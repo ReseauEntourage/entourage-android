@@ -169,9 +169,9 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
     public void configureView() {
         if (getActivity() != null) {
             if (editedUser == null) {
-                User user = EntourageApplication.me(getActivity());
-                if (user == null) return;
-                editedUser = user.clone();
+                User me = EntourageApplication.me(getActivity());
+                if (me == null) return;
+                editedUser = me.clone();
                 if (editedUser == null) return;
             }
 
@@ -379,10 +379,10 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
             return;
         }
 
-        User user = EntourageApplication.me(getActivity());
-        editedUser.setAvatarURL(user.getAvatarURL());
-        editedUser.setPartner(user.getPartner());
-        editedUser.setAddress(user.getAddress());
+        User me = EntourageApplication.me(getActivity());
+        editedUser.setAvatarURL(me.getAvatarURL());
+        editedUser.setPartner(me.getPartner());
+        editedUser.setAddress(me.getAddress());
 
         configureView();
     }

@@ -7,8 +7,8 @@ import java.util.List;
 
 import social.entourage.android.api.model.TourType;
 import social.entourage.android.api.model.map.Entourage;
-import social.entourage.android.map.entourage.category.EntourageCategory;
-import social.entourage.android.map.entourage.category.EntourageCategoryManager;
+import social.entourage.android.entourage.category.EntourageCategory;
+import social.entourage.android.entourage.category.EntourageCategoryManager;
 
 /**
  * Created by mihaiionescu on 17/05/16.

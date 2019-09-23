@@ -13,7 +13,7 @@ import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.tape.Events;
-import social.entourage.android.map.entourage.EntourageCloseFragment;
+import social.entourage.android.entourage.EntourageCloseFragment;
 import social.entourage.android.privateCircle.PrivateCircleChooseFragment;
 import social.entourage.android.tools.BusProvider;
 

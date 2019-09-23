@@ -31,7 +31,7 @@ import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.configuration.Configuration;
-import social.entourage.android.map.tour.information.TourInformationFragment;
+import social.entourage.android.entourage.information.EntourageInformationFragment;
 import social.entourage.android.partner.PartnerFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
@@ -384,9 +384,9 @@ public class UserFragment extends EntourageDialogFragment {
 //        UserDiscussionFragment userDiscussionFragment = UserDiscussionFragment.newInstance(user, false);
 //        userDiscussionFragment.show(getFragmentManager(), UserDiscussionFragment.TAG);
         if (user.getConversation() == null) return;
-        TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(user.getConversation().getUUID(), FeedItem.ENTOURAGE_CARD, 0);
-        tourInformationFragment.setShowInfoButton(false);
-        tourInformationFragment.show(getFragmentManager(), TourInformationFragment.TAG);
+        EntourageInformationFragment entourageInformationFragment = EntourageInformationFragment.newInstance(user.getConversation().getUUID(), FeedItem.ENTOURAGE_CARD, 0);
+        entourageInformationFragment.setShowInfoButton(false);
+        entourageInformationFragment.show(getFragmentManager(), EntourageInformationFragment.TAG);
     }
 
     @Optional

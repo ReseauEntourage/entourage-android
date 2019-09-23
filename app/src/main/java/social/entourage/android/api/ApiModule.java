@@ -26,7 +26,7 @@ import social.entourage.android.Constants;
 import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.tape.EncounterTapeTaskQueue;
 import social.entourage.android.authentication.AuthenticationInterceptor;
-import social.entourage.android.map.encounter.CreateEncounterPresenter;
+import social.entourage.android.tour.encounter.CreateEncounterPresenter;
 import timber.log.Timber;
 
 /**

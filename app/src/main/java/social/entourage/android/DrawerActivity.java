@@ -11,6 +11,8 @@ import android.os.Looper;
 import android.provider.Settings;
 import androidx.annotation.IdRes;
 import com.google.android.material.tabs.TabLayout;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -22,7 +24,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
@@ -57,16 +58,15 @@ import social.entourage.android.authentication.UserPreferences;
 import social.entourage.android.base.EntourageToast;
 import social.entourage.android.deeplinks.DeepLinksManager;
 import social.entourage.android.map.MapEntourageFragment;
-import social.entourage.android.map.choice.ChoiceFragment;
-import social.entourage.android.map.confirmation.ConfirmationFragment;
-import social.entourage.android.map.encounter.CreateEncounterActivity;
-import social.entourage.android.map.encounter.EncounterDisclaimerFragment;
-import social.entourage.android.map.encounter.ReadEncounterActivity;
-import social.entourage.android.map.entourage.EntourageDisclaimerFragment;
-import social.entourage.android.map.entourage.my.MyEntouragesFragment;
-import social.entourage.android.map.tour.TourService;
-import social.entourage.android.map.tour.information.TourInformationFragment;
-import social.entourage.android.map.tour.my.MyToursFragment;
+import social.entourage.android.tour.choice.ChoiceFragment;
+import social.entourage.android.tour.confirmation.ConfirmationFragment;
+import social.entourage.android.tour.encounter.CreateEncounterActivity;
+import social.entourage.android.tour.encounter.EncounterDisclaimerFragment;
+import social.entourage.android.tour.encounter.ReadEncounterActivity;
+import social.entourage.android.entourage.EntourageDisclaimerFragment;
+import social.entourage.android.entourage.my.MyEntouragesFragment;
+import social.entourage.android.tour.TourService;
+import social.entourage.android.entourage.information.EntourageInformationFragment;
 import social.entourage.android.message.push.PushNotificationManager;
 import social.entourage.android.navigation.BaseBottomNavigationDataSource;
 import social.entourage.android.navigation.BottomNavigationDataSource;
@@ -81,9 +81,8 @@ import social.entourage.android.user.edit.photo.PhotoEditFragment;
 import timber.log.Timber;
 
 public class DrawerActivity extends EntourageSecuredActivity
-    implements TourInformationFragment.OnTourInformationFragmentFinish,
+    implements EntourageInformationFragment.OnEntourageInformationFragmentFinish,
     ChoiceFragment.OnChoiceFragmentFinish,
-    MyToursFragment.OnFragmentInteractionListener,
     EntourageDisclaimerFragment.OnFragmentInteractionListener,
     EncounterDisclaimerFragment.OnFragmentInteractionListener,
     PhotoChooseInterface,
@@ -152,10 +151,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             //initialize the push notifications
             initializePushNotifications();
 
-            updateMixpanelInfo();
-
-            Crashlytics.setUserIdentifier(String.valueOf(user.getId()));
-            Crashlytics.setUserName(user.getDisplayName());
+            updateAnalyticsInfo();
         }
     }
 
@@ -203,8 +199,6 @@ public class DrawerActivity extends EntourageSecuredActivity
             if (getIntent()!=null && getIntent().getAction() != null) {
                 switch (getIntent().getAction()) {
                     case ConfirmationFragment.KEY_RESUME_TOUR:
-                        BusProvider.getInstance().post(new OnCheckIntentActionEvent());
-                        break;
                     case ConfirmationFragment.KEY_END_TOUR:
                         BusProvider.getInstance().post(new OnCheckIntentActionEvent());
                         break;
@@ -223,8 +217,8 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
 
         if (getIntent()==null || getIntent().getAction() == null) {
-            // user just returns to the app, update mixpanel
-            updateMixpanelInfo();
+            // user just returns to the app, update analytics
+            updateAnalyticsInfo();
         }
     }
 
@@ -395,7 +389,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             for (int i = 0; i < tabCount; i++) {
                 BaseBottomNavigationDataSource.NavigationItem navigationItem = navigationDataSource.getNavigationItemAtIndex(i);
                 TabLayout.Tab tab = tabLayout.newTab();
-                tab.setCustomView(R.layout.toolbar_view);
+                tab.setCustomView(i == navigationDataSource.getMyMessagesTabIndex()?R.layout.toolbar_view_with_badge: R.layout.toolbar_view);
                 tab.setText(navigationItem.getText());
                 tab.setIcon(navigationItem.getIcon(getApplicationContext()));
                 tabLayout.addTab(tab);
@@ -520,10 +514,10 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    private void updateMixpanelInfo() {
+    private void updateAnalyticsInfo() {
         User user = getAuthenticationController().getUser();
         if (user == null) return;
-        EntourageEvents.updateMixpanelInfo(user, getApplicationContext(), NotificationManagerCompat.from(this).areNotificationsEnabled());
+        EntourageEvents.updateUserInfo(user, getApplicationContext(), NotificationManagerCompat.from(this).areNotificationsEnabled());
     }
 
     @Override
@@ -610,7 +604,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                         break;
                 }
             }
-            EntourageApplication application = EntourageApplication.get(getApplicationContext());
+            EntourageApplication application = EntourageApplication.get();
             if (application != null) {
                 application.removePushNotification(message);
             }
@@ -769,12 +763,9 @@ public class DrawerActivity extends EntourageSecuredActivity
             if (!feedItem.isClosed()) {
                 // close
                 mapEntourageFragment.stopFeedItem(feedItem, event.isSuccess());
-            } else {
-                if (feedItem.getType() == TimestampedObject.TOUR_CARD && !feedItem.isFreezed()) {
-                    // freeze
-                    Tour tour = (Tour) feedItem;
-                    mapEntourageFragment.freezeTour(tour);
-                }
+            } else if (feedItem.getType() == TimestampedObject.TOUR_CARD && !feedItem.isFreezed()) {
+                // freeze
+                mapEntourageFragment.freezeTour((Tour) feedItem);
             }
         }
     }
@@ -797,8 +788,13 @@ public class DrawerActivity extends EntourageSecuredActivity
         showWebView(event.getUrl());
     }
 
+    @Subscribe
+    public void onUserUpdateEvent(Events.OnUserInfoUpdatedEvent event) {
+        updateAnalyticsInfo();
+    }
+
     @Override
-    public void closeTourInformationFragment(TourInformationFragment fragment) {
+    public void closeEntourageInformationFragment(EntourageInformationFragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().remove(fragment).commit();
     }
@@ -821,11 +817,6 @@ public class DrawerActivity extends EntourageSecuredActivity
                 mapEntourageFragment.displayChosenFeedItem(tour, 0);
             }
         }
-    }
-
-    @Override
-    public void onShowTourInfo(final Tour tour) {
-
     }
 
     @Override
@@ -896,21 +887,9 @@ public class DrawerActivity extends EntourageSecuredActivity
     // Floating Actions handling
     // ----------------------------------
 
-    public void onStartTourClicked() {
+    public void onCreateEntourageDeepLink() {
         if (mainFragment instanceof MapEntourageFragment) {
-            mapEntourageFragment.onStartTourLauncher();
-        }
-    }
-
-    public void onAddTourEncounterClicked() {
-        if (mainFragment instanceof MapEntourageFragment) {
-            mapEntourageFragment.onAddEncounter();
-        }
-    }
-
-    public void onCreateEntourageClicked() {
-        if (mainFragment instanceof MapEntourageFragment) {
-            mapEntourageFragment.displayEntouragePopupWhileTour();
+            mapEntourageFragment.displayEntourageDisclaimer();
         }
     }
 
@@ -921,65 +900,60 @@ public class DrawerActivity extends EntourageSecuredActivity
     @Subscribe
     public void onPushNotificationReceived(OnPushNotificationReceived event) {
         final Message message = event.getMessage();
-        if (message != null && message.getContent() != null && message.getContent().getJoinableId() != 0) {
-            Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    PushNotificationContent content = message.getContent();
-                    if (content != null) {
-                        String contentType = content.getType();
-                        if (contentType == null) {
-                            return;
-                        }
-                        switch (contentType) {
-                            case PushNotificationContent.TYPE_NEW_CHAT_MESSAGE:
-                                if (!onPushNotificationChatMessageReceived(message)) {
-                                    addPushNotification(message);
-                                } else {
-                                    EntourageApplication application = EntourageApplication.get(getApplicationContext());
-                                    if (application != null) {
-                                        if (content.isTourRelated()) {
-                                            application.removePushNotification(content.getJoinableId(), TimestampedObject.TOUR_CARD, content.getUserId(), PushNotificationContent.TYPE_NEW_CHAT_MESSAGE);
-                                        } else if (content.isEntourageRelated()) {
-                                            application.removePushNotification(content.getJoinableId(), TimestampedObject.ENTOURAGE_CARD, content.getUserId(), PushNotificationContent.TYPE_NEW_CHAT_MESSAGE);
-                                        }
-                                    }
-                                }
-                                break;
-                            case PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED:
-                                EntourageApplication application = EntourageApplication.get(getApplicationContext());
-                                if (application != null) {
-                                    if (content.isTourRelated()) {
-                                        application.removePushNotification(content.getJoinableId(), TimestampedObject.TOUR_CARD, content.getUserId(), PushNotificationContent.TYPE_NEW_JOIN_REQUEST);
-                                    } else if (content.isEntourageRelated()) {
-                                        application.removePushNotification(content.getJoinableId(), TimestampedObject.ENTOURAGE_CARD, content.getUserId(), PushNotificationContent.TYPE_NEW_JOIN_REQUEST);
-                                    }
-                                }
-                                break;
-                            case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:
-                                addPushNotification(message);
-                                if (mapEntourageFragment != null) {
-                                    mapEntourageFragment.userStatusChanged(content, Tour.JOIN_STATUS_ACCEPTED);
-                                }
-                                break;
-                            default:
-                                addPushNotification(message);
-                                break;
-                        }
+        if (message == null || message.getContent() == null || message.getContent().getJoinableId() == 0) {
+            return;
+        }
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(() -> {
+            PushNotificationContent content = message.getContent();
+            if (content == null  || content.getType()==null) {
+                return;
+            }
+            String contentType = content.getType();
+            switch (contentType) {
+                case PushNotificationContent.TYPE_NEW_CHAT_MESSAGE:
+                    if (displayMessageOnCurrentTourInfoFragment(message)) {
+                        //already displayed
+                        removePushNotification(content, contentType);
+                    } else {
+                        addPushNotification(message);
                     }
-                }
-            });
+                    break;
+                case PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED:
+                    //@todo should we update current tour info fragment ?
+                    removePushNotification(content, PushNotificationContent.TYPE_NEW_JOIN_REQUEST);
+                    break;
+                case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:
+                    addPushNotification(message);
+                    if (mapEntourageFragment != null) {
+                        mapEntourageFragment.userStatusChanged(content, Tour.JOIN_STATUS_ACCEPTED);
+                    }
+                    break;
+                default:
+                    /*TYPE_NEW_JOIN_REQUEST,TYPE_ENTOURAGE_INVITATION,TYPE_INVITATION_STATUS*/
+                    addPushNotification(message);
+                    break;
+            }
+        });
+    }
+
+    private void removePushNotification(PushNotificationContent content, String contentType) {
+        EntourageApplication application = EntourageApplication.get();
+        if (application != null) {
+            if (content.isTourRelated()) {
+                application.removePushNotification(content.getJoinableId(), TimestampedObject.TOUR_CARD, content.getUserId(), contentType);
+            } else if (content.isEntourageRelated()) {
+                application.removePushNotification(content.getJoinableId(), TimestampedObject.ENTOURAGE_CARD, content.getUserId(), contentType);
+            }
         }
     }
 
-    private boolean onPushNotificationChatMessageReceived(Message message) {
-        TourInformationFragment fragment = (TourInformationFragment) getSupportFragmentManager().findFragmentByTag(TourInformationFragment.TAG);
+    private boolean displayMessageOnCurrentTourInfoFragment(@NonNull Message message) {
+        EntourageInformationFragment fragment = (EntourageInformationFragment) getSupportFragmentManager().findFragmentByTag(EntourageInformationFragment.TAG);
         return fragment != null && fragment.onPushNotificationChatMessageReceived(message);
     }
 
     private void addPushNotification(Message message) {
-        refreshBadgeCount();
         if (mapEntourageFragment != null) {
             mapEntourageFragment.onPushNotificationReceived(message);
         }
@@ -987,6 +961,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (myEntouragesFragment != null) {
             myEntouragesFragment.onPushNotificationReceived(message);
         }
+        refreshBadgeCount();
     }
 
     // ----------------------------------
@@ -1061,14 +1036,30 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     // ----------------------------------
+    // BUS LISTENERS
+    // ----------------------------------
+
+    @Subscribe
+    public void onMyEntouragesForceRefresh(Events.OnMyEntouragesForceRefresh event) {
+        FeedItem item = event.getFeedItem();
+        if(item!=null) {
+            EntourageApplication application = EntourageApplication.get();
+            if (application != null) {
+                application.updateBadgeCountForFeedItem(item);
+            }
+            refreshBadgeCount();
+        }
+    }
+
+    // ----------------------------------
     // Helper functions
     // ----------------------------------
 
     private void refreshBadgeCount() {
-        EntourageApplication application = EntourageApplication.get(getApplicationContext());
         if (discussionBadgeView != null) {
-            discussionBadgeView.setVisibility(application.badgeCount > 0 ? View.VISIBLE : View.INVISIBLE);
-            discussionBadgeView.setText(String.valueOf(application.badgeCount));
+            int badgeCount = EntourageApplication.get().getBadgeCount();
+            discussionBadgeView.setVisibility(badgeCount > 0 ? View.VISIBLE : View.INVISIBLE);
+            discussionBadgeView.setText(String.valueOf(badgeCount));
         }
     }
 

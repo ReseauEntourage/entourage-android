@@ -29,8 +29,8 @@ import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.base.EntouragePagination;
-import social.entourage.android.map.entourage.my.filter.MyEntouragesFilter;
-import social.entourage.android.map.entourage.my.filter.MyEntouragesFilterFactory;
+import social.entourage.android.entourage.my.filter.MyEntouragesFilter;
+import social.entourage.android.entourage.my.filter.MyEntouragesFilterFactory;
 
 /**
  * A {@link EntourageDialogFragment} subclass that shows a list of private circles with the capability of choosing one

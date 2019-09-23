@@ -37,7 +37,7 @@ import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.base.EntourageDialogFragment;
-import social.entourage.android.map.tour.information.discussion.DiscussionAdapter;
+import social.entourage.android.entourage.information.discussion.DiscussionAdapter;
 import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.user.UserFragment;
 

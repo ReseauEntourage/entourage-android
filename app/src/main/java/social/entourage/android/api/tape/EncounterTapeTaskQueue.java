@@ -6,7 +6,7 @@ import android.content.Intent;
 import com.squareup.tape.ObjectQueue;
 import com.squareup.tape.TaskQueue;
 
-import social.entourage.android.map.encounter.CreateEncounterPresenter.EncounterUploadTask;
+import social.entourage.android.tour.encounter.CreateEncounterPresenter.EncounterUploadTask;
 
 public class EncounterTapeTaskQueue extends TaskQueue<EncounterUploadTask> {
 

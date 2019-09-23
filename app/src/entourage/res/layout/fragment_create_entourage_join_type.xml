@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              tools:context="social.entourage.android.map.entourage.create.CreateEntourageJoinTypeFragment">
+              tools:context="social.entourage.android.entourage.create.CreateEntourageJoinTypeFragment">
 
 
     <social.entourage.android.view.EntourageTitleView

@@ -24,10 +24,10 @@ import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
-import social.entourage.android.map.encounter.EncounterDisclaimerFragment;
-import social.entourage.android.map.entourage.create.CreateEntourageFragment;
-import social.entourage.android.map.entourage.EntourageDisclaimerFragment;
-import social.entourage.android.map.tour.information.TourInformationFragment;
+import social.entourage.android.tour.encounter.EncounterDisclaimerFragment;
+import social.entourage.android.entourage.create.CreateEntourageFragment;
+import social.entourage.android.entourage.EntourageDisclaimerFragment;
+import social.entourage.android.entourage.information.EntourageInformationFragment;
 import social.entourage.android.tools.BusProvider;
 
 /**
@@ -90,31 +90,27 @@ public class MapPresenter {
         authenticationController.setShowNoEntouragesPopup(show);
     }
 
-    public void loadEncounterOnMap(Encounter encounter) {
-        fragment.putEncounterOnMap(encounter, onClickListener);
-    }
-
     public void openFeedItem(FeedItem feedItem, long invitationId, int feedRank) {
         if (fragment.getActivity() != null) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
-            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(feedItem, invitationId, feedRank);
-            tourInformationFragment.show(fragmentManager, TourInformationFragment.TAG);
+            EntourageInformationFragment entourageInformationFragment = EntourageInformationFragment.newInstance(feedItem, invitationId, feedRank);
+            entourageInformationFragment.show(fragmentManager, EntourageInformationFragment.TAG);
         }
     }
 
     public void openFeedItem(String feedItemUUID, int feedItemType, long invitationId) {
         if (fragment.getActivity() != null) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
-            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(feedItemUUID, feedItemType, invitationId);
-            tourInformationFragment.show(fragmentManager, TourInformationFragment.TAG);
+            EntourageInformationFragment entourageInformationFragment = EntourageInformationFragment.newInstance(feedItemUUID, feedItemType, invitationId);
+            entourageInformationFragment.show(fragmentManager, EntourageInformationFragment.TAG);
         }
     }
 
     public void openFeedItem(String feedItemShareURL, int feedItemType) {
         if (fragment.getActivity() != null) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
-            TourInformationFragment tourInformationFragment = TourInformationFragment.newInstance(feedItemShareURL, feedItemType);
-            tourInformationFragment.show(fragmentManager, TourInformationFragment.TAG);
+            EntourageInformationFragment entourageInformationFragment = EntourageInformationFragment.newInstance(feedItemShareURL, feedItemType);
+            entourageInformationFragment.show(fragmentManager, EntourageInformationFragment.TAG);
         }
     }
 

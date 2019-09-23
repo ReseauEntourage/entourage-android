@@ -27,14 +27,13 @@ public class CarouselPageAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(final int position) {
         switch (position) {
-            case 0:
-                return new CarouselPage1Fragment();
             case 1:
                 return new CarouselPage2Fragment();
             case 2:
                 return new CarouselPage3Fragment();
             case 3:
                 return new CarouselPage4Fragment();
+            case 0:
             default:
                 return new CarouselPage1Fragment();
         }

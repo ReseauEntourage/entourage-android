@@ -18,8 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-import android.widget.RemoteViews;
-
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.ArrayList;
@@ -57,11 +55,11 @@ public class PushNotificationManager {
 
     public static final String PUSH_MESSAGE = "social.entourage.android.PUSH_MESSAGE";
 
-    public static final String KEY_SENDER = "sender";
-    public static final String KEY_OBJECT = "object";
-    public static final String KEY_CONTENT = "content";
+    private static final String KEY_SENDER = "sender";
+    private static final String KEY_OBJECT = "object";
+    private static final String KEY_CONTENT = "content";
     public static final String KEY_CTA = "entourage_cta";
-    public static final String KEY_MIXPANEL = "mp_message";
+    static final String KEY_MIXPANEL = "mp_message";
 
     // ----------------------------------
     // ATTRIBUTES
@@ -91,7 +89,7 @@ public class PushNotificationManager {
      * @param message The message that we use to build the push notification
      * @param context The context into which to add the push notification
      */
-    public void handlePushNotification(Message message, Context context) {
+    void handlePushNotification(Message message, Context context) {
         if (message == null) return;
         PushNotificationContent content = message.getContent();
         EntourageApplication application = EntourageApplication.get();
@@ -263,21 +261,12 @@ public class PushNotificationManager {
                     }
                     PushNotificationContent content = message.getContent();
                     if (content != null && content.getJoinableId() == feedId && content.getType() != null && content.getType().equals(pushType)) {
-                        if (FeedItem.TOUR_CARD == feedType && content.isTourRelated()) {
-                            // remove the notification from our internal list
+                        if((FeedItem.TOUR_CARD == feedType && content.isTourRelated())
+                        ||(FeedItem.ENTOURAGE_CARD == feedType && content.isEntourageRelated())) {
                             messageIterator.remove();
                             messageListChanged = true;
                             if (message.isVisible()) {
-                                application.updateFeedItemsStorage(message, false);
-                                count++;
-                            }
-                            break;
-                        }
-                        if (FeedItem.ENTOURAGE_CARD == feedType && content.isEntourageRelated()) {
-                            messageIterator.remove();
-                            messageListChanged = true;
-                            if (message.isVisible()) {
-                                application.updateFeedItemsStorage(message, false);
+                                application.storeNewPushNotification(message, false);
                                 count++;
                             }
                             break;
@@ -366,6 +355,8 @@ public class PushNotificationManager {
     public void displayPushNotification(RemoteMessage fcmMessage, Context context) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
         if (notificationManager == null) return;
+        RemoteMessage.Notification notif = fcmMessage.getNotification();
+        if(notif==null) return;
 
         String channelId = context.getString(R.string.app_name);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -383,8 +374,8 @@ public class PushNotificationManager {
         Intent ctaIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(fcmMessage.getData().get(PushNotificationManager.KEY_CTA)));
         builder.setContentIntent(PendingIntent.getActivity(context, 0, ctaIntent, PendingIntent.FLAG_UPDATE_CURRENT));
         builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.entourage_logo_grey));
-        builder.setContentTitle(fcmMessage.getNotification().getTitle());
-        builder.setContentText(fcmMessage.getNotification().getBody());
+        builder.setContentTitle(notif.getTitle());
+        builder.setContentText(notif.getBody());
 
         Notification notification = builder.build();
         notification.defaults = Notification.DEFAULT_LIGHTS;

@@ -28,4 +28,8 @@
 
     <item name="title_separator" type="id" />
 
+    <item name="launcher_tour_type_medical" type="id" />
+    <item name="launcher_tour_type_bare_hands" type="id" />
+    <item name="launcher_tour_type_alimentary" type="id" />
+
 </resources>

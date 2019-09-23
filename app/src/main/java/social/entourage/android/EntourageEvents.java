@@ -187,7 +187,6 @@ public class EntourageEvents {
     //MY ENTOURAGES Events
     public static final String EVENT_MYENTOURAGES_BANNER_CLICK = "BannerMessageClick";
     public static final String EVENT_MYENTOURAGES_MESSAGE_OPEN = "MessageOpen";
-    public static final String EVENT_MYENTOURAGES_PLUS_CLICK = "PlusOnMessagesPageClick";
     public static final String EVENT_MYENTOURAGES_FILTER_CLICK = "MessagesFilterClick";
     public static final String EVENT_MYENTOURAGES_BANNER_MOVE = "MoveBannerClick"; //A lot of code needs to be written to detect this
     public static final String EVENT_MYENTOURAGES_BACK_CLICK = "BackToFeedClick";
@@ -285,7 +284,7 @@ public class EntourageEvents {
         }
     }
 
-    public static void onLocationPermissionGranted(boolean isPermissionGranted) {
+    static void onLocationPermissionGranted(boolean isPermissionGranted) {
         MixpanelAPI mixpanel = EntourageApplication.get().getMixpanel();
         FirebaseAnalytics mFirebaseAnalytics = EntourageApplication.get().getFirebase();
         if (mixpanel == null || mFirebaseAnalytics== null) return;
@@ -297,7 +296,7 @@ public class EntourageEvents {
         mFirebaseAnalytics.setUserProperty("EntourageGeolocEnable", geolocStatus);
     }
 
-    public static void updateMixpanelInfo(User user, Context context, boolean areNotificationsEnabled) {
+    static void updateUserInfo(User user, Context context, boolean areNotificationsEnabled) {
         if (areNotificationsEnabled) {
             logEvent(EntourageEvents.EVENT_GEOLOCATION_POPUP_REFUSE);
         } else {
@@ -310,7 +309,9 @@ public class EntourageEvents {
         mixpanel.identify(String.valueOf(user.getId()));
         people.identify(String.valueOf(user.getId()));
         mFirebaseAnalytics.setUserId(String.valueOf(user.getId()));
+
         Crashlytics.setUserIdentifier(String.valueOf(user.getId()));
+        Crashlytics.setUserName(user.getDisplayName());
 
         people.set("EntourageUserType", user.isPro()?"Pro":"Public");
         mFirebaseAnalytics.setUserProperty("EntourageUserType", user.isPro()?"Pro":"Public");
@@ -321,6 +322,11 @@ public class EntourageEvents {
         if(user.getPartner()!=null) {
             people.set("EntouragePartner", user.getPartner().getName());
             mFirebaseAnalytics.setUserProperty("EntouragePartner", user.getPartner().getName());
+        }
+
+        if(user.getFirebaseProperties()!=null) {
+            mFirebaseAnalytics.setUserProperty(User.UserFirebaseProperties.actionZoneCPName, user.getFirebaseProperties().getActionZoneCP());
+            mFirebaseAnalytics.setUserProperty(User.UserFirebaseProperties.actionZoneDepName, user.getFirebaseProperties().getActionZoneDep());
         }
 
         String geolocStatus="NO";

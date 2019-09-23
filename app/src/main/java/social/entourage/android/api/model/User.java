@@ -73,6 +73,9 @@ public class User implements Serializable {
     @SerializedName("user_type")
     private String type = TYPE_PRO;
 
+    @SerializedName("firebase_properties")
+    private UserFirebaseProperties firebaseProperties;
+
     private String about;
 
     private ArrayList<String> roles;
@@ -130,9 +133,7 @@ public class User implements Serializable {
             ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
             ObjectInputStream ois = new ObjectInputStream(bais);
             return (User) ois.readObject();
-        } catch (IOException e) {
-            return null;
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             return null;
         }
     }
@@ -250,6 +251,10 @@ public class User implements Serializable {
 
     public UserConversation getConversation() {
         return conversation;
+    }
+
+    public UserFirebaseProperties getFirebaseProperties() {
+        return firebaseProperties;
     }
 
     public Address getAddress() {
@@ -429,6 +434,28 @@ public class User implements Serializable {
         public String getUUID() {
             return UUID;
         }
+    }
+
+    // ----------------------------------
+    // User Firebase Properties
+    // ----------------------------------
+
+    public static class UserFirebaseProperties implements Serializable {
+
+        private static final long serialVersionUID = 2290288743161484729L;
+
+        public static final String actionZoneDepName = "ActionZoneDep";
+        public static final String actionZoneCPName = "ActionZoneCP";
+
+        @SerializedName("ActionZoneDep")
+        private String actionZoneDep = "";
+
+        @SerializedName("ActionZoneCP")
+        private String actionZoneCP = "";
+
+        public String getActionZoneDep() { return actionZoneDep;}
+
+        public String getActionZoneCP() { return actionZoneCP;}
     }
 
     // ----------------------------------

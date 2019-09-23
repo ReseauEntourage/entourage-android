@@ -6,4 +6,5 @@
     <string name="about_website">Site web d’Entourage</string>
     <string name="about_email">Contactez Entourage</string>
     <string name="about_version_format">v%1$s</string>
+    <string name="about_clearing_entourage_cache">Données d\'historique locales effacées</string>
 </resources>

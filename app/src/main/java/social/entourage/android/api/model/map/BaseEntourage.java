@@ -21,8 +21,8 @@ import java.util.Locale;
 
 import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
-import social.entourage.android.map.entourage.category.EntourageCategory;
-import social.entourage.android.map.entourage.category.EntourageCategoryManager;
+import social.entourage.android.entourage.category.EntourageCategory;
+import social.entourage.android.entourage.category.EntourageCategoryManager;
 
 /**
  * Created by Mihai Ionescu on 06/07/2018.
@@ -205,6 +205,7 @@ public class BaseEntourage extends FeedItem implements Serializable {
         if (!status.equals(entourage.status)) return false;
         if (!joinStatus.equals(entourage.joinStatus)) return false;
         if (numberOfPeople != entourage.numberOfPeople) return false;
+        if(numberOfUnreadMessages != entourage.numberOfUnreadMessages) return false;
         if (!entourageType.equals(entourage.entourageType)) return false;
         if (category != null && !category.equals(entourage.category)) return false;
         if (getAuthor() != null) {

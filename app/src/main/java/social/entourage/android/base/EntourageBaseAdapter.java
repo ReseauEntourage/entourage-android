@@ -63,8 +63,8 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public void addItems(List<TimestampedObject> addItems) {
         int positionStart = (items.size() == 0 ? 0 : items.size()-1) + getPositionOffset();
-        for (int i = 0; i < addItems.size(); i++) {
-            addCardInfo(addItems.get(i), false);
+        for (TimestampedObject to : addItems) {
+            addCardInfo(to, false);
         }
         notifyItemRangeInserted(positionStart, addItems.size());
     }
@@ -127,8 +127,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (card == null) {
             return null;
         }
-        for (int i = 0; i < items.size(); i++) {
-            TimestampedObject timestampedObject = items.get(i);
+        for (TimestampedObject timestampedObject : items) {
             if (timestampedObject.equals(card)) {
                 return timestampedObject;
             }
@@ -137,8 +136,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     public TimestampedObject findCard(int type, long id) {
-        for (int i = 0; i < items.size(); i++) {
-            TimestampedObject timestampedObject = items.get(i);
+        for (TimestampedObject timestampedObject : items) {
             if (timestampedObject.getType() == type && timestampedObject.getId() == id) {
                 return timestampedObject;
             }

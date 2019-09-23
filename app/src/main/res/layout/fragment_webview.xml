@@ -70,7 +70,8 @@
                     android:layout_height="wrap_content"
                     android:background="?android:attr/selectableItemBackground"
                     android:contentDescription="@string/empty_description"
-                    app:srcCompat="@drawable/ic_more"/>
+                    app:srcCompat="@drawable/ic_more_3filleddots"
+                    android:tint="@color/accent"/>
             </LinearLayout>
 
             <View

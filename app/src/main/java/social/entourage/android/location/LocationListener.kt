@@ -10,8 +10,8 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.maps.model.LatLng
 import social.entourage.android.api.model.map.TourPoint
-import social.entourage.android.map.tour.TourService
-import social.entourage.android.map.tour.TourServiceManager
+import social.entourage.android.tour.TourService
+import social.entourage.android.tour.TourServiceManager
 import timber.log.Timber
 
 class LocationListener(private val manager: TourServiceManager,
@@ -56,7 +56,8 @@ class LocationListener(private val manager: TourServiceManager,
     override fun onLocationAvailability(result: LocationAvailability?) {
         super.onLocationAvailability(result)
         val isLocationAvailable = result?.isLocationAvailable == true
-        val intent = if (isLocationAvailable) Intent(TourService.KEY_LOCATION_PROVIDER_ENABLED) else Intent(TourService.KEY_LOCATION_PROVIDER_DISABLED)
+        Timber.d("LocationAvailability changed to %s", isLocationAvailable)
+        val intent = Intent(if(result?.isLocationAvailable == true) TourService.KEY_LOCATION_PROVIDER_ENABLED else TourService.KEY_LOCATION_PROVIDER_DISABLED)
         context.sendBroadcast(intent)
     }
 }

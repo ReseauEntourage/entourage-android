@@ -9,8 +9,12 @@ import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,6 +23,7 @@ import butterknife.Optional;
 import social.entourage.android.BuildConfig;
 import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
@@ -38,6 +43,9 @@ public class AboutFragment extends EntourageDialogFragment {
     @Nullable
     @BindView(R.id.about_version)
     TextView versionTextView;
+
+    @BindView(R.id.about_logo)
+    ImageView logoView;
 
     // ----------------------------------
     // LIFECYCLE
@@ -62,6 +70,14 @@ public class AboutFragment extends EntourageDialogFragment {
         if (versionTextView != null) {
             versionTextView.setText(getString(R.string.about_version_format, BuildConfig.VERSION_NAME));
         }
+        logoView.setOnLongClickListener(this::handleLongPress);
+    }
+
+    private boolean handleLongPress(View view) {
+        if(EntourageApplication.get().clearFeedStorage()){
+            Snackbar.make(this.getView(), R.string.about_clearing_entourage_cache, Snackbar.LENGTH_SHORT).show();
+        }
+        return true;
     }
 
     // ----------------------------------

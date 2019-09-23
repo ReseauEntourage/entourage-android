@@ -79,7 +79,7 @@
 
         <view
             android:id="@+id/fragment_map_entourage_mini_cards"
-            class="social.entourage.android.map.entourage.minicards.EntourageMiniCardsView"
+            class="social.entourage.android.entourage.minicards.EntourageMiniCardsView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
@@ -171,15 +171,6 @@
             android:visibility="gone"/>
 
     </RelativeLayout>
-
-    <include
-        android:id="@+id/layout_map_launcher"
-        layout="@layout/layout_map_launcher"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="@dimen/newsfeed_map_height"
-        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/layout_map_underconstruction"

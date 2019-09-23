@@ -213,7 +213,7 @@ public class DeepLinksManager {
                 DrawerActivity drawerActivity = (DrawerActivity)activity;
                 drawerActivity.showFeed();
                 drawerActivity.popToMapFragment();
-                drawerActivity.onCreateEntourageClicked();
+                drawerActivity.onCreateEntourageDeepLink();
             } else {
                 return;
             }
