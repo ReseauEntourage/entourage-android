@@ -57,7 +57,7 @@ class LocationListener(private val manager: TourServiceManager,
         super.onLocationAvailability(result)
         val isLocationAvailable = result?.isLocationAvailable == true
         Timber.d("LocationAvailability changed to %s", isLocationAvailable)
-        //val intent = if (isLocationAvailable) Intent(TourService.KEY_LOCATION_PROVIDER_ENABLED) else Intent(TourService.KEY_LOCATION_PROVIDER_DISABLED)
-        //context.sendBroadcast(intent)
+        val intent = Intent(if(result?.isLocationAvailable == true) TourService.KEY_LOCATION_PROVIDER_ENABLED else TourService.KEY_LOCATION_PROVIDER_DISABLED)
+        context.sendBroadcast(intent)
     }
 }
