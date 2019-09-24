@@ -7,7 +7,7 @@ trigger_map:
   - push_branch: "*EN-*"
     workflow: develop
 workflows:
-  develop:
+  dev_entourage:
     steps:
       - activate-ssh-key:
           run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
@@ -60,6 +60,101 @@ workflows:
                   )
                 end
             - gemfile_content: ''
+      - cache-pull: {}
+      - install-missing-android-tools: {}
+      - gradle-runner:
+          inputs:
+            - apk_file_include_filter: ''
+            - app_file_include_filter: "*.apk"
+            - gradle_options: "--stacktrace"
+            - gradle_task: "$GRADLE_TASK"
+      - deploy-to-bitrise-io: {}
+      - post-jira-comment-with-build-details:
+          inputs:
+            - base_url: "$JIRA_BASE_URL"
+            - api_token: "$JIRA_API_TOKEN"
+            - user_name: "$JIRA_USER_EMAIL"
+            - issue_keys: "$JIRA_ISSUE_KEYS"
+      - slack:
+          inputs:
+            - webhook_url: ''
+            - from_username: Bitrise
+            - from_username_on_error: Bitrise
+            - message: |-
+                New Entourage DEV android build is available: $BITRISE_BUILD_NUMBER  here:
+                $BITRISE_APP_URL
+            - message_on_error: 'Oups, build has failed for Entourage android... @francois
+            @gregoire '
+            - icon_url: ''
+            - icon_url_on_error: ''
+            - pretext_on_error: "*Entourage Build Failed!*"
+            - pretext: "*Build Succeeded!* (Entourage dev only)"
+            - fields: |
+                App|${BITRISE_APP_TITLE}
+                Branch|${BITRISE_GIT_BRANCH}
+                Workflow|${BITRISE_TRIGGERED_WORKFLOW_ID}
+                Jira|<${JIRA_BASE_URL}browse/${JIRA_ISSUE_KEYS}|${JIRA_ISSUE_KEYS}>
+            - api_token: "$SLACK__BOT_API_TOKEN"
+            - channel: "#androiddev"
+      - cache-push: {}
+    envs:
+      - opts:
+          is_expand: false
+        GRADLE_TASK: assembleEntourageProdRelease assembleEntourageStagingRelease
+  dev_pfp:
+    steps:
+      - activate-ssh-key:
+          run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+      - git-clone: {}
+      - ruby-script:
+          inputs:
+            - ruby_content: |-
+                PROJECT_KEY = 'EN'
+                RESULT_ENV_VARIABLE = 'JIRA_ISSUE_KEYS'
+
+                puts "Searching issue keys in environment variables"
+
+                ISSUE_KEY_REGEXP = /#{PROJECT_KEY}-\d+/
+                issue_keys = []
+
+                [
+                  :BITRISE_GIT_BRANCH,
+                  :GIT_CLONE_COMMIT_MESSAGE_SUBJECT,
+                  :GIT_CLONE_COMMIT_MESSAGE_BODY
+                ].each do |var|
+                  print "#{var}: "
+                  value = ENV[var.to_s]
+                  if value.nil?
+                    puts "(not set)"
+                    next
+                  end
+                  var_issue_keys = value.scan(ISSUE_KEY_REGEXP).uniq
+                  puts var_issue_keys.inspect
+                  issue_keys += var_issue_keys
+                end
+
+                issue_keys.uniq!
+
+                puts
+
+
+                puts "Issue keys found:"
+                puts issue_keys.inspect
+                puts
+
+                if issue_keys.none?
+                  puts "No issue key found, $#{RESULT_ENV_VARIABLE} has not been set."
+                else
+                  issue_keys = issue_keys.join('|')
+                  puts "Setting $#{RESULT_ENV_VARIABLE} to '#{issue_keys}'."
+                  system(
+                    'envman', 'add',
+                    '--key', RESULT_ENV_VARIABLE.to_s,
+                    '--value', issue_keys
+                  )
+                end
+            - gemfile_content: ''
+      - cache-pull: {}
       - install-missing-android-tools: {}
       - gradle-runner:
           inputs:
@@ -79,13 +174,13 @@ workflows:
             - from_username: Bitrise
             - from_username_on_error: Bitrise
             - message: |-
-                New DEV android build is available: $BITRISE_BUILD_NUMBER  here:
+                New PFP DEV android build is available: $BITRISE_BUILD_NUMBER  here:
                 $BITRISE_APP_URL
-            - message_on_error: 'Oups, build has failed for android... @francois @gregoire '
+            - message_on_error: 'Oups, build has failed for PFP android... @francois @gregoire '
             - icon_url: ''
             - icon_url_on_error: ''
-            - pretext_on_error: "*Build Failed!*"
-            - pretext: "*Build Succeeded!* (dev only)"
+            - pretext_on_error: "*PFP : Build Failed!*"
+            - pretext: "*Build Succeeded!* (PFP dev only)"
             - fields: |
                 App|${BITRISE_APP_TITLE}
                 Branch|${BITRISE_GIT_BRANCH}
@@ -93,10 +188,21 @@ workflows:
                 Jira|<${JIRA_BASE_URL}browse/${JIRA_ISSUE_KEYS}|${JIRA_ISSUE_KEYS}>
             - api_token: "$SLACK__BOT_API_TOKEN"
             - channel: "#androiddev"
+      - cache-push: {}
     envs:
       - opts:
           is_expand: false
-        GRADLE_TASK_AAB: bundleEntourageProdRelease
+        GRADLE_TASK: assemblePfpProdRelease assemblePfpStagingRelease
+  develop:
+    steps:
+      - trigger-bitrise-workflow:
+          inputs:
+            - workflow_id: dev_entourage
+            - api_token: "$BUILD_TRIGGER"
+      - trigger-bitrise-workflow:
+          inputs:
+            - workflow_id: dev_pfp
+            - api_token: "$BUILD_TRIGGER"
   prod_entourage:
     steps:
       - activate-ssh-key:
@@ -112,7 +218,7 @@ workflows:
                 *intermediary_bundle*.aab
             - mapping_file_include_filter: ''
             - gradle_options: "--stacktrace"
-            - gradle_task: "$GRADLE_TASK_AAB"
+            - gradle_task: "$GRADLE_TASK"
       - deploy-to-bitrise-io: {}
       - slack:
           inputs:
@@ -136,7 +242,7 @@ workflows:
     envs:
       - opts:
           is_expand: false
-        GRADLE_TASK_AAB: bundleEntourageProdRelease
+        GRADLE_TASK: bundleEntourageProdRelease
   prod_pfp:
     steps:
       - activate-ssh-key:
@@ -152,7 +258,7 @@ workflows:
                 *intermediary_bundle*.aab
             - mapping_file_include_filter: ''
             - gradle_options: "--stacktrace"
-            - gradle_task: "$GRADLE_TASK_AAB"
+            - gradle_task: "$GRADLE_TASK"
       - deploy-to-bitrise-io: {}
       - slack:
           inputs:
@@ -177,7 +283,7 @@ workflows:
     envs:
       - opts:
           is_expand: false
-        GRADLE_TASK_AAB: bundlePfpProdRelease
+        GRADLE_TASK: bundlePfpProdRelease
       - opts:
           is_expand: false
         APPBUNDLE_NAME: pfpapp
