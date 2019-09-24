@@ -107,6 +107,11 @@ workflows:
           inputs:
             - apk_file_include_filter: ''
             - app_file_include_filter: "*.aab"
+            - app_file_exclude_filter: |
+                *.apk
+                *intermediary_bundle*.aab
+            - mapping_file_include_filter: ''
+            - gradle_options: "--stacktrace"
             - gradle_task: "$GRADLE_TASK_AAB"
       - deploy-to-bitrise-io: {}
       - slack:
@@ -142,6 +147,11 @@ workflows:
           inputs:
             - apk_file_include_filter: ''
             - app_file_include_filter: "*.aab"
+            - app_file_exclude_filter: |
+                *.apk
+                *intermediary_bundle*.aab
+            - mapping_file_include_filter: ''
+            - gradle_options: "--stacktrace"
             - gradle_task: "$GRADLE_TASK_AAB"
       - deploy-to-bitrise-io: {}
       - slack:
