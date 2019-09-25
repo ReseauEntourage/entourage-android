@@ -114,12 +114,13 @@ public class TourService extends Service {
                 startActivity(newIntent);
             } else if (KEY_LOCATION_PROVIDER_DISABLED.equals(action)) {
                 notifyListenersGpsStatusChanged(false);
-                if (isRunning()) {
+                /* TODO: fix this so it won't start multiple intents
+                    if (isRunning()) {
                     final Intent newIntent = new Intent(context, DrawerActivity.class);
                     newIntent.setAction(action);
                     newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(newIntent);
-                }
+                }*/
             } else if (KEY_LOCATION_PROVIDER_ENABLED.equals(action)) {
                 notifyListenersGpsStatusChanged(true);
             }
