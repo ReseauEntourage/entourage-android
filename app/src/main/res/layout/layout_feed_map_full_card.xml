@@ -11,21 +11,21 @@
         android:layout_height="0dp"
         android:longClickable="true"/>
 
-    <ImageButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/layout_feed_map_card_follow_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="10dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="10dp"
+        android:layout_gravity="bottom|right"
         android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
         android:layout_marginTop="10dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:contentDescription="@string/empty_description"
-        android:scaleType="centerInside"
-        app:srcCompat="@drawable/ic_position"/>
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        app:backgroundTint="@color/background"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/button_my_location" />
 
 </RelativeLayout>

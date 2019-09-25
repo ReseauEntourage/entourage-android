@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
@@ -18,7 +19,7 @@ import social.entourage.android.base.BaseCardViewHolder;
 
 public class MapViewHolder extends BaseCardViewHolder {
 
-    private ImageButton mFollowButton;
+    private FloatingActionButton mGeolocRecenterButton;
     private EntourageMapView mMapView;
     private View mTabView;
 
@@ -28,7 +29,7 @@ public class MapViewHolder extends BaseCardViewHolder {
 
     @Override
     protected void bindFields() {
-        mFollowButton = itemView.findViewById(R.id.layout_feed_map_card_follow_button);
+        mGeolocRecenterButton = itemView.findViewById(R.id.layout_feed_map_card_follow_button);
         mMapView = itemView.findViewById(R.id.layout_feed_map_card_mapview);
         mTabView = itemView.findViewById(R.id.layout_feed_map_card_tab);
         //Force the map to full height, even if the view holder is smaller
@@ -61,8 +62,8 @@ public class MapViewHolder extends BaseCardViewHolder {
     }
 
     public void setFollowButtonOnClickListener(View.OnClickListener listener) {
-        if (mFollowButton != null) {
-            mFollowButton.setOnClickListener(listener);
+        if (mGeolocRecenterButton != null) {
+            mGeolocRecenterButton.setOnClickListener(listener);
         }
     }
 
@@ -75,6 +76,10 @@ public class MapViewHolder extends BaseCardViewHolder {
         if (mMapView != null) {
             mMapView.onResume();
         }
+    }
+
+    public void setGeolocStatusIcon(boolean active) {
+        mGeolocRecenterButton.setEnabled(active);
     }
 
     public void setHeight(int height) {
