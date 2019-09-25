@@ -1119,6 +1119,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
             }
             tourService.registerTourServiceListener(MapEntourageWithTourFragment.this);
             tourService.registerNewsFeedListener(MapEntourageWithTourFragment.this);
+
             if (tourService.isRunning()) {
                 if(mapOptionsMenu!=null) {
                     updateFloatingMenuOptions();
@@ -1140,6 +1141,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         @Override
         public void onServiceDisconnected(ComponentName name) {
             tourService.unregisterTourServiceListener(MapEntourageWithTourFragment.this);
+            tourService.unregisterNewsFeedListener(MapEntourageWithTourFragment.this);
             tourService = null;
         }
     }

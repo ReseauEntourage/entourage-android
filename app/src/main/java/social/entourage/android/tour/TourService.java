@@ -385,7 +385,7 @@ public class TourService extends Service {
         newsFeedListeners.add(listener);
     }
 
-    void unregisterNewsFeedListener(final NewsFeedListener listener) {
+    public void unregisterNewsFeedListener(final NewsFeedListener listener) {
         newsFeedListeners.remove(listener);
     }
 

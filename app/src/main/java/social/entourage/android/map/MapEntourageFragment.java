@@ -73,6 +73,7 @@ import social.entourage.android.api.tape.Events.OnBetterLocationEvent;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.base.EntourageToast;
+import social.entourage.android.base.HeaderBaseAdapter;
 import social.entourage.android.configuration.Configuration;
 import social.entourage.android.location.LocationUtils;
 import social.entourage.android.entourage.minicards.EntourageMiniCardsView;
@@ -684,6 +685,11 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         }
     }
 
+    @OnClick(R.id.fragment_map_gps)
+    void displayGeolocationPreferences() {
+        displayGeolocationPreferences(false);
+    }
+
     @OnClick(R.id.fragment_map_display_toggle)
     public void onDisplayToggle() {
         if (!isFullMapShown) {
@@ -1140,11 +1146,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         final int targetHeight = layoutMain.getMeasuredHeight();
         newsfeedAdapter.setMapHeight(targetHeight);
         ValueAnimator anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight);
-        anim.addUpdateListener(valueAnimator -> {
-            int val = (Integer) valueAnimator.getAnimatedValue();
-            newsfeedAdapter.setMapHeight(val);
-            newsfeedListView.getLayoutManager().requestLayout();
-        });
+        anim.addUpdateListener(this::onAnimationUpdate);
         anim.start();
     }
 
@@ -1164,11 +1166,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
         newsfeedAdapter.setTabVisibility(View.VISIBLE);
         ValueAnimator anim = ValueAnimator.ofInt(layoutMain.getMeasuredHeight(), originalMapLayoutHeight);
-        anim.addUpdateListener(valueAnimator -> {
-            int val = (Integer) valueAnimator.getAnimatedValue();
-            newsfeedAdapter.setMapHeight(val);
-            newsfeedListView.getLayoutManager().requestLayout();
-        });
+        anim.addUpdateListener(this::onAnimationUpdate);
         anim.start();
     }
 
@@ -1513,6 +1511,16 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     }
 
     public void addEncounter() {
+    }
+
+    private void onAnimationUpdate(ValueAnimator valueAnimator) {
+        int val = (Integer) valueAnimator.getAnimatedValue();
+        newsfeedAdapter.setMapHeight(val);
+        newsfeedListView.getLayoutManager().requestLayout();
+    }
+
+    protected HeaderBaseAdapter getAdapter() {
+        return newsfeedAdapter;
     }
 
     // ----------------------------------

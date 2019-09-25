@@ -43,6 +43,7 @@ import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
+import social.entourage.android.base.HeaderBaseAdapter;
 import social.entourage.android.location.LocationUpdateListener;
 import social.entourage.android.location.LocationUtils;
 import social.entourage.android.tools.BusProvider;
@@ -50,7 +51,7 @@ import timber.log.Timber;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
-public class BaseMapEntourageFragment extends Fragment implements BackPressable, LocationUpdateListener {
+public abstract class BaseMapEntourageFragment extends Fragment implements BackPressable, LocationUpdateListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -308,13 +309,7 @@ public class BaseMapEntourageFragment extends Fragment implements BackPressable,
                 .show();
     }
 
-
-    @OnClick(R.id.fragment_map_gps)
-    void displayGeolocationPreferences() {
-        displayGeolocationPreferences(false);
-    }
-
-    private void displayGeolocationPreferences(boolean forceDisplaySettings) {
+    void displayGeolocationPreferences(boolean forceDisplaySettings) {
         if (forceDisplaySettings || !LocationUtils.INSTANCE.isLocationEnabled()) {
             if (getActivity() != null) {
                 startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
@@ -325,32 +320,38 @@ public class BaseMapEntourageFragment extends Fragment implements BackPressable,
     }
 
     public void onLocationPermissionGranted(Events.OnLocationPermissionGranted event) {
+        updateGeolocBanner(event != null && event.isPermissionGranted());
+    }
+
+    private void updateGeolocBanner(boolean active) {
+        boolean visibility = true;
+        User me = EntourageApplication.me(getActivity());
+        if (LocationUtils.INSTANCE.isLocationEnabled() && LocationUtils.INSTANCE.isLocationPermissionGranted()) {
+            visibility = false;
+        }
+        //we force it because we don't need geoloc when Action zone is set
+        if ((me != null) && !me.isPro() && (me.getAddress() != null)) {
+            visibility = false;
+        }
+
+        TextView gpsLayout = getView()!=null?getView().findViewById(R.id.fragment_map_gps):null;
+        if (gpsLayout != null) {
+            gpsLayout.setText(LocationUtils.INSTANCE.isLocationEnabled()? getString(R.string.map_gps_no_permission):getString(R.string.map_gps_unavailable));
+            gpsLayout.setVisibility(visibility? View.VISIBLE : View.GONE);
+
+        }
+
+        getAdapter().setGeolocStatusIcon(!visibility);
+
         if (map != null) {
             try {
                 map.setMyLocationEnabled(LocationUtils.INSTANCE.isLocationEnabled());
             } catch (SecurityException ignored) {
             }
         }
-        updateGeolocBanner(event != null && event.isPermissionGranted());
     }
 
-    private void updateGeolocBanner(boolean active) {
-        TextView gpsLayout = getActivity().findViewById(R.id.fragment_map_gps);
-        if (gpsLayout != null) {
-            boolean visibility = true;
-            User me = EntourageApplication.me(getActivity());
-            if (LocationUtils.INSTANCE.isLocationEnabled() && LocationUtils.INSTANCE.isLocationPermissionGranted()) {
-                visibility = false;
-            }
-            //we force it because we don't need geoloc when Action zone is set
-            if ((me != null) && !me.isPro() && (me.getAddress() != null)) {
-                visibility = false;
-            }
-
-            gpsLayout.setText(LocationUtils.INSTANCE.isLocationEnabled()? getString(R.string.map_gps_no_permission):getString(R.string.map_gps_unavailable));
-            gpsLayout.setVisibility(visibility? View.VISIBLE : View.GONE);
-        }
-    }
+    abstract protected HeaderBaseAdapter getAdapter();
 
     protected void onFollowGeolocation() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_RECENTERCLICK);

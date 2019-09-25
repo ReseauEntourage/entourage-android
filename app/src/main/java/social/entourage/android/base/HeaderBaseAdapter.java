@@ -41,6 +41,12 @@ public class HeaderBaseAdapter extends EntourageBaseAdapter {
         }
     }
 
+    public void setGeolocStatusIcon(boolean active) {
+        if (mapViewHolder != null) {
+            mapViewHolder.setGeolocStatusIcon(active);
+        }
+    }
+
     public void setTabVisibility(int visibility) {
         if (mapViewHolder != null)  {
             mapViewHolder.setTabVisibility(visibility);

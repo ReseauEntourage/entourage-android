@@ -11,24 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_bar_height" />
 
-    <TextView
-        android:id="@+id/fragment_map_gps"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_below="@+id/fragment_guide_top_navigation"
-        android:background="@drawable/bg_clickable_layout_gps"
-        android:gravity="center"
-        android:text="@string/map_gps_unavailable"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/entourage_font_small"
-        android:visibility="gone"
-        tools:visibility="visible" />
-
     <RelativeLayout
         android:id="@+id/fragment_guide_main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/fragment_map_gps">
+        android:layout_below="@+id/fragment_guide_top_navigation">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fragment_guide_pois_view"
