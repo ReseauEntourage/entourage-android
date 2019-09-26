@@ -208,7 +208,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                         sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
                         break;
                     case TourService.KEY_LOCATION_PROVIDER_DISABLED:
-                        displayLocationProviderDisabledAlert();
+                        //displayLocationProviderDisabledAlert();
                         sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
                     default:
                         break;
