@@ -1,10 +1,12 @@
 package social.entourage.android.map;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+
+import androidx.appcompat.content.res.AppCompatResources;
 
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -29,7 +31,7 @@ public class MapViewHolder extends BaseCardViewHolder {
 
     @Override
     protected void bindFields() {
-        mGeolocRecenterButton = itemView.findViewById(R.id.layout_feed_map_card_follow_button);
+        mGeolocRecenterButton = itemView.findViewById(R.id.layout_feed_map_card_recenter_button);
         mMapView = itemView.findViewById(R.id.layout_feed_map_card_mapview);
         mTabView = itemView.findViewById(R.id.layout_feed_map_card_tab);
         //Force the map to full height, even if the view holder is smaller
@@ -79,7 +81,11 @@ public class MapViewHolder extends BaseCardViewHolder {
     }
 
     public void setGeolocStatusIcon(boolean active) {
-        mGeolocRecenterButton.setEnabled(active);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            mGeolocRecenterButton.setImageDrawable(AppCompatResources.getDrawable(this.mGeolocRecenterButton.getContext(), active?R.drawable.ic_my_location:R.drawable.ic_my_location_off));
+        } else {
+            mGeolocRecenterButton.setEnabled(active);
+        }
     }
 
     public void setHeight(int height) {

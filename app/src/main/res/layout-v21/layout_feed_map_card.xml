@@ -14,7 +14,7 @@
         android:longClickable="true"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/layout_feed_map_card_follow_button"
+        android:id="@+id/layout_feed_map_card_recenter_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
