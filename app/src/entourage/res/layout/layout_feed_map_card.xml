@@ -29,7 +29,7 @@
         app:backgroundTint="@color/background_light"
         app:backgroundTintMode="add"
         app:fabSize="mini"
-        app:srcCompat="@drawable/button_my_location" />
+        app:srcCompat="@drawable/ic_my_location" />
 
 
     <social.entourage.android.map.MapTabView
