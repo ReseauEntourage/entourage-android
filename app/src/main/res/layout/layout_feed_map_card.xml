@@ -28,6 +28,6 @@
         android:layout_marginRight="10dp"
         app:backgroundTint="#F2F2F2"
         app:fabSize="mini"
-        app:srcCompat="@drawable/button_my_location" />
+        app:srcCompat="@drawable/ic_my_location" />
 
 </RelativeLayout>
