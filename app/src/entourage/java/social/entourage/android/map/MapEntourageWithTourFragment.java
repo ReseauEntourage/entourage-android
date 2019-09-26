@@ -71,6 +71,8 @@ import social.entourage.android.tour.join.TourJoinRequestFragment;
 import social.entourage.android.newsfeed.NewsfeedBottomViewHolder;
 import timber.log.Timber;
 
+import static social.entourage.android.tour.TourService.KEY_LOCATION_PROVIDER_DISABLED;
+
 public class MapEntourageWithTourFragment extends MapEntourageFragment implements TourServiceListener {
     // ----------------------------------
     // CONSTANTS
@@ -94,6 +96,8 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
     private Map<Long, Tour> retrievedHistory;
 
     private int displayedTourHeads = 0;
+
+    private boolean shouldShowGPSDialog = true;
 
     @BindView(R.id.layout_map_launcher)
     View mapLauncherLayout;
@@ -145,6 +149,21 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
             doUnbindService();
         }
         super.onDestroy();
+    }
+
+    @Override
+    public void onLocationStatusUpdated(boolean active) {
+        super.onLocationStatusUpdated(active);
+        if(shouldShowGPSDialog && !active &&  tourService!=null && tourService.isRunning()) {
+            //We always need GPS to be turned on during tour
+            shouldShowGPSDialog = false;
+            final Intent newIntent = new Intent(this.getContext(), DrawerActivity.class);
+            newIntent.setAction(KEY_LOCATION_PROVIDER_DISABLED);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(newIntent);
+        } else if(!shouldShowGPSDialog && active) {
+            shouldShowGPSDialog = true;
+        }
     }
 
     @Override
