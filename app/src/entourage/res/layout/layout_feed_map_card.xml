@@ -30,7 +30,7 @@
         app:backgroundTintMode="add"
         app:fabSize="mini"
         app:srcCompat="@drawable/ic_my_location" />
-
+    <!-- not using button_my_location drawable because of Android 4.4-->
 
     <social.entourage.android.map.MapTabView
         android:id="@+id/layout_feed_map_card_tab"
