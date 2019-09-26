@@ -5,7 +5,6 @@ import android.content.Context
 import com.facebook.FacebookSdk
 import com.facebook.LoggingBehavior
 
-import social.entourage.android.tools.log.CrashlyticsLog
 import timber.log.Timber
 
 /**
@@ -17,7 +16,6 @@ class LibrariesSupport : BaseLibrariesSupport() {
 
     override fun setupLibraries(context: Context) {
         super.setupLibraries(context)
-        setupTimberTree()
         setupFacebookSDK()
     }
 
@@ -30,14 +28,6 @@ class LibrariesSupport : BaseLibrariesSupport() {
             Timber.tag("Facebook").d("version %s", FacebookSdk.getSdkVersion())
             FacebookSdk.setIsDebugEnabled(true)
             FacebookSdk.addLoggingBehavior(LoggingBehavior.APP_EVENTS)
-        }
-    }
-
-    private fun setupTimberTree() {
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        } else {
-            Timber.plant(CrashlyticsLog())
         }
     }
 }

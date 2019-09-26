@@ -273,7 +273,7 @@ public class EntourageEvents {
     public static final String EVENT_NOTIFICATION_MIXPANEL_RECEIVED="NotificationReceivedFromMixpanel";
     public static final String EVENT_NOTIFICATION_ENTOURAGE_RECEIVED="NotificationReceivedFromEntourage";
 
-    private static String TAG = EntourageEvents.class.getSimpleName();
+    public static String TAG = EntourageEvents.class.getSimpleName();
 
     public static void logEvent(String event) {
         if(EntourageApplication.get().getMixpanel()!= null) {
