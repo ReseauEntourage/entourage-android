@@ -57,6 +57,7 @@ import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.UserPreferences;
 import social.entourage.android.base.EntourageToast;
 import social.entourage.android.deeplinks.DeepLinksManager;
+import social.entourage.android.location.LocationUtils;
 import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.tour.choice.ChoiceFragment;
 import social.entourage.android.tour.confirmation.ConfirmationFragment;
@@ -286,6 +287,10 @@ public class DrawerActivity extends EntourageSecuredActivity
     // ----------------------------------
 
     private void displayLocationProviderDisabledAlert() {
+        if(LocationUtils.INSTANCE.isLocationEnabled() && LocationUtils.INSTANCE.isLocationPermissionGranted()) {
+            Timber.i("No need to ask for permission: false alert...");
+            return;
+        }
         try {
             new AlertDialog.Builder(this)
                     .setMessage(getString(R.string.error_dialog_disabled))

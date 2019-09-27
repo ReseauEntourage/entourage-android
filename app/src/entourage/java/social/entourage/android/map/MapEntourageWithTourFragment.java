@@ -203,12 +203,12 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         DrawerActivity drawerActivity = (DrawerActivity)getActivity();
         //Handling special cases
         if (!drawerActivity.isGuideShown()) {
-            User me = EntourageApplication.me(getContext());
+            /*User me = EntourageApplication.me(getContext());
             if ((me == null) || !me.isPro()) {
                 // Show directly the create entourage disclaimer
                 displayEntourageDisclaimer();
                 return true;
-            } else if (isBound && tourService != null && tourService.isRunning()) {
+            } else */if (isBound && tourService != null && tourService.isRunning()) {
                 // Show directly the create encounter
                 onAddEncounter();
                 return true;
