@@ -27,7 +27,6 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/login_notifications_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/login_notifications_navigation"
@@ -36,14 +35,12 @@
         android:paddingRight="10dp">
 
         <ImageView
-            android:id="@+id/login_notifications_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/empty_description"
             android:src="@drawable/notifications_square"/>
 
         <TextView
-            android:id="@+id/login_notifications_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -54,7 +51,6 @@
             />
 
         <TextView
-            android:id="@+id/login_notifications_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

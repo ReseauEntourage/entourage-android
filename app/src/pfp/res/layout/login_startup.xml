@@ -28,7 +28,6 @@
         android:visibility="gone"/>
 
     <TextView
-        android:id="@+id/login_startup_slogan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/login_startup_logo"
@@ -41,7 +40,6 @@
         android:visibility="gone"/>
 
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

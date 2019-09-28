@@ -33,7 +33,6 @@
         android:textSize="@dimen/entourage_font_medium"/>
 
     <LinearLayout
-        android:id="@+id/description_entourage_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"

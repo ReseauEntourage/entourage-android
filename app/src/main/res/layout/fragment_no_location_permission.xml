@@ -6,7 +6,6 @@
              tools:context="social.entourage.android.map.permissions.NoLocationPermissionFragment">
 
     <ImageView
-        android:id="@+id/no_location_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="false"
@@ -63,7 +62,6 @@
         android:text="@string/map_permission_activate_button"/>
 
     <TextView
-        android:id="@+id/no_location_extra"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/no_location_activate_button"

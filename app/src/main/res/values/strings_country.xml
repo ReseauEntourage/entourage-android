@@ -32,18 +32,6 @@
     <string name="country_angola_code">ao</string>
     <string name="country_angola_number" translatable="false">244</string>
 
-    <string name="country_anguilla_name">Anguilla</string>
-    <string name="country_anguilla_code">ai</string>
-    <string name="country_anguilla_number" translatable="false">1</string>
-
-    <string name="country_antarctica_name">Antarctica</string>
-    <string name="country_antarctica_code">aq</string>
-    <string name="country_antarctica_number" translatable="false">672</string>
-
-    <string name="country_antigua_and_barbuda_name">Antigua and Barbuda</string>
-    <string name="country_antigua_and_barbuda_code">ag</string>
-    <string name="country_antigua_and_barbuda_number" translatable="false">1</string>
-
     <string name="country_argentina_name">Argentine</string>
     <string name="country_argentina_code">ar</string>
     <string name="country_argentina_number" translatable="false">54</string>
@@ -51,10 +39,6 @@
     <string name="country_armenia_name">Arménie</string>
     <string name="country_armenia_code">am</string>
     <string name="country_armenia_number" translatable="false">374</string>
-
-    <string name="country_aruba_name">Aruba</string>
-    <string name="country_aruba_code">aw</string>
-    <string name="country_aruba_number" translatable="false">297</string>
 
     <string name="country_australia_name">Australie</string>
     <string name="country_australia_code">au</string>
@@ -68,10 +52,6 @@
     <string name="country_azerbaijan_code">az</string>
     <string name="country_azerbaijan_number" translatable="false">994</string>
 
-    <string name="country_bahamas_name">Bahamas</string>
-    <string name="country_bahamas_code">bs</string>
-    <string name="country_bahamas_number" translatable="false">1</string>
-
     <string name="country_bahrain_name">Bahrein</string>
     <string name="country_bahrain_code">bh</string>
     <string name="country_bahrain_number" translatable="false">973</string>
@@ -79,10 +59,6 @@
     <string name="country_bangladesh_name">Bangladesh</string>
     <string name="country_bangladesh_code">bd</string>
     <string name="country_bangladesh_number" translatable="false">880</string>
-
-    <string name="country_barbados_name">Barbados</string>
-    <string name="country_barbados_code">bb</string>
-    <string name="country_barbados_number" translatable="false">1</string>
 
     <string name="country_belarus_name">Bélarus</string>
     <string name="country_belarus_code">by</string>
@@ -99,10 +75,6 @@
     <string name="country_benin_name">Bénin</string>
     <string name="country_benin_code">bj</string>
     <string name="country_benin_number" translatable="false">229</string>
-
-    <string name="country_bermuda_name">Bermuda</string>
-    <string name="country_bermuda_code">bm</string>
-    <string name="country_bermuda_number" translatable="false">1</string>
 
     <string name="country_bhutan_name">Bhoutan</string>
     <string name="country_bhutan_code">bt</string>
@@ -123,10 +95,6 @@
     <string name="country_brazil_name">Brésil</string>
     <string name="country_brazil_code">br</string>
     <string name="country_brazil_number" translatable="false">55</string>
-
-    <string name="country_british_virgin_islands_name">British Virgin Islands</string>
-    <string name="country_british_virgin_islands_code">vg</string>
-    <string name="country_british_virgin_islands_number" translatable="false">1</string>
 
     <string name="country_brunei_darussalam_name">Brunéi</string>
     <string name="country_brunei_darussalam_code">bn</string>
@@ -160,10 +128,6 @@
     <string name="country_cape_verde_code">cv</string>
     <string name="country_cape_verde_number" translatable="false">238</string>
 
-    <string name="country_cayman_islands_name">Cayman Islands</string>
-    <string name="country_cayman_islands_code">ky</string>
-    <string name="country_cayman_islands_number" translatable="false">1</string>
-
     <string name="country_central_african_republic_name">République Centrafricaine</string>
     <string name="country_central_african_republic_code">cf</string>
     <string name="country_central_african_republic_number" translatable="false">236</string>
@@ -180,21 +144,9 @@
     <string name="country_china_code">cn</string>
     <string name="country_china_number" translatable="false">86</string>
 
-    <string name="country_christmas_island_name">Christmas Island</string>
-    <string name="country_christmas_island_code">cx</string>
-    <string name="country_christmas_island_number" translatable="false">61</string>
-
-    <string name="country_cocos_keeling_islands_name">Cocos Islands</string>
-    <string name="country_cocos_keeling_islands_code">cc</string>
-    <string name="country_cocos_keeling_islands_number" translatable="false">61</string>
-
     <string name="country_colombia_name">Colombie</string>
     <string name="country_colombia_code">co</string>
     <string name="country_colombia_number" translatable="false">57</string>
-
-    <string name="country_comoros_name">Comoros</string>
-    <string name="country_comoros_code">km</string>
-    <string name="country_comoros_number" translatable="false">269</string>
 
     <string name="country_congo_name">Republic of the Congo</string>
     <string name="country_congo_code">cg</string>
@@ -203,10 +155,6 @@
     <string name="country_the_democratic_republic_of_congo_name">République Démocratique du Congo</string>
     <string name="country_the_democratic_republic_of_congo_code">cd</string>
     <string name="country_the_democratic_republic_of_congo_number" translatable="false">243</string>
-
-    <string name="country_cook_islands_name">Cook Islands</string>
-    <string name="country_cook_islands_code">ck</string>
-    <string name="country_cook_islands_number" translatable="false">682</string>
 
     <string name="country_costa_rica_name">Costa Rica</string>
     <string name="country_costa_rica_code">cr</string>
@@ -276,14 +224,6 @@
     <string name="country_ethiopia_code">et</string>
     <string name="country_ethiopia_number" translatable="false">251</string>
 
-    <string name="country_falkland_islands_malvinas_name">Falkland Islands</string>
-    <string name="country_falkland_islands_malvinas_code">fk</string>
-    <string name="country_falkland_islands_malvinas_number" translatable="false">500</string>
-
-    <string name="country_faroe_islands_name">Faroe Islands</string>
-    <string name="country_faroe_islands_code">fo</string>
-    <string name="country_faroe_islands_number" translatable="false">298</string>
-
     <string name="country_fiji_name">Fidji</string>
     <string name="country_fiji_code">fj</string>
     <string name="country_fiji_number" translatable="false">679</string>
@@ -331,14 +271,6 @@
     <string name="country_greece_name">Grèce</string>
     <string name="country_greece_code">gr</string>
     <string name="country_greece_number" translatable="false">30</string>
-
-    <string name="country_greenland_name">Greenland</string>
-    <string name="country_greenland_code">gl</string>
-    <string name="country_greenland_number" translatable="false">299</string>
-
-    <string name="country_grenada_name">Grenada</string>
-    <string name="country_grenada_code">gd</string>
-    <string name="country_grenada_number" translatable="false">1</string>
 
     <string name="country_guadeloupe_name">Guadeloupe</string>
     <string name="country_guadeloupe_code">gp</string>
@@ -400,10 +332,6 @@
     <string name="country_iceland_code">is</string>
     <string name="country_iceland_number" translatable="false">354</string>
 
-    <string name="country_isle_of_man_name">Isle Of Man</string>
-    <string name="country_isle_of_man_code">im</string>
-    <string name="country_isle_of_man_number" translatable="false">44</string>
-
     <string name="country_israel_name">Israël</string>
     <string name="country_israel_code">il</string>
     <string name="country_israel_number" translatable="false">972</string>
@@ -435,10 +363,6 @@
     <string name="country_kenya_name">Kenya</string>
     <string name="country_kenya_code">ke</string>
     <string name="country_kenya_number" translatable="false">254</string>
-
-    <string name="country_kiribati_name">Kiribati</string>
-    <string name="country_kiribati_code">ki</string>
-    <string name="country_kiribati_number" translatable="false">686</string>
 
     <string name="country_kuwait_name">Koweït</string>
     <string name="country_kuwait_code">kw</string>
@@ -488,10 +412,6 @@
     <string name="country_luxembourg_code">lu</string>
     <string name="country_luxembourg_number" translatable="false">352</string>
 
-    <string name="country_macao_name">Macao</string>
-    <string name="country_macao_code">mo</string>
-    <string name="country_macao_number" translatable="false">853</string>
-
     <string name="country_macedonia_name">Macédoine</string>
     <string name="country_macedonia_code">mk</string>
     <string name="country_macedonia_number" translatable="false">389</string>
@@ -520,10 +440,6 @@
     <string name="country_malta_code">mt</string>
     <string name="country_malta_number" translatable="false">356</string>
 
-    <string name="country_marshall_islands_name">Marshall Islands</string>
-    <string name="country_marshall_islands_code">mh</string>
-    <string name="country_marshall_islands_number" translatable="false">692</string>
-
     <string name="country_martinique_name">Martinique</string>
     <string name="country_martinique_code">mq</string>
     <string name="country_martinique_number" translatable="false">596</string>
@@ -544,10 +460,6 @@
     <string name="country_mexico_code">mx</string>
     <string name="country_mexico_number" translatable="false">52</string>
 
-    <string name="country_micronesia_name">Micronesia</string>
-    <string name="country_micronesia_code">fm</string>
-    <string name="country_micronesia_number" translatable="false">691</string>
-
     <string name="country_moldova_name">Moldovie</string>
     <string name="country_moldova_code">md</string>
     <string name="country_moldova_number" translatable="false">373</string>
@@ -559,10 +471,6 @@
     <string name="country_mongolia_name">Mongolie</string>
     <string name="country_mongolia_code">mn</string>
     <string name="country_mongolia_number" translatable="false">976</string>
-
-    <string name="country_montserrat_name">Montserrat</string>
-    <string name="country_montserrat_code">ms</string>
-    <string name="country_montserrat_number" translatable="false">1</string>
 
     <string name="country_montenegro_name">Monténégro</string>
     <string name="country_montenegro_code">me</string>
@@ -576,17 +484,9 @@
     <string name="country_mozambique_code">mz</string>
     <string name="country_mozambique_number" translatable="false">258</string>
 
-    <string name="country_myanmar_name">Myanmar</string>
-    <string name="country_myanmar_code">mm</string>
-    <string name="country_myanmar_number" translatable="false">95</string>
-
     <string name="country_namibia_name">Namibie</string>
     <string name="country_namibia_code">na</string>
     <string name="country_namibia_number" translatable="false">264</string>
-
-    <string name="country_nauru_name">Nauru</string>
-    <string name="country_nauru_code">nr</string>
-    <string name="country_nauru_number" translatable="false">674</string>
 
     <string name="country_nepal_name">Népal</string>
     <string name="country_nepal_code">np</string>
@@ -616,14 +516,6 @@
     <string name="country_nigeria_code">ng</string>
     <string name="country_nigeria_number" translatable="false">234</string>
 
-    <string name="country_niue_name">Niue</string>
-    <string name="country_niue_code">nu</string>
-    <string name="country_niue_number" translatable="false">683</string>
-
-    <string name="country_north_korea_name">North Korea</string>
-    <string name="country_north_korea_code">kp</string>
-    <string name="country_north_korea_number" translatable="false">850</string>
-
     <string name="country_norway_name">Norvège</string>
     <string name="country_norway_code">no</string>
     <string name="country_norway_number" translatable="false">47</string>
@@ -635,10 +527,6 @@
     <string name="country_pakistan_name">Pakistan</string>
     <string name="country_pakistan_code">pk</string>
     <string name="country_pakistan_number" translatable="false">92</string>
-
-    <string name="country_palau_name">Palau</string>
-    <string name="country_palau_code">pw</string>
-    <string name="country_palau_number" translatable="false">680</string>
 
     <string name="country_panama_name">Panama</string>
     <string name="country_panama_code">pa</string>
@@ -659,10 +547,6 @@
     <string name="country_philippines_name">Philippines</string>
     <string name="country_philippines_code">ph</string>
     <string name="country_philippines_number" translatable="false">63</string>
-
-    <string name="country_pitcairn_name">Pitcairn</string>
-    <string name="country_pitcairn_code">pn</string>
-    <string name="country_pitcairn_number" translatable="false">870</string>
 
     <string name="country_poland_name">Pologne</string>
     <string name="country_poland_code">pl</string>
@@ -696,34 +580,6 @@
     <string name="country_rwanda_code">rw</string>
     <string name="country_rwanda_number" translatable="false">250</string>
 
-    <string name="country_saint_barthelemy_name">Saint Barthélemy</string>
-    <string name="country_saint_barthelemy_code">bl</string>
-    <string name="country_saint_barthelemy_number" translatable="false">590</string>
-
-    <string name="country_saint_kitts_and_nevis_name">Saint Kitts and Nevis</string>
-    <string name="country_saint_kitts_and_nevis_code">kn</string>
-    <string name="country_saint_kitts_and_nevis_number" translatable="false">1</string>
-
-    <string name="country_saint_lucia_name">Saint Lucia</string>
-    <string name="country_saint_lucia_code">lc</string>
-    <string name="country_saint_lucia_number" translatable="false">1</string>
-
-    <string name="country_saint_vincent_the_grenadines_name">Saint Vincent &amp; The Grenadines</string>
-    <string name="country_saint_vincent_the_grenadines_code">vc</string>
-    <string name="country_saint_vincent_the_grenadines_number" translatable="false">1</string>
-
-    <string name="country_samoa_name">Samoa</string>
-    <string name="country_samoa_code">ws</string>
-    <string name="country_samoa_number" translatable="false">685</string>
-
-    <string name="country_san_marino_name">San Marino</string>
-    <string name="country_san_marino_code">sm</string>
-    <string name="country_san_marino_number" translatable="false">378</string>
-
-    <string name="country_sao_tome_and_principe_name">Sao Tome And Principe</string>
-    <string name="country_sao_tome_and_principe_code">st</string>
-    <string name="country_sao_tome_and_principe_number" translatable="false">239</string>
-
     <string name="country_saudi_arabia_name">Arabie Saoudite</string>
     <string name="country_saudi_arabia_code">sa</string>
     <string name="country_saudi_arabia_number" translatable="false">966</string>
@@ -748,10 +604,6 @@
     <string name="country_singapore_code">sg</string>
     <string name="country_singapore_number" translatable="false">65</string>
 
-    <string name="country_sint_maarten_name">Sint Maarten</string>
-    <string name="country_sint_maarten_code">sx</string>
-    <string name="country_sint_maarten_number" translatable="false">1</string>
-
     <string name="country_slovakia_name">Slovaquie</string>
     <string name="country_slovakia_code">sk</string>
     <string name="country_slovakia_number" translatable="false">421</string>
@@ -759,10 +611,6 @@
     <string name="country_slovenia_name">Slovénie</string>
     <string name="country_slovenia_code">si</string>
     <string name="country_slovenia_number" translatable="false">386</string>
-
-    <string name="country_solomon_islands_name">Solomon Islands</string>
-    <string name="country_solomon_islands_code">sb</string>
-    <string name="country_solomon_islands_number" translatable="false">677</string>
 
     <string name="country_somalia_name">Somalie</string>
     <string name="country_somalia_code">so</string>
@@ -783,14 +631,6 @@
     <string name="country_sri_lanka_name">Sri Lanka</string>
     <string name="country_sri_lanka_code">lk</string>
     <string name="country_sri_lanka_number" translatable="false">94</string>
-
-    <string name="country_saint_helena_name">Saint Helena</string>
-    <string name="country_saint_helena_code">sh</string>
-    <string name="country_saint_helena_number" translatable="false">290</string>
-
-    <string name="country_saint_pierre_and_miquelon_name">Saint Pierre And Miquelon</string>
-    <string name="country_saint_pierre_and_miquelon_code">pm</string>
-    <string name="country_saint_pierre_and_miquelon_number" translatable="false">508</string>
 
     <string name="country_sudan_name">Soudan</string>
     <string name="country_sudan_code">sd</string>
@@ -836,18 +676,6 @@
     <string name="country_togo_code">tg</string>
     <string name="country_togo_number" translatable="false">228</string>
 
-    <string name="country_tokelau_name">Tokelau</string>
-    <string name="country_tokelau_code">tk</string>
-    <string name="country_tokelau_number" translatable="false">690</string>
-
-    <string name="country_tonga_name">Tonga</string>
-    <string name="country_tonga_code">to</string>
-    <string name="country_tonga_number" translatable="false">676</string>
-
-    <string name="country_trinidad_tobago_name">Trinidad &amp; Tobago</string>
-    <string name="country_trinidad_tobago_code">tt</string>
-    <string name="country_trinidad_tobago_number" translatable="false">1</string>
-
     <string name="country_tunisia_name">Tunisie</string>
     <string name="country_tunisia_code">tn</string>
     <string name="country_tunisia_number" translatable="false">216</string>
@@ -859,14 +687,6 @@
     <string name="country_turkmenistan_name">Turkménistan</string>
     <string name="country_turkmenistan_code">tm</string>
     <string name="country_turkmenistan_number" translatable="false">993</string>
-
-    <string name="country_turks_and_caicos_islands_name">Turks and Caicos Islands</string>
-    <string name="country_turks_and_caicos_islands_code">tc</string>
-    <string name="country_turks_and_caicos_islands_number" translatable="false">1</string>
-
-    <string name="country_tuvalu_name">Tuvalu</string>
-    <string name="country_tuvalu_code">tv</string>
-    <string name="country_tuvalu_number" translatable="false">688</string>
 
     <string name="country_united_arab_emirates_name">Emirats arabes unis</string>
     <string name="country_united_arab_emirates_code">ae</string>
@@ -892,21 +712,9 @@
     <string name="country_united_states_code">us</string>
     <string name="country_united_states_number" translatable="false">1</string>
 
-    <string name="country_us_virgin_islands_name">US Virgin Islands</string>
-    <string name="country_us_virgin_islands_code">vi</string>
-    <string name="country_us_virgin_islands_number" translatable="false">1</string>
-
     <string name="country_uzbekistan_name">Ouzbékistan</string>
     <string name="country_uzbekistan_code">uz</string>
     <string name="country_uzbekistan_number" translatable="false">998</string>
-
-    <string name="country_vanuatu_name">Vanuatu</string>
-    <string name="country_vanuatu_code">vu</string>
-    <string name="country_vanuatu_number" translatable="false">678</string>
-
-    <string name="country_holy_see_vatican_city_state_name">Vatican</string>
-    <string name="country_holy_see_vatican_city_state_code">va</string>
-    <string name="country_holy_see_vatican_city_state_number" translatable="false">39</string>
 
     <string name="country_venezuela_name">Venezuela</string>
     <string name="country_venezuela_code">ve</string>
@@ -915,10 +723,6 @@
     <string name="country_viet_nam_name">Vietnam</string>
     <string name="country_viet_nam_code">vn</string>
     <string name="country_viet_nam_number" translatable="false">84</string>
-
-    <string name="country_wallis_and_futuna_name">Wallis And Futuna</string>
-    <string name="country_wallis_and_futuna_code">wf</string>
-    <string name="country_wallis_and_futuna_number" translatable="false">681</string>
 
     <string name="country_yemen_name">Yémen</string>
     <string name="country_yemen_code">ye</string>

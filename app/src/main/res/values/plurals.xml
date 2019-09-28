@@ -1,17 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <plurals name="tours_count">
-        <item quantity="zero">%d maraude réalisée</item>
-        <item quantity="one">%d maraude réalisée</item>
-        <item quantity="other">%d maraudes réalisées</item>
-    </plurals>
-    <plurals name="encounters_count">
-        <item quantity="zero">%d personne rencontrée</item>
-        <item quantity="one">%d personne rencontrée</item>
-        <item quantity="other">%d personnes rencontrées</item>
-    </plurals>
-    <plurals name="kilometers_count">
-        <item quantity="zero">%s km parcouru</item>
-        <item quantity="other">%s km parcourus</item>
-    </plurals>
-</resources>
+<resources></resources>

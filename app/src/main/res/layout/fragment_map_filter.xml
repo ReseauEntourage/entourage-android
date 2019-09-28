@@ -8,14 +8,12 @@
               tools:context="social.entourage.android.map.filter.MapFilterFragment">
 
     <social.entourage.android.view.EntourageTitleView
-        android:id="@+id/map_filter_title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:entourageTitle="@string/map_filter_title"
         app:entourageTitleAction="@string/register"/>
 
     <ScrollView
-        android:id="@+id/map_filter_content_scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background_light">
@@ -34,7 +32,6 @@
                 android:visibility="visible">
 
                 <TextView
-                    android:id="@+id/map_filter_tour_type_title"
                     style="@style/EntourageTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -48,7 +45,6 @@
                     android:textSize="@dimen/entourage_font_medium"/>
 
                 <RelativeLayout
-                    android:id="@+id/map_filter_tour_all"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/background"
@@ -58,7 +54,6 @@
                     android:paddingStart="10dp">
 
                     <TextView
-                        android:id="@+id/map_filter_tour_all_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -101,7 +96,6 @@
                         android:background="@color/greyish"/>
 
                     <RelativeLayout
-                        android:id="@+id/map_filter_tour_medical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/background"
@@ -118,7 +112,6 @@
                             android:src="@drawable/ic_medical_active"/>
 
                         <TextView
-                            android:id="@+id/map_filter_tour_medical_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
@@ -154,7 +147,6 @@
                         android:background="@color/greyish"/>
 
                     <RelativeLayout
-                        android:id="@+id/map_filter_tour_social"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/background"
@@ -171,7 +163,6 @@
                             android:src="@drawable/ic_social_active"/>
 
                         <TextView
-                            android:id="@+id/map_filter_tour_social_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
@@ -207,7 +198,6 @@
                         android:background="@color/greyish"/>
 
                     <RelativeLayout
-                        android:id="@+id/map_filter_tour_distributive"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/background"
@@ -224,7 +214,6 @@
                             android:src="@drawable/ic_distributive_active"/>
 
                         <TextView
-                            android:id="@+id/map_filter_tour_distributive_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
@@ -256,13 +245,11 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/map_filter_outing_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/map_filter_outing_title"
                     style="@style/EntourageTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -270,7 +257,6 @@
                     android:textSize="@dimen/entourage_font_medium"/>
 
                 <RelativeLayout
-                    android:id="@+id/map_filter_entourage_outing"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/background"
@@ -288,7 +274,6 @@
                         android:src="@drawable/ic_entourage_category_event"/>
 
                     <TextView
-                        android:id="@+id/map_filter_entourage_outing_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -320,7 +305,6 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/map_filter_past_events"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/background"
@@ -344,7 +328,6 @@
                         android:padding="6dp"/>
 
                     <TextView
-                        android:id="@+id/map_filter_past_events_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -377,14 +360,12 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/map_filter_entourage_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="visible">
 
                 <TextView
-                    android:id="@+id/map_filter_entourage_type_title"
                     style="@style/EntourageTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -392,7 +373,6 @@
                     android:textSize="@dimen/entourage_font_medium"/>
 
                 <RelativeLayout
-                    android:id="@+id/map_filter_entourage_demand"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/background"
@@ -402,7 +382,6 @@
                     android:paddingStart="10dp">
 
                     <TextView
-                        android:id="@+id/map_filter_entourage_demand_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
@@ -436,7 +415,6 @@
                 </LinearLayout>
 
                 <RelativeLayout
-                    android:id="@+id/map_filter_entourage_contribution"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/background"
@@ -451,7 +429,6 @@
                         android:background="@color/greyish"/>
 
                     <TextView
-                        android:id="@+id/map_filter_entourage_contribution_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
@@ -487,14 +464,12 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/map_filter_personal_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:visibility="visible">
 
                 <TextView
-                    android:id="@+id/map_filter_personal_title"
                     style="@style/EntourageTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -502,7 +477,6 @@
                     android:textSize="@dimen/entourage_font_medium"/>
 
                 <RelativeLayout
-                    android:id="@+id/map_filter_entourage_user_only"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/background"
@@ -536,7 +510,6 @@
                         android:layout_marginStart="0dp"/>
 
                     <View
-                        android:id="@+id/view2"
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp"
                         android:layout_below="@+id/map_filter_entourage_user_only_text"
@@ -556,7 +529,6 @@
                     android:visibility="visible">
 
                     <TextView
-                        android:id="@+id/map_filter_entourage_organisation_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
@@ -584,13 +556,11 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/map_filter_time_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/map_filter_time_title"
                     style="@style/EntourageTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

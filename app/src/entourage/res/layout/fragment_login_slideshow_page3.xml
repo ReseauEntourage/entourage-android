@@ -8,17 +8,16 @@
                                              tools:ignore="MissingDefaultResource">
 
     <ImageView
-        android:id="@+id/login_slideshow_p3_title"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="4dp"
+        android:layout_margin="10dp"
         android:contentDescription="@string/login_slideshow_p3_details"
         android:src="@drawable/login_slideshow_p3_title"
         app:layout_constraintBottom_toTopOf="@+id/login_slideshow_p3_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/login_slideshow_p3_description"
@@ -38,7 +37,6 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
     <ImageView
-        android:id="@+id/login_slideshow_p3_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:contentDescription="@string/empty_description"
@@ -59,7 +57,6 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
     <ImageView
-        android:id="@+id/login_slideshow_p3_tree"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="274dp"
@@ -69,7 +66,6 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <ImageView
-        android:id="@+id/login_slideshow_p3_lamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="216dp"

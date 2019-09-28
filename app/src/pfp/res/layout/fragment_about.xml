@@ -10,13 +10,11 @@
     android:background="@color/background">
 
     <social.entourage.android.view.EntourageTitleView
-        android:id="@+id/about_title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:entourageTitle="@string/about_title"/>
 
     <View
-        android:id="@+id/about_separator_top"
         android:layout_width="match_parent"
         android:layout_height="20dp"
         />
@@ -74,7 +72,6 @@
     </RelativeLayout>
 
     <View
-        android:id="@+id/about_separator_version"
         style="@style/SeparatorAlpha"
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -96,7 +93,6 @@
         android:paddingTop="@dimen/about_items_padding">
 
         <TextView
-            android:id="@+id/about_conditions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -106,7 +102,6 @@
             android:textSize="@dimen/entourage_font_medium"/>
 
         <ImageView
-            android:id="@+id/imageView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -117,7 +112,6 @@
     </LinearLayout>
 
     <View
-        android:id="@+id/about_separator_conditions"
         style="@style/SeparatorAlpha"
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -139,7 +133,6 @@
         android:paddingTop="@dimen/about_items_padding">
 
         <TextView
-            android:id="@+id/about_privacy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -149,7 +142,6 @@
             android:textSize="@dimen/entourage_font_medium"/>
 
         <ImageView
-            android:id="@+id/imageView5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

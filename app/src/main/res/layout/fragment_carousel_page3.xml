@@ -15,7 +15,6 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/imageView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="-2dp"
@@ -37,7 +36,6 @@
         android:paddingTop="@dimen/carousel_padding">
 
         <TextView
-            android:id="@+id/carousel_p3_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -47,7 +45,6 @@
             android:textStyle="bold"/>
 
         <social.entourage.android.view.HtmlTextView
-            android:id="@+id/carousel_p3_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -57,7 +54,6 @@
             app:htmlText="@string/carousel_p3_content"/>
 
         <ImageView
-            android:id="@+id/imageView12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

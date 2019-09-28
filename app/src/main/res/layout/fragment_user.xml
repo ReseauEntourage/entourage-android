@@ -70,7 +70,6 @@
             <!-- USER INFORMATION -->
 
             <RelativeLayout
-                android:id="@+id/user_profile_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp">
@@ -147,7 +146,6 @@
                 android:paddingStart="10dp">
 
                 <View
-                    android:id="@+id/user_profile_about_topleft"
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:background="@drawable/about_topleft_corner"/>
@@ -164,7 +162,6 @@
                     android:textSize="@dimen/entourage_font_small"/>
 
                 <View
-                    android:id="@+id/user_profile_about_bottomright"
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:layout_gravity="end"
@@ -194,7 +191,6 @@
                     android:textStyle="bold"/>
 
                 <TextView
-                    android:id="@+id/textView3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/user_number_entourages_title"
@@ -230,14 +226,12 @@
             </RelativeLayout>
 
             <LinearLayout
-                android:id="@+id/user_profile_identification_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:weightSum="3">
 
                 <TextView
-                    android:id="@+id/textView2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -264,7 +258,6 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/user_identification_email_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -306,7 +299,6 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/user_identification_phone_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"

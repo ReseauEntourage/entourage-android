@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="login_title_welcome_html"><![CDATA[<font color=\"#FF6907\">B</font>IENVENUE SUR<br/><font color=\"#FF6907\">V</font>OISIN-AGE]]></string>
-    <string name="login_title_welcome_pro"><![CDATA[<font color=\"#FF6907\">B</font>IENVENUE SUR<br/><font color=\"#FF6907\">V</font>OISIN-AGE <font color=\"#FF6907\">P</font>RO]]></string>
-    <string name="login_title_discover"><![CDATA[<font color=\"#FF6907\">D</font>ÉCOUVREZ <font color=\"#FF6907\">V</font>OISIN-AGE]]></string>
-    <string name="login_title_newsletter">DÉCOUVREZ VOISIN-AGE</string>
-    <string name="login_text_info">Version réservée\nà un usage associatif</string>
-    <string name="login_text_description">Voisinage est un réseau civique sur téléphone mobile (smartphone), aidant les habitants des villes à entrer en relation et prendre soin des personnes vivant dans la rue (personnes sdf, migrants, etc.) en établissant des liens fraternels et chaleureux avec eux.</string>
-    <string name="login_text_newsletter_info">Voisinage est un réseau civique sur téléphone mobile (smartphone), aidant les habitants des villes à entrer en relation et prendre soin des personnes vivant dans la rue (personnes sdf, migrants, etc.) en établissant des liens fraternels et chaleureux avec eux.</string>
     <string name="login_text_email_details">Nous ne l’utiliserons que pour vous envoyer notre newsletter et les dernières actualités de Voisinage</string>
 
     <string name="login_text_verify_code_email">Le problème persiste ? écrivez à voisin-age@petitsfreresdespauvres.fr et nous en génèrerons un pour vous.</string>
@@ -17,9 +10,6 @@
 
     <string name="login_permission_notification_title">Ne manquez rien !</string>
     <string name="login_permission_notification_description">Pour vous coordonner entre voisineurs et voisinés, soyez notifié(e) des nouveaux messages reçus et de sorties à côté de chez vous.</string>
-
-    <string name="login_permission_geolocation_title">En direct de votre quartier !</string>
-    <string name="login_permission_geolocation_description">Voisin-Age, c’est utile parce que c’est local !\n\nParticipez à la vie du réseau dans votre quartier. Pour découvrir les nouvelles sorties de votre voisinage, activez la géolocalisation.</string>
 
     <string name="login_name_description">Seuls votre prénom et la première lettre de votre nom apparaitront.</string>
 

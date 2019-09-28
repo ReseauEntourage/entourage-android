@@ -10,8 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
-        android:id="@+id/encounter_disclaimer_title_layout">
+        android:visibility="visible">
 
         <ImageButton
             android:id="@+id/encounter_disclaimer_close_button"
@@ -30,11 +29,9 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:id="@+id/encounter_disclaimer_scrollview"
         android:layout_marginTop="10dp">
 
         <social.entourage.android.view.HtmlTextView
-            android:id="@+id/encounter_disclaimer_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:linksClickable="true"

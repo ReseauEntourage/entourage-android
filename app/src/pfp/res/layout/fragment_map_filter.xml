@@ -8,14 +8,12 @@
               tools:context="social.entourage.android.map.filter.MapFilterFragment">
 
     <social.entourage.android.view.EntourageTitleView
-        android:id="@+id/map_filter_title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:entourageTitle="@string/map_filter_title"
         app:entourageTitleAction="@string/register"/>
 
     <ScrollView
-        android:id="@+id/map_filter_content_scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
@@ -26,14 +24,12 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/map_filter_entourage_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="visible">
 
                 <TextView
-                    android:id="@+id/map_filter_entourage_type_title"
                     style="@style/EntourageTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -41,7 +37,6 @@
                     android:textSize="@dimen/entourage_font_medium"/>
 
                 <RelativeLayout
-                    android:id="@+id/map_filter_entourage_neighborhood"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/background"
@@ -61,7 +56,6 @@
                         android:src="@drawable/ic_neighborhood"/>
 
                     <TextView
-                        android:id="@+id/map_filter_entourage_neighborhood_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
@@ -91,7 +85,6 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/map_filter_entourage_private_circle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/background"
@@ -116,7 +109,6 @@
                         android:src="@drawable/ic_heart"/>
 
                     <TextView
-                        android:id="@+id/map_filter_entourage_private_circle_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
@@ -146,7 +138,6 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/map_filter_entourage_outing"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/background"
@@ -171,7 +162,6 @@
                         android:src="@drawable/ic_action_outing"/>
 
                     <TextView
-                        android:id="@+id/map_filter_entourage_outing_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
@@ -201,7 +191,6 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/map_filter_past_events"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/background"
@@ -225,7 +214,6 @@
                         />
 
                     <TextView
-                        android:id="@+id/map_filter_past_events_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"

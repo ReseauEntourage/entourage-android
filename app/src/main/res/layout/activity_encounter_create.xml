@@ -133,7 +133,6 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/create_encounter_details_layout"
                 android:layout_below="@+id/create_encounter_person">
 
                 <EditText

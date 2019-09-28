@@ -118,7 +118,6 @@
             android:textSize="@dimen/entourage_font_large"/>
 
         <ImageButton
-            android:id="@+id/user_discussion_comment_record_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

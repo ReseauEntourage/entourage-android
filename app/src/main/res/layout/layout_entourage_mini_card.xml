@@ -101,7 +101,6 @@
             tools:ignore="SmallSp"/>
 
         <ImageView
-            android:id="@+id/tour_card_people_image"
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:contentDescription="@string/empty_description"

@@ -7,7 +7,6 @@
               android:background="@color/background_light">
 
     <social.entourage.android.view.EntourageTitleView
-        android:id="@+id/myentourages_filter_navigation_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:entourageTitle="@string/map_filter_title"
@@ -16,7 +15,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/myentourages_filter_content_scrollview"
         android:background="@color/background_light">
 
         <LinearLayout
@@ -25,13 +23,11 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:id="@+id/my_entourages_filter_types_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/myentourages_filter_types_title"
                     style="@style/EntourageTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -46,7 +42,6 @@
                     >
 
                     <TextView
-                        android:id="@+id/myentourages_filter_tours_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
@@ -85,14 +80,12 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/myentourages_filter_demand_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/background"
                     >
 
                     <TextView
-                        android:id="@+id/myentourages_filter_demand_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
@@ -130,14 +123,12 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/myentourages_filter_contribution_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/background"
                     >
 
                     <TextView
-                        android:id="@+id/myentourages_filter_contribution_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -172,13 +163,11 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/myentourages_filter_entourages_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/myentourages_filter_entourages_title"
                     style="@style/EntourageTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -186,14 +175,12 @@
                     android:textSize="@dimen/entourage_font_medium"/>
 
                 <RelativeLayout
-                    android:id="@+id/myentourages_filter_unread_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/background"
                     >
 
                     <TextView
-                        android:id="@+id/myentourages_filter_unread_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
@@ -231,14 +218,12 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/myentourages_filter_created_by_me_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/background"
                     >
 
                     <TextView
-                        android:id="@+id/myentourages_filter_created_by_me_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
@@ -283,7 +268,6 @@
                     >
 
                     <TextView
-                        android:id="@+id/myentourages_filter_partner_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
@@ -321,7 +305,6 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/myentourages_filter_closed_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/background"
@@ -331,7 +314,6 @@
                     android:paddingStart="10dp">
 
                     <TextView
-                        android:id="@+id/myentourages_filter_closed_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"

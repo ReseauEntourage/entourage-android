@@ -28,7 +28,6 @@
             android:orientation="vertical">
 
             <RelativeLayout
-                android:id="@+id/user_profile_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp">
@@ -74,7 +73,6 @@
                 android:focusable="true">
 
                 <TextView
-                    android:id="@+id/textView6"
                     style="@style/UserProfileTextViewStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -113,7 +111,6 @@
                 android:paddingStart="20dp">
 
                 <TextView
-                    android:id="@+id/textView13"
                     style="@style/UserProfileTextViewStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -131,13 +128,11 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/user_about_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/user_about_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/background_light"
@@ -211,7 +206,6 @@
                 </androidx.recyclerview.widget.RecyclerView>
 
                 <View
-                    android:id="@+id/user_add_association_separator"
                     style="@style/SeparatorAlpha"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -220,7 +214,6 @@
                     android:visibility="gone"/>
 
                 <TextView
-                    android:id="@+id/user_add_association_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
@@ -251,7 +244,6 @@
                     android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/user_associations_public"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autoLink="email"
@@ -270,7 +262,6 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textView7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/background_light"
@@ -284,7 +275,6 @@
                 android:textStyle="bold"/>
 
             <LinearLayout
-                android:id="@+id/user_action_zone_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -317,7 +307,6 @@
                     android:textStyle="normal"/>
 
                 <View
-                    android:id="@+id/view5"
                     style="@style/SeparatorAlpha"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -326,7 +315,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/user_private_informations"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -344,7 +332,6 @@
                     android:focusable="true">
 
                     <TextView
-                        android:id="@+id/textView8"
                         style="@style/UserProfileTextViewStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -376,7 +363,6 @@
                     android:focusable="true">
 
                     <TextView
-                        android:id="@+id/textView9"
                         style="@style/UserProfileTextViewStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -395,7 +381,6 @@
                         android:src="@drawable/arrow_grey"/>
 
                     <TextView
-                        android:id="@+id/user_change_password_button"
                         style="@style/UserProfileTextViewStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -414,7 +399,6 @@
                     android:layout_height="1dp"/>
 
                 <LinearLayout
-                    android:id="@+id/user_phone_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
@@ -422,7 +406,6 @@
                     android:paddingTop="10dp">
 
                     <TextView
-                        android:id="@+id/textView10"
                         style="@style/UserProfileTextViewStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -439,7 +422,6 @@
                 </LinearLayout>
 
                 <View
-                    android:id="@+id/view"
                     style="@style/SeparatorAlpha"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"/>
@@ -454,7 +436,6 @@
                     android:paddingTop="10dp">
 
                     <TextView
-                        android:id="@+id/user_notifications_label"
                         style="@style/UserProfileTextViewStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -470,7 +451,6 @@
                         app:srcCompat="@drawable/verified"/>
 
                     <ImageView
-                        android:id="@+id/user_notifications_arrow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/empty_description"

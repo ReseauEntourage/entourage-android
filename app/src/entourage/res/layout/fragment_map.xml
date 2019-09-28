@@ -114,7 +114,6 @@
                 android:src="@drawable/ic_close_white" />
 
             <TextView
-                android:id="@+id/fragment_map_empty_list_popup_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"

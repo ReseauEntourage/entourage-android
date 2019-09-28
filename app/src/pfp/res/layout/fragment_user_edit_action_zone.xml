@@ -36,7 +36,6 @@
                 android:src="@drawable/map_pin_square"/>
 
             <TextView
-                android:id="@+id/action_zone_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -45,7 +44,6 @@
                 android:textSize="@dimen/entourage_font_xtra_large"/>
 
             <TextView
-                android:id="@+id/action_zone_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -54,7 +52,6 @@
                 android:textSize="@dimen/entourage_font_medium"/>
 
             <RelativeLayout
-                android:id="@+id/action_zone_places_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"

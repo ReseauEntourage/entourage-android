@@ -26,7 +26,6 @@
             android:orientation="vertical">
 
             <View
-                android:id="@+id/get_involved_separator_top"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
                 android:background="@color/background_light"/>
@@ -101,7 +100,6 @@
                 android:paddingTop="@dimen/about_items_padding">
 
                 <TextView
-                    android:id="@+id/get_involved_facebook"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -140,7 +138,6 @@
                 android:paddingTop="@dimen/about_items_padding">
 
                 <TextView
-                    android:id="@+id/get_involved_instagram"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -179,7 +176,6 @@
                 android:paddingTop="@dimen/about_items_padding">
 
                 <TextView
-                    android:id="@+id/get_involved_twitter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -218,7 +214,6 @@
                 android:paddingTop="@dimen/about_items_padding">
 
                 <TextView
-                    android:id="@+id/get_involved_suggestion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"

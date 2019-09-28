@@ -8,10 +8,9 @@
                                              tools:ignore="MissingDefaultResource">
 
     <ImageView
-        android:id="@+id/login_slideshow_p2_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
+        android:layout_margin="10dp"
         android:contentDescription="@string/empty_description"
         android:src="@drawable/login_slideshow_p2_title"
         app:layout_constraintBottom_toTopOf="@+id/login_slideshow_p2_description"
@@ -35,7 +34,6 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
     <ImageView
-        android:id="@+id/login_slideshow_p2_bush"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="100dp"
@@ -68,7 +66,6 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
     <ImageView
-        android:id="@+id/login_slideshow_p2_lamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="216dp"

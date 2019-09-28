@@ -8,7 +8,6 @@
               tools:context="social.entourage.android.authentication.login.register.RegisterSMSCodeFragment">
 
     <RelativeLayout
-        android:id="@+id/register_smscode_navigation_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -43,13 +42,11 @@
     </RelativeLayout>
 
     <ScrollView
-        android:id="@+id/register_smscode_content_scrollview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
         <LinearLayout
-            android:id="@+id/register_smscode_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -64,7 +61,6 @@
                 >
 
                 <TextView
-                    android:id="@+id/register_smscode_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
@@ -175,7 +171,6 @@
                 app:srcCompat="@drawable/password"/>
 
             <TextView
-                android:id="@+id/register_smscode_disclaimer"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"

@@ -9,7 +9,6 @@
         android:background="@color/greyish"
         android:alpha="0.5"
         android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
-        android:id="@+id/tic_separator"/>
+        android:layout_marginRight="60dp" />
 
 </LinearLayout>

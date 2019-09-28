@@ -43,7 +43,6 @@
         tools:visibility="visible">
 
         <ImageView
-            android:id="@+id/fragment_guide_empty_list_popup_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
@@ -94,7 +93,6 @@
             app:srcCompat="@drawable/ic_close_white" />
 
         <TextView
-            android:id="@+id/fragment_guide_info_popup_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

@@ -62,7 +62,6 @@
                 android:src="@drawable/entourage_logo_white"/>
 
             <TextView
-                android:id="@+id/register_welcome_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/registration_welcome_title"
@@ -71,7 +70,6 @@
                 android:textSize="@dimen/entourage_font_xtra_large"/>
 
             <TextView
-                android:id="@+id/register_welcome_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"

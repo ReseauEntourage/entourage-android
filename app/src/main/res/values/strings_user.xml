@@ -2,25 +2,16 @@
 <resources>
 
     <string name="activity_display_user_title">PROFIL</string>
-    <string name="user_information_label">Informations de maraudeur</string>
-    <string name="user_privacy_label">Informations privées</string>
-    <string name="user_unsubscribe_label">Désinscription</string>
-    <string name="user_form_access_code">Code d\'accès</string>
-    <string name="user_form_confirmation">Confirmation</string>
     <string name="user_button_confirm_changes">Confirmer</string>
-    <string name="user_button_unsubscribe">Me désinscrire</string>
     <string name="user_text_update_ok">Profil mis à jour</string>
     <string name="user_text_update_ko">Erreur de mise à jour</string>
     <string name="user_image_add_photo">Ajouter une photo</string>
-    <string name="user_switch_label">Afficher toutes mes maraudes</string>
-    <string name="user_terms_and_conditions"><u>Conditions Générales d\'Utilisation</u></string>
     <string name="user_profile_edit_button">Modifier</string>
     <string name="user_profile_verified_information_label">Identitification vérifiée</string>
     <string name="user_information_email_label">Adresse e-mail</string>
     <string name="user_information_phone_label">Numéro de téléphone</string>
     <string name="user_number_entourages_title">Entourages</string>
     <string name="user_number_entourages_label">Nombre d’entourages</string>
-    <string name="user_number_tours_label">Nombre de maraudes</string>
     <string name="user_associations_title">Association(s)</string>
     <string name="user_neighborhoods_title">Membres de voisinages</string>
     <string name="user_entourage_count_format">%1$d</string>
@@ -63,7 +54,6 @@
     <string name="user_edit_profile_invalid_email">Email invalide</string>
 
     <string name="user_delete_account_dialog">Voulez-vous vraiment supprimer votre compte ?</string>
-    <string name="user_delete_account_in_progress">Suppression en cours</string>
     <string name="user_delete_account_failure">Erreur lors de la suppression du compte</string>
 
     <string name="user_view_profile">Voir Profil</string>
@@ -99,7 +89,6 @@
     <string name="user_report_success">✔︎ Utilisateur signalé</string>
     <string name="user_report_error_reason_empty">Ajoutez un message</string>
     <string name="user_report_error_send_failed">L\'envoi du message a échoué, veuillez réessayer</string>
-    <string name="user_report_email_subject">Signalement d\'un utilisateur - %1$s</string>
 
     <!-- Action zone -->
     <string name="user_action_zone_title">Définissez votre zone d\'action</string>

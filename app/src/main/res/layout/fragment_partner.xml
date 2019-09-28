@@ -53,7 +53,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/partner_view_details_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/pale_grey"
@@ -74,7 +73,6 @@
                 android:textSize="@dimen/entourage_font_medium"/>
 
             <TextView
-                android:id="@+id/partner_view_information_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -100,7 +98,6 @@
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:id="@+id/partner_view_phone_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/partner_view_phone_description"
@@ -134,7 +131,6 @@
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:id="@+id/partner_view_address_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/partner_view_address_description"
@@ -168,7 +164,6 @@
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:id="@+id/partner_view_website_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/partner_view_website_description"
@@ -202,7 +197,6 @@
                 android:paddingTop="10dp">
 
                 <TextView
-                    android:id="@+id/partner_view_email_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/partner_view_email_description"
