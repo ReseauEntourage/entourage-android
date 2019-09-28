@@ -38,11 +38,11 @@ public class ChatMessageCardViewHolder extends BaseCardViewHolder {
     @Override
     protected void bindFields() {
 
-        mUserPhotoView = (ImageView) itemView.findViewById(R.id.tic_chat_user_photo);
-        mUserNameView = (TextView) itemView.findViewById(R.id.tic_chat_user_name);
-        mPartnerLogoView = (PartnerLogoImageView) itemView.findViewById(R.id.tic_chat_user_partner_logo);
-        mMessageView = (TextView) itemView.findViewById(R.id.tic_chat_message);
-        mTimestampView = (TextView) itemView.findViewById(R.id.tic_chat_timestamp);
+        mUserPhotoView = itemView.findViewById(R.id.tic_chat_user_photo);
+        mUserNameView = itemView.findViewById(R.id.tic_chat_user_name);
+        mPartnerLogoView = itemView.findViewById(R.id.tic_chat_user_partner_logo);
+        mMessageView = itemView.findViewById(R.id.tic_chat_message);
+        mTimestampView = itemView.findViewById(R.id.tic_chat_timestamp);
 
         mUserPhotoView.setOnClickListener(new View.OnClickListener() {
             @Override

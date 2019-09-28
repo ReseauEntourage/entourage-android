@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 

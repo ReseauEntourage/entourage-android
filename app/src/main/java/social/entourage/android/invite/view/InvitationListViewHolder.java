@@ -27,7 +27,7 @@ public class InvitationListViewHolder extends BaseCardViewHolder {
 
     @Override
     protected void bindFields() {
-        invitationsView = (RecyclerView) itemView.findViewById(R.id.invitation_list_recycler_view);
+        invitationsView = itemView.findViewById(R.id.invitation_list_recycler_view);
 
         invitationsView.setLayoutManager(new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false));
         invitationsAdapter = new InvitationsAdapter();
@@ -41,7 +41,7 @@ public class InvitationListViewHolder extends BaseCardViewHolder {
 
     private void populate(InvitationList invitationList) {
         if (invitationsAdapter != null) {
-            List<TimestampedObject> list = new ArrayList<TimestampedObject>(invitationList.getInvitationList());
+            List<TimestampedObject> list = new ArrayList<>(invitationList.getInvitationList());
             invitationsAdapter.addItems(list);
         }
     }

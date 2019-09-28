@@ -36,11 +36,11 @@ public class LocationCardViewHolder extends BaseCardViewHolder {
     @Override
     protected void bindFields() {
 
-        mLocationDate = (TextView) itemView.findViewById(R.id.tic_location_date);
-        mLocationImage = (ImageView) itemView.findViewById(R.id.tic_location_image);
-        mLocationTitle = (TextView) itemView.findViewById(R.id.tic_location_title);
-        mLocationDuration = (TextView) itemView.findViewById(R.id.tic_location_duration);
-        mLocationDistance = (TextView) itemView.findViewById(R.id.tic_location_distance);
+        mLocationDate = itemView.findViewById(R.id.tic_location_date);
+        mLocationImage = itemView.findViewById(R.id.tic_location_image);
+        mLocationTitle = itemView.findViewById(R.id.tic_location_title);
+        mLocationDuration = itemView.findViewById(R.id.tic_location_duration);
+        mLocationDistance = itemView.findViewById(R.id.tic_location_distance);
     }
 
     @Override

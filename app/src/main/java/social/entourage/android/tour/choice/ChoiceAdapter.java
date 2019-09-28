@@ -81,11 +81,11 @@ public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ChoiceView
 
         ChoiceViewHolder(View itemView) {
             super(itemView);
-            cardView = ((CardView)itemView.findViewById(R.id.choice_card_view));
-            cardImage = ((ImageView)itemView.findViewById(R.id.choice_card_image));
-            cardTextOrganization = ((TextView)itemView.findViewById(R.id.choice_card_organization));
-            cardTextDate = ((TextView)itemView.findViewById(R.id.choice_card_date));
-            cardTextType = ((TextView)itemView.findViewById(R.id.choice_card_type));
+            cardView = itemView.findViewById(R.id.choice_card_view);
+            cardImage = itemView.findViewById(R.id.choice_card_image);
+            cardTextOrganization = itemView.findViewById(R.id.choice_card_organization);
+            cardTextDate = itemView.findViewById(R.id.choice_card_date);
+            cardTextType = itemView.findViewById(R.id.choice_card_type);
             cardView.setOnClickListener(this);
         }
 

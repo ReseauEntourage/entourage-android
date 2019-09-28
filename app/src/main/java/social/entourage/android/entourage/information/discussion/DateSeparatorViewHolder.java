@@ -22,7 +22,7 @@ public class DateSeparatorViewHolder extends BaseCardViewHolder {
 
     @Override
     protected void bindFields() {
-        mTimestampView = (TextView) itemView.findViewById(R.id.tic_date_separator_timestamp);
+        mTimestampView = itemView.findViewById(R.id.tic_date_separator_timestamp);
     }
 
     @Override

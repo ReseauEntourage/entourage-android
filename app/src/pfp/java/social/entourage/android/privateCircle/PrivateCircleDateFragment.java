@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -112,7 +111,7 @@ public class PrivateCircleDateFragment extends EntourageDialogFragment implement
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
@@ -123,7 +122,7 @@ public class PrivateCircleDateFragment extends EntourageDialogFragment implement
     }
 
     @Override
-    public void onViewCreated(final View view, final Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         configureView();
     }
@@ -245,7 +244,7 @@ public class PrivateCircleDateFragment extends EntourageDialogFragment implement
         Call<ChatMessage.ChatMessageWrapper> call = request.visitMessage(entourageId, new VisitChatMessage.VisitChatMessageWrapper(visitChatMessage));
         call.enqueue(new Callback<ChatMessage.ChatMessageWrapper>() {
             @Override
-            public void onResponse(final Call<ChatMessage.ChatMessageWrapper> call, final Response<ChatMessage.ChatMessageWrapper> response) {
+            public void onResponse(@NonNull final Call<ChatMessage.ChatMessageWrapper> call, @NonNull final Response<ChatMessage.ChatMessageWrapper> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(EntourageApplication.get(), R.string.privatecircle_visit_sent_ok, Toast.LENGTH_SHORT).show();
                     if (!isStateSaved() && isAdded()) {
@@ -265,7 +264,7 @@ public class PrivateCircleDateFragment extends EntourageDialogFragment implement
             }
 
             @Override
-            public void onFailure(final Call<ChatMessage.ChatMessageWrapper> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<ChatMessage.ChatMessageWrapper> call, @NonNull final Throwable t) {
                 if (getContext() != null) {
                     Toast.makeText(getContext(), R.string.privatecircle_visit_sent_error, Toast.LENGTH_SHORT).show();
                 }

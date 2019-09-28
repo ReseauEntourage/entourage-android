@@ -1,10 +1,9 @@
 package social.entourage.android;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import androidx.annotation.IdRes;
-import androidx.appcompat.app.AlertDialog;
+
 import android.widget.Toast;
 
 import javax.inject.Inject;
@@ -12,10 +11,8 @@ import javax.inject.Inject;
 import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.model.map.FeedItem;
-import social.entourage.android.api.tape.Events;
 import social.entourage.android.entourage.EntourageCloseFragment;
 import social.entourage.android.privateCircle.PrivateCircleChooseFragment;
-import social.entourage.android.tools.BusProvider;
 
 /**
  * Presenter controlling the DrawerActivity

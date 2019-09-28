@@ -47,8 +47,8 @@ public class EntourageCategoryManager {
         entourageTypes.add(Entourage.TYPE_DEMAND);
         entourageTypes.add(Entourage.TYPE_CONTRIBUTION);
         // Construct the hashmap
-        entourageCategoriesHashMap.put(Entourage.TYPE_DEMAND, new ArrayList<EntourageCategory>());
-        entourageCategoriesHashMap.put(Entourage.TYPE_CONTRIBUTION, new ArrayList<EntourageCategory>());
+        entourageCategoriesHashMap.put(Entourage.TYPE_DEMAND, new ArrayList<>());
+        entourageCategoriesHashMap.put(Entourage.TYPE_CONTRIBUTION, new ArrayList<>());
         for (EntourageCategory category:entourageCategories) {
             String key = category.getEntourageType();
             List<EntourageCategory> list = entourageCategoriesHashMap.get(key);

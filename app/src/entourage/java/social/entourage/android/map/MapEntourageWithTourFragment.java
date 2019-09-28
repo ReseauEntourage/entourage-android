@@ -68,7 +68,6 @@ import social.entourage.android.tour.encounter.CreateEncounterActivity;
 import social.entourage.android.tour.TourService;
 import social.entourage.android.tour.TourServiceListener;
 import social.entourage.android.tour.join.TourJoinRequestFragment;
-import social.entourage.android.newsfeed.NewsfeedBottomViewHolder;
 import timber.log.Timber;
 
 import static social.entourage.android.tour.TourService.KEY_LOCATION_PROVIDER_DISABLED;

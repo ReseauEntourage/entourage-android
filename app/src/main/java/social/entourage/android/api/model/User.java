@@ -1,5 +1,6 @@
 package social.entourage.android.api.model;
 
+import androidx.annotation.NonNull;
 import androidx.collection.ArrayMap;
 
 import com.google.gson.annotations.Expose;
@@ -124,6 +125,7 @@ public class User implements Serializable {
         this.avatarURL = avatarURL;
     }
 
+    @NonNull
     public User clone() {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

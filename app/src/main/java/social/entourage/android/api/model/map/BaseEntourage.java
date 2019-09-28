@@ -399,13 +399,13 @@ public class BaseEntourage extends FeedItem implements Serializable {
 
     @Override
     public @StringRes int getFreezedCTAText() {
-        if (TYPE_OUTING.equalsIgnoreCase(groupType) || outcome == null || outcome.success == false) return super.getFreezedCTAText();
+        if (TYPE_OUTING.equalsIgnoreCase(groupType) || outcome == null || !outcome.success) return super.getFreezedCTAText();
         return R.string.tour_cell_button_freezed_success;
     }
 
     @Override
     public @ColorRes int getFreezedCTAColor() {
-        if (TYPE_OUTING.equalsIgnoreCase(groupType) || outcome == null || outcome.success == false) return super.getFreezedCTAColor();
+        if (TYPE_OUTING.equalsIgnoreCase(groupType) || outcome == null || !outcome.success) return super.getFreezedCTAColor();
         return R.color.accent;
     }
 

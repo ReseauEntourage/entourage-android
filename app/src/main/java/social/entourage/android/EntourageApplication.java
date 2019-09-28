@@ -151,7 +151,7 @@ public class EntourageApplication extends MultiDexApplication {
         activities.remove(activity);
         saveFeedItemsStorage();
         if (librariesSupport != null) {
-            librariesSupport.onActivityDestroyed(activity);
+            librariesSupport.onActivityDestroyed();
         }
     }
 

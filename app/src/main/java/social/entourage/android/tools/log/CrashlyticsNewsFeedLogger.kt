@@ -14,11 +14,11 @@ class CrashlyticsNewsFeedLogger : NewsFeedListener {
     }
 
     override fun onServerException(throwable: Throwable) {
-        Crashlytics.logException(throwable);
+        Crashlytics.logException(throwable)
     }
 
     override fun onTechnicalException(throwable: Throwable) {
-        Crashlytics.logException(throwable);
+        Crashlytics.logException(throwable)
     }
 
     override fun onNewsFeedReceived(newsFeeds: List<Newsfeed>) {

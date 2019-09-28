@@ -54,11 +54,11 @@ class CountryCodeDialog extends Dialog {
     }
 
     private void setupUI() {
-        mRlyDialog = (RelativeLayout) this.findViewById(R.id.dialog_rly);
-        mRvCountryDialog = (RecyclerView) this.findViewById(R.id.country_dialog_rv);
-        mTvTitle = (AppCompatTextView) this.findViewById(R.id.title_tv);
-        mEdtSearch = (AppCompatEditText) this.findViewById(R.id.search_edt);
-        mTvNoResult = (AppCompatTextView) this.findViewById(R.id.no_result_tv);
+        mRlyDialog = this.findViewById(R.id.dialog_rly);
+        mRvCountryDialog = this.findViewById(R.id.country_dialog_rv);
+        mTvTitle = this.findViewById(R.id.title_tv);
+        mEdtSearch = this.findViewById(R.id.search_edt);
+        mTvNoResult = this.findViewById(R.id.no_result_tv);
     }
 
     private void setupData() {

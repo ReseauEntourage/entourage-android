@@ -116,7 +116,7 @@ public class LoginSlideshowFragment extends Fragment {
     private void selectDot(int idx) {
         if (dots == null || dots.size() <= idx) return;
         Resources res = getResources();
-        for(int i = 0; i < LoginSlideshowPageAdapter.Companion.getNUM_PAGES(); i++) {
+        for(int i = 0; i < LoginSlideshowPageAdapter.NUM_PAGES; i++) {
             int drawableId = (i==idx)?(R.drawable.carousel_bullet_filled):(R.drawable.carousel_bullet_empty);
             Drawable drawable = res.getDrawable(drawableId);
             dots.get(i).setImageDrawable(drawable);

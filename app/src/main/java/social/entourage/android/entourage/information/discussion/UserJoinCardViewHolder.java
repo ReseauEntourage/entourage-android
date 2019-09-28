@@ -64,22 +64,22 @@ public class UserJoinCardViewHolder extends BaseCardViewHolder {
         mPublicSection = itemView.findViewById(R.id.tic_public_info_section);
         mPrivateSection = itemView.findViewById(R.id.tic_private_info_section);
 
-        mPublicPhotoView = (ImageView) itemView.findViewById(R.id.tic_public_info_photo);
-        mPublicPartnerLogo = (PartnerLogoImageView) itemView.findViewById(R.id.tic_public_info_partner_logo);
-        mPublicUsernameView = (TextView) itemView.findViewById(R.id.tic_public_info_username);
-        mJoinStatusView = (TextView) itemView.findViewById(R.id.tic_join_status);
-        mPublicJoinMessage = (TextView) itemView.findViewById(R.id.tic_public_join_message);
+        mPublicPhotoView = itemView.findViewById(R.id.tic_public_info_photo);
+        mPublicPartnerLogo = itemView.findViewById(R.id.tic_public_info_partner_logo);
+        mPublicUsernameView = itemView.findViewById(R.id.tic_public_info_username);
+        mJoinStatusView = itemView.findViewById(R.id.tic_join_status);
+        mPublicJoinMessage = itemView.findViewById(R.id.tic_public_join_message);
         mPublicMessageSection = itemView.findViewById(R.id.tic_public_info_message_layout);
-        mPublicTimestampView = (TextView) itemView.findViewById(R.id.tic_public_info_timestamp);
+        mPublicTimestampView = itemView.findViewById(R.id.tic_public_info_timestamp);
 
-        mPhotoView = (ImageView) itemView.findViewById(R.id.tic_photo);
-        mPartnerLogoView = (PartnerLogoImageView) itemView.findViewById(R.id.tic_partner_logo);
+        mPhotoView = itemView.findViewById(R.id.tic_photo);
+        mPartnerLogoView = itemView.findViewById(R.id.tic_partner_logo);
         mPrivateUsernameView = itemView.findViewById(R.id.tic_private_username);
-        mJoinDescription = (TextView) itemView.findViewById(R.id.tic_join_description);
-        mJoinMessage = (TextView) itemView.findViewById(R.id.tic_join_message);
-        mAcceptButton = (Button) itemView.findViewById(R.id.tic_accept_button);
-        mRefuseButton = (Button) itemView.findViewById(R.id.tic_refuse_button);
-        mViewProfileButton = (Button) itemView.findViewById(R.id.tic_view_profile_button);
+        mJoinDescription = itemView.findViewById(R.id.tic_join_description);
+        mJoinMessage = itemView.findViewById(R.id.tic_join_message);
+        mAcceptButton = itemView.findViewById(R.id.tic_accept_button);
+        mRefuseButton = itemView.findViewById(R.id.tic_refuse_button);
+        mViewProfileButton = itemView.findViewById(R.id.tic_view_profile_button);
 
         mPhotoView.setOnClickListener(new View.OnClickListener() {
             @Override

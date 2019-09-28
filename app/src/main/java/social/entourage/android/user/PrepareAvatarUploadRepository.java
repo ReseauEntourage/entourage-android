@@ -1,6 +1,5 @@
 package social.entourage.android.user;
 
-import android.util.Log;
 import com.google.gson.annotations.SerializedName;
 
 import androidx.annotation.NonNull;

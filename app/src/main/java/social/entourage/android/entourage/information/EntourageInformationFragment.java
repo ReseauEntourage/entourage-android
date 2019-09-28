@@ -1910,7 +1910,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
                     }
                 }
 
-                List<TimestampedObject> timestampedObjectList = new ArrayList<TimestampedObject>(chatMessageList);
+                List<TimestampedObject> timestampedObjectList = new ArrayList<>(chatMessageList);
                 if (feedItem.addCardInfoList(timestampedObjectList) > 0) {
                     //remember the last chat message
                     ChatMessage lastChatMessage = (ChatMessage) feedItem.getAddedCardInfoList().get(feedItem.getAddedCardInfoList().size()-1);
@@ -1970,7 +1970,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
                     encounter.setReadOnly(feedItem.isClosed());
                 }
             }
-            List<TimestampedObject> timestampedObjectList = new ArrayList<TimestampedObject>(encounterList);
+            List<TimestampedObject> timestampedObjectList = new ArrayList<>(encounterList);
             feedItem.addCardInfoList(timestampedObjectList);
         }
 

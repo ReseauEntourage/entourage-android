@@ -29,7 +29,7 @@ public class StatusCardViewHolder extends BaseCardViewHolder {
 
     @Override
     public void populate(final TimestampedObject data) {
-        if ( data == null || !(data instanceof ChatMessage) ) return;
+        if (!(data instanceof ChatMessage)) return;
         ChatMessage chatMessage = (ChatMessage) data;
         ChatMessage.Metadata metadata = chatMessage.getMetadata();
         if (metadata == null) return;

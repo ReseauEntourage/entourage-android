@@ -55,7 +55,7 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
     private void displayMessage() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.layout_tour_join_request_received_dialog, null);
-        HtmlTextView htmlTextView =  (HtmlTextView)view.findViewById(R.id.tour_join_request_received_text);
+        HtmlTextView htmlTextView = view.findViewById(R.id.tour_join_request_received_text);
         String alertMessage = "";
         PushNotificationContent content = message.getContent();
         if (content != null) {

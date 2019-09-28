@@ -36,9 +36,9 @@ public class UserEditPartnerAdapter extends BaseAdapter {
         public Partner partner;
 
         public PartnerViewHolder(View v, final OnCheckedChangeListener checkboxListener) {
-            mPartnerName = (TextView) v.findViewById(R.id.partner_name);
-            mPartnerLogo = (ImageView) v.findViewById(R.id.partner_logo);
-            mCheckbox = (CheckBox) v.findViewById(R.id.partner_checkbox);
+            mPartnerName = v.findViewById(R.id.partner_name);
+            mPartnerLogo = v.findViewById(R.id.partner_logo);
+            mCheckbox = v.findViewById(R.id.partner_checkbox);
 
             mCheckbox.setOnCheckedChangeListener(checkboxListener);
 

@@ -10,14 +10,14 @@ import social.entourage.android.authentification.login.slideshow.pages.LoginSlid
 /**
  * Created by Mihai Ionescu on 12/09/2018.
  */
-class LoginSlideshowPageAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class LoginSlideshowPageAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
-        when (position) {
-            0 -> return LoginSlideshowPage1Fragment()
-            1 -> return LoginSlideshowPage2Fragment()
-            2 -> return LoginSlideshowPage3Fragment()
-            else -> return LoginSlideshowPage1Fragment()
+        return when (position) {
+            0 -> LoginSlideshowPage1Fragment()
+            1 -> LoginSlideshowPage2Fragment()
+            2 -> LoginSlideshowPage3Fragment()
+            else -> LoginSlideshowPage1Fragment()
         }
     }
 
@@ -26,6 +26,6 @@ class LoginSlideshowPageAdapter(fm: FragmentManager) : FragmentStatePagerAdapter
     }
 
     companion object {
-        val NUM_PAGES = 3
+        const val NUM_PAGES = 3
     }
 }

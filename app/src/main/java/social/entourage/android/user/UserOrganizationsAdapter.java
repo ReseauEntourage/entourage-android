@@ -35,9 +35,9 @@ public class UserOrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.
 
         public OrganizationViewHolder(View v) {
             super(v);
-            mOrganizationName = (TextView) v.findViewById(R.id.organization_name);
-            mOrganizationType = (TextView) v.findViewById(R.id.organization_type);
-            mOrganizationLogo = (ImageView) v.findViewById(R.id.organization_logo);
+            mOrganizationName = v.findViewById(R.id.organization_name);
+            mOrganizationType = v.findViewById(R.id.organization_type);
+            mOrganizationLogo = v.findViewById(R.id.organization_logo);
             mSeparator = v.findViewById(R.id.organization_separator);
 
             if (mOrganizationLogo != null) {

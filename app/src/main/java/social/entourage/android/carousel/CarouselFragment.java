@@ -104,16 +104,16 @@ public class CarouselFragment extends EntourageDialogFragment {
     private void addDots() {
         dots = new ArrayList<>();
 
-        ImageView dot1 = (ImageView)indicatorLayout.findViewById(R.id.carousel_b1);
+        ImageView dot1 = indicatorLayout.findViewById(R.id.carousel_b1);
         dots.add(dot1);
 
-        ImageView dot2 = (ImageView)indicatorLayout.findViewById(R.id.carousel_b2);
+        ImageView dot2 = indicatorLayout.findViewById(R.id.carousel_b2);
         dots.add(dot2);
 
-        ImageView dot3 = (ImageView)indicatorLayout.findViewById(R.id.carousel_b3);
+        ImageView dot3 = indicatorLayout.findViewById(R.id.carousel_b3);
         dots.add(dot3);
 
-        ImageView dot4 = (ImageView)indicatorLayout.findViewById(R.id.carousel_b4);
+        ImageView dot4 = indicatorLayout.findViewById(R.id.carousel_b4);
         dots.add(dot4);
     }
 

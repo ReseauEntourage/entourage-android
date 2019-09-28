@@ -40,7 +40,7 @@ abstract class BaseLibrariesSupport {
         firebaseAnalytics = FirebaseAnalytics.getInstance(context)
     }
 
-    fun onActivityDestroyed(activity: EntourageActivity) {
+    fun onActivityDestroyed() {
         if (mixpanel != null) {
             mixpanel!!.flush()
         }

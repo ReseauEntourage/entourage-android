@@ -13,7 +13,6 @@ import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import social.entourage.android.EntourageLocation;
 import social.entourage.android.api.MapRequest;
 import social.entourage.android.api.MapResponse;
 import social.entourage.android.guide.filter.GuideFilter;

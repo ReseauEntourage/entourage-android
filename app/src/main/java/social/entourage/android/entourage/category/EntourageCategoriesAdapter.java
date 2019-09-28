@@ -32,9 +32,9 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
         CheckBox mCheckbox;
 
         public EntourageCategoryViewHolder(View v, final OnCheckedChangeListener checkboxListener) {
-            mIcon = (ImageView)v.findViewById(R.id.entourage_category_item_icon);
-            mLabel = (TextView)v.findViewById(R.id.entourage_category_item_label);
-            mCheckbox = (CheckBox) v.findViewById(R.id.entourage_category_item_checkbox);
+            mIcon = v.findViewById(R.id.entourage_category_item_icon);
+            mLabel = v.findViewById(R.id.entourage_category_item_label);
+            mCheckbox = v.findViewById(R.id.entourage_category_item_checkbox);
 
             mCheckbox.setOnCheckedChangeListener(checkboxListener);
             v.setOnClickListener(new View.OnClickListener() {
@@ -184,8 +184,8 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
         }
         // populate the group
         if (groupPosition != 0) {
-            TextView label = (TextView) convertView.findViewById(R.id.entourage_category_group_label);
-            ImageView arrow = (ImageView) convertView.findViewById(R.id.entourage_category_group_arrow);
+            TextView label = convertView.findViewById(R.id.entourage_category_group_label);
+            ImageView arrow = convertView.findViewById(R.id.entourage_category_group_arrow);
             if (label != null) {
                 label.setText(EntourageCategory.getEntourageTypeDescription((String) getGroup(groupPosition)));
             }

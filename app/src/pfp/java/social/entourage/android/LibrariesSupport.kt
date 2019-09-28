@@ -8,7 +8,4 @@ import android.content.Context
  */
 class LibrariesSupport : BaseLibrariesSupport(){
 
-    override fun setupLibraries(context: Context) {
-        super.setupLibraries(context)
-    }
 }

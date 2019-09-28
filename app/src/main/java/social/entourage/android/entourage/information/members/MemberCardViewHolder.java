@@ -44,9 +44,9 @@ public class MemberCardViewHolder extends BaseCardViewHolder {
 
     @Override
     protected void bindFields() {
-        mMemberPhoto = (ImageView) itemView.findViewById(R.id.tic_member_photo);
-        mPartnerLogo = (PartnerLogoImageView) itemView.findViewById(R.id.tic_member_partner_logo);
-        mMemberName = (TextView) itemView.findViewById(R.id.tic_member_name);
+        mMemberPhoto = itemView.findViewById(R.id.tic_member_photo);
+        mPartnerLogo = itemView.findViewById(R.id.tic_member_partner_logo);
+        mMemberName = itemView.findViewById(R.id.tic_member_name);
         mMemberTags = itemView.findViewById(R.id.tic_member_tags);
 
         itemView.setOnClickListener(new View.OnClickListener() {
