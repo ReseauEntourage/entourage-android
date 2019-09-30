@@ -121,7 +121,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
             if (resultCode == Constants.RESULT_CREATE_ENCOUNTER_OK && data.getExtras()!=null) {
                 Encounter encounter = (Encounter) data.getExtras().getSerializable(CreateEncounterActivity.BUNDLE_KEY_ENCOUNTER);
                 addEncounter(encounter);
-                putEncounterOnMap(encounter, presenter.getOnClickListener());
+                putEncounterOnMap(encounter);
             }
         }
     }
@@ -523,7 +523,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         if (encounter != null) {
             addEncounter(encounter);
             if(presenter!=null) {
-                putEncounterOnMap(encounter, presenter.getOnClickListener());
+                putEncounterOnMap(encounter);
             }
         }
         mapOptionsMenu.setVisibility(View.VISIBLE);
@@ -542,7 +542,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
             mapClusterManager.removeItem(mapClusterItem);
         }
         updateEncounter(updatedEncounter);
-        putEncounterOnMap(updatedEncounter, presenter.getOnClickListener());
+        putEncounterOnMap(updatedEncounter);
     }
 
     @Override
@@ -926,7 +926,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         List<Encounter> encounters = tourService.getCurrentTour().getEncounters();
         if (!encounters.isEmpty()) {
             for (Encounter encounter : encounters) {
-                putEncounterOnMap(encounter, presenter.getOnClickListener());
+                putEncounterOnMap(encounter);
             }
         }
     }
