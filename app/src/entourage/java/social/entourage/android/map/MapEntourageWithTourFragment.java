@@ -236,9 +236,8 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         return super.handleSpecialCasesForFAB();
     }
 
-    private void putEncounterOnMap(Encounter encounter,
-                           MapPresenter.OnEntourageMarkerClickListener onClickListener) {
-        if (map == null) {
+    private void putEncounterOnMap(Encounter encounter) {
+        if (map == null || presenter == null) {
             // The map is not yet initialized or the google play services are outdated on the phone
             return;
         }
@@ -248,7 +247,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
             return;
         }
         mapClusterItem = new MapClusterItem(encounter);
-        onClickListener.addEncounterMapClusterItem(mapClusterItem, encounter);
+        presenter.getOnClickListener().addEncounterMapClusterItem(mapClusterItem, encounter);
         mapClusterManager.addItem(mapClusterItem);
     }
 
@@ -523,7 +522,9 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         Encounter encounter = event.getEncounter();
         if (encounter != null) {
             addEncounter(encounter);
-            putEncounterOnMap(encounter, presenter.getOnClickListener());
+            if(presenter!=null) {
+                putEncounterOnMap(encounter, presenter.getOnClickListener());
+            }
         }
         mapOptionsMenu.setVisibility(View.VISIBLE);
         if (tourService != null) {
@@ -552,7 +553,6 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
             if (created) {
                 isFollowing = true;
                 currentTourUUID = tourUUID;
-                presenter.incrementUserToursCount();
                 mapLauncherLayout.setVisibility(View.GONE);
                 if (newsfeedListView.getVisibility() == View.VISIBLE) {
                     displayFullMap();
@@ -564,6 +564,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
                 if (tourStopButton != null) tourStopButton.setVisibility(View.VISIBLE);
 
                 if (presenter != null) {
+                    presenter.incrementUserToursCount();
                     presenter.setDisplayEncounterDisclaimer(true);
                 }
             } else {
@@ -680,7 +681,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     ChoiceFragment choiceFragment = ChoiceFragment.newInstance(toursList);
                     choiceFragment.show(fragmentManager, "fragment_choice");
-                } else {
+                } else if(presenter!=null){
                     TreeMap<Long, Tour> toursTree = new TreeMap<>(tours);
                     presenter.openFeedItem(toursTree.firstEntry().getValue(), 0, 0);
                 }
