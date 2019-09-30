@@ -596,6 +596,9 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
 
     @Override
     public void onRetrieveToursNearby(@NotNull List<? extends Tour> tours) {
+        if(newsfeedAdapter==null) {
+            return;
+        }
         //check if there are tours to add or update
         int previousToursCount = newsfeedAdapter.getDataItemCount();
         tours = removeRedundantTours(tours, false);
@@ -763,7 +766,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
 
     @Override
     protected void redrawWholeNewsfeed(@NotNull List<? extends Newsfeed> newsFeeds) {
-        if (map != null && newsFeeds.size() > 0) {
+        if (map != null && newsFeeds.size() > 0 && newsfeedAdapter!=null) {
             for (Polyline polyline:drawnToursMap) {
                 polyline.remove();
             }
@@ -847,6 +850,9 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         while (iteratorTours.hasNext()) {
             Tour tour = (Tour) iteratorTours.next();
             if (!isHistory) {
+                if(newsfeedAdapter==null) {
+                    break;//no need to continue here
+                }
                 Tour retrievedTour = (Tour) newsfeedAdapter.findCard(tour);
                 if (retrievedTour.isSame(tour)) {
                     iteratorTours.remove();
@@ -879,7 +885,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
                     continue;
                 }
                 TimestampedObject retrievedCard;
-                retrievedCard = newsfeedAdapter.findCard((TimestampedObject) card);
+                retrievedCard = newsfeedAdapter!=null?newsfeedAdapter.findCard((TimestampedObject) card):null;
                 if (retrievedCard != null) {
                     if (Tour.NEWSFEED_TYPE.equals(newsfeed.getType())) {
                         if (((Tour) retrievedCard).isSame((Tour) card)) {
@@ -978,6 +984,9 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
     }
 
     private void addTourCard(Tour tour) {
+        if(newsfeedAdapter==null) {
+            return;
+        }
         if (newsfeedAdapter.findCard(tour) != null) {
             newsfeedAdapter.updateCard(tour);
         } else {
@@ -1053,15 +1062,14 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
     public void userStatusChanged(PushNotificationContent content, String status) {
         super.userStatusChanged(content, status);
         if (tourService != null) {
-            TimestampedObject timestampedObject = null;
-            if (content.isTourRelated()) {
-                timestampedObject = newsfeedAdapter.findCard(TimestampedObject.TOUR_CARD, content.getJoinableId());
-            }
-            if (timestampedObject != null) {
-                TourUser user = new TourUser();
-                user.setUserId(userId);
-                user.setStatus(status);
-                tourService.notifyListenersUserStatusChanged(user, (FeedItem) timestampedObject);
+            if (content.isTourRelated() && newsfeedAdapter!=null) {
+                TimestampedObject timestampedObject = newsfeedAdapter.findCard(TimestampedObject.TOUR_CARD, content.getJoinableId());
+                if (timestampedObject != null) {
+                    TourUser user = new TourUser();
+                    user.setUserId(userId);
+                    user.setStatus(status);
+                    tourService.notifyListenersUserStatusChanged(user, (FeedItem) timestampedObject);
+                }
             }
         }
     }

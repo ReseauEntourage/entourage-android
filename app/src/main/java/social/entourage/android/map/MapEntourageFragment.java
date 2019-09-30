@@ -435,7 +435,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         FeedItem item = event.getFeedItem();
         if(item==null) {
             refreshFeed();
-        } else {
+        } else if(newsfeedAdapter!=null){
             newsfeedAdapter.updateCard(item);
         }
     }
@@ -471,7 +471,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
     @Subscribe
     public void onEntourageUpdated(Events.OnEntourageUpdated event) {
-        if (event == null) {
+        if (event == null || newsfeedAdapter == null) {
             return;
         }
         Entourage entourage = event.getEntourage();
@@ -1006,7 +1006,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     // ----------------------------------
 
     protected List<? extends Newsfeed> removeRedundantNewsfeed(List<? extends Newsfeed> newsFeedList, boolean isHistory) {
-        if (newsFeedList == null) {
+        if (newsFeedList == null || newsfeedAdapter == null) {
             return null;
         }
         Iterator iteratorNewsfeed = newsFeedList.iterator();
@@ -1079,6 +1079,9 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     }
 
     private void addNewsfeedCard(TimestampedObject card) {
+        if(newsfeedAdapter==null) {
+            return;
+        }
         if (newsfeedAdapter.findCard(card) != null) {
             newsfeedAdapter.updateCard(card);
         } else {
@@ -1127,7 +1130,9 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     }
 
     void displayFullMap() {
-
+        if(newsfeedAdapter==null) {
+            return;
+        }
         // show the empty list popup if necessary
         if (newsfeedAdapter.getDataItemCount() == 0) {
             showEmptyListPopup();
@@ -1151,7 +1156,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     }
 
     protected void displayListWithMapHeader() {
-        if (newsfeedListView == null || mapDisplayToggle == null) {
+        if (newsfeedAdapter==null || newsfeedListView == null || mapDisplayToggle == null) {
             return;
         }
 
@@ -1224,14 +1229,16 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
                 pagination.loadedItems(newestUpdatedDate, oldestUpdateDate);
                 break;
             case EVENTS_TAB:
-                int position = newsfeedAdapter.getItemCount();
-                while (position >= 0) {
-                    TimestampedObject card = newsfeedAdapter.getCardAt(position);
-                    if (card instanceof FeedItem) {
-                        pagination.setLastFeedItemUUID(((FeedItem)card).getUUID());
-                        break;
+                if(newsfeedAdapter!=null) {
+                    int position = newsfeedAdapter.getItemCount();
+                    while (position >= 0) {
+                        TimestampedObject card = newsfeedAdapter.getCardAt(position);
+                        if (card instanceof FeedItem) {
+                            pagination.setLastFeedItemUUID(((FeedItem)card).getUUID());
+                            break;
+                        }
+                        position--;
                     }
-                    position--;
                 }
                 break;
         }
@@ -1453,6 +1460,9 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     }
 
     protected void showHeatzoneMiniCardsAtLocation(LatLng location) {
+        if(newsfeedAdapter==null) {
+            return;
+        }
         // get the list of entourages near this location
         ArrayList<TimestampedObject> entourageArrayList = new ArrayList<>();
         List<TimestampedObject> feedItemsList = new ArrayList<>(newsfeedAdapter.getItems());
@@ -1514,6 +1524,9 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     }
 
     private void onAnimationUpdate(ValueAnimator valueAnimator) {
+        if(newsfeedAdapter==null) {
+            return;
+        }
         int val = (Integer) valueAnimator.getAnimatedValue();
         newsfeedAdapter.setMapHeight(val);
         newsfeedListView.getLayoutManager().requestLayout();
