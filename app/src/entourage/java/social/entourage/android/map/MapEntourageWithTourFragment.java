@@ -547,7 +547,9 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
 
     @Override
     public void onTourCreated(boolean created, @NonNull String tourUUID) {
-        buttonLaunchTour.setEnabled(true);
+        if(buttonLaunchTour!=null) {
+            buttonLaunchTour.setEnabled(true);
+        }
         launcherProgressBar.setVisibility(View.GONE);
         if (getActivity() != null) {
             if (created) {
