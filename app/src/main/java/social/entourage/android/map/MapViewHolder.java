@@ -84,7 +84,7 @@ public class MapViewHolder extends BaseCardViewHolder {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             mGeolocRecenterButton.setImageDrawable(AppCompatResources.getDrawable(this.mGeolocRecenterButton.getContext(), active?R.drawable.ic_my_location:R.drawable.ic_my_location_off));
         } else {
-            mGeolocRecenterButton.setEnabled(active);
+            mGeolocRecenterButton.setSelected(active);
         }
     }
 
