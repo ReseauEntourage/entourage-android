@@ -57,10 +57,10 @@ public class GuideMapPresenter {
             float[] result = {0};
             Location.distanceBetween(region.farLeft.latitude, region.farLeft.longitude, region.nearLeft.latitude, region.nearLeft.longitude, result);
             distance = result[0] / 1000.0f;
+            retrievePoisNearby(map.getCameraPosition(), distance);
         } else {
-            Timber.d("distance set to 0");
+            Timber.e("no map available for updating Guide");
         }
-        retrievePoisNearby(map.getCameraPosition(), distance);
     }
 
     // ----------------------------------
