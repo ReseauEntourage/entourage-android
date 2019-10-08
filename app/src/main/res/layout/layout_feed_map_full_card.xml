@@ -24,7 +24,8 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
-        app:backgroundTint="@color/background"
+        app:backgroundTint="@color/custom_button_white_enabled"
+        app:tint="@color/greyish_brown"
         app:fabSize="mini"
         app:srcCompat="@drawable/ic_my_location" />
     <!-- not using button_my_location drawable because of Android 4.4-->
