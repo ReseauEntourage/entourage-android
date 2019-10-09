@@ -25,7 +25,7 @@ class LibrariesSupport : BaseLibrariesSupport() {
 
     private fun setupFacebookSDK() {
         if (BuildConfig.DEBUG) {
-            Timber.tag("Facebook").d("version %s", FacebookSdk.getSdkVersion())
+            Timber.d("Facebook version %s", FacebookSdk.getSdkVersion())
             FacebookSdk.setIsDebugEnabled(true)
             FacebookSdk.addLoggingBehavior(LoggingBehavior.APP_EVENTS)
         }

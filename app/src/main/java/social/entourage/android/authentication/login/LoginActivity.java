@@ -977,7 +977,7 @@ public class LoginActivity extends EntourageActivity
         try {
             startActivity(settingsIntent);
         } catch (ActivityNotFoundException ex) {
-            Timber.e("Failed to start the activity that shows the app notification settings");
+            Timber.e(ex, "Failed to start the activity that shows the app notification settings");
         }
     }
 

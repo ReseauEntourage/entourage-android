@@ -341,7 +341,7 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
             }
             startActivity(intent);
         } catch (ActivityNotFoundException ex) {
-            Timber.e("Cannot open Notifications Settings page");
+            Timber.e(ex, "Cannot open Notifications Settings page");
         } catch (Exception ignored) {
 
         }

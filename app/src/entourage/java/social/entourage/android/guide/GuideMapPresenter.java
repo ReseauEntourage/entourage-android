@@ -58,7 +58,7 @@ public class GuideMapPresenter {
             distance = result[0] / 1000.0f;
             retrievePoisNearby(map.getCameraPosition(), distance);
         } else {
-            Timber.e("no map available for updating Guide");
+            Timber.w("no map available for updating Guide");
         }
     }
 

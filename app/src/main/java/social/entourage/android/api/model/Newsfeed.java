@@ -114,7 +114,7 @@ public class Newsfeed {
                     }
                 }
             } catch (Exception e) {
-                Timber.tag("NewsfeedAdapter").e(e);
+                Timber.e(e);
             }
 
             return newsfeed;
