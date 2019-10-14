@@ -420,6 +420,8 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     // ABSTRACT METHODS
     // ----------------------------------
 
+    public abstract String getGroupType();
+
     public abstract String getFeedType();
     public abstract String getFeedTypeLong(Context context);
 
@@ -431,6 +433,8 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
 
     public abstract Date getEndTime();
     public abstract void setEndTime(Date endTime);
+
+    public abstract String getDisplayAddress();
 
     public abstract TourPoint getStartPoint();
 

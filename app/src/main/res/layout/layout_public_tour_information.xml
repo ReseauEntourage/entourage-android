@@ -20,95 +20,230 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="16dp">
-
-            <TextView
-                android:id="@+id/tour_info_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:textColor="@color/dark_grey"
-                android:textSize="@dimen/entourage_font_medium"/>
+            android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/tour_info_metadata_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="10dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:visibility="visible">
+                android:orientation="horizontal"
+                android:padding="16dp">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingBottom="10dp">
+                    android:orientation="vertical"
+                    android:layout_weight="1">
 
                     <TextView
+                        android:id="@+id/tour_info_title_full"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:textStyle="normal"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="@dimen/entourage_font_title_3"
+                        tools:text="Urgent Cherche paire de lunettes"/>
+
+                    <LinearLayout
+                        android:id="@+id/new_way_container"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/tour_info_metadata_organised_by"
-                        android:textColor="@color/action_type_outing"
-                        android:textSize="@dimen/entourage_font_medium"/>
+                        android:layoutDirection="rtl" >
+
+                        <TextView
+                            android:id="@+id/tour_summary_author_name"
+                            tools:text="User name"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:lines="1"
+                            android:ellipsize="end"
+                            android:textStyle="bold"
+                            android:textSize="15sp"
+                            android:textColor="@color/greyish_brown" />
+
+                        <TextView
+                            android:id="@+id/tour_summary_group_type"
+                            tools:text="Demande par "
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:lines="1"
+                            android:ellipsize="end"
+                            android:fontFamily="sans-serif-light"
+                            android:textSize="15sp"
+                            android:textColor="@color/greyish_brown" />
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/tour_info_metadata_organiser"
-                        android:layout_width="0dp"
+                        android:id="@+id/tour_info_location"
+                        tools:text="Paris (75011)"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/dark_grey"/>
+                        android:layout_marginTop="8dp"
+                        android:textColor="@color/greyish_brown"
+                        android:fontFamily="sans-serif-light"
+                        android:textSize="@dimen/entourage_font_small"/>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="end"
+                    android:layout_marginLeft="6dp">
 
-                    <ImageView
+                    <RelativeLayout
+                        android:layout_width="39dp"
+                        android:layout_height="39dp">
+
+                        <ImageView
+                            android:id="@+id/tour_info_author_photo"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:contentDescription="@string/empty_description"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_user_photo_small"/>
+
+                        <social.entourage.android.view.PartnerLogoImageView
+                            android:id="@+id/tour_info_partner_logo"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_alignBottom="@+id/tour_info_author_photo"
+                            android:layout_alignEnd="@+id/tour_info_author_photo"
+                            android:layout_marginBottom="-4dp"
+                            android:layout_marginEnd="-4dp"
+                            tools:src="@drawable/entourage_logo_grey"/>
+                    </RelativeLayout>
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/empty_description"
-                        app:srcCompat="@drawable/ic_calendar"/>
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_height="25dp"
+                            android:layout_width="wrap_content"
+                            android:contentDescription="@string/empty_description"
+                            android:src="@drawable/ic_users"/>
+
+                        <TextView
+                            android:id="@+id/tour_info_people_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="5dp"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/greyish_brown"
+                            android:textSize="15sp"
+                            tools:text="4" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/greyish" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/tour_info_metadata_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    android:layout_marginBottom="16dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingLeft="10dp">
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
 
                         <TextView
-                            android:id="@+id/tour_info_metadata_date"
-                            android:layout_width="match_parent"
+                            android:id="@+id/tour_info_metadata_organised_by"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/dark_grey"
-                            android:textSize="@dimen/entourage_font_medium"
-                            tools:text="Date"/>
+                            android:text="@string/tour_info_metadata_organised_by"
+                            android:textSize="15sp"
+                            android:textColor="@color/greyish_brown"
+                            android:fontFamily="sans-serif-medium" />
 
                         <TextView
-                            android:id="@+id/tour_info_metadata_time"
-                            android:layout_width="match_parent"
+                            android:id="@+id/tour_info_metadata_organiser"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/dark_grey"
-                            android:textSize="@dimen/entourage_font_medium"
-                            tools:text="Time"/>
+                            android:layout_weight="1"
+                            tools:text="par User name"
+                            android:textSize="15sp"
+                            android:textColor="@color/greyish_brown"
+                            android:fontFamily="sans-serif-medium" />
+                    </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/tour_info_metadata_address"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/tour_info_metadata_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/empty_description"
+                            app:srcCompat="@drawable/ic_calendar"/>
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:maxLines="2"
-                            android:textColor="@color/accent"
-                            android:textSize="@dimen/entourage_font_medium"
-                            android:textStyle="bold"
-                            tools:text="Address"/>
+                            android:orientation="vertical"
+                            android:paddingLeft="10dp">
+
+                            <TextView
+                                android:id="@+id/tour_info_metadata_datetime"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/greyish_brown"
+                                android:textSize="@dimen/entourage_font_medium"
+                                android:fontFamily="sans-serif-medium"
+                                tools:text="Rendez-vous jeudi 28 mars 2018 à 8h"/>
+
+                            <TextView
+                                android:id="@+id/tour_info_metadata_address"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:maxLines="2"
+                                android:textColor="@color/greyish_brown"
+                                android:textSize="@dimen/entourage_font_medium"
+                                android:fontFamily="sans-serif-medium"
+                                tools:text="Café la Renaissance, 44 rue de l’Assomption, 75016 Paris"/>
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tour_info_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium" tools:text="Marcel a cassé ses lunettes, et il ne peut plus lire du tout, lui qui aime tant ça ! Si quelqu'un a chez lui une paire pour la lecture dont il ne se sert plus, rejoignez l'entourage !" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tour_info_timestamps"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="13sp"
+                    android:layout_marginTop="8sp"
+                    tools:text="Créé il y a 9 jours - mis à jour il y a 2 jours " />
 
             </LinearLayout>
 
@@ -116,6 +251,7 @@
                 android:id="@+id/tour_info_map_layout"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
+                tools:background="@color/quantum_brown100"
                 />
 
             <LinearLayout
@@ -128,10 +264,10 @@
                     android:id="@+id/tour_info_member_count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
                     android:paddingBottom="5dp"
-                    android:paddingTop="5dp"
+                    android:paddingTop="16dp"
                     android:textColor="@color/greyish_brown"
                     android:textSize="@dimen/entourage_font_medium"
                     android:textStyle="bold"/>
@@ -140,11 +276,11 @@
                     android:id="@+id/tour_info_member_add"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="16dp"
                     android:clickable="true"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="16dp"
                     android:focusable="true">
 
                     <androidx.appcompat.widget.AppCompatImageView

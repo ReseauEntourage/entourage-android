@@ -31,6 +31,8 @@ public class Tour extends FeedItem implements Serializable {
 
     private final static String HASH_STRING_HEAD = "Tour-";
 
+    public static final String TYPE_TOUR = "tour";
+
     public static final String KEY_TOUR = "social.entourage.android.KEY_TOUR";
     public static final String KEY_TOUR_ID = "social.entourage.android.KEY_TOUR_ID";
     public static final String KEY_TOURS = "social.entourage.android.KEY_TOURS";
@@ -121,6 +123,8 @@ public class Tour extends FeedItem implements Serializable {
     public Date getEndTime() {
         return endTime;
     }
+
+    public String getDisplayAddress() { return null; };
 
     public String getDuration() {
         return duration;
@@ -306,6 +310,10 @@ public class Tour extends FeedItem implements Serializable {
     // ----------------------------------
     // FeedItem overrides
     // ----------------------------------
+
+    public String getGroupType() {
+        return TYPE_TOUR;
+    }
 
     public String getFeedType() {
         return tourType;

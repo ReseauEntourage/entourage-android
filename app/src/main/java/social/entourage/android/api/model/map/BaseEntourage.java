@@ -43,6 +43,7 @@ public class BaseEntourage extends FeedItem implements Serializable {
     public static final String TYPE_NEIGHBORHOOD = "neighborhood";
     public static final String TYPE_CONVERSATION = "conversation";
     public static final String TYPE_OUTING = "outing";
+    public static final String TYPE_ACTION = "action";
 
     public static final String NEWSFEED_TYPE = "Entourage";
 
@@ -259,8 +260,14 @@ public class BaseEntourage extends FeedItem implements Serializable {
         if (TYPE_NEIGHBORHOOD.equalsIgnoreCase(groupType)) {
             return context.getString(R.string.entourage_type_neighborhood);
         }
+        if (TYPE_PRIVATE_CIRCLE.equalsIgnoreCase(groupType)) {
+            return context.getString(R.string.entourage_type_private_circle);
+        }
+        if (TYPE_CONVERSATION.equalsIgnoreCase(groupType)) {
+            return "";
+        }
         if (TYPE_OUTING.equalsIgnoreCase(groupType)) {
-            return context.getString(R.string.entourage_type_outing);
+            return String.format("%1$s %2$s", context.getString(R.string.entourage_type_outing), this.metadata.getStartDateAsString(context));
         }
         if (entourageType != null) {
             if (TYPE_DEMAND.equals(entourageType)) {
@@ -309,6 +316,11 @@ public class BaseEntourage extends FeedItem implements Serializable {
     public TourPoint getEndPoint() {
         return null;
     }
+
+    @Override
+    public String getDisplayAddress() {
+        return this.metadata.getDisplayAddress();
+    };
 
     @Override
     public Drawable getIconDrawable(Context context) {
@@ -501,7 +513,7 @@ public class BaseEntourage extends FeedItem implements Serializable {
 
         public String getStartDateAsString(Context context) {
             if (startDate == null) return "";
-            DateFormat df = new SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_format), Locale.getDefault());
+            DateFormat df = new SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_format), Locale.FRENCH);
             return df.format(startDate);
         }
 
@@ -514,7 +526,7 @@ public class BaseEntourage extends FeedItem implements Serializable {
             minutes = (minutes / 15) * 15;
             calendar.set(Calendar.MINUTE, minutes);
             //format it
-            DateFormat df = new SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_time_format), Locale.getDefault());
+            DateFormat df = new SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_time_format), Locale.FRENCH);
             return df.format(calendar.getTime());
         }
 

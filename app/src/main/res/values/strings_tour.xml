@@ -65,8 +65,9 @@
     
     <string name="tour_info_error_retrieve_entourage">Entourage indisponible</string>
     
-    <string name="tour_info_metadata_organised_by">organisé\u0020</string>
+    <string name="tour_info_metadata_organised_by">Organisé\u0020</string>
     <string name="tour_info_metadata_organiser_format">par %1$s</string>
+    <string name="tour_info_metadata_date_format">Rendez-vous %1$s %2$s</string>
 
     <!-- TourService -->
     <string name="local_service_stopped">Maraude terminée</string>

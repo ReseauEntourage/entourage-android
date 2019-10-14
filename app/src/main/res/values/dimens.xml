@@ -28,6 +28,7 @@
     <!-- Entourage font sizes -->
     <dimen name="entourage_font_xtra_large">30sp</dimen>
     <dimen name="entourage_font_big">22sp</dimen>
+    <dimen name="entourage_font_title_3">20sp</dimen>
     <dimen name="entourage_font_large">17sp</dimen>
     <dimen name="entourage_font_medium">15sp</dimen>
     <dimen name="entourage_font_small">13sp</dimen>
