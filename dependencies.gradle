@@ -36,7 +36,7 @@ ext {
     daggerVersion = "2.24"
     dateTimePickerVersion = "4.2.3"
     espressoVersion = "3.2.0"
-    facebookVersion = "5.5.2"
+    facebookVersion = "5.8.0"
     firebaseCoreVersion = "17.2.0"
     firebaseMessagingVersion = "20.0.0"
     firebaseInappVersion = "19.0.1"
