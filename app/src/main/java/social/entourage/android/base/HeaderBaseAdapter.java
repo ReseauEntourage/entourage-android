@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
 import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.location.LocationUtils;
 import social.entourage.android.map.MapViewHolder;
 
 public class HeaderBaseAdapter extends EntourageBaseAdapter {
@@ -41,6 +42,12 @@ public class HeaderBaseAdapter extends EntourageBaseAdapter {
         }
     }
 
+    public void setGeolocStatusIcon(boolean active) {
+        if (mapViewHolder != null) {
+            mapViewHolder.setGeolocStatusIcon(active);
+        }
+    }
+
     public void setTabVisibility(int visibility) {
         if (mapViewHolder != null)  {
             mapViewHolder.setTabVisibility(visibility);
@@ -61,6 +68,7 @@ public class HeaderBaseAdapter extends EntourageBaseAdapter {
             mapViewHolder = (MapViewHolder)cardViewHolder;
             mapViewHolder.setMapReadyCallback(onMapReadyCallback);
             mapViewHolder.setFollowButtonOnClickListener(onFollowButtonClickListener);
+            mapViewHolder.setGeolocStatusIcon(LocationUtils.INSTANCE.isLocationEnabled() && LocationUtils.INSTANCE.isLocationPermissionGranted());
         }
 
         return cardViewHolder;

@@ -114,7 +114,7 @@ public class AuthenticationController {
     public boolean isTutorialDone(Context context) {
         if (loggedUser == null) return false;
         SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
-        HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(KEY_TUTORIAL_DONE, new HashSet<String>());
+        HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(KEY_TUTORIAL_DONE, new HashSet<>());
         return loggedNumbers.contains(loggedUser.getPhone());
     }
 

@@ -57,7 +57,6 @@
     </FrameLayout>
 
     <RelativeLayout
-        android:id="@+id/entourage_location_places_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/entourage_location_title_layout"

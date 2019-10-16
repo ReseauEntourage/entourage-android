@@ -7,7 +7,6 @@
                 android:background="@color/background">
 
     <TextView
-        android:id="@+id/tour_info_discussion_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -24,7 +23,6 @@
         android:visibility="gone"/>
 
     <View
-        android:id="@+id/tour_info_private_separator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignParentLeft="true"
@@ -47,7 +45,6 @@
         android:padding="5dp">
 
         <ImageButton
-            android:id="@+id/tour_info_comment_add_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

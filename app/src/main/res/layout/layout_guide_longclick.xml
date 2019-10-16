@@ -12,7 +12,6 @@
         android:id="@+id/map_longclick_buttons">
 
         <ImageView
-            android:id="@+id/guide_longclick_heatzone"
             android:layout_width="46dp"
             android:layout_height="46dp"
             android:layout_alignParentLeft="true"

@@ -8,10 +8,9 @@
                                              tools:ignore="MissingDefaultResource">
 
     <ImageView
-        android:id="@+id/login_slideshow_p1_logo"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
+        android:layout_margin="10dp"
         android:contentDescription="@string/empty_description"
         android:scaleType="center"
         android:src="@drawable/entourage_logo_white"

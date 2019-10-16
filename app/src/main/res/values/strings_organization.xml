@@ -19,13 +19,5 @@
     <string name="partner_view_email_description">@string/user_edit_email_label</string>
 
     <!-- ATD Hardcoded values !-->
-    <string name="atd_name">ATD Quart Monde</string>
-    <string name="atd_details">ATD Quart Monde a pour but d’éradiquer la misère en agissant sur trois plans :\n
-        – sur le terrain avec les personnes concernées pour obtenir l’application du droit pour tous\n
-        – auprès des institutions et parlementaires, pour faire changer les lois (DALO, CMU, RMI…)\n
-        – auprès de l’opinion publique, par des campagnes citoyennes pour faire changer le regard porté sur les plus pauvres.</string>
-    <string name="atd_phone_number">+33 (0) 1 42 46 81 95</string>
-    <string name="atd_address">63 rue Beaumarchais 93100 Montreuil</string>
-    <string name="atd_website">www.atd-quartmonde.fr</string>
 
 </resources>

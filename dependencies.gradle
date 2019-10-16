@@ -19,7 +19,7 @@ ext {
 
     // App versions
     versionMajor = 5
-    versionMinor = 10
+    versionMinor = 11
     versionPatch = "git rev-list HEAD --count".execute().text.trim().toInteger()
     versionBranchName = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
     versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -34,28 +34,28 @@ ext {
     coordinatorlayoutVersion="1.0.0"
     crashlyticsVersion = "2.10.1"
     daggerVersion = "2.24"
-    dateTimePickerVersion = "3.6.3"
+    dateTimePickerVersion = "4.2.3"
     espressoVersion = "3.2.0"
-    facebookVersion = "5.5.1"
+    facebookVersion = "5.8.0"
     firebaseCoreVersion = "17.2.0"
     firebaseMessagingVersion = "20.0.0"
-    firebaseInappVersion = "19.0.0"
+    firebaseInappVersion = "19.0.1"
     floatingButtonVersion = "1.6.4"
     guavaVersion = "27.0.1-android"
     imageCropperVersion = "2.8.0"
     javaAnnotationVersion = "10.0-b28"
     jodaVersion = "2.10.3"
     mapsVersion = "17.0.0"
-    mapsUtilsVersion = "0.5"
-    materialVersion = "1.1.0-alpha10"
-    mixpanelVersion = "5.6.4"
+    mapsUtilsVersion = "0.6.1"
+    materialVersion = "1.1.0-beta01"
+    mixpanelVersion = "5.6.5"
     multidexVersion = "2.0.1"
-    okHttpVersion = "3.12.2" //version 3.14+ needs API 21+
+    okHttpVersion = "3.12.6" //version 3.14+ needs API 21+
     okHttpIdlingVersion = "1.0.0"
     picassoVersion = "2.71828"
     picassoTransformationsVersion = "2.2.1"
     playServicesVersion = "17.0.0"
-    retrofitVersion = "2.6.1"
+    retrofitVersion = "2.6.2"
     recyclerViewVersion = "1.1.0-beta04"
     shortcutBadgerVersion = "1.1.22"
     supportVersion = "1.0.0"

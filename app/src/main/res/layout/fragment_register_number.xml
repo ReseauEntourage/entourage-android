@@ -32,15 +32,13 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/register_number_content_scrollview"
         android:layout_below="@+id/register_number_navigation_layout"
         android:layout_above="@+id/register_number_form">
 
         <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/register_number_content"
-                android:paddingLeft="20dp"
+            android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:paddingTop="10dp"
                 android:orientation="vertical"
@@ -66,7 +64,6 @@
                 android:textSize="@dimen/entourage_font_xtra_large"/>
 
             <TextView
-                android:id="@+id/register_number_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/register_number_title"
@@ -127,7 +124,6 @@
             android:orientation="horizontal">
 
             <View
-                android:id="@+id/register_edit_cc"
                 android:layout_width="50dp"
                 android:layout_height="1dp"
                 android:alpha=".5"
@@ -139,7 +135,6 @@
                 />
 
             <View
-                android:id="@+id/register_edit_phone_number"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:alpha=".5"

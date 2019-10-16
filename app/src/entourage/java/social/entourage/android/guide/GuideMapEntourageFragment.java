@@ -43,6 +43,7 @@ import social.entourage.android.api.model.tape.EntouragePoiRequest;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.base.EntourageLinkMovementMethod;
+import social.entourage.android.base.HeaderBaseAdapter;
 import social.entourage.android.guide.filter.GuideFilterFragment;
 import social.entourage.android.guide.poi.ReadPoiFragment;
 import social.entourage.android.location.LocationUtils;
@@ -463,11 +464,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
         final int targetHeight = layoutMain.getMeasuredHeight();
         if (animated) {
             ValueAnimator anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight);
-            anim.addUpdateListener(valueAnimator -> {
-                int val = (Integer) valueAnimator.getAnimatedValue();
-                poisAdapter.setMapHeight(val);
-                poisListView.getLayoutManager().requestLayout();
-            });
+            anim.addUpdateListener(this::onAnimationUpdate);
             anim.start();
         } else {
             poisAdapter.setMapHeight(targetHeight);
@@ -493,11 +490,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
 
         if (animated) {
             ValueAnimator anim = ValueAnimator.ofInt(layoutMain.getMeasuredHeight(), originalMapLayoutHeight);
-            anim.addUpdateListener(valueAnimator -> {
-                int val = (Integer) valueAnimator.getAnimatedValue();
-                poisAdapter.setMapHeight(val);
-                poisListView.getLayoutManager().requestLayout();
-            });
+            anim.addUpdateListener(this::onAnimationUpdate);
             anim.start();
         } else {
             poisAdapter.setMapHeight(originalMapLayoutHeight);
@@ -516,6 +509,16 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
     private void initializeTopNavigationBar() {
         // Guide starts in full map mode, adjust the text accordingly
         guideDisplayToggle.setText(R.string.map_top_navigation_full_map);
+    }
+
+    private void onAnimationUpdate(ValueAnimator valueAnimator) {
+        int val = (Integer) valueAnimator.getAnimatedValue();
+        poisAdapter.setMapHeight(val);
+        poisListView.getLayoutManager().requestLayout();
+    }
+
+    protected HeaderBaseAdapter getAdapter() {
+        return poisAdapter;
     }
 
     // ----------------------------------

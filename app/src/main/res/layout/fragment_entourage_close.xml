@@ -9,7 +9,6 @@
               tools:context=".entourage.EntourageCloseFragment">
 
     <RelativeLayout
-        android:id="@+id/hack_for_proper_width"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -27,7 +26,6 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/entourage_close_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -37,7 +35,6 @@
         />
 
     <TextView
-        android:id="@+id/entourage_close_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -66,7 +63,6 @@
         android:text="@string/entourage_close_failed_button"/>
 
     <TextView
-        android:id="@+id/entourage_close_help_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"

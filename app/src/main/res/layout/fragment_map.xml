@@ -114,7 +114,6 @@
                 android:src="@drawable/ic_close_white"/>
 
             <TextView
-                android:id="@+id/fragment_map_empty_list_popup_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
@@ -173,7 +172,6 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/layout_map_underconstruction"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
@@ -193,14 +191,12 @@
             android:paddingTop="40dp">
 
             <TextView
-                android:id="@+id/underconstruction_explanation1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/map_underconstruction_explanation_1"
                 android:textColor="@color/text_dark"/>
 
             <TextView
-                android:id="@+id/underconstruction_explanation2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/entourage_padding_10"

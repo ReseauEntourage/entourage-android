@@ -57,8 +57,8 @@ class CountryCodeAdapter extends RecyclerView.Adapter<CountryCodeAdapter.Country
         CountryCodeViewHolder(View itemView) {
             super(itemView);
             rlyMain = (RelativeLayout) itemView;
-            tvName = (AppCompatTextView) rlyMain.findViewById(R.id.country_name_tv);
-            tvCode = (AppCompatTextView) rlyMain.findViewById(R.id.code_tv);
+            tvName = rlyMain.findViewById(R.id.country_name_tv);
+            tvCode = rlyMain.findViewById(R.id.code_tv);
             viewDivider = rlyMain.findViewById(R.id.preference_divider_view);
         }
 

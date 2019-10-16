@@ -16,24 +16,11 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/top_bar_height" />
 
-        <TextView
-            android:id="@+id/fragment_map_gps"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_below="@+id/fragment_map_top_navigation"
-            android:background="@drawable/bg_clickable_layout_gps"
-            android:gravity="center"
-            android:text="@string/map_gps_unavailable"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/entourage_font_small"
-            android:visibility="gone"
-            tools:visibility="visible" />
-
         <RelativeLayout
             android:id="@+id/fragment_map_main_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/fragment_map_gps"
+            android:layout_below="@+id/fragment_map_top_navigation"
             android:layout_alignParentStart="true"
             android:orientation="vertical"
             android:weightSum="8">
@@ -76,6 +63,19 @@
 
         </RelativeLayout>
 
+        <TextView
+            android:id="@+id/fragment_map_gps"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_below="@+id/fragment_map_top_navigation"
+            android:background="@drawable/bg_clickable_layout_gps"
+            android:gravity="center"
+            android:text="@string/map_gps_unavailable"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/entourage_font_small"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
         <view
             android:id="@+id/fragment_map_entourage_mini_cards"
             class="social.entourage.android.entourage.minicards.EntourageMiniCardsView"
@@ -114,7 +114,6 @@
                 android:src="@drawable/ic_close_white" />
 
             <TextView
-                android:id="@+id/fragment_map_empty_list_popup_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"

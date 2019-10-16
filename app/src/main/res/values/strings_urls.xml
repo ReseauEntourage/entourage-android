@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="disclaimer_link_public">https://blog.entourage.social/charte-ethique-grand-public/</string>
-    <string name="disclaimer_link_pro">https://blog.entourage.social/charte-ethique/</string>
 
     <string name="rate_url">market://details?id=</string>
     <string name="facebook_url">https://www.facebook.com/EntourageReseauCivique</string>

@@ -106,9 +106,9 @@ public class GuideFilterAdapter extends BaseAdapter {
         public long categoryId = 0;
 
         public GuideFilterViewHolder(View v, OnCheckedChangeListener onCheckedChangeListener) {
-            mFilterName = (TextView) v.findViewById(R.id.filter_item_text);
-            mFilterImage = (ImageView) v.findViewById(R.id.filter_item_image);
-            mFilterSwitch = (Switch) v.findViewById(R.id.filter_item_switch);
+            mFilterName = v.findViewById(R.id.filter_item_text);
+            mFilterImage = v.findViewById(R.id.filter_item_image);
+            mFilterSwitch = v.findViewById(R.id.filter_item_switch);
             mSeparatorView = v.findViewById(R.id.filter_item_separator);
 
             mFilterSwitch.setOnCheckedChangeListener(onCheckedChangeListener);

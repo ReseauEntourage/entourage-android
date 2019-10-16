@@ -2,6 +2,8 @@ package social.entourage.android.privateCircle;
 
 
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,7 +28,6 @@ import social.entourage.android.R;
 import social.entourage.android.api.NewsfeedRequest;
 import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.map.Entourage;
-import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.base.EntouragePagination;
 import social.entourage.android.entourage.my.filter.MyEntouragesFilter;
@@ -81,7 +82,7 @@ public class PrivateCircleChooseFragment extends EntourageDialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
@@ -92,7 +93,7 @@ public class PrivateCircleChooseFragment extends EntourageDialogFragment {
     }
 
     @Override
-    public void onViewCreated(final View view, final Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         configureView();
     }
@@ -150,7 +151,7 @@ public class PrivateCircleChooseFragment extends EntourageDialogFragment {
         progressBar.setVisibility(View.VISIBLE);
         call.enqueue(new Callback<Newsfeed.NewsfeedWrapper>() {
             @Override
-            public void onResponse(final Call<Newsfeed.NewsfeedWrapper> call, final Response<Newsfeed.NewsfeedWrapper> response) {
+            public void onResponse(@NonNull final Call<Newsfeed.NewsfeedWrapper> call, @NonNull final Response<Newsfeed.NewsfeedWrapper> response) {
                 if (response.isSuccessful()) {
                     List<Entourage> entourageList = new ArrayList<>();
                     List <Newsfeed> newsfeedList = response.body().getNewsfeed();
@@ -173,7 +174,7 @@ public class PrivateCircleChooseFragment extends EntourageDialogFragment {
             }
 
             @Override
-            public void onFailure(final Call<Newsfeed.NewsfeedWrapper> call, final Throwable t) {
+            public void onFailure(@NonNull final Call<Newsfeed.NewsfeedWrapper> call, @NonNull final Throwable t) {
                 progressBar.setVisibility(View.GONE);
             }
         });
@@ -186,7 +187,7 @@ public class PrivateCircleChooseFragment extends EntourageDialogFragment {
     private class OnScrollListener extends RecyclerView.OnScrollListener {
 
         @Override
-        public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
+        public void onScrolled(@NonNull final RecyclerView recyclerView, final int dx, final int dy) {
             if (dy > 0) {
                 // Scrolling down
                 int visibleItemCount = recyclerView.getChildCount();
@@ -202,7 +203,7 @@ public class PrivateCircleChooseFragment extends EntourageDialogFragment {
         }
 
         @Override
-        public void onScrollStateChanged(final RecyclerView recyclerView, final int newState) {
+        public void onScrollStateChanged(@NonNull final RecyclerView recyclerView, final int newState) {
         }
     }
 

@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="activity_map_title">MARAUDES</string>
-    <string name="activity_map_title_small">Entourages</string>
-    <string name="activity_map_tab_map">Carte</string>
-    <string name="activity_map_tab_liste">Liste</string>
     <string name="activity_map_new_entourages">\u0020Nouveaux entourages</string>
 
     <string name="map_gps_unavailable">Veuillez activer la géolocalisation de votre appareil</string>
@@ -47,7 +43,6 @@
     <string name="map_filter_time_option3">1M</string>
 
     <!-- Under Construction -->
-    <string name="map_underconstruction_title">Tous les messages</string>
     <string name="map_underconstruction_explanation_1">Ici, vous trouverez prochainement les activités de la communauté autour de vous</string>
     <string name="map_underconstruction_explanation_2">Vous pourrez demander à rejoindre des activités, en créer, et découvrir la communauté autour de vous</string>
 

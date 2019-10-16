@@ -1,19 +1,15 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="about_items_padding">16dp</dimen>
     <dimen name="google_1x">8dp</dimen>
 
     <dimen name="carousel_title">24sp</dimen>
     <dimen name="carousel_content">17sp</dimen>
     <dimen name="carousel_padding">20dp</dimen>
-    <dimen name="carousel_bullets_bottom">100dp</dimen>
 
     <dimen name="act_button_right_padding">10dp</dimen>
     <dimen name="entourage_category_icon_padding">6dp</dimen>
-
-    <dimen name="newsfeed_longpress_delta_y">20dp</dimen>
 
     <dimen name="newsfeed_map_height">255dp</dimen>
     <dimen name="solidarity_guide_map_height">155dp</dimen>
@@ -32,6 +28,7 @@
     <!-- Entourage font sizes -->
     <dimen name="entourage_font_xtra_large">30sp</dimen>
     <dimen name="entourage_font_big">22sp</dimen>
+    <dimen name="entourage_font_title_3">20sp</dimen>
     <dimen name="entourage_font_large">17sp</dimen>
     <dimen name="entourage_font_medium">15sp</dimen>
     <dimen name="entourage_font_small">13sp</dimen>
@@ -43,7 +40,6 @@
 
     <!-- Role View sizes -->
     <dimen name="role_corner_radius">5dp</dimen>
-    <dimen name="role_padding_top">0dp</dimen>
     <dimen name="role_padding_bottom">2dp</dimen>
     <dimen name="role_margin">6dp</dimen>
 

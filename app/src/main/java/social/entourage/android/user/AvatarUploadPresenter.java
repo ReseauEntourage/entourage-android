@@ -2,7 +2,6 @@ package social.entourage.android.user;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 
 import javax.inject.Inject;
 import java.io.File;

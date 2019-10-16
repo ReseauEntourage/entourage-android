@@ -1,28 +1,19 @@
 package social.entourage.android.entourage.create;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
-import androidx.core.content.res.ResourcesCompat;
 import android.view.View;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.libraries.places.compat.Place;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
 import butterknife.BindView;
-import butterknife.OnClick;
-import social.entourage.android.Constants;
 import social.entourage.android.EntourageComponent;
-import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.BaseEntourage;
 import social.entourage.android.api.model.map.Entourage;
+import social.entourage.android.entourage.create.BaseCreateEntourageFragment;
+import social.entourage.android.entourage.create.CreateEntourageListener;
 import social.entourage.android.location.LocationFragment;
 
 /**

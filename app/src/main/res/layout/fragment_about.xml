@@ -14,7 +14,6 @@
     android:background="@color/background">
 
     <social.entourage.android.view.EntourageTitleView
-        android:id="@+id/about_title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:entourageTitle="@string/about_title"/>
@@ -22,9 +21,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:background="@color/background_light"
-        android:id="@+id/about_separator_top"
-        />
+        android:background="@color/background_light" />
 
     <LinearLayout
         android:id="@+id/about_tutorial_layout"
@@ -39,7 +36,6 @@
         android:paddingTop="@dimen/about_items_padding">
 
         <TextView
-            android:id="@+id/about_tutorial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -58,7 +54,6 @@
     </LinearLayout>
 
     <View
-        android:id="@+id/about_separator_tutorial"
         style="@style/SeparatorAlpha"
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -79,7 +74,6 @@
         android:paddingTop="@dimen/about_items_padding">
 
         <TextView
-            android:id="@+id/faq_website"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -89,7 +83,6 @@
             android:textSize="@dimen/entourage_font_medium"/>
 
         <ImageView
-            android:id="@+id/imageView7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -99,7 +92,6 @@
     </LinearLayout>
 
     <View
-        android:id="@+id/faq_separator_website"
         style="@style/SeparatorAlpha"
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -120,7 +112,6 @@
         android:paddingTop="@dimen/about_items_padding">
 
         <TextView
-            android:id="@+id/about_conditions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -130,7 +121,6 @@
             android:textSize="@dimen/entourage_font_medium"/>
 
         <ImageView
-            android:id="@+id/imageView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -140,7 +130,6 @@
     </LinearLayout>
 
     <View
-        android:id="@+id/about_separator_conditions"
         style="@style/SeparatorAlpha"
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -161,7 +150,6 @@
         android:paddingTop="@dimen/about_items_padding">
 
         <TextView
-            android:id="@+id/about_privacy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -180,7 +168,6 @@
     </LinearLayout>
 
     <View
-        android:id="@+id/about_separator_privacy"
         style="@style/SeparatorAlpha"
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -201,7 +188,6 @@
         android:paddingTop="@dimen/about_items_padding">
 
         <TextView
-            android:id="@+id/about_website"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -211,7 +197,6 @@
             android:textSize="@dimen/entourage_font_medium"/>
 
         <ImageView
-            android:id="@+id/imageView5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -221,7 +206,6 @@
     </LinearLayout>
 
     <View
-        android:id="@+id/about_website_separator"
         style="@style/SeparatorAlpha"
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -242,7 +226,6 @@
         android:paddingTop="@dimen/about_items_padding">
 
         <TextView
-            android:id="@+id/about_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -252,7 +235,6 @@
             android:textSize="@dimen/entourage_font_medium"/>
 
         <ImageView
-            android:id="@+id/imageView6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -262,7 +244,6 @@
     </LinearLayout>
 
     <View
-        android:id="@+id/about_separator_email"
         style="@style/SeparatorAlpha"
         android:layout_width="match_parent"
         android:layout_height="1dp"

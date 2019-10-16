@@ -205,11 +205,9 @@ public class DrawerActivity extends EntourageSecuredActivity
                         break;
                     case TourService.KEY_NOTIFICATION_STOP_TOUR:
                     case TourService.KEY_NOTIFICATION_PAUSE_TOUR:
+                    case TourService.KEY_LOCATION_PROVIDER_DISABLED:
                         sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
                         break;
-                    case TourService.KEY_LOCATION_PROVIDER_DISABLED:
-                        displayLocationProviderDisabledAlert();
-                        sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
                     default:
                         break;
                 }
@@ -535,7 +533,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         SharedPreferences.Editor editor = sharedPreferences.edit();
         User me = EntourageApplication.me(getApplicationContext());
         if(me != null) {
-            HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, new HashSet<String>());
+            HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, new HashSet<>());
             loggedNumbers.remove(me.getPhone());
             editor.putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers);
         }

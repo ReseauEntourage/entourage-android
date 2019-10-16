@@ -1,12 +1,15 @@
 package social.entourage.android.map;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
+import androidx.appcompat.content.res.AppCompatResources;
+
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
@@ -18,7 +21,7 @@ import social.entourage.android.base.BaseCardViewHolder;
 
 public class MapViewHolder extends BaseCardViewHolder {
 
-    private ImageButton mFollowButton;
+    private FloatingActionButton mGeolocRecenterButton;
     private EntourageMapView mMapView;
     private View mTabView;
 
@@ -28,7 +31,7 @@ public class MapViewHolder extends BaseCardViewHolder {
 
     @Override
     protected void bindFields() {
-        mFollowButton = itemView.findViewById(R.id.layout_feed_map_card_follow_button);
+        mGeolocRecenterButton = itemView.findViewById(R.id.layout_feed_map_card_recenter_button);
         mMapView = itemView.findViewById(R.id.layout_feed_map_card_mapview);
         mTabView = itemView.findViewById(R.id.layout_feed_map_card_tab);
         //Force the map to full height, even if the view holder is smaller
@@ -61,8 +64,8 @@ public class MapViewHolder extends BaseCardViewHolder {
     }
 
     public void setFollowButtonOnClickListener(View.OnClickListener listener) {
-        if (mFollowButton != null) {
-            mFollowButton.setOnClickListener(listener);
+        if (mGeolocRecenterButton != null) {
+            mGeolocRecenterButton.setOnClickListener(listener);
         }
     }
 
@@ -74,6 +77,14 @@ public class MapViewHolder extends BaseCardViewHolder {
     public void mapViewOnResume() {
         if (mMapView != null) {
             mMapView.onResume();
+        }
+    }
+
+    public void setGeolocStatusIcon(boolean active) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            mGeolocRecenterButton.setImageDrawable(AppCompatResources.getDrawable(this.mGeolocRecenterButton.getContext(), active?R.drawable.ic_my_location:R.drawable.ic_my_location_off));
+        } else {
+            mGeolocRecenterButton.setSelected(active);
         }
     }
 

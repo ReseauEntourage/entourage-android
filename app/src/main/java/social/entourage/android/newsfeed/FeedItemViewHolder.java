@@ -207,7 +207,8 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
         if (feedItem instanceof BaseEntourage) {
             BaseEntourage.Metadata metadata = ((BaseEntourage) feedItem).getMetadata();
             if (metadata != null) {
-                if (tourAuthor != null && metadata.getStartDate() != null) tourAuthor.setText(metadata.getStartDateAsString(context));
+                // hide author name for events
+                if (tourAuthor != null && metadata.getStartDate() != null) tourAuthor.setText("");
             }
         }
 

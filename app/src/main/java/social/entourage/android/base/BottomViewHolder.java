@@ -1,7 +1,6 @@
 package social.entourage.android.base;
 
 import android.view.View;
-import android.widget.ProgressBar;
 
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
@@ -20,7 +19,7 @@ public class BottomViewHolder extends BaseCardViewHolder {
     }
 
     protected void bindFields() {
-        content = (ProgressBar)itemView.findViewById(R.id.layout_loader_card_progressBar);
+        content = itemView.findViewById(R.id.layout_loader_card_progressBar);
     }
 
     @Override

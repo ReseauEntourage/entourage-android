@@ -27,7 +27,6 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.github.clans.fab.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.squareup.otto.Subscribe;
 
 import java.io.File;
@@ -978,7 +977,7 @@ public class LoginActivity extends EntourageActivity
         try {
             startActivity(settingsIntent);
         } catch (ActivityNotFoundException ex) {
-            Timber.e("Failed to start the activity that shows the app notification settings");
+            Timber.e(ex, "Failed to start the activity that shows the app notification settings");
         }
     }
 

@@ -37,7 +37,6 @@
                 android:padding="10dp">
 
                 <TextView
-                    android:id="@+id/create_entourage_category_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/entourage_create_type_label"
@@ -62,7 +61,6 @@
                     android:textSize="@dimen/entourage_font_medium"/>
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/create_entourage_category_arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/empty_description"
@@ -107,7 +105,6 @@
                     android:textSize="@dimen/entourage_font_medium"/>
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/create_entourage_title_arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/empty_description"
@@ -152,7 +149,6 @@
                     android:textSize="@dimen/entourage_font_medium"/>
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/create_entourage_description_arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/empty_description"
@@ -197,7 +193,6 @@
                     android:textSize="@dimen/entourage_font_medium"/>
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/create_entourage_position_arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/empty_description"
@@ -240,7 +235,6 @@
                     android:textSize="@dimen/entourage_font_medium"/>
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/create_entourage_date_arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/arrow_grey"

@@ -36,7 +36,6 @@
     </LinearLayout>
 
     <ScrollView
-        android:id="@+id/action_zone_content_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
@@ -57,7 +56,6 @@
                 android:src="@drawable/map_pin_square"/>
 
             <TextView
-                android:id="@+id/action_zone_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -66,7 +64,6 @@
                 android:textSize="@dimen/entourage_font_xtra_large"/>
 
             <TextView
-                android:id="@+id/action_zone_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -75,7 +72,6 @@
                 android:textSize="@dimen/entourage_font_medium"/>
 
             <TextView
-                android:id="@+id/action_zone_description2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -85,7 +81,6 @@
                 android:visibility="visible"/>
 
             <RelativeLayout
-                android:id="@+id/action_zone_places_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"

@@ -68,8 +68,9 @@ import social.entourage.android.tour.encounter.CreateEncounterActivity;
 import social.entourage.android.tour.TourService;
 import social.entourage.android.tour.TourServiceListener;
 import social.entourage.android.tour.join.TourJoinRequestFragment;
-import social.entourage.android.newsfeed.NewsfeedBottomViewHolder;
 import timber.log.Timber;
+
+import static social.entourage.android.tour.TourService.KEY_LOCATION_PROVIDER_DISABLED;
 
 public class MapEntourageWithTourFragment extends MapEntourageFragment implements TourServiceListener {
     // ----------------------------------
@@ -95,6 +96,8 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
 
     private int displayedTourHeads = 0;
 
+    private boolean shouldShowGPSDialog = true;
+
     @BindView(R.id.layout_map_launcher)
     View mapLauncherLayout;
 
@@ -117,7 +120,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
             if (resultCode == Constants.RESULT_CREATE_ENCOUNTER_OK && data.getExtras()!=null) {
                 Encounter encounter = (Encounter) data.getExtras().getSerializable(CreateEncounterActivity.BUNDLE_KEY_ENCOUNTER);
                 addEncounter(encounter);
-                putEncounterOnMap(encounter, presenter.getOnClickListener());
+                putEncounterOnMap(encounter);
             }
         }
     }
@@ -145,6 +148,21 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
             doUnbindService();
         }
         super.onDestroy();
+    }
+
+    @Override
+    public void onLocationStatusUpdated(boolean active) {
+        super.onLocationStatusUpdated(active);
+        if(shouldShowGPSDialog && !active &&  tourService!=null && tourService.isRunning()) {
+            //We always need GPS to be turned on during tour
+            shouldShowGPSDialog = false;
+            final Intent newIntent = new Intent(this.getContext(), DrawerActivity.class);
+            newIntent.setAction(KEY_LOCATION_PROVIDER_DISABLED);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(newIntent);
+        } else if(!shouldShowGPSDialog && active) {
+            shouldShowGPSDialog = true;
+        }
     }
 
     @Override
@@ -217,9 +235,8 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         return super.handleSpecialCasesForFAB();
     }
 
-    private void putEncounterOnMap(Encounter encounter,
-                           MapPresenter.OnEntourageMarkerClickListener onClickListener) {
-        if (map == null) {
+    private void putEncounterOnMap(Encounter encounter) {
+        if (map == null || presenter == null) {
             // The map is not yet initialized or the google play services are outdated on the phone
             return;
         }
@@ -229,7 +246,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
             return;
         }
         mapClusterItem = new MapClusterItem(encounter);
-        onClickListener.addEncounterMapClusterItem(mapClusterItem, encounter);
+        presenter.getOnClickListener().addEncounterMapClusterItem(mapClusterItem, encounter);
         mapClusterManager.addItem(mapClusterItem);
     }
 
@@ -504,7 +521,9 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         Encounter encounter = event.getEncounter();
         if (encounter != null) {
             addEncounter(encounter);
-            putEncounterOnMap(encounter, presenter.getOnClickListener());
+            if(presenter!=null) {
+                putEncounterOnMap(encounter);
+            }
         }
         mapOptionsMenu.setVisibility(View.VISIBLE);
         if (tourService != null) {
@@ -522,18 +541,19 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
             mapClusterManager.removeItem(mapClusterItem);
         }
         updateEncounter(updatedEncounter);
-        putEncounterOnMap(updatedEncounter, presenter.getOnClickListener());
+        putEncounterOnMap(updatedEncounter);
     }
 
     @Override
     public void onTourCreated(boolean created, @NonNull String tourUUID) {
-        buttonLaunchTour.setEnabled(true);
+        if(buttonLaunchTour!=null) {
+            buttonLaunchTour.setEnabled(true);
+        }
         launcherProgressBar.setVisibility(View.GONE);
         if (getActivity() != null) {
             if (created) {
                 isFollowing = true;
                 currentTourUUID = tourUUID;
-                presenter.incrementUserToursCount();
                 mapLauncherLayout.setVisibility(View.GONE);
                 if (newsfeedListView.getVisibility() == View.VISIBLE) {
                     displayFullMap();
@@ -545,6 +565,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
                 if (tourStopButton != null) tourStopButton.setVisibility(View.VISIBLE);
 
                 if (presenter != null) {
+                    presenter.incrementUserToursCount();
                     presenter.setDisplayEncounterDisclaimer(true);
                 }
             } else {
@@ -577,6 +598,9 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
 
     @Override
     public void onRetrieveToursNearby(@NotNull List<? extends Tour> tours) {
+        if(newsfeedAdapter==null) {
+            return;
+        }
         //check if there are tours to add or update
         int previousToursCount = newsfeedAdapter.getDataItemCount();
         tours = removeRedundantTours(tours, false);
@@ -658,7 +682,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     ChoiceFragment choiceFragment = ChoiceFragment.newInstance(toursList);
                     choiceFragment.show(fragmentManager, "fragment_choice");
-                } else {
+                } else if(presenter!=null){
                     TreeMap<Long, Tour> toursTree = new TreeMap<>(tours);
                     presenter.openFeedItem(toursTree.firstEntry().getValue(), 0, 0);
                 }
@@ -744,7 +768,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
 
     @Override
     protected void redrawWholeNewsfeed(@NotNull List<? extends Newsfeed> newsFeeds) {
-        if (map != null && newsFeeds.size() > 0) {
+        if (map != null && newsFeeds.size() > 0 && newsfeedAdapter!=null) {
             for (Polyline polyline:drawnToursMap) {
                 polyline.remove();
             }
@@ -828,6 +852,9 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         while (iteratorTours.hasNext()) {
             Tour tour = (Tour) iteratorTours.next();
             if (!isHistory) {
+                if(newsfeedAdapter==null) {
+                    break;//no need to continue here
+                }
                 Tour retrievedTour = (Tour) newsfeedAdapter.findCard(tour);
                 if (retrievedTour.isSame(tour)) {
                     iteratorTours.remove();
@@ -860,7 +887,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
                     continue;
                 }
                 TimestampedObject retrievedCard;
-                retrievedCard = newsfeedAdapter.findCard((TimestampedObject) card);
+                retrievedCard = newsfeedAdapter!=null?newsfeedAdapter.findCard((TimestampedObject) card):null;
                 if (retrievedCard != null) {
                     if (Tour.NEWSFEED_TYPE.equals(newsfeed.getType())) {
                         if (((Tour) retrievedCard).isSame((Tour) card)) {
@@ -900,7 +927,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         List<Encounter> encounters = tourService.getCurrentTour().getEncounters();
         if (!encounters.isEmpty()) {
             for (Encounter encounter : encounters) {
-                putEncounterOnMap(encounter, presenter.getOnClickListener());
+                putEncounterOnMap(encounter);
             }
         }
     }
@@ -959,6 +986,9 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
     }
 
     private void addTourCard(Tour tour) {
+        if(newsfeedAdapter==null) {
+            return;
+        }
         if (newsfeedAdapter.findCard(tour) != null) {
             newsfeedAdapter.updateCard(tour);
         } else {
@@ -1034,15 +1064,14 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
     public void userStatusChanged(PushNotificationContent content, String status) {
         super.userStatusChanged(content, status);
         if (tourService != null) {
-            TimestampedObject timestampedObject = null;
-            if (content.isTourRelated()) {
-                timestampedObject = newsfeedAdapter.findCard(TimestampedObject.TOUR_CARD, content.getJoinableId());
-            }
-            if (timestampedObject != null) {
-                TourUser user = new TourUser();
-                user.setUserId(userId);
-                user.setStatus(status);
-                tourService.notifyListenersUserStatusChanged(user, (FeedItem) timestampedObject);
+            if (content.isTourRelated() && newsfeedAdapter!=null) {
+                TimestampedObject timestampedObject = newsfeedAdapter.findCard(TimestampedObject.TOUR_CARD, content.getJoinableId());
+                if (timestampedObject != null) {
+                    TourUser user = new TourUser();
+                    user.setUserId(userId);
+                    user.setStatus(status);
+                    tourService.notifyListenersUserStatusChanged(user, (FeedItem) timestampedObject);
+                }
             }
         }
     }
@@ -1119,6 +1148,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
             }
             tourService.registerTourServiceListener(MapEntourageWithTourFragment.this);
             tourService.registerNewsFeedListener(MapEntourageWithTourFragment.this);
+
             if (tourService.isRunning()) {
                 if(mapOptionsMenu!=null) {
                     updateFloatingMenuOptions();
@@ -1140,6 +1170,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         @Override
         public void onServiceDisconnected(ComponentName name) {
             tourService.unregisterTourServiceListener(MapEntourageWithTourFragment.this);
+            tourService.unregisterNewsFeedListener(MapEntourageWithTourFragment.this);
             tourService = null;
         }
     }

@@ -9,7 +9,6 @@
     >
 
     <LinearLayout
-        android:id="@+id/login_verify_code_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -62,7 +61,6 @@
                 android:paddingRight="10dp">
 
                 <TextView
-                    android:id="@+id/login_verify_code_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
@@ -85,7 +83,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/login_verify_code_form"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
@@ -181,7 +178,6 @@
                 app:srcCompat="@drawable/password"/>
 
             <TextView
-                android:id="@+id/login_verify_code_disclaimer"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"

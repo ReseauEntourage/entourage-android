@@ -1,5 +1,7 @@
 package social.entourage.android.api.model.map;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -169,6 +171,7 @@ public class TourUser extends TimestampedObject implements Serializable {
         return this.userId == ((TourUser)o).userId;
     }
 
+    @NonNull
     public TourUser clone() {
         TourUser clone = new TourUser();
         clone.userId = this.userId;

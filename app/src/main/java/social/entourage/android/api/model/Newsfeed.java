@@ -1,7 +1,5 @@
 package social.entourage.android.api.model;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -116,7 +114,7 @@ public class Newsfeed {
                     }
                 }
             } catch (Exception e) {
-                Timber.tag("NewsfeedAdapter").e(e);
+                Timber.e(e);
             }
 
             return newsfeed;

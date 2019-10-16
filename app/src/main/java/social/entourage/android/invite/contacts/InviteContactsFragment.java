@@ -258,7 +258,7 @@ public class InviteContactsFragment extends InviteBaseFragment implements
             AdapterView<?> parent, View item, int position, long rowID) {
         if (parent == contactsList) {
             // Toggle the checkbox
-            CheckBox contactCheckbox = (CheckBox) item.findViewById(R.id.contact_checkBox);
+            CheckBox contactCheckbox = item.findViewById(R.id.contact_checkBox);
             if (contactCheckbox == null) return;
 
             if (!contactCheckbox.isChecked()) {

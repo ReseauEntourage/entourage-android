@@ -35,7 +35,7 @@ public class LastMessage implements Serializable {
             if (fulltext.length() > 0) {
                 fulltext.append(" ");
                 // only the first letter
-                fulltext.append(lastName.charAt(0));
+                fulltext.append(Character.toChars(lastName.codePointAt(0)));
             } else {
                 fulltext.append(lastName);
             }

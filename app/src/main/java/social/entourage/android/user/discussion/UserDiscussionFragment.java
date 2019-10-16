@@ -224,7 +224,7 @@ public class UserDiscussionFragment extends EntourageDialogFragment {
                         }
                     }
                     //add the messages to the adapter
-                    List<TimestampedObject> timestampedObjectList = new ArrayList<TimestampedObject>(chatMessageList);
+                    List<TimestampedObject> timestampedObjectList = new ArrayList<>(chatMessageList);
                     discussionAdapter.addItems(timestampedObjectList);
                 } else {
                     if (getContext() != null) {

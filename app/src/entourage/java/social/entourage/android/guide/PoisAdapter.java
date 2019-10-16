@@ -2,7 +2,6 @@ package social.entourage.android.guide;
 
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.base.EntourageBaseAdapter;
 import social.entourage.android.base.HeaderBaseAdapter;
 import social.entourage.android.guide.poi.PoiViewHolder;
 import social.entourage.android.map.MapViewHolder;

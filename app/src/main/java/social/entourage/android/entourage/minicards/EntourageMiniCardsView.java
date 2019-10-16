@@ -38,8 +38,8 @@ public class EntourageMiniCardsView extends RelativeLayout {
     private void init(AttributeSet attrs, int defStyle) {
         inflate(getContext(), R.layout.layout_entourage_mini_cards_view, this);
 
-        mainLayout = (RelativeLayout) this.findViewById(R.id.mini_cards_view_rl);
-        miniCardsRecyclerView = (RecyclerView) this.findViewById(R.id.mini_cards_view_recycler_view);
+        mainLayout = this.findViewById(R.id.mini_cards_view_rl);
+        miniCardsRecyclerView = this.findViewById(R.id.mini_cards_view_recycler_view);
 
 //        mainLayout.setOnClickListener(new OnClickListener() {
 //            @Override

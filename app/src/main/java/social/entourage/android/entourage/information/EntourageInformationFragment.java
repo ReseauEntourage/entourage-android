@@ -21,6 +21,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,6 +68,8 @@ import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -92,6 +95,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.Message;
+import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
@@ -125,6 +129,9 @@ import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.tools.Utils;
 import timber.log.Timber;
+
+import static social.entourage.android.api.model.map.BaseEntourage.TYPE_ACTION;
+import static social.entourage.android.api.model.map.BaseEntourage.TYPE_OUTING;
 
 public class EntourageInformationFragment extends EntourageDialogFragment implements TourServiceListener, InviteFriendsListener {
 
@@ -163,8 +170,32 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
     @BindView(R.id.tour_info_title)
     TextView fragmentTitle;
 
+    @BindView(R.id.tour_info_title_full)
+    TextView tourTitle;
+
+    @BindView(R.id.tour_summary_group_type)
+    TextView groupType;
+
+    @BindView(R.id.tour_summary_author_name)
+    TextView authorName;
+
+    @BindView(R.id.tour_info_location)
+    TextView infoLocation;
+
+    @BindView(R.id.tour_info_author_photo)
+    ImageView authorPhoto;
+
+    @BindView(R.id.tour_info_partner_logo)
+    ImageView partnerLogo;
+
+    @BindView(R.id.tour_info_people_count)
+    TextView infoPeopleCount;
+
     @BindView(R.id.tour_info_description)
     TextView tourDescription;
+
+    @BindView(R.id.tour_info_timestamps)
+    TextView actionTimestamps;
 
     @BindView(R.id.tour_info_discussion_view)
     RecyclerView discussionView;
@@ -864,7 +895,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
         TextView inviteDescription = inviteSourceLayout.findViewById(R.id.invite_source_description);
         if (inviteDescription != null) {
             if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-                inviteDescription.setText(Entourage.TYPE_OUTING.equalsIgnoreCase(((Entourage) feedItem).getGroupType()) ? R.string.invite_source_description_outing : R.string.invite_source_description);
+                inviteDescription.setText(TYPE_OUTING.equalsIgnoreCase(((Entourage) feedItem).getGroupType()) ? R.string.invite_source_description_outing : R.string.invite_source_description);
             } else {
                 inviteDescription.setText(R.string.invite_source_description);
             }
@@ -1462,12 +1493,78 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
             }
         }
 
+        tourTitle.setText(feedItem.getTitle());
+
+        groupType.setText(feedItem.getFeedTypeLong(getContext()));
+
+        if (TYPE_OUTING.equalsIgnoreCase(feedItem.getGroupType())) {
+            authorName.setText("");
+            infoLocation.setVisibility(View.INVISIBLE);
+        } else {
+            authorName.setText(feedItem.getAuthor().getUserName());
+            infoLocation.setVisibility(View.VISIBLE);
+            infoLocation.setText(feedItem.getDisplayAddress());
+        }
+
+        String avatarURLAsString = feedItem.getAuthor().getAvatarURLAsString();
+        if (avatarURLAsString != null) {
+            Picasso.get()
+                    .load(Uri.parse(avatarURLAsString))
+                    .placeholder(R.drawable.ic_user_photo_small)
+                    .transform(new CropCircleTransformation())
+                    .into(authorPhoto);
+        } else {
+            authorPhoto.setImageResource(R.drawable.ic_user_photo_small);
+        }
+
+        Partner partner = feedItem.getAuthor().getPartner();
+        if (partner != null) {
+            String partnerLogoURL = partner.getSmallLogoUrl();
+            if (partnerLogoURL != null) {
+                Picasso.get()
+                        .load(Uri.parse(partnerLogoURL))
+                        .placeholder(R.drawable.partner_placeholder)
+                        .transform(new CropCircleTransformation())
+                        .into(partnerLogo);
+            } else {
+                partnerLogo.setImageDrawable(null);
+            }
+        } else {
+            partnerLogo.setImageDrawable(null);
+        }
+
+        infoPeopleCount.setText(getString(R.string.tour_cell_numberOfPeople, feedItem.getNumberOfPeople()));
+
         // update description
         tourDescription.setText(feedItem.getDescription());
         DeepLinksManager.linkify(tourDescription);
 
         // metadata
         updateMetadataView();
+
+        if (actionTimestamps != null) {
+            BaseEntourage group = (BaseEntourage)feedItem;
+            if (TYPE_ACTION.equalsIgnoreCase(feedItem.getGroupType())) {
+                ArrayList<String> timestamps = new ArrayList<>();
+                timestamps.add(String.format("Créé %s", formattedDaysIntervalFromToday(group.getCreatedTime())));
+                if (!(new LocalDate(group.getCreatedTime()).isEqual(new LocalDate()))) {
+                    timestamps.add(String.format("mis à jour %s", formattedDaysIntervalFromToday(group.getUpdatedTime())));
+                }
+                actionTimestamps.setText(TextUtils.join(" - ", timestamps));
+                actionTimestamps.setVisibility(View.VISIBLE);
+            } else {
+                actionTimestamps.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private String formattedDaysIntervalFromToday(Date rawDate) {
+        LocalDate today = new LocalDate();
+        LocalDate date = new LocalDate(rawDate);
+        if (date.isEqual(today)) return "aujourd'hui";
+        int days = Days.daysBetween(date, today).getDays();
+        if (days == -1) return "hier";
+        return String.format(Locale.FRENCH, "il y a %d jours", days);
     }
 
     private void updateMetadataView() {
@@ -1481,7 +1578,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
 
         if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
             metadata = ((Entourage) feedItem).getMetadata();
-            metadataVisible = Entourage.TYPE_OUTING.equalsIgnoreCase(((Entourage) feedItem).getGroupType()) && (metadata != null);
+            metadataVisible = TYPE_OUTING.equalsIgnoreCase(feedItem.getGroupType()) && (metadata != null);
         }
 
         metadataView.setVisibility(metadataVisible ? View.VISIBLE : View.GONE);
@@ -1493,11 +1590,12 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
             organiser.setText(getString(R.string.tour_info_metadata_organiser_format, feedItem.getAuthor().getUserName()));
         }
 
-        TextView metadataDate = fragmentView.findViewById(R.id.tour_info_metadata_date);
-        if (metadataDate != null) metadataDate.setText(metadata.getStartDateAsString(getContext()));
-
-        TextView metadateTime = fragmentView.findViewById(R.id.tour_info_metadata_time);
-        if (metadateTime != null) metadateTime.setText(metadata.getStartTimeAsString(getContext()));
+        TextView metadataDate = fragmentView.findViewById(R.id.tour_info_metadata_datetime);
+        if (metadataDate != null) {
+            metadataDate.setText(getString(R.string.tour_info_metadata_date_format,
+                    metadata.getStartDateAsString(getContext()),
+                    metadata.getStartTimeAsString(getContext())));
+        }
 
         setAddressView(fragmentView, metadata);
     }
@@ -1910,7 +2008,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
                     }
                 }
 
-                List<TimestampedObject> timestampedObjectList = new ArrayList<TimestampedObject>(chatMessageList);
+                List<TimestampedObject> timestampedObjectList = new ArrayList<>(chatMessageList);
                 if (feedItem.addCardInfoList(timestampedObjectList) > 0) {
                     //remember the last chat message
                     ChatMessage lastChatMessage = (ChatMessage) feedItem.getAddedCardInfoList().get(feedItem.getAddedCardInfoList().size()-1);
@@ -1970,7 +2068,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
                     encounter.setReadOnly(feedItem.isClosed());
                 }
             }
-            List<TimestampedObject> timestampedObjectList = new ArrayList<TimestampedObject>(encounterList);
+            List<TimestampedObject> timestampedObjectList = new ArrayList<>(encounterList);
             feedItem.addCardInfoList(timestampedObjectList);
         }
 

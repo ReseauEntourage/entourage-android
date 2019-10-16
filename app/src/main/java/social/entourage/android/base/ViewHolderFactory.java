@@ -36,7 +36,7 @@ public class ViewHolderFactory {
             ctor = viewHolderType.cardViewHolderClass.getConstructor(View.class);
             cardViewHolder = (BaseCardViewHolder)ctor.newInstance(view);
         } catch (Exception e) {
-            Timber.tag("Invalid Card").e(e);
+            Timber.e(e);
         }
 
         return cardViewHolder;

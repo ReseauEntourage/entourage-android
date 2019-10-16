@@ -1,6 +1,5 @@
 package social.entourage.android.location;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -14,7 +13,6 @@ import android.os.Looper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
-import androidx.core.content.PermissionChecker;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;

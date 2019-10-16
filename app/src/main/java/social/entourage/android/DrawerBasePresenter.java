@@ -250,7 +250,7 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
 
                 @Override
                 public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                    Timber.e("Error connecting to API");
+                    Timber.w(t, "Error connecting to API");
                 }
             });
             checkForUpdate=false;

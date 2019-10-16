@@ -15,7 +15,6 @@
         app:entourageTitleCloseDrawable="@drawable/ic_close"/>
 
     <ScrollView
-        android:id="@+id/entourage_disclaimer_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/entourage_disclaimer_bottom"
@@ -35,7 +34,6 @@
             android:paddingStart="20dp">
 
             <TextView
-                android:id="@+id/entourage_disclaimer_text_chart1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:linksClickable="false"
@@ -60,14 +58,12 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/imageView8"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:contentDescription="@string/empty_description"
                     app:srcCompat="@drawable/ic_entourage_disclaimer_hand"/>
 
                 <TextView
-                    android:id="@+id/entourage_disclaimer_accord_title"
                     style="@style/EntourageDisclaimerSectionTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -79,7 +75,6 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/entourage_disclaimer_accord_details"
                 style="@style/EntourageDisclaimerSectionDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -95,7 +90,6 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/imageView9"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:contentDescription="@string/empty_description"
@@ -103,7 +97,6 @@
                     app:srcCompat="@drawable/password"/>
 
                 <TextView
-                    android:id="@+id/entourage_disclaimer_security_title"
                     style="@style/EntourageDisclaimerSectionTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -116,7 +109,6 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/entourage_disclaimer_security_details"
                 style="@style/EntourageDisclaimerSectionDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -133,14 +125,12 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/imageView7"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:contentDescription="@string/empty_description"
                     app:srcCompat="@drawable/ic_map_pin_grey"/>
 
                 <TextView
-                    android:id="@+id/entourage_disclaimer_geolocation_title"
                     style="@style/EntourageDisclaimerSectionTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -153,7 +143,6 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/entourage_disclaimer_geolocation_details"
                 style="@style/EntourageDisclaimerSectionDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

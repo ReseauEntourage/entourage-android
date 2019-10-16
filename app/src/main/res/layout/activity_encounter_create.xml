@@ -110,6 +110,7 @@
                     android:layout_below="@+id/encounter_author"
                     android:background="@color/white"
                     android:hint="@string/encounter_hint_person_name"
+                    android:inputType="textPersonName"
                     android:padding="10dp"
                     android:textCursorDrawable="@drawable/bg_cursor_yellow"
                     android:textIsSelectable="false"
@@ -132,7 +133,6 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/create_encounter_details_layout"
                 android:layout_below="@+id/create_encounter_person">
 
                 <EditText

@@ -15,7 +15,6 @@
         app:entourageTitleAction="@string/register"/>
 
     <TextView
-        android:id="@+id/guide_filter_categories_title"
         style="@style/EntourageTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

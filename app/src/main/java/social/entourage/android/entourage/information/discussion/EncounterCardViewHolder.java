@@ -37,9 +37,9 @@ public class EncounterCardViewHolder extends BaseCardViewHolder {
 
         context = itemView.getContext();
 
-        mAuthorView = (TextView) itemView.findViewById(R.id.tic_encounter_author);
-        mStreetPersonNameView = (TextView) itemView.findViewById(R.id.tic_encounter_street_name);
-        mMessageView = (TextView) itemView.findViewById(R.id.tic_encounter_message);
+        mAuthorView = itemView.findViewById(R.id.tic_encounter_author);
+        mStreetPersonNameView = itemView.findViewById(R.id.tic_encounter_street_name);
+        mMessageView = itemView.findViewById(R.id.tic_encounter_message);
 
         mAuthorView.setOnClickListener(new View.OnClickListener() {
              @Override

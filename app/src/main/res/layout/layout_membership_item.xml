@@ -32,7 +32,6 @@
         tools:text="Private Circle Item"/>
 
     <ImageView
-        android:id="@+id/membership_count_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/empty_description"

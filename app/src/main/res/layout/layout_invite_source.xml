@@ -25,7 +25,6 @@
             app:srcCompat="@drawable/ic_close_white"/>
 
         <TextView
-            android:id="@+id/invite_source_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"

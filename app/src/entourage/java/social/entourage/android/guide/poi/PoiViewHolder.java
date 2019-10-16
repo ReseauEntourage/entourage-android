@@ -37,11 +37,11 @@ public class PoiViewHolder extends BaseCardViewHolder {
     }
 
     protected void bindFields() {
-        poiTitle = (TextView) itemView.findViewById(R.id.poi_card_title);
-        poiType = (TextView) itemView.findViewById(R.id.poi_card_type);
-        poiAddress = (TextView) itemView.findViewById(R.id.poi_card_address);
-        poiDistance = (TextView) itemView.findViewById(R.id.poi_card_distance);
-        poiCallButton = (Button) itemView.findViewById(R.id.poi_card_call_button);
+        poiTitle = itemView.findViewById(R.id.poi_card_title);
+        poiType = itemView.findViewById(R.id.poi_card_type);
+        poiAddress = itemView.findViewById(R.id.poi_card_address);
+        poiDistance = itemView.findViewById(R.id.poi_card_distance);
+        poiCallButton = itemView.findViewById(R.id.poi_card_call_button);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,7 +1,5 @@
 package social.entourage.android.map.filter;
 
-import android.content.Context;
-
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.authentication.AuthenticationController;
 

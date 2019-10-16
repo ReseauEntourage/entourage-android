@@ -12,7 +12,6 @@
     <!-- Invite Contacts -->
     <string name="invite_contacts_title">CONTACTS</string>
     <string name="invite_contacts_search_hint">Rechercher</string>
-    <string name="invite_contacts_retrieving_phone_numbers">Récupération des numéros</string>
     <string name="invite_contacts_inviting">Envoi des invitations</string>
     <string name="invite_contacts_send_error">Echec de l’envoi des invitations</string>
     <string name="invite_contacts_permission_error">Annulation: l’app n’a pas les permissions requises</string>

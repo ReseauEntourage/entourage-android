@@ -7,7 +7,6 @@
               tools:context="social.entourage.android.carousel.pages.CarouselPage2Fragment">
 
     <ImageView
-        android:id="@+id/carousel_p2_map_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -27,7 +26,6 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/carousel_p2_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/carousel_padding"
@@ -38,7 +36,6 @@
             android:textStyle="bold"/>
 
         <social.entourage.android.view.HtmlTextView
-            android:id="@+id/carousel_p2_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

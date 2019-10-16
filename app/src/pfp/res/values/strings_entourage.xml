@@ -20,11 +20,10 @@
     <string name="entourage_description_fragment_info_outing">Donnez une description claire à votre sortie !</string>
 
     <!-- Entourage Card -->
-    <string name="entourage_type_private_circle">voisinage</string>
-    <string name="entourage_type_outing">sortie\u0020</string>
+    <string name="entourage_type_private_circle">Voisinage</string>
+    <string name="entourage_type_outing">Sortie</string>
 
     <!-- Entourage Notifications -->
-    <string name="entourage_join_request_received">%1$s souhaite rejoindre votre sortie: %2$s</string>
     <string name="entourage_join_request_received_nomsg">%1$s souhaite rejoindre votre sortie.</string>
     <string name="entourage_info_quit_entourage_title">Quitter la sortie</string>
     <string name="entourage_info_quit_entourage_description">Voulez-vous vraiment quitter la sortie ?</string>

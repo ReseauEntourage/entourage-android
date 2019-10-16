@@ -3,7 +3,6 @@ package social.entourage.android.invite.view;
 import android.view.View;
 import android.widget.TextView;
 
-import social.entourage.android.Constants;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Invitation;
@@ -30,7 +29,7 @@ public class InvitationCardViewHolder extends BaseCardViewHolder {
     @Override
     protected void bindFields() {
 
-        mInviterNameView = (TextView) itemView.findViewById(R.id.invitation_card_inviter);
+        mInviterNameView = itemView.findViewById(R.id.invitation_card_inviter);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override

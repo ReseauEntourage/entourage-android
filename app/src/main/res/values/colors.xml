@@ -20,19 +20,12 @@
     <color name="light_grey">#ededed</color>
 
     <color name="accent_alt">@color/accent</color>
-    <color name="accent_alt_dark">@color/accent_dark</color>
-    
-    <color name="complementary_1">@color/accent</color>
-    <color name="complementary_2">@color/accent</color>
+
     <color name="complementary_3">@color/accent</color>
-    <color name="complementary_4">@color/accent</color>
-    <color name="complementary_5">@color/accent</color>
 
     <!-- Backgrounds -->
     <color name="background">@color/primary</color>
-    <color name="background_dark">@color/primary_dark</color>
     <color name="background_light">@color/primary_light</color>
-    <color name="background_pressed">#000000</color>
     <color name="background_transparent">#66000000</color>
     <color name="background_accent_dark_translucent">@color/pale_grey</color>
 
@@ -40,12 +33,9 @@
     <color name="background_login_light">#FFFFFF</color>
     <color name="background_login_grey">#F7F7F7</color>
     <color name="text_dark">#4f4f4f</color>
-    <color name="login_divider">@color/greyish</color>
     <color name="login_edittext_hint_alpha">#b2ffffff</color>
 
     <!-- Profile -->
-    <color name="background_user_category">#CFCFCF</color>
-    <color name="background_user_content">@color/white</color>
     <color name="profile_name">@color/greyish_brown</color>
     <color name="profile_role_text">@color/white</color>
     <color name="report_user_explanation">@color/tomato</color>
@@ -64,14 +54,9 @@
     <color name="custom_button_white_focused">#D4D4D4</color>
     <color name="custom_button_white_pressed">#F4F4F4</color>
     <color name="custom_button_white_disabled">#B2FFFFFF</color>
-    <color name="custom_button_grey_enabled">#CBCBCB</color>
-    <color name="custom_button_grey_focused">#D4D4D4</color>
-    <color name="custom_button_grey_pressed">#9C9C9C</color>
-    <color name="custom_button_grey_disabled">#959595</color>
 
     <!-- EditTexts -->
     <color name="custom_edittext_short_pressed">#EEEEEE</color>
-    <color name="login_form">#FFFFFF</color>
     <color name="login_edittext">#000000</color>
     <color name="login_edittext_hint">#B2FFFFFF</color>
 
@@ -124,7 +109,6 @@
     <color name="blue_dark">#007ea9</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
-    <color name="badge_background">#ee3e3a</color>
     <color name="white_88">#ccffffff</color>
     <color name="dark_grey">#333333</color>
 

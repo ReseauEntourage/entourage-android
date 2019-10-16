@@ -10,7 +10,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:id="@+id/confirmation_filler"
         android:layout_weight="1"/>
 
     <LinearLayout
@@ -39,7 +38,6 @@
             />
 
         <TextView
-            android:id="@+id/confirmation_duration_explanation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -81,7 +79,6 @@
                     android:textSize="40sp"/>
 
                 <TextView
-                    android:id="@+id/confirmation_encounters_explanation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
@@ -112,7 +109,6 @@
                     android:textSize="40sp"/>
 
                 <TextView
-                    android:id="@+id/confirmation_distance_explanation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"

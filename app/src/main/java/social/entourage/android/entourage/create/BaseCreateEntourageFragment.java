@@ -13,6 +13,7 @@ import android.speech.RecognizerIntent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -684,7 +685,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         );
         dpd.setCancelText(R.string.cancel);
         dpd.setMinDate(Calendar.getInstance()); // only today and future dates
-        dpd.show(getActivity().getFragmentManager(), "DatePickerDialog");
+        dpd.show(getActivity().getSupportFragmentManager(), "DatePickerDialog");
     }
 
     private void showTimePicker() {
@@ -694,7 +695,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
                 true);
         tpd.setInitialSelection(entourageDate.get(Calendar.HOUR_OF_DAY), entourageDate.get(Calendar.MINUTE));
         tpd.setCancelText(R.string.cancel);
-        tpd.show(getActivity().getFragmentManager(), "TimePickerDialog");
+        tpd.show(getActivity().getSupportFragmentManager(), "TimePickerDialog");
     }
 
     @Override

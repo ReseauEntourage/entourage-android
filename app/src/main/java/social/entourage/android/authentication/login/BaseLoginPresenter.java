@@ -65,7 +65,7 @@ public abstract class BaseLoginPresenter implements AvatarUpdatePresenter {
                 user.put("phone", phoneNumber);
                 user.put("sms_code", smsCode);
                 SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
-                HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, new HashSet<String>());
+                HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, new HashSet<>());
                 isTutorialDone = loggedNumbers.contains(phoneNumber);
                 activity.startLoader();
                 Call<LoginResponse> call = loginRequest.login(user);

@@ -32,7 +32,6 @@
             android:tint="@color/accent"/>
 
         <TextView
-            android:id="@+id/user_report_explanation_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/entourage_padding_10"
@@ -43,7 +42,6 @@
             android:textSize="@dimen/entourage_font_large"/>
 
         <TextView
-            android:id="@+id/user_report_reason_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/entourage_padding_10"

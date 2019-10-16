@@ -46,7 +46,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/login_email_content_scrollview"
         android:layout_below="@+id/login_email_navigation"
         android:layout_above="@+id/login_email_form_layout">
 
@@ -55,7 +54,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
-            android:id="@+id/login_email_content_layout"
             android:layout_marginRight="20dp">
 
             <ImageView
@@ -81,7 +79,6 @@
                 />
 
             <TextView
-                android:id="@+id/login_email_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/login_email_title"
