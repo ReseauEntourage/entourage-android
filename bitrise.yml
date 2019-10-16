@@ -220,6 +220,11 @@ workflows:
             - gradle_options: "--stacktrace"
             - gradle_task: "$GRADLE_TASK"
       - deploy-to-bitrise-io: {}
+      - google-play-deploy:
+          inputs:
+            - package_name: "$PLAYSTORE_APP_NAME"
+            - app_path: "$BITRISE_AAB_PATH"
+            - service_account_json_key_path: "$BITRISEIO_BITRISEIO_SERVICE_ACCOUNT_JSON_KEY_URL_URL"
       - slack:
           inputs:
             - from_username: Bitrise
@@ -243,6 +248,9 @@ workflows:
       - opts:
           is_expand: false
         GRADLE_TASK: bundleEntourageProdRelease
+      - opts:
+          is_expand: false
+        PLAYSTORE_APP_NAME: social.entourage.android
   prod_pfp:
     steps:
       - activate-ssh-key:
