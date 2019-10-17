@@ -340,7 +340,9 @@ public abstract class BaseMapEntourageFragment extends Fragment implements BackP
 
         }
 
-        getAdapter().setGeolocStatusIcon(LocationUtils.INSTANCE.isLocationEnabled() && LocationUtils.INSTANCE.isLocationPermissionGranted());
+        if(getAdapter()!=null) {
+            getAdapter().setGeolocStatusIcon(LocationUtils.INSTANCE.isLocationEnabled() && LocationUtils.INSTANCE.isLocationPermissionGranted());
+        }
 
         if (map != null) {
             try {
