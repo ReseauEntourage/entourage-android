@@ -104,12 +104,11 @@ public class BaseEntourage extends FeedItem implements Serializable {
     // GETTERS & SETTERS
     // ----------------------------------
 
-    public Date getCreatedTime() {
-        return createdTime;
-    }
+    @Override
+    public Date getCreationTime() { return createdTime; }
 
-    public void setCreatedTime(final Date createdTime) {
-        this.createdTime = createdTime;
+    public void setCreationTime(final Date creationTime) {
+        this.createdTime = creationTime;
     }
 
     public String getDescription() {
