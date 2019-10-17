@@ -429,6 +429,7 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
 
     public abstract String getDescription();
 
+    public abstract Date getCreationTime();
     public abstract Date getStartTime();
 
     public abstract Date getEndTime();

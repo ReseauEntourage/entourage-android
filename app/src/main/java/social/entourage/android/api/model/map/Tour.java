@@ -116,9 +116,11 @@ public class Tour extends FeedItem implements Serializable {
         return getStatus();
     }
 
-    public Date getStartTime() {
-        return startTime;
-    }
+    @Override
+    public Date getCreationTime() { return startTime; }
+
+    @Override
+    public Date getStartTime() { return startTime; }
 
     public Date getEndTime() {
         return endTime;

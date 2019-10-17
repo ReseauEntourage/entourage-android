@@ -132,6 +132,7 @@ import timber.log.Timber;
 
 import static social.entourage.android.api.model.map.BaseEntourage.TYPE_ACTION;
 import static social.entourage.android.api.model.map.BaseEntourage.TYPE_OUTING;
+import static social.entourage.android.api.model.map.Tour.TYPE_TOUR;
 
 public class EntourageInformationFragment extends EntourageDialogFragment implements TourServiceListener, InviteFriendsListener {
 
@@ -557,7 +558,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
         }
 
         // For conversation, open the author profile
-        if (FeedItem.ENTOURAGE_CARD == feedItem.getType() && Entourage.TYPE_CONVERSATION.equalsIgnoreCase(((Entourage) feedItem).getGroupType())) {
+        if (FeedItem.ENTOURAGE_CARD == feedItem.getType() && Entourage.TYPE_CONVERSATION.equalsIgnoreCase(feedItem.getGroupType())) {
             if (showInfoButton) {
                 // only if this screen wasn't shown from the profile page
                 BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(feedItem.getAuthor().getUserID()));
@@ -895,7 +896,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
         TextView inviteDescription = inviteSourceLayout.findViewById(R.id.invite_source_description);
         if (inviteDescription != null) {
             if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-                inviteDescription.setText(TYPE_OUTING.equalsIgnoreCase(((Entourage) feedItem).getGroupType()) ? R.string.invite_source_description_outing : R.string.invite_source_description);
+                inviteDescription.setText(TYPE_OUTING.equalsIgnoreCase(feedItem.getGroupType()) ? R.string.invite_source_description_outing : R.string.invite_source_description);
             } else {
                 inviteDescription.setText(R.string.invite_source_description);
             }
@@ -1536,26 +1537,35 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
         infoPeopleCount.setText(getString(R.string.tour_cell_numberOfPeople, feedItem.getNumberOfPeople()));
 
         // update description
-        tourDescription.setText(feedItem.getDescription());
+        if(feedItem.getDescription().length()>0) {
+            tourDescription.setText(feedItem.getDescription());
+            tourDescription.setVisibility(View.VISIBLE);
+        } else {
+            tourDescription.setVisibility(View.GONE);
+        }
         DeepLinksManager.linkify(tourDescription);
 
         // metadata
         updateMetadataView();
 
         if (actionTimestamps != null) {
-            BaseEntourage group = (BaseEntourage)feedItem;
-            if (TYPE_ACTION.equalsIgnoreCase(feedItem.getGroupType())) {
-                ArrayList<String> timestamps = new ArrayList<>();
-                timestamps.add(String.format("Créé %s", formattedDaysIntervalFromToday(group.getCreatedTime())));
-                if (!(new LocalDate(group.getCreatedTime()).isEqual(new LocalDate()))) {
-                    timestamps.add(String.format("mis à jour %s", formattedDaysIntervalFromToday(group.getUpdatedTime())));
-                }
-                actionTimestamps.setText(TextUtils.join(" - ", timestamps));
-                actionTimestamps.setVisibility(View.VISIBLE);
+            if ((TYPE_ACTION.equalsIgnoreCase(feedItem.getGroupType()))
+                    || TYPE_TOUR.equalsIgnoreCase(feedItem.getGroupType())) {
+                showActionTimestamps(feedItem.getCreationTime(), feedItem.getUpdatedTime());
             } else {
                 actionTimestamps.setVisibility(View.GONE);
             }
         }
+    }
+
+    private void showActionTimestamps(Date createdTime, Date updatedTime) {
+        ArrayList<String> timestamps = new ArrayList<>();
+        timestamps.add(getString(R.string.entourage_info_creation_time, formattedDaysIntervalFromToday(createdTime)));
+        if (!(new LocalDate(createdTime).isEqual(new LocalDate()))) {
+            timestamps.add(getString(R.string.entourage_info_update_time, formattedDaysIntervalFromToday(updatedTime)));
+        }
+        actionTimestamps.setText(TextUtils.join(" - ", timestamps));
+        actionTimestamps.setVisibility(View.VISIBLE);
     }
 
     private String formattedDaysIntervalFromToday(Date rawDate) {

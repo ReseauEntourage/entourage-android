@@ -67,7 +67,9 @@
     <string name="entourage_type_format">%1$s par\u0020</string>
     <string name="entourage_metadata_startAt_format">\'le\' EEEE dd/MM</string>
     <string name="entourage_metadata_startAt_time_format">\'à \'HH\'h\'mm</string>
-    
+    <string name="entourage_info_creation_time">Créé %s</string>
+    <string name="entourage_info_update_time">mis à jour %s</string>
+
     <!-- Entourage Location -->
     <string name="entourage_location_title">MA POSITION</string>
     <string name="entourage_location_address_not_found">L\'adresse n\'a pas été trouvée</string>
