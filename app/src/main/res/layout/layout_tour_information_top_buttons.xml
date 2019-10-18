@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
         android:contentDescription="@string/empty_description"
-        android:src="@drawable/ic_more"
+        app:srcCompat="@drawable/ic_more"
         android:tint="@color/feeditem_details_topbar_tint"
         android:visibility="gone"/>
 </LinearLayout>

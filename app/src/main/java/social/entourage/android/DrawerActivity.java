@@ -417,7 +417,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     protected void selectNavigationTab(int tabIndex) {
         TabLayout tabLayout = toolbar.findViewById(R.id.toolbar_tab_layout);
-        if (tabLayout != null) {
+        if (tabLayout != null && tabLayout.getTabAt(tabIndex) != null) {
             tabLayout.getTabAt(tabIndex).select();
         }
     }
