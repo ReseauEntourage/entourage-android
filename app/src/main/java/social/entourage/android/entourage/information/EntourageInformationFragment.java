@@ -1537,7 +1537,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
         infoPeopleCount.setText(getString(R.string.tour_cell_numberOfPeople, feedItem.getNumberOfPeople()));
 
         // update description
-        if(feedItem.getDescription().length()>0) {
+        if(feedItem.getDescription()!=null && feedItem.getDescription().length()>0) {
             tourDescription.setText(feedItem.getDescription());
             tourDescription.setVisibility(View.VISIBLE);
         } else {
