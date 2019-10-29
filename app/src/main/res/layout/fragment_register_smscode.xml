@@ -24,7 +24,8 @@
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
             android:padding="5dp"
-            app:srcCompat="@drawable/ic_action_back_accent"/>
+            app:srcCompat="@drawable/ic_action_back"
+            android:tint="@color/accent"/>
 
         <Button
             android:id="@+id/register_smscode_lost_code"
