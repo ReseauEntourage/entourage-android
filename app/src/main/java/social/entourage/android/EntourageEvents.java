@@ -252,6 +252,9 @@ public class EntourageEvents {
     public static final String EVENT_USER_TOBADGE = "ToBadgePageFromProfile";
     public static final String EVENT_USER_TONOTIFICATIONS = "ToNotifications";
 
+    // SHORTCUT Events
+    public static final String EVENT_SHORTCUT_SHAREAPP = "ShareShortcut";
+    public static final String EVENT_SHORTCUT_RATEAPP = "RateShortcut";
     // ABOUT Events
     public static final String EVENT_ABOUT_RATING = "RatingClick";
     public static final String EVENT_ABOUT_FACEBOOK = "FacebookPageClick";
