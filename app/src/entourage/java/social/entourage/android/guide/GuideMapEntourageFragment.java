@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.squareup.otto.Subscribe;
@@ -90,6 +91,9 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
     @BindView(R.id.fragment_guide_pois_view)
     RecyclerView poisListView;
 
+    @BindView(R.id.button_poi_propose)
+    FloatingActionButton fabProposePOI;
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -154,13 +158,9 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
 
     @Override
     public boolean onBackPressed() {
-        if (mapOptionsMenu != null && mapOptionsMenu.isOpened()) {
-            mapOptionsMenu.toggle(true);
-            return true;
-        }
         if (mapLongClickView.getVisibility() == View.VISIBLE) {
             mapLongClickView.setVisibility(View.GONE);
-            mapOptionsMenu.setVisibility(View.VISIBLE);
+            fabProposePOI.setVisibility(View.VISIBLE);
             return true;
         }
         return false;
@@ -259,7 +259,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
     }
 
     private void initializeFloatingMenu() {
-        mapOptionsMenu.setOnMenuButtonClickListener(view -> {
+        fabProposePOI.setOnClickListener(view -> {
             EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_PLUS_CLICK);
             proposePOI();
         });

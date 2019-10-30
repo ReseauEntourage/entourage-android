@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -155,6 +156,9 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
     @BindView(R.id.fragment_map_entourage_mini_cards)
     EntourageMiniCardsView miniCardsView;
+
+    @BindView(R.id.map_fab_menu)
+    protected FloatingActionMenu mapOptionsMenu;
 
     protected NewsfeedAdapter newsfeedAdapter;
     private Timer refreshToursTimer;
@@ -807,6 +811,8 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         }
         //update the visible buttons
         mapLongClickButtonsView.requestLayout();
+        //hide the FAB menu
+        mapOptionsMenu.setVisibility(View.GONE);
         super.showLongClickOnMapOptions(latLng);
     }
 
