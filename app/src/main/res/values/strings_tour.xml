@@ -95,7 +95,7 @@
     <string name="tour_cell_button_rejected">Refusé</string>
     <string name="tour_cell_button_freezed">Clôturé</string>
     <string name="tour_cell_button_freezed_success">Succès</string>
-    <string name="tour_cell_button_view">+ VOIR</string>
+    <string name="tour_cell_button_view">Voir plus</string>
 
     <!-- Join Request -->
     <string name="tour_join_request_success">Demande acceptée</string>
