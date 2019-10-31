@@ -45,7 +45,6 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
     // ----------------------------------
 
     private final String LOG_TAG = "UPDATE_USER_INFO";
-    private final String MARKET_PREFIX = "market://details?id=";
     private final static String KEY_EMAIL = "email";
     private final static String KEY_SMS_COE= "sms_code";
     private final static String KEY_PHONE= "phone";
@@ -179,7 +178,7 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
         if (updateButton != null) {
             updateButton.setOnClickListener(v -> {
                 try {
-                    Uri uri = Uri.parse(MARKET_PREFIX + activity.getPackageName());
+                    Uri uri = Uri.parse(activity.getString(R.string.market_url,activity.getPackageName()));
                     activity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
                 } catch (Exception e) {
                     Toast.makeText(activity, R.string.error_google_play_store_not_installed, Toast.LENGTH_SHORT).show();

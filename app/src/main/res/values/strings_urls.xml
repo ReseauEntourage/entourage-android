@@ -2,7 +2,8 @@
 <resources>
     <string name="disclaimer_link_public">https://blog.entourage.social/charte-ethique-grand-public/</string>
 
-    <string name="rate_url">market://details?id=</string>
+    <string name="market_url">market://details?id=%s</string>
+    <string name="playstore_url">https://play.google.com/store/apps/details?id=%s</string>
     <string name="facebook_url">https://www.facebook.com/EntourageReseauCivique</string>
     <string name="twitter_url">https://twitter.com/r_entourage</string>
     <string name="instagram_url">https://www.instagram.com/reseauentourage/</string>

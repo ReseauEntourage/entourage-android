@@ -21,7 +21,6 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
-import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -81,9 +80,6 @@ public abstract class BaseMapEntourageFragment extends Fragment implements BackP
     protected DefaultClusterRenderer mapClusterItemRenderer;
     protected int originalMapLayoutHeight;
     private View toReturn;
-
-    @BindView(R.id.map_fab_menu)
-    protected FloatingActionMenu mapOptionsMenu;
 
     @BindView(R.id.fragment_map_longclick)
     protected RelativeLayout mapLongClickView;
@@ -221,8 +217,6 @@ public abstract class BaseMapEntourageFragment extends Fragment implements BackP
     // ----------------------------------
 
     protected void showLongClickOnMapOptions(LatLng latLng) {
-        //hide the FAB menu
-        mapOptionsMenu.setVisibility(View.GONE);
         //get the click point
         Point clickPoint = map.getProjection().toScreenLocation(latLng);
         //adjust the buttons holder layout
@@ -300,11 +294,7 @@ public abstract class BaseMapEntourageFragment extends Fragment implements BackP
                         Timber.e(e);
                     }
                 })
-                .setNegativeButton(R.string.map_permission_refuse, (dialog, i) -> {
-                    if (mapOptionsMenu.isOpened()) {
-                        mapOptionsMenu.toggle(false);
-                    }
-                })
+                .setNegativeButton(R.string.map_permission_refuse, null)
                 .show();
     }
 

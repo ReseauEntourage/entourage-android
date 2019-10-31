@@ -107,6 +107,8 @@
                 <data
                     android:scheme="${deepLinksEntourageScheme}"/>
             </intent-filter>
+            <meta-data android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
         <activity
             android:name=".authentication.login.LoginActivity"
@@ -139,6 +141,8 @@
         <activity
             android:name="com.mixpanel.android.takeoverinapp.TakeoverInAppActivity"
             android:theme="@style/com_mixpanel_android_TakeoverInAppActivityTheme"/>
+        <activity android:name=".involvement.ShareActivity" />
+        <activity android:name=".involvement.RateActivity" />
 
 
         <service

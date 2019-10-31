@@ -102,39 +102,22 @@
             android:textSize="@dimen/entourage_font_medium" />
     </LinearLayout>
 
-    <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/map_fab_menu"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/button_poi_propose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_gravity="end"
-        android:paddingStart="10dp"
-        android:paddingLeft="10dp"
-        android:paddingEnd="10dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="5dp"
-        app:menu_backgroundColor="@color/white_88"
-        app:menu_colorNormal="@color/accent"
-        app:menu_colorPressed="@color/accent"
-        app:menu_colorRipple="@color/accent"
-        app:menu_labels_singleLine="true"
-        app:menu_labels_style="@style/MapActionLabelStyle"
-        app:menu_shadowRadius="2dp"
-        app:menu_shadowXOffset="0dp"
-        app:menu_shadowYOffset="0dp">
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/button_poi_propose"
-            style="@style/MapActionButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_solidarity"
-            android:visibility="visible"
-            app:fab_label="@string/map_poi_propose_button"
-            app:fab_size="mini" />
-
-    </com.github.clans.fab.FloatingActionMenu>
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="@string/map_poi_propose_button"
+        android:visibility="visible"
+        app:backgroundTint="@color/accent"
+        app:fabSize="auto"
+        app:srcCompat="@drawable/ic_add_location_white_24dp" />
 
     <include
         android:id="@+id/fragment_map_longclick"

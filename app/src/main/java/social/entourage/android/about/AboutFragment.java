@@ -91,7 +91,7 @@ public class AboutFragment extends EntourageDialogFragment {
     @Optional
     @OnClick(R.id.about_version_layout)
     protected void onVersionClicked() {
-        Uri uri = Uri.parse(getString(R.string.rate_url) + this.getActivity().getPackageName());
+        Uri uri = Uri.parse(getString(R.string.market_url, this.getActivity().getPackageName()));
         Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
         // To count with Play market backstack, After pressing back button,
         // to taken back to our application, we need to add following flags to intent.
@@ -102,7 +102,7 @@ public class AboutFragment extends EntourageDialogFragment {
             startActivity(goToMarket);
         } catch (ActivityNotFoundException e) {
             startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://play.google.com/store/apps/details?id=" + this.getActivity().getPackageName())));
+                    Uri.parse(getString(R.string.playstore_url,this.getActivity().getPackageName()))));
         }
     }
 
