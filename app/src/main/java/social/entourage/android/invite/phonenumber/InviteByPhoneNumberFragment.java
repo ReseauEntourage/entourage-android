@@ -135,6 +135,9 @@ public class InviteByPhoneNumberFragment extends InviteBaseFragment {
     // ----------------------------------
 
     protected void onInviteSent(boolean success) {
+        if(getActivity()== null) {
+            return;
+        }
         // Hide the progress dialog
         ((EntourageActivity)getActivity()).dismissProgressDialog();
         // Enable the send button
