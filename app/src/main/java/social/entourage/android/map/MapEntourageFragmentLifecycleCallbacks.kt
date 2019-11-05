@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import social.entourage.android.EntourageEvents
 
 import java.util.ArrayList
 
@@ -34,8 +35,12 @@ class MapEntourageFragmentLifecycleCallbacks : FragmentManager.FragmentLifecycle
         var count = fragmentList.size - 1
         while (count >= 0) {
             val fragment = fragmentList[count]
-            if (fragment is DialogFragment) {
-                fragment.dismissAllowingStateLoss()
+            try{
+                if (fragment is DialogFragment) {
+                    fragment.dismiss()
+                }
+            } catch(e: IllegalStateException) {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE)
             }
             count--
         }

@@ -536,7 +536,11 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
         // inform the app to refrehs the my entourages feed
         BusProvider.getInstance().post(new Events.OnMyEntouragesForceRefresh(feedItem));
 
-        this.dismissAllowingStateLoss();
+        try {
+            this.dismiss();
+        } catch(IllegalStateException e) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
+        }
     }
 
     @Optional

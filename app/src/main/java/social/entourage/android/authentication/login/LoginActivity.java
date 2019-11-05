@@ -1018,9 +1018,13 @@ public class LoginActivity extends EntourageActivity
 
     private void hideActionZoneView() {
         if (isFinishing()) return;
-        UserEditActionZoneFragment actionZoneFragment = (UserEditActionZoneFragment)getSupportFragmentManager().findFragmentByTag(UserEditActionZoneFragment.TAG);
-        if (actionZoneFragment != null) {
-            actionZoneFragment.dismissAllowingStateLoss();
+        try{
+            UserEditActionZoneFragment actionZoneFragment = (UserEditActionZoneFragment)getSupportFragmentManager().findFragmentByTag(UserEditActionZoneFragment.TAG);
+            if (actionZoneFragment != null) {
+                actionZoneFragment.dismiss();
+            }
+        } catch(IllegalStateException e) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
         }
     }
 
