@@ -605,7 +605,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
                     }
                 }
             }
-            catch (IOException ignored) {
+            catch (IOException | NullPointerException ignored) {
 
             }
             return "";
