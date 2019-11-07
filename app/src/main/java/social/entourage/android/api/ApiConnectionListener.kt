@@ -1,15 +1,11 @@
-package social.entourage.android.tour
+package social.entourage.android.api
 
 import social.entourage.android.api.model.Newsfeed
 
-interface NewsFeedListener {
+interface ApiConnectionListener {
     fun onNetworkException()
-
-    fun onCurrentPositionNotRetrieved()
 
     fun onServerException(throwable: Throwable)
 
     fun onTechnicalException(throwable: Throwable)
-
-    fun onNewsFeedReceived(newsFeeds: List<Newsfeed>)
 }

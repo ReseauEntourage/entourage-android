@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
+import social.entourage.android.api.ApiConnectionListener;
 import social.entourage.android.api.EncounterRequest;
 import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.NewsfeedRequest;
@@ -44,6 +45,7 @@ import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.location.LocationUpdateListener;
 import social.entourage.android.map.MapTabItem;
+import social.entourage.android.newsfeed.NewsFeedListener;
 import social.entourage.android.newsfeed.NewsfeedPagination;
 import social.entourage.android.tools.log.CrashlyticsNewsFeedLogger;
 import social.entourage.android.tools.log.LoggerNewsFeedLogger;
@@ -85,6 +87,7 @@ public class TourService extends Service {
 
     private final List<TourServiceListener> tourServiceListeners = new ArrayList<>();
     private final List<NewsFeedListener> newsFeedListeners = new ArrayList<>();
+    private final List<ApiConnectionListener> apiListeners = new ArrayList<>();
     private final List<LocationUpdateListener> locationUpdateListeners = new ArrayList<>();
 
     private final CrashlyticsNewsFeedLogger crashlyticsListener = new CrashlyticsNewsFeedLogger();
@@ -161,14 +164,14 @@ public class TourService extends Service {
         filter.addAction(KEY_LOCATION_PROVIDER_ENABLED);
         registerReceiver(receiver, filter);
 
-        registerNewsFeedListener(crashlyticsListener);
+        registerListener(crashlyticsListener);
         registerNewsFeedListener(loggerListener);
     }
 
     @Override
     public void onDestroy() {
         unregisterNewsFeedListener(loggerListener);
-        unregisterNewsFeedListener(crashlyticsListener);
+        unregisterListener(crashlyticsListener);
         endTreatment();
         unregisterReceiver(receiver);
         super.onDestroy();
@@ -381,12 +384,22 @@ public class TourService extends Service {
         tourServiceManager.requestToJoinEntourage(entourage);
     }
 
+    public void registerListener(final ApiConnectionListener listener) {
+        apiListeners.add(listener);
+    }
+
+    public void unregisterListener(final ApiConnectionListener listener) {
+        apiListeners.remove(listener);
+    }
+
     public void registerNewsFeedListener(final NewsFeedListener listener) {
         newsFeedListeners.add(listener);
+        apiListeners.add(listener);
     }
 
     public void unregisterNewsFeedListener(final NewsFeedListener listener) {
         newsFeedListeners.remove(listener);
+        apiListeners.remove(listener);
     }
 
     public void registerLocationUpdateListener(final LocationUpdateListener listener) {
@@ -503,7 +516,7 @@ public class TourService extends Service {
     }
 
     void notifyListenersNetworkException() {
-        for (final NewsFeedListener listener : newsFeedListeners) {
+        for (final ApiConnectionListener listener : apiListeners) {
             listener.onNetworkException();
         }
     }
@@ -515,13 +528,13 @@ public class TourService extends Service {
     }
 
     void notifyListenersServerException(final Throwable throwable) {
-        for (final NewsFeedListener listener : newsFeedListeners) {
+        for (final ApiConnectionListener listener : apiListeners) {
             listener.onServerException(throwable);
         }
     }
 
     void notifyListenersTechnicalException(final Throwable throwable) {
-        for (final NewsFeedListener listener : newsFeedListeners) {
+        for (final ApiConnectionListener listener : apiListeners) {
             listener.onTechnicalException(throwable);
         }
     }

@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -31,6 +30,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.squareup.otto.Subscribe;
 
@@ -73,7 +73,6 @@ import social.entourage.android.api.tape.Events;
 import social.entourage.android.api.tape.Events.OnBetterLocationEvent;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
 import social.entourage.android.authentication.AuthenticationController;
-import social.entourage.android.base.EntourageToast;
 import social.entourage.android.base.HeaderBaseAdapter;
 import social.entourage.android.configuration.Configuration;
 import social.entourage.android.location.LocationUtils;
@@ -82,7 +81,7 @@ import social.entourage.android.map.filter.MapFilter;
 import social.entourage.android.map.filter.MapFilterFactory;
 import social.entourage.android.map.filter.MapFilterFragment;
 import social.entourage.android.map.permissions.NoLocationPermissionFragment;
-import social.entourage.android.tour.NewsFeedListener;
+import social.entourage.android.newsfeed.NewsFeedListener;
 import social.entourage.android.tour.TourService;
 import social.entourage.android.entourage.information.EntourageInformationFragment;
 import social.entourage.android.newsfeed.NewsfeedAdapter;
@@ -90,6 +89,8 @@ import social.entourage.android.newsfeed.NewsfeedBottomViewHolder;
 import social.entourage.android.newsfeed.NewsfeedPagination;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.edit.UserEditActionZoneFragment;
+import social.entourage.android.view.EntourageSnackbar;
+import timber.log.Timber;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
@@ -377,8 +378,8 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
             } else {
                 isRequestingToJoin--;
             }
-        } else {
-            Toast.makeText(getContext(), R.string.tour_join_request_error, Toast.LENGTH_SHORT).show();
+        } else if(layoutMain!=null) {
+            EntourageSnackbar.INSTANCE.make(layoutMain, R.string.tour_join_request_error, Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -519,7 +520,9 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
                 try {
                     startActivity(browserIntent);
                 } catch (ActivityNotFoundException ex) {
-                    Toast.makeText(getContext(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+                    if(layoutMain!=null){
+                        EntourageSnackbar.INSTANCE.make(layoutMain, R.string.no_browser_error, Snackbar.LENGTH_SHORT).show();
+                    }
                 }
                 break;
         }
@@ -561,8 +564,8 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
     @Override
     public void onNetworkException() {
-        if (getActivity() != null) {
-            Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_LONG).show();
+        if (layoutMain != null) {
+            EntourageSnackbar.INSTANCE.make(layoutMain, R.string.network_error, Snackbar.LENGTH_LONG).show();
         }
         if (pagination.isLoading) {
             pagination.isLoading = false;
@@ -580,8 +583,8 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
     @Override
     public void onServerException(@NonNull Throwable throwable) {
-        if (getActivity() != null) {
-            EntourageToast.makeText(getActivity(), R.string.server_error, Toast.LENGTH_LONG).show();
+        if (layoutMain != null) {
+            EntourageSnackbar.INSTANCE.make(layoutMain, R.string.server_error, Snackbar.LENGTH_LONG).show();
         }
         if (pagination.isLoading) {
             pagination.isLoading = false;
@@ -591,8 +594,8 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
     @Override
     public void onTechnicalException(@NonNull Throwable throwable) {
-        if (getActivity() != null) {
-            EntourageToast.makeText(getActivity(), R.string.technical_error, Toast.LENGTH_LONG).show();
+        if (layoutMain != null) {
+            EntourageSnackbar.INSTANCE.make(layoutMain, R.string.technical_error, Snackbar.LENGTH_LONG).show();
         }
         if (pagination.isLoading) {
             pagination.isLoading = false;

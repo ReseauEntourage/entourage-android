@@ -26,6 +26,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
+import social.entourage.android.view.EntourageSnackbar;
 
 public class AboutFragment extends EntourageDialogFragment {
 
@@ -73,8 +74,8 @@ public class AboutFragment extends EntourageDialogFragment {
     }
 
     private boolean handleLongPress(View view) {
-        if(EntourageApplication.get().clearFeedStorage()){
-            Snackbar.make(this.getView(), R.string.about_clearing_entourage_cache, Snackbar.LENGTH_SHORT).show();
+        if(EntourageApplication.get().clearFeedStorage() && getView()!=null){
+            EntourageSnackbar.INSTANCE.make(getView(), R.string.about_clearing_entourage_cache, Snackbar.LENGTH_SHORT).show();
         }
         return true;
     }

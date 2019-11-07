@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +25,7 @@ import com.github.clans.fab.FloatingActionButton;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.otto.Subscribe;
 
 import org.jetbrains.annotations.NotNull;
@@ -68,6 +68,7 @@ import social.entourage.android.tour.encounter.CreateEncounterActivity;
 import social.entourage.android.tour.TourService;
 import social.entourage.android.tour.TourServiceListener;
 import social.entourage.android.tour.join.TourJoinRequestFragment;
+import social.entourage.android.view.EntourageSnackbar;
 import timber.log.Timber;
 
 import static social.entourage.android.tour.TourService.KEY_LOCATION_PROVIDER_DISABLED;
@@ -436,6 +437,9 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
     @Override
     protected void updateFloatingMenuOptions() {
         super.updateFloatingMenuOptions();
+        if(mapOptionsMenu==null) {
+            return;
+        }
         View addTourEncounterButton = mapOptionsMenu.findViewById(R.id.button_add_tour_encounter);
         View startTourButton = mapOptionsMenu.findViewById(R.id.button_start_tour_launcher);
         if (tourService != null && tourService.isRunning()) {
@@ -568,10 +572,8 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
                     presenter.incrementUserToursCount();
                     presenter.setDisplayEncounterDisclaimer(true);
                 }
-            } else {
-                if (getActivity() != null) {
-                    Toast.makeText(getActivity(), R.string.tour_creation_fail, Toast.LENGTH_SHORT).show();
-                }
+            } else if(layoutMain!=null){
+                EntourageSnackbar.INSTANCE.make(layoutMain, R.string.tour_creation_fail, Snackbar.LENGTH_SHORT).show();
             }
         }
     }
@@ -669,70 +671,68 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
             loaderSearchTours.dismiss();
             loaderSearchTours = null;
         }
-        if (getActivity() != null) {
-            if (tours.isEmpty()) {
-                Toast.makeText(getActivity(), tourService.getString(R.string.tour_info_text_nothing_found), Toast.LENGTH_SHORT).show();
-            } else {
-                if (tours.size() > 1) {
-                    List<Tour> tempList = new ArrayList<>();
-                    for (Map.Entry<Long, ? extends Tour> entry : tours.entrySet()) {
-                        tempList.add(entry.getValue());
-                    }
-                    Tour.Tours toursList = new Tour.Tours(tempList);
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    ChoiceFragment choiceFragment = ChoiceFragment.newInstance(toursList);
-                    choiceFragment.show(fragmentManager, "fragment_choice");
-                } else if(presenter!=null){
-                    TreeMap<Long, Tour> toursTree = new TreeMap<>(tours);
-                    presenter.openFeedItem(toursTree.firstEntry().getValue(), 0, 0);
+        if(getActivity()==null) {
+            return;
+        }
+        if (tours.isEmpty()) {
+            if(layoutMain!=null) {
+                EntourageSnackbar.INSTANCE.make(layoutMain, R.string.tour_info_text_nothing_found, Snackbar.LENGTH_SHORT).show();
+            }
+        } else {
+            if (tours.size() > 1) {
+                List<Tour> tempList = new ArrayList<>();
+                for (Map.Entry<Long, ? extends Tour> entry : tours.entrySet()) {
+                    tempList.add(entry.getValue());
                 }
+                Tour.Tours toursList = new Tour.Tours(tempList);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                ChoiceFragment choiceFragment = ChoiceFragment.newInstance(toursList);
+                choiceFragment.show(fragmentManager, "fragment_choice");
+            } else if(presenter!=null){
+                TreeMap<Long, Tour> toursTree = new TreeMap<>(tours);
+                presenter.openFeedItem(toursTree.firstEntry().getValue(), 0, 0);
             }
         }
     }
 
     @Override
     public void onFeedItemClosed(boolean closed, @NonNull FeedItem feedItem) {
-        if (getActivity() != null) {
-            if (closed) {
-                refreshFeed();
-                if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-                    if (feedItem.getUUID().equalsIgnoreCase(currentTourUUID)) {
+        @StringRes int message=0;
+        if (closed) {
+            refreshFeed();
+            if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
+                if (feedItem.getUUID().equalsIgnoreCase(currentTourUUID)) {
+                    if(mapOptionsMenu!=null) {
                         mapOptionsMenu.setVisibility(View.VISIBLE);
                         updateFloatingMenuOptions();
-                        if (tourStopButton != null) tourStopButton.setVisibility(View.GONE);
-                        //bottomTitleTextView.setText(R.string.activity_map_title_small);
-
-                        currentTourUUID = "";
-                    } else {
-                        tourService.notifyListenersTourResumed();
                     }
-                }
-
-                if (tourService != null) {
-                    if (userHistory) {
-                        tourService.updateUserHistory(userId, 1, 1);
+                    if (tourStopButton != null) {
+                        tourStopButton.setVisibility(View.GONE);
                     }
-                }
-
-                if (getActivity() != null) {
-                    Toast.makeText(getActivity(), feedItem.getClosedToastMessage(), Toast.LENGTH_SHORT).show();
-                }
-
-            } else {
-                if (getActivity() != null) {
-                    @StringRes int tourClosedFailedId = R.string.tour_close_fail;
-                    if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-                        if (feedItem.getStatus()!=null && feedItem.getStatus().equals(FeedItem.STATUS_FREEZED)) {
-                            tourClosedFailedId = R.string.tour_freezed;
-                        }
-                    }
-                    Toast.makeText(getActivity(), tourClosedFailedId, Toast.LENGTH_SHORT).show();
+                    currentTourUUID = "";
+                } else {
+                    tourService.notifyListenersTourResumed();
                 }
             }
-            if (loaderStop != null) {
-                loaderStop.dismiss();
-                loaderStop = null;
+            if ((tourService != null) && (userHistory)) {
+                tourService.updateUserHistory(userId, 1, 1);
             }
+            message = feedItem.getClosedToastMessage();
+        } else {
+            message = R.string.tour_close_fail;
+            if ((feedItem.getType() == TimestampedObject.TOUR_CARD)
+                    &&(feedItem.getStatus()!=null
+                    && feedItem.getStatus().equals(FeedItem.STATUS_FREEZED))) {
+                message = R.string.tour_freezed;
+            }
+        }
+        if(layoutMain!=null){
+            EntourageSnackbar.INSTANCE.make(layoutMain, message, Snackbar.LENGTH_SHORT).show();
+        }
+
+        if (loaderStop != null) {
+            loaderStop.dismiss();
+            loaderStop = null;
         }
     }
 
@@ -1150,9 +1150,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
             tourService.registerNewsFeedListener(MapEntourageWithTourFragment.this);
 
             if (tourService.isRunning()) {
-                if(mapOptionsMenu!=null) {
-                    updateFloatingMenuOptions();
-                }
+                updateFloatingMenuOptions();
 
                 currentTourUUID = tourService.getCurrentTourId();
                 //bottomTitleTextView.setText(R.string.tour_info_text_ongoing);

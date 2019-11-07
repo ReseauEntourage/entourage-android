@@ -1,175 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <RelativeLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="visible">
-
-        <include
-            android:id="@+id/fragment_map_top_navigation"
-            layout="@layout/layout_map_top_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/top_bar_height"/>
-
-        <TextView
-            android:id="@+id/fragment_map_gps"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_below="@+id/fragment_map_top_navigation"
-            android:background="@drawable/bg_clickable_layout_gps"
-            android:gravity="center"
-            android:text="@string/map_gps_unavailable"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/entourage_font_small"
-            android:visibility="gone"
-            tools:visibility="visible" />
+        android:layout_height="match_parent">
 
         <RelativeLayout
-            android:id="@+id/fragment_map_main_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/fragment_map_gps"
             android:orientation="vertical"
-            android:weightSum="8">
+            android:visibility="visible">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/fragment_map_tours_view"
+            <include
+                android:id="@+id/fragment_map_top_navigation"
+                layout="@layout/layout_map_top_navigation"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/top_bar_height" />
+
+            <TextView
+                android:id="@+id/fragment_map_gps"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_below="@+id/fragment_map_top_navigation"
+                android:background="@drawable/bg_clickable_layout_gps"
+                android:gravity="center"
+                android:text="@string/map_gps_unavailable"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/entourage_font_small"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <RelativeLayout
+                android:id="@+id/fragment_map_main_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentTop="true"/>
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/fragment_map_gps"
+                android:orientation="vertical"
+                android:weightSum="8">
 
-            <Button
-                android:id="@+id/fragment_map_new_entourages_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/new_entourages"
-                android:drawableStart="@drawable/arrow_new_entourages"
-                android:paddingEnd="10dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingStart="10dp"
-                android:text="@string/activity_map_new_entourages"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:visibility="gone"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fragment_map_tours_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="0dp" />
 
-            <TextView
-                android:id="@+id/fragment_map_empty_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/fragment_map_tours_view"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:text="@string/map_empty_newsfeed"
-                android:textColor="@color/black"
-                android:textSize="@dimen/entourage_font_medium"
-                android:visibility="gone"/>
+                <Button
+                    android:id="@+id/fragment_map_new_entourages_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/new_entourages"
+                    android:drawableStart="@drawable/arrow_new_entourages"
+                    android:paddingStart="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingRight="10dp"
+                    android:text="@string/activity_map_new_entourages"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:visibility="gone" />
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/fragment_map_empty_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/fragment_map_tours_view"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/map_empty_newsfeed"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/entourage_font_medium"
+                    android:visibility="gone" />
 
-        <view
-            android:id="@+id/fragment_map_entourage_mini_cards"
-            class="social.entourage.android.entourage.minicards.EntourageMiniCardsView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="10dp"
-            android:visibility="invisible"/>
+            </RelativeLayout>
 
-        <LinearLayout
-            android:id="@+id/fragment_map_empty_list_popup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginEnd="50dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="100dp"
-            android:background="@drawable/rounded_dialog"
-            android:orientation="vertical"
-            android:visibility="gone"
-            >
+            <view
+                android:id="@+id/fragment_map_entourage_mini_cards"
+                class="social.entourage.android.entourage.minicards.EntourageMiniCardsView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="10dp"
+                android:visibility="invisible"/>
 
-            <ImageView
-                android:id="@+id/fragment_map_empty_list_popup_close"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="0dp"
-                android:layout_marginStart="3dp"
-                android:layout_marginTop="3dp"
-                android:contentDescription="@string/empty_description"
-                android:padding="3dp"
-                android:src="@drawable/ic_close_white"/>
-
-            <TextView
+            <LinearLayout
+                android:id="@+id/fragment_map_empty_list_popup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:paddingBottom="15dp"
-                android:paddingEnd="10dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingStart="10dp"
-                android:paddingTop="4dp"
-                android:text="@string/map_empty_newsfeed_popup"
-                android:textColor="@color/white"
-                android:textColorLink="@color/white"
-                android:textSize="@dimen/entourage_font_medium"/>
-        </LinearLayout>
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="100dp"
+                android:layout_marginEnd="50dp"
+                android:layout_marginRight="50dp"
+                android:background="@drawable/rounded_dialog"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
-        <com.github.clans.fab.FloatingActionMenu
-            android:id="@+id/map_fab_menu"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="end"
-            android:paddingBottom="5dp"
-            android:paddingEnd="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingStart="10dp"
-            android:visibility="visible"
-            app:menu_backgroundColor="@color/white_88"
-            app:menu_colorNormal="@color/map_plus_button"
-            app:menu_colorPressed="@color/map_plus_button"
-            app:menu_colorRipple="@color/map_plus_button"
-            app:menu_labels_singleLine="true"
-            app:menu_labels_style="@style/MapActionLabelStyle"
-            app:menu_shadowRadius="2dp"
-            app:menu_shadowXOffset="0dp"
-            app:menu_shadowYOffset="0dp">
+                <ImageView
+                    android:id="@+id/fragment_map_empty_list_popup_close"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="0dp"
+                    android:contentDescription="@string/empty_description"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_close_white" />
 
-            <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/button_create_entourage"
-                style="@style/MapActionButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_entourage_contribution"
-                app:fab_label="@string/entourage_create_menu"
-                app:fab_size="mini"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:paddingStart="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="4dp"
+                    android:paddingEnd="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="15dp"
+                    android:text="@string/map_empty_newsfeed_popup"
+                    android:textColor="@color/white"
+                    android:textColorLink="@color/white"
+                    android:textSize="@dimen/entourage_font_medium" />
+            </LinearLayout>
 
-        </com.github.clans.fab.FloatingActionMenu>
+            <com.github.clans.fab.FloatingActionMenu
+                android:id="@+id/map_fab_menu"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="end"
+                android:paddingBottom="5dp"
+                android:paddingRight="5dp"
+                app:menu_backgroundColor="@color/white_88"
+                app:menu_colorNormal="@color/map_plus_button"
+                app:menu_colorPressed="@color/map_plus_button"
+                app:menu_colorRipple="@color/map_plus_button"
+                app:menu_labels_singleLine="true"
+                app:menu_labels_style="@style/MapActionLabelStyle"
+                app:menu_shadowRadius="3dp"
+                app:menu_shadowXOffset="0dp"
+                app:menu_shadowYOffset="0dp">
 
-        <include
-            android:id="@+id/fragment_map_longclick"
-            layout="@layout/layout_map_longclick"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"/>
+                <com.github.clans.fab.FloatingActionButton
+                    android:id="@+id/button_create_entourage"
+                    style="@style/MapActionButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_entourage_contribution"
+                    app:fab_label="@string/entourage_create_menu"
+                    app:fab_size="mini" />
 
-    </RelativeLayout>
+            </com.github.clans.fab.FloatingActionMenu>
+
+            <include
+                android:id="@+id/fragment_map_longclick"
+                layout="@layout/layout_map_longclick"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

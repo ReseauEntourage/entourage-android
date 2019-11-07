@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import social.entourage.android.api.model.Newsfeed;
+import social.entourage.android.newsfeed.NewsFeedListener;
 
 import static social.entourage.android.tour.TourService.NewsFeedListener;
 
