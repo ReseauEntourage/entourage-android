@@ -437,7 +437,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.main_fragment, mainFragment, tag);
                 fragmentTransaction.addToBackStack(tag);
-                fragmentTransaction.commitAllowingStateLoss();
+                fragmentTransaction.commit();
             }
         } catch(IllegalStateException e){
             EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
@@ -620,6 +620,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             UserFragment fragment = UserFragment.newInstance(event.getUserId());
             fragment.show(getSupportFragmentManager(), UserFragment.TAG);
         } catch (IllegalStateException e) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
             Timber.e(e);
         }
     }

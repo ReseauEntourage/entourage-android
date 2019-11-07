@@ -1211,15 +1211,20 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
 
     private void initializeMap() {
         if (!isAdded()) return;
-        if (mapFragment == null) {
-            GoogleMapOptions googleMapOptions = new GoogleMapOptions();
-            googleMapOptions.zOrderOnTop(true);
-            mapFragment = SupportMapFragment.newInstance(googleMapOptions);
-        }
-        FragmentManager fragmentManager = getChildFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.tour_info_map_layout, mapFragment).commitAllowingStateLoss();
+        try{
+            if (mapFragment == null) {
+                GoogleMapOptions googleMapOptions = new GoogleMapOptions();
+                googleMapOptions.zOrderOnTop(true);
+                mapFragment = SupportMapFragment.newInstance(googleMapOptions);
+            }
+            FragmentManager fragmentManager = getChildFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.tour_info_map_layout, mapFragment).commit();
 
-        drawFeedItemOnMap();
+            drawFeedItemOnMap();
+        }catch(IllegalStateException e) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
+            Timber.e(e);
+        }
     }
 
     private void updateMap() {
@@ -1301,49 +1306,54 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
 
     private void initializeHiddenMap() {
         if (!isAdded()) return;
-        if (hiddenMapFragment == null) {
-            GoogleMapOptions googleMapOptions = new GoogleMapOptions();
-            googleMapOptions.zOrderOnTop(true);
-            hiddenMapFragment = SupportMapFragment.newInstance(googleMapOptions);
-        }
-        FragmentManager fragmentManager = getChildFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.tour_info_hidden_map_layout, hiddenMapFragment).commitAllowingStateLoss();
-        hiddenMapFragment.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(final GoogleMap googleMap) {
-                googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-                googleMap.getUiSettings().setMapToolbarEnabled(false);
-                googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-                        getActivity(), R.raw.map_styles_json));
-                if (tourTimestampList.size() > 0) {
-                    TourTimestamp tourTimestamp = tourTimestampList.get(0);
-                    if (tourTimestamp.getTourPoint() != null) {
-                        //put the pin
-                        MarkerOptions pin = new MarkerOptions().position(tourTimestamp.getTourPoint().getLocation());
-                        googleMap.addMarker(pin);
-                        //move the camera
-                        CameraUpdate camera = CameraUpdateFactory.newLatLngZoom(tourTimestamp.getTourPoint().getLocation(), EntourageInformationFragment.MAP_SNAPSHOT_ZOOM);
-                        googleMap.moveCamera(camera);
-                    }
-                } else {
-                    googleMap.moveCamera(CameraUpdateFactory.zoomTo(EntourageInformationFragment.MAP_SNAPSHOT_ZOOM));
-                }
-
-                googleMap.setOnMapLoadedCallback(EntourageInformationFragment.this::getMapSnapshot);
-
-                googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
-                    @Override
-                    public void onCameraChange(final CameraPosition cameraPosition) {
-                        if (takeSnapshotOnCameraMove) {
-                            getMapSnapshot();
-                            hiddenGoogleMap = null;
-                        }
-                    }
-                });
-
-                hiddenGoogleMap = googleMap;
+        try {
+            if (hiddenMapFragment == null) {
+                GoogleMapOptions googleMapOptions = new GoogleMapOptions();
+                googleMapOptions.zOrderOnTop(true);
+                hiddenMapFragment = SupportMapFragment.newInstance(googleMapOptions);
             }
-        });
+            FragmentManager fragmentManager = getChildFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.tour_info_hidden_map_layout, hiddenMapFragment).commit();
+
+            hiddenMapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(final GoogleMap googleMap) {
+                    googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+                    googleMap.getUiSettings().setMapToolbarEnabled(false);
+                    googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                            getActivity(), R.raw.map_styles_json));
+                    if (tourTimestampList.size() > 0) {
+                        TourTimestamp tourTimestamp = tourTimestampList.get(0);
+                        if (tourTimestamp.getTourPoint() != null) {
+                            //put the pin
+                            MarkerOptions pin = new MarkerOptions().position(tourTimestamp.getTourPoint().getLocation());
+                            googleMap.addMarker(pin);
+                            //move the camera
+                            CameraUpdate camera = CameraUpdateFactory.newLatLngZoom(tourTimestamp.getTourPoint().getLocation(), EntourageInformationFragment.MAP_SNAPSHOT_ZOOM);
+                            googleMap.moveCamera(camera);
+                        }
+                    } else {
+                        googleMap.moveCamera(CameraUpdateFactory.zoomTo(EntourageInformationFragment.MAP_SNAPSHOT_ZOOM));
+                    }
+
+                    googleMap.setOnMapLoadedCallback(EntourageInformationFragment.this::getMapSnapshot);
+
+                    googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+                        @Override
+                        public void onCameraChange(final CameraPosition cameraPosition) {
+                            if (takeSnapshotOnCameraMove) {
+                                getMapSnapshot();
+                                hiddenGoogleMap = null;
+                            }
+                        }
+                    });
+
+                    hiddenGoogleMap = googleMap;
+                }
+            });
+        } catch(IllegalStateException e){
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);;
+        }
     }
 
     private void getMapSnapshot() {
@@ -2219,6 +2229,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
             getActivity().startService(intent);
             getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
             } catch (IllegalStateException e) {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
                 Timber.e(e);
             }
         }

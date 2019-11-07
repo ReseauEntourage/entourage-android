@@ -291,6 +291,7 @@ public abstract class BaseMapEntourageFragment extends Fragment implements BackP
                             displayGeolocationPreferences(true);
                         }
                     } catch(IllegalStateException e) {
+                        EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
                         Timber.e(e);
                     }
                 })

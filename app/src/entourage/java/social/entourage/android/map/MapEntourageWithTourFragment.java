@@ -1118,6 +1118,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
                 getActivity().startService(intent);
                 getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
             } catch(IllegalStateException e) {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
                 Timber.e(e);
             }
         }

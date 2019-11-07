@@ -332,7 +332,7 @@ public class LoginActivity extends EntourageActivity
                 }
             }
             // We don't care if the user allowed/denied the location, just show the notifications view
-            //TODO to do this in onResume, HOTFIX: dismisAllowingStateLoss in function
+            //TODO to do this in onResume
             hideActionZoneView();
             showNotificationPermissionView();
         }
@@ -757,6 +757,7 @@ public class LoginActivity extends EntourageActivity
                 displayToast(R.string.user_photo_error_not_saved);
             }
         } catch(IllegalStateException e) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
             Timber.e(e);
         }
     }
