@@ -12,15 +12,18 @@ import social.entourage.android.sidemenu.SideMenuFragment;
 public class BottomNavigationDataSource extends BaseBottomNavigationDataSource {
 
     public BottomNavigationDataSource() {
-        add(new NavigationItem(R.string.action_empty, R.drawable.ic_navigation_map), new MapEntourageWithTourFragment(), MapEntourageWithTourFragment.TAG);
-        //TODO add proper tag
-        add(new NavigationItem(R.string.action_guide, R.drawable.ic_navigation_guide), new GuideMapEntourageFragment(), GuideMapEntourageFragment.TAG);
-        add(new NavigationItem(R.string.empty_description, R.drawable.ic_navigation_plus), new SideMenuFragment(), SideMenuFragment.TAG);
-        add(new NavigationItem(R.string.action_my_messages, R.drawable.ic_navigation_my_messages), new MyEntouragesFragment(), MyEntouragesFragment.TAG);
-        add(new NavigationItem(R.string.action_profile, R.drawable.ic_navigation_profile), new SideMenuFragment(), SideMenuFragment.TAG);
+        boolean showActionButton = false;
+        MapEntourageWithTourFragment homeFragment = new MapEntourageWithTourFragment();
+        add(new NavigationItem(R.string.action_empty, R.drawable.ic_pin_drop_white_24dp), homeFragment, MapEntourageWithTourFragment.TAG);
+        add(new NavigationItem(R.string.action_empty, R.drawable.ic_map_white_24dp), new GuideMapEntourageFragment(), GuideMapEntourageFragment.TAG);
+        if(showActionButton) {
+            add(new NavigationItem(R.string.empty_description, R.drawable.ic_add_circle_outline_white_24dp), homeFragment, MapEntourageWithTourFragment.TAG);
+        }
+        add(new NavigationItem(R.string.action_empty, R.drawable.ic_mail_outline_black_24dp), new MyEntouragesFragment(), MyEntouragesFragment.TAG);
+        add(new NavigationItem(R.string.action_empty, R.drawable.ic_account_circle_outline_white_24dp), new SideMenuFragment(), SideMenuFragment.TAG);
 
         guideTabIndex = 1;
-        myMessagesTabIndex=3;
+        myMessagesTabIndex=showActionButton?3:2;
     }
 
 }

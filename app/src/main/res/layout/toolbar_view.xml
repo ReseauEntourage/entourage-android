@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/navigation_icons_state_list"
         android:textSize="12sp"
+        android:visibility="gone"
         android:text="agir"/>
 
 </LinearLayout>

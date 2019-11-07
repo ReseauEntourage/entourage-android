@@ -27,6 +27,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.github.clans.fab.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.otto.Subscribe;
 
 import java.io.File;
@@ -62,7 +63,8 @@ import social.entourage.android.user.edit.UserEditActionZoneFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
-import social.entourage.android.view.CountryCodePicker.CountryCodePicker;
+import social.entourage.android.view.countrycodepicker.CountryCodePicker;
+import social.entourage.android.view.EntourageSnackbar;
 import social.entourage.android.view.HtmlTextView;
 import timber.log.Timber;
 
@@ -1030,7 +1032,7 @@ public class LoginActivity extends EntourageActivity
 
     @Override
     public void onUserEditActionZoneFragmentDismiss() {
-        Snackbar.make(findViewById(R.id.activity_login), R.string.user_setting_ignore_hint, Snackbar.LENGTH_LONG)
+        EntourageSnackbar.INSTANCE.make(findViewById(R.id.activity_login), R.string.user_setting_ignore_hint, Snackbar.LENGTH_LONG)
                 .show();
         if(!goToNextActionAfterActionZone) {
             showNameView();

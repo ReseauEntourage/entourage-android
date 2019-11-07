@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@color/toolbar"
     android:elevation="4dp"
-    android:minHeight="?android:attr/actionBarSize"
+    android:minHeight="40dp"
     app:contentInsetEnd="0dp"
     app:contentInsetEndWithActions="0dp"
     app:contentInsetLeft="0dp"

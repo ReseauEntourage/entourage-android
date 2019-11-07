@@ -1,4 +1,4 @@
-package social.entourage.android.view.CountryCodePicker;
+package social.entourage.android.view.countrycodepicker;
 
 import android.annotation.TargetApi;
 import android.content.Context;
