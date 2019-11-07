@@ -157,15 +157,6 @@
                 app:showDivider="false"/>
 
             <social.entourage.android.sidemenu.SideMenuItemView
-                android:id="@+id/action_tours"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@color/white"
-                android:icon="@drawable/ic_map"
-                android:title="@string/action_tours"
-                android:visibility="gone"/>
-
-            <social.entourage.android.sidemenu.SideMenuItemView
                 android:id="@+id/action_logout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

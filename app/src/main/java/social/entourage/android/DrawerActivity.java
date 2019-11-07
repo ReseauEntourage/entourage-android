@@ -343,14 +343,6 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    public void switchToMapFragment() {
-        if (mainFragment instanceof MapEntourageFragment) {
-            mapEntourageFragment = (MapEntourageFragment) mainFragment;
-        } else {
-            loadFragmentWithExtras();
-        }
-    }
-
     public void popToMapFragment() {
         if (mapEntourageFragment != null) {
             mapEntourageFragment.dismissAllDialogs();
@@ -368,6 +360,9 @@ public class DrawerActivity extends EntourageSecuredActivity
                 public void onTabSelected(final TabLayout.Tab tab) {
                     int tabIndex = tab.getPosition();
                     loadFragment(navigationDataSource.getFragmentAtIndex(tabIndex), navigationDataSource.getFragmentTagAtIndex(tabIndex));
+                    if(tabIndex == navigationDataSource.getActionTabIndex()) {
+                        showFeed(true);
+                    }
                 }
 
                 @Override
@@ -389,7 +384,9 @@ public class DrawerActivity extends EntourageSecuredActivity
                 tab.setText(navigationItem.getText());
                 tab.setIcon(navigationItem.getIcon(getApplicationContext()));
                 tabLayout.addTab(tab);
-                if (i == navigationDataSource.getDefaultSelectedTab()) tab.select();
+                if (i == navigationDataSource.getDefaultSelectedTab()) {
+                    tab.select();
+                }
                 if (i == navigationDataSource.getMyMessagesTabIndex()) {
                     View view = tab.getCustomView();
                     if (view != null) {
@@ -444,36 +441,18 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    protected void loadFragmentWithExtras() {
-        mapEntourageFragment = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
-        if (mapEntourageFragment == null) {
-            mapEntourageFragment = new MapEntourageFragment();
-        }
-        loadFragment(mapEntourageFragment, MapEntourageFragment.TAG);
-        if (getAuthenticationController().getUser() != null) {
-            final int userId = getAuthenticationController().getUser().getId();
-            final boolean choice = getAuthenticationController().isUserToursOnly();
-            if (mainFragment instanceof MapEntourageFragment) {
-                Handler handler = new Handler();
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
-                        mapEntourageFragment.onNotificationExtras(userId, choice);
-                    }
-                });
-            }
-        }
-    }
-
     public void showMapFilters() {
         if (mapEntourageFragment != null) {
             mapEntourageFragment.onShowFilter();
         }
     }
 
-    public void showFeed() {
+    public void showFeed(boolean showActionMenu) {
         selectNavigationTab(navigationDataSource.getFeedTabIndex());
+        if(showActionMenu) {
+            popToMapFragment();
+            onCreateEntourageDeepLink();
+        }
     }
 
     public void showGuide() {

@@ -134,7 +134,7 @@ public class DeepLinksManager {
         if (key.equals(DeepLinksView.FEED.getView())) {
             if (activity instanceof DrawerActivity) {
                 DrawerActivity drawerActivity = (DrawerActivity)activity;
-                drawerActivity.showFeed();
+                drawerActivity.showFeed(false);
                 drawerActivity.popToMapFragment();
                 if (pathSegments != null && pathSegments.size() >= 1) {
                     String requestedView = pathSegments.get(0);
@@ -173,7 +173,7 @@ public class DeepLinksManager {
                     }
                     if (activity instanceof DrawerActivity) {
                         DrawerActivity drawerActivity = (DrawerActivity) activity;
-                        drawerActivity.showFeed();
+                        drawerActivity.showFeed(false);
                         drawerActivity.popToMapFragment();
                         drawerActivity.showWebView(urlToOpen);
                     } else {
@@ -211,7 +211,7 @@ public class DeepLinksManager {
         else if (key.equals(DeepLinksView.CREATE_ACTION.getView())) {
             if (activity instanceof DrawerActivity) {
                 DrawerActivity drawerActivity = (DrawerActivity)activity;
-                drawerActivity.showFeed();
+                drawerActivity.showFeed(false);
                 drawerActivity.popToMapFragment();
                 drawerActivity.onCreateEntourageDeepLink();
             } else {
