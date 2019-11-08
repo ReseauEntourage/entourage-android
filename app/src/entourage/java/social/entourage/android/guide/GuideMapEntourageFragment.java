@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -457,7 +458,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
         }
         isFullMapShown = true;
 
-        guideDisplayToggle.setImageDrawable(getResources().getDrawable(R.drawable.ic_fullscreen_exit_white_24dp));
+        guideDisplayToggle.setImageDrawable(AppCompatResources.getDrawable(getContext(),R.drawable.ic_fullscreen_exit_white_24dp));
 
         ensureMapVisible();
 
@@ -483,7 +484,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
         }
         isFullMapShown = false;
 
-        guideDisplayToggle.setImageDrawable(getResources().getDrawable(R.drawable.ic_fullscreen_white_24dp));
+        guideDisplayToggle.setImageDrawable(AppCompatResources.getDrawable(getContext(),R.drawable.ic_fullscreen_white_24dp));
 
         hideInfoPopup();
         hideEmptyListPopup();
@@ -508,7 +509,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
 
     private void initializeTopNavigationBar() {
         // Guide starts in full map mode, adjust the text accordingly
-        guideDisplayToggle.setImageDrawable(getResources().getDrawable(R.drawable.ic_fullscreen_exit_white_24dp));
+        guideDisplayToggle.setImageDrawable(AppCompatResources.getDrawable(getContext(),R.drawable.ic_fullscreen_exit_white_24dp));
     }
 
     private void onAnimationUpdate(ValueAnimator valueAnimator) {
