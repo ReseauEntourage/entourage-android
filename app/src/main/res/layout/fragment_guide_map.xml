@@ -5,17 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/fragment_guide_top_navigation"
-        layout="@layout/layout_map_top_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/top_bar_height" />
-
     <RelativeLayout
         android:id="@+id/fragment_guide_main_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/fragment_guide_top_navigation">
+        android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fragment_guide_pois_view"
@@ -24,6 +17,38 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:visibility="visible" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fragment_map_filter_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_gravity="top"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@string/map_poi_propose_button"
+            android:visibility="visible"
+            app:backgroundTint="@color/accent"
+            app:fabSize="mini"
+            app:srcCompat="@drawable/ic_filter_list_white_24dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fragment_map_display_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="top"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:contentDescription="@string/map_poi_propose_button"
+            android:visibility="visible"
+            app:backgroundTint="@color/accent"
+            app:fabSize="mini"
+            app:srcCompat="@drawable/ic_fullscreen_white_24dp" />
 
     </RelativeLayout>
 

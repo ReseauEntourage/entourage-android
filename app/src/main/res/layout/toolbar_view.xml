@@ -22,7 +22,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@android:id/text1"
+        android:id="@+id/toolbar_tab_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/navigation_icons_state_list"

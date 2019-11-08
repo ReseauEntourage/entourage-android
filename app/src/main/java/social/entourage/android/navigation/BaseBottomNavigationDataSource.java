@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -98,7 +99,7 @@ public abstract class BaseBottomNavigationDataSource {
 
         public Drawable getIcon(Context context) {
             ColorStateList colorStateList = ContextCompat.getColorStateList(context, R.color.navigation_icons_state_list);
-            Drawable drawable = DrawableCompat.wrap(ContextCompat.getDrawable(context, icon));
+            Drawable drawable = DrawableCompat.wrap(AppCompatResources.getDrawable(context, icon));
             DrawableCompat.setTintList(drawable, colorStateList);
             return drawable;
         }

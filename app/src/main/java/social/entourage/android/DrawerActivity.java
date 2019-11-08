@@ -397,17 +397,9 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    protected int getNavigationTab() {
-        TabLayout tabLayout = toolbar.findViewById(R.id.toolbar_tab_layout);
-        if (tabLayout != null) {
-            return tabLayout.getSelectedTabPosition();
-        }
-        return -1;
-    }
-
     protected void selectNavigationTab(int tabIndex) {
         TabLayout tabLayout = toolbar.findViewById(R.id.toolbar_tab_layout);
-        if (tabLayout != null && tabLayout.getTabAt(tabIndex) != null) {
+        if (tabLayout != null && tabLayout.getTabAt(tabIndex) != null && tabLayout.getSelectedTabPosition() != tabIndex) {
             tabLayout.getTabAt(tabIndex).select();
         }
     }
@@ -1037,10 +1029,6 @@ public class DrawerActivity extends EntourageSecuredActivity
             discussionBadgeView.setVisibility(badgeCount > 0 ? View.VISIBLE : View.INVISIBLE);
             discussionBadgeView.setText(String.valueOf(badgeCount));
         }
-    }
-
-    public boolean isGuideShown() {
-        return (getNavigationTab() == navigationDataSource.getGuideTabIndex());
     }
 
 }

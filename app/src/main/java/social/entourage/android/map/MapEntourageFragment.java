@@ -750,9 +750,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
             if (opened) {
                 if ((getActivity() != null) &&(getActivity() instanceof DrawerActivity)) {
                     DrawerActivity activity = (DrawerActivity) getActivity();
-                    if (activity.isGuideShown()) {
-                        EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_PLUS_CLICK);
-                    } else if (tourService!=null && tourService.isRunning()) {
+                    if (tourService!=null && tourService.isRunning()) {
                         EntourageEvents.logEvent(EntourageEvents.EVENT_TOUR_PLUS_CLICK);
                     } else  if (isToursListVisible()) {
                         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_PLUS_CLICK);
@@ -779,12 +777,10 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         }
         DrawerActivity drawerActivity = (DrawerActivity)getActivity();
         //Handling special cases
-        if (!drawerActivity.isGuideShown()) {
-            if (!Configuration.getInstance().showMapFABMenu()) {
-                // Show directly the create entourage disclaimer
-                displayEntourageDisclaimer();
-                return true;
-            }
+        if (!Configuration.getInstance().showMapFABMenu()) {
+            // Show directly the create entourage disclaimer
+            displayEntourageDisclaimer();
+            return true;
         }
         return false;
     }

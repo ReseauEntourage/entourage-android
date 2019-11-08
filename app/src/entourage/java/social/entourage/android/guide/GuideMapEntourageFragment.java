@@ -83,7 +83,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
     View infoPopup;
 
     @BindView(R.id.fragment_map_display_toggle)
-    Button guideDisplayToggle;
+    FloatingActionButton guideDisplayToggle;
 
     @BindView(R.id.fragment_guide_main_layout)
     RelativeLayout layoutMain;
@@ -457,7 +457,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
         }
         isFullMapShown = true;
 
-        guideDisplayToggle.setText(R.string.map_top_navigation_full_map);
+        guideDisplayToggle.setImageDrawable(getResources().getDrawable(R.drawable.ic_fullscreen_exit_white_24dp));
 
         ensureMapVisible();
 
@@ -483,7 +483,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
         }
         isFullMapShown = false;
 
-        guideDisplayToggle.setText(R.string.map_top_navigation_list);
+        guideDisplayToggle.setImageDrawable(getResources().getDrawable(R.drawable.ic_fullscreen_white_24dp));
 
         hideInfoPopup();
         hideEmptyListPopup();
@@ -508,7 +508,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
 
     private void initializeTopNavigationBar() {
         // Guide starts in full map mode, adjust the text accordingly
-        guideDisplayToggle.setText(R.string.map_top_navigation_full_map);
+        guideDisplayToggle.setImageDrawable(getResources().getDrawable(R.drawable.ic_fullscreen_exit_white_24dp));
     }
 
     private void onAnimationUpdate(ValueAnimator valueAnimator) {
