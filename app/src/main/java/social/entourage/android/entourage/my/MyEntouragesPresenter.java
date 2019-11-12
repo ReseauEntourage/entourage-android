@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.InvitationRequest;
 import social.entourage.android.api.NewsfeedRequest;
@@ -18,6 +19,7 @@ import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.entourage.my.filter.MyEntouragesFilter;
 import social.entourage.android.entourage.my.filter.MyEntouragesFilterFactory;
+import timber.log.Timber;
 
 /**
  * Created by mihaiionescu on 03/08/16.
@@ -150,4 +152,7 @@ public class MyEntouragesPresenter {
         }
     }
 
+    public void clear() {
+        EntourageApplication.get().clearFeedStorage();
+    }
 }

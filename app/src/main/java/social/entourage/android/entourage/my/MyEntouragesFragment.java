@@ -46,6 +46,7 @@ import social.entourage.android.base.EntourageViewHolderListener;
 import social.entourage.android.entourage.my.filter.MyEntouragesFilter;
 import social.entourage.android.entourage.my.filter.MyEntouragesFilterFactory;
 import social.entourage.android.tools.BusProvider;
+import timber.log.Timber;
 
 /**
  * My Entourages Fragment
@@ -138,7 +139,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Ent
 
         refreshMyFeeds();
 
-        if (getActivity() != null) {
+        if (getActivity() instanceof  DrawerActivity) {
             ((DrawerActivity)getActivity()).showEditActionZoneFragment();
         }
     }
@@ -184,14 +185,13 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Ent
                 switch (tab.getPosition()) {
                     case FILTER_TAB_INDEX_ALL:
                         filter.setShowUnreadOnly(false);
-                        refreshMyFeeds();
                         break;
                     case FILTER_TAB_INDEX_UNREAD:
                         filter.setShowUnreadOnly(true);
                         EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_UNREAD);
-                        refreshMyFeeds();
                         break;
                 }
+                refreshMyFeeds();
             }
 
             @Override
@@ -235,6 +235,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Ent
 
     private void refreshMyFeeds() {
         entouragesRefresh.setRefreshing(true);
+        presenter.clear();
         // remove the current feed
         entouragesAdapter.removeAll();
         entouragesPagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
@@ -426,6 +427,9 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Ent
             if (card instanceof FeedItem) {
                 entouragesAdapter.updateCard(feedItem);
             }
+        } else {
+            //TODO force refresh really?
+            Timber.e("shoud we refreshMyFeeds();");
         }
     }
 

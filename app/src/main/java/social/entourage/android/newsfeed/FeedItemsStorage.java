@@ -171,7 +171,7 @@ public class FeedItemsStorage implements Serializable {
         boolean updateFrom(FeedItem feedItem) {
             boolean isChanged = false;
             if(this.badgeCount != feedItem.getBadgeCount()) {
-            this.badgeCount = feedItem.getBadgeCount();
+                this.badgeCount = feedItem.getBadgeCount();
                 isChanged = true;
             }
             return isChanged;
