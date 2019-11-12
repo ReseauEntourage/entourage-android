@@ -28,7 +28,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
-            android:contentDescription="@string/map_poi_propose_button"
+            android:contentDescription="@string/guide_filter_title"
             android:visibility="visible"
             app:backgroundTint="@color/accent"
             app:fabSize="mini"
