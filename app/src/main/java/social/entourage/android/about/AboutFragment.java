@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 import butterknife.BindView;
@@ -145,6 +146,12 @@ public class AboutFragment extends EntourageDialogFragment {
         } else {
             Toast.makeText(getContext(), R.string.error_no_email, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Optional
+    @OnClick(R.id.about_oss_licenses)
+    protected void onOSSLicensesClicked() {
+        startActivity(new Intent(getContext(), OssLicensesMenuActivity.class));
     }
 
     @Optional

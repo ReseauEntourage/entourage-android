@@ -152,6 +152,7 @@ ext {
             mixpanel                : "com.mixpanel.android:mixpanel-android:$mixpanelVersion",
             picasso                 : "com.squareup.picasso:picasso:$picassoVersion",
             picassoTransformations  : "jp.wasabeef:picasso-transformations:$picassoTransformationsVersion",
-            shortcutBadger          : "me.leolin:ShortcutBadger:$shortcutBadgerVersion@aar"
+            shortcutBadger          : "me.leolin:ShortcutBadger:$shortcutBadgerVersion@aar",
+            ossLicenses             : "com.google.android.gms:play-services-oss-licenses:16.0.2"
     ]
 }
