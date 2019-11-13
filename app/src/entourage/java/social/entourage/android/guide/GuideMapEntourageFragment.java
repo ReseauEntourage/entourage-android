@@ -458,7 +458,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
         }
         isFullMapShown = true;
 
-        guideDisplayToggle.setImageDrawable(AppCompatResources.getDrawable(getContext(),R.drawable.ic_filter_list_white_24dp));
+        guideDisplayToggle.setImageDrawable(AppCompatResources.getDrawable(getContext(),R.drawable.ic_list_white_24dp));
 
         ensureMapVisible();
 
@@ -509,7 +509,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
 
     private void initializeTopNavigationBar() {
         // Guide starts in full map mode, adjust the text accordingly
-        guideDisplayToggle.setImageDrawable(AppCompatResources.getDrawable(getContext(),R.drawable.ic_filter_list_white_24dp));
+        guideDisplayToggle.setImageDrawable(AppCompatResources.getDrawable(getContext(),R.drawable.ic_list_white_24dp));
     }
 
     private void onAnimationUpdate(ValueAnimator valueAnimator) {
