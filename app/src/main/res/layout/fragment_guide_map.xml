@@ -48,7 +48,7 @@
             android:visibility="visible"
             app:backgroundTint="@color/accent"
             app:fabSize="mini"
-            app:srcCompat="@drawable/ic_fullscreen_white_24dp" />
+            app:srcCompat="@drawable/ic_map_white_24dp" />
 
     </RelativeLayout>
 
