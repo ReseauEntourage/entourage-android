@@ -75,7 +75,7 @@ android {
         }
         entourage {
             dimension 'app'
-            buildConfigField 'String', 'API_KEY', '"9de7f5860fd0b1067c1fd725"'
+            buildConfigField 'String', 'API_KEY', '"eba339ae2dac29941af8cbd6"'
             ext {
                 prod = [
                         serverURL: "https://api.entourage.social/api/v1/",
@@ -93,7 +93,7 @@ android {
             dimension 'app'
             applicationId 'social.entourage.android.pfp'
             buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_PFP
-            buildConfigField 'String', 'API_KEY', '"9ebf2b47e35046e43dae5e31"'
+            buildConfigField 'String', 'API_KEY', '"ee15c4f26482e61b72f1f565"'
 
             buildConfigField 'String', 'TEST_ACCOUNT_LOGIN', TEST_PFP_ACCOUNT_LOGIN
             buildConfigField 'String', 'TEST_ACCOUNT_PWD', TEST_PFP_ACCOUNT_PWD
