@@ -141,6 +141,12 @@
         <activity
             android:name="com.mixpanel.android.takeoverinapp.TakeoverInAppActivity"
             android:theme="@style/com_mixpanel_android_TakeoverInAppActivityTheme"/>
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:theme="@style/EntourageOSSLicenses.Theme" />
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:theme="@style/EntourageOSSLicenses.Theme" />
         <activity android:name=".involvement.ShareActivity" />
         <activity android:name=".involvement.RateActivity" />
 

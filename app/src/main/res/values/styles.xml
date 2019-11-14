@@ -215,5 +215,13 @@
         <item name="android:colorForeground">#221f1f</item>
     </style>
 
+    <style name="EntourageOSSLicenses.Theme" parent="Theme.AppCompat.Light">
+        <item name="actionBarTheme">@style/EntourageOSSLicenses.ActionBarTheme</item>
+    </style>
+
+    <style name="EntourageOSSLicenses.ActionBarTheme" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/accent</item>
+    </style>
+
 
 </resources>

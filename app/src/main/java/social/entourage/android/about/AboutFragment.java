@@ -151,6 +151,7 @@ public class AboutFragment extends EntourageDialogFragment {
     @Optional
     @OnClick(R.id.about_oss_licenses)
     protected void onOSSLicensesClicked() {
+        OssLicensesMenuActivity.setActivityTitle(getString(R.string.about_oss_licenses));
         startActivity(new Intent(getContext(), OssLicensesMenuActivity.class));
     }
 

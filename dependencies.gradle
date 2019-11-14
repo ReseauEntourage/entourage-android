@@ -1,6 +1,6 @@
 allprojects {
     repositories {
-        maven { url 'https://maven.google.com' }
+        google()
         jcenter()
     }
 }
@@ -107,7 +107,9 @@ ext {
     gmsDependencies = [
             maps            : "com.google.android.gms:play-services-maps:$mapsVersion",
             location        : "com.google.android.gms:play-services-location:$playServicesVersion",
-            places          : "com.google.android.libraries.places:places-compat:1.1.0"
+            places          : "com.google.android.libraries.places:places-compat:1.1.0",
+            //https://developers.google.com/android/guides/opensource
+            ossLicenses     : "com.google.android.gms:play-services-oss-licenses:$playServicesVersion"
     ]
 
     javaDependencies = [
@@ -152,7 +154,6 @@ ext {
             mixpanel                : "com.mixpanel.android:mixpanel-android:$mixpanelVersion",
             picasso                 : "com.squareup.picasso:picasso:$picassoVersion",
             picassoTransformations  : "jp.wasabeef:picasso-transformations:$picassoTransformationsVersion",
-            shortcutBadger          : "me.leolin:ShortcutBadger:$shortcutBadgerVersion@aar",
-            ossLicenses             : "com.google.android.gms:play-services-oss-licenses:16.0.2"
+            shortcutBadger          : "me.leolin:ShortcutBadger:$shortcutBadgerVersion@aar"
     ]
 }

@@ -8,7 +8,7 @@ buildscript {
         //maven { url 'https://maven.google.com' }
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
-        maven { url 'https://firebase.bintray.com/gradle' }
+        //maven { url 'https://firebase.bintray.com/gradle' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.2'
