@@ -4,8 +4,6 @@
     <item name="login_verify_code_description" type="id"/>
     <item name="login_verify_code_email" type="id" />
 
-    <item name="layout_feed_map_card_tab" type="id" />
-
     <item name="slideshow_b4" type="id" />
 
     <item name="action_blog" type="id" />

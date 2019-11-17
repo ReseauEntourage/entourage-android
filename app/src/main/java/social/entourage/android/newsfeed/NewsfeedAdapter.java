@@ -51,6 +51,10 @@ public class NewsfeedAdapter extends HeaderFooterBaseAdapter {
         setHasStableIds(false);
     }
 
+    private int getContentType(MapTabItem selectedTab) {
+        return bottomViewContentType + NewsfeedBottomViewHolder.CONTENT_TYPES * selectedTab.getId();
+    }
+
     public void showBottomView(final boolean showBottomView, int bottomViewContentType, MapTabItem selectedTab) {
         setSelectedTab(selectedTab);
         showBottomView(showBottomView, bottomViewContentType);
@@ -60,17 +64,13 @@ public class NewsfeedAdapter extends HeaderFooterBaseAdapter {
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
         if (position == getItemCount() - 1) {
             // map the actual content type using the selected tab
-            int contentType = bottomViewContentType + NewsfeedBottomViewHolder.CONTENT_TYPES * selectedTab.getId();
-            ((BottomViewHolder)holder).populate(showBottomView, contentType);
+            ((BottomViewHolder)holder).populate(showBottomView, getContentType(selectedTab));
             return;
         }
         super.onBindViewHolder(holder, position);
     }
 
-    public void setSelectedTab(MapTabItem selectedTab) {
+    private void setSelectedTab(MapTabItem selectedTab) {
         this.selectedTab = selectedTab;
-        if (mapViewHolder != null) {
-            mapViewHolder.setSelectedTab(selectedTab);
-        }
     }
 }

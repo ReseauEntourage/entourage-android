@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,7 +31,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.squareup.otto.Subscribe;
 
@@ -90,7 +93,6 @@ import social.entourage.android.newsfeed.NewsfeedPagination;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.edit.UserEditActionZoneFragment;
 import social.entourage.android.view.EntourageSnackbar;
-import timber.log.Timber;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
@@ -136,6 +138,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
     private boolean isStopped = false;
     private final Handler refreshToursHandler = new Handler();
+    private TabLayout.OnTabSelectedListener onTabSelectedListener;
 
     @BindView(R.id.fragment_map_tours_view)
     RecyclerView newsfeedListView;
@@ -144,7 +147,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     RelativeLayout layoutMain;
 
     @BindView(R.id.fragment_map_display_toggle)
-    Button mapDisplayToggle;
+    FloatingActionButton mapDisplayToggle;
 
     @BindView(R.id.fragment_map_new_entourages_button)
     Button newEntouragesButton;
@@ -158,8 +161,11 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     @BindView(R.id.fragment_map_entourage_mini_cards)
     EntourageMiniCardsView miniCardsView;
 
-    @BindView(R.id.map_fab_menu)
-    protected FloatingActionMenu mapOptionsMenu;
+    @BindView(R.id.fragment_map_action_overlay)
+    protected RelativeLayout mapActionView;
+
+    @BindView(R.id.map_action_buttons)
+    RelativeLayout mapActionButtonsView;
 
     protected NewsfeedAdapter newsfeedAdapter;
     private Timer refreshToursTimer;
@@ -211,7 +217,8 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
         initializeMap();
         initializeFloatingMenu();
-        initializeToursListView();
+        initializeFilterTab();
+        initializeNewsfeedView();
         initializeInvitations();
         if (getActivity() != null) {
             ((DrawerActivity)getActivity()).showEditActionZoneFragment();
@@ -274,15 +281,12 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
     @Override
     public boolean onBackPressed() {
-        if (mapOptionsMenu != null && mapOptionsMenu.isOpened()) {
-            mapOptionsMenu.toggle(true);
+        if (mapActionView != null && mapActionView.getVisibility() == View.VISIBLE) {
+            mapActionView.setVisibility(View.GONE);
             return true;
         }
         if (mapLongClickView != null && mapLongClickView.getVisibility() == View.VISIBLE) {
             mapLongClickView.setVisibility(View.GONE);
-            if (mapOptionsMenu != null) {
-                mapOptionsMenu.setVisibility(View.VISIBLE);
-            }
             return true;
         }
         //before closing the fragment, send the cached tour points to server (if applicable)
@@ -384,16 +388,13 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     }
 
     public void displayEntourageDisclaimer() {
-        if (mapLongClickView == null) {
+        if (mapLongClickView == null || mapActionView == null) {
             // Binder haven't kicked in yet
             return;
         }
         // Hide the create entourage menu ui
         mapLongClickView.setVisibility(View.GONE);
-        if (mapOptionsMenu.isOpened()) {
-            mapOptionsMenu.toggle(false);
-        }
-        mapOptionsMenu.setVisibility(View.VISIBLE);
+        mapActionView.setVisibility(View.GONE);
 
         // Check if we need to show the entourage disclaimer
         if (Configuration.getInstance().showEntourageDisclaimer()) {
@@ -528,10 +529,11 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         }
     }
 
-    @Subscribe
-    public void onMapTabChanged(Events.OnMapTabSelected event) {
-        selectedTab = event.getSelectedTab();
-
+    private void onMapTabChanged(MapTabItem newSelectedTab) {
+        if(newSelectedTab == this.selectedTab) {
+            return;
+        }
+        this.selectedTab = newSelectedTab;
         EntourageEvents.logEvent(selectedTab == MapTabItem.ALL_TAB ? EntourageEvents.EVENT_FEED_TAB_ALL : EntourageEvents.EVENT_FEED_TAB_EVENTS);
 
         if(getActivity()!= null) {
@@ -541,7 +543,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
             }
         }
 
-        resetFeed();
+        clearAll();
 
         if (newsfeedAdapter != null) {
             newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE, selectedTab);
@@ -701,10 +703,11 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     public void onDisplayToggle() {
         if (!isFullMapShown) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_MAPVIEW_CLICK);
+            /*TODO: check if we want to do this
             if (selectedTab == MapTabItem.EVENTS_TAB && newsfeedAdapter != null) {
                 newsfeedAdapter.setSelectedTab(MapTabItem.ALL_TAB);
-                onMapTabChanged(new Events.OnMapTabSelected(MapTabItem.ALL_TAB));
-            }
+                onMapTabChanged(MapTabItem.ALL_TAB);
+            } */
         }
         else {
             EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_LISTVIEW_CLICK);
@@ -745,37 +748,10 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     // ----------------------------------
 
     private void initializeFloatingMenu() {
-        mapOptionsMenu.setClosedOnTouchOutside(true);
-        mapOptionsMenu.setOnMenuToggleListener(opened -> {
-            if (opened) {
-                if ((getActivity() != null) &&(getActivity() instanceof DrawerActivity)) {
-                    DrawerActivity activity = (DrawerActivity) getActivity();
-                    if (tourService!=null && tourService.isRunning()) {
-                        EntourageEvents.logEvent(EntourageEvents.EVENT_TOUR_PLUS_CLICK);
-                    } else  if (isToursListVisible()) {
-                        EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_PLUS_CLICK);
-                    } else {
-                        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_PLUS_CLICK);
-                    }
-                }
-            }
-        });
-        mapOptionsMenu.setOnMenuButtonClickListener(v -> {
-            if(handleSpecialCasesForFAB())
-                return;
-            // Let the FAB do it's normal thing
-            mapOptionsMenu.toggle(mapOptionsMenu.isAnimated());
-        });
-
         updateFloatingMenuOptions();
     }
 
     protected boolean handleSpecialCasesForFAB() {
-
-        if(!(getActivity() instanceof DrawerActivity)) {
-            return true;
-        }
-        DrawerActivity drawerActivity = (DrawerActivity)getActivity();
         //Handling special cases
         if (!Configuration.getInstance().showMapFABMenu()) {
             // Show directly the create entourage disclaimer
@@ -803,16 +779,13 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         //save the tap coordinates
         longTapCoordinates = latLng;
         //hide the FAB menu
-        if (!Configuration.getInstance().showMapFABMenu()) {
-            mapOptionsMenu.setVisibility(View.GONE);
-            displayEntourageDisclaimer();
-            return;
+        mapActionView.setVisibility(View.GONE);
+        if (!handleSpecialCasesForFAB()) {
+            //update the visible buttons
+            mapLongClickButtonsView.requestLayout();
+            //hide the FAB menu
+            super.showLongClickOnMapOptions(latLng);
         }
-        //update the visible buttons
-        mapLongClickButtonsView.requestLayout();
-        //hide the FAB menu
-        mapOptionsMenu.setVisibility(View.GONE);
-        super.showLongClickOnMapOptions(latLng);
     }
 
     // ----------------------------------
@@ -906,7 +879,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     protected void updateUserHistory() {
     }
 
-    private void initializeToursListView() {
+    private void initializeNewsfeedView() {
         if (newsfeedAdapter == null) {
             newsfeedListView.setLayoutManager(new LinearLayoutManager(getContext()));
             newsfeedAdapter = new NewsfeedAdapter();
@@ -915,6 +888,32 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
             newsfeedListView.setAdapter(newsfeedAdapter);
         }
     }
+
+    private void initializeFilterTab() {
+        TabLayout tabLayout = getView().findViewById(R.id.fragment_map_top_tab);
+        if (tabLayout == null) return;
+        if(onTabSelectedListener ==null) {
+            onTabSelectedListener = new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(final TabLayout.Tab tab) {
+                    onMapTabChanged(tab.getPosition() == 1 ? MapTabItem.EVENTS_TAB : MapTabItem.ALL_TAB);
+                }
+
+                @Override
+                public void onTabUnselected(final TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(final TabLayout.Tab tab) {
+
+                }
+            };
+        }
+        tabLayout.addOnTabSelectedListener(onTabSelectedListener);
+    }
+
+
 
     // ----------------------------------
     // PRIVATE METHODS (tours events)
@@ -1111,7 +1110,9 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
             map.clear();
         }
 
-        if (mapClusterManager != null) mapClusterManager.clearItems();
+        if (mapClusterManager != null) {
+            mapClusterManager.clearItems();
+        }
         markersMap.clear();
         if (presenter != null) {
             presenter.getOnClickListener().clear();
@@ -1148,11 +1149,10 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         }
         isFullMapShown = true;
         newEntouragesButton.setVisibility(View.GONE);
-        mapDisplayToggle.setText(R.string.map_top_navigation_full_map);
+        mapDisplayToggle.setImageDrawable(AppCompatResources.getDrawable(getContext(),R.drawable.ic_list_white_24dp));
 
         ensureMapVisible();
 
-        newsfeedAdapter.setTabVisibility(View.GONE);
         final int targetHeight = layoutMain.getMeasuredHeight();
         newsfeedAdapter.setMapHeight(targetHeight);
         ValueAnimator anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight);
@@ -1169,12 +1169,11 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
             return;
         }
         isFullMapShown = false;
-        mapDisplayToggle.setText(R.string.map_top_navigation_list);
+        mapDisplayToggle.setImageDrawable(AppCompatResources.getDrawable(getContext(),R.drawable.ic_map_white_24dp));
         miniCardsView.setVisibility(View.INVISIBLE);
 
         hideEmptyListPopup();
 
-        newsfeedAdapter.setTabVisibility(View.VISIBLE);
         ValueAnimator anim = ValueAnimator.ofInt(layoutMain.getMeasuredHeight(), originalMapLayoutHeight);
         anim.addUpdateListener(this::onAnimationUpdate);
         anim.start();

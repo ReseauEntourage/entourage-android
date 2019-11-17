@@ -330,7 +330,7 @@ public class BaseEntourage extends FeedItem implements Serializable {
             return null;
         }
         if (TYPE_OUTING.equalsIgnoreCase(groupType)) {
-            return AppCompatResources.getDrawable(context, R.drawable.ic_action_outing);
+            return AppCompatResources.getDrawable(context, R.drawable.ic_event_accent_24dp);
         }
         EntourageCategory entourageCategory = EntourageCategoryManager.getInstance().findCategory(this);
         if (entourageCategory != null) {

@@ -48,12 +48,6 @@ public class HeaderBaseAdapter extends EntourageBaseAdapter {
         }
     }
 
-    public void setTabVisibility(int visibility) {
-        if (mapViewHolder != null)  {
-            mapViewHolder.setTabVisibility(visibility);
-        }
-    }
-
     @Override
     protected int getPositionOffset() {
         return 1;

@@ -118,7 +118,7 @@ public class EntourageCategory implements Serializable{
             return R.drawable.ic_entourage_category_friendly_time;
         }
         if ("event".equalsIgnoreCase(category)) {
-            return R.drawable.ic_entourage_category_event;
+            return R.drawable.ic_event_accent_24dp;
         }
         if ("mat_help".equalsIgnoreCase(category)) {
             return R.drawable.ic_entourage_category_sweater;

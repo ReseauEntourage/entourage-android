@@ -359,9 +359,11 @@ public class DrawerActivity extends EntourageSecuredActivity
                 @Override
                 public void onTabSelected(final TabLayout.Tab tab) {
                     int tabIndex = tab.getPosition();
-                    loadFragment(navigationDataSource.getFragmentAtIndex(tabIndex), navigationDataSource.getFragmentTagAtIndex(tabIndex));
                     if(tabIndex == navigationDataSource.getActionTabIndex()) {
                         showFeed(true);
+                        //don't load any fragments
+                    } else {
+                        loadFragment(navigationDataSource.getFragmentAtIndex(tabIndex), navigationDataSource.getFragmentTagAtIndex(tabIndex));
                     }
                 }
 

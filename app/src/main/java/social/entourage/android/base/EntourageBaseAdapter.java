@@ -195,8 +195,6 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
         notifyItemRangeRemoved(getPositionOffset(), oldCount);
     }
 
-    public void setTabVisibility(int visibility) {}
-
     public EntourageViewHolderListener getViewHolderListener() {
         return viewHolderListener;
     }

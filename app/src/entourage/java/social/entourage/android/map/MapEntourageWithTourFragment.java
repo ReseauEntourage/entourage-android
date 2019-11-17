@@ -339,10 +339,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
                     showAllowGeolocationDialog(GEOLOCATION_POPUP_TOUR);
                     return;
                 }
-                if (mapOptionsMenu.isOpened()) {
-                    mapOptionsMenu.toggle(false);
-                }
-                mapOptionsMenu.setVisibility(View.GONE);
+                mapActionView.setVisibility(View.GONE);
                 mapLongClickView.setVisibility(View.GONE);
                 mapLauncherLayout.setVisibility(View.VISIBLE);
             }
@@ -383,9 +380,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_CLICK);
         // Hide the create entourage menu ui
         mapLongClickView.setVisibility(View.GONE);
-        if (mapOptionsMenu.isOpened()) {
-            mapOptionsMenu.toggle(false);
-        }
+        mapActionView.setVisibility(View.GONE);
 
         // MI: EMA-1669 Show the disclaimer only the first time when a tour was started
         // Show the disclaimer fragment
@@ -430,11 +425,11 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
     @Override
     protected void updateFloatingMenuOptions() {
         super.updateFloatingMenuOptions();
-        if(mapOptionsMenu==null) {
+        if(mapActionView==null) {
             return;
         }
-        View addTourEncounterButton = mapOptionsMenu.findViewById(R.id.button_add_tour_encounter);
-        View startTourButton = mapOptionsMenu.findViewById(R.id.button_start_tour_launcher);
+        View addTourEncounterButton = mapActionView.findViewById(R.id.button_add_tour_encounter);
+        View startTourButton = mapActionView.findViewById(R.id.button_start_tour_launcher);
         if (tourService != null && tourService.isRunning()) {
             if (addTourEncounterButton != null) addTourEncounterButton.setVisibility(View.INVISIBLE);
             if (startTourButton != null) startTourButton.setVisibility(View.GONE);
@@ -463,7 +458,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         User me = EntourageApplication.me(getActivity());
         boolean isPro = (me != null && me.isPro());
         if (!isPro) {
-            mapOptionsMenu.setVisibility(View.GONE);
+            mapActionView.setVisibility(View.GONE);
             displayEntourageDisclaimer();
             return;
         }
@@ -522,7 +517,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
                 putEncounterOnMap(encounter);
             }
         }
-        mapOptionsMenu.setVisibility(View.VISIBLE);
+        mapActionView.setVisibility(View.GONE);
         if (tourService != null) {
             if (tourStopButton != null) tourStopButton.setVisibility(tourService.isRunning() ? View.VISIBLE : View.GONE);
         }
@@ -557,7 +552,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
                 }
                 addTourCard(tourService.getCurrentTour());
 
-                mapOptionsMenu.setVisibility(View.VISIBLE);
+                mapActionView.setVisibility(View.GONE);
                 updateFloatingMenuOptions();
                 if (tourStopButton != null) tourStopButton.setVisibility(View.VISIBLE);
 
@@ -695,8 +690,8 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
             refreshFeed();
             if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
                 if (feedItem.getUUID().equalsIgnoreCase(currentTourUUID)) {
-                    if(mapOptionsMenu!=null) {
-                        mapOptionsMenu.setVisibility(View.VISIBLE);
+                    if(mapActionView!=null) {
+                        mapActionView.setVisibility(View.GONE);
                         updateFloatingMenuOptions();
                     }
                     if (tourStopButton != null) {
@@ -751,7 +746,9 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
     protected void hideTourLauncher() {
         if (mapLauncherLayout.getVisibility() == View.VISIBLE) {
             mapLauncherLayout.setVisibility(View.GONE);
-            mapOptionsMenu.setVisibility(View.VISIBLE);
+        }
+        if (mapActionView.getVisibility() == View.VISIBLE) {
+            mapActionView.setVisibility(View.GONE);
         }
     }
 
@@ -999,12 +996,6 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
             markersMap.put(tour.hashString(), mapClusterItem);
             mapClusterManager.addItem(mapClusterItem);
         }
-    }
-
-    @Subscribe
-    @Override
-    public void onMapTabChanged(Events.OnMapTabSelected event) {
-        super.onMapTabChanged(event);
     }
 
     @Subscribe

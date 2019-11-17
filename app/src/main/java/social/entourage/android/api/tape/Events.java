@@ -505,21 +505,4 @@ public class Events {
         }
     }
 
-    /**
-     * Event signaling that a map tab was selected
-     */
-
-    public static class OnMapTabSelected {
-
-        private MapTabItem selectedTab;
-
-        public OnMapTabSelected(MapTabItem selectedTab) {
-            this.selectedTab = selectedTab;
-        }
-
-        public MapTabItem getSelectedTab() {
-            return selectedTab;
-        }
-    }
-
 }

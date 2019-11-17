@@ -271,7 +271,7 @@
                         android:layout_height="40dp"
                         android:contentDescription="@string/empty_description"
                         android:padding="6dp"
-                        android:src="@drawable/ic_entourage_category_event"/>
+                        app:srcCompat="@drawable/ic_event_accent_24dp"/>
 
                     <TextView
                         android:layout_width="match_parent"
