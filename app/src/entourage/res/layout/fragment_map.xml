@@ -107,13 +107,13 @@
                 android:id="@+id/fragment_map_filter_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/fragment_map_gps"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_gravity="top"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
-                android:layout_below="@+id/fragment_map_gps"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
                 android:contentDescription="@string/guide_filter_title"
                 android:visibility="visible"
                 app:backgroundTint="@color/accent"
@@ -142,11 +142,12 @@
                 class="social.entourage.android.entourage.minicards.EntourageMiniCardsView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginBottom="10dp"
-                android:visibility="invisible"/>
+                android:visibility="invisible"
+                tools:visibility="gone" />
 
             <LinearLayout
                 android:id="@+id/fragment_map_empty_list_popup"
@@ -155,7 +156,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="50dp"
                 android:layout_marginLeft="50dp"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="120dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginRight="50dp"
                 android:background="@drawable/rounded_dialog"
@@ -207,30 +208,33 @@
                 app:fab_colorRipple="@color/dodger_blue"
                 tools:visibility="visible"/>
 
-            <include
-                android:id="@+id/fragment_map_action_overlay"
-                layout="@layout/layout_map_action_overlay"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone" />
-
-            <include
-                android:id="@+id/fragment_map_longclick"
-                layout="@layout/layout_map_longclick"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone" />
-
         </RelativeLayout>
+
+        <include
+            android:id="@+id/fragment_map_action_overlay"
+            layout="@layout/layout_map_action_overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="gone" />
+
+        <include
+            android:id="@+id/fragment_map_longclick"
+            layout="@layout/layout_map_longclick"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="gone" />
+
+        <include
+            android:id="@+id/layout_map_launcher"
+            layout="@layout/layout_map_launcher"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"
+            tools:visibility="gone" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <include
-        android:id="@+id/layout_map_launcher"
-        layout="@layout/layout_map_launcher"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:visibility="gone"
-        tools:visibility="gone" />
 
 </RelativeLayout>

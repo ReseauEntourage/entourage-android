@@ -445,7 +445,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         selectNavigationTab(navigationDataSource.getFeedTabIndex());
         if(showActionMenu) {
             popToMapFragment();
-            onCreateEntourageDeepLink();
+            onShowAction();
         }
     }
 
@@ -860,6 +860,12 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void onCreateEntourageDeepLink() {
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.displayEntourageDisclaimer();
+        }
+    }
+
+    public void onShowAction() {
+        if (mainFragment instanceof MapEntourageFragment) {
+            mapEntourageFragment.onShowAction();
         }
     }
 

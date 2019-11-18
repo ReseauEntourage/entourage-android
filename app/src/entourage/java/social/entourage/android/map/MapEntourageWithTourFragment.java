@@ -216,10 +216,6 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
 
     @Override
     protected boolean handleSpecialCasesForFAB() {
-        if(!(getActivity() instanceof DrawerActivity)) {
-            return true;
-        }
-        DrawerActivity drawerActivity = (DrawerActivity)getActivity();
         //Handling special cases
         if (isBound && tourService != null && tourService.isRunning()) {
             // Show directly the create encounter
@@ -428,8 +424,8 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         if(mapActionView==null) {
             return;
         }
-        View addTourEncounterButton = mapActionView.findViewById(R.id.button_add_tour_encounter);
-        View startTourButton = mapActionView.findViewById(R.id.button_start_tour_launcher);
+        View addTourEncounterButton = mapActionView.findViewById(R.id.layout_line_add_encounter);
+        View startTourButton = mapActionView.findViewById(R.id.layout_line_create_maraude);
         if (tourService != null && tourService.isRunning()) {
             if (addTourEncounterButton != null) addTourEncounterButton.setVisibility(View.INVISIBLE);
             if (startTourButton != null) startTourButton.setVisibility(View.GONE);

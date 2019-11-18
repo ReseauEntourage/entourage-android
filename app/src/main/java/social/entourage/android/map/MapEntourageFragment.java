@@ -913,8 +913,6 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         tabLayout.addOnTabSelectedListener(onTabSelectedListener);
     }
 
-
-
     // ----------------------------------
     // PRIVATE METHODS (tours events)
     // ----------------------------------
@@ -1538,6 +1536,12 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
     protected HeaderBaseAdapter getAdapter() {
         return newsfeedAdapter;
+    }
+
+    public void onShowAction() {
+        if(!handleSpecialCasesForFAB()) {
+            mapActionView.setVisibility(View.VISIBLE);
+        }
     }
 
     // ----------------------------------
