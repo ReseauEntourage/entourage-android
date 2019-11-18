@@ -166,7 +166,7 @@ public class ReadPoiFragment extends EntourageDialogFragment {
         // Set the subject
         String title = poi.getName();
         if (title == null) title = "";
-        String emailSubject = getString(R.string.poi_report_email_subject_format, title);
+        String emailSubject = getString(R.string.poi_report_email_subject_format, title, poi.getId());
         intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
         if (intent.resolveActivity(this.getActivity().getPackageManager()) != null) {
             // Start the intent
