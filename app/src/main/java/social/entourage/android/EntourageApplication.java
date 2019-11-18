@@ -85,8 +85,6 @@ public class EntourageApplication extends MultiDexApplication {
         setupBadgeCount();
     }
 
-
-
     private void setupDagger() {
         component = DaggerEntourageComponent.builder()
                 .entourageModule(new EntourageModule(this))

@@ -184,6 +184,7 @@ public class AboutFragment extends EntourageDialogFragment {
         }
     }
 
+    @Optional
     @OnClick(R.id.about_suggestion_layout)
     protected void onSuggestionClicked() {
         if (getActivity() != null && getActivity() instanceof DrawerActivity) {
@@ -192,6 +193,7 @@ public class AboutFragment extends EntourageDialogFragment {
         }
     }
 
+    @Optional
     @OnClick(R.id.about_feedback_layout)
     protected void onFeedbackClicked() {
         if (getActivity() != null && getActivity() instanceof DrawerActivity) {
