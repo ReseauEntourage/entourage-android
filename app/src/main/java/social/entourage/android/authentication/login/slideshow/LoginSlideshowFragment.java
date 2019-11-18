@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
@@ -115,10 +116,9 @@ public class LoginSlideshowFragment extends Fragment {
 
     private void selectDot(int idx) {
         if (dots == null || dots.size() <= idx) return;
-        Resources res = getResources();
         for(int i = 0; i < LoginSlideshowPageAdapter.NUM_PAGES; i++) {
             int drawableId = (i==idx)?(R.drawable.carousel_bullet_filled):(R.drawable.carousel_bullet_empty);
-            Drawable drawable = res.getDrawable(drawableId);
+            Drawable drawable = AppCompatResources.getDrawable(getContext(), drawableId);
             dots.get(i).setImageDrawable(drawable);
         }
     }

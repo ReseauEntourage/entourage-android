@@ -2,6 +2,8 @@ package social.entourage.android.view;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 
@@ -33,7 +35,7 @@ public class PartnerLogoImageView extends androidx.appcompat.widget.AppCompatIma
         if (drawable == null) {
             setBackgroundResource(R.color.partner_logo_transparent);
         } else {
-            setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_partner_logo));
+            setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.bg_partner_logo));
         }
     }
 }

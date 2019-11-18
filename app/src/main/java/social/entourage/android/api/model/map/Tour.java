@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 
 import com.google.gson.annotations.Expose;
@@ -280,7 +281,7 @@ public class Tour extends FeedItem implements Serializable {
     public Drawable getIconDrawable(final Context context) {
         @DrawableRes int iconRes = getIconRes();
         if (iconRes != 0) {
-            return ContextCompat.getDrawable(context, iconRes);
+            return AppCompatResources.getDrawable(context, iconRes);
         }
         return super.getIconDrawable(context);
     }

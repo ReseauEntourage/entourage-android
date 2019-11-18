@@ -42,6 +42,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.PermissionChecker;
@@ -1289,7 +1290,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
                             googleMap.addGroundOverlay(groundOverlayOptions);
                         } else {
                             // add marker
-                            Drawable drawable = getResources().getDrawable(feedItem.getHeatmapResourceId());
+                            Drawable drawable = AppCompatResources.getDrawable(getContext(), feedItem.getHeatmapResourceId());
                             BitmapDescriptor icon = Utils.getBitmapDescriptorFromDrawable(drawable, Entourage.getMarkerSize(getContext()), Entourage.getMarkerSize(getContext()));
                             MarkerOptions markerOptions = new MarkerOptions()
                                     .icon(icon)

@@ -3,6 +3,7 @@ package social.entourage.android;
 import android.content.Context;
 import android.content.SharedPreferences;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.multidex.MultiDexApplication;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -69,9 +70,10 @@ public class EntourageApplication extends MultiDexApplication {
 
     @Override
     public void onCreate() {
-        activities = new ArrayList<>();
         super.onCreate();
+        activities = new ArrayList<>();
         instance = this;
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         librariesSupport = new LibrariesSupport();
         librariesSupport.setupLibraries(this);

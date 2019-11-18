@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -118,10 +119,9 @@ public class CarouselFragment extends EntourageDialogFragment {
     }
 
     public void selectDot(int idx) {
-        Resources res = getResources();
         for(int i = 0; i < NUM_PAGES; i++) {
             int drawableId = (i==idx)?(R.drawable.carousel_bullet_filled):(R.drawable.carousel_bullet_empty);
-            Drawable drawable = res.getDrawable(drawableId);
+            Drawable drawable = AppCompatResources.getDrawable(getContext(), drawableId);
             dots.get(i).setImageDrawable(drawable);
         }
     }
