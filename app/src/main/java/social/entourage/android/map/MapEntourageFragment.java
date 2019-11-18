@@ -1192,7 +1192,8 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     }
 
     public void ensureMapVisible() {
-        newsfeedListView.scrollToPosition(0);
+        if(newsfeedListView!=null)
+            newsfeedListView.scrollToPosition(0);
     }
 
     private void updatePagination(List<? extends Newsfeed> newsfeedList) {
