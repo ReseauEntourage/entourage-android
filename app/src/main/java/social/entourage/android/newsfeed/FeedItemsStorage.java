@@ -28,6 +28,7 @@ public class FeedItemsStorage implements Serializable {
 
     //cache
     private int cacheCount = 0;
+    private int cacheInvitationCount = 0;
     private boolean hasChanged = true;
 
 
@@ -102,6 +103,13 @@ public class FeedItemsStorage implements Serializable {
         return -1;
     }
 
+    public void updateInvitationCount(int count) {
+        if(count!=cacheInvitationCount) {
+            hasChanged = true;
+            cacheInvitationCount = count;
+        }
+    }
+
     public void updateFeedItem(int userId, FeedItem feedItem) {
         // get the list
         List<FeedItemStorage> userFeeds = getUserFeeds(userId);
@@ -124,6 +132,7 @@ public class FeedItemsStorage implements Serializable {
             myList.clear();
             hasChanged =false;
             cacheCount = 0;
+            cacheInvitationCount = 0;
             return true;
         }
         return false;
@@ -131,7 +140,7 @@ public class FeedItemsStorage implements Serializable {
 
     public int getBadgeCount(int userId) {
         if(!hasChanged) {
-            return cacheCount;
+            return cacheCount+cacheInvitationCount;
         }
         Timber.d("old cacheCount=%d", cacheCount);
         List<FeedItemStorage> userFeeds = getUserFeeds(userId);
@@ -141,7 +150,7 @@ public class FeedItemsStorage implements Serializable {
             cacheCount += feedItem.badgeCount;
         }
         Timber.d("new cacheCount=%d", cacheCount);
-        return cacheCount;
+        return cacheCount+cacheInvitationCount;
     }
 
     // ----------------------------------

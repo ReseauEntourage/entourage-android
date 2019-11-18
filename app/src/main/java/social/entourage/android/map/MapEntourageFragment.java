@@ -1540,7 +1540,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     }
 
     public void onShowAction() {
-        if(!handleSpecialCasesForFAB()) {
+        if(!handleSpecialCasesForFAB() && mapActionView!=null) {
             mapActionView.setVisibility(View.VISIBLE);
         }
     }

@@ -240,6 +240,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Ent
         entouragesAdapter.removeAll();
         entouragesPagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
         // request a new feed
+        refreshInvitations();
         retrieveMyFeeds();
         entouragesRefresh.setRefreshing(false);
     }

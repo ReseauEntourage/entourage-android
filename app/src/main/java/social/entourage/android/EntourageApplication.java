@@ -293,6 +293,10 @@ public class EntourageApplication extends MultiDexApplication {
         return feedItemsStorage.saveFeedItem(me.getId(), message, isAdded);
     }
 
+    public void updateStorageInvitationCount(int count) {
+        feedItemsStorage.updateInvitationCount(count);
+    }
+
     public void updateStorageFeedItem(FeedItem feedItem) {
         if (feedItemsStorage == null) {
             return;

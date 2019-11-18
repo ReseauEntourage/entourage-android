@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import social.entourage.android.R;
+import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.InvitationList;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.base.BaseCardViewHolder;
@@ -42,6 +43,7 @@ public class InvitationListViewHolder extends BaseCardViewHolder {
     private void populate(InvitationList invitationList) {
         if (invitationsAdapter != null) {
             List<TimestampedObject> list = new ArrayList<>(invitationList.getInvitationList());
+            invitationsAdapter.removeAll();
             invitationsAdapter.addItems(list);
         }
     }

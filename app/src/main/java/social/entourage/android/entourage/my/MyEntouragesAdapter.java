@@ -4,6 +4,8 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.InvitationList;
@@ -15,6 +17,7 @@ import social.entourage.android.map.LoaderCardViewHolder;
 import social.entourage.android.entourage.EntourageViewHolder;
 import social.entourage.android.tour.TourViewHolder;
 import social.entourage.android.base.ViewHolderFactory;
+import timber.log.Timber;
 
 /**
  * Created by mihaiionescu on 09/08/16.
@@ -49,7 +52,6 @@ public class MyEntouragesAdapter extends EntourageBaseAdapter {
         setHasStableIds(false);
 
         invitationList = new InvitationList();
-        items.add(invitationList);
     }
 
     @Override
@@ -70,7 +72,11 @@ public class MyEntouragesAdapter extends EntourageBaseAdapter {
 
     public void setInvitations(List<Invitation> invitations) {
         invitationList.setInvitationList(invitations);
+        if(findCard(invitationList)==null) {
+            items.add(invitationList);
+        }
         notifyItemChanged(0);
+        EntourageApplication.get().updateStorageInvitationCount(invitations.size());
     }
 
     void addLoader() {
