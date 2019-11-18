@@ -183,4 +183,20 @@ public class AboutFragment extends EntourageDialogFragment {
             drawerActivity.showWebViewForLinkId(Constants.PRIVACY_LINK_ID);
         }
     }
+
+    @OnClick(R.id.about_suggestion_layout)
+    protected void onSuggestionClicked() {
+        if (getActivity() != null && getActivity() instanceof DrawerActivity) {
+            DrawerActivity drawerActivity = (DrawerActivity) getActivity();
+            drawerActivity.showWebView(drawerActivity.getLink(Constants.SUGGESTION_ID));
+        }
+    }
+
+    @OnClick(R.id.about_feedback_layout)
+    protected void onFeedbackClicked() {
+        if (getActivity() != null && getActivity() instanceof DrawerActivity) {
+            DrawerActivity drawerActivity = (DrawerActivity) getActivity();
+            drawerActivity.showWebView(drawerActivity.getLink(Constants.FEEDBACK_ID));
+        }
+    }
 }

@@ -137,12 +137,4 @@ public class GetInvolvedFragment extends EntourageDialogFragment {
         }
     }
 
-    @OnClick(R.id.get_involved_suggestion_layout)
-    protected void onSuggestionClicked() {
-        if (getActivity() != null && getActivity() instanceof DrawerActivity) {
-            DrawerActivity drawerActivity = (DrawerActivity) getActivity();
-            drawerActivity.showWebView(drawerActivity.getLink(Constants.FEEDBACK_ID));
-        }
-    }
-
 }
