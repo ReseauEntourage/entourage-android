@@ -81,9 +81,9 @@ public class PushNotificationContent implements Serializable {
        if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST.equals(getType())
                 ||(PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(getType()))) {
             if (isTourRelated()) {
-                return  TAG_TOUR+ String.valueOf(getJoinableId());
+                return  TAG_TOUR+ getJoinableId();
             } else if (isEntourageRelated()) {
-                return TAG_ENTOURAGE + String.valueOf(getJoinableId());
+                return TAG_ENTOURAGE + getJoinableId();
             }
         }
         return null;

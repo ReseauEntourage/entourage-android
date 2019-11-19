@@ -307,9 +307,7 @@ public class TourServiceManager {
             final TourPoint p = tourPoints.get(0);
             final float[] distance = {0};
             Location.distanceBetween(p.getLatitude(), p.getLongitude(), latLng.latitude, latLng.longitude, distance);
-            if (distance[0] <= MAX_DISTANCE_BETWEEN_TWO_POINTS) {
-                return true;
-            }
+            return distance[0] <= MAX_DISTANCE_BETWEEN_TWO_POINTS;
         } else {
             final TourPoint targetPoint = new TourPoint(latLng.latitude, latLng.longitude);
             for (int i = 1; i < tourPoints.size(); i++) {

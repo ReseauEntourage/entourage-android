@@ -73,6 +73,7 @@
     <string name="local_service_stopped">Maraude terminée</string>
     <string name="tour_freezed">Maraude clôturée</string>
     <string name="local_service_running">Maraude en cours</string>
+    <string name="local_service_notification_title">Maraudes</string>
     <string name="loader_title_tour_finish">Arrêt de la maraude</string>
     <string name="loader_title_outing_finish">Suppression de l\'évènement</string>
     <string name="loader_title_action_finish">Suppression de l\'action</string>

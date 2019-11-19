@@ -44,12 +44,9 @@ public class ChatMessageCardViewHolder extends BaseCardViewHolder {
         mMessageView = itemView.findViewById(R.id.tic_chat_message);
         mTimestampView = itemView.findViewById(R.id.tic_chat_timestamp);
 
-        mUserPhotoView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                if (userId == 0) return;
-                BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(userId));
-            }
+        mUserPhotoView.setOnClickListener(v -> {
+            if (userId == 0) return;
+            BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(userId));
         });
 
     }

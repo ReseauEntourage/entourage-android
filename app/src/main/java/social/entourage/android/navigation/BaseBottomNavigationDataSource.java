@@ -55,8 +55,7 @@ public abstract class BaseBottomNavigationDataSource {
 
     public Fragment getFragmentAtIndex(int index) {
         if (index < 0 || index >= navigationFragments.size()) return null;
-        Fragment fragment = navigationFragments.get(index);
-        return fragment;
+        return navigationFragments.get(index);
     }
 
     public String getFragmentTagAtIndex(int index) {

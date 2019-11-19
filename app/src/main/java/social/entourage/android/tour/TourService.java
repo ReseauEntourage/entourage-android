@@ -224,7 +224,7 @@ public class TourService extends Service {
     private void createNotification() {
         final Intent notificationIntent = new Intent(this, DrawerActivity.class);
         final PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getString(R.string.local_service_notification_title))
                 .setSmallIcon(R.drawable.tour_record)
                 .setContentTitle(getString(R.string.local_service_running))
                 .setContentIntent(contentIntent)

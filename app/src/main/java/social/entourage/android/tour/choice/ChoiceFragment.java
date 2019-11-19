@@ -96,14 +96,6 @@ public class ChoiceFragment extends DialogFragment implements ChoiceAdapter.Recy
         }
     }
 
-    @Override
-    public void onAttach(@NonNull Activity activity) {
-        super.onAttach(activity);
-        if (!(activity instanceof OnChoiceFragmentFinish)) {
-            throw new ClassCastException(activity.toString() + " must implement OnChoiceFragmentFinish");
-        }
-    }
-
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------

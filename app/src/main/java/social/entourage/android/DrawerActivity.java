@@ -286,18 +286,8 @@ public class DrawerActivity extends EntourageSecuredActivity
             new AlertDialog.Builder(this)
                     .setMessage(getString(R.string.error_dialog_disabled))
                     .setCancelable(false)
-                    .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                        }
-                    })
-                    .setNegativeButton("Non", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.cancel();
-                        }
-                    })
+                    .setPositiveButton("Oui", (dialogInterface, i) -> startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)))
+                    .setNegativeButton("Non", (dialogInterface, i) -> dialogInterface.cancel())
                     .create()
                     .show();
         } catch(Exception e) {
@@ -471,13 +461,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         final SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
         boolean notificationsEnabled = sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, true);
         if (notificationsEnabled) {
-            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( this,  new OnSuccessListener<InstanceIdResult>() {
-                @Override
-                public void onSuccess(InstanceIdResult instanceIdResult) {
-                    presenter.updateApplicationInfo(instanceIdResult.getToken());
-
-                }
-            });
+            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( this, instanceIdResult -> presenter.updateApplicationInfo(instanceIdResult.getToken()));
         } else {
             presenter.deleteApplicationInfo();
         }

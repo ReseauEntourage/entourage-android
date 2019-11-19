@@ -319,7 +319,7 @@ public class BaseEntourage extends FeedItem implements Serializable {
     @Override
     public String getDisplayAddress() {
         return this.metadata.getDisplayAddress();
-    };
+    }
 
     @Override
     public Drawable getIconDrawable(Context context) {

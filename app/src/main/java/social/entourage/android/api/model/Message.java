@@ -102,7 +102,7 @@ public class Message implements Serializable {
             setPushNotificationTag(content.getNotificationTag());
             if (pushNotificationTag == null) return String.valueOf(pushNotificationId);
         }
-        return pushNotificationTag + HASH_SEPARATOR + String.valueOf(pushNotificationId);
+        return pushNotificationTag + HASH_SEPARATOR + pushNotificationId;
     }
 
     public String getContentTitleForCount(int count, Context context) {

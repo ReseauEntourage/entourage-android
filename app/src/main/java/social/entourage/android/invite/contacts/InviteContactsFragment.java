@@ -178,7 +178,8 @@ public class InviteContactsFragment extends InviteBaseFragment implements
         contactsList.setOnItemClickListener(this);
 
         // Initializes the loader
-        getLoaderManager().initLoader(CONTACTS_LOADER_ID, null, this);
+        LoaderManager loaderInstance = LoaderManager.getInstance(this);
+        loaderInstance.initLoader(CONTACTS_LOADER_ID, null, this);
 
         // Initialize the search field
         searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -187,15 +188,15 @@ public class InviteContactsFragment extends InviteBaseFragment implements
                 if (event == null) {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         mSearchString = v.getText().toString().trim();
-                        getLoaderManager().destroyLoader(CONTACTS_LOADER_ID);
-                        getLoaderManager().initLoader(CONTACTS_LOADER_ID, null, InviteContactsFragment.this);
+                        loaderInstance.destroyLoader(CONTACTS_LOADER_ID);
+                        loaderInstance.initLoader(CONTACTS_LOADER_ID, null, InviteContactsFragment.this);
                     }
                 }
                 else if (event.getKeyCode() == KeyEvent.ACTION_DOWN) {
                     mSearchString = v.getText().toString().trim();
-                    //getLoaderManager().restartLoader(CONTACTS_LOADER_ID, null, InviteContactsFragment.this);
-                    getLoaderManager().destroyLoader(CONTACTS_LOADER_ID);
-                    getLoaderManager().initLoader(CONTACTS_LOADER_ID, null, InviteContactsFragment.this);
+                    //LoaderManager.getInstance(this).restartLoader(CONTACTS_LOADER_ID, null, InviteContactsFragment.this);
+                    loaderInstance.destroyLoader(CONTACTS_LOADER_ID);
+                    loaderInstance.initLoader(CONTACTS_LOADER_ID, null, InviteContactsFragment.this);
                 }
                 return false;
             }

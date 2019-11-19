@@ -6,7 +6,6 @@ import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.content.ContextCompat;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -127,7 +126,7 @@ public class Tour extends FeedItem implements Serializable {
         return endTime;
     }
 
-    public String getDisplayAddress() { return null; };
+    public String getDisplayAddress() { return null; }
 
     public String getDuration() {
         return duration;

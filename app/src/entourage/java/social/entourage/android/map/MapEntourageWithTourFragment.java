@@ -681,7 +681,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
 
     @Override
     public void onFeedItemClosed(boolean closed, @NonNull FeedItem feedItem) {
-        @StringRes int message=0;
+        @StringRes int message;
         if (closed) {
             refreshFeed();
             if (feedItem.getType() == TimestampedObject.TOUR_CARD) {

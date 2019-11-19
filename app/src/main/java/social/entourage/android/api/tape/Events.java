@@ -9,7 +9,6 @@ import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
-import social.entourage.android.map.MapTabItem;
 
 public class Events {
 

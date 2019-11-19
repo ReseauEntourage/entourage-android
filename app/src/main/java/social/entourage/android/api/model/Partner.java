@@ -126,11 +126,10 @@ public class Partner extends BaseOrganization implements Serializable {
         if (partner == null) return false;
         if (id != partner.id) return false;
         if (smallLogoUrl != null) {
-            if (!smallLogoUrl.equals(partner.smallLogoUrl)) return false;
+            return smallLogoUrl.equals(partner.smallLogoUrl);
         } else {
-            if (partner.smallLogoUrl != null) return false;
+            return partner.smallLogoUrl == null;
         }
-        return true;
     }
 
     // ----------------------------------

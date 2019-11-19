@@ -419,12 +419,12 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
     }
 
     @Override
-    public void onAttach(@NonNull Activity activity) {
-        super.onAttach(activity);
-        if (!(activity instanceof OnEntourageInformationFragmentFinish)) {
-            throw new ClassCastException(activity.toString() + " must implement OnEntourageInformationFragmentFinish");
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (!(context instanceof OnEntourageInformationFragmentFinish)) {
+            throw new ClassCastException(context.toString() + " must implement OnEntourageInformationFragmentFinish");
         }
-        mListener = (OnEntourageInformationFragmentFinish) activity;
+        mListener = (OnEntourageInformationFragmentFinish) context;
         doBindService();
 
         BusProvider.getInstance().register(this);
@@ -1339,9 +1339,9 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
 
                     googleMap.setOnMapLoadedCallback(EntourageInformationFragment.this::getMapSnapshot);
 
-                    googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+                    googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
                         @Override
-                        public void onCameraChange(final CameraPosition cameraPosition) {
+                        public void onCameraIdle() {
                             if (takeSnapshotOnCameraMove) {
                                 getMapSnapshot();
                                 hiddenGoogleMap = null;
@@ -1353,7 +1353,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
                 }
             });
         } catch(IllegalStateException e){
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);;
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
         }
     }
 

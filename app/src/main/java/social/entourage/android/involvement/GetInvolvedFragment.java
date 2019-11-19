@@ -17,8 +17,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.BuildConfig;
-import social.entourage.android.Constants;
-import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
@@ -50,8 +48,7 @@ public class GetInvolvedFragment extends EntourageDialogFragment {
     }
 
     public static GetInvolvedFragment newInstance() {
-        GetInvolvedFragment fragment = new GetInvolvedFragment();
-        return fragment;
+        return new GetInvolvedFragment();
     }
 
 

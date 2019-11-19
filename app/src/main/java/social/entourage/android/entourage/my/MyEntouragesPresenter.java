@@ -19,7 +19,6 @@ import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.entourage.my.filter.MyEntouragesFilter;
 import social.entourage.android.entourage.my.filter.MyEntouragesFilterFactory;
-import timber.log.Timber;
 
 /**
  * Created by mihaiionescu on 03/08/16.

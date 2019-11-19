@@ -17,7 +17,6 @@ import social.entourage.android.map.LoaderCardViewHolder;
 import social.entourage.android.entourage.EntourageViewHolder;
 import social.entourage.android.tour.TourViewHolder;
 import social.entourage.android.base.ViewHolderFactory;
-import timber.log.Timber;
 
 /**
  * Created by mihaiionescu on 09/08/16.

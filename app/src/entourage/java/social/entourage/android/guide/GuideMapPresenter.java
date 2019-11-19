@@ -50,7 +50,7 @@ public class GuideMapPresenter {
     }
 
     public void updatePoisNearby(GoogleMap map) {
-        float distance = 0;
+        float distance;
         if (map != null) {
             VisibleRegion region = map.getProjection().getVisibleRegion();
             float[] result = {0};
