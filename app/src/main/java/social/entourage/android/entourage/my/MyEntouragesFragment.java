@@ -88,9 +88,6 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Ent
     @BindView(R.id.myentourages_no_items_details)
     TextView noItemsDetailsTextView;
 
-    @BindView(R.id.myentourages_progressBar)
-    ProgressBar progressBar;
-
     private @NonNull EntouragePagination entouragesPagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
 
     // Refresh invitations attributes

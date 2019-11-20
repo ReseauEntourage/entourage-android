@@ -45,7 +45,6 @@
     <color name="profile_role_accepted">@color/accent_alt</color>
 
     <!-- Map -->
-    <color name="map_plus_button">@color/accent_alt</color>
     <color name="map_announcement_background">@color/accent_dark</color>
 
     <!-- Buttons -->

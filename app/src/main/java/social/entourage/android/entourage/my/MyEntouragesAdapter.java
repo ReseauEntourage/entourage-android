@@ -29,7 +29,7 @@ public class MyEntouragesAdapter extends EntourageBaseAdapter {
     public MyEntouragesAdapter() {
 
         viewHolderFactory.registerViewHolder(
-                TimestampedObject.INVITATION_LIST,
+                TimestampedObject.TOP_VIEW,
                 new ViewHolderFactory.ViewHolderType(InvitationListViewHolder.class, InvitationListViewHolder.getLayoutResource())
         );
 
@@ -51,18 +51,29 @@ public class MyEntouragesAdapter extends EntourageBaseAdapter {
         setHasStableIds(false);
 
         invitationList = new InvitationList();
+        //items.add(invitationList);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (position == 0) {//header position
+            ((InvitationListViewHolder)holder).populate(invitationList);
+            return;
+        }
         super.onBindViewHolder(holder, position);
-
-        TimestampedObject item = items.get(position - getPositionOffset());
-        if (item.getType() == TimestampedObject.LOADER_CARD) {
-            if (loaderCallback != null) {
-                loaderCallback.loadMoreItems();
+        if(position>=getPositionOffset()) {
+            TimestampedObject item = items.get(position - getPositionOffset());
+            if (item.getType() == TimestampedObject.LOADER_CARD) {
+                if (loaderCallback != null) {
+                    loaderCallback.loadMoreItems();
+                }
             }
         }
+    }
+
+    @Override
+    protected int getPositionOffset() {
+        return 1;
     }
 
     void setLoaderCallback(LoaderCallback loaderCallback) {
@@ -71,9 +82,6 @@ public class MyEntouragesAdapter extends EntourageBaseAdapter {
 
     public void setInvitations(List<Invitation> invitations) {
         invitationList.setInvitationList(invitations);
-        if(findCard(invitationList)==null) {
-            items.add(invitationList);
-        }
         notifyItemChanged(0);
         EntourageApplication.get().updateStorageInvitationCount(invitations.size());
     }
@@ -92,5 +100,11 @@ public class MyEntouragesAdapter extends EntourageBaseAdapter {
 
     public interface LoaderCallback {
         void loadMoreItems();
+    }
+
+
+    @Override
+    public int getDataItemCount() {
+        return (items == null?0:items.size()) + (invitationList.getInvitationList()==null?0:invitationList.getInvitationList().size());
     }
 }

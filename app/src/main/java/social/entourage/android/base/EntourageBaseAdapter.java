@@ -9,6 +9,7 @@ import java.util.List;
 
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.FeedItem;
+import timber.log.Timber;
 
 /**
  * Created by mihaiionescu on 05/05/16.
@@ -36,6 +37,10 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
+        if(position<getPositionOffset()) {
+            Timber.e("Adapter trying to populate Top View");
+            return;
+        }
         ((BaseCardViewHolder)holder).populate(items.get(position - getPositionOffset()));
     }
 
@@ -54,6 +59,9 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemViewType(final int position) {
+        if(position<getPositionOffset()) {
+            return TimestampedObject.TOP_VIEW;
+        }
         return items.get(position - getPositionOffset()).getType();
     }
 

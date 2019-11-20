@@ -148,14 +148,6 @@
         <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="MapActionLabelStyle">
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:textColor">@color/accent</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:paddingRight">5dp</item>
-        <item name="android:gravity">right</item>
-    </style>
-
     <style name="MapActionButtonStyle">
         <item name="fab_shadowColor">@android:color/transparent</item>
         <item name="fab_colorNormal">@android:color/transparent</item>

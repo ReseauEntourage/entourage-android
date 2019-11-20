@@ -22,6 +22,7 @@ public class HeaderBaseAdapter extends EntourageBaseAdapter {
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
         if (position == 0) {//header position
             MapViewHolder mapViewHolder = ((MapViewHolder)holder);
+            //we populate with  no data
             mapViewHolder.populate(null);
             return;
         }
@@ -66,12 +67,6 @@ public class HeaderBaseAdapter extends EntourageBaseAdapter {
         }
 
         return cardViewHolder;
-    }
-
-
-
-    public MapViewHolder getMapViewHolder() {
-        return mapViewHolder;
     }
 
     public void setOnMapReadyCallback(final OnMapReadyCallback onMapReadyCallback) {
