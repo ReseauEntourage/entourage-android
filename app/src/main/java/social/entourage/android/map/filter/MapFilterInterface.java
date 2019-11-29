@@ -6,9 +6,7 @@ package social.entourage.android.map.filter;
 public interface MapFilterInterface {
 
     String getTypes();
-    boolean onlyMyEntourages();
     int getTimeFrame();
-    boolean onlyMyPartnerEntourages();
     boolean showPastEvents();
 
     void entourageCreated();

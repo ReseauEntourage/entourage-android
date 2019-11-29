@@ -599,9 +599,9 @@ public class TourServiceManager {
                         pagination.distance,
                         pagination.itemsPerPage,
                         mapFilter.getTypes(),
-                        mapFilter.onlyMyEntourages(),
+                        false,
                         mapFilter.getTimeFrame(),
-                        mapFilter.onlyMyPartnerEntourages(),
+                        false,
                         Constants.ANNOUNCEMENTS_VERSION,
                         mapFilter.showPastEvents()
                 );

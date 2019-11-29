@@ -62,13 +62,6 @@ public class MapFilterFragment extends BaseMapFilterFragment {
     @BindView(R.id.map_filter_entourage_contribution_details_layout)
     LinearLayout entourageContributionDetailsLayout;
 
-    @BindView(R.id.map_filter_entourage_user_only_switch)
-    Switch onlyMyEntouragesSwitch;
-    @BindView(R.id.map_filter_entourage_partner)
-    RelativeLayout onlyMyPartnerEntouragesLayout;
-    @BindView(R.id.map_filter_entourage_partner_switch)
-    Switch onlyMyPartnerEntouragesSwitch;
-
     @BindView(R.id.map_filter_time_days_1)
     RadioButton days1RB;
     @BindView(R.id.map_filter_time_days_2)
@@ -155,11 +148,6 @@ public class MapFilterFragment extends BaseMapFilterFragment {
 //        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_TOURS);
 //    }
 
-    @OnClick(R.id.map_filter_entourage_user_only_switch)
-    protected void onOnlyMineSwitch() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_MINE);
-    }
-
     @OnClick(R.id.map_filter_time_days_1)
     protected void onDays1Click() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_FILTER1);
@@ -184,13 +172,7 @@ public class MapFilterFragment extends BaseMapFilterFragment {
 
         MapFilter mapFilter = MapFilterFactory.getMapFilter();
 
-        User me = EntourageApplication.me();
-
-        boolean showPartnerFilter = me != null && me.getPartner() != null;
-        if (!showPartnerFilter) mapFilter.onlyMyPartnerEntourages = false;
-
         tourTypeLayout.setVisibility(isProUser ? View.VISIBLE : View.GONE);
-        onlyMyPartnerEntouragesLayout.setVisibility(showPartnerFilter ? View.VISIBLE : View.GONE);
 
         tourMedicalSwitch.setChecked(mapFilter.tourTypeMedical);
         tourSocialSwitch.setChecked(mapFilter.tourTypeSocial);
@@ -208,9 +190,6 @@ public class MapFilterFragment extends BaseMapFilterFragment {
         entourageContributionSwitch.setChecked(mapFilter.entourageTypeContribution);
         entourageContributionDetailsLayout.setVisibility(mapFilter.entourageTypeContribution ? View.VISIBLE : View.GONE);
         addEntourageCategories(Entourage.TYPE_CONTRIBUTION, entourageContributionDetailsLayout, mapFilter);
-
-        onlyMyEntouragesSwitch.setChecked(mapFilter.onlyMyEntourages);
-        onlyMyPartnerEntouragesSwitch.setChecked(mapFilter.onlyMyPartnerEntourages);
 
         switch (mapFilter.timeframe) {
             case MapFilter.DAYS_1:
@@ -240,8 +219,6 @@ public class MapFilterFragment extends BaseMapFilterFragment {
         mapFilter.entourageTypeDemand = entourageDemandSwitch.isChecked();
         mapFilter.entourageTypeContribution = entourageContributionSwitch.isChecked();
         mapFilter.showTours = tourAllSwitch.isChecked();
-        mapFilter.onlyMyEntourages = onlyMyEntouragesSwitch.isChecked();
-        mapFilter.onlyMyPartnerEntourages = onlyMyPartnerEntouragesSwitch.isChecked();
 
         for (List<Switch> switchList : actionSwitches.values()) {
             for (Switch categorySwitch : switchList) {
