@@ -31,6 +31,8 @@
 
     <string name="entourage_create_menu">Créer une action</string>
     <string name="outing_create_menu">Créer un évènement</string>
+    <string name="entourage_create_submenu">Demander de l’aide ou faire un don</string>
+    <string name="outing_create_submenu">Évènement solidaire à une date précise</string>
 
     <!-- Entourage Category Fragment -->
     <string name="entourage_category_fragment_title">CATÉGORIE</string>
