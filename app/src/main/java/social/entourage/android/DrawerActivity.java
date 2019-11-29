@@ -353,6 +353,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                         showFeed(true);
                         //don't load any fragments
                     } else {
+                        hideAction();
                         loadFragment(navigationDataSource.getFragmentAtIndex(tabIndex), navigationDataSource.getFragmentTagAtIndex(tabIndex));
                     }
                 }
@@ -364,7 +365,9 @@ public class DrawerActivity extends EntourageSecuredActivity
 
                 @Override
                 public void onTabReselected(final TabLayout.Tab tab) {
-
+                    if(tab.getPosition() == navigationDataSource.getFeedTabIndex()) {
+                        hideAction();
+                    }
                 }
             });
 
@@ -428,6 +431,12 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void showMapFilters() {
         if (mapEntourageFragment != null) {
             mapEntourageFragment.onShowFilter();
+        }
+    }
+
+    public void hideAction() {
+        if (mainFragment instanceof MapEntourageFragment) {
+            mapEntourageFragment.hideAction();
         }
     }
 

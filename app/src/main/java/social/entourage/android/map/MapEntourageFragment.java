@@ -393,7 +393,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         }
         // Hide the create entourage menu ui
         mapLongClickView.setVisibility(View.GONE);
-        mapActionView.setVisibility(View.GONE);
+        hideAction();
 
         // Check if we need to show the entourage disclaimer
         if (Configuration.getInstance().showEntourageDisclaimer()) {
@@ -778,7 +778,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         //save the tap coordinates
         longTapCoordinates = latLng;
         //hide the FAB menu
-        mapActionView.setVisibility(View.GONE);
+        hideAction();
         if (!handleSpecialCasesForFAB()) {
             //update the visible buttons
             mapLongClickButtonsView.requestLayout();
@@ -1536,6 +1536,12 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
     protected HeaderBaseAdapter getAdapter() {
         return newsfeedAdapter;
+    }
+
+    public void hideAction() {
+        if(mapActionView!=null) {
+            mapActionView.setVisibility(View.GONE);
+        }
     }
 
     public void onShowAction() {
