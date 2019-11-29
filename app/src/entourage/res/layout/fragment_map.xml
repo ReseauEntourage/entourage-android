@@ -21,6 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:background="@color/accent"
+                android:elevation="10dp"
                 app:tabInlineLabel="true"
                 app:tabIndicatorColor="@color/white"
                 app:tabTextColor="@color/white">

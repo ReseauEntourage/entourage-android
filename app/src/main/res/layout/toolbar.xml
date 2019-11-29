@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/accent"
+        android:elevation="10dp"
         app:tabBackground="@drawable/navigation_tab_background"
         app:tabIndicatorHeight="0dp"
         app:tabSelectedTextColor="@color/accent"
