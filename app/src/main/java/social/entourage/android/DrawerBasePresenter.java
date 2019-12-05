@@ -394,6 +394,7 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
         ApplicationInfo applicationInfo = new ApplicationInfo(pushNotificationToken);
         ApplicationInfo.ApplicationWrapper applicationWrapper = new ApplicationInfo.ApplicationWrapper();
         applicationWrapper.setApplicationInfo(applicationInfo);
+        applicationWrapper.setNotificationStatus(ApplicationInfo.NOTIF_PERMISSION_AUTHORIZED);
         Call<ResponseBody> call = appRequest.updateApplicationInfo(applicationWrapper);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
