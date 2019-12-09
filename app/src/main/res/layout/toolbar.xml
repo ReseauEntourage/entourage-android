@@ -17,8 +17,8 @@
         android:elevation="10dp"
         app:tabBackground="@drawable/navigation_tab_background"
         app:tabIndicatorHeight="0dp"
-        app:tabSelectedTextColor="@color/accent"
-        app:tabTextColor="@color/white">
+        app:tabIconTint="@color/navigation_icons_state_list"
+        app:tabTextColor="@color/navigation_icons_state_list" >
 
     </com.google.android.material.tabs.TabLayout>
 
