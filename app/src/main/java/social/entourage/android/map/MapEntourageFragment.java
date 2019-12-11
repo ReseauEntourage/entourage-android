@@ -714,9 +714,15 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         toggleToursList();
     }
 
-    @OnClick({R.id.button_create_entourage, R.id.map_longclick_button_entourage_action})
-    protected void onCreateEntourageAction() {
-        entourageGroupType = null;
+    @OnClick({R.id.button_create_entourage_contribute})
+    protected void onCreateEntourageContributionAction() {
+        entourageGroupType = Entourage.TYPE_CONTRIBUTION;
+        displayEntourageDisclaimer();
+    }
+
+    @OnClick({R.id.button_create_entourage_ask_help, R.id.map_longclick_button_entourage_action})
+    protected void onCreateEntourageHelpAction() {
+        entourageGroupType = Entourage.TYPE_DEMAND;
         displayEntourageDisclaimer();
     }
 

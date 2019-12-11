@@ -7,7 +7,7 @@
     "title_example": "Rencontrez Tatiana ! ",
     "description_example": "Tatiana sur les Champs Elysées est pleine d'humour ! Elle a besoin de produits d'hygiène (et d'une valise de billets me dit elle en riant). Entourez-la!\n\n(Attention : ne mentionnez pas l'identité complète ni la localisation exacte des personnes).",
     "hidden": false,
-    "default": false
+    "default": true
   },
   {
     "entourage_type": "ask_for_help",
@@ -33,7 +33,7 @@
     "entourage_type": "ask_for_help",
     "display_category": "info",
     "key": "ai",
-    "display_category_title": "Poser une question au réseau",
+    "display_category_title": "Une réponse du réseau à ma question",
     "title_example": "Y a-t-il un foyer d'hébergement qui accepte les animaux, pour Laurent et son chat ?",
     "description_example": "Laurent dort à la rue actuellement, avec son chat. Connaissez-vous une solution d'hébergement ?\n\n(Attention : ne mentionnez pas l'identité complète ni la localisation exacte des personnes).",
     "hidden": false,

@@ -4,8 +4,8 @@
     <string name="entourage_create_action_title">ACTION</string>
     <string name="entourage_create_outing_title">ÉVÈNEMENT</string>
     <string name="entourage_create_type_label">Catégorie</string>
-    <string name="entourage_create_type_demand">Je cherche : %1$s</string>
-    <string name="entourage_create_type_contribution">Je me propose de : %1$s</string>
+    <string name="entourage_create_type_demand">Je cherche %1$s</string>
+    <string name="entourage_create_type_contribution">Je me propose de %1$s</string>
     <string name="entourage_create_position_description">Adresse *</string>
     <string name="entourage_create_title_label">Titre *</string>
     <string name="entourage_create_title_hint">Exemple : %1$s</string>
@@ -30,8 +30,12 @@
     <string name="entourage_create_error_location_empty">Indiquez une localisation</string>
 
     <string name="entourage_create_menu">Créer une action</string>
-    <string name="outing_create_menu">Créer un évènement</string>
     <string name="entourage_create_submenu">Demander de l’aide ou faire un don</string>
+    <string name="entourage_create_menu_ask_help">Créer une action</string>
+    <string name="entourage_create_submenu_ask_help">Demander de l’aide</string>
+    <string name="entourage_create_menu_contribute">Créer une contribution</string>
+    <string name="entourage_create_submenu_contribute">Faire un don</string>
+    <string name="outing_create_menu">Créer un évènement</string>
     <string name="outing_create_submenu">Évènement solidaire à une date précise</string>
 
     <!-- Entourage Category Fragment -->

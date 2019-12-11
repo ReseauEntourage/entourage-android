@@ -450,15 +450,18 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
 
     protected void initializeCategory() {
         if (editedEntourage != null) {
-            String entourageType = editedEntourage.getEntourageType();
-            String category = editedEntourage.getCategory();
-            entourageCategory = EntourageCategoryManager.getInstance().findCategory(entourageType, category);
-            if (entourageCategory != null) {
-                entourageCategory.setSelected(true);
-            }
+            entourageCategory = EntourageCategoryManager.getInstance().findCategory(editedEntourage.getEntourageType(), editedEntourage.getCategory());
             groupType = editedEntourage.getGroupType();
-        } else {
-            entourageCategory = null;
+        }
+        if(entourageCategory==null) {
+            if(groupType != null){
+                entourageCategory = EntourageCategoryManager.getInstance().getDefaultCategory(groupType);
+            } else {
+                entourageCategory = EntourageCategoryManager.getInstance().getDefaultCategory();
+            }
+        }
+        if (entourageCategory != null) {
+            entourageCategory.setSelected(true);
         }
         updateFragmentTitle();
         updateCategoryTextView();

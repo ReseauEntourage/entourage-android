@@ -17,24 +17,68 @@
         android:paddingRight="20dp" >
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_line_create_entourage"
+            android:id="@+id/layout_line_create_entourage_ask_help"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentEnd="true">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/textView23"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
-                android:text="@string/entourage_create_menu"
+                android:text="@string/entourage_create_menu_ask_help"
                 android:textColor="@color/greyish_brown"
                 android:textSize="@dimen/entourage_font_medium"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/button_create_entourage"
-                app:layout_constraintTop_toTopOf="@+id/button_create_entourage" />
+                app:layout_constraintEnd_toStartOf="@+id/button_create_entourage_ask_help"
+                app:layout_constraintTop_toTopOf="@+id/button_create_entourage_ask_help" />
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/entourage_create_submenu_ask_help"
+                android:textColor="@color/greyish_brown"
+                android:textSize="@dimen/entourage_font_small"
+                app:layout_constraintEnd_toStartOf="@+id/button_create_entourage_ask_help"
+                app:layout_constraintTop_toBottomOf="@id/textView23" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/button_create_entourage_ask_help"
+                style="@style/MapActionButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:srcCompat="@drawable/ic_entourage_contribution"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_line_create_entourage_contribute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout_line_create_entourage_ask_help"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true">
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/entourage_create_menu_contribute"
+                android:textColor="@color/greyish_brown"
+                android:textSize="@dimen/entourage_font_medium"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/button_create_entourage_contribute"
+                app:layout_constraintTop_toTopOf="@+id/button_create_entourage_contribute" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -42,14 +86,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
-                android:text="@string/entourage_create_submenu"
+                android:text="@string/entourage_create_submenu_contribute"
                 android:textColor="@color/greyish_brown"
                 android:textSize="@dimen/entourage_font_small"
-                app:layout_constraintEnd_toStartOf="@+id/button_create_entourage"
-                app:layout_constraintTop_toBottomOf="@id/textView2" />
+                app:layout_constraintEnd_toStartOf="@+id/button_create_entourage_contribute"
+                app:layout_constraintTop_toBottomOf="@id/textView22" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/button_create_entourage"
+                android:id="@+id/button_create_entourage_contribute"
                 style="@style/MapActionButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -63,7 +107,7 @@
             android:id="@+id/layout_line_create_outing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/layout_line_create_entourage"
+            android:layout_below="@id/layout_line_create_entourage_contribute"
             android:layout_alignParentLeft="true"
             android:layout_alignParentEnd="true">
 
