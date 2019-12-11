@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/item1"
+        android:title="@string/action_empty"
+        android:icon="@drawable/ic_home_white_24dp"/>
+    <item android:id="@+id/item2"
+        android:title="@string/action_empty"
+        android:icon="@drawable/ic_location_city_white_24dp"/>
+    <item android:id="@+id/item3"
+        android:title="@string/action_empty"
+        android:icon="@drawable/ic_add_circle_white_24dp"
+        android:checked="true"/>
+    <item android:id="@+id/item4"
+        android:title="@string/action_empty"
+        android:icon="@drawable/ic_chat_bubble_outline_white_24dp"/>
+    <item android:id="@+id/item5"
+        android:title="@string/action_empty"
+        android:icon="@drawable/ic_account_circle_outline_white_24dp"/>
+</menu>
