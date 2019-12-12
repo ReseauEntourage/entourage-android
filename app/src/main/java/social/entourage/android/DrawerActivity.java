@@ -1,6 +1,5 @@
 package social.entourage.android;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
@@ -10,9 +9,12 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
 import androidx.annotation.IdRes;
-import com.google.android.material.tabs.TabLayout;
+
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -21,12 +23,9 @@ import androidx.appcompat.app.AlertDialog;
 
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.squareup.otto.Subscribe;
 
 import java.io.File;
@@ -68,7 +67,6 @@ import social.entourage.android.entourage.my.MyEntouragesFragment;
 import social.entourage.android.tour.TourService;
 import social.entourage.android.entourage.information.EntourageInformationFragment;
 import social.entourage.android.message.push.PushNotificationManager;
-import social.entourage.android.navigation.BaseBottomNavigationDataSource;
 import social.entourage.android.navigation.BottomNavigationDataSource;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.user.AvatarUploadPresenter;
@@ -103,15 +101,16 @@ public class DrawerActivity extends EntourageSecuredActivity
     @Inject
     AvatarUploadPresenter avatarUploadPresenter;
 
-    @BindView(R.id.toolbar)
-    View toolbar;
+    @BindView(R.id.bottom_navigation)
+    BottomNavigationView bottomBar;
 
     @BindView(R.id.content_view)
     View contentView;
 
-    TextView discussionBadgeView;
+    //TextView discussionBadgeView;
 
     private BottomNavigationDataSource navigationDataSource = new BottomNavigationDataSource();
+    BadgeDrawable messageBadge;
 
     protected Fragment mainFragment;
     protected MapEntourageFragment mapEntourageFragment;
@@ -340,64 +339,39 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     private void configureToolbar() {
-
-        TabLayout tabLayout = toolbar.findViewById(R.id.toolbar_tab_layout);
-        if (tabLayout != null) {
-
+        if (bottomBar != null) {
             // we need to set the listener fist, to respond to the default selected tab request
-            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            bottomBar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
-                public void onTabSelected(final TabLayout.Tab tab) {
-                    int tabIndex = tab.getPosition();
-                    if(tabIndex == navigationDataSource.getActionTabIndex()) {
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    int menuId = item.getItemId();
+                    if(menuId == navigationDataSource.getActionMenuId()) {
                         showFeed(true);
-                        //don't load any fragments
-                    } else {
-                        hideAction();
-                        loadFragment(navigationDataSource.getFragmentAtIndex(tabIndex), navigationDataSource.getFragmentTagAtIndex(tabIndex));
+                        //don't load any fragments and don't switch menu
+                        return false;
                     }
+                    hideAction();
+                    loadFragment(navigationDataSource.getFragmentAtIndex(menuId), navigationDataSource.getFragmentTagAtIndex(menuId));
+                    return true;
                 }
+            });
 
+            bottomBar.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
                 @Override
-                public void onTabUnselected(final TabLayout.Tab tab) {
-
-                }
-
-                @Override
-                public void onTabReselected(final TabLayout.Tab tab) {
-                    if(tab.getPosition() == navigationDataSource.getFeedTabIndex()) {
+                public void onNavigationItemReselected(@NonNull MenuItem item) {
+                    if(item.getItemId() == navigationDataSource.getFeedTabIndex()) {
                         hideAction();
                     }
                 }
             });
 
-            int tabCount = navigationDataSource.getItemCount();
-            for (int i = 0; i < tabCount; i++) {
-                BaseBottomNavigationDataSource.NavigationItem navigationItem = navigationDataSource.getNavigationItemAtIndex(i);
-                TabLayout.Tab tab = tabLayout.newTab();
-                if(i == navigationDataSource.getMyMessagesTabIndex()) {
-                    tab.setCustomView(R.layout.toolbar_view_with_badge);
-                }
-                tab.setText(navigationItem.getText());
-                tab.setIcon(navigationItem.getIcon(getApplicationContext()));
-                tabLayout.addTab(tab);
-                if (i == navigationDataSource.getDefaultSelectedTab()) {
-                    tab.select();
-                }
-                if (i == navigationDataSource.getMyMessagesTabIndex()) {
-                    View view = tab.getCustomView();
-                    if (view != null) {
-                        discussionBadgeView = view.findViewById(R.id.badge_count);
-                    }
-                }
-            }
+            bottomBar.setSelectedItemId(navigationDataSource.getDefaultSelectedTab());
         }
     }
 
-    protected void selectNavigationTab(int tabIndex) {
-        TabLayout tabLayout = toolbar.findViewById(R.id.toolbar_tab_layout);
-        if (tabLayout != null && tabLayout.getTabAt(tabIndex) != null && tabLayout.getSelectedTabPosition() != tabIndex) {
-            tabLayout.getTabAt(tabIndex).select();
+    protected void selectNavigationTab(int menuIndex) {
+        if (bottomBar != null && bottomBar.getSelectedItemId()  != menuIndex) {
+            bottomBar.setSelectedItemId(menuIndex);
         }
     }
 
@@ -528,7 +502,9 @@ public class DrawerActivity extends EntourageSecuredActivity
             return;
         }
 
-        mapEntourageFragment.checkAction(intent.getAction(), intentTour);
+        if(mapEntourageFragment!= null) {
+            mapEntourageFragment.checkAction(intent.getAction(), intentTour);
+        }
         Message message = null;
         if (intent.getExtras() != null) {
             message = (Message) intent.getExtras().getSerializable(PushNotificationManager.PUSH_MESSAGE);
@@ -1027,10 +1003,23 @@ public class DrawerActivity extends EntourageSecuredActivity
     // ----------------------------------
 
     private void refreshBadgeCount() {
-        if (discussionBadgeView != null) {
+        if(messageBadge==null) {
+            if(bottomBar!=null){
+                messageBadge = bottomBar.getOrCreateBadge(navigationDataSource.getMyMessagesTabIndex());
+                messageBadge.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.map_announcement_background, null));
+                messageBadge.setBadgeTextColor(ResourcesCompat.getColor(getResources(), R.color.primary, null));
+                messageBadge.setMaxCharacterCount(2);
+            }
+        }
+        if (messageBadge!= null) {
             int badgeCount = EntourageApplication.get().getBadgeCount();
-            discussionBadgeView.setVisibility(badgeCount > 0 ? View.VISIBLE : View.INVISIBLE);
-            discussionBadgeView.setText(String.valueOf(badgeCount));
+            if(badgeCount > 0) {
+                messageBadge.setVisible(true);
+                messageBadge.setNumber(badgeCount);
+
+            } else {
+                messageBadge.setVisible(false);
+            }
         }
     }
 

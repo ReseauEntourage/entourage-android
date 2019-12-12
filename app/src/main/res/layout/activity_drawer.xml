@@ -15,7 +15,7 @@
         android:layout_height="match_parent">
 
         <include
-            android:id="@+id/toolbar"
+            android:id="@+id/bottom_navigation"
             layout="@layout/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
             android:id="@+id/main_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/toolbar"/>
+            android:layout_above="@+id/bottom_navigation"/>
 
     </RelativeLayout>
 
