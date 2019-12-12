@@ -11,11 +11,11 @@ import social.entourage.android.sidemenu.SideMenuFragment;
 public class BottomNavigationDataSource extends BaseBottomNavigationDataSource {
 
     public BottomNavigationDataSource() {
-        add(new NavigationItem(R.string.action_map, R.drawable.ic_navigation_map), new MapEntourageFragment(), MapEntourageFragment.TAG);
-        add(new NavigationItem(R.string.action_my_messages, R.drawable.ic_navigation_my_messages), new MyEntouragesFragment(), MyEntouragesFragment.TAG);
-        add(new NavigationItem(R.string.action_menu, R.drawable.ic_navigation_menu), new SideMenuFragment(), SideMenuFragment.TAG);
+        add(R.id.bottom_bar_item1, new MapEntourageFragment(), MapEntourageFragment.TAG);
+        add(R.id.bottom_bar_item2, new MyEntouragesFragment(), MyEntouragesFragment.TAG);
+        add(R.id.bottom_bar_item3, new SideMenuFragment(), SideMenuFragment.TAG);
 
-        defaultSelectedTab = 1; // My messages tab
+        defaultSelectedTab = R.id.bottom_bar_item2; // My messages tab
     }
 
 }

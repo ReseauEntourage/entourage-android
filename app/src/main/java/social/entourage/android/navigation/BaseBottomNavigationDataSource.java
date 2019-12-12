@@ -3,7 +3,11 @@ package social.entourage.android.navigation;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+import android.util.SparseArray;
+import android.util.SparseIntArray;
+
 import androidx.annotation.DrawableRes;
+import androidx.annotation.IdRes;
 import androidx.annotation.StringRes;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
@@ -11,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import social.entourage.android.R;
 
@@ -22,45 +27,29 @@ import social.entourage.android.R;
  */
 public abstract class BaseBottomNavigationDataSource {
 
-    ArrayList<NavigationItem> navigationItems = new ArrayList<>();
-    ArrayList<Fragment> navigationFragments = new ArrayList<>();
-    ArrayList<String> navigationFragmentTags = new ArrayList<>();
+    private SparseArray<Fragment> navigationFragments = new SparseArray<>();
+    private SparseArray<String> navigationFragmentTags = new SparseArray<>();
 
-    protected int defaultSelectedTab = 0;
-    protected int feedTabIndex = 0;
-    protected int myMessagesTabIndex = 1;
-    //unused tabs
-    protected int actionTabIndex =-1;
-    protected int guideTabIndex = -1;
+    @IdRes int defaultSelectedTab = R.id.bottom_bar_item1;
+    @IdRes int feedTabIndex = R.id.bottom_bar_item1;
+    @IdRes int myMessagesTabIndex = R.id.bottom_bar_item2;
+    //unused menu
+    @IdRes int actionTabIndex =-1;
+    @IdRes int guideTabIndex = -1;
 
-    public BaseBottomNavigationDataSource() {
+    BaseBottomNavigationDataSource() {}
 
+    protected void add(@IdRes int menuId, Fragment fragment, String tag) {
+        navigationFragments.put(menuId, fragment);
+        navigationFragmentTags.put(menuId, tag);
     }
 
-    protected void add(NavigationItem navigationItem, Fragment fragment, String tag) {
-        navigationItems.add(navigationItem);
-//        navigationClassFragments.add(fragmentClass);
-        navigationFragments.add(fragment);
-        navigationFragmentTags.add(tag);
+    public Fragment getFragmentAtIndex(int menuId) {
+        return navigationFragments.get(menuId);
     }
 
-    public int getItemCount() {
-        return navigationItems.size();
-    }
-
-    public NavigationItem getNavigationItemAtIndex(int index) {
-        if (index < 0 || index >= navigationItems.size()) return null;
-        return navigationItems.get(index);
-    }
-
-    public Fragment getFragmentAtIndex(int index) {
-        if (index < 0 || index >= navigationFragments.size()) return null;
-        return navigationFragments.get(index);
-    }
-
-    public String getFragmentTagAtIndex(int index) {
-        if (index < 0 || index >= navigationFragmentTags.size()) return null;
-        return navigationFragmentTags.get(index);
+    public String getFragmentTagAtIndex(int menuId) {
+        return navigationFragmentTags.get(menuId);
     }
 
     public int getDefaultSelectedTab() {
@@ -79,28 +68,7 @@ public abstract class BaseBottomNavigationDataSource {
         return guideTabIndex;
     }
 
-    public int getActionTabIndex() {
+    public int getActionMenuId() {
         return actionTabIndex;
-    }
-
-    public static class NavigationItem {
-        private @StringRes int text;
-        private @DrawableRes int icon;
-
-        public NavigationItem(@StringRes int text, @DrawableRes int icon) {
-            this.text = text;
-            this.icon = icon;
-        }
-
-        public int getText() {
-            return text;
-        }
-
-        public Drawable getIcon(Context context) {
-            ColorStateList colorStateList = ContextCompat.getColorStateList(context, R.color.navigation_icons_state_list);
-            Drawable drawable = DrawableCompat.wrap(AppCompatResources.getDrawable(context, icon));
-            DrawableCompat.setTintList(drawable, colorStateList);
-            return drawable;
-        }
     }
 }
