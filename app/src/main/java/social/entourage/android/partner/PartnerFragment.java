@@ -19,6 +19,7 @@ import butterknife.OnClick;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.base.EntourageDialogFragment;
+import social.entourage.android.tools.CropCircleTransformation;
 import timber.log.Timber;
 
 /**
@@ -164,7 +165,9 @@ public class PartnerFragment extends EntourageDialogFragment {
         Picasso.get()
                 .load(Uri.parse(partner.getLargeLogoUrl()))
                 .placeholder(R.drawable.partner_placeholder)
+                .transform(new CropCircleTransformation())
                 .into(partnerLogoImageView);
+
         // name
         partnerName.setText(partner.getName());
         // description
