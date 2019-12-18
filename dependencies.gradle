@@ -56,7 +56,7 @@ ext {
     picassoVersion = "2.71828"
     picassoTransformationsVersion = "2.2.1"
     playServicesVersion = "17.0.0"
-    retrofitVersion = "2.7.0"
+    retrofitVersion = "2.6.3" //Version 2.7.0 changes the minimum requirements to Java 8+ or Android 5+
     recyclerViewVersion = "1.1.0"
     shortcutBadgerVersion = "1.1.22"
     supportVersion = "1.0.0"
