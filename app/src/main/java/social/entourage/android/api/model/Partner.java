@@ -1,5 +1,10 @@
 package social.entourage.android.api.model;
 
+import android.content.Context;
+
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -42,6 +47,9 @@ public class Partner extends BaseOrganization implements Serializable {
 
     @SerializedName("website_url")
     private String websiteUrl;
+
+    @SerializedName("user_role_title")
+    private String userRoleTitle;
 
     // ----------------------------------
     // GETTERS & SETTERS
@@ -114,8 +122,8 @@ public class Partner extends BaseOrganization implements Serializable {
     }
 
     @Override
-    public int getTypeAsResourceId() {
-        return R.string.member_type_partner;
+    public String getTypeAsString(Context context) {
+        return userRoleTitle;//context.getString(R.string.member_type_partner);
     }
 
     // ----------------------------------

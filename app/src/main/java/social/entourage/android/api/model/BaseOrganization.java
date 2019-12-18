@@ -1,5 +1,7 @@
 package social.entourage.android.api.model;
 
+import android.content.Context;
+
 import androidx.annotation.StringRes;
 
 import java.util.Comparator;
@@ -15,7 +17,7 @@ public abstract class BaseOrganization {
 
     public abstract int getType();
 
-    public abstract @StringRes int getTypeAsResourceId();
+    public abstract String getTypeAsString(Context contet);
 
     public abstract String getName();
 
