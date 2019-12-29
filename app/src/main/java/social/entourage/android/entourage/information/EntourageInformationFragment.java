@@ -1089,21 +1089,17 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
                         quitTourButton.setVisibility(View.VISIBLE);
                         quitTourButton.setText(FeedItem.JOIN_STATUS_PENDING.equals(feedItem.getJoinStatus()) ? R.string.tour_info_options_cancel_request : R.string.tour_info_options_quit_tour);
                     }
-                    if (feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
-                        reportEntourageButton.setVisibility(View.VISIBLE);
-                        // Share button available only for entourages and non-members
-                        shareEntourageButton.setVisibility(feedItem.isPrivate() || feedItem.isSuspended() ? View.GONE : View.VISIBLE);
-                    }
                 } else {
                     stopTourButton.setVisibility(feedItem.isFreezed() || !feedItem.canBeClosed() ? View.GONE : View.VISIBLE);
-                    if (feedItem.isClosed()) {
-                        stopTourButton.setText(R.string.tour_info_options_freeze_tour);
-                    } else {
-                        stopTourButton.setText(feedItem.getType() == FeedItem.ENTOURAGE_CARD ? R.string.tour_info_options_freeze_tour : R.string.tour_info_options_stop_tour);
-                    }
+                    stopTourButton.setText( (feedItem.isClosed() || feedItem.getType() == FeedItem.ENTOURAGE_CARD) ? R.string.tour_info_options_freeze_tour : R.string.tour_info_options_stop_tour);
                     if (feedItem.getType() == FeedItem.ENTOURAGE_CARD && FeedItem.STATUS_OPEN.equals(feedItem.getStatus())) {
                         editEntourageButton.setVisibility(View.VISIBLE);
                     }
+                }
+                if (feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
+                    reportEntourageButton.setVisibility(View.VISIBLE);
+                    // Share button available only for entourages and non-members
+                    shareEntourageButton.setVisibility(feedItem.isPrivate() || feedItem.isSuspended() ? View.GONE : View.VISIBLE);
                 }
                 if (promoteEntourageButton != null && membersList != null && feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
                     for (TimestampedObject member : membersList) {
