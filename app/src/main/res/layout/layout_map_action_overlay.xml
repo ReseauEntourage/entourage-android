@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:alpha="0.88">
 
     <RelativeLayout
-        android:id="@+id/map_action_buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -148,7 +147,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_line_create_maraude"
+            android:id="@+id/layout_line_start_tour_launcher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -174,7 +173,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
-                android:text="Pour votre association"
+                android:text="@string/entourage_create_submenu_start_tour_launcher"
                 android:textColor="@color/greyish_brown"
                 android:textSize="@dimen/entourage_font_small"
                 app:layout_constraintEnd_toStartOf="@+id/button_start_tour_launcher"
@@ -192,11 +191,11 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_line_add_encounter"
+            android:id="@+id/layout_line_add_tour_encounter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@id/layout_line_create_maraude"
+            android:layout_below="@id/layout_line_start_tour_launcher"
             android:layout_alignParentEnd="true">
 
             <TextView
@@ -218,7 +217,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
-                android:text="lors de votre maraude"
+                android:text="@string/entourage_create_submenu_add_tour_encounter"
                 android:textColor="@color/greyish_brown"
                 android:textSize="@dimen/entourage_font_small"
                 app:layout_constraintEnd_toStartOf="@+id/button_add_tour_encounter"

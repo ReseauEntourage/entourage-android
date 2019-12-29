@@ -1,6 +1,7 @@
 package social.entourage.android.map;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -24,6 +25,7 @@ import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.entourage.category.EntourageCategory;
 import social.entourage.android.tour.encounter.EncounterDisclaimerFragment;
 import social.entourage.android.entourage.create.CreateEntourageFragment;
 import social.entourage.android.entourage.EntourageDisclaimerFragment;
@@ -114,10 +116,10 @@ public class MapPresenter {
         }
     }
 
-    public void createEntourage(LatLng location, String groupType) {
+    public void createEntourage(LatLng location, @NonNull String groupType, @Nullable EntourageCategory category) {
         if (fragment != null && fragment.getActivity() != null && !fragment.isStateSaved()) {
             FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
-            CreateEntourageFragment entourageFragment = CreateEntourageFragment.newInstance(location, groupType);
+            CreateEntourageFragment entourageFragment = CreateEntourageFragment.newInstance(location, groupType, category);
             entourageFragment.show(fragmentManager, CreateEntourageFragment.TAG);
         }
     }

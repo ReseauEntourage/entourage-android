@@ -325,7 +325,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
     // ----------------------------------
 
     @Optional
-    @OnClick({R.id.button_start_tour_launcher, R.id.map_longclick_button_start_tour_launcher})
+    @OnClick({R.id.layout_line_start_tour_launcher, R.id.map_longclick_button_start_tour_launcher})
     public void onStartTourLauncher() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_TOUR_CREATE_CLICK);
         if (tourService != null) {
@@ -368,7 +368,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
     }
 
     @Optional
-    @OnClick({R.id.button_add_tour_encounter, R.id.map_longclick_button_create_encounter})
+    @OnClick({R.id.layout_line_add_tour_encounter, R.id.map_longclick_button_create_encounter})
     public void onAddEncounter() {
         if (getActivity() == null) {
             return;
@@ -424,8 +424,8 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         if(mapActionView==null) {
             return;
         }
-        View addTourEncounterButton = mapActionView.findViewById(R.id.layout_line_add_encounter);
-        View startTourButton = mapActionView.findViewById(R.id.layout_line_create_maraude);
+        View addTourEncounterButton = mapActionView.findViewById(R.id.layout_line_add_tour_encounter);
+        View startTourButton = mapActionView.findViewById(R.id.layout_line_start_tour_launcher);
         if (tourService != null && tourService.isRunning()) {
             if (addTourEncounterButton != null) addTourEncounterButton.setVisibility(View.INVISIBLE);
             if (startTourButton != null) startTourButton.setVisibility(View.GONE);

@@ -77,6 +77,8 @@ import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.base.HeaderBaseAdapter;
 import social.entourage.android.configuration.Configuration;
+import social.entourage.android.entourage.category.EntourageCategory;
+import social.entourage.android.entourage.category.EntourageCategoryManager;
 import social.entourage.android.location.LocationUtils;
 import social.entourage.android.entourage.minicards.EntourageMiniCardsView;
 import social.entourage.android.map.filter.MapFilter;
@@ -163,9 +165,6 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     @BindView(R.id.fragment_map_action_overlay)
     protected RelativeLayout mapActionView;
 
-    @BindView(R.id.map_action_buttons)
-    RelativeLayout mapActionButtonsView;
-
     protected NewsfeedAdapter newsfeedAdapter;
     private Timer refreshToursTimer;
 
@@ -178,6 +177,9 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
     // requested entourage group type
     private String entourageGroupType = null;
+
+    // requested entourage group type
+    private EntourageCategory entourageCategory = null;
 
     // current selected tab
     protected MapTabItem selectedTab = MapTabItem.ALL_TAB;
@@ -424,7 +426,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
             longTapCoordinates = null;
         }
         if (presenter != null) {
-            presenter.createEntourage(location, entourageGroupType);
+            presenter.createEntourage(location, entourageGroupType, entourageCategory);
         }
     }
 
@@ -714,22 +716,25 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         toggleToursList();
     }
 
-    @OnClick({R.id.button_create_entourage_contribute})
+    @OnClick({R.id.layout_line_create_entourage_contribute})
     protected void onCreateEntourageContributionAction() {
-        entourageGroupType = Entourage.TYPE_CONTRIBUTION;
+        entourageCategory = EntourageCategoryManager.getInstance().getDefaultCategory(Entourage.TYPE_CONTRIBUTION);
+        entourageGroupType = Entourage.TYPE_ACTION;
         displayEntourageDisclaimer();
     }
 
-    @OnClick({R.id.button_create_entourage_ask_help, R.id.map_longclick_button_entourage_action})
+    @OnClick({R.id.layout_line_create_entourage_ask_help, R.id.map_longclick_button_entourage_action})
     protected void onCreateEntourageHelpAction() {
-        entourageGroupType = Entourage.TYPE_DEMAND;
+        entourageCategory = EntourageCategoryManager.getInstance().getDefaultCategory(Entourage.TYPE_DEMAND);
+        entourageGroupType = Entourage.TYPE_ACTION;
         displayEntourageDisclaimer();
     }
 
     @Optional
-    @OnClick({R.id.button_create_outing})
+    @OnClick({R.id.layout_line_create_outing})
     protected void onCreateOuting() {
         entourageGroupType = Entourage.TYPE_OUTING;
+        entourageCategory = null;
         displayEntourageDisclaimer();
     }
 
@@ -1182,7 +1187,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         anim.start();
     }
 
-    public void toggleToursList() {
+    private void toggleToursList() {
         if (!isFullMapShown) {
             displayFullMap();
             EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_06_2);
@@ -1192,11 +1197,11 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         }
     }
 
-    public boolean isToursListVisible() {
+    private boolean isToursListVisible() {
         return !isFullMapShown;
     }
 
-    public void ensureMapVisible() {
+    private void ensureMapVisible() {
         if(newsfeedListView!=null)
             newsfeedListView.scrollToPosition(0);
     }
@@ -1566,8 +1571,11 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         public void onScrolled(@NonNull final RecyclerView recyclerView, final int dx, final int dy) {
             if (dy > 0) {
                 // Scrolling down
-                int visibleItemCount = recyclerView.getChildCount();
                 LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if(linearLayoutManager==null) {
+                    return;
+                }
+                int visibleItemCount = recyclerView.getChildCount();
                 int firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
                 int totalItemCount = linearLayoutManager.getItemCount();
                 if (totalItemCount - visibleItemCount <= firstVisibleItem + 2) {

@@ -59,6 +59,8 @@ import social.entourage.android.tools.BusProvider;
 import social.entourage.android.view.EntourageTitleView;
 import social.entourage.android.view.HtmlTextView;
 
+import static social.entourage.android.entourage.category.EntourageCategoryFragment.KEY_ENTOURAGE_CATEGORY;
+
 /**
  * Base fragment for creating and editing an action/entourage
  */
@@ -145,11 +147,14 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         // Required empty public constructor
     }
 
-    public static CreateEntourageFragment newInstance(LatLng location, String groupType) {
+    public static CreateEntourageFragment newInstance(LatLng location, @NonNull String groupType, @Nullable EntourageCategory category) {
         CreateEntourageFragment fragment = new CreateEntourageFragment();
         Bundle args = new Bundle();
         args.putParcelable(KEY_ENTOURAGE_LOCATION, location);
         args.putString(KEY_ENTOURAGE_GROUP_TYPE, groupType);
+        if(category!=null) {
+            args.putSerializable(KEY_ENTOURAGE_CATEGORY, category);
+        }
         fragment.setArguments(args);
 
         return fragment;
@@ -438,6 +443,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
                 entourageMetadata = editedEntourage.getMetadata();
             }
             groupType = args.getString(KEY_ENTOURAGE_GROUP_TYPE, null);
+            entourageCategory = (EntourageCategory)args.getSerializable(KEY_ENTOURAGE_CATEGORY);
         }
         initializeCategory();
         initializeLocation();
