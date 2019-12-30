@@ -1,6 +1,6 @@
 package social.entourage.android.api.model.tape;
 
-import social.entourage.android.api.model.map.Poi;
+import social.entourage.android.api.model.guide.Poi;
 import social.entourage.android.api.tape.Events;
 
 /**

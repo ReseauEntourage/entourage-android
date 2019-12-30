@@ -25,7 +25,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
-import social.entourage.android.api.model.map.Poi;
+import social.entourage.android.api.model.guide.Poi;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.guide.PoiRenderer;
 import social.entourage.android.map.OnAddressClickListener;

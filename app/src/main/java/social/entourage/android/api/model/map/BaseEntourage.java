@@ -389,8 +389,9 @@ public class BaseEntourage extends FeedItem implements Serializable {
     }
 
     @Override
-    public @StringRes int getJoinRequestTitle() {
-        return R.string.tour_info_request_join_title_entourage;
+    public int getJoinRequestTitle() {
+        if (TYPE_OUTING.equalsIgnoreCase(groupType)) return R.string.tour_info_request_join_title_outing;
+        return super.getJoinRequestTitle();
     }
 
     @Override

@@ -14,7 +14,7 @@ import java.util.List;
 
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Category;
-import social.entourage.android.api.model.map.Poi;
+import social.entourage.android.api.model.guide.Poi;
 
 public class PoiRenderer extends DefaultClusterRenderer<Poi> {
 

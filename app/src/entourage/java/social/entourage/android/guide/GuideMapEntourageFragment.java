@@ -39,7 +39,7 @@ import social.entourage.android.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Category;
-import social.entourage.android.api.model.map.Poi;
+import social.entourage.android.api.model.guide.Poi;
 import social.entourage.android.api.model.tape.EntouragePoiRequest;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;

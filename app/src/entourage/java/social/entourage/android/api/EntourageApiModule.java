@@ -14,7 +14,7 @@ import retrofit2.Retrofit;
 public class EntourageApiModule {
     @Provides
     @Singleton
-    public MapRequest providesMapService(final Retrofit restAdapter) {
-        return restAdapter.create(MapRequest.class);
+    public PoiRequest providesMapService(final Retrofit restAdapter) {
+        return restAdapter.create(PoiRequest.class);
     }
 }

@@ -4,9 +4,9 @@ import java.util.List;
 
 import social.entourage.android.api.model.map.Category;
 import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.api.model.map.Poi;
+import social.entourage.android.api.model.guide.Poi;
 
-public class MapResponse {
+public class PoiResponse {
     private List<Encounter> encounters;
     private List<Poi> pois;
     private List<Category> categories;

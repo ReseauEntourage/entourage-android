@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.api.model.map.Poi;
+import social.entourage.android.api.model.guide.Poi;
 import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.tape.EntouragePoiRequest;
 import social.entourage.android.base.BaseCardViewHolder;
