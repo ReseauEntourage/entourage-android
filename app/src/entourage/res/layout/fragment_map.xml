@@ -22,8 +22,8 @@
                 android:layout_alignParentTop="true"
                 android:background="@color/accent"
                 android:elevation="10dp"
-                app:tabInlineLabel="true"
                 app:tabIndicatorColor="@color/white"
+                app:tabInlineLabel="true"
                 app:tabTextColor="@color/white">
 
                 <com.google.android.material.tabs.TabItem
@@ -31,14 +31,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:icon="@drawable/entourage_logo_white"
-                    android:text="@string/map_tab_all"/>
+                    android:text="@string/map_tab_all" />
 
                 <com.google.android.material.tabs.TabItem
                     android:id="@+id/map_tab_events_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:icon="@drawable/ic_event_white_24dp"
-                    android:text="@string/map_tab_events"/>
+                    android:text="@string/map_tab_events" />
 
             </com.google.android.material.tabs.TabLayout>
 
@@ -123,11 +123,11 @@
                 android:id="@+id/fragment_map_display_toggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/fragment_map_gps"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="top"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:layout_below="@+id/fragment_map_gps"
                 android:contentDescription="@string/map_poi_propose_button"
                 android:visibility="visible"
                 app:backgroundTint="@color/accent"
@@ -202,7 +202,7 @@
                 app:fab_colorNormal="@color/dodger_blue"
                 app:fab_colorPressed="@color/dodger_blue"
                 app:fab_colorRipple="@color/dodger_blue"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
 
         </RelativeLayout>
 

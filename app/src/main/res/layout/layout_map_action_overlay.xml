@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:alpha="0.88">
+    android:alpha="0.88"
+    android:background="@color/white">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -12,15 +12,13 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_gravity="end"
-        android:paddingBottom="20dp"
-        android:paddingRight="20dp" >
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp"
+        android:paddingBottom="20dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_line_create_entourage_ask_help"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentEnd="true">
+            style="@style/MapActionLine">
 
             <TextView
                 android:id="@+id/textView23"
@@ -37,201 +35,126 @@
 
             <TextView
                 android:id="@+id/textView21"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
+                style="@style/MapActionSubMenu"
                 android:text="@string/entourage_create_submenu_ask_help"
                 android:textColor="@color/greyish_brown"
-                android:textSize="@dimen/entourage_font_small"
                 app:layout_constraintEnd_toStartOf="@+id/button_create_entourage_ask_help"
                 app:layout_constraintTop_toBottomOf="@id/textView23" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button_create_entourage_ask_help"
                 style="@style/MapActionButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:srcCompat="@drawable/ic_entourage_contribution"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/ic_entourage_contribution" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_line_create_entourage_contribute"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_below="@id/layout_line_create_entourage_ask_help"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentEnd="true">
+            style="@style/MapActionLine">
 
             <TextView
                 android:id="@+id/textView22"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
+                style="@style/MapActionMenu"
                 android:text="@string/entourage_create_menu_contribute"
-                android:textColor="@color/greyish_brown"
-                android:textSize="@dimen/entourage_font_medium"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/button_create_entourage_contribute"
                 app:layout_constraintTop_toTopOf="@+id/button_create_entourage_contribute" />
 
             <TextView
                 android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
+                style="@style/MapActionSubMenu"
                 android:text="@string/entourage_create_submenu_contribute"
-                android:textColor="@color/greyish_brown"
-                android:textSize="@dimen/entourage_font_small"
                 app:layout_constraintEnd_toStartOf="@+id/button_create_entourage_contribute"
                 app:layout_constraintTop_toBottomOf="@id/textView22" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button_create_entourage_contribute"
                 style="@style/MapActionButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:srcCompat="@drawable/ic_entourage_contribution"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/ic_entourage_contribution" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_line_create_outing"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_below="@id/layout_line_create_entourage_contribute"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentEnd="true">
+            style="@style/MapActionLine">
 
             <TextView
                 android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
+                style="@style/MapActionMenu"
                 android:text="@string/outing_create_menu"
-                android:textColor="@color/greyish_brown"
-                android:textSize="@dimen/entourage_font_medium"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/button_create_outing"
                 app:layout_constraintTop_toTopOf="@+id/button_create_outing" />
 
             <TextView
                 android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
+                style="@style/MapActionSubMenu"
                 android:text="@string/outing_create_submenu"
-                android:textColor="@color/greyish_brown"
-                android:textSize="@dimen/entourage_font_small"
                 app:layout_constraintEnd_toStartOf="@+id/button_create_outing"
                 app:layout_constraintTop_toBottomOf="@id/textView5" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button_create_outing"
                 style="@style/MapActionButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:srcCompat="@drawable/ic_event_white_24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/ic_event_white_24dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_line_start_tour_launcher"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_below="@id/layout_line_create_outing"
-            android:layout_alignParentEnd="true">
+            style="@style/MapActionLine">
 
             <TextView
                 android:id="@+id/textView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
+                style="@style/MapActionMenu"
                 android:text="@string/tour_create"
-                android:textColor="@color/greyish_brown"
-                android:textSize="@dimen/entourage_font_medium"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/button_start_tour_launcher"
                 app:layout_constraintTop_toTopOf="@+id/button_start_tour_launcher" />
 
             <TextView
                 android:id="@+id/textView7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
+                style="@style/MapActionSubMenu"
                 android:text="@string/entourage_create_submenu_start_tour_launcher"
-                android:textColor="@color/greyish_brown"
-                android:textSize="@dimen/entourage_font_small"
                 app:layout_constraintEnd_toStartOf="@+id/button_start_tour_launcher"
                 app:layout_constraintTop_toBottomOf="@id/textView6" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button_start_tour_launcher"
                 style="@style/MapActionButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:srcCompat="@drawable/ic_button_create_maraude"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/ic_button_create_maraude" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_line_add_tour_encounter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_below="@id/layout_line_start_tour_launcher"
-            android:layout_alignParentEnd="true">
+            style="@style/MapActionLine">
 
             <TextView
                 android:id="@+id/textView8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
+                style="@style/MapActionMenu"
                 android:text="@string/tour_create_encounter_button"
-                android:textColor="@color/greyish_brown"
-                android:textSize="@dimen/entourage_font_medium"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/button_add_tour_encounter"
                 app:layout_constraintTop_toTopOf="@+id/button_add_tour_encounter" />
 
             <TextView
                 android:id="@+id/textView9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
+                style="@style/MapActionSubMenu"
                 android:text="@string/entourage_create_submenu_add_tour_encounter"
-                android:textColor="@color/greyish_brown"
-                android:textSize="@dimen/entourage_font_small"
                 app:layout_constraintEnd_toStartOf="@+id/button_add_tour_encounter"
                 app:layout_constraintTop_toBottomOf="@id/textView8" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button_add_tour_encounter"
                 style="@style/MapActionButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:srcCompat="@drawable/ic_encounter"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/ic_encounter" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </RelativeLayout>

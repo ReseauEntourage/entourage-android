@@ -149,10 +149,9 @@
     </style>
 
     <style name="MapActionButtonStyle">
-        <item name="fab_shadowColor">@android:color/transparent</item>
-        <item name="fab_colorNormal">@android:color/transparent</item>
-        <item name="fab_colorPressed">@android:color/transparent</item>
-        <item name="fab_colorRipple">@android:color/transparent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">16dp</item>
     </style>
 
     <!-- Style for ongoing tour marker -->
@@ -213,6 +212,32 @@
 
     <style name="EntourageOSSLicenses.ActionBarTheme" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@color/accent</item>
+    </style>
+
+    <style name="MapActionSubMenu">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:textColor">@color/greyish_brown</item>
+        <item name="android:textSize">@dimen/entourage_font_small</item>
+    </style>
+
+    <style name="MapActionMenu">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:textColor">@color/greyish_brown</item>
+        <item name="android:textSize">@dimen/entourage_font_medium</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MapActionLine">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_alignParentEnd">true</item>
     </style>
 
 
