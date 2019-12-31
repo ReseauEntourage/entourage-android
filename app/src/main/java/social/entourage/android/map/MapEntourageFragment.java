@@ -281,6 +281,13 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     }
 
     @Override
+    @OnClick(R.id.fragment_map_action_overlay)
+    void hideLongClickView() {
+        //here just to catch click on zones without action in overlay
+        super.hideLongClickView();
+    }
+
+    @Override
     public boolean onBackPressed() {
         if (mapActionView != null && mapActionView.getVisibility() == View.VISIBLE) {
             mapActionView.setVisibility(View.GONE);

@@ -245,7 +245,7 @@ public abstract class BaseMapEntourageFragment extends Fragment implements BackP
         mapLongClickView.setVisibility(View.VISIBLE);
     }
 
-    @OnClick({R.id.fragment_map_longclick, R.id.fragment_map_action_overlay})
+    @OnClick(R.id.fragment_map_longclick)
     void hideLongClickView() {
         onBackPressed();
     }
