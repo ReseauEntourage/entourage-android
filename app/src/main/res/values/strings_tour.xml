@@ -82,7 +82,8 @@
     <string name="tour_end_confirmation">Voulez-vous arrêter votre maraude ?\nUn mail récapitulatif vous sera envoyé.</string>
     <string name="tour_end_duration">Passées dans la rue</string>
     <string name="tour_end_encounters">Personne rencontrée</string>
-    <string name="tour_end_distance">km parcourus</string>
+    <string name="tour_end_distance_value_in_km">%1$.3f</string>
+    <string name="tour_end_distance_text">km parcourus</string>
 
     <!-- Tour Cell -->
     <string name="tour_cell_title">%1$s</string>

@@ -112,7 +112,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:text="@string/tour_end_distance"
+                    android:text="@string/tour_end_distance_text"
                     android:textColor="@color/greyish"
                     android:textSize="@dimen/entourage_font_medium"/>
             </LinearLayout>
