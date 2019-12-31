@@ -365,7 +365,9 @@ public class DrawerActivity extends EntourageSecuredActivity
                 }
             });
 
-            bottomBar.setSelectedItemId(navigationDataSource.getDefaultSelectedTab());
+            int defaultId = navigationDataSource.getDefaultSelectedTab();
+            loadFragment(navigationDataSource.getFragmentAtIndex(defaultId), navigationDataSource.getFragmentTagAtIndex(defaultId));
+            bottomBar.setSelectedItemId(defaultId);
         }
     }
 
