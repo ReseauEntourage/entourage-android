@@ -33,5 +33,6 @@
     <string name="empty_description"></string>
 
     <string name="preference_file_key">ENTOURAGE_GCM_DATA</string>
+    <string name="action_overlay_close">Fermer le menu Actions</string>
 
 </resources>

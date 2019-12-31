@@ -5,6 +5,15 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
+    <ImageView
+        android:id="@+id/image_overlay_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/action_overlay_close"
+        android:layout_marginStart="@dimen/entourage_padding_10"
+        android:layout_marginTop="@dimen/entourage_padding_10"
+        app:srcCompat="@drawable/ic_close" />
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1563,6 +1563,8 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     }
 
     public void onShowAction() {
+        hideTourLauncher();
+        hideLongClickView();
         if(!handleSpecialCasesForFAB() && mapActionView!=null) {
             mapActionView.setVisibility(View.VISIBLE);
         }
