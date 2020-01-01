@@ -2115,7 +2115,9 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
             if (FeedItem.JOIN_STATUS_REJECTED.equals(status)) {
                 messageId = R.string.tour_join_request_rejected;
             }
-            Toast.makeText(getActivity(), messageId, Toast.LENGTH_SHORT).show();
+            if(getActivity()!=null) {
+                Toast.makeText(getActivity(), messageId, Toast.LENGTH_SHORT).show();
+            }
             // Update the card
             TourUser card = (TourUser) discussionAdapter.findCard(TimestampedObject.TOUR_USER_JOIN, userId);
             if (card != null) {
