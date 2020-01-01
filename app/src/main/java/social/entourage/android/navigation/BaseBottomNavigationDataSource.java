@@ -1,21 +1,9 @@
 package social.entourage.android.navigation;
 
-import android.content.Context;
-import android.content.res.ColorStateList;
-import android.graphics.drawable.Drawable;
 import android.util.SparseArray;
-import android.util.SparseIntArray;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
-import androidx.annotation.StringRes;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import social.entourage.android.R;
 
@@ -30,9 +18,9 @@ public abstract class BaseBottomNavigationDataSource {
     private SparseArray<Fragment> navigationFragments = new SparseArray<>();
     private SparseArray<String> navigationFragmentTags = new SparseArray<>();
 
-    @IdRes int defaultSelectedTab = R.id.bottom_bar_item1;
-    @IdRes int feedTabIndex = R.id.bottom_bar_item1;
-    @IdRes int myMessagesTabIndex = R.id.bottom_bar_item2;
+    @IdRes int defaultSelectedTab = R.id.bottom_bar_newsfeed;
+    @IdRes int feedTabIndex = R.id.bottom_bar_newsfeed;
+    @IdRes int myMessagesTabIndex = R.id.bottom_bar_mymessages;
     //unused menu
     @IdRes int actionTabIndex =-1;
     @IdRes int guideTabIndex = -1;

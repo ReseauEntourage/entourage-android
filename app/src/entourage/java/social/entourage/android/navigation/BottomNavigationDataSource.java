@@ -13,14 +13,14 @@ public class BottomNavigationDataSource extends BaseBottomNavigationDataSource {
 
     public BottomNavigationDataSource() {
         MapEntourageWithTourFragment homeFragment = new MapEntourageWithTourFragment();
-        add(R.id.bottom_bar_item1, homeFragment, MapEntourageWithTourFragment.TAG);
-        add(R.id.bottom_bar_item2, new GuideMapEntourageFragment(), GuideMapEntourageFragment.TAG);
-        add(R.id.bottom_bar_item3, homeFragment, MapEntourageWithTourFragment.TAG);
-        add(R.id.bottom_bar_item4, new MyEntouragesFragment(), MyEntouragesFragment.TAG);
-        add(R.id.bottom_bar_item5, new SideMenuFragment(), SideMenuFragment.TAG);
+        add(R.id.bottom_bar_newsfeed, homeFragment, MapEntourageWithTourFragment.TAG);
+        add(R.id.bottom_bar_guide, new GuideMapEntourageFragment(), GuideMapEntourageFragment.TAG);
+        add(R.id.bottom_bar_plus, homeFragment, MapEntourageWithTourFragment.TAG);
+        add(R.id.bottom_bar_mymessages, new MyEntouragesFragment(), MyEntouragesFragment.TAG);
+        add(R.id.bottom_bar_profile, new SideMenuFragment(), SideMenuFragment.TAG);
 
-        guideTabIndex = R.id.bottom_bar_item2;
-        myMessagesTabIndex=R.id.bottom_bar_item4;
-        actionTabIndex = R.id.bottom_bar_item3;
+        guideTabIndex = R.id.bottom_bar_guide;
+        myMessagesTabIndex=R.id.bottom_bar_mymessages;
+        actionTabIndex = R.id.bottom_bar_plus;
     }
 }

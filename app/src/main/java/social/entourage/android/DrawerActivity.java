@@ -351,7 +351,7 @@ public class DrawerActivity extends EntourageSecuredActivity
                         return false;
                     }
                     hideAction();
-                    loadFragment(navigationDataSource.getFragmentAtIndex(menuId), navigationDataSource.getFragmentTagAtIndex(menuId));
+                    loadFragment(menuId);
                     return true;
                 }
             });
@@ -366,7 +366,7 @@ public class DrawerActivity extends EntourageSecuredActivity
             });
 
             int defaultId = navigationDataSource.getDefaultSelectedTab();
-            loadFragment(navigationDataSource.getFragmentAtIndex(defaultId), navigationDataSource.getFragmentTagAtIndex(defaultId));
+            loadFragment(defaultId);
             bottomBar.setSelectedItemId(defaultId);
         }
     }
@@ -387,19 +387,22 @@ public class DrawerActivity extends EntourageSecuredActivity
         selectedSidemenuAction = 0;
     }
 
-    protected void loadFragment(Fragment newFragment, String tag) {
+    protected void loadFragment(int menuId) {
         try {
+            Fragment newFragment = navigationDataSource.getFragmentAtIndex(menuId);
             if (newFragment == null) return;
             mainFragment = newFragment;
             if (mainFragment instanceof MapEntourageFragment) {
                 mapEntourageFragment = (MapEntourageFragment) newFragment;
             }
+            String tag = navigationDataSource.getFragmentTagAtIndex(menuId);
             FragmentManager fragmentManager = getSupportFragmentManager();
             if (!fragmentManager.popBackStackImmediate(tag, 0)) {
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.main_fragment, mainFragment, tag);
                 fragmentTransaction.addToBackStack(tag);
                 fragmentTransaction.commit();
+
             }
         } catch(IllegalStateException e){
             EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
