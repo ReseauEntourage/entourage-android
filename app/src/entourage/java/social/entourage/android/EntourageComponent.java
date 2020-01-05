@@ -48,7 +48,7 @@ public interface EntourageComponent {
     AppRequest getAppRequest();
     EncounterRequest getEncounterRequest();
     LoginRequest getLoginRequest();
-    PoiRequest getMapRequest();
+    PoiRequest getPoiRequest();
     TourRequest getTourRequest();
     UserRequest getUserRequest();
     EntourageRequest getEntourageRequest();

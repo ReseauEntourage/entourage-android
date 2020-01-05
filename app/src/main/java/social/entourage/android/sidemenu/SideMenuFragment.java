@@ -153,7 +153,7 @@ public class SideMenuFragment extends Fragment {
     }
 
     private void updateUserView() {
-        User user = EntourageApplication.me();
+        User user = EntourageApplication.me(getActivity());
         if (user != null) {
             userName.setText(user.getDisplayName());
             String avatarURL = user.getAvatarURL();

@@ -185,14 +185,6 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
         }
     }
 
-    protected void displayFeedItemOptions(FeedItem feedItem) {
-        if (activity != null && activity.isSafeToCommit()) {
-            FeedItemOptionsFragment feedItemOptionsFragment = FeedItemOptionsFragment.newInstance(feedItem);
-            feedItemOptionsFragment.show(activity.getSupportFragmentManager(), FeedItemOptionsFragment.TAG);
-        }
-
-    }
-
     protected void proposePOI() {
         // does nothing
     }

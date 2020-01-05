@@ -110,15 +110,6 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
 
     }
 
-    /*
-    @Override
-    protected void onStart() {
-        super.onStart();
-        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-    }
-    */
-
     @Override
     protected void setupComponent(EntourageComponent entourageComponent) {
         DaggerCreateEncounterComponent.builder()
@@ -133,7 +124,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
         if (requestCode == VOICE_RECOGNITION_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 List<String> textMatchList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                if (!textMatchList.isEmpty()) {
+                if (textMatchList!=null && !textMatchList.isEmpty()) {
                     if (messageEditText.getText().toString().equals("")) {
                         messageEditText.setText(textMatchList.get(0));
                     } else {

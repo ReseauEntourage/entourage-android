@@ -1,5 +1,6 @@
 package social.entourage.android.navigation;
 
+import social.entourage.android.PlusFragment;
 import social.entourage.android.R;
 import social.entourage.android.guide.GuideMapEntourageFragment;
 import social.entourage.android.map.MapEntourageWithTourFragment;
@@ -12,10 +13,9 @@ import social.entourage.android.sidemenu.SideMenuFragment;
 public class BottomNavigationDataSource extends BaseBottomNavigationDataSource {
 
     public BottomNavigationDataSource() {
-        MapEntourageWithTourFragment homeFragment = new MapEntourageWithTourFragment();
-        add(R.id.bottom_bar_newsfeed, homeFragment, MapEntourageWithTourFragment.TAG);
+        add(R.id.bottom_bar_newsfeed, new MapEntourageWithTourFragment(), MapEntourageWithTourFragment.TAG);
         add(R.id.bottom_bar_guide, new GuideMapEntourageFragment(), GuideMapEntourageFragment.TAG);
-        add(R.id.bottom_bar_plus, homeFragment, MapEntourageWithTourFragment.TAG);
+        add(R.id.bottom_bar_plus, new PlusFragment(), PlusFragment.TAG);
         add(R.id.bottom_bar_mymessages, new MyEntouragesFragment(), MyEntouragesFragment.TAG);
         add(R.id.bottom_bar_profile, new SideMenuFragment(), SideMenuFragment.TAG);
 

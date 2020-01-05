@@ -93,7 +93,7 @@ public class TourServiceManager {
     private final LocationProvider locationProvider;
     public final EntourageLocation entourageLocation;
 
-    private Tour tour;
+    private Tour currentTour;
     private Location previousLocation;
     private String tourUUID;
     private int pointsNeededForNextRequest;
@@ -161,7 +161,7 @@ public class TourServiceManager {
                 // it's not the user's tour, so remove it from preferences
                 controller.saveTour(null);
             } else {
-                tourServiceManager.tour = savedTour;
+                tourServiceManager.currentTour = savedTour;
                 tourServiceManager.tourUUID = savedTour.getUUID();
                 tourService.notifyListenersTourCreated(true, savedTour.getUUID());
                 provider.setUserType(UserType.PRO);
@@ -176,12 +176,12 @@ public class TourServiceManager {
     // ----------------------------------
 
     public Tour getTour() {
-        return tour;
+        return currentTour;
     }
 
     String getTourUUID() {
-        if (tour != null) {
-            return tour.getUUID();
+        if (currentTour != null) {
+            return currentTour.getUUID();
         }
         return tourUUID == null ? "" : tourUUID;
     }
@@ -191,7 +191,7 @@ public class TourServiceManager {
     }
 
     void setTourDuration(final String duration) {
-        tour.setDuration(duration);
+        currentTour.setDuration(duration);
     }
 
     // ----------------------------------
@@ -203,7 +203,7 @@ public class TourServiceManager {
     }
 
     void startTour(final String type) {
-        tour = new Tour(type);
+        currentTour = new Tour(type);
         sendTour();
     }
 
@@ -217,18 +217,18 @@ public class TourServiceManager {
     }
 
     boolean isRunning() {
-        return tour != null;
+        return currentTour != null;
     }
 
     void addEncounter(final Encounter encounter) {
-        if (tour != null) {
-            tour.addEncounter(encounter);
+        if (currentTour != null) {
+            currentTour.addEncounter(encounter);
         }
     }
 
     void updateEncounter(final Encounter encounter) {
-        if (tour != null) {
-            tour.updateEncounter(encounter);
+        if (currentTour != null) {
+            currentTour.updateEncounter(encounter);
         }
     }
 
@@ -259,7 +259,7 @@ public class TourServiceManager {
         }
         final TourPoint.TourPointWrapper tourPointWrapper = new TourPoint.TourPointWrapper();
         tourPointWrapper.setTourPoints(new ArrayList<>(pointsToSend));
-        tourPointWrapper.setDistance(tour.getDistance());
+        tourPointWrapper.setDistance(currentTour.getDistance());
         final Call<Tour.TourWrapper> call = tourRequest.tourPoints(tourUUID, tourPointWrapper);
         call.enqueue(new Callback<Tour.TourWrapper>() {
             @Override
@@ -271,7 +271,7 @@ public class TourServiceManager {
                     }
                 } else {
                     if (isTourClosing) {
-                        tourService.notifyListenersFeedItemClosed(false, tour);
+                        tourService.notifyListenersFeedItemClosed(false, currentTour);
                     }
                 }
                 isTourClosing = false;
@@ -280,7 +280,7 @@ public class TourServiceManager {
             @Override
             public void onFailure(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Throwable t) {
                 if (isTourClosing) {
-                    tourService.notifyListenersFeedItemClosed(false, tour);
+                    tourService.notifyListenersFeedItemClosed(false, currentTour);
                 }
                 isTourClosing = false;
                 Timber.e(t);
@@ -296,10 +296,10 @@ public class TourServiceManager {
     }
 
     boolean isLocationInTour(final LatLng latLng) {
-        if (tour == null) {
+        if (currentTour == null) {
             return false;
         }
-        final List<TourPoint> tourPoints = tour.getTourPoints();
+        final List<TourPoint> tourPoints = currentTour.getTourPoints();
         if (tourPoints.isEmpty()) {
             return false;
         }
@@ -638,7 +638,7 @@ public class TourServiceManager {
 
     private void sendTour() {
         final Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
-        tourWrapper.setTour(tour);
+        tourWrapper.setTour(currentTour);
         final Call<Tour.TourWrapper> call = tourRequest.tour(tourWrapper);
         call.enqueue(new Callback<Tour.TourWrapper>() {
             @Override
@@ -651,12 +651,12 @@ public class TourServiceManager {
                     }
                     initializeTimerFinishTask();
                     tourUUID = response.body().getTour().getUUID();
-                    tour = response.body().getTour();
+                    currentTour = response.body().getTour();
                     tourService.notifyListenersTourCreated(true, tourUUID);
 
                     locationProvider.requestLastKnownLocation();
                 } else {
-                    tour = null;
+                    currentTour = null;
                     tourService.notifyListenersTourCreated(false, "");
                 }
             }
@@ -664,39 +664,39 @@ public class TourServiceManager {
             @Override
             public void onFailure(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Throwable t) {
                 Timber.e(t);
-                tour = null;
+                currentTour = null;
                 tourService.notifyListenersTourCreated(false, "");
             }
         });
     }
 
     private void closeTour() {
-        tour.setTourStatus(FeedItem.STATUS_CLOSED);
-        tour.setEndTime(new Date());
+        currentTour.setTourStatus(FeedItem.STATUS_CLOSED);
+        currentTour.setEndTime(new Date());
         final Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
-        tourWrapper.setTour(tour);
+        tourWrapper.setTour(currentTour);
         final Call<Tour.TourWrapper> call = tourRequest.closeTour(tourUUID, tourWrapper);
         call.enqueue(new Callback<Tour.TourWrapper>() {
             @Override
             public void onResponse(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Response<Tour.TourWrapper> response) {
                 if (response.isSuccessful()) {
                     Timber.d(response.body().getTour().toString());
-                    tour = null;
+                    currentTour = null;
                     pointsToSend.clear();
                     pointsToDraw.clear();
                     cancelFinishTimer();
                     tourService.notifyListenersFeedItemClosed(true, response.body().getTour());
                     locationProvider.setUserType(UserType.PUBLIC);
-                    authenticationController.saveTour(tour);
+                    authenticationController.saveTour(currentTour);
                 } else {
-                    tourService.notifyListenersFeedItemClosed(false, tour);
+                    tourService.notifyListenersFeedItemClosed(false, currentTour);
                 }
             }
 
             @Override
             public void onFailure(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Throwable t) {
                 Timber.e(t);
-                tourService.notifyListenersFeedItemClosed(false, tour);
+                tourService.notifyListenersFeedItemClosed(false, currentTour);
             }
         });
     }
@@ -742,9 +742,9 @@ public class TourServiceManager {
         }
         pointsNeededForNextRequest--;
 
-        tour.addCoordinate(new TourPoint(location.getLatitude(), location.getLongitude()));
+        currentTour.addCoordinate(new TourPoint(location.getLatitude(), location.getLongitude()));
         if (previousLocation != null) {
-            tour.updateDistance(location.distanceTo(previousLocation));
+            currentTour.updateDistance(location.distanceTo(previousLocation));
         }
         previousLocation = location;
 
@@ -754,7 +754,7 @@ public class TourServiceManager {
         }
 
         tourService.notifyListenersTourUpdated(new LatLng(location.getLatitude(), location.getLongitude()));
-        authenticationController.saveTour(tour);
+        authenticationController.saveTour(currentTour);
     }
 
     public void updateLocation(final Location location) {

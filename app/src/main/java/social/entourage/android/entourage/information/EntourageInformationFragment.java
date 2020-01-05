@@ -1686,7 +1686,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
             presenter.getFeedItemJoinRequests();
             presenter.getFeedItemMembers();
             presenter.getFeedItemMessages();
-            if (feedItem != null && feedItem.isMine()) {
+            if (feedItem != null && feedItem.isMine(getContext())) {
                 presenter.getFeedItemEncounters();
             }
         }

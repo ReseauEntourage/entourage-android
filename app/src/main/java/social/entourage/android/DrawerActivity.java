@@ -55,10 +55,12 @@ import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.UserPreferences;
 import social.entourage.android.deeplinks.DeepLinksManager;
+import social.entourage.android.entourage.category.EntourageCategory;
 import social.entourage.android.location.LocationUtils;
 import social.entourage.android.map.MapEntourageFragment;
+import social.entourage.android.map.MapEntourageWithTourFragment;
 import social.entourage.android.tour.choice.ChoiceFragment;
-import social.entourage.android.tour.confirmation.ConfirmationFragment;
+import social.entourage.android.tour.confirmation.TourEndConfirmationFragment;
 import social.entourage.android.tour.encounter.CreateEncounterActivity;
 import social.entourage.android.tour.encounter.EncounterDisclaimerFragment;
 import social.entourage.android.tour.encounter.ReadEncounterActivity;
@@ -197,8 +199,13 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (mainFragment != null) {
             if (getIntent()!=null && getIntent().getAction() != null) {
                 switch (getIntent().getAction()) {
-                    case ConfirmationFragment.KEY_RESUME_TOUR:
-                    case ConfirmationFragment.KEY_END_TOUR:
+                    case TourEndConfirmationFragment.KEY_RESUME_TOUR:
+                    case TourEndConfirmationFragment.KEY_END_TOUR:
+                    case PlusFragment.KEY_START_TOUR:
+                    case PlusFragment.KEY_ADD_ENCOUNTER:
+                    case PlusFragment.KEY_CREATE_CONTRIBUTION:
+                    case PlusFragment.KEY_CREATE_DEMAND:
+                    case PlusFragment.KEY_CREATE_OUTING:
                         BusProvider.getInstance().post(new OnCheckIntentActionEvent());
                         break;
                     case TourService.KEY_NOTIFICATION_STOP_TOUR:
@@ -303,17 +310,6 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     private void setIntentAction(Intent intent) {
-        Bundle args = intent.getExtras();
-        if (args != null) {
-            intentTour = (Tour) args.getSerializable(Tour.KEY_TOUR);
-            if (args.getBoolean(ConfirmationFragment.KEY_RESUME_TOUR, false)) {
-                getIntent().setAction(ConfirmationFragment.KEY_RESUME_TOUR);
-                return;
-            } else if (args.getBoolean(ConfirmationFragment.KEY_END_TOUR, false)) {
-                getIntent().setAction(ConfirmationFragment.KEY_END_TOUR);
-                return;
-            }
-        }
         if (intent.getAction() != null) {
             switch (intent.getAction()) {
                 case PushNotificationContent.TYPE_NEW_CHAT_MESSAGE :
@@ -324,6 +320,13 @@ public class DrawerActivity extends EntourageSecuredActivity
                 case TourService.KEY_LOCATION_PROVIDER_DISABLED:
                 case TourService.KEY_NOTIFICATION_PAUSE_TOUR:
                 case TourService.KEY_NOTIFICATION_STOP_TOUR:
+                case TourEndConfirmationFragment.KEY_RESUME_TOUR:
+                case TourEndConfirmationFragment.KEY_END_TOUR:
+                case PlusFragment.KEY_START_TOUR:
+                case PlusFragment.KEY_ADD_ENCOUNTER:
+                case PlusFragment.KEY_CREATE_CONTRIBUTION:
+                case PlusFragment.KEY_CREATE_DEMAND:
+                case PlusFragment.KEY_CREATE_OUTING:
                     getIntent().setAction(intent.getAction());
                     break;
                 default:
@@ -344,24 +347,8 @@ public class DrawerActivity extends EntourageSecuredActivity
             bottomBar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    int menuId = item.getItemId();
-                    if(menuId == navigationDataSource.getActionMenuId()) {
-                        showFeed(true);
-                        //don't load any fragments and don't switch menu
-                        return false;
-                    }
-                    hideAction();
-                    loadFragment(menuId);
+                    loadFragment(item.getItemId());
                     return true;
-                }
-            });
-
-            bottomBar.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
-                @Override
-                public void onNavigationItemReselected(@NonNull MenuItem item) {
-                    if(item.getItemId() == navigationDataSource.getFeedTabIndex()) {
-                        hideAction();
-                    }
                 }
             });
 
@@ -402,7 +389,6 @@ public class DrawerActivity extends EntourageSecuredActivity
                 fragmentTransaction.replace(R.id.main_fragment, mainFragment, tag);
                 fragmentTransaction.addToBackStack(tag);
                 fragmentTransaction.commit();
-
             }
         } catch(IllegalStateException e){
             EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
@@ -415,18 +401,12 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    public void hideAction() {
-        if (mainFragment instanceof MapEntourageFragment) {
-            mapEntourageFragment.hideAction();
-        }
+    public void showFeed() {
+        selectNavigationTab(navigationDataSource.getFeedTabIndex());
     }
 
-    public void showFeed(boolean showActionMenu) {
-        selectNavigationTab(navigationDataSource.getFeedTabIndex());
-        if(showActionMenu) {
-            popToMapFragment();
-            onShowAction();
-        }
+    public void showPlusActions() {
+        selectNavigationTab(navigationDataSource.getActionMenuId());
     }
 
     public void showGuide() {
@@ -507,47 +487,17 @@ public class DrawerActivity extends EntourageSecuredActivity
             return;
         }
 
-        if(mapEntourageFragment!= null) {
-            mapEntourageFragment.checkAction(intent.getAction(), intentTour);
-        }
         Message message = null;
         if (intent.getExtras() != null) {
             message = (Message) intent.getExtras().getSerializable(PushNotificationManager.PUSH_MESSAGE);
         }
         if (message != null) {
             PushNotificationContent content = message.getContent();
-            if (content != null) {
-                PushNotificationContent.Extra extra = content.extra;
-                switch(intent.getAction()) {
-                    case PushNotificationContent.TYPE_NEW_CHAT_MESSAGE:
-                        if (content.isTourRelated()) {
-                            mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.TOUR_CARD);
-                        } else if (content.isEntourageRelated()) {
-                            mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.ENTOURAGE_CARD);
-                        } else {
-                            showMyEntourages();
-                        }
-                        break;
-                    case PushNotificationContent.TYPE_NEW_JOIN_REQUEST:
-                    case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:
-                        if (content.isTourRelated()) {
-                            mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.TOUR_CARD);
-                        } else if (content.isEntourageRelated()) {
-                            mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.ENTOURAGE_CARD);
-                        }
-                        break;
-                    case PushNotificationContent.TYPE_ENTOURAGE_INVITATION:
-                        if (extra != null) {
-                            mapEntourageFragment.displayChosenFeedItem(String.valueOf(extra.entourageId), TimestampedObject.ENTOURAGE_CARD, extra.invitationId);
-                        }
-                        break;
-                    case PushNotificationContent.TYPE_INVITATION_STATUS:
-                        if (extra != null && (content.isEntourageRelated() || content.isTourRelated())) {
-                            mapEntourageFragment.displayChosenFeedItem(content.getJoinableUUID(),
-                                    content.isTourRelated() ? TimestampedObject.TOUR_CARD : TimestampedObject.ENTOURAGE_CARD);
-                        }
-                        break;
-                }
+            if (content != null
+                    && intent.getAction()== PushNotificationContent.TYPE_NEW_CHAT_MESSAGE
+                    && !content.isTourRelated()
+                    && !content.isEntourageRelated()) {
+                showMyEntourages();
             }
             EntourageApplication application = EntourageApplication.get();
             if (application != null) {
@@ -685,38 +635,6 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     @Subscribe
-    public void feedItemCloseRequested(OnFeedItemCloseRequestEvent event) {
-        FeedItem feedItem = event.getFeedItem();
-        if (feedItem == null) {
-            return;
-        }
-        if (mapEntourageFragment != null) {
-            if (event.isShowUI()) {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_ACTIVE_CLOSE_OVERLAY);
-                presenter.displayFeedItemOptions(feedItem);
-                return;
-            }
-            // Only the author can close entourages/tours
-            User me = EntourageApplication.me(this);
-            if (me == null || feedItem.getAuthor() == null) {
-                return;
-            }
-            int myId = me.getId();
-            if (feedItem.getAuthor().getUserID() != myId) {
-                return;
-            }
-
-            if (!feedItem.isClosed()) {
-                // close
-                mapEntourageFragment.stopFeedItem(feedItem, event.isSuccess());
-            } else if (feedItem.getType() == TimestampedObject.TOUR_CARD && !feedItem.isFreezed()) {
-                // freeze
-                mapEntourageFragment.freezeTour((Tour) feedItem);
-            }
-        }
-    }
-
-    @Subscribe
     public void onUnauthorized(OnUnauthorizedEvent event) {
         logout();
     }
@@ -749,8 +667,8 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void showStopTourActivity(Tour tour) {
         mapEntourageFragment.pauseTour(tour);
 
-        ConfirmationFragment confirmationFragment = ConfirmationFragment.newInstance(tour);
-        confirmationFragment.show(getSupportFragmentManager(), ConfirmationFragment.TAG);
+        TourEndConfirmationFragment tourEndConfirmationFragment = TourEndConfirmationFragment.newInstance(tour);
+        tourEndConfirmationFragment.show(getSupportFragmentManager(), TourEndConfirmationFragment.TAG);
     }
 
     @Override
@@ -791,8 +709,8 @@ public class DrawerActivity extends EntourageSecuredActivity
         // Dismiss the disclaimer fragment
         fragment.dismiss();
 
-        if (mainFragment instanceof MapEntourageFragment) {
-            ((MapEntourageFragment) mainFragment).addEncounter();
+        if (mainFragment instanceof MapEntourageWithTourFragment) {
+            ((MapEntourageWithTourFragment)mapEntourageFragment).addEncounter();
         }
     }
 
@@ -834,14 +752,10 @@ public class DrawerActivity extends EntourageSecuredActivity
     // ----------------------------------
 
     public void onCreateEntourageDeepLink() {
+        showFeed();
+        popToMapFragment();
         if (mainFragment instanceof MapEntourageFragment) {
             mapEntourageFragment.displayEntourageDisclaimer();
-        }
-    }
-
-    public void onShowAction() {
-        if (mainFragment instanceof MapEntourageFragment) {
-            mapEntourageFragment.onShowAction();
         }
     }
 
@@ -925,7 +839,6 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     public void showEditActionZoneFragment(UserEditActionZoneFragment.FragmentListener extraFragmentListener) {
-        AuthenticationController authenticationController = EntourageApplication.get().getEntourageComponent().getAuthenticationController();
         if (!authenticationController.isAuthenticated()) {
             return;
         }
@@ -973,7 +886,6 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     private void storeActionZone(final boolean ignoreZone) {
-        AuthenticationController authenticationController = EntourageApplication.get().getEntourageComponent().getAuthenticationController();
         if (authenticationController.isAuthenticated()) {
             UserPreferences userPreferences = authenticationController.getUserPreferences();
             if (userPreferences != null) {
@@ -1027,5 +939,4 @@ public class DrawerActivity extends EntourageSecuredActivity
             }
         }
     }
-
 }

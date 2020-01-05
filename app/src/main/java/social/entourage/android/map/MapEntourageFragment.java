@@ -162,9 +162,6 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     @BindView(R.id.fragment_map_entourage_mini_cards)
     EntourageMiniCardsView miniCardsView;
 
-    @BindView(R.id.fragment_map_action_overlay)
-    protected RelativeLayout mapActionView;
-
     protected NewsfeedAdapter newsfeedAdapter;
     private Timer refreshToursTimer;
 
@@ -281,18 +278,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     }
 
     @Override
-    @OnClick(R.id.fragment_map_action_overlay)
-    void hideLongClickView() {
-        //here just to catch click on zones without action in overlay
-        super.hideLongClickView();
-    }
-
-    @Override
     public boolean onBackPressed() {
-        if (mapActionView != null && mapActionView.getVisibility() == View.VISIBLE) {
-            mapActionView.setVisibility(View.GONE);
-            return true;
-        }
         if (mapLongClickView != null && mapLongClickView.getVisibility() == View.VISIBLE) {
             mapLongClickView.setVisibility(View.GONE);
             return true;
@@ -396,13 +382,8 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     }
 
     public void displayEntourageDisclaimer() {
-        if (mapLongClickView == null || mapActionView == null) {
-            // Binder haven't kicked in yet
-            return;
-        }
         // Hide the create entourage menu ui
         mapLongClickView.setVisibility(View.GONE);
-        hideAction();
 
         // Check if we need to show the entourage disclaimer
         if (Configuration.getInstance().showEntourageDisclaimer()) {
@@ -420,7 +401,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         LatLng location = EntourageLocation.getInstance().getLastCameraPosition().target;
         if (!Entourage.TYPE_OUTING.equalsIgnoreCase(entourageGroupType)) {
             // For demand/contribution, by default select the action zone location, if set
-            User me = EntourageApplication.me();
+            User me = EntourageApplication.me(getActivity());
             if (me != null) {
                 User.Address address = me.getAddress();
                 if (address != null) {
@@ -435,9 +416,6 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         if (presenter != null) {
             presenter.createEntourage(location, entourageGroupType, entourageCategory);
         }
-    }
-
-    public void checkAction(@NonNull String action, Tour actionTour) {
     }
 
     // ----------------------------------
@@ -723,26 +701,15 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         toggleToursList();
     }
 
-    @OnClick({R.id.layout_line_create_entourage_contribute})
-    protected void onCreateEntourageContributionAction() {
-        entourageCategory = EntourageCategoryManager.getInstance().getDefaultCategory(Entourage.TYPE_CONTRIBUTION);
-        entourageGroupType = Entourage.TYPE_ACTION;
+    public void createAction(EntourageCategory newEntourageCategory, String newEntourageGroupType) {
+        entourageCategory = newEntourageCategory;
+        entourageGroupType = newEntourageGroupType;
         displayEntourageDisclaimer();
     }
 
-    @OnClick({R.id.layout_line_create_entourage_ask_help, R.id.map_longclick_button_entourage_action})
+    @OnClick(R.id.map_longclick_button_entourage_action)
     protected void onCreateEntourageHelpAction() {
-        entourageCategory = EntourageCategoryManager.getInstance().getDefaultCategory(Entourage.TYPE_DEMAND);
-        entourageGroupType = Entourage.TYPE_ACTION;
-        displayEntourageDisclaimer();
-    }
-
-    @Optional
-    @OnClick({R.id.layout_line_create_outing})
-    protected void onCreateOuting() {
-        entourageGroupType = Entourage.TYPE_OUTING;
-        entourageCategory = null;
-        displayEntourageDisclaimer();
+        createAction(EntourageCategoryManager.getInstance().getDefaultCategory(Entourage.TYPE_DEMAND), Entourage.TYPE_ACTION);
     }
 
     @OnClick(R.id.fragment_map_filter_button)
@@ -768,16 +735,6 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         updateFloatingMenuOptions();
     }
 
-    protected boolean handleSpecialCasesForFAB() {
-        //Handling special cases
-        if (!Configuration.getInstance().showMapFABMenu()) {
-            // Show directly the create entourage disclaimer
-            displayEntourageDisclaimer();
-            return true;
-        }
-        return false;
-    }
-
     @Subscribe
     @Override
     public void onLocationPermissionGranted(Events.OnLocationPermissionGranted event) {
@@ -795,14 +752,10 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     protected  void showLongClickOnMapOptions(LatLng latLng) {
         //save the tap coordinates
         longTapCoordinates = latLng;
+        //update the visible buttons
+        mapLongClickButtonsView.requestLayout();
         //hide the FAB menu
-        hideAction();
-        if (!handleSpecialCasesForFAB()) {
-            //update the visible buttons
-            mapLongClickButtonsView.requestLayout();
-            //hide the FAB menu
-            super.showLongClickOnMapOptions(latLng);
-        }
+        super.showLongClickOnMapOptions(latLng);
     }
 
     // ----------------------------------
@@ -953,35 +906,20 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     public void stopFeedItem(FeedItem feedItem, boolean success) {
         if (getActivity() != null) {
             if (tourService != null) {
-                if (feedItem != null) {
-                    if (!tourService.isRunning()) {
-                        // Not ongoing tour, just stop the feed item
-                        loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(feedItem.getClosingLoaderMessage()), getActivity().getString(R.string.button_loading), true);
-                        loaderStop.setCancelable(true);
-                        EntourageEvents.logEvent(EntourageEvents.EVENT_STOP_TOUR);
-                        tourService.stopFeedItem(feedItem, success);
-                    } else {
-                        if (feedItem.getType() == TimestampedObject.TOUR_CARD && tourService.getCurrentTourId().equalsIgnoreCase(feedItem.getUUID())) {
-                            // ongoing tour
-                            loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_finish), getActivity().getString(R.string.button_loading), true);
-                            loaderStop.setCancelable(true);
-                            tourService.endTreatment();
-                            EntourageEvents.logEvent(EntourageEvents.EVENT_STOP_TOUR);
-                        } else {
-                            // Not ongoing tour, just stop the feed item
-                            loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(feedItem.getClosingLoaderMessage()), getActivity().getString(R.string.button_loading), true);
-                            loaderStop.setCancelable(true);
-                            EntourageEvents.logEvent(EntourageEvents.EVENT_STOP_TOUR);
-                            tourService.stopFeedItem(feedItem, success);
-                        }
-                    }
-                } else {
-                    if (tourService.isRunning()) {
-                        loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_finish), getActivity().getString(R.string.button_loading), true);
-                        loaderStop.setCancelable(true);
-                        tourService.endTreatment();
-                        EntourageEvents.logEvent(EntourageEvents.EVENT_STOP_TOUR);
-                    }
+                if ((feedItem != null)
+                        && (!tourService.isRunning()
+                        || feedItem.getType() != TimestampedObject.TOUR_CARD
+                        || tourService.getCurrentTourId().equalsIgnoreCase(feedItem.getUUID()))) {
+                    // Not ongoing tour, just stop the feed item
+                    loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(feedItem.getClosingLoaderMessage()), getActivity().getString(R.string.button_loading), true);
+                    loaderStop.setCancelable(true);
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_STOP_TOUR);
+                    tourService.stopFeedItem(feedItem, success);
+                } else if (tourService.isRunning()) {
+                    loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_finish), getActivity().getString(R.string.button_loading), true);
+                    loaderStop.setCancelable(true);
+                    tourService.endTreatment();
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_STOP_TOUR);
                 }
             }
         }
@@ -1531,16 +1469,13 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         AuthenticationController authenticationController = EntourageApplication.get().getEntourageComponent().getAuthenticationController();
         authenticationController.getUserPreferences().setIgnoringActionZone(ignoreAddress);
         authenticationController.saveUserPreferences();
-        User me = EntourageApplication.me();
+        User me = EntourageApplication.me(getActivity());
         if (me != null && !ignoreAddress) {
             User.Address address = me.getAddress();
             if (address != null) {
                 centerMap(new LatLng(address.getLatitude(), address.getLongitude()));
             }
         }
-    }
-
-    public void addEncounter() {
     }
 
     private void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -1554,20 +1489,6 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
     protected HeaderBaseAdapter getAdapter() {
         return newsfeedAdapter;
-    }
-
-    public void hideAction() {
-        if(mapActionView!=null) {
-            mapActionView.setVisibility(View.GONE);
-        }
-    }
-
-    public void onShowAction() {
-        hideTourLauncher();
-        hideLongClickView();
-        if(!handleSpecialCasesForFAB() && mapActionView!=null) {
-            mapActionView.setVisibility(View.VISIBLE);
-        }
     }
 
     // ----------------------------------

@@ -207,14 +207,6 @@
         </RelativeLayout>
 
         <include
-            android:id="@+id/fragment_map_action_overlay"
-            layout="@layout/layout_map_action_overlay"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            tools:visibility="gone" />
-
-        <include
             android:id="@+id/fragment_map_longclick"
             layout="@layout/layout_map_longclick"
             android:layout_width="match_parent"

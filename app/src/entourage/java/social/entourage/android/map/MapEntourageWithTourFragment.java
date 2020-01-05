@@ -46,7 +46,9 @@ import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.EntourageLocation;
+import social.entourage.android.PlusFragment;
 import social.entourage.android.R;
+import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
@@ -61,9 +63,13 @@ import social.entourage.android.api.model.map.TourPoint;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.api.tape.Events.OnEncounterCreated;
+import social.entourage.android.deeplinks.DeepLinksManager;
+import social.entourage.android.entourage.category.EntourageCategoryManager;
 import social.entourage.android.location.LocationUtils;
+import social.entourage.android.message.push.PushNotificationManager;
+import social.entourage.android.newsfeed.FeedItemOptionsFragment;
 import social.entourage.android.tour.choice.ChoiceFragment;
-import social.entourage.android.tour.confirmation.ConfirmationFragment;
+import social.entourage.android.tour.confirmation.TourEndConfirmationFragment;
 import social.entourage.android.tour.encounter.CreateEncounterActivity;
 import social.entourage.android.tour.TourService;
 import social.entourage.android.tour.TourServiceListener;
@@ -214,17 +220,6 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         super.displayEntourageDisclaimer();
     }
 
-    @Override
-    protected boolean handleSpecialCasesForFAB() {
-        //Handling special cases
-        if (isBound && tourService != null && tourService.isRunning()) {
-            // Show directly the create encounter
-            onAddEncounter();
-            return true;
-        }
-        return super.handleSpecialCasesForFAB();
-    }
-
     private void putEncounterOnMap(Encounter encounter) {
         if (map == null || presenter == null) {
             // The map is not yet initialized or the google play services are outdated on the phone
@@ -241,31 +236,50 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
     }
 
 
-    @Override
-    public void checkAction(@NonNull String action, Tour actionTour) {
+    public void checkAction(@NonNull String action) {
         if (getActivity() != null && isBound) {
             // 1 : Check if should Resume tour
-            if (ConfirmationFragment.KEY_RESUME_TOUR.equals(action)) {
-                resumeTour(actionTour);
+            if (TourEndConfirmationFragment.KEY_RESUME_TOUR.equals(action)) {
+                resumeTour();
             }
             // 2 : Check if should End tour
-            else if (ConfirmationFragment.KEY_END_TOUR.equals(action)) {
-                stopFeedItem(actionTour, true);
+            else if (TourEndConfirmationFragment.KEY_END_TOUR.equals(action)) {
+                if(tourService != null && tourService.isRunning())
+                    stopFeedItem(null, true);
             }
             // 3 : Check if tour is already paused
             else if (tourService!=null && tourService.isPaused()) {
-                launchConfirmationActivity();
+                launchConfirmationFragment();
             }
             // 4 : Check if should pause tour
             else if (TourService.KEY_NOTIFICATION_PAUSE_TOUR.equals(action)) {
-                launchConfirmationActivity();
+                launchConfirmationFragment();
             }
             // 5 : Check if should stop tour
             else if (tourService!=null && TourService.KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
                 tourService.endTreatment();
             }
+            // 6 : start tour
+            else if (PlusFragment.KEY_START_TOUR.equals(action)) {
+                onStartTourLauncher();
+            }
+            // 7 : Create action
+            else if (PlusFragment.KEY_CREATE_CONTRIBUTION.equals(action)) {
+                createAction(EntourageCategoryManager.getInstance().getDefaultCategory(Entourage.TYPE_CONTRIBUTION), Entourage.TYPE_ACTION);
+            }
+            // 8 : Create action
+            else if (PlusFragment.KEY_CREATE_DEMAND.equals(action)) {
+                createAction(EntourageCategoryManager.getInstance().getDefaultCategory(Entourage.TYPE_DEMAND), Entourage.TYPE_ACTION);
+            }
+            // 9 : Create action
+            else if (PlusFragment.KEY_CREATE_OUTING.equals(action)) {
+                createAction(null, Entourage.TYPE_OUTING);
+            }
+            // 10 : Create encounter
+            else if (PlusFragment.KEY_ADD_ENCOUNTER.equals(action)) {
+                onAddEncounter();
+            }
         }
-        super.checkAction(action, actionTour);
     }
 
     @Override
@@ -325,7 +339,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
     // ----------------------------------
 
     @Optional
-    @OnClick({R.id.layout_line_start_tour_launcher, R.id.map_longclick_button_start_tour_launcher})
+    @OnClick(R.id.map_longclick_button_start_tour_launcher)
     public void onStartTourLauncher() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_TOUR_CREATE_CLICK);
         if (tourService != null) {
@@ -335,7 +349,6 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
                     showAllowGeolocationDialog(GEOLOCATION_POPUP_TOUR);
                     return;
                 }
-                hideAction();
                 mapLongClickView.setVisibility(View.GONE);
                 mapLauncherLayout.setVisibility(View.VISIBLE);
             }
@@ -363,12 +376,12 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         EntourageEvents.logEvent(EntourageEvents.EVENT_TOUR_SUSPEND);
         pauseTour();
         if (getActivity() != null) {
-            launchConfirmationActivity();
+            launchConfirmationFragment();
         }
     }
 
     @Optional
-    @OnClick({R.id.layout_line_add_tour_encounter, R.id.map_longclick_button_create_encounter})
+    @OnClick(R.id.map_longclick_button_create_encounter)
     public void onAddEncounter() {
         if (getActivity() == null) {
             return;
@@ -376,7 +389,6 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_CLICK);
         // Hide the create entourage menu ui
         mapLongClickView.setVisibility(View.GONE);
-        hideAction();
 
         // MI: EMA-1669 Show the disclaimer only the first time when a tour was started
         // Show the disclaimer fragment
@@ -389,7 +401,6 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         }
     }
 
-    @Override
     public void addEncounter() {
         if (getActivity() != null) {
             Intent intent = new Intent(getActivity(), CreateEncounterActivity.class);
@@ -418,25 +429,9 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         }
     }
 
-    @Override
     protected void updateFloatingMenuOptions() {
-        super.updateFloatingMenuOptions();
-        if(mapActionView==null) {
-            return;
-        }
-        View addTourEncounterButton = mapActionView.findViewById(R.id.layout_line_add_tour_encounter);
-        View startTourButton = mapActionView.findViewById(R.id.layout_line_start_tour_launcher);
-        if (tourService != null && tourService.isRunning()) {
-            if (addTourEncounterButton != null) addTourEncounterButton.setVisibility(View.INVISIBLE);
-            if (startTourButton != null) startTourButton.setVisibility(View.GONE);
-            if (tourStopButton != null) tourStopButton.setVisibility(View.VISIBLE);
-        } else {
-            User me = EntourageApplication.me(getActivity());
-            boolean isPro = (me != null && me.isPro());
-
-            if (addTourEncounterButton != null) addTourEncounterButton.setVisibility(View.GONE);
-            if (startTourButton != null) startTourButton.setVisibility(isPro ? View.VISIBLE : View.GONE);
-            if (tourStopButton != null) tourStopButton.setVisibility(View.GONE);
+        if (tourStopButton != null) {
+            tourStopButton.setVisibility((tourService != null && tourService.isRunning())?View.VISIBLE:View.GONE);
         }
     }
 
@@ -454,7 +449,6 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         User me = EntourageApplication.me(getActivity());
         boolean isPro = (me != null && me.isPro());
         if (!isPro) {
-            hideAction();
             displayEntourageDisclaimer();
             return;
         }
@@ -513,7 +507,6 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
                 putEncounterOnMap(encounter);
             }
         }
-        hideAction();
         if (tourService != null) {
             if (tourStopButton != null) tourStopButton.setVisibility(tourService.isRunning() ? View.VISIBLE : View.GONE);
         }
@@ -548,8 +541,6 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
                 }
                 addTourCard(tourService.getCurrentTour());
 
-                hideAction();
-                updateFloatingMenuOptions();
                 if (tourStopButton != null) tourStopButton.setVisibility(View.VISIBLE);
 
                 if (presenter != null) {
@@ -686,13 +677,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
             refreshFeed();
             if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
                 if (feedItem.getUUID().equalsIgnoreCase(currentTourUUID)) {
-                    if(mapActionView!=null) {
-                        hideAction();
-                        updateFloatingMenuOptions();
-                    }
-                    if (tourStopButton != null) {
-                        tourStopButton.setVisibility(View.GONE);
-                    }
+                    updateFloatingMenuOptions();
                     currentTourUUID = "";
                 } else {
                     tourService.notifyListenersTourResumed();
@@ -743,7 +728,6 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         if (mapLauncherLayout.getVisibility() == View.VISIBLE) {
             mapLauncherLayout.setVisibility(View.GONE);
         }
-        hideAction();
     }
 
     // ----------------------------------
@@ -804,20 +788,18 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         }
     }
 
-    private void resumeTour(Tour tour) {
-        if (tourService != null) {
-            if (tour != null && tourService.getCurrentTourId().equalsIgnoreCase(tour.getUUID()) && tourService.isRunning()) {
+    private void resumeTour() {
+        if (tourService != null && tourService.isRunning()) {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_RESTART_TOUR);
                 tourService.resumeTreatment();
-            }
         }
     }
 
-    private void launchConfirmationActivity() {
+    private void launchConfirmationFragment() {
         pauseTour();
 
-        ConfirmationFragment confirmationFragment = ConfirmationFragment.newInstance(getCurrentTour());
-        confirmationFragment.show(getFragmentManager(), ConfirmationFragment.TAG);
+        TourEndConfirmationFragment tourEndConfirmationFragment = TourEndConfirmationFragment.newInstance(getCurrentTour());
+        tourEndConfirmationFragment.show(getFragmentManager(), TourEndConfirmationFragment.TAG);
     }
 
     private void addEncounter(Encounter encounter) {
@@ -1106,6 +1088,90 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         if (getActivity() != null && isBound) {
             getActivity().unbindService(connection);
             isBound = false;
+        }
+    }
+
+
+
+    protected void displayFeedItemOptions(FeedItem feedItem) {
+        if (getActivity() != null ) {
+            FeedItemOptionsFragment feedItemOptionsFragment = FeedItemOptionsFragment.newInstance(feedItem);
+            feedItemOptionsFragment.show(getActivity().getSupportFragmentManager(), FeedItemOptionsFragment.TAG);
+        }
+
+    }
+    @Subscribe
+    public void feedItemCloseRequested(Events.OnFeedItemCloseRequestEvent event) {
+        FeedItem feedItem = event.getFeedItem();
+        if (feedItem == null) {
+            return;
+        }
+        if (event.isShowUI()) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_ACTIVE_CLOSE_OVERLAY);
+            displayFeedItemOptions(feedItem);
+            return;
+        }
+        // Only the author can close entourages/tours
+        User me = EntourageApplication.me(getContext());
+        if (me == null || feedItem.getAuthor() == null) {
+            return;
+        }
+        int myId = me.getId();
+        if (feedItem.getAuthor().getUserID() != myId) {
+            return;
+        }
+
+        if (!feedItem.isClosed()) {
+            // close
+            stopFeedItem(feedItem, event.isSuccess());
+        } else if (feedItem.getType() == TimestampedObject.TOUR_CARD && !feedItem.isFreezed()) {
+            // freeze
+            freezeTour((Tour) feedItem);
+        }
+    }
+
+    @Subscribe
+    public void checkIntentAction(Events.OnCheckIntentActionEvent event) {
+        Intent intent = getActivity().getIntent();
+
+        checkAction(intent.getAction());
+
+        Message message = null;
+        if (intent.getExtras() != null) {
+            message = (Message) intent.getExtras().getSerializable(PushNotificationManager.PUSH_MESSAGE);
+        }
+        if (message != null) {
+            PushNotificationContent content = message.getContent();
+            if (content != null) {
+                PushNotificationContent.Extra extra = content.extra;
+                switch(intent.getAction()) {
+                    case PushNotificationContent.TYPE_NEW_CHAT_MESSAGE:
+                        if (content.isTourRelated()) {
+                            displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.TOUR_CARD);
+                        } else if (content.isEntourageRelated()) {
+                            displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.ENTOURAGE_CARD);
+                        }
+                        break;
+                    case PushNotificationContent.TYPE_NEW_JOIN_REQUEST:
+                    case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:
+                        if (content.isTourRelated()) {
+                            displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.TOUR_CARD);
+                        } else if (content.isEntourageRelated()) {
+                            displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.ENTOURAGE_CARD);
+                        }
+                        break;
+                    case PushNotificationContent.TYPE_ENTOURAGE_INVITATION:
+                        if (extra != null) {
+                            displayChosenFeedItem(String.valueOf(extra.entourageId), TimestampedObject.ENTOURAGE_CARD, extra.invitationId);
+                        }
+                        break;
+                    case PushNotificationContent.TYPE_INVITATION_STATUS:
+                        if (extra != null && (content.isEntourageRelated() || content.isTourRelated())) {
+                            displayChosenFeedItem(content.getJoinableUUID(), content.isTourRelated() ? TimestampedObject.TOUR_CARD : TimestampedObject.ENTOURAGE_CARD);
+                        }
+                        break;
+                }
+            }
         }
     }
 

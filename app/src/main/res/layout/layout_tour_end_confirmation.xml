@@ -28,7 +28,7 @@
             android:textSize="@dimen/entourage_font_large"/>
 
         <TextView
-            android:id="@+id/confirmation_duration"
+            android:id="@+id/tour_end_duration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -70,7 +70,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/confirmation_encounters"
+                    android:id="@+id/tour_end_total_encounters"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
@@ -100,7 +100,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/confirmation_distance"
+                    android:id="@+id/tour_end_distance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
