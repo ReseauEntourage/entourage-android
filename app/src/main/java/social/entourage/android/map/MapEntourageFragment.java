@@ -1478,6 +1478,9 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         }
     }
 
+    public void addEncounter() {
+    }
+
     private void onAnimationUpdate(ValueAnimator valueAnimator) {
         if(newsfeedAdapter==null) {
             return;

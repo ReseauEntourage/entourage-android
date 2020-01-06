@@ -109,22 +109,11 @@ public class DrawerActivity extends EntourageSecuredActivity
     @BindView(R.id.content_view)
     View contentView;
 
-    //TextView discussionBadgeView;
-
     private BottomNavigationDataSource navigationDataSource = new BottomNavigationDataSource();
-    BadgeDrawable messageBadge;
 
     protected Fragment mainFragment;
     protected MapEntourageFragment mapEntourageFragment;
     private UserFragment userFragment;
-
-    //private SharedPreferences gcmSharedPreferences;
-    //private String intentAction;
-    private Tour intentTour;
-
-    @IdRes int selectedSidemenuAction;
-
-    private boolean editActionZoneShown = false;
 
     // ----------------------------------
     // LIFECYCLE
@@ -355,6 +344,12 @@ public class DrawerActivity extends EntourageSecuredActivity
             int defaultId = navigationDataSource.getDefaultSelectedTab();
             loadFragment(defaultId);
             bottomBar.setSelectedItemId(defaultId);
+
+            BadgeDrawable messageBadge = bottomBar.getOrCreateBadge(navigationDataSource.getMyMessagesTabIndex());
+            messageBadge.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.map_announcement_background, null));
+            messageBadge.setBadgeTextColor(ResourcesCompat.getColor(getResources(), R.color.primary, null));
+            messageBadge.setMaxCharacterCount(2);
+
         }
     }
 
@@ -371,7 +366,6 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (presenter != null) {
             presenter.handleMenu(menuId);
         }
-        selectedSidemenuAction = 0;
     }
 
     protected void loadFragment(int menuId) {
@@ -483,7 +477,6 @@ public class DrawerActivity extends EntourageSecuredActivity
 
         Intent intent = getIntent();
         if (intent == null) {
-            intentTour = null;
             return;
         }
 
@@ -508,7 +501,6 @@ public class DrawerActivity extends EntourageSecuredActivity
             // Handle the deep link
             DeepLinksManager.getInstance().handleCurrentDeepLink(this);
         }
-        intentTour = null;
         setIntent(null);
     }
 
@@ -709,8 +701,8 @@ public class DrawerActivity extends EntourageSecuredActivity
         // Dismiss the disclaimer fragment
         fragment.dismiss();
 
-        if (mainFragment instanceof MapEntourageWithTourFragment) {
-            ((MapEntourageWithTourFragment)mapEntourageFragment).addEncounter();
+        if (mainFragment instanceof MapEntourageFragment) {
+            ((MapEntourageFragment)mainFragment).addEncounter();
         }
     }
 
@@ -920,23 +912,20 @@ public class DrawerActivity extends EntourageSecuredActivity
     // ----------------------------------
 
     private void refreshBadgeCount() {
-        if(messageBadge==null) {
-            if(bottomBar!=null){
-                messageBadge = bottomBar.getOrCreateBadge(navigationDataSource.getMyMessagesTabIndex());
-                messageBadge.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.map_announcement_background, null));
-                messageBadge.setBadgeTextColor(ResourcesCompat.getColor(getResources(), R.color.primary, null));
-                messageBadge.setMaxCharacterCount(2);
-            }
+        if (bottomBar== null) {
+            return;
         }
-        if (messageBadge!= null) {
-            int badgeCount = EntourageApplication.get().getBadgeCount();
-            if(badgeCount > 0) {
-                messageBadge.setVisible(true);
-                messageBadge.setNumber(badgeCount);
+        BadgeDrawable messageBadge = bottomBar.getOrCreateBadge(navigationDataSource.getMyMessagesTabIndex());
+        if(messageBadge==null) {
+            return;
+        }
+        int badgeCount = EntourageApplication.get().getBadgeCount();
+        if(badgeCount > 0) {
+            messageBadge.setVisible(true);
+            messageBadge.setNumber(badgeCount);
 
-            } else {
-                messageBadge.setVisible(false);
-            }
+        } else {
+            messageBadge.setVisible(false);
         }
     }
 }

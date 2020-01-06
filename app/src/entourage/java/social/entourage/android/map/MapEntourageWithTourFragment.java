@@ -401,6 +401,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
         }
     }
 
+    @Override
     public void addEncounter() {
         if (getActivity() != null) {
             Intent intent = new Intent(getActivity(), CreateEncounterActivity.class);
