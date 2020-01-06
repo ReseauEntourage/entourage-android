@@ -1099,7 +1099,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
                 if (feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
                     reportEntourageButton.setVisibility(View.VISIBLE);
                     // Share button available only for entourages and non-members
-                    shareEntourageButton.setVisibility(feedItem.isPrivate() || feedItem.isSuspended() ? View.GONE : View.VISIBLE);
+                    shareEntourageButton.setVisibility(feedItem.isSuspended() ? View.GONE : View.VISIBLE);
                 }
                 if (promoteEntourageButton != null && membersList != null && feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
                     for (TimestampedObject member : membersList) {
