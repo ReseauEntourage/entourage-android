@@ -15,7 +15,7 @@ import social.entourage.android.R;
  */
 public abstract class BaseBottomNavigationDataSource {
 
-    private SparseArray<Fragment> navigationFragments = new SparseArray<>();
+    //private SparseArray<Fragment> navigationFragments = new SparseArray<>();
     private SparseArray<String> navigationFragmentTags = new SparseArray<>();
 
     @IdRes int defaultSelectedTab = R.id.bottom_bar_newsfeed;
@@ -27,13 +27,12 @@ public abstract class BaseBottomNavigationDataSource {
 
     BaseBottomNavigationDataSource() {}
 
-    protected void add(@IdRes int menuId, Fragment fragment, String tag) {
-        navigationFragments.put(menuId, fragment);
+    protected void add(@IdRes int menuId, String tag) {
         navigationFragmentTags.put(menuId, tag);
     }
 
     public Fragment getFragmentAtIndex(int menuId) {
-        return navigationFragments.get(menuId);
+        return null;
     }
 
     public String getFragmentTagAtIndex(int menuId) {

@@ -383,7 +383,9 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
     public void displayEntourageDisclaimer() {
         // Hide the create entourage menu ui
-        mapLongClickView.setVisibility(View.GONE);
+        if(mapLongClickView!=null) {
+            mapLongClickView.setVisibility(View.GONE);
+        }
 
         // Check if we need to show the entourage disclaimer
         if (Configuration.getInstance().showEntourageDisclaimer()) {
