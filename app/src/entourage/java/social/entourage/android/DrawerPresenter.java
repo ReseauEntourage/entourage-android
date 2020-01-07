@@ -60,12 +60,4 @@ public class DrawerPresenter extends DrawerBasePresenter {
         }
 
     }
-
-    @Override
-    protected void proposePOI() {
-        GuideMapEntourageFragment guideMapEntourageFragment = (GuideMapEntourageFragment) activity.getSupportFragmentManager().findFragmentByTag(GuideMapEntourageFragment.TAG);
-        if (guideMapEntourageFragment != null) {
-            guideMapEntourageFragment.proposePOI();
-        }
-    }
 }

@@ -48,8 +48,6 @@ public class EntourageCloseFragment extends DialogFragment {
     // Lifecycle
     // ----------------------------------
 
-
-
     public EntourageCloseFragment() {
         // Required empty public constructor
     }
@@ -60,10 +58,6 @@ public class EntourageCloseFragment extends DialogFragment {
         args.putSerializable(FeedItem.KEY_FEEDITEM, feedItem);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public void show(FragmentManager fragmentManager, String tag, Context context) {
-        show(fragmentManager, tag);
     }
 
     @Override
@@ -147,7 +141,7 @@ public class EntourageCloseFragment extends DialogFragment {
         if (title == null) title = "";
         String emailSubject = getString(emailSubjectFormat, title);
         intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
-        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+        if (getActivity() !=null && intent.resolveActivity(getActivity().getPackageManager()) != null) {
             // Start the intent
             startActivity(intent);
         } else {

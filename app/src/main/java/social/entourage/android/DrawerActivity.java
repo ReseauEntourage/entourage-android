@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -166,26 +165,24 @@ public class DrawerActivity extends EntourageSecuredActivity
         this.setIntent(intent);
         checkDeepLinks();
         setIntentAction(intent);
-        if (mainFragment != null) {
-            if (getIntent()!=null && getIntent().getAction() != null) {
-                switch (getIntent().getAction()) {
-                    case TourEndConfirmationFragment.KEY_RESUME_TOUR:
-                    case TourEndConfirmationFragment.KEY_END_TOUR:
-                    case PlusFragment.KEY_START_TOUR:
-                    case PlusFragment.KEY_ADD_ENCOUNTER:
-                    case PlusFragment.KEY_CREATE_CONTRIBUTION:
-                    case PlusFragment.KEY_CREATE_DEMAND:
-                    case PlusFragment.KEY_CREATE_OUTING:
-                        BusProvider.getInstance().post(new OnCheckIntentActionEvent());
-                        break;
-                    case TourService.KEY_NOTIFICATION_STOP_TOUR:
-                    case TourService.KEY_NOTIFICATION_PAUSE_TOUR:
-                    case TourService.KEY_LOCATION_PROVIDER_DISABLED:
-                        sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
-                        break;
-                    default:
-                        break;
-                }
+        if (getIntent()!=null && getIntent().getAction() != null) {
+            switch (getIntent().getAction()) {
+                case TourEndConfirmationFragment.KEY_RESUME_TOUR:
+                case TourEndConfirmationFragment.KEY_END_TOUR:
+                case PlusFragment.KEY_START_TOUR:
+                case PlusFragment.KEY_ADD_ENCOUNTER:
+                case PlusFragment.KEY_CREATE_CONTRIBUTION:
+                case PlusFragment.KEY_CREATE_DEMAND:
+                case PlusFragment.KEY_CREATE_OUTING:
+                    BusProvider.getInstance().post(new OnCheckIntentActionEvent());
+                    break;
+                case TourService.KEY_NOTIFICATION_STOP_TOUR:
+                case TourService.KEY_NOTIFICATION_PAUSE_TOUR:
+                case TourService.KEY_LOCATION_PROVIDER_DISABLED:
+                    sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+                    break;
+                default:
+                    break;
             }
             sendMapFragmentExtras();
         }
@@ -272,12 +269,10 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     private void sendMapFragmentExtras() {
-        AuthenticationController authenticationController = getAuthenticationController();
-        if (authenticationController == null || authenticationController.getUser() == null) return;
-        int userId = authenticationController.getUser().getId();
-        boolean choice = authenticationController.isUserToursOnly();
         if(mainFragment instanceof MapEntourageFragment) {
-            ((MapEntourageFragment)mainFragment).onNotificationExtras(userId, choice);
+            AuthenticationController authenticationController = getAuthenticationController();
+            if (authenticationController == null || authenticationController.getUser() == null) return;
+            ((MapEntourageFragment)mainFragment).onNotificationExtras(authenticationController.getUser().getId(), authenticationController.isUserToursOnly());
         }
     }
 
@@ -307,7 +302,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    public void popToMapFragment() {
+    public void dismissMapFragmentDialogs() {
         if(mainFragment instanceof MapEntourageFragment) {
             ((MapEntourageFragment)mainFragment).dismissAllDialogs();
         }
@@ -319,12 +314,9 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
         if (bottomBar != null) {
             // we need to set the listener fist, to respond to the default selected tab request
-            bottomBar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    loadFragment(item.getItemId());
-                    return true;
-                }
+            bottomBar.setOnNavigationItemSelectedListener(item -> {
+                loadFragment(item.getItemId());
+                return true;
             });
 
             int defaultId = navigationDataSource.getDefaultSelectedTab();
@@ -383,9 +375,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         selectNavigationTab(navigationDataSource.getFeedTabIndex());
     }
 
-    public void showPlusActions() {
-        selectNavigationTab(navigationDataSource.getActionMenuId());
-    }
+    //public void showPlusActions() { selectNavigationTab(navigationDataSource.getActionMenuId()); }
 
     public void showGuide() {
         selectNavigationTab(navigationDataSource.getGuideTabIndex());
@@ -471,7 +461,7 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (message != null) {
             PushNotificationContent content = message.getContent();
             if (content != null
-                    && intent.getAction()== PushNotificationContent.TYPE_NEW_CHAT_MESSAGE
+                    && PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(intent.getAction())
                     && !content.isTourRelated()
                     && !content.isEntourageRelated()) {
                 showMyEntourages();
@@ -733,7 +723,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     public void onCreateEntourageDeepLink() {
         showFeed();
-        popToMapFragment();
+        dismissMapFragmentDialogs();
         if (mainFragment instanceof MapEntourageFragment) {
             ((MapEntourageFragment)mainFragment).displayEntourageDisclaimer();
         }

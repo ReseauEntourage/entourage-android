@@ -185,10 +185,6 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
         }
     }
 
-    protected void proposePOI() {
-        // does nothing
-    }
-
     protected void displayTutorial(boolean forced) {
         if (!forced && !Configuration.getInstance().showTutorial()) return;
         if (activity != null && activity.isSafeToCommit()) {

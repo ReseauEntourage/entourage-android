@@ -311,7 +311,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
         // Close the overlays
         onBackPressed();
         // Open the link to propose a POI
-        if (getActivity() != null && getActivity() instanceof DrawerActivity) {
+        if (getActivity() instanceof DrawerActivity) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_PROPOSE_POI);
             ((DrawerActivity) getActivity()).showWebViewForLinkId(Constants.PROPOSE_POI_ID);
         }
