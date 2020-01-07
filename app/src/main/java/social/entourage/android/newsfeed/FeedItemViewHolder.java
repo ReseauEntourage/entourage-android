@@ -96,7 +96,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
     }
 
     public static int getLayoutResource() {
-        return R.layout.layout_tour_card;
+        return R.layout.layout_feed_action_card;
     }
 
     @Override

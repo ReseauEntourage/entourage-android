@@ -13,7 +13,6 @@
         android:id="@+id/tour_info_title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="@color/feeditem_details_topbar_background"
@@ -36,43 +35,40 @@
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/tour_info_close"
-            android:layout_toRightOf="@+id/tour_info_close"
             android:background="@drawable/bg_feeditem_icon"
             android:contentDescription="@string/empty_description"
             android:padding="3dp"
             android:scaleType="centerInside"
             android:visibility="gone"
-            app:srcCompat="@drawable/ic_entourage_category_question_chat"/>
+            app:srcCompat="@drawable/ic_entourage_category_question_chat"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/tour_info_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_marginEnd="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="5dp"
             android:layout_marginStart="5dp"
-            android:layout_toEndOf="@+id/tour_info_icon"
-            android:layout_toLeftOf="@+id/tour_info_top_buttons"
-            android:layout_toRightOf="@+id/tour_info_icon"
+            android:layout_marginEnd="10dp"
             android:layout_toStartOf="@+id/tour_info_top_buttons"
+            android:layout_toEndOf="@+id/tour_info_icon"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:lines="1"
             android:textColor="@color/feeditem_details_title"
             android:textSize="@dimen/entourage_font_medium"
             android:textStyle="bold"
-            tools:text="Test description"/>
+            tools:text="Test description"
+            tools:visibility="visible" />
 
         <include
             android:id="@+id/tour_info_top_buttons"
             layout="@layout/layout_tour_information_top_buttons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"/>
+            tools:visibility="visible" />
 
     </RelativeLayout>
 
@@ -82,52 +78,58 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tour_info_title_layout"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <include
         android:id="@+id/tour_info_public_section"
         layout="@layout/layout_public_tour_information"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tour_info_title_layout"/>
+        android:layout_below="@+id/tour_info_title_layout"
+        tools:visibility="visible" />
 
     <View
         android:id="@+id/tour_info_loading_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tour_info_title_layout"
-        android:background="@color/white"/>
+        android:background="@color/white"
+        tools:visibility="visible" />
 
     <ProgressBar
         android:id="@+id/tour_info_progress_bar"
         style="?android:attr/progressBarStyleSmall"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_centerInParent="true"
         android:indeterminate="true"
         android:indeterminateDrawable="@drawable/circular_progress_bar"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <include
         android:id="@+id/tour_info_invite_source_layout"
         layout="@layout/layout_invite_source"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <include
         android:id="@+id/tour_info_invite_success_layout"
         layout="@layout/layout_invite_success"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <include
         android:id="@+id/tour_info_options"
         layout="@layout/layout_feeditem_options"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 </RelativeLayout>

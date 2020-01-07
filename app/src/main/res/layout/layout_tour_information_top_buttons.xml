@@ -6,7 +6,6 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentEnd="true"
-    android:layout_alignParentRight="true"
     android:layout_centerVertical="true"
     android:gravity="center_vertical"
     tools:showIn="@layout/fragment_tour_information">
@@ -15,22 +14,24 @@
         android:id="@+id/tour_info_description_button"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginRight="5dp"
         android:background="?android:attr/selectableItemBackground"
-        android:contentDescription="@string/empty_description"
+        android:contentDescription="Information"
         android:scaleType="fitXY"
-        android:tint="@color/white"
+        android:tint="@color/feeditem_details_topbar_tint"
         android:visibility="gone"
         app:srcCompat="@drawable/ic_info"
-        android:layout_marginEnd="5dp"/>
+        android:layout_marginEnd="5dp"
+        tools:visibility="visible" />
 
     <ImageButton
         android:id="@+id/tour_info_more_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:background="?android:attr/selectableItemBackground"
-        android:contentDescription="@string/empty_description"
-        app:srcCompat="@drawable/ic_more"
+        android:contentDescription="Plus"
+        android:scaleType="fitXY"
         android:tint="@color/feeditem_details_topbar_tint"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_more_3filleddots"
+        tools:visibility="visible" />
 </LinearLayout>
