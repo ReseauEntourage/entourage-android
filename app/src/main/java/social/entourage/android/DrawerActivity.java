@@ -329,7 +329,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
             int defaultId = navigationDataSource.getDefaultSelectedTab();
             loadFragment(defaultId);
-            bottomBar.setSelectedItemId(defaultId);
+            //bottomBar.setSelectedItemId(defaultId);
 
             BadgeDrawable messageBadge = bottomBar.getOrCreateBadge(navigationDataSource.getMyMessagesTabIndex());
             messageBadge.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.map_announcement_background, null));

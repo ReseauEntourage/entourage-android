@@ -9,9 +9,7 @@
     android:background="@color/background"
     android:columnCount="3"
     android:paddingEnd="12dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="12dp"
-    android:paddingStart="16dp"
+    android:paddingStart="8dp"
     android:paddingTop="8dp"
     android:rowCount="5">
 
@@ -21,24 +19,23 @@
         android:layout_height="30dp"
         android:contentDescription="@string/empty_description"
         android:scaleType="centerInside"
-        />
+        tools:srcCompat="@drawable/ic_entourage_category_friendly_time" />
 
     <TextView
         android:id="@+id/tour_card_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/tour_card_icon"
-        android:layout_toRightOf="@+id/tour_card_icon"
-        android:layout_toLeftOf="@+id/tour_card_people_layout"
         android:layout_toStartOf="@+id/tour_card_people_layout"
-        android:drawablePadding="@dimen/entourage_category_icon_padding"
+        android:layout_toEndOf="@+id/tour_card_icon"
+        android:drawablePadding="16dp"
         android:gravity="center_vertical"
-        android:paddingLeft="3dp"
-        android:paddingRight="3dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/greyish_brown"
         android:textSize="@dimen/entourage_font_large"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        tools:text="some text" />
 
     <LinearLayout
         android:id="@+id/tour_card_people_layout"
@@ -55,14 +52,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
             android:background="@drawable/bg_badge"
             android:gravity="center"
             android:minWidth="15dp"
             android:textColor="@color/white"
             android:textSize="@dimen/badge_size"
             android:visibility="gone"
-            tools:ignore="SmallSp"/>
+            tools:ignore="SmallSp" />
 
         <ImageView
             android:layout_width="22dp"
@@ -75,64 +71,46 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:paddingEnd="0dp"
-            android:paddingLeft="3dp"
-            android:paddingRight="0dp"
             android:paddingStart="3dp"
+            android:paddingEnd="0dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/greyish_brown"
             android:textSize="@dimen/entourage_font_medium"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            tools:text="9" />
     </LinearLayout>
 
     <ImageView
         android:id="@+id/tour_card_photo"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_below="@+id/tour_card_people_layout"
+        android:layout_alignParentEnd="true"
         android:layout_gravity="end"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
         android:layout_marginTop="5dp"
+        android:layout_marginEnd="3dp"
         android:contentDescription="@string/empty_description"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_user_photo_small"/>
+        android:src="@drawable/ic_user_photo_small" />
 
     <social.entourage.android.view.PartnerLogoImageView
         android:id="@+id/tour_card_partner_logo"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_alignBottom="@+id/tour_card_photo"
         android:layout_alignEnd="@+id/tour_card_photo"
-        android:layout_alignRight="@+id/tour_card_photo"
-        android:layout_marginBottom="-4dp"
+        android:layout_alignBottom="@+id/tour_card_photo"
         android:layout_marginEnd="-4dp"
-        android:layout_marginRight="-4dp"/>
-
-    <ImageView
-        android:id="@+id/tour_card_arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="3dp"
-        android:contentDescription="@string/empty_description"
-        android:padding="5dp"
-        android:visibility="gone"
-        app:srcCompat="@drawable/arrow_grey_light"/>
+        android:layout_marginBottom="-4dp"
+        app:srcCompat="@drawable/entourage_logo_grey" />
 
     <LinearLayout
         android:id="@+id/tour_card_type_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/tour_card_title"
         android:layout_marginTop="8dp"
-        android:layout_toEndOf="@+id/tour_card_photo"
-        android:layout_toRightOf="@+id/tour_card_photo"
+        android:layout_toLeftOf="@+id/tour_card_photo"
         android:orientation="horizontal">
 
         <TextView
@@ -142,7 +120,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/greyish_brown"
             android:textSize="@dimen/entourage_font_medium"
-            tools:text="voisinage"/>
+            tools:text="Demande par "/>
 
         <TextView
             android:id="@+id/tour_card_author"
@@ -152,7 +130,7 @@
             android:textColor="@color/greyish_brown"
             android:textSize="@dimen/entourage_font_medium"
             android:textStyle="bold"
-            tools:text=" some text"/>
+            tools:text="Utilisateur E."/>
 
     </LinearLayout>
 
@@ -160,21 +138,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tour_card_type_layout"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="5dp">
 
         <TextView
             android:id="@+id/tour_card_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/tour_card_button_act"
             android:layout_toStartOf="@+id/tour_card_button_act"
             android:lines="1"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/greyish"
-            android:textSize="@dimen/entourage_font_small"/>
+            android:textSize="@dimen/entourage_font_small"
+            tools:text="à 5km" />
 
         <Button
             android:id="@+id/tour_card_button_act"
@@ -182,11 +159,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:paddingEnd="@dimen/act_button_right_padding"
-            android:paddingLeft="0dp"
-            android:paddingRight="@dimen/act_button_right_padding"
             android:paddingStart="0dp"
-            android:textSize="@dimen/entourage_font_large"/>
+            android:paddingEnd="@dimen/act_button_right_padding"
+            android:minHeight="30dp"
+            tools:text="Voir plus" />
 
     </RelativeLayout>
 

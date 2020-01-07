@@ -746,6 +746,38 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     protected void updateFloatingMenuOptions() {
     }
 
+    protected void displayFeedItemOptions(FeedItem feedItem) {
+    }
+
+    public void feedItemCloseRequested(Events.OnFeedItemCloseRequestEvent event) {
+        FeedItem feedItem = event.getFeedItem();
+        if (feedItem == null) {
+            return;
+        }
+        if (event.isShowUI()) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_ACTIVE_CLOSE_OVERLAY);
+            displayFeedItemOptions(feedItem);
+            return;
+        }
+        // Only the author can close entourages/tours
+        User me = EntourageApplication.me(getContext());
+        if (me == null || feedItem.getAuthor() == null) {
+            return;
+        }
+        int myId = me.getId();
+        if (feedItem.getAuthor().getUserID() != myId) {
+            return;
+        }
+
+        if (!feedItem.isClosed()) {
+            // close
+            stopFeedItem(feedItem, event.isSuccess());
+        } else if (feedItem.getType() == TimestampedObject.TOUR_CARD && !feedItem.isFreezed()) {
+            // freeze
+            freezeTour((Tour) feedItem);
+        }
+    }
+
     // ----------------------------------
     // Long clicks on map handler
     // ----------------------------------

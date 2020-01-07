@@ -545,7 +545,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
     }
 
     @Optional
-    @OnClick({R.id.tour_info_icon, R.id.tour_info_title, R.id.tour_card_arrow, R.id.tour_info_description_button})
+    @OnClick({R.id.tour_info_icon, R.id.tour_info_title, R.id.tour_info_description_button})
     protected void onSwitchSections() {
         // Ignore if the entourage is not loaded or is public
         if (feedItem == null || !feedItem.isPrivate()) {
