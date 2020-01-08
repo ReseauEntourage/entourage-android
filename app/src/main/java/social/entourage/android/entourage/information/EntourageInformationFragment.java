@@ -122,8 +122,8 @@ import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.map.OnAddressClickListener;
 import social.entourage.android.entourage.EntourageCloseFragment;
 import social.entourage.android.entourage.create.CreateEntourageFragment;
-import social.entourage.android.tour.TourService;
-import social.entourage.android.tour.TourServiceListener;
+import social.entourage.android.service.EntourageService;
+import social.entourage.android.service.EntourageServiceListener;
 import social.entourage.android.entourage.information.discussion.DiscussionAdapter;
 import social.entourage.android.entourage.information.members.MembersAdapter;
 import social.entourage.android.tools.BusProvider;
@@ -135,7 +135,7 @@ import static social.entourage.android.api.model.map.BaseEntourage.TYPE_ACTION;
 import static social.entourage.android.api.model.map.BaseEntourage.TYPE_OUTING;
 import static social.entourage.android.api.model.map.Tour.TYPE_TOUR;
 
-public class EntourageInformationFragment extends EntourageDialogFragment implements TourServiceListener, InviteFriendsListener {
+public class EntourageInformationFragment extends EntourageDialogFragment implements EntourageServiceListener, InviteFriendsListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -161,7 +161,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
     @Inject
     EntourageInformationPresenter presenter;
 
-    TourService tourService;
+    EntourageService entourageService;
     private ServiceConnection connection = new ServiceConnection();
     private boolean isBound = false;
 
@@ -435,7 +435,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
         super.onDetach();
         mListener = null;
         if (isBound) {
-            tourService.unregisterTourServiceListener(this);
+            entourageService.unregisterServiceListener(this);
         }
         doUnbindService();
 
@@ -711,20 +711,20 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
                 }
             } else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE);
-                //tourService.stopFeedItem(feedItem);
+                //entourageService.stopFeedItem(feedItem);
                 //hide the options
                 optionsLayout.setVisibility(View.GONE);
                 //show close fragment
                 if (getActivity() != null) {
                     FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
                     EntourageCloseFragment entourageCloseFragment = EntourageCloseFragment.newInstance(feedItem);
-                    entourageCloseFragment.show(fragmentManager, EntourageCloseFragment.TAG);
+                    entourageCloseFragment.show(fragmentManager, EntourageCloseFragment.TAG, getContext());
                 }
             }
         } else if (feedItem.getType() == TimestampedObject.TOUR_CARD && feedItem.getStatus().equals(FeedItem.STATUS_CLOSED)) {
-            if (tourService != null) {
+            if (entourageService != null) {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE);
-                tourService.freezeTour((Tour) feedItem);
+                entourageService.freezeTour((Tour) feedItem);
             }
         }
     }
@@ -735,7 +735,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
     }
 
     private void quitTour() {
-        if (tourService == null) {
+        if (entourageService == null) {
             Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
         } else {
             User me = EntourageApplication.me(getActivity());
@@ -744,21 +744,21 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
             } else {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_QUIT);
                 showProgressBar();
-                tourService.removeUserFromFeedItem(feedItem, me.getId());
+                entourageService.removeUserFromFeedItem(feedItem, me.getId());
             }
         }
     }
 
     @OnClick({R.id.feeditem_option_join, R.id.feeditem_option_contact, R.id.tour_info_request_join_button})
     public void onJoinTourButton() {
-        if (tourService != null) {
+        if (entourageService != null) {
             showProgressBar();
             if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN);
-                tourService.requestToJoinTour((Tour) feedItem);
+                entourageService.requestToJoinTour((Tour) feedItem);
             } else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN);
-                tourService.requestToJoinEntourage((Entourage) feedItem);
+                entourageService.requestToJoinEntourage((Entourage) feedItem);
             } else {
                 hideProgressBar();
             }
@@ -2224,7 +2224,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
     void doBindService() {
         if (getActivity() != null) {
             try {
-            Intent intent = new Intent(getActivity(), TourService.class);
+            Intent intent = new Intent(getActivity(), EntourageService.class);
             getActivity().startService(intent);
             getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
             } catch (IllegalStateException e) {
@@ -2429,16 +2429,16 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             if (getActivity() != null) {
-                tourService = ((TourService.LocalBinder) service).getService();
-                tourService.registerTourServiceListener(EntourageInformationFragment.this);
+                entourageService = ((EntourageService.LocalBinder) service).getService();
+                entourageService.registerServiceListener(EntourageInformationFragment.this);
                 isBound = true;
             }
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            tourService.unregisterTourServiceListener(EntourageInformationFragment.this);
-            tourService = null;
+            entourageService.unregisterServiceListener(EntourageInformationFragment.this);
+            entourageService = null;
             isBound = false;
         }
     }

@@ -278,6 +278,15 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Ent
         }
     }
 
+
+
+    @Subscribe
+    public void feedItemViewRequested(Events.OnFeedItemInfoViewRequestedEvent event) {
+        if(event != null && event.getFeedItem() != null) {
+            onPushNotificationConsumedForFeedItem(event.getFeedItem());
+        }
+    }
+
     // ----------------------------------
     // Push handling
     // ----------------------------------

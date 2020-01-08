@@ -69,7 +69,7 @@
     <string name="tour_info_metadata_organiser_format">par %1$s</string>
     <string name="tour_info_metadata_date_format">Rendez-vous %1$s %2$s</string>
 
-    <!-- TourService -->
+    <!-- EntourageService -->
     <string name="local_service_stopped">Maraude terminée</string>
     <string name="tour_freezed">Maraude clôturée</string>
     <string name="local_service_running">Maraude en cours</string>

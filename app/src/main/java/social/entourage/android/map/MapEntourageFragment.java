@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -52,7 +53,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import butterknife.Optional;
 import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
@@ -86,7 +86,7 @@ import social.entourage.android.map.filter.MapFilterFactory;
 import social.entourage.android.map.filter.MapFilterFragment;
 import social.entourage.android.map.permissions.NoLocationPermissionFragment;
 import social.entourage.android.newsfeed.NewsFeedListener;
-import social.entourage.android.tour.TourService;
+import social.entourage.android.service.EntourageService;
 import social.entourage.android.entourage.information.EntourageInformationFragment;
 import social.entourage.android.newsfeed.NewsfeedAdapter;
 import social.entourage.android.newsfeed.NewsfeedBottomViewHolder;
@@ -129,7 +129,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
     private Location previousEmptyListPopupLocation = null;
 
-    protected TourService tourService;
+    protected EntourageService entourageService;
     protected ProgressDialog loaderStop;
 
     protected Map<String, Object> markersMap;
@@ -181,7 +181,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     // current selected tab
     protected MapTabItem selectedTab = MapTabItem.ALL_TAB;
 
-    public MapEntourageFragment() {
+    protected MapEntourageFragment() {
         super(R.layout.fragment_map);
         eventLongClick = EntourageEvents.EVENT_MAP_LONGPRESS;
     }
@@ -284,8 +284,8 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
             return true;
         }
         //before closing the fragment, send the cached tour points to server (if applicable)
-        if (tourService != null) {
-            tourService.updateOngoingTour();
+        if (entourageService != null) {
+            entourageService.updateOngoingTour();
         }
         return false;
     }
@@ -365,14 +365,14 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         }
     }
 
-    public void act(TimestampedObject timestampedObject) {
-        if (tourService != null) {
+    private void act(TimestampedObject timestampedObject) {
+        if (entourageService != null) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_OPEN_CONTACT);
             isRequestingToJoin++;
             if (timestampedObject.getType() == TimestampedObject.TOUR_CARD) {
-                tourService.requestToJoinTour((Tour) timestampedObject);
+                entourageService.requestToJoinTour((Tour) timestampedObject);
             } else if (timestampedObject.getType() == TimestampedObject.ENTOURAGE_CARD) {
-                tourService.requestToJoinEntourage((Entourage) timestampedObject);
+                entourageService.requestToJoinEntourage((Entourage) timestampedObject);
             } else {
                 isRequestingToJoin--;
             }
@@ -420,11 +420,21 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         }
     }
 
+    protected void refreshFeed() {
+        clearAll();
+        if(newsfeedAdapter!=null) {
+            newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS, selectedTab);
+        }
+
+        if (entourageService != null) {
+            entourageService.updateNewsfeed(pagination, selectedTab);
+        }
+    }
+
     // ----------------------------------
-    // BUS LISTENERS
+    // BUS LISTENERS : don't susbcribe here but in children !
     // ----------------------------------
 
-    @Subscribe
     public void onMyEntouragesForceRefresh(Events.OnMyEntouragesForceRefresh event) {
         FeedItem item = event.getFeedItem();
         if(item==null) {
@@ -434,14 +444,12 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         }
     }
 
-    @Subscribe
     public void onBetterLocation(OnBetterLocationEvent event) {
         if (event.getLocation() != null) {
             centerMap(event.getLocation());
         }
     }
 
-    @Subscribe
     public void onEntourageCreated(Events.OnEntourageCreated event) {
         Entourage entourage = event.getEntourage();
         if (entourage == null) {
@@ -457,13 +465,12 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
         // Update the newsfeed
         clearAll();
-        if(tourService!=null) {
-            tourService.updateNewsfeed(pagination, selectedTab);
+        if(entourageService !=null) {
+            entourageService.updateNewsfeed(pagination, selectedTab);
         }
 
     }
 
-    @Subscribe
     public void onEntourageUpdated(Events.OnEntourageUpdated event) {
         if (event == null || newsfeedAdapter == null) {
             return;
@@ -475,7 +482,6 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         newsfeedAdapter.updateCard(entourage);
     }
 
-    @Subscribe
     public void onMapFilterChanged(Events.OnMapFilterChanged event) {
         // Save the filter
         if (presenter != null) {
@@ -485,18 +491,6 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         refreshFeed();
     }
 
-    protected void refreshFeed() {
-        clearAll();
-        if(newsfeedAdapter!=null) {
-            newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS, selectedTab);
-        }
-
-        if (tourService != null) {
-            tourService.updateNewsfeed(pagination, selectedTab);
-        }
-    }
-
-    @Subscribe
     public void onNewsfeedLoadMoreRequested(Events.OnNewsfeedLoadMoreEvent event) {
         switch (selectedTab) {
             case ALL_TAB:
@@ -536,8 +530,51 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         if (newsfeedAdapter != null) {
             newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE, selectedTab);
         }
-        if (tourService != null) {
-            tourService.updateNewsfeed(pagination, selectedTab);
+        if (entourageService != null) {
+            entourageService.updateNewsfeed(pagination, selectedTab);
+        }
+    }
+
+    public void userActRequested(final Events.OnUserActEvent event) {
+        if (Events.OnUserActEvent.ACT_JOIN.equals(event.getAct())) {
+            act(event.getFeedItem());
+        } else if (Events.OnUserActEvent.ACT_QUIT.equals(event.getAct())) {
+            User me = EntourageApplication.me(getContext());
+            if (me == null) {
+                Toast.makeText(getContext(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
+            } else {
+                FeedItem item = event.getFeedItem();
+                if (item != null && FeedItem.JOIN_STATUS_PENDING.equals(item.getJoinStatus())) {
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_CANCEL_JOIN_REQUEST);
+                }
+                if (entourageService != null) {
+                    entourageService.removeUserFromFeedItem(item, userId);
+                }
+            }
+        }
+    }
+
+    public void feedItemViewRequested(Events.OnFeedItemInfoViewRequestedEvent event) {
+        if(event != null) {
+            FeedItem feedItem = event.getFeedItem();
+            if (feedItem != null) {
+                displayChosenFeedItem(feedItem, event.getfeedRank());
+                // update the newsfeed card
+                onPushNotificationConsumedForFeedItem(feedItem);
+                // update the my entourages card, if necessary
+            } else {
+                //check if we are receiving feed type and id
+                int feedItemType = event.getFeedItemType();
+                if (feedItemType == 0) {
+                    return;
+                }
+                String feedItemUUID = event.getFeedItemUUID();
+                if (feedItemUUID == null || feedItemUUID.length() == 0) {
+                    displayChosenFeedItemFromShareURL(event.getFeedItemShareURL(), feedItemType);
+                } else {
+                    displayChosenFeedItem(feedItemUUID, feedItemType, event.getInvitationId());
+                }
+            }
         }
     }
 
@@ -547,7 +584,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
     @Override
     public void onLocationUpdated(@NonNull LatLng location) {
-        if(tourService.isRunning()) {
+        if(entourageService.isRunning()) {
             centerMap(location);
         }
     }
@@ -737,12 +774,6 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         updateFloatingMenuOptions();
     }
 
-    @Subscribe
-    @Override
-    public void onLocationPermissionGranted(Events.OnLocationPermissionGranted event) {
-        super.onLocationPermissionGranted(event);
-    }
-
     protected void updateFloatingMenuOptions() {
     }
 
@@ -829,7 +860,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
             Location newLocation = EntourageLocation.cameraPositionToLocation(null, cameraPosition);
             float newZoom = cameraPosition.zoom;
 
-            if (tourService != null && (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT)) {
+            if (entourageService != null && (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT)) {
                 if (previousCameraZoom != newZoom) {
                     if (previousCameraZoom > newZoom) {
                         EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_ZOOM_IN);
@@ -842,7 +873,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
                 // check if we need to cancel the current request
                 if (pagination.isLoading) {
-                    tourService.cancelNewsFeedUpdate();
+                    entourageService.cancelNewsFeedUpdate();
                 }
 
                 if (newsfeedAdapter != null) {
@@ -850,7 +881,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
                     newsfeedAdapter.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE, selectedTab);
                 }
                 pagination = new NewsfeedPagination();
-                tourService.updateNewsfeed(pagination, selectedTab);
+                entourageService.updateNewsfeed(pagination, selectedTab);
                 updateUserHistory();
 
             }
@@ -924,35 +955,35 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     }
 
     public void pauseTour(Tour tour) {
-        if (tourService != null && tourService.isRunning()) {
-            if (tourService.getCurrentTourId().equalsIgnoreCase(tour.getUUID())) {
-                tourService.pauseTreatment();
+        if (entourageService != null && entourageService.isRunning()) {
+            if (entourageService.getCurrentTourId().equalsIgnoreCase(tour.getUUID())) {
+                entourageService.pauseTreatment();
             }
         }
     }
 
     public void saveOngoingTour() {
-        if (tourService != null) {
-            tourService.updateOngoingTour();
+        if (entourageService != null) {
+            entourageService.updateOngoingTour();
         }
     }
 
     public void stopFeedItem(FeedItem feedItem, boolean success) {
         if (getActivity() != null) {
-            if (tourService != null) {
+            if (entourageService != null) {
                 if ((feedItem != null)
-                        && (!tourService.isRunning()
+                        && (!entourageService.isRunning()
                         || feedItem.getType() != TimestampedObject.TOUR_CARD
-                        || tourService.getCurrentTourId().equalsIgnoreCase(feedItem.getUUID()))) {
+                        || entourageService.getCurrentTourId().equalsIgnoreCase(feedItem.getUUID()))) {
                     // Not ongoing tour, just stop the feed item
                     loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(feedItem.getClosingLoaderMessage()), getActivity().getString(R.string.button_loading), true);
                     loaderStop.setCancelable(true);
                     EntourageEvents.logEvent(EntourageEvents.EVENT_STOP_TOUR);
-                    tourService.stopFeedItem(feedItem, success);
-                } else if (tourService.isRunning()) {
+                    entourageService.stopFeedItem(feedItem, success);
+                } else if (entourageService.isRunning()) {
                     loaderStop = ProgressDialog.show(getActivity(), getActivity().getString(R.string.loader_title_tour_finish), getActivity().getString(R.string.button_loading), true);
                     loaderStop.setCancelable(true);
-                    tourService.endTreatment();
+                    entourageService.endTreatment();
                     EntourageEvents.logEvent(EntourageEvents.EVENT_STOP_TOUR);
                 }
             }
@@ -961,14 +992,14 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
     public void freezeTour(Tour tour) {
         if (getActivity() != null) {
-            if (tourService != null) {
-                tourService.freezeTour(tour);
+            if (entourageService != null) {
+                entourageService.freezeTour(tour);
             }
         }
     }
 
     public void userStatusChanged(PushNotificationContent content, String status) {
-        if (tourService != null) {
+        if (entourageService != null) {
             TimestampedObject timestampedObject = null;
             if (content.isEntourageRelated()) {
                 timestampedObject = newsfeedAdapter.findCard(TimestampedObject.ENTOURAGE_CARD, content.getJoinableId());
@@ -977,14 +1008,8 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
                 TourUser user = new TourUser();
                 user.setUserId(userId);
                 user.setStatus(status);
-                tourService.notifyListenersUserStatusChanged(user, (FeedItem) timestampedObject);
+                entourageService.notifyListenersUserStatusChanged(user, (FeedItem) timestampedObject);
             }
-        }
-    }
-
-    public void removeUserFromNewsfeedCard(FeedItem card, int userId) {
-        if (tourService != null) {
-            tourService.removeUserFromFeedItem(card, userId);
         }
     }
 
@@ -1115,8 +1140,8 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
         }
 
         // check if we need to cancel the current request
-        if (pagination.isLoading && tourService != null) {
-            tourService.cancelNewsFeedUpdate();
+        if (pagination.isLoading && entourageService != null) {
+            entourageService.cancelNewsFeedUpdate();
         }
 
         pagination.reset();
@@ -1242,9 +1267,9 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
     public void onPushNotificationReceived(Message message) {
         //refresh the newsfeed
-        if (tourService != null) {
+        if (entourageService != null) {
             pagination.isRefreshing = true;
-            tourService.updateNewsfeed(pagination, selectedTab);
+            entourageService.updateNewsfeed(pagination, selectedTab);
         }
         //update the badge count on tour card
         PushNotificationContent content = message.getContent();
@@ -1297,10 +1322,10 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
             @Override
             public void run() {
                 refreshToursHandler.post(() -> {
-                    if (tourService != null) {
+                    if (entourageService != null) {
                         if (selectedTab == MapTabItem.ALL_TAB) {
                             pagination.isRefreshing = true;
-                            tourService.updateNewsfeed(pagination, selectedTab);
+                            entourageService.updateNewsfeed(pagination, selectedTab);
                         }
                     }
                 });
@@ -1546,7 +1571,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
                 int firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
                 int totalItemCount = linearLayoutManager.getItemCount();
                 if (totalItemCount - visibleItemCount <= firstVisibleItem + 2) {
-                    if ((tourService != null)&&(tourService.updateNewsfeed(pagination, selectedTab))) {
+                    if ((entourageService != null)&&(entourageService.updateNewsfeed(pagination, selectedTab))) {
                             //if update returns false no need to log this...
                         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_SCROLL_LIST);
                     }

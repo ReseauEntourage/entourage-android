@@ -10,15 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
 import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
-import social.entourage.android.tour.TourService;
 
 public class PlusFragment extends Fragment implements BackPressable{
     public static final String TAG = "social.entourage.android.fragment_plus";
@@ -135,7 +132,7 @@ public class PlusFragment extends Fragment implements BackPressable{
             displayEntourageDisclaimer();
             return true;
         }
-        else if (isBound && tourService != null && tourService.isRunning()) {
+        else if (isBound && entourageService != null && entourageService.isRunning()) {
             // Show directly the create encounter
             onAddEncounter();
             return true;

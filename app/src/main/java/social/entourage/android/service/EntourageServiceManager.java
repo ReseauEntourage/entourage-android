@@ -1,4 +1,4 @@
-package social.entourage.android.tour;
+package social.entourage.android.service;
 
 import android.content.Intent;
 import android.location.Location;
@@ -58,16 +58,14 @@ import timber.log.Timber;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
 import static android.content.Context.VIBRATOR_SERVICE;
-import static social.entourage.android.location.LocationProvider.UserType.PRO;
-import static social.entourage.android.location.LocationProvider.UserType.PUBLIC;
 
 /**
  * Manager is like a presenter but for a service
- * controlling the TourService
+ * controlling the EntourageService
  *
- * @see TourService
+ * @see EntourageService
  */
-public class TourServiceManager {
+public class EntourageServiceManager {
 
     // ----------------------------------
     // CONSTANTS
@@ -83,7 +81,7 @@ public class TourServiceManager {
     // ATTRIBUTES
     // ----------------------------------
 
-    public final TourService tourService;
+    public final EntourageService entourageService;
     private final TourRequest tourRequest;
     private final AuthenticationController authenticationController;
     private final EncounterRequest encounterRequest;
@@ -105,16 +103,16 @@ public class TourServiceManager {
 
     private boolean isBetterLocationUpdated;
 
-    private TourServiceManager(final TourService tourService,
-                               final AuthenticationController authenticationController,
-                               final TourRequest tourRequest,
-                               final EncounterRequest encounterRequest,
-                               final NewsfeedRequest newsfeedRequest,
-                               final EntourageRequest entourageRequest,
-                               final ConnectivityManager connectivityManager,
-                               final EntourageLocation entourageLocation,
-                               final LocationProvider locationProvider) {
-        this.tourService = tourService;
+    private EntourageServiceManager(final EntourageService entourageService,
+                                    final AuthenticationController authenticationController,
+                                    final TourRequest tourRequest,
+                                    final EncounterRequest encounterRequest,
+                                    final NewsfeedRequest newsfeedRequest,
+                                    final EntourageRequest entourageRequest,
+                                    final ConnectivityManager connectivityManager,
+                                    final EntourageLocation entourageLocation,
+                                    final LocationProvider locationProvider) {
+        this.entourageService = entourageService;
         this.authenticationController = authenticationController;
         this.tourRequest = tourRequest;
         this.encounterRequest = encounterRequest;
@@ -129,20 +127,20 @@ public class TourServiceManager {
         this.entourageLocation = entourageLocation;
     }
 
-    public static TourServiceManager newInstance(final TourService tourService,
-                                                 final TourRequest tourRequest,
-                                                 final AuthenticationController controller,
-                                                 final EncounterRequest encounterRequest,
-                                                 final NewsfeedRequest newsfeedRequest,
-                                                 final EntourageRequest entourageRequest) {
+    public static EntourageServiceManager newInstance(final EntourageService entourageService,
+                                                      final TourRequest tourRequest,
+                                                      final AuthenticationController controller,
+                                                      final EncounterRequest encounterRequest,
+                                                      final NewsfeedRequest newsfeedRequest,
+                                                      final EntourageRequest entourageRequest) {
         Timber.d("newInstance");
-        final ConnectivityManager connectivityManager = (ConnectivityManager) tourService.getSystemService(CONNECTIVITY_SERVICE);
+        final ConnectivityManager connectivityManager = (ConnectivityManager) entourageService.getSystemService(CONNECTIVITY_SERVICE);
         final EntourageLocation entourageLocation = EntourageLocation.getInstance();
         final User user = controller.getUser();
-        final UserType type = user != null && user.isPro() ? PRO : PUBLIC;
-        final LocationProvider provider = new LocationProvider(tourService, type);
-        final TourServiceManager tourServiceManager = new TourServiceManager(
-                tourService,
+        final UserType type = user != null && user.isPro() ? UserType.PRO : UserType.PUBLIC;
+        final LocationProvider provider = new LocationProvider(entourageService, type);
+        final EntourageServiceManager entourageServiceManager = new EntourageServiceManager(
+                entourageService,
                 controller,
                 tourRequest,
                 encounterRequest,
@@ -152,7 +150,7 @@ public class TourServiceManager {
                 entourageLocation,
                 provider);
 
-        provider.setLocationListener(new LocationListener(tourServiceManager, tourService));
+        provider.setLocationListener(new LocationListener(entourageServiceManager, entourageService));
         provider.start();
         final Tour savedTour = controller.getSavedTour();
         if (savedTour != null && user != null) {
@@ -161,14 +159,14 @@ public class TourServiceManager {
                 // it's not the user's tour, so remove it from preferences
                 controller.saveTour(null);
             } else {
-                tourServiceManager.currentTour = savedTour;
-                tourServiceManager.tourUUID = savedTour.getUUID();
-                tourService.notifyListenersTourCreated(true, savedTour.getUUID());
+                entourageServiceManager.currentTour = savedTour;
+                entourageServiceManager.tourUUID = savedTour.getUUID();
+                entourageService.notifyListenersTourCreated(true, savedTour.getUUID());
                 provider.setUserType(UserType.PRO);
             }
         }
-        BusProvider.getInstance().register(tourServiceManager);
-        return tourServiceManager;
+        BusProvider.getInstance().register(entourageServiceManager);
+        return entourageServiceManager;
     }
 
     // ----------------------------------
@@ -271,7 +269,7 @@ public class TourServiceManager {
                     }
                 } else {
                     if (isTourClosing) {
-                        tourService.notifyListenersFeedItemClosed(false, currentTour);
+                        entourageService.notifyListenersFeedItemClosed(false, currentTour);
                     }
                 }
                 isTourClosing = false;
@@ -280,7 +278,7 @@ public class TourServiceManager {
             @Override
             public void onFailure(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Throwable t) {
                 if (isTourClosing) {
-                    tourService.notifyListenersFeedItemClosed(false, currentTour);
+                    entourageService.notifyListenersFeedItemClosed(false, currentTour);
                 }
                 isTourClosing = false;
                 Timber.e(t);
@@ -357,16 +355,16 @@ public class TourServiceManager {
             public void onResponse(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Response<Tour.TourWrapper> response) {
                 if (response.isSuccessful()) {
                     Timber.d(response.body().getTour().toString());
-                    tourService.notifyListenersFeedItemClosed(true, response.body().getTour());
+                    entourageService.notifyListenersFeedItemClosed(true, response.body().getTour());
                 } else {
-                    tourService.notifyListenersFeedItemClosed(false, tour);
+                    entourageService.notifyListenersFeedItemClosed(false, tour);
                 }
             }
 
             @Override
             public void onFailure(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Throwable t) {
                 Timber.e(t);
-                tourService.notifyListenersFeedItemClosed(false, tour);
+                entourageService.notifyListenersFeedItemClosed(false, tour);
             }
         });
     }
@@ -377,7 +375,7 @@ public class TourServiceManager {
             @Override
             public void onResponse(@NonNull final Call<Tour.ToursWrapper> call, @NonNull final Response<Tour.ToursWrapper> response) {
                 if (response.isSuccessful()) {
-                    tourService.notifyListenersUserToursFound(response.body().getTours());
+                    entourageService.notifyListenersUserToursFound(response.body().getTours());
                 }
             }
 
@@ -391,7 +389,7 @@ public class TourServiceManager {
     void retrieveNewsFeed(final NewsfeedPagination pagination, final MapTabItem selectedTab) {
         final NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         if (netInfo == null || !netInfo.isConnected()) {
-            tourService.notifyListenersNetworkException();
+            entourageService.notifyListenersNetworkException();
             return;
         }
 
@@ -405,12 +403,12 @@ public class TourServiceManager {
             currentNewsFeedCall = createNewsfeedWrapperCall(location, pagination, mapFilter, selectedTab);
             if (currentNewsFeedCall == null) {
                 //fail graciously
-                tourService.notifyListenersNewsFeedReceived(null);
+                entourageService.notifyListenersNewsFeedReceived(null);
                 return;
             }
-            currentNewsFeedCall.enqueue(new NewsFeedCallback(this, tourService));
+            currentNewsFeedCall.enqueue(new NewsFeedCallback(this, entourageService));
         } else {
-            tourService.notifyListenersCurrentPositionNotRetrieved();
+            entourageService.notifyListenersCurrentPositionNotRetrieved();
         }
     }
 
@@ -486,7 +484,7 @@ public class TourServiceManager {
                 @Override
                 public void onResponse(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Response<TourUser.TourUserWrapper> response) {
                     if (response.isSuccessful()) {
-                        tourService.notifyListenersUserStatusChanged(response.body().getUser(), tour);
+                        entourageService.notifyListenersUserStatusChanged(response.body().getUser(), tour);
                     }
                 }
 
@@ -506,7 +504,7 @@ public class TourServiceManager {
                 @Override
                 public void onResponse(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Response<TourUser.TourUserWrapper> response) {
                     if (response.isSuccessful()) {
-                        tourService.notifyListenersUserStatusChanged(response.body().getUser(), tour);
+                        entourageService.notifyListenersUserStatusChanged(response.body().getUser(), tour);
                     }
                 }
 
@@ -531,10 +529,10 @@ public class TourServiceManager {
             public void onResponse(@NonNull final Call<Entourage.EntourageWrapper> call, @NonNull final Response<Entourage.EntourageWrapper> response) {
                 if (response.isSuccessful()) {
                     Timber.d(response.body().getEntourage().toString());
-                    tourService.notifyListenersFeedItemClosed(true, response.body().getEntourage());
+                    entourageService.notifyListenersFeedItemClosed(true, response.body().getEntourage());
                 } else {
                     entourage.setStatus(oldStatus);
-                    tourService.notifyListenersFeedItemClosed(false, entourage);
+                    entourageService.notifyListenersFeedItemClosed(false, entourage);
                 }
             }
 
@@ -542,7 +540,7 @@ public class TourServiceManager {
             public void onFailure(@NonNull final Call<Entourage.EntourageWrapper> call, @NonNull final Throwable t) {
                 Timber.e(t);
                 entourage.setStatus(oldStatus);
-                tourService.notifyListenersFeedItemClosed(false, entourage);
+                entourageService.notifyListenersFeedItemClosed(false, entourage);
             }
         });
     }
@@ -556,7 +554,7 @@ public class TourServiceManager {
                 @Override
                 public void onResponse(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Response<TourUser.TourUserWrapper> response) {
                     if (response.isSuccessful()) {
-                        tourService.notifyListenersUserStatusChanged(response.body().getUser(), entourage);
+                        entourageService.notifyListenersUserStatusChanged(response.body().getUser(), entourage);
                     }
                 }
 
@@ -576,7 +574,7 @@ public class TourServiceManager {
                 @Override
                 public void onResponse(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Response<TourUser.TourUserWrapper> response) {
                     if (response.isSuccessful()) {
-                        tourService.notifyListenersUserStatusChanged(response.body().getUser(), entourage);
+                        entourageService.notifyListenersUserStatusChanged(response.body().getUser(), entourage);
                     }
                 }
 
@@ -627,9 +625,9 @@ public class TourServiceManager {
     }
 
     private void timeOut() {
-        final Vibrator vibrator = (Vibrator) tourService.getSystemService(VIBRATOR_SERVICE);
+        final Vibrator vibrator = (Vibrator) entourageService.getSystemService(VIBRATOR_SERVICE);
         vibrator.vibrate(VIBRATION_DURATION);
-        tourService.sendBroadcast(new Intent(TourService.KEY_NOTIFICATION_PAUSE_TOUR));
+        entourageService.sendBroadcast(new Intent(EntourageService.KEY_NOTIFICATION_PAUSE_TOUR));
     }
 
     // ----------------------------------
@@ -652,12 +650,12 @@ public class TourServiceManager {
                     initializeTimerFinishTask();
                     tourUUID = response.body().getTour().getUUID();
                     currentTour = response.body().getTour();
-                    tourService.notifyListenersTourCreated(true, tourUUID);
+                    entourageService.notifyListenersTourCreated(true, tourUUID);
 
                     locationProvider.requestLastKnownLocation();
                 } else {
                     currentTour = null;
-                    tourService.notifyListenersTourCreated(false, "");
+                    entourageService.notifyListenersTourCreated(false, "");
                 }
             }
 
@@ -665,7 +663,7 @@ public class TourServiceManager {
             public void onFailure(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Throwable t) {
                 Timber.e(t);
                 currentTour = null;
-                tourService.notifyListenersTourCreated(false, "");
+                entourageService.notifyListenersTourCreated(false, "");
             }
         });
     }
@@ -685,18 +683,18 @@ public class TourServiceManager {
                     pointsToSend.clear();
                     pointsToDraw.clear();
                     cancelFinishTimer();
-                    tourService.notifyListenersFeedItemClosed(true, response.body().getTour());
+                    entourageService.notifyListenersFeedItemClosed(true, response.body().getTour());
                     locationProvider.setUserType(UserType.PUBLIC);
                     authenticationController.saveTour(currentTour);
                 } else {
-                    tourService.notifyListenersFeedItemClosed(false, currentTour);
+                    entourageService.notifyListenersFeedItemClosed(false, currentTour);
                 }
             }
 
             @Override
             public void onFailure(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Throwable t) {
                 Timber.e(t);
-                tourService.notifyListenersFeedItemClosed(false, currentTour);
+                entourageService.notifyListenersFeedItemClosed(false, currentTour);
             }
         });
     }
@@ -711,20 +709,19 @@ public class TourServiceManager {
             @Override
             public void onResponse(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Response<Tour.TourWrapper> response) {
                 if (response.isSuccessful()) {
-                    Timber.d(response.body().getTour().toString());
-                    tourService.notifyListenersFeedItemClosed(true, response.body().getTour());
+                    entourageService.notifyListenersFeedItemClosed(true, response.body().getTour());
                     if (tour.getUUID().equalsIgnoreCase(tourUUID)) {
                         authenticationController.saveTour(null);
                     }
                 } else {
-                    tourService.notifyListenersFeedItemClosed(false, tour);
+                    entourageService.notifyListenersFeedItemClosed(false, tour);
                 }
             }
 
             @Override
             public void onFailure(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Throwable t) {
                 Timber.e(t);
-                tourService.notifyListenersFeedItemClosed(false, tour);
+                entourageService.notifyListenersFeedItemClosed(false, tour);
             }
         });
     }
@@ -753,7 +750,7 @@ public class TourServiceManager {
             updateTourCoordinates();
         }
 
-        tourService.notifyListenersTourUpdated(new LatLng(location.getLatitude(), location.getLongitude()));
+        entourageService.notifyListenersTourUpdated(new LatLng(location.getLatitude(), location.getLongitude()));
         authenticationController.saveTour(currentTour);
     }
 
@@ -796,10 +793,10 @@ public class TourServiceManager {
 
     static class NewsFeedCallback implements Callback<Newsfeed.NewsfeedWrapper> {
         private static final String EMPTY_STRING = "";
-        private final TourServiceManager manager;
-        private final TourService service;
+        private final EntourageServiceManager manager;
+        private final EntourageService service;
 
-        NewsFeedCallback(final TourServiceManager manager, final TourService service) {
+        NewsFeedCallback(final EntourageServiceManager manager, final EntourageService service) {
             this.manager = manager;
             this.service = service;
         }

@@ -26,9 +26,66 @@ public class MapVoisinageFragment extends MapEntourageFragment {
         }
     }
 
+    // ----------------------------------
+    // BUS LISTENERS : needs to be in final class (not in parent class
+    // ----------------------------------
+
+    @Subscribe
+    @Override
+    public void onMyEntouragesForceRefresh(Events.OnMyEntouragesForceRefresh event) {
+        super.onMyEntouragesForceRefresh(event);
+    }
+
+    @Subscribe
+    @Override
+    public void onBetterLocation(Events.OnBetterLocationEvent event) {
+        super.onBetterLocation(event);
+    }
+
+    @Subscribe
+    @Override
+    public void onEntourageCreated(Events.OnEntourageCreated event) {
+        super.onEntourageCreated(event);
+    }
+
     @Subscribe
     @Override
     public void feedItemCloseRequested(Events.OnFeedItemCloseRequestEvent event) {
         super.feedItemCloseRequested(event);
+    }
+
+    @Subscribe
+    @Override
+    public void onEntourageUpdated(Events.OnEntourageUpdated event) {
+        super.onEntourageUpdated(event);
+    }
+
+    @Subscribe
+    @Override
+    public void onMapFilterChanged(Events.OnMapFilterChanged event) {
+        super.onMapFilterChanged(event);
+    }
+
+    @Subscribe
+    @Override
+    public void onNewsfeedLoadMoreRequested(Events.OnNewsfeedLoadMoreEvent event) {
+        super.onNewsfeedLoadMoreRequested(event);
+    }
+
+    @Subscribe
+    @Override
+    public void onLocationPermissionGranted(Events.OnLocationPermissionGranted event) {
+        super.onLocationPermissionGranted(event);
+    }
+
+
+    @Subscribe
+    public void userActRequested(final Events.OnUserActEvent event) {
+        super.userActRequested(event);
+    }
+
+    @Subscribe
+    public void feedItemViewRequested(Events.OnFeedItemInfoViewRequestedEvent event) {
+        super.feedItemViewRequested(event);
     }
 }

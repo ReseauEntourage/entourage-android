@@ -1,4 +1,4 @@
-package social.entourage.android.tour
+package social.entourage.android.service
 
 import com.google.android.gms.maps.model.LatLng
 import social.entourage.android.api.model.map.FeedItem
@@ -8,7 +8,7 @@ import social.entourage.android.api.model.map.TourUser
 import social.entourage.android.location.LocationUpdateListener
 import java.util.*
 
-interface TourServiceListener : LocationUpdateListener {
+interface EntourageServiceListener : LocationUpdateListener {
 
     fun onTourCreated(created: Boolean, tourUUID: String)
 

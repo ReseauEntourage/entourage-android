@@ -60,6 +60,11 @@ public class EntourageCloseFragment extends DialogFragment {
         return fragment;
     }
 
+    public void show(FragmentManager fragmentManager, String tag, Context context) {
+        //TODO change PFP to use that kind of dialog, use we use this function for compatibility
+        show(fragmentManager, tag);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

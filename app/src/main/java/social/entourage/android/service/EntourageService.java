@@ -1,4 +1,4 @@
-package social.entourage.android.tour;
+package social.entourage.android.service;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -54,7 +54,7 @@ import social.entourage.android.tools.log.LoggerNewsFeedLogger;
  * Background service handling location updates
  * and tours request
  */
-public class TourService extends Service {
+public class EntourageService extends Service {
 
     // ----------------------------------
     // CONSTANTS
@@ -83,9 +83,9 @@ public class TourService extends Service {
     @Inject
     EntourageRequest entourageRequest;
 
-    private TourServiceManager tourServiceManager;
+    private EntourageServiceManager entourageServiceManager;
 
-    private final List<TourServiceListener> tourServiceListeners = new ArrayList<>();
+    private final List<EntourageServiceListener> entourageServiceListeners = new ArrayList<>();
     private final List<NewsFeedListener> newsFeedListeners = new ArrayList<>();
     private final List<ApiConnectionListener> apiListeners = new ArrayList<>();
     private final List<LocationUpdateListener> locationUpdateListeners = new ArrayList<>();
@@ -135,8 +135,8 @@ public class TourService extends Service {
     // ----------------------------------
 
     public class LocalBinder extends Binder {
-        public TourService getService() {
-            return TourService.this;
+        public EntourageService getService() {
+            return EntourageService.this;
         }
     }
 
@@ -147,7 +147,7 @@ public class TourService extends Service {
 
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        tourServiceManager = TourServiceManager.newInstance(
+        entourageServiceManager = EntourageServiceManager.newInstance(
                 this,
                 tourRequest,
                 authenticationController,
@@ -193,11 +193,11 @@ public class TourService extends Service {
     // ----------------------------------
 
     public Tour getCurrentTour() {
-        return tourServiceManager.getTour();
+        return entourageServiceManager.getTour();
     }
 
     public String getCurrentTourId() {
-        return tourServiceManager.getTourUUID();
+        return entourageServiceManager.getTourUUID();
     }
 
     // ----------------------------------
@@ -286,8 +286,8 @@ public class TourService extends Service {
     }
 
     private void stopService() {
-        tourServiceManager.stopLocationService();
-        tourServiceManager.unregisterFromBus();
+        entourageServiceManager.stopLocationService();
+        entourageServiceManager.unregisterFromBus();
         stopSelf();
     }
 
@@ -296,28 +296,28 @@ public class TourService extends Service {
             return false;
         }
         pagination.isLoading = true;
-        tourServiceManager.retrieveNewsFeed(pagination, selectedTab);
+        entourageServiceManager.retrieveNewsFeed(pagination, selectedTab);
         return true;
     }
 
     public void cancelNewsFeedUpdate() {
-        tourServiceManager.cancelNewsFeedRetrieval();
+        entourageServiceManager.cancelNewsFeedRetrieval();
     }
 
     public void updateUserHistory(final int userId, final int page, final int per) {
-        tourServiceManager.retrieveToursByUserId(userId, page, per);
+        entourageServiceManager.retrieveToursByUserId(userId, page, per);
     }
 
     public void updateOngoingTour() {
         if (!isRunning()) {
             return;
         }
-        tourServiceManager.updateTourCoordinates();
+        entourageServiceManager.updateTourCoordinates();
     }
 
     public void beginTreatment(final String type) {
         if (!isRunning()) {
-            tourServiceManager.startTour(type);
+            entourageServiceManager.startTour(type);
         }
     }
 
@@ -334,8 +334,8 @@ public class TourService extends Service {
         final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
 
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        if (tourServiceManager != null) {
-            tourServiceManager.setTourDuration(dateFormat.format(duration));
+        if (entourageServiceManager != null) {
+            entourageServiceManager.setTourDuration(dateFormat.format(duration));
         }
         pauseNotification();
         isPaused = true;
@@ -352,36 +352,36 @@ public class TourService extends Service {
 
     public void endTreatment() {
         if (isRunning()) {
-            tourServiceManager.finishTour();
+            entourageServiceManager.finishTour();
         }
     }
 
     public void stopFeedItem(final FeedItem feedItem, final boolean success) {
         if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-            tourServiceManager.finishTour((Tour) feedItem);
+            entourageServiceManager.finishTour((Tour) feedItem);
         } else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-            tourServiceManager.closeEntourage((Entourage) feedItem, success);
+            entourageServiceManager.closeEntourage((Entourage) feedItem, success);
         }
     }
 
     public void freezeTour(final Tour tour) {
-        tourServiceManager.freezeTour(tour);
+        entourageServiceManager.freezeTour(tour);
     }
 
     public void requestToJoinTour(final Tour tour) {
-        tourServiceManager.requestToJoinTour(tour);
+        entourageServiceManager.requestToJoinTour(tour);
     }
 
     public void removeUserFromFeedItem(final FeedItem feedItem, final int userId) {
         if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
-            tourServiceManager.removeUserFromTour((Tour) feedItem, userId);
+            entourageServiceManager.removeUserFromTour((Tour) feedItem, userId);
         } else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-            tourServiceManager.removeUserFromEntourage((Entourage) feedItem, userId);
+            entourageServiceManager.removeUserFromEntourage((Entourage) feedItem, userId);
         }
     }
 
     public void requestToJoinEntourage(final Entourage entourage) {
-        tourServiceManager.requestToJoinEntourage(entourage);
+        entourageServiceManager.requestToJoinEntourage(entourage);
     }
 
     public void registerListener(final ApiConnectionListener listener) {
@@ -410,22 +410,22 @@ public class TourService extends Service {
         locationUpdateListeners.remove(listener);
     }
 
-    public void registerTourServiceListener(final TourServiceListener listener) {
-        tourServiceListeners.add(listener);
-        if (tourServiceManager.isRunning()) {
-            listener.onTourResumed(tourServiceManager.getPointsToDraw(), tourServiceManager.getTour().getTourType(), tourServiceManager.getTour().getStartTime());
+    public void registerServiceListener(final EntourageServiceListener listener) {
+        entourageServiceListeners.add(listener);
+        if (entourageServiceManager.isRunning()) {
+            listener.onTourResumed(entourageServiceManager.getPointsToDraw(), entourageServiceManager.getTour().getTourType(), entourageServiceManager.getTour().getStartTime());
         }
     }
 
-    public void unregisterTourServiceListener(final TourServiceListener listener) {
-        tourServiceListeners.remove(listener);
-        if (!isRunning() && tourServiceListeners.size() == 0) {
+    public void unregisterServiceListener(final EntourageServiceListener listener) {
+        entourageServiceListeners.remove(listener);
+        if (!isRunning() && entourageServiceListeners.size() == 0) {
             stopService();
         }
     }
 
     public boolean isRunning() {
-        return tourServiceManager.isRunning();
+        return entourageServiceManager.isRunning();
     }
 
     public boolean isPaused() {
@@ -433,34 +433,34 @@ public class TourService extends Service {
     }
 
     public void addEncounter(final Encounter encounter) {
-        tourServiceManager.addEncounter(encounter);
+        entourageServiceManager.addEncounter(encounter);
     }
 
     public void updateEncounter(final Encounter encounter) {
-        tourServiceManager.updateEncounter(encounter);
+        entourageServiceManager.updateEncounter(encounter);
     }
 
     void notifyListenersTourCreated(final boolean created, final String uuid) {
         if (created) {
             startNotification();
         }
-        for (final TourServiceListener listener : tourServiceListeners) {
+        for (final EntourageServiceListener listener : entourageServiceListeners) {
             listener.onTourCreated(created, uuid);
         }
     }
 
     public void notifyListenersTourResumed() {
-        if (!tourServiceManager.isRunning()) {
+        if (!entourageServiceManager.isRunning()) {
             return;
         }
-        for (final TourServiceListener listener : tourServiceListeners) {
-            listener.onTourResumed(tourServiceManager.getPointsToDraw(), tourServiceManager.getTour().getTourType(), tourServiceManager.getTour().getStartTime());
+        for (final EntourageServiceListener listener : entourageServiceListeners) {
+            listener.onTourResumed(entourageServiceManager.getPointsToDraw(), entourageServiceManager.getTour().getTourType(), entourageServiceManager.getTour().getStartTime());
         }
     }
 
     void notifyListenersFeedItemClosed(final boolean closed, final FeedItem feedItem) {
         if (closed && feedItem.getType() == TimestampedObject.TOUR_CARD) {
-            final Tour ongoingTour = tourServiceManager.getTour();
+            final Tour ongoingTour = entourageServiceManager.getTour();
             if (ongoingTour != null) {
                 if (ongoingTour.getId() == feedItem.getId()) {
                     removeNotification();
@@ -471,19 +471,19 @@ public class TourService extends Service {
                 isPaused = false;
             }
         }
-        for (final TourServiceListener listener : tourServiceListeners) {
+        for (final EntourageServiceListener listener : entourageServiceListeners) {
             listener.onFeedItemClosed(closed, feedItem);
         }
     }
 
     void notifyListenersTourUpdated(final LatLng newPoint) {
-        for (final TourServiceListener listener : tourServiceListeners) {
+        for (final EntourageServiceListener listener : entourageServiceListeners) {
             listener.onTourUpdated(newPoint);
         }
     }
 
     public void notifyListenersPosition(final LatLng location) {
-        for (final TourServiceListener listener : tourServiceListeners) {
+        for (final EntourageServiceListener listener : entourageServiceListeners) {
             listener.onLocationUpdated(location);
         }
         for (final LocationUpdateListener listener : locationUpdateListeners) {
@@ -492,13 +492,13 @@ public class TourService extends Service {
     }
 
     void notifyListenersUserToursFound(final List<Tour> tours) {
-        for (final TourServiceListener listener : tourServiceListeners) {
+        for (final EntourageServiceListener listener : entourageServiceListeners) {
             listener.onRetrieveToursByUserId(tours);
         }
     }
 
     private void notifyListenersGpsStatusChanged(final boolean active) {
-        for (final TourServiceListener listener : tourServiceListeners) {
+        for (final EntourageServiceListener listener : entourageServiceListeners) {
             listener.onLocationStatusUpdated(active);
         }
         for (final LocationUpdateListener listener : locationUpdateListeners) {
@@ -510,7 +510,7 @@ public class TourService extends Service {
         if(user==null || feedItem==null) {
             return;
         }
-        for (final TourServiceListener listener : tourServiceListeners) {
+        for (final EntourageServiceListener listener : entourageServiceListeners) {
             listener.onUserStatusChanged(user, feedItem);
         }
     }

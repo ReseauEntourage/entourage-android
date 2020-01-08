@@ -1,5 +1,6 @@
 package social.entourage.android;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
@@ -59,7 +60,7 @@ import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.message.push.PushNotificationManager;
 import social.entourage.android.navigation.BottomNavigationDataSource;
 import social.entourage.android.tools.BusProvider;
-import social.entourage.android.tour.TourService;
+import social.entourage.android.service.EntourageService;
 import social.entourage.android.tour.choice.ChoiceFragment;
 import social.entourage.android.tour.confirmation.TourEndConfirmationFragment;
 import social.entourage.android.tour.encounter.CreateEncounterActivity;
@@ -176,9 +177,9 @@ public class DrawerActivity extends EntourageSecuredActivity
                 case PlusFragment.KEY_CREATE_OUTING:
                     BusProvider.getInstance().post(new OnCheckIntentActionEvent());
                     break;
-                case TourService.KEY_NOTIFICATION_STOP_TOUR:
-                case TourService.KEY_NOTIFICATION_PAUSE_TOUR:
-                case TourService.KEY_LOCATION_PROVIDER_DISABLED:
+                case EntourageService.KEY_NOTIFICATION_STOP_TOUR:
+                case EntourageService.KEY_NOTIFICATION_PAUSE_TOUR:
+                case EntourageService.KEY_LOCATION_PROVIDER_DISABLED:
                     sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
                     break;
                 default:
@@ -220,10 +221,10 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (getIntent() != null) {
             String action = getIntent().getAction();
             if (action != null) {
-                if (TourService.KEY_LOCATION_PROVIDER_DISABLED.equals(action)) {
+                if (EntourageService.KEY_LOCATION_PROVIDER_DISABLED.equals(action)) {
                     displayLocationProviderDisabledAlert();
                     sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
-                } else if (TourService.KEY_NOTIFICATION_PAUSE_TOUR.equals(action) || TourService.KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
+                } else if (EntourageService.KEY_NOTIFICATION_PAUSE_TOUR.equals(action) || EntourageService.KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
                     sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
                 }
             }
@@ -284,9 +285,9 @@ public class DrawerActivity extends EntourageSecuredActivity
                 case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:
                 case PushNotificationContent.TYPE_ENTOURAGE_INVITATION:
                 case PushNotificationContent.TYPE_INVITATION_STATUS:
-                case TourService.KEY_LOCATION_PROVIDER_DISABLED:
-                case TourService.KEY_NOTIFICATION_PAUSE_TOUR:
-                case TourService.KEY_NOTIFICATION_STOP_TOUR:
+                case EntourageService.KEY_LOCATION_PROVIDER_DISABLED:
+                case EntourageService.KEY_NOTIFICATION_PAUSE_TOUR:
+                case EntourageService.KEY_NOTIFICATION_STOP_TOUR:
                 case TourEndConfirmationFragment.KEY_RESUME_TOUR:
                 case TourEndConfirmationFragment.KEY_END_TOUR:
                 case PlusFragment.KEY_START_TOUR:
@@ -487,95 +488,6 @@ public class DrawerActivity extends EntourageSecuredActivity
         } catch (IllegalStateException e) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
             Timber.e(e);
-        }
-    }
-
-    @Subscribe
-    public void feedItemViewRequested(OnFeedItemInfoViewRequestedEvent event) {
-        if(mainFragment instanceof MapEntourageFragment && event != null) {
-            FeedItem feedItem = event.getFeedItem();
-            if (feedItem != null) {
-                ((MapEntourageFragment)mainFragment).displayChosenFeedItem(feedItem, event.getfeedRank());
-                //refresh badge count
-                refreshBadgeCount();
-                // update the newsfeed card
-                ((MapEntourageFragment)mainFragment).onPushNotificationConsumedForFeedItem(feedItem);
-                // update the my entourages card, if necessary
-                MyEntouragesFragment myEntouragesFragment = (MyEntouragesFragment) getSupportFragmentManager().findFragmentByTag(MyEntouragesFragment.TAG);
-                if (myEntouragesFragment != null) {
-                    myEntouragesFragment.onPushNotificationConsumedForFeedItem(feedItem);
-                }
-            } else {
-                //check if we are receiving feed type and id
-                int feedItemType = event.getFeedItemType();
-                String feedItemUUID = event.getFeedItemUUID();
-                if (feedItemType == 0) {
-                    return;
-                }
-                if (feedItemUUID == null || feedItemUUID.length() == 0) {
-                    String shareURL = event.getFeedItemShareURL();
-                    ((MapEntourageFragment)mainFragment).displayChosenFeedItemFromShareURL(shareURL, feedItemType);
-                } else {
-                    ((MapEntourageFragment)mainFragment).displayChosenFeedItem(feedItemUUID, feedItemType, event.getInvitationId());
-                }
-            }
-        }
-    }
-
-    @Subscribe
-    public void userActRequested(final OnUserActEvent event) {
-        if (OnUserActEvent.ACT_JOIN.equals(event.getAct())) {
-            if (mainFragment instanceof MapEntourageFragment) {
-                ((MapEntourageFragment)mainFragment).act(event.getFeedItem());
-            }
-        } else if (OnUserActEvent.ACT_QUIT.equals(event.getAct())) {
-            if (!(mainFragment instanceof MapEntourageFragment)) {
-                Toast.makeText(DrawerActivity.this, R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
-            } else {
-                User me = EntourageApplication.me(DrawerActivity.this);
-                if (me == null) {
-                    Toast.makeText(DrawerActivity.this, R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
-                } else {
-                    FeedItem item = event.getFeedItem();
-                    if (item != null && FeedItem.JOIN_STATUS_PENDING.equals(item.getJoinStatus())) {
-                        EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_CANCEL_JOIN_REQUEST);
-                    }
-                    ((MapEntourageFragment)mainFragment).removeUserFromNewsfeedCard(item, me.getId());
-                }
-            }
-            /*
-            FeedItem feedItem = event.getFeedItem();
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            int titleId = R.string.tour_info_quit_tour_title;
-            int messageId = R.string.tour_info_quit_tour_description;
-            if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-                titleId = R.string.entourage_info_quit_entourage_title;
-                messageId = R.string.entourage_info_quit_entourage_description;
-            }
-            builder.setTitle(titleId)
-                .setMessage(messageId)
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which) {
-                        if (mapEntourageFragment == null) {
-                            Toast.makeText(DrawerActivity.this, R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
-                        } else {
-                            User me = EntourageApplication.me(DrawerActivity.this);
-                            if (me == null) {
-                                Toast.makeText(DrawerActivity.this, R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
-                            } else {
-                                FeedItem item = event.getFeedItem();
-                                if (item != null && FeedItem.JOIN_STATUS_PENDING.equals(item.getJoinStatus())) {
-                                    EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_CANCEL_JOIN_REQUEST);
-                                }
-                                mapEntourageFragment.removeUserFromNewsfeedCard(item, me.getId());
-                            }
-                        }
-                    }
-                })
-                .setNegativeButton(R.string.no, null);
-            builder.create().show();
-            */
         }
     }
 
