@@ -34,6 +34,7 @@ import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.BaseCardViewHolder;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
+import social.entourage.android.tools.Utils;
 import social.entourage.android.view.PartnerLogoImageView;
 
 import static social.entourage.android.tools.Utils.getMonthAsString;
@@ -303,7 +304,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
         //last update date
         if (lastUpdateDateTextView != null) {
             Date lastUpdateDate = feedItem.getUpdatedTime();
-            lastUpdateDateTextView.setText(formatLastUpdateDate(lastUpdateDate));
+            lastUpdateDateTextView.setText(Utils.formatLastUpdateDate(lastUpdateDate, context));
             lastUpdateDateTextView.setTypeface(null, feedItem.getBadgeCount() == 0 ? Typeface.NORMAL : Typeface.BOLD);
             lastUpdateDateTextView.setTextColor(feedItem.getBadgeCount() == 0 ? res.getColor(R.color.feeditem_card_details_normal) : res.getColor(R.color.feeditem_card_details_bold));
         }
@@ -312,31 +313,6 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
 
     protected boolean showCategoryIcon() {
         return true;
-    }
-
-    private String formatLastUpdateDate(Date lastUpdateDate) {
-        if (lastUpdateDate == null) return "";
-        Calendar lastUpdate = Calendar.getInstance();
-        lastUpdate.setTime(lastUpdateDate);
-
-        Calendar now = Calendar.getInstance();
-        // for today, return the time part
-        if (now.get(Calendar.YEAR) ==lastUpdate.get(Calendar.YEAR)
-                && now.get(Calendar.MONTH) == lastUpdate.get(Calendar.MONTH)
-                && now.get(Calendar.DAY_OF_MONTH) == lastUpdate.get(Calendar.DAY_OF_MONTH)) {
-            return DateFormat.format(context.getString(R.string.date_format_today_time), lastUpdate.getTime()).toString();
-        }
-        // check for yesterday
-        Calendar yesterday = Calendar.getInstance();
-        yesterday.add(Calendar.DATE, -1);
-        if (yesterday.get(Calendar.YEAR) ==lastUpdate.get(Calendar.YEAR)
-                && yesterday.get(Calendar.MONTH) == lastUpdate.get(Calendar.MONTH)
-                && yesterday.get(Calendar.DAY_OF_MONTH) == lastUpdate.get(Calendar.DAY_OF_MONTH)) {
-            return context.getString(R.string.date_yesterday);
-        }
-        // other date
-        String month = getMonthAsString(lastUpdate.get(Calendar.MONTH), context);
-        return context.getString(R.string.date_format_short, lastUpdate.get(Calendar.DAY_OF_MONTH), month);
     }
 
     //--------------------------

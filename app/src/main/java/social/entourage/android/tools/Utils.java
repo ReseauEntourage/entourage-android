@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.format.DateFormat;
 import android.util.Patterns;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -58,32 +59,55 @@ public class Utils {
         return null;
     }
 
-    public static String checkEmailFormat(String email) {
-        if (email != null && !email.equals("")) {
-            return email;
+    public static String formatLastUpdateDate(Date lastUpdateDate, Context context) {
+        if (lastUpdateDate == null) return "";
+        Calendar lastUpdate = Calendar.getInstance();
+        lastUpdate.setTime(lastUpdateDate);
+
+        Calendar now = Calendar.getInstance();
+        // for today, return the time part
+        if (now.get(Calendar.YEAR) ==lastUpdate.get(Calendar.YEAR)
+                && now.get(Calendar.MONTH) == lastUpdate.get(Calendar.MONTH)
+                && now.get(Calendar.DAY_OF_MONTH) == lastUpdate.get(Calendar.DAY_OF_MONTH)) {
+            return DateFormat.format(context.getString(R.string.date_format_today_time), lastUpdate.getTime()).toString();
         }
-        return null;
+        // check for yesterday
+        Calendar yesterday = Calendar.getInstance();
+        yesterday.add(Calendar.DATE, -1);
+        if (yesterday.get(Calendar.YEAR) ==lastUpdate.get(Calendar.YEAR)
+                && yesterday.get(Calendar.MONTH) == lastUpdate.get(Calendar.MONTH)
+                && yesterday.get(Calendar.DAY_OF_MONTH) == lastUpdate.get(Calendar.DAY_OF_MONTH)) {
+            return context.getString(R.string.date_yesterday);
+        }
+        // other date
+        String month = getMonthAsString(lastUpdate.get(Calendar.MONTH), context);
+        return context.getString(R.string.date_format_short, lastUpdate.get(Calendar.DAY_OF_MONTH), month);
     }
 
     public static String dateAsStringFromNow(Date date, Context context) {
         if (date == null) return "";
-        Date now = new Date();
+        Calendar lastUpdate = Calendar.getInstance();
+        lastUpdate.setTime(date);
+
+        Calendar now = Calendar.getInstance();
         // check for today
-        if (now.getYear() == date.getYear() && now.getMonth() == date.getMonth() && now.getDate() == date.getDate()) {
+        if (now.get(Calendar.YEAR) ==lastUpdate.get(Calendar.YEAR)
+                && now.get(Calendar.MONTH) == lastUpdate.get(Calendar.MONTH)
+                && now.get(Calendar.DAY_OF_MONTH) == lastUpdate.get(Calendar.DAY_OF_MONTH)) {
             return context.getString(R.string.date_today).toUpperCase();
         }
+
         // check for yesterday
-        long sinceMidnight = now.getSeconds() * 1000 + now.getMinutes() * 60 * 1000 + now.getHours() * 60 * 60 * 1000;
-        long oneDay = 86400000L; // 24 hours in millis
-        if ( (now.getTime() - date.getTime()) < (oneDay + sinceMidnight) ) {
+        Calendar yesterday = Calendar.getInstance();
+        yesterday.add(Calendar.DATE, -1);
+        if (yesterday.get(Calendar.YEAR) ==lastUpdate.get(Calendar.YEAR)
+                && yesterday.get(Calendar.MONTH) == lastUpdate.get(Calendar.MONTH)
+                && yesterday.get(Calendar.DAY_OF_MONTH) == lastUpdate.get(Calendar.DAY_OF_MONTH)) {
             return context.getString(R.string.date_yesterday).toUpperCase();
         }
         // regular date
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        String month = getMonthAsString(calendar.get(Calendar.MONTH), context);
-
-        return context.getString(R.string.date_format, calendar.get(Calendar.DAY_OF_MONTH), month, calendar.get(Calendar.YEAR)).toUpperCase();
+        String month = getMonthAsString(lastUpdate.get(Calendar.MONTH), context);
+        return context.getString(R.string.date_format, lastUpdate.get(Calendar.DAY_OF_MONTH), month, lastUpdate.get(Calendar.YEAR)).toUpperCase();
     }
 
     public static String getMonthAsString(int month, Context context) {
