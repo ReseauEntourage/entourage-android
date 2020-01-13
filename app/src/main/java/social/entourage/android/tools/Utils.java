@@ -149,7 +149,11 @@ public class Utils {
         drawable.draw(canvas);
         float scale = Math.max(width / (float) dstWidth, height / (float) dstHeight);
         if (scale <= 0) scale = 1;
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(markerBitmap, (int) (width / scale), (int) (height / scale), false);
+
+        //make sure dimensions are > 0 pixel
+        int newW = Math.max((int) (width / scale), 1);
+        int newH = Math.max((int) (height/ scale), 1);
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(markerBitmap, newW, newH, false);
         bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(scaledBitmap);
         return bitmapDescriptor;
     }
