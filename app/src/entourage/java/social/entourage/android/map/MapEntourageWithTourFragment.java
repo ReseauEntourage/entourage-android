@@ -83,8 +83,6 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
     // CONSTANTS
     // ----------------------------------
 
-    public static final String TAG = "social.entourage.android.fragment_map_with_tour";
-
     private static final int MAX_TOUR_HEADS_DISPLAYED = 10;
 
     private ServiceConnection connection = new ServiceConnection();
