@@ -4,19 +4,19 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * Module related to MapEntourageFragment
- * @see MapEntourageFragment
+ * Module related to MapFragment
+ * @see MapFragment
  */
 @Module
 public class MapModule {
-    private final MapEntourageFragment fragment;
+    private final MapFragment fragment;
 
-    public MapModule(final MapEntourageFragment fragment) {
+    public MapModule(final MapFragment fragment) {
         this.fragment = fragment;
     }
 
     @Provides
-    public MapEntourageFragment providesMapEntourageFragment() {
+    public MapFragment providesMapFragment() {
         return fragment;
     }
 }

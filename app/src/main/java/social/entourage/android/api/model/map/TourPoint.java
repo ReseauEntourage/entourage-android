@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import social.entourage.android.EntourageLocation;
+import social.entourage.android.location.EntourageLocation;
 
 @SuppressWarnings("unused")
 public class TourPoint implements Serializable {

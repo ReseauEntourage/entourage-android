@@ -19,7 +19,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import social.entourage.android.EntourageLocation;
+import social.entourage.android.location.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.entourage.category.EntourageCategory;
 import social.entourage.android.entourage.category.EntourageCategoryManager;

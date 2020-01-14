@@ -1,6 +1,5 @@
 package social.entourage.android;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
@@ -42,12 +41,10 @@ import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.api.tape.Events.OnCheckIntentActionEvent;
-import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent;
 import social.entourage.android.api.tape.Events.OnGCMTokenObtainedEvent;
 import social.entourage.android.api.tape.Events.OnPushNotificationReceived;
 import social.entourage.android.api.tape.Events.OnTourEncounterViewRequestedEvent;
 import social.entourage.android.api.tape.Events.OnUnauthorizedEvent;
-import social.entourage.android.api.tape.Events.OnUserActEvent;
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.UserPreferences;
@@ -55,8 +52,9 @@ import social.entourage.android.deeplinks.DeepLinksManager;
 import social.entourage.android.entourage.EntourageDisclaimerFragment;
 import social.entourage.android.entourage.information.EntourageInformationFragment;
 import social.entourage.android.entourage.my.MyEntouragesFragment;
+import social.entourage.android.location.EntourageLocation;
 import social.entourage.android.location.LocationUtils;
-import social.entourage.android.map.MapEntourageFragment;
+import social.entourage.android.map.MapFragment;
 import social.entourage.android.message.push.PushNotificationManager;
 import social.entourage.android.navigation.BottomNavigationDataSource;
 import social.entourage.android.tools.BusProvider;
@@ -272,9 +270,9 @@ public class DrawerActivity extends EntourageSecuredActivity
     private void sendMapFragmentExtras() {
         AuthenticationController authenticationController = getAuthenticationController();
         if (authenticationController == null || authenticationController.getUser() == null) return;
-        MapEntourageFragment mapEntourageFragment  = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
-        if(mapEntourageFragment !=null) {
-            mapEntourageFragment.onNotificationExtras(authenticationController.getUser().getId(), authenticationController.isUserToursOnly());
+        MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+        if(mapFragment !=null) {
+            mapFragment.onNotificationExtras(authenticationController.getUser().getId(), authenticationController.isUserToursOnly());
         }
     }
 
@@ -305,9 +303,9 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     public void dismissMapFragmentDialogs() {
-        MapEntourageFragment mapEntourageFragment  = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
-        if(mapEntourageFragment !=null) {
-            mapEntourageFragment.dismissAllDialogs();
+        MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+        if(mapFragment !=null) {
+            mapFragment.dismissAllDialogs();
         }
     }
 
@@ -369,9 +367,9 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     public void showMapFilters() {
-        MapEntourageFragment mapEntourageFragment  = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
-        if(mapEntourageFragment !=null) {
-            mapEntourageFragment.onShowFilter();
+        MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+        if(mapFragment !=null) {
+            mapFragment.onShowFilter();
         }
     }
 
@@ -417,9 +415,9 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void logout() {
-        MapEntourageFragment mapEntourageFragment  = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
-        if(mapEntourageFragment !=null) {
-            mapEntourageFragment.saveOngoingTour();
+        MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+        if(mapFragment !=null) {
+            mapFragment.saveOngoingTour();
         }
         //remove user phone
         final SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
@@ -547,9 +545,9 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     public void showStopTourActivity(Tour tour) {
-        MapEntourageFragment mapEntourageFragment  = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
-        if(mapEntourageFragment !=null) {
-            mapEntourageFragment.pauseTour(tour);
+        MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+        if(mapFragment !=null) {
+            mapFragment.pauseTour(tour);
         }
 
         TourEndConfirmationFragment tourEndConfirmationFragment = TourEndConfirmationFragment.newInstance(tour);
@@ -561,9 +559,9 @@ public class DrawerActivity extends EntourageSecuredActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().remove(fragment).commit();
         if (tour != null) {
-            MapEntourageFragment mapEntourageFragment  = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
-            if(mapEntourageFragment !=null) {
-                mapEntourageFragment.displayChosenFeedItem(tour, 0);
+            MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+            if(mapFragment !=null) {
+                mapFragment.displayChosenFeedItem(tour, 0);
             }
         }
     }
@@ -579,9 +577,9 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (fragment != null) fragment.dismiss();
 
         // Show the create entourage fragment
-        MapEntourageFragment mapEntourageFragment  = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
-        if(mapEntourageFragment !=null) {
-            mapEntourageFragment.createEntourage();
+        MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+        if(mapFragment !=null) {
+            mapFragment.createEntourage();
         }
     }
 
@@ -597,9 +595,9 @@ public class DrawerActivity extends EntourageSecuredActivity
         // Dismiss the disclaimer fragment
         fragment.dismiss();
 
-        MapEntourageFragment mapEntourageFragment  = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
-        if(mapEntourageFragment !=null) {
-            mapEntourageFragment.addEncounter();
+        MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+        if(mapFragment !=null) {
+            mapFragment.addEncounter();
         }
     }
 
@@ -643,9 +641,9 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void onCreateEntourageDeepLink() {
         showFeed();
         dismissMapFragmentDialogs();
-        MapEntourageFragment mapEntourageFragment  = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
-        if(mapEntourageFragment !=null) {
-            mapEntourageFragment.displayEntourageDisclaimer();
+        MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+        if(mapFragment !=null) {
+            mapFragment.displayEntourageDisclaimer();
         }
     }
 
@@ -681,9 +679,9 @@ public class DrawerActivity extends EntourageSecuredActivity
                     break;
                 case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:
                     addPushNotification(message);
-                    MapEntourageFragment mapEntourageFragment  = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
-                    if(mapEntourageFragment !=null) {
-                        mapEntourageFragment.userStatusChanged(content, Tour.JOIN_STATUS_ACCEPTED);
+                    MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+                    if(mapFragment !=null) {
+                        mapFragment.userStatusChanged(content, Tour.JOIN_STATUS_ACCEPTED);
                     }
                     break;
                 default:
@@ -711,9 +709,9 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     private void addPushNotification(Message message) {
-        MapEntourageFragment mapEntourageFragment  = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
-        if(mapEntourageFragment !=null) {
-            mapEntourageFragment.onPushNotificationReceived(message);
+        MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+        if(mapFragment !=null) {
+            mapFragment.onPushNotificationReceived(message);
         }
         MyEntouragesFragment myEntouragesFragment = (MyEntouragesFragment) getSupportFragmentManager().findFragmentByTag(MyEntouragesFragment.TAG);
         if (myEntouragesFragment != null) {

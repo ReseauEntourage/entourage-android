@@ -7,7 +7,7 @@ import social.entourage.android.newsfeed.FeedItemOptionsFragment;
 
 import com.squareup.otto.Subscribe;
 
-public class MapVoisinageFragment extends MapEntourageFragment {
+public class MapVoisinageFragment extends MapFragment {
 
     // ----------------------------------
     // DISPLAY SCREENS METHODS

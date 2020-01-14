@@ -45,7 +45,7 @@ import social.entourage.android.Constants;
 import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageEvents;
-import social.entourage.android.EntourageLocation;
+import social.entourage.android.location.EntourageLocation;
 import social.entourage.android.PlusFragment;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Message;
@@ -78,7 +78,7 @@ import timber.log.Timber;
 
 import static social.entourage.android.service.EntourageService.KEY_LOCATION_PROVIDER_DISABLED;
 
-public class MapEntourageWithTourFragment extends MapEntourageFragment implements EntourageServiceListener {
+public class MapWithTourFragment extends MapFragment implements EntourageServiceListener {
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
@@ -148,7 +148,7 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
     @Override
     public void onDestroy() {
         if (isBound && entourageService != null) {
-            entourageService.unregisterServiceListener(MapEntourageWithTourFragment.this);
+            entourageService.unregisterServiceListener(MapWithTourFragment.this);
             doUnbindService();
         }
         super.onDestroy();
@@ -1175,8 +1175,8 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
                 Timber.e("Tour service not found");
                 return;
             }
-            entourageService.registerServiceListener(MapEntourageWithTourFragment.this);
-            entourageService.registerNewsFeedListener(MapEntourageWithTourFragment.this);
+            entourageService.registerServiceListener(MapWithTourFragment.this);
+            entourageService.registerNewsFeedListener(MapWithTourFragment.this);
 
             if (entourageService.isRunning()) {
                 updateFloatingMenuOptions();
@@ -1196,8 +1196,8 @@ public class MapEntourageWithTourFragment extends MapEntourageFragment implement
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            entourageService.unregisterServiceListener(MapEntourageWithTourFragment.this);
-            entourageService.unregisterNewsFeedListener(MapEntourageWithTourFragment.this);
+            entourageService.unregisterServiceListener(MapWithTourFragment.this);
+            entourageService.unregisterNewsFeedListener(MapWithTourFragment.this);
             entourageService = null;
         }
     }

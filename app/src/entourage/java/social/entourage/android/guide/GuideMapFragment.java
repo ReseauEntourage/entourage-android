@@ -35,7 +35,7 @@ import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
-import social.entourage.android.EntourageLocation;
+import social.entourage.android.location.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.Category;
@@ -48,11 +48,11 @@ import social.entourage.android.base.HeaderBaseAdapter;
 import social.entourage.android.guide.filter.GuideFilterFragment;
 import social.entourage.android.guide.poi.ReadPoiFragment;
 import social.entourage.android.location.LocationUtils;
-import social.entourage.android.map.BaseMapEntourageFragment;
+import social.entourage.android.map.BaseMapFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
 
-public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
+public class GuideMapFragment extends BaseMapFragment {
 
     // ----------------------------------
     // CONSTANTS
@@ -98,7 +98,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
     // LIFECYCLE
     // ----------------------------------
 
-    public GuideMapEntourageFragment() {
+    public GuideMapFragment() {
         super(R.layout.fragment_guide_map);
         eventLongClick = EntourageEvents.EVENT_GUIDE_LONGPRESS;
     }
@@ -294,7 +294,7 @@ public class GuideMapEntourageFragment extends BaseMapEntourageFragment {
             CameraPosition position = map.getCameraPosition();
             Location newLocation = EntourageLocation.cameraPositionToLocation(null, position);
             float newZoom = position.zoom;
-            if (newZoom / previousCameraZoom >= BaseMapEntourageFragment.ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= BaseMapEntourageFragment.REDRAW_LIMIT) {
+            if (newZoom / previousCameraZoom >= BaseMapFragment.ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= BaseMapFragment.REDRAW_LIMIT) {
                 previousCameraZoom = newZoom;
                 previousCameraLocation = newLocation;
                 presenter.updatePoisNearby(map);

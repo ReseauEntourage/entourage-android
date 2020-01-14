@@ -4,7 +4,6 @@ import androidx.fragment.app.Fragment;
 
 import social.entourage.android.PlusFragment;
 import social.entourage.android.R;
-import social.entourage.android.map.MapEntourageFragment;
 import social.entourage.android.entourage.my.MyEntouragesFragment;
 import social.entourage.android.map.MapVoisinageFragment;
 import social.entourage.android.sidemenu.SideMenuFragment;

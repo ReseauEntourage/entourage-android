@@ -35,7 +35,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
-import com.squareup.otto.Subscribe;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -58,7 +57,7 @@ import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
-import social.entourage.android.EntourageLocation;
+import social.entourage.android.location.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.Message;
@@ -97,7 +96,7 @@ import social.entourage.android.view.EntourageSnackbar;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
-public class MapEntourageFragment extends BaseMapEntourageFragment implements NewsFeedListener, UserEditActionZoneFragment.FragmentListener {
+public class MapFragment extends BaseMapFragment implements NewsFeedListener, UserEditActionZoneFragment.FragmentListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -170,7 +169,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
 
     private OnScrollListener scrollListener = new OnScrollListener();
     // keeps tracks of the attached fragments
-    private MapEntourageFragmentLifecycleCallbacks fragmentLifecycleCallbacks;
+    private MapFragmentLifecycleCallbacks fragmentLifecycleCallbacks;
 
     // requested entourage group type
     private String entourageGroupType = null;
@@ -181,7 +180,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
     // current selected tab
     protected MapTabItem selectedTab = MapTabItem.ALL_TAB;
 
-    protected MapEntourageFragment() {
+    protected MapFragment() {
         super(R.layout.fragment_map);
         eventLongClick = EntourageEvents.EVENT_MAP_LONGPRESS;
     }
@@ -209,7 +208,7 @@ public class MapEntourageFragment extends BaseMapEntourageFragment implements Ne
             presenter.start();
         }
         if (fragmentLifecycleCallbacks == null && getFragmentManager() != null) {
-            fragmentLifecycleCallbacks = new MapEntourageFragmentLifecycleCallbacks();
+            fragmentLifecycleCallbacks = new MapFragmentLifecycleCallbacks();
             getFragmentManager().registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks, false);
         }
 

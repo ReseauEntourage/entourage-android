@@ -51,7 +51,6 @@ import java.util.TimerTask;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import social.entourage.android.EntourageLocation;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.tape.Events;

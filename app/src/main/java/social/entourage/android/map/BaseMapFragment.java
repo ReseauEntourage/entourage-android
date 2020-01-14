@@ -37,7 +37,7 @@ import butterknife.OnClick;
 import social.entourage.android.BackPressable;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageEvents;
-import social.entourage.android.EntourageLocation;
+import social.entourage.android.location.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
@@ -49,7 +49,7 @@ import timber.log.Timber;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
-public abstract class BaseMapEntourageFragment extends Fragment implements BackPressable, LocationUpdateListener {
+public abstract class BaseMapFragment extends Fragment implements BackPressable, LocationUpdateListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -92,7 +92,7 @@ public abstract class BaseMapEntourageFragment extends Fragment implements BackP
         return false;
     }
 
-    public BaseMapEntourageFragment(int layout) {
+    public BaseMapFragment(int layout) {
         this.layout = layout;
     }
 

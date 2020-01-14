@@ -19,8 +19,8 @@ import social.entourage.android.guide.filter.GuideFilter;
 import timber.log.Timber;
 
 /**
- * Presenter controlling the GuideMapEntourageFragment
- * @see GuideMapEntourageFragment
+ * Presenter controlling the GuideMapFragment
+ * @see GuideMapFragment
  */
 public class GuideMapPresenter {
 
@@ -28,7 +28,7 @@ public class GuideMapPresenter {
     // ATTRIBUTES
     // ----------------------------------
 
-    private final GuideMapEntourageFragment fragment;
+    private final GuideMapFragment fragment;
     private final PoiRequest poiRequest;
 
     // ----------------------------------
@@ -36,7 +36,7 @@ public class GuideMapPresenter {
     // ----------------------------------
 
     @Inject
-    public GuideMapPresenter(final GuideMapEntourageFragment fragment, final PoiRequest poiRequest) {
+    public GuideMapPresenter(final GuideMapFragment fragment, final PoiRequest poiRequest) {
         this.fragment = fragment;
         this.poiRequest = poiRequest;
     }

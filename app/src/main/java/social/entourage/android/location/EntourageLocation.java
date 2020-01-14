@@ -1,10 +1,11 @@
-package social.entourage.android;
+package social.entourage.android.location;
 
 import android.location.Location;
 
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.api.model.User;
 
 public class EntourageLocation {

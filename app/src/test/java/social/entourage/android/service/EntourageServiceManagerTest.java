@@ -11,7 +11,7 @@ import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
-import social.entourage.android.EntourageLocation;
+import social.entourage.android.location.EntourageLocation;
 import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.Newsfeed.NewsfeedWrapper;
 import social.entourage.android.map.MapTabItem;

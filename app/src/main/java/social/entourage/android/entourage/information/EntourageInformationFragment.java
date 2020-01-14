@@ -91,7 +91,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageError;
 import social.entourage.android.EntourageEvents;
-import social.entourage.android.EntourageLocation;
+import social.entourage.android.location.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.Invitation;
@@ -118,7 +118,7 @@ import social.entourage.android.deeplinks.DeepLinksManager;
 import social.entourage.android.invite.InviteFriendsListener;
 import social.entourage.android.invite.contacts.InviteContactsFragment;
 import social.entourage.android.invite.phonenumber.InviteByPhoneNumberFragment;
-import social.entourage.android.map.MapEntourageFragment;
+import social.entourage.android.map.MapFragment;
 import social.entourage.android.map.OnAddressClickListener;
 import social.entourage.android.entourage.EntourageCloseFragment;
 import social.entourage.android.entourage.create.CreateEntourageFragment;
@@ -1408,8 +1408,8 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
         int color = Color.GRAY;
         if (getContext() == null) return color;
         color = ContextCompat.getColor(getContext(), Tour.getTypeColorRes(type));
-        if (!MapEntourageFragment.isToday(date)) {
-            return MapEntourageFragment.getTransparentColor(color);
+        if (!MapFragment.isToday(date)) {
+            return MapFragment.getTransparentColor(color);
         }
 
         return color;

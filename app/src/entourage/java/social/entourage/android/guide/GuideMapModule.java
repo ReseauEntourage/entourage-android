@@ -4,19 +4,19 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * Module related to GuideMapEntourageFragment
- * @see GuideMapEntourageFragment
+ * Module related to GuideMapFragment
+ * @see GuideMapFragment
  */
 @Module
 final class GuideMapModule {
-    private final GuideMapEntourageFragment fragment;
+    private final GuideMapFragment fragment;
 
-    public GuideMapModule(final GuideMapEntourageFragment fragment) {
+    public GuideMapModule(final GuideMapFragment fragment) {
         this.fragment = fragment;
     }
 
     @Provides
-    public GuideMapEntourageFragment providesGuideMapEntourageFragment() {
+    public GuideMapFragment providesGuideMapFragment() {
         return fragment;
     }
 }

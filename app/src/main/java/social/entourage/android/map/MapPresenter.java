@@ -33,9 +33,9 @@ import social.entourage.android.entourage.information.EntourageInformationFragme
 import social.entourage.android.tools.BusProvider;
 
 /**
- * Presenter controlling the MapEntourageFragment
+ * Presenter controlling the MapFragment
  *
- * @see MapEntourageFragment
+ * @see MapFragment
  */
 public class MapPresenter {
 
@@ -43,7 +43,7 @@ public class MapPresenter {
     // ATTRIBUTES
     // ----------------------------------
 
-    private final MapEntourageFragment fragment;
+    private final MapFragment fragment;
     private final AuthenticationController authenticationController;
     private final InvitationRequest invitationRequest;
 
@@ -55,7 +55,7 @@ public class MapPresenter {
     // ----------------------------------
 
     @Inject
-    public MapPresenter(final MapEntourageFragment fragment,
+    public MapPresenter(final MapFragment fragment,
                         final AuthenticationController authenticationController,
                         final InvitationRequest invitationRequest) {
         this.fragment = fragment;

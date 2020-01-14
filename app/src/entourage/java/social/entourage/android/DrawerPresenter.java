@@ -12,7 +12,6 @@ import javax.inject.Inject;
 
 import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.UserRequest;
-import social.entourage.android.guide.GuideMapEntourageFragment;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
