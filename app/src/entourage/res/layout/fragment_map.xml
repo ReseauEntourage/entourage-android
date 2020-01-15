@@ -24,7 +24,8 @@
                 android:elevation="10dp"
                 app:tabIndicatorColor="@color/white"
                 app:tabInlineLabel="true"
-                app:tabTextColor="@color/white">
+                app:tabSelectedTextColor="@color/white"
+                app:tabTextColor="@color/white_88">
 
                 <com.google.android.material.tabs.TabItem
                     android:id="@+id/map_tab_all_button"
