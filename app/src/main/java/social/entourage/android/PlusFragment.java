@@ -16,6 +16,7 @@ import butterknife.OnClick;
 import butterknife.Optional;
 import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.configuration.Configuration;
 
 public class PlusFragment extends Fragment implements BackPressable{
     public static final String TAG = "social.entourage.android.fragment_plus";
@@ -50,6 +51,7 @@ public class PlusFragment extends Fragment implements BackPressable{
             if (startTourButton != null) startTourButton.setVisibility(isPro ? View.VISIBLE : View.GONE);
         }
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,6 +59,14 @@ public class PlusFragment extends Fragment implements BackPressable{
         View v = inflater.inflate(R.layout.fragment_plus, container, false);
         ButterKnife.bind(this, v);
         return v;
+    }
+
+    @OnClick(R.id.plus_help_button)
+    protected void onHelpButton() {
+        if (getActivity() instanceof DrawerActivity) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_PLUS_NOT_READY);
+            ((DrawerActivity) getActivity()).showWebViewForLinkId(Constants.SCB_LINK_ID);
+        }
     }
 
     @OnClick(R.id.layout_line_create_entourage_ask_help)
@@ -124,19 +134,4 @@ public class PlusFragment extends Fragment implements BackPressable{
         }
         return true;
     }
-
-    /*  protected boolean handleSpecialCasesForFAB() {
-        //Handling special cases
-        if (!Configuration.getInstance().showMapFABMenu()) {
-            // Show directly the create entourage disclaimer
-            displayEntourageDisclaimer();
-            return true;
-        }
-        else if (isBound && entourageService != null && entourageService.isRunning()) {
-            // Show directly the create encounter
-            onAddEncounter();
-            return true;
-        }
-        return super.handleSpecialCasesForFAB();
-    }*/
 }

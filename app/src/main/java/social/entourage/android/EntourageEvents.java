@@ -277,6 +277,9 @@ public class EntourageEvents {
     public static final String EVENT_NOTIFICATION_MIXPANEL_RECEIVED="NotificationReceivedFromMixpanel";
     public static final String EVENT_NOTIFICATION_ENTOURAGE_RECEIVED="NotificationReceivedFromEntourage";
 
+    //PLUS Screen
+    public static final String EVENT_PLUS_NOT_READY = "NotReadyToHelpClick";
+
     public static String TAG = EntourageEvents.class.getSimpleName();
 
     public static void logEvent(String event) {

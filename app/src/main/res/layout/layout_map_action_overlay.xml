@@ -1,28 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/background">
 
-    <ImageView
-        android:id="@+id/image_overlay_close"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/action_overlay_close"
-        android:layout_marginStart="@dimen/entourage_padding_10"
-        android:layout_marginTop="@dimen/entourage_padding_10"
-        app:srcCompat="@drawable/ic_close" />
+        android:layout_above="@+id/plus_action_list"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp">
+
+        <ImageView
+            android:id="@+id/image_overlay_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/action_overlay_close"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_close" />
+
+        <TextView
+            android:id="@+id/plus_help_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/plus_help_text"
+            android:textColor="@color/greyish_brown"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/plus_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/plus_image_subtitle"
+            app:layout_constraintBottom_toTopOf="@id/plus_image_subtitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/plus_help_button"
+            app:srcCompat="@drawable/group_10" />
+
+        <TextView
+            android:id="@+id/plus_image_subtitle"
+            style="@style/plus_image_subtitle"
+            android:text="@string/plus_image_subtitle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <RelativeLayout
+        android:id="@+id/plus_action_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_gravity="end"
-        android:paddingEnd="20dp"
-        android:paddingStart="20dp"
-        android:paddingBottom="20dp">
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_line_create_entourage_ask_help"
@@ -30,8 +69,8 @@
 
             <TextView
                 android:id="@+id/textView23"
-                android:text="@string/entourage_create_menu_ask_help"
                 style="@style/MapActionMenu"
+                android:text="@string/entourage_create_menu_ask_help"
                 app:layout_constraintEnd_toStartOf="@+id/button_create_entourage_ask_help"
                 app:layout_constraintTop_toTopOf="@+id/button_create_entourage_ask_help" />
 
@@ -48,13 +87,13 @@
                 style="@style/MapActionButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_entourage_contribution" />
+                app:srcCompat="@drawable/ic_demanding_heart" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_line_create_entourage_contribute"
-            android:layout_below="@id/layout_line_create_entourage_ask_help"
-            style="@style/MapActionLine">
+            style="@style/MapActionLine"
+            android:layout_below="@id/layout_line_create_entourage_ask_help">
 
             <TextView
                 android:id="@+id/textView22"
@@ -75,13 +114,13 @@
                 style="@style/MapActionButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_entourage_contribution" />
+                app:srcCompat="@drawable/ic_giving_heart" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_line_create_outing"
-            android:layout_below="@id/layout_line_create_entourage_contribute"
-            style="@style/MapActionLine">
+            style="@style/MapActionLine"
+            android:layout_below="@id/layout_line_create_entourage_contribute">
 
             <TextView
                 android:id="@+id/textView5"
@@ -107,8 +146,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_line_start_tour_launcher"
+            style="@style/MapActionLine"
             android:layout_below="@id/layout_line_create_outing"
-            style="@style/MapActionLine">
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/textView6"
@@ -134,8 +174,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_line_add_tour_encounter"
+            style="@style/MapActionLine"
             android:layout_below="@id/layout_line_start_tour_launcher"
-            style="@style/MapActionLine">
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/textView8"

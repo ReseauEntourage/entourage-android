@@ -31,12 +31,12 @@
 
     <string name="entourage_create_menu">Créer une action</string>
     <string name="entourage_create_submenu">Demander de l’aide ou faire un don</string>
-    <string name="entourage_create_menu_ask_help">Créer une action</string>
-    <string name="entourage_create_submenu_ask_help">Demander de l’aide</string>
-    <string name="entourage_create_menu_contribute">Créer une contribution</string>
-    <string name="entourage_create_submenu_contribute">Faire un don</string>
-    <string name="outing_create_menu">Créer un évènement</string>
-    <string name="outing_create_submenu">Évènement solidaire à une date précise</string>
+    <string name="entourage_create_menu_ask_help">Demander un don, de l\'aide, ...</string>
+    <string name="entourage_create_submenu_ask_help">Faire appel au réseau</string>
+    <string name="entourage_create_menu_contribute">Proposer un don</string>
+    <string name="entourage_create_submenu_contribute">Donner un bien, du temps, ...</string>
+    <string name="outing_create_menu">Annoncer un évènement</string>
+    <string name="outing_create_submenu">Se rassembler à une date précise</string>
 
     <!-- Entourage Category Fragment -->
     <string name="entourage_category_fragment_title">CATÉGORIE</string>

@@ -206,7 +206,7 @@ public class DeepLinksManager {
         else if (key.equals(DeepLinksView.CREATE_ACTION.getView())) {
             if (activity instanceof DrawerActivity) {
                 DrawerActivity drawerActivity = (DrawerActivity)activity;
-                drawerActivity.onCreateEntourageDeepLink();
+                drawerActivity.createEntourage();
             } else {
                 return;
             }

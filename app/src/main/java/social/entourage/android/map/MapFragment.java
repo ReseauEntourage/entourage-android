@@ -1536,6 +1536,9 @@ public class MapFragment extends BaseMapFragment implements NewsFeedListener, Us
         }
     }
 
+    public void onAddEncounter() {
+    }
+
     public void addEncounter() {
     }
 

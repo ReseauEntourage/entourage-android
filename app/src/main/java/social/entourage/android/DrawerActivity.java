@@ -48,6 +48,7 @@ import social.entourage.android.api.tape.Events.OnUnauthorizedEvent;
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.authentication.UserPreferences;
+import social.entourage.android.configuration.Configuration;
 import social.entourage.android.deeplinks.DeepLinksManager;
 import social.entourage.android.entourage.EntourageDisclaimerFragment;
 import social.entourage.android.entourage.information.EntourageInformationFragment;
@@ -316,6 +317,9 @@ public class DrawerActivity extends EntourageSecuredActivity
         if (bottomBar != null) {
             // we need to set the listener fist, to respond to the default selected tab request
             bottomBar.setOnNavigationItemSelectedListener(item -> {
+                if(shouldBypassNavigation(item.getItemId())) {
+                    return false;
+                }
                 loadFragment(item.getItemId());
                 return true;
             });
@@ -330,6 +334,24 @@ public class DrawerActivity extends EntourageSecuredActivity
             messageBadge.setMaxCharacterCount(2);
 
         }
+    }
+
+    private boolean shouldBypassNavigation(@IdRes int itemId) {
+        if(itemId==navigationDataSource.getActionMenuId()) {
+            //Handling special cases
+            if (!Configuration.getInstance().showPlusScreen()) {
+                // Show directly the create entourage disclaimer
+                createEntourage();
+                return true;
+            }
+            else if (authenticationController != null && authenticationController.getSavedTour()!=null) {
+                // Show directly the create encounter
+                //TODO should be bound to service
+                addEncounter();
+                return true;
+            }
+        }
+        return false;
     }
 
     protected void selectNavigationTab(int menuIndex) {
@@ -376,8 +398,6 @@ public class DrawerActivity extends EntourageSecuredActivity
     public void showFeed() {
         selectNavigationTab(navigationDataSource.getFeedTabIndex());
     }
-
-    //public void showPlusActions() { selectNavigationTab(navigationDataSource.getActionMenuId()); }
 
     public void showGuide() {
         selectNavigationTab(navigationDataSource.getGuideTabIndex());
@@ -635,15 +655,24 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     // ----------------------------------
-    // Floating Actions handling
+    // Deeplink actions handling
     // ----------------------------------
 
-    public void onCreateEntourageDeepLink() {
+    public void createEntourage() {
         showFeed();
         dismissMapFragmentDialogs();
         MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
         if(mapFragment !=null) {
             mapFragment.displayEntourageDisclaimer();
+        }
+    }
+
+    public void addEncounter() {
+        showFeed();
+        dismissMapFragmentDialogs();
+        MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+        if(mapFragment !=null) {
+            mapFragment.onAddEncounter();
         }
     }
 

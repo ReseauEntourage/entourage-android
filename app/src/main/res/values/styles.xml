@@ -255,9 +255,9 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">4dp</item>
         <item name="android:layout_marginEnd">8dp</item>
-        <item name="android:textColor">@color/greyish_brown</item>
+        <item name="android:textColor">@color/accent</item>
         <item name="android:textSize">@dimen/entourage_font_medium</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="MapActionLine">
@@ -265,6 +265,13 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_alignParentStart">true</item>
         <item name="android:layout_alignParentEnd">true</item>
+    </style>
+
+    <style name="plus_image_subtitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/greyish_brown</item>
+        <item name="android:textSize">17sp</item>
     </style>
 
 
