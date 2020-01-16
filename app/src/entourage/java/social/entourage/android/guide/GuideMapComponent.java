@@ -5,9 +5,9 @@ import social.entourage.android.ActivityScope;
 import social.entourage.android.EntourageComponent;
 
 /**
- * Component linked to GuideMapEntourageFragment lifecycle
+ * Component linked to GuideMapFragment lifecycle
  * Provide a GuideMapPresenter
- * @see GuideMapEntourageFragment
+ * @see GuideMapFragment
  * @see GuideMapPresenter
  */
 @ActivityScope
@@ -17,7 +17,7 @@ import social.entourage.android.EntourageComponent;
 )
 @SuppressWarnings("unused")
 public interface GuideMapComponent {
-    void inject(GuideMapEntourageFragment fragment);
+    void inject(GuideMapFragment fragment);
 
     GuideMapPresenter getGuideMapPresenter();
 }

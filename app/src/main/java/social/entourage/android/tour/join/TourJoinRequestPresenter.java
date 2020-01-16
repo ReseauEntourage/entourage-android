@@ -12,6 +12,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import social.entourage.android.EntourageApplication;
+import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.TourRequest;
@@ -130,6 +131,7 @@ public class TourJoinRequestPresenter {
                         }
                     }
                 } catch(IllegalStateException e) {
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
                     Timber.e(e);
                 }
             }

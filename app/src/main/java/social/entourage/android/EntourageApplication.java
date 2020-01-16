@@ -3,6 +3,7 @@ package social.entourage.android;
 import android.content.Context;
 import android.content.SharedPreferences;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.multidex.MultiDexApplication;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -69,9 +70,10 @@ public class EntourageApplication extends MultiDexApplication {
 
     @Override
     public void onCreate() {
-        activities = new ArrayList<>();
         super.onCreate();
+        activities = new ArrayList<>();
         instance = this;
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         librariesSupport = new LibrariesSupport();
         librariesSupport.setupLibraries(this);
@@ -82,8 +84,6 @@ public class EntourageApplication extends MultiDexApplication {
         setupSharedPreferences();
         setupBadgeCount();
     }
-
-
 
     private void setupDagger() {
         component = DaggerEntourageComponent.builder()
@@ -126,10 +126,9 @@ public class EntourageApplication extends MultiDexApplication {
         return context!=null? (EntourageApplication) context.getApplicationContext() : EntourageApplication.get();
     }
 
-    public static User me() {
-        EntourageApplication application = EntourageApplication.get();
-        if (application == null || application.component == null) return null;
-        AuthenticationController authenticationController = application.component.getAuthenticationController();
+    public User me() {
+        if (component == null) return null;
+        AuthenticationController authenticationController = component.getAuthenticationController();
         if (authenticationController == null) return null;
         return authenticationController.getUser();
     }
@@ -137,10 +136,8 @@ public class EntourageApplication extends MultiDexApplication {
     public static User me(Context context) {
         if (context == null) return null;
         EntourageApplication application = EntourageApplication.get(context);
-        if (application == null || application.component == null) return null;
-        AuthenticationController authenticationController = application.component.getAuthenticationController();
-        if (authenticationController == null) return null;
-        return authenticationController.getUser();
+        if (application == null) return null;
+        return application.me();
     }
 
     public void onActivityCreated(EntourageActivity activity) {
@@ -291,6 +288,10 @@ public class EntourageApplication extends MultiDexApplication {
             return -1;
         }
         return feedItemsStorage.saveFeedItem(me.getId(), message, isAdded);
+    }
+
+    public void updateStorageInvitationCount(int count) {
+        feedItemsStorage.updateInvitationCount(count);
     }
 
     public void updateStorageFeedItem(FeedItem feedItem) {

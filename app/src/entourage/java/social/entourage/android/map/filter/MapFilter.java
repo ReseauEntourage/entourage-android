@@ -39,9 +39,6 @@ public class MapFilter implements MapFilterInterface, Serializable {
 
     public boolean showTours = true;
 
-    public boolean onlyMyEntourages = false;
-    public boolean onlyMyPartnerEntourages = false;
-
     public int timeframe = DAYS_3;
 
     // ----------------------------------
@@ -90,18 +87,8 @@ public class MapFilter implements MapFilterInterface, Serializable {
     }
 
     @Override
-    public boolean onlyMyEntourages() {
-        return onlyMyEntourages;
-    }
-
-    @Override
     public int getTimeFrame() {
         return timeframe;
-    }
-
-    @Override
-    public boolean onlyMyPartnerEntourages() {
-        return onlyMyPartnerEntourages;
     }
 
     @Override

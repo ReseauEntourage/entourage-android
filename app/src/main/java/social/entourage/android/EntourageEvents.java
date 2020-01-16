@@ -10,6 +10,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import java.util.Locale;
+import java.util.Objects;
 
 import social.entourage.android.api.model.User;
 import social.entourage.android.location.LocationUtils;
@@ -276,6 +277,9 @@ public class EntourageEvents {
     public static final String EVENT_NOTIFICATION_MIXPANEL_RECEIVED="NotificationReceivedFromMixpanel";
     public static final String EVENT_NOTIFICATION_ENTOURAGE_RECEIVED="NotificationReceivedFromEntourage";
 
+    //PLUS Screen
+    public static final String EVENT_PLUS_NOT_READY = "NotReadyToHelpClick";
+
     public static String TAG = EntourageEvents.class.getSimpleName();
 
     public static void logEvent(String event) {
@@ -300,11 +304,13 @@ public class EntourageEvents {
     }
 
     static void updateUserInfo(User user, Context context, boolean areNotificationsEnabled) {
+        /* TODO: catch this event elsewhere
         if (areNotificationsEnabled) {
             logEvent(EntourageEvents.EVENT_GEOLOCATION_POPUP_REFUSE);
         } else {
             logEvent(EntourageEvents.EVENT_GEOLOCATION_POPUP_ACCEPT);
         }
+         */
         FirebaseAnalytics mFirebaseAnalytics = EntourageApplication.get().getFirebase();
         MixpanelAPI mixpanel = EntourageApplication.get().getMixpanel();
         MixpanelAPI.People people = mixpanel.getPeople();
@@ -349,7 +355,7 @@ public class EntourageEvents {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            mFirebaseAnalytics.setUserProperty("BackgroundRestriction", ((ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE)).isBackgroundRestricted()?"YES":"NO");
+            mFirebaseAnalytics.setUserProperty("BackgroundRestriction", ((ActivityManager) Objects.requireNonNull(context.getSystemService(Context.ACTIVITY_SERVICE))).isBackgroundRestricted()?"YES":"NO");
         }
     }
 }

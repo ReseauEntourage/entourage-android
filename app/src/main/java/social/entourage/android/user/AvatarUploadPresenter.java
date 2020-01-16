@@ -47,21 +47,11 @@ public class AvatarUploadPresenter implements PrepareAvatarUploadRepository.Call
             // Failed to delete the file
             Timber.d("Failed to delete the temporary photo file");
         }
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                presenter.updateUserPhoto(avatarKey);
-            }
-        });
+        new Handler(Looper.getMainLooper()).post(() -> presenter.updateUserPhoto(avatarKey));
     }
 
     @Override
     public void onRepositoryError() {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                activity.onUploadError();
-            }
-        });
+        new Handler(Looper.getMainLooper()).post(() -> activity.onUploadError());
     }
 }

@@ -4,15 +4,14 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/background"
-                android:alpha="1">
+                android:alpha="1"
+                android:background="@color/background">
 
     <ScrollView
         android:id="@+id/tour_info_public_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/tour_info_act_layout"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         >
@@ -31,18 +30,18 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tour_info_title_full"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:textStyle="normal"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/greyish_brown"
                         android:textSize="@dimen/entourage_font_title_3"
+                        android:textStyle="normal"
                         tools:text="Urgent Cherche paire de lunettes"/>
 
                     <LinearLayout
@@ -53,45 +52,45 @@
 
                         <TextView
                             android:id="@+id/tour_summary_author_name"
-                            tools:text="User name"
-                            android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
-                            android:lines="1"
+                            android:layout_height="wrap_content"
                             android:ellipsize="end"
-                            android:textStyle="bold"
+                            android:lines="1"
+                            android:textColor="@color/greyish_brown"
                             android:textSize="15sp"
-                            android:textColor="@color/greyish_brown" />
+                            android:textStyle="bold"
+                            tools:text="User name" />
 
                         <TextView
                             android:id="@+id/tour_summary_group_type"
-                            tools:text="Demande par "
-                            android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
-                            android:lines="1"
+                            android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:fontFamily="sans-serif-light"
+                            android:lines="1"
+                            android:textColor="@color/greyish_brown"
                             android:textSize="15sp"
-                            android:textColor="@color/greyish_brown" />
+                            tools:text="Demande par " />
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/tour_info_location"
-                        tools:text="Paris (75011)"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:textColor="@color/greyish_brown"
                         android:fontFamily="sans-serif-light"
-                        android:textSize="@dimen/entourage_font_small"/>
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="@dimen/entourage_font_small"
+                        tools:text="Paris (75011)"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginStart="6dp"
                     android:gravity="end"
-                    android:layout_marginLeft="6dp">
+                    android:orientation="vertical">
 
                     <RelativeLayout
                         android:layout_width="39dp"
@@ -109,10 +108,10 @@
                             android:id="@+id/tour_info_partner_logo"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:layout_alignBottom="@+id/tour_info_author_photo"
                             android:layout_alignEnd="@+id/tour_info_author_photo"
-                            android:layout_marginBottom="-4dp"
+                            android:layout_alignBottom="@+id/tour_info_author_photo"
                             android:layout_marginEnd="-4dp"
+                            android:layout_marginBottom="-4dp"
                             tools:src="@drawable/entourage_logo_grey"/>
                     </RelativeLayout>
 
@@ -122,8 +121,8 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:layout_height="25dp"
                             android:layout_width="wrap_content"
+                            android:layout_height="25dp"
                             android:contentDescription="@string/empty_description"
                             android:src="@drawable/ic_users"/>
 
@@ -132,7 +131,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginStart="5dp"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="@color/greyish_brown"
                             android:textSize="15sp"
@@ -140,6 +139,7 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
@@ -148,41 +148,41 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <LinearLayout
                     android:id="@+id/tour_info_metadata_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
                     android:orientation="vertical"
-                    android:visibility="visible"
-                    android:layout_marginBottom="16dp">
+                    android:visibility="visible">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="8dp">
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/tour_info_metadata_organised_by"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-medium"
                             android:text="@string/tour_info_metadata_organised_by"
-                            android:textSize="15sp"
                             android:textColor="@color/greyish_brown"
-                            android:fontFamily="sans-serif-medium" />
+                            android:textSize="15sp" />
 
                         <TextView
                             android:id="@+id/tour_info_metadata_organiser"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            tools:text="par User name"
-                            android:textSize="15sp"
+                            android:fontFamily="sans-serif-medium"
                             android:textColor="@color/greyish_brown"
-                            android:fontFamily="sans-serif-medium" />
+                            android:textSize="15sp"
+                            tools:text="par User name" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -202,25 +202,25 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:paddingLeft="10dp">
+                            android:paddingStart="10dp">
 
                             <TextView
                                 android:id="@+id/tour_info_metadata_datetime"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-medium"
                                 android:textColor="@color/greyish_brown"
                                 android:textSize="@dimen/entourage_font_medium"
-                                android:fontFamily="sans-serif-medium"
                                 tools:text="Rendez-vous jeudi 28 mars 2018 à 8h"/>
 
                             <TextView
                                 android:id="@+id/tour_info_metadata_address"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-medium"
                                 android:maxLines="2"
                                 android:textColor="@color/greyish_brown"
                                 android:textSize="@dimen/entourage_font_medium"
-                                android:fontFamily="sans-serif-medium"
                                 tools:text="Café la Renaissance, 44 rue de l’Assomption, 75016 Paris"/>
 
                         </LinearLayout>
@@ -237,12 +237,12 @@
                     android:textSize="@dimen/entourage_font_medium" tools:text="Marcel a cassé ses lunettes, et il ne peut plus lire du tout, lui qui aime tant ça ! Si quelqu'un a chez lui une paire pour la lecture dont il ne se sert plus, rejoignez l'entourage !" />
 
                 <TextView
+                    android:id="@+id/tour_info_timestamps"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tour_info_timestamps"
+                    android:layout_marginTop="8sp"
                     android:textColor="@color/greyish_brown"
                     android:textSize="13sp"
-                    android:layout_marginTop="8sp"
                     tools:text="Créé il y a 9 jours - mis à jour il y a 2 jours " />
 
             </LinearLayout>
@@ -264,10 +264,9 @@
                     android:id="@+id/tour_info_member_count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
-                    android:paddingBottom="5dp"
                     android:paddingTop="16dp"
+                    android:paddingBottom="5dp"
                     android:textColor="@color/greyish_brown"
                     android:textSize="@dimen/entourage_font_medium"
                     android:textStyle="bold"/>
@@ -276,12 +275,11 @@
                     android:id="@+id/tour_info_member_add"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="16dp"
-                    android:clickable="true"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
                     android:layout_marginStart="16dp"
-                    android:focusable="true">
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="35dp"
@@ -293,7 +291,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
                         android:layout_marginStart="10dp"
                         android:text="@string/tour_info_members_add"
                         android:textColor="@color/accent"
@@ -315,9 +312,8 @@
         android:id="@+id/tour_info_act_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
         android:orientation="horizontal"
         android:visibility="visible"
@@ -329,7 +325,6 @@
             android:layout_height="2dp"
             android:layout_centerVertical="true"
             android:layout_gravity="fill_horizontal"
-            android:layout_toLeftOf="@+id/tour_info_act_button"
             android:layout_toStartOf="@+id/tour_info_act_button"
             android:alpha="0.5"
             android:background="@color/greyish"
@@ -342,8 +337,6 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginEnd="@dimen/act_button_right_padding"
-            android:layout_marginRight="@dimen/act_button_right_padding"
-            android:drawableLeft="@drawable/button_act_join"
             android:drawableStart="@drawable/button_act_join"
             android:enabled="true"
             android:text="@string/tour_cell_button_join"/>
@@ -355,7 +348,6 @@
             android:layout_centerVertical="true"
             android:layout_gravity="fill_horizontal"
             android:layout_toEndOf="@+id/tour_info_act_button"
-            android:layout_toRightOf="@+id/tour_info_act_button"
             android:alpha="0.5"
             android:background="@color/greyish"
             android:contentDescription="@string/empty_description"/>
@@ -366,14 +358,13 @@
         android:id="@+id/tour_info_request_join_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
         android:background="@drawable/bg_transparent_rounded_top"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingBottom="10dp"
         android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:visibility="gone">
 
         <TextView
@@ -389,8 +380,8 @@
             style="@style/AccentButton.BigRoundedCorners"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
-            android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:text="@string/tour_info_request_join_button_entourage"
             android:textSize="@dimen/entourage_font_medium"/>
     </LinearLayout>
@@ -399,9 +390,8 @@
         android:id="@+id/tour_info_invited_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
         android:background="@color/accent"
         android:orientation="vertical"
         android:visibility="gone">
@@ -411,8 +401,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:gravity="center"
             android:text="@string/invited_description"
             android:textColor="@color/white"
@@ -422,8 +412,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal"
             android:weightSum="1">
 
@@ -438,7 +428,6 @@
                 android:layout_width="140dp"
                 android:layout_height="35dp"
                 android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
                 android:text="@string/ignore"
                 android:textSize="@dimen/entourage_font_medium"/>
 
@@ -447,7 +436,6 @@
                 style="@style/WhiteButton.RoundedCorners"
                 android:layout_width="140dp"
                 android:layout_height="35dp"
-                android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:text="@string/accept"
                 android:textSize="@dimen/entourage_font_medium"/>

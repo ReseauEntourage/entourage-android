@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/plus_action_list"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp">
+
+        <ImageView
+            android:id="@+id/image_overlay_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/action_overlay_close"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_close" />
+
+        <TextView
+            android:id="@+id/plus_help_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/plus_help_text"
+            android:textColor="@color/greyish_brown"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/plus_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/plus_image_subtitle"
+            app:layout_constraintBottom_toTopOf="@id/plus_image_subtitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/plus_help_button"
+            app:srcCompat="@drawable/group_10" />
+
+        <TextView
+            android:id="@+id/plus_image_subtitle"
+            style="@style/plus_image_subtitle"
+            android:text="@string/plus_image_subtitle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RelativeLayout
+        android:id="@+id/plus_action_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="end"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_line_create_entourage_ask_help"
+            style="@style/MapActionLine">
+
+            <TextView
+                android:id="@+id/textView23"
+                style="@style/MapActionMenu"
+                android:text="@string/entourage_create_menu_ask_help"
+                app:layout_constraintEnd_toStartOf="@+id/button_create_entourage_ask_help"
+                app:layout_constraintTop_toTopOf="@+id/button_create_entourage_ask_help" />
+
+            <TextView
+                android:id="@+id/textView21"
+                style="@style/MapActionSubMenu"
+                android:text="@string/entourage_create_submenu_ask_help"
+                android:textColor="@color/greyish_brown"
+                app:layout_constraintEnd_toStartOf="@+id/button_create_entourage_ask_help"
+                app:layout_constraintTop_toBottomOf="@id/textView23" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/button_create_entourage_ask_help"
+                style="@style/MapActionButtonStyle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/ic_demanding_heart" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_line_create_entourage_contribute"
+            style="@style/MapActionLine"
+            android:layout_below="@id/layout_line_create_entourage_ask_help">
+
+            <TextView
+                android:id="@+id/textView22"
+                style="@style/MapActionMenu"
+                android:text="@string/entourage_create_menu_contribute"
+                app:layout_constraintEnd_toStartOf="@+id/button_create_entourage_contribute"
+                app:layout_constraintTop_toTopOf="@+id/button_create_entourage_contribute" />
+
+            <TextView
+                android:id="@+id/textView3"
+                style="@style/MapActionSubMenu"
+                android:text="@string/entourage_create_submenu_contribute"
+                app:layout_constraintEnd_toStartOf="@+id/button_create_entourage_contribute"
+                app:layout_constraintTop_toBottomOf="@id/textView22" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/button_create_entourage_contribute"
+                style="@style/MapActionButtonStyle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/ic_giving_heart" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_line_create_outing"
+            style="@style/MapActionLine"
+            android:layout_below="@id/layout_line_create_entourage_contribute">
+
+            <TextView
+                android:id="@+id/textView5"
+                style="@style/MapActionMenu"
+                android:text="@string/outing_create_menu"
+                app:layout_constraintEnd_toStartOf="@+id/button_create_outing"
+                app:layout_constraintTop_toTopOf="@+id/button_create_outing" />
+
+            <TextView
+                android:id="@+id/textView4"
+                style="@style/MapActionSubMenu"
+                android:text="@string/outing_create_submenu"
+                app:layout_constraintEnd_toStartOf="@+id/button_create_outing"
+                app:layout_constraintTop_toBottomOf="@id/textView5" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/button_create_outing"
+                style="@style/MapActionButtonStyle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/ic_event_white_24dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_line_start_tour_launcher"
+            style="@style/MapActionLine"
+            android:layout_below="@id/layout_line_create_outing"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/textView6"
+                style="@style/MapActionMenu"
+                android:text="@string/tour_create"
+                app:layout_constraintEnd_toStartOf="@+id/button_start_tour_launcher"
+                app:layout_constraintTop_toTopOf="@+id/button_start_tour_launcher" />
+
+            <TextView
+                android:id="@+id/textView7"
+                style="@style/MapActionSubMenu"
+                android:text="@string/entourage_create_submenu_start_tour_launcher"
+                app:layout_constraintEnd_toStartOf="@+id/button_start_tour_launcher"
+                app:layout_constraintTop_toBottomOf="@id/textView6" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/button_start_tour_launcher"
+                style="@style/MapActionButtonStyle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/ic_button_create_maraude" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_line_add_tour_encounter"
+            style="@style/MapActionLine"
+            android:layout_below="@id/layout_line_start_tour_launcher"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/textView8"
+                style="@style/MapActionMenu"
+                android:text="@string/tour_create_encounter_button"
+                app:layout_constraintEnd_toStartOf="@+id/button_add_tour_encounter"
+                app:layout_constraintTop_toTopOf="@+id/button_add_tour_encounter" />
+
+            <TextView
+                android:id="@+id/textView9"
+                style="@style/MapActionSubMenu"
+                android:text="@string/entourage_create_submenu_add_tour_encounter"
+                app:layout_constraintEnd_toStartOf="@+id/button_add_tour_encounter"
+                app:layout_constraintTop_toBottomOf="@id/textView8" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/button_add_tour_encounter"
+                style="@style/MapActionButtonStyle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/ic_encounter" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

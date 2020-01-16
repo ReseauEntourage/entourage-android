@@ -257,7 +257,11 @@ public class UserFragment extends EntourageDialogFragment {
         if (!(isMyProfile && Configuration.getInstance().showUserEditProfile())) return;
         // Show the edit profile screen
         UserEditFragment fragment = new UserEditFragment();
-        fragment.show(getFragmentManager(), UserEditFragment.TAG);
+        try{
+            fragment.show(getFragmentManager(), UserEditFragment.TAG);
+        } catch(IllegalStateException e) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
+        }
     }
 
     // ----------------------------------

@@ -4,8 +4,8 @@
     <string name="entourage_create_action_title">ACTION</string>
     <string name="entourage_create_outing_title">ÉVÈNEMENT</string>
     <string name="entourage_create_type_label">Catégorie</string>
-    <string name="entourage_create_type_demand">Je cherche : %1$s</string>
-    <string name="entourage_create_type_contribution">Je me propose de : %1$s</string>
+    <string name="entourage_create_type_demand">Je cherche %1$s</string>
+    <string name="entourage_create_type_contribution">Je me propose de %1$s</string>
     <string name="entourage_create_position_description">Adresse *</string>
     <string name="entourage_create_title_label">Titre *</string>
     <string name="entourage_create_title_hint">Exemple : %1$s</string>
@@ -30,7 +30,13 @@
     <string name="entourage_create_error_location_empty">Indiquez une localisation</string>
 
     <string name="entourage_create_menu">Créer une action</string>
-    <string name="outing_create_menu">Créer un évènement</string>
+    <string name="entourage_create_submenu">Demander de l’aide ou faire un don</string>
+    <string name="entourage_create_menu_ask_help">Demander un don, de l\'aide, ...</string>
+    <string name="entourage_create_submenu_ask_help">Faire appel au réseau</string>
+    <string name="entourage_create_menu_contribute">Proposer un don</string>
+    <string name="entourage_create_submenu_contribute">Donner un bien, du temps, ...</string>
+    <string name="outing_create_menu">Annoncer un évènement</string>
+    <string name="outing_create_submenu">Se rassembler à une date précise</string>
 
     <!-- Entourage Category Fragment -->
     <string name="entourage_category_fragment_title">CATÉGORIE</string>
@@ -42,7 +48,7 @@
     <string name="entourage_title_fragment_hint">Exemple : Je suis disponible pour aide administrative pour l’accès au logement </string>
     <string name="entourage_title_fragment_info">Les actions avec un titre clair attirent plus de membres et ont plus de chances d’aboutir !</string>
     <string name="entourage_title_fragment_error">Votre titre doit faire moins de 100 caractères. Vous pourrez en dire plus dans la description.</string>
-    <string name="entourage_title_fragment_hint_outing">Exemple : Appel aux bonnes volontés pour la collecte nationale des Restos du cœur</string>
+    <string name="entourage_title_fragment_hint_outing">Exemple : Soirée jeux entre voisins avec et sans domicile</string>
     <string name="entourage_title_fragment_info_outing">Les évènements avec un titre clair attirent plus de participants.</string>
 
     <!-- Entourage Description Fragment -->
@@ -118,7 +124,6 @@
     <string name="myentourages_unread">Non lus</string>
 
     <string name="myentourages_no_items_title">Vous n\'avez pas encore de messages…</string>
-    <string name="myentourages_no_items_details">Demandez à rejoindre des sorties, devenez membre validé de Voisin-Age et vous retrouverez alors vos conversations avec les membres du réseau Voisin-Age ici</string>
     <string name="myentourages_no_unread_items_details">Vous n\'avez pas de messages non lus</string>
 
     <!-- My Entourages Filter -->

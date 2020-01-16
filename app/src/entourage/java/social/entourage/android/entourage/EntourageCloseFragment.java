@@ -48,8 +48,6 @@ public class EntourageCloseFragment extends DialogFragment {
     // Lifecycle
     // ----------------------------------
 
-
-
     public EntourageCloseFragment() {
         // Required empty public constructor
     }
@@ -63,6 +61,7 @@ public class EntourageCloseFragment extends DialogFragment {
     }
 
     public void show(FragmentManager fragmentManager, String tag, Context context) {
+        //TODO change PFP to use that kind of dialog, use we use this function for compatibility
         show(fragmentManager, tag);
     }
 
@@ -147,7 +146,7 @@ public class EntourageCloseFragment extends DialogFragment {
         if (title == null) title = "";
         String emailSubject = getString(emailSubjectFormat, title);
         intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
-        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+        if (getActivity() !=null && intent.resolveActivity(getActivity().getPackageManager()) != null) {
             // Start the intent
             startActivity(intent);
         } else {

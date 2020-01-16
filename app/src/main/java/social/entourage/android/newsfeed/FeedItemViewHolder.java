@@ -34,6 +34,7 @@ import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.BaseCardViewHolder;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
+import social.entourage.android.tools.Utils;
 import social.entourage.android.view.PartnerLogoImageView;
 
 import static social.entourage.android.tools.Utils.getMonthAsString;
@@ -96,7 +97,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
     }
 
     public static int getLayoutResource() {
-        return R.layout.layout_tour_card;
+        return R.layout.layout_feed_action_card;
     }
 
     @Override
@@ -303,7 +304,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
         //last update date
         if (lastUpdateDateTextView != null) {
             Date lastUpdateDate = feedItem.getUpdatedTime();
-            lastUpdateDateTextView.setText(formatLastUpdateDate(lastUpdateDate));
+            lastUpdateDateTextView.setText(Utils.formatLastUpdateDate(lastUpdateDate, context));
             lastUpdateDateTextView.setTypeface(null, feedItem.getBadgeCount() == 0 ? Typeface.NORMAL : Typeface.BOLD);
             lastUpdateDateTextView.setTextColor(feedItem.getBadgeCount() == 0 ? res.getColor(R.color.feeditem_card_details_normal) : res.getColor(R.color.feeditem_card_details_bold));
         }
@@ -312,26 +313,6 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
 
     protected boolean showCategoryIcon() {
         return true;
-    }
-
-    private String formatLastUpdateDate(Date date) {
-        if (date == null) return "";
-        Date now = new Date();
-        // for today, return the time part
-        if (now.getYear() == date.getYear() && now.getMonth() == date.getMonth() && now.getDate() == date.getDate()) {
-            return DateFormat.format("H'h'mm", date).toString();
-        }
-        // check for yesterday
-        long sinceMidnight = now.getSeconds() * 1000 + now.getMinutes() * 60 * 1000 + now.getHours() * 60 * 60 * 1000;
-        long oneDay = 86400000L; // 24 hours in millis
-        if ( (now.getTime() - date.getTime()) < (oneDay + sinceMidnight) ) {
-            return context.getString(R.string.date_yesterday);
-        }
-        // other date
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        String month = getMonthAsString(calendar.get(Calendar.MONTH), context);
-        return context.getString(R.string.date_format_short, calendar.get(Calendar.DAY_OF_MONTH), month);
     }
 
     //--------------------------
@@ -379,7 +360,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
                     EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_OPEN_ACTIVE_OVERLAY);
                     BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem));
                 } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
-                    //What to do on rejected status ?
+                    //TODO: What to do on rejected status ?
                 } else {
                     // The server wants the position starting with 1
                     BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(feedItem, getAdapterPosition()+1));

@@ -42,6 +42,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.PermissionChecker;
@@ -90,7 +91,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageError;
 import social.entourage.android.EntourageEvents;
-import social.entourage.android.EntourageLocation;
+import social.entourage.android.location.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.Invitation;
@@ -117,12 +118,12 @@ import social.entourage.android.deeplinks.DeepLinksManager;
 import social.entourage.android.invite.InviteFriendsListener;
 import social.entourage.android.invite.contacts.InviteContactsFragment;
 import social.entourage.android.invite.phonenumber.InviteByPhoneNumberFragment;
-import social.entourage.android.map.MapEntourageFragment;
+import social.entourage.android.map.MapFragment;
 import social.entourage.android.map.OnAddressClickListener;
 import social.entourage.android.entourage.EntourageCloseFragment;
 import social.entourage.android.entourage.create.CreateEntourageFragment;
-import social.entourage.android.tour.TourService;
-import social.entourage.android.tour.TourServiceListener;
+import social.entourage.android.service.EntourageService;
+import social.entourage.android.service.EntourageServiceListener;
 import social.entourage.android.entourage.information.discussion.DiscussionAdapter;
 import social.entourage.android.entourage.information.members.MembersAdapter;
 import social.entourage.android.tools.BusProvider;
@@ -134,7 +135,7 @@ import static social.entourage.android.api.model.map.BaseEntourage.TYPE_ACTION;
 import static social.entourage.android.api.model.map.BaseEntourage.TYPE_OUTING;
 import static social.entourage.android.api.model.map.Tour.TYPE_TOUR;
 
-public class EntourageInformationFragment extends EntourageDialogFragment implements TourServiceListener, InviteFriendsListener {
+public class EntourageInformationFragment extends EntourageDialogFragment implements EntourageServiceListener, InviteFriendsListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -160,7 +161,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
     @Inject
     EntourageInformationPresenter presenter;
 
-    TourService tourService;
+    EntourageService entourageService;
     private ServiceConnection connection = new ServiceConnection();
     private boolean isBound = false;
 
@@ -418,12 +419,12 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
     }
 
     @Override
-    public void onAttach(@NonNull Activity activity) {
-        super.onAttach(activity);
-        if (!(activity instanceof OnEntourageInformationFragmentFinish)) {
-            throw new ClassCastException(activity.toString() + " must implement OnEntourageInformationFragmentFinish");
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (!(context instanceof OnEntourageInformationFragmentFinish)) {
+            throw new ClassCastException(context.toString() + " must implement OnEntourageInformationFragmentFinish");
         }
-        mListener = (OnEntourageInformationFragmentFinish) activity;
+        mListener = (OnEntourageInformationFragmentFinish) context;
         doBindService();
 
         BusProvider.getInstance().register(this);
@@ -434,7 +435,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
         super.onDetach();
         mListener = null;
         if (isBound) {
-            tourService.unregisterTourServiceListener(this);
+            entourageService.unregisterServiceListener(this);
         }
         doUnbindService();
 
@@ -536,11 +537,15 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
         // inform the app to refrehs the my entourages feed
         BusProvider.getInstance().post(new Events.OnMyEntouragesForceRefresh(feedItem));
 
-        this.dismissAllowingStateLoss();
+        try {
+            this.dismiss();
+        } catch(IllegalStateException e) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
+        }
     }
 
     @Optional
-    @OnClick({R.id.tour_info_icon, R.id.tour_info_title, R.id.tour_card_arrow, R.id.tour_info_description_button})
+    @OnClick({R.id.tour_info_icon, R.id.tour_info_title, R.id.tour_info_description_button})
     protected void onSwitchSections() {
         // Ignore if the entourage is not loaded or is public
         if (feedItem == null || !feedItem.isPrivate()) {
@@ -706,7 +711,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
                 }
             } else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE);
-                //tourService.stopFeedItem(feedItem);
+                //entourageService.stopFeedItem(feedItem);
                 //hide the options
                 optionsLayout.setVisibility(View.GONE);
                 //show close fragment
@@ -717,9 +722,9 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
                 }
             }
         } else if (feedItem.getType() == TimestampedObject.TOUR_CARD && feedItem.getStatus().equals(FeedItem.STATUS_CLOSED)) {
-            if (tourService != null) {
+            if (entourageService != null) {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE);
-                tourService.freezeTour((Tour) feedItem);
+                entourageService.freezeTour((Tour) feedItem);
             }
         }
     }
@@ -730,7 +735,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
     }
 
     private void quitTour() {
-        if (tourService == null) {
+        if (entourageService == null) {
             Toast.makeText(getActivity(), R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show();
         } else {
             User me = EntourageApplication.me(getActivity());
@@ -739,21 +744,21 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
             } else {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_QUIT);
                 showProgressBar();
-                tourService.removeUserFromFeedItem(feedItem, me.getId());
+                entourageService.removeUserFromFeedItem(feedItem, me.getId());
             }
         }
     }
 
     @OnClick({R.id.feeditem_option_join, R.id.feeditem_option_contact, R.id.tour_info_request_join_button})
     public void onJoinTourButton() {
-        if (tourService != null) {
+        if (entourageService != null) {
             showProgressBar();
             if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN);
-                tourService.requestToJoinTour((Tour) feedItem);
+                entourageService.requestToJoinTour((Tour) feedItem);
             } else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN);
-                tourService.requestToJoinEntourage((Entourage) feedItem);
+                entourageService.requestToJoinEntourage((Entourage) feedItem);
             } else {
                 hideProgressBar();
             }
@@ -1084,21 +1089,17 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
                         quitTourButton.setVisibility(View.VISIBLE);
                         quitTourButton.setText(FeedItem.JOIN_STATUS_PENDING.equals(feedItem.getJoinStatus()) ? R.string.tour_info_options_cancel_request : R.string.tour_info_options_quit_tour);
                     }
-                    if (feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
-                        reportEntourageButton.setVisibility(View.VISIBLE);
-                        // Share button available only for entourages and non-members
-                        shareEntourageButton.setVisibility(feedItem.isPrivate() || feedItem.isSuspended() ? View.GONE : View.VISIBLE);
-                    }
                 } else {
                     stopTourButton.setVisibility(feedItem.isFreezed() || !feedItem.canBeClosed() ? View.GONE : View.VISIBLE);
-                    if (feedItem.isClosed()) {
-                        stopTourButton.setText(R.string.tour_info_options_freeze_tour);
-                    } else {
-                        stopTourButton.setText(feedItem.getType() == FeedItem.ENTOURAGE_CARD ? R.string.tour_info_options_freeze_tour : R.string.tour_info_options_stop_tour);
-                    }
+                    stopTourButton.setText( (feedItem.isClosed() || feedItem.getType() == FeedItem.ENTOURAGE_CARD) ? R.string.tour_info_options_freeze_tour : R.string.tour_info_options_stop_tour);
                     if (feedItem.getType() == FeedItem.ENTOURAGE_CARD && FeedItem.STATUS_OPEN.equals(feedItem.getStatus())) {
                         editEntourageButton.setVisibility(View.VISIBLE);
                     }
+                }
+                if (feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
+                    reportEntourageButton.setVisibility(View.VISIBLE);
+                    // Share button available only for entourages and non-members
+                    shareEntourageButton.setVisibility(feedItem.isSuspended() ? View.GONE : View.VISIBLE);
                 }
                 if (promoteEntourageButton != null && membersList != null && feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
                     for (TimestampedObject member : membersList) {
@@ -1207,15 +1208,20 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
 
     private void initializeMap() {
         if (!isAdded()) return;
-        if (mapFragment == null) {
-            GoogleMapOptions googleMapOptions = new GoogleMapOptions();
-            googleMapOptions.zOrderOnTop(true);
-            mapFragment = SupportMapFragment.newInstance(googleMapOptions);
-        }
-        FragmentManager fragmentManager = getChildFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.tour_info_map_layout, mapFragment).commitAllowingStateLoss();
+        try{
+            if (mapFragment == null) {
+                GoogleMapOptions googleMapOptions = new GoogleMapOptions();
+                googleMapOptions.zOrderOnTop(true);
+                mapFragment = SupportMapFragment.newInstance(googleMapOptions);
+            }
+            FragmentManager fragmentManager = getChildFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.tour_info_map_layout, mapFragment).commit();
 
-        drawFeedItemOnMap();
+            drawFeedItemOnMap();
+        }catch(IllegalStateException e) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
+            Timber.e(e);
+        }
     }
 
     private void updateMap() {
@@ -1280,7 +1286,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
                             googleMap.addGroundOverlay(groundOverlayOptions);
                         } else {
                             // add marker
-                            Drawable drawable = getResources().getDrawable(feedItem.getHeatmapResourceId());
+                            Drawable drawable = AppCompatResources.getDrawable(getContext(), feedItem.getHeatmapResourceId());
                             BitmapDescriptor icon = Utils.getBitmapDescriptorFromDrawable(drawable, Entourage.getMarkerSize(getContext()), Entourage.getMarkerSize(getContext()));
                             MarkerOptions markerOptions = new MarkerOptions()
                                     .icon(icon)
@@ -1297,49 +1303,54 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
 
     private void initializeHiddenMap() {
         if (!isAdded()) return;
-        if (hiddenMapFragment == null) {
-            GoogleMapOptions googleMapOptions = new GoogleMapOptions();
-            googleMapOptions.zOrderOnTop(true);
-            hiddenMapFragment = SupportMapFragment.newInstance(googleMapOptions);
-        }
-        FragmentManager fragmentManager = getChildFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.tour_info_hidden_map_layout, hiddenMapFragment).commitAllowingStateLoss();
-        hiddenMapFragment.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(final GoogleMap googleMap) {
-                googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-                googleMap.getUiSettings().setMapToolbarEnabled(false);
-                googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-                        getActivity(), R.raw.map_styles_json));
-                if (tourTimestampList.size() > 0) {
-                    TourTimestamp tourTimestamp = tourTimestampList.get(0);
-                    if (tourTimestamp.getTourPoint() != null) {
-                        //put the pin
-                        MarkerOptions pin = new MarkerOptions().position(tourTimestamp.getTourPoint().getLocation());
-                        googleMap.addMarker(pin);
-                        //move the camera
-                        CameraUpdate camera = CameraUpdateFactory.newLatLngZoom(tourTimestamp.getTourPoint().getLocation(), EntourageInformationFragment.MAP_SNAPSHOT_ZOOM);
-                        googleMap.moveCamera(camera);
-                    }
-                } else {
-                    googleMap.moveCamera(CameraUpdateFactory.zoomTo(EntourageInformationFragment.MAP_SNAPSHOT_ZOOM));
-                }
-
-                googleMap.setOnMapLoadedCallback(EntourageInformationFragment.this::getMapSnapshot);
-
-                googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
-                    @Override
-                    public void onCameraChange(final CameraPosition cameraPosition) {
-                        if (takeSnapshotOnCameraMove) {
-                            getMapSnapshot();
-                            hiddenGoogleMap = null;
-                        }
-                    }
-                });
-
-                hiddenGoogleMap = googleMap;
+        try {
+            if (hiddenMapFragment == null) {
+                GoogleMapOptions googleMapOptions = new GoogleMapOptions();
+                googleMapOptions.zOrderOnTop(true);
+                hiddenMapFragment = SupportMapFragment.newInstance(googleMapOptions);
             }
-        });
+            FragmentManager fragmentManager = getChildFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.tour_info_hidden_map_layout, hiddenMapFragment).commit();
+
+            hiddenMapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(final GoogleMap googleMap) {
+                    googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+                    googleMap.getUiSettings().setMapToolbarEnabled(false);
+                    googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                            getActivity(), R.raw.map_styles_json));
+                    if (tourTimestampList.size() > 0) {
+                        TourTimestamp tourTimestamp = tourTimestampList.get(0);
+                        if (tourTimestamp.getTourPoint() != null) {
+                            //put the pin
+                            MarkerOptions pin = new MarkerOptions().position(tourTimestamp.getTourPoint().getLocation());
+                            googleMap.addMarker(pin);
+                            //move the camera
+                            CameraUpdate camera = CameraUpdateFactory.newLatLngZoom(tourTimestamp.getTourPoint().getLocation(), EntourageInformationFragment.MAP_SNAPSHOT_ZOOM);
+                            googleMap.moveCamera(camera);
+                        }
+                    } else {
+                        googleMap.moveCamera(CameraUpdateFactory.zoomTo(EntourageInformationFragment.MAP_SNAPSHOT_ZOOM));
+                    }
+
+                    googleMap.setOnMapLoadedCallback(EntourageInformationFragment.this::getMapSnapshot);
+
+                    googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+                        @Override
+                        public void onCameraIdle() {
+                            if (takeSnapshotOnCameraMove) {
+                                getMapSnapshot();
+                                hiddenGoogleMap = null;
+                            }
+                        }
+                    });
+
+                    hiddenGoogleMap = googleMap;
+                }
+            });
+        } catch(IllegalStateException e){
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
+        }
     }
 
     private void getMapSnapshot() {
@@ -1397,8 +1408,8 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
         int color = Color.GRAY;
         if (getContext() == null) return color;
         color = ContextCompat.getColor(getContext(), Tour.getTypeColorRes(type));
-        if (!MapEntourageFragment.isToday(date)) {
-            return MapEntourageFragment.getTransparentColor(color);
+        if (!MapFragment.isToday(date)) {
+            return MapFragment.getTransparentColor(color);
         }
 
         return color;
@@ -1675,7 +1686,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
             presenter.getFeedItemJoinRequests();
             presenter.getFeedItemMembers();
             presenter.getFeedItemMessages();
-            if (feedItem != null && feedItem.isMine()) {
+            if (feedItem != null && feedItem.isMine(getContext())) {
                 presenter.getFeedItemEncounters();
             }
         }
@@ -2104,7 +2115,9 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
             if (FeedItem.JOIN_STATUS_REJECTED.equals(status)) {
                 messageId = R.string.tour_join_request_rejected;
             }
-            Toast.makeText(getActivity(), messageId, Toast.LENGTH_SHORT).show();
+            if(getActivity()!=null) {
+                Toast.makeText(getActivity(), messageId, Toast.LENGTH_SHORT).show();
+            }
             // Update the card
             TourUser card = (TourUser) discussionAdapter.findCard(TimestampedObject.TOUR_USER_JOIN, userId);
             if (card != null) {
@@ -2211,10 +2224,11 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
     void doBindService() {
         if (getActivity() != null) {
             try {
-            Intent intent = new Intent(getActivity(), TourService.class);
+            Intent intent = new Intent(getActivity(), EntourageService.class);
             getActivity().startService(intent);
             getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
             } catch (IllegalStateException e) {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
                 Timber.e(e);
             }
         }
@@ -2415,16 +2429,16 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             if (getActivity() != null) {
-                tourService = ((TourService.LocalBinder) service).getService();
-                tourService.registerTourServiceListener(EntourageInformationFragment.this);
+                entourageService = ((EntourageService.LocalBinder) service).getService();
+                entourageService.registerServiceListener(EntourageInformationFragment.this);
                 isBound = true;
             }
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            tourService.unregisterTourServiceListener(EntourageInformationFragment.this);
-            tourService = null;
+            entourageService.unregisterServiceListener(EntourageInformationFragment.this);
+            entourageService = null;
             isBound = false;
         }
     }

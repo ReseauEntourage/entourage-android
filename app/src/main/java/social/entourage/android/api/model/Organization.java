@@ -1,5 +1,7 @@
 package social.entourage.android.api.model;
 
+import android.content.Context;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -96,7 +98,7 @@ public class Organization extends BaseOrganization implements Serializable {
     }
 
     @Override
-    public int getTypeAsResourceId() {
-        return R.string.member_type_organization;
+    public String getTypeAsString(Context context) {
+        return context.getString(R.string.member_type_organization);
     }
 }

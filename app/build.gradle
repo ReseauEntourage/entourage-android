@@ -2,6 +2,7 @@ apply plugin: "com.android.application"
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'io.fabric'
+apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -27,7 +28,7 @@ android {
         versionCode rootProject.ext.versionCodeInt
         versionName rootProject.ext.versionNameProd
 
-        buildConfigField 'String', 'VERSION_DISPLAY_NAME', '"' + rootProject.ext.versionBranchName +'"'
+        buildConfigField 'String', 'VERSION_DISPLAY_NAME', '"' + rootProject.ext.versionBranchName + '"'
         setProperty("archivesBaseName", "$appBundleName-$versionNameProd")
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -74,17 +75,17 @@ android {
         }
         entourage {
             dimension 'app'
-            buildConfigField 'String', 'API_KEY', '"9de7f5860fd0b1067c1fd725"'
+            buildConfigField 'String', 'API_KEY', '"eba339ae2dac29941af8cbd6"'
             ext {
                 prod = [
-                        serverURL: "https://api.entourage.social/api/v1/",
+                        serverURL        : "https://api.entourage.social/api/v1/",
                         deepLinksHostName: "www.entourage.social",
-                        deepLinksScheme: "entourage"
+                        deepLinksScheme  : "entourage"
                 ]
                 staging = [
-                        serverURL: "https://entourage-back-preprod.herokuapp.com/api/v1/",
+                        serverURL        : "https://entourage-back-preprod.herokuapp.com/api/v1/",
                         deepLinksHostName: "entourage-landingpages-preprod.herokuapp.com",
-                        deepLinksScheme: "entourage-staging"
+                        deepLinksScheme  : "entourage-staging"
                 ]
             }
         }
@@ -92,21 +93,21 @@ android {
             dimension 'app'
             applicationId 'social.entourage.android.pfp'
             buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_PFP
-            buildConfigField 'String', 'API_KEY', '"9ebf2b47e35046e43dae5e31"'
+            buildConfigField 'String', 'API_KEY', '"ee15c4f26482e61b72f1f565"'
 
             buildConfigField 'String', 'TEST_ACCOUNT_LOGIN', TEST_PFP_ACCOUNT_LOGIN
             buildConfigField 'String', 'TEST_ACCOUNT_PWD', TEST_PFP_ACCOUNT_PWD
 
             ext {
                 prod = [
-                        serverURL: "https://apipxtgs.entourage.social/api/v1/",
+                        serverURL        : "https://apipxtgs.entourage.social/api/v1/",
                         deepLinksHostName: "www.entourage.social/pfp",
-                        deepLinksScheme: "pfp-prod"
+                        deepLinksScheme  : "pfp-prod"
                 ]
                 staging = [
-                        serverURL: "https://pfp-back-preprod.herokuapp.com/api/v1/",
+                        serverURL        : "https://pfp-back-preprod.herokuapp.com/api/v1/",
                         deepLinksHostName: "entourage-landingpages-preprod.herokuapp.com",
-                        deepLinksScheme: "pfp-staging"
+                        deepLinksScheme  : "pfp-staging"
                 ]
             }
         }
@@ -147,7 +148,7 @@ android {
 
         variant.mergedFlavor.manifestPlaceholders = [
                 deepLinksHostName       : "${app[environment.name]['deepLinksHostName']}",
-                deepLinksEntourageScheme : "${app[environment.name]['deepLinksScheme']}"
+                deepLinksEntourageScheme: "${app[environment.name]['deepLinksScheme']}"
         ]
 
     }

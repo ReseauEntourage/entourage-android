@@ -11,7 +11,7 @@ public class InviteItem {
 
     public static final int TYPE_COUNT = 3;
 
-    private int itemType = TYPE_CONTACT_NAME;
+    private int itemType;
     private String itemText;
     private boolean isSelected = false;
 

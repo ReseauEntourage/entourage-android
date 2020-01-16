@@ -87,7 +87,7 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
     private List<String> entourageTypeList;
     private HashMap<String, List<EntourageCategory>> entourageCategoryHashMap;
 
-    public EntourageCategory selectedCategory = null;
+    public EntourageCategory selectedCategory;
     private OnCheckedChangeListener onCheckedChangeListener = new OnCheckedChangeListener();
 
     public EntourageCategoriesAdapter(Context context, List<String> entourageTypeList, HashMap<String, List<EntourageCategory>> entourageCategoryHashMap, EntourageCategory selectedCategory) {
@@ -171,7 +171,6 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(final int groupPosition, final boolean isExpanded, View convertView, final ViewGroup parent) {
-        boolean _isExpanded = isExpanded;
         if (convertView == null) {
             // create the group view
             LayoutInflater layoutInflater = (LayoutInflater) this.context
@@ -190,7 +189,7 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
                 label.setText(EntourageCategory.getEntourageTypeDescription((String) getGroup(groupPosition)));
             }
             if (arrow != null) {
-                if (_isExpanded) {
+                if (isExpanded) {
                     arrow.setRotation(-90.0f);
                 } else {
                     arrow.setRotation(90.0f);

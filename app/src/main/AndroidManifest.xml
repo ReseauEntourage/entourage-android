@@ -131,7 +131,7 @@
             android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
-            android:name="social.entourage.android.tour.join.received.TourJoinRequestReceivedActivity"
+            android:name=".tour.join.received.TourJoinRequestReceivedActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".user.edit.photo.ChoosePhotoActivity">
@@ -141,12 +141,18 @@
         <activity
             android:name="com.mixpanel.android.takeoverinapp.TakeoverInAppActivity"
             android:theme="@style/com_mixpanel_android_TakeoverInAppActivityTheme"/>
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:theme="@style/EntourageOSSLicenses.Theme" />
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:theme="@style/EntourageOSSLicenses.Theme" />
         <activity android:name=".involvement.ShareActivity" />
         <activity android:name=".involvement.RateActivity" />
 
 
         <service
-            android:name="social.entourage.android.tour.TourService"
+            android:name=".service.EntourageService"
             android:exported="false"/>
         <service
             android:name=".api.tape.EncounterTapeService"

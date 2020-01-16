@@ -71,19 +71,4 @@ public class DrawerPresenter extends DrawerBasePresenter {
                 break;
         }
     }
-
-    // ----------------------------------
-    // DISPLAY SCREENS METHODS
-    // ----------------------------------
-
-
-    @Override
-    protected void displayFeedItemOptions(final FeedItem feedItem) {
-        if (!feedItem.isMine() || feedItem.isFreezed() || !feedItem.canBeClosed()) {
-            super.displayFeedItemOptions(feedItem);
-            return;
-        }
-        EntourageCloseFragment entourageCloseFragment = EntourageCloseFragment.newInstance(feedItem);
-        entourageCloseFragment.show(activity.getSupportFragmentManager(), EntourageCloseFragment.TAG, activity);
-    }
 }

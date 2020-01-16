@@ -79,9 +79,6 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
     protected void handleMenu(@IdRes int menuId) {
         if (activity == null) return;
         switch (menuId) {
-            case R.id.action_tours:
-                activity.loadFragmentWithExtras();
-                break;
             case R.id.action_user:
                 EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_TAP_MY_PROFILE);
                 UserFragment userFragment = (UserFragment) activity.getSupportFragmentManager().findFragmentByTag(UserFragment.TAG);
@@ -186,18 +183,6 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
                 }
             });
         }
-    }
-
-    protected void displayFeedItemOptions(FeedItem feedItem) {
-        if (activity != null && activity.isSafeToCommit()) {
-            FeedItemOptionsFragment feedItemOptionsFragment = FeedItemOptionsFragment.newInstance(feedItem);
-            feedItemOptionsFragment.show(activity.getSupportFragmentManager(), FeedItemOptionsFragment.TAG);
-        }
-
-    }
-
-    protected void proposePOI() {
-        // does nothing
     }
 
     protected void displayTutorial(boolean forced) {
@@ -397,6 +382,7 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
         ApplicationInfo applicationInfo = new ApplicationInfo(pushNotificationToken);
         ApplicationInfo.ApplicationWrapper applicationWrapper = new ApplicationInfo.ApplicationWrapper();
         applicationWrapper.setApplicationInfo(applicationInfo);
+        applicationWrapper.setNotificationStatus(ApplicationInfo.NOTIF_PERMISSION_AUTHORIZED);
         Call<ResponseBody> call = appRequest.updateApplicationInfo(applicationWrapper);
         call.enqueue(new Callback<ResponseBody>() {
             @Override

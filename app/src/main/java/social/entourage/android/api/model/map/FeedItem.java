@@ -262,9 +262,9 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
         return STATUS_FREEZED.equals(status);
     }
 
-    public boolean isMine() {
+    public boolean isMine(Context context) {
         if (author != null) {
-            User me = EntourageApplication.me();
+            User me = EntourageApplication.me(context);
             if (me != null) {
                 return author.getUserID() == me.getId();
             }

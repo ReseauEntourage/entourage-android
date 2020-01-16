@@ -12,7 +12,6 @@ import javax.inject.Inject;
 
 import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.UserRequest;
-import social.entourage.android.guide.GuideMapEntourageFragment;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
@@ -59,13 +58,5 @@ public class DrawerPresenter extends DrawerBasePresenter {
                 break;
         }
 
-    }
-
-    @Override
-    protected void proposePOI() {
-        GuideMapEntourageFragment guideMapEntourageFragment = (GuideMapEntourageFragment) activity.getSupportFragmentManager().findFragmentByTag(GuideMapEntourageFragment.TAG);
-        if (guideMapEntourageFragment != null) {
-            guideMapEntourageFragment.proposePOI();
-        }
     }
 }

@@ -13,7 +13,7 @@ public class EntouragePagination {
     // ATTRIBUTES
     // ----------------------------------
     public int page = 1;
-    public int itemsPerPage = 0;
+    public int itemsPerPage;
     protected Date beforeDate = new Date();
     protected Date newestDate = null;
     public boolean isLoading = false;

@@ -87,11 +87,10 @@ public class TourAuthor implements Serializable {
             if (author.avatarURLAsString != null) return false;
         }
         if (partner != null) {
-            if (!partner.isSame(author.partner)) return false;
+            return partner.isSame(author.partner);
         } else {
-            if (author.partner != null) return false;
+            return author.partner == null;
         }
-        return true;
     }
 
 }

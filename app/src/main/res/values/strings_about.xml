@@ -1,5 +1,7 @@
 <resources>
     <string name="about_title">À PROPOS</string>
+    <string name="about_suggestion">Une suggestion ? Un problème ?</string>
+    <string name="about_feedback">Donnez votre avis</string>
     <string name="about_tutorial">Voir le tutoriel</string>
     <string name="about_conditions">Conditions générales d’utilisation</string>
     <string name="about_privacy">Politique de Confidentialité</string>
@@ -9,4 +11,5 @@
     <string name="about_clearing_entourage_cache">Données d\'historique locales effacées</string>
     <string name="about_rate_app">Noter l\'app</string>
     <string name="about_share_app">Partager l\'app</string>
+    <string name="about_oss_licenses">Licenses Open-Source</string>
 </resources>

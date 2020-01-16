@@ -9,7 +9,6 @@ import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.model.map.Encounter;
 import social.entourage.android.api.model.map.Entourage;
-import social.entourage.android.map.MapTabItem;
 
 public class Events {
 
@@ -502,23 +501,6 @@ public class Events {
 
         public String getUrl() {
             return url;
-        }
-    }
-
-    /**
-     * Event signaling that a map tab was selected
-     */
-
-    public static class OnMapTabSelected {
-
-        private MapTabItem selectedTab;
-
-        public OnMapTabSelected(MapTabItem selectedTab) {
-            this.selectedTab = selectedTab;
-        }
-
-        public MapTabItem getSelectedTab() {
-            return selectedTab;
         }
     }
 

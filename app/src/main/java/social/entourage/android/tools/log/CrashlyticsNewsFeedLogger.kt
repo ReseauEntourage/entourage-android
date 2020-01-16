@@ -1,16 +1,11 @@
 package social.entourage.android.tools.log
 
 import com.crashlytics.android.Crashlytics
+import social.entourage.android.api.ApiConnectionListener
 
-import social.entourage.android.api.model.Newsfeed
-import social.entourage.android.tour.NewsFeedListener
-
-class CrashlyticsNewsFeedLogger : NewsFeedListener {
+class CrashlyticsNewsFeedLogger : ApiConnectionListener {
 
     override fun onNetworkException() {
-    }
-
-    override fun onCurrentPositionNotRetrieved() {
     }
 
     override fun onServerException(throwable: Throwable) {
@@ -19,8 +14,5 @@ class CrashlyticsNewsFeedLogger : NewsFeedListener {
 
     override fun onTechnicalException(throwable: Throwable) {
         Crashlytics.logException(throwable)
-    }
-
-    override fun onNewsFeedReceived(newsFeeds: List<Newsfeed>) {
     }
 }

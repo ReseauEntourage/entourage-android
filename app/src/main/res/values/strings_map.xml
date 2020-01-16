@@ -23,10 +23,6 @@
     <string name="newsfeed_tab_events_no_items">Aucun évènement à proximité.</string>
     <string name="newsfeed_tab_events_no_items_button"><u>Retrouvez plus d\'évènements d\'Entourage ici</u></string>
 
-    <string name="map_top_navigation_filter">Filtrer</string>
-    <string name="map_top_navigation_full_map">Voir la liste</string>
-    <string name="map_top_navigation_list">Voir la carte</string>
-
     <!-- Map Filter -->
     <string name="map_filter_title">FILTRES</string>
     <string name="map_filter_tour_type_title">Types de maraude</string>

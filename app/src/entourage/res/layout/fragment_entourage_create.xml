@@ -1,0 +1,301 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_light"
+    android:orientation="vertical"
+    android:windowSoftInputMode="adjustPan"
+    tools:context=".entourage.create.CreateEntourageFragment">
+
+    <social.entourage.android.view.EntourageTitleView
+        android:id="@+id/create_entourage_fragment_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:entourageTitle="@string/entourage_create_action_title"
+        app:entourageTitleAction="@string/validate"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/create_entourage_category_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:background="@color/background"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/entourage_create_type_label"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"
+                    />
+
+                <TextView
+                    android:id="@+id/create_entourage_category"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:paddingEnd="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingStart="5dp"
+                    android:textColor="@color/accent"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/empty_description"
+                    android:src="@drawable/arrow_grey"
+                    android:tint="@color/accent"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/create_entourage_title_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:background="@color/background"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/create_entourage_title_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/entourage_create_title_label"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"
+                    />
+
+                <TextView
+                    android:id="@+id/create_entourage_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:paddingEnd="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingStart="5dp"
+                    android:textColor="@color/accent"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/empty_description"
+                    android:src="@drawable/arrow_grey"
+                    android:tint="@color/accent"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/create_entourage_description_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@color/background"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/create_entourage_description_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/entourage_create_description_label"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"
+                    />
+
+                <TextView
+                    android:id="@+id/create_entourage_description"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:paddingEnd="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingStart="5dp"
+                    android:textColor="@color/accent"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/empty_description"
+                    android:src="@drawable/arrow_grey"
+                    android:tint="@color/accent"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/create_entourage_position_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:background="@color/background"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/create_entourage_position_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/entourage_create_position_description"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <TextView
+                    android:id="@+id/create_entourage_position"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:paddingEnd="0dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="5dp"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/accent"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/empty_description"
+                    android:src="@drawable/arrow_grey"
+                    android:tint="@color/accent"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/create_entourage_date_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@color/background"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:padding="@dimen/entourage_padding_10"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/create_entourage_date_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/entourage_create_date_label"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <TextView
+                    android:id="@+id/create_entourage_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:paddingEnd="0dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="5dp"
+                    android:textColor="@color/accent"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/arrow_grey"
+                    android:tint="@color/accent"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/create_entourage_privacy_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/create_entourage_privacy_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/entourage_create_privacy_public"
+                        android:textColor="@color/create_entourage_privacy_public"
+                        android:textSize="@dimen/entourage_font_medium"
+                        android:textStyle="bold"/>
+
+                    <Switch
+                        android:id="@+id/create_entourage_privacy_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/create_entourage_privacy_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:text="@string/entourage_create_privacy_description_public"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_small"/>
+            </LinearLayout>
+
+            <view
+                android:id="@+id/create_entourage_help_link"
+                class="social.entourage.android.view.HtmlTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:textSize="@dimen/entourage_font_medium"
+                app:htmlText="@string/entourage_create_help_text"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

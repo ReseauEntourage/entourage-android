@@ -27,6 +27,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.github.clans.fab.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.otto.Subscribe;
 
 import java.io.File;
@@ -62,7 +63,8 @@ import social.entourage.android.user.edit.UserEditActionZoneFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
-import social.entourage.android.view.CountryCodePicker.CountryCodePicker;
+import social.entourage.android.view.countrycodepicker.CountryCodePicker;
+import social.entourage.android.view.EntourageSnackbar;
 import social.entourage.android.view.HtmlTextView;
 import timber.log.Timber;
 
@@ -330,7 +332,7 @@ public class LoginActivity extends EntourageActivity
                 }
             }
             // We don't care if the user allowed/denied the location, just show the notifications view
-            //TODO to do this in onResume, HOTFIX: dismisAllowingStateLoss in function
+            //TODO to do this in onResume
             hideActionZoneView();
             showNotificationPermissionView();
         }
@@ -755,6 +757,7 @@ public class LoginActivity extends EntourageActivity
                 displayToast(R.string.user_photo_error_not_saved);
             }
         } catch(IllegalStateException e) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
             Timber.e(e);
         }
     }
@@ -1018,15 +1021,20 @@ public class LoginActivity extends EntourageActivity
 
     private void hideActionZoneView() {
         if (isFinishing()) return;
-        UserEditActionZoneFragment actionZoneFragment = (UserEditActionZoneFragment)getSupportFragmentManager().findFragmentByTag(UserEditActionZoneFragment.TAG);
-        if (actionZoneFragment != null) {
-            actionZoneFragment.dismissAllowingStateLoss();
+        try{
+            UserEditActionZoneFragment actionZoneFragment = (UserEditActionZoneFragment)getSupportFragmentManager().findFragmentByTag(UserEditActionZoneFragment.TAG);
+            if (actionZoneFragment != null) {
+                actionZoneFragment.dismiss();
+            }
+        } catch(IllegalStateException e) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
         }
     }
 
     @Override
     public void onUserEditActionZoneFragmentDismiss() {
-        displayToast(R.string.user_action_zone_ignore_hint);
+        EntourageSnackbar.INSTANCE.make(findViewById(R.id.activity_login), R.string.user_setting_ignore_hint, Snackbar.LENGTH_LONG)
+                .show();
         if(!goToNextActionAfterActionZone) {
             showNameView();
         } else {

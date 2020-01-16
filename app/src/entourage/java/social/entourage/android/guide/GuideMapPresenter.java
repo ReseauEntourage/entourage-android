@@ -13,14 +13,14 @@ import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import social.entourage.android.api.MapRequest;
-import social.entourage.android.api.MapResponse;
+import social.entourage.android.api.PoiRequest;
+import social.entourage.android.api.PoiResponse;
 import social.entourage.android.guide.filter.GuideFilter;
 import timber.log.Timber;
 
 /**
- * Presenter controlling the GuideMapEntourageFragment
- * @see GuideMapEntourageFragment
+ * Presenter controlling the GuideMapFragment
+ * @see GuideMapFragment
  */
 public class GuideMapPresenter {
 
@@ -28,17 +28,17 @@ public class GuideMapPresenter {
     // ATTRIBUTES
     // ----------------------------------
 
-    private final GuideMapEntourageFragment fragment;
-    private final MapRequest mapRequest;
+    private final GuideMapFragment fragment;
+    private final PoiRequest poiRequest;
 
     // ----------------------------------
     // CONSTRUCTOR
     // ----------------------------------
 
     @Inject
-    public GuideMapPresenter(final GuideMapEntourageFragment fragment, final MapRequest mapRequest) {
+    public GuideMapPresenter(final GuideMapFragment fragment, final PoiRequest poiRequest) {
         this.fragment = fragment;
-        this.mapRequest = mapRequest;
+        this.poiRequest = poiRequest;
     }
 
     // ----------------------------------
@@ -50,7 +50,7 @@ public class GuideMapPresenter {
     }
 
     public void updatePoisNearby(GoogleMap map) {
-        float distance = 0;
+        float distance;
         if (map != null) {
             VisibleRegion region = map.getProjection().getVisibleRegion();
             float[] result = {0};
@@ -71,17 +71,17 @@ public class GuideMapPresenter {
             LatLng location = currentPosition.target;
             distance = Math.max(1, distance);
             GuideFilter filter = GuideFilter.getInstance();
-            Call<MapResponse> call = mapRequest.retrievePoisNearby(location.latitude, location.longitude, distance, filter.getRequestedCategories());
-            call.enqueue(new Callback<MapResponse>() {
+            Call<PoiResponse> call = poiRequest.retrievePoisNearby(location.latitude, location.longitude, distance, filter.getRequestedCategories());
+            call.enqueue(new Callback<PoiResponse>() {
                 @Override
-                public void onResponse(@NonNull Call<MapResponse> call, @NonNull Response<MapResponse> response) {
+                public void onResponse(@NonNull Call<PoiResponse> call, @NonNull Response<PoiResponse> response) {
                     if (response.isSuccessful()) {
                         fragment.putPoiOnMap(response.body().getCategories(), response.body().getPois());
                     }
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<MapResponse> call, @NonNull Throwable t) {
+                public void onFailure(@NonNull Call<PoiResponse> call, @NonNull Throwable t) {
                     Timber.e(t, "Impossible to retrieve POIs");
                 }
             });

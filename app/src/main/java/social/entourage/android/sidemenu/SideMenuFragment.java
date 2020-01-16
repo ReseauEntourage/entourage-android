@@ -30,6 +30,7 @@ import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
+import social.entourage.android.view.EntourageSnackbar;
 import social.entourage.android.view.PartnerLogoImageView;
 
 /**
@@ -152,7 +153,7 @@ public class SideMenuFragment extends Fragment {
     }
 
     private void updateUserView() {
-        User user = EntourageApplication.me();
+        User user = EntourageApplication.me(getActivity());
         if (user != null) {
             userName.setText(user.getDisplayName());
             String avatarURL = user.getAvatarURL();
@@ -199,7 +200,7 @@ public class SideMenuFragment extends Fragment {
 
     private boolean handleLongPress() {
         selectMenuAction(R.id.sidemenu_app_version);
-        Snackbar.make(
+        EntourageSnackbar.INSTANCE.make(
                 getView().findViewById(R.id.sideMenuCoordinatorLayout),
                 R.string.debug_info_clipboard,
                 Snackbar.LENGTH_SHORT

@@ -16,8 +16,8 @@ public abstract class BaseConfiguration {
     boolean showEditEntourageView = true;
     // Show the invite screen in 14.2 . If false, show the share screen
     boolean showInviteView = true;
-    // Show the FAB Menu in screens 06.1 and 06.2. If false, it shows the entourage disclaimer directly
-    boolean showMapFABMenu = true;
+    // Show the Plus Screen Menu in screens 06.1 and 06.2. If false, it shows the entourage disclaimer directly
+    boolean showPlusScreen = true;
     // Show the entourage disclaimer screen. If false, show directly the create entourage screen
     boolean showEntourageDisclaimer = true;
 
@@ -43,8 +43,8 @@ public abstract class BaseConfiguration {
         return showInviteView;
     }
 
-    public boolean showMapFABMenu() {
-        return showMapFABMenu;
+    public boolean showPlusScreen() {
+        return showPlusScreen;
     }
 
     public boolean showEntourageDisclaimer() {

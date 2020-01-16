@@ -25,9 +25,7 @@ public class CarouselPage2Fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_carousel_page2, container, false);
-
-        return v;
+        return inflater.inflate(R.layout.fragment_carousel_page2, container, false);
     }
 
 }

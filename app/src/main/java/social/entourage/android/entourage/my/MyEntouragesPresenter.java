@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.InvitationRequest;
 import social.entourage.android.api.NewsfeedRequest;
@@ -150,4 +151,7 @@ public class MyEntouragesPresenter {
         }
     }
 
+    public void clear() {
+        EntourageApplication.get().clearFeedStorage();
+    }
 }

@@ -8,7 +8,7 @@
     <string name="tour_info_request_join_title_outing">vous souhaitez rejoindre cette sortie ?</string>
     <string name="tour_info_request_join_button_outing">PARTICIPER</string>
 
-    <!-- TourService -->
+    <!-- EntourageService -->
     <string name="loader_title_outing_finish">Suppression de la sortie</string>
     <string name="loader_title_action_finish">Suppression de la sortie</string>
 

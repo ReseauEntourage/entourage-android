@@ -20,7 +20,7 @@
         android:contentDescription="@string/empty_description"
         android:padding="10dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/ic_action_outing"/>
+        app:srcCompat="@drawable/ic_event_accent_24dp"/>
 
     <social.entourage.android.view.HtmlTextView
         android:id="@+id/tic_outing_author"

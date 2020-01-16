@@ -20,7 +20,7 @@ public class CarouselPageAdapter extends FragmentStatePagerAdapter {
     protected static final int NUM_PAGES = 4;
 
     public CarouselPageAdapter(final FragmentManager fm) {
-        super(fm);
+        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
 
     @NonNull

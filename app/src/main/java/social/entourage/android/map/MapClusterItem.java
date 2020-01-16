@@ -3,6 +3,8 @@ package social.entourage.android.map;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
+import androidx.appcompat.content.res.AppCompatResources;
+
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -90,7 +92,7 @@ public class MapClusterItem implements ClusterItem {
                 markerOptions.anchor(0.5f, 1.0f);
             }
             else if (feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
-                Drawable drawable = context.getResources().getDrawable(((Entourage)mapItem).getHeatmapResourceId());
+                Drawable drawable = AppCompatResources.getDrawable(context, ((Entourage)mapItem).getHeatmapResourceId());
                 BitmapDescriptor icon = Utils.getBitmapDescriptorFromDrawable(drawable, Entourage.getMarkerSize(context), Entourage.getMarkerSize(context));
 
                 markerOptions.icon(icon);

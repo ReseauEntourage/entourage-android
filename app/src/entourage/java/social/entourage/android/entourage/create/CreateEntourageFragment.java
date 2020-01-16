@@ -50,13 +50,14 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
             if (Entourage.TYPE_DEMAND.equalsIgnoreCase(entourageCategory.getEntourageType())) {
                 // for DEMAND events, we need to show a wizard
                 showCreateActionWizard();
-            } else {
+                return;
+            } else if (Entourage.TYPE_CONTRIBUTION.equalsIgnoreCase(entourageCategory.getEntourageType())) {
                 // for CONTRIBUTION events, we need to show the join request type screen
                 showCreateEntourageJoinFragment();
+                return;
             }
-        } else {
-            super.createEntourage();
         }
+        super.createEntourage();
     }
 
     @Override
@@ -73,12 +74,10 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
                 // for CONTRIBUTION events, we need to show the join request type screen
                 showCreateEntourageJoinFragment();
                 return;
-            } else {
+            } else  if (!Entourage.TYPE_DEMAND.equalsIgnoreCase(editedEntourage.getEntourageType())) {
                 // for DEMAND, we show the wizard only if the type of the edited action has changed
-                if (!Entourage.TYPE_DEMAND.equalsIgnoreCase(editedEntourage.getEntourageType())) {
-                    showCreateActionWizard();
-                    return;
-                }
+                showCreateActionWizard();
+                return;
             }
         }
         super.saveEditedEntourage();

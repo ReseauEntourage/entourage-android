@@ -4,21 +4,20 @@
     <item name="login_verify_code_description" type="id"/>
     <item name="login_verify_code_email" type="id" />
 
-    <item name="layout_feed_map_card_tab" type="id" />
-
     <item name="slideshow_b4" type="id" />
 
     <item name="action_blog" type="id" />
     <item name="action_goal" type="id" />
     <item name="action_donation" type="id" />
     <item name="action_atd" type="id" />
-    <item name="action_tours" type="id" />
     <item name="action_involvement" type="id" />
 
     <item name="about_website_layout" type="id" />
     <item name="faq_website_layout" type="id" />
     <item name="about_email_layout" type="id" />
     <item name="about_tutorial_layout" type="id" />
+    <item name="about_suggestion_layout" type="id" />
+    <item name="about_feedback_layout" type="id" />
 
     <item name="create_entourage_help_link" type="id" />
 

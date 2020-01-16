@@ -86,13 +86,15 @@ public abstract class EntourageActivity extends AppCompatActivity {
     protected void showKeyboard(View view) {
         view.requestFocus();
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+        if(imm!=null) {
+            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+        }
     }
 
     protected void hideKeyboard() {
         View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (view != null && imm != null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }

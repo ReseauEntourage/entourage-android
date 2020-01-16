@@ -1,8 +1,6 @@
 package social.entourage.android.involvement;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import social.entourage.android.EntourageActivity;

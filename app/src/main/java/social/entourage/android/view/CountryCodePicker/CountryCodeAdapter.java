@@ -1,4 +1,4 @@
-package social.entourage.android.view.CountryCodePicker;
+package social.entourage.android.view.countrycodepicker;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -38,11 +38,7 @@ class CountryCodeAdapter extends RecyclerView.Adapter<CountryCodeAdapter.Country
     @Override public void onBindViewHolder(@NonNull CountryCodeViewHolder viewHolder, final int i) {
 	    final int position = viewHolder.getAdapterPosition();
 	    viewHolder.setCountry(mCountries.get(position));
-	    viewHolder.rlyMain.setOnClickListener(new View.OnClickListener() {
-	        @Override public void onClick(View view) {
-		        mCallback.onItemCountrySelected(mCountries.get(position));
-	        }
-	    });
+	    viewHolder.rlyMain.setOnClickListener(view -> mCallback.onItemCountrySelected(mCountries.get(position)));
     }
 
     @Override public int getItemCount() {

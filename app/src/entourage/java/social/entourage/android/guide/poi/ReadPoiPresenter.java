@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
 
-import social.entourage.android.api.model.map.Poi;
+import social.entourage.android.api.model.guide.Poi;
 import social.entourage.android.map.OnAddressClickListener;
 
 /**

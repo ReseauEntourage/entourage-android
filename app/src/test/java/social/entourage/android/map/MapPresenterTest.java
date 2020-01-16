@@ -7,7 +7,7 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class MapPresenterTest {
     @Rule public MockitoRule rule = MockitoJUnit.rule();
-    @Mock private MapEntourageFragment fragment;
+    @Mock private MapFragment fragment;
     @Mock private AuthenticationController controller;
     @Mock private User user;
     @InjectMocks private MapPresenter presenter;

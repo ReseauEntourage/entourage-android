@@ -69,10 +69,11 @@
     <string name="tour_info_metadata_organiser_format">par %1$s</string>
     <string name="tour_info_metadata_date_format">Rendez-vous %1$s %2$s</string>
 
-    <!-- TourService -->
+    <!-- EntourageService -->
     <string name="local_service_stopped">Maraude terminée</string>
     <string name="tour_freezed">Maraude clôturée</string>
     <string name="local_service_running">Maraude en cours</string>
+    <string name="local_service_notification_title">Maraudes</string>
     <string name="loader_title_tour_finish">Arrêt de la maraude</string>
     <string name="loader_title_outing_finish">Suppression de l\'évènement</string>
     <string name="loader_title_action_finish">Suppression de l\'action</string>
@@ -81,7 +82,8 @@
     <string name="tour_end_confirmation">Voulez-vous arrêter votre maraude ?\nUn mail récapitulatif vous sera envoyé.</string>
     <string name="tour_end_duration">Passées dans la rue</string>
     <string name="tour_end_encounters">Personne rencontrée</string>
-    <string name="tour_end_distance">km parcourus</string>
+    <string name="tour_end_distance_value_in_km">%1$.3f</string>
+    <string name="tour_end_distance_text">km parcourus</string>
 
     <!-- Tour Cell -->
     <string name="tour_cell_title">%1$s</string>
@@ -125,5 +127,7 @@
     <!-- Promote Entourage Email -->
     <string name="promote_entourage_email_title">Veuillez envoyer une notification pour la sortie %1$s</string>
     <string name="promote_entourage_email_body">Bonjour,\nVeuillez promouvoir la sortie "%1$s" grâce à une notification envoyée aux téléphones des personnes membres des voisinages suivants :\n\nMerci</string>
+    <string name="entourage_create_submenu_add_tour_encounter">lors de votre maraude</string>
+    <string name="entourage_create_submenu_start_tour_launcher">Pour votre association</string>
 
 </resources>

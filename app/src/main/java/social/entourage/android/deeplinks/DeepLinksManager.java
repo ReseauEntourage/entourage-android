@@ -135,7 +135,7 @@ public class DeepLinksManager {
             if (activity instanceof DrawerActivity) {
                 DrawerActivity drawerActivity = (DrawerActivity)activity;
                 drawerActivity.showFeed();
-                drawerActivity.popToMapFragment();
+                drawerActivity.dismissMapFragmentDialogs();
                 if (pathSegments != null && pathSegments.size() >= 1) {
                     String requestedView = pathSegments.get(0);
                     if (requestedView.equalsIgnoreCase(DeepLinksView.FILTERS.getView())) {
@@ -150,13 +150,11 @@ public class DeepLinksManager {
             if (activity instanceof AppCompatActivity) {
                 AppCompatActivity appCompatActivity = (AppCompatActivity) activity;
                 FragmentManager fragmentManager = appCompatActivity.getSupportFragmentManager();
-                if (fragmentManager != null) {
-                    UserEditFragment userEditFragment = (UserEditFragment)fragmentManager.findFragmentByTag(UserEditFragment.TAG);
-                    if (userEditFragment != null) {
-                        userEditFragment.onAddAssociationClicked();
-                        deepLinkIntent = null;
-                        return;
-                    }
+                UserEditFragment userEditFragment = (UserEditFragment)fragmentManager.findFragmentByTag(UserEditFragment.TAG);
+                if (userEditFragment != null) {
+                    userEditFragment.onAddAssociationClicked();
+                    deepLinkIntent = null;
+                    return;
                 }
             }
             if (activity instanceof DrawerActivity) {
@@ -174,7 +172,7 @@ public class DeepLinksManager {
                     if (activity instanceof DrawerActivity) {
                         DrawerActivity drawerActivity = (DrawerActivity) activity;
                         drawerActivity.showFeed();
-                        drawerActivity.popToMapFragment();
+                        drawerActivity.dismissMapFragmentDialogs();
                         drawerActivity.showWebView(urlToOpen);
                     } else {
                         return;
@@ -191,10 +189,7 @@ public class DeepLinksManager {
         }
         else if (key.equals(DeepLinksView.GUIDE.getView())) {
             if (activity instanceof DrawerActivity) {
-                DrawerActivity drawerActivity = (DrawerActivity)activity;
-                if (!drawerActivity.isGuideShown()) {
-                    drawerActivity.showGuide();
-                }
+                ((DrawerActivity)activity).showGuide();
             } else {
                 return;
             }
@@ -202,7 +197,7 @@ public class DeepLinksManager {
         else if (key.equals(DeepLinksView.MY_CONVERSATIONS.getView())) {
             if (activity instanceof DrawerActivity) {
                 DrawerActivity drawerActivity = (DrawerActivity)activity;
-                drawerActivity.popToMapFragment();
+                drawerActivity.dismissMapFragmentDialogs();
                 drawerActivity.showMyEntourages();
             } else {
                 return;
@@ -211,9 +206,7 @@ public class DeepLinksManager {
         else if (key.equals(DeepLinksView.CREATE_ACTION.getView())) {
             if (activity instanceof DrawerActivity) {
                 DrawerActivity drawerActivity = (DrawerActivity)activity;
-                drawerActivity.showFeed();
-                drawerActivity.popToMapFragment();
-                drawerActivity.onCreateEntourageDeepLink();
+                drawerActivity.createEntourage();
             } else {
                 return;
             }

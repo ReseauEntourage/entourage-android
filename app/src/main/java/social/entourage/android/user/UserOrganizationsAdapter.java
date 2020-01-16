@@ -74,7 +74,7 @@ public class UserOrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.
 
         organizationViewHolder.mOrganizationName.setText(organization.getName());
 
-        organizationViewHolder.mOrganizationType.setText(organization.getTypeAsResourceId());
+        organizationViewHolder.mOrganizationType.setText(organization.getTypeAsString(organizationViewHolder.mOrganizationType.getContext()));
 
         String organizationLogo = organization.getLargeLogoUrl();
         if (organizationLogo != null) {

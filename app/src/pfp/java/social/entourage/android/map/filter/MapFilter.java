@@ -52,18 +52,8 @@ public class MapFilter implements MapFilterInterface, Serializable {
     }
 
     @Override
-    public boolean onlyMyEntourages() {
-        return false;
-    }
-
-    @Override
     public int getTimeFrame() {
         return 720; // 30 days
-    }
-
-    @Override
-    public boolean onlyMyPartnerEntourages() {
-        return false;
     }
 
     @Override

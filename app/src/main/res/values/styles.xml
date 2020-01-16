@@ -5,6 +5,33 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
+        <!--item name="colorSecondary">@color/accent_alt</item>
+        <item name="android:colorBackground">@color/my_app_background_color</item>
+        <item name="colorError">@color/my_app_error_color</item-->
+        <!-- New MaterialComponents attributes. -->
+        <item name="colorPrimaryVariant">@color/light_grey</item>
+        <item name="colorSecondaryVariant">@color/light_grey</item>
+        <item name="colorSurface">@color/primary</item>
+        <item name="colorOnPrimary">@color/primary</item>
+        <item name="colorOnSecondary">@color/light_grey</item>
+        <item name="colorOnBackground">@color/primary_dark</item>
+        <item name="colorOnError">@color/entourage_error</item>
+        <item name="colorOnSurface">@color/primary_dark</item>
+        <item name="scrimBackground">@color/mtrl_scrim_color</item>
+        <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
+        <item name="textAppearanceHeadline2">@style/TextAppearance.MaterialComponents.Headline2</item>
+        <item name="textAppearanceHeadline3">@style/TextAppearance.MaterialComponents.Headline3</item>
+        <item name="textAppearanceHeadline4">@style/TextAppearance.MaterialComponents.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.MaterialComponents.Headline5</item>
+        <item name="textAppearanceHeadline6">@style/TextAppearance.MaterialComponents.Headline6</item>
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.MaterialComponents.Subtitle1</item>
+        <item name="textAppearanceSubtitle2">@style/TextAppearance.MaterialComponents.Subtitle2</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.MaterialComponents.Body1</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.MaterialComponents.Body2</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.MaterialComponents.Caption</item>
+        <item name="textAppearanceButton">@style/TextAppearance.MaterialComponents.Button</item>
+        <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
+
     </style>
 
     <!-- Custom Edit Text theme for the login views. -->
@@ -148,19 +175,10 @@
         <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="MapActionLabelStyle">
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:textColor">@color/accent</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:paddingRight">5dp</item>
-        <item name="android:gravity">right</item>
-    </style>
-
     <style name="MapActionButtonStyle">
-        <item name="fab_shadowColor">@android:color/transparent</item>
-        <item name="fab_colorNormal">@android:color/transparent</item>
-        <item name="fab_colorPressed">@android:color/transparent</item>
-        <item name="fab_colorRipple">@android:color/transparent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">16dp</item>
     </style>
 
     <!-- Style for ongoing tour marker -->
@@ -213,6 +231,47 @@
 
         <!-- inactive track color (30% transparency) -->
         <item name="android:colorForeground">#221f1f</item>
+    </style>
+
+    <style name="EntourageOSSLicenses.Theme" parent="Theme.AppCompat.Light">
+        <item name="actionBarTheme">@style/EntourageOSSLicenses.ActionBarTheme</item>
+    </style>
+
+    <style name="EntourageOSSLicenses.ActionBarTheme" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/accent</item>
+    </style>
+
+    <style name="MapActionSubMenu">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:textColor">@color/greyish_brown</item>
+        <item name="android:textSize">@dimen/entourage_font_small</item>
+    </style>
+
+    <style name="MapActionMenu">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:textSize">@dimen/entourage_font_medium</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="MapActionLine">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_alignParentEnd">true</item>
+    </style>
+
+    <style name="plus_image_subtitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/greyish_brown</item>
+        <item name="android:textSize">17sp</item>
     </style>
 
 

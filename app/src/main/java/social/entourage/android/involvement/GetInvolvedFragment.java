@@ -17,8 +17,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.BuildConfig;
-import social.entourage.android.Constants;
-import social.entourage.android.DrawerActivity;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
@@ -50,8 +48,7 @@ public class GetInvolvedFragment extends EntourageDialogFragment {
     }
 
     public static GetInvolvedFragment newInstance() {
-        GetInvolvedFragment fragment = new GetInvolvedFragment();
-        return fragment;
+        return new GetInvolvedFragment();
     }
 
 
@@ -134,14 +131,6 @@ public class GetInvolvedFragment extends EntourageDialogFragment {
             startActivity(browserIntent);
         } catch (ActivityNotFoundException ex) {
             Toast.makeText(getContext(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @OnClick(R.id.get_involved_suggestion_layout)
-    protected void onSuggestionClicked() {
-        if (getActivity() != null && getActivity() instanceof DrawerActivity) {
-            DrawerActivity drawerActivity = (DrawerActivity) getActivity();
-            drawerActivity.showWebView(drawerActivity.getLink(Constants.FEEDBACK_ID));
         }
     }
 

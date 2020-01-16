@@ -25,7 +25,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
-import social.entourage.android.api.model.map.Poi;
+import social.entourage.android.api.model.guide.Poi;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.guide.PoiRenderer;
 import social.entourage.android.map.OnAddressClickListener;
@@ -166,7 +166,7 @@ public class ReadPoiFragment extends EntourageDialogFragment {
         // Set the subject
         String title = poi.getName();
         if (title == null) title = "";
-        String emailSubject = getString(R.string.poi_report_email_subject_format, title);
+        String emailSubject = getString(R.string.poi_report_email_subject_format, title, poi.getId());
         intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
         if (intent.resolveActivity(this.getActivity().getPackageManager()) != null) {
             // Start the intent

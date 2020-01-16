@@ -19,7 +19,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import social.entourage.android.EntourageLocation;
+import social.entourage.android.location.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.entourage.category.EntourageCategory;
 import social.entourage.android.entourage.category.EntourageCategoryManager;
@@ -319,7 +319,7 @@ public class BaseEntourage extends FeedItem implements Serializable {
     @Override
     public String getDisplayAddress() {
         return this.metadata.getDisplayAddress();
-    };
+    }
 
     @Override
     public Drawable getIconDrawable(Context context) {
@@ -330,7 +330,7 @@ public class BaseEntourage extends FeedItem implements Serializable {
             return null;
         }
         if (TYPE_OUTING.equalsIgnoreCase(groupType)) {
-            return AppCompatResources.getDrawable(context, R.drawable.ic_action_outing);
+            return AppCompatResources.getDrawable(context, R.drawable.ic_event_accent_24dp);
         }
         EntourageCategory entourageCategory = EntourageCategoryManager.getInstance().findCategory(this);
         if (entourageCategory != null) {
@@ -390,6 +390,7 @@ public class BaseEntourage extends FeedItem implements Serializable {
 
     @Override
     public @StringRes int getJoinRequestTitle() {
+        if (TYPE_OUTING.equalsIgnoreCase(groupType)) return R.string.tour_info_request_join_title_outing;
         return R.string.tour_info_request_join_title_entourage;
     }
 

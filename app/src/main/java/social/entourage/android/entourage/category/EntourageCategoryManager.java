@@ -103,13 +103,15 @@ public class EntourageCategoryManager {
     }
 
     public EntourageCategory getDefaultCategory() {
-        for (String key : entourageCategoriesHashMap.keySet()) {
-            List<EntourageCategory> list = entourageCategoriesHashMap.get(key);
-            if (list != null) {
-                for (EntourageCategory category : list) {
-                    if (category.isDefault()) {
-                        return category;
-                    }
+        return getDefaultCategory(Entourage.TYPE_CONTRIBUTION);
+    }
+
+    public EntourageCategory getDefaultCategory(String entourageType) {
+        List<EntourageCategory> list = entourageCategoriesHashMap.get(entourageType);
+        if (list != null) {
+            for (EntourageCategory category : list) {
+                if (category.isDefault()) {
+                    return category;
                 }
             }
         }

@@ -33,5 +33,8 @@
     <string name="empty_description"></string>
 
     <string name="preference_file_key">ENTOURAGE_GCM_DATA</string>
+    <string name="action_overlay_close">Fermer le menu Actions</string>
+    <string name="plus_image_subtitle">L’essentiel, c’est la rencontre !</string>
+    <string name="plus_help_text">Vous ne vous sentez pas prêt ?</string>
 
 </resources>

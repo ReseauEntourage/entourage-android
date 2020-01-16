@@ -8,7 +8,7 @@
     <string name="activity_read_poi_title">GUIDE DE SOLIDARITE</string>
     <string name="poi_report_description">J\'ai des informations sur cette structure</string>
     <string name="poi_report_button">Mettre à jour</string>
-    <string name="poi_report_email_subject_format">Information sur la structure \'%1$s\'</string>
+    <string name="poi_report_email_subject_format">Information sur la structure \'%1$s\' (#%2$d)</string>
 
     <!-- Empty Guide Popup -->
     <string name="map_poi_empty_popup"><![CDATA[On dirait que c\'est calme ici!<br/><br/>

@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 import butterknife.BindView;
@@ -26,6 +27,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
+import social.entourage.android.view.EntourageSnackbar;
 
 public class AboutFragment extends EntourageDialogFragment {
 
@@ -73,8 +75,8 @@ public class AboutFragment extends EntourageDialogFragment {
     }
 
     private boolean handleLongPress(View view) {
-        if(EntourageApplication.get().clearFeedStorage()){
-            Snackbar.make(this.getView(), R.string.about_clearing_entourage_cache, Snackbar.LENGTH_SHORT).show();
+        if(EntourageApplication.get().clearFeedStorage() && getView()!=null){
+            EntourageSnackbar.INSTANCE.make(getView(), R.string.about_clearing_entourage_cache, Snackbar.LENGTH_SHORT).show();
         }
         return true;
     }
@@ -147,6 +149,13 @@ public class AboutFragment extends EntourageDialogFragment {
     }
 
     @Optional
+    @OnClick(R.id.about_oss_licenses)
+    protected void onOSSLicensesClicked() {
+        OssLicensesMenuActivity.setActivityTitle(getString(R.string.about_oss_licenses));
+        startActivity(new Intent(getContext(), OssLicensesMenuActivity.class));
+    }
+
+    @Optional
     @OnClick(R.id.faq_website_layout)
     protected void onFAQClicked() {
         if (getActivity() != null && getActivity() instanceof DrawerActivity) {
@@ -172,6 +181,24 @@ public class AboutFragment extends EntourageDialogFragment {
         if (getActivity() != null && getActivity() instanceof DrawerActivity) {
             DrawerActivity drawerActivity = (DrawerActivity) getActivity();
             drawerActivity.showWebViewForLinkId(Constants.PRIVACY_LINK_ID);
+        }
+    }
+
+    @Optional
+    @OnClick(R.id.about_suggestion_layout)
+    protected void onSuggestionClicked() {
+        if (getActivity() != null && getActivity() instanceof DrawerActivity) {
+            DrawerActivity drawerActivity = (DrawerActivity) getActivity();
+            drawerActivity.showWebView(drawerActivity.getLink(Constants.SUGGESTION_ID));
+        }
+    }
+
+    @Optional
+    @OnClick(R.id.about_feedback_layout)
+    protected void onFeedbackClicked() {
+        if (getActivity() != null && getActivity() instanceof DrawerActivity) {
+            DrawerActivity drawerActivity = (DrawerActivity) getActivity();
+            drawerActivity.showWebView(drawerActivity.getLink(Constants.FEEDBACK_ID));
         }
     }
 }

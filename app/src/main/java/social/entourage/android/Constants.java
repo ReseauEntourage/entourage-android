@@ -19,6 +19,7 @@ public class Constants {
     public static final String ATD_LINK_ID = "atd-partnership";
     public static final String CHARTE_LINK_ID = "ethics-charter";
     public static final String FAQ_LINK_ID = "faq";
+    public static final String SUGGESTION_ID = "suggestion";
     public static final String FEEDBACK_ID = "feedback";
     public static final String VOLUNTEERING_ID = "volunteering";
     public static final String PROPOSE_POI_ID = "propose-poi";

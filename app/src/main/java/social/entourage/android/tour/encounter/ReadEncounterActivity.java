@@ -108,7 +108,7 @@ public class ReadEncounterActivity extends EntourageActivity {
         if (encounter.getCreationDate() != null) {
             encounterDate = DateFormat.getDateFormat(getApplicationContext()).format(encounter.getCreationDate());
         }
-        String encounterLocation = "";
+        String encounterLocation;
         if (location.length() == 0) {
             encounterLocation = getResources().getString(R.string.encounter_read_location_no_address,
                     encounter.getUserName(),
