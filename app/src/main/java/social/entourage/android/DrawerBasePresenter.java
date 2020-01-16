@@ -156,7 +156,6 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
                 getInvolvedFragment.show(activity.getSupportFragmentManager(), GetInvolvedFragment.TAG);
                 break;
             default:
-                //Snackbar.make(contentView, getString(R.string.drawer_error, menuItem.getTitle()), Snackbar.LENGTH_LONG).show();
                 Toast.makeText(activity, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show();
         }
     }

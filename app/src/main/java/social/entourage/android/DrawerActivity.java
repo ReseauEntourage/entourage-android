@@ -100,9 +100,6 @@ public class DrawerActivity extends EntourageSecuredActivity
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomBar;
 
-    @BindView(R.id.content_view)
-    View contentView;
-
     private BottomNavigationDataSource navigationDataSource;
 
     // ----------------------------------
