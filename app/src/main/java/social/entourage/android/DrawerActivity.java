@@ -105,8 +105,6 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     private BottomNavigationDataSource navigationDataSource;
 
-    protected Fragment mainFragment;
-
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -195,14 +193,12 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     public void onBackPressed() {
-        if (mainFragment instanceof BackPressable) {
-            BackPressable backPressable = (BackPressable) mainFragment;
-            if (!backPressable.onBackPressed()) {
-                finish();
-            }
-        } else {
-            finish();
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_fragment);
+        if ((currentFragment instanceof BackPressable) && ((BackPressable) currentFragment).onBackPressed()) {
+            //backAction is done in the fragment
+            return;
         }
+        finish();
     }
 
     @Override
@@ -381,8 +377,8 @@ public class DrawerActivity extends EntourageSecuredActivity
                 fragmentTransaction.addToBackStack(tag);
                 fragmentTransaction.commit();
             }
-            fragmentManager.executePendingTransactions();
-            mainFragment = fragmentManager.findFragmentById(R.id.main_fragment);
+            //TODO check if we need to execute pending actions
+            //fragmentManager.executePendingTransactions();
         } catch(IllegalStateException e){
             EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
         }
