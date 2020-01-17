@@ -69,6 +69,7 @@
                 android:layout_marginStart="5dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"
+                android:textIsSelectable="true"
                 android:textSize="@dimen/entourage_font_large"/>
 
             <TextView

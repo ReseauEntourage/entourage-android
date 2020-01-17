@@ -30,6 +30,7 @@
             android:layout_marginRight="10dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/white"
+            android:textIsSelectable="true"
             android:textSize="@dimen/entourage_font_large"/>
 
         <TextView
