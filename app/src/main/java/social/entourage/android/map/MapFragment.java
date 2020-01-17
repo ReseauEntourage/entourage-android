@@ -53,7 +53,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.MainActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
@@ -218,7 +218,7 @@ public class MapFragment extends BaseMapFragment implements NewsFeedListener, Us
         initializeNewsfeedView();
         initializeInvitations();
         if (getActivity() != null) {
-            ((DrawerActivity)getActivity()).showEditActionZoneFragment();
+            ((MainActivity)getActivity()).showEditActionZoneFragment();
         }
     }
 
@@ -234,7 +234,7 @@ public class MapFragment extends BaseMapFragment implements NewsFeedListener, Us
     public void onStart() {
         super.onStart();
         if (!LocationUtils.INSTANCE.isLocationEnabled() && !LocationUtils.INSTANCE.isLocationPermissionGranted() && getActivity() != null) {
-            ((DrawerActivity) getActivity()).showEditActionZoneFragment(this);
+            ((MainActivity) getActivity()).showEditActionZoneFragment(this);
         }
         newsfeedListView.addOnScrollListener(scrollListener);
         EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_FEED_FROM_TAB);
@@ -393,7 +393,7 @@ public class MapFragment extends BaseMapFragment implements NewsFeedListener, Us
             }
         } else {
             if (getActivity() != null) {
-                ((DrawerActivity) getActivity()).onEntourageDisclaimerAccepted(null);
+                ((MainActivity) getActivity()).onEntourageDisclaimerAccepted(null);
             }
         }
     }
@@ -1432,7 +1432,7 @@ public class MapFragment extends BaseMapFragment implements NewsFeedListener, Us
             if (topFragment == null) {
                 return;
             }
-            ((DrawerActivity) getActivity()).showTutorial();
+            ((MainActivity) getActivity()).showTutorial();
         }, Constants.CAROUSEL_DELAY_MILLIS);
     }
 

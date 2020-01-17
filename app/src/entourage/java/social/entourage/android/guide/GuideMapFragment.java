@@ -31,7 +31,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.MainActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
@@ -311,9 +311,9 @@ public class GuideMapFragment extends BaseMapFragment {
         // Close the overlays
         onBackPressed();
         // Open the link to propose a POI
-        if (getActivity() instanceof DrawerActivity) {
+        if (getActivity() instanceof MainActivity) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_PROPOSE_POI);
-            ((DrawerActivity) getActivity()).showWebViewForLinkId(Constants.PROPOSE_POI_ID);
+            ((MainActivity) getActivity()).showWebViewForLinkId(Constants.PROPOSE_POI_ID);
         }
     }
 
@@ -347,8 +347,8 @@ public class GuideMapFragment extends BaseMapFragment {
 
     private void initializeEmptyListPopup() {
         String proposePOIUrl = "";
-        if (getActivity() != null && getActivity() instanceof DrawerActivity) {
-            proposePOIUrl = ((DrawerActivity) getActivity()).getLink(Constants.PROPOSE_POI_ID);
+        if (getActivity() != null && getActivity() instanceof MainActivity) {
+            proposePOIUrl = ((MainActivity) getActivity()).getLink(Constants.PROPOSE_POI_ID);
         }
         emptyListTextView.setMovementMethod(EntourageLinkMovementMethod.getInstance());
         emptyListTextView.setText(Utils.fromHtml(getString(R.string.map_poi_empty_popup, proposePOIUrl)));

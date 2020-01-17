@@ -35,7 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.MainActivity;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
@@ -444,8 +444,8 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
         }
         if (success) {
             //logout and go back to login screen
-            if (getActivity() instanceof DrawerActivity) {
-                ((DrawerActivity) getActivity()).selectItem(R.id.action_logout);
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).selectItem(R.id.action_logout);
             }
         }
         else {

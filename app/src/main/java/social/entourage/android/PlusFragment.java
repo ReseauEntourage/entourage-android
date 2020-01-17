@@ -16,7 +16,6 @@ import butterknife.OnClick;
 import butterknife.Optional;
 import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
-import social.entourage.android.configuration.Configuration;
 
 public class PlusFragment extends Fragment implements BackPressable{
     public static final String TAG = "social.entourage.android.fragment_plus";
@@ -63,62 +62,62 @@ public class PlusFragment extends Fragment implements BackPressable{
 
     @OnClick(R.id.plus_help_button)
     protected void onHelpButton() {
-        if (getActivity() instanceof DrawerActivity) {
+        if (getActivity() instanceof MainActivity) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_PLUS_NOT_READY);
-            ((DrawerActivity) getActivity()).showWebViewForLinkId(Constants.SCB_LINK_ID);
+            ((MainActivity) getActivity()).showWebViewForLinkId(Constants.SCB_LINK_ID);
         }
     }
 
     @OnClick(R.id.layout_line_create_entourage_ask_help)
     protected void onCreateEntourageHelpAction() {
-        if(getActivity() instanceof DrawerActivity) {
-            Intent newIntent = new Intent(getContext(), DrawerActivity.class);
+        if(getActivity() instanceof MainActivity) {
+            Intent newIntent = new Intent(getContext(), MainActivity.class);
             newIntent.setAction(KEY_CREATE_DEMAND);
             startActivity(newIntent);
-            ((DrawerActivity)getActivity()).showFeed();
+            ((MainActivity)getActivity()).showFeed();
         }
     }
 
 
     @OnClick(R.id.layout_line_create_entourage_contribute)
     protected void onCreateEntourageContributionAction() {
-        if(getActivity() instanceof DrawerActivity) {
-            Intent newIntent = new Intent(getContext(), DrawerActivity.class);
+        if(getActivity() instanceof MainActivity) {
+            Intent newIntent = new Intent(getContext(), MainActivity.class);
             newIntent.setAction(KEY_CREATE_CONTRIBUTION);
             startActivity(newIntent);
-            ((DrawerActivity)getActivity()).showFeed();
+            ((MainActivity)getActivity()).showFeed();
         }
     }
 
     @Optional
     @OnClick(R.id.layout_line_create_outing)
     protected void onCreateOuting() {
-        if(getActivity() instanceof DrawerActivity) {Intent newIntent = new Intent(getContext(), DrawerActivity.class);
+        if(getActivity() instanceof MainActivity) {Intent newIntent = new Intent(getContext(), MainActivity.class);
             newIntent.setAction(KEY_CREATE_OUTING);
             startActivity(newIntent);
-            ((DrawerActivity)getActivity()).showFeed();
+            ((MainActivity)getActivity()).showFeed();
         }
     }
 
     @Optional
     @OnClick(R.id.layout_line_start_tour_launcher)
     public void onStartTourLauncher() {
-        if(getActivity() instanceof DrawerActivity) {
-            Intent newIntent = new Intent(getContext(), DrawerActivity.class);
+        if(getActivity() instanceof MainActivity) {
+            Intent newIntent = new Intent(getContext(), MainActivity.class);
             newIntent.setAction(KEY_START_TOUR);
             startActivity(newIntent);
-            ((DrawerActivity)getActivity()).showFeed();
+            ((MainActivity)getActivity()).showFeed();
         }
     }
 
     @Optional
     @OnClick({R.id.layout_line_add_tour_encounter, R.id.map_longclick_button_create_encounter})
     public void onAddEncounter() {
-        if(getActivity() instanceof DrawerActivity) {
-            Intent newIntent = new Intent(getContext(), DrawerActivity.class);
+        if(getActivity() instanceof MainActivity) {
+            Intent newIntent = new Intent(getContext(), MainActivity.class);
             newIntent.setAction(KEY_ADD_ENCOUNTER);
             startActivity(newIntent);
-            ((DrawerActivity)getActivity()).showFeed();
+            ((MainActivity)getActivity()).showFeed();
         }
     }
 
@@ -129,8 +128,8 @@ public class PlusFragment extends Fragment implements BackPressable{
 
     @Override
     public boolean onBackPressed() {
-        if(getActivity() instanceof DrawerActivity) {
-            ((DrawerActivity) getActivity()).showFeed();
+        if(getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).showFeed();
         }
         return true;
     }

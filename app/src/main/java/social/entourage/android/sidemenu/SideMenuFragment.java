@@ -21,7 +21,7 @@ import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import social.entourage.android.BuildConfig;
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.MainActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;
@@ -193,9 +193,9 @@ public class SideMenuFragment extends Fragment {
     }
 
     private void selectMenuAction(int action) {
-        if (getActivity() == null || !(getActivity() instanceof DrawerActivity)) return;
-        DrawerActivity drawerActivity = (DrawerActivity)getActivity();
-        drawerActivity.selectItem(action);
+        if (getActivity() == null || !(getActivity() instanceof MainActivity)) return;
+        MainActivity mainActivity = (MainActivity)getActivity();
+        mainActivity.selectItem(action);
     }
 
     private boolean handleLongPress() {

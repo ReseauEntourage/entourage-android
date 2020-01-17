@@ -12,7 +12,7 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.MainActivity;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.base.EntourageLinkMovementMethod;
@@ -60,7 +60,7 @@ public class CreateActionWizardPage2Fragment extends EntourageDialogFragment {
         if (getActivity() != null && getView() != null) {
             TextView disclaimerTextView = getView().findViewById(R.id.create_action_wizard_disclaimer);
             if (disclaimerTextView != null) {
-                DrawerActivity activity = (DrawerActivity)getActivity();
+                MainActivity activity = (MainActivity)getActivity();
                 String text = getString(R.string.create_action_wizard_disclaimer, activity.getLink(Constants.CHARTE_LINK_ID));
                 disclaimerTextView.setText(Utils.fromHtml(text));
                 disclaimerTextView.setMovementMethod(EntourageLinkMovementMethod.getInstance());

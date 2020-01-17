@@ -39,7 +39,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.MainActivity;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
@@ -347,7 +347,7 @@ public class LoginActivity extends EntourageActivity
         stopLoader();
         hideKeyboard();
         EntourageEvents.logEvent(EntourageEvents.EVENT_LOGIN_OK);
-        startActivity(new Intent(this, DrawerActivity.class));
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 

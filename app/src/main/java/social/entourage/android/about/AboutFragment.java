@@ -22,7 +22,7 @@ import butterknife.OnClick;
 import butterknife.Optional;
 import social.entourage.android.BuildConfig;
 import social.entourage.android.Constants;
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.MainActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
@@ -158,47 +158,47 @@ public class AboutFragment extends EntourageDialogFragment {
     @Optional
     @OnClick(R.id.faq_website_layout)
     protected void onFAQClicked() {
-        if (getActivity() != null && getActivity() instanceof DrawerActivity) {
+        if (getActivity() != null && getActivity() instanceof MainActivity) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_FAQ);
-            DrawerActivity drawerActivity = (DrawerActivity) getActivity();
-            drawerActivity.showWebViewForLinkId(Constants.FAQ_LINK_ID);
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.showWebViewForLinkId(Constants.FAQ_LINK_ID);
         }
     }
 
     @Optional
     @OnClick(R.id.about_tutorial_layout)
     protected void onTutorialClicked() {
-        if (getActivity() != null && getActivity() instanceof DrawerActivity) {
+        if (getActivity() != null && getActivity() instanceof MainActivity) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_ABOUT_TUTORIAL);
-            DrawerActivity drawerActivity = (DrawerActivity) getActivity();
-            drawerActivity.showTutorial(true);
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.showTutorial(true);
         }
     }
 
     @Optional
     @OnClick(R.id.about_privacy_layout)
     protected void onPrivacyClicked() {
-        if (getActivity() != null && getActivity() instanceof DrawerActivity) {
-            DrawerActivity drawerActivity = (DrawerActivity) getActivity();
-            drawerActivity.showWebViewForLinkId(Constants.PRIVACY_LINK_ID);
+        if (getActivity() != null && getActivity() instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.showWebViewForLinkId(Constants.PRIVACY_LINK_ID);
         }
     }
 
     @Optional
     @OnClick(R.id.about_suggestion_layout)
     protected void onSuggestionClicked() {
-        if (getActivity() != null && getActivity() instanceof DrawerActivity) {
-            DrawerActivity drawerActivity = (DrawerActivity) getActivity();
-            drawerActivity.showWebView(drawerActivity.getLink(Constants.SUGGESTION_ID));
+        if (getActivity() != null && getActivity() instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.showWebView(mainActivity.getLink(Constants.SUGGESTION_ID));
         }
     }
 
     @Optional
     @OnClick(R.id.about_feedback_layout)
     protected void onFeedbackClicked() {
-        if (getActivity() != null && getActivity() instanceof DrawerActivity) {
-            DrawerActivity drawerActivity = (DrawerActivity) getActivity();
-            drawerActivity.showWebView(drawerActivity.getLink(Constants.FEEDBACK_ID));
+        if (getActivity() != null && getActivity() instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.showWebView(mainActivity.getLink(Constants.FEEDBACK_ID));
         }
     }
 }

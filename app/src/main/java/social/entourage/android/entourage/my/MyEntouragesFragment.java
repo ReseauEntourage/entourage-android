@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,7 +26,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import social.entourage.android.Constants;
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.MainActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
@@ -136,8 +135,8 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Ent
 
         refreshMyFeeds();
 
-        if (getActivity() instanceof  DrawerActivity) {
-            ((DrawerActivity)getActivity()).showEditActionZoneFragment();
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity)getActivity()).showEditActionZoneFragment();
         }
     }
 

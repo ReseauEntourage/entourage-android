@@ -27,7 +27,7 @@ import java.util.TimeZone;
 
 import javax.inject.Inject;
 
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.MainActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.ApiConnectionListener;
@@ -106,12 +106,12 @@ public class EntourageService extends Service {
         public void onReceive(final Context context, final Intent intent) {
             final String action = intent.getAction();
             if (KEY_NOTIFICATION_PAUSE_TOUR.equals(action)) {
-                final Intent newIntent = new Intent(context, DrawerActivity.class);
+                final Intent newIntent = new Intent(context, MainActivity.class);
                 newIntent.setAction(action);
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(newIntent);
             } else if (KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
-                final Intent newIntent = new Intent(context, DrawerActivity.class);
+                final Intent newIntent = new Intent(context, MainActivity.class);
                 newIntent.setAction(action);
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(newIntent);
@@ -119,7 +119,7 @@ public class EntourageService extends Service {
                 notifyListenersGpsStatusChanged(false);
                 /* TODO: fix this so it won't start multiple intents
                     if (isRunning()) {
-                    final Intent newIntent = new Intent(context, DrawerActivity.class);
+                    final Intent newIntent = new Intent(context, MainActivity.class);
                     newIntent.setAction(action);
                     newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(newIntent);
@@ -222,7 +222,7 @@ public class EntourageService extends Service {
     }
 
     private void createNotification() {
-        final Intent notificationIntent = new Intent(this, DrawerActivity.class);
+        final Intent notificationIntent = new Intent(this, MainActivity.class);
         final PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getString(R.string.local_service_notification_title))
                 .setSmallIcon(R.drawable.tour_record)

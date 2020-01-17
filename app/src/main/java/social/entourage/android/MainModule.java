@@ -6,19 +6,19 @@ import social.entourage.android.user.AvatarUpdatePresenter;
 import social.entourage.android.user.AvatarUploadView;
 
 /**
- * Module related to DrawerActivity
+ * Module related to MainActivity
  */
 @Module
-public class DrawerModule {
+public class MainModule {
 
-    private final DrawerActivity activity;
+    private final MainActivity activity;
 
-    public DrawerModule(final DrawerActivity activity) {
+    public MainModule(final MainActivity activity) {
         this.activity = activity;
     }
 
     @Provides
-    public DrawerActivity providesActivity() {
+    public MainActivity providesActivity() {
         return activity;
     }
 
@@ -26,5 +26,5 @@ public class DrawerModule {
     public AvatarUploadView providesAvatarUploadView() { return activity; }
 
     @Provides
-    public AvatarUpdatePresenter providesAvatarUpdatePresenter(DrawerPresenter presenter) { return presenter; }
+    public AvatarUpdatePresenter providesAvatarUpdatePresenter(MainPresenter presenter) { return presenter; }
 }

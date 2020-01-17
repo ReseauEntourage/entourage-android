@@ -21,11 +21,9 @@ import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
 import social.entourage.android.api.model.ApplicationInfo;
-import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.carousel.CarouselFragment;
 import social.entourage.android.configuration.Configuration;
 import social.entourage.android.involvement.GetInvolvedFragment;
-import social.entourage.android.newsfeed.FeedItemOptionsFragment;
 import social.entourage.android.user.AvatarUpdatePresenter;
 import social.entourage.android.user.UserFragment;
 import social.entourage.android.user.edit.UserEditFragment;
@@ -34,11 +32,11 @@ import social.entourage.android.user.edit.photo.PhotoEditFragment;
 import timber.log.Timber;
 
 /**
- * The base class for DrawerPresenter<br/>
+ * The base class for MainPresenter<br/>
  * The derived classes will be per app
  * Created by Mihai Ionescu on 27/04/2018.
  */
-public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
+public abstract class MainBasePresenter implements AvatarUpdatePresenter {
 
     // ----------------------------------
     // CONSTANTS
@@ -57,7 +55,7 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
     // ATTRIBUTES
     // ----------------------------------
 
-    protected final DrawerActivity activity;
+    protected final MainActivity activity;
     private final AppRequest appRequest;
     private final UserRequest userRequest;
     private boolean checkForUpdate = true;
@@ -66,7 +64,7 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
     // LIFECYCLE
     // ----------------------------------
 
-    DrawerBasePresenter(final DrawerActivity activity, final AppRequest appRequest, final UserRequest userRequest) {
+    MainBasePresenter(final MainActivity activity, final AppRequest appRequest, final UserRequest userRequest) {
         this.activity = activity;
         this.appRequest = appRequest;
         this.userRequest = userRequest;

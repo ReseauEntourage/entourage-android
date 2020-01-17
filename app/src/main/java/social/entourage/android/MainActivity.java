@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.IdRes;
@@ -74,7 +73,7 @@ import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
 import timber.log.Timber;
 
-public class DrawerActivity extends EntourageSecuredActivity
+public class MainActivity extends EntourageSecuredActivity
     implements EntourageInformationFragment.OnEntourageInformationFragmentFinish,
     ChoiceFragment.OnChoiceFragmentFinish,
     EntourageDisclaimerFragment.OnFragmentInteractionListener,
@@ -92,7 +91,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     // ----------------------------------
 
     @Inject
-    DrawerPresenter presenter;
+    MainPresenter presenter;
 
     @Inject
     AvatarUploadPresenter avatarUploadPresenter;
@@ -109,7 +108,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_drawer);
+        setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
         if (isFinishing()) return;
@@ -146,9 +145,9 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     @Override
     protected void setupComponent(EntourageComponent entourageComponent) {
-        DaggerDrawerComponent.builder()
+        DaggerMainComponent.builder()
             .entourageComponent(entourageComponent)
-            .drawerModule(new DrawerModule(this))
+            .mainModule(new MainModule(this))
             .build()
             .inject(this);
     }
@@ -639,7 +638,7 @@ public class DrawerActivity extends EntourageSecuredActivity
     }
 
     public void onUploadError() {
-        Toast.makeText(DrawerActivity.this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show();
         dismissProgressDialog();
         PhotoEditFragment photoEditFragment = (PhotoEditFragment) getSupportFragmentManager().findFragmentByTag(PhotoEditFragment.TAG);
         if (photoEditFragment != null) {

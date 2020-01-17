@@ -42,7 +42,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.Optional;
 import social.entourage.android.Constants;
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.MainActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.location.EntourageLocation;
@@ -160,7 +160,7 @@ public class MapWithTourFragment extends MapFragment implements EntourageService
         if(shouldShowGPSDialog && !active &&  entourageService !=null && entourageService.isRunning()) {
             //We always need GPS to be turned on during tour
             shouldShowGPSDialog = false;
-            final Intent newIntent = new Intent(this.getContext(), DrawerActivity.class);
+            final Intent newIntent = new Intent(this.getContext(), MainActivity.class);
             newIntent.setAction(KEY_LOCATION_PROVIDER_DISABLED);
             newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(newIntent);

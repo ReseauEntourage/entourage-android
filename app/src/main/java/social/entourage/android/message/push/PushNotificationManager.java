@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.MainActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Message;
@@ -434,7 +434,7 @@ public class PushNotificationManager {
         if (message.getContent() != null) {
             messageType = message.getContent().getType();
         }
-        messageIntent = new Intent(context, DrawerActivity.class);
+        messageIntent = new Intent(context, MainActivity.class);
         switch (messageType) {
             case PushNotificationContent.TYPE_NEW_JOIN_REQUEST:
                 // because of the grouping, we need an intent that is specific for each entourage
