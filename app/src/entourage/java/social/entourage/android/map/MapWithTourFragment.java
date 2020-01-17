@@ -346,8 +346,12 @@ public class MapWithTourFragment extends MapFragment implements EntourageService
                     showAllowGeolocationDialog(GEOLOCATION_POPUP_TOUR);
                     return;
                 }
-                mapLongClickView.setVisibility(View.GONE);
-                mapLauncherLayout.setVisibility(View.VISIBLE);
+                if(mapLongClickView!=null) {
+                    mapLongClickView.setVisibility(View.GONE);
+                }
+                if(mapLauncherLayout!=null) {
+                    mapLauncherLayout.setVisibility(View.VISIBLE);
+                }
             }
         }
     }
