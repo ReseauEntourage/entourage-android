@@ -729,7 +729,7 @@ public class MapWithTourFragment extends MapFragment implements EntourageService
 //                    joinRequestOkFragment.show(fragmentManager, JoinRequestOkFragment.TAG);
                     TourJoinRequestFragment tourJoinRequestFragment = TourJoinRequestFragment.newInstance(feedItem);
                     tourJoinRequestFragment.show(fragmentManager, TourJoinRequestFragment.TAG);
-                } catch {IllegalStateException e) {
+                } catch (IllegalStateException e) {
                     Timber.e(e);
                 }
             }
