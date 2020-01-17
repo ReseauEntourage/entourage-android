@@ -723,11 +723,15 @@ public class MapWithTourFragment extends MapFragment implements EntourageService
         if (feedItem.getType() == TimestampedObject.TOUR_CARD || feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
             feedItem.setJoinStatus(user.getStatus());
             if (user.getStatus().equals(Tour.JOIN_STATUS_PENDING)) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                try {
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 //                    JoinRequestOkFragment joinRequestOkFragment = JoinRequestOkFragment.newInstance(feedItem);
 //                    joinRequestOkFragment.show(fragmentManager, JoinRequestOkFragment.TAG);
-                TourJoinRequestFragment tourJoinRequestFragment = TourJoinRequestFragment.newInstance(feedItem);
-                tourJoinRequestFragment.show(fragmentManager, TourJoinRequestFragment.TAG);
+                    TourJoinRequestFragment tourJoinRequestFragment = TourJoinRequestFragment.newInstance(feedItem);
+                    tourJoinRequestFragment.show(fragmentManager, TourJoinRequestFragment.TAG);
+                } catch {IllegalStateException e) {
+                    Timber.e(e);
+                }
             }
         }
         updateNewsfeedJoinStatus(feedItem);
