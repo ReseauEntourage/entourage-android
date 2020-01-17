@@ -376,7 +376,7 @@ public class MainActivity extends EntourageSecuredActivity
             //TODO check if we need to execute pending actions
             //fragmentManager.executePendingTransactions();
         } catch(IllegalStateException e){
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
+            Timber.w(e);
         }
     }
 
@@ -500,8 +500,7 @@ public class MainActivity extends EntourageSecuredActivity
             UserFragment fragment = UserFragment.newInstance(event.getUserId());
             fragment.show(getSupportFragmentManager(), UserFragment.TAG);
         } catch (IllegalStateException e) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
-            Timber.e(e);
+            Timber.w(e);
         }
     }
 

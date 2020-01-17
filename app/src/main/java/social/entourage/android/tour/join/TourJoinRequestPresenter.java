@@ -131,8 +131,7 @@ public class TourJoinRequestPresenter {
                         }
                     }
                 } catch(IllegalStateException e) {
-                    EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
-                    Timber.e(e);
+                    Timber.w(e);
                 }
             }
 

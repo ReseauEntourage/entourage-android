@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import social.entourage.android.EntourageEvents
+import timber.log.Timber
 
 import java.util.ArrayList
 
@@ -40,7 +40,7 @@ class MapFragmentLifecycleCallbacks : FragmentManager.FragmentLifecycleCallbacks
                     fragment.dismiss()
                 }
             } catch(e: IllegalStateException) {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE)
+                Timber.w(e)
             }
             count--
         }

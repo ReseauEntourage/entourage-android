@@ -732,7 +732,7 @@ public class MapWithTourFragment extends MapFragment implements EntourageService
                     TourJoinRequestFragment tourJoinRequestFragment = TourJoinRequestFragment.newInstance(feedItem);
                     tourJoinRequestFragment.show(fragmentManager, TourJoinRequestFragment.TAG);
                 } catch (IllegalStateException e) {
-                    Timber.e(e);
+                    Timber.w(e);
                 }
             }
         }
@@ -1096,8 +1096,7 @@ public class MapWithTourFragment extends MapFragment implements EntourageService
                 getActivity().startService(intent);
                 getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
             } catch(IllegalStateException e) {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
-                Timber.e(e);
+                Timber.w(e);
             }
         }
     }

@@ -268,9 +268,6 @@ public class EntourageEvents {
     public static final String EVENT_ENCOUNTER_POPUP_ENCOUNTER = "SwitchToCreateEncounter";
     public static final String EVENT_ENCOUNTER_POPUP_ENTOURAGE = "ContinueCreatePublicEntourage";
 
-    public static final String EVENT_CAROUSEL_EXCEPTION = "CarouselException";
-    public static final String EVENT_ILLEGAL_STATE = "CatchedExceptionIllegalStateAppIsGone";
-
     //Notifications
     public static final String EVENT_NOTIFICATION_RECEIVED="NotificationReceived";
     public static final String EVENT_NOTIFICATION_FCM_RECEIVED="NotificationReceivedFromFCM";

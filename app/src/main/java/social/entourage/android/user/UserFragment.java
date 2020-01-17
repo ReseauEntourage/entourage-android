@@ -40,6 +40,7 @@ import social.entourage.android.user.edit.UserEditFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.report.UserReportFragment;
 import social.entourage.android.view.PartnerLogoImageView;
+import timber.log.Timber;
 
 public class UserFragment extends EntourageDialogFragment {
 
@@ -260,7 +261,7 @@ public class UserFragment extends EntourageDialogFragment {
         try{
             fragment.show(getFragmentManager(), UserEditFragment.TAG);
         } catch(IllegalStateException e) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
+            Timber.w(e);
         }
     }
 

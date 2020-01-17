@@ -191,7 +191,7 @@ public abstract class MainBasePresenter implements AvatarUpdatePresenter {
                 carouselFragment.show(fragmentManager, CarouselFragment.TAG);
             } catch (Exception e) {
                 // This is just to see if we still get the Illegal state exception
-                EntourageEvents.logEvent(EntourageEvents.EVENT_CAROUSEL_EXCEPTION);
+                Timber.e(e);
             }
         }
     }

@@ -291,8 +291,7 @@ public abstract class BaseMapFragment extends Fragment implements BackPressable,
                             displayGeolocationPreferences(true);
                         }
                     } catch(IllegalStateException e) {
-                        EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
-                        Timber.e(e);
+                        Timber.w(e);
                     }
                 })
                 .setNegativeButton(R.string.map_permission_refuse, null)
