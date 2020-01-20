@@ -1134,12 +1134,6 @@ public class MapWithTourFragment extends MapFragment implements EntourageService
                 PushNotificationContent.Extra extra = content.extra;
                 switch(intent.getAction()) {
                     case PushNotificationContent.TYPE_NEW_CHAT_MESSAGE:
-                        if (content.isTourRelated()) {
-                            displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.TOUR_CARD);
-                        } else if (content.isEntourageRelated()) {
-                            displayChosenFeedItem(content.getJoinableUUID(), TimestampedObject.ENTOURAGE_CARD);
-                        }
-                        break;
                     case PushNotificationContent.TYPE_NEW_JOIN_REQUEST:
                     case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:
                         if (content.isTourRelated()) {

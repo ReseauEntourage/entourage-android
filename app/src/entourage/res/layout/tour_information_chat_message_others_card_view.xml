@@ -70,6 +70,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"
                 android:textIsSelectable="true"
+                android:autoLink="all"
                 android:textSize="@dimen/entourage_font_large"/>
 
             <TextView
