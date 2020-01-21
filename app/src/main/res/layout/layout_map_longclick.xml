@@ -2,6 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:alpha="0.88"
@@ -29,8 +30,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:contentDescription="@string/empty_description"
-            android:src="@drawable/ic_button_create_maraude"
-            android:visibility="visible" />
+            android:visibility="visible"
+            app:srcCompat="@drawable/ic_button_create_maraude"
+            tools:visibility="visible" />
 
         <ImageView
             android:id="@+id/map_longclick_button_create_encounter"
@@ -39,7 +41,8 @@
             android:layout_alignParentStart="true"
             android:contentDescription="@string/empty_description"
             android:src="@drawable/ic_encounter"
-            android:visibility="visible" />
+            android:visibility="visible"
+            tools:visibility="invisible" />
 
         <ImageView
             android:id="@+id/map_longclick_button_entourage_action"

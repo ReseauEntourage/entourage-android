@@ -148,7 +148,8 @@
             android:id="@+id/layout_line_start_tour_launcher"
             style="@style/MapActionLine"
             android:layout_below="@id/layout_line_create_outing"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <TextView
                 android:id="@+id/textView6"
@@ -169,7 +170,7 @@
                 style="@style/MapActionButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_button_create_maraude" />
+                app:srcCompat="@drawable/ic_start_maraude" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
