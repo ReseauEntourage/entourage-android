@@ -211,6 +211,8 @@
                                 android:fontFamily="sans-serif-medium"
                                 android:textColor="@color/greyish_brown"
                                 android:textSize="@dimen/entourage_font_medium"
+                                android:textIsSelectable="true"
+                                android:autoLink="all"
                                 tools:text="Rendez-vous jeudi 28 mars 2018 à 8h"/>
 
                             <TextView
@@ -234,7 +236,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/greyish_brown"
-                    android:textSize="@dimen/entourage_font_medium" tools:text="Marcel a cassé ses lunettes, et il ne peut plus lire du tout, lui qui aime tant ça ! Si quelqu'un a chez lui une paire pour la lecture dont il ne se sert plus, rejoignez l'entourage !" />
+                    android:textIsSelectable="true"
+                    android:textSize="@dimen/entourage_font_medium"
+                    android:autoLink="all"
+                    tools:text="Marcel a cassé ses lunettes, et il ne peut plus lire du tout, lui qui aime tant ça ! Si quelqu'un a chez lui une paire pour la lecture dont il ne se sert plus, rejoignez l'entourage !" />
 
                 <TextView
                     android:id="@+id/tour_info_timestamps"

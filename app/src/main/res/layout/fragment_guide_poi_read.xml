@@ -65,9 +65,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/greyish_brown"
+                android:textIsSelectable="true"
                 android:textSize="@dimen/entourage_font_large"
                 android:textStyle="bold"
-                tools:text="POI NAME"/>
+                tools:text="POI NAME" />
 
             <View
                 android:layout_width="match_parent"
@@ -83,8 +84,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:textColor="@color/greyish_brown"
+                android:textIsSelectable="true"
+                android:autoLink="all"
                 android:textSize="@dimen/entourage_font_medium"
-                tools:text="Description"/>
+                tools:text="Description" />
 
             <Button
                 android:id="@+id/button_poi_address"
