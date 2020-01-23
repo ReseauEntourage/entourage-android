@@ -19,8 +19,15 @@ public class ReadPoiPresenter {
     }
 
     public void displayPoi(Poi poi) {
-        OnAddressClickListener listener = new OnAddressClickListener(fragment.getActivity(), poi.getAddress());
-        fragment.onDisplayedPoi(poi, listener, new OnPhoneClickListener(poi.getPhone()));
+        OnAddressClickListener listenerAddress = null;
+        OnPhoneClickListener listenerPhone = null;
+        if(poi.getAddress()!=null) {
+            listenerAddress = new OnAddressClickListener(fragment.getActivity(), poi.getAddress());
+        }
+        if(poi.getPhone()!=null) {
+            listenerPhone = new OnPhoneClickListener(poi.getPhone());
+        }
+        fragment.onDisplayedPoi(poi, listenerAddress, listenerPhone);
     }
 
     private void dial(Uri phone) {

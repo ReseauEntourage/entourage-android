@@ -1618,16 +1618,20 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
                     metadata.getStartTimeAsString(getContext())));
         }
 
-        setAddressView(fragmentView, metadata);
+        if(metadata!=null) {
+            setAddressView(fragmentView, metadata);
+        }
     }
 
-    private void setAddressView(View fragmentView, BaseEntourage.Metadata metadata) {
+    private void setAddressView(View fragmentView, @NonNull BaseEntourage.Metadata metadata) {
         TextView address = fragmentView.findViewById(R.id.tour_info_metadata_address);
         if (address != null) {
             final String displayAddress = metadata.getDisplayAddress();
             address.setText(displayAddress);
             address.setPaintFlags(address.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-            address.setOnClickListener(new OnAddressClickListener(getActivity(), displayAddress));
+            if(displayAddress!=null) {
+                address.setOnClickListener(new OnAddressClickListener(getActivity(), displayAddress));
+            }
         }
     }
 

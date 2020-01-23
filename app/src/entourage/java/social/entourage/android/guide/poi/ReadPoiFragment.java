@@ -123,15 +123,19 @@ public class ReadPoiFragment extends EntourageDialogFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onDisplayedPoi(Poi poi, final OnAddressClickListener onAddressClickListener, final ReadPoiPresenter.OnPhoneClickListener onPhoneClickListener) {
+    public void onDisplayedPoi(Poi poi, @Nullable final OnAddressClickListener onAddressClickListener, @Nullable final ReadPoiPresenter.OnPhoneClickListener onPhoneClickListener) {
         txtPoiName.setText(poi.getName());
         txtPoiDesc.setText(poi.getDescription());
         setActionButton(btnPoiPhone, poi.getPhone());
         setActionButton(btnPoiMail, poi.getEmail());
         setActionButton(btnPoiWeb, poi.getWebsite());
         setActionButton(btnPoiAddress, poi.getAddress());
-        btnPoiAddress.setOnClickListener(onAddressClickListener);
-        btnPoiPhone.setOnClickListener(onPhoneClickListener);
+        if(onAddressClickListener!=null) {
+            btnPoiAddress.setOnClickListener(onAddressClickListener);
+        }
+        if(onPhoneClickListener!=null) {
+            btnPoiPhone.setOnClickListener(onPhoneClickListener);
+        }
         PoiRenderer.CategoryType categoryType = PoiRenderer.CategoryType.findCategoryTypeById(poi.getCategoryId());
         poiTypeLayout.setBackgroundColor(categoryType.getColor());
         poiTypeLabel.setText(categoryType.getName());
