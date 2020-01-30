@@ -893,7 +893,7 @@ public class MapWithTourFragment extends MapFragment implements EntourageService
         Iterator iteratorTours = tours.iterator();
         while (iteratorTours.hasNext()) {
             Tour tour = (Tour) iteratorTours.next();
-            if (newsfeedAdapter.findCard(tour) != null) {
+            if (newsfeedAdapter!=null && newsfeedAdapter.findCard(tour) != null) {
                 iteratorTours.remove();
             }
         }
@@ -1174,7 +1174,7 @@ public class MapWithTourFragment extends MapFragment implements EntourageService
             }
             entourageService = ((EntourageService.LocalBinder) service).getService();
             if(entourageService ==null) {
-                Timber.e("Tour service not found");
+                Timber.e("Service not found");
                 return;
             }
             entourageService.registerServiceListener(MapWithTourFragment.this);

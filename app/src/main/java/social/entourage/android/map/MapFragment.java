@@ -674,7 +674,7 @@ public class MapFragment extends BaseMapFragment implements NewsFeedListener, Us
     }
 
     protected void redrawWholeNewsfeed(@NotNull List<? extends Newsfeed> newsFeeds) {
-        if (map != null && newsFeeds.size() > 0) {
+        if (map != null && newsFeeds.size() > 0 && newsfeedAdapter!=null) {
             //redraw the whole newsfeed
             for (TimestampedObject timestampedObject : newsfeedAdapter.getItems()) {
                 if (timestampedObject.getType() == TimestampedObject.ENTOURAGE_CARD) {
@@ -727,11 +727,6 @@ public class MapFragment extends BaseMapFragment implements NewsFeedListener, Us
     public void onDisplayToggle() {
         if (!isFullMapShown) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_MAPVIEW_CLICK);
-            /*TODO: check if we want to do this
-            if (selectedTab == MapTabItem.EVENTS_TAB && newsfeedAdapter != null) {
-                newsfeedAdapter.setSelectedTab(MapTabItem.ALL_TAB);
-                onMapTabChanged(MapTabItem.ALL_TAB);
-            } */
         }
         else {
             EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_LISTVIEW_CLICK);
@@ -1000,7 +995,7 @@ public class MapFragment extends BaseMapFragment implements NewsFeedListener, Us
     public void userStatusChanged(PushNotificationContent content, String status) {
         if (entourageService != null) {
             TimestampedObject timestampedObject = null;
-            if (content.isEntourageRelated()) {
+            if (content.isEntourageRelated() && newsfeedAdapter!=null) {
                 timestampedObject = newsfeedAdapter.findCard(TimestampedObject.ENTOURAGE_CARD, content.getJoinableId());
             }
             if (timestampedObject != null) {
@@ -1172,7 +1167,7 @@ public class MapFragment extends BaseMapFragment implements NewsFeedListener, Us
     }
 
     protected void displayListWithMapHeader() {
-        if (newsfeedAdapter==null || newsfeedListView == null || mapDisplayToggle == null) {
+        if (mapDisplayToggle == null) {
             return;
         }
 
