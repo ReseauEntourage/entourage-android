@@ -542,7 +542,9 @@ public class MapWithTourFragment extends MapFragment implements EntourageService
         if(buttonLaunchTour!=null) {
             buttonLaunchTour.setEnabled(true);
         }
-        launcherProgressBar.setVisibility(View.GONE);
+        if(launcherProgressBar!=null) {
+            launcherProgressBar.setVisibility(View.GONE);
+        }
         if (getActivity() != null) {
             if (created) {
                 isFollowing = true;
