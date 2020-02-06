@@ -52,6 +52,7 @@ import social.entourage.android.location.LocationUtils;
 import social.entourage.android.map.BaseMapFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
+import social.entourage.android.view.EntourageTapPrompt;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 public class GuideMapFragment extends BaseMapFragment {
@@ -507,23 +508,11 @@ public class GuideMapFragment extends BaseMapFragment {
         if(getContext()== null) return;
         guideDisplayToggle.setImageDrawable(AppCompatResources.getDrawable(getContext(),R.drawable.ic_list_white_24dp));
 
-        new MaterialTapTargetPrompt.Builder(getActivity())
-                .setTarget(R.id.fragment_map_filter_button)
-                .setPrimaryText("Filtrer les POI")
-                .setSecondaryText("Clique ici pour voir les filtres actifs")
-                .setPromptStateChangeListener((prompt, state) -> {
-                    if (state == MaterialTapTargetPrompt.STATE_NON_FOCAL_PRESSED)
-                    {
-                        new MaterialTapTargetPrompt.Builder(getActivity())
-                                .setTarget(R.id.button_poi_propose)
-                                .setPrimaryText("Proposer un POI")
-                                .setSecondaryText("Clique ici pour envoyer les infos")
-                                .setBackgroundColour(ContextCompat.getColor(getContext(), R.color.accent))
-                                .show();
-                    }
-                })
-                .setBackgroundColour(ContextCompat.getColor(getContext(), R.color.accent))
-                .show();
+        if(getActivity()!=null) {
+            EntourageTapPrompt proposePrompt = new EntourageTapPrompt(R.id.button_poi_propose, "Proposer un POI","Clique ici pour envoyer les infos", null);
+            EntourageTapPrompt filterPrompt = new EntourageTapPrompt(R.id.fragment_map_filter_button, "Filtrer les POI","Clique ici pour voir les filtres actifs", proposePrompt);
+            filterPrompt.show(getActivity());
+        }
     }
 
     private void onAnimationUpdate(ValueAnimator valueAnimator) {
