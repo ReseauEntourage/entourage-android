@@ -155,6 +155,7 @@ ext {
             mixpanel                : "com.mixpanel.android:mixpanel-android:$mixpanelVersion",
             picasso                 : "com.squareup.picasso:picasso:$picassoVersion",
             picassoTransformations  : "jp.wasabeef:picasso-transformations:$picassoTransformationsVersion",
-            shortcutBadger          : "me.leolin:ShortcutBadger:$shortcutBadgerVersion@aar"
+            shortcutBadger          : "me.leolin:ShortcutBadger:$shortcutBadgerVersion@aar",
+            tapTargetPrompt         : "uk.co.samuelwall:material-tap-target-prompt:3.0.0"
     ]
 }

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,6 +52,7 @@ import social.entourage.android.location.LocationUtils;
 import social.entourage.android.map.BaseMapFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 public class GuideMapFragment extends BaseMapFragment {
 
@@ -91,9 +93,6 @@ public class GuideMapFragment extends BaseMapFragment {
     @BindView(R.id.fragment_guide_pois_view)
     RecyclerView poisListView;
 
-    @BindView(R.id.button_poi_propose)
-    FloatingActionButton fabProposePOI;
-
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -113,7 +112,6 @@ public class GuideMapFragment extends BaseMapFragment {
         poisMap = new TreeMap<>();
         initializeEmptyListPopup();
         initializeMap();
-        initializeFloatingMenu();
         initializePOIList();
         initializeTopNavigationBar();
     }
@@ -160,7 +158,7 @@ public class GuideMapFragment extends BaseMapFragment {
     public boolean onBackPressed() {
         if (mapLongClickView.getVisibility() == View.VISIBLE) {
             mapLongClickView.setVisibility(View.GONE);
-            fabProposePOI.setVisibility(View.VISIBLE);
+            //fabProposePOI.setVisibility(View.VISIBLE);
             return true;
         }
         return false;
@@ -248,23 +246,6 @@ public class GuideMapFragment extends BaseMapFragment {
         }
     }
 
-    private void clearOldPois() {
-        poisMap.clear();
-        if (map != null && mapClusterManager != null) {
-            mapClusterManager.clearItems();
-        }
-        if (poisAdapter != null) {
-            poisAdapter.removeAll();
-        }
-    }
-
-    private void initializeFloatingMenu() {
-        fabProposePOI.setOnClickListener(view -> {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_PLUS_CLICK);
-            proposePOI();
-        });
-    }
-
     @Override
     protected void initializeMap() {
         originalMapLayoutHeight = (int) getResources().getDimension(R.dimen.solidarity_guide_map_height);
@@ -282,6 +263,35 @@ public class GuideMapFragment extends BaseMapFragment {
     @Override
     protected DefaultClusterRenderer getRenderer() {
         return new PoiRenderer(getActivity(), map, mapClusterManager);
+    }
+
+    @OnClick(R.id.guide_longclick_button_poi_propose)
+    void proposePOI() {
+        // Close the overlays
+        onBackPressed();
+        // Open the link to propose a POI
+        if (getActivity() instanceof MainActivity) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_PROPOSE_POI);
+            ((MainActivity) getActivity()).showWebViewForLinkId(Constants.PROPOSE_POI_ID);
+        }
+    }
+
+    @Override
+    protected HeaderBaseAdapter getAdapter() {
+        return poisAdapter;
+    }
+
+    // ----------------------------------
+    // PRIVATE METHODS
+    // ----------------------------------
+    private void clearOldPois() {
+        poisMap.clear();
+        if (map != null && mapClusterManager != null) {
+            mapClusterManager.clearItems();
+        }
+        if (poisAdapter != null) {
+            poisAdapter.removeAll();
+        }
     }
 
     private void onMapReady(GoogleMap googleMap) {
@@ -305,21 +315,6 @@ public class GuideMapFragment extends BaseMapFragment {
             presenter.updatePoisNearby(map);
         }
     }
-
-    @OnClick(R.id.guide_longclick_button_poi_propose)
-    public void proposePOI() {
-        // Close the overlays
-        onBackPressed();
-        // Open the link to propose a POI
-        if (getActivity() instanceof MainActivity) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_PROPOSE_POI);
-            ((MainActivity) getActivity()).showWebViewForLinkId(Constants.PROPOSE_POI_ID);
-        }
-    }
-
-    // ----------------------------------
-    // PRIVATE METHODS
-    // ----------------------------------
 
     private List<Poi> removeRedundantPois(List<Poi> pois) {
         Iterator iterator = pois.iterator();
@@ -423,6 +418,7 @@ public class GuideMapFragment extends BaseMapFragment {
 
     @OnClick(R.id.button_poi_propose)
     void onPOIProposeClicked() {
+        EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_PLUS_CLICK);
         proposePOI();
     }
 
@@ -508,17 +504,34 @@ public class GuideMapFragment extends BaseMapFragment {
 
     private void initializeTopNavigationBar() {
         // Guide starts in full map mode, adjust the text accordingly
+        if(getContext()== null) return;
         guideDisplayToggle.setImageDrawable(AppCompatResources.getDrawable(getContext(),R.drawable.ic_list_white_24dp));
+
+        new MaterialTapTargetPrompt.Builder(getActivity())
+                .setTarget(R.id.fragment_map_filter_button)
+                .setPrimaryText("Filtrer les POI")
+                .setSecondaryText("Clique ici pour voir les filtres actifs")
+                .setPromptStateChangeListener((prompt, state) -> {
+                    if (state == MaterialTapTargetPrompt.STATE_NON_FOCAL_PRESSED)
+                    {
+                        new MaterialTapTargetPrompt.Builder(getActivity())
+                                .setTarget(R.id.button_poi_propose)
+                                .setPrimaryText("Proposer un POI")
+                                .setSecondaryText("Clique ici pour envoyer les infos")
+                                .setBackgroundColour(ContextCompat.getColor(getContext(), R.color.accent))
+                                .show();
+                    }
+                })
+                .setBackgroundColour(ContextCompat.getColor(getContext(), R.color.accent))
+                .show();
     }
 
     private void onAnimationUpdate(ValueAnimator valueAnimator) {
         int val = (Integer) valueAnimator.getAnimatedValue();
         poisAdapter.setMapHeight(val);
-        poisListView.getLayoutManager().requestLayout();
-    }
-
-    protected HeaderBaseAdapter getAdapter() {
-        return poisAdapter;
+        if(poisListView.getLayoutManager()!=null) {
+            poisListView.getLayoutManager().requestLayout();
+        }
     }
 
     // ----------------------------------
