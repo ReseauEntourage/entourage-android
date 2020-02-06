@@ -29,37 +29,39 @@ ext {
     // Libraries versions
     annotationVersion = "1.1.0"
     appCompatVersion = "1.1.0"
-    butterKnifeVersion = "10.2.0"
+    butterKnifeVersion = "10.2.1"
     constraintlayoutVersion = "1.1.3"
     coordinatorlayoutVersion="1.1.0"
     crashlyticsVersion = "2.10.1"
-    daggerVersion = "2.25.2"
+    daggerVersion = "2.26"
     dateTimePickerVersion = "4.2.3"
     espressoVersion = "3.2.0"
     exifinterfaceVersion = "1.1.0"
-    facebookVersion = "5.12.1"
-    firebaseCoreVersion = "17.2.1"
+    facebookVersion = "6.0.0"
+    firebaseCoreVersion = "17.2.2"
     firebaseMessagingVersion = "20.1.0"
-    firebaseInappVersion = "19.0.2"
+    firebaseInappVersion = "19.0.3"
+    firebasePerfMonitor = "19.0.5"
     floatingButtonVersion = "1.6.4"
-    guavaVersion = "28.1-android"
+    guavaVersion = "28.2-android"
     imageCropperVersion = "2.8.0"
     javaAnnotationVersion = "10.0-b28"
     jodaVersion = "2.10.3"
     mapsVersion = "17.0.0"
     mapsUtilsVersion = "0.6.2"
-    materialVersion = "1.1.0-beta02"
+    materialVersion = "1.1.0"
     mixpanelVersion = "5.6.8"
     multidexVersion = "2.0.1"
-    okHttpVersion = "3.12.6" //version 3.13+ needs API 21+ //https://square.github.io/okhttp/changelog_3x/
+    okHttpVersion = "3.12.8" //version 3.13+ needs API 21+ //https://square.github.io/okhttp/changelog_3x/
     okHttpIdlingVersion = "1.0.0"
     picassoVersion = "2.71828"
     picassoTransformationsVersion = "2.2.1"
     playServicesVersion = "17.0.0"
-    retrofitVersion = "2.6.3" //Version 2.7.0 changes the minimum requirements to Java 8+ or Android 5+
+    retrofitVersion = "2.6.4" //Version 2.7.0 changes the minimum requirements to Java 8+ or Android 5+
     recyclerViewVersion = "1.1.0"
     shortcutBadgerVersion = "1.1.22"
     supportVersion = "1.0.0"
+    supportBrowserVersion = "1.2.0"
     tapeVersion = "1.2.3"
     timberVersion = "4.7.1"
     ottoVersion = "1.3.8"
@@ -67,7 +69,7 @@ ext {
     androidSupportDependencies = [
             annotations      : "androidx.annotation:annotation:$annotationVersion",
             appcompat       : "androidx.appcompat:appcompat:$appCompatVersion",
-            browser         : "androidx.browser:browser:$supportVersion",
+            browser         : "androidx.browser:browser:$supportBrowserVersion",
             cardview        : "androidx.cardview:cardview:$supportVersion",
             coordinatorLayout: "androidx.coordinatorlayout:coordinatorlayout:$coordinatorlayoutVersion",
             constraintLayout: "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion",
@@ -102,7 +104,8 @@ ext {
     firebaseDependencies = [
             firebaseCore        : "com.google.firebase:firebase-core:$firebaseCoreVersion",
             firebaseMessaging   : "com.google.firebase:firebase-messaging:$firebaseMessagingVersion",
-            firebaseInapp       : "com.google.firebase:firebase-inappmessaging-display:$firebaseInappVersion"
+            firebaseInapp       : "com.google.firebase:firebase-inappmessaging-display:$firebaseInappVersion",
+            firebasePerfMonitor : "com.google.firebase:firebase-perf:$firebasePerfMonitor"
     ]
 
     gmsDependencies = [
