@@ -27,8 +27,6 @@ public class GuideFilterAdapter extends BaseAdapter {
 
     private List<GuideFilterItem> items = new ArrayList<>();
 
-    private GuideFilter guideFilter = GuideFilter.getInstance();
-
     private OnCheckedChangeListener onCheckedChangeListener = new OnCheckedChangeListener();
 
     // ----------------------------------
@@ -37,6 +35,7 @@ public class GuideFilterAdapter extends BaseAdapter {
 
 
     public GuideFilterAdapter() {
+        GuideFilter guideFilter = GuideFilter.getInstance();
         for (int i = 1; i < PoiRenderer.CategoryType.values().length; i++) {
             PoiRenderer.CategoryType categoryType = PoiRenderer.CategoryType.values()[i];
             items.add(new GuideFilterItem(categoryType, guideFilter.valueForCategoryId(categoryType.getCategoryId())));

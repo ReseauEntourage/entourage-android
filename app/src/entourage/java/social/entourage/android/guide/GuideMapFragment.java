@@ -1,6 +1,7 @@
 package social.entourage.android.guide;
 
 import android.animation.ValueAnimator;
+import android.content.res.ColorStateList;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
@@ -9,13 +10,16 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
@@ -36,6 +40,7 @@ import social.entourage.android.MainActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
+import social.entourage.android.guide.filter.GuideFilter;
 import social.entourage.android.location.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
@@ -88,8 +93,11 @@ public class GuideMapFragment extends BaseMapFragment {
     @BindView(R.id.fragment_map_display_toggle)
     FloatingActionButton guideDisplayToggle;
 
+    @BindView(R.id.fragment_map_filter_button)
+    ExtendedFloatingActionButton guideFilterButton;
+
     @BindView(R.id.fragment_guide_main_layout)
-    RelativeLayout layoutMain;
+    ConstraintLayout layoutMain;
 
     @BindView(R.id.fragment_guide_pois_view)
     RecyclerView poisListView;
@@ -115,6 +123,7 @@ public class GuideMapFragment extends BaseMapFragment {
         initializeMap();
         initializePOIList();
         initializeTopNavigationBar();
+        initializeFilterButton();
     }
 
     protected void setupComponent(EntourageComponent entourageComponent) {
@@ -167,11 +176,11 @@ public class GuideMapFragment extends BaseMapFragment {
 
     @OnClick(R.id.fragment_map_filter_button)
     void onShowFilter() {
-        if (getFragmentManager() == null) {
+        if (getParentFragmentManager() == null) {
             return;
         }
         GuideFilterFragment guideFilterFragment = new GuideFilterFragment();
-        guideFilterFragment.show(getFragmentManager(), GuideFilterFragment.TAG);
+        guideFilterFragment.show(getParentFragmentManager(), GuideFilterFragment.TAG);
     }
 
     @OnClick(R.id.fragment_map_display_toggle)
@@ -190,6 +199,7 @@ public class GuideMapFragment extends BaseMapFragment {
 
     @Subscribe
     public void onSolidarityGuideFilterChanged(Events.OnSolidarityGuideFilterChanged event) {
+        initializeFilterButton();
         if (presenter != null) {
             if (mapClusterManager != null) {
                 mapClusterManager.clearItems();
@@ -332,8 +342,8 @@ public class GuideMapFragment extends BaseMapFragment {
 
     private void showPoiDetails(Poi poi) {
         ReadPoiFragment readPoiFragment = ReadPoiFragment.newInstance(poi);
-        if (readPoiFragment != null && getFragmentManager() != null) {
-            readPoiFragment.show(getFragmentManager(), ReadPoiFragment.TAG);
+        if (readPoiFragment != null && getParentFragmentManager() != null) {
+            readPoiFragment.show(getParentFragmentManager(), ReadPoiFragment.TAG);
         }
     }
 
@@ -510,8 +520,23 @@ public class GuideMapFragment extends BaseMapFragment {
 
         if(getActivity()!=null) {
             EntourageTapPrompt proposePrompt = new EntourageTapPrompt(R.id.button_poi_propose, "Proposer un POI","Clique ici pour envoyer les infos", null);
-            EntourageTapPrompt filterPrompt = new EntourageTapPrompt(R.id.fragment_map_filter_button, "Filtrer les POI","Clique ici pour voir les filtres actifs", proposePrompt);
-            filterPrompt.show(getActivity());
+            if(!GuideFilter.getInstance().hasFilteredCategories()) {
+                EntourageTapPrompt filterPrompt = new EntourageTapPrompt(R.id.fragment_map_filter_button, "Filtrer les POI","Clique ici pour voir les filtres actifs", proposePrompt);
+                filterPrompt.show(getActivity());
+            } else {
+                proposePrompt.show(getActivity());
+            }
+        }
+    }
+
+    private void initializeFilterButton() {
+        boolean hasFilter = GuideFilter.getInstance().hasFilteredCategories();
+        if(hasFilter) {
+            //guideFilterButton.extend();
+            guideFilterButton.setText(R.string.guide_filters_activated);
+        } else {
+            guideFilterButton.setText(R.string.guide_no_filter);
+            //guideFilterButton.shrink();
         }
     }
 

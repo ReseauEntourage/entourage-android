@@ -9,7 +9,7 @@ ext {
 
     // SDK versions
     compileSdkVersion = 29
-    buildToolsVersion = "29.0.2"
+    buildToolsVersion = "29.0.3"
     minSdkVersion = 19 /*October 2013: Android 4.4, KitKat*/
     targetSdkVersion = 29
 
@@ -43,6 +43,7 @@ ext {
     firebaseInappVersion = "19.0.3"
     firebasePerfMonitor = "19.0.5"
     floatingButtonVersion = "1.6.4"
+    fragmentVersion = '1.2.1'
     guavaVersion = "28.2-android"
     imageCropperVersion = "2.8.0"
     javaAnnotationVersion = "10.0-b28"
@@ -68,16 +69,17 @@ ext {
 
     androidSupportDependencies = [
             annotations      : "androidx.annotation:annotation:$annotationVersion",
-            appcompat       : "androidx.appcompat:appcompat:$appCompatVersion",
-            browser         : "androidx.browser:browser:$supportBrowserVersion",
-            cardview        : "androidx.cardview:cardview:$supportVersion",
+            appcompat        : "androidx.appcompat:appcompat:$appCompatVersion",
+            browser          : "androidx.browser:browser:$supportBrowserVersion",
+            cardview         : "androidx.cardview:cardview:$supportVersion",
             coordinatorLayout: "androidx.coordinatorlayout:coordinatorlayout:$coordinatorlayoutVersion",
-            constraintLayout: "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion",
-            exifinterface   : "androidx.exifinterface:exifinterface:$exifinterfaceVersion",
-            legacyV4        : "androidx.legacy:legacy-support-v4:$supportVersion",
-            legacyV13       : "androidx.legacy:legacy-support-v13:$supportVersion",
-            multidex        : "androidx.multidex:multidex:$multidexVersion",
-            recyclerview    : "androidx.recyclerview:recyclerview:$recyclerViewVersion"
+            constraintLayout : "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion",
+            exifinterface    : "androidx.exifinterface:exifinterface:$exifinterfaceVersion",
+            fragment         : "androidx.fragment:fragment:$fragmentVersion",
+            legacyV4         : "androidx.legacy:legacy-support-v4:$supportVersion",
+            legacyV13        : "androidx.legacy:legacy-support-v13:$supportVersion",
+            multidex         : "androidx.multidex:multidex:$multidexVersion",
+            recyclerview     : "androidx.recyclerview:recyclerview:$recyclerViewVersion"
     ]
 
     annotationDependencies = [

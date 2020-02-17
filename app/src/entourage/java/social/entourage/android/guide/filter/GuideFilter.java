@@ -1,5 +1,9 @@
 package social.entourage.android.guide.filter;
 
+import android.util.SparseBooleanArray;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.HashMap;
 
@@ -17,13 +21,12 @@ public class GuideFilter implements Serializable {
     // Attributes
     // ----------------------------------
 
-    public HashMap<Integer, Boolean> filterValues = new HashMap<>();
+    private SparseBooleanArray filterValues = new SparseBooleanArray();
 
     private static GuideFilter instance = new GuideFilter();
 
     private GuideFilter() {
-        for (PoiRenderer.CategoryType categoryType: PoiRenderer.CategoryType.values()
-             ) {
+        for (PoiRenderer.CategoryType categoryType: PoiRenderer.CategoryType.values()) {
             filterValues.put(categoryType.getCategoryId(), true);
         }
     }
@@ -48,18 +51,31 @@ public class GuideFilter implements Serializable {
     public String getRequestedCategories() {
         StringBuilder builder = new StringBuilder();
         boolean existingFilteredCategories = false;
-        for (int i = 1; i < PoiRenderer.CategoryType.values().length; i++) {
-            PoiRenderer.CategoryType categoryType = PoiRenderer.CategoryType.values()[i];
+        for (PoiRenderer.CategoryType categoryType: PoiRenderer.CategoryType.values()) {
             if (valueForCategoryId(categoryType.getCategoryId())) {
                 if (builder.length() > 0) builder.append(',');
                 builder.append(categoryType.getCategoryId());
-            }
-            else {
+            } else {
                 existingFilteredCategories = true;
             }
         }
         if (existingFilteredCategories) return builder.toString();
         return null;
+    }
+
+
+    /**
+     * Tells if there is any category filtered out
+     *
+     * @return true if any category is filtered out, false otherwise
+     */
+    public boolean hasFilteredCategories() {
+        for (PoiRenderer.CategoryType catType: PoiRenderer.CategoryType.values()) {
+            if (!valueForCategoryId(catType.getCategoryId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
