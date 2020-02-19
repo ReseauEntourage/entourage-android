@@ -58,6 +58,7 @@ import social.entourage.android.entourage.category.EntourageCategoryManager;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.view.EntourageTitleView;
 import social.entourage.android.view.HtmlTextView;
+import timber.log.Timber;
 
 import static social.entourage.android.entourage.category.EntourageCategoryFragment.KEY_ENTOURAGE_CATEGORY;
 
@@ -398,7 +399,11 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
                 Entourage.TYPE_OUTING.equalsIgnoreCase(groupType) ? R.string.outing_create_ok : R.string.entourage_create_ok,
                 Toast.LENGTH_SHORT
         ).show();
-        dismiss();
+        try {
+            dismiss();
+        } catch(IllegalStateException e) {
+            Timber.w(e);
+        }
         BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(entourage));
     }
 
