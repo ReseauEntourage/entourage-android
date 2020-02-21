@@ -9,7 +9,7 @@ ext {
 
     // SDK versions
     compileSdkVersion = 29
-    buildToolsVersion = "29.0.2"
+    buildToolsVersion = "29.0.3"
     minSdkVersion = 19 /*October 2013: Android 4.4, KitKat*/
     targetSdkVersion = 29
 
@@ -19,7 +19,7 @@ ext {
 
     // App versions
     versionMajor = 5
-    versionMinor = 12
+    versionMinor = 13
     versionPatch = "git rev-list HEAD --count".execute().text.trim().toInteger()
     versionBranchName = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
     versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
