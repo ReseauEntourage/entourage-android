@@ -1500,7 +1500,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
 
         if (TYPE_OUTING.equalsIgnoreCase(feedItem.getGroupType())) {
             authorName.setText("");
-            infoLocation.setVisibility(View.INVISIBLE);
+            infoLocation.setVisibility(View.GONE);
         } else {
             authorName.setText(feedItem.getAuthor().getUserName());
             infoLocation.setVisibility(View.VISIBLE);
