@@ -58,7 +58,6 @@ import social.entourage.android.map.BaseMapFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
 import social.entourage.android.view.EntourageTapPrompt;
-import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 public class GuideMapFragment extends BaseMapFragment {
 
@@ -518,7 +517,9 @@ public class GuideMapFragment extends BaseMapFragment {
         if(getContext()== null) return;
         guideDisplayToggle.setImageDrawable(AppCompatResources.getDrawable(getContext(),R.drawable.ic_list_white_24dp));
 
+        /* TODO activate this !
         if(getActivity()!=null) {
+
             EntourageTapPrompt proposePrompt = new EntourageTapPrompt(R.id.button_poi_propose, "Proposer un POI","Clique ici pour envoyer les infos", null);
             if(!GuideFilter.getInstance().hasFilteredCategories()) {
                 EntourageTapPrompt filterPrompt = new EntourageTapPrompt(R.id.fragment_map_filter_button, "Filtrer les POI","Clique ici pour voir les filtres actifs", proposePrompt);
@@ -526,7 +527,7 @@ public class GuideMapFragment extends BaseMapFragment {
             } else {
                 proposePrompt.show(getActivity());
             }
-        }
+        }*/
     }
 
     private void initializeFilterButton() {
