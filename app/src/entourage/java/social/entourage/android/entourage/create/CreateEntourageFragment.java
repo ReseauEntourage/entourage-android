@@ -90,17 +90,19 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
     }
 
     private void hideExtraScreens() {
-        if (getFragmentManager() != null) {
+        try {
             //Hide the wizard pages
-            DialogFragment fragment1 = (DialogFragment) getFragmentManager().findFragmentByTag(CreateActionWizardPage1Fragment.TAG);
+            DialogFragment fragment1 = (DialogFragment) getParentFragmentManager().findFragmentByTag(CreateActionWizardPage1Fragment.TAG);
             if (fragment1 != null) fragment1.dismiss();
-            DialogFragment fragment2 = (DialogFragment) getFragmentManager().findFragmentByTag(CreateActionWizardPage2Fragment.TAG);
+            DialogFragment fragment2 = (DialogFragment) getParentFragmentManager().findFragmentByTag(CreateActionWizardPage2Fragment.TAG);
             if (fragment2 != null) fragment2.dismiss();
-            DialogFragment fragment3 = (DialogFragment) getFragmentManager().findFragmentByTag(CreateActionWizardPage3Fragment.TAG);
+            DialogFragment fragment3 = (DialogFragment) getParentFragmentManager().findFragmentByTag(CreateActionWizardPage3Fragment.TAG);
             if (fragment3 != null) fragment3.dismiss();
             //Hide the join type fragment
-            DialogFragment joinTypeFragment = (DialogFragment) getFragmentManager().findFragmentByTag(CreateEntourageJoinTypeFragment.TAG);
+            DialogFragment joinTypeFragment = (DialogFragment) getParentFragmentManager().findFragmentByTag(CreateEntourageJoinTypeFragment.TAG);
             if (joinTypeFragment != null) joinTypeFragment.dismiss();
+        } catch(IllegalStateException e) {
+            Timber.w(e);
         }
     }
 
@@ -110,10 +112,12 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
 
     private void showCreateActionWizard() {
         joinRequestTypePublic = false;
-        if (getFragmentManager() != null) {
+        try {
             CreateActionWizardPage1Fragment createActionWizardPage1Fragment = new CreateActionWizardPage1Fragment();
             createActionWizardPage1Fragment.setListener(this);
-            createActionWizardPage1Fragment.show(getFragmentManager(), CreateActionWizardPage1Fragment.TAG);
+            createActionWizardPage1Fragment.show(getParentFragmentManager(), CreateActionWizardPage1Fragment.TAG);
+        } catch(IllegalStateException e) {
+            Timber.w(e);
         }
     }
 
@@ -143,10 +147,12 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
     private void handleStep1(int option) {
         switch (option) {
             case 1:
-                if (getFragmentManager() != null) {
+                try {
                     CreateActionWizardPage2Fragment createActionWizardPage2Fragment = new CreateActionWizardPage2Fragment();
                     createActionWizardPage2Fragment.setListener(this);
-                    createActionWizardPage2Fragment.show(getFragmentManager(), CreateActionWizardPage2Fragment.TAG);
+                    createActionWizardPage2Fragment.show(getParentFragmentManager(), CreateActionWizardPage2Fragment.TAG);
+                } catch(IllegalStateException e) {
+                    Timber.w(e);
                 }
                 break;
             case 2:
@@ -170,10 +176,12 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
                 }
                 break;
             case 2:
-                if (getFragmentManager() != null) {
+                try {
                     CreateActionWizardPage3Fragment createActionWizardPage3Fragment = new CreateActionWizardPage3Fragment();
                     createActionWizardPage3Fragment.setListener(this);
-                    createActionWizardPage3Fragment.show(getFragmentManager(), CreateActionWizardPage3Fragment.TAG);
+                    createActionWizardPage3Fragment.show(getParentFragmentManager(), CreateActionWizardPage3Fragment.TAG);
+                } catch(IllegalStateException e) {
+                    Timber.w(e);
                 }
                 break;
         }
@@ -198,11 +206,13 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
     // ----------------------------------
 
     private void showCreateEntourageJoinFragment() {
-        if (getFragmentManager() != null) {
+       try {
             CreateEntourageJoinTypeFragment createEntourageJoinTypeFragment = new CreateEntourageJoinTypeFragment();
             createEntourageJoinTypeFragment.setListener(this);
-            createEntourageJoinTypeFragment.show(getFragmentManager(), CreateEntourageJoinTypeFragment.TAG);
-        }
+            createEntourageJoinTypeFragment.show(getParentFragmentManager(), CreateEntourageJoinTypeFragment.TAG);
+        } catch(IllegalStateException e) {
+           Timber.w(e);
+       }
     }
 
     @Override
