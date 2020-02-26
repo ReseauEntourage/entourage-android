@@ -11,8 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -58,6 +56,7 @@ import social.entourage.android.map.BaseMapFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
 import social.entourage.android.view.EntourageTapPrompt;
+import timber.log.Timber;
 
 public class GuideMapFragment extends BaseMapFragment {
 
@@ -175,11 +174,12 @@ public class GuideMapFragment extends BaseMapFragment {
 
     @OnClick(R.id.fragment_map_filter_button)
     void onShowFilter() {
-        if (getParentFragmentManager() == null) {
-            return;
+        try {
+            GuideFilterFragment guideFilterFragment = new GuideFilterFragment();
+            guideFilterFragment.show(getParentFragmentManager(), GuideFilterFragment.TAG);
+        }catch(IllegalStateException e) {
+            Timber.w(e);
         }
-        GuideFilterFragment guideFilterFragment = new GuideFilterFragment();
-        guideFilterFragment.show(getParentFragmentManager(), GuideFilterFragment.TAG);
     }
 
     @OnClick(R.id.fragment_map_display_toggle)
@@ -341,8 +341,12 @@ public class GuideMapFragment extends BaseMapFragment {
 
     private void showPoiDetails(Poi poi) {
         ReadPoiFragment readPoiFragment = ReadPoiFragment.newInstance(poi);
-        if (readPoiFragment != null && getParentFragmentManager() != null) {
-            readPoiFragment.show(getParentFragmentManager(), ReadPoiFragment.TAG);
+        if (readPoiFragment != null) {
+            try {
+                readPoiFragment.show(getParentFragmentManager(), ReadPoiFragment.TAG);
+            } catch(IllegalStateException e) {
+                Timber.w(e);
+            }
         }
     }
 
