@@ -350,14 +350,6 @@ public class DrawerActivity extends EntourageSecuredActivity
         }
     }
 
-    public void switchToMapFragment() {
-        if (mainFragment instanceof MapEntourageFragment) {
-            mapEntourageFragment = (MapEntourageFragment) mainFragment;
-        } else {
-            loadFragmentWithExtras();
-        }
-    }
-
     public void popToMapFragment() {
         if (mapEntourageFragment != null) {
             mapEntourageFragment.dismissAllDialogs();
@@ -448,28 +440,6 @@ public class DrawerActivity extends EntourageSecuredActivity
             }
         } catch(IllegalStateException e){
             EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
-        }
-    }
-
-    protected void loadFragmentWithExtras() {
-        mapEntourageFragment = (MapEntourageFragment) getSupportFragmentManager().findFragmentByTag(MapEntourageFragment.TAG);
-        if (mapEntourageFragment == null) {
-            mapEntourageFragment = new MapEntourageFragment();
-        }
-        loadFragment(mapEntourageFragment, MapEntourageFragment.TAG);
-        if (getAuthenticationController().getUser() != null) {
-            final int userId = getAuthenticationController().getUser().getId();
-            final boolean choice = getAuthenticationController().isUserToursOnly();
-            if (mainFragment instanceof MapEntourageFragment) {
-                Handler handler = new Handler();
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        MapEntourageFragment mapEntourageFragment = (MapEntourageFragment) mainFragment;
-                        mapEntourageFragment.onNotificationExtras(userId, choice);
-                    }
-                });
-            }
         }
     }
 
@@ -892,7 +862,7 @@ public class DrawerActivity extends EntourageSecuredActivity
 
     public void onCreateEntourageDeepLink() {
         if (mainFragment instanceof MapEntourageFragment) {
-            mapEntourageFragment.displayEntourageDisclaimer();
+            ((MapEntourageFragment)mainFragment).displayEntourageDisclaimer();
         }
     }
 

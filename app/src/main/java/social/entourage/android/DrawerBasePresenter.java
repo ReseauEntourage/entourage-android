@@ -79,9 +79,6 @@ public abstract class DrawerBasePresenter implements AvatarUpdatePresenter {
     protected void handleMenu(@IdRes int menuId) {
         if (activity == null) return;
         switch (menuId) {
-            case R.id.action_tours:
-                activity.loadFragmentWithExtras();
-                break;
             case R.id.action_user:
                 EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_TAP_MY_PROFILE);
                 UserFragment userFragment = (UserFragment) activity.getSupportFragmentManager().findFragmentByTag(UserFragment.TAG);

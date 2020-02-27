@@ -93,7 +93,7 @@ import social.entourage.android.user.edit.UserEditActionZoneFragment;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
-public class MapEntourageFragment extends BaseMapEntourageFragment implements NewsFeedListener, UserEditActionZoneFragment.FragmentListener {
+public abstract class MapEntourageFragment extends BaseMapEntourageFragment implements NewsFeedListener, UserEditActionZoneFragment.FragmentListener {
 
     // ----------------------------------
     // CONSTANTS
