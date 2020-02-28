@@ -68,6 +68,7 @@ import social.entourage.android.location.LocationUtils;
 import social.entourage.android.message.push.PushNotificationManager;
 import social.entourage.android.newsfeed.FeedItemOptionsFragment;
 import social.entourage.android.service.EntourageService;
+import social.entourage.android.service.TourServiceListener;
 import social.entourage.android.tour.choice.ChoiceFragment;
 import social.entourage.android.tour.confirmation.TourEndConfirmationFragment;
 import social.entourage.android.tour.encounter.CreateEncounterActivity;
@@ -78,7 +79,7 @@ import timber.log.Timber;
 
 import static social.entourage.android.service.EntourageService.KEY_LOCATION_PROVIDER_DISABLED;
 
-public class MapWithTourFragment extends MapFragment implements EntourageServiceListener {
+public class MapWithTourFragment extends MapFragment implements TourServiceListener {
     // ----------------------------------
     // CONSTANTS
     // ----------------------------------
@@ -148,7 +149,7 @@ public class MapWithTourFragment extends MapFragment implements EntourageService
     @Override
     public void onDestroy() {
         if (isBound && entourageService != null) {
-            entourageService.unregisterServiceListener(MapWithTourFragment.this);
+            entourageService.unregisterServiceListener(this);
             doUnbindService();
         }
         super.onDestroy();
@@ -817,7 +818,7 @@ public class MapWithTourFragment extends MapFragment implements EntourageService
         pauseTour();
 
         TourEndConfirmationFragment tourEndConfirmationFragment = TourEndConfirmationFragment.newInstance(getCurrentTour());
-        tourEndConfirmationFragment.show(getFragmentManager(), TourEndConfirmationFragment.TAG);
+        tourEndConfirmationFragment.show(getParentFragmentManager(), TourEndConfirmationFragment.TAG);
     }
 
     private void addEncounter(Encounter encounter) {
@@ -1044,11 +1045,11 @@ public class MapWithTourFragment extends MapFragment implements EntourageService
         if (entourageService != null) {
             if (content.isTourRelated() && newsfeedAdapter!=null) {
                 TimestampedObject timestampedObject = newsfeedAdapter.findCard(TimestampedObject.TOUR_CARD, content.getJoinableId());
-                if (timestampedObject != null) {
+                if (timestampedObject instanceof Tour) {
                     TourUser user = new TourUser();
                     user.setUserId(userId);
                     user.setStatus(status);
-                    entourageService.notifyListenersUserStatusChanged(user, (FeedItem) timestampedObject);
+                    entourageService.notifyListenersUserStatusChanged(user, (Tour)timestampedObject);
                 }
             }
         }
@@ -1125,6 +1126,10 @@ public class MapWithTourFragment extends MapFragment implements EntourageService
 
     @Subscribe
     public void checkIntentAction(Events.OnCheckIntentActionEvent event) {
+        if(getActivity()==null) {
+            Timber.w("No activity found");
+            return;
+        }
         Intent intent = getActivity().getIntent();
 
         checkAction(intent.getAction());
@@ -1179,7 +1184,7 @@ public class MapWithTourFragment extends MapFragment implements EntourageService
                 return;
             }
             entourageService.registerServiceListener(MapWithTourFragment.this);
-            entourageService.registerNewsFeedListener(MapWithTourFragment.this);
+            entourageService.registerApiListener(MapWithTourFragment.this);
 
             if (entourageService.isRunning()) {
                 updateFloatingMenuOptions();
@@ -1200,7 +1205,7 @@ public class MapWithTourFragment extends MapFragment implements EntourageService
         @Override
         public void onServiceDisconnected(ComponentName name) {
             entourageService.unregisterServiceListener(MapWithTourFragment.this);
-            entourageService.unregisterNewsFeedListener(MapWithTourFragment.this);
+            entourageService.unregisterApiListener(MapWithTourFragment.this);
             entourageService = null;
         }
     }

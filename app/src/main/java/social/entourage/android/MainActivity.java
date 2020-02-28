@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.res.ResourcesCompat;
@@ -260,10 +261,15 @@ public class MainActivity extends EntourageSecuredActivity
         }
     }
 
+    @Nullable
+    private MapFragment getMapFragment() {
+        return (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+    }
+
     private void sendMapFragmentExtras() {
         AuthenticationController authenticationController = getAuthenticationController();
         if (authenticationController == null || authenticationController.getUser() == null) return;
-        MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+        MapFragment mapFragment  = getMapFragment();
         if(mapFragment !=null) {
             mapFragment.onNotificationExtras(authenticationController.getUser().getId(), authenticationController.isUserToursOnly());
         }
@@ -296,7 +302,7 @@ public class MainActivity extends EntourageSecuredActivity
     }
 
     public void dismissMapFragmentDialogs() {
-        MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+        MapFragment mapFragment  = getMapFragment();
         if(mapFragment !=null) {
             mapFragment.dismissAllDialogs();
         }
@@ -381,7 +387,7 @@ public class MainActivity extends EntourageSecuredActivity
     }
 
     public void showMapFilters() {
-        MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+        MapFragment mapFragment  = getMapFragment();
         if(mapFragment !=null) {
             mapFragment.onShowFilter();
         }
@@ -427,7 +433,7 @@ public class MainActivity extends EntourageSecuredActivity
 
     @Override
     protected void logout() {
-        MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+        MapFragment mapFragment  = getMapFragment();
         if(mapFragment !=null) {
             mapFragment.saveOngoingTour();
         }
@@ -556,7 +562,7 @@ public class MainActivity extends EntourageSecuredActivity
 
     @Override
     public void showStopTourActivity(Tour tour) {
-        MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+        MapFragment mapFragment  = getMapFragment();
         if(mapFragment !=null) {
             mapFragment.pauseTour(tour);
         }
@@ -570,7 +576,7 @@ public class MainActivity extends EntourageSecuredActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().remove(fragment).commit();
         if (tour != null) {
-            MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+            MapFragment mapFragment  = getMapFragment();
             if(mapFragment !=null) {
                 mapFragment.displayChosenFeedItem(tour, 0);
             }
@@ -588,7 +594,7 @@ public class MainActivity extends EntourageSecuredActivity
         if (fragment != null) fragment.dismiss();
 
         // Show the create entourage fragment
-        MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+        MapFragment mapFragment  = getMapFragment();
         if(mapFragment !=null) {
             mapFragment.createEntourage();
         }
@@ -606,7 +612,7 @@ public class MainActivity extends EntourageSecuredActivity
         // Dismiss the disclaimer fragment
         fragment.dismiss();
 
-        MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+        MapFragment mapFragment  = getMapFragment();
         if(mapFragment !=null) {
             mapFragment.addEncounter();
         }
@@ -652,7 +658,7 @@ public class MainActivity extends EntourageSecuredActivity
     public void createEntourage() {
         showFeed();
         dismissMapFragmentDialogs();
-        MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+        MapFragment mapFragment  = getMapFragment();
         if(mapFragment !=null) {
             mapFragment.displayEntourageDisclaimer();
         }
@@ -661,7 +667,7 @@ public class MainActivity extends EntourageSecuredActivity
     public void addEncounter() {
         showFeed();
         dismissMapFragmentDialogs();
-        MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+        MapFragment mapFragment  = getMapFragment();
         if(mapFragment !=null) {
             mapFragment.onAddEncounter();
         }
@@ -699,7 +705,7 @@ public class MainActivity extends EntourageSecuredActivity
                     break;
                 case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:
                     addPushNotification(message);
-                    MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+                    MapFragment mapFragment  = getMapFragment();
                     if(mapFragment !=null) {
                         mapFragment.userStatusChanged(content, Tour.JOIN_STATUS_ACCEPTED);
                     }
@@ -729,7 +735,7 @@ public class MainActivity extends EntourageSecuredActivity
     }
 
     private void addPushNotification(Message message) {
-        MapFragment mapFragment  = (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+        MapFragment mapFragment  = getMapFragment();
         if(mapFragment !=null) {
             mapFragment.onPushNotificationReceived(message);
         }

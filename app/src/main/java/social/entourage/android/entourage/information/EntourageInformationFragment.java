@@ -2244,46 +2244,8 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
     }
 
     // ----------------------------------
-    // Tour Service listener implementation
+    // Entourage Service listener implementation
     // ----------------------------------
-
-    @Override
-    public void onTourCreated(final boolean created, @NonNull final String tourUUID) {
-
-    }
-
-    @Override
-    public void onTourUpdated(@NonNull final LatLng newPoint) {
-
-    }
-
-    @Override
-    public void onTourResumed(@NotNull List<? extends TourPoint> pointsToDraw, @NotNull String tourType, @NotNull Date startDate) {
-    }
-
-    @Override
-    public void onRetrieveToursNearby(@NotNull List<? extends Tour> tours) {
-        if (feedItem.getType() != TimestampedObject.TOUR_CARD) return;
-        for (Tour receivedTour:tours) {
-            if (receivedTour.getId() == this.feedItem.getId()) {
-                if(!receivedTour.isSame((Tour)this.feedItem)) {
-                    onFeedItemClosed(true, receivedTour);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void onRetrieveToursByUserId(@NotNull List<? extends Tour> tours) {
-    }
-
-    @Override
-    public void onUserToursFound(@NotNull Map<Long, ? extends Tour> tours) {
-    }
-
-    @Override
-    public void onToursFound(@NotNull Map<Long, ? extends Tour> tours) {
-    }
 
     @Override
     public void onFeedItemClosed(final boolean closed, final FeedItem feedItem) {

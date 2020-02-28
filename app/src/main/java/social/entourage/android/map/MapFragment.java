@@ -96,7 +96,7 @@ import social.entourage.android.view.EntourageSnackbar;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
-public class MapFragment extends BaseMapFragment implements NewsFeedListener, UserEditActionZoneFragment.FragmentListener {
+public abstract class MapFragment extends BaseMapFragment implements NewsFeedListener, UserEditActionZoneFragment.FragmentListener {
 
     // ----------------------------------
     // CONSTANTS
