@@ -28,7 +28,7 @@ ext {
 
     // Libraries versions
     annotationVersion = "1.1.0"
-    appCompatVersion = "1.1.0"
+    appCompatVersion = "1.2.0-alpha02"
     butterKnifeVersion = "10.2.1"
     constraintlayoutVersion = "1.1.3"
     coordinatorlayoutVersion="1.1.0"

@@ -31,7 +31,7 @@
 
     <string name="entourage_create_menu">Créer une action</string>
     <string name="entourage_create_submenu">Demander de l’aide ou faire un don</string>
-    <string name="entourage_create_menu_ask_help">Demander un don, de l\'aide, ...</string>
+    <string name="entourage_create_menu_ask_help">Demander de l\'aide</string>
     <string name="entourage_create_submenu_ask_help">Faire appel au réseau</string>
     <string name="entourage_create_menu_contribute">Proposer un don</string>
     <string name="entourage_create_submenu_contribute">Donner un bien, du temps, ...</string>
