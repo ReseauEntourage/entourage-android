@@ -54,7 +54,11 @@ class PartnerFragment : EntourageDialogFragment() {
             Timber.i("No activity for this View")
             return
         }
-        user_title_layout.title_close_button.setOnClickListener(View.OnClickListener {dismiss()})
+        if(partner==null) {
+            Timber.e("No partner for Partner View")
+            return
+        }
+        user_title_layout.title_close_button.setOnClickListener {dismiss()}
         // url
         Picasso.get()
                 .load(Uri.parse(partner!!.largeLogoUrl))
@@ -67,7 +71,7 @@ class PartnerFragment : EntourageDialogFragment() {
         partner_view_details!!.text = partner!!.description
         // phone
         val phone = partner!!.phone
-        if (phone == null || phone.length == 0) {
+        if (phone == null || phone.isEmpty()) {
             partner_view_phone_layout!!.visibility = View.GONE
         } else {
             partner_view_phone_layout!!.visibility = View.VISIBLE
@@ -75,7 +79,7 @@ class PartnerFragment : EntourageDialogFragment() {
         }
         // address
         val address = partner!!.address
-        if (address == null || address.length == 0) {
+        if (address == null || address.isEmpty()) {
             partner_view_address_layout!!.visibility = View.GONE
         } else {
             partner_view_address_layout!!.visibility = View.VISIBLE
@@ -83,7 +87,7 @@ class PartnerFragment : EntourageDialogFragment() {
         }
         // website
         val website = partner!!.websiteUrl
-        if (website == null || website.length == 0) {
+        if (website == null || website.isEmpty()) {
             partner_view_website_layout!!.visibility = View.GONE
         } else {
             partner_view_website_layout!!.visibility = View.VISIBLE
@@ -91,7 +95,7 @@ class PartnerFragment : EntourageDialogFragment() {
         }
         // email
         val email = partner!!.email
-        if (email == null || email.length == 0) {
+        if (email == null || email.isEmpty()) {
             partner_view_email_layout!!.visibility = View.GONE
         } else {
             partner_view_email_layout!!.visibility = View.VISIBLE

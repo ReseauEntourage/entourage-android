@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.google.android.material.snackbar.Snackbar;
@@ -93,6 +92,9 @@ public class AboutFragment extends EntourageDialogFragment {
     @Optional
     @OnClick(R.id.about_version_layout)
     protected void onVersionClicked() {
+        if(getActivity()== null) {
+            return;
+        }
         Uri uri = Uri.parse(getString(R.string.market_url, this.getActivity().getPackageName()));
         Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
         // To count with Play market backstack, After pressing back button,
@@ -117,7 +119,7 @@ public class AboutFragment extends EntourageDialogFragment {
         try {
             startActivity(browserIntent);
         } catch (ActivityNotFoundException ex) {
-            Toast.makeText(getContext(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+            EntourageSnackbar.INSTANCE.make(getView().findViewById(R.id.about_coordinator_layout), R.string.no_browser_error, Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -130,7 +132,7 @@ public class AboutFragment extends EntourageDialogFragment {
         try {
             startActivity(browserIntent);
         } catch (ActivityNotFoundException ex) {
-            Toast.makeText(getContext(), R.string.no_browser_error, Toast.LENGTH_SHORT).show();
+            EntourageSnackbar.INSTANCE.make(getView().findViewById(R.id.about_coordinator_layout), R.string.no_browser_error, Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -141,10 +143,10 @@ public class AboutFragment extends EntourageDialogFragment {
         intent.setData(Uri.parse("mailto:"));
         String[] addresses = {getString(R.string.contact_email)};
         intent.putExtra(Intent.EXTRA_EMAIL, addresses);
-        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+        if (getActivity()!=null && intent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivity(intent);
         } else {
-            Toast.makeText(getContext(), R.string.error_no_email, Toast.LENGTH_SHORT).show();
+            EntourageSnackbar.INSTANCE.make(getView().findViewById(R.id.about_coordinator_layout), R.string.error_no_email, Snackbar.LENGTH_SHORT).show();
         }
     }
 

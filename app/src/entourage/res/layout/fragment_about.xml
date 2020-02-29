@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/about_coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -39,8 +40,6 @@
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/about_items_padding"
                 android:paddingEnd="0dp"
-                android:paddingLeft="@dimen/about_items_padding"
-                android:paddingRight="0dp"
                 android:paddingStart="@dimen/about_items_padding"
                 android:paddingTop="@dimen/about_items_padding">
 
@@ -66,7 +65,6 @@
                 style="@style/SeparatorAlpha"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/about_items_padding"
                 android:layout_marginStart="@dimen/about_items_padding"
                 />
 
@@ -77,8 +75,6 @@
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/about_items_padding"
                 android:paddingEnd="0dp"
-                android:paddingLeft="@dimen/about_items_padding"
-                android:paddingRight="0dp"
                 android:paddingStart="@dimen/about_items_padding"
                 android:paddingTop="@dimen/about_items_padding">
 
@@ -104,7 +100,6 @@
                 style="@style/SeparatorAlpha"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/about_items_padding"
                 android:layout_marginStart="@dimen/about_items_padding"
                 />
 
@@ -115,8 +110,6 @@
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/about_items_padding"
                 android:paddingEnd="0dp"
-                android:paddingLeft="@dimen/about_items_padding"
-                android:paddingRight="0dp"
                 android:paddingStart="@dimen/about_items_padding"
                 android:paddingTop="@dimen/about_items_padding">
 
@@ -142,7 +135,6 @@
                 style="@style/SeparatorAlpha"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/about_items_padding"
                 android:layout_marginStart="@dimen/about_items_padding"
                 />
 
@@ -153,8 +145,6 @@
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/about_items_padding"
                 android:paddingEnd="0dp"
-                android:paddingLeft="@dimen/about_items_padding"
-                android:paddingRight="0dp"
                 android:paddingStart="@dimen/about_items_padding"
                 android:paddingTop="@dimen/about_items_padding">
 
@@ -180,7 +170,6 @@
                 style="@style/SeparatorAlpha"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/about_items_padding"
                 android:layout_marginStart="@dimen/about_items_padding"
                 />
 
@@ -191,8 +180,6 @@
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/about_items_padding"
                 android:paddingEnd="0dp"
-                android:paddingLeft="@dimen/about_items_padding"
-                android:paddingRight="0dp"
                 android:paddingStart="@dimen/about_items_padding"
                 android:paddingTop="@dimen/about_items_padding">
 
@@ -218,7 +205,6 @@
                 style="@style/SeparatorAlpha"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/about_items_padding"
                 android:layout_marginStart="@dimen/about_items_padding"
                 />
 
@@ -229,8 +215,6 @@
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/about_items_padding"
                 android:paddingEnd="0dp"
-                android:paddingLeft="@dimen/about_items_padding"
-                android:paddingRight="0dp"
                 android:paddingStart="@dimen/about_items_padding"
                 android:paddingTop="@dimen/about_items_padding">
 
@@ -256,7 +240,6 @@
                 style="@style/SeparatorAlpha"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/about_items_padding"
                 android:layout_marginStart="@dimen/about_items_padding"
                 />
 
@@ -267,8 +250,6 @@
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/about_items_padding"
                 android:paddingEnd="0dp"
-                android:paddingLeft="@dimen/about_items_padding"
-                android:paddingRight="0dp"
                 android:paddingStart="@dimen/about_items_padding"
                 android:paddingTop="@dimen/about_items_padding">
 
@@ -294,7 +275,6 @@
                 style="@style/SeparatorAlpha"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/about_items_padding"
                 android:layout_marginStart="@dimen/about_items_padding"
                 />
 
@@ -305,8 +285,6 @@
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/about_items_padding"
                 android:paddingEnd="0dp"
-                android:paddingLeft="@dimen/about_items_padding"
-                android:paddingRight="0dp"
                 android:paddingStart="@dimen/about_items_padding"
                 android:paddingTop="@dimen/about_items_padding">
 
@@ -332,7 +310,6 @@
                 style="@style/SeparatorAlpha"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/about_items_padding"
                 android:layout_marginStart="@dimen/about_items_padding"
                 />
 
@@ -343,8 +320,6 @@
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/about_items_padding"
                 android:paddingEnd="0dp"
-                android:paddingLeft="@dimen/about_items_padding"
-                android:paddingRight="0dp"
                 android:paddingStart="@dimen/about_items_padding"
                 android:paddingTop="@dimen/about_items_padding">
 
@@ -370,7 +345,6 @@
                 style="@style/SeparatorAlpha"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/about_items_padding"
                 android:layout_marginStart="@dimen/about_items_padding"
                 />
 
