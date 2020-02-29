@@ -6,13 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.entourage.layout_view_title.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.tools.CropCircleTransformation
 import timber.log.Timber
 import kotlinx.android.synthetic.main.fragment_partner.*
+import kotlinx.android.synthetic.main.layout_view_title.*
+import kotlinx.android.synthetic.main.layout_view_title.view.*
 
 /**
  * Fragment that displays the details of a partner organisation

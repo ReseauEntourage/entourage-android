@@ -68,7 +68,7 @@
             android:layout_centerVertical="true"
             android:contentDescription="@string/empty_description"
             android:src="@drawable/arrow_grey"
-            android:tint="@color/accent_dark"/>
+            app:tint="@color/accent_dark"/>
     </RelativeLayout>
 
     <View
@@ -108,7 +108,7 @@
             android:contentDescription="@string/empty_description"
             android:scaleType="fitEnd"
             android:src="@drawable/arrow_grey"
-            android:tint="@color/accent_dark"/>
+            app:tint="@color/accent_dark"/>
     </LinearLayout>
 
     <View
@@ -148,7 +148,7 @@
             android:contentDescription="@string/empty_description"
             android:scaleType="fitEnd"
             android:src="@drawable/arrow_grey"
-            android:tint="@color/accent_dark"/>
+            app:tint="@color/accent_dark"/>
     </LinearLayout>
 
     <LinearLayout
@@ -180,7 +180,7 @@
             android:contentDescription="@string/empty_description"
             android:scaleType="fitEnd"
             android:src="@drawable/arrow_grey"
-            android:tint="@color/accent_dark"/>
+            app:tint="@color/accent_dark"/>
     </LinearLayout>
 
     <LinearLayout

@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import javax.inject.Inject;
 
+import social.entourage.android.about.VoisinageAboutFragment;
 import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.model.map.FeedItem;
@@ -65,6 +66,11 @@ public class MainPresenter extends MainBasePresenter {
                 } catch (Exception ex) {
                     Toast.makeText(activity, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
                 }
+                break;
+            case R.id.action_about:
+                EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_ABOUT);
+                VoisinageAboutFragment aboutFragment = new VoisinageAboutFragment();
+                aboutFragment.show(activity.getSupportFragmentManager(), VoisinageAboutFragment.TAG);
                 break;
             default:
                 super.handleMenu(menuId);

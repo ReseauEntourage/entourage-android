@@ -12,11 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.collection.ArrayMap;
 import androidx.fragment.app.FragmentManager;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import social.entourage.android.about.AboutFragment;
 import social.entourage.android.api.AppRequest;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
@@ -93,27 +93,6 @@ public abstract class MainBasePresenter implements AvatarUpdatePresenter {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_LOGOUT);
                 activity.logout();
                 break;
-            case R.id.action_about:
-
-                /*
-                Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.DEEP_LINKS_SCHEME + "://guide"));
-                        try {
-                            activity.startActivity(intent);
-                        } catch (Exception ex) {
-                            Log.d("DEEPLINK", ex.toString());
-                        }
-                    }
-                }, 8*1000);
-                */
-
-                EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_ABOUT);
-                AboutFragment aboutFragment = new AboutFragment();
-                aboutFragment.show(activity.getSupportFragmentManager(), AboutFragment.TAG);
-                break;
             case R.id.action_blog:
                 EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_BLOG);
                 activity.showWebViewForLinkId(Constants.SCB_LINK_ID);
@@ -182,7 +161,7 @@ public abstract class MainBasePresenter implements AvatarUpdatePresenter {
         }
     }
 
-    protected void displayTutorial(boolean forced) {
+    void displayTutorial(boolean forced) {
         if (!forced && !Configuration.getInstance().showTutorial()) return;
         if (activity != null && activity.isSafeToCommit()) {
             CarouselFragment carouselFragment = new CarouselFragment();
@@ -216,7 +195,7 @@ public abstract class MainBasePresenter implements AvatarUpdatePresenter {
     // API CALLS METHODS
     // ----------------------------------
 
-    public void checkForUpdate() {
+    void checkForUpdate() {
         if (checkForUpdate) {
             Call<ResponseBody> call = appRequest.checkForUpdate();
             call.enqueue(new Callback<ResponseBody>() {
@@ -238,7 +217,7 @@ public abstract class MainBasePresenter implements AvatarUpdatePresenter {
         }
     }
 
-    public void updateUser(String email, String smsCode, String phone, Location location) {
+    void updateUser(String email, String smsCode, String phone, Location location) {
         if (activity != null) {
 
             String deviceId = getDeviceID();
