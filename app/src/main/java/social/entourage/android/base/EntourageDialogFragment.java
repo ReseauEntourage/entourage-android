@@ -18,7 +18,6 @@ import android.view.inputmethod.InputMethodManager;
 
 import social.entourage.android.R;
 import social.entourage.android.deeplinks.DeepLinksManager;
-import timber.log.Timber;
 
 /**
  * Base DialogFragment with no title and full screen
@@ -53,7 +52,6 @@ public class EntourageDialogFragment extends DialogFragment {
         if (getDialog() == null) {
             //TODO should we use setShowsDialog(false) here
             setShowsDialog(false);
-            Timber.w("No dialog before onActivityCreated for this DialogFragment: %s", this.getClass().getName());
         }
 
         super.onActivityCreated(savedInstanceState);
@@ -63,8 +61,6 @@ public class EntourageDialogFragment extends DialogFragment {
             if (window != null && window.getAttributes() != null) {
                 window.getAttributes().windowAnimations = getSlideStyle();
             }
-        } else {
-            Timber.e("No dialog after onActivityCreated for this DialogFragment: %s", this.getClass().getName());
         }
     }
 
@@ -104,7 +100,7 @@ public class EntourageDialogFragment extends DialogFragment {
         return new ColorDrawable(Color.TRANSPARENT);
     }
 
-    public void showKeyboard() {
+    protected void showKeyboard() {
         Dialog dialog = getDialog();
         if (dialog != null) {
             Window window = dialog.getWindow();
@@ -115,11 +111,11 @@ public class EntourageDialogFragment extends DialogFragment {
     }
 
     protected void hideKeyboard() {
-        View view = getDialog().getCurrentFocus();
-        if (view != null) {
+        if (getDialog() != null && getDialog().getCurrentFocus() !=null && getActivity()!= null) {
             InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            if(imm!=null) {
+                imm.hideSoftInputFromWindow(getDialog().getCurrentFocus().getWindowToken(), 0);
+            }
         }
     }
-
 }

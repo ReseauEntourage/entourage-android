@@ -396,11 +396,9 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
             return;
         }
         if (event.getPartner() != null) {
-            PartnerFragment partnerFragment = PartnerFragment.newInstance(event.getPartner());
-            partnerFragment.show(getFragmentManager(), PartnerFragment.TAG);
+            PartnerFragment.Companion.newInstance(event.getPartner()).show(getParentFragmentManager(), PartnerFragment.TAG);
         } else {
-            PartnerFragment partnerFragment = PartnerFragment.newInstance(event.getPartnerId());
-            partnerFragment.show(getFragmentManager(), PartnerFragment.TAG);
+            PartnerFragment.Companion.newInstance(event.getPartnerId()).show(getParentFragmentManager(), PartnerFragment.TAG);
         }
     }
 
