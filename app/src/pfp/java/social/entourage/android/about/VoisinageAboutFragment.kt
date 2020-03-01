@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_get_involved.*
 import social.entourage.android.*
 import kotlinx.android.synthetic.main.fragment_about.*
+import kotlinx.android.synthetic.main.fragment_get_involved.about_version_description
+import kotlinx.android.synthetic.pfp.fragment_about.*
 
 class VoisinageAboutFragment : AboutFragment() {
     // ----------------------------------
