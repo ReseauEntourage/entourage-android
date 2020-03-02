@@ -181,8 +181,8 @@ public class FeedItemOptionsFragment extends EntourageDialogFragment {
             else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
                 //BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem, false));
                 FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
-                EntourageCloseFragment entourageCloseFragment = EntourageCloseFragment.newInstance(feedItem);
-                entourageCloseFragment.show(fragmentManager, EntourageCloseFragment.TAG, getContext());
+                EntourageCloseFragment entourageCloseFragment = EntourageCloseFragment.Companion.newInstance(feedItem);
+                entourageCloseFragment.show(fragmentManager, EntourageCloseFragment.Companion.getTAG(), getContext());
                 dismiss();
             }
         }

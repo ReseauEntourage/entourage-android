@@ -717,8 +717,8 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
                 //show close fragment
                 if (getActivity() != null) {
                     FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
-                    EntourageCloseFragment entourageCloseFragment = EntourageCloseFragment.newInstance(feedItem);
-                    entourageCloseFragment.show(fragmentManager, EntourageCloseFragment.TAG, getContext());
+                    EntourageCloseFragment entourageCloseFragment = EntourageCloseFragment.Companion.newInstance(feedItem);
+                    entourageCloseFragment.show(fragmentManager, EntourageCloseFragment.Companion.getTAG(), getContext());
                 }
             }
         } else if (feedItem.getType() == TimestampedObject.TOUR_CARD && feedItem.getStatus().equals(FeedItem.STATUS_CLOSED)) {
