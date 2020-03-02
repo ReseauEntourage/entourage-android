@@ -92,14 +92,14 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
     private void hideExtraScreens() {
         try {
             //Hide the wizard pages
-            DialogFragment fragment1 = (DialogFragment) getParentFragmentManager().findFragmentByTag(CreateActionWizardPage1Fragment.TAG);
+            DialogFragment fragment1 = (DialogFragment) getParentFragmentManager().findFragmentByTag(CreateActionWizardPage1Fragment.Companion.getTAG());
             if (fragment1 != null) fragment1.dismiss();
-            DialogFragment fragment2 = (DialogFragment) getParentFragmentManager().findFragmentByTag(CreateActionWizardPage2Fragment.TAG);
+            DialogFragment fragment2 = (DialogFragment) getParentFragmentManager().findFragmentByTag(CreateActionWizardPage2Fragment.Companion.getTAG());
             if (fragment2 != null) fragment2.dismiss();
-            DialogFragment fragment3 = (DialogFragment) getParentFragmentManager().findFragmentByTag(CreateActionWizardPage3Fragment.TAG);
+            DialogFragment fragment3 = (DialogFragment) getParentFragmentManager().findFragmentByTag(CreateActionWizardPage3Fragment.Companion.getTAG());
             if (fragment3 != null) fragment3.dismiss();
             //Hide the join type fragment
-            DialogFragment joinTypeFragment = (DialogFragment) getParentFragmentManager().findFragmentByTag(CreateEntourageJoinTypeFragment.TAG);
+            DialogFragment joinTypeFragment = (DialogFragment) getParentFragmentManager().findFragmentByTag(CreateEntourageJoinTypeFragment.Companion.getTAG());
             if (joinTypeFragment != null) joinTypeFragment.dismiss();
         } catch(IllegalStateException e) {
             Timber.w(e);
@@ -115,7 +115,7 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
         try {
             CreateActionWizardPage1Fragment createActionWizardPage1Fragment = new CreateActionWizardPage1Fragment();
             createActionWizardPage1Fragment.setListener(this);
-            createActionWizardPage1Fragment.show(getParentFragmentManager(), CreateActionWizardPage1Fragment.TAG);
+            createActionWizardPage1Fragment.show(getParentFragmentManager(), CreateActionWizardPage1Fragment.Companion.getTAG());
         } catch(IllegalStateException e) {
             Timber.w(e);
         }
@@ -150,7 +150,7 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
                 try {
                     CreateActionWizardPage2Fragment createActionWizardPage2Fragment = new CreateActionWizardPage2Fragment();
                     createActionWizardPage2Fragment.setListener(this);
-                    createActionWizardPage2Fragment.show(getParentFragmentManager(), CreateActionWizardPage2Fragment.TAG);
+                    createActionWizardPage2Fragment.show(getParentFragmentManager(), CreateActionWizardPage2Fragment.Companion.getTAG());
                 } catch(IllegalStateException e) {
                     Timber.w(e);
                 }
@@ -179,7 +179,7 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
                 try {
                     CreateActionWizardPage3Fragment createActionWizardPage3Fragment = new CreateActionWizardPage3Fragment();
                     createActionWizardPage3Fragment.setListener(this);
-                    createActionWizardPage3Fragment.show(getParentFragmentManager(), CreateActionWizardPage3Fragment.TAG);
+                    createActionWizardPage3Fragment.show(getParentFragmentManager(), CreateActionWizardPage3Fragment.Companion.getTAG());
                 } catch(IllegalStateException e) {
                     Timber.w(e);
                 }
@@ -188,16 +188,14 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
     }
 
     private void handleStep3(int option) {
-        switch (option) {
-            case 1:
-                if (editedEntourage != null) {
-                    super.saveEditedEntourage();
-                } else {
-                    recipientConsentObtained = false;
-                    super.createEntourage();
-                    recipientConsentObtained = true;
-                }
-                break;
+        if (option == 1) {
+            if (editedEntourage != null) {
+                super.saveEditedEntourage();
+            } else {
+                recipientConsentObtained = false;
+                super.createEntourage();
+                recipientConsentObtained = true;
+            }
         }
     }
 
@@ -209,7 +207,7 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
        try {
             CreateEntourageJoinTypeFragment createEntourageJoinTypeFragment = new CreateEntourageJoinTypeFragment();
             createEntourageJoinTypeFragment.setListener(this);
-            createEntourageJoinTypeFragment.show(getParentFragmentManager(), CreateEntourageJoinTypeFragment.TAG);
+            createEntourageJoinTypeFragment.show(getParentFragmentManager(), CreateEntourageJoinTypeFragment.Companion.getTAG());
         } catch(IllegalStateException e) {
            Timber.w(e);
        }
