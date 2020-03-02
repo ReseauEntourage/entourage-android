@@ -20,7 +20,8 @@
         <TextView
             android:id="@+id/announcement_card_title"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="wrap_content"
+            android:minHeight="35dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_toStartOf="@+id/announcement_card_photo"
@@ -30,7 +31,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="@dimen/entourage_font_large"
             android:textStyle="bold"
-            tools:text="Carte Annonce : titre"/>
+            tools:text="Carte Annonce : titre qui peut faire plusieurs lignes sans problèmes"/>
 
         <ImageView
             android:id="@+id/announcement_card_photo"

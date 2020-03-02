@@ -1581,9 +1581,9 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
     private String formattedDaysIntervalFromToday(Date rawDate) {
         LocalDate today = new LocalDate();
         LocalDate date = new LocalDate(rawDate);
-        if (date.isEqual(today)) return "aujourd'hui";
+        if (date.isEqual(today)) return this.getString(R.string.date_today).toLowerCase();
         int days = Days.daysBetween(date, today).getDays();
-        if (days == -1) return "hier";
+        if (days == 1) return this.getString(R.string.date_yesterday).toLowerCase();
         return String.format(Locale.FRENCH, "il y a %d jours", days);
     }
 

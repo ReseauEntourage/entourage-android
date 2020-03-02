@@ -61,12 +61,13 @@
             app:htmlText="@string/carousel_p4_content"/>
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="14dp"
             android:contentDescription="@string/empty_description"
-            android:src="@drawable/carousel_p4_plus_with_circle"/>
+            app:srcCompat="@drawable/ic_add_circle_white_24dp"
+            app:tint="@color/accent"/>
     </LinearLayout>
 
 </LinearLayout>
