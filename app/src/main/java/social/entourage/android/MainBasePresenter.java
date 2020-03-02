@@ -162,7 +162,7 @@ public abstract class MainBasePresenter implements AvatarUpdatePresenter {
     }
 
     void displayTutorial(boolean forced) {
-        if (!forced && !Configuration.getInstance().showTutorial()) return;
+        if (!forced && !Configuration.INSTANCE.showTutorial()) return;
         if (activity != null && activity.isSafeToCommit()) {
             CarouselFragment carouselFragment = new CarouselFragment();
             try {

@@ -255,11 +255,11 @@ public class UserFragment extends EntourageDialogFragment {
 
     private void showUserEditFragment() {
         // Allow editing only of the logged user and if enabled in configuration
-        if (!(isMyProfile && Configuration.getInstance().showUserEditProfile())) return;
+        if (!(isMyProfile && Configuration.INSTANCE.showUserEditProfile())) return;
         // Show the edit profile screen
         UserEditFragment fragment = new UserEditFragment();
         try{
-            fragment.show(getFragmentManager(), UserEditFragment.TAG);
+            fragment.show(getParentFragmentManager(), UserEditFragment.TAG);
         } catch(IllegalStateException e) {
             Timber.w(e);
         }

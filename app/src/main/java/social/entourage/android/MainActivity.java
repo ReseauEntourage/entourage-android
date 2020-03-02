@@ -337,7 +337,7 @@ public class MainActivity extends EntourageSecuredActivity
     private boolean shouldBypassNavigation(@IdRes int itemId) {
         if(itemId==navigationDataSource.getActionMenuId()) {
             //Handling special cases
-            if (!Configuration.getInstance().showPlusScreen()) {
+            if (!Configuration.INSTANCE.showPlusScreen()) {
                 // Show directly the create entourage disclaimer
                 createEntourage();
                 return true;

@@ -594,7 +594,7 @@ public class LoginActivity extends EntourageActivity
                 }
             }
         } else {
-            if (isOnboarding || Configuration.getInstance().showLostCodeErrorToast()) {
+            if (isOnboarding || Configuration.INSTANCE.showLostCodeErrorToast()) {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_03_2);
                 displayToast(R.string.login_text_lost_code_ko);
             } else {

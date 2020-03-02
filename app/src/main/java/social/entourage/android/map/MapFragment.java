@@ -387,7 +387,7 @@ public abstract class MapFragment extends BaseMapFragment implements NewsFeedLis
         }
 
         // Check if we need to show the entourage disclaimer
-        if (Configuration.getInstance().showEntourageDisclaimer()) {
+        if (Configuration.INSTANCE.showEntourageDisclaimer()) {
             if (presenter != null) {
                 presenter.displayEntourageDisclaimer(entourageGroupType);
             }
