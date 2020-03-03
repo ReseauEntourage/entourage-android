@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'io.fabric'
 apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 apply plugin: 'com.google.firebase.firebase-perf'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -187,7 +188,7 @@ dependencies {
 
     compileOnly javaDependencies.values()
 
-    annotationProcessor annotationDependencies.values()
+    kapt annotationDependencies.values()
 
     androidTestImplementation testDependencies.values()
 }

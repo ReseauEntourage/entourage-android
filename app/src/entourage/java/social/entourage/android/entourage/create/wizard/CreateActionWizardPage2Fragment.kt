@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import butterknife.ButterKnife
-import butterknife.OnClick
 import kotlinx.android.synthetic.entourage.fragment_create_action_wizard_page2.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.Constants
