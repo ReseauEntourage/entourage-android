@@ -33,7 +33,6 @@
             android:id="@+id/poi_type_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/white"

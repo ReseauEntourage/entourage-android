@@ -1,7 +1,7 @@
 package social.entourage.android.guide.filter
 
 import android.util.SparseBooleanArray
-import social.entourage.android.guide.PoiRenderer.CategoryType
+import social.entourage.android.guide.poi.PoiRenderer.CategoryType
 import java.io.Serializable
 
 /**

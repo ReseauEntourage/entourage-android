@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.*
 import kotlinx.android.synthetic.main.layout_filter_item.view.*
 import social.entourage.android.R
-import social.entourage.android.guide.PoiRenderer.CategoryType
+import social.entourage.android.guide.poi.PoiRenderer.CategoryType
 import social.entourage.android.guide.filter.GuideFilter.Companion.instance
 import java.util.*
 
@@ -44,7 +44,7 @@ class GuideFilterAdapter : BaseAdapter() {
         // Populate the view
         val item = getItem(position)
         val categoryType = item.categoryType
-        view.filter_item_text.text = categoryType.getName()
+        view.filter_item_text.text = categoryType.name
         view.filter_item_image.setImageResource(categoryType.resourceId)
         // set the switch
         view.filter_item_switch.isChecked = item.isChecked

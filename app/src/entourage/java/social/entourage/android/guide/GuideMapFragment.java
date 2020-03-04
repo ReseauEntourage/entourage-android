@@ -1,11 +1,9 @@
 package social.entourage.android.guide;
 
 import android.animation.ValueAnimator;
-import android.content.res.ColorStateList;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,6 +37,8 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.guide.filter.GuideFilter;
+import social.entourage.android.guide.poi.PoiRenderer;
+import social.entourage.android.guide.poi.PoisAdapter;
 import social.entourage.android.location.EntourageLocation;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
@@ -55,7 +55,6 @@ import social.entourage.android.location.LocationUtils;
 import social.entourage.android.map.BaseMapFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
-import social.entourage.android.view.EntourageTapPrompt;
 import timber.log.Timber;
 
 public class GuideMapFragment extends BaseMapFragment {

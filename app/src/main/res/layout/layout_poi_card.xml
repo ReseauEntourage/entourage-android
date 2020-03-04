@@ -11,21 +11,19 @@
         android:id="@+id/poi_card_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/poi_card_call_button"
         android:layout_toStartOf="@+id/poi_card_call_button"
         android:textColor="@color/greyish_brown"
         android:textSize="@dimen/entourage_font_large"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        tools:text="Nom du PIO qui peut être vraiment très long"/>
 
     <Button
         android:id="@+id/poi_card_call_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:background="?android:attr/selectableItemBackground"
         android:drawablePadding="5dp"
@@ -37,7 +35,6 @@
         android:id="@+id/poi_card_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/poi_card_title"
         android:textColor="@color/brownish_grey"
@@ -49,14 +46,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/poi_card_title"
         android:layout_toEndOf="@+id/poi_card_type"
-        android:layout_toRightOf="@+id/poi_card_type"
         android:paddingEnd="3dp"
         android:paddingLeft="3dp"
         android:paddingRight="3dp"
         android:paddingStart="3dp"
         android:text="@string/poi_card_bullet"
         android:textColor="@color/brownish_grey"
-        android:textSize="@dimen/entourage_font_medium"/>
+        android:textSize="@dimen/entourage_font_medium"
+        tools:text="S'occuper de soi"/>
 
     <TextView
         android:id="@+id/poi_card_address"
@@ -64,21 +61,20 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/poi_card_title"
         android:layout_toEndOf="@+id/poi_card_bullet"
-        android:layout_toLeftOf="@+id/poi_card_call_button"
-        android:layout_toRightOf="@+id/poi_card_bullet"
         android:layout_toStartOf="@+id/poi_card_call_button"
         android:maxLines="2"
         android:textColor="@color/brownish_grey"
-        android:textSize="@dimen/entourage_font_medium"/>
+        android:textSize="@dimen/entourage_font_medium"
+        tools:text="Chez Entourage 75010 Paris, France"/>
 
     <TextView
         android:id="@+id/poi_card_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/poi_card_address"
         android:textColor="@color/greyish"
-        android:textSize="@dimen/entourage_font_small"/>
+        android:textSize="@dimen/entourage_font_small"
+        tools:text="0 km"/>
 
 </RelativeLayout>
