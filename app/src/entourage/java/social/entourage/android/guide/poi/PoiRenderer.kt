@@ -38,7 +38,7 @@ class PoiRenderer(context: Context?, map: GoogleMap?, clusterManager: ClusterMan
         return CategoryType.OTHER
     }
 
-    fun setCategories(categories: List<Category>?) {
+    fun setCategories(categories: List<Category>) {
         this.categories = categories
     }
 

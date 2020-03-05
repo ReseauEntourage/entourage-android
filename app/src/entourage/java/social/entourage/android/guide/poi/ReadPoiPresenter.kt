@@ -15,10 +15,10 @@ class ReadPoiPresenter(private val fragment: ReadPoiFragment) {
         var listenerAddress: OnAddressClickListener? = null
         var listenerPhone: OnPhoneClickListener? = null
         if (poi.address != null) {
-            listenerAddress = OnAddressClickListener(fragment.requireActivity(), poi.address)
+            listenerAddress = OnAddressClickListener(fragment.requireActivity(), poi.address!!)
         }
         if (poi.phone != null) {
-            listenerPhone = OnPhoneClickListener(poi.phone)
+            listenerPhone = OnPhoneClickListener(poi.phone!!)
         }
         fragment.onDisplayedPoi(poi, listenerAddress, listenerPhone)
     }

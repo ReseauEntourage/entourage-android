@@ -273,8 +273,8 @@ public class MapVoisinageFragment extends MapFragment implements EntourageServic
                 feedItemOptionsFragment.show(getActivity().getSupportFragmentManager(), FeedItemOptionsFragment.TAG);
                 return;
             }
-            EntourageCloseFragment entourageCloseFragment = EntourageCloseFragment.newInstance(feedItem);
-            entourageCloseFragment.show(getActivity().getSupportFragmentManager(), EntourageCloseFragment.TAG, getContext());
+            EntourageCloseFragment entourageCloseFragment = EntourageCloseFragment.Companion.newInstance(feedItem);
+            entourageCloseFragment.show(getActivity().getSupportFragmentManager(), EntourageCloseFragment.Companion.getTAG(), getContext());
         }
     }
 
