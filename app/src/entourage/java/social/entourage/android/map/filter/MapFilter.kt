@@ -87,7 +87,7 @@ class MapFilter : MapFilterInterface, Serializable {
         }
     }
 
-    fun setDefaultValues(isProUser: Boolean) {
+    override fun setDefaultValues(isProUser: Boolean) {
         //var isProUser:Boolean? = EntourageApplication.get()?.entourageComponent?.authenticationController?.user?.isPro
         //if(isProUser==null) isProUser = false;
         tourTypeMedical = isProUser
