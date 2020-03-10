@@ -31,6 +31,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="@dimen/entourage_font_large"
             android:textStyle="bold"
+            android:textColor="@color/map_announcement_background"
             tools:text="Carte Annonce : titre qui peut faire plusieurs lignes sans problèmes"/>
 
         <ImageView
@@ -66,6 +67,7 @@
         android:layout_marginTop="5dp"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textSize="@dimen/entourage_font_medium"
+        android:textColor="@color/map_announcement_background"
         android:textAlignment="center"
         tools:text="L'annonce est ici !"/>
 
@@ -109,7 +111,7 @@
             android:paddingRight="@dimen/act_button_right_padding"
             android:paddingStart="@dimen/act_button_right_padding"
             android:textSize="@dimen/entourage_font_medium"
-            android:textColor="@color/greyish_brown"
+            android:textColor="@color/map_announcement_background"
             tools:text="Annonce"/>
 
         <ImageView

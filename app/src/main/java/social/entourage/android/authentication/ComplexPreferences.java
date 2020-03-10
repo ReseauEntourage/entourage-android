@@ -57,7 +57,7 @@ public class ComplexPreferences {
             try{
                 return GSON.fromJson(gson, a);
             } catch (Exception e) {
-                throw new IllegalArgumentException("Object storaged with key " + key + " is instanceof other class");
+                throw new IllegalArgumentException("Object storage with key " + key + " is instanceof other class");
             }
         }
     }
@@ -70,7 +70,7 @@ public class ComplexPreferences {
             try{
                 return GSON.fromJson(gson, t);
             } catch (Exception e) {
-                throw new IllegalArgumentException("Object storaged with key " + key + " is instanceof other class");
+                throw new IllegalArgumentException("Object storage with key " + key + " is instanceof other class: "+e.getLocalizedMessage());
             }
         }
     }

@@ -328,8 +328,9 @@ public abstract class BaseMapFragment extends Fragment implements BackPressable,
             gpsLayout.setText(LocationUtils.INSTANCE.isLocationEnabled()? getString(R.string.map_gps_no_permission):getString(R.string.map_gps_unavailable));
             gpsLayout.setVisibility(visibility? View.VISIBLE : View.GONE);
 
-            View recenterButton = getView().findViewById(R.id.layout_feed_map_card_recenter_button);
-            if(recenterButton!=null) recenterButton.setVisibility(visibility?View.INVISIBLE:View.VISIBLE);
+            if(getAdapter()!=null) {
+                getAdapter().displayGeolocStatusIcon(!visibility);
+            };
 
         }
 

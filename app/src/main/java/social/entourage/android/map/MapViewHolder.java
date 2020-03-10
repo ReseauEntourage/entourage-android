@@ -78,6 +78,10 @@ public class MapViewHolder extends BaseCardViewHolder {
         }
     }
 
+    public void displayGeolocStatusIcon(boolean visible) {
+        mGeolocRecenterButton.setVisibility(visible?View.VISIBLE:View.INVISIBLE);
+    }
+
     public void setGeolocStatusIcon(boolean active) {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             mGeolocRecenterButton.setImageDrawable(AppCompatResources.getDrawable(this.mGeolocRecenterButton.getContext(), active?R.drawable.ic_my_location:R.drawable.ic_my_location_off));

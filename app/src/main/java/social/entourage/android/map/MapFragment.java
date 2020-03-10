@@ -31,6 +31,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -486,8 +487,17 @@ public abstract class MapFragment extends BaseMapFragment implements NewsFeedLis
         if (presenter != null) {
             presenter.saveMapFilter();
         }
+
+        updateFilterButtonText();
         // Refresh the newsfeed
         refreshFeed();
+    }
+
+    private void updateFilterButtonText() {
+        View v = getView().findViewById(R.id.fragment_map_filter_button);
+        if(v instanceof ExtendedFloatingActionButton) {
+            ((ExtendedFloatingActionButton) v).setText(MapFilterFactory.getMapFilter().isDefaultFilter() ? R.string.map_no_filter : R.string.map_filters_activated);
+        }
     }
 
     public void onNewsfeedLoadMoreRequested(Events.OnNewsfeedLoadMoreEvent event) {
@@ -751,7 +761,7 @@ public abstract class MapFragment extends BaseMapFragment implements NewsFeedLis
         User me = EntourageApplication.me(getActivity());
         boolean isPro = (me != null && me.isPro());
         MapFilterFragment mapFilterFragment = MapFilterFragment.newInstance(isPro);
-        mapFilterFragment.show(getFragmentManager(), MapFilterFragment.TAG);
+        mapFilterFragment.show(getParentFragmentManager(), MapFilterFragment.TAG);
     }
 
     @OnClick(R.id.fragment_map_new_entourages_button)
@@ -765,6 +775,7 @@ public abstract class MapFragment extends BaseMapFragment implements NewsFeedLis
     // ----------------------------------
 
     private void initializeFloatingMenu() {
+        updateFilterButtonText();
         updateFloatingMenuOptions();
     }
 

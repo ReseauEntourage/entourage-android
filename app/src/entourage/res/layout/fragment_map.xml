@@ -41,97 +41,118 @@
 
             </com.google.android.material.tabs.TabLayout>
 
-            <RelativeLayout
-                android:id="@+id/fragment_map_main_layout"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/fragment_guide_main_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/fragment_map_top_tab"
-                android:layout_alignParentStart="true"
-                android:orientation="vertical"
-                android:weightSum="8">
+                android:layout_below="@+id/fragment_map_top_tab">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/fragment_map_tours_view"
+                <RelativeLayout
+                    android:id="@+id/fragment_map_main_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="0dp" />
+                    android:layout_alignParentStart="true"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <Button
-                    android:id="@+id/fragment_map_new_entourages_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/new_entourages"
-                    android:drawableStart="@drawable/arrow_new_entourages"
-                    android:paddingStart="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingEnd="10dp"
-                    android:paddingRight="10dp"
-                    android:text="@string/activity_map_new_entourages"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:visibility="gone" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/fragment_map_tours_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="0dp" />
+
+                    <Button
+                        android:id="@+id/fragment_map_new_entourages_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/new_entourages"
+                        android:drawableStart="@drawable/arrow_new_entourages"
+                        android:paddingStart="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingRight="10dp"
+                        android:text="@string/activity_map_new_entourages"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
+
+                    <TextView
+                        android:id="@+id/fragment_map_empty_list"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/fragment_map_tours_view"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/map_empty_newsfeed"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/entourage_font_medium"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
+
+                </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/fragment_map_empty_list"
+                    android:id="@+id/fragment_map_gps"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:background="@drawable/bg_clickable_layout_gps"
+                    android:gravity="center"
+                    android:text="@string/map_gps_unavailable"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/entourage_font_small"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible" />
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/fragment_map_filter_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/fragment_map_tours_view"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/map_empty_newsfeed"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/entourage_font_medium"
-                    android:visibility="gone" />
+                    android:layout_below="@+id/fragment_map_gps"
+                    android:layout_gravity="top"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:contentDescription="@string/guide_filter_title"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:padding="8dp"
+                    android:text="@string/guide_filters_activated"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:backgroundTint="@color/accent"
+                    app:icon="@drawable/ic_filter_list_white_24dp"
+                    app:iconPadding="0dp"
+                    app:layout_anchorGravity="start"
+                    app:layout_constraintEnd_toStartOf="@+id/fragment_map_display_toggle"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/fragment_map_gps"/>
 
-
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/fragment_map_gps"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_below="@+id/fragment_map_top_tab"
-                android:background="@drawable/bg_clickable_layout_gps"
-                android:gravity="center"
-                android:text="@string/map_gps_unavailable"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/entourage_font_small"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fragment_map_filter_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/fragment_map_gps"
-                android:layout_alignParentStart="true"
-                android:layout_gravity="top"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:contentDescription="@string/guide_filter_title"
-                android:visibility="visible"
-                app:backgroundTint="@color/accent"
-                app:fabSize="mini"
-                app:srcCompat="@drawable/ic_filter_list_white_24dp" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fragment_map_display_toggle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/fragment_map_gps"
-                android:layout_alignParentEnd="true"
-                android:layout_gravity="top"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:contentDescription="@string/map_poi_propose_button"
-                android:visibility="visible"
-                app:backgroundTint="@color/accent"
-                app:fabSize="mini"
-                app:srcCompat="@drawable/ic_map_white_24dp" />
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fragment_map_display_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fragment_map_gps"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:contentDescription="@string/map_poi_propose_button"
+                    android:visibility="visible"
+                    app:backgroundTint="@color/accent"
+                    app:fabSize="mini"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/fragment_map_gps"
+                    app:srcCompat="@drawable/ic_map_white_24dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <view
                 android:id="@+id/fragment_map_entourage_mini_cards"
@@ -151,7 +172,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="50dp"
                 android:layout_marginLeft="50dp"
-                android:layout_marginTop="120dp"
+                android:layout_marginTop="150dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginRight="50dp"
                 android:background="@drawable/rounded_dialog"
