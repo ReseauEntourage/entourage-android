@@ -124,6 +124,8 @@
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
                     android:padding="8dp"
+                    android:paddingEnd="16dp"
+                    android:paddingStart="16dp"
                     android:text="@string/guide_filters_activated"
                     android:textColor="@color/white"
                     android:textSize="18sp"
