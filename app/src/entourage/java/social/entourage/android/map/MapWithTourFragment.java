@@ -20,11 +20,10 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
-
-import com.github.clans.fab.FloatingActionButton;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.otto.Subscribe;
 
@@ -72,7 +71,6 @@ import social.entourage.android.service.TourServiceListener;
 import social.entourage.android.tour.choice.ChoiceFragment;
 import social.entourage.android.tour.confirmation.TourEndConfirmationFragment;
 import social.entourage.android.tour.encounter.CreateEncounterActivity;
-import social.entourage.android.service.EntourageServiceListener;
 import social.entourage.android.tour.join.TourJoinRequestFragment;
 import social.entourage.android.view.EntourageSnackbar;
 import timber.log.Timber;

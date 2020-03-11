@@ -88,16 +88,26 @@ class MapFilterFragment  : BaseMapFilterFragment() {
         }
     }
 
+    //TODO find another to have both constraintlayout and radiogroup
     fun onDays1Click() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_FILTER1)
+        //map_filter_time_days_1.isSelected = false
+        map_filter_time_days_2.isChecked = false
+        map_filter_time_days_3.isChecked = false
     }
 
     fun onDays2Click() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_FILTER2)
+        map_filter_time_days_1.isChecked = false
+        //map_filter_time_days_2.isChecked = false
+        map_filter_time_days_3.isChecked = false
     }
 
     fun onDays3Click() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_FILTER3)
+        map_filter_time_days_1.isChecked = false
+        map_filter_time_days_2.isChecked = false
+        //map_filter_time_days_3.isChecked = false
     }
 
     // ----------------------------------

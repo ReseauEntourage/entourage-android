@@ -207,7 +207,7 @@
                     android:textSize="@dimen/entourage_font_medium" />
             </LinearLayout>
 
-            <com.github.clans.fab.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/tour_stop_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -217,8 +217,9 @@
                 android:layout_marginStart="0dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="5dp"
-                android:src="@drawable/ic_pause_white"
+                app:srcCompat="@drawable/ic_pause_black_24dp"
                 android:visibility="gone"
+                app:backgroundTint="@color/dodger_blue"
                 app:fab_colorNormal="@color/dodger_blue"
                 app:fab_colorPressed="@color/dodger_blue"
                 app:fab_colorRipple="@color/dodger_blue"
