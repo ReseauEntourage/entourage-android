@@ -1,6 +1,8 @@
 package social.entourage.android;
 
 import android.content.Context;
+import android.view.autofill.AutofillManager;
+
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.IdlingResource;
 import androidx.test.filters.LargeTest;
@@ -20,6 +22,7 @@ import social.entourage.android.authentication.login.LoginActivity;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -34,6 +37,7 @@ public class LoginTest {
     public ActivityTestRule<LoginActivity> activityRule = new ActivityTestRule<>(LoginActivity.class);
 
     private IdlingResource resource;
+    private AutofillManager afM;
 
     @Before
     public void setUp() {
@@ -42,6 +46,10 @@ public class LoginTest {
         OkHttpClient client = EntourageApplication.get(context).getEntourageComponent().getOkHttpClient();
         resource = OkHttp3IdlingResource.create("OkHttp", client);
         IdlingRegistry.getInstance().register(resource);
+        afM = context.getSystemService(AutofillManager.class);
+        if(afM!=null) {
+            afM.disableAutofillServices();
+        }
     }
 
     private void checkTCDisplay() {
@@ -70,8 +78,10 @@ public class LoginTest {
         onView(withId(R.id.login_button_login)).perform(click());
         checkTCDisplay();
 
-        onView(withId(R.id.login_edit_phone)).perform(typeText(BuildConfig.TEST_ACCOUNT_LOGIN));
-        onView(withId(R.id.login_edit_code)).perform(typeText(BuildConfig.TEST_ACCOUNT_PWD));
+        onView(withId(R.id.login_edit_phone)).perform(typeText(BuildConfig.TEST_ACCOUNT_LOGIN), closeSoftKeyboard());
+        closeAutofill();
+        onView(withId(R.id.login_edit_code)).perform(typeText(BuildConfig.TEST_ACCOUNT_PWD), closeSoftKeyboard());
+        closeAutofill();
         onView(withId(R.id.login_button_signin)).perform(click());
 
         onView(withText(R.string.login_error_title)).check(doesNotExist());
@@ -83,12 +93,24 @@ public class LoginTest {
         onView(withId(R.id.login_button_login)).perform(click());
         checkTCDisplay();
 
-        onView(withId(R.id.login_edit_phone)).perform(typeText(BuildConfig.TEST_ACCOUNT_LOGIN.replaceFirst("\\+33", "0")));
-        onView(withId(R.id.login_edit_code)).perform(typeText(BuildConfig.TEST_ACCOUNT_PWD));
+        onView(withId(R.id.login_edit_phone)).perform(typeText(BuildConfig.TEST_ACCOUNT_LOGIN.replaceFirst("\\+33", "0")), closeSoftKeyboard());
+        closeAutofill();
+        onView(withId(R.id.login_edit_code)).perform(typeText(BuildConfig.TEST_ACCOUNT_PWD), closeSoftKeyboard());
+        closeAutofill();
         onView(withId(R.id.login_button_signin)).perform(click());
 
         onView(withText(R.string.login_error_title)).check(doesNotExist());
         //checkNoUserIsLoggedIn();
+    }
+
+    private void closeAutofill() {
+        if(afM ==null) {
+            afM = activityRule.getActivity().getSystemService(AutofillManager.class);
+        }
+        if(afM!=null) {
+            afM.cancel();
+            afM.commit();
+        }
     }
 
     @Test
@@ -97,8 +119,10 @@ public class LoginTest {
         onView(withId(R.id.login_button_login)).perform(click());
         checkTCDisplay();
 
-        onView(withId(R.id.login_edit_phone)).perform(typeText(BuildConfig.TEST_ACCOUNT_LOGIN));
-        onView(withId(R.id.login_edit_code)).perform(typeText("999999"));
+        onView(withId(R.id.login_edit_phone)).perform(typeText(BuildConfig.TEST_ACCOUNT_LOGIN), closeSoftKeyboard());
+        closeAutofill();
+        onView(withId(R.id.login_edit_code)).perform(typeText("999999"), closeSoftKeyboard());
+        closeAutofill();
         onView(withId(R.id.login_button_signin)).perform(click());
 
         onView(withText(R.string.login_error_title)).check(matches(isDisplayed()));
@@ -111,8 +135,10 @@ public class LoginTest {
         onView(withId(R.id.login_button_login)).perform(click());
         checkTCDisplay();
 
-        onView(withId(R.id.login_edit_phone)).perform(typeText("012345678"));
-        onView(withId(R.id.login_edit_code)).perform(typeText("000000"));
+        onView(withId(R.id.login_edit_phone)).perform(typeText("012345678"), closeSoftKeyboard());
+        closeAutofill();
+        onView(withId(R.id.login_edit_code)).perform(typeText("000000"), closeSoftKeyboard());
+        closeAutofill();
         onView(withId(R.id.login_button_signin)).perform(click());
 
         onView(withText(R.string.login_error_title)).check(matches(isDisplayed()));
