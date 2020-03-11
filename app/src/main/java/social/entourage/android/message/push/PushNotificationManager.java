@@ -341,7 +341,7 @@ public class PushNotificationManager {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId);
         builder.setSmallIcon(R.drawable.ic_notification_small);
         builder.setContentIntent(createMessagePendingIntent(message, context));
-        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.entourage_logo_grey));
+        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_entourage_logo_two_colors));
         builder.setContentTitle(message.getContentTitleForCount(count, context));
         builder.setContentText(message.getContentTextForCount(count, context));
 
@@ -373,7 +373,7 @@ public class PushNotificationManager {
         builder.setSmallIcon(R.drawable.ic_notification_small);
         Intent ctaIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(fcmMessage.getData().get(PushNotificationManager.KEY_CTA)));
         builder.setContentIntent(PendingIntent.getActivity(context, 0, ctaIntent, PendingIntent.FLAG_UPDATE_CURRENT));
-        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.entourage_logo_grey));
+        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_entourage_logo_two_colors));
         builder.setContentTitle(notif.getTitle());
         builder.setContentText(notif.getBody());
 

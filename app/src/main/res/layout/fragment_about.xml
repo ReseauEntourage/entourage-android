@@ -362,7 +362,7 @@
                     android:layout_marginTop="@dimen/about_items_padding"
                     android:layout_marginBottom="@dimen/about_items_padding"
                     android:contentDescription="@string/empty_description"
-                    android:src="@drawable/entourage_logo_grey"/>
+                    app:srcCompat="@drawable/ic_entourage_logo_two_colors"/>
             </LinearLayout>
 
         </LinearLayout>

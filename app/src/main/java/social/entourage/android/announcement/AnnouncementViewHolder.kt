@@ -117,7 +117,7 @@ class AnnouncementViewHolder(view: View?) : BaseCardViewHolder(view), Target {
             itemView.announcement_card_divider_right.visibility = View.GONE
             Picasso.get()
                     .load(Uri.parse(imageUrl))
-                    .placeholder(R.drawable.announcement_image_placeholder)
+                    .placeholder(R.drawable.ic_announcement_image_placeholder)
                     .into(itemView.announcement_card_image)
         }
         //act button

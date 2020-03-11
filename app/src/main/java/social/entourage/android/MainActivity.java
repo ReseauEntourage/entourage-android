@@ -139,9 +139,9 @@ public class MainActivity extends EntourageSecuredActivity
         Bundle extras = getIntent().getExtras();
         if (Intent.ACTION_VIEW.equals(intentAction)) {
             // Save the deep link intent
-            DeepLinksManager.getInstance().setDeepLinkIntent(getIntent());
+            DeepLinksManager.Companion.getInstance().setDeepLinkIntent(getIntent());
         } else if(extras !=null && extras.containsKey(PushNotificationManager.KEY_CTA)) {
-            DeepLinksManager.getInstance().setDeepLinkIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(extras.getString(PushNotificationManager.KEY_CTA))));
+            DeepLinksManager.Companion.getInstance().setDeepLinkIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(extras.getString(PushNotificationManager.KEY_CTA))));
         }
 
     }
@@ -471,7 +471,7 @@ public class MainActivity extends EntourageSecuredActivity
             refreshBadgeCount();
         } else {
             // Handle the deep link
-            DeepLinksManager.getInstance().handleCurrentDeepLink(this);
+            DeepLinksManager.Companion.getInstance().handleCurrentDeepLink(this);
         }
         setIntent(null);
     }

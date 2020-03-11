@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:baselineAligned="false">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -91,7 +92,7 @@
                 android:layout_alignBottom="@+id/tour_info_author_photo"
                 android:layout_marginEnd="-4dp"
                 android:layout_marginBottom="-4dp"
-                tools:src="@drawable/entourage_logo_grey"/>
+                tools:src="@drawable/ic_entourage_logo_two_colors"/>
         </RelativeLayout>
 
         <LinearLayout
