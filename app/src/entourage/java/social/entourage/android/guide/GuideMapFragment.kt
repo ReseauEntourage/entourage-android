@@ -151,7 +151,7 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
                 (mapClusterItemRenderer as PoiRenderer).setCategories(categories)
             }
             clearOldPois()
-            if (pois != null && pois.size > 0) {
+            if (pois != null && pois.isNotEmpty()) {
                 val poiCollection = removeRedundantPois(pois)
                 if (map != null && mapClusterManager != null) {
                     mapClusterManager.addItems(poiCollection)
@@ -302,7 +302,7 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
     // ----------------------------------
     // INFO POPUP
     // ----------------------------------
-    fun onInfoPopupClose() {
+    private fun onInfoPopupClose() {
         val authenticationController = EntourageApplication.get(context).entourageComponent.authenticationController
         if (authenticationController != null) {
             authenticationController.isShowInfoPOIsPopup = false
@@ -327,7 +327,7 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
     // ----------------------------------
     // FAB HANDLING
     // ----------------------------------
-    fun onPOIProposeClicked() {
+    private fun onPOIProposeClicked() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_PLUS_CLICK)
         proposePOI()
     }
