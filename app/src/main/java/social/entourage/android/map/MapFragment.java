@@ -494,7 +494,7 @@ public abstract class MapFragment extends BaseMapFragment implements NewsFeedLis
     }
 
     private void updateFilterButtonText() {
-        View v = getView().findViewById(R.id.fragment_map_filter_button);
+        View v = getView()!=null?getView().findViewById(R.id.fragment_map_filter_button):null;
         if(v instanceof ExtendedFloatingActionButton) {
             ((ExtendedFloatingActionButton) v).setText(MapFilterFactory.getMapFilter().isDefaultFilter() ? R.string.map_no_filter : R.string.map_filters_activated);
         }
