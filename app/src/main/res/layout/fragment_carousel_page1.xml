@@ -70,12 +70,13 @@
             app:htmlText="@string/carousel_p1_content"/>
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="14dp"
             android:contentDescription="@string/empty_description"
-            app:srcCompat="@drawable/carousel_p1_group"/>
+            app:tint="@color/accent"
+            app:srcCompat="@drawable/ic_account_circle_outline_white_24dp" />
     </LinearLayout>
 
 </LinearLayout>

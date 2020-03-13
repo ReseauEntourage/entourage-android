@@ -22,6 +22,8 @@
 
     <!-- Guide Filter -->
     <string name="guide_filter_title">FILTRES</string>
+    <string name="guide_filters_activated">Filtres activés</string>
+    <string name="guide_no_filter"></string>
     <string name="guide_filter_categories_title">Catégories</string>
 
     <!-- POI Card -->

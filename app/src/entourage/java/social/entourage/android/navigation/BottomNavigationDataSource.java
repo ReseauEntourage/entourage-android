@@ -22,6 +22,7 @@ public class BottomNavigationDataSource extends BaseBottomNavigationDataSource {
         add(R.id.bottom_bar_profile, SideMenuFragment.TAG);
 
         guideTabIndex = R.id.bottom_bar_guide;
+        actionTabIndex =R.id.bottom_bar_plus;
     }
 
     public Fragment getFragmentAtIndex(int menuId) {

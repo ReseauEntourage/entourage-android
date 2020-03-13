@@ -39,7 +39,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.MainActivity;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
@@ -347,7 +347,7 @@ public class LoginActivity extends EntourageActivity
         stopLoader();
         hideKeyboard();
         EntourageEvents.logEvent(EntourageEvents.EVENT_LOGIN_OK);
-        startActivity(new Intent(this, DrawerActivity.class));
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 
@@ -453,7 +453,7 @@ public class LoginActivity extends EntourageActivity
                 }
             }
         } catch(IllegalStateException e){
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
+            Timber.w(e);
         }
     }
 
@@ -594,7 +594,7 @@ public class LoginActivity extends EntourageActivity
                 }
             }
         } else {
-            if (isOnboarding || Configuration.getInstance().showLostCodeErrorToast()) {
+            if (isOnboarding || Configuration.INSTANCE.showLostCodeErrorToast()) {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_03_2);
                 displayToast(R.string.login_text_lost_code_ko);
             } else {
@@ -735,7 +735,7 @@ public class LoginActivity extends EntourageActivity
                 displayToast(R.string.login_error);
             }
         } catch(IllegalStateException e){
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
+            Timber.w(e);
         }
     }
 
@@ -757,8 +757,7 @@ public class LoginActivity extends EntourageActivity
                 displayToast(R.string.user_photo_error_not_saved);
             }
         } catch(IllegalStateException e) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
-            Timber.e(e);
+            Timber.w(e);
         }
     }
 
@@ -935,7 +934,7 @@ public class LoginActivity extends EntourageActivity
                 RegisterSMSCodeFragment fragment = new RegisterSMSCodeFragment();
                 fragment.show(getSupportFragmentManager(), RegisterSMSCodeFragment.TAG);
             } catch (IllegalStateException e) {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
+                Timber.w(e);
             }
         }
     }
@@ -1015,7 +1014,7 @@ public class LoginActivity extends EntourageActivity
         try {
             actionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
         } catch (IllegalStateException e) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
+            Timber.w(e);
         }
     }
 
@@ -1027,7 +1026,7 @@ public class LoginActivity extends EntourageActivity
                 actionZoneFragment.dismiss();
             }
         } catch(IllegalStateException e) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
+            Timber.w(e);
         }
     }
 

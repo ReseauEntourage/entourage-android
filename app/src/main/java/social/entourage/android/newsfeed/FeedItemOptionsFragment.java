@@ -22,7 +22,7 @@ import java.util.TimeZone;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.MainActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
@@ -171,8 +171,8 @@ public class FeedItemOptionsFragment extends EntourageDialogFragment {
 
                 //show stop tour activity
                 Activity activity = getActivity();
-                if (activity instanceof DrawerActivity) {
-                    ((DrawerActivity)activity).showStopTourActivity(tour);
+                if (activity instanceof MainActivity) {
+                    ((MainActivity)activity).showStopTourActivity(tour);
                 }
 
                 //hide the options
@@ -181,8 +181,8 @@ public class FeedItemOptionsFragment extends EntourageDialogFragment {
             else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
                 //BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem, false));
                 FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
-                EntourageCloseFragment entourageCloseFragment = EntourageCloseFragment.newInstance(feedItem);
-                entourageCloseFragment.show(fragmentManager, EntourageCloseFragment.TAG, getContext());
+                EntourageCloseFragment entourageCloseFragment = EntourageCloseFragment.Companion.newInstance(feedItem);
+                entourageCloseFragment.show(fragmentManager, EntourageCloseFragment.Companion.getTAG(), getContext());
                 dismiss();
             }
         }

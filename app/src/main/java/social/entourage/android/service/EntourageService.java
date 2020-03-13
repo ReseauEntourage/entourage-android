@@ -27,7 +27,7 @@ import java.util.TimeZone;
 
 import javax.inject.Inject;
 
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.MainActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.ApiConnectionListener;
@@ -49,6 +49,7 @@ import social.entourage.android.newsfeed.NewsFeedListener;
 import social.entourage.android.newsfeed.NewsfeedPagination;
 import social.entourage.android.tools.log.CrashlyticsNewsFeedLogger;
 import social.entourage.android.tools.log.LoggerNewsFeedLogger;
+import timber.log.Timber;
 
 /**
  * Background service handling location updates
@@ -85,8 +86,6 @@ public class EntourageService extends Service {
 
     private EntourageServiceManager entourageServiceManager;
 
-    private final List<EntourageServiceListener> entourageServiceListeners = new ArrayList<>();
-    private final List<NewsFeedListener> newsFeedListeners = new ArrayList<>();
     private final List<ApiConnectionListener> apiListeners = new ArrayList<>();
     private final List<LocationUpdateListener> locationUpdateListeners = new ArrayList<>();
 
@@ -106,12 +105,12 @@ public class EntourageService extends Service {
         public void onReceive(final Context context, final Intent intent) {
             final String action = intent.getAction();
             if (KEY_NOTIFICATION_PAUSE_TOUR.equals(action)) {
-                final Intent newIntent = new Intent(context, DrawerActivity.class);
+                final Intent newIntent = new Intent(context, MainActivity.class);
                 newIntent.setAction(action);
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(newIntent);
             } else if (KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
-                final Intent newIntent = new Intent(context, DrawerActivity.class);
+                final Intent newIntent = new Intent(context, MainActivity.class);
                 newIntent.setAction(action);
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(newIntent);
@@ -119,7 +118,7 @@ public class EntourageService extends Service {
                 notifyListenersGpsStatusChanged(false);
                 /* TODO: fix this so it won't start multiple intents
                     if (isRunning()) {
-                    final Intent newIntent = new Intent(context, DrawerActivity.class);
+                    final Intent newIntent = new Intent(context, MainActivity.class);
                     newIntent.setAction(action);
                     newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(newIntent);
@@ -164,14 +163,14 @@ public class EntourageService extends Service {
         filter.addAction(KEY_LOCATION_PROVIDER_ENABLED);
         registerReceiver(receiver, filter);
 
-        registerListener(crashlyticsListener);
-        registerNewsFeedListener(loggerListener);
+        registerApiListener(crashlyticsListener);
+        registerApiListener(loggerListener);
     }
 
     @Override
     public void onDestroy() {
-        unregisterNewsFeedListener(loggerListener);
-        unregisterListener(crashlyticsListener);
+        unregisterApiListener(loggerListener);
+        unregisterApiListener(crashlyticsListener);
         endTreatment();
         unregisterReceiver(receiver);
         super.onDestroy();
@@ -222,7 +221,7 @@ public class EntourageService extends Service {
     }
 
     private void createNotification() {
-        final Intent notificationIntent = new Intent(this, DrawerActivity.class);
+        final Intent notificationIntent = new Intent(this, MainActivity.class);
         final PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getString(R.string.local_service_notification_title))
                 .setSmallIcon(R.drawable.tour_record)
@@ -384,42 +383,24 @@ public class EntourageService extends Service {
         entourageServiceManager.requestToJoinEntourage(entourage);
     }
 
-    public void registerListener(final ApiConnectionListener listener) {
+    public void registerApiListener(final ApiConnectionListener listener) {
         apiListeners.add(listener);
     }
 
-    public void unregisterListener(final ApiConnectionListener listener) {
+    public void unregisterApiListener(final ApiConnectionListener listener) {
         apiListeners.remove(listener);
     }
 
-    public void registerNewsFeedListener(final NewsFeedListener listener) {
-        newsFeedListeners.add(listener);
-        apiListeners.add(listener);
-    }
-
-    public void unregisterNewsFeedListener(final NewsFeedListener listener) {
-        newsFeedListeners.remove(listener);
-        apiListeners.remove(listener);
-    }
-
-    public void registerLocationUpdateListener(final LocationUpdateListener listener) {
+    public void registerServiceListener(final LocationUpdateListener listener) {
         locationUpdateListeners.add(listener);
-    }
-
-    public void unregisterLocationUpdateListener(final LocationUpdateListener listener) {
-        locationUpdateListeners.remove(listener);
-    }
-
-    public void registerServiceListener(final EntourageServiceListener listener) {
-        entourageServiceListeners.add(listener);
-        if (entourageServiceManager.isRunning()) {
-            listener.onTourResumed(entourageServiceManager.getPointsToDraw(), entourageServiceManager.getTour().getTourType(), entourageServiceManager.getTour().getStartTime());
+        if (entourageServiceManager.isRunning() && listener instanceof TourServiceListener) {
+            ((TourServiceListener)listener).onTourResumed(entourageServiceManager.getPointsToDraw(), entourageServiceManager.getTour().getTourType(), entourageServiceManager.getTour().getStartTime());
         }
     }
 
-    public void unregisterServiceListener(final EntourageServiceListener listener) {
-        entourageServiceListeners.remove(listener);
-        if (!isRunning() && entourageServiceListeners.size() == 0) {
+    public void unregisterServiceListener(final LocationUpdateListener listener) {
+        locationUpdateListeners.remove(listener);
+        if (!isRunning() && locationUpdateListeners.size() == 0) {
             stopService();
         }
     }
@@ -444,8 +425,10 @@ public class EntourageService extends Service {
         if (created) {
             startNotification();
         }
-        for (final EntourageServiceListener listener : entourageServiceListeners) {
-            listener.onTourCreated(created, uuid);
+        for (final LocationUpdateListener listener : locationUpdateListeners) {
+            if(listener instanceof TourServiceListener) {
+                ((TourServiceListener) listener).onTourCreated(created, uuid);
+            }
         }
     }
 
@@ -453,8 +436,10 @@ public class EntourageService extends Service {
         if (!entourageServiceManager.isRunning()) {
             return;
         }
-        for (final EntourageServiceListener listener : entourageServiceListeners) {
-            listener.onTourResumed(entourageServiceManager.getPointsToDraw(), entourageServiceManager.getTour().getTourType(), entourageServiceManager.getTour().getStartTime());
+        for (final LocationUpdateListener listener : locationUpdateListeners) {
+            if(listener instanceof TourServiceListener) {
+                ((TourServiceListener) listener).onTourResumed(entourageServiceManager.getPointsToDraw(), entourageServiceManager.getTour().getTourType(), entourageServiceManager.getTour().getStartTime());
+            }
         }
     }
 
@@ -471,36 +456,36 @@ public class EntourageService extends Service {
                 isPaused = false;
             }
         }
-        for (final EntourageServiceListener listener : entourageServiceListeners) {
-            listener.onFeedItemClosed(closed, feedItem);
+        for (final LocationUpdateListener listener : locationUpdateListeners) {
+            if(listener instanceof EntourageServiceListener) {
+                ((EntourageServiceListener)listener).onFeedItemClosed(closed, feedItem);
+            }
         }
     }
 
     void notifyListenersTourUpdated(final LatLng newPoint) {
-        for (final EntourageServiceListener listener : entourageServiceListeners) {
-            listener.onTourUpdated(newPoint);
+        for (final LocationUpdateListener listener : locationUpdateListeners) {
+            if(listener instanceof TourServiceListener) {
+                ((TourServiceListener) listener).onTourUpdated(newPoint);
+            }
         }
     }
 
     public void notifyListenersPosition(final LatLng location) {
-        for (final EntourageServiceListener listener : entourageServiceListeners) {
-            listener.onLocationUpdated(location);
-        }
         for (final LocationUpdateListener listener : locationUpdateListeners) {
             listener.onLocationUpdated(location);
         }
     }
 
     void notifyListenersUserToursFound(final List<Tour> tours) {
-        for (final EntourageServiceListener listener : entourageServiceListeners) {
-            listener.onRetrieveToursByUserId(tours);
+        for (final LocationUpdateListener listener : locationUpdateListeners) {
+            if(listener instanceof TourServiceListener) {
+                ((TourServiceListener) listener).onRetrieveToursByUserId(tours);
+            }
         }
     }
 
     private void notifyListenersGpsStatusChanged(final boolean active) {
-        for (final EntourageServiceListener listener : entourageServiceListeners) {
-            listener.onLocationStatusUpdated(active);
-        }
         for (final LocationUpdateListener listener : locationUpdateListeners) {
             listener.onLocationStatusUpdated(active);
         }
@@ -510,8 +495,10 @@ public class EntourageService extends Service {
         if(user==null || feedItem==null) {
             return;
         }
-        for (final EntourageServiceListener listener : entourageServiceListeners) {
-            listener.onUserStatusChanged(user, feedItem);
+        for (final LocationUpdateListener listener : locationUpdateListeners) {
+            if(listener instanceof EntourageServiceListener) {
+                ((EntourageServiceListener) listener).onUserStatusChanged(user, feedItem);
+            }
         }
     }
 
@@ -522,8 +509,10 @@ public class EntourageService extends Service {
     }
 
     void notifyListenersCurrentPositionNotRetrieved() {
-        for (final NewsFeedListener listener : newsFeedListeners) {
-            listener.onCurrentPositionNotRetrieved();
+        for (final ApiConnectionListener listener : apiListeners) {
+            if(listener instanceof NewsFeedListener) {
+                ((NewsFeedListener)listener).onCurrentPositionNotRetrieved();
+            }
         }
     }
 
@@ -540,8 +529,10 @@ public class EntourageService extends Service {
     }
 
     void notifyListenersNewsFeedReceived(final List<Newsfeed> newsFeeds) {
-        for (final NewsFeedListener listener : newsFeedListeners) {
-            listener.onNewsFeedReceived(newsFeeds);
+        for (final ApiConnectionListener listener : apiListeners) {
+            if(listener instanceof NewsFeedListener) {
+                ((NewsFeedListener) listener).onNewsFeedReceived(newsFeeds);
+            }
         }
     }
 }

@@ -40,6 +40,7 @@ import social.entourage.android.user.edit.UserEditFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.report.UserReportFragment;
 import social.entourage.android.view.PartnerLogoImageView;
+import timber.log.Timber;
 
 public class UserFragment extends EntourageDialogFragment {
 
@@ -254,13 +255,13 @@ public class UserFragment extends EntourageDialogFragment {
 
     private void showUserEditFragment() {
         // Allow editing only of the logged user and if enabled in configuration
-        if (!(isMyProfile && Configuration.getInstance().showUserEditProfile())) return;
+        if (!(isMyProfile && Configuration.INSTANCE.showUserEditProfile())) return;
         // Show the edit profile screen
         UserEditFragment fragment = new UserEditFragment();
         try{
-            fragment.show(getFragmentManager(), UserEditFragment.TAG);
+            fragment.show(getParentFragmentManager(), UserEditFragment.TAG);
         } catch(IllegalStateException e) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
+            Timber.w(e);
         }
     }
 
@@ -397,14 +398,14 @@ public class UserFragment extends EntourageDialogFragment {
     @OnClick(R.id.user_photo_button)
     protected void onPhotoEditClicked() {
         PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
-        fragment.show(getFragmentManager(), PhotoChooseSourceFragment.TAG);
+        fragment.show(getParentFragmentManager(), PhotoChooseSourceFragment.TAG);
     }
 
     @Optional
     @OnClick(R.id.user_about_edit_button)
     protected void onAboutEditClicked() {
         UserEditAboutFragment editAboutFragment = new UserEditAboutFragment();
-        editAboutFragment.show(getFragmentManager(), UserEditAboutFragment.TAG);
+        editAboutFragment.show(getParentFragmentManager(), UserEditAboutFragment.TAG);
     }
 
     // ----------------------------------
@@ -429,19 +430,18 @@ public class UserFragment extends EntourageDialogFragment {
         if (event == null) {
             return;
         }
-        // Because we are handling this event in the user edit fragment too, we need to make sure that there is no active user edit fragment
-        if (getFragmentManager() != null) {
-            UserEditFragment userEditFragment = (UserEditFragment) getFragmentManager().findFragmentByTag(UserEditFragment.TAG);
-            if (userEditFragment != null) {
+        try {
+            // Because we are handling this event in the user edit fragment too, we need to make sure that there is no active user edit fragment
+            if (getParentFragmentManager().findFragmentByTag(UserEditFragment.TAG) != null) {
                 return;
             }
-        }
-        if (event.getPartner() != null) {
-            PartnerFragment partnerFragment = PartnerFragment.newInstance(event.getPartner());
-            partnerFragment.show(getFragmentManager(), PartnerFragment.TAG);
-        } else {
-            PartnerFragment partnerFragment = PartnerFragment.newInstance(event.getPartnerId());
-            partnerFragment.show(getFragmentManager(), PartnerFragment.TAG);
+            if (event.getPartner() != null) {
+                PartnerFragment.Companion.newInstance(event.getPartner()).show(getParentFragmentManager(), PartnerFragment.TAG);
+            } else {
+                PartnerFragment.Companion.newInstance(event.getPartnerId()).show(getParentFragmentManager(), PartnerFragment.TAG);
+            }
+        } catch(IllegalStateException e) {
+            Timber.w(e);
         }
     }
 

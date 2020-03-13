@@ -31,7 +31,7 @@
 
     <string name="entourage_create_menu">Créer une action</string>
     <string name="entourage_create_submenu">Demander de l’aide ou faire un don</string>
-    <string name="entourage_create_menu_ask_help">Demander un don, de l\'aide, ...</string>
+    <string name="entourage_create_menu_ask_help">Demander de l\'aide</string>
     <string name="entourage_create_submenu_ask_help">Faire appel au réseau</string>
     <string name="entourage_create_menu_contribute">Proposer un don</string>
     <string name="entourage_create_submenu_contribute">Donner un bien, du temps, ...</string>
@@ -74,7 +74,7 @@
     <string name="entourage_metadata_startAt_format">\'le\' EEEE dd/MM</string>
     <string name="entourage_metadata_startAt_time_format">\'à \'HH\'h\'mm</string>
     <string name="entourage_info_creation_time">Créé %s</string>
-    <string name="entourage_info_update_time">mis à jour %s</string>
+    <string name="entourage_info_update_time">actif %s</string>
 
     <!-- Entourage Location -->
     <string name="entourage_location_title">MA POSITION</string>

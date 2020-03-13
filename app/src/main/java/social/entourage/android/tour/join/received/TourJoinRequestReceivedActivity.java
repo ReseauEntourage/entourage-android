@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import javax.inject.Inject;
 
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.MainActivity;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.EntourageSecuredActivity;
@@ -162,7 +162,7 @@ public class TourJoinRequestReceivedActivity extends EntourageSecuredActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    startActivity(new Intent(TourJoinRequestReceivedActivity.this, DrawerActivity.class));
+                    startActivity(new Intent(TourJoinRequestReceivedActivity.this, MainActivity.class));
                     finish();
                 }
             }, duration+100);

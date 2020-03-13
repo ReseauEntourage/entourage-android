@@ -37,6 +37,8 @@
     <string name="map_filter_time_option1">24H</string>
     <string name="map_filter_time_option2">8J</string>
     <string name="map_filter_time_option3">1M</string>
+    <string name="map_filters_activated">Filtres activés</string>
+    <string name="map_no_filter">Filtres</string>
 
     <!-- Under Construction -->
     <string name="map_underconstruction_explanation_1">Ici, vous trouverez prochainement les activités de la communauté autour de vous</string>

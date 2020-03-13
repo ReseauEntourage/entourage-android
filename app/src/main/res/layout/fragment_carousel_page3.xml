@@ -17,11 +17,10 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="-2dp"
-            android:layout_marginLeft="6dp"
             android:layout_marginStart="6dp"
+            android:layout_marginBottom="-2dp"
             android:contentDescription="@string/empty_description"
-            android:src="@drawable/carousel_p3_group"/>
+            android:src="@drawable/carousel_p3_group" />
     </LinearLayout>
 
     <LinearLayout
@@ -51,15 +50,16 @@
             android:gravity="center"
             android:textColor="@color/greyish_brown"
             android:textSize="@dimen/carousel_content"
-            app:htmlText="@string/carousel_p3_content"/>
+            app:htmlText="@string/carousel_p3_content" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="14dp"
             android:contentDescription="@string/empty_description"
-            app:srcCompat="@drawable/carousel_p1_group"/>
+            app:tint="@color/accent"
+            app:srcCompat="@drawable/ic_account_circle_outline_white_24dp" />
 
     </LinearLayout>
 

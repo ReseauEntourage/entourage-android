@@ -17,16 +17,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="bottom|right"
+        android:layout_gravity="bottom|end"
         android:layout_marginStart="0dp"
-        android:layout_marginLeft="0dp"
         android:layout_marginTop="60dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
         app:backgroundTint="@color/custom_button_white_enabled"
-        app:tint="@color/greyish_brown"
         app:fabSize="mini"
-        app:srcCompat="@drawable/button_my_location" />
+        app:srcCompat="@drawable/button_my_location"
+        app:tint="@color/greyish_brown" />
 
 </RelativeLayout>

@@ -21,7 +21,7 @@ import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import social.entourage.android.BuildConfig;
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.MainActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;
@@ -124,9 +124,8 @@ public class SideMenuFragment extends Fragment {
     // ----------------------------------
 
     private void initialiseView() {
-        appVersion.setText(getString(R.string.about_version_format, BuildConfig.VERSION_NAME));
-        appDebugInfo.setText("build: staging/"+BuildConfig.VERSION_DISPLAY_NAME
-                + "\nFIId: "+ FirebaseInstanceId.getInstance().getId());
+        appVersion.setText(getString(R.string.about_version_format, BuildConfig.DEBUG? BuildConfig.VERSION_DEBUG_NAME : BuildConfig.VERSION_NAME));
+        appDebugInfo.setText(getString(R.string.about_debug_info_format,BuildConfig.VERSION_DISPLAY_NAME, FirebaseInstanceId.getInstance().getId()));
 
         appVersion.setOnLongClickListener(v -> handleLongPress());
         appDebugInfo.setOnLongClickListener(v -> handleLongPress());
@@ -193,9 +192,9 @@ public class SideMenuFragment extends Fragment {
     }
 
     private void selectMenuAction(int action) {
-        if (getActivity() == null || !(getActivity() instanceof DrawerActivity)) return;
-        DrawerActivity drawerActivity = (DrawerActivity)getActivity();
-        drawerActivity.selectItem(action);
+        if (getActivity() == null || !(getActivity() instanceof MainActivity)) return;
+        MainActivity mainActivity = (MainActivity)getActivity();
+        mainActivity.selectItem(action);
     }
 
     private boolean handleLongPress() {

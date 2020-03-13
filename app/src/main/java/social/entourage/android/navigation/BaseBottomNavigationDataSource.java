@@ -20,8 +20,8 @@ public abstract class BaseBottomNavigationDataSource {
     @IdRes int defaultSelectedTab = R.id.bottom_bar_newsfeed;
     @IdRes int feedTabIndex = R.id.bottom_bar_newsfeed;
     @IdRes int myMessagesTabIndex = R.id.bottom_bar_mymessages;
-    @IdRes int actionTabIndex =R.id.bottom_bar_plus;
-    //unused menu
+    //optional menu
+    @IdRes int actionTabIndex =-1;
     @IdRes int guideTabIndex = -1;
 
     BaseBottomNavigationDataSource() {}

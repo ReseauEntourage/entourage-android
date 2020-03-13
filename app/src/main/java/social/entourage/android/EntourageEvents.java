@@ -101,7 +101,7 @@ public class EntourageEvents {
     public static final String EVENT_MENU_LOGOUT = "LogOut";
     public static final String EVENT_MENU_ABOUT = "AboutClick";
     public static final String EVENT_MENU_GOAL = "WhatActionsClick";
-    public static final String EVENT_MENU_FAQ = "AppFAQClick";
+    public static final String EVENT_ABOUT_FAQ = "AppFAQClick";
     public static final String EVENT_MENU_BLOG = "SimpleCommeBonjourClick";
     public static final String EVENT_MENU_CHART = "ViewEthicsChartClick";
     public static final String EVENT_MENU_ATD = "ATDPartnershipView";
@@ -262,14 +262,16 @@ public class EntourageEvents {
     public static final String EVENT_ABOUT_WEBSITE = "WebsiteVisitClick";
     public static final String EVENT_ABOUT_CGU = "CGUClick";
     public static final String EVENT_ABOUT_TUTORIAL = "OpenTutorialFromMenu";
+    public static final String EVENT_ABOUT_PRIVACY = "OpenPrivacyFromAbout";
+    public static final String EVENT_ABOUT_SUGGESTION = "OpenSuggestionFromAbout";
+    public static final String EVENT_ABOUT_FEEDBACK = "OpenFeedbackFromAbout";
+    public static final String EVENT_ABOUT_OSS = "OpenOpenSourceLibrariesFromAbout";
+    public static final String EVENT_ABOUT_EMAIL = "OpenEmailFromAbout";
 
     // Encounter Popup While Tour Events
     public static final String EVENT_ENCOUNTER_POPUP_SHOW = "SwitchToEncounterPopupView";
     public static final String EVENT_ENCOUNTER_POPUP_ENCOUNTER = "SwitchToCreateEncounter";
     public static final String EVENT_ENCOUNTER_POPUP_ENTOURAGE = "ContinueCreatePublicEntourage";
-
-    public static final String EVENT_CAROUSEL_EXCEPTION = "CarouselException";
-    public static final String EVENT_ILLEGAL_STATE = "CatchedExceptionIllegalStateAppIsGone";
 
     //Notifications
     public static final String EVENT_NOTIFICATION_RECEIVED="NotificationReceived";

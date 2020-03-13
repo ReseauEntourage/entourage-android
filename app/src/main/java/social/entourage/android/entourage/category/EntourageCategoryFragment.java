@@ -17,7 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.MainActivity;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageLinkMovementMethod;
@@ -144,8 +144,8 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
     private void initializeHelpHtmlView() {
         HtmlTextView helpHtmlTextView = getView().findViewById(R.id.entourage_category_help_link);
         if (helpHtmlTextView != null) {
-            if (getActivity() != null && getActivity() instanceof DrawerActivity) {
-                String goalLink = ((DrawerActivity) getActivity()).getLink(Constants.GOAL_LINK_ID);
+            if (getActivity() != null && getActivity() instanceof MainActivity) {
+                String goalLink = ((MainActivity) getActivity()).getLink(Constants.GOAL_LINK_ID);
                 helpHtmlTextView.setHtmlString(getString(R.string.entourage_create_help_text, goalLink), EntourageLinkMovementMethod.getInstance());
             }
         }

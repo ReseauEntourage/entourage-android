@@ -90,24 +90,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="10dp"
-                android:paddingEnd="20dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
                 android:paddingStart="20dp"
-                android:paddingTop="10dp">
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/partner_view_phone_description"
-                    android:textSize="@dimen/entourage_font_medium"/>
+                    android:textSize="@dimen/entourage_font_medium" />
 
                 <TextView
                     android:id="@+id/partner_view_phone"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_weight="1"
                     android:autoLink="phone"
@@ -115,7 +114,7 @@
                     android:textColor="@color/greyish_brown"
                     android:textColorLink="@color/greyish_brown"
                     android:textSize="@dimen/entourage_font_medium"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -140,7 +139,6 @@
                     android:id="@+id/partner_view_address"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_weight="1"
                     android:autoLink="map"
@@ -173,7 +171,6 @@
                     android:id="@+id/partner_view_website"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_weight="1"
                     android:autoLink="web"
@@ -206,7 +203,6 @@
                     android:id="@+id/partner_view_email"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_weight="1"
                     android:autoLink="email"

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import social.entourage.android.BuildConfig;
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.MainActivity;
 import social.entourage.android.api.model.map.FeedItem;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.tools.BusProvider;
@@ -132,14 +132,14 @@ public class DeepLinksManager {
 
     private void handleDeepLink(Activity activity, String key, List<String> pathSegments) {
         if (key.equals(DeepLinksView.FEED.getView())) {
-            if (activity instanceof DrawerActivity) {
-                DrawerActivity drawerActivity = (DrawerActivity)activity;
-                drawerActivity.showFeed();
-                drawerActivity.dismissMapFragmentDialogs();
+            if (activity instanceof MainActivity) {
+                MainActivity mainActivity = (MainActivity)activity;
+                mainActivity.showFeed();
+                mainActivity.dismissMapFragmentDialogs();
                 if (pathSegments != null && pathSegments.size() >= 1) {
                     String requestedView = pathSegments.get(0);
                     if (requestedView.equalsIgnoreCase(DeepLinksView.FILTERS.getView())) {
-                        drawerActivity.showMapFilters();
+                        mainActivity.showMapFilters();
                     }
                 }
             } else {
@@ -157,8 +157,8 @@ public class DeepLinksManager {
                     return;
                 }
             }
-            if (activity instanceof DrawerActivity) {
-                ((DrawerActivity)activity).selectItem(action_edit_profile);
+            if (activity instanceof MainActivity) {
+                ((MainActivity)activity).selectItem(action_edit_profile);
                 return;
             }
         }
@@ -169,11 +169,11 @@ public class DeepLinksManager {
                     if (!urlToOpen.toLowerCase().startsWith("http")) {
                         urlToOpen = "https://"+urlToOpen;
                     }
-                    if (activity instanceof DrawerActivity) {
-                        DrawerActivity drawerActivity = (DrawerActivity) activity;
-                        drawerActivity.showFeed();
-                        drawerActivity.dismissMapFragmentDialogs();
-                        drawerActivity.showWebView(urlToOpen);
+                    if (activity instanceof MainActivity) {
+                        MainActivity mainActivity = (MainActivity) activity;
+                        mainActivity.showFeed();
+                        mainActivity.dismissMapFragmentDialogs();
+                        mainActivity.showWebView(urlToOpen);
                     } else {
                         return;
                     }
@@ -181,38 +181,38 @@ public class DeepLinksManager {
             } catch (Exception ignored) {}
         }
         else if (key.equals(DeepLinksView.PROFILE.getView())) {
-            if (activity instanceof DrawerActivity) {
-                ((DrawerActivity)activity).selectItem(action_edit_profile);
+            if (activity instanceof MainActivity) {
+                ((MainActivity)activity).selectItem(action_edit_profile);
             } else {
                 return;
             }
         }
         else if (key.equals(DeepLinksView.GUIDE.getView())) {
-            if (activity instanceof DrawerActivity) {
-                ((DrawerActivity)activity).showGuide();
+            if (activity instanceof MainActivity) {
+                ((MainActivity)activity).showGuide();
             } else {
                 return;
             }
         }
         else if (key.equals(DeepLinksView.MY_CONVERSATIONS.getView())) {
-            if (activity instanceof DrawerActivity) {
-                DrawerActivity drawerActivity = (DrawerActivity)activity;
-                drawerActivity.dismissMapFragmentDialogs();
-                drawerActivity.showMyEntourages();
+            if (activity instanceof MainActivity) {
+                MainActivity mainActivity = (MainActivity)activity;
+                mainActivity.dismissMapFragmentDialogs();
+                mainActivity.showMyEntourages();
             } else {
                 return;
             }
         }
         else if (key.equals(DeepLinksView.CREATE_ACTION.getView())) {
-            if (activity instanceof DrawerActivity) {
-                DrawerActivity drawerActivity = (DrawerActivity)activity;
-                drawerActivity.createEntourage();
+            if (activity instanceof MainActivity) {
+                MainActivity mainActivity = (MainActivity)activity;
+                mainActivity.createEntourage();
             } else {
                 return;
             }
         }
         else if (key.equals(DeepLinksView.ENTOURAGE.getView())) {
-            if (activity instanceof DrawerActivity) {
+            if (activity instanceof MainActivity) {
                 if (pathSegments != null && pathSegments.size() >= 1) {
                     String entourage = pathSegments.get(0);
                     BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, "", entourage));
@@ -222,9 +222,9 @@ public class DeepLinksManager {
             }
         }
         else if (key.equals(DeepLinksView.TUTORIAL.getView())) {
-            if (activity instanceof DrawerActivity) {
-                DrawerActivity drawerActivity = (DrawerActivity)activity;
-                drawerActivity.showTutorial(true);
+            if (activity instanceof MainActivity) {
+                MainActivity mainActivity = (MainActivity)activity;
+                mainActivity.showTutorial(true);
             } else {
                 return;
             }

@@ -291,8 +291,7 @@ public abstract class BaseMapFragment extends Fragment implements BackPressable,
                             displayGeolocationPreferences(true);
                         }
                     } catch(IllegalStateException e) {
-                        EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
-                        Timber.e(e);
+                        Timber.w(e);
                     }
                 })
                 .setNegativeButton(R.string.map_permission_refuse, null)
@@ -314,20 +313,24 @@ public abstract class BaseMapFragment extends Fragment implements BackPressable,
     }
 
     private void updateGeolocBanner(boolean active) {
-        boolean visibility = true;
-        User me = EntourageApplication.me(getActivity());
-        if (LocationUtils.INSTANCE.isLocationEnabled() && LocationUtils.INSTANCE.isLocationPermissionGranted()) {
-            visibility = false;
-        }
-        //we force it because we don't need geoloc when Action zone is set
-        if ((me != null) && !me.isPro() && (me.getAddress() != null)) {
-            visibility = false;
-        }
-
         TextView gpsLayout = getView()!=null?getView().findViewById(R.id.fragment_map_gps):null;
         if (gpsLayout != null) {
+            boolean visibility = true;
+            if (LocationUtils.INSTANCE.isLocationEnabled() && LocationUtils.INSTANCE.isLocationPermissionGranted()) {
+                visibility = false;
+            }
+            //we force it because we don't need geoloc when Action zone is set
+            User me = EntourageApplication.me(getActivity());
+            if ((me != null) && !me.isPro() && (me.getAddress() != null)) {
+                visibility = false;
+            }
+
             gpsLayout.setText(LocationUtils.INSTANCE.isLocationEnabled()? getString(R.string.map_gps_no_permission):getString(R.string.map_gps_unavailable));
             gpsLayout.setVisibility(visibility? View.VISIBLE : View.GONE);
+
+            if(getAdapter()!=null) {
+                getAdapter().displayGeolocStatusIcon(!visibility);
+            };
 
         }
 

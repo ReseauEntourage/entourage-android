@@ -183,10 +183,13 @@ public class AuthenticationController {
 
     public MapFilter getMapFilter() {
         MapFilter mapFilter = null;
-        if (loggedUser != null && userPreferences != null) {
+        if (userPreferences != null) {
             mapFilter = userPreferences.getMapFilter();
             if (mapFilter == null) {
-                mapFilter = MapFilterFactory.getMapFilter(loggedUser.isPro());
+                mapFilter = new MapFilter();
+                if(loggedUser!=null) {
+                    mapFilter.setDefaultValues(loggedUser.isPro());
+                }
                 userPreferences.setMapFilter(mapFilter);
                 saveUserPreferences();
             }
@@ -268,11 +271,6 @@ public class AuthenticationController {
                 // Delete it
                 appSharedPref.putObject(PREF_KEY_MAP_FILTER, null);
             }
-        }
-        // MapFilter validation
-        MapFilter mapFilter = getMapFilter();
-        if (mapFilter != null) {
-            mapFilter.validateCategories();
         }
     }
 

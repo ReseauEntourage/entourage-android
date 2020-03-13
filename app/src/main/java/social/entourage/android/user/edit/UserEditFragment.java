@@ -35,7 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.MainActivity;
 import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
@@ -396,11 +396,9 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
             return;
         }
         if (event.getPartner() != null) {
-            PartnerFragment partnerFragment = PartnerFragment.newInstance(event.getPartner());
-            partnerFragment.show(getFragmentManager(), PartnerFragment.TAG);
+            PartnerFragment.Companion.newInstance(event.getPartner()).show(getParentFragmentManager(), PartnerFragment.TAG);
         } else {
-            PartnerFragment partnerFragment = PartnerFragment.newInstance(event.getPartnerId());
-            partnerFragment.show(getFragmentManager(), PartnerFragment.TAG);
+            PartnerFragment.Companion.newInstance(event.getPartnerId()).show(getParentFragmentManager(), PartnerFragment.TAG);
         }
     }
 
@@ -444,8 +442,8 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
         }
         if (success) {
             //logout and go back to login screen
-            if (getActivity() instanceof DrawerActivity) {
-                ((DrawerActivity) getActivity()).selectItem(R.id.action_logout);
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).selectItem(R.id.action_logout);
             }
         }
         else {

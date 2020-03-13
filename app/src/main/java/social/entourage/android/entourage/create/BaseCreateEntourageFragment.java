@@ -39,7 +39,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.MainActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
@@ -58,6 +58,7 @@ import social.entourage.android.entourage.category.EntourageCategoryManager;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.view.EntourageTitleView;
 import social.entourage.android.view.HtmlTextView;
+import timber.log.Timber;
 
 import static social.entourage.android.entourage.category.EntourageCategoryFragment.KEY_ENTOURAGE_CATEGORY;
 
@@ -398,7 +399,11 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
                 Entourage.TYPE_OUTING.equalsIgnoreCase(groupType) ? R.string.outing_create_ok : R.string.entourage_create_ok,
                 Toast.LENGTH_SHORT
         ).show();
-        dismiss();
+        try {
+            dismiss();
+        } catch(IllegalStateException e) {
+            Timber.w(e);
+        }
         BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(entourage));
     }
 
@@ -554,8 +559,8 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         if (getView() == null) return;
         HtmlTextView helpHtmlTextView = getView().findViewById(R.id.create_entourage_help_link);
         if (helpHtmlTextView != null) {
-            if (getActivity() != null && getActivity() instanceof DrawerActivity) {
-                String goalLink = ((DrawerActivity) getActivity()).getLink(Constants.GOAL_LINK_ID);
+            if (getActivity() != null && getActivity() instanceof MainActivity) {
+                String goalLink = ((MainActivity) getActivity()).getLink(Constants.GOAL_LINK_ID);
                 helpHtmlTextView.setHtmlString(getString(R.string.entourage_create_help_text, goalLink), EntourageLinkMovementMethod.getInstance());
             }
         }

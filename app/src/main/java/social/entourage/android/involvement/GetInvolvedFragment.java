@@ -71,7 +71,7 @@ public class GetInvolvedFragment extends EntourageDialogFragment {
     }
 
     private void populate() {
-        versionTextView.setText(getString(R.string.about_version_format, BuildConfig.VERSION_NAME));
+        versionTextView.setText(getString(R.string.about_version_format, BuildConfig.DEBUG?BuildConfig.VERSION_DEBUG_NAME:BuildConfig.VERSION_NAME));
     }
 
     // ----------------------------------

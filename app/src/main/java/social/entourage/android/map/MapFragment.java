@@ -31,6 +31,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -53,7 +54,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.MainActivity;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
@@ -96,7 +97,7 @@ import social.entourage.android.view.EntourageSnackbar;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
-public class MapFragment extends BaseMapFragment implements NewsFeedListener, UserEditActionZoneFragment.FragmentListener {
+public abstract class MapFragment extends BaseMapFragment implements NewsFeedListener, UserEditActionZoneFragment.FragmentListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -218,7 +219,7 @@ public class MapFragment extends BaseMapFragment implements NewsFeedListener, Us
         initializeNewsfeedView();
         initializeInvitations();
         if (getActivity() != null) {
-            ((DrawerActivity)getActivity()).showEditActionZoneFragment();
+            ((MainActivity)getActivity()).showEditActionZoneFragment();
         }
     }
 
@@ -234,7 +235,7 @@ public class MapFragment extends BaseMapFragment implements NewsFeedListener, Us
     public void onStart() {
         super.onStart();
         if (!LocationUtils.INSTANCE.isLocationEnabled() && !LocationUtils.INSTANCE.isLocationPermissionGranted() && getActivity() != null) {
-            ((DrawerActivity) getActivity()).showEditActionZoneFragment(this);
+            ((MainActivity) getActivity()).showEditActionZoneFragment(this);
         }
         newsfeedListView.addOnScrollListener(scrollListener);
         EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_FEED_FROM_TAB);
@@ -387,13 +388,13 @@ public class MapFragment extends BaseMapFragment implements NewsFeedListener, Us
         }
 
         // Check if we need to show the entourage disclaimer
-        if (Configuration.getInstance().showEntourageDisclaimer()) {
+        if (Configuration.INSTANCE.showEntourageDisclaimer()) {
             if (presenter != null) {
                 presenter.displayEntourageDisclaimer(entourageGroupType);
             }
         } else {
             if (getActivity() != null) {
-                ((DrawerActivity) getActivity()).onEntourageDisclaimerAccepted(null);
+                ((MainActivity) getActivity()).onEntourageDisclaimerAccepted(null);
             }
         }
     }
@@ -486,8 +487,17 @@ public class MapFragment extends BaseMapFragment implements NewsFeedListener, Us
         if (presenter != null) {
             presenter.saveMapFilter();
         }
+
+        updateFilterButtonText();
         // Refresh the newsfeed
         refreshFeed();
+    }
+
+    private void updateFilterButtonText() {
+        View v = getView().findViewById(R.id.fragment_map_filter_button);
+        if(v instanceof ExtendedFloatingActionButton) {
+            ((ExtendedFloatingActionButton) v).setText(MapFilterFactory.getMapFilter().isDefaultFilter() ? R.string.map_no_filter : R.string.map_filters_activated);
+        }
     }
 
     public void onNewsfeedLoadMoreRequested(Events.OnNewsfeedLoadMoreEvent event) {
@@ -674,7 +684,7 @@ public class MapFragment extends BaseMapFragment implements NewsFeedListener, Us
     }
 
     protected void redrawWholeNewsfeed(@NotNull List<? extends Newsfeed> newsFeeds) {
-        if (map != null && newsFeeds.size() > 0) {
+        if (map != null && newsFeeds.size() > 0 && newsfeedAdapter!=null) {
             //redraw the whole newsfeed
             for (TimestampedObject timestampedObject : newsfeedAdapter.getItems()) {
                 if (timestampedObject.getType() == TimestampedObject.ENTOURAGE_CARD) {
@@ -727,11 +737,6 @@ public class MapFragment extends BaseMapFragment implements NewsFeedListener, Us
     public void onDisplayToggle() {
         if (!isFullMapShown) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_MAPVIEW_CLICK);
-            /*TODO: check if we want to do this
-            if (selectedTab == MapTabItem.EVENTS_TAB && newsfeedAdapter != null) {
-                newsfeedAdapter.setSelectedTab(MapTabItem.ALL_TAB);
-                onMapTabChanged(MapTabItem.ALL_TAB);
-            } */
         }
         else {
             EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_LISTVIEW_CLICK);
@@ -756,7 +761,7 @@ public class MapFragment extends BaseMapFragment implements NewsFeedListener, Us
         User me = EntourageApplication.me(getActivity());
         boolean isPro = (me != null && me.isPro());
         MapFilterFragment mapFilterFragment = MapFilterFragment.newInstance(isPro);
-        mapFilterFragment.show(getFragmentManager(), MapFilterFragment.TAG);
+        mapFilterFragment.show(getParentFragmentManager(), MapFilterFragment.TAG);
     }
 
     @OnClick(R.id.fragment_map_new_entourages_button)
@@ -770,6 +775,7 @@ public class MapFragment extends BaseMapFragment implements NewsFeedListener, Us
     // ----------------------------------
 
     private void initializeFloatingMenu() {
+        updateFilterButtonText();
         updateFloatingMenuOptions();
     }
 
@@ -1000,7 +1006,7 @@ public class MapFragment extends BaseMapFragment implements NewsFeedListener, Us
     public void userStatusChanged(PushNotificationContent content, String status) {
         if (entourageService != null) {
             TimestampedObject timestampedObject = null;
-            if (content.isEntourageRelated()) {
+            if (content.isEntourageRelated() && newsfeedAdapter!=null) {
                 timestampedObject = newsfeedAdapter.findCard(TimestampedObject.ENTOURAGE_CARD, content.getJoinableId());
             }
             if (timestampedObject != null) {
@@ -1172,7 +1178,7 @@ public class MapFragment extends BaseMapFragment implements NewsFeedListener, Us
     }
 
     protected void displayListWithMapHeader() {
-        if (newsfeedAdapter==null || newsfeedListView == null || mapDisplayToggle == null) {
+        if (mapDisplayToggle == null) {
             return;
         }
 
@@ -1437,7 +1443,7 @@ public class MapFragment extends BaseMapFragment implements NewsFeedListener, Us
             if (topFragment == null) {
                 return;
             }
-            ((DrawerActivity) getActivity()).showTutorial();
+            ((MainActivity) getActivity()).showTutorial();
         }, Constants.CAROUSEL_DELAY_MILLIS);
     }
 

@@ -14,7 +14,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import social.entourage.android.DrawerActivity;
+import social.entourage.android.MainActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.base.EntourageDialogFragment;
@@ -118,7 +118,7 @@ public class TourEndConfirmationFragment extends EntourageDialogFragment {
         Bundle args = new Bundle();
         args.putBoolean(KEY_RESUME_TOUR, true);
         args.putSerializable(Tour.KEY_TOUR, tour);
-        Intent resumeIntent = new Intent(getActivity(), DrawerActivity.class);
+        Intent resumeIntent = new Intent(getActivity(), MainActivity.class);
         resumeIntent.putExtras(args);
         resumeIntent.setAction(KEY_RESUME_TOUR);
         startActivity(resumeIntent);
@@ -130,7 +130,7 @@ public class TourEndConfirmationFragment extends EntourageDialogFragment {
         Bundle args = new Bundle();
         args.putBoolean(KEY_END_TOUR, true);
         args.putSerializable(Tour.KEY_TOUR, tour);
-        Intent resumeIntent = new Intent(getActivity(), DrawerActivity.class);
+        Intent resumeIntent = new Intent(getActivity(), MainActivity.class);
         resumeIntent.putExtras(args);
         resumeIntent.setAction(KEY_END_TOUR);
         startActivity(resumeIntent);

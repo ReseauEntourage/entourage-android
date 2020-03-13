@@ -41,9 +41,7 @@ abstract class BaseLibrariesSupport {
     }
 
     fun onActivityDestroyed() {
-        if (mixpanel != null) {
-            mixpanel!!.flush()
-        }
+        mixpanel?.flush()
     }
 
     // ----------------------------------
@@ -64,11 +62,10 @@ abstract class BaseLibrariesSupport {
         val props = JSONObject()
         try {
             props.put("Flavor", FLAVOR)
+            mixpanel?.registerSuperProperties(props)
         } catch (e: JSONException) {
             Timber.e(e)
         }
-
-        mixpanel!!.registerSuperProperties(props)
     }
 
     private fun setupTimberTree() {

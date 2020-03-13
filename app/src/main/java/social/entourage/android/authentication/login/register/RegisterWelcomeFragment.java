@@ -114,8 +114,7 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
                 RegisterNumberFragment registerNumberFragment = new RegisterNumberFragment();
                 registerNumberFragment.show(getFragmentManager(), RegisterNumberFragment.TAG);
             } catch(IllegalStateException e) {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
-                Timber.e(e);
+                Timber.w(e);
             }
         } else {
             dismiss();

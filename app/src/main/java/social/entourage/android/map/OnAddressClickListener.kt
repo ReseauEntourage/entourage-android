@@ -10,8 +10,10 @@ import java.util.Locale
 class OnAddressClickListener(private val context: Context, private val address: String) : View.OnClickListener {
 
     override fun onClick(v: View) {
-        val uri = Uri.parse(String.format(Locale.FRENCH, "geo:0,0?q=%s", address))
-        openExternalMap(uri)
+        val uri:Uri? = Uri.parse(String.format(Locale.FRENCH, "geo:0,0?q=%s", address))
+        if (uri != null) {
+            openExternalMap(uri)
+        }
     }
 
     private fun openExternalMap(geoLocation: Uri) {

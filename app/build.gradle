@@ -3,6 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'io.fabric'
 apply plugin: 'com.google.android.gms.oss-licenses-plugin'
+apply plugin: 'com.google.firebase.firebase-perf'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -25,9 +27,13 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
 
-        versionCode rootProject.ext.versionCodeInt
-        versionName rootProject.ext.versionNameProd
+        // Making either of these two values dynamic in the defaultConfig will
+        // require a full APK build and reinstallation because the AndroidManifest.xml
+        // must be updated.
+        versionCode 1
+        versionName "1.0"
 
+        buildConfigField 'String', 'VERSION_DEBUG_NAME', '"' + rootProject.ext.versionNameProd + '"'
         buildConfigField 'String', 'VERSION_DISPLAY_NAME', '"' + rootProject.ext.versionBranchName + '"'
         setProperty("archivesBaseName", "$appBundleName-$versionNameProd")
         multiDexEnabled true
@@ -137,7 +143,7 @@ android {
         targetCompatibility rootProject.ext.targetCompatibilityVersion
     }
 
-    android.applicationVariants.all { variant ->
+    applicationVariants.all { variant ->
         def flavors = variant.productFlavors
         // flavorDimensions "app" -> 0, "env" -> 1
         def app = flavors[0]
@@ -151,8 +157,18 @@ android {
                 deepLinksEntourageScheme: "${app[environment.name]['deepLinksScheme']}"
         ]
 
+        // The defaultConfig values above are fixed, so your incremental builds don't
+        // need to rebuild the manifest (and therefore the whole APK, slowing build times).
+        // But for release builds, it's okay. So the following script iterates through
+        // all the known variants, finds those that are "release" build types, and
+        // changes those properties to something dynamic.
+        if (variant.buildType.name == "release") {
+            variant.outputs.each { output ->
+                output.versionCodeOverride = rootProject.ext.versionCodeInt
+                output.versionNameOverride = rootProject.ext.versionNameProd
+            }
+        }
     }
-
     packagingOptions {
         exclude 'META-INF/notice.txt'
         exclude 'META-INF/NOTICE.txt'
@@ -186,7 +202,7 @@ dependencies {
 
     compileOnly javaDependencies.values()
 
-    annotationProcessor annotationDependencies.values()
+    kapt annotationDependencies.values()
 
     androidTestImplementation testDependencies.values()
 }

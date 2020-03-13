@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tour_info_title_full"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/greyish_brown"
+            android:textSize="@dimen/entourage_font_title_3"
+            android:textStyle="normal"
+            tools:text="Urgent Cherche paire de lunettes"/>
+
+        <LinearLayout
+            android:id="@+id/new_way_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layoutDirection="rtl" >
+
+            <TextView
+                android:id="@+id/tour_summary_author_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="@color/greyish_brown"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                tools:text="User name" />
+
+            <TextView
+                android:id="@+id/tour_summary_group_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-light"
+                android:lines="1"
+                android:textColor="@color/greyish_brown"
+                android:textSize="15sp"
+                tools:text="Demande par " />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tour_info_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/greyish_brown"
+            android:textSize="@dimen/entourage_font_small"
+            tools:text="Paris (75011)"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="6dp"
+        android:gravity="end"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="39dp"
+            android:layout_height="39dp">
+
+            <ImageView
+                android:id="@+id/tour_info_author_photo"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:contentDescription="@string/empty_description"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_user_photo_small"/>
+
+            <social.entourage.android.view.PartnerLogoImageView
+                android:id="@+id/tour_info_partner_logo"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignEnd="@+id/tour_info_author_photo"
+                android:layout_alignBottom="@+id/tour_info_author_photo"
+                android:layout_marginEnd="-4dp"
+                android:layout_marginBottom="-4dp"
+                tools:src="@drawable/entourage_logo_grey"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:contentDescription="@string/empty_description"
+                android:src="@drawable/ic_users"/>
+
+            <TextView
+                android:id="@+id/tour_info_people_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/greyish_brown"
+                android:textSize="15sp"
+                tools:text="4" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

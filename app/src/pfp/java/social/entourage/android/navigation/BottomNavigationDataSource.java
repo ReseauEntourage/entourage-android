@@ -15,7 +15,6 @@ public class BottomNavigationDataSource extends BaseBottomNavigationDataSource {
 
     public BottomNavigationDataSource() {
         add(R.id.bottom_bar_newsfeed, MapVoisinageFragment.TAG);
-        add(R.id.bottom_bar_plus, PlusFragment.TAG);
         add(R.id.bottom_bar_mymessages, MyEntouragesFragment.TAG);
         add(R.id.bottom_bar_profile, SideMenuFragment.TAG);
 
@@ -26,8 +25,6 @@ public class BottomNavigationDataSource extends BaseBottomNavigationDataSource {
         switch(menuId) {
             case R.id.bottom_bar_newsfeed:
                 return new MapVoisinageFragment();
-            case R.id.bottom_bar_plus:
-                return new PlusFragment();
             case R.id.bottom_bar_mymessages:
                 return new MyEntouragesFragment();
             case R.id.bottom_bar_profile:

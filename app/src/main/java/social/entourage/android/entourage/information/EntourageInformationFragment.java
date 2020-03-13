@@ -540,7 +540,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
         try {
             this.dismiss();
         } catch(IllegalStateException e) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
+            Timber.w(e);
         }
     }
 
@@ -717,8 +717,8 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
                 //show close fragment
                 if (getActivity() != null) {
                     FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
-                    EntourageCloseFragment entourageCloseFragment = EntourageCloseFragment.newInstance(feedItem);
-                    entourageCloseFragment.show(fragmentManager, EntourageCloseFragment.TAG, getContext());
+                    EntourageCloseFragment entourageCloseFragment = EntourageCloseFragment.Companion.newInstance(feedItem);
+                    entourageCloseFragment.show(fragmentManager, EntourageCloseFragment.Companion.getTAG(), getContext());
                 }
             }
         } else if (feedItem.getType() == TimestampedObject.TOUR_CARD && feedItem.getStatus().equals(FeedItem.STATUS_CLOSED)) {
@@ -887,7 +887,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
     @OnClick(R.id.tour_info_member_add)
     protected void onMembersAddClicked() {
         if (feedItem == null) return;
-        if (feedItem.isPrivate() && Configuration.getInstance().showInviteView()) {
+        if (feedItem.isPrivate() && Configuration.INSTANCE.showInviteView()) {
             // For members show the invite screen
             onUserAddClicked();
         } else {
@@ -1219,8 +1219,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
 
             drawFeedItemOnMap();
         }catch(IllegalStateException e) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
-            Timber.e(e);
+            Timber.w(e);
         }
     }
 
@@ -1349,7 +1348,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
                 }
             });
         } catch(IllegalStateException e){
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
+            Timber.w(e);
         }
     }
 
@@ -1511,7 +1510,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
 
         if (TYPE_OUTING.equalsIgnoreCase(feedItem.getGroupType())) {
             authorName.setText("");
-            infoLocation.setVisibility(View.INVISIBLE);
+            infoLocation.setVisibility(View.GONE);
         } else {
             authorName.setText(feedItem.getAuthor().getUserName());
             infoLocation.setVisibility(View.VISIBLE);
@@ -1582,9 +1581,9 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
     private String formattedDaysIntervalFromToday(Date rawDate) {
         LocalDate today = new LocalDate();
         LocalDate date = new LocalDate(rawDate);
-        if (date.isEqual(today)) return "aujourd'hui";
+        if (date.isEqual(today)) return this.getString(R.string.date_today).toLowerCase();
         int days = Days.daysBetween(date, today).getDays();
-        if (days == -1) return "hier";
+        if (days == 1) return this.getString(R.string.date_yesterday).toLowerCase();
         return String.format(Locale.FRENCH, "il y a %d jours", days);
     }
 
@@ -1618,16 +1617,20 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
                     metadata.getStartTimeAsString(getContext())));
         }
 
-        setAddressView(fragmentView, metadata);
+        if(metadata!=null) {
+            setAddressView(fragmentView, metadata);
+        }
     }
 
-    private void setAddressView(View fragmentView, BaseEntourage.Metadata metadata) {
+    private void setAddressView(View fragmentView, @NonNull BaseEntourage.Metadata metadata) {
         TextView address = fragmentView.findViewById(R.id.tour_info_metadata_address);
         if (address != null) {
             final String displayAddress = metadata.getDisplayAddress();
             address.setText(displayAddress);
             address.setPaintFlags(address.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-            address.setOnClickListener(new OnAddressClickListener(getActivity(), displayAddress));
+            if(displayAddress!=null) {
+                address.setOnClickListener(new OnAddressClickListener(getActivity(), displayAddress));
+            }
         }
     }
 
@@ -2228,8 +2231,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
             getActivity().startService(intent);
             getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
             } catch (IllegalStateException e) {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_ILLEGAL_STATE);
-                Timber.e(e);
+                Timber.w(e);
             }
         }
     }
@@ -2242,46 +2244,8 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
     }
 
     // ----------------------------------
-    // Tour Service listener implementation
+    // Entourage Service listener implementation
     // ----------------------------------
-
-    @Override
-    public void onTourCreated(final boolean created, @NonNull final String tourUUID) {
-
-    }
-
-    @Override
-    public void onTourUpdated(@NonNull final LatLng newPoint) {
-
-    }
-
-    @Override
-    public void onTourResumed(@NotNull List<? extends TourPoint> pointsToDraw, @NotNull String tourType, @NotNull Date startDate) {
-    }
-
-    @Override
-    public void onRetrieveToursNearby(@NotNull List<? extends Tour> tours) {
-        if (feedItem.getType() != TimestampedObject.TOUR_CARD) return;
-        for (Tour receivedTour:tours) {
-            if (receivedTour.getId() == this.feedItem.getId()) {
-                if(!receivedTour.isSame((Tour)this.feedItem)) {
-                    onFeedItemClosed(true, receivedTour);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void onRetrieveToursByUserId(@NotNull List<? extends Tour> tours) {
-    }
-
-    @Override
-    public void onUserToursFound(@NotNull Map<Long, ? extends Tour> tours) {
-    }
-
-    @Override
-    public void onToursFound(@NotNull Map<Long, ? extends Tour> tours) {
-    }
 
     @Override
     public void onFeedItemClosed(final boolean closed, final FeedItem feedItem) {
