@@ -162,7 +162,7 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
                     val previousPoiCount = poisAdapter!!.dataItemCount
                     poisAdapter!!.addItems(poiCollection)
                     if (previousPoiCount == 0) {
-                        fragment_guide_pois_view.scrollToPosition(0)
+                        fragment_guide_pois_view?.scrollToPosition(0)
                     }
                 }
             } else {
