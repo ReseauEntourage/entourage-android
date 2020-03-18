@@ -137,7 +137,7 @@ class AnnouncementViewHolder(view: View?) : BaseCardViewHolder(view), Target {
     }
 
     override fun onBitmapFailed(e: Exception, errorDrawable: Drawable) {
-        Timber.e(e)
+        Timber.w(e)
     }
 
     override fun onPrepareLoad(placeHolderDrawable: Drawable) {
