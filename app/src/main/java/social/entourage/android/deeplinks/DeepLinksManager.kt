@@ -17,8 +17,16 @@ import java.util.regex.Pattern
 /**
  * Handles the deep links received by the app
  * Created by Mihai Ionescu on 31/10/2017.
+ *
+ * entourage://...
+ * http://websiteurl/key/info
+ * https://websiteurl/key/info
+ * /feed/
+ * /feed/filters
+ * /badge
+ * /webview/...url=...
  */
-class DeepLinksManager {
+object DeepLinksManager {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -42,7 +50,7 @@ class DeepLinksManager {
     fun handleCurrentDeepLink(activity: MainActivity) {
         if (deepLinkIntent == null) return
         deepLinkUri = deepLinkIntent!!.data
-        if (deepLinkUri == null || deepLinkUri!!.scheme == null) {
+        if (deepLinkUri == null || deepLinkUri?.scheme == null) {
             deepLinkIntent = null
             return
         }
@@ -58,12 +66,12 @@ class DeepLinksManager {
      * @param activity
      */
     private fun handleEntourageDeepLink(activity: MainActivity) {
-        var host = deepLinkUri!!.host
+        val host = deepLinkUri?.host
         if (host == null) {
             deepLinkIntent = null
             return
         }
-        handleDeepLink(activity, host.toLowerCase(), deepLinkUri!!.pathSegments)
+        handleDeepLink(activity, host.toLowerCase(), deepLinkUri?.pathSegments)
     }
 
     /**
@@ -76,8 +84,10 @@ class DeepLinksManager {
             val requestedView = pathSegments[0]
             val key = pathSegments[1]
             if (requestedView.equals(DeepLinksView.ENTOURAGES.view, ignoreCase = true)) {
+                //path like /entourage/UUID...
                 BusProvider.getInstance().post(OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, "", key))
             } else if (requestedView.equals(DeepLinksView.DEEPLINK.view, ignoreCase = true)) {
+                //path like /deeplink/key/...
                 //Remove the requested view and the key from path segments
                 pathSegments.removeAt(0)
                 pathSegments.removeAt(0) // zero, because it was shifted when we removed requestedview
@@ -94,14 +104,12 @@ class DeepLinksManager {
             activity.showFeed()
             activity.dismissMapFragmentDialogs()
             if (pathSegments != null && pathSegments.isNotEmpty()) {
-                val requestedView = pathSegments[0]
-                if (requestedView.equals(DeepLinksView.FILTERS.view, ignoreCase = true)) {
+                if (DeepLinksView.FILTERS.view.equals(pathSegments[0], ignoreCase = true)) {
                     activity.showMapFilters()
                 }
             }
         } else if (key == DeepLinksView.BADGE.view) {
-            val fragmentManager = activity.supportFragmentManager
-            val userEditFragment = fragmentManager.findFragmentByTag(UserEditFragment.TAG) as UserEditFragment?
+            val userEditFragment = activity.supportFragmentManager.findFragmentByTag(UserEditFragment.TAG) as UserEditFragment?
             if (userEditFragment != null) {
                 userEditFragment.onAddAssociationClicked()
             } else {
@@ -109,7 +117,7 @@ class DeepLinksManager {
             }
         } else if (key == DeepLinksView.WEBVIEW.view) {
             try {
-                var urlToOpen = deepLinkUri!!.getQueryParameter("url")
+                var urlToOpen = deepLinkUri?.getQueryParameter("url")
                 if (urlToOpen != null) {
                     if (!urlToOpen.toLowerCase().startsWith("http")) {
                         urlToOpen = "https://$urlToOpen"
@@ -158,22 +166,14 @@ class DeepLinksManager {
 
     }
 
-    companion object {
-        /**
-         * Singleton accessor
-         * @return the singleton
-         */
-        val instance = DeepLinksManager()
-
-        /**
-         * Linkify the textview, by adding the app deep link
-         * @param textView textview to be linkified
-         */
-        @JvmStatic
-        fun linkify(textView: TextView) {
-            val pattern = Pattern.compile(BuildConfig.DEEP_LINKS_SCHEME + "://" + DeepLinksView.ENTOURAGE.view + "/[0-9]+")
-            Linkify.addLinks(textView, Linkify.ALL) // to add support for standard URLs, emails, phones a.s.o.
-            Linkify.addLinks(textView, pattern, null)
-        }
+    /**
+     * Linkify the textview, by adding the app deep link
+     * @param textView textview to be linkified
+     */
+    //@JvmStatic
+    fun linkify(textView: TextView) {
+        val pattern = Pattern.compile(BuildConfig.DEEP_LINKS_SCHEME + "://" + DeepLinksView.ENTOURAGE.view + "/[0-9]+")
+        Linkify.addLinks(textView, Linkify.ALL) // to add support for standard URLs, emails, phones a.s.o.
+        Linkify.addLinks(textView, pattern, null)
     }
 }

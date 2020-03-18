@@ -59,8 +59,8 @@ abstract class BaseMapFilterFragment : EntourageDialogFragment() {
     // Private methods
     // ----------------------------------
     protected open fun initializeView() {
-        title_close_button.setOnClickListener {onCloseClicked()}
-        title_action_button.setOnClickListener {onValidateClicked()}
+        title_close_button?.setOnClickListener {onCloseClicked()}
+        title_action_button?.setOnClickListener {onValidateClicked()}
         loadFilter()
     }
 

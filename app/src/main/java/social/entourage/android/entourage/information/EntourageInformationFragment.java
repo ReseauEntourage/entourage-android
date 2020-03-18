@@ -1553,7 +1553,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
         } else {
             tourDescription.setVisibility(View.GONE);
         }
-        DeepLinksManager.linkify(tourDescription);
+        DeepLinksManager.INSTANCE.linkify(tourDescription);
 
         // metadata
         updateMetadataView();

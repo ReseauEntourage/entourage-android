@@ -32,14 +32,14 @@ class CreateActionWizardPage2Fragment : EntourageDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null && getView() != null) {
-            val activity = activity as MainActivity?
-            val text = getString(R.string.create_action_wizard_disclaimer, activity?.getLink(Constants.CHARTE_LINK_ID))
-            create_action_wizard_disclaimer.text = Utils.fromHtml(text)
-            create_action_wizard_disclaimer.movementMethod = EntourageLinkMovementMethod.getInstance()
+            val mainActivity = activity as MainActivity
+            val text = getString(R.string.create_action_wizard_disclaimer, mainActivity.getLink(Constants.CHARTE_LINK_ID))
+            create_action_wizard_disclaimer?.text = Utils.fromHtml(text)
+            create_action_wizard_disclaimer?.movementMethod = EntourageLinkMovementMethod.getInstance()
         }
-        title_close_button.setOnClickListener { onCloseClicked()        }
-        create_action_wizard_p2_option1_button.setOnClickListener {onOption1Clicked()}
-        create_action_wizard_p2_option2_button.setOnClickListener {onOption2Clicked()}
+        title_close_button?.setOnClickListener { onCloseClicked()        }
+        create_action_wizard_p2_option1_button?.setOnClickListener {onOption1Clicked()}
+        create_action_wizard_p2_option2_button?.setOnClickListener {onOption2Clicked()}
     }
 
     fun setListener(listener: CreateActionWizardListener?) {
@@ -54,11 +54,11 @@ class CreateActionWizardPage2Fragment : EntourageDialogFragment() {
         dismiss()
     }
 
-    fun onOption1Clicked() {
+    private fun onOption1Clicked() {
         listener?.createActionWizardNextStep(STEP, 1)
     }
 
-    fun onOption2Clicked() {
+    private fun onOption2Clicked() {
         listener?.createActionWizardNextStep(STEP, 2)
     }
 

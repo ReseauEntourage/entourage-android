@@ -35,7 +35,7 @@ class AnnouncementViewHolder(view: View?) : BaseCardViewHolder(view), Target {
     // BaseViewHolder implementation
     // ----------------------------------
     override fun bindFields() {
-        val onClickListener = View.OnClickListener { _: View? ->
+        val onClickListener = View.OnClickListener {
             if (actUrl == null) return@OnClickListener
             val actIntent = Intent(Intent.ACTION_VIEW, Uri.parse(actUrl))
             try {
@@ -45,8 +45,8 @@ class AnnouncementViewHolder(view: View?) : BaseCardViewHolder(view), Target {
             }
         }
         itemView.setOnClickListener(onClickListener)
-        itemView.announcement_card_image.setOnClickListener(onClickListener)
-        itemView.announcement_card_button_act.setOnClickListener(onClickListener)
+        itemView.announcement_card_image?.setOnClickListener(onClickListener)
+        itemView.announcement_card_button_act?.setOnClickListener(onClickListener)
     }
 
     override fun populate(data: TimestampedObject) {
@@ -61,7 +61,7 @@ class AnnouncementViewHolder(view: View?) : BaseCardViewHolder(view), Target {
         Picasso.get().cancelRequest(itemView.announcement_card_partner_logo)
         Picasso.get().cancelRequest(itemView.announcement_card_image)
         //title
-        itemView.announcement_card_title.text = announcement.title
+        itemView.announcement_card_title?.text = announcement.title
         val iconUrl = announcement.iconUrl
         if (iconUrl != null) {
             Picasso.get()
@@ -69,7 +69,7 @@ class AnnouncementViewHolder(view: View?) : BaseCardViewHolder(view), Target {
                     .placeholder(R.drawable.ic_broadcast)
                     .into(this)
         } else {
-            itemView.announcement_card_title.setCompoundDrawables(null, null, null, null)
+            itemView.announcement_card_title?.setCompoundDrawables(null, null, null, null)
         }
         //author
         val author = announcement.author
@@ -84,9 +84,9 @@ class AnnouncementViewHolder(view: View?) : BaseCardViewHolder(view), Target {
                             .load(Uri.parse(avatarURLAsString))
                             .placeholder(R.drawable.ic_user_photo_small)
                             .transform(CropCircleTransformation())
-                            .into(itemView.announcement_card_photo)
+                            .into(itemView.announcement_card_photo!!)
                 } else {
-                    itemView.announcement_card_photo.setImageResource(R.drawable.ic_user_photo_small)
+                    itemView.announcement_card_photo!!.setImageResource(R.drawable.ic_user_photo_small)
                 }
             }
             // Partner logo
@@ -97,32 +97,32 @@ class AnnouncementViewHolder(view: View?) : BaseCardViewHolder(view), Target {
                             .load(Uri.parse(partnerLogoURL))
                             .placeholder(R.drawable.partner_placeholder)
                             .transform(CropCircleTransformation())
-                            .into(itemView.announcement_card_partner_logo)
+                            .into(itemView.announcement_card_partner_logo!!)
                 } else {
-                    itemView.announcement_card_partner_logo.setImageDrawable(null)
+                    itemView.announcement_card_partner_logo!!.setImageDrawable(null)
                 }
             }
         }
         //body
-        itemView.announcement_card_body.text = announcement.body
+        itemView.announcement_card_body?.text = announcement.body
         //image
         val imageUrl = announcement.imageUrl
         if (imageUrl == null || imageUrl.trim { it <= ' ' }.length == 0) {
-            itemView.announcement_card_image.visibility = View.GONE
-            itemView.announcement_card_divider_left.visibility = View.VISIBLE
-            itemView.announcement_card_divider_right.visibility = View.VISIBLE
+            itemView.announcement_card_image?.visibility = View.GONE
+            itemView.announcement_card_divider_left?.visibility = View.VISIBLE
+            itemView.announcement_card_divider_right?.visibility = View.VISIBLE
         } else {
-            itemView.announcement_card_image.visibility = View.VISIBLE
-            itemView.announcement_card_divider_left.visibility = View.GONE
-            itemView.announcement_card_divider_right.visibility = View.GONE
+            itemView.announcement_card_image?.visibility = View.VISIBLE
+            itemView.announcement_card_divider_left?.visibility = View.GONE
+            itemView.announcement_card_divider_right?.visibility = View.GONE
             Picasso.get()
                     .load(Uri.parse(imageUrl))
                     .placeholder(R.drawable.ic_announcement_image_placeholder)
                     .into(itemView.announcement_card_image)
         }
         //act button
-        itemView.announcement_card_act_layout.visibility = if (announcement.action != null) View.VISIBLE else View.GONE
-        itemView.announcement_card_button_act.text = announcement.action
+        itemView.announcement_card_act_layout?.visibility = if (announcement.action != null) View.VISIBLE else View.GONE
+        itemView.announcement_card_button_act?.text = announcement.action
         actUrl = announcement.url
     }
 
@@ -133,7 +133,7 @@ class AnnouncementViewHolder(view: View?) : BaseCardViewHolder(view), Target {
         val targetWidth = itemView.resources.getDimensionPixelOffset(R.dimen.announcement_icon_width)
         val targetHeight = itemView.resources.getDimensionPixelOffset(R.dimen.announcement_icon_height)
         val bitmapDrawable = BitmapDrawable(Resources.getSystem(), Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, false))
-        itemView.announcement_card_title.setCompoundDrawablesWithIntrinsicBounds(bitmapDrawable, null, null, null)
+        itemView.announcement_card_title?.setCompoundDrawablesWithIntrinsicBounds(bitmapDrawable, null, null, null)
     }
 
     override fun onBitmapFailed(e: Exception, errorDrawable: Drawable?) {
@@ -141,7 +141,7 @@ class AnnouncementViewHolder(view: View?) : BaseCardViewHolder(view), Target {
     }
 
     override fun onPrepareLoad(placeHolderDrawable: Drawable) {
-        itemView.announcement_card_title.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+        itemView.announcement_card_title?.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
     }
 
     companion object {

@@ -36,7 +36,7 @@ class EntourageCloseFragment : DialogFragment() {
     // Lifecycle
     // ----------------------------------
     fun show(fragmentManager: FragmentManager, tag: String?, context: Context?) {
-        //TODO change PFP to use that kind of dialog, use we use this function for compatibility
+        //TODO change PFP to use that kind of dialog, we use this function for compatibility
         show(fragmentManager, tag)
     }
 
@@ -58,11 +58,11 @@ class EntourageCloseFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        entourage_close_close_button.setOnClickListener({onCloseClicked()})
-        entourage_close_cancel_button.setOnClickListener({onCloseClicked()})
-        entourage_close_success_button.setOnClickListener( {onSuccessClicked()})
-        entourage_close_failed_button.setOnClickListener( {onFailedClicked()})
-        entourage_close_help_button.setOnClickListener( {onHelpClicked()})
+        entourage_close_close_button?.setOnClickListener {onCloseClicked()}
+        entourage_close_cancel_button?.setOnClickListener {onCloseClicked()}
+        entourage_close_success_button?.setOnClickListener {onSuccessClicked()}
+        entourage_close_failed_button?.setOnClickListener {onFailedClicked()}
+        entourage_close_help_button?.setOnClickListener {onHelpClicked()}
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -78,21 +78,21 @@ class EntourageCloseFragment : DialogFragment() {
         dismiss()
     }
 
-    fun onSuccessClicked() {
+    private fun onSuccessClicked() {
         BusProvider.getInstance().post(OnFeedItemCloseRequestEvent(feedItem, false, true))
         showEmail(R.string.entourage_close_email_title_success)
         EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_CLOSE_POPUP_SUCCESS)
         dismiss()
     }
 
-    fun onFailedClicked() {
+    private fun onFailedClicked() {
         BusProvider.getInstance().post(OnFeedItemCloseRequestEvent(feedItem, false, false))
         showEmail(R.string.entourage_close_email_title_failed)
         EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_CLOSE_POPUP_FAILURE)
         dismiss()
     }
 
-    fun onHelpClicked() {
+    private fun onHelpClicked() {
         showEmail(R.string.entourage_close_email_title_help)
         EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_CLOSE_POPUP_HELP)
         dismiss()

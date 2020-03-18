@@ -30,11 +30,11 @@ abstract class AboutFragment : EntourageDialogFragment() {
     }
 
     protected open fun populate() {
-        about_logo.setOnLongClickListener { view: View -> handleLongPress(view) }
-        title_close_button.setOnClickListener { dismiss() }
-        about_conditions_layout.setOnClickListener { onTermsClicked() }
-        about_oss_licenses.setOnClickListener { onOSSLicensesClicked() }
-        about_privacy_layout.setOnClickListener { onPrivacyClicked() }
+        about_logo?.setOnLongClickListener { view: View -> handleLongPress(view) }
+        title_close_button?.setOnClickListener { dismiss() }
+        about_conditions_layout?.setOnClickListener { onTermsClicked() }
+        about_oss_licenses?.setOnClickListener { onOSSLicensesClicked() }
+        about_privacy_layout?.setOnClickListener { onPrivacyClicked() }
     }
 
     private fun handleLongPress(view: View): Boolean {

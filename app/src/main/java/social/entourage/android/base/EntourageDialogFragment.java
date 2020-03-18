@@ -46,7 +46,7 @@ public class EntourageDialogFragment extends DialogFragment {
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if(getActivity() instanceof MainActivity) {
-            DeepLinksManager.Companion.getInstance().handleCurrentDeepLink((MainActivity)getActivity());
+            DeepLinksManager.INSTANCE.handleCurrentDeepLink((MainActivity)getActivity());
         }
     }
 

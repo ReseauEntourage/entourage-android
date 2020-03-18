@@ -108,7 +108,7 @@ public class Newsfeed {
                 String type = jsonObject.get(TYPE).getAsString();
                 newsfeed.type = type;
                 if (type != null) {
-                    Class newsfeedClass = NewsfeedTypes.getNewsfeedClass(type);
+                    Class newsfeedClass = NewsfeedTypes.getClassFromString(type);
                     if (newsfeedClass != null) {
                         newsfeed.data = gson.fromJson(jsonObject.get(DATA), newsfeedClass);
                     }

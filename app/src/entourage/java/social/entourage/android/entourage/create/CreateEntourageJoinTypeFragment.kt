@@ -30,9 +30,9 @@ class CreateEntourageJoinTypeFragment : EntourageDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        title_close_button.setOnClickListener {dismiss()}
-        entourage_join_type_option_private.setOnClickListener {onJoinTypePrivateClicked()}
-        entourage_join_type_option_public.setOnClickListener {onJoinTypePublicClicked()}
+        title_close_button?.setOnClickListener {dismiss()}
+        entourage_join_type_option_private?.setOnClickListener {onJoinTypePrivateClicked()}
+        entourage_join_type_option_public?.setOnClickListener {onJoinTypePublicClicked()}
     }
 
     fun setListener(listener: CreateEntourageJoinTypeListener?) {

@@ -257,9 +257,9 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
     // EMPTY LIST POPUP
     // ----------------------------------
     private fun initializeEmptyListPopup() {
-        fragment_guide_empty_list_popup.setOnClickListener {onEmptyListPopupClose()}
-        fragment_guide_info_popup_close.setOnClickListener {onInfoPopupClose()}
-        fragment_guide_info_popup.setOnClickListener {onInfoPopupClose()}
+        fragment_guide_empty_list_popup?.setOnClickListener {onEmptyListPopupClose()}
+        fragment_guide_info_popup_close?.setOnClickListener {onInfoPopupClose()}
+        fragment_guide_info_popup?.setOnClickListener {onInfoPopupClose()}
         var proposePOIUrl: String? = ""
         if (activity != null && activity is MainActivity) {
             proposePOIUrl = (activity as MainActivity).getLink(Constants.PROPOSE_POI_ID)
@@ -268,7 +268,7 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
         fragment_guide_empty_list_popup_text?.text = Utils.fromHtml(getString(R.string.map_poi_empty_popup, proposePOIUrl))
     }
 
-    fun onEmptyListPopupClose() {
+    private fun onEmptyListPopupClose() {
         val authenticationController = EntourageApplication.get(context).entourageComponent.authenticationController
         //TODO add an "never display" button
         authenticationController?.isShowNoPOIsPopup = false
@@ -313,16 +313,16 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
     private fun showInfoPopup() {
         val authenticationController = EntourageApplication.get(context).entourageComponent.authenticationController
         if (authenticationController == null || !authenticationController.isShowInfoPOIsPopup) {
-            fragment_guide_info_popup.visibility = View.VISIBLE
+            fragment_guide_info_popup?.visibility = View.VISIBLE
         }
     }
 
     private fun hideInfoPopup() {
-        fragment_guide_info_popup.visibility = View.GONE
+        fragment_guide_info_popup?.visibility = View.GONE
     }
 
     private val isInfoPopupVisible: Boolean
-        get() = fragment_guide_info_popup.visibility == View.VISIBLE
+        get() = fragment_guide_info_popup?.visibility == View.VISIBLE
 
     // ----------------------------------
     // FAB HANDLING
@@ -337,11 +337,11 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
     // ----------------------------------
     private fun initializePOIList() {
         if (poisAdapter == null) {
-            fragment_guide_pois_view.layoutManager = LinearLayoutManager(context)
+            fragment_guide_pois_view?.layoutManager = LinearLayoutManager(context)
             poisAdapter = PoisAdapter()
             poisAdapter!!.setOnMapReadyCallback(onMapReadyCallback)
             poisAdapter!!.setOnFollowButtonClickListener { onFollowGeolocation() }
-            fragment_guide_pois_view.adapter = poisAdapter
+            fragment_guide_pois_view?.adapter = poisAdapter
         }
     }
 
@@ -358,7 +358,7 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
             return
         }
         isFullMapShown = true
-        fragment_map_display_toggle.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_list_white_24dp))
+        fragment_map_display_toggle?.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_list_white_24dp))
         ensureMapVisible()
         val targetHeight = fragment_guide_main_layout.measuredHeight
         if (animated) {
@@ -403,9 +403,9 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
         // Guide starts in full map mode, adjust the text accordingly
         if (context == null) return
         fragment_map_display_toggle?.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_list_white_24dp))
-        fragment_map_display_toggle.setOnClickListener {onDisplayToggle()}
-        guide_longclick_button_poi_propose.setOnClickListener {proposePOI()}
-        button_poi_propose.setOnClickListener {onPOIProposeClicked()}
+        fragment_map_display_toggle?.setOnClickListener {onDisplayToggle()}
+        guide_longclick_button_poi_propose?.setOnClickListener {proposePOI()}
+        button_poi_propose?.setOnClickListener {onPOIProposeClicked()}
 
         /* TODO activate this !
         if(getActivity()!=null) {
@@ -421,7 +421,7 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
     }
 
     private fun initializeFilterButton() {
-        fragment_map_filter_button.setOnClickListener {onShowFilter()}
+        fragment_map_filter_button?.setOnClickListener {onShowFilter()}
         if (instance.hasFilteredCategories()) {
             //fragment_map_filter_button.extend();
             (fragment_map_filter_button as ExtendedFloatingActionButton).setText(R.string.guide_filters_activated)
