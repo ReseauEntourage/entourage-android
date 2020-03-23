@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="activity_display_user_title">PROFIL</string>
+    <string name="user_profile_display_title">PROFIL</string>
     <string name="user_button_confirm_changes">Confirmer</string>
     <string name="user_text_update_ok">Profil mis à jour</string>
     <string name="user_text_update_ko">Erreur de mise à jour</string>

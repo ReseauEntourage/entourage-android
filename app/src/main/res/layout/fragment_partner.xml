@@ -10,7 +10,7 @@
         android:id="@+id/user_title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:entourageTitle="@string/activity_display_user_title"/>
+        app:entourageTitle="@string/user_profile_display_title"/>
 
     <View
         android:layout_width="match_parent"

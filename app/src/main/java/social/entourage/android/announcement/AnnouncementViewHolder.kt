@@ -7,6 +7,9 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.View
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Picasso.LoadedFrom
@@ -107,7 +110,7 @@ class AnnouncementViewHolder(view: View?) : BaseCardViewHolder(view), Target {
         itemView.announcement_card_body?.text = announcement.body
         //image
         val imageUrl = announcement.imageUrl
-        if (imageUrl == null || imageUrl.trim { it <= ' ' }.length == 0) {
+        if (imageUrl == null || imageUrl.trim { it <= ' ' }.isEmpty()) {
             itemView.announcement_card_image?.visibility = View.GONE
             itemView.announcement_card_divider_left?.visibility = View.VISIBLE
             itemView.announcement_card_divider_right?.visibility = View.VISIBLE
@@ -115,10 +118,12 @@ class AnnouncementViewHolder(view: View?) : BaseCardViewHolder(view), Target {
             itemView.announcement_card_image?.visibility = View.VISIBLE
             itemView.announcement_card_divider_left?.visibility = View.GONE
             itemView.announcement_card_divider_right?.visibility = View.GONE
-            Picasso.get()
-                    .load(Uri.parse(imageUrl))
-                    .placeholder(R.drawable.ic_announcement_image_placeholder)
-                    .into(itemView.announcement_card_image)
+            Picasso.get().load(Uri.parse(imageUrl)).let {
+                AppCompatResources.getDrawable(itemView.context, R.drawable.ic_announcement_image_placeholder)?.let {
+                    itPlaceholder -> it.placeholder(itPlaceholder)
+                }
+                it.into(itemView.announcement_card_image)
+            }
         }
         //act button
         itemView.announcement_card_act_layout?.visibility = if (announcement.action != null) View.VISIBLE else View.GONE

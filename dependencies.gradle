@@ -130,14 +130,8 @@ ext {
     ]
 
     testDependencies = [
-            espresso        : [
-                    group: "androidx.test.espresso",
-                    name: "espresso-core",
-                    version: "$espressoVersion",
-                    exclude: [
-                            group: "com.android.support"
-                    ]
-            ],
+            espresso        :"androidx.test.espresso:espresso-core:$espressoVersion",
+            espressoIntents :"androidx.test.espresso:espresso-intents:$espressoVersion",
             okHttpIdling    : [
                     group: "com.jakewharton.espresso",
                     name: "okhttp3-idling-resource",

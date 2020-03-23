@@ -115,7 +115,7 @@ public class MainActivity extends EntourageSecuredActivity
         configureBottombar();
 
         if (getIntent() != null) {
-            checkDeepLinks();
+            DeepLinksManager.INSTANCE.storeIntent(getIntent());
         }
 
         User user = getAuthenticationController().getUser();
@@ -128,18 +128,6 @@ public class MainActivity extends EntourageSecuredActivity
 
             updateAnalyticsInfo();
         }
-    }
-
-    private void checkDeepLinks() {
-        String intentAction = getIntent().getAction();
-        Bundle extras = getIntent().getExtras();
-        if (Intent.ACTION_VIEW.equals(intentAction)) {
-            // Save the deep link intent
-            DeepLinksManager.INSTANCE.setDeepLinkIntent(getIntent());
-        } else if(extras !=null && extras.containsKey(PushNotificationManager.KEY_CTA)) {
-            DeepLinksManager.INSTANCE.setDeepLinkIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(extras.getString(PushNotificationManager.KEY_CTA))));
-        }
-
     }
 
     @Override
@@ -156,7 +144,7 @@ public class MainActivity extends EntourageSecuredActivity
         Timber.d("onNewIntent %s", intent.toString());
         super.onNewIntent(intent);
         this.setIntent(intent);
-        checkDeepLinks();
+        DeepLinksManager.INSTANCE.storeIntent(intent);
         setIntentAction(intent);
     }
 

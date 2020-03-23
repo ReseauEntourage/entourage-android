@@ -46,10 +46,7 @@ class LoginTest {
     }
 
     private fun checkNoUserIsLoggedIn() {
-        val context: Context = activityRule.activity
-        if (EntourageApplication.get(context).entourageComponent.authenticationController.user != null) {
-            EntourageApplication.get(context).entourageComponent.authenticationController.logOutUser()
-        }
+        EntourageApplication.get(activityRule.activity).entourageComponent.authenticationController?.logOutUser()
     }
 
     @After

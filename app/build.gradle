@@ -151,6 +151,7 @@ android {
 
         variant.buildConfigField "String", "ENTOURAGE_URL", "\"${app[environment.name]['serverURL']}\""
         variant.buildConfigField "String", "DEEP_LINKS_SCHEME", "\"${app[environment.name]['deepLinksScheme']}\""
+        variant.buildConfigField "String", "DEEP_LINKS_URL", "\"${app[environment.name]['deepLinksHostName']}\""
 
         variant.mergedFlavor.manifestPlaceholders = [
                 deepLinksHostName       : "${app[environment.name]['deepLinksHostName']}",

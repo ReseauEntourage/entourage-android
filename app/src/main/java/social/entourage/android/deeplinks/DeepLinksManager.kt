@@ -2,6 +2,7 @@ package social.entourage.android.deeplinks
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.text.util.Linkify
 import android.widget.TextView
 import social.entourage.android.BuildConfig
@@ -9,8 +10,10 @@ import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.map.FeedItem
 import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent
+import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.user.edit.UserEditFragment
+import timber.log.Timber
 import java.util.*
 import java.util.regex.Pattern
 
@@ -25,36 +28,31 @@ import java.util.regex.Pattern
  * /feed/filters
  * /badge
  * /webview/...url=...
+ * adb shell am start -W -a android.intent.action.VIEW -d "example://gizmos" com.example.android
  */
 object DeepLinksManager {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-    private var deepLinkIntent: Intent? = null
-    private var deepLinkUri: Uri? = null
+    private var intent: Intent? = null
+    private var currentUri: Uri? = null
     // ----------------------------------
     // DEEP LINK HANDLING
     // ----------------------------------
-    /**
-     * Saves the receieved deep link intent
-     * @param deepLinkIntent
-     */
-    fun setDeepLinkIntent(deepLinkIntent: Intent?) {
-        this.deepLinkIntent = deepLinkIntent
-    }
 
     /**
      * Handles the current deep link, and sets it to null if successfully
      * @param activity
      */
     fun handleCurrentDeepLink(activity: MainActivity) {
-        if (deepLinkIntent == null) return
-        deepLinkUri = deepLinkIntent!!.data
-        if (deepLinkUri == null || deepLinkUri?.scheme == null) {
-            deepLinkIntent = null
+        if (intent == null) return
+        currentUri = intent!!.data
+        if (currentUri == null || currentUri?.scheme == null) {
+            intent = null
             return
         }
-        if (deepLinkUri!!.scheme!!.contains(BuildConfig.DEEP_LINKS_SCHEME)) {
+        Timber.i("New deeplink : "+ currentUri.toString())
+        if (currentUri!!.scheme!!.contains(BuildConfig.DEEP_LINKS_SCHEME)) {
             handleEntourageDeepLink(activity)
         } else {
             handleHttpDeepLink(activity)
@@ -66,12 +64,12 @@ object DeepLinksManager {
      * @param activity
      */
     private fun handleEntourageDeepLink(activity: MainActivity) {
-        val host = deepLinkUri?.host
+        val host = currentUri?.host
         if (host == null) {
-            deepLinkIntent = null
+            intent = null
             return
         }
-        handleDeepLink(activity, host.toLowerCase(), deepLinkUri?.pathSegments)
+        handleDeepLink(activity, host.toLowerCase(), currentUri?.pathSegments)
     }
 
     /**
@@ -79,11 +77,12 @@ object DeepLinksManager {
      * @param activity
      */
     private fun handleHttpDeepLink(activity: MainActivity) {
-        val pathSegments: ArrayList<String> = ArrayList(deepLinkUri!!.pathSegments)
+        val pathSegments: ArrayList<String> = ArrayList(currentUri!!.pathSegments)
         if (pathSegments.size >= 2) {
             val requestedView = pathSegments[0]
             val key = pathSegments[1]
-            if (requestedView.equals(DeepLinksView.ENTOURAGES.view, ignoreCase = true)) {
+            if (requestedView.equals(DeepLinksView.ENTOURAGES.view, ignoreCase = true)
+                    ||requestedView.equals(DeepLinksView.ENTOURAGE.view, ignoreCase = true)) {
                 //path like /entourage/UUID...
                 BusProvider.getInstance().post(OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, "", key))
             } else if (requestedView.equals(DeepLinksView.DEEPLINK.view, ignoreCase = true)) {
@@ -96,7 +95,7 @@ object DeepLinksManager {
                 return  // we don't suppress the intent in this case
             }
         }
-        deepLinkIntent = null
+        intent = null
     }
 
     private fun handleDeepLink(activity: MainActivity, key: String, pathSegments: List<String>?) {
@@ -117,7 +116,7 @@ object DeepLinksManager {
             }
         } else if (key == DeepLinksView.WEBVIEW.view) {
             try {
-                var urlToOpen = deepLinkUri?.getQueryParameter("url")
+                var urlToOpen = currentUri?.getQueryParameter("url")
                 if (urlToOpen != null) {
                     if (!urlToOpen.toLowerCase().startsWith("http")) {
                         urlToOpen = "https://$urlToOpen"
@@ -137,14 +136,14 @@ object DeepLinksManager {
             activity.showMyEntourages()
         } else if (key == DeepLinksView.CREATE_ACTION.view) {
             activity.createEntourage()
-        } else if (key == DeepLinksView.ENTOURAGE.view) {
+        } else if (key == DeepLinksView.ENTOURAGE.view || key == DeepLinksView.ENTOURAGES.view) {
             if (pathSegments != null && pathSegments.isNotEmpty()) {
                 BusProvider.getInstance().post(OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, "", pathSegments[0]))
             }
         } else if (key == DeepLinksView.TUTORIAL.view) {
             activity.showTutorial(true)
         }
-        deepLinkIntent = null
+        intent = null
     }
 
     /**
@@ -163,17 +162,27 @@ object DeepLinksManager {
         MY_CONVERSATIONS("messages"),
         CREATE_ACTION("create-action"),
         TUTORIAL("tutorial");
-
     }
 
     /**
      * Linkify the textview, by adding the app deep link
      * @param textView textview to be linkified
      */
-    //@JvmStatic
     fun linkify(textView: TextView) {
         val pattern = Pattern.compile(BuildConfig.DEEP_LINKS_SCHEME + "://" + DeepLinksView.ENTOURAGE.view + "/[0-9]+")
         Linkify.addLinks(textView, Linkify.ALL) // to add support for standard URLs, emails, phones a.s.o.
         Linkify.addLinks(textView, pattern, null)
     }
+
+    fun storeIntent(newIntent: Intent) {
+        val extras: Bundle? = newIntent.extras
+        if (Intent.ACTION_VIEW == newIntent.action) {
+            // Save the deep link intent
+            intent = newIntent
+        } else if (extras != null && extras.containsKey(PushNotificationManager.KEY_CTA)) {
+            intent = Intent(Intent.ACTION_VIEW, Uri.parse(extras.getString(PushNotificationManager.KEY_CTA)))
+        }
+    }
+
+
 }
