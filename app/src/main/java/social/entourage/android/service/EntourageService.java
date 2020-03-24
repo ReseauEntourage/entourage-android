@@ -18,6 +18,8 @@ import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -195,7 +197,7 @@ public class EntourageService extends Service {
         return entourageServiceManager.getTour();
     }
 
-    public String getCurrentTourId() {
+    @NotNull public String getCurrentTourId() {
         return entourageServiceManager.getTourUUID();
     }
 
@@ -421,7 +423,7 @@ public class EntourageService extends Service {
         entourageServiceManager.updateEncounter(encounter);
     }
 
-    void notifyListenersTourCreated(final boolean created, final String uuid) {
+    void notifyListenersTourCreated(final boolean created, @NotNull final String uuid) {
         if (created) {
             startNotification();
         }
