@@ -30,11 +30,11 @@ android {
         // Making either of these two values dynamic in the defaultConfig will
         // require a full APK build and reinstallation because the AndroidManifest.xml
         // must be updated.
-        versionCode 1
-        versionName "1.0"
+        versionCode 601
+        versionName "6.1"
 
-        buildConfigField 'String', 'VERSION_DEBUG_NAME', '"' + rootProject.ext.versionNameProd + '"'
-        buildConfigField 'String', 'VERSION_DISPLAY_NAME', '"' + rootProject.ext.versionBranchName + '"'
+        buildConfigField 'String', 'VERSION_FULL_NAME', '"' + rootProject.ext.versionNameProd + '"'
+        buildConfigField 'String', 'VERSION_DISPLAY_BRANCH_NAME', '"' + rootProject.ext.versionBranchName + '"'
         setProperty("archivesBaseName", "$appBundleName-$versionNameProd")
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

@@ -24,7 +24,7 @@ class VoisinageAboutFragment : AboutFragment() {
 
     override fun populate() {
         super.populate()
-        about_version_description?.text = getString(R.string.about_version_format, if (BuildConfig.DEBUG) BuildConfig.VERSION_DEBUG_NAME else BuildConfig.VERSION_NAME)
+        about_version_description?.text = getString(R.string.about_version_format, BuildConfig.VERSION_FULL_NAME )
         about_version_layout?.setOnClickListener { onVersionClicked() }
     }
 

@@ -40,7 +40,7 @@ public class ApplicationInfo {
     public ApplicationInfo(final String pushToken) {
         this.pushToken = pushToken;
         this.deviceOS = DEVICE_TYPE + Build.VERSION.RELEASE;
-        this.version = BuildConfig.DEBUG? BuildConfig.VERSION_DEBUG_NAME : BuildConfig.VERSION_NAME;
+        this.version = BuildConfig.VERSION_FULL_NAME;
         notificationsPermissions = NOTIF_PERMISSION_NOTDETERMINED;
     }
 
