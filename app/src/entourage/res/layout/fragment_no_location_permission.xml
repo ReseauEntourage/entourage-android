@@ -61,6 +61,17 @@
         android:layout_marginTop="20dp"
         android:text="@string/map_permission_activate_button"/>
 
+    <Button
+        android:id="@+id/no_location_ignore_button"
+        style="@style/WhiteButton.RoundedCorners"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/no_location_activate_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/ignore"
+        android:visibility="gone"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
