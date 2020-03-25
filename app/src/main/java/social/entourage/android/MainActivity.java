@@ -162,6 +162,11 @@ public class MainActivity extends EntourageSecuredActivity
         setIntentAction(intent);
         if (getIntent()!=null && getIntent().getAction() != null) {
             switch (getIntent().getAction()) {
+                case PushNotificationContent.TYPE_NEW_CHAT_MESSAGE :
+                case PushNotificationContent.TYPE_NEW_JOIN_REQUEST:
+                case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:
+                case PushNotificationContent.TYPE_ENTOURAGE_INVITATION:
+                case PushNotificationContent.TYPE_INVITATION_STATUS:
                 case TourEndConfirmationFragment.KEY_RESUME_TOUR:
                 case TourEndConfirmationFragment.KEY_END_TOUR:
                 case PlusFragment.KEY_START_TOUR:
@@ -700,7 +705,7 @@ public class MainActivity extends EntourageSecuredActivity
                     }
                     break;
                 case PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED:
-                    //@todo should we update current tour info fragment ?
+                    //@TODO should we update current tour info fragment ?
                     removePushNotification(content, PushNotificationContent.TYPE_NEW_JOIN_REQUEST);
                     break;
                 case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:
