@@ -136,7 +136,7 @@ class AnnouncementViewHolder(view: View?) : BaseCardViewHolder(view), Target {
         itemView.announcement_card_title.setCompoundDrawablesWithIntrinsicBounds(bitmapDrawable, null, null, null)
     }
 
-    override fun onBitmapFailed(e: Exception, errorDrawable: Drawable) {
+    override fun onBitmapFailed(e: Exception, errorDrawable: Drawable?) {
         Timber.w(e)
     }
 
