@@ -302,7 +302,7 @@ public class MapVoisinageFragment extends MapFragment implements EntourageServic
             PushNotificationContent content = message.getContent();
             if (content != null) {
                 PushNotificationContent.Extra extra = content.extra;
-                switch(intent.getAction()) {
+                switch(event.getAction()) {
                     case PushNotificationContent.TYPE_NEW_CHAT_MESSAGE:
                     case PushNotificationContent.TYPE_NEW_JOIN_REQUEST:
                     case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:

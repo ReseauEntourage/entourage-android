@@ -37,8 +37,8 @@ class PushNotificationTest {
         val intent = Intent(PushNotificationContent.TYPE_NEW_CHAT_MESSAGE)
         val args = Bundle()
         val myobject = "title"
-        val content = "{\"extra\":{\"joinable_id\":2300,\"joinable_type\":\"Entourage\",\"group_type\":\"action\",\"type\":\"NEW_CHAT_MESSAGE\"},\"message\":\"155\"}"
-        val message = Message("francois P", myobject, content,  0, null)
+        val content = "{\"extra\":{\"joinable_id\":"+entourageID+",\"joinable_type\":\"Entourage\",\"group_type\":\"action\",\"type\":\"NEW_CHAT_MESSAGE\"},\"message\":\"test\"}"
+        val message = Message("test Entourage", myobject, content,  0, null)
         args.putSerializable(PushNotificationManager.PUSH_MESSAGE, message)
         intent.putExtras(args);
         activityTestRule.launchActivity(intent)
