@@ -1,8 +1,12 @@
 package social.entourage.android.api.tape;
 
 import android.net.Uri;
+import android.os.Bundle;
 
 import com.google.android.gms.maps.model.LatLng;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.Partner;
@@ -16,9 +20,21 @@ public class Events {
      * Event triggering the checking of the intent action
      */
     public static class OnCheckIntentActionEvent {
+        private @NotNull String action;
+        private @Nullable Bundle extras;
 
-        public OnCheckIntentActionEvent() {}
+        public OnCheckIntentActionEvent(@NotNull String newAction, @Nullable Bundle newExtras) {
+            action = newAction;
+            extras = newExtras;
+        }
 
+        public @NotNull String getAction() {
+            return action;
+        }
+
+        public @Nullable Bundle getExtras() {
+            return extras;
+        }
     }
 
     /**

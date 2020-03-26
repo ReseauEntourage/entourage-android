@@ -285,20 +285,18 @@ public class MapVoisinageFragment extends MapFragment implements EntourageServic
     }
 
     @Subscribe
-    public void checkIntentAction(Events.OnCheckIntentActionEvent event) {
+    public void checkIntentAction(@NotNull Events.OnCheckIntentActionEvent event) {
         if(getActivity()==null) {
             Timber.w("No activity found");
             return;
         }
-        Intent intent = getActivity().getIntent();
-
-        if(intent.getAction()!=null) {
-            checkAction(intent.getAction());
+        if(event.getAction()!=null) {
+            checkAction(event.getAction());
         }
 
         Message message = null;
-        if (intent.getExtras() != null) {
-            message = (Message) intent.getExtras().getSerializable(PushNotificationManager.PUSH_MESSAGE);
+        if (event.getExtras() != null) {
+            message = (Message) event.getExtras().getSerializable(PushNotificationManager.PUSH_MESSAGE);
         }
         if (message != null) {
             PushNotificationContent content = message.getContent();
