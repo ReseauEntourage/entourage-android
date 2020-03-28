@@ -3,6 +3,8 @@ package social.entourage.android.base;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
+import org.jetbrains.annotations.Nullable;
+
 import social.entourage.android.api.model.TimestampedObject;
 
 /**

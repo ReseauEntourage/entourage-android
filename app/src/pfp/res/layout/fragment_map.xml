@@ -94,21 +94,26 @@
                     android:textSize="@dimen/entourage_font_medium"
                     android:visibility="gone" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                     android:id="@+id/fragment_map_filter_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"
                     android:layout_gravity="top"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
                     android:contentDescription="@string/guide_filter_title"
-                    android:visibility="visible"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:padding="8dp"
+                    android:paddingEnd="16dp"
+                    android:paddingStart="16dp"
+                    android:text="@string/guide_filters_activated"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
                     app:backgroundTint="@color/accent"
-                    app:fabSize="mini"
-                    app:srcCompat="@drawable/ic_filter_list_white_24dp" />
+                    app:icon="@drawable/ic_filter_list_white_24dp"
+                    app:iconPadding="0dp"
+                    app:layout_anchorGravity="start"/>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fragment_map_display_toggle"
@@ -145,7 +150,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="50dp"
                 android:layout_marginLeft="50dp"
-                android:layout_marginTop="120dp"
+                android:layout_marginTop="160dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginRight="50dp"
                 android:background="@drawable/rounded_dialog"

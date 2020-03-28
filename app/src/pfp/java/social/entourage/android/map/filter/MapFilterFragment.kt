@@ -40,4 +40,16 @@ class MapFilterFragment  : BaseMapFilterFragment() {
         mapFilter.entourageTypeOuting = map_filter_entourage_outing_switch.isChecked
         mapFilter.includePastEvents = map_filter_past_events_switch.isChecked
     }
+
+    companion object {
+        // ----------------------------------
+        // Constants
+        // ----------------------------------
+        const val TAG = "social.entourage.android.MapFilterFragment"
+        @JvmStatic
+        fun newInstance(isProUser: Boolean): MapFilterFragment {
+            val fragment = MapFilterFragment()
+            return fragment
+        }
+    }
 }

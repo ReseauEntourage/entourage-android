@@ -9,11 +9,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener
 import com.google.maps.android.clustering.view.DefaultClusterRenderer
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_guide_map.*
+import kotlinx.android.synthetic.main.fragment_guide_map.fragment_guide_main_layout
+import kotlinx.android.synthetic.main.fragment_guide_map.fragment_map_display_toggle
+import kotlinx.android.synthetic.main.fragment_guide_map.fragment_map_filter_button
+import kotlinx.android.synthetic.main.fragment_guide_map.fragment_map_longclick
 import kotlinx.android.synthetic.main.layout_guide_longclick.*
 import social.entourage.android.*
 import social.entourage.android.api.model.guide.Poi
@@ -39,7 +44,7 @@ import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
-class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
+open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -50,6 +55,7 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
     private var poisMap: MutableMap<Long, Poi> = TreeMap()
     private var previousEmptyListPopupLocation: Location? = null
     private var poisAdapter: PoisAdapter? = null
+    protected var mapClusterItemRenderer: PoiRenderer? = null
 
     // ----------------------------------
     // LIFECYCLE
@@ -97,15 +103,15 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
     }
 
     override fun onBackPressed(): Boolean {
-        if (mapLongClickView.visibility == View.VISIBLE) {
-            mapLongClickView.visibility = View.GONE
+        if (fragment_map_longclick?.visibility == View.VISIBLE) {
+            fragment_map_longclick.visibility = View.GONE
             //fabProposePOI.setVisibility(View.VISIBLE);
             return true
         }
         return false
     }
 
-    fun onShowFilter() {
+    private fun onShowFilter() {
         try {
             GuideFilterFragment().show(parentFragmentManager, GuideFilterFragment.TAG)
         } catch (e: IllegalStateException) {
@@ -113,7 +119,7 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
         }
     }
 
-    fun onDisplayToggle() {
+    private fun onDisplayToggle() {
         if (!isFullMapShown) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_MAP_VIEW)
         } else {
@@ -147,15 +153,15 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
     // ----------------------------------
     fun putPoiOnMap(categories: List<Category>?, pois: List<Poi>?) {
         if (activity != null) {
-            if (categories != null && mapClusterItemRenderer is PoiRenderer) {
-                (mapClusterItemRenderer as PoiRenderer).setCategories(categories)
+            if (categories != null) {
+                mapClusterItemRenderer?.setCategories(categories)
             }
             clearOldPois()
             if (pois != null && pois.isNotEmpty()) {
                 val poiCollection = removeRedundantPois(pois)
                 if (map != null && mapClusterManager != null) {
-                    mapClusterManager.addItems(poiCollection)
-                    mapClusterManager.cluster()
+                    mapClusterManager?.addItems(poiCollection)
+                    mapClusterManager?.cluster()
                     hideEmptyListPopup()
                 }
                 if (poisAdapter != null) {
@@ -188,9 +194,12 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
         super.onLocationPermissionGranted(event)
     }
 
-    override fun getRenderer(): DefaultClusterRenderer<*> {
-        return PoiRenderer(activity, map, mapClusterManager as ClusterManager<Poi?>?)
-    }
+    override val renderer: DefaultClusterRenderer<ClusterItem>?
+        get() {
+            if(mapClusterItemRenderer==null) mapClusterItemRenderer = PoiRenderer(activity, map, mapClusterManager as ClusterManager<Poi?>?)
+            return mapClusterItemRenderer as DefaultClusterRenderer<ClusterItem>?
+        }
+
 
     private fun proposePOI() {
         // Close the overlays
@@ -202,9 +211,8 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
         }
     }
 
-    override fun getAdapter(): HeaderBaseAdapter {
-        return poisAdapter!!
-    }
+    override val adapter: HeaderBaseAdapter?
+        get() { return poisAdapter}
 
     // ----------------------------------
     // PRIVATE METHODS
@@ -217,11 +225,11 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
 
     private fun onMapReady(googleMap: GoogleMap) {
         super.onMapReady(googleMap,
-                OnEntourageMarkerClickListener(),
+                OnEntourageMarkerClickListener() as OnClusterItemClickListener<ClusterItem>?,
                 null
         )
-        map.setOnCameraIdleListener {
-            val position = map.cameraPosition
+        map?.setOnCameraIdleListener {
+            val position = map!!.cameraPosition
             val newLocation = EntourageLocation.cameraPositionToLocation(null, position)
             val newZoom = position.zoom
             if (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
@@ -278,10 +286,10 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
     private fun showEmptyListPopup() {
         if (map != null) {
             previousEmptyListPopupLocation = if (previousEmptyListPopupLocation == null) {
-                EntourageLocation.cameraPositionToLocation(null, map.cameraPosition)
+                EntourageLocation.cameraPositionToLocation(null, map!!.cameraPosition)
             } else {
                 // Show the popup only we moved from the last position we show it
-                val currentLocation = EntourageLocation.cameraPositionToLocation(null, map.cameraPosition)
+                val currentLocation = EntourageLocation.cameraPositionToLocation(null, map!!.cameraPosition)
                 if (previousEmptyListPopupLocation!!.distanceTo(currentLocation) < Constants.EMPTY_POPUP_DISPLAY_LIMIT) {
                     return
                 }

@@ -28,8 +28,11 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import com.google.maps.android.clustering.ClusterItem
+import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.clustering.view.DefaultClusterRenderer
-import kotlinx.android.synthetic.entourage.fragment_map.*
+import kotlinx.android.synthetic.main.fragment_map.*
+import kotlinx.android.synthetic.main.layout_map_longclick.*
 import social.entourage.android.*
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.map.*
@@ -56,7 +59,7 @@ import social.entourage.android.view.EntourageSnackbar.make
 import java.util.*
 import javax.inject.Inject
 
-abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fragment_map), NewsFeedListener, FragmentListener {
+abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedListener, FragmentListener {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -69,34 +72,11 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
     private var previousEmptyListPopupLocation: Location? = null
     protected var entourageService: EntourageService? = null
     protected var loaderStop: ProgressDialog? = null
-    protected var markersMap: MutableMap<String, Any?>? = null
+    protected var markersMap: MutableMap<String, Any?> =  TreeMap()
     private var initialNewsfeedLoaded = false
     protected var isRequestingToJoin = 0
     private var isStopped = false
     private val refreshToursHandler = Handler()
-    private var onTabSelectedListener: OnTabSelectedListener? = null
-
-    /*@BindView(R.id.fragment_map_main_layout)
-    var layoutMain: RelativeLayout? = null
-
-    @BindView(R.id.fragment_map_display_toggle)
-    var mapDisplayToggle: FloatingActionButton? = null
-
-    @JvmField
-    @BindView(R.id.fragment_map_new_entourages_button)
-    var newEntouragesButton: Button? = null
-
-    @JvmField
-    @BindView(R.id.fragment_map_empty_list)
-    var emptyListTextView: TextView? = null
-
-    @JvmField
-    @BindView(R.id.fragment_map_empty_list_popup)
-    var emptyListPopup: View? = null
-
-    @JvmField
-    @BindView(R.id.fragment_map_entourage_mini_cards)
-    var miniCardsView: EntourageMiniCardsView? = null*/
 
     protected var newsfeedAdapter: NewsfeedAdapter? = null
     private var refreshToursTimer: Timer? = null
@@ -123,7 +103,7 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         BusProvider.getInstance().register(this)
-        markersMap = TreeMap()
+        markersMap.clear()
         EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_TOURS_FROM_MENU)
     }
 
@@ -131,21 +111,24 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
         super.onViewCreated(view, savedInstanceState)
         if (presenter == null) {
             setupComponent(EntourageApplication.get(activity).entourageComponent)
-            presenter!!.start()
+            presenter?.start()
         }
-        if (fragmentLifecycleCallbacks == null && fragmentManager != null) {
+        if (fragmentLifecycleCallbacks == null) {
             fragmentLifecycleCallbacks = MapFragmentLifecycleCallbacks()
-            fragmentManager!!.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks!!, false)
+            activity?.supportFragmentManager?.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks!!, false)
         }
         initializeMap()
         initializeFloatingMenu()
         initializeFilterTab()
         initializeNewsfeedView()
         initializeInvitations()
-        if (activity != null) {
-            (activity as MainActivity?)!!.showEditActionZoneFragment()
-        }
-        fragment_map_empty_list_popup_close.setOnClickListener {onEmptyListPopupClose()}
+        (activity as MainActivity?)?.showEditActionZoneFragment()
+        fragment_map_empty_list_popup_close?.setOnClickListener {onEmptyListPopupClose()}
+        fragment_map_display_toggle?.setOnClickListener {onDisplayToggle()}
+        map_longclick_button_entourage_action?.setOnClickListener {onCreateEntourageHelpAction()}
+        fragment_map_filter_button?.setOnClickListener {onShowFilter()}
+        fragment_map_new_entourages_button?.setOnClickListener {onNewEntouragesReceivedButton()}
+        fragment_map_gps?.setOnClickListener {displayGeolocationPreferences()}
     }
 
     protected fun setupComponent(entourageComponent: EntourageComponent?) {
@@ -158,8 +141,8 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
 
     override fun onStart() {
         super.onStart()
-        if (!isLocationEnabled() && !isLocationPermissionGranted() && activity != null) {
-            (activity as MainActivity?)!!.showEditActionZoneFragment(this)
+        if (!isLocationEnabled() && !isLocationPermissionGranted()) {
+            (activity as MainActivity?)?.showEditActionZoneFragment(this)
         }
         fragment_map_tours_view?.addOnScrollListener(scrollListener)
         EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_FEED_FROM_TAB)
@@ -179,8 +162,7 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
     override fun onResume() {
         super.onResume()
         timerStart()
-        val isLocationGranted = isLocationPermissionGranted()
-        BusProvider.getInstance().post(OnLocationPermissionGranted(isLocationGranted))
+        BusProvider.getInstance().post(OnLocationPermissionGranted(isLocationPermissionGranted()))
     }
 
     override fun onPause() {
@@ -194,14 +176,12 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
     }
 
     override fun onBackPressed(): Boolean {
-        if (mapLongClickView != null && mapLongClickView.visibility == View.VISIBLE) {
-            mapLongClickView.visibility = View.GONE
+        if (fragment_map_longclick?.visibility == View.VISIBLE) {
+            fragment_map_longclick?.visibility = View.GONE
             return true
         }
         //before closing the fragment, send the cached tour points to server (if applicable)
-        if (entourageService != null) {
-            entourageService!!.updateOngoingTour()
-        }
+        entourageService?.updateOngoingTour()
         return false
     }
 
@@ -213,25 +193,19 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
     }
 
     fun dismissAllDialogs() {
-        if (fragmentLifecycleCallbacks != null) {
-            fragmentLifecycleCallbacks!!.dismissAllDialogs()
-        }
+        fragmentLifecycleCallbacks?.dismissAllDialogs()
     }
 
     @JvmOverloads
     fun displayChosenFeedItem(feedItemUUID: String?, feedItemType: Int, invitationId: Long = 0) {
         //display the feed item
-        if (newsfeedAdapter != null) {
-            val feedItem = newsfeedAdapter!!.findCard(feedItemType, feedItemUUID) as FeedItem
-            if (feedItem != null) {
-                displayChosenFeedItem(feedItem, invitationId)
-                return
-            }
+        val feedItem = newsfeedAdapter?.findCard(feedItemType, feedItemUUID) as FeedItem?
+        if (feedItem != null) {
+            displayChosenFeedItem(feedItem, invitationId)
+            return
         }
-        if (presenter != null) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_OPEN_ENTOURAGE)
-            presenter!!.openFeedItem(feedItemUUID, feedItemType, invitationId)
-        }
+        EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_OPEN_ENTOURAGE)
+        presenter?.openFeedItem(feedItemUUID, feedItemType, invitationId)
     }
 
     fun displayChosenFeedItem(feedItem: FeedItem, feedRank: Int) {
@@ -242,41 +216,38 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
     fun displayChosenFeedItem(feedItem: FeedItem, invitationId: Long, feedRank: Int = 0) {
         if (context == null || isStateSaved) return
         // decrease the badge count
-        val application = EntourageApplication.get(context)
-        application?.removePushNotificationsForFeedItem(feedItem)
+        EntourageApplication.get(context)?.removePushNotificationsForFeedItem(feedItem)
         //check if we are not already displaying the tour
-        if (activity != null) {
-            val fragmentManager = activity!!.supportFragmentManager
-            val entourageInformationFragment = fragmentManager.findFragmentByTag(EntourageInformationFragment.TAG) as EntourageInformationFragment?
-            if (entourageInformationFragment != null && entourageInformationFragment.feedItemType == feedItem.type.toLong() && entourageInformationFragment.feedItemId != null && entourageInformationFragment.feedItemId.equals(feedItem.uuid, ignoreCase = true)) {
-                //TODO refresh the tour info screen
-                return
-            }
+        val fragmentManager = activity?.supportFragmentManager ?: return
+        val entourageInformationFragment = fragmentManager.findFragmentByTag(EntourageInformationFragment.TAG) as EntourageInformationFragment?
+        if (entourageInformationFragment != null && entourageInformationFragment.feedItemType == feedItem.type.toLong() && entourageInformationFragment.feedItemId != null && entourageInformationFragment.feedItemId.equals(feedItem.uuid, ignoreCase = true)) {
+            //TODO refresh the tour info screen
+            return
         }
-        if (presenter != null) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_OPEN_ENTOURAGE)
-            presenter!!.openFeedItem(feedItem, invitationId, feedRank)
-        }
+        EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_OPEN_ENTOURAGE)
+        presenter?.openFeedItem(feedItem, invitationId, feedRank)
     }
 
-    fun displayChosenFeedItemFromShareURL(feedItemShareURL: String?, feedItemType: Int) {
+    private fun displayChosenFeedItemFromShareURL(feedItemShareURL: String?, feedItemType: Int) {
         //display the feed item
-        if (presenter != null) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_OPEN_ENTOURAGE)
-            presenter!!.openFeedItem(feedItemShareURL, feedItemType)
-        }
+        EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_OPEN_ENTOURAGE)
+        presenter?.openFeedItem(feedItemShareURL, feedItemType)
     }
 
     private fun act(timestampedObject: TimestampedObject) {
         if (entourageService != null) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_OPEN_CONTACT)
             isRequestingToJoin++
-            if (timestampedObject.type == TimestampedObject.TOUR_CARD) {
-                entourageService!!.requestToJoinTour(timestampedObject as Tour)
-            } else if (timestampedObject.type == TimestampedObject.ENTOURAGE_CARD) {
-                entourageService!!.requestToJoinEntourage(timestampedObject as Entourage)
-            } else {
-                isRequestingToJoin--
+            when (timestampedObject.type) {
+                TimestampedObject.TOUR_CARD -> {
+                    entourageService?.requestToJoinTour(timestampedObject as Tour)
+                }
+                TimestampedObject.ENTOURAGE_CARD -> {
+                    entourageService?.requestToJoinEntourage(timestampedObject as Entourage)
+                }
+                else -> {
+                    isRequestingToJoin--
+                }
             }
         } else if (fragment_map_main_layout != null) {
             make(fragment_map_main_layout!!, R.string.tour_join_request_error, Snackbar.LENGTH_SHORT).show()
@@ -285,19 +256,13 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
 
     open fun displayEntourageDisclaimer() {
         // Hide the create entourage menu ui
-        if (mapLongClickView != null) {
-            mapLongClickView.visibility = View.GONE
-        }
+        fragment_map_longclick?.visibility = View.GONE
 
         // Check if we need to show the entourage disclaimer
         if (Configuration.showEntourageDisclaimer()) {
-            if (presenter != null) {
-                presenter!!.displayEntourageDisclaimer(entourageGroupType)
-            }
+            presenter?.displayEntourageDisclaimer(entourageGroupType)
         } else {
-            if (activity != null) {
-                (activity as MainActivity?)!!.onEntourageDisclaimerAccepted(null)
-            }
+            (activity as MainActivity?)?.onEntourageDisclaimerAccepted(null)
         }
     }
 
@@ -305,31 +270,22 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
         var location = EntourageLocation.getInstance().lastCameraPosition.target
         if (!Entourage.TYPE_OUTING.equals(entourageGroupType, ignoreCase = true)) {
             // For demand/contribution, by default select the action zone location, if set
-            val me = EntourageApplication.me(activity)
-            if (me != null) {
-                val address = me.address
-                if (address != null) {
-                    location = LatLng(address.latitude, address.longitude)
-                }
+            val address = EntourageApplication.me(activity)?.address
+            if (address != null) {
+                location = LatLng(address.latitude, address.longitude)
             }
         }
         if (longTapCoordinates != null) {
             location = longTapCoordinates
             longTapCoordinates = null
         }
-        if (presenter != null) {
-            presenter!!.createEntourage(location, entourageGroupType!!, entourageCategory)
-        }
+        presenter?.createEntourage(location, entourageGroupType!!, entourageCategory)
     }
 
     protected fun refreshFeed() {
         clearAll()
-        if (newsfeedAdapter != null) {
-            newsfeedAdapter!!.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS, selectedTab)
-        }
-        if (entourageService != null) {
-            entourageService!!.updateNewsfeed(pagination, selectedTab)
-        }
+        newsfeedAdapter?.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS, selectedTab)
+        entourageService?.updateNewsfeed(pagination, selectedTab)
     }
 
     // ----------------------------------
@@ -339,8 +295,8 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
         val item = event.feedItem
         if (item == null) {
             refreshFeed()
-        } else if (newsfeedAdapter != null) {
-            newsfeedAdapter!!.updateCard(item)
+        } else {
+            newsfeedAdapter?.updateCard(item)
         }
     }
 
@@ -351,48 +307,35 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
     }
 
     open fun onEntourageCreated(event: OnEntourageCreated) {
-        val entourage = event.entourage ?: return
-
+        //only if entourage if found
+        event.entourage ?: return
         // Force the map filtering for entourages as ON
-        val mapFilter = mapFilter
         mapFilter.entourageCreated()
-        if (presenter != null) {
-            presenter!!.saveMapFilter()
-        }
+        presenter?.saveMapFilter()
 
         // Update the newsfeed
         clearAll()
-        if (entourageService != null) {
-            entourageService!!.updateNewsfeed(pagination, selectedTab)
-        }
+        entourageService?.updateNewsfeed(pagination, selectedTab)
     }
 
-    open fun onEntourageUpdated(event: OnEntourageUpdated?) {
-        if (event == null || newsfeedAdapter == null) {
-            return
-        }
+    open fun onEntourageUpdated(event: OnEntourageUpdated) {
         val entourage = event.entourage ?: return
-        newsfeedAdapter!!.updateCard(entourage)
+        newsfeedAdapter?.updateCard(entourage)
     }
 
-    open fun onMapFilterChanged(event: OnMapFilterChanged?) {
+    open fun onMapFilterChanged(event: OnMapFilterChanged) {
         // Save the filter
-        if (presenter != null) {
-            presenter!!.saveMapFilter()
-        }
+        presenter?.saveMapFilter()
         updateFilterButtonText()
         // Refresh the newsfeed
         refreshFeed()
     }
 
     private fun updateFilterButtonText() {
-        val v = if (view != null) view!!.findViewById<View>(R.id.fragment_map_filter_button) else null
-        if (v is ExtendedFloatingActionButton) {
-            v.setText(if (mapFilter.isDefaultFilter()) R.string.map_no_filter else R.string.map_filters_activated)
-        }
+        fragment_map_filter_button.setText(if (mapFilter.isDefaultFilter()) R.string.map_no_filter else R.string.map_filters_activated)
     }
 
-    open fun onNewsfeedLoadMoreRequested(event: OnNewsfeedLoadMoreEvent?) {
+    open fun onNewsfeedLoadMoreRequested(event: OnNewsfeedLoadMoreEvent) {
         when (selectedTab) {
             MapTabItem.ALL_TAB -> {
                 ensureMapVisible()
@@ -418,56 +361,41 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
         }
         selectedTab = newSelectedTab
         EntourageEvents.logEvent(if (selectedTab == MapTabItem.ALL_TAB) EntourageEvents.EVENT_FEED_TAB_ALL else EntourageEvents.EVENT_FEED_TAB_EVENTS)
-        if (activity != null) {
-            val filterButton = activity!!.findViewById<View>(R.id.fragment_map_filter_button)
-            if (filterButton != null) {
-                filterButton.visibility = if (selectedTab == MapTabItem.ALL_TAB) View.VISIBLE else View.GONE
-            }
-        }
+        fragment_map_filter_button?.visibility = if (selectedTab == MapTabItem.ALL_TAB) View.VISIBLE else View.GONE
         clearAll()
-        if (newsfeedAdapter != null) {
-            newsfeedAdapter!!.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE, selectedTab)
-        }
-        if (entourageService != null) {
-            entourageService!!.updateNewsfeed(pagination, selectedTab)
-        }
+        newsfeedAdapter?.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE, selectedTab)
+        entourageService?.updateNewsfeed(pagination, selectedTab)
     }
 
     open fun userActRequested(event: OnUserActEvent) {
         if (OnUserActEvent.ACT_JOIN == event.act) {
             act(event.feedItem)
         } else if (OnUserActEvent.ACT_QUIT == event.act) {
-            val me = EntourageApplication.me(context)
-            if (me == null) {
+            if (EntourageApplication.me(context) == null) {
                 Toast.makeText(context, R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show()
             } else {
-                val item = event.feedItem
-                if (item != null && FeedItem.JOIN_STATUS_PENDING == item.joinStatus) {
+                val item = event.feedItem ?:return
+                if (FeedItem.JOIN_STATUS_PENDING == item.joinStatus) {
                     EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_CANCEL_JOIN_REQUEST)
                 }
-                if (entourageService != null) {
-                    entourageService!!.removeUserFromFeedItem(item, userId)
-                }
+                entourageService?.removeUserFromFeedItem(item, userId)
             }
         }
     }
 
-    open fun feedItemViewRequested(event: OnFeedItemInfoViewRequestedEvent?) {
-        if (event != null) {
-            val feedItem = event.feedItem
-            if (feedItem != null) {
-                displayChosenFeedItem(feedItem, event.getfeedRank())
-                // update the newsfeed card
-                onPushNotificationConsumedForFeedItem(feedItem)
-                // update the my entourages card, if necessary
-            } else {
-                //check if we are receiving feed type and id
-                val feedItemType = event.feedItemType
-                if (feedItemType == 0) {
-                    return
-                }
+    open fun feedItemViewRequested(event: OnFeedItemInfoViewRequestedEvent) {
+        val feedItem = event.feedItem
+        if (feedItem != null) {
+            displayChosenFeedItem(feedItem, event.getfeedRank())
+            // update the newsfeed card
+            onPushNotificationConsumedForFeedItem(feedItem)
+            // update the my entourages card, if necessary
+        } else {
+            //check if we are receiving feed type and id
+            val feedItemType = event.feedItemType
+            if (feedItemType != 0) {
                 val feedItemUUID = event.feedItemUUID
-                if (feedItemUUID == null || feedItemUUID.length == 0) {
+                if (feedItemUUID == null || feedItemUUID.isEmpty()) {
                     displayChosenFeedItemFromShareURL(event.feedItemShareURL, feedItemType)
                 } else {
                     displayChosenFeedItem(feedItemUUID, feedItemType, event.invitationId)
@@ -480,7 +408,7 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
     // SERVICE INTERFACE METHODS
     // ----------------------------------
     override fun onLocationUpdated(location: LatLng) {
-        if (entourageService!!.isRunning) {
+        if (entourageService?.isRunning == true) {
             centerMap(location)
         }
     }
@@ -523,27 +451,26 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
     }
 
     override fun onNewsFeedReceived(newsFeeds: List<Newsfeed>) {
-        var newsFeeds = newsFeeds
         if (newsfeedAdapter == null || !isAdded) {
             pagination.isLoading = false
             pagination.isRefreshing = false
             return
         }
         val previousItemCount = newsfeedAdapter!!.dataItemCount
-        newsFeeds = removeRedundantNewsfeed(newsFeeds, false)!!
+        val newNewsFeeds = removeRedundantNewsfeed(newsFeeds)
         //add or update the received newsfeed
-        for (newsfeed in newsFeeds) {
+        for (newsfeed in newNewsFeeds) {
             val newsfeedData = newsfeed.data
             if (newsfeedData is TimestampedObject) {
                 addNewsfeedCard(newsfeedData)
             }
         }
-        updatePagination(newsFeeds)
-        redrawWholeNewsfeed(newsFeeds)
+        updatePagination(newNewsFeeds)
+        redrawWholeNewsfeed(newNewsFeeds)
 
         // update the bottom view, if not refreshing
         if (!pagination.isRefreshing) {
-            showNewsfeedBottomView(if (selectedTab == MapTabItem.ALL_TAB) newsFeeds.size < pagination.itemsPerPage else newsfeedAdapter!!.dataItemCount == 0)
+            showNewsfeedBottomView(if (selectedTab == MapTabItem.ALL_TAB) newNewsFeeds.size < pagination.itemsPerPage else newsfeedAdapter!!.dataItemCount == 0)
         }
         if (newsfeedAdapter!!.dataItemCount == 0) {
             if (!pagination.isRefreshing) {
@@ -563,14 +490,15 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
     }
 
     protected open fun redrawWholeNewsfeed(newsFeeds: List<Newsfeed>) {
-        if (map != null && newsFeeds.size > 0 && newsfeedAdapter != null) {
+        //TODO do we need newsFeeds variable here ?
+        if (map != null && newsFeeds.isNotEmpty() && newsfeedAdapter != null) {
             //redraw the whole newsfeed
             for (timestampedObject in newsfeedAdapter!!.items) {
                 if (timestampedObject.type == TimestampedObject.ENTOURAGE_CARD) {
                     drawNearbyEntourage(timestampedObject as Entourage)
                 }
             }
-            mapClusterManager.cluster()
+            mapClusterManager?.cluster()
         }
     }
 
@@ -590,13 +518,13 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
             return
         }
         if (shouldShowRequestPermissionRationale(permission.ACCESS_FINE_LOCATION)) {
-            AlertDialog.Builder(activity!!)
+            AlertDialog.Builder(requireActivity())
                     .setTitle(R.string.map_permission_title)
                     .setMessage(R.string.map_permission_description)
-                    .setPositiveButton(getString(R.string.activate)) { dialogInterface: DialogInterface?, i: Int -> requestPermissions(arrayOf(permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_LOCATION) }
-                    .setNegativeButton(R.string.map_permission_refuse) { dialog: DialogInterface?, i: Int ->
+                    .setPositiveButton(getString(R.string.activate)) { _: DialogInterface?, _: Int -> requestPermissions(arrayOf(permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_LOCATION) }
+                    .setNegativeButton(R.string.map_permission_refuse) { _: DialogInterface?, _: Int ->
                         val noLocationPermissionFragment = NoLocationPermissionFragment()
-                        noLocationPermissionFragment.show(activity!!.supportFragmentManager, NoLocationPermissionFragment.TAG)
+                        noLocationPermissionFragment.show(requireActivity().supportFragmentManager, NoLocationPermissionFragment.TAG)
                         BusProvider.getInstance().post(OnLocationPermissionGranted(false))
                     }
                     .show()
@@ -605,12 +533,10 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
         }
     }
 
-    @OnClick(R.id.fragment_map_gps)
     fun displayGeolocationPreferences() {
         displayGeolocationPreferences(false)
     }
 
-    @OnClick(R.id.fragment_map_display_toggle)
     fun onDisplayToggle() {
         if (!isFullMapShown) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_MAPVIEW_CLICK)
@@ -626,21 +552,16 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
         displayEntourageDisclaimer()
     }
 
-    @OnClick(R.id.map_longclick_button_entourage_action)
     fun onCreateEntourageHelpAction() {
         createAction(EntourageCategoryManager.getInstance().getDefaultCategory(Entourage.TYPE_DEMAND), Entourage.TYPE_ACTION)
     }
 
-    @OnClick(R.id.fragment_map_filter_button)
     fun onShowFilter() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_FILTERSCLICK)
-        val me = EntourageApplication.me(activity)
-        val isPro = me != null && me.isPro
-        val mapFilterFragment: MapFilterFragment = MapFilterFragment.newInstance(isPro)
-        mapFilterFragment.show(parentFragmentManager, MapFilterFragment.TAG)
+        val isPro = EntourageApplication.me(activity)?.isPro ?: false
+        MapFilterFragment.newInstance(isPro).show(parentFragmentManager, MapFilterFragment.TAG)
     }
 
-    @OnClick(R.id.fragment_map_new_entourages_button)
     fun onNewEntouragesReceivedButton() {
         fragment_map_tours_view?.scrollToPosition(0)
         fragment_map_new_entourages_button?.visibility = View.GONE
@@ -655,7 +576,7 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
     }
 
     protected open fun updateFloatingMenuOptions() {}
-    protected open fun displayFeedItemOptions(feedItem: FeedItem?) {}
+    protected open fun displayFeedItemOptions(feedItem: FeedItem) {}
     open fun feedItemCloseRequested(event: OnFeedItemCloseRequestEvent) {
         val feedItem = event.feedItem ?: return
         if (event.isShowUI) {
@@ -664,11 +585,11 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
             return
         }
         // Only the author can close entourages/tours
-        val me = EntourageApplication.me(context)
-        if (me == null || feedItem.author == null) {
+        val myId = EntourageApplication.me(context)?.id
+                ?: return
+        if (feedItem.author == null) {
             return
         }
-        val myId = me.id
         if (feedItem.author.userID != myId) {
             return
         }
@@ -688,7 +609,7 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
         //save the tap coordinates
         longTapCoordinates = latLng
         //update the visible buttons
-        mapLongClickButtonsView.requestLayout()
+        map_longclick_buttons?.requestLayout()
         //hide the FAB menu
         super.showLongClickOnMapOptions(latLng)
     }
@@ -705,21 +626,21 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
 
     public override fun saveCameraPosition() {
         if (map != null) {
-            EntourageLocation.getInstance().saveLastCameraPosition(map.cameraPosition)
+            EntourageLocation.getInstance().saveLastCameraPosition(map!!.cameraPosition)
         }
     }
 
-    override fun getRenderer(): DefaultClusterRenderer<*> {
-        return MapClusterItemRenderer(activity!!, map, mapClusterManager)
-    }
+    override open val renderer: DefaultClusterRenderer<ClusterItem>?
+        get() = MapClusterItemRenderer(requireActivity(), map, mapClusterManager as ClusterManager<MapClusterItem?>?) as DefaultClusterRenderer<ClusterItem>?
+
 
     protected fun onMapReady(googleMap: GoogleMap?) {
         super.onMapReady(googleMap,
-                presenter!!.onClickListener,
-                presenter!!.onGroundOverlayClickListener
+                presenter?.onClickListener as ClusterManager.OnClusterItemClickListener<ClusterItem>?,
+                presenter?.onGroundOverlayClickListener
         )
-        map.setOnCameraIdleListener {
-            val cameraPosition = map.cameraPosition
+        map?.setOnCameraIdleListener {
+            val cameraPosition = map!!.cameraPosition
             EntourageLocation.getInstance().saveCurrentCameraPosition(cameraPosition)
             val currentLocation = EntourageLocation.getInstance().currentLocation
             val newLocation = EntourageLocation.cameraPositionToLocation(null, cameraPosition)
@@ -737,14 +658,12 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
 
                 // check if we need to cancel the current request
                 if (pagination.isLoading) {
-                    entourageService!!.cancelNewsFeedUpdate()
+                    entourageService?.cancelNewsFeedUpdate()
                 }
-                if (newsfeedAdapter != null) {
-                    newsfeedAdapter!!.removeAll()
-                    newsfeedAdapter!!.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE, selectedTab)
-                }
+                newsfeedAdapter?.removeAll()
+                newsfeedAdapter?.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE, selectedTab)
                 pagination = NewsfeedPagination()
-                entourageService!!.updateNewsfeed(pagination, selectedTab)
+                entourageService?.updateNewsfeed(pagination, selectedTab)
                 updateUserHistory()
             }
             if (isFollowing && currentLocation != null) {
@@ -754,7 +673,7 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
             }
             hideEmptyListPopup()
         }
-        map.setOnMapClickListener { latLng: LatLng? ->
+        map?.setOnMapClickListener {
             if (activity != null) {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_MAPCLICK)
                 hideTourLauncher()
@@ -776,24 +695,20 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
             fragment_map_tours_view?.layoutManager = LinearLayoutManager(context)
             newsfeedAdapter = NewsfeedAdapter()
             newsfeedAdapter!!.setOnMapReadyCallback(onMapReadyCallback)
-            newsfeedAdapter!!.setOnFollowButtonClickListener { v: View? -> onFollowGeolocation() }
+            newsfeedAdapter!!.setOnFollowButtonClickListener { onFollowGeolocation() }
             fragment_map_tours_view?.adapter = newsfeedAdapter
         }
     }
 
     private fun initializeFilterTab() {
-        val tabLayout: TabLayout = view!!.findViewById(R.id.fragment_map_top_tab) ?: return
-        if (onTabSelectedListener == null) {
-            onTabSelectedListener = object : OnTabSelectedListener {
-                override fun onTabSelected(tab: TabLayout.Tab) {
-                    onMapTabChanged(if (tab.position == 1) MapTabItem.EVENTS_TAB else MapTabItem.ALL_TAB)
-                }
-
-                override fun onTabUnselected(tab: TabLayout.Tab) {}
-                override fun onTabReselected(tab: TabLayout.Tab) {}
+        fragment_map_top_tab?.addOnTabSelectedListener(object : OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                onMapTabChanged(if (tab.position == 1) MapTabItem.EVENTS_TAB else MapTabItem.ALL_TAB)
             }
-        }
-        tabLayout.addOnTabSelectedListener(onTabSelectedListener)
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
     }
 
     // ----------------------------------
@@ -801,17 +716,15 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
     // ----------------------------------
     protected open fun hideTourLauncher() {}
     fun pauseTour(tour: Tour) {
-        if (entourageService != null && entourageService!!.isRunning) {
-            if (entourageService!!.currentTourId.equals(tour.uuid, ignoreCase = true)) {
-                entourageService!!.pauseTreatment()
+        if (entourageService?.isRunning == true) {
+            if (entourageService?.currentTourId.equals(tour.uuid, ignoreCase = true)) {
+                entourageService?.pauseTreatment()
             }
         }
     }
 
     fun saveOngoingTour() {
-        if (entourageService != null) {
-            entourageService!!.updateOngoingTour()
-        }
+        entourageService?.updateOngoingTour()
     }
 
     fun stopFeedItem(feedItem: FeedItem?, success: Boolean) {
@@ -821,79 +734,62 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
                         && (!entourageService!!.isRunning
                                 || feedItem.type != TimestampedObject.TOUR_CARD || entourageService!!.currentTourId.equals(feedItem.uuid, ignoreCase = true))) {
                     // Not ongoing tour, just stop the feed item
-                    loaderStop = ProgressDialog.show(activity, activity!!.getString(feedItem.closingLoaderMessage), activity!!.getString(R.string.button_loading), true)
-                    loaderStop.setCancelable(true)
+                    loaderStop = ProgressDialog.show(activity, requireActivity().getString(feedItem.closingLoaderMessage), requireActivity().getString(R.string.button_loading), true)
+                    loaderStop?.setCancelable(true)
                     EntourageEvents.logEvent(EntourageEvents.EVENT_STOP_TOUR)
-                    entourageService!!.stopFeedItem(feedItem, success)
+                    entourageService?.stopFeedItem(feedItem, success)
                 } else if (entourageService!!.isRunning) {
-                    loaderStop = ProgressDialog.show(activity, activity!!.getString(R.string.loader_title_tour_finish), activity!!.getString(R.string.button_loading), true)
-                    loaderStop.setCancelable(true)
-                    entourageService!!.endTreatment()
+                    loaderStop = ProgressDialog.show(activity, requireActivity().getString(R.string.loader_title_tour_finish), requireActivity().getString(R.string.button_loading), true)
+                    loaderStop?.setCancelable(true)
+                    entourageService?.endTreatment()
                     EntourageEvents.logEvent(EntourageEvents.EVENT_STOP_TOUR)
                 }
             }
         }
     }
 
-    fun freezeTour(tour: Tour?) {
-        if (activity != null) {
-            if (entourageService != null) {
-                entourageService!!.freezeTour(tour)
-            }
-        }
+    fun freezeTour(tour: Tour) {
+        entourageService?.freezeTour(tour)
     }
 
-    open fun userStatusChanged(content: PushNotificationContent, status: String?) {
-        if (entourageService != null) {
-            var timestampedObject: TimestampedObject? = null
-            if (content.isEntourageRelated && newsfeedAdapter != null) {
-                timestampedObject = newsfeedAdapter!!.findCard(TimestampedObject.ENTOURAGE_CARD, content.joinableId)
-            }
-            if (timestampedObject != null) {
-                val user = TourUser()
-                user.userId = userId
-                user.status = status
-                entourageService!!.notifyListenersUserStatusChanged(user, timestampedObject as FeedItem?)
-            }
+    open fun userStatusChanged(content: PushNotificationContent, status: String) {
+        if (entourageService != null && content.isEntourageRelated) {
+            var timestampedObject = newsfeedAdapter?.findCard(TimestampedObject.ENTOURAGE_CARD, content.joinableId)
+                    ?: return
+            val user = TourUser()
+            user.userId = userId
+            user.status = status
+            entourageService!!.notifyListenersUserStatusChanged(user, timestampedObject as FeedItem)
         }
     }
 
     // ----------------------------------
     // PRIVATE METHODS (views)
     // ----------------------------------
-    protected open fun removeRedundantNewsfeed(newsFeedList: List<Newsfeed>?, isHistory: Boolean): List<Newsfeed>? {
-        if (newsFeedList == null || newsfeedAdapter == null) {
-            return null
-        }
-        val iteratorNewsfeed: Iterator<*> = newsFeedList.iterator()
-        while (iteratorNewsfeed.hasNext()) {
-            val newsfeed = iteratorNewsfeed.next() as Newsfeed? ?: continue
-            if (!isHistory) {
-                val card = newsfeed.data
-                if (card !is TimestampedObject) {
-                    iteratorNewsfeed.remove()
+    protected open fun removeRedundantNewsfeed(currentFeedList: List<Newsfeed>): List<Newsfeed> {
+        val newsFeedList = ArrayList<Newsfeed>();
+        for(newsfeed: Newsfeed in currentFeedList) {
+            val card = newsfeed.data
+            if (card !is TimestampedObject) {
+                continue
+            }
+            val retrievedCard = newsfeedAdapter?.findCard(card)
+            if(retrievedCard!=null) {
+                if ((Entourage.NEWSFEED_TYPE == newsfeed.type) && ((retrievedCard as Entourage).isSame(card as Entourage))) {
+                    continue
+                } else if (Announcement.NEWSFEED_TYPE == newsfeed.type) {
                     continue
                 }
-                var retrievedCard: TimestampedObject?
-                retrievedCard = newsfeedAdapter!!.findCard(card)
-                if (retrievedCard != null) {
-                    if (Entourage.NEWSFEED_TYPE == newsfeed.type) {
-                        if ((retrievedCard as Entourage).isSame(card as Entourage)) {
-                            iteratorNewsfeed.remove()
-                        }
-                    } else if (Announcement.NEWSFEED_TYPE == newsfeed.type) {
-                        iteratorNewsfeed.remove()
-                    }
-                }
             }
+            newsFeedList.add(newsfeed)
         }
         return newsFeedList
     }
 
     protected fun drawNearbyEntourage(feedItem: FeedItem?) {
-        if (map == null || markersMap == null ) return
+        if (map == null) return
         if (feedItem?.startPoint == null) return
-        if (markersMap!![feedItem.hashString()] == null) {
+        if (markersMap[feedItem.hashString()] == null) {
             if (feedItem.showHeatmapAsOverlay()) {
                 val position = feedItem.startPoint.location
                 val heatmapIcon = BitmapDescriptorFactory.fromResource(feedItem.heatmapResourceId)
@@ -902,21 +798,18 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
                         .position(position, Entourage.HEATMAP_SIZE, Entourage.HEATMAP_SIZE)
                         .clickable(true)
                         .anchor(0.5f, 0.5f)
-                markersMap!![feedItem.hashString()] = map.addGroundOverlay(groundOverlayOptions)
+                markersMap[feedItem.hashString()] = map!!.addGroundOverlay(groundOverlayOptions)
                 presenter?.onGroundOverlayClickListener?.addEntourageGroundOverlay(position, feedItem)
             } else {
                 val mapClusterItem = MapClusterItem(feedItem)
-                markersMap!![feedItem.hashString()] = mapClusterItem
-                mapClusterManager.addItem(mapClusterItem)
+                markersMap[feedItem.hashString()] = mapClusterItem
+                mapClusterManager?.addItem(mapClusterItem)
             }
         }
     }
 
     private fun addNewsfeedCard(card: TimestampedObject) {
-        if (newsfeedAdapter == null) {
-            return
-        }
-        if (newsfeedAdapter!!.findCard(card) != null) {
+        if (newsfeedAdapter?.findCard(card) != null) {
             newsfeedAdapter?.updateCard(card)
         } else {
             // set the badge count
@@ -935,7 +828,7 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
     open fun clearAll() {
         map?.clear()
         mapClusterManager?.clearItems()
-        markersMap?.clear()
+        markersMap.clear()
         presenter?.onClickListener?.clear()
         presenter?.onGroundOverlayClickListener?.clear()
         resetFeed()
@@ -1013,6 +906,7 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
                 var newestUpdatedDate: Date? = null
                 var oldestUpdateDate: Date? = null
                 for (newsfeed in newsfeedList) {
+                    if(newsfeed.data !is FeedItem) continue
                     val feedUpdatedDate = (newsfeed.data as FeedItem?)?.updatedTime
                             ?: continue
                     if (newestUpdatedDate == null || newestUpdatedDate.before(feedUpdatedDate)) {
@@ -1067,7 +961,7 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
         }
     }
 
-    fun onPushNotificationConsumedForFeedItem(feedItem: FeedItem) {
+    private fun onPushNotificationConsumedForFeedItem(feedItem: FeedItem) {
         val feedItemCard = newsfeedAdapter?.findCard(feedItem) as FeedItem?
                 ?: return
         feedItemCard.decreaseBadgeCount()
@@ -1109,7 +1003,7 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
         // Check if it's a valid user and onboarding
         if (EntourageApplication.me(activity)?.isOnboardingUser == true) {
             // Retrieve the list of invitations
-            presenter?.getMyPendingInvitations()
+            presenter?.myPendingInvitations
         }
     }
 
@@ -1135,7 +1029,7 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
     // ----------------------------------
     // EMPTY LIST POPUP
     // ----------------------------------
-    fun onEmptyListPopupClose() {
+    private fun onEmptyListPopupClose() {
         presenter?.isShowNoEntouragesPopup = false
         hideEmptyListPopup()
     }
@@ -1174,8 +1068,7 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
                 return@postDelayed
             }
             // Check if the map fragment is still on top
-            if (fragmentLifecycleCallbacks == null) return@postDelayed
-            val topFragment = fragmentLifecycleCallbacks!!.topFragment ?: return@postDelayed
+            if(fragmentLifecycleCallbacks?.topFragment == null) return@postDelayed
             (activity as MainActivity?)!!.showTutorial()
         }, Constants.CAROUSEL_DELAY_MILLIS)
     }
@@ -1212,7 +1105,7 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
         }
     }
 
-    protected fun showHeatzoneMiniCardsAtLocation(location: LatLng?) {
+    private fun showHeatzoneMiniCardsAtLocation(location: LatLng?) {
         if (newsfeedAdapter == null) {
             return
         }
@@ -1268,9 +1161,8 @@ abstract class MapFragment protected constructor() : BaseMapFragment(R.layout.fr
         fragment_map_tours_view?.layoutManager!!.requestLayout()
     }
 
-    override fun getAdapter(): HeaderBaseAdapter {
-        return newsfeedAdapter!!
-    }
+    override val adapter: HeaderBaseAdapter?
+        get() { return newsfeedAdapter}
 
     // ----------------------------------
     // INNER CLASSES

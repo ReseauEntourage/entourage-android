@@ -52,8 +52,8 @@ class MapVoisinageFragment : MapFragment(), EntourageServiceListener {
     }
 
     override fun onDestroy() {
-        if (isBound && entourageService != null) {
-            entourageService.unregisterServiceListener(this)
+        if (isBound) {
+            entourageService?.unregisterServiceListener(this)
             doUnbindService()
         }
         super.onDestroy()
@@ -86,7 +86,7 @@ class MapVoisinageFragment : MapFragment(), EntourageServiceListener {
         val meAsAuthor = EntourageApplication.me(context)?.asTourAuthor() ?: return
         val dirtyList: MutableList<TimestampedObject> = ArrayList()
         // See which cards needs updating
-        for (timestampedObject in newsfeedAdapter.items) {
+        for (timestampedObject in newsfeedAdapter!!.items) {
             if (timestampedObject !is FeedItem) continue
             val author = timestampedObject.author ?: continue
             // Skip null author
@@ -102,7 +102,7 @@ class MapVoisinageFragment : MapFragment(), EntourageServiceListener {
         }
         // Update the dirty cards
         for (dirty in dirtyList) {
-            newsfeedAdapter.updateCard(dirty)
+            newsfeedAdapter!!.updateCard(dirty)
         }
     }
 
@@ -155,8 +155,8 @@ class MapVoisinageFragment : MapFragment(), EntourageServiceListener {
     override fun onFeedItemClosed(closed: Boolean, feedItem: FeedItem) {
         if (closed) {
             refreshFeed()
-            if (layoutMain != null) {
-                make(layoutMain, feedItem.closedToastMessage, Snackbar.LENGTH_SHORT).show()
+            if (fragment_map_main_layout != null) {
+                make(fragment_map_main_layout, feedItem.closedToastMessage, Snackbar.LENGTH_SHORT).show()
             }
         }
         loaderStop?.dismiss()
@@ -190,19 +190,17 @@ class MapVoisinageFragment : MapFragment(), EntourageServiceListener {
     override fun redrawWholeNewsfeed(newsFeeds: List<Newsfeed>) {
         if (map != null && newsFeeds.isNotEmpty() && newsfeedAdapter != null) {
             //redraw the whole newsfeed
-            for (timestampedObject in newsfeedAdapter.items) {
-                if (timestampedObject.type == TimestampedObject.ENTOURAGE_CARD) {
+            for (timestampedObject in newsfeedAdapter!!.items) {
+                if (timestampedObject.type == TimestampedObject.ENTOURAGE_CARD && timestampedObject is Entourage) {
                     drawNearbyEntourage(timestampedObject as Entourage)
                 }
             }
-            mapClusterManager.cluster()
+            mapClusterManager?.cluster()
         }
     }
 
     private fun updateNewsfeedJoinStatus(timestampedObject: TimestampedObject) {
-        if (newsfeedAdapter != null) {
-            newsfeedAdapter.updateCard(timestampedObject)
-        }
+        newsfeedAdapter?.updateCard(timestampedObject)
     }
 
     // ----------------------------------
@@ -246,19 +244,16 @@ class MapVoisinageFragment : MapFragment(), EntourageServiceListener {
     }
 
     @Subscribe
-    fun checkIntentAction(event: OnCheckIntentActionEvent?) {
+    fun checkIntentAction(event: OnCheckIntentActionEvent) {
         if (activity == null) {
             Timber.w("No activity found")
             return
         }
-        val intent = requireActivity().intent
-        if (intent.action != null) {
-            checkAction(intent.action!!)
-        }
+        checkAction(event.action)
 
-        val content = (intent.extras?.getSerializable(PushNotificationManager.PUSH_MESSAGE) as Message?)?.content
+        val content = (event.extras?.getSerializable(PushNotificationManager.PUSH_MESSAGE) as Message?)?.content
                 ?:return
-        when (intent.action) {
+        when (event.action) {
             PushNotificationContent.TYPE_NEW_CHAT_MESSAGE, PushNotificationContent.TYPE_NEW_JOIN_REQUEST, PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED -> if (content.isTourRelated) {
                     displayChosenFeedItem(content.joinableUUID, TimestampedObject.TOUR_CARD)
                 } else if (content.isEntourageRelated) {
@@ -283,16 +278,13 @@ class MapVoisinageFragment : MapFragment(), EntourageServiceListener {
                 return
             }
             entourageService = (service as LocalBinder).service
-            if (entourageService == null) {
-                Timber.e("Service not found")
-                return
-            }
-            entourageService.registerServiceListener(this@MapVoisinageFragment)
-            entourageService.registerApiListener(this@MapVoisinageFragment)
-            if (entourageService.isRunning) {
+                    ?: return
+            entourageService!!.registerServiceListener(this@MapVoisinageFragment)
+            entourageService!!.registerApiListener(this@MapVoisinageFragment)
+            if (entourageService!!.isRunning) {
                 updateFloatingMenuOptions()
             }
-            entourageService.updateNewsfeed(pagination, selectedTab)
+            entourageService!!.updateNewsfeed(pagination, selectedTab)
             isBound = true
         }
 

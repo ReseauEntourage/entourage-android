@@ -16,7 +16,7 @@ import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Subscribe
-import kotlinx.android.synthetic.entourage.fragment_map.*
+import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.entourage.layout_map_launcher.*
 import kotlinx.android.synthetic.main.layout_map_longclick.*
 import kotlinx.android.synthetic.main.layout_map_longclick.view.*
@@ -88,8 +88,8 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
     }
 
     override fun onDestroy() {
-        if (isBound && entourageService != null) {
-            entourageService.unregisterServiceListener(this)
+        if (isBound ) {
+            entourageService?.unregisterServiceListener(this)
             doUnbindService()
         }
         super.onDestroy()
@@ -97,7 +97,7 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
 
     override fun onLocationStatusUpdated(active: Boolean) {
         super.onLocationStatusUpdated(active)
-        if (shouldShowGPSDialog && !active && entourageService != null && entourageService.isRunning) {
+        if (shouldShowGPSDialog && !active && entourageService?.isRunning == true) {
             //We always need GPS to be turned on during tour
             shouldShowGPSDialog = false
             val newIntent = Intent(this.context, MainActivity::class.java)
@@ -114,7 +114,7 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
             hideTourLauncher()
             return true
         }
-        if (mapLongClickView != null && mapLongClickView.visibility == View.VISIBLE && entourageService != null && entourageService.isRunning ) {
+        if (fragment_map_longclick?.visibility == View.VISIBLE && entourageService?.isRunning==true ) {
             tour_stop_button?.visibility = View.VISIBLE
         }
         return super.onBackPressed()
@@ -123,7 +123,7 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
     override fun displayEntourageDisclaimer() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_ACTION_CREATE_CLICK)
         // if we have an ongoing tour
-        if (activity != null && isBound && entourageService != null && entourageService.isRunning) {
+        if (activity != null && isBound && entourageService?.isRunning==true) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENCOUNTER_POPUP_SHOW)
             // Show the dialog that asks the user if he really wants to create an entourage instead of encounter
             val builder = AlertDialog.Builder(requireActivity())
@@ -141,7 +141,7 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
             builder.show()
             return
         }
-        if (entourageService != null && entourageService.isRunning) {
+        if (entourageService?.isRunning==true) {
             tour_stop_button?.visibility = View.VISIBLE
         }
         super.displayEntourageDisclaimer()
@@ -152,13 +152,13 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
             // The map is not yet initialized or the google play services are outdated on the phone
             return
         }
-        if(presenter.onClickListener.getEncounterMapClusterItem(encounter!!.id) != null) {
+        if(presenter?.onClickListener?.getEncounterMapClusterItem(encounter!!.id) != null) {
             //the item aalready exists
             return
         }
         val mapClusterItem = MapClusterItem(encounter)
-        presenter.onClickListener.addEncounterMapClusterItem(mapClusterItem, encounter)
-        mapClusterManager.addItem(mapClusterItem)
+        presenter?.onClickListener?.addEncounterMapClusterItem(mapClusterItem, encounter)
+        mapClusterManager?.addItem(mapClusterItem)
     }
 
     private fun checkAction(action: String) {
@@ -166,9 +166,9 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
         when (action) {
             TourEndConfirmationFragment.KEY_RESUME_TOUR -> resumeTour()
             TourEndConfirmationFragment.KEY_END_TOUR-> {
-                if (entourageService != null && entourageService.isRunning)
+                if (entourageService?.isRunning==true)
                     stopFeedItem(null, true)
-                else if (entourageService != null && entourageService.isPaused)
+                else if (entourageService?.isPaused==true)
                     launchConfirmationFragment()
             }
             EntourageService.KEY_NOTIFICATION_PAUSE_TOUR-> launchConfirmationFragment()
@@ -193,7 +193,7 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
     fun onUserChoiceChanged(event: OnUserChoiceEvent) {
         userHistory = event.isUserHistory
         if (userHistory) {
-            entourageService.updateUserHistory(userId, 1, 500)
+            entourageService?.updateUserHistory(userId, 1, 500)
             showUserHistory()
         } else {
             hideUserHistory()
@@ -206,7 +206,7 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
         val meAsAuthor = EntourageApplication.me(context)?.asTourAuthor() ?: return
         val dirtyList: MutableList<TimestampedObject> = ArrayList()
         // See which cards needs updating
-        for (timestampedObject in newsfeedAdapter.items) {
+        for (timestampedObject in newsfeedAdapter!!.items) {
             if (timestampedObject !is FeedItem) continue
             // Skip null author
             val author = timestampedObject.author ?: continue
@@ -222,7 +222,7 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
         }
         // Update the dirty cards
         for (dirty in dirtyList) {
-            newsfeedAdapter.updateCard(dirty)
+            newsfeedAdapter!!.updateCard(dirty)
         }
     }
 
@@ -231,13 +231,13 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
     // ----------------------------------
     private fun onStartTourLauncher() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_TOUR_CREATE_CLICK)
-        if (entourageService != null && !entourageService.isRunning) {
+        if (entourageService?.isRunning==true) {
             // Check if the geolocation is permitted
             if (!isLocationEnabled() || !isLocationPermissionGranted()) {
-                showAllowGeolocationDialog(BaseMapFragment.GEOLOCATION_POPUP_TOUR)
+                showAllowGeolocationDialog(GEOLOCATION_POPUP_TOUR)
                 return
             }
-            mapLongClickView?.visibility = View.GONE
+            fragment_map_longclick?.visibility = View.GONE
             layout_map_launcher?.visibility = View.VISIBLE
         }
     }
@@ -275,13 +275,13 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
         }
         EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_CLICK)
         // Hide the create entourage menu ui
-        mapLongClickView.visibility = View.GONE
+        fragment_map_longclick?.visibility = View.GONE
 
         // MI: EMA-1669 Show the disclaimer only the first time when a tour was started
         // Show the disclaimer fragment
         if (presenter != null) {
-            if (presenter.shouldDisplayEncounterDisclaimer()) {
-                presenter.displayEncounterDisclaimer()
+            if (presenter!!.shouldDisplayEncounterDisclaimer()) {
+                presenter!!.displayEncounterDisclaimer()
             } else {
                 addEncounter()
             }
@@ -296,8 +296,8 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
             args.putString(CreateEncounterActivity.BUNDLE_KEY_TOUR_ID, currentTourUUID)
             when {
                 longTapCoordinates != null -> {
-                    args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, longTapCoordinates.latitude)
-                    args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, longTapCoordinates.longitude)
+                    args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, longTapCoordinates!!.latitude)
+                    args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, longTapCoordinates!!.longitude)
                     longTapCoordinates = null
                 }
                 EntourageLocation.getInstance().currentLocation != null -> {
@@ -319,7 +319,7 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
     }
 
     override fun updateFloatingMenuOptions() {
-        tour_stop_button?.visibility = if (entourageService != null && entourageService.isRunning) View.VISIBLE else View.GONE
+        tour_stop_button?.visibility = if (entourageService?.isRunning==true) View.VISIBLE else View.GONE
     }
 
     // ----------------------------------
@@ -338,9 +338,9 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
             return
         }
         //update the visible buttons
-        val isTourRunning = entourageService != null && entourageService.isRunning
-        mapLongClickButtonsView.map_longclick_button_start_tour_launcher?.visibility = if (isTourRunning) View.INVISIBLE else View.VISIBLE
-        mapLongClickButtonsView.map_longclick_button_create_encounter?.visibility = if (isTourRunning) View.VISIBLE else View.GONE
+        val isTourRunning = entourageService?.isRunning==true
+        map_longclick_buttons?.map_longclick_button_start_tour_launcher?.visibility = if (isTourRunning) View.INVISIBLE else View.VISIBLE
+        map_longclick_buttons?.map_longclick_button_create_encounter?.visibility = if (isTourRunning) View.VISIBLE else View.GONE
         super.showLongClickOnMapOptions(latLng)
     }
 
@@ -380,7 +380,7 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
     @Subscribe
     fun onEncounterCreated(event: OnEncounterCreated) {
         if (entourageService != null) { //refresh button just in case
-            tour_stop_button?.visibility = if (entourageService.isRunning) View.VISIBLE else View.GONE
+            tour_stop_button?.visibility = if (entourageService?.isRunning==true) View.VISIBLE else View.GONE
         }
         val encounter = event.encounter ?: return
         addEncounter(encounter)
@@ -391,9 +391,9 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
     fun onEncounterUpdated(event: OnEncounterUpdated?) {
         if (presenter == null) return
         val updatedEncounter = event?.encounter ?: return
-        val mapClusterItem = presenter.onClickListener.removeEncounterMapClusterItem(updatedEncounter.id)
+        val mapClusterItem = presenter?.onClickListener?.removeEncounterMapClusterItem(updatedEncounter.id)
         if (mapClusterItem != null) {
-            mapClusterManager.removeItem(mapClusterItem)
+            mapClusterManager?.removeItem(mapClusterItem)
         }
         updateEncounter(updatedEncounter)
         putEncounterOnMap(updatedEncounter)
@@ -414,19 +414,19 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
         launcher_tour_progressBar?.visibility = View.GONE
 
         if (activity != null) {
-            if (created) {
+            if (created && entourageService?.currentTour !=null) {
                 isFollowing = true
                 currentTourUUID = tourUUID
                 layout_map_launcher?.visibility = View.GONE
-                if (newsfeedListView.visibility == View.VISIBLE) {
+                if (fragment_map_tours_view.visibility == View.VISIBLE) {
                     displayFullMap()
                 }
-                addTourCard(entourageService.currentTour)
+                addTourCard(entourageService!!.currentTour)
                 tour_stop_button?.visibility = View.VISIBLE
                 presenter?.incrementUserToursCount()
                 presenter?.setDisplayEncounterDisclaimer(true)
-            } else if (layoutMain != null) {
-                make(layoutMain, R.string.tour_creation_fail, Snackbar.LENGTH_SHORT).show()
+            } else if (fragment_map_main_layout != null) {
+                make(fragment_map_main_layout, R.string.tour_creation_fail, Snackbar.LENGTH_SHORT).show()
             }
         }
     }
@@ -452,7 +452,7 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
         }
         var nearbyTours = tours
         //check if there are tours to add or update
-        val previousToursCount = newsfeedAdapter.dataItemCount
+        val previousToursCount = newsfeedAdapter!!.dataItemCount
         nearbyTours = removeRedundantTours(nearbyTours, false)
         Collections.sort(nearbyTours, TourComparatorOldToNew())
         for (tour in nearbyTours) {
@@ -462,8 +462,8 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
         }
         //recreate the map if needed
         if (nearbyTours.isNotEmpty() && map != null) {
-            map.clear()
-            for (timestampedObject in newsfeedAdapter.items) {
+            map?.clear()
+            for (timestampedObject in newsfeedAdapter!!.items) {
                 if (timestampedObject.type == TimestampedObject.TOUR_CARD) {
                     val tour = timestampedObject as Tour
                     if (!tour.uuid.equals(currentTourUUID, ignoreCase = true)) {
@@ -479,20 +479,20 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
                 line.zIndex(2f)
                 line.width(15f)
                 line.color(color)
-                map.addPolyline(line)
+                map?.addPolyline(line)
                 addCurrentTourEncounters()
             }
         }
 
         //show the map if no tours
-        if (newsfeedAdapter.dataItemCount == 0) {
+        if (newsfeedAdapter!!.dataItemCount == 0) {
             displayFullMap()
         } else if (previousToursCount == 0) {
             displayListWithMapHeader()
         }
         //scroll to latest
-        if (newsfeedAdapter.dataItemCount > 0) {
-            newsfeedListView.scrollToPosition(0)
+        if (newsfeedAdapter!!.dataItemCount > 0) {
+            fragment_map_tours_view.scrollToPosition(0)
         }
     }
 
@@ -515,15 +515,14 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
             return
         }
         if (tours.isEmpty()) {
-            if (layoutMain != null) {
-                make(layoutMain, R.string.tour_info_text_nothing_found, Snackbar.LENGTH_SHORT).show()
+            if (fragment_map_main_layout != null) {
+                make(fragment_map_main_layout, R.string.tour_info_text_nothing_found, Snackbar.LENGTH_SHORT).show()
             }
         } else if (tours.size > 1) { //more than 1 tour
                 val choiceFragment = ChoiceFragment.newInstance(Tours(ArrayList(tours.values)))
                 choiceFragment.show(requireActivity().supportFragmentManager, "fragment_choice")
-        } else if (presenter != null) { //only 1 tour
-            presenter.openFeedItem(tours[0], 0, 0)
-        }
+        } else
+            presenter?.openFeedItem(tours[0], 0, 0)
     }
 
     override fun onFeedItemClosed(closed: Boolean, feedItem: FeedItem) {
@@ -535,11 +534,11 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
                     updateFloatingMenuOptions()
                     currentTourUUID = ""
                 } else {
-                    entourageService.notifyListenersTourResumed()
+                    entourageService?.notifyListenersTourResumed()
                 }
             }
-            if (entourageService != null && userHistory) {
-                entourageService.updateUserHistory(userId, 1, 1)
+            if (userHistory) {
+                entourageService?.updateUserHistory(userId, 1, 1)
             }
             message = feedItem.closedToastMessage
         } else {
@@ -549,8 +548,8 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
                 message = R.string.tour_freezed
             }
         }
-        if (layoutMain != null) {
-            make(layoutMain, message, Snackbar.LENGTH_SHORT).show()
+        if (fragment_map_main_layout != null) {
+            make(fragment_map_main_layout, message, Snackbar.LENGTH_SHORT).show()
         }
         loaderStop?.dismiss()
         loaderStop = null
@@ -582,6 +581,7 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
     // PRIVATE METHODS (tours events)
     // ----------------------------------
     override fun redrawWholeNewsfeed(newsFeeds: List<Newsfeed>) {
+        //TODO do we need newsFeeds variable here ?
         if (map != null && newsFeeds.isNotEmpty() && newsfeedAdapter != null) {
             for (polyline in drawnToursMap) {
                 polyline.remove()
@@ -589,7 +589,7 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
             drawnToursMap.clear()
 
             //redraw the whole newsfeed
-            for (timestampedObject in newsfeedAdapter.items) {
+            for (timestampedObject in newsfeedAdapter!!.items) {
                 if (timestampedObject.type == TimestampedObject.TOUR_CARD) {
                     val tour = timestampedObject as Tour
                     if (tour.uuid.equals(currentTourUUID, ignoreCase = true)) {
@@ -600,7 +600,7 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
                     drawNearbyEntourage(timestampedObject as Entourage)
                 }
             }
-            mapClusterManager.cluster()
+            mapClusterManager?.cluster()
             //redraw the current ongoing tour, if any
             if (entourageService != null && currentTourUUID.isNotEmpty()) {
                 val line = PolylineOptions()
@@ -610,32 +610,32 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
                 line.zIndex(2f)
                 line.width(15f)
                 line.color(color)
-                drawnToursMap.add(map.addPolyline(line))
+                drawnToursMap.add(map!!.addPolyline(line))
                 addCurrentTourEncounters()
             }
         }
     }
 
     private val currentTour: Tour?
-        get() = if (entourageService != null) entourageService.currentTour else null
+        get() = entourageService?.currentTour
 
     private fun startTour(type: String) {
-        if (entourageService != null && !entourageService.isRunning) {
+        if (entourageService?.isRunning==true) {
             color = getTrackColor(false, type, Date())
-            entourageService.beginTreatment(type)
+            entourageService?.beginTreatment(type)
         }
     }
 
     private fun pauseTour() {
-        if (entourageService != null && entourageService.isRunning) {
-            entourageService.pauseTreatment()
+        if (entourageService?.isRunning==true) {
+            entourageService?.pauseTreatment()
         }
     }
 
     private fun resumeTour() {
-        if (entourageService != null && entourageService.isRunning) {
+        if (entourageService?.isRunning==true) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_RESTART_TOUR)
-            entourageService.resumeTreatment()
+            entourageService?.resumeTreatment()
         }
     }
 
@@ -645,69 +645,57 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
     }
 
     private fun addEncounter(encounter: Encounter?) {
-        entourageService.addEncounter(encounter)
+        entourageService?.addEncounter(encounter)
     }
 
     private fun updateEncounter(encounter: Encounter) {
-        entourageService.updateEncounter(encounter)
+        entourageService?.updateEncounter(encounter)
     }
 
     private fun removeRedundantTours(allTours: List<Tour>, isHistory: Boolean): List<Tour> {
-        val uniqueTours : MutableList<Tour>  = allTours as MutableList<Tour>
-        if(isHistory || newsfeedAdapter !=null) {
-            for (tour in uniqueTours.iterator()) {
-                if (!isHistory) {
-                    val retrievedTour = newsfeedAdapter.findCard(tour) as Tour
-                    if (retrievedTour.isSame(tour)) {
-                        uniqueTours.iterator().remove()
-                    }
-                } else {
-                    if (drawnUserHistory.containsKey(tour.id)) {
-                        uniqueTours.iterator().remove()
-                    }
+        if(!isHistory && newsfeedAdapter ==null) return allTours
+        val uniqueTours = ArrayList<Tour>()
+        for (tour in allTours) {
+            if (!isHistory) {
+                if ((newsfeedAdapter?.findCard(tour) as Tour?)?.isSame(tour) == true) {
+                    continue
                 }
+            } else if (drawnUserHistory.containsKey(tour.id)) {
+                continue
             }
+            uniqueTours.add(tour)
         }
         return uniqueTours
     }
 
-    override fun removeRedundantNewsfeed(currentNewsFeedList: MutableList<out Newsfeed>, isHistory: Boolean): List<Newsfeed>? {
-        val newsFeedList = super.removeRedundantNewsfeed(currentNewsFeedList, isHistory)
+    override fun removeRedundantNewsfeed(currentFeedList: List<Newsfeed>): List<Newsfeed> {
+        val tempList = super.removeRedundantNewsfeed(currentFeedList).toMutableList()
+        val newList = ArrayList<Newsfeed>()
         try {
-            for (newsfeed in newsFeedList.iterator()) {
-                if (!isHistory) {
-                    val card = newsfeed.data
-                    if (card !is TimestampedObject) {
-                        newsFeedList.iterator().remove()
-                        continue
-                    }
-                    var retrievedCard: TimestampedObject?
-                    retrievedCard = if (newsfeedAdapter != null) newsfeedAdapter.findCard(card) else null
-                    if (retrievedCard != null) {
-                        if (Tour.NEWSFEED_TYPE == newsfeed.type) {
-                            if ((retrievedCard as Tour).isSame(card as Tour)) {
-                                newsFeedList.iterator().remove()
-                            }
-                        }
-                    }
-                } else {
-                    if (drawnUserHistory.containsKey(newsfeed.id)) {
-                        newsFeedList.iterator().remove()
-                    }
+            for (newsfeed in tempList) {
+                val card = newsfeed.data
+                if (card !is TimestampedObject) {
+                    continue
                 }
+                val retrievedCard = newsfeedAdapter?.findCard(card)
+                if (retrievedCard!=null && (Tour.NEWSFEED_TYPE == newsfeed.type) && ((retrievedCard as Tour).isSame(card as Tour))) {
+                    continue
+                }
+                newList.add(newsfeed)
             }
         } catch (e: IllegalStateException) {
             Timber.w(e)
         }
-        return newsFeedList
+        return newList
     }
 
     private fun removeRecentTours(tours: List<Tour>): List<Tour> {
-        val tourList : MutableList<Tour> = tours as MutableList<Tour>
-        for(tour in tourList.iterator()) {
-            if (newsfeedAdapter != null && newsfeedAdapter.findCard(tour) != null) {
-                tourList.iterator().remove()
+        val tourList = ArrayList<Tour>()
+        for(tour in tours) {
+            if (newsfeedAdapter?.findCard(tour) != null) {
+                continue
             }
+            tourList.add(tour)
         }
         return tourList
     }
@@ -717,8 +705,8 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
             Timber.e("MapPresenter not ready")
             return
         }
-        val encounters = entourageService.currentTour.encounters
-        if (encounters.isNotEmpty()) {
+        val encounters = entourageService?.currentTour?.encounters
+        if (encounters?.isNotEmpty() == true) {
             for (encounter in encounters) {
                 putEncounterOnMap(encounter)
             }
@@ -735,7 +723,7 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
             for (tourPoint in pointsToDraw) {
                 line.add(tourPoint.location)
             }
-            currentTourLines.add(map.addPolyline(line))
+            currentTourLines.add(map!!.addPolyline(line))
         }
     }
 
@@ -750,9 +738,9 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
             }
             if (isHistory) {
                 retrievedHistory[tour.id] = tour
-                drawnUserHistory[tour.id] = map.addPolyline(line)
+                drawnUserHistory[tour.id] = map!!.addPolyline(line)
             } else {
-                drawnToursMap.add(map.addPolyline(line))
+                drawnToursMap.add(map!!.addPolyline(line))
                 //addTourCard(tour);
             }
             if (tour.tourStatus == null) {
@@ -769,19 +757,16 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
             line.zIndex(2f)
             line.width(15f)
             line.color(color)
-            currentTourLines.add(map.addPolyline(line))
+            currentTourLines.add(map!!.addPolyline(line))
         }
         previousCoordinates = location
     }
 
     private fun addTourCard(tour: Tour) {
-        if (newsfeedAdapter == null) {
-            return
-        }
-        if (newsfeedAdapter.findCard(tour) != null) {
-            newsfeedAdapter.updateCard(tour)
+        if (newsfeedAdapter?.findCard(tour) != null) {
+            newsfeedAdapter?.updateCard(tour)
         } else {
-            newsfeedAdapter.addCardInfoBeforeTimestamp(tour)
+            newsfeedAdapter?.addCardInfoBeforeTimestamp(tour)
         }
     }
 
@@ -792,7 +777,7 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
         displayedTourHeads++
         MapClusterItem(tour).let {
             markersMap[tour.hashString()] = it
-            mapClusterManager.addItem(it)
+            mapClusterManager?.addItem(it)
         }
     }
 
@@ -801,7 +786,7 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
         super.onLocationPermissionGranted(event)
     }
 
-    public override fun clearAll() {
+    override fun clearAll() {
         super.clearAll()
         currentTourLines.clear()
         drawnToursMap.clear()
@@ -837,7 +822,7 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
                 val user = TourUser()
                 user.userId = userId
                 user.status = status
-                entourageService.notifyListenersUserStatusChanged(user, timestampedObject)
+                entourageService?.notifyListenersUserStatusChanged(user, timestampedObject)
             }
         }
     }
@@ -861,7 +846,7 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
 
     override fun updateUserHistory() {
         if (userHistory) {
-            entourageService.updateUserHistory(userId, 1, 500)
+            entourageService?.updateUserHistory(userId, 1, 500)
         }
     }
 
@@ -903,19 +888,18 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
     }
 
     @Subscribe
-    fun checkIntentAction(event: OnCheckIntentActionEvent?) {
+    fun checkIntentAction(event: OnCheckIntentActionEvent) {
         if (activity == null) {
             Timber.w("No activity found")
             return
         }
-        val intent = requireActivity().intent
-        checkAction(intent.action!!)
-        val message: Message = intent.extras?.getSerializable(PushNotificationManager.PUSH_MESSAGE) as Message?
+        checkAction(event.action)
+        val message: Message = event.extras?.getSerializable(PushNotificationManager.PUSH_MESSAGE) as Message?
                 ?: return
         val content = message.content
                 ?: return
         val extra = content.extra
-        when (intent.action) {
+        when (event.action) {
             PushNotificationContent.TYPE_NEW_CHAT_MESSAGE,
             PushNotificationContent.TYPE_NEW_JOIN_REQUEST,
             PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED -> if (content.isTourRelated) {
@@ -946,17 +930,17 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
                 Timber.e("Service not found")
                 return
             }
-            entourageService.registerServiceListener(this@MapWithTourFragment)
-            entourageService.registerApiListener(this@MapWithTourFragment)
-            if (entourageService.isRunning) {
+            entourageService!!.registerServiceListener(this@MapWithTourFragment)
+            entourageService!!.registerApiListener(this@MapWithTourFragment)
+            if (entourageService?.isRunning==true) {
                 updateFloatingMenuOptions()
-                currentTourUUID = entourageService.currentTourId
+                currentTourUUID = entourageService!!.currentTourId
                 //bottomTitleTextView.setText(R.string.tour_info_text_ongoing);
                 addCurrentTourEncounters()
             }
-            entourageService.updateNewsfeed(pagination, selectedTab)
+            entourageService!!.updateNewsfeed(pagination, selectedTab)
             if (userHistory) {
-                entourageService.updateUserHistory(userId, 1, 500)
+                entourageService!!.updateUserHistory(userId, 1, 500)
             }
             isBound = true
         }

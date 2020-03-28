@@ -1,6 +1,7 @@
 package social.entourage.android.map.filter
 
 import android.graphics.PorterDuff
+import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.core.content.ContextCompat
@@ -18,7 +19,15 @@ class MapFilterFragment  : BaseMapFilterFragment() {
     // ----------------------------------
     private var actionSwitches = HashMap<String, List<Switch>>()
     private val onCheckedChangeListener = OnCheckedChangeListener()
+    protected var isProUser = false
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val args = arguments
+        if (args != null) {
+            isProUser = args.getBoolean(KEY_PRO_USER, false)
+        }
+        super.onViewCreated(view, savedInstanceState)
+    }
     override fun initializeView() {
         super.initializeView()
         map_filter_tour_all_switch.setOnClickListener { onAllToursSwitch() }
@@ -205,6 +214,22 @@ class MapFilterFragment  : BaseMapFilterFragment() {
                 return
             }
             EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ACTION_CATEGORY)
+        }
+    }
+
+    companion object {
+        // ----------------------------------
+        // Constants
+        // ----------------------------------
+        const val TAG = "social.entourage_android.MapFilterFragment"
+        private const val KEY_PRO_USER = "social.entourage.android.KEY_PRO_USER"
+        @JvmStatic
+        fun newInstance(isProUser: Boolean): MapFilterFragment {
+            val fragment = MapFilterFragment()
+            val args = Bundle()
+            args.putBoolean(KEY_PRO_USER, isProUser)
+            fragment.arguments = args
+            return fragment
         }
     }
 }

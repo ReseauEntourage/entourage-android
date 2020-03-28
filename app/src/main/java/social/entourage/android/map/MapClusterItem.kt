@@ -57,12 +57,12 @@ class MapClusterItem : ClusterItem {
         return null
     }
 
-    override fun getTitle(): String {
-        return ""
+    override fun getTitle(): String? {
+        return null
     }
 
-    override fun getSnippet(): String {
-        return ""
+    override fun getSnippet(): String? {
+        return null
     }
 
     fun applyMarkerOptions(context: Context?, markerOptions: MarkerOptions) {

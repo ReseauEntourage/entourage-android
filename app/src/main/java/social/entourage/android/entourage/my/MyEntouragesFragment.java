@@ -16,6 +16,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.squareup.otto.Subscribe;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
@@ -280,8 +282,8 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Ent
 
 
     @Subscribe
-    public void feedItemViewRequested(Events.OnFeedItemInfoViewRequestedEvent event) {
-        if(event != null && event.getFeedItem() != null) {
+    public void feedItemViewRequested(@NotNull Events.OnFeedItemInfoViewRequestedEvent event) {
+        if(event.getFeedItem() != null) {
             onPushNotificationConsumedForFeedItem(event.getFeedItem());
         }
     }
