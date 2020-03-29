@@ -207,23 +207,8 @@ public class MainActivity extends EntourageSecuredActivity
         }
         refreshBadgeCount();
 
-        if (getIntent()!=null && getIntent().getAction() != null) {
-                switch (getIntent().getAction()) {
-                    case PushNotificationContent.TYPE_NEW_CHAT_MESSAGE:
-                    case PushNotificationContent.TYPE_NEW_JOIN_REQUEST:
-                    case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:
-                    case PushNotificationContent.TYPE_ENTOURAGE_INVITATION:
-                    case PushNotificationContent.TYPE_INVITATION_STATUS:
-                    case TourEndConfirmationFragment.KEY_RESUME_TOUR:
-                    case TourEndConfirmationFragment.KEY_END_TOUR:
-                    case PlusFragment.KEY_START_TOUR:
-                    case PlusFragment.KEY_ADD_ENCOUNTER:
-                    case PlusFragment.KEY_CREATE_CONTRIBUTION:
-                    case PlusFragment.KEY_CREATE_DEMAND:
-                    case PlusFragment.KEY_CREATE_OUTING:
-                        BusProvider.getInstance().post(new OnCheckIntentActionEvent(getIntent().getAction(), getIntent().getExtras()));
-                        break;
-                }
+        if (getIntent()!=null) {
+            BusProvider.getInstance().post(new OnCheckIntentActionEvent(getIntent().getAction(), getIntent().getExtras()));
         }
     }
 
@@ -465,7 +450,7 @@ public class MainActivity extends EntourageSecuredActivity
 
     @Subscribe
     public void checkIntentAction(@NotNull OnCheckIntentActionEvent event) {
-        if (!isSafeToCommit()) return;
+        //if (!isSafeToCommit()) return;
 
         Message message = null;
         if (event.getExtras() != null) {
