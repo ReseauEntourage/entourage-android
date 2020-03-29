@@ -563,18 +563,23 @@ public class MainActivity extends EntourageSecuredActivity
     @Override
     public void onEntourageDisclaimerAccepted(final EntourageDisclaimerFragment fragment) {
         // Save the entourage disclaimer shown flag
-        User me = EntourageApplication.me(this);
-        me.setEntourageDisclaimerShown(true);
-        getAuthenticationController().saveUser(me);
+        try{
+            User me = EntourageApplication.me(this);
+            me.setEntourageDisclaimerShown(true);
+            getAuthenticationController().saveUser(me);
 
-        // Dismiss the disclaimer fragment
-        if (fragment != null) fragment.dismiss();
+            // Dismiss the disclaimer fragment
+            if (fragment != null) fragment.dismiss();
 
-        // Show the create entourage fragment
-        MapFragment mapFragment  = getMapFragment();
-        if(mapFragment !=null) {
-            mapFragment.createEntourage();
+            // Show the create entourage fragment
+            MapFragment mapFragment  = getMapFragment();
+            if(mapFragment !=null) {
+                mapFragment.createEntourage();
+            }
+        } catch (IllegalStateException e) {
+            Timber.w(e);
         }
+
     }
 
     @Override
