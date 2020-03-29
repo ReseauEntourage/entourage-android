@@ -191,7 +191,7 @@ public class MainActivity extends EntourageSecuredActivity
         }
         refreshBadgeCount();
 
-        if (getIntent()!=null) {
+        if (getIntent()!=null && getIntent().getAction() != null) {
             BusProvider.getInstance().post(new OnCheckIntentActionEvent(getIntent().getAction(), getIntent().getExtras()));
         }
     }
@@ -262,7 +262,7 @@ public class MainActivity extends EntourageSecuredActivity
                 default:
                     //we get rid of the action
                     //@TODO is it necessary ?
-                    getIntent().setAction(null);
+                    //getIntent().setAction(null);
             }
         }
     }
