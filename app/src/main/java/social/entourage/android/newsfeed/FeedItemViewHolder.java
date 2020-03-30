@@ -280,6 +280,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
                 } else {
                     actButton.setText(R.string.tour_cell_button_view);
                     dividerColor = R.color.greyish;
+                    actButton.setVisibility(View.INVISIBLE);
                 }
             }
             actButton.setTextColor(res.getColor(textColor));
