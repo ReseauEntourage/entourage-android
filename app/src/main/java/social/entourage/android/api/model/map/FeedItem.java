@@ -136,7 +136,7 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
         if(!isChatMessage) {
             badgeCount++;
         } else {
-            //numberOfUnreadMessages will be updated elsewhere
+            numberOfUnreadMessages++;//numberOfUnreadMessages will be updated elsewhere
         }
     }
 

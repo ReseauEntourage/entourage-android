@@ -124,8 +124,8 @@ public class SideMenuFragment extends Fragment {
     // ----------------------------------
 
     private void initialiseView() {
-        appVersion.setText(getString(R.string.about_version_format, BuildConfig.DEBUG? BuildConfig.VERSION_DEBUG_NAME : BuildConfig.VERSION_NAME));
-        appDebugInfo.setText(getString(R.string.about_debug_info_format,BuildConfig.VERSION_DISPLAY_NAME, FirebaseInstanceId.getInstance().getId()));
+        appVersion.setText(getString(R.string.about_version_format, BuildConfig.VERSION_FULL_NAME ));
+        appDebugInfo.setText(getString(R.string.about_debug_info_format,BuildConfig.VERSION_DISPLAY_BRANCH_NAME, FirebaseInstanceId.getInstance().getId()));
 
         appVersion.setOnLongClickListener(v -> handleLongPress());
         appDebugInfo.setOnLongClickListener(v -> handleLongPress());

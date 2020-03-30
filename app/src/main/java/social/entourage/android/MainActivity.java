@@ -25,6 +25,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.otto.Subscribe;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.util.HashSet;
 
@@ -160,32 +162,6 @@ public class MainActivity extends EntourageSecuredActivity
         this.setIntent(intent);
         checkDeepLinks();
         setIntentAction(intent);
-        if (getIntent()!=null && getIntent().getAction() != null) {
-            switch (getIntent().getAction()) {
-                case TourEndConfirmationFragment.KEY_RESUME_TOUR:
-                case TourEndConfirmationFragment.KEY_END_TOUR:
-                case PlusFragment.KEY_START_TOUR:
-                case PlusFragment.KEY_ADD_ENCOUNTER:
-                case PlusFragment.KEY_CREATE_CONTRIBUTION:
-                case PlusFragment.KEY_CREATE_DEMAND:
-                case PlusFragment.KEY_CREATE_OUTING:
-                    BusProvider.getInstance().post(new OnCheckIntentActionEvent());
-                    break;
-                case EntourageService.KEY_NOTIFICATION_STOP_TOUR:
-                case EntourageService.KEY_NOTIFICATION_PAUSE_TOUR:
-                case EntourageService.KEY_LOCATION_PROVIDER_DISABLED:
-                    sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
-                    break;
-                default:
-                    break;
-            }
-            sendMapFragmentExtras();
-        }
-
-        if (getIntent()==null || getIntent().getAction() == null) {
-            // user just returns to the app, update analytics
-            updateAnalyticsInfo();
-        }
     }
 
     @Override
@@ -210,27 +186,30 @@ public class MainActivity extends EntourageSecuredActivity
     protected void onResume() {
         super.onResume();
 
-        if (getIntent() != null) {
-            String action = getIntent().getAction();
-            if (action != null) {
-                if (EntourageService.KEY_LOCATION_PROVIDER_DISABLED.equals(action)) {
+        if (getIntent() != null && getIntent().getAction()!=null) {
+            switch(getIntent().getAction()) {
+                case EntourageService.KEY_LOCATION_PROVIDER_DISABLED:
                     displayLocationProviderDisabledAlert();
                     sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
-                } else if (EntourageService.KEY_NOTIFICATION_PAUSE_TOUR.equals(action) || EntourageService.KEY_NOTIFICATION_STOP_TOUR.equals(action)) {
+                    break;
+                case EntourageService.KEY_NOTIFICATION_PAUSE_TOUR:
+                case EntourageService.KEY_NOTIFICATION_STOP_TOUR:
                     sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
-                }
+                    break;
             }
         }
         EntourageApplication.get().getMixpanel().getPeople().showNotificationIfAvailable(this);
 
+        sendMapFragmentExtras();
+        if (getIntent()==null || getIntent().getAction() == null) {
+            // user just returns to the app, update analytics
+            updateAnalyticsInfo();
+        }
         refreshBadgeCount();
-    }
 
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-
-        checkIntentAction(null);
+        if (getIntent()!=null) {
+            BusProvider.getInstance().post(new OnCheckIntentActionEvent(getIntent().getAction(), getIntent().getExtras()));
+        }
     }
 
     @Override
@@ -293,9 +272,12 @@ public class MainActivity extends EntourageSecuredActivity
                 case PlusFragment.KEY_CREATE_CONTRIBUTION:
                 case PlusFragment.KEY_CREATE_DEMAND:
                 case PlusFragment.KEY_CREATE_OUTING:
-                    getIntent().setAction(intent.getAction());
+                    //we keep the action
+                    //getIntent().setAction(intent.getAction());
                     break;
                 default:
+                    //we get rid of the action
+                    //@TODO is it necessary ?
                     getIntent().setAction(null);
             }
         }
@@ -467,22 +449,17 @@ public class MainActivity extends EntourageSecuredActivity
     }
 
     @Subscribe
-    public void checkIntentAction(OnCheckIntentActionEvent event) {
-        if (!isSafeToCommit()) return;
-
-        Intent intent = getIntent();
-        if (intent == null) {
-            return;
-        }
+    public void checkIntentAction(@NotNull OnCheckIntentActionEvent event) {
+        //if (!isSafeToCommit()) return;
 
         Message message = null;
-        if (intent.getExtras() != null) {
-            message = (Message) intent.getExtras().getSerializable(PushNotificationManager.PUSH_MESSAGE);
+        if (event.getExtras() != null) {
+            message = (Message) event.getExtras().getSerializable(PushNotificationManager.PUSH_MESSAGE);
         }
         if (message != null) {
             PushNotificationContent content = message.getContent();
             if (content != null
-                    && PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(intent.getAction())
+                    && PushNotificationContent.TYPE_NEW_CHAT_MESSAGE.equals(event.getAction())
                     && !content.isTourRelated()
                     && !content.isEntourageRelated()) {
                 showMyEntourages();
@@ -586,18 +563,23 @@ public class MainActivity extends EntourageSecuredActivity
     @Override
     public void onEntourageDisclaimerAccepted(final EntourageDisclaimerFragment fragment) {
         // Save the entourage disclaimer shown flag
-        User me = EntourageApplication.me(this);
-        me.setEntourageDisclaimerShown(true);
-        getAuthenticationController().saveUser(me);
+        try{
+            User me = EntourageApplication.me(this);
+            me.setEntourageDisclaimerShown(true);
+            getAuthenticationController().saveUser(me);
 
-        // Dismiss the disclaimer fragment
-        if (fragment != null) fragment.dismiss();
+            // Dismiss the disclaimer fragment
+            if (fragment != null) fragment.dismiss();
 
-        // Show the create entourage fragment
-        MapFragment mapFragment  = getMapFragment();
-        if(mapFragment !=null) {
-            mapFragment.createEntourage();
+            // Show the create entourage fragment
+            MapFragment mapFragment  = getMapFragment();
+            if(mapFragment !=null) {
+                mapFragment.createEntourage();
+            }
+        } catch (IllegalStateException e) {
+            Timber.w(e);
         }
+
     }
 
     @Override
@@ -700,7 +682,7 @@ public class MainActivity extends EntourageSecuredActivity
                     }
                     break;
                 case PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED:
-                    //@todo should we update current tour info fragment ?
+                    //@TODO should we update current tour info fragment ?
                     removePushNotification(content, PushNotificationContent.TYPE_NEW_JOIN_REQUEST);
                     break;
                 case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:

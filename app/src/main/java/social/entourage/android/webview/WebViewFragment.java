@@ -260,7 +260,7 @@ public class WebViewFragment extends EntourageDialogFragment {
     @OnClick(R.id.webview_menu_share)
     protected void onMenuShareClicked() {
         String shareString = getString(R.string.webview_share_text, webView.getUrl());
-        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
         sharingIntent.putExtra(Intent.EXTRA_TEXT, shareString);
         startActivity(Intent.createChooser(sharingIntent, getString(R.string.entourage_share_intent_title)));
