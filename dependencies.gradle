@@ -79,7 +79,8 @@ ext {
             legacyV4         : "androidx.legacy:legacy-support-v4:$supportVersion",
             legacyV13        : "androidx.legacy:legacy-support-v13:$supportVersion",
             multidex         : "androidx.multidex:multidex:$multidexVersion",
-            recyclerview     : "androidx.recyclerview:recyclerview:$recyclerViewVersion"
+            recyclerview     : "androidx.recyclerview:recyclerview:$recyclerViewVersion",
+            preference       : "androidx.preference:preference-ktx:1.1.0"
     ]
 
     annotationDependencies = [

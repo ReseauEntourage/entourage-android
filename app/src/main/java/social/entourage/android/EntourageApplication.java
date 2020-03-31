@@ -186,7 +186,8 @@ public class EntourageApplication extends MultiDexApplication {
     }
 
     public void addPushNotification(Message message) {
-        PushNotificationManager.getInstance().addPushNotification(message);
+        if(message==null) return;
+        PushNotificationManager.INSTANCE.addPushNotification(message);
         if(storeNewPushNotification(message, true)>1) {
             //feedItem badge was already set
             return;
@@ -195,7 +196,8 @@ public class EntourageApplication extends MultiDexApplication {
     }
 
     public void removePushNotificationsForFeedItem(FeedItem feedItem) {
-        int count = PushNotificationManager.getInstance().removePushNotificationsForFeedItem(feedItem);
+        if(feedItem==null) return;
+        int count = PushNotificationManager.INSTANCE.removePushNotificationsForFeedItem(feedItem);
         if(count>0) {
             updateStorageFeedItem(feedItem);
         }
@@ -205,7 +207,7 @@ public class EntourageApplication extends MultiDexApplication {
         if (message == null) {
             return;
         }
-        int count = PushNotificationManager.getInstance().removePushNotification(message);
+        int count = PushNotificationManager.INSTANCE.removePushNotification(message);
         if (count > 0) {
             if(storeNewPushNotification(message, false)==0) {
                 //feedItem badge was set to 0
@@ -222,14 +224,14 @@ public class EntourageApplication extends MultiDexApplication {
     }
 
     public void removePushNotification(long feedId, int feedType, int userId, String pushType) {
-        int count = PushNotificationManager.getInstance().removePushNotification(feedId, feedType, userId, pushType);
+        int count = PushNotificationManager.INSTANCE.removePushNotification(feedId, feedType, userId, pushType);
         if(count>0) {
             updateBadgeCount();
         }
     }
 
     public void removeAllPushNotifications() {
-        PushNotificationManager.getInstance().removeAllPushNotifications();
+        PushNotificationManager.INSTANCE.removeAllPushNotifications();
         // reset the badge count
         updateBadgeCount();
     }

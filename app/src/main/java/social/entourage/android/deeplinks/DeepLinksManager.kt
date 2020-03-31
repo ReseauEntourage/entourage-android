@@ -51,7 +51,7 @@ object DeepLinksManager {
             intent = null
             return
         }
-        Timber.i("New deeplink : "+ currentUri.toString())
+        Timber.i("New deeplink : %s", currentUri.toString())
         if (currentUri!!.scheme!!.contains(BuildConfig.DEEP_LINKS_SCHEME)) {
             handleEntourageDeepLink(activity)
         } else {

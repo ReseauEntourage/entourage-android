@@ -92,14 +92,14 @@ public class FeedItemsStorage implements Serializable {
                 hasChanged = true;
                 return feedItemStorage.badgeCount;
             }
-            }
+        }
 
-            if (isAdded) {
-                // none found, add one
-                userFeeds.add(new FeedItemStorage(content));
+        if (isAdded) {
+            // none found, add one
+            userFeeds.add(new FeedItemStorage(content));
             hasChanged =true;
-                return 1;
-            }
+            return 1;
+        }
         return -1;
     }
 
