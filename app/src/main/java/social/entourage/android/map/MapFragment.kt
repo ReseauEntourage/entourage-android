@@ -1156,9 +1156,9 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
         if (newsfeedAdapter == null) {
             return
         }
-        val `val` = valueAnimator.animatedValue as Int
-        newsfeedAdapter!!.setMapHeight(`val`)
-        fragment_map_tours_view?.layoutManager!!.requestLayout()
+        val newHeight = valueAnimator.animatedValue as Int
+        newsfeedAdapter!!.setMapHeight(newHeight)
+        fragment_map_tours_view?.layoutManager?.requestLayout()
     }
 
     override val adapter: HeaderBaseAdapter?
