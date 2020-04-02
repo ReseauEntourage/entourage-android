@@ -15,10 +15,6 @@ import com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListe
 import com.google.maps.android.clustering.view.DefaultClusterRenderer
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_guide_map.*
-import kotlinx.android.synthetic.main.fragment_guide_map.fragment_guide_main_layout
-import kotlinx.android.synthetic.main.fragment_guide_map.fragment_map_display_toggle
-import kotlinx.android.synthetic.main.fragment_guide_map.fragment_map_filter_button
-import kotlinx.android.synthetic.main.fragment_guide_map.fragment_map_longclick
 import kotlinx.android.synthetic.main.layout_guide_longclick.*
 import social.entourage.android.*
 import social.entourage.android.api.model.guide.Poi
@@ -39,12 +35,15 @@ import social.entourage.android.location.LocationUtils.isLocationPermissionGrant
 import social.entourage.android.map.BaseMapFragment
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.Utils
+import social.entourage.android.view.HtmlTextView
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
+    private var isAlertTextVisible: Boolean = false
+
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -66,7 +65,8 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
             setupComponent(EntourageApplication.get(activity).entourageComponent)
         }
         initializeMap()
-        initializeEmptyListPopup()
+        initializeAlertBanner()
+        initializePopups()
         initializePOIList()
         initializeFloatingButtons()
         initializeFilterButton()
@@ -261,10 +261,29 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
         }
     }
 
+    fun initializeAlertBanner() {
+        isAlertTextVisible = false;
+        fragment_guide_alert_description?.setHtmlString(getString(R.string.guide_alert_info_text), EntourageLinkMovementMethod.getInstance())
+        fragment_guide_alert_arrow?.setOnClickListener {onClickAlertArrow()}
+        fragment_guide_alert?.setOnClickListener {onClickAlertArrow()}
+    }
+
+    private fun onClickAlertArrow() {
+        if(!isAlertTextVisible) {
+            isAlertTextVisible = true
+            fragment_guide_alert_description?.visibility = View.VISIBLE
+            fragment_guide_alert_arrow?.setImageDrawable((AppCompatResources.getDrawable(requireContext(), R.drawable.ic_expand_less_black_24dp)))
+        } else {
+            isAlertTextVisible = false
+            fragment_guide_alert_description?.visibility = View.GONE
+            fragment_guide_alert_arrow?.setImageDrawable((AppCompatResources.getDrawable(requireContext(), R.drawable.ic_expand_more_black_24dp)))
+        }
+    }
+
     // ----------------------------------
     // EMPTY LIST POPUP
     // ----------------------------------
-    private fun initializeEmptyListPopup() {
+    private fun initializePopups() {
         fragment_guide_empty_list_popup?.setOnClickListener {onEmptyListPopupClose()}
         fragment_guide_info_popup_close?.setOnClickListener {onInfoPopupClose()}
         fragment_guide_info_popup?.setOnClickListener {onInfoPopupClose()}

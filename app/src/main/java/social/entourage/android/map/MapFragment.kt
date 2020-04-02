@@ -766,6 +766,27 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
     // ----------------------------------
     // PRIVATE METHODS (views)
     // ----------------------------------
+    override fun updateGeolocBanner(active: Boolean) {
+        if (fragment_map_gps != null) {
+            var visibility = true
+            if (isLocationEnabled() && isLocationPermissionGranted()) {
+                visibility = false
+            }
+            //we force it because we don't need geoloc when Action zone is set
+            val me = EntourageApplication.me(activity)
+            if (me != null && !me.isPro && me.address != null) {
+                visibility = false
+            }
+            fragment_map_gps.text = if (isLocationEnabled()) getString(R.string.map_gps_no_permission) else getString(R.string.map_gps_unavailable)
+            fragment_map_gps.visibility = if (visibility) View.VISIBLE else View.GONE
+            if(!visibility && isFullMapShown) {
+                animFullMap()
+            }
+            adapter?.displayGeolocStatusIcon(!visibility)
+        }
+        super.updateGeolocBanner(active)
+    }
+
     protected open fun removeRedundantNewsfeed(currentFeedList: List<Newsfeed>): List<Newsfeed> {
         val newsFeedList = ArrayList<Newsfeed>();
         for(newsfeed: Newsfeed in currentFeedList) {
@@ -845,7 +866,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
     }
 
     fun displayFullMap() {
-        if (newsfeedAdapter == null || fragment_map_main_layout==null) {
+        if (newsfeedAdapter == null || fragment_map_main_layout == null) {
             return
         }
         // show the empty list popup if necessary
@@ -859,8 +880,12 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
         fragment_map_new_entourages_button?.visibility = View.GONE
         fragment_map_display_toggle?.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_list_white_24dp))
         ensureMapVisible()
-        val targetHeight = fragment_map_main_layout.measuredHeight
-        newsfeedAdapter!!.setMapHeight(targetHeight)
+        animFullMap()
+    }
+
+    fun animFullMap() {
+        val targetHeight = fragment_map_main_layout?.measuredHeight ?: return
+        newsfeedAdapter?.setMapHeight(targetHeight) ?:return
         val anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight)
         anim.addUpdateListener { valueAnimator: ValueAnimator -> onAnimationUpdate(valueAnimator) }
         anim.start()

@@ -256,21 +256,7 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
         updateGeolocBanner(event.isPermissionGranted)
     }
 
-    private fun updateGeolocBanner(active: Boolean) {
-        if (fragment_map_gps != null) {
-            var visibility = true
-            if (isLocationEnabled() && isLocationPermissionGranted()) {
-                visibility = false
-            }
-            //we force it because we don't need geoloc when Action zone is set
-            val me = EntourageApplication.me(activity)
-            if (me != null && !me.isPro && me.address != null) {
-                visibility = false
-            }
-            fragment_map_gps.text = if (isLocationEnabled()) getString(R.string.map_gps_no_permission) else getString(R.string.map_gps_unavailable)
-            fragment_map_gps.visibility = if (visibility) View.VISIBLE else View.GONE
-            adapter?.displayGeolocStatusIcon(!visibility)
-        }
+    protected open fun updateGeolocBanner(active: Boolean) {
         adapter?.setGeolocStatusIcon(isLocationEnabled() && isLocationPermissionGranted())
         try {
             map?.isMyLocationEnabled = isLocationEnabled()

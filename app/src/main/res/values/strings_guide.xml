@@ -13,7 +13,7 @@
     <!-- Empty Guide Popup -->
     <string name="map_poi_empty_popup"><![CDATA[On dirait que c\'est calme ici!<br/><br/>
     Déplacez la carte pour trouver des structures d’assistance: restaurants solidaires, douches publiques, centres médicaux ouverts aux personnes de la rue…<br/><br/>
-    Une structure manque sur la carte?<<br/>
+    Une structure manque sur la carte?<br/>
     <a href=\'%1$s\'>Proposez une structure</a>]]></string>
 
     <!-- Info Popup -->
@@ -23,11 +23,17 @@
     <!-- Guide Filter -->
     <string name="guide_filter_title">FILTRES</string>
     <string name="guide_filters_activated">Filtres activés</string>
-    <string name="guide_no_filter"></string>
+    <string name="guide_no_filter">Filtres</string>
     <string name="guide_filter_categories_title">Catégories</string>
 
     <!-- POI Card -->
     <string name="poi_card_call">APPELER</string>
     <string name="poi_card_bullet">•</string>
+    <string name="guide_alert_arrow_desc">Détails Alerte</string>
+    <string name="guide_alert_info_desc">Info Guide</string>
+    <string name="guide_alert_info_title">INFO COVID-19</string>
+    <string name="guide_alert_info_text"><![CDATA[En raison de la situation sanitaire actuelle, de nombreuses structures ont temporairement fermé ou ont adapté leurs horaires d’ouverture.
+        Notre Annuaire Solidaire est mis à jour autant que possible, certaines informations risquent toutefois d’être érronées.<br/><br/>
+        Rendez-vous sur <a href=https://soliguide.fr/>Soliguide.fr</a> pour consulter un annuaire de lieux solidaires mis à jour en temps réel.]]></string>
 
 </resources>

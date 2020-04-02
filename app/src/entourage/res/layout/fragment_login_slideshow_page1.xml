@@ -13,7 +13,7 @@
         android:layout_margin="10dp"
         android:contentDescription="@string/empty_description"
         android:scaleType="center"
-        android:src="@drawable/entourage_logo_white"
+        app:srcCompat="@drawable/ic_entourage_logo_two_colors"
         app:layout_constraintBottom_toTopOf="@+id/login_slideshow_p1_description"
         app:layout_constraintTop_toTopOf="parent"/>
 

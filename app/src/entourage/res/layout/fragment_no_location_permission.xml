@@ -36,7 +36,7 @@
         android:layout_marginTop="80dp"
         android:contentDescription="@string/empty_description"
         android:scaleType="fitCenter"
-        android:src="@drawable/entourage_logo_white"/>
+        app:srcCompat="@drawable/ic_entourage_logo_one_color"/>
 
     <TextView
         android:id="@+id/no_location_explanation"

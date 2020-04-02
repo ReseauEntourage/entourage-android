@@ -107,6 +107,7 @@
     <color name="separator">@color/greyish</color>
     <color name="grey_contour">#DADADA</color>
     <color name="blue_dark">#007ea9</color>
+    <color name="red_dark">#d63649</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="white_88">#ccffffff</color>

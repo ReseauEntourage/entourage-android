@@ -75,7 +75,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/ic_info"
+            app:srcCompat="@drawable/ic_info_white_24dp"
             android:tint="@color/feeditem_details_topbar_tint"/>
 
     </RelativeLayout>

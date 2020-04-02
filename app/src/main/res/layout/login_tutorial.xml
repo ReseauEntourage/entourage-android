@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/empty_description"
             android:paddingTop="15dp"
-            android:src="@drawable/entourage_logo_white"/>
+            app:srcCompat="@drawable/ic_entourage_logo_one_color"/>
 
         <social.entourage.android.view.HtmlTextView
             style="@style/SpacedTextViewLarge"

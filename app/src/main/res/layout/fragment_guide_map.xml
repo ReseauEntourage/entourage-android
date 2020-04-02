@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,153 +9,231 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/fragment_guide_main_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fragment_guide_pois_view"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/fragment_guide_main_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent">
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/fragment_map_filter_button"
-            android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/fragment_guide_alert_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageButton
+                    android:id="@+id/fragment_guide_alert_info"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/bg_clickable_layout_alert"
+                    android:tint="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/fragment_guide_alert"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_info_white_24dp"
+                    android:contentDescription="@string/guide_alert_info_desc" />
+
+                <TextView
+                    android:id="@+id/fragment_guide_alert"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/bg_clickable_layout_alert"
+                    android:gravity="center"
+                    android:text="@string/guide_alert_info_title"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/entourage_font_large"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toTopOf="@id/fragment_guide_alert_description"
+                    app:layout_constraintEnd_toStartOf="@id/fragment_guide_alert_arrow"
+                    app:layout_constraintStart_toEndOf="@id/fragment_guide_alert_info"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible" />
+
+                <ImageButton
+                    android:id="@+id/fragment_guide_alert_arrow"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/bg_clickable_layout_alert"
+                    android:tint="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/fragment_guide_alert"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_expand_more_black_24dp"
+                    android:contentDescription="@string/guide_alert_arrow_desc" />
+
+                <social.entourage.android.view.HtmlTextView
+                    android:id="@+id/fragment_guide_alert_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_clickable_layout_alert"
+                    android:paddingStart="32dp"
+                    android:paddingEnd="32dp"
+                    android:paddingBottom="32dp"
+                    android:paddingTop="10dp"
+                    android:linksClickable="true"
+                    android:text="@string/guide_alert_info_text"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/light_grey"
+                    android:textColorLink="@color/light_grey"
+                    android:textSize="@dimen/entourage_font_medium"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/fragment_guide_alert"
+                    android:visibility="gone"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fragment_guide_pois_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_guide_alert_layout" />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/fragment_map_filter_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:contentDescription="@string/guide_filter_title"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="16dp"
+                android:text="@string/guide_filters_activated"
+                android:textColor="@color/white"
+                android:textSize="@dimen/entourage_font_large"
+                app:backgroundTint="@color/accent"
+                app:icon="@drawable/ic_filter_list_white_24dp"
+                app:iconPadding="0dp"
+                app:layout_anchorGravity="start"
+                app:layout_constraintEnd_toStartOf="@+id/fragment_map_display_toggle"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_guide_alert_layout" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fragment_map_display_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:contentDescription="@string/map_poi_propose_button"
+                android:visibility="visible"
+                app:backgroundTint="@color/accent"
+                app:fabSize="mini"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_guide_alert_layout"
+                app:srcCompat="@drawable/ic_map_white_24dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/fragment_guide_empty_list_popup"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:contentDescription="@string/guide_filter_title"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:padding="8dp"
-            android:paddingEnd="16dp"
-            android:text="@string/guide_filters_activated"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            app:backgroundTint="@color/accent"
-            app:icon="@drawable/ic_filter_list_white_24dp"
-            app:iconPadding="0dp"
-            app:layout_anchorGravity="start"
-            app:layout_constraintEnd_toStartOf="@+id/fragment_map_display_toggle"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_centerInParent="true"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:background="@drawable/rounded_dialog"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="3dp"
+                android:contentDescription="@string/empty_description"
+                android:padding="3dp"
+                android:src="@drawable/ic_close_white" />
+
+            <TextView
+                android:id="@+id/fragment_guide_empty_list_popup_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingStart="10dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="15dp"
+                android:text="@string/map_poi_empty_popup"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textColorLink="@color/white"
+                android:textSize="@dimen/entourage_font_medium" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fragment_guide_info_popup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="50dp"
+            android:background="@drawable/rounded_dialog"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:visibility="gone"
+            tools:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/fragment_guide_info_popup_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="@string/empty_description"
+                app:srcCompat="@drawable/ic_close_white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/map_poi_info_popup"
+                android:textColor="@color/white"
+                android:textSize="@dimen/entourage_font_medium" />
+        </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fragment_map_display_toggle"
+            android:id="@+id/button_poi_propose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:layout_marginTop="10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="end"
             android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:contentDescription="@string/map_poi_propose_button"
             android:visibility="visible"
             app:backgroundTint="@color/accent"
-            app:fabSize="mini"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_map_white_24dp" />
+            app:fabSize="auto"
+            app:srcCompat="@drawable/ic_add_location_white_24dp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <LinearLayout
-        android:id="@+id/fragment_guide_empty_list_popup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
-        android:background="@drawable/rounded_dialog"
-        android:orientation="vertical"
-        android:visibility="gone"
-        tools:visibility="visible">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
-            android:layout_marginTop="3dp"
-            android:contentDescription="@string/empty_description"
-            android:padding="3dp"
-            android:src="@drawable/ic_close_white" />
-
-        <TextView
-            android:id="@+id/fragment_guide_empty_list_popup_text"
+        <include
+            android:id="@+id/fragment_map_longclick"
+            layout="@layout/layout_guide_longclick"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:paddingStart="10dp"
-            android:paddingLeft="10dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="10dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="15dp"
-            android:text="@string/map_poi_empty_popup"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textColorLink="@color/white"
-            android:textSize="@dimen/entourage_font_medium" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/fragment_guide_info_popup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="50dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginRight="50dp"
-        android:background="@drawable/rounded_dialog"
-        android:orientation="vertical"
-        android:padding="10dp"
-        android:visibility="gone"
-        tools:visibility="gone">
-
-        <ImageButton
-            android:id="@+id/fragment_guide_info_popup_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:contentDescription="@string/empty_description"
-            app:srcCompat="@drawable/ic_close_white" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="@string/map_poi_info_popup"
-            android:textColor="@color/white"
-            android:textSize="@dimen/entourage_font_medium" />
-    </LinearLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/button_poi_propose"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="end"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:contentDescription="@string/map_poi_propose_button"
-        android:visibility="visible"
-        app:backgroundTint="@color/accent"
-        app:fabSize="auto"
-        app:srcCompat="@drawable/ic_add_location_white_24dp" />
-
-    <include
-        android:id="@+id/fragment_map_longclick"
-        layout="@layout/layout_guide_longclick"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
+            android:layout_height="match_parent"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
