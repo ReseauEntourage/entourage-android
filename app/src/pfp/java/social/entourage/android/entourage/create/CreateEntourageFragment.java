@@ -38,7 +38,7 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
     @BindView(R.id.create_entourage_position_description)
     TextView positionLabel;
 
-    @BindView(R.id.create_entourage_date_label)
+    @BindView(R.id.create_entourage_date_start_label)
     TextView dateLabel;
 
     // ----------------------------------

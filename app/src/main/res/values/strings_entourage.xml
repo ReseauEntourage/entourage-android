@@ -15,6 +15,9 @@
     <string name="entourage_create_date_label">Date *</string>
     <string name="entourage_create_date_format">\'le\' EEEE dd MMMM \'à\' HH\'h\'mm</string>
 
+    <string name="entourage_create_date_start_label">Date de début *</string>
+    <string name="entourage_create_date_end_label">Date de fin</string>
+
     <string name="entourage_create_privacy_public">Public</string>
     <string name="entourage_create_privacy_private">Privé</string>
     <string name="entourage_create_privacy_description_public">Vous acceptez que toute personne participe à votre évènement, sans vérifier son profil au préalable.</string>
@@ -71,9 +74,12 @@
     <string name="entourage_type_outing">Évènement</string>
     <string name="entourage_type_format">%1$s par\u0020</string>
     <string name="entourage_metadata_startAt_format">\'le\' EEEE dd/MM</string>
+    <string name="entourage_metadata_startAt_format_full">EEEE dd MMMM YYYY</string>
     <string name="entourage_metadata_startAt_time_format">\'à \'HH\'h\'mm</string>
     <string name="entourage_info_creation_time">Créé %s</string>
     <string name="entourage_info_update_time">actif %s</string>
+    <string name="entourage_metadata_date_startAt_endAt">du %s au %s</string>
+    <string name="entourage_metadata_time_startAt_endAt">de %s à %s</string>
 
     <!-- Entourage Location -->
     <string name="entourage_location_title">MA POSITION</string>

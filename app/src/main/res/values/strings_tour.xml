@@ -69,6 +69,9 @@
     <string name="tour_info_metadata_organiser_format">par %1$s</string>
     <string name="tour_info_metadata_date_format">Rendez-vous %1$s %2$s</string>
 
+    <string name="tour_info_metadata_dateStart_hours_format">Rendez-vous le %1$s %2$s</string>
+    <string name="tour_info_metadata_dateStart_End_hours_format">Rendez-vous du %1$s %2$s au %3$s %4$s</string>
+
     <!-- EntourageService -->
     <string name="local_service_stopped">Maraude terminée</string>
     <string name="tour_freezed">Maraude clôturée</string>

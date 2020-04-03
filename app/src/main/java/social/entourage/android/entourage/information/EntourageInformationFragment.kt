@@ -1106,11 +1106,14 @@ class EntourageInformationFragment : EntourageDialogFragment(), EntourageService
             }
         }
         tour_info_title_full?.text = feedItem.title
-        tour_summary_group_type?.text = feedItem.getFeedTypeLong(context)
+        //
+
         if (BaseEntourage.TYPE_OUTING.equals(feedItem.groupType, ignoreCase = true)) {
+            tour_summary_group_type?.text = getResources().getString(R.string.entourage_type_outing)
             tour_summary_author_name?.text = ""
             tour_info_location?.visibility = View.GONE
         } else {
+            tour_summary_group_type?.text = feedItem.getFeedTypeLong(context)
             tour_summary_author_name?.text = feedItem.author.userName
             tour_info_location?.visibility = View.VISIBLE
             tour_info_location?.text = feedItem.displayAddress
@@ -1197,9 +1200,30 @@ class EntourageInformationFragment : EntourageDialogFragment(), EntourageService
             tour_info_metadata_organiser?.text = getString(R.string.tour_info_metadata_organiser_format, feedItem.author.userName)
         }
         if (metadata == null) return
-        tour_info_metadata_datetime?.text = getString(R.string.tour_info_metadata_date_format,
+        if (BaseEntourage.TYPE_OUTING.equals(feedItem.groupType, ignoreCase = true)) {
+            //Format dates same day or different days.
+            val startCalendar = Calendar.getInstance()
+            startCalendar.time = (feedItem as Entourage).metadata.startDate
+            val endCalendar = Calendar.getInstance()
+            endCalendar.time = (feedItem as Entourage).metadata.endDate
+            if (startCalendar[Calendar.DAY_OF_YEAR] == endCalendar[Calendar.DAY_OF_YEAR]) {
+                tour_info_metadata_datetime?.text = getString(R.string.tour_info_metadata_dateStart_hours_format,
+                        metadata.getStartDateFullAsString(context),
+                        metadata.getStartEndTimesAsString(context))
+            } else {
+                //du xx à hh au yy à hh
+                tour_info_metadata_datetime?.text = getString(R.string.tour_info_metadata_dateStart_End_hours_format,
+                        metadata.getStartDateFullAsString(context),
+                        metadata.getStartTimeAsString(context),
+                        metadata.getEndDateFullAsString(context),
+                        metadata.getEndTimeAsString(context))
+            }
+        } else {
+            tour_info_metadata_datetime?.text = getString(R.string.tour_info_metadata_date_format,
                     metadata.getStartDateAsString(context),
                     metadata.getStartTimeAsString(context))
+        }
+
         setAddressView(metadata)
     }
 
