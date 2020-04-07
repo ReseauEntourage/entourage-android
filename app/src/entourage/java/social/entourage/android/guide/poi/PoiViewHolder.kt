@@ -26,7 +26,7 @@ class PoiViewHolder(itemView: View?) : BaseCardViewHolder(itemView) {
             if (poi == null) return@OnClickListener
             BusProvider.getInstance().post(OnPoiViewRequestedEvent(poi!!))
         })
-        itemView.poi_card_call_button.setOnClickListener {
+        itemView.poi_card_call_button?.setOnClickListener {
             val intent = Intent(Intent.ACTION_DIAL)
             intent.data = Uri.parse("tel:${poi!!.phone}")
             if (itemView.context != null) {
@@ -43,12 +43,11 @@ class PoiViewHolder(itemView: View?) : BaseCardViewHolder(itemView) {
 
     private fun populatePoi(newPoi: Poi) {
         this.poi = newPoi
-        itemView.poi_card_title.text = poi!!.name ?: ""
-        val categoryType = CategoryType.findCategoryTypeById(poi!!.categoryId)
-        itemView.poi_card_type.text = categoryType.displayName
-        itemView.poi_card_address.text = if (poi!!.address != null) poi!!.address else ""
-        itemView.poi_card_distance.text = TourPoint(poi!!.latitude, poi!!.longitude).distanceToCurrentLocation()
-        itemView.poi_card_call_button.visibility = if (poi!!.phone == null || poi!!.phone!!.isEmpty()) View.GONE else View.VISIBLE
+        itemView.poi_card_title?.text = poi!!.name ?: ""
+        itemView.poi_card_type?.text = CategoryType.findCategoryTypeById(poi!!.categoryId).displayName
+        itemView.poi_card_address?.text = if (poi!!.address != null) poi!!.address else ""
+        itemView.poi_card_distance?.text = TourPoint(poi!!.latitude, poi!!.longitude).distanceToCurrentLocation()
+        itemView.poi_card_call_button?.visibility = if (poi!!.phone == null || poi!!.phone!!.isEmpty()) View.GONE else View.VISIBLE
     }
 
     companion object {

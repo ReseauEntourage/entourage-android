@@ -50,10 +50,10 @@ class MapFilter : MapFilterInterface, Serializable {
     override fun isDefaultFilter(): Boolean {
         //TODO
         return when {
-            !entourageTypeNeighborhood -> true
-            !entourageTypePrivateCircle -> true
-            !entourageTypeOuting -> true
-            else -> false
+            !entourageTypeNeighborhood -> false
+            !entourageTypePrivateCircle -> false
+            !entourageTypeOuting -> false
+            else -> true
         }
     }
 

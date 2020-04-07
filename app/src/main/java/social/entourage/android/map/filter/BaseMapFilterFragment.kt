@@ -12,10 +12,7 @@ import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.tools.BusProvider
 
 abstract class BaseMapFilterFragment : EntourageDialogFragment() {
-    // ----------------------------------
-    // Attributes
-    // ----------------------------------
-    protected var isProUser = false
+
     // ----------------------------------
     // Lifecycle
     // ----------------------------------
@@ -28,10 +25,6 @@ abstract class BaseMapFilterFragment : EntourageDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val args = arguments
-        if (args != null) {
-            isProUser = args.getBoolean(KEY_PRO_USER, false)
-        }
         initializeView()
     }
 
@@ -59,27 +52,11 @@ abstract class BaseMapFilterFragment : EntourageDialogFragment() {
     // Private methods
     // ----------------------------------
     protected open fun initializeView() {
-        title_close_button.setOnClickListener {onCloseClicked()}
-        title_action_button.setOnClickListener {onValidateClicked()}
+        title_close_button?.setOnClickListener {onCloseClicked()}
+        title_action_button?.setOnClickListener {onValidateClicked()}
         loadFilter()
     }
 
     protected abstract fun loadFilter()
     protected abstract fun saveFilter()
-
-    companion object {
-        // ----------------------------------
-        // Constants
-        // ----------------------------------
-        const val TAG = "social.entourage_android.MapFilterFragment"
-        private const val KEY_PRO_USER = "social.entourage.android.KEY_PRO_USER"
-        @JvmStatic
-        fun newInstance(isProUser: Boolean): MapFilterFragment {
-            val fragment = MapFilterFragment()
-            val args = Bundle()
-            args.putBoolean(KEY_PRO_USER, isProUser)
-            fragment.arguments = args
-            return fragment
-        }
-    }
 }

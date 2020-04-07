@@ -38,8 +38,8 @@ class CarouselFragment  : EntourageDialogFragment() {
     }
 
     private fun initializeCarousel() {
-        carousel_view.adapter = CarouselPageAdapter(childFragmentManager)
-        carousel_view.addOnPageChangeListener(object : OnPageChangeListener {
+        carousel_view?.adapter = CarouselPageAdapter(childFragmentManager)
+        carousel_view?.addOnPageChangeListener(object : OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
             override fun onPageSelected(position: Int) {
                 selectDot(position)
@@ -47,7 +47,7 @@ class CarouselFragment  : EntourageDialogFragment() {
             override fun onPageScrollStateChanged(state: Int) {}
         })
         addDots()
-        carousel_close_button.setOnClickListener {dismiss()}
+        carousel_close_button?.setOnClickListener {dismiss()}
     }
 
     private fun addDots() {

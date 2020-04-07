@@ -24,7 +24,6 @@
             android:minHeight="35dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_toStartOf="@+id/announcement_card_photo"
             android:drawablePadding="@dimen/entourage_category_icon_padding"
             app:drawableTint="@color/greyish_brown"
             android:gravity="center_vertical"
@@ -33,29 +32,6 @@
             android:textStyle="bold"
             android:textColor="@color/map_announcement_background"
             tools:text="Carte Annonce : titre qui peut faire plusieurs lignes sans problèmes"/>
-
-        <ImageView
-            android:id="@+id/announcement_card_photo"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:layout_gravity="end"
-            android:layout_marginEnd="4dp"
-            android:contentDescription="@string/empty_description"
-            android:paddingTop="3dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_user_photo_small"/>
-
-        <social.entourage.android.view.PartnerLogoImageView
-            android:id="@+id/announcement_card_partner_logo"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignBottom="@+id/announcement_card_photo"
-            android:layout_alignEnd="@+id/announcement_card_photo"
-            android:layout_marginBottom="-4dp"
-            android:layout_marginEnd="-4dp"
-            app:srcCompat="@drawable/partner_placeholder"/>
     </RelativeLayout>
 
     <TextView
@@ -81,7 +57,7 @@
         android:scaleType="centerCrop"
         android:visibility="gone"
         tools:visibility="visible"
-        app:srcCompat="@drawable/announcement_image_placeholder"/>
+        app:srcCompat="@drawable/ic_announcement_image_placeholder"/>
 
     <RelativeLayout
         android:id="@+id/announcement_card_act_layout"

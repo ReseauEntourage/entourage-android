@@ -19,7 +19,7 @@ public class BottomViewHolder extends BaseCardViewHolder {
     }
 
     protected void bindFields() {
-        content = itemView.findViewById(R.id.layout_loader_card_progressBar);
+        content = itemView.findViewById(R.id.layout_loader_card_progressbar);
     }
 
     @Override

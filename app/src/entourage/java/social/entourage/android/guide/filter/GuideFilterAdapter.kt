@@ -44,13 +44,13 @@ class GuideFilterAdapter : BaseAdapter() {
         // Populate the view
         val item = getItem(position)
         val categoryType = item.categoryType
-        view.filter_item_text.text = categoryType.displayName
-        view.filter_item_image.setImageResource(categoryType.resourceId)
+        view.filter_item_text?.text = categoryType.displayName
+        view.filter_item_image?.setImageResource(categoryType.resourceId)
         // set the switch
-        view.filter_item_switch.isChecked = item.isChecked
-        view.filter_item_switch.tag = position
+        view.filter_item_switch?.isChecked = item.isChecked
+        view.filter_item_switch?.tag = position
         // separator is visible unless last element
-        view.filter_item_separator.visibility = if (position == count - 1) View.GONE else View.VISIBLE
+        view.filter_item_separator?.visibility = if (position == count - 1) View.GONE else View.VISIBLE
         return view
     }
 
@@ -59,7 +59,7 @@ class GuideFilterAdapter : BaseAdapter() {
     // ----------------------------------
     inner class GuideFilterViewHolder(v: View) {
         init {
-            v.filter_item_switch.setOnCheckedChangeListener { buttonView, isChecked ->
+            v.filter_item_switch?.setOnCheckedChangeListener { buttonView, isChecked ->
                 // if no tag, exit
                 if (buttonView.tag != null) {
                     getItem(buttonView.tag as Int).isChecked = isChecked

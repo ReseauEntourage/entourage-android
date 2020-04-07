@@ -5,7 +5,7 @@
               android:orientation="vertical">
 
     <ProgressBar
-        android:id="@+id/layout_loader_card_progressBar"
+        android:id="@+id/layout_loader_card_progressbar"
         style="?android:attr/progressBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

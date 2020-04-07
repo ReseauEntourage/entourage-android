@@ -42,6 +42,7 @@
 
     <!-- Map -->
     <color name="map_announcement_background">#344055</color>
+    <color name="map_announcement_logo">#666F7F</color>
 
     <!-- Buttons -->
     <color name="custom_button_accent_enabled">@color/accent</color>
@@ -106,6 +107,7 @@
     <color name="separator">@color/greyish</color>
     <color name="grey_contour">#DADADA</color>
     <color name="blue_dark">#007ea9</color>
+    <color name="red_dark">#d63649</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="white_88">#ccffffff</color>

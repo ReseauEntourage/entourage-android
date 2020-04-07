@@ -1,17 +1,15 @@
 package social.entourage.android.map.filter
 
-import android.widget.Switch
 import kotlinx.android.synthetic.pfp.fragment_map_filter.*
-import social.entourage.android.R
 import social.entourage.android.map.filter.MapFilterFactory.mapFilter
 
 class MapFilterFragment  : BaseMapFilterFragment() {
     // ----------------------------------
     // Lifecycle
     // ----------------------------------
-    override protected fun initializeView() {
+    override fun initializeView() {
         super.initializeView()
-        map_filter_entourage_outing_switch.setOnClickListener {onOutingSwitchClicked()}
+        map_filter_entourage_outing_switch?.setOnClickListener {onOutingSwitchClicked()}
 
     }
 
@@ -29,10 +27,10 @@ class MapFilterFragment  : BaseMapFilterFragment() {
     // ----------------------------------
     override fun loadFilter() {
         val mapFilter = mapFilter
-        map_filter_entourage_neighborhood_switch.isChecked = mapFilter.entourageTypeNeighborhood
-        map_filter_entourage_private_circle_switch.isChecked = mapFilter.entourageTypePrivateCircle
-        map_filter_entourage_outing_switch.isChecked = mapFilter.entourageTypeOuting
-        map_filter_past_events_switch.isChecked = mapFilter.includePastEvents
+        map_filter_entourage_neighborhood_switch?.isChecked = mapFilter.entourageTypeNeighborhood
+        map_filter_entourage_private_circle_switch?.isChecked = mapFilter.entourageTypePrivateCircle
+        map_filter_entourage_outing_switch?.isChecked = mapFilter.entourageTypeOuting
+        map_filter_past_events_switch?.isChecked = mapFilter.includePastEvents
     }
 
     override fun saveFilter() {
@@ -41,5 +39,17 @@ class MapFilterFragment  : BaseMapFilterFragment() {
         mapFilter.entourageTypePrivateCircle = map_filter_entourage_private_circle_switch.isChecked
         mapFilter.entourageTypeOuting = map_filter_entourage_outing_switch.isChecked
         mapFilter.includePastEvents = map_filter_past_events_switch.isChecked
+    }
+
+    companion object {
+        // ----------------------------------
+        // Constants
+        // ----------------------------------
+        const val TAG = "social.entourage.android.MapFilterFragment"
+        @JvmStatic
+        fun newInstance(isProUser: Boolean): MapFilterFragment {
+            val fragment = MapFilterFragment()
+            return fragment
+        }
     }
 }

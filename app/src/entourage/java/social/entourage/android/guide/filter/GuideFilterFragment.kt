@@ -4,10 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
 import kotlinx.android.synthetic.main.fragment_guide_filter.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.R
@@ -57,9 +53,9 @@ class GuideFilterFragment : EntourageDialogFragment() {
     // ----------------------------------
     private fun initializeFiltersList() {
         filterAdapter = GuideFilterAdapter()
-        guide_filter_list.adapter = filterAdapter
-        title_close_button.setOnClickListener {  dismiss() }
-        title_action_button.setOnClickListener { onValidateClicked() }
+        guide_filter_list?.adapter = filterAdapter
+        title_close_button?.setOnClickListener {  dismiss() }
+        title_action_button?.setOnClickListener { onValidateClicked() }
     }
 
     companion object {

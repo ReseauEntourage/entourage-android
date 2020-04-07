@@ -1403,7 +1403,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
         discussionAdapter.updateCard(tourTimestamp);
     }
 
-    private int getTrackColor(String type, Date date) {
+    private int getTrackColor(String type, @NotNull Date date) {
         int color = Color.GRAY;
         if (getContext() == null) return color;
         color = ContextCompat.getColor(getContext(), Tour.getTypeColorRes(type));
@@ -1553,7 +1553,7 @@ public class EntourageInformationFragment extends EntourageDialogFragment implem
         } else {
             tourDescription.setVisibility(View.GONE);
         }
-        DeepLinksManager.linkify(tourDescription);
+        DeepLinksManager.INSTANCE.linkify(tourDescription);
 
         // metadata
         updateMetadataView();

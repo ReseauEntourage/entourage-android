@@ -21,9 +21,11 @@ public class HeaderBaseAdapter extends EntourageBaseAdapter {
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
         if (position == 0) {//header position
-            MapViewHolder mapViewHolder = ((MapViewHolder)holder);
+            if(mapViewHolder == null && holder instanceof MapViewHolder) {
+                mapViewHolder = (MapViewHolder)holder;
+            }
             //we populate with  no data
-            mapViewHolder.populate(null);
+            mapViewHolder.populate();
             return;
         }
         super.onBindViewHolder(holder, position);
@@ -65,7 +67,7 @@ public class HeaderBaseAdapter extends EntourageBaseAdapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
 
         RecyclerView.ViewHolder cardViewHolder = super.onCreateViewHolder(parent,viewType);
-        if (cardViewHolder != null && viewType == TimestampedObject.TOP_VIEW) {
+        if (cardViewHolder instanceof MapViewHolder && viewType == TimestampedObject.TOP_VIEW) {
             mapViewHolder = (MapViewHolder)cardViewHolder;
             mapViewHolder.setMapReadyCallback(onMapReadyCallback);
             mapViewHolder.setFollowButtonOnClickListener(onFollowButtonClickListener);

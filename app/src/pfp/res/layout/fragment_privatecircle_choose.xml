@@ -12,9 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         app:entourageTitle="@string/privatecircle_choose_title"
-        app:entourageTitleAction="@string/privatecircle_choose_next">
-
-    </social.entourage.android.view.EntourageTitleView>
+        app:entourageTitleAction="@string/privatecircle_choose_next" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/privatecircle_choose_list"

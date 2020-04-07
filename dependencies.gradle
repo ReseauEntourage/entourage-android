@@ -28,19 +28,19 @@ ext {
 
     // Libraries versions
     annotationVersion = "1.1.0"
-    appCompatVersion = "1.2.0-alpha02"
+    appCompatVersion = "1.2.0-alpha03"
     butterKnifeVersion = "10.2.1"
     constraintlayoutVersion = "1.1.3"
     coordinatorlayoutVersion="1.1.0"
     crashlyticsVersion = "2.10.1"
-    daggerVersion = "2.26"
+    daggerVersion = "2.27"
     dateTimePickerVersion = "4.2.3"
     espressoVersion = "3.2.0"
     exifinterfaceVersion = "1.1.0"
     facebookVersion = "6.1.0"
-    firebaseCoreVersion = "17.2.2"
-    firebaseMessagingVersion = "20.1.0"
-    firebaseInappVersion = "19.0.3"
+    firebaseCoreVersion = "17.2.3"
+    firebaseMessagingVersion = "20.1.3"
+    firebaseInappVersion = "19.0.4"
     firebasePerfMonitor = "19.0.5"
     floatingButtonVersion = "1.6.4"
     fragmentVersion = '1.2.2'
@@ -49,7 +49,7 @@ ext {
     javaAnnotationVersion = "10.0-b28"
     jodaVersion = "2.10.3"
     mapsVersion = "17.0.0"
-    mapsUtilsVersion = "1.0.0" //"0.6.2"
+    mapsUtilsVersion = "1.0.2"
     materialVersion = "1.1.0"
     mixpanelVersion = "5.7.0"
     multidexVersion = "2.0.1"
@@ -79,7 +79,8 @@ ext {
             legacyV4         : "androidx.legacy:legacy-support-v4:$supportVersion",
             legacyV13        : "androidx.legacy:legacy-support-v13:$supportVersion",
             multidex         : "androidx.multidex:multidex:$multidexVersion",
-            recyclerview     : "androidx.recyclerview:recyclerview:$recyclerViewVersion"
+            recyclerview     : "androidx.recyclerview:recyclerview:$recyclerViewVersion",
+            preference       : "androidx.preference:preference-ktx:1.1.0"
     ]
 
     annotationDependencies = [
@@ -130,14 +131,8 @@ ext {
     ]
 
     testDependencies = [
-            espresso        : [
-                    group: "androidx.test.espresso",
-                    name: "espresso-core",
-                    version: "$espressoVersion",
-                    exclude: [
-                            group: "com.android.support"
-                    ]
-            ],
+            espresso        :"androidx.test.espresso:espresso-core:$espressoVersion",
+            espressoIntents :"androidx.test.espresso:espresso-intents:$espressoVersion",
             okHttpIdling    : [
                     group: "com.jakewharton.espresso",
                     name: "okhttp3-idling-resource",

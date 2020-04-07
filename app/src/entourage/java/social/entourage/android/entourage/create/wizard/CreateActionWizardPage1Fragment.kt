@@ -28,11 +28,11 @@ class CreateActionWizardPage1Fragment : EntourageDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        title_close_button.setOnClickListener { onCloseClicked() }
+        title_close_button?.setOnClickListener { onCloseClicked() }
 
-        create_action_wizard_p1_option1_button.setOnClickListener {onOption1Clicked()}
-        create_action_wizard_p1_option2_button.setOnClickListener {onOption2Clicked()}
-        create_action_wizard_p1_option3_button.setOnClickListener {onOption3Clicked()}
+        create_action_wizard_p1_option1_button?.setOnClickListener {onOption1Clicked()}
+        create_action_wizard_p1_option2_button?.setOnClickListener {onOption2Clicked()}
+        create_action_wizard_p1_option3_button?.setOnClickListener {onOption3Clicked()}
     }
 
     fun setListener(listener: CreateActionWizardListener?) {
@@ -47,15 +47,15 @@ class CreateActionWizardPage1Fragment : EntourageDialogFragment() {
         dismiss()
     }
 
-    fun onOption1Clicked() {
+    private fun onOption1Clicked() {
         listener?.createActionWizardNextStep(STEP, 1)
     }
 
-    fun onOption2Clicked() {
+    private fun onOption2Clicked() {
         listener?.createActionWizardNextStep(STEP, 2)
     }
 
-    fun onOption3Clicked() {
+    private fun onOption3Clicked() {
         listener?.createActionWizardNextStep(STEP, 3)
     }
 

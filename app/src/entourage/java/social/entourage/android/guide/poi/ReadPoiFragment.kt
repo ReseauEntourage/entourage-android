@@ -45,8 +45,8 @@ class ReadPoiFragment : EntourageDialogFragment() {
         setupComponent(EntourageApplication.get(activity).entourageComponent)
         if(poi!=null) presenter!!.displayPoi(poi!!)
 
-        title_close_button.setOnClickListener {dismiss()}
-        poi_report_button.setOnClickListener {onReportButtonClicked()}
+        title_close_button?.setOnClickListener {dismiss()}
+        poi_report_button?.setOnClickListener {onReportButtonClicked()}
     }
 
     protected fun setupComponent(entourageComponent: EntourageComponent?) {
@@ -58,22 +58,22 @@ class ReadPoiFragment : EntourageDialogFragment() {
     }
 
     fun onDisplayedPoi(poi: Poi, onAddressClickListener: OnAddressClickListener?, onPhoneClickListener: OnPhoneClickListener?) {
-        textview_poi_name.text = poi.name
-        textview_poi_description.text = poi.description
+        textview_poi_name?.text = poi.name
+        textview_poi_description?.text = poi.description
         setActionButton(button_poi_phone, poi.phone)
         setActionButton(button_poi_mail, poi.email)
         setActionButton(button_poi_web, poi.website)
         setActionButton(button_poi_address, poi.address)
         if (onAddressClickListener != null) {
-            button_poi_address.setOnClickListener(onAddressClickListener)
+            button_poi_address?.setOnClickListener(onAddressClickListener)
         }
         if (onPhoneClickListener != null) {
-            button_poi_phone.setOnClickListener(onPhoneClickListener)
+            button_poi_phone?.setOnClickListener(onPhoneClickListener)
         }
         val categoryType = CategoryType.findCategoryTypeById(poi.categoryId)
-        poi_type_layout.setBackgroundColor(categoryType.color)
-        poi_type_label.text = categoryType.displayName
-        poi_type_image.setImageResource(categoryType.resourceTransparentId)
+        poi_type_layout?.setBackgroundColor(categoryType.color)
+        poi_type_label?.text = categoryType.displayName
+        poi_type_image?.setImageResource(categoryType.resourceTransparentId)
     }
 
     private fun setActionButton(btn: Button, value: String?) {

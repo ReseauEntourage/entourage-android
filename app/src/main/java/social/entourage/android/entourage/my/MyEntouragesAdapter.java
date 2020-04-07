@@ -13,7 +13,7 @@ import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.LoaderCardItem;
 import social.entourage.android.base.EntourageBaseAdapter;
 import social.entourage.android.invite.view.InvitationListViewHolder;
-import social.entourage.android.map.LoaderCardViewHolder;
+import social.entourage.android.base.LoaderCardViewHolder;
 import social.entourage.android.entourage.EntourageViewHolder;
 import social.entourage.android.tour.TourViewHolder;
 import social.entourage.android.base.ViewHolderFactory;

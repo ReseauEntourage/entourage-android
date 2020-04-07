@@ -34,11 +34,11 @@ class CreateActionWizardPage3Fragment : EntourageDialogFragment() {
         if (activity != null && getView() != null) {
             val activity = activity as MainActivity?
             val text = getString(R.string.create_action_wizard_disclaimer, activity?.getLink(Constants.CHARTE_LINK_ID))
-            create_action_wizard_disclaimer.text = Utils.fromHtml(text)
-            create_action_wizard_disclaimer.movementMethod = EntourageLinkMovementMethod.getInstance()
+            create_action_wizard_disclaimer?.text = Utils.fromHtml(text)
+            create_action_wizard_disclaimer?.movementMethod = EntourageLinkMovementMethod.getInstance()
         }
-        title_close_button.setOnClickListener {onCloseClicked() }
-        create_action_wizard_p3_option1_button.setOnClickListener { onOption1Clicked() }
+        title_close_button?.setOnClickListener {onCloseClicked() }
+        create_action_wizard_p3_option1_button?.setOnClickListener { onOption1Clicked() }
     }
 
     fun setListener(listener: CreateActionWizardListener?) {
@@ -53,7 +53,7 @@ class CreateActionWizardPage3Fragment : EntourageDialogFragment() {
         dismiss()
     }
 
-    fun onOption1Clicked() {
+    private fun onOption1Clicked() {
         listener?.createActionWizardNextStep(STEP, 1)
     }
 

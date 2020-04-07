@@ -16,6 +16,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
+import social.entourage.android.MainActivity;
 import social.entourage.android.R;
 import social.entourage.android.deeplinks.DeepLinksManager;
 
@@ -44,7 +45,9 @@ public class EntourageDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        DeepLinksManager.getInstance().handleCurrentDeepLink(this.getActivity());
+        if(getActivity() instanceof MainActivity) {
+            DeepLinksManager.INSTANCE.handleCurrentDeepLink((MainActivity)getActivity());
+        }
     }
 
     @Override

@@ -14,9 +14,7 @@
         android:textColor="@color/white"
         app:entourageShowSeparator="false"
         app:entourageTitle="@string/create_action_wizard_p3_title"
-        app:entourageTitleCloseDrawable="@drawable/ic_action_back">
-
-    </social.entourage.android.view.EntourageTitleView>
+        app:entourageTitleCloseDrawable="@drawable/ic_action_back"/>
 
     <LinearLayout
         android:layout_width="match_parent"

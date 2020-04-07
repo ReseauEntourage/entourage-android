@@ -12,7 +12,6 @@ import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.tools.CropCircleTransformation
 import timber.log.Timber
 import kotlinx.android.synthetic.main.fragment_partner.*
-import kotlinx.android.synthetic.main.layout_view_title.*
 import kotlinx.android.synthetic.main.layout_view_title.view.*
 
 /**
@@ -59,7 +58,7 @@ class PartnerFragment : EntourageDialogFragment() {
             Timber.e("No partner for Partner View")
             return
         }
-        user_title_layout.title_close_button.setOnClickListener {dismiss()}
+        user_title_layout?.title_close_button?.setOnClickListener {dismiss()}
         // url
         Picasso.get()
                 .load(Uri.parse(partner!!.largeLogoUrl))
@@ -67,40 +66,40 @@ class PartnerFragment : EntourageDialogFragment() {
                 .transform(CropCircleTransformation())
                 .into(partner_view_logo!!)
         // name
-        partner_view_name!!.text = partner!!.name
+        partner_view_name?.text = partner!!.name
         // description
-        partner_view_details!!.text = partner!!.description
+        partner_view_details?.text = partner!!.description
         // phone
         val phone = partner!!.phone
         if (phone == null || phone.isEmpty()) {
-            partner_view_phone_layout!!.visibility = View.GONE
+            partner_view_phone_layout?.visibility = View.GONE
         } else {
-            partner_view_phone_layout!!.visibility = View.VISIBLE
-            partner_view_phone!!.text = phone
+            partner_view_phone_layout?.visibility = View.VISIBLE
+            partner_view_phone?.text = phone
         }
         // address
         val address = partner!!.address
         if (address == null || address.isEmpty()) {
-            partner_view_address_layout!!.visibility = View.GONE
+            partner_view_address_layout?.visibility = View.GONE
         } else {
-            partner_view_address_layout!!.visibility = View.VISIBLE
-            partner_view_address!!.text = address
+            partner_view_address_layout?.visibility = View.VISIBLE
+            partner_view_address?.text = address
         }
         // website
         val website = partner!!.websiteUrl
         if (website == null || website.isEmpty()) {
-            partner_view_website_layout!!.visibility = View.GONE
+            partner_view_website_layout?.visibility = View.GONE
         } else {
-            partner_view_website_layout!!.visibility = View.VISIBLE
-            partner_view_website!!.text = website
+            partner_view_website_layout?.visibility = View.VISIBLE
+            partner_view_website?.text = website
         }
         // email
         val email = partner!!.email
         if (email == null || email.isEmpty()) {
-            partner_view_email_layout!!.visibility = View.GONE
+            partner_view_email_layout?.visibility = View.GONE
         } else {
-            partner_view_email_layout!!.visibility = View.VISIBLE
-            partner_view_email!!.text = email
+            partner_view_email_layout?.visibility = View.VISIBLE
+            partner_view_email?.text = email
         }
     }
 

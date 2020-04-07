@@ -88,7 +88,7 @@ public class ChatMessageCardViewHolder extends BaseCardViewHolder {
         // the actual chat
         mMessageView.setText(chatMessage.getContent());
 
-        DeepLinksManager.linkify(mMessageView);
+        DeepLinksManager.INSTANCE.linkify(mMessageView);
 
         // chat timestamp
         mTimestampView.setText(DateFormat.format("H'h'mm", chatMessage.getTimestamp()));
