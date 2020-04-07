@@ -236,6 +236,9 @@ object PushNotificationManager {
     private fun displayPushNotification(message: Message, context: Context) {
         val messageList: List<Message>? = pushNotifications[message.hash]
         val count = messageList?.size ?: 0
+        if(count>0) {
+            message.pushNotificationId = messageList?.first()!!.pushNotificationId
+        }
 
         val channelId = context.getString(R.string.app_name)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

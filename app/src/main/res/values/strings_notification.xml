@@ -2,11 +2,11 @@
 <resources>
     <plurals name="notification_title_join_request">
         <item quantity="one">Nouvelle demande de %1$s</item>
-        <item quantity="other">Nouvelles demandes</item>
+        <item quantity="other">Nouvelles demandes de %1$s,…</item>
     </plurals>
     <plurals name="notification_title_chat_message">
         <item quantity="one">Nouveau message de %1$s</item>
-        <item quantity="other">Nouveaux messages</item>
+        <item quantity="other">Nouveaux messages de %1$s,…</item>
     </plurals>
     <plurals name="notification_text_chat_message">
         <item quantity="zero">Vous n\'avez pas de nouveau message</item>

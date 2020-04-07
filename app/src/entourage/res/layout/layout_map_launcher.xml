@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:clickable="true"
-              android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:orientation="vertical"
+    android:focusable="true">
 
     <View
         android:id="@+id/launcher_tour_outer_view"
@@ -59,8 +61,8 @@
             <View
                 android:layout_width="2dp"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:background="@color/separator"
                 android:visibility="gone"/>
 
@@ -81,8 +83,8 @@
             <View
                 android:layout_width="2dp"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:background="@color/separator"
                 android:visibility="gone"/>
 
@@ -112,31 +114,36 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/tour_start"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/greyish_brown"
                 android:textSize="@dimen/entourage_font_big"/>
-
-            <ImageView
-                android:id="@+id/launcher_tour_go"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textView"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="40dp"
-                android:layout_marginTop="20dp"
-                android:contentDescription="@string/empty_description"
-                android:src="@drawable/tour_start"/>
+                android:layout_below="@id/textView"
+                android:layout_centerHorizontal="true">
+                <ImageView
+                    android:id="@+id/launcher_tour_go"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:contentDescription="@string/empty_description"
+                    android:src="@drawable/tour_start"/>
 
-            <ProgressBar
-                android:id="@+id/launcher_tour_progressBar"
-                style="?android:attr/progressBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:indeterminate="true"
-                android:visibility="gone"/>
+                <ProgressBar
+                    android:id="@+id/launcher_tour_progressBar"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:indeterminate="true"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+            </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
 

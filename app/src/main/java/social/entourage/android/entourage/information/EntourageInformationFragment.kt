@@ -167,7 +167,7 @@ class EntourageInformationFragment : EntourageDialogFragment(), EntourageService
                 requestedFeedItemType = args.getInt(FeedItem.KEY_FEEDITEM_TYPE)
                 if (requestedFeedItemType == TimestampedObject.TOUR_CARD || requestedFeedItemType == TimestampedObject.ENTOURAGE_CARD) {
                     if (!requestedFeedItemShareURL.isNullOrEmpty()) {
-                        presenter?.getFeedItem(requestedFeedItemShareURL, requestedFeedItemType)
+                        presenter?.getFeedItem(requestedFeedItemShareURL!!, requestedFeedItemType)
                     } else {
                         presenter?.getFeedItem(requestedFeedItemUUID, requestedFeedItemType, 0, 0)
                     }
@@ -354,7 +354,8 @@ class EntourageInformationFragment : EntourageDialogFragment(), EntourageService
     fun onAddCommentButton() {
         tour_info_comment?.isEnabled = false
         tour_info_comment_send_button?.isEnabled = false
-        presenter?.sendFeedItemMessage(feedItem, tour_info_comment?.text.toString())
+        if(tour_info_comment?.text.isNullOrBlank()) return
+        presenter?.sendFeedItemMessage(feedItem, tour_info_comment.text.toString())
     }
 
     fun onAuthorClicked() {
@@ -760,6 +761,9 @@ class EntourageInformationFragment : EntourageDialogFragment(), EntourageService
                 feeditem_option_quit?.visibility = View.VISIBLE
                 feeditem_option_quit?.setText(if (FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus) R.string.tour_info_options_cancel_request else R.string.tour_info_options_quit_tour)
             }
+            if (feedItem.type == FeedItem.ENTOURAGE_CARD) {
+                feeditem_option_report?.visibility = View.VISIBLE
+            }
         } else {
             feeditem_option_stop?.visibility = if (feedItem.isFreezed || !feedItem.canBeClosed()) View.GONE else View.VISIBLE
             feeditem_option_stop?.setText(if (feedItem.isClosed || feedItem.type == FeedItem.ENTOURAGE_CARD) R.string.tour_info_options_freeze_tour else R.string.tour_info_options_stop_tour)
@@ -767,10 +771,9 @@ class EntourageInformationFragment : EntourageDialogFragment(), EntourageService
                 feeditem_option_edit?.visibility = View.VISIBLE
             }
         }
-        if (feedItem.type == FeedItem.ENTOURAGE_CARD) {
-            feeditem_option_report?.visibility = View.VISIBLE
+        if (feedItem.type == FeedItem.ENTOURAGE_CARD && !feedItem.isSuspended) {
             // Share button available only for entourages and non-members
-            feeditem_option_share?.visibility = if (feedItem.isSuspended) View.GONE else View.VISIBLE
+            feeditem_option_share?.visibility = View.VISIBLE
         }
         if (feeditem_option_promote != null && membersList != null && feedItem.type == FeedItem.ENTOURAGE_CARD) {
             for (member in membersList!!) {
