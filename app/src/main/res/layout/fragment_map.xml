@@ -26,14 +26,12 @@
                 app:tabTextColor="@color/white_88">
 
                 <com.google.android.material.tabs.TabItem
-                    android:id="@+id/map_tab_all_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:icon="@drawable/ic_entourage_logo_one_color"
                     android:text="@string/map_tab_all" />
 
                 <com.google.android.material.tabs.TabItem
-                    android:id="@+id/map_tab_events_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:icon="@drawable/ic_event_white_24dp"
@@ -83,7 +81,6 @@
                         tools:visibility="visible"/>
 
                     <TextView
-                        android:id="@+id/fragment_map_empty_list"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignTop="@+id/fragment_map_tours_view"

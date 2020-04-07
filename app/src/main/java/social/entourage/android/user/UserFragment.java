@@ -391,7 +391,7 @@ public class UserFragment extends EntourageDialogFragment {
         if (user.getConversation() == null) return;
         EntourageInformationFragment entourageInformationFragment = EntourageInformationFragment.newInstance(user.getConversation().getUUID(), FeedItem.ENTOURAGE_CARD, 0);
         entourageInformationFragment.setShowInfoButton(false);
-        entourageInformationFragment.show(getFragmentManager(), EntourageInformationFragment.TAG);
+        entourageInformationFragment.show(getParentFragmentManager(), EntourageInformationFragment.TAG);
     }
 
     @Optional

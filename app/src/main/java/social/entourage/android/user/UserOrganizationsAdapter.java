@@ -80,7 +80,6 @@ public class UserOrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.
         if (organizationLogo != null) {
             Picasso.get()
                     .load(Uri.parse(organizationLogo))
-                    .placeholder(null)
                     .into(organizationViewHolder.mOrganizationLogo);
         }
         else {

@@ -30,11 +30,10 @@
     <string name="entourage_create_error_location_empty">Indiquez une localisation</string>
 
     <string name="entourage_create_menu">Créer une action</string>
-    <string name="entourage_create_submenu">Demander de l’aide ou faire un don</string>
     <string name="entourage_create_menu_ask_help">Demander de l\'aide</string>
     <string name="entourage_create_submenu_ask_help">Faire appel au réseau</string>
     <string name="entourage_create_menu_contribute">Proposer un don</string>
-    <string name="entourage_create_submenu_contribute">Donner un bien, du temps, ...</string>
+    <string name="entourage_create_submenu_contribute">Donner un bien, du temps, …</string>
     <string name="outing_create_menu">Annoncer un évènement</string>
     <string name="outing_create_submenu">Se rassembler à une date précise</string>
 
@@ -157,11 +156,19 @@
 
     <!-- Share Entourage -->
     <string name="entourage_share_intent_title">Partager via</string>
-    <string name="entourage_share_link">https://entourage.social</string>
+    <string name="entourage_share_link">https://www.entourage.social</string>
     <string name="entourage_share_text_author">J\'ai créé ce projet solidaire sur Entourage. Rejoins-le en téléchargeant l\'app ici %1$s</string>
     <string name="entourage_share_text_member">J\'ai rejoint ce projet solidaire sur Entourage. Rejoins-le en téléchargeant l\'app ici %1$s</string>
     <string name="entourage_share_text_non_member">Ce projet solidaire sur Entourage a besoin de toi. Rejoins-le en téléchargeant l\'app ici %1$s</string>
 
+    <string name="entourage_share_text_verb_for_entourage_author">créé</string>
+    <string name="entourage_share_text_verb_for_entourage_member">rejoint</string>
+    <string name="entourage_share_text_verb_for_entourage_nonmember">vu</string>
+    <string name="entourage_share_text_for_entourage">Hello ! J\'ai %1$s une initiative solidaire sur Entourage, le réseau qui tisse des liens entre voisins avec et sans domicile : \"%2$s\".
+        J\'ai pensé que ça t\'intéresserait. Clique ici : %3$s.\n\nMerci beaucoup pour ta solidarité !</string>
+
+    <string name="entourage_share_text_for_event">Hello ! Je t\'invite à : \"%1$s\", %2$s, %3$s !\n\nSi ça te dit y participer, rejoins-moi ici sur Entourage,
+        le réseau qui crée des liens entre voisins avec et sans domicile : %4$s</string>
     <!-- Entourage Mini Card -->
 
 </resources>

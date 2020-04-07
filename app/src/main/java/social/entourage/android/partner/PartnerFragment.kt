@@ -71,7 +71,7 @@ class PartnerFragment : EntourageDialogFragment() {
         partner_view_details?.text = partner!!.description
         // phone
         val phone = partner!!.phone
-        if (phone == null || phone.isEmpty()) {
+        if (phone.isNullOrEmpty()) {
             partner_view_phone_layout?.visibility = View.GONE
         } else {
             partner_view_phone_layout?.visibility = View.VISIBLE
@@ -79,7 +79,7 @@ class PartnerFragment : EntourageDialogFragment() {
         }
         // address
         val address = partner!!.address
-        if (address == null || address.isEmpty()) {
+        if (address.isNullOrEmpty()) {
             partner_view_address_layout?.visibility = View.GONE
         } else {
             partner_view_address_layout?.visibility = View.VISIBLE
@@ -87,7 +87,7 @@ class PartnerFragment : EntourageDialogFragment() {
         }
         // website
         val website = partner!!.websiteUrl
-        if (website == null || website.isEmpty()) {
+        if (website.isNullOrEmpty()) {
             partner_view_website_layout?.visibility = View.GONE
         } else {
             partner_view_website_layout?.visibility = View.VISIBLE
@@ -95,7 +95,7 @@ class PartnerFragment : EntourageDialogFragment() {
         }
         // email
         val email = partner!!.email
-        if (email == null || email.isEmpty()) {
+        if (email.isNullOrEmpty()) {
             partner_view_email_layout?.visibility = View.GONE
         } else {
             partner_view_email_layout?.visibility = View.VISIBLE

@@ -2,8 +2,6 @@ package social.entourage.android.api.model;
 
 import android.content.Context;
 
-import androidx.annotation.StringRes;
-
 import java.util.Comparator;
 
 /**

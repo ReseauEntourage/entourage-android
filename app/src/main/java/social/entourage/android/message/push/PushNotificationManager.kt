@@ -1,8 +1,5 @@
 package social.entourage.android.message.push
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -13,6 +10,9 @@ import android.os.Build
 import android.os.Bundle
 import androidx.preference.PreferenceManager
 import androidx.core.app.NotificationCompat
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.RemoteMessage
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
@@ -36,9 +36,7 @@ object PushNotificationManager {
     const val KEY_CTA = "entourage_cta"
     const val KEY_MIXPANEL = "mp_message"
 
-    private const val CHAT_MESSAGE_NOTIFICATION_ID = 2
-    private const val JOIN_REQUEST_NOTIFICATION_ID = 3
-    private const val MIN_NOTIFICATION_ID = 4
+    private const val MIN_NOTIFICATION_ID = 40
     private const val PREFERENCE_LAST_NOTIFICATION_ID = "PREFERENCE_LAST_NOTIFICATION_ID"
     private const val KEY_SENDER = "sender"
     private const val KEY_OBJECT = "object"
@@ -94,7 +92,7 @@ object PushNotificationManager {
         val feedItemId = feedItem.id
         val feedType = feedItem.type
         var nbNotifsFound = 0
-        val newPushNotifsMap =  HashMap<String, MutableList<Message>>()
+        val newPushNotifications =  HashMap<String, MutableList<Message>>()
         for(key in pushNotifications.keys) {
             if (pushNotifications[key] == null) continue
             var messageListChanged = false
@@ -120,34 +118,34 @@ object PushNotificationManager {
                 // no more notifications in the group, remove the key
                 continue
             }
-            if(newMessageList.isNotEmpty()) newPushNotifsMap[key] = newMessageList
+            if(newMessageList.isNotEmpty()) newPushNotifications[key] = newMessageList
         }
-        pushNotifications = newPushNotifsMap
+        pushNotifications = newPushNotifications
         return nbNotifsFound
     }
 
     /**
      * Removes a notification from our internal list
-     * @param message The message to remove
+     * @param msg The message to remove
      * @return the number of push notifications that were removed
      */
     @Synchronized
-    fun removePushNotification(message: Message): Int {
+    fun removePushNotification(msg: Message): Int {
         var nbMsgFound = 0
-        val newPushNotifMap = HashMap<String, MutableList<Message>>()
+        val newPushNotifications = HashMap<String, MutableList<Message>>()
         for (key in pushNotifications.keys) {
             if (pushNotifications[key] == null) continue
             val newMessageList = ArrayList<Message>()
-            for(msg in pushNotifications[key]!!) {
-                if (msg.hash == message.hash) {
+            for(message in pushNotifications[key]!!) {
+                if (message.hash == msg.hash) {
                     nbMsgFound++
                     continue
                 }
-                newMessageList.add(msg)
+                newMessageList.add(message)
             }
-            if(newMessageList.isNotEmpty()) newPushNotifMap[key] = newMessageList
+            if(newMessageList.isNotEmpty()) newPushNotifications[key] = newMessageList
         }
-        pushNotifications = newPushNotifMap
+        pushNotifications = newPushNotifications
         return nbMsgFound
     }
 
@@ -180,7 +178,7 @@ object PushNotificationManager {
         val application = EntourageApplication.get() ?: return 0
         var count = 0
         // search for a push notification that matches our parameters
-        val newPush = HashMap<String, MutableList<Message>>()
+        val newPushNotifications = HashMap<String, MutableList<Message>>()
         for(key in pushNotifications.keys) {
             if (pushNotifications[key] == null) continue
             val messageList = ArrayList<Message>()
@@ -207,9 +205,9 @@ object PushNotificationManager {
                     continue
                 }
             }
-            if(messageList.isNotEmpty()) newPush[key] = messageList
+            if(messageList.isNotEmpty()) newPushNotifications[key] = messageList
         }
-        pushNotifications = newPush
+        pushNotifications = newPushNotifications
         return count
     }
 
@@ -218,16 +216,14 @@ object PushNotificationManager {
      */
     @Synchronized
     fun removeAllPushNotifications() {
-        // get the notification manager
-        val notificationManager = EntourageApplication.get().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         // cancel all the notifications
         for (messageList in pushNotifications.values) {
-            if (messageList.size > 0) {
-                notificationManager.cancel( messageList[0].pushNotificationTag,  messageList[0].pushNotificationId)
-            }
+            if (messageList.isEmpty()) continue
+            NotificationManagerCompat.from(EntourageApplication.get()).cancel(messageList[0].pushNotificationTag,  messageList[0].pushNotificationId)
         }
         // remove all the notifications from our internal list
         pushNotifications.clear()
+        NotificationManagerCompat.from(EntourageApplication.get()).cancelAll()
     }
     // ----------------------------------
     // PUSH NOTIFICATION UI HANDLING
@@ -239,11 +235,9 @@ object PushNotificationManager {
      */
     private fun displayPushNotification(message: Message, context: Context) {
         val messageList: List<Message>? = pushNotifications[message.hash]
-        var count = 0
-        if (messageList != null) {
-            count = messageList.size
+        val count = messageList?.size ?: 0
         }
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
         val channelId = context.getString(R.string.app_name)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(channelId, channelId, NotificationManager.IMPORTANCE_DEFAULT)
@@ -252,24 +246,24 @@ object PushNotificationManager {
             notificationChannel.description = channelId
             notificationChannel.enableLights(true)
             notificationChannel.lightColor = Color.RED
-            notificationManager.createNotificationChannel(notificationChannel)
+            NotificationManagerCompat.from(context).createNotificationChannel(notificationChannel)
         }
         val builder = NotificationCompat.Builder(context, channelId)
-        builder.setSmallIcon(R.drawable.ic_entourage_logo_one_color)
-        builder.setContentIntent(createMessagePendingIntent(message, context))
-        builder.setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.ic_entourage_logo_two_colors))
-        builder.setContentTitle(message.getContentTitleForCount(count, context))
-        builder.setContentText(message.getContentTextForCount(count, context))
+                .setSmallIcon(R.drawable.ic_entourage_logo_one_color)
+                .setContentIntent(createMessagePendingIntent(message, context))
+                .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.ic_entourage_logo_two_colors))
+                .setContentTitle(message.getContentTitleForCount(count, context))
+                .setContentText(message.getContentTextForCount(count, context))
+
         val notification = builder.build()
-        notification.defaults = Notification.DEFAULT_LIGHTS
-        notification.flags = Notification.FLAG_AUTO_CANCEL or Notification.FLAG_SHOW_LIGHTS
-        Timber.d("TAG = " + message.pushNotificationTag + " , ID = " + message.pushNotificationId)
-        notificationManager.notify(message.pushNotificationTag, message.pushNotificationId, notification)
+        notification.defaults = NotificationCompat.DEFAULT_LIGHTS
+        notification.flags = NotificationCompat.FLAG_AUTO_CANCEL or NotificationCompat.FLAG_SHOW_LIGHTS
+        Timber.d("TAG = %s , ID = %d", message.pushNotificationTag, message.pushNotificationId)
+        NotificationManagerCompat.from(context).notify(message.pushNotificationTag, message.pushNotificationId, notification)
     }
 
     fun displayPushNotification(fcmMessage: RemoteMessage, context: Context) {
         val notif = fcmMessage.notification ?: return
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val channelId = context.getString(R.string.app_name)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(channelId, channelId, NotificationManager.IMPORTANCE_DEFAULT)
@@ -278,19 +272,19 @@ object PushNotificationManager {
             notificationChannel.description = channelId
             notificationChannel.enableLights(true)
             notificationChannel.lightColor = Color.RED
-            notificationManager.createNotificationChannel(notificationChannel)
+            NotificationManagerCompat.from(context).createNotificationChannel(notificationChannel)
         }
-        val builder = NotificationCompat.Builder(context, channelId)
-        builder.setSmallIcon(R.drawable.ic_entourage_logo_one_color)
         val ctaIntent = Intent(Intent.ACTION_VIEW, Uri.parse(fcmMessage.data[KEY_CTA]))
-        builder.setContentIntent(PendingIntent.getActivity(context, 0, ctaIntent, PendingIntent.FLAG_UPDATE_CURRENT))
-        builder.setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.ic_entourage_logo_two_colors))
-        builder.setContentTitle(notif.title)
-        builder.setContentText(notif.body)
+        val builder = NotificationCompat.Builder(context, channelId)
+                .setSmallIcon(R.drawable.ic_entourage_logo_one_color)
+                .setContentIntent(PendingIntent.getActivity(context, 0, ctaIntent, PendingIntent.FLAG_UPDATE_CURRENT))
+                .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.ic_entourage_logo_two_colors))
+                .setContentTitle(notif.title)
+                .setContentText(notif.body)
         val notification = builder.build()
-        notification.defaults = Notification.DEFAULT_LIGHTS
-        notification.flags = Notification.FLAG_AUTO_CANCEL or Notification.FLAG_SHOW_LIGHTS
-        notificationManager.notify(0, notification)
+        notification.defaults = NotificationCompat.DEFAULT_LIGHTS
+        notification.flags = NotificationCompat.FLAG_AUTO_CANCEL or NotificationCompat.FLAG_SHOW_LIGHTS
+        NotificationManagerCompat.from(context).notify(0, notification)
     }
 
     /**
@@ -319,7 +313,7 @@ object PushNotificationManager {
             } else {
                 notificationId = key.toInt()
             }
-            (EntourageApplication.get().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).cancel(notificationTag, notificationId)
+            NotificationManagerCompat.from(EntourageApplication.get()).cancel(notificationTag, notificationId)
             return false
         } else {
             displayPushNotification(messageList.last(), EntourageApplication.get())
@@ -364,11 +358,11 @@ object PushNotificationManager {
     fun getMessageFromRemoteMessage(remoteMessage: RemoteMessage, context: Context): Message? {
         val msg = remoteMessage.data
         //first checking if content json is present (not here for mixpanel or firebase notification
-        if ( !msg.containsKey(KEY_CONTENT)) return null
-        Timber.d(KEY_SENDER + "= " + msg[KEY_SENDER] + "; " + KEY_OBJECT + "= " + msg[KEY_OBJECT] + "; " + KEY_CONTENT + "= " + msg[KEY_CONTENT])
-        val message = Message(msg[KEY_SENDER], msg[KEY_OBJECT], msg[KEY_CONTENT], 0, null)
+        Timber.d("%s= %s; %s= %s; %s= %s", KEY_SENDER,msg[KEY_SENDER],  KEY_OBJECT, msg[KEY_OBJECT], KEY_CONTENT, msg[KEY_CONTENT])
+        if ( !msg.containsKey(KEY_CONTENT) || !msg.containsKey(KEY_SENDER)) return null
+        val message = Message(msg[KEY_SENDER]!!, msg[KEY_OBJECT], msg[KEY_CONTENT]!!, 0, null)
         message.pushNotificationId = getNotificationId(context, message)
-        message.pushNotificationTag = if (message.content != null) message.content.notificationTag else ""
+        message.pushNotificationTag = message.content?.notificationTag ?: ""
         return message
     }
 
@@ -380,38 +374,21 @@ object PushNotificationManager {
      */
     fun getMessageFromIntent(intent: Intent, context: Context): Message? {
         val args = intent.extras ?: return null
-        Timber.d(KEY_SENDER + "= " + args.getString(KEY_SENDER) + "; " + KEY_OBJECT + "= " + args.getString(KEY_OBJECT) + "; " + KEY_CONTENT + "= " + args.getString(KEY_CONTENT))
-        val message = Message(args.getString(KEY_SENDER), args.getString(KEY_OBJECT), args.getString(KEY_CONTENT), 0, null)
+        Timber.d("%s= %s;%s = %s;%s = %s", KEY_SENDER, args.getString(KEY_SENDER), KEY_OBJECT, args.getString(KEY_OBJECT), KEY_CONTENT, args.getString(KEY_CONTENT))
+        if ( args.getString(KEY_CONTENT)==null || args.getString(KEY_SENDER)==null) return null
+        val message = Message(args.getString(KEY_SENDER)!!, args.getString(KEY_OBJECT), args.getString(KEY_CONTENT)!!, 0, null)
         message.pushNotificationId = getNotificationId(context, message)
-        message.pushNotificationTag = message.content.notificationTag
+        message.pushNotificationTag = message.content?.notificationTag
         return message
     }
 
     /**
-     * Returns the notification id for the message.<br></br>
-     * The NEW_CHAT_MESSAGE and TYPE_NEW_JOIN_REQUEST messages use a hardcoded id, for grouping purposes. The others use an incremental id
+     * Returns a unique notification id for the message.<br></br>
      * @param context the context
      * @param message the message
      * @return the notification id
      */
     private fun getNotificationId(context: Context, message: Message): Int {
-        val notificationType = message.content?.type
-        if (notificationType != null) {
-            if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE == notificationType) {
-                return CHAT_MESSAGE_NOTIFICATION_ID
-            } else if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST == notificationType) {
-                return JOIN_REQUEST_NOTIFICATION_ID
-            }
-        }
-        return getNextNotificationId(context)
-    }
-
-    /**
-     * Returns the next notification id
-     * @param context the context
-     * @return the notification id
-     */
-    private fun getNextNotificationId(context: Context): Int {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         var id = sharedPreferences.getInt(PREFERENCE_LAST_NOTIFICATION_ID, MIN_NOTIFICATION_ID - 1) + 1
         if (id == Int.MAX_VALUE) {

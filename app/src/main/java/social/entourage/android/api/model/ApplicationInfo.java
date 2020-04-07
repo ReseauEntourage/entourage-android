@@ -4,8 +4,6 @@ import android.os.Build;
 
 import com.google.gson.annotations.SerializedName;
 
-import javax.annotation.Nullable;
-
 import social.entourage.android.BuildConfig;
 
 /**

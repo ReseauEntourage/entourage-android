@@ -13,6 +13,4 @@
     <item name="tour_card_icon" type="id" />
     <item name="tour_card_last_update_date" type="id" />
 
-    <item name="feeditem_option_promote" type="id" />
-
 </resources>

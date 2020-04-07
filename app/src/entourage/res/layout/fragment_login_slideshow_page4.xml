@@ -40,7 +40,6 @@
         app:srcCompat="@drawable/login_slideshow_p4_bottom_grey"/>
 
     <Space
-        android:id="@+id/space"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"

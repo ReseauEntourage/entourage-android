@@ -35,7 +35,6 @@ import social.entourage.android.location.LocationUtils.isLocationPermissionGrant
 import social.entourage.android.map.BaseMapFragment
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.Utils
-import social.entourage.android.view.HtmlTextView
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -54,7 +53,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
     private var poisMap: MutableMap<Long, Poi> = TreeMap()
     private var previousEmptyListPopupLocation: Location? = null
     private var poisAdapter: PoisAdapter? = null
-    protected var mapClusterItemRenderer: PoiRenderer? = null
+    private var mapClusterItemRenderer: PoiRenderer? = null
 
     // ----------------------------------
     // LIFECYCLE
@@ -261,8 +260,8 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
         }
     }
 
-    fun initializeAlertBanner() {
-        isAlertTextVisible = false;
+    private fun initializeAlertBanner() {
+        isAlertTextVisible = false
         fragment_guide_alert_description?.setHtmlString(getString(R.string.guide_alert_info_text), EntourageLinkMovementMethod.getInstance())
         fragment_guide_alert_arrow?.setOnClickListener {onClickAlertArrow()}
         fragment_guide_alert?.setOnClickListener {onClickAlertArrow()}

@@ -192,7 +192,7 @@ class MapVoisinageFragment : MapFragment(), EntourageServiceListener {
             //redraw the whole newsfeed
             for (timestampedObject in newsfeedAdapter!!.items) {
                 if (timestampedObject.type == TimestampedObject.ENTOURAGE_CARD && timestampedObject is Entourage) {
-                    drawNearbyEntourage(timestampedObject as Entourage)
+                    drawNearbyEntourage(timestampedObject)
                 }
             }
             mapClusterManager?.cluster()

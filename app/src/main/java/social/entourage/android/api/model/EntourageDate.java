@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by mihaiionescu on 01/06/16.
@@ -13,7 +14,7 @@ import java.util.Date;
 public class EntourageDate {
     private static final ThreadLocal<DateFormat> DF = new ThreadLocal<DateFormat>() {
         @Override public DateFormat initialValue() {
-            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.FRANCE);
         }
     };
 

@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -309,7 +310,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
 
     private Uri createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.FRANCE).format(new Date());
         String imageFileName = "ENTOURAGE_" + timeStamp + "_";
         File storageDir = new File(getContext().getFilesDir(), "images");
         if (!storageDir.exists()) {

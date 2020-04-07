@@ -19,7 +19,6 @@ import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.entourage.EntourageDisclaimerFragment
 import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.create.BaseCreateEntourageFragment
-import social.entourage.android.entourage.create.CreateEntourageFragment
 import social.entourage.android.entourage.information.EntourageInformationFragment
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tour.encounter.EncounterDisclaimerFragment
@@ -59,17 +58,17 @@ class MapPresenter @Inject constructor(
             authenticationController?.isShowNoEntouragesPopup = show
         }
 
-    fun openFeedItem(feedItem: FeedItem?, invitationId: Long, feedRank: Int) {
+    fun openFeedItem(feedItem: FeedItem, invitationId: Long, feedRank: Int) {
         val fragmentManager = fragment?.activity?.supportFragmentManager ?: return
         EntourageInformationFragment.newInstance(feedItem, invitationId, feedRank).show(fragmentManager, EntourageInformationFragment.TAG)
     }
 
-    fun openFeedItem(feedItemUUID: String?, feedItemType: Int, invitationId: Long) {
+    fun openFeedItem(feedItemUUID: String, feedItemType: Int, invitationId: Long) {
         val fragmentManager = fragment?.activity?.supportFragmentManager ?: return
         EntourageInformationFragment.newInstance(feedItemUUID, feedItemType, invitationId).show(fragmentManager, EntourageInformationFragment.TAG)
     }
 
-    fun openFeedItem(feedItemShareURL: String?, feedItemType: Int) {
+    fun openFeedItem(feedItemShareURL: String, feedItemType: Int) {
         val fragmentManager = fragment?.activity?.supportFragmentManager ?: return
         EntourageInformationFragment.newInstance(feedItemShareURL, feedItemType).show(fragmentManager, EntourageInformationFragment.TAG)
     }

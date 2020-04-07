@@ -646,12 +646,15 @@ public class MainActivity extends EntourageSecuredActivity
     @Subscribe
     public void onPushNotificationReceived(OnPushNotificationReceived event) {
         final Message message = event.getMessage();
-        if (message == null || message.getContent() == null || message.getContent().getJoinableId() == 0) {
+        if (message == null) {
+            return;
+        }
+        PushNotificationContent content = message.getContent();
+        if (content == null || content.getJoinableId() == 0) {
             return;
         }
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(() -> {
-            PushNotificationContent content = message.getContent();
             if (content == null  || content.getType()==null) {
                 return;
             }

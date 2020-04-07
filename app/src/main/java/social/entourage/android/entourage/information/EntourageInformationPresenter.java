@@ -1,6 +1,7 @@
 package social.entourage.android.entourage.information;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -69,13 +70,13 @@ public class EntourageInformationPresenter {
                     if (response.isSuccessful()) {
                         fragment.onFeedItemReceived(response.body().getTour());
                     } else {
-                        fragment.onFeedItemReceived(null);
+                        fragment.onFeedItemNotFound();
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Throwable t) {
-                    fragment.onFeedItemReceived(null);
+                    fragment.onFeedItemNotFound();
                 }
             });
         }
@@ -87,25 +88,25 @@ public class EntourageInformationPresenter {
                     if (response.isSuccessful()) {
                         fragment.onFeedItemReceived(response.body().getEntourage());
                     } else {
-                        fragment.onFeedItemReceived(null);
+                        fragment.onFeedItemNotFound();
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull final Call<Entourage.EntourageWrapper> call, @NonNull final Throwable t) {
-                    fragment.onFeedItemReceived(null);
+                    fragment.onFeedItemNotFound();
                 }
             });
         }
         else {
-            fragment.onFeedItemReceived(null);
+            fragment.onFeedItemNotFound();
         }
     }
 
     public void getFeedItem(String feedItemShareURL, int feedItemType) {
         fragment.showProgressBar();
         if (feedItemType == TimestampedObject.TOUR_CARD) {
-            fragment.onFeedItemReceived(null);
+            fragment.onFeedItemNotFound();
         }
         else if (feedItemType == TimestampedObject.ENTOURAGE_CARD) {
             Call<Entourage.EntourageWrapper> call = entourageRequest.retrieveEntourageByShareURL(feedItemShareURL);
@@ -115,132 +116,132 @@ public class EntourageInformationPresenter {
                     if (response.isSuccessful()) {
                         fragment.onFeedItemReceived(response.body().getEntourage());
                     } else {
-                        fragment.onFeedItemReceived(null);
+                        fragment.onFeedItemNotFound();
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull final Call<Entourage.EntourageWrapper> call, @NonNull final Throwable t) {
-                    fragment.onFeedItemReceived(null);
+                    fragment.onFeedItemNotFound();
                 }
             });
         }
         else {
-            fragment.onFeedItemReceived(null);
+            fragment.onFeedItemNotFound();
         }
     }
 
-    public void getFeedItemMembers() {
-        getFeedItemUsers(null);
+    public void getFeedItemMembers(final FeedItem feedItem) {
+        getFeedItemUsers(feedItem,null);
     }
 
-    public void getFeedItemJoinRequests() {
-        getFeedItemUsers("group_feed");
+    public void getFeedItemJoinRequests(final FeedItem feedItem) {
+        getFeedItemUsers(feedItem, "group_feed");
     }
 
-    private void getFeedItemUsers(final String context) {
+    private void getFeedItemUsers(final FeedItem feedItem, final String context) {
         fragment.showProgressBar();
-        if (fragment.feedItem == null) {
-            fragment.onFeedItemUsersReceived(null, context);
+        if (feedItem == null) {
+            fragment.onFeedItemNoUserReceived();
             return;
         }
-        int feedItemType = fragment.feedItem.getType();
+        int feedItemType = feedItem.getType();
         if (feedItemType == TimestampedObject.TOUR_CARD) {
-            Call<TourUser.TourUsersWrapper> call = tourRequest.retrieveTourUsers(fragment.feedItem.getUUID());
+            Call<TourUser.TourUsersWrapper> call = tourRequest.retrieveTourUsers(feedItem.getUUID());
             call.enqueue(new Callback<TourUser.TourUsersWrapper>() {
                 @Override
                 public void onResponse(@NonNull final Call<TourUser.TourUsersWrapper> call, @NonNull final Response<TourUser.TourUsersWrapper> response) {
                     if (response.isSuccessful()) {
                         fragment.onFeedItemUsersReceived(response.body().getUsers(), context);
                     } else {
-                        fragment.onFeedItemUsersReceived(null, context);
+                        fragment.onFeedItemNoUserReceived();
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull final Call<TourUser.TourUsersWrapper> call, @NonNull final Throwable t) {
-                    fragment.onFeedItemUsersReceived(null, context);
+                    fragment.onFeedItemNoUserReceived();
                 }
             });
         }
         else if (feedItemType == TimestampedObject.ENTOURAGE_CARD) {
-            Call<TourUser.TourUsersWrapper> call = entourageRequest.retrieveEntourageUsers(fragment.feedItem.getUUID(), context);
+            Call<TourUser.TourUsersWrapper> call = entourageRequest.retrieveEntourageUsers(feedItem.getUUID(), context);
             call.enqueue(new Callback<TourUser.TourUsersWrapper>() {
                 @Override
                 public void onResponse(@NonNull final Call<TourUser.TourUsersWrapper> call, @NonNull final Response<TourUser.TourUsersWrapper> response) {
                     if (response.isSuccessful()) {
                         fragment.onFeedItemUsersReceived(response.body().getUsers(), context);
                     } else {
-                        fragment.onFeedItemUsersReceived(null, context);
+                        fragment.onFeedItemNoUserReceived();
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull final Call<TourUser.TourUsersWrapper> call, @NonNull final Throwable t) {
-                    fragment.onFeedItemUsersReceived(null, context);
+                    fragment.onFeedItemNoUserReceived();
                 }
             });
         }
         else {
-            fragment.onFeedItemUsersReceived(null, context);
+            fragment.onFeedItemNoUserReceived();
         }
     }
 
-    public void getFeedItemMessages() {
-        getFeedItemMessages(null);
+    public void getFeedItemMessages(final FeedItem feedItem) {
+        getFeedItemMessages(feedItem, null);
     }
 
-    public void getFeedItemMessages(Date lastMessageDate) {
+    public void getFeedItemMessages(final FeedItem feedItem, Date lastMessageDate) {
         fragment.showProgressBar();
-        if (fragment.feedItem == null) {
-            fragment.onFeedItemMessagesReceived(null);
+        if (feedItem == null) {
+            fragment.onFeedItemNoNewMessages();
             return;
         }
-        int feedItemType = fragment.feedItem.getType();
+        int feedItemType = feedItem.getType();
         if (feedItemType == TimestampedObject.TOUR_CARD) {
-            Call<ChatMessage.ChatMessagesWrapper> call = tourRequest.retrieveTourMessages(fragment.feedItem.getUUID(), lastMessageDate);
+            Call<ChatMessage.ChatMessagesWrapper> call = tourRequest.retrieveTourMessages(feedItem.getUUID(), lastMessageDate);
             call.enqueue(new Callback<ChatMessage.ChatMessagesWrapper>() {
                 @Override
                 public void onResponse(@NonNull final Call<ChatMessage.ChatMessagesWrapper> call, @NonNull final Response<ChatMessage.ChatMessagesWrapper> response) {
                     if (response.isSuccessful()) {
                         fragment.onFeedItemMessagesReceived(response.body().getChatMessages());
                     } else {
-                        fragment.onFeedItemMessagesReceived(null);
+                        fragment.onFeedItemNoNewMessages();
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull final Call<ChatMessage.ChatMessagesWrapper> call, @NonNull final Throwable t) {
-                    fragment.onFeedItemMessagesReceived(null);
+                    fragment.onFeedItemNoNewMessages();
                 }
             });
         }
         else if (feedItemType == TimestampedObject.ENTOURAGE_CARD) {
-            Call<ChatMessage.ChatMessagesWrapper> call = entourageRequest.retrieveEntourageMessages(fragment.feedItem.getUUID(), lastMessageDate);
+            Call<ChatMessage.ChatMessagesWrapper> call = entourageRequest.retrieveEntourageMessages(feedItem.getUUID(), lastMessageDate);
             call.enqueue(new Callback<ChatMessage.ChatMessagesWrapper>() {
                 @Override
                 public void onResponse(@NonNull final Call<ChatMessage.ChatMessagesWrapper> call, @NonNull final Response<ChatMessage.ChatMessagesWrapper> response) {
                     if (response.isSuccessful()) {
                         fragment.onFeedItemMessagesReceived(response.body().getChatMessages());
                     } else {
-                        fragment.onFeedItemMessagesReceived(null);
+                        fragment.onFeedItemNoNewMessages();
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull final Call<ChatMessage.ChatMessagesWrapper> call, @NonNull final Throwable t) {
-                    fragment.onFeedItemMessagesReceived(null);
+                    fragment.onFeedItemNoNewMessages();
                 }
             });
         }
         else {
-            fragment.onFeedItemMessagesReceived(null);
+            fragment.onFeedItemNoNewMessages();
         }
     }
 
-    public void sendFeedItemMessage(String message) {
+    public void sendFeedItemMessage(@Nullable FeedItem feedItem, String message) {
         fragment.showProgressBar();
-        if (fragment.feedItem == null || message == null || message.trim().length() == 0) {
+        if (feedItem == null || message == null || message.trim().length() == 0) {
             fragment.onFeedItemMessageSent(null);
             return;
         }
@@ -249,9 +250,9 @@ public class EntourageInformationPresenter {
         ChatMessage.ChatMessageWrapper chatMessageWrapper = new ChatMessage.ChatMessageWrapper();
         chatMessageWrapper.setChatMessage(chatMessage);
 
-        int feedItemType = fragment.feedItem.getType();
+        int feedItemType = feedItem.getType();
         if (feedItemType == TimestampedObject.TOUR_CARD) {
-            Call<ChatMessage.ChatMessageWrapper> call = tourRequest.chatMessage(fragment.feedItem.getUUID(), chatMessageWrapper);
+            Call<ChatMessage.ChatMessageWrapper> call = tourRequest.chatMessage(feedItem.getUUID(), chatMessageWrapper);
             call.enqueue(new Callback<ChatMessage.ChatMessageWrapper>() {
                 @Override
                 public void onResponse(@NonNull final Call<ChatMessage.ChatMessageWrapper> call, @NonNull final Response<ChatMessage.ChatMessageWrapper> response) {
@@ -269,7 +270,7 @@ public class EntourageInformationPresenter {
             });
         }
         else if (feedItemType == TimestampedObject.ENTOURAGE_CARD) {
-            Call<ChatMessage.ChatMessageWrapper> call = entourageRequest.chatMessage(fragment.feedItem.getUUID(), chatMessageWrapper);
+            Call<ChatMessage.ChatMessageWrapper> call = entourageRequest.chatMessage(feedItem.getUUID(), chatMessageWrapper);
             call.enqueue(new Callback<ChatMessage.ChatMessageWrapper>() {
                 @Override
                 public void onResponse(@NonNull final Call<ChatMessage.ChatMessageWrapper> call, @NonNull final Response<ChatMessage.ChatMessageWrapper> response) {
@@ -291,15 +292,15 @@ public class EntourageInformationPresenter {
         }
     }
 
-    public void getFeedItemEncounters() {
+    public void getFeedItemEncounters(final FeedItem feedItem) {
         fragment.showProgressBar();
-        if (fragment.feedItem == null) {
+        if (feedItem == null) {
             fragment.onFeedItemEncountersReceived(null);
             return;
         }
-        int feedItemType = fragment.feedItem.getType();
+        int feedItemType = feedItem.getType();
         if (feedItemType == TimestampedObject.TOUR_CARD) {
-            Call<Encounter.EncountersWrapper> call = tourRequest.retrieveTourEncounters(fragment.feedItem.getUUID());
+            Call<Encounter.EncountersWrapper> call = tourRequest.retrieveTourEncounters(feedItem.getUUID());
             call.enqueue(new Callback<Encounter.EncountersWrapper>() {
                 @Override
                 public void onResponse(@NonNull final Call<Encounter.EncountersWrapper> call, @NonNull final Response<Encounter.EncountersWrapper> response) {

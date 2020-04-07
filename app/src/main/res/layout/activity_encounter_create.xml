@@ -68,8 +68,6 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/create_encounter_location_description"
-                    android:layout_toLeftOf="@+id/create_encounter_position_arrow"
-                    android:layout_toRightOf="@+id/create_encounter_location_description"
                     android:layout_toStartOf="@+id/create_encounter_position_arrow"
                     android:gravity="end"
                     android:paddingEnd="0dp"

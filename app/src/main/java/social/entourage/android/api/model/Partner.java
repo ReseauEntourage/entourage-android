@@ -2,15 +2,10 @@ package social.entourage.android.api.model;
 
 import android.content.Context;
 
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
-
-import social.entourage.android.R;
 
 /**
  * Created by mihaiionescu on 17/01/2017.

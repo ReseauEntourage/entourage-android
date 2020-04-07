@@ -51,7 +51,6 @@ import social.entourage.android.newsfeed.NewsFeedListener;
 import social.entourage.android.newsfeed.NewsfeedPagination;
 import social.entourage.android.tools.log.CrashlyticsNewsFeedLogger;
 import social.entourage.android.tools.log.LoggerNewsFeedLogger;
-import timber.log.Timber;
 
 /**
  * Background service handling location updates

@@ -24,7 +24,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.GroundOverlayOptions
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
@@ -197,7 +196,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
     }
 
     @JvmOverloads
-    fun displayChosenFeedItem(feedItemUUID: String?, feedItemType: Int, invitationId: Long = 0) {
+    fun displayChosenFeedItem(feedItemUUID: String, feedItemType: Int, invitationId: Long = 0) {
         //display the feed item
         val feedItem = newsfeedAdapter?.findCard(feedItemType, feedItemUUID) as FeedItem?
         if (feedItem != null) {
@@ -228,7 +227,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
         presenter?.openFeedItem(feedItem, invitationId, feedRank)
     }
 
-    private fun displayChosenFeedItemFromShareURL(feedItemShareURL: String?, feedItemType: Int) {
+    private fun displayChosenFeedItemFromShareURL(feedItemShareURL: String, feedItemType: Int) {
         //display the feed item
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_OPEN_ENTOURAGE)
         presenter?.openFeedItem(feedItemShareURL, feedItemType)
@@ -395,7 +394,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
             val feedItemType = event.feedItemType
             if (feedItemType != 0) {
                 val feedItemUUID = event.feedItemUUID
-                if (feedItemUUID == null || feedItemUUID.isEmpty()) {
+                if (feedItemUUID.isNullOrEmpty()) {
                     displayChosenFeedItemFromShareURL(event.feedItemShareURL, feedItemType)
                 } else {
                     displayChosenFeedItem(feedItemUUID, feedItemType, event.invitationId)
@@ -630,7 +629,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
         }
     }
 
-    override open val renderer: DefaultClusterRenderer<ClusterItem>?
+    override val renderer: DefaultClusterRenderer<ClusterItem>?
         get() = MapClusterItemRenderer(requireActivity(), map, mapClusterManager as ClusterManager<MapClusterItem?>?) as DefaultClusterRenderer<ClusterItem>?
 
 
@@ -754,7 +753,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
 
     open fun userStatusChanged(content: PushNotificationContent, status: String) {
         if (entourageService != null && content.isEntourageRelated) {
-            var timestampedObject = newsfeedAdapter?.findCard(TimestampedObject.ENTOURAGE_CARD, content.joinableId)
+            val timestampedObject = newsfeedAdapter?.findCard(TimestampedObject.ENTOURAGE_CARD, content.joinableId)
                     ?: return
             val user = TourUser()
             user.userId = userId
@@ -788,7 +787,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
     }
 
     protected open fun removeRedundantNewsfeed(currentFeedList: List<Newsfeed>): List<Newsfeed> {
-        val newsFeedList = ArrayList<Newsfeed>();
+        val newsFeedList = ArrayList<Newsfeed>()
         for(newsfeed: Newsfeed in currentFeedList) {
             val card = newsfeed.data
             if (card !is TimestampedObject) {
@@ -883,7 +882,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
         animFullMap()
     }
 
-    fun animFullMap() {
+    private fun animFullMap() {
         val targetHeight = fragment_map_main_layout?.measuredHeight ?: return
         newsfeedAdapter?.setMapHeight(targetHeight) ?:return
         val anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight)
@@ -922,7 +921,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
     }
 
     private fun updatePagination(newsfeedList: List<Newsfeed>?) {
-        if (newsfeedList == null || newsfeedList.isEmpty()) {
+        if (newsfeedList.isNullOrEmpty()) {
             pagination.loadedItems(null, null)
             return
         }
@@ -1034,7 +1033,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
 
     fun onInvitationsReceived(invitationList: List<Invitation>?) {
         // Check for errors and empty list
-        if (invitationList == null || invitationList.isEmpty()) {
+        if (invitationList.isNullOrEmpty()) {
             // Check if we need to show the carousel
             if (EntourageApplication.me(activity)?.isOnboardingUser == true) {
                 showCarousel()

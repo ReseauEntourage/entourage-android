@@ -522,7 +522,7 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
                 val choiceFragment = ChoiceFragment.newInstance(Tours(ArrayList(tours.values)))
                 choiceFragment.show(requireActivity().supportFragmentManager, "fragment_choice")
         } else
-            presenter?.openFeedItem(tours[0], 0, 0)
+            presenter?.openFeedItem(tours[0] as FeedItem, 0, 0)
     }
 
     override fun onFeedItemClosed(closed: Boolean, feedItem: FeedItem) {
