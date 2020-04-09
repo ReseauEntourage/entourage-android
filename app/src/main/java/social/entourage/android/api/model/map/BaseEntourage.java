@@ -211,6 +211,7 @@ public class BaseEntourage extends FeedItem implements Serializable {
         if (getAuthor() != null) {
             return getAuthor().isSame(entourage.getAuthor());
         }
+        if (isJoinRequestPublic != entourage.isJoinRequestPublic) return false;
 
         return true;
     }

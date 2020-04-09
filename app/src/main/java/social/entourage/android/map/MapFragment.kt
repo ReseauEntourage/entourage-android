@@ -548,6 +548,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
     fun createAction(newEntourageCategory: EntourageCategory?, newEntourageGroupType: String?) {
         entourageCategory = newEntourageCategory
         entourageGroupType = newEntourageGroupType
+        entourageCategory?.isNewlyCreated = true
         displayEntourageDisclaimer()
     }
 

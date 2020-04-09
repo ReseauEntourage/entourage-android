@@ -7,6 +7,7 @@
     <string name="entourage_create_type_demand">Je cherche %1$s</string>
     <string name="entourage_create_type_contribution">Je me propose de %1$s</string>
     <string name="entourage_create_position_description">Adresse *</string>
+    <string name="entourage_create_position_description_new">Près de *</string>
     <string name="entourage_create_title_label">Titre *</string>
     <string name="entourage_create_title_hint">Exemple : %1$s</string>
     <string name="entourage_create_title_char_count_format">%1$d/%2$d</string>
@@ -22,6 +23,9 @@
     <string name="entourage_create_privacy_private">Privé</string>
     <string name="entourage_create_privacy_description_public">Vous acceptez que toute personne participe à votre évènement, sans vérifier son profil au préalable.</string>
     <string name="entourage_create_privacy_description_private">Vous validez chaque personne individuellement avant de  lui confirmer qu’elle peut participer.</string>
+
+    <string name="entourage_create_privacy_description_public_action">Toute personne participe à votre action solidaire, sans vérifier son profil au préalable.</string>
+    <string name="entourage_create_privacy_description_private_action">Vous vérifiez le profil de chaque personne qui souhaite participer à votre action solidaire.</string>
 
     <string name="entourage_create_error">L\'entourage n\'a pas été créé!</string>
     <string name="entourage_create_ok">Entourage créé.</string>

@@ -45,6 +45,7 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
     // ----------------------------------
 
     public static final String KEY_ENTOURAGE_CATEGORY = "ENTOURAGE_CATEGORY";
+    public static final String KEY_ENTOURAGE_ISDEMAND = "ENTOURAGE_ISDEMAND";
 
     private EntourageCategory category;
 
@@ -55,14 +56,17 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
 
     private EntourageCategoriesAdapter adapter;
 
+    private boolean isDemand;
+
     public EntourageCategoryFragment() {
         // Required empty public constructor
     }
 
-    public static EntourageCategoryFragment newInstance(EntourageCategory category) {
+    public static EntourageCategoryFragment newInstance(EntourageCategory category,boolean isDemand) {
         EntourageCategoryFragment fragment = new EntourageCategoryFragment();
         Bundle args = new Bundle();
         args.putSerializable(KEY_ENTOURAGE_CATEGORY, category);
+        args.putBoolean(KEY_ENTOURAGE_ISDEMAND, isDemand);
         fragment.setArguments(args);
         return fragment;
     }
@@ -91,12 +95,14 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
 
         if (getArguments() != null) {
             category = (EntourageCategory)getArguments().getSerializable(KEY_ENTOURAGE_CATEGORY);
-            if (category != null) {
+            if (category != null && !category.isNewlyCreated()) {
                 category.setSelected(true);
             } else {
                 category = EntourageCategoryManager.getInstance().getDefaultCategory();
-                category.setSelected(true);
+                category.setNewlyCreated(true);
+                category.setSelected(false);
             }
+            isDemand = getArguments().getBoolean(KEY_ENTOURAGE_ISDEMAND,true);
         }
 
         initializeView();
@@ -133,12 +139,14 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
     private void initializeListView() {
         HashMap<String, List<EntourageCategory>> entourageCategoryHashMap = EntourageCategoryManager.getInstance().getEntourageCategories();
         List<String> entourageTypeList = EntourageCategoryManager.getInstance().getEntourageTypes();
-        adapter = new EntourageCategoriesAdapter(getContext(), entourageTypeList, entourageCategoryHashMap, category);
+        adapter = new EntourageCategoriesAdapter(getContext(), entourageTypeList, entourageCategoryHashMap, category,isDemand);
         listView.setAdapter(adapter);
         int count = adapter.getGroupCount();
         for (int position = 0; position < count; position++) {
             listView.expandGroup(position);
         }
+        //Disable click on group header
+        listView.setOnGroupClickListener((expandableListView, view, i, l) -> true);
     }
 
     private void initializeHelpHtmlView() {

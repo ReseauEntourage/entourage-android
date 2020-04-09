@@ -35,7 +35,8 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/empty_description"
             android:tint="@color/accent"
-            app:srcCompat="@drawable/arrow_grey"/>
+            android:visibility="invisible"
+            app:srcCompat="@drawable/arrow_grey" />
     </LinearLayout>
 
     <View

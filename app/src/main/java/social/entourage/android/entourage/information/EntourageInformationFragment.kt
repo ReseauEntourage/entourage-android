@@ -1186,7 +1186,17 @@ class EntourageInformationFragment : EntourageDialogFragment(), EntourageService
         val date = LocalDate(rawDate)
         if (date.isEqual(today)) return this.getString(R.string.date_today).toLowerCase()
         val days = Days.daysBetween(date, today).days
-        return if (days == 1) this.getString(R.string.date_yesterday).toLowerCase() else String.format(Locale.FRENCH, "il y a %d jours", days)
+
+        val dayString = when(days) {
+            1 -> this.getString(R.string.date_yesterday).toLowerCase()
+            in 2..14 -> String.format(getString(R.string.x_days_ago),days)
+            in 15..31 -> getString(R.string.date_this_month)
+            else -> {
+                val nbMonths = days / 30
+                String.format(getString(R.string.x_months_ago),nbMonths)
+            }
+        }
+        return  dayString
     }
 
     private fun updateMetadataView() {

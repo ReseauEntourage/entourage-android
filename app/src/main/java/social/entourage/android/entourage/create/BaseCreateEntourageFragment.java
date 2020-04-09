@@ -12,11 +12,13 @@ import android.os.Handler;
 import android.speech.RecognizerIntent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -136,6 +138,26 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     @BindView(R.id.create_entourage_privacy_description)
     TextView privacyDescription;
 
+    @BindView(R.id.ui_create_entourage_privacyAction)
+    View ui_privacyActionLayout;
+    @BindView(R.id.ui_layout_privacyAction_public)
+    ConstraintLayout ui_privacyActionPublicLayout;
+    @BindView(R.id.ui_layout_privacyAction_private)
+    ConstraintLayout ui_privacyActionPrivateLayout;
+    @BindView(R.id.ui_iv_button_public)
+    ImageView ui_privacyActionPublicImageSelect;
+    @BindView(R.id.ui_tv_entourage_privacyAction_public_title)
+    TextView ui_privacyActionPublicTitle;
+    @BindView(R.id.ui_tv_entourage_privacyAction_public)
+    TextView ui_privacyActionPublicDescription;
+    @BindView(R.id.ui_iv_button_private)
+    ImageView ui_privacyActionPrivateImageSelect;
+    @BindView(R.id.ui_tv_entourage_privacyAction_private_title)
+    TextView ui_privacyActionPrivateTitle;
+    @BindView(R.id.ui_tv_entourage_privacyAction_private)
+    TextView ui_privacyActionPrivateDescription;
+
+
     protected EntourageCategory entourageCategory;
     protected LatLng location;
     protected String groupType;
@@ -198,6 +220,10 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         setupComponent(EntourageApplication.get().getEntourageComponent());
 
         initializeView();
+        //To show choice type at launch (if not an event)
+        if (!Entourage.TYPE_OUTING.equalsIgnoreCase(groupType) && entourageCategory.isNewlyCreated()) {
+            onEditTypeClicked();
+        }
     }
 
     protected void setupComponent(EntourageComponent entourageComponent) {
@@ -247,7 +273,9 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         if (isSaving) return;
         if (isValid()) {
             if (presenter != null) {
-                joinRequestTypePublic = privacySwitch.isChecked();
+                if (Entourage.TYPE_OUTING.equalsIgnoreCase(groupType)) {
+                    joinRequestTypePublic = privacySwitch.isChecked();
+                }
                 if (editedEntourage != null) {
                     saveEditedEntourage();
                 } else {
@@ -262,7 +290,15 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     @OnClick(R.id.create_entourage_category_layout)
     protected void onEditTypeClicked() {
         if (getFragmentManager() == null) return;
-        EntourageCategoryFragment fragment = EntourageCategoryFragment.newInstance(entourageCategory);
+        Boolean isDemand = true;
+
+        if (editedEntourage != null) {
+            if (editedEntourage.getEntourageType().equalsIgnoreCase(Entourage.TYPE_CONTRIBUTION)) isDemand = false;
+        } else {
+            if (entourageCategory.getEntourageType().equalsIgnoreCase(Entourage.TYPE_CONTRIBUTION)) isDemand = false;
+        }
+
+        EntourageCategoryFragment fragment = EntourageCategoryFragment.newInstance(entourageCategory,isDemand);
         fragment.setListener(this);
         fragment.show(getFragmentManager(), EntourageCategoryFragment.TAG);
     }
@@ -476,12 +512,14 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         initializeDate();
         initializeJoinRequestType();
         initializeHelpHtmlView();
+        initializePrivacyAction();
     }
 
     protected void initializeCategory() {
         if (editedEntourage != null) {
             entourageCategory = EntourageCategoryManager.getInstance().findCategory(editedEntourage.getEntourageType(), editedEntourage.getCategory());
             groupType = editedEntourage.getGroupType();
+            entourageCategory.setSelected(true);
         }
         if(entourageCategory==null) {
             if(groupType != null){
@@ -489,17 +527,17 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
             } else {
                 entourageCategory = EntourageCategoryManager.getInstance().getDefaultCategory();
             }
+            entourageCategory.setSelected(false);
+            entourageCategory.setNewlyCreated(true);
         }
-        if (entourageCategory != null) {
-            entourageCategory.setSelected(true);
-        }
+        
         updateFragmentTitle();
         updateCategoryTextView();
     }
 
     protected void updateCategoryTextView() {
-        if (entourageCategory == null) {
-            categoryTextView.setText("");
+        if (entourageCategory == null || entourageCategory.isNewlyCreated()) {
+            categoryTextView.setText("*");
         } else {
             categoryTextView.setText(
                     getString(
@@ -592,6 +630,35 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         }
     }
 
+    private void initializePrivacyAction() {
+        if (Entourage.TYPE_OUTING.equalsIgnoreCase(groupType)) {
+            ui_privacyActionLayout.setVisibility(View.GONE);
+        }
+        else {
+            if (editedEntourage != null) {
+                changeActionView(editedEntourage.isJoinRequestPublic());
+            }
+            else {
+                changeActionView(true);
+            }
+
+            ui_privacyActionLayout.setVisibility(View.VISIBLE);
+            ui_privacyActionPublicLayout.setOnClickListener(view -> changeActionView(true));
+            ui_privacyActionPrivateLayout.setOnClickListener(view -> changeActionView(false));
+        }
+    }
+
+    private void changeActionView(Boolean isPublicActive) {
+        ui_privacyActionPublicTitle.setTypeface(Typeface.create(ui_privacyActionPublicTitle.getTypeface(), isPublicActive ? Typeface.BOLD : Typeface.NORMAL));
+        ui_privacyActionPublicDescription.setTypeface(Typeface.create(ui_privacyActionPublicDescription.getTypeface(), isPublicActive ? Typeface.BOLD : Typeface.NORMAL));
+        ui_privacyActionPrivateTitle.setTypeface(Typeface.create(ui_privacyActionPrivateTitle.getTypeface(), !isPublicActive ? Typeface.BOLD : Typeface.NORMAL));
+        ui_privacyActionPrivateDescription.setTypeface(Typeface.create(ui_privacyActionPrivateDescription.getTypeface(), !isPublicActive ? Typeface.BOLD : Typeface.NORMAL));
+        ui_privacyActionPublicImageSelect.setVisibility( isPublicActive ? View.VISIBLE : View.INVISIBLE);
+        ui_privacyActionPrivateImageSelect.setVisibility(!isPublicActive ? View.VISIBLE : View.INVISIBLE);
+
+        joinRequestTypePublic = isPublicActive;
+    }
+
     protected boolean isValid() {
         String title = titleEditText.getText().toString().trim();
         if (title.length() == 0) {
@@ -605,7 +672,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
                 return false;
             }
         } else {
-            if (entourageCategory == null) {
+            if (entourageCategory == null || entourageCategory.isNewlyCreated()) {
                 Toast.makeText(getActivity(), R.string.entourage_create_error_category_empty, Toast.LENGTH_SHORT).show();
                 return false;
             }
@@ -702,6 +769,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     @Override
     public void onCategoryChosen(final EntourageCategory category) {
         this.entourageCategory = category;
+
         updateCategoryTextView();
     }
 

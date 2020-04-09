@@ -35,14 +35,9 @@ class CreateEntourageFragment : BaseCreateEntourageFragment(), CreateActionWizar
     // Entourage create/edit methods
     // ----------------------------------
     override fun createEntourage() {
-        if (entourageCategory != null) {
-            if (Entourage.TYPE_DEMAND.equals(entourageCategory.entourageType, ignoreCase = true)) { // for DEMAND events, we need to show a wizard
-                showCreateActionWizard()
-                return
-            } else if (Entourage.TYPE_CONTRIBUTION.equals(entourageCategory.entourageType, ignoreCase = true)) { // for CONTRIBUTION events, we need to show the join request type screen
-                showCreateEntourageJoinFragment()
-                return
-            }
+        if (entourageCategory != null && Entourage.TYPE_DEMAND.equals(entourageCategory.entourageType, ignoreCase = true)) { // for DEMAND events, we need to show a wizard
+            showCreateActionWizard()
+            return
         }
         super.createEntourage()
     }
@@ -50,19 +45,6 @@ class CreateEntourageFragment : BaseCreateEntourageFragment(), CreateActionWizar
     override fun postEntourageCreated(entourage: Entourage) {
         hideExtraScreens()
         super.postEntourageCreated(entourage)
-    }
-
-    override fun saveEditedEntourage() { // if the user changed the type, we need to show the wizard or the join type screens
-        if (entourageCategory != null) {
-            if (Entourage.TYPE_CONTRIBUTION.equals(entourageCategory.entourageType, ignoreCase = true)) { // for CONTRIBUTION events, we need to show the join request type screen
-                showCreateEntourageJoinFragment()
-                return
-            } else if (!Entourage.TYPE_DEMAND.equals(editedEntourage.entourageType, ignoreCase = true)) { // for DEMAND, we show the wizard only if the type of the edited action has changed
-                showCreateActionWizard()
-                return
-            }
-        }
-        super.saveEditedEntourage()
     }
 
     override fun postEntourageSaved(entourage: Entourage) {

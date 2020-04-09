@@ -30,7 +30,7 @@ class MapFilterFragment  : BaseMapFilterFragment() {
         map_filter_entourage_neighborhood_switch?.isChecked = mapFilter.entourageTypeNeighborhood
         map_filter_entourage_private_circle_switch?.isChecked = mapFilter.entourageTypePrivateCircle
         map_filter_entourage_outing_switch?.isChecked = mapFilter.entourageTypeOuting
-        map_filter_past_events_switch?.isChecked = mapFilter.includePastEvents
+        map_filter_past_events_switch?.isChecked = false//mapFilter.includePastEvents
     }
 
     override fun saveFilter() {
@@ -38,7 +38,7 @@ class MapFilterFragment  : BaseMapFilterFragment() {
         mapFilter.entourageTypeNeighborhood = map_filter_entourage_neighborhood_switch.isChecked
         mapFilter.entourageTypePrivateCircle = map_filter_entourage_private_circle_switch.isChecked
         mapFilter.entourageTypeOuting = map_filter_entourage_outing_switch.isChecked
-        mapFilter.includePastEvents = map_filter_past_events_switch.isChecked
+        mapFilter.includePastEvents = false//map_filter_past_events_switch.isChecked
     }
 
     companion object {

@@ -45,6 +45,8 @@ public class EntourageCategory implements Serializable{
 
     private boolean isSelected = false;
 
+    private boolean isNewlyCreated = false;
+
     // ----------------------------------
     // GETTERS & SETTERS
     // ----------------------------------
@@ -109,7 +111,14 @@ public class EntourageCategory implements Serializable{
         return isDefault;
     }
 
-    // ----------------------------------
+    public boolean isNewlyCreated() {
+        return isNewlyCreated;
+    }
+
+    public void setNewlyCreated(boolean newlyCreated) {
+        isNewlyCreated = newlyCreated;
+    }
+// ----------------------------------
     // Helper methods
     // ----------------------------------
 
