@@ -25,7 +25,7 @@ public class PlusFragment extends Fragment implements BackPressable{
     public static final String KEY_CREATE_CONTRIBUTION = "social.entourage.android.KEY_CREATE_CONTRIBUTION";
     public static final String KEY_CREATE_OUTING = "social.entourage.android.KEY_CREATE_OUTING";
 
-    @BindView(R.id.fragment_map_action_overlay)
+    @BindView(R.id.fragment_plus_overlay)
     protected RelativeLayout mapActionView;
 
     public PlusFragment() {
@@ -121,7 +121,7 @@ public class PlusFragment extends Fragment implements BackPressable{
         }
     }
 
-    @OnClick(R.id.fragment_map_action_overlay)
+    @OnClick(R.id.fragment_plus_overlay)
     void onClickBackground() {
         onBackPressed();
     }

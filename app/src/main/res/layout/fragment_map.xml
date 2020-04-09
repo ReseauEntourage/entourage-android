@@ -40,7 +40,7 @@
             </com.google.android.material.tabs.TabLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/fragment_guide_main_layout"
+                android:id="@+id/fragment_map_main_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/fragment_map_top_tab">

@@ -331,7 +331,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
     }
 
     private fun updateFilterButtonText() {
-        fragment_map_filter_button.setText(if (mapFilter.isDefaultFilter()) R.string.map_no_filter else R.string.map_filters_activated)
+        fragment_map_filter_button?.setText(if (mapFilter.isDefaultFilter()) R.string.map_no_filter else R.string.map_filters_activated)
     }
 
     open fun onNewsfeedLoadMoreRequested(event: OnNewsfeedLoadMoreEvent) {

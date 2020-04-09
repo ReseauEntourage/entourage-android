@@ -107,8 +107,14 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
     }
 
     @Override
-    protected void updateDateTextView() {
-        super.updateDateTextView();
+    protected void updateDateStartTextView() {
+        super.updateDateStartTextView();
+        dateLabel.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void updateDateEndTextView() {
+        super.updateDateEndTextView();
         dateLabel.setVisibility(View.GONE);
     }
 
