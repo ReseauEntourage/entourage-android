@@ -169,9 +169,11 @@ object DeepLinksManager {
      * @param textView textview to be linkified
      */
     fun linkify(textView: TextView) {
-        val pattern = Pattern.compile(BuildConfig.DEEP_LINKS_SCHEME + "://" + DeepLinksView.ENTOURAGE.view + "/[0-9]+")
         Linkify.addLinks(textView, Linkify.ALL) // to add support for standard URLs, emails, phones a.s.o.
+        /*Not working
+        val pattern = Pattern.compile(BuildConfig.DEEP_LINKS_SCHEME + "://\\S+")
         Linkify.addLinks(textView, pattern, null)
+        */
     }
 
     fun storeIntent(newIntent: Intent) {
@@ -184,5 +186,8 @@ object DeepLinksManager {
         }
     }
 
-
+    fun findFirstDeeplinkInText(content: String): String? {
+        val pattern  = (BuildConfig.DEEP_LINKS_SCHEME + "://\\S+").toRegex()
+        return pattern.find(content)?.value
+    }
 }
