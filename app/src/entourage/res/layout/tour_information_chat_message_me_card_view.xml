@@ -11,29 +11,29 @@
     android:paddingBottom="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
+        android:id="@+id/tic_chat_layout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bubble_discussion">
 
         <social.entourage.android.view.HtmlTextView
             android:id="@+id/tic_chat_message"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
             android:autoLink="all"
-            android:layout_marginEnd="10dp"
             android:layout_marginBottom="5dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="5dp"
             android:textAlignment="textEnd"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/white"
             android:textIsSelectable="true"
             android:textSize="@dimen/entourage_font_large"
             app:layout_constraintBottom_toTopOf="@+id/tic_chat_timestamp"
-            app:layout_constraintEnd_toStartOf="@id/tic_chat_deeplink"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Hello this is a chat message that is very very long" />
+            tools:text="Hello this is a really long chat message that could be very long" />
 
         <TextView
             android:id="@+id/tic_chat_timestamp"
@@ -41,8 +41,9 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textSize="@dimen/entourage_font_small"
+            android:paddingEnd="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tic_chat_deeplink"
             tools:text="Hier" />
 
         <ImageButton
@@ -52,9 +53,9 @@
             android:background="@color/bright_blue"
             android:contentDescription="Deeplink vers les actions entourage"
             android:visibility="gone"
-            app:layout_constraintStart_toEndOf="@id/tic_chat_message"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tic_chat_message"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tic_chat_message"
             app:srcCompat="@drawable/ic_open_in_new_white_24dp"
             tools:visibility="visible"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
