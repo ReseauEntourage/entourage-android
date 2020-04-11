@@ -165,7 +165,7 @@ public class EntourageServiceManager {
                 provider.setUserType(UserType.PRO);
             }
         }
-        BusProvider.getInstance().register(entourageServiceManager);
+        BusProvider.INSTANCE.getInstance().register(entourageServiceManager);
         return entourageServiceManager;
     }
 
@@ -232,7 +232,7 @@ public class EntourageServiceManager {
 
     void unregisterFromBus() {
         try {
-            BusProvider.getInstance().unregister(this);
+            BusProvider.INSTANCE.getInstance().unregister(this);
         } catch (final IllegalArgumentException e) {
             Timber.d("No need to unregister");
         }
@@ -430,19 +430,19 @@ public class EntourageServiceManager {
                 public void onResponse(@NonNull final Call<EncounterResponse> call, @NonNull final Response<EncounterResponse> response) {
                     if (response.isSuccessful()) {
                         Timber.tag("tape:").d("success");
-                        BusProvider.getInstance().post(new EncounterTaskResult(true, response.body().getEncounter(), EncounterTaskResult.OperationType.ENCOUNTER_ADD));
+                        BusProvider.INSTANCE.getInstance().post(new EncounterTaskResult(true, response.body().getEncounter(), EncounterTaskResult.OperationType.ENCOUNTER_ADD));
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull final Call<EncounterResponse> call, @NonNull final Throwable t) {
                     Timber.tag("tape:").e("failure");
-                    BusProvider.getInstance().post(new EncounterTaskResult(false, null, EncounterTaskResult.OperationType.ENCOUNTER_ADD));
+                    BusProvider.INSTANCE.getInstance().post(new EncounterTaskResult(false, null, EncounterTaskResult.OperationType.ENCOUNTER_ADD));
                 }
             });
         } else {
             Timber.tag("tape:").d("no network");
-            BusProvider.getInstance().post(new EncounterTaskResult(false, null, EncounterTaskResult.OperationType.ENCOUNTER_ADD));
+            BusProvider.INSTANCE.getInstance().post(new EncounterTaskResult(false, null, EncounterTaskResult.OperationType.ENCOUNTER_ADD));
         }
     }
 
@@ -457,22 +457,22 @@ public class EntourageServiceManager {
                 public void onResponse(@NonNull final Call<EncounterResponse> call, @NonNull final Response<EncounterResponse> response) {
                     if (response.isSuccessful()) {
                         Timber.tag("tape:").d("success");
-                        BusProvider.getInstance().post(new EncounterTaskResult(true, encounter, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE));
+                        BusProvider.INSTANCE.getInstance().post(new EncounterTaskResult(true, encounter, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE));
                     } else {
                         Timber.tag("tape:").d("not successful");
-                        BusProvider.getInstance().post(new EncounterTaskResult(false, null, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE));
+                        BusProvider.INSTANCE.getInstance().post(new EncounterTaskResult(false, null, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE));
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull final Call<EncounterResponse> call, @NonNull final Throwable t) {
                     Timber.tag("tape:").d("failure");
-                    BusProvider.getInstance().post(new EncounterTaskResult(false, null, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE));
+                    BusProvider.INSTANCE.getInstance().post(new EncounterTaskResult(false, null, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE));
                 }
             });
         } else {
             Timber.tag("tape:").d("no network");
-            BusProvider.getInstance().post(new EncounterTaskResult(false, null, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE));
+            BusProvider.INSTANCE.getInstance().post(new EncounterTaskResult(false, null, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE));
         }
     }
 
@@ -645,7 +645,7 @@ public class EntourageServiceManager {
                     final Location currentLocation = entourageLocation.getCurrentLocation();
                     if (currentLocation != null) {
                         final LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-                        BusProvider.getInstance().post(new OnBetterLocationEvent(latLng));
+                        BusProvider.INSTANCE.getInstance().post(new OnBetterLocationEvent(latLng));
                     }
                     initializeTimerFinishTask();
                     tourUUID = response.body().getTour().getUUID();
@@ -767,7 +767,7 @@ public class EntourageServiceManager {
         if (isBetterLocationUpdated) {
             isBetterLocationUpdated = false;
             if (shouldCenterMap) {
-                BusProvider.getInstance().post(new OnBetterLocationEvent(entourageLocation.getLatLng()));
+                BusProvider.INSTANCE.getInstance().post(new OnBetterLocationEvent(entourageLocation.getLatLng()));
             }
         }
     }

@@ -115,7 +115,7 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
         MyEntouragesFilterFactory.saveMyEntouragesFilter(filter, this.getContext());
 
         // inform the app to refrehs the my entourages feed
-        BusProvider.getInstance().post(new Events.OnMyEntouragesForceRefresh(null));
+        BusProvider.INSTANCE.getInstance().post(new Events.OnMyEntouragesForceRefresh(null));
 
         EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_SAVE);
 

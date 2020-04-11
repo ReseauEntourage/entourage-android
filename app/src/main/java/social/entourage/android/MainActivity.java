@@ -160,7 +160,7 @@ public class MainActivity extends EntourageSecuredActivity
 
     @Override
     protected void onStart() {
-        BusProvider.getInstance().register(this);
+        BusProvider.INSTANCE.getInstance().register(this);
         presenter.checkForUpdate();
 
         super.onStart();
@@ -192,13 +192,13 @@ public class MainActivity extends EntourageSecuredActivity
         refreshBadgeCount();
 
         if (getIntent()!=null && getIntent().getAction() != null) {
-            BusProvider.getInstance().post(new OnCheckIntentActionEvent(getIntent().getAction(), getIntent().getExtras()));
+            BusProvider.INSTANCE.getInstance().post(new OnCheckIntentActionEvent(getIntent().getAction(), getIntent().getExtras()));
         }
     }
 
     @Override
     protected void onStop() {
-        BusProvider.getInstance().unregister(this);
+        BusProvider.INSTANCE.getInstance().unregister(this);
         super.onStop();
     }
 

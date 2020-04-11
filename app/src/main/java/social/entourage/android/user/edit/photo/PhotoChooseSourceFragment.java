@@ -96,7 +96,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
         if (context instanceof PhotoChooseInterface) {
             mListener = (PhotoChooseInterface) context;
         }
-        BusProvider.getInstance().register(this);
+        BusProvider.INSTANCE.getInstance().register(this);
 //        else {
 //            throw new RuntimeException(context.toString()
 //                    + " must implement OnFragmentInteractionListener");
@@ -107,7 +107,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        BusProvider.getInstance().unregister(this);
+        BusProvider.INSTANCE.getInstance().unregister(this);
     }
 
     @Override

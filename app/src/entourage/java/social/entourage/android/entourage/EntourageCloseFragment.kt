@@ -79,14 +79,14 @@ class EntourageCloseFragment : DialogFragment() {
     }
 
     private fun onSuccessClicked() {
-        BusProvider.getInstance().post(OnFeedItemCloseRequestEvent(feedItem, false, true))
+        BusProvider.instance.post(OnFeedItemCloseRequestEvent(feedItem, false, true))
         showEmail(R.string.entourage_close_email_title_success)
         EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_CLOSE_POPUP_SUCCESS)
         dismiss()
     }
 
     private fun onFailedClicked() {
-        BusProvider.getInstance().post(OnFeedItemCloseRequestEvent(feedItem, false, false))
+        BusProvider.instance.post(OnFeedItemCloseRequestEvent(feedItem, false, false))
         showEmail(R.string.entourage_close_email_title_failed)
         EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_CLOSE_POPUP_FAILURE)
         dismiss()

@@ -24,7 +24,7 @@ class PoiViewHolder(itemView: View?) : BaseCardViewHolder(itemView) {
     override fun bindFields() {
         itemView.setOnClickListener(View.OnClickListener {
             if (poi == null) return@OnClickListener
-            BusProvider.getInstance().post(OnPoiViewRequestedEvent(poi!!))
+            BusProvider.instance.post(OnPoiViewRequestedEvent(poi!!))
         })
         itemView.poi_card_call_button?.setOnClickListener {
             val intent = Intent(Intent.ACTION_DIAL)

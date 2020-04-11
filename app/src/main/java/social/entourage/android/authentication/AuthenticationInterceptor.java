@@ -50,7 +50,7 @@ public class AuthenticationInterceptor implements okhttp3.Interceptor {
 
         if (response.code() == 401) {
             if (response.message() != null && response.message().equalsIgnoreCase("Unauthorized")) {
-                BusProvider.getInstance().post(new Events.OnUnauthorizedEvent());
+                BusProvider.INSTANCE.getInstance().post(new Events.OnUnauthorizedEvent());
             }
         }
 

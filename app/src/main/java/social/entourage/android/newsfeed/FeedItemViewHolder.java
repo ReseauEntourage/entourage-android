@@ -346,22 +346,22 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
             if (feedItem == null) return;
             if (v == photoView || v == tourAuthor) {
                 if (feedItem.getAuthor() != null) {
-                    BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(feedItem.getAuthor().getUserID()));
+                    BusProvider.INSTANCE.getInstance().post(new Events.OnUserViewRequestedEvent(feedItem.getAuthor().getUserID()));
                 }
             }
             else if (v == actButton) {
                 String joinStatus = feedItem.getJoinStatus();
                 if (Tour.JOIN_STATUS_PENDING.equals(joinStatus)) {
                     EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_PENDING_OVERLAY);
-                    BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem));
+                    BusProvider.INSTANCE.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem));
                 } else if (Tour.JOIN_STATUS_ACCEPTED.equals(joinStatus)) {
                     EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_OPEN_ACTIVE_OVERLAY);
-                    BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem));
+                    BusProvider.INSTANCE.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem));
                 } else if (Tour.JOIN_STATUS_REJECTED.equals(joinStatus)) {
                     //TODO: What to do on rejected status ?
                 } else {
                     // The server wants the position starting with 1
-                    BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(feedItem, getAdapterPosition()+1));
+                    BusProvider.INSTANCE.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(feedItem, getAdapterPosition()+1));
                 }
 
             }
@@ -370,7 +370,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
                     viewHolderListener.onViewHolderDetailsClicked(0);
                 }
                 // The server wants the position starting with 1
-                BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(feedItem, getAdapterPosition()+1));
+                BusProvider.INSTANCE.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(feedItem, getAdapterPosition()+1));
             }
         }
 

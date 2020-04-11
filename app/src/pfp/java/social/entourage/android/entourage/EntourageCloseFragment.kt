@@ -19,7 +19,7 @@ class EntourageCloseFragment  {
     fun show(fragmentManager: FragmentManager?, tag: String?, context: Context?) {
         val builder = AlertDialog.Builder(context!!)
         builder.setMessage(R.string.entourage_close_alert_description)
-                .setPositiveButton(R.string.yes) { dialog, which -> BusProvider.getInstance().post(OnFeedItemCloseRequestEvent(feedItem, false, true)) }
+                .setPositiveButton(R.string.yes) { dialog, which -> BusProvider.INSTANCE.getInstance().post(OnFeedItemCloseRequestEvent(feedItem, false, true)) }
                 .setNegativeButton(R.string.no, null)
         builder.create().show()
     }

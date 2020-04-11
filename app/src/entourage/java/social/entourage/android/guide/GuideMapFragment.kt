@@ -46,9 +46,8 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-    @JvmField
-    @Inject
-    var presenter: GuideMapPresenter? = null
+    @Inject lateinit var presenter: GuideMapPresenter
+
     private var onMapReadyCallback: OnMapReadyCallback? = null
     private var poisMap: MutableMap<Long, Poi> = TreeMap()
     private var previousEmptyListPopupLocation: Location? = null
@@ -60,9 +59,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
     // ----------------------------------
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (presenter == null) {
-            setupComponent(EntourageApplication.get(activity).entourageComponent)
-        }
+        setupComponent(EntourageApplication.get(activity).entourageComponent)
         initializeMap()
         initializeAlertBanner()
         initializePopups()
@@ -81,24 +78,24 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
 
     override fun onStart() {
         super.onStart()
-        presenter?.start()
+        presenter.start()
         if (map != null) {
-            presenter?.updatePoisNearby(map)
+            presenter.updatePoisNearby(map)
         }
         showInfoPopup()
         EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_GUIDE_FROM_TAB)
-        BusProvider.getInstance().register(this)
+        BusProvider.instance.register(this)
     }
 
     override fun onResume() {
         super.onResume()
         val isLocationGranted = isLocationPermissionGranted()
-        BusProvider.getInstance().post(OnLocationPermissionGranted(isLocationGranted))
+        BusProvider.instance.post(OnLocationPermissionGranted(isLocationGranted))
     }
 
     override fun onStop() {
         super.onStop()
-        BusProvider.getInstance().unregister(this)
+        BusProvider.instance.unregister(this)
     }
 
     override fun onBackPressed(): Boolean {
@@ -136,7 +133,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
         mapClusterManager?.clearItems()
         poisMap.clear()
         poisAdapter?.removeAll()
-        presenter?.updatePoisNearby(map)
+        presenter.updatePoisNearby(map)
     }
 
     @Subscribe
@@ -234,10 +231,10 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
             if (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
                 previousCameraZoom = newZoom
                 previousCameraLocation = newLocation
-                presenter?.updatePoisNearby(map)
+                presenter.updatePoisNearby(map)
             }
         }
-        presenter?.updatePoisNearby(map)
+        presenter.updatePoisNearby(map)
     }
 
     private fun removeRedundantPois(pois: List<Poi>): List<Poi> {

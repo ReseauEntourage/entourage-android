@@ -86,12 +86,12 @@ public class SideMenuFragment extends Fragment {
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BusProvider.getInstance().register(this);
+        BusProvider.INSTANCE.getInstance().register(this);
     }
 
     @Override
     public void onDestroy() {
-        BusProvider.getInstance().unregister(this);
+        BusProvider.INSTANCE.getInstance().unregister(this);
         super.onDestroy();
     }
 

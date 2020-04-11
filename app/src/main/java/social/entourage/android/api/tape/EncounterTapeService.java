@@ -39,7 +39,7 @@ public class EncounterTapeService extends Service implements EncounterUploadCall
         super.onCreate();
         EntourageApplication.get(this).getEntourageComponent().inject(this);
         connected = isConnected();
-        BusProvider.getInstance().register(this);
+        BusProvider.INSTANCE.getInstance().register(this);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class EncounterTapeService extends Service implements EncounterUploadCall
     }
 
     private void stopService() {
-        BusProvider.getInstance().unregister(this);
+        BusProvider.INSTANCE.getInstance().unregister(this);
         stopSelf();
     }
 
@@ -118,15 +118,15 @@ public class EncounterTapeService extends Service implements EncounterUploadCall
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            BusProvider.getInstance().register(this);
+            BusProvider.INSTANCE.getInstance().register(this);
             ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
             if (activeNetInfo != null && activeNetInfo.isConnected()) {
-                BusProvider.getInstance().post(new OnConnectionChangedEvent(true));
+                BusProvider.INSTANCE.getInstance().post(new OnConnectionChangedEvent(true));
             } else {
-                BusProvider.getInstance().post(new OnConnectionChangedEvent(false));
+                BusProvider.INSTANCE.getInstance().post(new OnConnectionChangedEvent(false));
             }
-            BusProvider.getInstance().unregister(this);
+            BusProvider.INSTANCE.getInstance().unregister(this);
         }
 
     }

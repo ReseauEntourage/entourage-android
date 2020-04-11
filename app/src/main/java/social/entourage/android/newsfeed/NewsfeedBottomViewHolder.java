@@ -52,7 +52,7 @@ public class NewsfeedBottomViewHolder extends BottomViewHolder {
         loadMoreTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                BusProvider.getInstance().post(new Events.OnNewsfeedLoadMoreEvent());
+                BusProvider.INSTANCE.getInstance().post(new Events.OnNewsfeedLoadMoreEvent());
             }
         });
 
@@ -60,7 +60,7 @@ public class NewsfeedBottomViewHolder extends BottomViewHolder {
         loadMoreEventsView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                BusProvider.getInstance().post(new Events.OnNewsfeedLoadMoreEvent());
+                BusProvider.INSTANCE.getInstance().post(new Events.OnNewsfeedLoadMoreEvent());
             }
         });
     }

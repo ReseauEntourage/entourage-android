@@ -43,7 +43,7 @@ class GuideFilterFragment : EntourageDialogFragment() {
             GuideFilter.instance.setValueForCategoryId(filterItem.categoryType.categoryId, filterItem.isChecked)
         }
         // Apply the filter
-        BusProvider.getInstance().post(OnSolidarityGuideFilterChanged())
+        BusProvider.instance.post(OnSolidarityGuideFilterChanged())
         // Dismiss the fragment
         dismiss()
     }

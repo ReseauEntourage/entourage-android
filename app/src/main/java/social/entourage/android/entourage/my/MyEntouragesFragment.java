@@ -108,12 +108,12 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Ent
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        BusProvider.getInstance().register(this);
+        BusProvider.INSTANCE.getInstance().register(this);
     }
 
     @Override
     public void onDestroy() {
-        BusProvider.getInstance().unregister(this);
+        BusProvider.INSTANCE.getInstance().unregister(this);
 
         super.onDestroy();
     }
@@ -394,7 +394,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Ent
                         entouragesAdapter.addCardInfo(feedItem);
                     }
                 }
-                BusProvider.getInstance().post(new Events.OnMyEntouragesForceRefresh(feedItem));
+                BusProvider.INSTANCE.getInstance().post(new Events.OnMyEntouragesForceRefresh(feedItem));
             }
 
             //increase page and items count

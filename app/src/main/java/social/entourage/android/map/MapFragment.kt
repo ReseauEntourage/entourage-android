@@ -62,9 +62,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-    @JvmField
-    @Inject
-    var presenter: MapPresenter? = null
+    @Inject lateinit var presenter: MapPresenter
     private var onMapReadyCallback: OnMapReadyCallback? = null
     protected var userId = 0
     protected var longTapCoordinates: LatLng? = null
@@ -101,17 +99,15 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
     // ----------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        BusProvider.getInstance().register(this)
+        BusProvider.instance.register(this)
         markersMap.clear()
         EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_TOURS_FROM_MENU)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (presenter == null) {
-            setupComponent(EntourageApplication.get(activity).entourageComponent)
-            presenter?.start()
-        }
+        setupComponent(EntourageApplication.get(activity).entourageComponent)
+        presenter.start()
         if (fragmentLifecycleCallbacks == null) {
             fragmentLifecycleCallbacks = MapFragmentLifecycleCallbacks()
             activity?.supportFragmentManager?.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks!!, false)
@@ -161,7 +157,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
     override fun onResume() {
         super.onResume()
         timerStart()
-        BusProvider.getInstance().post(OnLocationPermissionGranted(isLocationPermissionGranted()))
+        BusProvider.instance.post(OnLocationPermissionGranted(isLocationPermissionGranted()))
     }
 
     override fun onPause() {
@@ -170,7 +166,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
     }
 
     override fun onDestroy() {
-        BusProvider.getInstance().unregister(this)
+        BusProvider.instance.unregister(this)
         super.onDestroy()
     }
 
@@ -204,7 +200,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
             return
         }
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_OPEN_ENTOURAGE)
-        presenter?.openFeedItem(feedItemUUID, feedItemType, invitationId)
+        presenter.openFeedItem(feedItemUUID, feedItemType, invitationId)
     }
 
     fun displayChosenFeedItem(feedItem: FeedItem, feedRank: Int) {
@@ -224,13 +220,13 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
             return
         }
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_OPEN_ENTOURAGE)
-        presenter?.openFeedItem(feedItem, invitationId, feedRank)
+        presenter.openFeedItem(feedItem, invitationId, feedRank)
     }
 
     private fun displayChosenFeedItemFromShareURL(feedItemShareURL: String, feedItemType: Int) {
         //display the feed item
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_OPEN_ENTOURAGE)
-        presenter?.openFeedItem(feedItemShareURL, feedItemType)
+        presenter.openFeedItem(feedItemShareURL, feedItemType)
     }
 
     private fun act(timestampedObject: TimestampedObject) {
@@ -259,7 +255,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
 
         // Check if we need to show the entourage disclaimer
         if (Configuration.showEntourageDisclaimer()) {
-            presenter?.displayEntourageDisclaimer(entourageGroupType)
+            presenter.displayEntourageDisclaimer(entourageGroupType)
         } else {
             (activity as MainActivity?)?.onEntourageDisclaimerAccepted(null)
         }
@@ -278,7 +274,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
             location = longTapCoordinates
             longTapCoordinates = null
         }
-        presenter?.createEntourage(location, entourageGroupType!!, entourageCategory)
+        presenter.createEntourage(location, entourageGroupType!!, entourageCategory)
     }
 
     protected fun refreshFeed() {
@@ -310,7 +306,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
         event.entourage ?: return
         // Force the map filtering for entourages as ON
         mapFilter.entourageCreated()
-        presenter?.saveMapFilter()
+        presenter.saveMapFilter()
 
         // Update the newsfeed
         clearAll()
@@ -324,7 +320,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
 
     open fun onMapFilterChanged(event: OnMapFilterChanged) {
         // Save the filter
-        presenter?.saveMapFilter()
+        presenter.saveMapFilter()
         updateFilterButtonText()
         // Refresh the newsfeed
         refreshFeed()
@@ -506,14 +502,14 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
             return
         }
         if (isLocationPermissionGranted()) {
-            BusProvider.getInstance().post(OnLocationPermissionGranted(true))
+            BusProvider.instance.post(OnLocationPermissionGranted(true))
             return
         }
 
         // Check if the user allowed geolocation from screen 04.2 (login funnel)
         val geolocationAllowedByUser = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_GEOLOCATION_ENABLED, true)
         if (!geolocationAllowedByUser) {
-            BusProvider.getInstance().post(OnLocationPermissionGranted(false))
+            BusProvider.instance.post(OnLocationPermissionGranted(false))
             return
         }
         if (shouldShowRequestPermissionRationale(permission.ACCESS_FINE_LOCATION)) {
@@ -524,7 +520,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
                     .setNegativeButton(R.string.map_permission_refuse) { _: DialogInterface?, _: Int ->
                         val noLocationPermissionFragment = NoLocationPermissionFragment()
                         noLocationPermissionFragment.show(requireActivity().supportFragmentManager, NoLocationPermissionFragment.TAG)
-                        BusProvider.getInstance().post(OnLocationPermissionGranted(false))
+                        BusProvider.instance.post(OnLocationPermissionGranted(false))
                     }
                     .show()
         } else {
@@ -552,7 +548,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
         displayEntourageDisclaimer()
     }
 
-    fun onCreateEntourageHelpAction() {
+    private fun onCreateEntourageHelpAction() {
         createAction(EntourageCategoryManager.getInstance().getDefaultCategory(Entourage.TYPE_DEMAND), Entourage.TYPE_ACTION)
     }
 
@@ -562,7 +558,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
         MapFilterFragment.newInstance(isPro).show(parentFragmentManager, MapFilterFragment.TAG)
     }
 
-    fun onNewEntouragesReceivedButton() {
+    private fun onNewEntouragesReceivedButton() {
         fragment_map_tours_view?.scrollToPosition(0)
         fragment_map_new_entourages_button?.visibility = View.GONE
     }
@@ -636,8 +632,8 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
 
     protected fun onMapReady(googleMap: GoogleMap?) {
         super.onMapReady(googleMap,
-                presenter?.onClickListener as ClusterManager.OnClusterItemClickListener<ClusterItem>?,
-                presenter?.onGroundOverlayClickListener
+                presenter.onClickListener as ClusterManager.OnClusterItemClickListener<ClusterItem>?,
+                presenter.onGroundOverlayClickListener
         )
         map?.setOnCameraIdleListener {
             val cameraPosition = map!!.cameraPosition
@@ -820,7 +816,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
                         .clickable(true)
                         .anchor(0.5f, 0.5f)
                 markersMap[feedItem.hashString()] = map!!.addGroundOverlay(groundOverlayOptions)
-                presenter?.onGroundOverlayClickListener?.addEntourageGroundOverlay(position, feedItem)
+                presenter.onGroundOverlayClickListener?.addEntourageGroundOverlay(position, feedItem)
             } else {
                 val mapClusterItem = MapClusterItem(feedItem)
                 markersMap[feedItem.hashString()] = mapClusterItem
@@ -850,8 +846,8 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
         map?.clear()
         mapClusterManager?.clearItems()
         markersMap.clear()
-        presenter?.onClickListener?.clear()
-        presenter?.onGroundOverlayClickListener?.clear()
+        presenter.onClickListener?.clear()
+        presenter.onGroundOverlayClickListener?.clear()
         resetFeed()
     }
 
@@ -1028,7 +1024,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
         // Check if it's a valid user and onboarding
         if (EntourageApplication.me(activity)?.isOnboardingUser == true) {
             // Retrieve the list of invitations
-            presenter?.myPendingInvitations
+            presenter.myPendingInvitations
         }
     }
 
@@ -1039,15 +1035,15 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
             if (EntourageApplication.me(activity)?.isOnboardingUser == true) {
                 showCarousel()
                 // Reset the onboarding flag
-                presenter?.resetUserOnboardingFlag()
+                presenter.resetUserOnboardingFlag()
             }
         } else {
             for (invitation in invitationList) {
-                presenter?.acceptInvitation(invitation.id)
+                presenter.acceptInvitation(invitation.id)
             }
             // Show the first invitation
             val firstInvitation = invitationList[0]
-            presenter?.openFeedItem(firstInvitation.entourageUUID, FeedItem.ENTOURAGE_CARD, firstInvitation.id)
+            presenter.openFeedItem(firstInvitation.entourageUUID, FeedItem.ENTOURAGE_CARD, firstInvitation.id)
         }
     }
 
@@ -1055,7 +1051,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
     // EMPTY LIST POPUP
     // ----------------------------------
     private fun onEmptyListPopupClose() {
-        presenter?.isShowNoEntouragesPopup = false
+        presenter.isShowNoEntouragesPopup = false
         hideEmptyListPopup()
     }
 
@@ -1071,7 +1067,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
             currentLocation
         }
         // Check if we need to show the popup
-        if (presenter?.isShowNoEntouragesPopup ==true) {
+        if (presenter.isShowNoEntouragesPopup) {
             fragment_map_empty_list_popup?.visibility = View.VISIBLE
         }
 

@@ -84,7 +84,7 @@ object DeepLinksManager {
             if (requestedView.equals(DeepLinksView.ENTOURAGES.view, ignoreCase = true)
                     ||requestedView.equals(DeepLinksView.ENTOURAGE.view, ignoreCase = true)) {
                 //path like /entourage/UUID...
-                BusProvider.getInstance().post(OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, "", key))
+                BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, "", key))
             } else if (requestedView.equals(DeepLinksView.DEEPLINK.view, ignoreCase = true)) {
                 //path like /deeplink/key/...
                 //Remove the requested view and the key from path segments
@@ -138,7 +138,7 @@ object DeepLinksManager {
             activity.createEntourage()
         } else if (key == DeepLinksView.ENTOURAGE.view || key == DeepLinksView.ENTOURAGES.view) {
             if (pathSegments != null && pathSegments.isNotEmpty()) {
-                BusProvider.getInstance().post(OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, "", pathSegments[0]))
+                BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, "", pathSegments[0]))
             }
         } else if (key == DeepLinksView.TUTORIAL.view) {
             activity.showTutorial(true)
@@ -187,7 +187,22 @@ object DeepLinksManager {
     }
 
     fun findFirstDeeplinkInText(content: String): String? {
-        val pattern  = (BuildConfig.DEEP_LINKS_SCHEME + "://\\S+").toRegex()
-        return pattern.find(content)?.value
+        val patternDeepLink  = (BuildConfig.DEEP_LINKS_SCHEME + "://\\S+").toRegex()
+        patternDeepLink.find(content)?.let {
+            return it.value
+        }
+        val patternHTTPDeepLink  = ("http.?://"+BuildConfig.DEEP_LINKS_URL + "/deeplink/\\S+").toRegex()
+        patternHTTPDeepLink.find(content)?.let {
+            return it.value
+        }
+        val patternHTTPWWWDeepLink  = ("http.?://www\\."+BuildConfig.DEEP_LINKS_URL + "/deeplink/\\S+").toRegex()
+        patternHTTPWWWDeepLink.find(content)?.let {
+            return it.value
+        }
+        val patternHTTPEntourage  = ("http.?://www\\."+BuildConfig.DEEP_LINKS_URL + "/entourage\\S+").toRegex()
+        patternHTTPEntourage.find(content)?.let {
+            return it.value
+        }
+        return null
     }
 }

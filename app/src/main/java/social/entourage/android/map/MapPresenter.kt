@@ -141,7 +141,7 @@ class MapPresenter @Inject constructor(
     // ----------------------------------
     private fun openEncounter(encounter: Encounter?) {
         fragment?.saveCameraPosition()
-        BusProvider.getInstance().post(OnTourEncounterViewRequestedEvent(encounter))
+        BusProvider.instance.post(OnTourEncounterViewRequestedEvent(encounter))
     }
 
     // ----------------------------------

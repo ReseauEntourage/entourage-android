@@ -175,14 +175,14 @@ public class UserFragment extends EntourageDialogFragment {
     public void onStart() {
         super.onStart();
 
-        BusProvider.getInstance().register(this);
+        BusProvider.INSTANCE.getInstance().register(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
 
-        BusProvider.getInstance().unregister(this);
+        BusProvider.INSTANCE.getInstance().unregister(this);
     }
 
     // ----------------------------------

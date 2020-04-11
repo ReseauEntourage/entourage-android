@@ -139,13 +139,13 @@ public class CreateEncounterPresenter implements EncounterUploadCallback {
         @Override
         public void execute(final EncounterUploadCallback callback) {
             this.callback = callback;
-            BusProvider.getInstance().register(this);
-            BusProvider.getInstance().post(this);
+            BusProvider.INSTANCE.getInstance().register(this);
+            BusProvider.INSTANCE.getInstance().post(this);
         }
 
         @Subscribe
         public void taskResult(EncounterTaskResult result) {
-            BusProvider.getInstance().unregister(this);
+            BusProvider.INSTANCE.getInstance().unregister(this);
             Encounter resultEncounter = result.getEncounter();
             EncounterTaskResult.OperationType operationType = result.getOperationType();
             if (resultEncounter != null && encounter.getCreationDate().equals(resultEncounter.getCreationDate())) {

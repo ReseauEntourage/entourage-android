@@ -92,7 +92,7 @@ public class PFPUserProfileAssociationsView extends RelativeLayout implements Us
                         public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                             UserMembership userMembership = userNeighborhoodsAdapter.getItemAt(position);
                             if (userMembership != null) {
-                                BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(Entourage.ENTOURAGE_CARD, userMembership.getMembershipUUID(), null));
+                                BusProvider.INSTANCE.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(Entourage.ENTOURAGE_CARD, userMembership.getMembershipUUID(), null));
                             }
                         }
                     });
@@ -114,7 +114,7 @@ public class PFPUserProfileAssociationsView extends RelativeLayout implements Us
                         public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                             UserMembership userMembership = privateCircleAdapter.getItemAt(position);
                             if (userMembership != null) {
-                                BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(Entourage.ENTOURAGE_CARD, userMembership.getMembershipUUID(), null));
+                                BusProvider.INSTANCE.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(Entourage.ENTOURAGE_CARD, userMembership.getMembershipUUID(), null));
                             }
                         }
                     });

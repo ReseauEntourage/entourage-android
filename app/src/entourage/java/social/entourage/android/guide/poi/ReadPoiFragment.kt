@@ -28,10 +28,8 @@ class ReadPoiFragment : EntourageDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-    private var poi: Poi? = null
-    @JvmField
-    @Inject
-    var presenter: ReadPoiPresenter? = null
+    private lateinit var poi: Poi
+    @Inject lateinit var presenter: ReadPoiPresenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -41,9 +39,9 @@ class ReadPoiFragment : EntourageDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        poi = arguments?.getSerializable(BUNDLE_KEY_POI) as Poi?
+        poi = arguments?.getSerializable(BUNDLE_KEY_POI) as Poi
         setupComponent(EntourageApplication.get(activity).entourageComponent)
-        if(poi!=null) presenter!!.displayPoi(poi!!)
+        presenter.displayPoi(poi)
 
         title_close_button?.setOnClickListener {dismiss()}
         poi_report_button?.setOnClickListener {onReportButtonClicked()}
@@ -85,9 +83,6 @@ class ReadPoiFragment : EntourageDialogFragment() {
     }
 
     private fun onReportButtonClicked() {
-        if (poi == null) {
-            return
-        }
         // Build the email intent
         val intent = Intent(Intent.ACTION_SENDTO)
         intent.data = Uri.parse("mailto:")
@@ -95,9 +90,8 @@ class ReadPoiFragment : EntourageDialogFragment() {
         val addresses = arrayOf(getString(R.string.contact_email))
         intent.putExtra(Intent.EXTRA_EMAIL, addresses)
         // Set the subject
-        var title = poi?.name
-        if (title == null) title = ""
-        val emailSubject = getString(R.string.poi_report_email_subject_format, title, poi!!.id)
+        val title = poi.name ?:""
+        val emailSubject = getString(R.string.poi_report_email_subject_format, title, poi.id)
         intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject)
         if (activity!=null && intent.resolveActivity(requireActivity().packageManager) != null) { // Start the intent
             startActivity(intent)
@@ -116,8 +110,7 @@ class ReadPoiFragment : EntourageDialogFragment() {
         // ----------------------------------
         // LIFECYCLE
         // ----------------------------------
-        @JvmStatic
-        fun newInstance(poi: Poi?): ReadPoiFragment {
+        fun newInstance(poi: Poi): ReadPoiFragment {
             val readPoiFragment = ReadPoiFragment()
             val args = Bundle()
             args.putSerializable(BUNDLE_KEY_POI, poi)

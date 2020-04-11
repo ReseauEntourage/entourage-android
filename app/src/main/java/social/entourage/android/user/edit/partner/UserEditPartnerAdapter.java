@@ -56,7 +56,7 @@ public class UserEditPartnerAdapter extends BaseAdapter {
                 @Override
                 public void onClick(final View view) {
                     if (partner != null) {
-                        BusProvider.getInstance().post(new Events.OnPartnerViewRequestedEvent(partner));
+                        BusProvider.INSTANCE.getInstance().post(new Events.OnPartnerViewRequestedEvent(partner));
                     }
                 }
             });

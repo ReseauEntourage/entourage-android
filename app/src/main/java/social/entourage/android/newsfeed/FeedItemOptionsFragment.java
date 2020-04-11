@@ -37,6 +37,7 @@ import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.entourage.create.CreateEntourageFragment;
 import social.entourage.android.entourage.EntourageCloseFragment;
 import social.entourage.android.tools.BusProvider;
+import social.entourage.android.tools.Utils;
 
 
 public class FeedItemOptionsFragment extends EntourageDialogFragment {
@@ -164,10 +165,7 @@ public class FeedItemOptionsFragment extends EntourageDialogFragment {
 
                 //duration
                 Date now = new Date();
-                Date duration = new Date(now.getTime() - tour.getStartTime().getTime());
-                SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
-                dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-                tour.setDuration(dateFormat.format(duration));
+                tour.setDuration(Utils.getDateStringFromSeconds(now.getTime() - tour.getStartTime().getTime()));
 
                 //show stop tour activity
                 Activity activity = getActivity();
@@ -179,7 +177,7 @@ public class FeedItemOptionsFragment extends EntourageDialogFragment {
                 dismiss();
             }
             else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-                //BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem, false));
+                //BusProvider.INSTANCE.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem, false));
                 FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
                 EntourageCloseFragment entourageCloseFragment = EntourageCloseFragment.Companion.newInstance(feedItem);
                 entourageCloseFragment.show(fragmentManager, EntourageCloseFragment.Companion.getTAG(), getContext());
@@ -187,7 +185,7 @@ public class FeedItemOptionsFragment extends EntourageDialogFragment {
             }
         }
         else if (feedItem.getType() == TimestampedObject.TOUR_CARD && feedItem.getStatus().equals(FeedItem.STATUS_CLOSED)) {
-            BusProvider.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem, false, true));
+            BusProvider.INSTANCE.getInstance().post(new Events.OnFeedItemCloseRequestEvent(feedItem, false, true));
             dismiss();
         }
     }
@@ -195,7 +193,7 @@ public class FeedItemOptionsFragment extends EntourageDialogFragment {
     @OnClick(R.id.feeditem_option_quit)
     protected void onQuitClicked() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_QUIT_ENTOURAGE);
-        BusProvider.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, feedItem));
+        BusProvider.INSTANCE.getInstance().post(new Events.OnUserActEvent(Events.OnUserActEvent.ACT_QUIT, feedItem));
         dismiss();
     }
 

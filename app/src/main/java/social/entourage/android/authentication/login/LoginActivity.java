@@ -313,13 +313,13 @@ public class LoginActivity extends EntourageActivity
 
     @Override
     protected void onStart() {
-        BusProvider.getInstance().register(this);
+        BusProvider.INSTANCE.getInstance().register(this);
         super.onStart();
     }
 
     @Override
     protected void onStop() {
-        BusProvider.getInstance().unregister(this);
+        BusProvider.INSTANCE.getInstance().unregister(this);
         super.onStop();
     }
 
@@ -328,7 +328,7 @@ public class LoginActivity extends EntourageActivity
         if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
             for (int index = 0; index < permissions.length; index++) {
                 if (permissions[index].equalsIgnoreCase(ACCESS_FINE_LOCATION)) {
-                    BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(grantResults[index] == PackageManager.PERMISSION_GRANTED));
+                    BusProvider.INSTANCE.getInstance().post(new Events.OnLocationPermissionGranted(grantResults[index] == PackageManager.PERMISSION_GRANTED));
                 }
             }
             // We don't care if the user allowed/denied the location, just show the notifications view

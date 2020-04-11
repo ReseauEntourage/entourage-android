@@ -33,7 +33,7 @@ public class ChoosePhotoActivity extends AppCompatActivity {
 
             Uri uri = intent.getData();
 
-            BusProvider.getInstance().post(new Events.OnPhotoChosen(uri));
+            BusProvider.INSTANCE.getInstance().post(new Events.OnPhotoChosen(uri));
 
 //            if (PermissionChecker.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 //                pickedImageUri = uri;

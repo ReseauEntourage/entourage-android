@@ -12,8 +12,8 @@ class EntourageFirebaseMessagingService : MixpanelFCMMessagingService() {
     override fun onNewToken(registrationId: String) {
         super.onNewToken(registrationId)
         EntourageApplication.get().mixpanel.people.pushRegistrationId = registrationId
-        BusProvider.getInstance().register(this)
-        BusProvider.getInstance().post(OnGCMTokenObtainedEvent(registrationId))
+        BusProvider.instance.register(this)
+        BusProvider.instance.post(OnGCMTokenObtainedEvent(registrationId))
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -46,7 +46,7 @@ class EntourageFirebaseMessagingService : MixpanelFCMMessagingService() {
     private fun handleNow(remoteMessage: RemoteMessage) {
         val message = PushNotificationManager.getMessageFromRemoteMessage(remoteMessage, this) ?: return
         PushNotificationManager.handlePushNotification(message, this)
-        BusProvider.getInstance().post(OnPushNotificationReceived(message))
+        BusProvider.instance.post(OnPushNotificationReceived(message))
     }
 
     companion object {

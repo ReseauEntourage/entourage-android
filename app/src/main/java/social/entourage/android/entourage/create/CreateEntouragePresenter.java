@@ -60,7 +60,7 @@ public class CreateEntouragePresenter {
                     if (fragment != null) {
                         fragment.onEntourageCreated(receivedEntourage);
                     }
-                    BusProvider.getInstance().post(new Events.OnEntourageCreated(receivedEntourage));
+                    BusProvider.INSTANCE.getInstance().post(new Events.OnEntourageCreated(receivedEntourage));
                 }
                 else {
                     if (fragment != null) {
@@ -91,7 +91,7 @@ public class CreateEntouragePresenter {
                     if (fragment != null) {
                         fragment.onEntourageEdited(receivedEntourage);
                     }
-                    BusProvider.getInstance().post(new Events.OnEntourageUpdated(receivedEntourage));
+                    BusProvider.INSTANCE.getInstance().post(new Events.OnEntourageUpdated(receivedEntourage));
                 } else {
                     if (fragment != null) {
                         fragment.onEntourageEdited(null);

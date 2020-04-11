@@ -24,7 +24,7 @@ class HtmlTextView : AppCompatTextView {
         val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.HtmlTextView, 0, 0)
         try {
             htmlString = typedArray.getString(R.styleable.HtmlTextView_htmlText) ?: return
-            setText(Utils.fromHtml(htmlString), BufferType.SPANNABLE)
+            setText(Utils.fromHtml(htmlString!!), BufferType.SPANNABLE)
             movementMethod = LinkMovementMethod.getInstance()
         } finally {
             typedArray.recycle()
@@ -41,7 +41,7 @@ class HtmlTextView : AppCompatTextView {
 
     fun setHtmlString(newHtmlString: String?, movementMethod: MovementMethod?) {
         this.htmlString = newHtmlString ?: ""
-        setText(Utils.fromHtml(htmlString), BufferType.SPANNABLE)
+        setText(Utils.fromHtml(htmlString!!), BufferType.SPANNABLE)
         this.movementMethod = movementMethod
     }
 }

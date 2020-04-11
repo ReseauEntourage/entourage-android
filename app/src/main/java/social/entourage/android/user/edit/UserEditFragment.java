@@ -156,14 +156,14 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
 
         configureNotifications();
 
-        BusProvider.getInstance().register(this);
+        BusProvider.INSTANCE.getInstance().register(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
 
-        BusProvider.getInstance().unregister(this);
+        BusProvider.INSTANCE.getInstance().unregister(this);
     }
 
     public void configureView() {

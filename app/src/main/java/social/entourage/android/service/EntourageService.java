@@ -49,6 +49,7 @@ import social.entourage.android.location.LocationUpdateListener;
 import social.entourage.android.map.MapTabItem;
 import social.entourage.android.newsfeed.NewsFeedListener;
 import social.entourage.android.newsfeed.NewsfeedPagination;
+import social.entourage.android.tools.Utils;
 import social.entourage.android.tools.log.CrashlyticsNewsFeedLogger;
 import social.entourage.android.tools.log.LoggerNewsFeedLogger;
 
@@ -330,12 +331,8 @@ public class EntourageService extends Service {
             chronometer = new Chronometer(this);
         }
 
-        final Date duration = new Date(SystemClock.elapsedRealtime() - chronometer.getBase());
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
-
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         if (entourageServiceManager != null) {
-            entourageServiceManager.setTourDuration(dateFormat.format(duration));
+            entourageServiceManager.setTourDuration(Utils.getDateStringFromSeconds(SystemClock.elapsedRealtime() - chronometer.getBase()));
         }
         pauseNotification();
         isPaused = true;

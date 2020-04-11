@@ -73,7 +73,7 @@ public class AuthenticationController {
 
         if (shouldLoadUserPreferences) loadUserPreferences();
 
-        BusProvider.getInstance().post(new Events.OnUserInfoUpdatedEvent());
+        BusProvider.INSTANCE.getInstance().post(new Events.OnUserInfoUpdatedEvent());
     }
 
     public void saveUserPhoneAndCode(String phone, String smsCode) {

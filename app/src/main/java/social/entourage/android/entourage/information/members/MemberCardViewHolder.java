@@ -53,7 +53,7 @@ public class MemberCardViewHolder extends BaseCardViewHolder {
             @Override
             public void onClick(final View v) {
                 if (userId == 0) return;
-                BusProvider.getInstance().post(new Events.OnUserViewRequestedEvent(userId));
+                BusProvider.INSTANCE.getInstance().post(new Events.OnUserViewRequestedEvent(userId));
             }
         });
     }

@@ -459,7 +459,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         } catch(IllegalStateException e) {
             Timber.w(e);
         }
-        BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(entourage));
+        BusProvider.INSTANCE.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(entourage));
     }
 
     protected void saveEditedEntourage() {
