@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/country_code_holder_rly"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -62,7 +63,7 @@
         android:layout_toRightOf="@+id/selected_country_tv"
         android:adjustViewBounds="true"
         android:alpha="0.6"
-        android:src="@drawable/ic_arrow_drop_down_black_24dp"
+        app:srcCompat="@drawable/ic_expand_more_black_24dp"
         android:tint="@android:color/black"
         />
   </RelativeLayout>

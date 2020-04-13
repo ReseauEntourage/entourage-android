@@ -248,8 +248,8 @@
         </RelativeLayout>
 
         <include
-            android:id="@+id/fragment_map_action_overlay"
-            layout="@layout/layout_map_action_overlay"
+            android:id="@+id/fragment_plus_overlay"
+            layout="@layout/layout_plus_overlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone" />

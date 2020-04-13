@@ -38,7 +38,7 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
     @BindView(R.id.create_entourage_position_description)
     TextView positionLabel;
 
-    @BindView(R.id.create_entourage_date_label)
+    @BindView(R.id.create_entourage_date_start_label)
     TextView dateLabel;
 
     // ----------------------------------
@@ -107,8 +107,14 @@ public class CreateEntourageFragment extends BaseCreateEntourageFragment impleme
     }
 
     @Override
-    protected void updateDateTextView() {
-        super.updateDateTextView();
+    protected void updateDateStartTextView() {
+        super.updateDateStartTextView();
+        dateLabel.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void updateDateEndTextView() {
+        super.updateDateEndTextView();
         dateLabel.setVisibility(View.GONE);
     }
 

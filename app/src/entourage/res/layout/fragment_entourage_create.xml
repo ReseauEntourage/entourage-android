@@ -173,7 +173,7 @@
                     android:id="@+id/create_entourage_position_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/entourage_create_position_description"
+                    android:text="@string/entourage_create_position_description_new"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/greyish_brown"
                     android:textSize="@dimen/entourage_font_medium"/>
@@ -202,7 +202,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/create_entourage_date_layout"
+                android:id="@+id/create_entourage_date_start_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -214,15 +214,55 @@
                 android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/create_entourage_date_label"
+                    android:id="@+id/create_entourage_date_start_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/entourage_create_date_label"
+                    android:text="@string/entourage_create_date_start_label"
                     android:textColor="@color/greyish_brown"
                     android:textSize="@dimen/entourage_font_medium"/>
 
                 <TextView
-                    android:id="@+id/create_entourage_date"
+                    android:id="@+id/create_entourage_date_start"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:paddingEnd="0dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="5dp"
+                    android:textColor="@color/accent"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/arrow_grey"
+                    android:tint="@color/accent"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/create_entourage_date_end_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@color/background"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:padding="@dimen/entourage_padding_10"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/create_entourage_date_end_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/entourage_create_date_end_label"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <TextView
+                    android:id="@+id/create_entourage_date_end"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -284,6 +324,124 @@
                     android:textSize="@dimen/entourage_font_small"/>
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/ui_create_entourage_privacyAction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="@dimen/entourage_padding_10">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/ui_layout_privacyAction_public"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imageViewActionPublic"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/bg_button_rounded_black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/ui_iv_button_public"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:src="@drawable/button_rounded_black_fill"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageViewActionPublic"
+                        app:layout_constraintEnd_toEndOf="@+id/imageViewActionPublic"
+                        app:layout_constraintStart_toStartOf="@+id/imageViewActionPublic"
+                        app:layout_constraintTop_toTopOf="@+id/imageViewActionPublic" />
+
+                    <TextView
+                        android:id="@+id/ui_tv_entourage_privacyAction_public_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/entourage_create_privacy_public"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="@dimen/entourage_font_medium"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageViewActionPublic"
+                        app:layout_constraintStart_toEndOf="@+id/imageViewActionPublic"
+                        app:layout_constraintTop_toTopOf="@+id/imageViewActionPublic" />
+
+                    <TextView
+                        android:id="@+id/ui_tv_entourage_privacyAction_public"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/entourage_create_privacy_description_public_action"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="@dimen/entourage_font_medium"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/imageViewActionPublic"
+                        app:layout_constraintTop_toBottomOf="@+id/imageViewActionPublic" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/ui_layout_privacyAction_private"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/bg_button_rounded_black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/ui_iv_button_private"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:src="@drawable/button_rounded_black_fill"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                        app:layout_constraintEnd_toEndOf="@+id/imageView"
+                        app:layout_constraintStart_toStartOf="@+id/imageView"
+                        app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+                    <TextView
+                        android:id="@+id/ui_tv_entourage_privacyAction_private_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/entourage_create_privacy_private"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="@dimen/entourage_font_medium"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                        app:layout_constraintStart_toEndOf="@+id/imageView"
+                        app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+                    <TextView
+                        android:id="@+id/ui_tv_entourage_privacyAction_private"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/entourage_create_privacy_description_private_action"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="@dimen/entourage_font_medium"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/imageView"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
             <view
                 android:id="@+id/create_entourage_help_link"
                 class="social.entourage.android.view.HtmlTextView"
@@ -293,7 +451,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:textSize="@dimen/entourage_font_medium"
-                app:htmlText="@string/entourage_create_help_text"/>
+                app:htmlText="@string/entourage_create_help_text" />
 
         </LinearLayout>
 

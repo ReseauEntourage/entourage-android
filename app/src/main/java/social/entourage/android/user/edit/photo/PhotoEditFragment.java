@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -200,7 +201,7 @@ public class PhotoEditFragment extends EntourageDialogFragment implements CropIm
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.FRANCE).format(new Date());
         String imageFileName = "ENTOURAGE_CROP_" + timeStamp + "_";
         File storageDir = Environment.getExternalStoragePublicDirectory(
             Environment.DIRECTORY_PICTURES);

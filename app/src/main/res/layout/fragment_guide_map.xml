@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -99,7 +100,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/fragment_guide_alert_layout" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/fragment_map_filter_button"
+                android:id="@+id/fragment_guide_filter_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
@@ -119,13 +120,13 @@
                 app:icon="@drawable/ic_filter_list_white_24dp"
                 app:iconPadding="0dp"
                 app:layout_anchorGravity="start"
-                app:layout_constraintEnd_toStartOf="@+id/fragment_map_display_toggle"
+                app:layout_constraintEnd_toStartOf="@+id/fragment_guide_display_toggle"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/fragment_guide_alert_layout" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fragment_map_display_toggle"
+                android:id="@+id/fragment_guide_display_toggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"

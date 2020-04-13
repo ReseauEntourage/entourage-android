@@ -231,7 +231,7 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
     // ----------------------------------
     private fun onStartTourLauncher() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_TOUR_CREATE_CLICK)
-        if (entourageService?.isRunning==true) {
+        if (entourageService!=null && entourageService!!.isRunning==false) {
             // Check if the geolocation is permitted
             if (!isLocationEnabled() || !isLocationPermissionGranted()) {
                 showAllowGeolocationDialog(GEOLOCATION_POPUP_TOUR)
@@ -522,7 +522,7 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
                 val choiceFragment = ChoiceFragment.newInstance(Tours(ArrayList(tours.values)))
                 choiceFragment.show(requireActivity().supportFragmentManager, "fragment_choice")
         } else
-            presenter?.openFeedItem(tours[0], 0, 0)
+            presenter?.openFeedItem(tours[0] as FeedItem, 0, 0)
     }
 
     override fun onFeedItemClosed(closed: Boolean, feedItem: FeedItem) {
@@ -620,7 +620,7 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
         get() = entourageService?.currentTour
 
     private fun startTour(type: String) {
-        if (entourageService?.isRunning==true) {
+        if (entourageService!=null && entourageService!!.isRunning==false) {
             color = getTrackColor(false, type, Date())
             entourageService?.beginTreatment(type)
         }
@@ -633,7 +633,7 @@ class MapWithTourFragment : MapFragment(), TourServiceListener {
     }
 
     private fun resumeTour() {
-        if (entourageService?.isRunning==true) {
+        if (entourageService!=null && entourageService!!.isRunning==false) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_RESTART_TOUR)
             entourageService?.resumeTreatment()
         }

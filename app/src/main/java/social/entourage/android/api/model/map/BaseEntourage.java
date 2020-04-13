@@ -211,6 +211,7 @@ public class BaseEntourage extends FeedItem implements Serializable {
         if (getAuthor() != null) {
             return getAuthor().isSame(entourage.getAuthor());
         }
+        if (isJoinRequestPublic != entourage.isJoinRequestPublic) return false;
 
         return true;
     }
@@ -266,8 +267,21 @@ public class BaseEntourage extends FeedItem implements Serializable {
             return "";
         }
         if (TYPE_OUTING.equalsIgnoreCase(groupType)) {
-            return String.format("%1$s %2$s", context.getString(R.string.entourage_type_outing), this.metadata.getStartDateAsString(context));
+            //check si les dates de début et fin sont le même jour ou pas
+            Calendar startCalendar = Calendar.getInstance() ;
+            startCalendar.setTime(this.metadata.getStartDate());
+
+            Calendar endCalendar = Calendar.getInstance() ;
+            endCalendar.setTime(this.metadata.getEndDate());
+
+            if (startCalendar.get(Calendar.DAY_OF_YEAR) == endCalendar.get(Calendar.DAY_OF_YEAR)) {
+                return String.format("%1$s %2$s", context.getString(R.string.entourage_type_outing), this.metadata.getStartDateAsString(context));
+            }
+            else {
+                return String.format("%1$s %2$s", context.getString(R.string.entourage_type_outing),this.metadata.getStartEndDatesAsString(context));
+            }
         }
+
         if (entourageType != null) {
             if (TYPE_DEMAND.equals(entourageType)) {
                 return context.getString(R.string.entourage_type_format, context.getString(R.string.entourage_type_demand));
@@ -491,6 +505,9 @@ public class BaseEntourage extends FeedItem implements Serializable {
         @SerializedName("starts_at")
         private Date startDate;
 
+        @SerializedName("ends_at")
+        private Date endDate;
+
         @SerializedName("display_address")
         private String displayAddress;
 
@@ -517,6 +534,12 @@ public class BaseEntourage extends FeedItem implements Serializable {
             return df.format(startDate);
         }
 
+        public String getStartDateFullAsString(Context context) {
+            if (startDate == null) return "";
+            DateFormat df = new SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_format_full), Locale.FRENCH);
+            return df.format(startDate);
+        }
+
         public String getStartTimeAsString(Context context) {
             if (startDate == null) return "";
             //round the minutes to multiple of 15
@@ -528,6 +551,61 @@ public class BaseEntourage extends FeedItem implements Serializable {
             //format it
             DateFormat df = new SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_time_format), Locale.FRENCH);
             return df.format(calendar.getTime());
+        }
+
+        public Date getEndDate() {
+            return endDate;
+        }
+
+        public void setEndDate(final Date endDate) {
+            this.endDate = endDate;
+        }
+
+        public String getEndDateFullAsString(Context context) {
+            if (endDate == null) return "";
+            DateFormat df = new SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_format_full), Locale.FRENCH);
+            return df.format(endDate);
+        }
+
+        public String getEndTimeAsString(Context context) {
+            if (endDate == null) return "";
+            //round the minutes to multiple of 15
+            Calendar calendar = Calendar.getInstance(Locale.getDefault());
+            calendar.setTime(endDate);
+            int minutes = calendar.get(Calendar.MINUTE);
+            minutes = (minutes / 15) * 15;
+            calendar.set(Calendar.MINUTE, minutes);
+            //format it
+            DateFormat df = new SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_time_format), Locale.FRENCH);
+            return df.format(calendar.getTime());
+        }
+
+        public String getStartEndDatesAsString(Context context) {
+            if (startDate == null || endDate == null) return "";
+            DateFormat df = new SimpleDateFormat("dd/MM", Locale.FRENCH);
+            String _startDate = df.format(startDate);
+            String _endDate = df.format(endDate);
+
+            return String.format(context.getString(R.string.entourage_metadata_date_startAt_endAt),_startDate,_endDate);
+        }
+
+        public String getStartEndTimesAsString(Context context) {
+            if (startDate == null || endDate == null) return "";
+            Calendar calendarStart = Calendar.getInstance(Locale.getDefault());
+            Calendar calendarEnd = Calendar.getInstance(Locale.getDefault());
+            calendarStart.setTime(startDate);
+            calendarEnd.setTime(endDate);
+            int minutesStart = calendarStart.get(Calendar.MINUTE);
+            int minutesEnd = calendarEnd.get(Calendar.MINUTE);
+            minutesStart = (minutesStart / 15) * 15;
+            minutesEnd = (minutesEnd / 15) * 15;
+            calendarStart.set(Calendar.MINUTE, minutesStart);
+            calendarEnd.set(Calendar.MINUTE, minutesEnd);
+            //format it
+            DateFormat df = new SimpleDateFormat("HH'h'mm", Locale.FRENCH);
+            String _timeStart = df.format(calendarStart.getTime());
+            String _timeEnd = df.format(calendarEnd.getTime());
+            return String.format(context.getResources().getString(R.string.entourage_metadata_time_startAt_endAt),_timeStart,_timeEnd);
         }
 
         public String getDisplayAddress() {

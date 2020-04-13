@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import social.entourage.android.R;
+import social.entourage.android.api.model.map.Entourage;
 
 /**
  * Entourage categories adapter, with the group at index zero acting as an empty header.<br/>
@@ -71,8 +72,15 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
             category.setSelected(isChecked);
             if (EntourageCategoriesAdapter.this.selectedCategory != category) {
                 EntourageCategoriesAdapter.this.selectedCategory = category;
-            } else {
-                EntourageCategoriesAdapter.this.selectedCategory = category.isSelected() ? category : null;
+                EntourageCategoriesAdapter.this.selectedCategory.setNewlyCreated(false);
+            }
+            else {
+                if (category.isSelected()) {
+                    EntourageCategoriesAdapter.this.selectedCategory.setNewlyCreated(false);
+                }
+                else {
+                    EntourageCategoriesAdapter.this.selectedCategory.setNewlyCreated(true);
+                }
             }
 
             // refresh the list view
@@ -90,24 +98,26 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
     public EntourageCategory selectedCategory;
     private OnCheckedChangeListener onCheckedChangeListener = new OnCheckedChangeListener();
 
-    public EntourageCategoriesAdapter(Context context, List<String> entourageTypeList, HashMap<String, List<EntourageCategory>> entourageCategoryHashMap, EntourageCategory selectedCategory) {
+    private boolean isDemand;
+
+    public EntourageCategoriesAdapter(Context context, List<String> entourageTypeList, HashMap<String, List<EntourageCategory>> entourageCategoryHashMap, EntourageCategory selectedCategory,boolean isDemand) {
         this.context = context;
         this.entourageTypeList = entourageTypeList;
         this.entourageCategoryHashMap = entourageCategoryHashMap;
         this.selectedCategory = selectedCategory;
+        this.isDemand = isDemand;
     }
 
     @Override
     public int getChildrenCount(final int groupPosition) {
         if (groupPosition == 0) return 0;
-        return this.entourageCategoryHashMap.get(this.entourageTypeList.get(groupPosition - 1)).size();
+       return isDemand ? this.entourageCategoryHashMap.get(Entourage.TYPE_DEMAND).size() : this.entourageCategoryHashMap.get(Entourage.TYPE_CONTRIBUTION).size();
     }
 
     @Override
     public Object getChild(final int groupPosition, final int childPosition) {
         if (groupPosition == 0) return null;
-        return this.entourageCategoryHashMap.get(this.entourageTypeList.get(groupPosition - 1))
-                .get(childPosition);
+        return isDemand ? this.entourageCategoryHashMap.get(Entourage.TYPE_DEMAND).get(childPosition) : this.entourageCategoryHashMap.get(Entourage.TYPE_CONTRIBUTION).get(childPosition);
     }
 
     @Override
@@ -155,7 +165,7 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getGroupCount() {
-        return this.entourageTypeList.size() + 1;
+        return 2; // Header + list
     }
 
     @Override
@@ -184,16 +194,9 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
         // populate the group
         if (groupPosition != 0) {
             TextView label = convertView.findViewById(R.id.entourage_category_group_label);
-            ImageView arrow = convertView.findViewById(R.id.entourage_category_group_arrow);
             if (label != null) {
-                label.setText(EntourageCategory.getEntourageTypeDescription((String) getGroup(groupPosition)));
-            }
-            if (arrow != null) {
-                if (isExpanded) {
-                    arrow.setRotation(-90.0f);
-                } else {
-                    arrow.setRotation(90.0f);
-                }
+                String titleKey = isDemand ? this.entourageTypeList.get(0) : this.entourageTypeList.get(1);
+                label.setText(EntourageCategory.getEntourageTypeDescription(titleKey));
             }
         }
 

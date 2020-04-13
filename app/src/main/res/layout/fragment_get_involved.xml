@@ -212,6 +212,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/about_items_padding"
         android:contentDescription="@string/empty_description"
-        android:src="@drawable/ic_entourage_logo_two_colors"/>
+        app:srcCompat="@drawable/ic_entourage_logo_two_colors"/>
 
 </RelativeLayout>

@@ -8,7 +8,7 @@
               tools:context=".authentication.login.LoginActivity"
     >
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment"
         android:name="social.entourage.android.authentication.login.slideshow.LoginSlideshowFragment"
         android:layout_width="match_parent"

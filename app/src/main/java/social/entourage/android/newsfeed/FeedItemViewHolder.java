@@ -8,7 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import androidx.core.content.ContextCompat;
-import android.text.format.DateFormat;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import social.entourage.android.EntourageEvents;
@@ -36,8 +35,6 @@ import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.tools.Utils;
 import social.entourage.android.view.PartnerLogoImageView;
-
-import static social.entourage.android.tools.Utils.getMonthAsString;
 
 /**
  * Created by Mihai Ionescu on 24/03/2017.

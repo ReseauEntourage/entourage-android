@@ -18,7 +18,7 @@ class GuideFilterFragment : EntourageDialogFragment() {
     // ----------------------------------
     // Attributes
     // ----------------------------------
-    var filterAdapter: GuideFilterAdapter? = null
+    private var filterAdapter: GuideFilterAdapter? = null
     // ----------------------------------
     // Lifecycle
     // ----------------------------------

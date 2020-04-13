@@ -3,7 +3,6 @@ package social.entourage.android
 import android.content.Intent
 import android.net.Uri
 import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -16,15 +15,24 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class DeepLinkingTest {
 
+    private val isAppStarted = false
+
     @Rule
     @JvmField
-    val activityTestRule = ActivityTestRule(MainActivity::class.java, false, false)
-    //Staging
-    //private val entourageHash =
-    //private val entourageID = "2300"
-    //Prod
-    private val entourageHash = if(BuildConfig.FLAVOR_env=="prod") "eu_LTSFD6OEc" else "eP8v6B2UYM44"
-    private val entourageID = if(BuildConfig.FLAVOR_env=="prod") "46569" else "2300"
+    val activityTestRule = ActivityTestRule(MainActivity::class.java, isAppStarted, isAppStarted)
+    private val entourageHash = if(BuildConfig.FLAVOR_env=="prod") "eWvL7X0WfPug" else "eP8v6B2UYM44"
+    private val entourageID = if(BuildConfig.FLAVOR_env=="prod") "204" else "2300"
+    private val dmHash= if(BuildConfig.FLAVOR_env=="prod") "1_list_me-94" else "1_list_me-2790"
+    private val dmID=if(BuildConfig.FLAVOR_env=="prod") "51946" else "2013"
+    
+    private fun startIntent(intent: Intent) {
+        if(!isAppStarted) {
+            activityTestRule.launchActivity(intent)
+        } else {
+            activityTestRule.activity.startActivity(intent)
+        }
+    }
+
 
     @Before
     fun setUp() {
@@ -53,7 +61,7 @@ class DeepLinkingTest {
 
     private fun connectedCreateActionDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-        activityTestRule.launchActivity(intent)
+        startIntent(intent)
         Espresso.onView(ViewMatchers.withText(R.string.entourage_disclaimer_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
@@ -74,7 +82,7 @@ class DeepLinkingTest {
 
     private fun connectedBadgeDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-        activityTestRule.launchActivity(intent)
+        startIntent(intent)
         Espresso.onView(ViewMatchers.withText(R.string.user_profile_display_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
@@ -95,7 +103,7 @@ class DeepLinkingTest {
 
     private fun connectedWebviewDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-        activityTestRule.launchActivity(intent)
+        startIntent(intent)
         Espresso.onView(ViewMatchers.withId(R.id.webview_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
@@ -116,7 +124,7 @@ class DeepLinkingTest {
 
     private fun connectedPhoneSettingsDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-        activityTestRule.launchActivity(intent)
+        startIntent(intent)
         Espresso.onView(ViewMatchers.withId(R.id.fragment_map_top_tab)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
@@ -137,7 +145,7 @@ class DeepLinkingTest {
 
     private fun connectedFeedFilterDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-        activityTestRule.launchActivity(intent)
+        startIntent(intent)
         Espresso.onView(ViewMatchers.withText(R.string.map_filter_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
@@ -158,7 +166,7 @@ class DeepLinkingTest {
 
     private fun connectedFeedDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-        activityTestRule.launchActivity(intent)
+        startIntent(intent)
         Espresso.onView(ViewMatchers.withId(R.id.fragment_map_top_tab)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
@@ -262,6 +270,106 @@ class DeepLinkingTest {
         connectedEntourageDeeplink("entourage",entourageHash)
     }
 
+    @Test
+    fun connectedDMsIdDeeplinkHTTP() {
+        connectedEntourageDeeplinkHTTP("entourages",dmID)
+    }
+
+    @Test
+    fun connectedDMsHashDeeplinkHTTP() {
+        connectedEntourageDeeplinkHTTP("entourages",dmHash)
+    }
+
+    @Test
+    fun connectedDMIdDeeplinkHTTP() {
+        connectedEntourageDeeplinkHTTP("entourage",dmID)
+    }
+
+    @Test
+    fun connectedDMHashDeeplinkHTTP() {
+        connectedEntourageDeeplinkHTTP("entourage",dmHash)
+    }
+
+    @Test
+    fun connectedDMsIdHTTP() {
+        connectedEntourageHTTP("entourages",dmID)
+    }
+
+    @Test
+    fun connectedDMsHashHTTP() {
+        connectedEntourageHTTP("entourages",dmHash)
+    }
+
+    @Test
+    fun connectedDMIdHTTP() {
+        connectedEntourageHTTP("entourage",dmID)
+    }
+
+    @Test
+    fun connectedDMHashHTTP() {
+        connectedEntourageHTTP("entourage",dmHash)
+    }
+
+    @Test
+    fun connectedDMsIdHTTPS() {
+        connectedEntourageHTTPS("entourages",dmID)
+    }
+
+    @Test
+    fun connectedDMsHashHTTPS() {
+        connectedEntourageHTTPS("entourages",dmHash)
+    }
+
+    @Test
+    fun connectedDMIdHTTPS() {
+        connectedEntourageHTTPS("entourage",dmID)
+    }
+
+    @Test
+    fun connectedDMHashHTTPS() {
+        connectedEntourageHTTPS("entourage",dmHash)
+    }
+
+    @Test
+    fun connectedDMsIdDeeplinkHTTPS() {
+        connectedEntourageDeeplinkHTTPS("entourages",dmID)
+    }
+
+    @Test
+    fun connectedDMsHashDeeplinkHTTPS() {
+        connectedEntourageDeeplinkHTTPS("entourages",dmHash)
+    }
+
+    @Test
+    fun connectedDMIdDeeplinkHTTPS() {
+        connectedEntourageDeeplinkHTTPS("entourage",dmID)
+    }
+
+    @Test
+    fun connectedDMHashDeeplinkHTTPS() {
+        connectedEntourageDeeplinkHTTPS("entourage",dmHash)
+    }
+
+    @Test
+    fun connectedDMsIdDeeplink() {
+        connectedEntourageDeeplink("entourages",dmID)
+    }
+
+    @Test
+    fun connectedDMsHashDeeplink() {
+        connectedEntourageDeeplink("entourages",dmHash)
+    }
+
+    @Test
+    fun connectedDMIdDeeplink() {
+        connectedEntourageDeeplink("entourage",dmID)
+    }
+
+    @Test
+    fun connectedDMHashDeeplink() {
+        connectedEntourageDeeplink("entourage",dmHash)
+    }
+
     private fun connectedEntourageDeeplink(key:String, id: String) {
         connectedEntourageDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://"+key+"/"+id)
     }
@@ -284,7 +392,7 @@ class DeepLinkingTest {
 
     private fun connectedEntourageDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-        activityTestRule.launchActivity(intent)
+        startIntent(intent)
         Espresso.onView(ViewMatchers.withId(R.id.tour_info_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
@@ -305,7 +413,7 @@ class DeepLinkingTest {
 
     private fun connectedMessagesDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-        activityTestRule.launchActivity(intent)
+        startIntent(intent)
         Espresso.onView(ViewMatchers.withId(R.id.myentourages_tab)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
@@ -326,7 +434,7 @@ class DeepLinkingTest {
 
     private fun connectedTutorialDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-        activityTestRule.launchActivity(intent)
+        startIntent(intent)
         Espresso.onView(ViewMatchers.withId(R.id.carousel_indicator_layout)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
@@ -347,7 +455,7 @@ class DeepLinkingTest {
 
     private fun connectedGuideDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-        activityTestRule.launchActivity(intent)
+        startIntent(intent)
         Espresso.onView(ViewMatchers.withId(R.id.button_poi_propose)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
@@ -368,21 +476,21 @@ class DeepLinkingTest {
 
     private fun connectedProfileDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-        activityTestRule.launchActivity(intent)
+        startIntent(intent)
         Espresso.onView(ViewMatchers.withText(R.string.user_profile_display_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
     @Test
     fun connectedWrongProfileDeeplink() {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.DEEP_LINKS_SCHEME + "://profile/toto"))
-        activityTestRule.launchActivity(intent)
+        startIntent(intent)
         Espresso.onView(ViewMatchers.withText(R.string.user_profile_display_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
     @Test
     fun unkownDeeplinkDeeplink() {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.DEEP_LINKS_SCHEME + "://deeplink/profile"))
-        activityTestRule.launchActivity(intent)
+        startIntent(intent)
         Espresso.onView(ViewMatchers.withText(R.string.user_profile_display_title)).check(ViewAssertions.doesNotExist())
     }
 

@@ -12,11 +12,13 @@ import android.os.Handler;
 import android.speech.RecognizerIntent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,6 +81,8 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     private static final int VOICE_RECOGNITION_TITLE_CODE = 1;
     private static final int VOICE_RECOGNITION_DESCRIPTION_CODE = 2;
 
+    private static final int ADD_HOURS_TO_END_DATE = 3;
+
     // ----------------------------------
     // Attributes
     // ----------------------------------
@@ -110,11 +114,17 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     @BindView(R.id.create_entourage_description_label)
     TextView descriptionLabelTextView;
 
-    @BindView(R.id.create_entourage_date_layout)
-    View entourageDateLayout;
+    @BindView(R.id.create_entourage_date_start_layout)
+    View entourageDateStartLayout;
 
-    @BindView(R.id.create_entourage_date)
-    TextView entourageDateTextView;
+    @BindView(R.id.create_entourage_date_start)
+    TextView entourageDateStartTextView;
+
+    @BindView(R.id.create_entourage_date_end_layout)
+    View entourageDateEndLayout;
+
+    @BindView(R.id.create_entourage_date_end)
+    TextView entourageDateEndTextView;
 
     @BindView(R.id.create_entourage_privacy_layout)
     View privacyLayout;
@@ -128,10 +138,31 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     @BindView(R.id.create_entourage_privacy_description)
     TextView privacyDescription;
 
+    @BindView(R.id.ui_create_entourage_privacyAction)
+    View ui_privacyActionLayout;
+    @BindView(R.id.ui_layout_privacyAction_public)
+    ConstraintLayout ui_privacyActionPublicLayout;
+    @BindView(R.id.ui_layout_privacyAction_private)
+    ConstraintLayout ui_privacyActionPrivateLayout;
+    @BindView(R.id.ui_iv_button_public)
+    ImageView ui_privacyActionPublicImageSelect;
+    @BindView(R.id.ui_tv_entourage_privacyAction_public_title)
+    TextView ui_privacyActionPublicTitle;
+    @BindView(R.id.ui_tv_entourage_privacyAction_public)
+    TextView ui_privacyActionPublicDescription;
+    @BindView(R.id.ui_iv_button_private)
+    ImageView ui_privacyActionPrivateImageSelect;
+    @BindView(R.id.ui_tv_entourage_privacyAction_private_title)
+    TextView ui_privacyActionPrivateTitle;
+    @BindView(R.id.ui_tv_entourage_privacyAction_private)
+    TextView ui_privacyActionPrivateDescription;
+
+
     protected EntourageCategory entourageCategory;
     protected LatLng location;
     protected String groupType;
-    protected Calendar entourageDate = Calendar.getInstance();
+    protected Calendar entourageDateStart ;//= Calendar.getInstance();
+    protected Calendar entourageDateEnd ;//= Calendar.getInstance();
     protected BaseEntourage.Metadata entourageMetadata;
     protected boolean recipientConsentObtained = true;
     protected boolean joinRequestTypePublic = true;
@@ -139,6 +170,8 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     protected boolean isSaving = false;
 
     protected Entourage editedEntourage;
+
+    protected Boolean isStartDateEdited = true;
 
     // ----------------------------------
     // Lifecycle
@@ -187,6 +220,10 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         setupComponent(EntourageApplication.get().getEntourageComponent());
 
         initializeView();
+        //To show choice type at launch (if not an event)
+        if (!Entourage.TYPE_OUTING.equalsIgnoreCase(groupType) && entourageCategory.isNewlyCreated()) {
+            onEditTypeClicked();
+        }
     }
 
     protected void setupComponent(EntourageComponent entourageComponent) {
@@ -236,7 +273,9 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         if (isSaving) return;
         if (isValid()) {
             if (presenter != null) {
-                joinRequestTypePublic = privacySwitch.isChecked();
+                if (Entourage.TYPE_OUTING.equalsIgnoreCase(groupType)) {
+                    joinRequestTypePublic = privacySwitch.isChecked();
+                }
                 if (editedEntourage != null) {
                     saveEditedEntourage();
                 } else {
@@ -251,7 +290,15 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     @OnClick(R.id.create_entourage_category_layout)
     protected void onEditTypeClicked() {
         if (getFragmentManager() == null) return;
-        EntourageCategoryFragment fragment = EntourageCategoryFragment.newInstance(entourageCategory);
+        Boolean isDemand = true;
+
+        if (editedEntourage != null) {
+            if (editedEntourage.getEntourageType().equalsIgnoreCase(Entourage.TYPE_CONTRIBUTION)) isDemand = false;
+        } else {
+            if (entourageCategory.getEntourageType().equalsIgnoreCase(Entourage.TYPE_CONTRIBUTION)) isDemand = false;
+        }
+
+        EntourageCategoryFragment fragment = EntourageCategoryFragment.newInstance(entourageCategory,isDemand);
         fragment.setListener(this);
         fragment.show(getFragmentManager(), EntourageCategoryFragment.TAG);
     }
@@ -284,8 +331,16 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         descriptionFragment.show(getFragmentManager(), CreateEntourageDescriptionFragment.TAG);
     }
 
-    @OnClick(R.id.create_entourage_date_layout)
-    protected void onEditDateClicked() {
+    @OnClick(R.id.create_entourage_date_start_layout)
+    protected void onEditDateStartClicked() {
+        isStartDateEdited = true;
+        showDatePicker();
+    }
+
+    @OnClick(R.id.create_entourage_date_end_layout)
+    protected void onEditDateEndClicked() {
+        if (entourageDateStart == null) return;
+        isStartDateEdited = false;
         showDatePicker();
     }
 
@@ -457,12 +512,14 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         initializeDate();
         initializeJoinRequestType();
         initializeHelpHtmlView();
+        initializePrivacyAction();
     }
 
     protected void initializeCategory() {
         if (editedEntourage != null) {
             entourageCategory = EntourageCategoryManager.getInstance().findCategory(editedEntourage.getEntourageType(), editedEntourage.getCategory());
             groupType = editedEntourage.getGroupType();
+            entourageCategory.setSelected(true);
         }
         if(entourageCategory==null) {
             if(groupType != null){
@@ -470,17 +527,17 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
             } else {
                 entourageCategory = EntourageCategoryManager.getInstance().getDefaultCategory();
             }
+            entourageCategory.setSelected(false);
+            entourageCategory.setNewlyCreated(true);
         }
-        if (entourageCategory != null) {
-            entourageCategory.setSelected(true);
-        }
+        
         updateFragmentTitle();
         updateCategoryTextView();
     }
 
     protected void updateCategoryTextView() {
-        if (entourageCategory == null) {
-            categoryTextView.setText("");
+        if (entourageCategory == null || entourageCategory.isNewlyCreated()) {
+            categoryTextView.setText("*");
         } else {
             categoryTextView.setText(
                     getString(
@@ -540,11 +597,18 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         if (editedEntourage != null) {
             BaseEntourage.Metadata metadata = editedEntourage.getMetadata();
             if (metadata != null && metadata.getStartDate() != null) {
-                entourageDate.setTime(metadata.getStartDate());
+                entourageDateStart = Calendar.getInstance();
+                entourageDateStart.setTime(metadata.getStartDate());
             }
-            updateDateTextView();
+            if (metadata != null && metadata.getEndDate() != null) {
+                entourageDateEnd = Calendar.getInstance();
+                entourageDateEnd.setTime(metadata.getEndDate());
+            }
+            updateDateStartTextView();
+            updateDateEndTextView();
         }
-        entourageDateLayout.setVisibility((groupType != null && groupType.equalsIgnoreCase(Entourage.TYPE_OUTING)) ? View.VISIBLE : View.GONE);
+        entourageDateStartLayout.setVisibility((groupType != null && groupType.equalsIgnoreCase(Entourage.TYPE_OUTING)) ? View.VISIBLE : View.GONE);
+        entourageDateEndLayout.setVisibility((groupType != null && groupType.equalsIgnoreCase(Entourage.TYPE_OUTING)) ? View.VISIBLE : View.GONE);
     }
 
     protected void initializeJoinRequestType() {
@@ -566,6 +630,35 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         }
     }
 
+    private void initializePrivacyAction() {
+        if (Entourage.TYPE_OUTING.equalsIgnoreCase(groupType)) {
+            ui_privacyActionLayout.setVisibility(View.GONE);
+        }
+        else {
+            if (editedEntourage != null) {
+                changeActionView(editedEntourage.isJoinRequestPublic());
+            }
+            else {
+                changeActionView(true);
+            }
+
+            ui_privacyActionLayout.setVisibility(View.VISIBLE);
+            ui_privacyActionPublicLayout.setOnClickListener(view -> changeActionView(true));
+            ui_privacyActionPrivateLayout.setOnClickListener(view -> changeActionView(false));
+        }
+    }
+
+    private void changeActionView(Boolean isPublicActive) {
+        ui_privacyActionPublicTitle.setTypeface(Typeface.create(ui_privacyActionPublicTitle.getTypeface(), isPublicActive ? Typeface.BOLD : Typeface.NORMAL));
+        ui_privacyActionPublicDescription.setTypeface(Typeface.create(ui_privacyActionPublicDescription.getTypeface(), isPublicActive ? Typeface.BOLD : Typeface.NORMAL));
+        ui_privacyActionPrivateTitle.setTypeface(Typeface.create(ui_privacyActionPrivateTitle.getTypeface(), !isPublicActive ? Typeface.BOLD : Typeface.NORMAL));
+        ui_privacyActionPrivateDescription.setTypeface(Typeface.create(ui_privacyActionPrivateDescription.getTypeface(), !isPublicActive ? Typeface.BOLD : Typeface.NORMAL));
+        ui_privacyActionPublicImageSelect.setVisibility( isPublicActive ? View.VISIBLE : View.INVISIBLE);
+        ui_privacyActionPrivateImageSelect.setVisibility(!isPublicActive ? View.VISIBLE : View.INVISIBLE);
+
+        joinRequestTypePublic = isPublicActive;
+    }
+
     protected boolean isValid() {
         String title = titleEditText.getText().toString().trim();
         if (title.length() == 0) {
@@ -573,13 +666,13 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
             return false;
         }
         if (Entourage.TYPE_OUTING.equalsIgnoreCase(groupType)) {
-            String dateString = entourageDateTextView.getText().toString().trim();
+            String dateString = entourageDateStartTextView.getText().toString().trim();
             if (dateString.length() == 0) {
                 Toast.makeText(getActivity(), R.string.entourage_create_error_date_empty, Toast.LENGTH_SHORT).show();
                 return false;
             }
         } else {
-            if (entourageCategory == null) {
+            if (entourageCategory == null || entourageCategory.isNewlyCreated()) {
                 Toast.makeText(getActivity(), R.string.entourage_create_error_category_empty, Toast.LENGTH_SHORT).show();
                 return false;
             }
@@ -676,6 +769,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     @Override
     public void onCategoryChosen(final EntourageCategory category) {
         this.entourageCategory = category;
+
         updateCategoryTextView();
     }
 
@@ -683,22 +777,42 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     // Date/Time Methods
     // ----------------------------------
 
-    protected void updateDateTextView() {
-        if (entourageDate == null) return;
+    protected void updateDateStartTextView() {
+        if (entourageDateStart == null) return;
         DateFormat df = new SimpleDateFormat(getString(R.string.entourage_create_date_format), Locale.getDefault());
-        entourageDateTextView.setText(df.format(entourageDate.getTime()));
+        entourageDateStartTextView.setText(df.format(entourageDateStart.getTime()));
+    }
+
+    protected void updateDateEndTextView() {
+        if (entourageDateEnd == null) return;
+        DateFormat df = new SimpleDateFormat(getString(R.string.entourage_create_date_format), Locale.getDefault());
+        entourageDateEndTextView.setText(df.format(entourageDateEnd.getTime()));
     }
 
     private void showDatePicker() {
         if (getActivity() == null || getActivity().getFragmentManager() == null) return;
-        DatePickerDialog dpd = DatePickerDialog.newInstance(
-                this,
-                entourageDate.get(Calendar.YEAR),
-                entourageDate.get(Calendar.MONTH),
-                entourageDate.get(Calendar.DAY_OF_MONTH)
-        );
+        DatePickerDialog dpd;
+        if (isStartDateEdited) {
+            entourageDateStart = Calendar.getInstance();
+            dpd = DatePickerDialog.newInstance(
+                    this,
+                    entourageDateStart.get(Calendar.YEAR),
+                    entourageDateStart.get(Calendar.MONTH),
+                    entourageDateStart.get(Calendar.DAY_OF_MONTH)
+            );
+            dpd.setMinDate(Calendar.getInstance()); // only today and future dates
+        }
+        else {
+            dpd = DatePickerDialog.newInstance(
+                    this,
+                    entourageDateEnd.get(Calendar.YEAR),
+                    entourageDateEnd.get(Calendar.MONTH),
+                    entourageDateEnd.get(Calendar.DAY_OF_MONTH)
+            );
+            dpd.setMinDate(entourageDateStart); // only after start date
+        }
+
         dpd.setCancelText(R.string.cancel);
-        dpd.setMinDate(Calendar.getInstance()); // only today and future dates
         dpd.show(getActivity().getSupportFragmentManager(), "DatePickerDialog");
     }
 
@@ -707,24 +821,57 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         TimePickerDialog tpd = TimePickerDialog.newInstance(
                 BaseCreateEntourageFragment.this,
                 true);
-        tpd.setInitialSelection(entourageDate.get(Calendar.HOUR_OF_DAY), entourageDate.get(Calendar.MINUTE));
+        if (isStartDateEdited) {
+            tpd.setInitialSelection(entourageDateStart.get(Calendar.HOUR_OF_DAY), entourageDateStart.get(Calendar.MINUTE));
+        }
+        else {
+            tpd.setInitialSelection(entourageDateEnd.get(Calendar.HOUR_OF_DAY), entourageDateEnd.get(Calendar.MINUTE));
+            tpd.setMinTime(entourageDateStart.get(Calendar.HOUR_OF_DAY),
+                    entourageDateStart.get(Calendar.MINUTE),
+                    entourageDateStart.get(Calendar.SECOND)); //Only after time from start date
+        }
+
         tpd.setCancelText(R.string.cancel);
         tpd.show(getActivity().getSupportFragmentManager(), "TimePickerDialog");
     }
 
     @Override
     public void onDateSet(final DatePickerDialog view, final int year, final int monthOfYear, final int dayOfMonth) {
-        entourageDate.set(year, monthOfYear, dayOfMonth);
+        if (isStartDateEdited) {
+            entourageDateStart.set(year, monthOfYear, dayOfMonth);
+            if (entourageDateEnd == null || entourageDateStart.after(entourageDateEnd)) {
+                entourageDateEnd = Calendar.getInstance();
+                entourageDateEnd.setTime(entourageDateStart.getTime());
+                entourageDateEnd.set(Calendar.HOUR,entourageDateEnd.get(Calendar.HOUR) + ADD_HOURS_TO_END_DATE);
+            }
+        }
+        else {
+            entourageDateEnd.set(year, monthOfYear, dayOfMonth);
+        }
         new Handler().post(this::showTimePicker);
     }
 
     @Override
     public void onTimeSet(final TimePickerDialog view, final int hourOfDay, final int minute, final int second) {
-        entourageDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
-        entourageDate.set(Calendar.MINUTE, minute);
-        entourageDate.set(Calendar.SECOND, second);
+        if (isStartDateEdited) {
+            entourageDateStart.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            entourageDateStart.set(Calendar.MINUTE, minute);
+            entourageDateStart.set(Calendar.SECOND, second);
+
+            if (entourageDateStart.after(entourageDateEnd)) {
+                entourageDateEnd.setTime(entourageDateStart.getTime());
+                entourageDateEnd.set(Calendar.HOUR,entourageDateEnd.get(Calendar.HOUR) + ADD_HOURS_TO_END_DATE);
+            }
+        }
+        else {
+            entourageDateEnd.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            entourageDateEnd.set(Calendar.MINUTE, minute);
+            entourageDateEnd.set(Calendar.SECOND, second);
+        }
         if (entourageMetadata == null) entourageMetadata = new BaseEntourage.Metadata();
-        entourageMetadata.setStartDate(entourageDate.getTime());
-        updateDateTextView();
+        entourageMetadata.setEndDate(entourageDateEnd.getTime());
+        entourageMetadata.setStartDate(entourageDateStart.getTime());
+        updateDateStartTextView();
+        updateDateEndTextView();
     }
 }

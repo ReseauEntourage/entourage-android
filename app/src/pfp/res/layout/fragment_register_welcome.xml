@@ -59,7 +59,7 @@
                 android:layout_width="50dp"
                 android:layout_height="74dp"
                 android:contentDescription="@string/empty_description"
-                android:src="@drawable/entourage_logo_white"/>
+                android:src="@drawable/login_slideshow_voisinage_logo"/>
 
             <TextView
                 android:layout_width="wrap_content"

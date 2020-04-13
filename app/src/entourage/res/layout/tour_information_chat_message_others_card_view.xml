@@ -1,7 +1,8 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:gravity="center_vertical|start"
     android:padding="10dp">
@@ -17,7 +18,6 @@
             android:id="@+id/tic_chat_user_photo"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_gravity="bottom"
@@ -30,10 +30,8 @@
             android:layout_height="20dp"
             android:id="@+id/tic_chat_user_partner_logo"
             android:layout_alignBottom="@+id/tic_chat_user_photo"
-            android:layout_alignRight="@+id/tic_chat_user_photo"
             android:layout_alignEnd="@+id/tic_chat_user_photo"
             android:layout_marginBottom="-4dp"
-            android:layout_marginRight="-4dp"
             android:layout_marginEnd="-4dp"
             />
     </RelativeLayout>
@@ -48,40 +46,62 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
             android:layout_marginStart="15dp"
             android:textColor="@color/greyish"
-            android:textSize="@dimen/entourage_font_small"/>
+            android:textSize="@dimen/entourage_font_small"
+            tools:text="This a username"/>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tic_chat_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bubble_left"
-            android:orientation="vertical">
+            android:background="@drawable/bubble_left">
 
-            <TextView
+            <social.entourage.android.view.HtmlTextView
                 android:id="@+id/tic_chat_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="10dp"
                 android:layout_marginStart="5dp"
+                android:layout_marginBottom="5dp"
+                android:autoLink="all"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"
                 android:textIsSelectable="true"
-                android:autoLink="all"
-                android:textSize="@dimen/entourage_font_large"/>
+                android:textSize="@dimen/entourage_font_large"
+                app:layout_constraintBottom_toTopOf="@+id/tic_chat_timestamp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="this is a chat message that could be https://entourage-landingpages-preprod.herokuapp.com/deeplink/entourages/2013" />
 
             <TextView
                 android:id="@+id/tic_chat_timestamp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="5dp"
+                android:layout_marginEnd="6dp"
+                android:layout_marginBottom="3dp"
                 android:textColor="@color/warm_grey"
-                android:textSize="@dimen/entourage_font_small"/>
-        </LinearLayout>
+                android:textSize="@dimen/entourage_font_small"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tic_chat_deeplink"
+                tools:text="This a timestamp" />
+
+            <ImageButton
+                android:id="@+id/tic_chat_deeplink"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="3dp"
+                android:background="@color/light_grey"
+                android:tint="@color/accent"
+                android:contentDescription="Deeplink vers les actions entourage"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tic_chat_message"
+                app:srcCompat="@drawable/ic_open_in_new_white_24dp"
+                tools:visibility="visible" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 

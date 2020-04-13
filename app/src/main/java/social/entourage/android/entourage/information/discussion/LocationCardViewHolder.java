@@ -52,7 +52,7 @@ public class LocationCardViewHolder extends BaseCardViewHolder {
 
         List<TourPoint> tourPointsList = tour.getTourPoints();
 
-        SimpleDateFormat locationDateFormat = new SimpleDateFormat(itemView.getResources().getString(R.string.tour_info_location_card_date_format));
+        SimpleDateFormat locationDateFormat = new SimpleDateFormat(itemView.getResources().getString(R.string.tour_info_location_card_date_format), Locale.FRANCE);
         if (!isStartCard) {
             mLocationDate.setText(locationDateFormat.format(tour.getEndTime()).toUpperCase());
             mLocationTitle.setText(R.string.tour_info_text_closed);
@@ -88,7 +88,7 @@ public class LocationCardViewHolder extends BaseCardViewHolder {
 
     public void populate(TourTimestamp tourTimestamp) {
         if (tourTimestamp.getDate() != null) {
-            SimpleDateFormat locationDateFormat = new SimpleDateFormat(itemView.getResources().getString(R.string.tour_info_location_card_date_format));
+            SimpleDateFormat locationDateFormat = new SimpleDateFormat(itemView.getResources().getString(R.string.tour_info_location_card_date_format), Locale.FRANCE);
             mLocationDate.setText(locationDateFormat.format(tourTimestamp.getDate()).toUpperCase());
         }
 

@@ -15,16 +15,15 @@ import social.entourage.android.location.EntourageLocation;
 import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.Newsfeed.NewsfeedWrapper;
 import social.entourage.android.map.MapTabItem;
-import social.entourage.android.tour.TourServiceManager.NewsFeedCallback;
 import social.entourage.android.newsfeed.NewsfeedPagination;
 
 @RunWith(HierarchicalContextRunner.class)
 public class EntourageServiceManagerTest {
-    @Mock private TourService service;
+    @Mock private EntourageService service;
     @Mock private ConnectivityManager connectivityManager;
     @Mock private EntourageLocation location;
     @Mock private Context context;
-    @InjectMocks private TourServiceManager tourServiceManager;
+    @InjectMocks private EntourageServiceManager tourServiceManager;
 
     @Before
     public void setup() {

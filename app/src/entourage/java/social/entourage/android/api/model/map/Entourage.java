@@ -2,8 +2,6 @@ package social.entourage.android.api.model.map;
 
 import java.io.Serializable;
 
-import social.entourage.android.R;
-
 /**
  * Created by Mihai Ionescu on 28/04/16.
  */

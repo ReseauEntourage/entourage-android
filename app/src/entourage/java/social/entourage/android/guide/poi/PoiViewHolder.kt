@@ -47,7 +47,7 @@ class PoiViewHolder(itemView: View?) : BaseCardViewHolder(itemView) {
         itemView.poi_card_type?.text = CategoryType.findCategoryTypeById(poi!!.categoryId).displayName
         itemView.poi_card_address?.text = if (poi!!.address != null) poi!!.address else ""
         itemView.poi_card_distance?.text = TourPoint(poi!!.latitude, poi!!.longitude).distanceToCurrentLocation()
-        itemView.poi_card_call_button?.visibility = if (poi!!.phone == null || poi!!.phone!!.isEmpty()) View.GONE else View.VISIBLE
+        itemView.poi_card_call_button?.visibility = if (poi!!.phone.isNullOrEmpty()) View.GONE else View.VISIBLE
     }
 
     companion object {

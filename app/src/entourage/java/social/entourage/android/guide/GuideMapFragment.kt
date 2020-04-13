@@ -35,7 +35,6 @@ import social.entourage.android.location.LocationUtils.isLocationPermissionGrant
 import social.entourage.android.map.BaseMapFragment
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.Utils
-import social.entourage.android.view.HtmlTextView
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -54,7 +53,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
     private var poisMap: MutableMap<Long, Poi> = TreeMap()
     private var previousEmptyListPopupLocation: Location? = null
     private var poisAdapter: PoisAdapter? = null
-    protected var mapClusterItemRenderer: PoiRenderer? = null
+    private var mapClusterItemRenderer: PoiRenderer? = null
 
     // ----------------------------------
     // LIFECYCLE
@@ -261,8 +260,8 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
         }
     }
 
-    fun initializeAlertBanner() {
-        isAlertTextVisible = false;
+    private fun initializeAlertBanner() {
+        isAlertTextVisible = false
         fragment_guide_alert_description?.setHtmlString(getString(R.string.guide_alert_info_text), EntourageLinkMovementMethod.getInstance())
         fragment_guide_alert_arrow?.setOnClickListener {onClickAlertArrow()}
         fragment_guide_alert?.setOnClickListener {onClickAlertArrow()}
@@ -385,7 +384,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
             return
         }
         isFullMapShown = true
-        fragment_map_display_toggle?.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_list_white_24dp))
+        fragment_guide_display_toggle?.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_list_white_24dp))
         ensureMapVisible()
         val targetHeight = fragment_guide_main_layout.measuredHeight
         if (animated) {
@@ -399,14 +398,14 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
     }
 
     private fun showPOIList(animated: Boolean) {
-        if (fragment_guide_main_layout == null || fragment_guide_pois_view == null || fragment_map_display_toggle == null) {
+        if (fragment_guide_main_layout == null || fragment_guide_pois_view == null || fragment_guide_display_toggle == null) {
             return
         }
         if (!isFullMapShown) {
             return
         }
         isFullMapShown = false
-        fragment_map_display_toggle?.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_map_white_24dp))
+        fragment_guide_display_toggle?.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_map_white_24dp))
         hideInfoPopup()
         hideEmptyListPopup()
         if (animated) {
@@ -429,8 +428,8 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
     private fun initializeFloatingButtons() {
         // Guide starts in full map mode, adjust the text accordingly
         if (context == null) return
-        fragment_map_display_toggle?.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_list_white_24dp))
-        fragment_map_display_toggle?.setOnClickListener {onDisplayToggle()}
+        fragment_guide_display_toggle?.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_list_white_24dp))
+        fragment_guide_display_toggle?.setOnClickListener {onDisplayToggle()}
         guide_longclick_button_poi_propose?.setOnClickListener {proposePOI()}
         button_poi_propose?.setOnClickListener {onPOIProposeClicked()}
 
@@ -439,7 +438,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
 
             EntourageTapPrompt proposePrompt = new EntourageTapPrompt(R.id.button_poi_propose, "Proposer un POI","Clique ici pour envoyer les infos", null);
             if(!GuideFilter.getInstance().hasFilteredCategories()) {
-                EntourageTapPrompt filterPrompt = new EntourageTapPrompt(R.id.fragment_map_filter_button, "Filtrer les POI","Clique ici pour voir les filtres actifs", proposePrompt);
+                EntourageTapPrompt filterPrompt = new EntourageTapPrompt(R.id.fragment_guide_filter_button, "Filtrer les POI","Clique ici pour voir les filtres actifs", proposePrompt);
                 filterPrompt.show(getActivity());
             } else {
                 proposePrompt.show(getActivity());
@@ -448,13 +447,13 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
     }
 
     private fun initializeFilterButton() {
-        fragment_map_filter_button?.setOnClickListener {onShowFilter()}
+        fragment_guide_filter_button?.setOnClickListener {onShowFilter()}
         if (instance.hasFilteredCategories()) {
-            //fragment_map_filter_button.extend();
-            (fragment_map_filter_button as ExtendedFloatingActionButton).setText(R.string.guide_filters_activated)
+            //fragment_guide_filter_button.extend();
+            (fragment_guide_filter_button as ExtendedFloatingActionButton).setText(R.string.guide_filters_activated)
         } else {
-            (fragment_map_filter_button as ExtendedFloatingActionButton).setText(R.string.guide_no_filter)
-            //fragment_map_filter_button.shrink();
+            (fragment_guide_filter_button as ExtendedFloatingActionButton).setText(R.string.guide_no_filter)
+            //fragment_guide_filter_button.shrink();
         }
     }
 

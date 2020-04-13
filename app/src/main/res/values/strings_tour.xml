@@ -43,7 +43,7 @@
     <string name="tour_info_options_close">Annuler</string>
     <string name="tour_info_options_contact">Contacter</string>
     <string name="tour_info_options_cancel_request">Retirer ma demande</string>
-    <string name="tour_info_options_promote">promouvoir la sortie</string>
+    <string name="tour_info_options_promote">Promouvoir la sortie</string>
 
     <string name="tour_info_encounter_location">&#160;et %1$s se sont rencontrés ici.</string>
     <string name="tour_info_encounter_location_mine">&lt;u>&#160;et %1$s se sont rencontrés ici.&lt;/u></string>
@@ -68,6 +68,9 @@
     <string name="tour_info_metadata_organised_by">Organisé\u0020</string>
     <string name="tour_info_metadata_organiser_format">par %1$s</string>
     <string name="tour_info_metadata_date_format">Rendez-vous %1$s %2$s</string>
+
+    <string name="tour_info_metadata_dateStart_hours_format">Rendez-vous le %1$s %2$s</string>
+    <string name="tour_info_metadata_dateStart_End_hours_format">Rendez-vous du %1$s %2$s au %3$s %4$s</string>
 
     <!-- EntourageService -->
     <string name="local_service_stopped">Maraude terminée</string>
