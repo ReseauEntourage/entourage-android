@@ -330,7 +330,7 @@ class EntourageInformationFragment : EntourageDialogFragment(), EntourageService
         }
 
         // For conversation, open the author profile
-        if (FeedItem.ENTOURAGE_CARD == feedItem.type && Entourage.TYPE_CONVERSATION.equals(feedItem.groupType, ignoreCase = true)) {
+        if (FeedItem.ENTOURAGE_CARD == feedItem.type && BaseEntourage.TYPE_CONVERSATION.equals(feedItem.groupType, ignoreCase = true)) {
             if (showInfoButton) {
                 // only if this screen wasn't shown from the profile page
                 BusProvider.instance.post(OnUserViewRequestedEvent(feedItem.author.userID))
@@ -923,14 +923,14 @@ class EntourageInformationFragment : EntourageDialogFragment(), EntourageService
                     val icon = BitmapDescriptorFactory.fromResource(feedItem.heatmapResourceId)
                     val groundOverlayOptions = GroundOverlayOptions()
                             .image(icon)
-                            .position(position, Entourage.HEATMAP_SIZE, Entourage.HEATMAP_SIZE)
+                            .position(position, BaseEntourage.HEATMAP_SIZE, BaseEntourage.HEATMAP_SIZE)
                             .clickable(true)
                             .anchor(0.5f, 0.5f)
                     googleMap.addGroundOverlay(groundOverlayOptions)
                 } else {
                     // add marker
                     val drawable = AppCompatResources.getDrawable(requireContext(), feedItem.heatmapResourceId)
-                    val icon = Utils.getBitmapDescriptorFromDrawable(drawable!!, Entourage.getMarkerSize(context), Entourage.getMarkerSize(context))
+                    val icon = Utils.getBitmapDescriptorFromDrawable(drawable!!, BaseEntourage.getMarkerSize(context), BaseEntourage.getMarkerSize(context))
                     val markerOptions = MarkerOptions()
                             .icon(icon)
                             .position(position)

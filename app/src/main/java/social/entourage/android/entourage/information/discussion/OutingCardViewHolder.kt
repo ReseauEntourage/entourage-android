@@ -6,6 +6,7 @@ import kotlinx.android.synthetic.entourage.tour_information_outing_card_view.vie
 import social.entourage.android.R
 import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.model.TimestampedObject
+import social.entourage.android.api.model.map.BaseEntourage
 import social.entourage.android.api.model.map.Entourage
 import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
@@ -29,7 +30,7 @@ class OutingCardViewHolder(view: View?) : BaseCardViewHolder(view) {
 
     private fun onClick() {
         if (outingUUID.isNullOrEmpty()) return
-        BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(Entourage.ENTOURAGE_CARD, outingUUID, null))
+        BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(BaseEntourage.ENTOURAGE_CARD, outingUUID, null))
     }
 
     override fun populate(chatMessage: TimestampedObject) {

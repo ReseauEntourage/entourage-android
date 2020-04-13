@@ -263,7 +263,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
 
     fun createEntourage() {
         var location = EntourageLocation.getInstance().lastCameraPosition.target
-        if (!Entourage.TYPE_OUTING.equals(entourageGroupType, ignoreCase = true)) {
+        if (!BaseEntourage.TYPE_OUTING.equals(entourageGroupType, ignoreCase = true)) {
             // For demand/contribution, by default select the action zone location, if set
             val address = EntourageApplication.me(activity)?.address
             if (address != null) {
@@ -549,7 +549,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
     }
 
     private fun onCreateEntourageHelpAction() {
-        createAction(EntourageCategoryManager.getInstance().getDefaultCategory(Entourage.TYPE_DEMAND), Entourage.TYPE_ACTION)
+        createAction(EntourageCategoryManager.getInstance().getDefaultCategory(BaseEntourage.TYPE_DEMAND), BaseEntourage.TYPE_ACTION)
     }
 
     fun onShowFilter() {
@@ -792,7 +792,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
             }
             val retrievedCard = newsfeedAdapter?.findCard(card)
             if(retrievedCard!=null) {
-                if ((Entourage.NEWSFEED_TYPE == newsfeed.type) && ((retrievedCard as Entourage).isSame(card as Entourage))) {
+                if ((BaseEntourage.NEWSFEED_TYPE == newsfeed.type) && ((retrievedCard as Entourage).isSame(card as Entourage))) {
                     continue
                 } else if (Announcement.NEWSFEED_TYPE == newsfeed.type) {
                     continue
@@ -812,7 +812,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
                 val heatmapIcon = BitmapDescriptorFactory.fromResource(feedItem.heatmapResourceId)
                 val groundOverlayOptions = GroundOverlayOptions()
                         .image(heatmapIcon)
-                        .position(position, Entourage.HEATMAP_SIZE, Entourage.HEATMAP_SIZE)
+                        .position(position, BaseEntourage.HEATMAP_SIZE, BaseEntourage.HEATMAP_SIZE)
                         .clickable(true)
                         .anchor(0.5f, 0.5f)
                 markersMap[feedItem.hashString()] = map!!.addGroundOverlay(groundOverlayOptions)
@@ -1218,7 +1218,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
         private const val REFRESH_TOURS_INTERVAL: Long = 60000 //1 minute in ms
 
         // Radius of the circle where to search for entourages when user taps a heatzone
-        private const val HEATZONE_SEARCH_RADIUS = Entourage.HEATMAP_SIZE.toInt() / 2 // meters
+        private const val HEATZONE_SEARCH_RADIUS = BaseEntourage.HEATMAP_SIZE.toInt() / 2 // meters
 
         // Zoom in level when taping a heatzone
         private const val ZOOM_HEATZONE = 15.7f

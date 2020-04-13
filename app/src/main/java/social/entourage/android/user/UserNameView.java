@@ -75,7 +75,7 @@ public class UserNameView extends LinearLayout {
         removeAllRoleViews();
         if (roles == null) return;
         for (String role: roles) {
-            UserRole userRole = UserRolesFactory.getInstance().findByName(role);
+            UserRole userRole = UserRolesFactory.INSTANCE.findByName(role);
             if (userRole != null && userRole.isVisible()) {
                 addRoleView(userRole);
             }

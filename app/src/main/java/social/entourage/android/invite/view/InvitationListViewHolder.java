@@ -4,6 +4,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +37,7 @@ public class InvitationListViewHolder extends BaseCardViewHolder {
     }
 
     @Override
-    public void populate(final TimestampedObject data) {
+    public void populate(@NotNull final TimestampedObject data) {
         populate((InvitationList)data);
     }
 

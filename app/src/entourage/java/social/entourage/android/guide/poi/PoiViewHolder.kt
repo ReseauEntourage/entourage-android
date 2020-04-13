@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.view.View
 import kotlinx.android.synthetic.main.layout_poi_card.view.*
+import social.entourage.android.Constants
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.guide.Poi
@@ -46,7 +47,7 @@ class PoiViewHolder(itemView: View?) : BaseCardViewHolder(itemView) {
         itemView.poi_card_title?.text = poi!!.name ?: ""
         itemView.poi_card_type?.text = CategoryType.findCategoryTypeById(poi!!.categoryId).displayName
         itemView.poi_card_address?.text = if (poi!!.address != null) poi!!.address else ""
-        itemView.poi_card_distance?.text = TourPoint(poi!!.latitude, poi!!.longitude).distanceToCurrentLocation()
+        itemView.poi_card_distance?.text = TourPoint(poi!!.latitude, poi!!.longitude).distanceToCurrentLocation(Constants.DISTANCE_MAX_DISPLAY)
         itemView.poi_card_call_button?.visibility = if (poi!!.phone.isNullOrEmpty()) View.GONE else View.VISIBLE
     }
 

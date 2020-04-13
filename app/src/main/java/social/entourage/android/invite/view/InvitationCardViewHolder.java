@@ -3,6 +3,8 @@ package social.entourage.android.invite.view;
 import android.view.View;
 import android.widget.TextView;
 
+import org.jetbrains.annotations.NotNull;
+
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Invitation;
@@ -43,7 +45,7 @@ public class InvitationCardViewHolder extends BaseCardViewHolder {
     }
 
     @Override
-    public void populate(final TimestampedObject data) {
+    public void populate(@NotNull final TimestampedObject data) {
         populate((Invitation) data);
     }
 

@@ -17,8 +17,11 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Date;
 
+import social.entourage.android.Constants;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;
@@ -98,11 +101,11 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
     }
 
     @Override
-    public void populate(final TimestampedObject data) {
+    public void populate(@NotNull final TimestampedObject data) {
         populate((FeedItem) data);
     }
 
-    public void populate(FeedItem feedItem) {
+    public void populate(@NotNull FeedItem feedItem) {
 
         this.feedItem = feedItem;
 
@@ -222,7 +225,7 @@ public class FeedItemViewHolder extends BaseCardViewHolder implements Target {
             String distanceAsString = "";
             TourPoint startPoint = feedItem.getStartPoint();
             if (startPoint != null) {
-                distanceAsString = startPoint.distanceToCurrentLocation();
+                distanceAsString = startPoint.distanceToCurrentLocation(Constants.DISTANCE_MAX_DISPLAY);
             }
 
             if (distanceAsString.equalsIgnoreCase("")) {

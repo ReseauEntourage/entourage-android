@@ -17,10 +17,7 @@ import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.Newsfeed
 import social.entourage.android.api.model.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.map.Entourage
-import social.entourage.android.api.model.map.FeedItem
-import social.entourage.android.api.model.map.Tour
-import social.entourage.android.api.model.map.TourUser
+import social.entourage.android.api.model.map.*
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.entourage.EntourageCloseFragment
 import social.entourage.android.entourage.EntourageCloseFragment.Companion.newInstance
@@ -61,13 +58,13 @@ class MapVoisinageFragment : MapFragment(), EntourageServiceListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        button_create_outing?.setOnClickListener {createAction(null, Entourage.TYPE_OUTING)}
+        button_create_outing?.setOnClickListener {createAction(null, BaseEntourage.TYPE_OUTING)}
     }
 
     private fun checkAction(action: String) {
         if (activity != null && isBound) {
             if (PlusFragment.KEY_CREATE_OUTING == action) {
-                createAction(null, Entourage.TYPE_OUTING)
+                createAction(null, BaseEntourage.TYPE_OUTING)
             }
         }
     }

@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
+
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.map.TourUser;
@@ -59,7 +61,7 @@ public class MemberCardViewHolder extends BaseCardViewHolder {
     }
 
     @Override
-    public void populate(final TimestampedObject data) {
+    public void populate(@NotNull final TimestampedObject data) {
         this.populate((TourUser)data);
     }
 
@@ -106,7 +108,7 @@ public class MemberCardViewHolder extends BaseCardViewHolder {
 
         mMemberTags.removeAllViews();
         for (String role: roles) {
-            UserRole userRole = UserRolesFactory.getInstance().findByName(role);
+            UserRole userRole = UserRolesFactory.INSTANCE.findByName(role);
             if (userRole == null || !userRole.isVisible()) {
                 continue;
             }

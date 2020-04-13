@@ -2,6 +2,8 @@ package social.entourage.android.base;
 
 import android.view.View;
 
+import org.jetbrains.annotations.NotNull;
+
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
 
@@ -23,7 +25,7 @@ public class BottomViewHolder extends BaseCardViewHolder {
     }
 
     @Override
-    public void populate(final TimestampedObject data) {
+    public void populate(@NotNull final TimestampedObject data) {
         // Does nothing
     }
 
