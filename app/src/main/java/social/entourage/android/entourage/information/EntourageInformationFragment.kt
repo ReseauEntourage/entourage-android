@@ -359,7 +359,9 @@ class EntourageInformationFragment : EntourageDialogFragment(), EntourageService
     }
 
     fun onAuthorClicked() {
-        BusProvider.instance.post(OnUserViewRequestedEvent(feedItem.author.userID))
+        if(feedItem.author != null) {
+            BusProvider.instance.post(OnUserViewRequestedEvent(feedItem.author.userID))
+        }
     }
 
     fun onRecord() {
