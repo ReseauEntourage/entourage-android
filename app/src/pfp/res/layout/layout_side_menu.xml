@@ -171,7 +171,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/sidemenu_item_background"
-                android:icon="@drawable/ic_about"
+                android:icon="@drawable/ic_info_outline_black_24dp"
                 android:minHeight="50dp"
                 android:textColor="@color/sidemenu_item_text_color"
                 android:textSize="@dimen/entourage_font_large"

@@ -79,18 +79,12 @@
             android:gravity="bottom|center_vertical"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/empty_description"
-                android:src="@drawable/ic_about"/>
-
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="6dp"
-                android:layout_marginStart="6dp"
                 android:layout_weight="1"
+                android:drawableStart="@drawable/ic_info_white_24dp"
+                android:drawablePadding="6dp"
                 android:text="@string/entourage_join_type_fragment_disclaimer"
                 android:textColor="@color/greyish_brown"/>
         </LinearLayout>
