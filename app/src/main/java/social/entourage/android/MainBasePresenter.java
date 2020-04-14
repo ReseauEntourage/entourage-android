@@ -110,15 +110,6 @@ public abstract class MainBasePresenter implements AvatarUpdatePresenter {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_GOAL);
                 activity.showWebViewForLinkId(Constants.GOAL_LINK_ID);
                 break;
-            case R.id.action_atd:
-                EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_ATD);
-                Intent atdIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.ATD_LINK_ID)));
-                try {
-                    activity.startActivity(atdIntent);
-                } catch (Exception ex) {
-                    Toast.makeText(activity, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
-                }
-                break;
             case R.id.action_donation:
                 EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_DONATION);
                 Intent donationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.DONATE_LINK_ID)));

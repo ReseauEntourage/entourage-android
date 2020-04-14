@@ -68,7 +68,7 @@ public class UserMembership implements Serializable {
 
     public Drawable getIconDrawable(final Context context) {
         if (Entourage.TYPE_PRIVATE_CIRCLE.equalsIgnoreCase(type)) {
-            return AppCompatResources.getDrawable(context, R.drawable.ic_heart);
+            return AppCompatResources.getDrawable(context, R.drawable.ic_favorite_border_black_24dp);
         }
         if (Entourage.TYPE_NEIGHBORHOOD.equalsIgnoreCase(type)) {
             return AppCompatResources.getDrawable(context, R.drawable.ic_neighborhood);
