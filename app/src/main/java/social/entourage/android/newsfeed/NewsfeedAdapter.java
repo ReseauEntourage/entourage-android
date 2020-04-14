@@ -11,14 +11,13 @@ import social.entourage.android.map.MapViewHolder;
 import social.entourage.android.entourage.EntourageViewHolder;
 import social.entourage.android.tour.TourViewHolder;
 import social.entourage.android.base.ViewHolderFactory;
-import social.entourage.android.map.MapTabItem;
 
 /**
  * Created by mihaiionescu on 05/05/16.
  */
 public class NewsfeedAdapter extends HeaderFooterBaseAdapter {
 
-    private MapTabItem selectedTab = MapTabItem.ALL_TAB;
+    private NewsfeedTabItem selectedTab = NewsfeedTabItem.ALL_TAB;
 
     public NewsfeedAdapter() {
         super();
@@ -51,11 +50,11 @@ public class NewsfeedAdapter extends HeaderFooterBaseAdapter {
         setHasStableIds(false);
     }
 
-    private int getContentType(MapTabItem selectedTab) {
+    private int getContentType(NewsfeedTabItem selectedTab) {
         return bottomViewContentType + NewsfeedBottomViewHolder.CONTENT_TYPES * selectedTab.getId();
     }
 
-    public void showBottomView(final boolean showBottomView, int bottomViewContentType, MapTabItem selectedTab) {
+    public void showBottomView(final boolean showBottomView, int bottomViewContentType, NewsfeedTabItem selectedTab) {
         setSelectedTab(selectedTab);
         showBottomView(showBottomView, bottomViewContentType);
     }
@@ -70,7 +69,7 @@ public class NewsfeedAdapter extends HeaderFooterBaseAdapter {
         super.onBindViewHolder(holder, position);
     }
 
-    private void setSelectedTab(MapTabItem selectedTab) {
+    private void setSelectedTab(NewsfeedTabItem selectedTab) {
         this.selectedTab = selectedTab;
     }
 }

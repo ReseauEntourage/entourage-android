@@ -1,4 +1,4 @@
-package social.entourage.android.map
+package social.entourage.android.newsfeed
 
 import android.content.ComponentName
 import android.content.Context
@@ -6,23 +6,23 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.IBinder
 import android.view.View
-import androidx.annotation.NonNull
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Subscribe
-import kotlinx.android.synthetic.pfp.fragment_map.*
+import kotlinx.android.synthetic.main.fragment_map.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.PlusFragment
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.Newsfeed
 import social.entourage.android.api.model.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.map.*
+import social.entourage.android.api.model.map.Entourage
+import social.entourage.android.api.model.map.FeedItem
+import social.entourage.android.api.model.map.Tour
+import social.entourage.android.api.model.map.TourUser
 import social.entourage.android.api.tape.Events.*
-import social.entourage.android.entourage.EntourageCloseFragment
-import social.entourage.android.entourage.EntourageCloseFragment.Companion.newInstance
+import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.message.push.PushNotificationManager
-import social.entourage.android.newsfeed.FeedItemOptionsFragment
 import social.entourage.android.service.EntourageService
 import social.entourage.android.service.EntourageService.LocalBinder
 import social.entourage.android.service.EntourageServiceListener
@@ -31,12 +31,9 @@ import social.entourage.android.view.EntourageSnackbar.make
 import timber.log.Timber
 import java.util.*
 
-class MapVoisinageFragment : BaseNewsfeedFragment(), EntourageServiceListener {
-    // ----------------------------------
-    // CONSTANTS
-    // ----------------------------------
+open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
     private val connection = ServiceConnection()
-    private var isBound = false
+    protected var isBound = false
 
     // ----------------------------------
     // LIFECYCLE
@@ -49,44 +46,39 @@ class MapVoisinageFragment : BaseNewsfeedFragment(), EntourageServiceListener {
     }
 
     override fun onDestroy() {
-        if (isBound) {
+        if (isBound ) {
             entourageService?.unregisterServiceListener(this)
             doUnbindService()
         }
         super.onDestroy()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        button_create_outing?.setOnClickListener {createAction(null, BaseEntourage.TYPE_OUTING)}
-    }
-
-    private fun checkAction(action: String) {
-        if (activity != null && isBound) {
-            if (PlusFragment.KEY_CREATE_OUTING == action) {
-                createAction(null, BaseEntourage.TYPE_OUTING)
-            }
+    protected open fun checkAction(action: String) {
+        if (activity == null || !isBound) return
+        when (action) {
+            PlusFragment.KEY_CREATE_CONTRIBUTION -> createAction(EntourageCategoryManager.getInstance().getDefaultCategory(Entourage.TYPE_CONTRIBUTION), Entourage.TYPE_ACTION)
+            PlusFragment.KEY_CREATE_DEMAND -> createAction(EntourageCategoryManager.getInstance().getDefaultCategory(Entourage.TYPE_DEMAND), Entourage.TYPE_ACTION)
+            PlusFragment.KEY_CREATE_OUTING -> createAction(null, Entourage.TYPE_OUTING)
         }
     }
-
-    // ----------------------------------
-    // Long clicks on map handler
-    // ----------------------------------
-    override fun showLongClickOnMapOptions(latLng: LatLng) { }
 
     // ----------------------------------
     // BUS LISTENERS
     // ----------------------------------
     @Subscribe
-    fun onUserInfoUpdated(event: OnUserInfoUpdatedEvent?) {
+    open fun onUserChoiceChanged(event: OnUserChoiceEvent) {
+    }
+
+    @Subscribe
+    open fun onUserInfoUpdated(event: OnUserInfoUpdatedEvent?) {
         if (newsfeedAdapter == null) return
         val meAsAuthor = EntourageApplication.me(context)?.asTourAuthor() ?: return
         val dirtyList: MutableList<TimestampedObject> = ArrayList()
         // See which cards needs updating
         for (timestampedObject in newsfeedAdapter!!.items) {
             if (timestampedObject !is FeedItem) continue
-            val author = timestampedObject.author ?: continue
             // Skip null author
+            val author = timestampedObject.author ?: continue
             // Skip not same author id
             if (author.userID != meAsAuthor.userID) continue
             // Skip if nothing changed
@@ -106,6 +98,19 @@ class MapVoisinageFragment : BaseNewsfeedFragment(), EntourageServiceListener {
     // ----------------------------------
     // CLICK CALLBACKS
     // ----------------------------------
+    // ----------------------------------
+    // Long clicks on map handler
+    // ----------------------------------
+    override fun showLongClickOnMapOptions(latLng: LatLng) {
+        if(this is NewsFeedWithTourFragment) return super.showLongClickOnMapOptions(latLng)
+        //for public user, start the create entourage funnel directly
+        // save the tap coordinates
+        longTapCoordinates = latLng
+        //hide the FAB menu
+        tour_stop_button?.visibility = View.GONE
+        displayEntourageDisclaimer()
+    }
+
     // ----------------------------------
     // BUS LISTENERS : needs to be in final class (not in parent class
     // ----------------------------------
@@ -162,7 +167,7 @@ class MapVoisinageFragment : BaseNewsfeedFragment(), EntourageServiceListener {
 
     override fun onUserStatusChanged(user: TourUser, feedItem: FeedItem) {
         if (activity == null || requireActivity().isFinishing) return
-        if (feedItem.type == TimestampedObject.ENTOURAGE_CARD) {
+        if (feedItem.type == TimestampedObject.TOUR_CARD || feedItem.type == TimestampedObject.ENTOURAGE_CARD) {
             feedItem.joinStatus = user.status
             if (user.status == Tour.JOIN_STATUS_PENDING) {
                 try {
@@ -176,41 +181,64 @@ class MapVoisinageFragment : BaseNewsfeedFragment(), EntourageServiceListener {
         isRequestingToJoin--
     }
 
+    override fun removeRedundantNewsfeed(currentFeedList: List<Newsfeed>): List<Newsfeed> {
+        val tempList = super.removeRedundantNewsfeed(currentFeedList).toMutableList()
+        val newList = ArrayList<Newsfeed>()
+        try {
+            for (newsfeed in tempList) {
+                val card = newsfeed.data
+                if (card !is TimestampedObject) {
+                    continue
+                }
+                val retrievedCard = newsfeedAdapter?.findCard(card)
+                if (retrievedCard!=null && (Tour.NEWSFEED_TYPE == newsfeed.type) && ((retrievedCard as Tour).isSame(card as Tour))) {
+                    continue
+                }
+                newList.add(newsfeed)
+            }
+        } catch (e: IllegalStateException) {
+            Timber.w(e)
+        }
+        return newList
+    }
+
+    /////////////////////////////////////
     @Subscribe
     override fun onLocationPermissionGranted(event: OnLocationPermissionGranted) {
         super.onLocationPermissionGranted(event)
-    }
-
-    // ----------------------------------
-    // PRIVATE METHODS (tours events)
-    // ----------------------------------
-    override fun redrawWholeNewsfeed(newsFeeds: List<Newsfeed>) {
-        if (map != null && newsFeeds.isNotEmpty() && newsfeedAdapter != null) {
-            //redraw the whole newsfeed
-            for (timestampedObject in newsfeedAdapter!!.items) {
-                if (timestampedObject.type == TimestampedObject.ENTOURAGE_CARD && timestampedObject is Entourage) {
-                    drawNearbyEntourage(timestampedObject)
-                }
-            }
-            mapClusterManager?.cluster()
-        }
     }
 
     private fun updateNewsfeedJoinStatus(timestampedObject: TimestampedObject) {
         newsfeedAdapter?.updateCard(timestampedObject)
     }
 
+    override fun userStatusChanged(content: PushNotificationContent, status: String) {
+        super.userStatusChanged(content, status)
+        if (entourageService == null) return
+        if (content.isTourRelated) {
+            val timestampedObject = newsfeedAdapter?.findCard(TimestampedObject.TOUR_CARD, content.joinableId)
+            if (timestampedObject is Tour) {
+                val user = TourUser()
+                user.userId = userId
+                user.status = status
+                entourageService?.notifyListenersUserStatusChanged(user, timestampedObject)
+            }
+        }
+    }
+
     // ----------------------------------
     // SERVICE BINDING METHODS
     // ----------------------------------
     private fun doBindService() {
-        if (activity != null) {
-            EntourageApplication.me(activity)
-                    ?: return // Don't start the service
+        activity?.let {
+            if(EntourageApplication.me(it) ==null) {
+                // Don't start the service
+                return
+            }
             try {
-                val intent = Intent(activity, EntourageService::class.java)
-                requireActivity().startService(intent)
-                requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE)
+                val intent = Intent(it, EntourageService::class.java)
+                it.startService(intent)
+                it.bindService(intent, connection, Context.BIND_AUTO_CREATE)
             } catch (e: IllegalStateException) {
                 Timber.w(e)
             }
@@ -226,12 +254,7 @@ class MapVoisinageFragment : BaseNewsfeedFragment(), EntourageServiceListener {
 
     override fun displayFeedItemOptions(feedItem: FeedItem) {
         if (activity != null) {
-            if (!feedItem.isMine(context) || feedItem.isFreezed || !feedItem.canBeClosed()) {
-                val feedItemOptionsFragment = FeedItemOptionsFragment.newInstance(feedItem)
-                feedItemOptionsFragment.show(requireActivity().supportFragmentManager, FeedItemOptionsFragment.TAG)
-                return
-            }
-            newInstance(feedItem).show(requireActivity().supportFragmentManager, EntourageCloseFragment.TAG, context)
+            FeedItemOptionsFragment.newInstance(feedItem).show(requireActivity().supportFragmentManager, FeedItemOptionsFragment.TAG)
         }
     }
 
@@ -241,29 +264,35 @@ class MapVoisinageFragment : BaseNewsfeedFragment(), EntourageServiceListener {
     }
 
     @Subscribe
-    fun checkIntentAction(event: OnCheckIntentActionEvent) {
+    open fun checkIntentAction(event: OnCheckIntentActionEvent) {
         if (activity == null) {
             Timber.w("No activity found")
             return
         }
         checkAction(event.action)
-
-        val content = (event.extras?.getSerializable(PushNotificationManager.PUSH_MESSAGE) as Message?)?.content
-                ?:return
+        val message: Message = event.extras?.getSerializable(PushNotificationManager.PUSH_MESSAGE) as Message?
+                ?: return
+        val content = message.content
+                ?: return
+        val extra = content.extra
         when (event.action) {
-            PushNotificationContent.TYPE_NEW_CHAT_MESSAGE, PushNotificationContent.TYPE_NEW_JOIN_REQUEST, PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED -> if (content.isTourRelated) {
-                    displayChosenFeedItem(content.joinableUUID, TimestampedObject.TOUR_CARD)
-                } else if (content.isEntourageRelated) {
-                    displayChosenFeedItem(content.joinableUUID, TimestampedObject.ENTOURAGE_CARD)
-                }
-            PushNotificationContent.TYPE_ENTOURAGE_INVITATION -> if (content.extra != null) {
-                displayChosenFeedItem(content.extra.entourageId.toString(), TimestampedObject.ENTOURAGE_CARD, content.extra.invitationId.toLong())
+            PushNotificationContent.TYPE_NEW_CHAT_MESSAGE,
+            PushNotificationContent.TYPE_NEW_JOIN_REQUEST,
+            PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED -> if (content.isTourRelated) {
+                displayChosenFeedItem(content.joinableUUID, TimestampedObject.TOUR_CARD)
+            } else if (content.isEntourageRelated) {
+                displayChosenFeedItem(content.joinableUUID, TimestampedObject.ENTOURAGE_CARD)
             }
-            PushNotificationContent.TYPE_INVITATION_STATUS -> if (content.isEntourageRelated || content.isTourRelated) {
+            PushNotificationContent.TYPE_ENTOURAGE_INVITATION -> if (extra != null) {
+                displayChosenFeedItem(extra.entourageId.toString(), TimestampedObject.ENTOURAGE_CARD, extra.invitationId.toLong())
+            }
+            PushNotificationContent.TYPE_INVITATION_STATUS -> if (extra != null && (content.isEntourageRelated || content.isTourRelated)) {
                 displayChosenFeedItem(content.joinableUUID, if (content.isTourRelated) TimestampedObject.TOUR_CARD else TimestampedObject.ENTOURAGE_CARD)
             }
         }
     }
+
+    open fun updateFragmentFromService() {}
 
     // ----------------------------------
     // INNER CLASSES
@@ -275,19 +304,20 @@ class MapVoisinageFragment : BaseNewsfeedFragment(), EntourageServiceListener {
                 return
             }
             entourageService = (service as LocalBinder).service
-                    ?: return
-            entourageService!!.registerServiceListener(this@MapVoisinageFragment)
-            entourageService!!.registerApiListener(this@MapVoisinageFragment)
-            if (entourageService!!.isRunning) {
-                updateFloatingMenuOptions()
+            if (entourageService == null) {
+                Timber.e("Service not found")
+                return
             }
+            entourageService!!.registerServiceListener(this@NewsFeedFragment)
+            entourageService!!.registerApiListener(this@NewsFeedFragment)
+            updateFragmentFromService()
             entourageService!!.updateNewsfeed(pagination, selectedTab)
             isBound = true
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
-            entourageService?.unregisterServiceListener(this@MapVoisinageFragment)
-            entourageService?.unregisterApiListener(this@MapVoisinageFragment)
+            entourageService?.unregisterServiceListener(this@NewsFeedFragment)
+            entourageService?.unregisterApiListener(this@NewsFeedFragment)
             entourageService = null
         }
     }

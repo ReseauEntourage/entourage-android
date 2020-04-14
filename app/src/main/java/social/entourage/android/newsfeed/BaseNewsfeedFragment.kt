@@ -1,4 +1,4 @@
-package social.entourage.android.map
+package social.entourage.android.newsfeed
 
 import android.Manifest.permission
 import android.animation.ValueAnimator
@@ -44,13 +44,10 @@ import social.entourage.android.entourage.information.EntourageInformationFragme
 import social.entourage.android.location.EntourageLocation
 import social.entourage.android.location.LocationUtils.isLocationEnabled
 import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
+import social.entourage.android.map.*
 import social.entourage.android.map.filter.MapFilterFactory.mapFilter
 import social.entourage.android.map.filter.MapFilterFragment
 import social.entourage.android.map.permissions.NoLocationPermissionFragment
-import social.entourage.android.newsfeed.NewsFeedListener
-import social.entourage.android.newsfeed.NewsfeedAdapter
-import social.entourage.android.newsfeed.NewsfeedBottomViewHolder
-import social.entourage.android.newsfeed.NewsfeedPagination
 import social.entourage.android.service.EntourageService
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.user.edit.UserEditActionZoneFragment.FragmentListener
@@ -58,11 +55,11 @@ import social.entourage.android.view.EntourageSnackbar.make
 import java.util.*
 import javax.inject.Inject
 
-abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedListener, FragmentListener {
+abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedListener, FragmentListener {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-    @Inject lateinit var presenter: MapPresenter
+    @Inject lateinit var presenter: NewsfeedPresenter
     private var onMapReadyCallback: OnMapReadyCallback? = null
     protected var userId = 0
     protected var longTapCoordinates: LatLng? = null
@@ -83,7 +80,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
     private val scrollListener = OnScrollListener()
 
     // keeps tracks of the attached fragments
-    private var fragmentLifecycleCallbacks: MapFragmentLifecycleCallbacks? = null
+    private var fragmentLifecycleCallbacks: NewsfeedFragmentLifecycleCallbacks? = null
 
     // requested entourage group type
     private var entourageGroupType: String? = null
@@ -92,7 +89,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
     private var entourageCategory: EntourageCategory? = null
 
     // current selected tab
-    protected var selectedTab = MapTabItem.ALL_TAB
+    protected var selectedTab = NewsfeedTabItem.ALL_TAB
 
     // ----------------------------------
     // LIFECYCLE
@@ -109,7 +106,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
         setupComponent(EntourageApplication.get(activity).entourageComponent)
         presenter.start()
         if (fragmentLifecycleCallbacks == null) {
-            fragmentLifecycleCallbacks = MapFragmentLifecycleCallbacks()
+            fragmentLifecycleCallbacks = NewsfeedFragmentLifecycleCallbacks()
             activity?.supportFragmentManager?.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks!!, false)
         }
         initializeMap()
@@ -127,9 +124,9 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
     }
 
     protected fun setupComponent(entourageComponent: EntourageComponent?) {
-        DaggerMapComponent.builder()
+        DaggerNewsfeedComponent.builder()
                 .entourageComponent(entourageComponent)
-                .mapModule(MapModule(this))
+                .newsfeedModule(NewsfeedModule(this))
                 .build()
                 .inject(this)
     }
@@ -332,12 +329,13 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
 
     open fun onNewsfeedLoadMoreRequested(event: OnNewsfeedLoadMoreEvent) {
         when (selectedTab) {
-            MapTabItem.ALL_TAB -> {
+            NewsfeedTabItem.ALL_TAB,
+            NewsfeedTabItem.TOUR_TAB -> {
                 ensureMapVisible()
                 pagination.setNextDistance()
                 refreshFeed()
             }
-            MapTabItem.EVENTS_TAB -> {
+            NewsfeedTabItem.EVENTS_TAB -> {
                 val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.more_events_url)))
                 try {
                     startActivity(browserIntent)
@@ -350,13 +348,25 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
         }
     }
 
-    private fun onMapTabChanged(newSelectedTab: MapTabItem) {
+    private fun onMapTabChanged(newSelectedTab: NewsfeedTabItem) {
         if (newSelectedTab == selectedTab) {
             return
         }
         selectedTab = newSelectedTab
-        EntourageEvents.logEvent(if (selectedTab == MapTabItem.ALL_TAB) EntourageEvents.EVENT_FEED_TAB_ALL else EntourageEvents.EVENT_FEED_TAB_EVENTS)
-        fragment_map_filter_button?.visibility = if (selectedTab == MapTabItem.ALL_TAB) View.VISIBLE else View.GONE
+        when(selectedTab) {
+            NewsfeedTabItem.ALL_TAB -> {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_TAB_ALL)
+                fragment_map_filter_button?.visibility = View.VISIBLE
+            }
+            NewsfeedTabItem.TOUR_TAB -> {
+                EntourageEvents.logEvent(EntourageEvents.TOUR_FEED_TAB_EVENTS)
+                fragment_map_filter_button?.visibility = View.GONE
+            }
+            NewsfeedTabItem.EVENTS_TAB -> {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_TAB_EVENTS)
+                fragment_map_filter_button?.visibility = View.GONE
+            }
+        }
         clearAll()
         newsfeedAdapter?.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE, selectedTab)
         entourageService?.updateNewsfeed(pagination, selectedTab)
@@ -465,7 +475,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
 
         // update the bottom view, if not refreshing
         if (!pagination.isRefreshing) {
-            showNewsfeedBottomView(if (selectedTab == MapTabItem.ALL_TAB) newNewsFeeds.size < pagination.itemsPerPage else newsfeedAdapter!!.dataItemCount == 0)
+            showNewsfeedBottomView(if (selectedTab != NewsfeedTabItem.EVENTS_TAB) newNewsFeeds.size < pagination.itemsPerPage else newsfeedAdapter!!.dataItemCount == 0)
         }
         if (newsfeedAdapter!!.dataItemCount == 0) {
             if (!pagination.isRefreshing) {
@@ -697,9 +707,18 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
     }
 
     private fun initializeFilterTab() {
+        if(EntourageApplication.me(activity)?.isPro ==false) {
+            fragment_map_top_tab?.removeTabAt(NewsfeedTabItem.TOUR_TAB.id)
+            fragment_map_top_tab?.tabMode = TabLayout.MODE_FIXED
+        }
         fragment_map_top_tab?.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                onMapTabChanged(if (tab.position == 1) MapTabItem.EVENTS_TAB else MapTabItem.ALL_TAB)
+                val newtab = when (tab.position) {
+                    NewsfeedTabItem.EVENTS_TAB.id -> NewsfeedTabItem.EVENTS_TAB
+                    NewsfeedTabItem.TOUR_TAB.id -> NewsfeedTabItem.TOUR_TAB
+                    else -> NewsfeedTabItem.ALL_TAB
+                }
+                onMapTabChanged(newtab)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
@@ -923,7 +942,8 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
             return
         }
         when (selectedTab) {
-            MapTabItem.ALL_TAB -> {
+            NewsfeedTabItem.ALL_TAB,
+            NewsfeedTabItem.TOUR_TAB -> {
                 var newestUpdatedDate: Date? = null
                 var oldestUpdateDate: Date? = null
                 for (newsfeed in newsfeedList) {
@@ -939,7 +959,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
                 }
                 pagination.loadedItems(newestUpdatedDate, oldestUpdateDate)
             }
-            MapTabItem.EVENTS_TAB -> if (newsfeedAdapter != null) {
+            NewsfeedTabItem.EVENTS_TAB -> if (newsfeedAdapter != null) {
                 var position = newsfeedAdapter!!.itemCount
                 while (position >= 0) {
                     val card = newsfeedAdapter!!.getCardAt(position)
@@ -1000,7 +1020,7 @@ abstract class MapFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedLis
             override fun run() {
                 refreshToursHandler.post {
                     if (entourageService != null) {
-                        if (selectedTab == MapTabItem.ALL_TAB) {
+                        if (selectedTab != NewsfeedTabItem.EVENTS_TAB) {
                             pagination.isRefreshing = true
                             entourageService!!.updateNewsfeed(pagination, selectedTab)
                         }

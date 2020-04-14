@@ -48,7 +48,8 @@ import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.location.LocationListener;
 import social.entourage.android.location.LocationProvider;
 import social.entourage.android.location.LocationProvider.UserType;
-import social.entourage.android.map.MapTabItem;
+import social.entourage.android.newsfeed.NewsfeedTabItem;
+import social.entourage.android.tour.TourFilter;
 import social.entourage.android.tour.encounter.CreateEncounterPresenter.EncounterUploadTask;
 import social.entourage.android.map.filter.MapFilter;
 import social.entourage.android.map.filter.MapFilterFactory;
@@ -386,7 +387,7 @@ public class EntourageServiceManager {
         });
     }
 
-    void retrieveNewsFeed(final NewsfeedPagination pagination, final MapTabItem selectedTab) {
+    void retrieveNewsFeed(final NewsfeedPagination pagination, final NewsfeedTabItem selectedTab) {
         final NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         if (netInfo == null || !netInfo.isConnected()) {
             entourageService.notifyListenersNetworkException();
@@ -587,7 +588,7 @@ public class EntourageServiceManager {
     }
 
     private @Nullable
-    Call<Newsfeed.NewsfeedWrapper> createNewsfeedWrapperCall(final LatLng location, final NewsfeedPagination pagination, final MapFilter mapFilter, final MapTabItem selectedTab) {
+    Call<Newsfeed.NewsfeedWrapper> createNewsfeedWrapperCall(final LatLng location, final NewsfeedPagination pagination, final MapFilter mapFilter, final NewsfeedTabItem selectedTab) {
         switch (selectedTab) {
             case ALL_TAB:
                 return newsfeedRequest.retrieveFeed(
@@ -602,6 +603,20 @@ public class EntourageServiceManager {
                         false,
                         Constants.ANNOUNCEMENTS_VERSION,
                         mapFilter.showPastEvents()
+                );
+            case TOUR_TAB:
+                return newsfeedRequest.retrieveFeed(
+                        (pagination.getBeforeDate() == null ? null : new EntourageDate(pagination.getBeforeDate())),
+                        location.longitude,
+                        location.latitude,
+                        pagination.distance,
+                        pagination.itemsPerPage,
+                        TourFilter.getTypes(),
+                        false,
+                        TourFilter.getTimeFrame(),
+                        false,
+                        null,
+                        true
                 );
             case EVENTS_TAB:
                 return newsfeedRequest.retrieveOutings(

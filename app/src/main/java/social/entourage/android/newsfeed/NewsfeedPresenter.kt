@@ -1,4 +1,4 @@
-package social.entourage.android.map
+package social.entourage.android.newsfeed
 
 import com.google.android.gms.maps.GoogleMap.OnGroundOverlayClickListener
 import com.google.android.gms.maps.model.GroundOverlay
@@ -20,18 +20,19 @@ import social.entourage.android.entourage.EntourageDisclaimerFragment
 import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.create.BaseCreateEntourageFragment
 import social.entourage.android.entourage.information.EntourageInformationFragment
+import social.entourage.android.map.MapClusterItem
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tour.encounter.EncounterDisclaimerFragment
 import java.util.*
 import javax.inject.Inject
 
 /**
- * Presenter controlling the MapFragment
+ * Presenter controlling the BaseNewsfeedFragment
  *
- * @see MapFragment
+ * @see BaseNewsfeedFragment
  */
-class MapPresenter @Inject constructor(
-        private val fragment: MapFragment?,
+class NewsfeedPresenter @Inject constructor(
+        private val fragment: BaseNewsfeedFragment?,
         private val authenticationController: AuthenticationController?,
         private val invitationRequest: InvitationRequest) {
 

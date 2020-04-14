@@ -57,7 +57,7 @@ import social.entourage.android.entourage.information.EntourageInformationFragme
 import social.entourage.android.entourage.my.MyEntouragesFragment;
 import social.entourage.android.location.EntourageLocation;
 import social.entourage.android.location.LocationUtils;
-import social.entourage.android.map.MapFragment;
+import social.entourage.android.newsfeed.BaseNewsfeedFragment;
 import social.entourage.android.message.push.PushNotificationManager;
 import social.entourage.android.navigation.BottomNavigationDataSource;
 import social.entourage.android.tools.BusProvider;
@@ -184,7 +184,7 @@ public class MainActivity extends EntourageSecuredActivity
         }
         EntourageApplication.get().getMixpanel().getPeople().showNotificationIfAvailable(this);
 
-        sendMapFragmentExtras();
+        sendNewsfeedFragmentExtras();
         if (getIntent()==null || getIntent().getAction() == null) {
             // user just returns to the app, update analytics
             updateAnalyticsInfo();
@@ -225,16 +225,16 @@ public class MainActivity extends EntourageSecuredActivity
     }
 
     @Nullable
-    private MapFragment getMapFragment() {
-        return (MapFragment) getSupportFragmentManager().findFragmentByTag(MapFragment.TAG);
+    private BaseNewsfeedFragment getNewsfeedFragment() {
+        return (BaseNewsfeedFragment) getSupportFragmentManager().findFragmentByTag(BaseNewsfeedFragment.TAG);
     }
 
-    private void sendMapFragmentExtras() {
+    private void sendNewsfeedFragmentExtras() {
         AuthenticationController authenticationController = getAuthenticationController();
         if (authenticationController == null || authenticationController.getUser() == null) return;
-        MapFragment mapFragment  = getMapFragment();
-        if(mapFragment !=null) {
-            mapFragment.onNotificationExtras(authenticationController.getUser().getId(), authenticationController.isUserToursOnly());
+        BaseNewsfeedFragment newsfeedFRagment  = getNewsfeedFragment();
+        if(newsfeedFRagment !=null) {
+            newsfeedFRagment.onNotificationExtras(authenticationController.getUser().getId(), authenticationController.isUserToursOnly());
         }
     }
 
@@ -267,10 +267,10 @@ public class MainActivity extends EntourageSecuredActivity
         }
     }
 
-    public void dismissMapFragmentDialogs() {
-        MapFragment mapFragment  = getMapFragment();
-        if(mapFragment !=null) {
-            mapFragment.dismissAllDialogs();
+    public void dismissNewsfeedFragmentDialogs() {
+        BaseNewsfeedFragment newsfeedFragment  = getNewsfeedFragment();
+        if(newsfeedFragment !=null) {
+            newsfeedFragment.dismissAllDialogs();
         }
     }
 
@@ -353,7 +353,7 @@ public class MainActivity extends EntourageSecuredActivity
     }
 
     public void showMapFilters() {
-        MapFragment mapFragment  = getMapFragment();
+        BaseNewsfeedFragment mapFragment  = getNewsfeedFragment();
         if(mapFragment !=null) {
             mapFragment.onShowFilter();
         }
@@ -399,7 +399,7 @@ public class MainActivity extends EntourageSecuredActivity
 
     @Override
     protected void logout() {
-        MapFragment mapFragment  = getMapFragment();
+        BaseNewsfeedFragment mapFragment  = getNewsfeedFragment();
         if(mapFragment !=null) {
             mapFragment.saveOngoingTour();
         }
@@ -523,7 +523,7 @@ public class MainActivity extends EntourageSecuredActivity
 
     @Override
     public void showStopTourActivity(Tour tour) {
-        MapFragment mapFragment  = getMapFragment();
+        BaseNewsfeedFragment mapFragment  = getNewsfeedFragment();
         if(mapFragment !=null) {
             mapFragment.pauseTour(tour);
         }
@@ -537,7 +537,7 @@ public class MainActivity extends EntourageSecuredActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().remove(fragment).commit();
         if (tour != null) {
-            MapFragment mapFragment  = getMapFragment();
+            BaseNewsfeedFragment mapFragment  = getNewsfeedFragment();
             if(mapFragment !=null) {
                 mapFragment.displayChosenFeedItem(tour, 0);
             }
@@ -556,7 +556,7 @@ public class MainActivity extends EntourageSecuredActivity
             if (fragment != null) fragment.dismiss();
 
             // Show the create entourage fragment
-            MapFragment mapFragment  = getMapFragment();
+            BaseNewsfeedFragment mapFragment  = getNewsfeedFragment();
             if(mapFragment !=null) {
                 mapFragment.createEntourage();
             }
@@ -578,7 +578,7 @@ public class MainActivity extends EntourageSecuredActivity
         // Dismiss the disclaimer fragment
         fragment.dismiss();
 
-        MapFragment mapFragment  = getMapFragment();
+        BaseNewsfeedFragment mapFragment  = getNewsfeedFragment();
         if(mapFragment !=null) {
             mapFragment.addEncounter();
         }
@@ -623,8 +623,8 @@ public class MainActivity extends EntourageSecuredActivity
 
     public void createEntourage() {
         showFeed();
-        dismissMapFragmentDialogs();
-        MapFragment mapFragment  = getMapFragment();
+        dismissNewsfeedFragmentDialogs();
+        BaseNewsfeedFragment mapFragment  = getNewsfeedFragment();
         if(mapFragment !=null) {
             mapFragment.displayEntourageDisclaimer();
         }
@@ -632,8 +632,8 @@ public class MainActivity extends EntourageSecuredActivity
 
     public void addEncounter() {
         showFeed();
-        dismissMapFragmentDialogs();
-        MapFragment mapFragment  = getMapFragment();
+        dismissNewsfeedFragmentDialogs();
+        BaseNewsfeedFragment mapFragment  = getNewsfeedFragment();
         if(mapFragment !=null) {
             mapFragment.onAddEncounter();
         }
@@ -674,7 +674,7 @@ public class MainActivity extends EntourageSecuredActivity
                     break;
                 case PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED:
                     addPushNotification(message);
-                    MapFragment mapFragment  = getMapFragment();
+                    BaseNewsfeedFragment mapFragment  = getNewsfeedFragment();
                     if(mapFragment !=null) {
                         mapFragment.userStatusChanged(content, Tour.JOIN_STATUS_ACCEPTED);
                     }
@@ -704,7 +704,7 @@ public class MainActivity extends EntourageSecuredActivity
     }
 
     private void addPushNotification(Message message) {
-        MapFragment mapFragment  = getMapFragment();
+        BaseNewsfeedFragment mapFragment  = getNewsfeedFragment();
         if(mapFragment !=null) {
             mapFragment.onPushNotificationReceived(message);
         }

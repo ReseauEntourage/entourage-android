@@ -14,7 +14,7 @@ import retrofit2.Response;
 import social.entourage.android.location.EntourageLocation;
 import social.entourage.android.api.model.Newsfeed;
 import social.entourage.android.api.model.Newsfeed.NewsfeedWrapper;
-import social.entourage.android.map.MapTabItem;
+import social.entourage.android.newsfeed.NewsfeedTabItem;
 import social.entourage.android.newsfeed.NewsfeedPagination;
 
 @RunWith(HierarchicalContextRunner.class)
@@ -34,7 +34,7 @@ public class EntourageServiceManagerTest {
     public void retrieveNewsFeed_WithoutNetworkInfo() {
         given(connectivityManager.getActiveNetworkInfo()).willReturn(null);
 
-        tourServiceManager.retrieveNewsFeed(new NewsfeedPagination(), MapTabItem.ALL_TAB);
+        tourServiceManager.retrieveNewsFeed(new NewsfeedPagination(), NewsfeedTabItem.ALL_TAB);
 
         verify(service).notifyListenersNetworkException();
     }
@@ -45,7 +45,7 @@ public class EntourageServiceManagerTest {
         given(connectivityManager.getActiveNetworkInfo()).willReturn(networkInfo);
         given(networkInfo.isConnected()).willReturn(false);
 
-        tourServiceManager.retrieveNewsFeed(new NewsfeedPagination(), MapTabItem.ALL_TAB);
+        tourServiceManager.retrieveNewsFeed(new NewsfeedPagination(), NewsfeedTabItem.ALL_TAB);
 
         verify(service).notifyListenersNetworkException();
     }
@@ -57,7 +57,7 @@ public class EntourageServiceManagerTest {
         given(networkInfo.isConnected()).willReturn(true);
         given(location.getCurrentCameraPosition()).willReturn(null);
 
-        tourServiceManager.retrieveNewsFeed(new NewsfeedPagination(), MapTabItem.ALL_TAB);
+        tourServiceManager.retrieveNewsFeed(new NewsfeedPagination(), NewsfeedTabItem.ALL_TAB);
 
         verify(service).notifyListenersCurrentPositionNotRetrieved();
     }

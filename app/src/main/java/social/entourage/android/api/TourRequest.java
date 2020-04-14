@@ -42,10 +42,10 @@ public interface TourRequest {
     Call<Tour.ToursWrapper> retrieveToursNearby(
             @Query("limit") int limit,
             @Query("type") String type,
-            @Query("vehicle_type") String vehicleType,
             @Query("latitude") double latitude,
             @Query("longitude") double longitude,
-            @Query("distance") double distance
+            @Query("distance") double distance,
+            @Query("status") String status
     );
 
     @GET("users/{user_id}/tours.json")

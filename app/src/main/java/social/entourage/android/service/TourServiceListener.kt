@@ -13,11 +13,5 @@ interface TourServiceListener : EntourageServiceListener {
 
     fun onTourResumed(pointsToDraw: List<TourPoint>, tourType: String, startDate: Date)
 
-    fun onRetrieveToursNearby(tours: List<Tour>)
-
     fun onRetrieveToursByUserId(tours: List<Tour>)
-
-    fun onUserToursFound(tours: Map<Long, Tour>)
-
-    fun onToursFound(tours: Map<Long, Tour>)
 }

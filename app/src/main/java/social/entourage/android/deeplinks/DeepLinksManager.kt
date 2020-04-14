@@ -15,7 +15,6 @@ import social.entourage.android.tools.BusProvider
 import social.entourage.android.user.edit.UserEditFragment
 import timber.log.Timber
 import java.util.*
-import java.util.regex.Pattern
 
 /**
  * Handles the deep links received by the app
@@ -101,7 +100,7 @@ object DeepLinksManager {
     private fun handleDeepLink(activity: MainActivity, key: String, pathSegments: List<String>?) {
         if (key == DeepLinksView.FEED.view) {
             activity.showFeed()
-            activity.dismissMapFragmentDialogs()
+            activity.dismissNewsfeedFragmentDialogs()
             if (pathSegments != null && pathSegments.isNotEmpty()) {
                 if (DeepLinksView.FILTERS.view.equals(pathSegments[0], ignoreCase = true)) {
                     activity.showMapFilters()
@@ -122,7 +121,7 @@ object DeepLinksManager {
                         urlToOpen = "https://$urlToOpen"
                     }
                     activity.showFeed()
-                    activity.dismissMapFragmentDialogs()
+                    activity.dismissNewsfeedFragmentDialogs()
                     activity.showWebView(urlToOpen)
                 }
             } catch (ignored: Exception) {
@@ -132,7 +131,7 @@ object DeepLinksManager {
         } else if (key == DeepLinksView.GUIDE.view) {
             activity.showGuide()
         } else if (key == DeepLinksView.MY_CONVERSATIONS.view) {
-            activity.dismissMapFragmentDialogs()
+            activity.dismissNewsfeedFragmentDialogs()
             activity.showMyEntourages()
         } else if (key == DeepLinksView.CREATE_ACTION.view) {
             activity.createEntourage()

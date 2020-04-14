@@ -69,8 +69,8 @@ import social.entourage.android.invite.InviteFriendsListener
 import social.entourage.android.invite.contacts.InviteContactsFragment
 import social.entourage.android.invite.phonenumber.InviteByPhoneNumberFragment
 import social.entourage.android.location.EntourageLocation
-import social.entourage.android.map.MapFragment.Companion.getTransparentColor
-import social.entourage.android.map.MapFragment.Companion.isToday
+import social.entourage.android.newsfeed.BaseNewsfeedFragment.Companion.getTransparentColor
+import social.entourage.android.newsfeed.BaseNewsfeedFragment.Companion.isToday
 import social.entourage.android.map.OnAddressClickListener
 import social.entourage.android.service.EntourageService
 import social.entourage.android.service.EntourageService.LocalBinder

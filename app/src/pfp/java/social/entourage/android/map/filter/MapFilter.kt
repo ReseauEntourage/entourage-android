@@ -57,7 +57,7 @@ class MapFilter : MapFilterInterface, Serializable {
         }
     }
 
-    override fun setDefaultValues(isProUser: Boolean) {
+    override fun setDefaultValues() {
         entourageTypeNeighborhood = true
         entourageTypePrivateCircle = true
         entourageTypeOuting = true

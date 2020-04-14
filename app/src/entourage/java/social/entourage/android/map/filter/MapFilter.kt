@@ -1,7 +1,5 @@
 package social.entourage.android.map.filter
 
-import social.entourage.android.EntourageApplication
-import social.entourage.android.api.model.TourType
 import social.entourage.android.api.model.map.Entourage
 import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryManager
@@ -12,14 +10,10 @@ import java.util.*
  * Created by mihaiionescu on 17/05/16.
  */
 class MapFilter : MapFilterInterface, Serializable {
-    var tourTypeMedical = false
-    var tourTypeSocial = false
-    var tourTypeDistributive = false
     var entourageTypeOuting = true
     var showPastEvents = false
     var entourageTypeDemand = true
     var entourageTypeContribution = true
-    var showTours = false
     var timeframe = DAYS_3
 
     private var entourageCategories: MutableList<String> = ArrayList()
@@ -29,17 +23,6 @@ class MapFilter : MapFilterInterface, Serializable {
     // ----------------------------------
     override fun getTypes(): String {
         val entourageTypes = StringBuilder()
-        if (tourTypeMedical) {
-            entourageTypes.append(TourType.MEDICAL.key)
-        }
-        if (tourTypeSocial) {
-            if (entourageTypes.isNotEmpty()) entourageTypes.append(",")
-            entourageTypes.append(TourType.BARE_HANDS.key)
-        }
-        if (tourTypeDistributive) {
-            if (entourageTypes.isNotEmpty()) entourageTypes.append(",")
-            entourageTypes.append(TourType.ALIMENTARY.key)
-        }
         if (entourageTypeOuting) {
             if (entourageTypes.isNotEmpty()) entourageTypes.append(",")
             entourageTypes.append("ou")
@@ -70,15 +53,9 @@ class MapFilter : MapFilterInterface, Serializable {
     }
 
     override fun isDefaultFilter(): Boolean{
-        var isProUser:Boolean? = EntourageApplication.get()?.entourageComponent?.authenticationController?.user?.isPro
-        if(isProUser == null) isProUser = false
         return when {
-            !tourTypeMedical && isProUser -> false
-            !tourTypeSocial && isProUser -> false
-            !tourTypeDistributive && isProUser -> false
-            !entourageTypeDemand && !isProUser -> false
-            !entourageTypeContribution && !isProUser -> false
-            !showTours && isProUser -> false
+            !entourageTypeDemand  -> false
+            !entourageTypeContribution -> false
             //normal filter
             !entourageTypeOuting -> false
             //TODO check tis one: //showPastEvents -> false
@@ -87,15 +64,9 @@ class MapFilter : MapFilterInterface, Serializable {
         }
     }
 
-    override fun setDefaultValues(isProUser: Boolean) {
-        //var isProUser:Boolean? = EntourageApplication.get()?.entourageComponent?.authenticationController?.user?.isPro
-        //if(isProUser==null) isProUser = false;
-        tourTypeMedical = isProUser
-        tourTypeSocial = isProUser
-        tourTypeDistributive = isProUser
-        entourageTypeDemand = !isProUser
-        entourageTypeContribution = !isProUser
-        showTours = isProUser
+    override fun setDefaultValues() {
+        entourageTypeDemand = true
+        entourageTypeContribution = true
         entourageTypeOuting=true
         showPastEvents=false
         timeframe = DAYS_3

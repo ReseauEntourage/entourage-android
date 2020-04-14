@@ -2,15 +2,17 @@ package social.entourage.android.map;
 
 import social.entourage.android.api.model.User;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.newsfeed.BaseNewsfeedFragment;
+import social.entourage.android.newsfeed.NewsfeedPresenter;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class MapPresenterTest {
     @Rule public MockitoRule rule = MockitoJUnit.rule();
-    @Mock private MapFragment fragment;
+    @Mock private BaseNewsfeedFragment fragment;
     @Mock private AuthenticationController controller;
     @Mock private User user;
-    @InjectMocks private MapPresenter presenter;
+    @InjectMocks private NewsfeedPresenter presenter;
 
     @Test
     public void handleGeolocationPermission_WhenUserIsNull() {

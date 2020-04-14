@@ -1,7 +1,6 @@
 package social.entourage.android.map.filter
 
 import android.graphics.PorterDuff
-import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.core.content.ContextCompat
@@ -19,21 +18,9 @@ class MapFilterFragment  : BaseMapFilterFragment() {
     // ----------------------------------
     private var actionSwitches = HashMap<String, List<Switch>>()
     private val onCheckedChangeListener = OnCheckedChangeListener()
-    protected var isProUser = false
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val args = arguments
-        if (args != null) {
-            isProUser = args.getBoolean(KEY_PRO_USER, false)
-        }
-        super.onViewCreated(view, savedInstanceState)
-    }
     override fun initializeView() {
         super.initializeView()
-        map_filter_tour_all_switch.setOnClickListener { onAllToursSwitch() }
-        map_filter_tour_medical_switch.setOnClickListener { onMedicalSwitch() }
-        map_filter_tour_social_switch.setOnClickListener { onSocialSwitch() }
-        map_filter_tour_distributive_switch.setOnClickListener { onDistributiveSwitch() }
         map_filter_entourage_outing_switch.setOnClickListener { onOutingSwitch() }
         map_filter_entourage_demand_switch.setOnClickListener { onDemandSwitch() }
         map_filter_entourage_contribution_switch.setOnClickListener { onContributionSwitch() }
@@ -45,39 +32,13 @@ class MapFilterFragment  : BaseMapFilterFragment() {
     // ----------------------------------
     // Buttons handling
     // ----------------------------------
-    fun onAllToursSwitch() {
-        val checked = map_filter_tour_all_switch.isChecked
-        map_filter_tour_medical_switch.isChecked = checked
-        map_filter_tour_social_switch.isChecked = checked
-        map_filter_tour_distributive_switch.isChecked = checked
-        map_filter_tour_type_details_layout.visibility = if (checked) View.VISIBLE else View.GONE
-    }
-
-    fun onMedicalSwitch() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_MEDICAL_TOURS)
-        map_filter_tour_all_switch.isChecked = !allToursDisabled()
-        map_filter_tour_type_details_layout.visibility = if (allToursDisabled()) View.GONE else View.VISIBLE
-    }
-
-    fun onSocialSwitch() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_SOCIAL_TOURS)
-        map_filter_tour_all_switch.isChecked = !allToursDisabled()
-        map_filter_tour_type_details_layout.visibility = if (allToursDisabled()) View.GONE else View.VISIBLE
-    }
-
-    fun onDistributiveSwitch() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_DISTRIBUTION_TOURS)
-        map_filter_tour_all_switch.isChecked = !allToursDisabled()
-        map_filter_tour_type_details_layout.visibility = if (allToursDisabled()) View.GONE else View.VISIBLE
-    }
-
-    fun onOutingSwitch() {
+    private fun onOutingSwitch() {
         if (!map_filter_entourage_outing_switch.isChecked) {
             map_filter_past_events_switch.isChecked = false
         }
     }
 
-    fun onDemandSwitch() {
+    private fun onDemandSwitch() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_ASK)
         val checked = map_filter_entourage_demand_switch.isChecked
         map_filter_entourage_demand_details_layout.visibility = if (checked) View.VISIBLE else View.GONE
@@ -87,7 +48,7 @@ class MapFilterFragment  : BaseMapFilterFragment() {
         }
     }
 
-    fun onContributionSwitch() {
+    private fun onContributionSwitch() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_OFFERS)
         val checked = map_filter_entourage_contribution_switch.isChecked
         map_filter_entourage_contribution_details_layout.visibility = if (checked) View.VISIBLE else View.GONE
@@ -98,21 +59,21 @@ class MapFilterFragment  : BaseMapFilterFragment() {
     }
 
     //TODO find another way to have both constraintlayout and radiogroup
-    fun onDays1Click() {
+    private fun onDays1Click() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_FILTER1)
         //map_filter_time_days_1.isSelected = false
         map_filter_time_days_2.isChecked = false
         map_filter_time_days_3.isChecked = false
     }
 
-    fun onDays2Click() {
+    private fun onDays2Click() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_FILTER2)
         map_filter_time_days_1.isChecked = false
         //map_filter_time_days_2.isChecked = false
         map_filter_time_days_3.isChecked = false
     }
 
-    fun onDays3Click() {
+    private fun onDays3Click() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_FILTER3)
         map_filter_time_days_1.isChecked = false
         map_filter_time_days_2.isChecked = false
@@ -124,12 +85,6 @@ class MapFilterFragment  : BaseMapFilterFragment() {
     // ----------------------------------
     override fun loadFilter() {
         val mapFilter = mapFilter
-        map_filter_tour_type_layout?.visibility = if (isProUser) View.VISIBLE else View.GONE
-        map_filter_tour_medical_switch.isChecked = mapFilter.tourTypeMedical
-        map_filter_tour_social_switch.isChecked = mapFilter.tourTypeSocial
-        map_filter_tour_distributive_switch.isChecked = mapFilter.tourTypeDistributive
-        map_filter_tour_all_switch.isChecked = !allToursDisabled()
-        map_filter_tour_type_details_layout.visibility = if (allToursDisabled()) View.GONE else View.VISIBLE
         map_filter_entourage_outing_switch.isChecked = mapFilter.entourageTypeOuting
         map_filter_past_events_switch.isChecked = mapFilter.showPastEvents
         map_filter_entourage_demand_switch.isChecked = mapFilter.entourageTypeDemand
@@ -147,14 +102,10 @@ class MapFilterFragment  : BaseMapFilterFragment() {
     }
 
     override fun saveFilter() {
-        mapFilter.tourTypeMedical = map_filter_tour_medical_switch.isChecked
-        mapFilter.tourTypeSocial = map_filter_tour_social_switch.isChecked
-        mapFilter.tourTypeDistributive = map_filter_tour_distributive_switch.isChecked
         mapFilter.entourageTypeOuting = map_filter_entourage_outing_switch.isChecked
         mapFilter.showPastEvents = map_filter_past_events_switch.isChecked
         mapFilter.entourageTypeDemand = map_filter_entourage_demand_switch.isChecked
         mapFilter.entourageTypeContribution = map_filter_entourage_contribution_switch.isChecked
-        mapFilter.showTours = map_filter_tour_all_switch.isChecked
         for (switchList in actionSwitches.values) {
             for (categorySwitch in switchList) {
                 if (categorySwitch.tag != null) {
@@ -168,10 +119,6 @@ class MapFilterFragment  : BaseMapFilterFragment() {
             map_filter_time_days_3.isChecked -> MapFilter.DAYS_3
             else -> MapFilter.DAYS_3
             }
-    }
-
-    private fun allToursDisabled(): Boolean {
-        return !map_filter_tour_medical_switch.isChecked and !map_filter_tour_social_switch.isChecked and !map_filter_tour_distributive_switch.isChecked
     }
 
     private fun addEntourageCategories(entourageType: String, layout: LinearLayout?, mapFilter: MapFilter) {
@@ -222,14 +169,9 @@ class MapFilterFragment  : BaseMapFilterFragment() {
         // Constants
         // ----------------------------------
         const val TAG = "social.entourage_android.MapFilterFragment"
-        private const val KEY_PRO_USER = "social.entourage.android.KEY_PRO_USER"
         @JvmStatic
         fun newInstance(isProUser: Boolean): MapFilterFragment {
-            val fragment = MapFilterFragment()
-            val args = Bundle()
-            args.putBoolean(KEY_PRO_USER, isProUser)
-            fragment.arguments = args
-            return fragment
+            return MapFilterFragment()
         }
     }
 }

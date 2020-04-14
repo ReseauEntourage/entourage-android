@@ -186,9 +186,7 @@ public class AuthenticationController {
             mapFilter = userPreferences.getMapFilter();
             if (mapFilter == null) {
                 mapFilter = new MapFilter();
-                if(loggedUser!=null) {
-                    mapFilter.setDefaultValues(loggedUser.isPro());
-                }
+                mapFilter.setDefaultValues();
                 userPreferences.setMapFilter(mapFilter);
                 saveUserPreferences();
             }

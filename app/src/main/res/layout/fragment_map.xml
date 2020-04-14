@@ -22,6 +22,7 @@
                 android:elevation="10dp"
                 app:tabIndicatorColor="@color/white"
                 app:tabInlineLabel="true"
+                app:tabMode="auto"
                 app:tabSelectedTextColor="@color/white"
                 app:tabTextColor="@color/white_88">
 
@@ -36,6 +37,13 @@
                     android:layout_height="wrap_content"
                     android:icon="@drawable/ic_event_white_24dp"
                     android:text="@string/map_tab_events" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/fragment_map_tab_tours"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:icon="@drawable/ic_start_maraude"
+                    android:text="@string/map_tab_tours" />
 
             </com.google.android.material.tabs.TabLayout>
 

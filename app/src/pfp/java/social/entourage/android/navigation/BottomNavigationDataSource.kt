@@ -3,7 +3,7 @@ package social.entourage.android.navigation
 import androidx.fragment.app.Fragment
 import social.entourage.android.R
 import social.entourage.android.entourage.my.MyEntouragesFragment
-import social.entourage.android.map.MapFragment
+import social.entourage.android.map.BaseNewsfeedFragment
 import social.entourage.android.map.MapVoisinageFragment
 import social.entourage.android.sidemenu.SideMenuFragment
 
@@ -21,7 +21,7 @@ class BottomNavigationDataSource : BaseBottomNavigationDataSource() {
     }
 
     init {
-        add(R.id.bottom_bar_newsfeed, MapFragment.TAG)
+        add(R.id.bottom_bar_newsfeed, BaseNewsfeedFragment.TAG)
         add(R.id.bottom_bar_mymessages, MyEntouragesFragment.TAG)
         add(R.id.bottom_bar_profile, SideMenuFragment.TAG)
         defaultSelectedTab = R.id.bottom_bar_mymessages // My messages tab

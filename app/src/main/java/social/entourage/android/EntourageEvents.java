@@ -136,6 +136,7 @@ public class EntourageEvents {
     public static final String EVENT_GUIDE_ACTIVATE_GEOLOC_FROM_BANNER = "ActivateGeolocFromGuideBanner";
     public static final String EVENT_FEED_TAB_ALL = "ShowAllFeed";
     public static final String EVENT_FEED_TAB_EVENTS = "ShowEventFeed";
+    public static final String TOUR_FEED_TAB_EVENTS = "ShowTourFeed";
 
     //MAP Events
     public static final String EVENT_MAP_MAPVIEW_CLICK = "MapViewClick";

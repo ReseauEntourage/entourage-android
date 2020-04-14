@@ -20,12 +20,8 @@ import com.google.android.gms.maps.model.LatLng;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 import javax.inject.Inject;
 
@@ -46,7 +42,7 @@ import social.entourage.android.api.model.map.Tour;
 import social.entourage.android.api.model.map.TourUser;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.location.LocationUpdateListener;
-import social.entourage.android.map.MapTabItem;
+import social.entourage.android.newsfeed.NewsfeedTabItem;
 import social.entourage.android.newsfeed.NewsFeedListener;
 import social.entourage.android.newsfeed.NewsfeedPagination;
 import social.entourage.android.tools.Utils;
@@ -292,7 +288,7 @@ public class EntourageService extends Service {
         stopSelf();
     }
 
-    public boolean updateNewsfeed(final NewsfeedPagination pagination, final MapTabItem selectedTab) {
+    public boolean updateNewsfeed(final NewsfeedPagination pagination, final NewsfeedTabItem selectedTab) {
         if (pagination.isLoading && !pagination.isRefreshing) {
             return false;
         }

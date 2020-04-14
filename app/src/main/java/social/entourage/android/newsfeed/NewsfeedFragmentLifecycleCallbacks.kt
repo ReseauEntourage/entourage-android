@@ -1,4 +1,4 @@
-package social.entourage.android.map
+package social.entourage.android.newsfeed
 
 import android.content.Context
 import androidx.fragment.app.DialogFragment
@@ -12,7 +12,7 @@ import java.util.ArrayList
  * Created by Mihai Ionescu on 10/10/2017.
  */
 
-class MapFragmentLifecycleCallbacks : FragmentManager.FragmentLifecycleCallbacks() {
+class NewsfeedFragmentLifecycleCallbacks : FragmentManager.FragmentLifecycleCallbacks() {
 
     private val fragmentList = ArrayList<Fragment>()
 
