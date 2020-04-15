@@ -50,8 +50,6 @@ import social.entourage.android.map.filter.MapFilterFragment
 import social.entourage.android.map.permissions.NoLocationPermissionFragment
 import social.entourage.android.service.EntourageService
 import social.entourage.android.tools.BusProvider
-import social.entourage.android.tour.TourFilter
-import social.entourage.android.tour.TourFilterFragment
 import social.entourage.android.user.edit.UserEditActionZoneFragment.FragmentListener
 import social.entourage.android.view.EntourageSnackbar.make
 import java.util.*
@@ -325,8 +323,8 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         refreshFeed()
     }
 
-    private fun updateFilterButtonText() {
-        val activefilters = (mapFilter.isDefaultFilter() && selectedTab==NewsfeedTabItem.ALL_TAB)|| (TourFilter.isDefaultFilter() && selectedTab==NewsfeedTabItem.TOUR_TAB)
+    open fun updateFilterButtonText() {
+        val activefilters = (mapFilter.isDefaultFilter() && selectedTab==NewsfeedTabItem.ALL_TAB)
         fragment_map_filter_button?.setText(if (activefilters) R.string.map_no_filter else R.string.map_filters_activated)
     }
 
@@ -565,13 +563,9 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         createAction(EntourageCategoryManager.getInstance().getDefaultCategory(BaseEntourage.TYPE_DEMAND), BaseEntourage.TYPE_ACTION)
     }
 
-    fun onShowFilter() {
+    open fun onShowFilter() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_FILTERSCLICK)
-        if(selectedTab==NewsfeedTabItem.TOUR_TAB) {
-            TourFilterFragment().show(parentFragmentManager, MapFilterFragment.TAG)
-        } else {
-            MapFilterFragment().show(parentFragmentManager, MapFilterFragment.TAG)
-        }
+        MapFilterFragment().show(parentFragmentManager, MapFilterFragment.TAG)
     }
 
     private fun onNewEntouragesReceivedButton() {

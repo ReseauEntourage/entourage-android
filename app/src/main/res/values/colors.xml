@@ -60,10 +60,10 @@
     <color name="login_edittext">#000000</color>
     <color name="login_edittext_hint">#B2FFFFFF</color>
 
-    <!-- Side Menu -->
-    <color name="sidemenu_background">@color/background_light</color>
-    <color name="sidemenu_item_background">@color/white</color>
-    <color name="sidemenu_divider">@color/greyish</color>
+    <!-- Main profile -->
+    <color name="mainprofile_background">@color/background_light</color>
+    <color name="mainprofile_item_background">@color/white</color>
+    <color name="mainprofile_divider">@color/greyish</color>
     
     <!-- Notifications -->
     <color name="battleship_grey">#797a7c</color>

@@ -4,14 +4,14 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/sidemenu_background"
+              android:background="@color/mainprofile_background"
               android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:id="@+id/sidemenu_app_version"
+        android:id="@+id/mainprofile_app_version"
         android:title="@string/empty_description"
         android:layout_marginTop="5dp"
         android:textColor="@color/greyish" />
@@ -20,8 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:id="@+id/sidemenu_app_debug_info"
-        android:visibility="invisible"
+        android:id="@+id/mainprofile_app_debug_info"
         android:title="@string/empty_description"
         android:layout_marginTop="5dp"
         android:textColor="@color/greyish" />

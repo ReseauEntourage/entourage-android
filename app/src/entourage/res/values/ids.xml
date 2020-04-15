@@ -2,7 +2,7 @@
 <resources>
 
     <!-- IDs that doesn't exist in Entourage app, but in the others -->
-    <item name="side_menu_item_arrow" type="id" />
+    <item name="mainprofile_item_arrow" type="id" />
     <item name="action_update_info" type="id" />
 
     <item name="user_message_layout" type="id" />

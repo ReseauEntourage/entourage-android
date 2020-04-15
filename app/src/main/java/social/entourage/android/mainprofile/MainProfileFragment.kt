@@ -1,4 +1,4 @@
-package social.entourage.android.sidemenu
+package social.entourage.android.mainprofile
 
 import android.net.Uri
 import android.os.Bundle
@@ -8,8 +8,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
 import com.squareup.otto.Subscribe
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.entourage.layout_side_menu.*
-import kotlinx.android.synthetic.entourage.layout_side_menu_appversion.*
+import kotlinx.android.synthetic.main.layout_mainprofile.*
+import kotlinx.android.synthetic.main.layout_mainprofile_appversion.*
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
@@ -22,7 +22,7 @@ import social.entourage.android.view.EntourageSnackbar
 /**
  * Side menu fragment
  */
-class SideMenuFragment  : Fragment(R.layout.layout_side_menu) {
+class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,10 +52,10 @@ class SideMenuFragment  : Fragment(R.layout.layout_side_menu) {
     // PRIVATE METHODS
     // ----------------------------------
     private fun initialiseView() {
-        sidemenu_app_version?.text = getString(R.string.about_version_format, BuildConfig.VERSION_FULL_NAME)
-        sidemenu_app_debug_info?.text = getString(R.string.about_debug_info_format, BuildConfig.VERSION_DISPLAY_BRANCH_NAME, FirebaseInstanceId.getInstance().id)
-        sidemenu_app_version?.setOnLongClickListener { v: View? -> handleLongPress() }
-        sidemenu_app_debug_info?.setOnLongClickListener { v: View? -> handleLongPress() }
+        mainprofile_app_version?.text = getString(R.string.about_version_format, BuildConfig.VERSION_FULL_NAME)
+        mainprofile_app_debug_info?.text = getString(R.string.about_debug_info_format, BuildConfig.VERSION_DISPLAY_BRANCH_NAME, FirebaseInstanceId.getInstance().id)
+        mainprofile_app_version?.setOnLongClickListener { v: View? -> handleLongPress() }
+        mainprofile_app_debug_info?.setOnLongClickListener { v: View? -> handleLongPress() }
 
         //add listener to user photo and name, that opens the user profile screen
         drawer_header_user_photo?.setOnClickListener { v: View? -> selectMenuAction(R.id.action_user) }
@@ -64,10 +64,10 @@ class SideMenuFragment  : Fragment(R.layout.layout_side_menu) {
         action_edit_profile?.setOnClickListener { v: View? -> selectMenuAction(R.id.action_edit_profile) }
 
         //add listeners to side menu items
-        if (sidemenuitems_layout != null) {
-            val itemsCount = sidemenuitems_layout.childCount
+        if (mainprofile_items_layout != null) {
+            val itemsCount = mainprofile_items_layout.childCount
             for (j in 0 until itemsCount) {
-                (sidemenuitems_layout.getChildAt(j) as? SideMenuItemView)?.setOnClickListener { v: View -> selectMenuAction(v.id) }
+                (mainprofile_items_layout.getChildAt(j) as? MainProfileItemView)?.setOnClickListener { v: View -> selectMenuAction(v.id) }
             }
         }
     }
@@ -112,10 +112,10 @@ class SideMenuFragment  : Fragment(R.layout.layout_side_menu) {
     }
 
     private fun handleLongPress(): Boolean {
-        selectMenuAction(R.id.sidemenu_app_version)
-        if(sideMenuCoordinatorLayout != null) {
+        selectMenuAction(R.id.mainprofile_app_version)
+        if(mainProfileCoordinatorLayout != null) {
             EntourageSnackbar.make(
-                    sideMenuCoordinatorLayout,
+                    mainProfileCoordinatorLayout,
                     R.string.debug_info_clipboard,
                     Snackbar.LENGTH_SHORT
             ).show()
@@ -127,6 +127,6 @@ class SideMenuFragment  : Fragment(R.layout.layout_side_menu) {
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        val TAG = SideMenuFragment::class.java.simpleName
+        val TAG = MainProfileFragment::class.java.simpleName
     }
 }

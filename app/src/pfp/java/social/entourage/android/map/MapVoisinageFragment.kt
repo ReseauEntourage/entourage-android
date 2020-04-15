@@ -22,6 +22,7 @@ import social.entourage.android.api.tape.Events.*
 import social.entourage.android.entourage.EntourageCloseFragment
 import social.entourage.android.entourage.EntourageCloseFragment.Companion.newInstance
 import social.entourage.android.message.push.PushNotificationManager
+import social.entourage.android.newsfeed.BaseNewsfeedFragment
 import social.entourage.android.newsfeed.FeedItemOptionsFragment
 import social.entourage.android.service.EntourageService
 import social.entourage.android.service.EntourageService.LocalBinder

@@ -9,7 +9,7 @@ import social.entourage.android.guide.GuideMapFragment
 import social.entourage.android.newsfeed.BaseNewsfeedFragment
 import social.entourage.android.newsfeed.NewsFeedFragment
 import social.entourage.android.newsfeed.NewsFeedWithTourFragment
-import social.entourage.android.sidemenu.SideMenuFragment
+import social.entourage.android.mainprofile.MainProfileFragment
 
 /**
  * Created by Mihai Ionescu on 23/04/2018.
@@ -21,7 +21,7 @@ class BottomNavigationDataSource : BaseBottomNavigationDataSource() {
             R.id.bottom_bar_guide -> GuideMapFragment()
             R.id.bottom_bar_plus -> PlusFragment()
             R.id.bottom_bar_mymessages -> MyEntouragesFragment()
-            R.id.bottom_bar_profile -> SideMenuFragment()
+            R.id.bottom_bar_profile -> MainProfileFragment()
             else -> null
         }
     }
@@ -31,7 +31,7 @@ class BottomNavigationDataSource : BaseBottomNavigationDataSource() {
         add(R.id.bottom_bar_guide, GuideMapFragment.TAG)
         add(R.id.bottom_bar_plus, PlusFragment.TAG)
         add(R.id.bottom_bar_mymessages, MyEntouragesFragment.TAG)
-        add(R.id.bottom_bar_profile, SideMenuFragment.TAG)
+        add(R.id.bottom_bar_profile, MainProfileFragment.TAG)
         guideTabIndex = R.id.bottom_bar_guide
         actionMenuId = R.id.bottom_bar_plus
     }

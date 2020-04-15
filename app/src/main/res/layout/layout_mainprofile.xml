@@ -2,10 +2,10 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/sideMenuCoordinatorLayout"
+    android:id="@+id/mainProfileCoordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/sidemenu_background"
+    android:background="@color/mainprofile_background"
     android:orientation="vertical">
 
     <ScrollView
@@ -13,7 +13,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/sidemenuitems_layout"
+            android:id="@+id/mainprofile_items_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -75,79 +75,79 @@
 
             </RelativeLayout>
 
-            <social.entourage.android.sidemenu.SideMenuItemView
+            <social.entourage.android.mainprofile.MainProfileItemView
                 android:id="@+id/action_user"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:visibility="gone" />
 
-            <social.entourage.android.sidemenu.SideMenuItemView
+            <social.entourage.android.mainprofile.MainProfileItemView
                 android:id="@+id/action_blog"
-                style="@style/side_menu_item_style"
+                style="@style/mainprofile_item_style"
                 android:icon="@drawable/ic_blog"
                 android:title="@string/action_blog"
                 app:iconTint="@color/greyish"
                 app:showDivider="true" />
 
-            <social.entourage.android.sidemenu.SideMenuItemView
+            <social.entourage.android.mainprofile.MainProfileItemView
                 android:id="@+id/action_goal"
-                style="@style/side_menu_item_style"
+                style="@style/mainprofile_item_style"
                 android:icon="@drawable/ic_goal"
                 android:title="@string/action_goal"
                 app:showDivider="true" />
 
-            <social.entourage.android.sidemenu.SideMenuItemView
+            <social.entourage.android.mainprofile.MainProfileItemView
                 android:id="@+id/action_ambassador"
-                style="@style/side_menu_item_style"
+                style="@style/mainprofile_item_style"
                 android:icon="@drawable/ic_ambassador"
                 android:title="@string/action_ambassador"
                 app:iconTint="@color/greyish"
                 app:showDivider="true" />
 
-            <social.entourage.android.sidemenu.SideMenuItemView
+            <social.entourage.android.mainprofile.MainProfileItemView
                 android:id="@+id/action_donation"
-                style="@style/side_menu_item_style"
+                style="@style/mainprofile_item_style"
                 android:icon="@drawable/ic_favorite_border_black_24dp"
                 android:title="@string/action_donation"
                 app:iconTint="@color/accent"
                 app:showDivider="true" />
 
-            <social.entourage.android.sidemenu.SideMenuItemView
+            <social.entourage.android.mainprofile.MainProfileItemView
                 android:id="@+id/action_involvement"
-                style="@style/side_menu_item_style"
+                style="@style/mainprofile_item_style"
                 android:icon="@drawable/ic_broadcast"
                 android:title="@string/action_involvement"
                 app:iconTint="@color/greyish"
                 app:showDivider="true" />
 
-            <social.entourage.android.sidemenu.SideMenuItemView
+            <social.entourage.android.mainprofile.MainProfileItemView
                 android:id="@+id/action_charte"
-                style="@style/side_menu_item_style"
+                style="@style/mainprofile_item_style"
                 android:icon="@drawable/ic_charte"
                 android:title="@string/action_charter_unsigned"
                 app:iconTint="@color/greyish"
                 app:showDivider="true" />
 
-            <social.entourage.android.sidemenu.SideMenuItemView
+            <social.entourage.android.mainprofile.MainProfileItemView
                 android:id="@+id/action_about"
-                style="@style/side_menu_item_style"
+                style="@style/mainprofile_item_style"
                 android:icon="@drawable/ic_info_outline_black_24dp"
                 android:title="@string/action_about"
                 app:iconTint="@color/greyish"
                 app:showDivider="false" />
 
-            <social.entourage.android.sidemenu.SideMenuItemView
+            <social.entourage.android.mainprofile.MainProfileItemView
                 android:id="@+id/action_logout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="30dp"
-                android:background="@color/sidemenu_item_background"
+                android:background="@color/mainprofile_item_background"
                 android:textColor="@color/accent"
                 android:title="@string/action_logout"
                 app:centerText="true"
                 app:showDivider="false" />
 
-            <include layout="@layout/layout_side_menu_appversion" />
+            <include layout="@layout/layout_mainprofile_appversion" />
         </LinearLayout>
     </ScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

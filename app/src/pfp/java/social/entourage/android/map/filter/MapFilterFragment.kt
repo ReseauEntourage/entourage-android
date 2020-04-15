@@ -1,6 +1,11 @@
 package social.entourage.android.map.filter
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import kotlinx.android.synthetic.pfp.fragment_map_filter.*
+import social.entourage.android.R
 import social.entourage.android.map.filter.MapFilterFactory.mapFilter
 
 class MapFilterFragment  : BaseMapFilterFragment() {
@@ -53,10 +58,5 @@ class MapFilterFragment  : BaseMapFilterFragment() {
         // Constants
         // ----------------------------------
         const val TAG = "social.entourage.android.MapFilterFragment"
-        @JvmStatic
-        fun newInstance(isProUser: Boolean): MapFilterFragment {
-            val fragment = MapFilterFragment()
-            return fragment
-        }
     }
 }

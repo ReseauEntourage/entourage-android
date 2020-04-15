@@ -7,11 +7,6 @@ import social.entourage.android.EntourageApplication
  */
 object MapFilterFactory {
     @JvmStatic
-    fun getMapFilter(isProUser: Boolean): MapFilter {
-        return MapFilter()
-    }
-
-    @JvmStatic
     val mapFilter: MapFilter
         get() {
             val app = EntourageApplication.get()
