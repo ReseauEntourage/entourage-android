@@ -30,8 +30,8 @@ android {
         // Making either of these two values dynamic in the defaultConfig will
         // require a full APK build and reinstallation because the AndroidManifest.xml
         // must be updated.
-        versionCode 601
-        versionName "6.1"
+        versionCode 602
+        versionName "6.2"
 
         buildConfigField 'String', 'VERSION_FULL_NAME', '"' + rootProject.ext.versionNameProd + '"'
         buildConfigField 'String', 'VERSION_DISPLAY_BRANCH_NAME', '"' + rootProject.ext.versionBranchName + '"'
@@ -81,7 +81,7 @@ android {
         }
         entourage {
             dimension 'app'
-            buildConfigField 'String', 'API_KEY', '"d2e4767cb77fafdca80fd59b"'
+            buildConfigField 'String', 'API_KEY', '"145afedd05482e1e91ed2990"'
             ext {
                 prod = [
                         serverURL        : "https://api.entourage.social/api/v1/",
@@ -99,7 +99,7 @@ android {
             dimension 'app'
             applicationId 'social.entourage.android.pfp'
             buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_PFP
-            buildConfigField 'String', 'API_KEY', '"da45a612b1f1b085a86976e6"'
+            buildConfigField 'String', 'API_KEY', '"14fe3580873758c2a63f14aa"'
 
             buildConfigField 'String', 'TEST_ACCOUNT_LOGIN', TEST_PFP_ACCOUNT_LOGIN
             buildConfigField 'String', 'TEST_ACCOUNT_PWD', TEST_PFP_ACCOUNT_PWD

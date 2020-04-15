@@ -45,6 +45,8 @@ public class AuthenticationInterceptor implements okhttp3.Interceptor {
         request = request.newBuilder()
                 .header("Accept", "application/json")
                 .header("X-API-KEY", BuildConfig.API_KEY)
+                .header("X-PLATFORM", "Android")
+                .header("X-APP-VERSION", BuildConfig.VERSION_FULL_NAME)
                 .url(url).build();
         Response response = chain.proceed(request);
 
