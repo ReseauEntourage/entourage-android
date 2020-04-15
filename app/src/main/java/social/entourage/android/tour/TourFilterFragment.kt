@@ -1,14 +1,25 @@
 package social.entourage.android.tour
 
+import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import kotlinx.android.synthetic.entourage.fragment_map_tour_filter.*
 import social.entourage.android.EntourageEvents
+import social.entourage.android.R
 import social.entourage.android.map.filter.BaseMapFilterFragment
 
 class TourFilterFragment  : BaseMapFilterFragment() {
     // ----------------------------------
     // Attributes
     // ----------------------------------
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_map_tour_filter, container, false)
+    }
 
     override fun initializeView() {
         super.initializeView()
@@ -111,9 +122,5 @@ class TourFilterFragment  : BaseMapFilterFragment() {
         // Constants
         // ----------------------------------
         const val TAG = "social.entourage_android.MapTourFilterFragment"
-        @JvmStatic
-        fun newInstance(): TourFilterFragment {
-             return TourFilterFragment()
-        }
     }
 }

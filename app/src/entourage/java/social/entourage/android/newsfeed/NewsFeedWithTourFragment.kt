@@ -240,6 +240,10 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
         tour_stop_button?.visibility = if (entourageService?.isRunning==true) View.VISIBLE else View.GONE
     }
 
+    override fun needForGeoloc():Boolean {
+        return true
+    }
+
     // ----------------------------------
     // Long clicks on map handler
     // ----------------------------------
@@ -341,7 +345,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
                 isFollowing = true
                 currentTourUUID = tourUUID
                 layout_map_launcher?.visibility = View.GONE
-                if (fragment_map_tours_view.visibility == View.VISIBLE) {
+                if (fragment_map_feeditems_view.visibility == View.VISIBLE) {
                     displayFullMap()
                 }
                 addTourCard(entourageService!!.currentTour)

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -11,12 +11,12 @@
         android:background="@color/pale_grey"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingBottom="30dp"
-        android:paddingEnd="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         android:paddingStart="10dp"
-        android:paddingTop="10dp">
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="30dp">
 
         <LinearLayout
             android:id="@+id/newsfeed_tab_all_content"
@@ -28,8 +28,7 @@
                 android:id="@+id/newsfeed_load_more_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -37,37 +36,56 @@
                     android:gravity="center_horizontal"
                     android:text="@string/newsfeed_load_more_description"
                     android:textColor="@color/greyish_brown"
-                    android:textSize="@dimen/entourage_font_medium"/>
+                    android:textSize="@dimen/entourage_font_medium" />
 
                 <TextView
                     android:id="@+id/newsfeed_load_more"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:gravity="center_horizontal"
                     android:text="@string/newsfeed_load_more_button"
                     android:textColor="@color/accent"
-                    android:textSize="@dimen/entourage_font_medium"/>
+                    android:textSize="@dimen/entourage_font_medium" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/newsfeed_no_items"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
                 android:gravity="center_horizontal"
                 android:text="@string/map_empty_newsfeed"
                 android:textColor="@color/greyish_brown"
-                android:textSize="@dimen/entourage_font_medium"/>
+                android:textSize="@dimen/entourage_font_medium" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/newsfeed_tab_tours_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/newsfeed_no_tours"
+                android:textColor="@color/greyish_brown"
+                android:textSize="@dimen/entourage_font_medium" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/newsfeed_tab_events_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <TextView
                 android:layout_width="match_parent"
@@ -75,18 +93,18 @@
                 android:gravity="center_horizontal"
                 android:text="@string/newsfeed_tab_events_no_items"
                 android:textColor="@color/greyish_brown"
-                android:textSize="@dimen/entourage_font_medium"/>
+                android:textSize="@dimen/entourage_font_medium" />
 
             <TextView
                 android:id="@+id/newsfeed_tab_events_load_more"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:gravity="center_horizontal"
                 android:text="@string/newsfeed_tab_events_no_items_button"
                 android:textColor="@color/accent"
-                android:textSize="@dimen/entourage_font_medium"/>
+                android:textSize="@dimen/entourage_font_medium" />
         </LinearLayout>
 
     </LinearLayout>

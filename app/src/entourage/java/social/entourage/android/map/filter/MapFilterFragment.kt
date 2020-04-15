@@ -1,7 +1,10 @@
 package social.entourage.android.map.filter
 
 import android.graphics.PorterDuff
+import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.entourage.fragment_map_filter.*
@@ -18,6 +21,13 @@ class MapFilterFragment  : BaseMapFilterFragment() {
     // ----------------------------------
     private var actionSwitches = HashMap<String, List<Switch>>()
     private val onCheckedChangeListener = OnCheckedChangeListener()
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_map_filter, container, false)
+    }
 
     override fun initializeView() {
         super.initializeView()
@@ -169,9 +179,5 @@ class MapFilterFragment  : BaseMapFilterFragment() {
         // Constants
         // ----------------------------------
         const val TAG = "social.entourage_android.MapFilterFragment"
-        @JvmStatic
-        fun newInstance(isProUser: Boolean): MapFilterFragment {
-            return MapFilterFragment()
-        }
     }
 }

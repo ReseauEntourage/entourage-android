@@ -50,6 +50,8 @@ import social.entourage.android.map.filter.MapFilterFragment
 import social.entourage.android.map.permissions.NoLocationPermissionFragment
 import social.entourage.android.service.EntourageService
 import social.entourage.android.tools.BusProvider
+import social.entourage.android.tour.TourFilter
+import social.entourage.android.tour.TourFilterFragment
 import social.entourage.android.user.edit.UserEditActionZoneFragment.FragmentListener
 import social.entourage.android.view.EntourageSnackbar.make
 import java.util.*
@@ -136,14 +138,14 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         if (!isLocationEnabled() && !isLocationPermissionGranted()) {
             (activity as MainActivity?)?.showEditActionZoneFragment(this)
         }
-        fragment_map_tours_view?.addOnScrollListener(scrollListener)
+        fragment_map_feeditems_view?.addOnScrollListener(scrollListener)
         EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_FEED_FROM_TAB)
         isStopped = false
     }
 
     override fun onStop() {
         super.onStop()
-        fragment_map_tours_view?.removeOnScrollListener(scrollListener)
+        fragment_map_feeditems_view?.removeOnScrollListener(scrollListener)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -324,7 +326,8 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     private fun updateFilterButtonText() {
-        fragment_map_filter_button?.setText(if (mapFilter.isDefaultFilter()) R.string.map_no_filter else R.string.map_filters_activated)
+        val activefilters = (mapFilter.isDefaultFilter() && selectedTab==NewsfeedTabItem.ALL_TAB)|| (TourFilter.isDefaultFilter() && selectedTab==NewsfeedTabItem.TOUR_TAB)
+        fragment_map_filter_button?.setText(if (activefilters) R.string.map_no_filter else R.string.map_filters_activated)
     }
 
     open fun onNewsfeedLoadMoreRequested(event: OnNewsfeedLoadMoreEvent) {
@@ -360,7 +363,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             }
             NewsfeedTabItem.TOUR_TAB -> {
                 EntourageEvents.logEvent(EntourageEvents.TOUR_FEED_TAB_EVENTS)
-                fragment_map_filter_button?.visibility = View.GONE
+                fragment_map_filter_button?.visibility = View.VISIBLE
             }
             NewsfeedTabItem.EVENTS_TAB -> {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_TAB_EVENTS)
@@ -368,7 +371,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             }
         }
         clearAll()
-        newsfeedAdapter?.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE, selectedTab)
+        newsfeedAdapter?.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS, selectedTab)
         entourageService?.updateNewsfeed(pagination, selectedTab)
     }
 
@@ -475,7 +478,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
         // update the bottom view, if not refreshing
         if (!pagination.isRefreshing) {
-            showNewsfeedBottomView(if (selectedTab != NewsfeedTabItem.EVENTS_TAB) newNewsFeeds.size < pagination.itemsPerPage else newsfeedAdapter!!.dataItemCount == 0)
+            showNewsfeedBottomView(if (selectedTab == NewsfeedTabItem.ALL_TAB) newNewsFeeds.size < pagination.itemsPerPage else newsfeedAdapter!!.dataItemCount == 0)
         }
         if (newsfeedAdapter!!.dataItemCount == 0) {
             if (!pagination.isRefreshing) {
@@ -487,7 +490,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                 initialNewsfeedLoaded = true
             }
             if (!pagination.isRefreshing && previousItemCount == 0) {
-                fragment_map_tours_view?.scrollToPosition(0)
+                fragment_map_feeditems_view?.scrollToPosition(0)
             }
         }
         pagination.isLoading = false
@@ -538,11 +541,11 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         }
     }
 
-    fun displayGeolocationPreferences() {
+    private fun displayGeolocationPreferences() {
         displayGeolocationPreferences(false)
     }
 
-    fun onDisplayToggle() {
+    private fun onDisplayToggle() {
         if (!isFullMapShown) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_MAPVIEW_CLICK)
         } else {
@@ -564,12 +567,15 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     fun onShowFilter() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_FILTERSCLICK)
-        val isPro = EntourageApplication.me(activity)?.isPro ?: false
-        MapFilterFragment.newInstance(isPro).show(parentFragmentManager, MapFilterFragment.TAG)
+        if(selectedTab==NewsfeedTabItem.TOUR_TAB) {
+            TourFilterFragment().show(parentFragmentManager, MapFilterFragment.TAG)
+        } else {
+            MapFilterFragment().show(parentFragmentManager, MapFilterFragment.TAG)
+        }
     }
 
     private fun onNewEntouragesReceivedButton() {
-        fragment_map_tours_view?.scrollToPosition(0)
+        fragment_map_feeditems_view?.scrollToPosition(0)
         fragment_map_new_entourages_button?.visibility = View.GONE
     }
 
@@ -667,7 +673,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                     entourageService?.cancelNewsFeedUpdate()
                 }
                 newsfeedAdapter?.removeAll()
-                newsfeedAdapter?.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE, selectedTab)
+                newsfeedAdapter?.showBottomView(false, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS, selectedTab)
                 pagination = NewsfeedPagination()
                 entourageService?.updateNewsfeed(pagination, selectedTab)
                 updateUserHistory()
@@ -698,11 +704,11 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     protected open fun updateUserHistory() {}
     private fun initializeNewsfeedView() {
         if (newsfeedAdapter == null) {
-            fragment_map_tours_view?.layoutManager = LinearLayoutManager(context)
+            fragment_map_feeditems_view?.layoutManager = LinearLayoutManager(context)
             newsfeedAdapter = NewsfeedAdapter()
             newsfeedAdapter!!.setOnMapReadyCallback(onMapReadyCallback)
             newsfeedAdapter!!.setOnFollowButtonClickListener { onFollowGeolocation() }
-            fragment_map_tours_view?.adapter = newsfeedAdapter
+            fragment_map_feeditems_view?.adapter = newsfeedAdapter
         }
     }
 
@@ -763,7 +769,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         }
     }
 
-    fun freezeTour(tour: Tour) {
+    private fun freezeTour(tour: Tour) {
         entourageService?.freezeTour(tour)
     }
 
@@ -781,17 +787,15 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     // ----------------------------------
     // PRIVATE METHODS (views)
     // ----------------------------------
+    open fun needForGeoloc():Boolean {
+        val me = EntourageApplication.me(activity) ?: return false
+        return me.address == null
+    }
+
     override fun updateGeolocBanner(active: Boolean) {
         if (fragment_map_gps != null) {
-            var visibility = true
-            if (isLocationEnabled() && isLocationPermissionGranted()) {
-                visibility = false
-            }
             //we force it because we don't need geoloc when Action zone is set
-            val me = EntourageApplication.me(activity)
-            if (me != null && !me.isPro && me.address != null) {
-                visibility = false
-            }
+            val visibility = (!isLocationEnabled() || !isLocationPermissionGranted()) && needForGeoloc()
             fragment_map_gps.text = if (isLocationEnabled()) getString(R.string.map_gps_no_permission) else getString(R.string.map_gps_unavailable)
             fragment_map_gps.visibility = if (visibility) View.VISIBLE else View.GONE
             if(!visibility && isFullMapShown) {
@@ -906,7 +910,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         anim.start()
     }
 
-    protected fun displayListWithMapHeader() {
+    private fun displayListWithMapHeader() {
         if (!isFullMapShown || fragment_map_main_layout==null) {
             return
         }
@@ -933,7 +937,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         get() = !isFullMapShown
 
     private fun ensureMapVisible() {
-        fragment_map_tours_view?.scrollToPosition(0)
+        fragment_map_feeditems_view?.scrollToPosition(0)
     }
 
     private fun updatePagination(newsfeedList: List<Newsfeed>?) {
@@ -1118,19 +1122,22 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     // Newsfeed Bottom View Handling
     // ----------------------------------
     private fun showNewsfeedBottomView(show: Boolean) {
-        if (newsfeedAdapter == null) return
-        if (pagination.isNextDistanceAvailable) {
-            // we can increase the distance
-            newsfeedAdapter!!.showBottomView(show, NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE, selectedTab)
-        } else {
-            if (newsfeedAdapter!!.dataItemCount == 0) {
-                // max distance and still no items, show no items info
-                newsfeedAdapter!!.showBottomView(show, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS, selectedTab)
-            } else {
-                // max distance and items, show no more items info
-                newsfeedAdapter!!.showBottomView(show, NewsfeedBottomViewHolder.CONTENT_TYPE_NO_MORE_ITEMS, selectedTab)
-            }
-        }
+        newsfeedAdapter?.showBottomView(show,
+                when {
+                    pagination.isNextDistanceAvailable -> {
+                        // we can increase the distance
+                        NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE
+                    }
+                    newsfeedAdapter!!.dataItemCount == 0 -> {
+                        // max distance and still no items, show no items info
+                        NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS
+                    }
+                    else -> {
+                        // max distance and items, show no more items info
+                        NewsfeedBottomViewHolder.CONTENT_TYPE_NO_MORE_ITEMS
+                    }
+                },
+                selectedTab)
     }
 
     // ----------------------------------
@@ -1199,7 +1206,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         }
         val newHeight = valueAnimator.animatedValue as Int
         newsfeedAdapter!!.setMapHeight(newHeight)
-        fragment_map_tours_view?.layoutManager?.requestLayout()
+        fragment_map_feeditems_view?.layoutManager?.requestLayout()
     }
 
     override val adapter: HeaderBaseAdapter?
