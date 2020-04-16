@@ -14,11 +14,6 @@ object MapFilterFactory {
     @JvmStatic
     val mapFilter: MapFilter
         get() {
-            val app = EntourageApplication.get()
-            val authenticationController = app?.entourageComponent?.authenticationController
-            if (authenticationController != null) {
-                return authenticationController.mapFilter
-            }
-            return MapFilter()
+            return EntourageApplication.get()?.entourageComponent?.authenticationController?.mapFilter ?: MapFilter()
         }
 }
