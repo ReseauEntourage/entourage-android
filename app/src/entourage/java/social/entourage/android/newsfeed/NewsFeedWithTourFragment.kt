@@ -349,7 +349,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
                 isFollowing = true
                 currentTourUUID = tourUUID
                 layout_map_launcher?.visibility = View.GONE
-                if (fragment_map_feeditems_view.visibility == View.VISIBLE) {
+                if (fragment_map_feeditems_view?.visibility == View.VISIBLE) {
                     displayFullMap()
                 }
                 addTourCard(entourageService!!.currentTour)
@@ -360,7 +360,6 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
                 EntourageSnackbar.make(fragment_map_main_layout, R.string.tour_creation_fail, Snackbar.LENGTH_SHORT).show()
             }
         }
-
     }
 
     override fun onTourUpdated(newPoint: LatLng) {
