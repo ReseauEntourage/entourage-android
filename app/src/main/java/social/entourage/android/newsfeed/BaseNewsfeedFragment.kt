@@ -45,7 +45,7 @@ import social.entourage.android.location.EntourageLocation
 import social.entourage.android.location.LocationUtils.isLocationEnabled
 import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
 import social.entourage.android.map.*
-import social.entourage.android.map.filter.MapFilterFactory.mapFilter
+import social.entourage.android.map.filter.MapFilterFactory
 import social.entourage.android.map.filter.MapFilterFragment
 import social.entourage.android.map.permissions.NoLocationPermissionFragment
 import social.entourage.android.service.EntourageService
@@ -302,7 +302,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         //only if entourage if found
         event.entourage ?: return
         // Force the map filtering for entourages as ON
-        mapFilter.entourageCreated()
+        MapFilterFactory.mapFilter.entourageCreated()
         presenter.saveMapFilter()
 
         // Update the newsfeed
@@ -324,7 +324,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     open fun updateFilterButtonText() {
-        val activefilters = (mapFilter.isDefaultFilter() && selectedTab==NewsfeedTabItem.ALL_TAB)
+        val activefilters = (MapFilterFactory.mapFilter.isDefaultFilter() && selectedTab==NewsfeedTabItem.ALL_TAB)
         fragment_map_filter_button?.setText(if (activefilters) R.string.map_no_filter else R.string.map_filters_activated)
     }
 

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.pfp.fragment_map_filter.*
 import social.entourage.android.R
-import social.entourage.android.map.filter.MapFilterFactory.mapFilter
+import social.entourage.android.map.filter.MapFilterFactory
 
 class MapFilterFragment  : BaseMapFilterFragment() {
     // ----------------------------------

@@ -12,7 +12,7 @@ import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.map.Entourage
 import social.entourage.android.entourage.category.EntourageCategoryManager
-import social.entourage.android.map.filter.MapFilterFactory.mapFilter
+import social.entourage.android.map.filter.MapFilterFactory
 import java.util.*
 
 class MapFilterFragment  : BaseMapFilterFragment() {
@@ -94,7 +94,7 @@ class MapFilterFragment  : BaseMapFilterFragment() {
     // Private methods
     // ----------------------------------
     override fun loadFilter() {
-        val mapFilter = mapFilter
+        val mapFilter = MapFilterFactory.mapFilter
         map_filter_entourage_outing_switch.isChecked = mapFilter.entourageTypeOuting
         map_filter_past_events_switch.isChecked = mapFilter.showPastEvents
         map_filter_entourage_demand_switch.isChecked = mapFilter.entourageTypeDemand
@@ -112,6 +112,7 @@ class MapFilterFragment  : BaseMapFilterFragment() {
     }
 
     override fun saveFilter() {
+        val mapFilter = MapFilterFactory.mapFilter
         mapFilter.entourageTypeOuting = map_filter_entourage_outing_switch.isChecked
         mapFilter.showPastEvents = map_filter_past_events_switch.isChecked
         mapFilter.entourageTypeDemand = map_filter_entourage_demand_switch.isChecked

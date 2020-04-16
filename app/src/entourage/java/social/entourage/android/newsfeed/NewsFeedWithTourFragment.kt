@@ -25,7 +25,7 @@ import social.entourage.android.api.tape.Events
 import social.entourage.android.location.EntourageLocation
 import social.entourage.android.location.LocationUtils
 import social.entourage.android.map.MapClusterItem
-import social.entourage.android.map.filter.MapFilterFactory.mapFilter
+import social.entourage.android.map.filter.MapFilterFactory
 import social.entourage.android.map.filter.MapFilterFragment
 import social.entourage.android.service.EntourageService
 import social.entourage.android.service.TourServiceListener
@@ -688,7 +688,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     }
 
     override fun updateFilterButtonText() {
-        val activefilters = (mapFilter.isDefaultFilter() && selectedTab==NewsfeedTabItem.ALL_TAB)|| (TourFilter.isDefaultFilter() && selectedTab==NewsfeedTabItem.TOUR_TAB)
+        val activefilters = (MapFilterFactory.mapFilter.isDefaultFilter() && selectedTab==NewsfeedTabItem.ALL_TAB)|| (TourFilter.isDefaultFilter() && selectedTab==NewsfeedTabItem.TOUR_TAB)
         fragment_map_filter_button?.setText(if (activefilters) R.string.map_no_filter else R.string.map_filters_activated)
     }
 
