@@ -519,7 +519,9 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         if (editedEntourage != null) {
             entourageCategory = EntourageCategoryManager.getInstance().findCategory(editedEntourage.getEntourageType(), editedEntourage.getCategory());
             groupType = editedEntourage.getGroupType();
-            entourageCategory.setSelected(true);
+            if(entourageCategory!=null) {
+                entourageCategory.setSelected(true);
+            }
         }
         if(entourageCategory==null) {
             if(groupType != null){
@@ -527,8 +529,10 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
             } else {
                 entourageCategory = EntourageCategoryManager.getInstance().getDefaultCategory();
             }
-            entourageCategory.setSelected(false);
-            entourageCategory.setNewlyCreated(true);
+            if(entourageCategory!=null) {
+                entourageCategory.setSelected(false);
+                entourageCategory.setNewlyCreated(true);
+            }
         }
         
         updateFragmentTitle();
