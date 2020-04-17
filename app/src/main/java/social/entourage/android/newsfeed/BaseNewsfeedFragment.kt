@@ -568,6 +568,11 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         MapFilterFragment().show(parentFragmentManager, MapFilterFragment.TAG)
     }
 
+    fun onShowEvents() {
+        EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_TAB_EVENTS)
+        fragment_map_top_tab?.getTabAt(NewsfeedTabItem.EVENTS_TAB.id)?.select()
+    }
+
     private fun onNewEntouragesReceivedButton() {
         fragment_map_feeditems_view?.scrollToPosition(0)
         fragment_map_new_entourages_button?.visibility = View.GONE
