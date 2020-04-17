@@ -130,6 +130,8 @@ object DeepLinksManager {
             activity.selectItem(R.id.action_edit_profile)
         } else if (key == DeepLinksView.GUIDE.view) {
             activity.showGuide()
+        } else if (key == DeepLinksView.EVENTS.view) {
+            activity.showEvents()
         } else if (key == DeepLinksView.MY_CONVERSATIONS.view) {
             activity.dismissNewsfeedFragmentDialogs()
             activity.showMyEntourages()
@@ -157,6 +159,7 @@ object DeepLinksManager {
         WEBVIEW("webview"),
         PROFILE("profile"),
         FILTERS("filters"),
+        EVENTS("events"),
         GUIDE("guide"),
         MY_CONVERSATIONS("messages"),
         CREATE_ACTION("create-action"),

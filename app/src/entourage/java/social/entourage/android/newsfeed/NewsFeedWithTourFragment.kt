@@ -25,8 +25,12 @@ import social.entourage.android.api.tape.Events
 import social.entourage.android.location.EntourageLocation
 import social.entourage.android.location.LocationUtils
 import social.entourage.android.map.MapClusterItem
+import social.entourage.android.map.filter.MapFilterFactory
+import social.entourage.android.map.filter.MapFilterFragment
 import social.entourage.android.service.EntourageService
 import social.entourage.android.service.TourServiceListener
+import social.entourage.android.tour.TourFilter
+import social.entourage.android.tour.TourFilterFragment
 import social.entourage.android.tour.confirmation.TourEndConfirmationFragment
 import social.entourage.android.tour.encounter.CreateEncounterActivity
 import social.entourage.android.view.EntourageSnackbar
@@ -345,7 +349,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
                 isFollowing = true
                 currentTourUUID = tourUUID
                 layout_map_launcher?.visibility = View.GONE
-                if (fragment_map_feeditems_view.visibility == View.VISIBLE) {
+                if (fragment_map_feeditems_view?.visibility == View.VISIBLE) {
                     displayFullMap()
                 }
                 addTourCard(entourageService!!.currentTour)
@@ -356,7 +360,6 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
                 EntourageSnackbar.make(fragment_map_main_layout, R.string.tour_creation_fail, Snackbar.LENGTH_SHORT).show()
             }
         }
-
     }
 
     override fun onTourUpdated(newPoint: LatLng) {
@@ -672,6 +675,20 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
         if (userHistory) {
             entourageService?.updateUserHistory(userId, 1, 500)
         }
+    }
+
+    override fun onShowFilter() {
+        if(selectedTab==NewsfeedTabItem.TOUR_TAB) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_FILTERSCLICK)
+            TourFilterFragment().show(parentFragmentManager, MapFilterFragment.TAG)
+        } else {
+            super.onShowFilter()
+        }
+    }
+
+    override fun updateFilterButtonText() {
+        val activefilters = (MapFilterFactory.mapFilter.isDefaultFilter() && selectedTab==NewsfeedTabItem.ALL_TAB)|| (TourFilter.isDefaultFilter() && selectedTab==NewsfeedTabItem.TOUR_TAB)
+        fragment_map_filter_button?.setText(if (activefilters) R.string.map_no_filter else R.string.map_filters_activated)
     }
 
     companion object {

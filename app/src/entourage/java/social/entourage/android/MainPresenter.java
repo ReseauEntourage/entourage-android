@@ -46,7 +46,7 @@ public class MainPresenter extends MainBasePresenter {
                     Toast.makeText(activity, R.string.no_browser_error, Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.sidemenu_app_version:
+            case R.id.mainprofile_app_version:
                 final android.content.ClipboardManager clipboardManager = (ClipboardManager)EntourageApplication.get().getSystemService(CLIPBOARD_SERVICE);
                 if(clipboardManager!=null){
                     ClipData clipData = ClipData.newPlainText("FirebaseID", FirebaseInstanceId.getInstance().getId());

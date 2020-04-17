@@ -397,11 +397,7 @@ public class EntourageServiceManager {
         final CameraPosition currentPosition = entourageLocation.getCurrentCameraPosition();
         if (currentPosition != null) {
             final LatLng location = currentPosition.target;
-            final MapFilter mapFilter = MapFilterFactory.getMapFilter();
-            if (mapFilter == null) {
-                return;
-            }
-            currentNewsFeedCall = createNewsfeedWrapperCall(location, pagination, mapFilter, selectedTab);
+            currentNewsFeedCall = createNewsfeedWrapperCall(location, pagination, selectedTab);
             if (currentNewsFeedCall == null) {
                 //fail graciously
                 entourageService.notifyListenersNewsFeedReceived(null);
@@ -588,9 +584,10 @@ public class EntourageServiceManager {
     }
 
     private @Nullable
-    Call<Newsfeed.NewsfeedWrapper> createNewsfeedWrapperCall(final LatLng location, final NewsfeedPagination pagination, final MapFilter mapFilter, final NewsfeedTabItem selectedTab) {
+    Call<Newsfeed.NewsfeedWrapper> createNewsfeedWrapperCall(final LatLng location, final NewsfeedPagination pagination, final NewsfeedTabItem selectedTab) {
         switch (selectedTab) {
-            case ALL_TAB:
+            case ALL_TAB: {
+                final MapFilter mapFilter = MapFilterFactory.getMapFilter();
                 return newsfeedRequest.retrieveFeed(
                         (pagination.getBeforeDate() == null ? null : new EntourageDate(pagination.getBeforeDate())),
                         location.longitude,
@@ -604,6 +601,7 @@ public class EntourageServiceManager {
                         Constants.ANNOUNCEMENTS_VERSION,
                         mapFilter.showPastEvents()
                 );
+            }
             case TOUR_TAB:
                 return newsfeedRequest.retrieveFeed(
                         (pagination.getBeforeDate() == null ? null : new EntourageDate(pagination.getBeforeDate())),

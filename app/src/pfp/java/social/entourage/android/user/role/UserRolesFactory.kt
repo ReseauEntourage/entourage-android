@@ -7,7 +7,7 @@ import social.entourage.android.R
  * Created by Mihai Ionescu on 21/05/2018.
  */
 object UserRolesFactory : BaseUserRolesFactory() {
-    fun isVisited(role: String?): Boolean {
+    fun isVisited(role: String): Boolean {
         val userRole = findByName(role)
         return userRole?.name?.equals("visited", ignoreCase = true) ?: false
     }

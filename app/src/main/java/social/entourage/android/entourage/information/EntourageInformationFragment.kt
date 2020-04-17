@@ -142,8 +142,8 @@ class EntourageInformationFragment : EntourageDialogFragment(), EntourageService
             val newFeedItem = args.getSerializable(FeedItem.KEY_FEEDITEM) as FeedItem?
             invitationId = args.getLong(KEY_INVITATION_ID)
             if (newFeedItem != null) {
+                feedItem = newFeedItem
                 if (newFeedItem.isPrivate) {
-                    feedItem = newFeedItem
                     initializeView()
                     loadPrivateCards()
                 } else {

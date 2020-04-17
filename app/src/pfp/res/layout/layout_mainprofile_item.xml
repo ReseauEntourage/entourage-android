@@ -6,7 +6,7 @@
     >
 
     <ImageView
-        android:id="@+id/side_menu_item_icon"
+        android:id="@+id/mainprofile_item_icon"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_centerVertical="true"
@@ -19,23 +19,23 @@
         android:src="@drawable/ic_info_white_24dp"/>
 
     <TextView
-        android:id="@+id/side_menu_item_title"
+        android:id="@+id/mainprofile_item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="15dp"
         android:layout_marginRight="15dp"
-        android:layout_toEndOf="@+id/side_menu_item_icon"
-        android:layout_toLeftOf="@+id/side_menu_item_arrow"
-        android:layout_toRightOf="@id/side_menu_item_icon"
-        android:layout_toStartOf="@+id/side_menu_item_arrow"
+        android:layout_toEndOf="@+id/mainprofile_item_icon"
+        android:layout_toLeftOf="@+id/mainprofile_item_arrow"
+        android:layout_toRightOf="@id/mainprofile_item_icon"
+        android:layout_toStartOf="@+id/mainprofile_item_arrow"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/greyish_brown"
         android:textSize="@dimen/entourage_font_medium"/>
 
     <ImageView
-        android:id="@+id/side_menu_item_arrow"
+        android:id="@+id/mainprofile_item_arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -48,11 +48,11 @@
         android:layout_marginEnd="15dp"/>
 
     <ImageView
-        android:id="@+id/side_menu_item_divider"
+        android:id="@+id/mainprofile_item_divider"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/sidemenu_divider"
+        android:background="@color/mainprofile_divider"
         android:contentDescription="@string/empty_description"/>
 
 </merge>
