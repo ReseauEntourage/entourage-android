@@ -712,7 +712,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     private fun initializeFilterTab() {
-        if(EntourageApplication.me(activity)?.isPro ==false) {
+        if(EntourageApplication.me(activity)?.isPro ==false && fragment_map_top_tab.getTabAt(NewsfeedTabItem.TOUR_TAB.id)!=null) {
             fragment_map_top_tab?.removeTabAt(NewsfeedTabItem.TOUR_TAB.id)
             fragment_map_top_tab?.tabMode = TabLayout.MODE_FIXED
         }
