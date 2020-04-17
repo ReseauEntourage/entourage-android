@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pre_onboard_button_connect">Me connecter</string>
+    <string name="pre_onboard_button_next">Suivant</string>
+    <string name="pre_onboard_tutorial_title1">Bienvenue\nsur Entourage</string>
+    <string name="pre_onboard_tutorial_title1_colored">Entourage</string>
+    <string name="pre_onboard_tutorial_description1">Quand on est en précarité, le plus dur est la solitude. Rejoignez une communauté d’entraide et de partage au coeur de votre quartier.</string>
+
+    <string name="pre_onboard_tutorial_title2">Entraidez-vous et créez du lien !</string>
+    <string name="pre_onboard_tutorial_title2_colored">créez du lien</string>
+    <string name="pre_onboard_tutorial_description2">Proposez ou demandez de l’aide et rencontrez-vous entre voisins, avec et sans domicile, d’un même quartier.</string>
+
+    <string name="pre_onboard_tutorial_title3">Participez à des événements solidaires</string>
+    <string name="pre_onboard_tutorial_title3_colored">événements solidaires</string>
+
+    <string name="pre_onboard_tutorial_title4">Entourage\nvous guide</string>
+    <string name="pre_onboard_tutorial_title4_colored">Entourage</string>
+    <string name="pre_onboard_tutorial_description4">L’équipe d’accompagnement et ses ambassadeurs sont là pour vous aider ! Orientation, ateliers, informations : trouvez des réponses au sein du réseau.</string>
+
+    <string name="pre_onboard_choice_description_title">Le réseau de ceux qui n’ont pas de réseau</string>
+    <string name="pre_onboard_choice_login">J’ai déjà un compte</string>
+    <string name="pre_onboard_choice_signup">Je m’inscris</string>
+    <string name="pre_onboard_choice_about">Qui est l’association Entourage ?</string>
+</resources>

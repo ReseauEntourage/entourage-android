@@ -1,6 +1,7 @@
 package social.entourage.android.authentication.login.register;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -91,6 +92,17 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
         mListener = null;
     }
 
+    //Hack temporaire (en attendant la nouvelle version de l'onboarding)
+    public Boolean isFromChoice = false;
+    public Boolean isShowLogin = false;
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (isFromChoice) {
+            mListener.registerClosePop(isShowLogin);
+        }
+    }
+
     // ----------------------------------
     // Click handlers
     // ----------------------------------
@@ -103,6 +115,7 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
     @OnClick(R.id.register_welcome_signin_button)
     protected void onSigninClicked() {
         mListener.registerShowSignIn();
+        isShowLogin = true;
         dismiss();
     }
 
