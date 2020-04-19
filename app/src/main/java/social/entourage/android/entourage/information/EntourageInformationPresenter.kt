@@ -48,8 +48,8 @@ class EntourageInformationPresenter @Inject constructor(private val fragment: En
     // ----------------------------------
     // Api calls
     // ----------------------------------
-    fun getFeedItem(feedItemUUID: String?, feedItemType: Int, feedRank: Int, distance: Int) {
-        if(feedItemUUID.isNullOrBlank()) return
+    fun getFeedItem(feedItemUUID: String, feedItemType: Int, feedRank: Int, distance: Int) {
+        if(feedItemUUID.isBlank()) return
         fragment?.showProgressBar()
         when (feedItemType) {
             TimestampedObject.TOUR_CARD -> {

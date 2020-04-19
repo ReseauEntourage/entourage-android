@@ -168,8 +168,8 @@ class EntourageInformationFragment : EntourageDialogFragment(), EntourageService
                 if (requestedFeedItemType == TimestampedObject.TOUR_CARD || requestedFeedItemType == TimestampedObject.ENTOURAGE_CARD) {
                     if (!requestedFeedItemShareURL.isNullOrEmpty()) {
                         presenter.getFeedItem(requestedFeedItemShareURL!!, requestedFeedItemType)
-                    } else {
-                        presenter.getFeedItem(requestedFeedItemUUID, requestedFeedItemType, 0, 0)
+                    } else if(requestedFeedItemUUID != null && requestedFeedItemUUID!!.isNotBlank()){
+                        presenter.getFeedItem(requestedFeedItemUUID!!, requestedFeedItemType, 0, 0)
                     }
                 }
             }
@@ -1391,13 +1391,11 @@ class EntourageInformationFragment : EntourageDialogFragment(), EntourageService
         val duration = if (feedItem.startTime != null && feedItem.endTime != null) {
             feedItem.endTime.time - feedItem.startTime.time
         } else 0
-        var endPoint = feedItem.endPoint
-        if (feedItem.type == TimestampedObject.TOUR_CARD) {
-            val tour = feedItem as Tour?
-            val tourPointsList = tour!!.tourPoints
+        if (feedItem.type == TimestampedObject.TOUR_CARD && feedItem is Tour) {
+            val tour = feedItem as Tour
+            val tourPointsList = tour.tourPoints
             if (tourPointsList.size > 1) {
                 var startPoint = tourPointsList[0]
-                endPoint = tourPointsList[tourPointsList.size - 1]
                 for (i in 1 until tourPointsList.size) {
                     val p = tourPointsList[i]
                     distance += p.distanceTo(startPoint)
@@ -1405,11 +1403,11 @@ class EntourageInformationFragment : EntourageDialogFragment(), EntourageService
                 }
             }
             val tourTimestamp = TourTimestamp(
-                    feedItem.endTime,
-                    if (feedItem.endTime != null) feedItem.endTime else now,
-                    feedItem.type,
+                    tour.endTime,
+                    if (tour.endTime != null) tour.endTime else now,
+                    tour.type,
                     FeedItem.STATUS_CLOSED,
-                    endPoint,
+                    tour.endPoint,
                     duration,
                     distance
             )
@@ -1629,7 +1627,9 @@ class EntourageInformationFragment : EntourageDialogFragment(), EntourageService
         tour_info_comment?.isEnabled = true
         tour_info_comment_send_button?.isEnabled = true
         if (chatMessage == null) {
-            EntourageSnackbar.make(entourage_information_coordinator_layout!!,  R.string.tour_info_error_chat_message, Snackbar.LENGTH_SHORT).show()
+            if(entourage_information_coordinator_layout!=null) {
+                EntourageSnackbar.make(entourage_information_coordinator_layout!!, R.string.tour_info_error_chat_message, Snackbar.LENGTH_SHORT).show()
+            }
             return
         }
         tour_info_comment?.setText("")

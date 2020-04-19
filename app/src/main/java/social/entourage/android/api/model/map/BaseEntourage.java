@@ -326,11 +326,6 @@ public class BaseEntourage extends FeedItem implements Serializable {
     }
 
     @Override
-    public TourPoint getEndPoint() {
-        return null;
-    }
-
-    @Override
     public String getDisplayAddress() {
         return this.metadata.getDisplayAddress();
     }
