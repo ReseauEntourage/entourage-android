@@ -4,10 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_pre_onboarding_choice.*
+import social.entourage.android.EntourageActivity
 import social.entourage.android.R
 import social.entourage.android.authentication.login.LoginActivity
 
-class PreOnboardingChoiceActivity : AppCompatActivity() {
+class PreOnboardingChoiceActivity : EntourageActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +26,8 @@ class PreOnboardingChoiceActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-        ui_button_about
+        ui_button_about?.setOnClickListener {
+            showWebView(getString(R.string.website_url))
+        }
     }
 }
