@@ -163,7 +163,7 @@ public class EntourageEvents {
 
     //ENTOURAGE VIEW Events
     public static final String EVENT_ENTOURAGE_DISCUSSION_VIEW = "Screen14_1DiscussionView";
-    public static final String EVENT_ENTOURAGE_PUBLIC_VIEW_MEMBER = "Screen14_2PublicPageViewAsMemberOrCreator";
+    public static final String EVENT_ENTOURAGE_PUBLIC_VIEW_MEMBER = "Screen14_2PublicPageViewAsMember";
     public static final String EVENT_ENTOURAGE_PUBLIC_VIEW_NONMEMBER = "Screen14_2PublicPageViewAsNonMember";
     public static final String EVENT_ENTOURAGE_VIEW_WRITE_MESSAGE = "WriteMessage";
     public static final String EVENT_ENTOURAGE_VIEW_SPEECH = "SpeechRecognitionMessage";
@@ -226,8 +226,8 @@ public class EntourageEvents {
     public static final String EVENT_CREATE_ENCOUNTER_START = "Open_Create_Encounter_From_Tour";
     public static final String EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_OK = "Encounter_Voice_Message_Recorded_OK";
     public static final String EVENT_CREATE_ENCOUNTER_OK = "Encounter_Created";
-    public static final String EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_STARTED = "Encounter_Voice_Message_Recording_Started";
-    public static final String EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_NOT_SUPPORTED = "Encounter_Voice_Message_Recording_Not_Supported";
+    public static final String EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_STARTED = "Encounter_VoiceMsgRecord_Started";
+    public static final String EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_NOT_SUPPORTED = "Encounter_VoiceMsgRecord_Not_Supported";
     public static final String EVENT_CREATE_ENCOUNTER_FAILED = "Encounter_Create_Failed";
 
     //MAP Filter Events
