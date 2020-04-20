@@ -119,6 +119,6 @@ public class MemberCardViewHolder extends BaseCardViewHolder {
     }
 
     public static int getLayoutResource() {
-        return R.layout.tour_information_member_card;
+        return R.layout.entourage_information_member_card;
     }
 }

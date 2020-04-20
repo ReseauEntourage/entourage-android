@@ -438,7 +438,4 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     public abstract String getDisplayAddress();
 
     public abstract TourPoint getStartPoint();
-
-    public abstract TourPoint getEndPoint();
-
 }

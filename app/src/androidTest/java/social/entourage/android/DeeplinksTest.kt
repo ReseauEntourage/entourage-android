@@ -414,7 +414,7 @@ class DeepLinkingTest {
     private fun connectedEntourageDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
-        Espresso.onView(ViewMatchers.withId(R.id.tour_info_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withId(R.id.entourage_info_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
     @Test

@@ -8,10 +8,10 @@
                 android:background="@color/background">
 
     <ScrollView
-        android:id="@+id/tour_info_public_scrollview"
+        android:id="@+id/entourage_info_public_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/tour_info_act_layout"
+        android:layout_above="@+id/entourage_info_act_layout"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         >
@@ -22,7 +22,7 @@
             android:orientation="vertical">
 
             <include
-                layout="@layout/layout_public_tour_header"
+                layout="@layout/layout_public_entourage_header"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:visibility="visible" />
@@ -40,7 +40,7 @@
                 android:padding="16dp">
 
                 <LinearLayout
-                    android:id="@+id/tour_info_metadata_layout"
+                    android:id="@+id/entourage_info_metadata_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
@@ -62,7 +62,7 @@
                             android:textSize="15sp" />
 
                         <TextView
-                            android:id="@+id/tour_info_metadata_organiser"
+                            android:id="@+id/entourage_info_metadata_organiser"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -91,7 +91,7 @@
                             android:paddingStart="10dp">
 
                             <TextView
-                                android:id="@+id/tour_info_metadata_datetime"
+                                android:id="@+id/entourage_info_metadata_datetime"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="sans-serif-medium"
@@ -102,7 +102,7 @@
                                 tools:text="Rendez-vous jeudi 28 mars 2018 à 8h"/>
 
                             <TextView
-                                android:id="@+id/tour_info_metadata_address"
+                                android:id="@+id/entourage_info_metadata_address"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="sans-serif-medium"
@@ -118,7 +118,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/tour_info_description"
+                    android:id="@+id/entourage_info_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/greyish_brown"
@@ -128,7 +128,7 @@
                     tools:text="Marcel a cassé ses lunettes, et il ne peut plus lire du tout, lui qui aime tant ça ! Si quelqu'un a chez lui une paire pour la lecture dont il ne se sert plus, rejoignez l'entourage !" />
 
                 <TextView
-                    android:id="@+id/tour_info_timestamps"
+                    android:id="@+id/entourage_info_timestamps"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8sp"
@@ -139,20 +139,20 @@
             </LinearLayout>
 
             <FrameLayout
-                android:id="@+id/tour_info_map_layout"
+                android:id="@+id/entourage_info_map_layout"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 tools:background="@color/quantum_brown100"
                 />
 
             <LinearLayout
-                android:id="@+id/tour_info_members_layout"
+                android:id="@+id/entourage_info_members_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tour_info_member_count"
+                    android:id="@+id/entourage_info_member_count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -163,7 +163,7 @@
                     android:textStyle="bold"/>
 
                 <LinearLayout
-                    android:id="@+id/tour_info_member_add"
+                    android:id="@+id/entourage_info_member_add"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginStart="16dp"
@@ -191,7 +191,7 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/tour_info_members"
+                    android:id="@+id/entourage_info_members"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -200,7 +200,7 @@
     </ScrollView>
 
     <RelativeLayout
-        android:id="@+id/tour_info_act_layout"
+        android:id="@+id/entourage_info_act_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -211,18 +211,18 @@
         android:weightSum="5">
 
         <ImageView
-            android:id="@+id/tour_info_act_divider_left"
+            android:id="@+id/entourage_info_act_divider_left"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_centerVertical="true"
             android:layout_gravity="fill_horizontal"
-            android:layout_toStartOf="@+id/tour_info_act_button"
+            android:layout_toStartOf="@+id/entourage_info_act_button"
             android:alpha="0.5"
             android:background="@color/greyish"
             android:contentDescription="@string/empty_description"/>
 
         <Button
-            android:id="@+id/tour_info_act_button"
+            android:id="@+id/entourage_info_act_button"
             style="@style/ActButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -233,12 +233,12 @@
             android:text="@string/tour_cell_button_join"/>
 
         <ImageView
-            android:id="@+id/tour_info_act_divider_right"
+            android:id="@+id/entourage_info_act_divider_right"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_centerVertical="true"
             android:layout_gravity="fill_horizontal"
-            android:layout_toEndOf="@+id/tour_info_act_button"
+            android:layout_toEndOf="@+id/entourage_info_act_button"
             android:alpha="0.5"
             android:background="@color/greyish"
             android:contentDescription="@string/empty_description"/>
@@ -246,7 +246,7 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/tour_info_request_join_layout"
+        android:id="@+id/entourage_info_request_join_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -259,7 +259,7 @@
         android:visibility="gone">
 
         <TextView
-            android:id="@+id/tour_info_request_join_title"
+            android:id="@+id/entourage_info_request_join_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tour_info_request_join_title_entourage"
@@ -267,7 +267,7 @@
             android:textSize="@dimen/entourage_font_medium"/>
 
         <Button
-            android:id="@+id/tour_info_request_join_button"
+            android:id="@+id/entourage_info_request_join_button"
             style="@style/AccentButton.BigRoundedCorners"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
@@ -278,7 +278,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/tour_info_invited_layout"
+        android:id="@+id/entourage_info_invited_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -314,7 +314,7 @@
                 android:layout_weight="0.5"/>
 
             <Button
-                android:id="@+id/tour_info_invited_reject_button"
+                android:id="@+id/entourage_info_invited_reject_button"
                 style="@style/WhiteButtonTransparent"
                 android:layout_width="140dp"
                 android:layout_height="35dp"
@@ -323,7 +323,7 @@
                 android:textSize="@dimen/entourage_font_medium"/>
 
             <Button
-                android:id="@+id/tour_info_invited_accept_button"
+                android:id="@+id/entourage_info_invited_accept_button"
                 style="@style/WhiteButton.RoundedCorners"
                 android:layout_width="140dp"
                 android:layout_height="35dp"

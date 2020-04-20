@@ -54,6 +54,7 @@ import social.entourage.android.configuration.Configuration;
 import social.entourage.android.deeplinks.DeepLinksManager;
 import social.entourage.android.entourage.EntourageDisclaimerFragment;
 import social.entourage.android.entourage.information.EntourageInformationFragment;
+import social.entourage.android.entourage.information.TourInformationFragment;
 import social.entourage.android.entourage.my.MyEntouragesFragment;
 import social.entourage.android.location.EntourageLocation;
 import social.entourage.android.location.LocationUtils;
@@ -77,7 +78,7 @@ import social.entourage.android.user.edit.photo.PhotoEditFragment;
 import timber.log.Timber;
 
 public class MainActivity extends EntourageSecuredActivity
-    implements EntourageInformationFragment.OnEntourageInformationFragmentFinish,
+    implements TourInformationFragment.OnTourInformationFragmentFinish,
     ChoiceFragment.OnChoiceFragmentFinish,
     EntourageDisclaimerFragment.OnFragmentInteractionListener,
     EncounterDisclaimerFragment.OnFragmentInteractionListener,
@@ -521,12 +522,6 @@ public class MainActivity extends EntourageSecuredActivity
     @Subscribe
     public void onUserUpdateEvent(Events.OnUserInfoUpdatedEvent event) {
         updateAnalyticsInfo();
-    }
-
-    @Override
-    public void closeEntourageInformationFragment(EntourageInformationFragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().remove(fragment).commit();
     }
 
     @Override

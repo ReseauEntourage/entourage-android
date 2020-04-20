@@ -8,10 +8,10 @@
     android:layout_alignParentEnd="true"
     android:layout_centerVertical="true"
     android:gravity="center_vertical"
-    tools:showIn="@layout/fragment_tour_information">
+    tools:showIn="@layout/fragment_entourage_information">
 
     <ImageButton
-        android:id="@+id/tour_info_description_button"
+        android:id="@+id/entourage_info_description_button"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:background="?android:attr/selectableItemBackground"
@@ -24,7 +24,7 @@
         tools:visibility="visible" />
 
     <ImageButton
-        android:id="@+id/tour_info_more_button"
+        android:id="@+id/entourage_info_more_button"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:background="?android:attr/selectableItemBackground"

@@ -212,7 +212,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         //check if we are not already displaying the tour
         val fragmentManager = activity?.supportFragmentManager ?: return
         val entourageInformationFragment = fragmentManager.findFragmentByTag(EntourageInformationFragment.TAG) as EntourageInformationFragment?
-        if (entourageInformationFragment != null && entourageInformationFragment.feedItemType == feedItem.type.toLong() && entourageInformationFragment.feedItemId != null && entourageInformationFragment.feedItemId.equals(feedItem.uuid, ignoreCase = true)) {
+        if (entourageInformationFragment != null && entourageInformationFragment.getItemType() == feedItem.type.toInt() && entourageInformationFragment.feedItemId != null && entourageInformationFragment.feedItemId.equals(feedItem.uuid, ignoreCase = true)) {
             //TODO refresh the tour info screen
             return
         }
