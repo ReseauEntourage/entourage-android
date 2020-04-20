@@ -186,6 +186,7 @@ open class EntourageInformationFragment : EntourageDialogFragment(), EntourageSe
         invite_source_contacts_button?.setOnClickListener {inviteSourceContactsButton()}
         entourage_info_invited_accept_button?.setOnClickListener { v -> onAcceptInvitationClicked(v)}
         entourage_info_invited_reject_button?.setOnClickListener { v -> onRejectInvitationClicked(v)}
+        invite_source_number_button?.setOnClickListener { onInvitePhoneNumberClicked() }
     }
 
     open fun getItemType(): Int {
