@@ -45,6 +45,6 @@ class PushNotificationTest {
         args.putSerializable(PushNotificationManager.PUSH_MESSAGE, message)
         intent.putExtras(args);
         activityTestRule.activity.startActivity(intent)
-        Espresso.onView(ViewMatchers.withId(R.id.tour_info_comment)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withId(R.id.entourage_info_comment)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 }

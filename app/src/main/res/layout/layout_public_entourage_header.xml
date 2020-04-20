@@ -14,7 +14,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tour_info_title_full"
+            android:id="@+id/entourage_info_title_full"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -53,7 +53,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tour_info_location"
+            android:id="@+id/entourage_info_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -76,7 +76,7 @@
             android:layout_height="39dp">
 
             <ImageView
-                android:id="@+id/tour_info_author_photo"
+                android:id="@+id/entourage_info_author_photo"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:contentDescription="@string/empty_description"
@@ -84,11 +84,11 @@
                 android:src="@drawable/ic_user_photo_small"/>
 
             <social.entourage.android.view.PartnerLogoImageView
-                android:id="@+id/tour_info_partner_logo"
+                android:id="@+id/entourage_info_partner_logo"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_alignEnd="@+id/tour_info_author_photo"
-                android:layout_alignBottom="@+id/tour_info_author_photo"
+                android:layout_alignEnd="@+id/entourage_info_author_photo"
+                android:layout_alignBottom="@+id/entourage_info_author_photo"
                 android:layout_marginEnd="-4dp"
                 android:layout_marginBottom="-4dp"
                 tools:src="@drawable/ic_entourage_logo_two_colors"/>
@@ -106,7 +106,7 @@
                 android:src="@drawable/ic_users"/>
 
             <TextView
-                android:id="@+id/tour_info_people_count"
+                android:id="@+id/entourage_info_people_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"

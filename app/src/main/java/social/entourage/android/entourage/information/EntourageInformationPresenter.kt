@@ -257,30 +257,23 @@ class EntourageInformationPresenter @Inject constructor(private val fragment: En
     }
 
     fun getFeedItemEncounters(feedItem: FeedItem) {
-        fragment?.showProgressBar()
         when (feedItem.type) {
             TimestampedObject.TOUR_CARD -> {
+                fragment?.showProgressBar()
                 val call = tourRequest!!.retrieveTourEncounters(feedItem.uuid)
                 call.enqueue(object : Callback<EncountersWrapper> {
                     override fun onResponse(call: Call<EncountersWrapper>, response: Response<EncountersWrapper>) {
                         if (response.isSuccessful) {
-                            fragment?.onFeedItemEncountersReceived(response.body()!!.encounters)
+                            (fragment as TourInformationFragment?)?.onFeedItemEncountersReceived(response.body()!!.encounters)
                         } else {
-                            fragment?.onFeedItemEncountersReceived(null)
+                            (fragment as TourInformationFragment?)?.onFeedItemEncountersReceived(null)
                         }
                     }
 
                     override fun onFailure(call: Call<EncountersWrapper>, t: Throwable) {
-                        fragment?.onFeedItemEncountersReceived(null)
+                        (fragment as TourInformationFragment?)?.onFeedItemEncountersReceived(null)
                     }
                 })
-            }
-            TimestampedObject.ENTOURAGE_CARD -> {
-                //Entourage doesn't have encounters
-                fragment?.onFeedItemEncountersReceived(null)
-            }
-            else -> {
-                fragment?.onFeedItemEncountersReceived(null)
             }
         }
     }

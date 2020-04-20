@@ -2,12 +2,11 @@ package social.entourage.android.entourage.information.discussion
 
 import android.view.View
 import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.entourage.tour_information_outing_card_view.view.*
+import kotlinx.android.synthetic.entourage.entourage_information_outing_card_view.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.map.BaseEntourage
-import social.entourage.android.api.model.map.Entourage
 import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.tools.BusProvider
@@ -55,6 +54,6 @@ class OutingCardViewHolder(view: View?) : BaseCardViewHolder(view) {
     companion object {
         @JvmStatic
         val layoutResource: Int
-            get() = R.layout.tour_information_outing_card_view
+            get() = R.layout.entourage_information_outing_card_view
     }
 }

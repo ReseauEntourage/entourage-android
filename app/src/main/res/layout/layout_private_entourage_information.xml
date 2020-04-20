@@ -32,7 +32,7 @@
         android:background="@color/greyish"/>
 
     <LinearLayout
-        android:id="@+id/tour_info_comment_layout"
+        android:id="@+id/entourage_info_comment_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -54,7 +54,7 @@
             android:visibility="gone"/>
 
         <EditText
-            android:id="@+id/tour_info_comment"
+            android:id="@+id/entourage_info_comment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -66,7 +66,7 @@
             android:textSize="@dimen/entourage_font_large"/>
 
         <ImageButton
-            android:id="@+id/tour_info_comment_record_button"
+            android:id="@+id/entourage_info_comment_record_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -75,7 +75,7 @@
             app:srcCompat="@drawable/ic_action_record_sound"/>
 
         <Button
-            android:id="@+id/tour_info_comment_send_button"
+            android:id="@+id/entourage_info_comment_send_button"
             style="@style/TransparentButton.Accent"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
@@ -87,10 +87,10 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/tour_info_discussion_view"
+        android:id="@+id/entourage_info_discussion_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/tour_info_comment_layout"
+        android:layout_above="@+id/entourage_info_comment_layout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:background="@color/background"/>
