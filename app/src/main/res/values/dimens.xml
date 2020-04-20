@@ -42,4 +42,9 @@
     <dimen name="role_padding_bottom">2dp</dimen>
     <dimen name="role_margin">6dp</dimen>
 
+    <declare-styleable name="RoundedCornersView">
+        <attr name="radius" format="dimension"/>
+        <attr name="cornersColor" format="color"/>
+    </declare-styleable>
+
 </resources>

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="social.entourage.android.authentication.login.LoginActivity"
-    android:background="@color/login_view">
+    android:background="@color/pre_onboard_orange">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/activity_login"

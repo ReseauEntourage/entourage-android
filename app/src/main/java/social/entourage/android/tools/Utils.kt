@@ -3,13 +3,20 @@ package social.entourage.android.tools
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Point
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.Html
+import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.format.DateFormat
 import android.text.format.DateUtils
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
+import android.util.DisplayMetrics
 import android.util.Patterns
+import android.view.WindowManager
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import social.entourage.android.R
@@ -146,5 +153,46 @@ object Utils {
     @JvmStatic
     fun getDateStringFromSeconds(milliseconds: Long): String {
         return DateUtils.formatElapsedTime(milliseconds / 1000)
+    }
+
+    @JvmStatic
+    fun getScreenWidth(context: Context): Int {
+        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display = wm.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        return size.x
+    }
+
+    @JvmStatic
+    fun convertDpToPixel(dp: Float, context: Context): Float {
+        return dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+    }
+
+    @JvmStatic
+    fun convertPixelsToDp(px: Float, context: Context): Float {
+        return px / (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+    }
+
+    @JvmStatic
+    fun formatTextWithBoldSpanAndColor(color:Int, isBold:Boolean, text: String, vararg textToBold: String): SpannableStringBuilder {
+
+        val builder = SpannableStringBuilder(text)
+
+        for (textItem in textToBold) {
+            if (textItem.isNotEmpty() && textItem.trim { it <= ' ' } != "") {
+                //for counting start/end indexes
+                val _text = text.toLowerCase()
+                val _textToBold = textItem.toLowerCase()
+                val startingIndex = _text.indexOf(_textToBold)
+                val endingIndex = startingIndex + _textToBold.length
+
+                if (startingIndex >= 0 && endingIndex >= 0) {
+                    builder.setSpan(ForegroundColorSpan(color),startingIndex,endingIndex,0)
+                    if (isBold) builder.setSpan(StyleSpan(Typeface.BOLD), startingIndex, endingIndex, 0)
+                }
+            }
+        }
+        return builder
     }
 }

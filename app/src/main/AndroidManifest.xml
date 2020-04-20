@@ -179,6 +179,10 @@
         <activity android:name=".involvement.ShareActivity" />
         <activity android:name=".involvement.RateActivity" />
 
+        <activity android:name=".Onboarding.PreOnboardingChoiceActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Onboarding.PreOnboardingStartActivity"
+            android:screenOrientation="portrait"/>
 
         <service
             android:name=".service.EntourageService"

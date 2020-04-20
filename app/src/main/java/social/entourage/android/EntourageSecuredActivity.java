@@ -6,7 +6,7 @@ import android.os.Bundle;
 import javax.inject.Inject;
 
 import social.entourage.android.authentication.AuthenticationController;
-import social.entourage.android.authentication.login.LoginActivity;
+import social.entourage.android.Onboarding.PreOnboardingStartActivity;
 
 /**
  * Base Activity that only runs if the user is currently logged
@@ -21,7 +21,7 @@ public abstract class EntourageSecuredActivity extends EntourageActivity {
         super.onCreate(savedInstanceState);
 
         if(!authenticationController.isAuthenticated() || !authenticationController.isTutorialDone(getApplicationContext())) {
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, PreOnboardingStartActivity.class));
             finish();
         } else {
             EntourageApplication application = (EntourageApplication)getApplication();
@@ -40,7 +40,7 @@ public abstract class EntourageSecuredActivity extends EntourageActivity {
             application.removeAllPushNotifications();
         }
         //EntourageEvents.logEvent(EntourageEvents.EVENT_LOGOUT);
-        startActivity(new Intent(this, LoginActivity.class));
+        startActivity(new Intent(this, PreOnboardingStartActivity.class));
         finish();
     }
 

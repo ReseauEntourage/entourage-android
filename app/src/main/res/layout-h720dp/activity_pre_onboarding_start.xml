@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="social.entourage.android.Onboarding.PreOnboardingStartActivity">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="38dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/empty_description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_entourage_logo_two_colors" />
+
+    <Button
+        android:id="@+id/ui_button_connect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="48dp"
+        android:background="@drawable/btn_clear"
+        android:text="@string/pre_onboard_button_connect"
+        android:textColor="@color/pre_onboard_orange"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView2" />
+
+
+    <LinearLayout
+        android:id="@+id/login_slideshow_indicator_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="12dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="48dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/ui_button_next"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ui_button_next">
+
+        <ImageView
+            android:id="@+id/ui_iv_dot1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            android:contentDescription="@string/empty_description"
+            app:srcCompat="@drawable/pre_onboard_dot_selected" />
+
+        <ImageView
+            android:id="@+id/ui_iv_dot2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_weight="0.25"
+            android:contentDescription="@string/empty_description"
+            app:srcCompat="@drawable/pre_onboard_dot_unselected" />
+
+        <ImageView
+            android:id="@+id/ui_iv_dot3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_weight="0.25"
+            android:contentDescription="@string/empty_description"
+            app:srcCompat="@drawable/pre_onboard_dot_unselected" />
+
+        <ImageView
+            android:id="@+id/ui_iv_dot4"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_weight="0.25"
+            android:contentDescription="@string/empty_description"
+            app:srcCompat="@drawable/pre_onboard_dot_unselected" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/ui_button_next"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="113dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/bg_button_rounded_pre_onboard_orange_light"
+        android:text="@string/pre_onboard_button_next"
+        android:textColor="@color/pre_onboard_orange"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ui_recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="267dp"
+        android:layout_marginTop="30dp"
+        android:clipToPadding="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+    <FrameLayout
+        android:id="@+id/ui_fl_trans_left"
+        android:layout_width="70dp"
+        android:layout_height="267dp"
+        android:alpha="0.5"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/ui_recyclerView"
+        app:layout_constraintStart_toStartOf="@+id/ui_recyclerView"
+        app:layout_constraintTop_toTopOf="@+id/ui_recyclerView">
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/ui_fl_trans_right"
+        android:layout_width="84dp"
+        android:layout_height="0dp"
+        android:alpha="0.5"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/ui_recyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ui_recyclerView">
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/ui_tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="48dp"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/pre_onboard_black"
+        android:text="_title"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ui_recyclerView" />
+
+    <TextView
+        android:id="@+id/ui_tv_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="48dp"
+        android:fontFamily="sans-serif-light"
+        android:text="_description"
+        android:textSize="16sp"
+        android:textColor="@color/pre_onboard_black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/ui_tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/ui_tv_title" />
+
+    <ImageView
+        android:id="@+id/ui_iv_pre3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:contentDescription="@string/empty_description"
+        app:layout_constraintEnd_toEndOf="@+id/ui_tv_title"
+        app:layout_constraintStart_toStartOf="@+id/ui_tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/ui_tv_title"
+        app:srcCompat="@drawable/pre_onboard_event" />
+</androidx.constraintlayout.widget.ConstraintLayout>

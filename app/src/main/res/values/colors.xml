@@ -115,4 +115,10 @@
 
     <color name="design_snackbar_background_color" tools:override="true">@color/accent_dark</color>
 
+    <!-- Pre Onboard -->
+    <color name="pre_onboard_orange">@color/accent</color>
+    <color name="pre_onboard_orange_trans">#FAEDE8</color>
+    <color name="pre_onboard_black">#1E1E1E</color>
+    <color name="pre_onboard_dot_unselect">#E1E1E1</color>
+
 </resources>
