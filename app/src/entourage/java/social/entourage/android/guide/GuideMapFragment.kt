@@ -82,7 +82,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
         if (map != null) {
             presenter.updatePoisNearby(map)
         }
-        showInfoPopup()
+      //  showInfoPopup()
         EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_GUIDE_FROM_TAB)
         BusProvider.instance.register(this)
     }
@@ -287,6 +287,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
         if (activity != null && activity is MainActivity) {
             proposePOIUrl = (activity as MainActivity).getLink(Constants.PROPOSE_POI_ID)
         }
+        hideInfoPopup()
         fragment_guide_empty_list_popup_text?.movementMethod = EntourageLinkMovementMethod.getInstance()
         fragment_guide_empty_list_popup_text?.text = Utils.fromHtml(getString(R.string.map_poi_empty_popup, proposePOIUrl))
     }
