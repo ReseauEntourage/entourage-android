@@ -82,8 +82,8 @@
     <string name="entourage_metadata_startAt_time_format">\'à \'HH\'h\'mm</string>
     <string name="entourage_info_creation_time">Créé %s</string>
     <string name="entourage_info_update_time">actif %s</string>
-    <string name="entourage_metadata_date_startAt_endAt">du %s au %s</string>
-    <string name="entourage_metadata_time_startAt_endAt">de %s à %s</string>
+    <string name="entourage_metadata_date_startAt_endAt">du %1$s au %2$s</string>
+    <string name="entourage_metadata_time_startAt_endAt">de %1$s à %2$s</string>
 
     <!-- Entourage Location -->
     <string name="entourage_location_title">MA POSITION</string>

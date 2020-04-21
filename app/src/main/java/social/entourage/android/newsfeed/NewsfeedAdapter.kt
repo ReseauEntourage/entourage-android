@@ -7,7 +7,6 @@ import social.entourage.android.base.HeaderFooterBaseAdapter
 import social.entourage.android.base.ViewHolderFactory.ViewHolderType
 import social.entourage.android.entourage.EntourageViewHolder
 import social.entourage.android.map.MapViewHolder
-import social.entourage.android.newsfeed.NewsfeedBottomViewHolder
 import social.entourage.android.tour.TourViewHolder
 
 /**
@@ -40,7 +39,7 @@ class NewsfeedAdapter : HeaderFooterBaseAdapter() {
         )
         viewHolderFactory.registerViewHolder(
                 TimestampedObject.ENTOURAGE_CARD,
-                ViewHolderType(EntourageViewHolder::class.java, EntourageViewHolder.getLayoutResource())
+                ViewHolderType(EntourageViewHolder::class.java, FeedItemViewHolder.getLayoutResource())
         )
         viewHolderFactory.registerViewHolder(
                 TimestampedObject.ANNOUNCEMENT_CARD,

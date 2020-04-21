@@ -131,7 +131,7 @@
 
     <include
         android:id="@+id/entourage_info_options"
-        layout="@layout/layout_feeditem_options"
+        layout="@layout/layout_entourage_options"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"

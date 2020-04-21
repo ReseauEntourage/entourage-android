@@ -40,6 +40,7 @@ import social.entourage.android.configuration.Configuration
 import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.entourage.information.EntourageInformationFragment
+import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.location.EntourageLocation
 import social.entourage.android.location.LocationUtils.isLocationEnabled
 import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
@@ -210,7 +211,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         EntourageApplication.get(context)?.removePushNotificationsForFeedItem(feedItem)
         //check if we are not already displaying the tour
         val fragmentManager = activity?.supportFragmentManager ?: return
-        val entourageInformationFragment = fragmentManager.findFragmentByTag(EntourageInformationFragment.TAG) as EntourageInformationFragment?
+        val entourageInformationFragment = fragmentManager.findFragmentByTag(FeedItemInformationFragment.TAG) as EntourageInformationFragment?
         if (entourageInformationFragment != null && entourageInformationFragment.getItemType() == feedItem.type.toInt() && entourageInformationFragment.feedItemId != null && entourageInformationFragment.feedItemId.equals(feedItem.uuid, ignoreCase = true)) {
             //TODO refresh the tour info screen
             return

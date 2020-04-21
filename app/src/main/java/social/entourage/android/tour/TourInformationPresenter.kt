@@ -1,4 +1,4 @@
-package social.entourage.android.entourage.information
+package social.entourage.android.tour
 
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -8,28 +8,35 @@ import social.entourage.android.EntourageError
 import social.entourage.android.EntourageEvents
 import social.entourage.android.api.EntourageRequest
 import social.entourage.android.api.InvitationRequest
+import social.entourage.android.api.TourRequest
 import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.model.ChatMessage.ChatMessageWrapper
 import social.entourage.android.api.model.ChatMessage.ChatMessagesWrapper
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.Invitation.InvitationWrapper
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.map.BaseEntourage.EntourageWrapper
+import social.entourage.android.api.model.map.Encounter.EncountersWrapper
 import social.entourage.android.api.model.map.FeedItem
+import social.entourage.android.api.model.map.Tour
+import social.entourage.android.api.model.map.Tour.TourWrapper
 import social.entourage.android.api.model.map.TourUser.TourUserWrapper
 import social.entourage.android.api.model.map.TourUser.TourUsersWrapper
+import social.entourage.android.entourage.information.FeedItemInformationPresenter
 import java.util.*
 import javax.inject.Inject
 
 /**
- * Presenter controlling the EntourageInformationFragment
- * @see EntourageInformationFragment
+ * Presenter controlling the TourInformationFragment
+ * @see TourInformationFragment
  */
-class EntourageInformationPresenter @Inject constructor(private val fragment: EntourageInformationFragment)  : FeedItemInformationPresenter() {
+class TourInformationPresenter @Inject constructor(private val fragment: TourInformationFragment) : FeedItemInformationPresenter() {
 
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
+    @Inject
+    lateinit var tourRequest: TourRequest
+
     @Inject
     lateinit var entourageRequest: EntourageRequest
 
@@ -43,18 +50,18 @@ class EntourageInformationPresenter @Inject constructor(private val fragment: En
         if(feedItemUUID.isBlank()) return
         fragment.showProgressBar()
         when (feedItemType) {
-            TimestampedObject.ENTOURAGE_CARD -> {
-                val call = entourageRequest.retrieveEntourageById(feedItemUUID, distance, feedRank)
-                call.enqueue(object : Callback<EntourageWrapper> {
-                    override fun onResponse(call: Call<EntourageWrapper>, response: Response<EntourageWrapper>) {
+            TimestampedObject.TOUR_CARD -> {
+                val call = tourRequest.retrieveTourById(feedItemUUID)
+                call.enqueue(object : Callback<TourWrapper> {
+                    override fun onResponse(call: Call<TourWrapper>, response: Response<TourWrapper>) {
                         if (response.isSuccessful) {
-                            fragment.onFeedItemReceived(response.body()!!.entourage)
+                            fragment.onFeedItemReceived(response.body()!!.tour)
                         } else {
                             fragment.onFeedItemNotFound()
                         }
                     }
 
-                    override fun onFailure(call: Call<EntourageWrapper>, t: Throwable) {
+                    override fun onFailure(call: Call<TourWrapper>, t: Throwable) {
                         fragment.onFeedItemNotFound()
                     }
                 })
@@ -66,28 +73,7 @@ class EntourageInformationPresenter @Inject constructor(private val fragment: En
     }
 
     override fun getFeedItem(feedItemShareURL: String, feedItemType: Int) {
-        fragment.showProgressBar()
-        when (feedItemType) {
-            TimestampedObject.ENTOURAGE_CARD -> {
-                val call = entourageRequest.retrieveEntourageByShareURL(feedItemShareURL)
-                call.enqueue(object : Callback<EntourageWrapper> {
-                    override fun onResponse(call: Call<EntourageWrapper>, response: Response<EntourageWrapper>) {
-                        if (response.isSuccessful) {
-                            fragment.onFeedItemReceived(response.body()!!.entourage)
-                        } else {
-                            fragment.onFeedItemNotFound()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<EntourageWrapper>, t: Throwable) {
-                        fragment.onFeedItemNotFound()
-                    }
-                })
-            }
-            else -> {
-                fragment.onFeedItemNotFound()
-            }
-        }
+        fragment.onFeedItemNotFound()
     }
 
     override fun getFeedItemMembers(feedItem: FeedItem) {
@@ -101,8 +87,8 @@ class EntourageInformationPresenter @Inject constructor(private val fragment: En
     private fun getFeedItemUsers(feedItem: FeedItem, context: String?) {
         fragment.showProgressBar()
         when (feedItem.type) {
-            TimestampedObject.ENTOURAGE_CARD -> {
-                val call = entourageRequest.retrieveEntourageUsers(feedItem.uuid, context)
+            TimestampedObject.TOUR_CARD -> {
+                val call = tourRequest.retrieveTourUsers(feedItem.uuid)
                 call.enqueue(object : Callback<TourUsersWrapper> {
                     override fun onResponse(call: Call<TourUsersWrapper>, response: Response<TourUsersWrapper>) {
                         if (response.isSuccessful) {
@@ -130,8 +116,8 @@ class EntourageInformationPresenter @Inject constructor(private val fragment: En
     override fun getFeedItemMessages(feedItem: FeedItem, lastMessageDate: Date?) {
         fragment.showProgressBar()
         when (feedItem.type) {
-            TimestampedObject.ENTOURAGE_CARD -> {
-                val call = entourageRequest.retrieveEntourageMessages(feedItem.uuid, lastMessageDate)
+            TimestampedObject.TOUR_CARD -> {
+                val call = tourRequest.retrieveTourMessages(feedItem.uuid, lastMessageDate)
                 call.enqueue(object : Callback<ChatMessagesWrapper> {
                     override fun onResponse(call: Call<ChatMessagesWrapper>, response: Response<ChatMessagesWrapper>) {
                         if (response.isSuccessful) {
@@ -158,8 +144,8 @@ class EntourageInformationPresenter @Inject constructor(private val fragment: En
         val chatMessageWrapper = ChatMessageWrapper()
         chatMessageWrapper.chatMessage = ChatMessage(message)
         when (feedItem.type) {
-            TimestampedObject.ENTOURAGE_CARD -> {
-                val call = entourageRequest.chatMessage(feedItem.uuid, chatMessageWrapper)
+            TimestampedObject.TOUR_CARD -> {
+                val call = tourRequest.chatMessage(feedItem.uuid, chatMessageWrapper)
                 call.enqueue(object : Callback<ChatMessageWrapper> {
                     override fun onResponse(call: Call<ChatMessageWrapper>, response: Response<ChatMessageWrapper>) {
                         if (response.isSuccessful) {
@@ -180,20 +166,38 @@ class EntourageInformationPresenter @Inject constructor(private val fragment: En
         }
     }
 
+    fun getFeedItemEncounters(tour: Tour) {
+        fragment.showProgressBar()
+        val call = tourRequest.retrieveTourEncounters(tour.uuid)
+        call.enqueue(object : Callback<EncountersWrapper> {
+            override fun onResponse(call: Call<EncountersWrapper>, response: Response<EncountersWrapper>) {
+                if (response.isSuccessful) {
+                    fragment.onFeedItemEncountersReceived(response.body()!!.encounters)
+                } else {
+                    fragment.onFeedItemEncountersReceived(null)
+                }
+            }
+
+            override fun onFailure(call: Call<EncountersWrapper>, t: Throwable) {
+                fragment.onFeedItemEncountersReceived(null)
+            }
+        })
+    }
+
     // ----------------------------------
     // Update user join requests
     // ----------------------------------
     override fun updateUserJoinRequest(userId: Int, status: String, feedItem: FeedItem) {
         fragment.showProgressBar()
         when (feedItem.type) {
-            TimestampedObject.ENTOURAGE_CARD -> {
-                // Entourage user update status
+            TimestampedObject.TOUR_CARD -> {
+                // Tour user update status
                 when {
                     FeedItem.JOIN_STATUS_ACCEPTED == status -> {
-                        acceptEntourageJoinRequest(feedItem.uuid, userId)
+                        acceptTourJoinRequest(feedItem.uuid, userId)
                     }
                     FeedItem.JOIN_STATUS_REJECTED == status -> {
-                        rejectJoinEntourageRequest(feedItem.uuid, userId)
+                        rejectJoinTourRequest(feedItem.uuid, userId)
                     }
                     else -> {
                         fragment.onUserJoinRequestUpdated(userId, status, EntourageError.ERROR_UNKNOWN)
@@ -207,12 +211,12 @@ class EntourageInformationPresenter @Inject constructor(private val fragment: En
         }
     }
 
-    private fun acceptEntourageJoinRequest(entourageUUID: String?, userId: Int) {
+    private fun acceptTourJoinRequest(tourUUID: String?, userId: Int) {
         val status = HashMap<String, String>()
         status["status"] = FeedItem.JOIN_STATUS_ACCEPTED
         val user = HashMap<String, Any>()
         user["user"] = status
-        val call = entourageRequest.updateUserEntourageStatus(entourageUUID, userId, user)
+        val call = tourRequest.updateUserTourStatus(tourUUID, userId, user)
         call.enqueue(object : Callback<ResponseBody?> {
             override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
                 if (response.isSuccessful) {
@@ -228,8 +232,8 @@ class EntourageInformationPresenter @Inject constructor(private val fragment: En
         })
     }
 
-    private fun rejectJoinEntourageRequest(entourageUUID: String?, userId: Int) {
-        val call = entourageRequest.removeUserFromEntourage(entourageUUID, userId)
+    private fun rejectJoinTourRequest(tourUUID: String?, userId: Int) {
+        val call = tourRequest.removeUserFromTour(tourUUID, userId)
         call.enqueue(object : Callback<TourUserWrapper?> {
             override fun onResponse(call: Call<TourUserWrapper?>, response: Response<TourUserWrapper?>) {
                 if (response.isSuccessful) {

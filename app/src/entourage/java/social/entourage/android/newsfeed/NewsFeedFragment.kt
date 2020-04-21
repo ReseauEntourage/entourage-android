@@ -21,6 +21,7 @@ import social.entourage.android.api.model.map.FeedItem
 import social.entourage.android.api.model.map.Tour
 import social.entourage.android.api.model.map.TourUser
 import social.entourage.android.api.tape.Events.*
+import social.entourage.android.entourage.FeedItemOptionsFragment
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.service.EntourageService
@@ -221,7 +222,7 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
 
     override fun displayFeedItemOptions(feedItem: FeedItem) {
         if (activity != null) {
-            FeedItemOptionsFragment.newInstance(feedItem).show(requireActivity().supportFragmentManager, FeedItemOptionsFragment.TAG)
+            FeedItemOptionsFragment.show(feedItem, requireActivity().supportFragmentManager)
         }
     }
 

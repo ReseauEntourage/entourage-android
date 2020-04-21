@@ -54,7 +54,7 @@ import social.entourage.android.configuration.Configuration;
 import social.entourage.android.deeplinks.DeepLinksManager;
 import social.entourage.android.entourage.EntourageDisclaimerFragment;
 import social.entourage.android.entourage.information.EntourageInformationFragment;
-import social.entourage.android.entourage.information.TourInformationFragment;
+import social.entourage.android.tour.TourInformationFragment;
 import social.entourage.android.entourage.my.MyEntouragesFragment;
 import social.entourage.android.location.EntourageLocation;
 import social.entourage.android.location.LocationUtils;

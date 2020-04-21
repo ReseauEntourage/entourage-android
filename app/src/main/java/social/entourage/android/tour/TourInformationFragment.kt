@@ -1,9 +1,10 @@
-package social.entourage.android.entourage.information
+package social.entourage.android.tour
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.location.Location
+import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -13,11 +14,12 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Subscribe
-import kotlinx.android.synthetic.entourage.layout_feeditem_options.*
+import kotlinx.android.synthetic.entourage.layout_entourage_options.*
 import kotlinx.android.synthetic.main.fragment_entourage_information.*
 import kotlinx.android.synthetic.main.layout_invite_source.*
 import kotlinx.android.synthetic.main.layout_public_entourage_information.*
 import social.entourage.android.EntourageApplication
+import social.entourage.android.EntourageComponent
 import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.Message
@@ -27,14 +29,20 @@ import social.entourage.android.api.model.map.FeedItem
 import social.entourage.android.api.model.map.Tour
 import social.entourage.android.api.model.map.TourTimestamp
 import social.entourage.android.api.tape.Events
+import social.entourage.android.entourage.information.*
 import social.entourage.android.location.EntourageLocation
 import social.entourage.android.newsfeed.BaseNewsfeedFragment
 import social.entourage.android.tools.Utils
 import social.entourage.android.view.EntourageSnackbar
 import timber.log.Timber
 import java.util.*
+import javax.inject.Inject
 
-class TourInformationFragment : EntourageInformationFragment(){
+class TourInformationFragment : FeedItemInformationFragment(){
+    @Inject
+    lateinit var presenter: TourInformationPresenter
+    override fun presenter(): FeedItemInformationPresenter { return presenter}
+
     private var mListener: OnTourInformationFragmentFinish? = null
     private var hiddenMapFragment: SupportMapFragment? = null
     private var hiddenGoogleMap: GoogleMap? = null
@@ -42,6 +50,18 @@ class TourInformationFragment : EntourageInformationFragment(){
     private var mapSnapshot: Bitmap? = null
     private var takeSnapshotOnCameraMove = false
     private var tourTimestampList: MutableList<TourTimestamp> = ArrayList()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun setupComponent(entourageComponent: EntourageComponent?) {
+        DaggerTourInformationComponent.builder()
+                .entourageComponent(entourageComponent)
+                .tourInformationModule(TourInformationModule(this))
+                .build()
+                .inject(this)
+    }
 
     override fun onAttach(context: Context) {
         if (context !is OnTourInformationFragmentFinish) {
@@ -125,27 +145,27 @@ class TourInformationFragment : EntourageInformationFragment(){
     }
 
     override fun initializeOptionsView() {
-        feeditem_option_stop?.visibility = View.GONE
-        feeditem_option_quit?.visibility = View.GONE
-        feeditem_option_edit?.visibility = View.GONE
-        feeditem_option_share?.visibility = View.GONE
-        feeditem_option_report?.visibility = View.GONE
-        feeditem_option_join?.visibility = View.GONE
-        feeditem_option_contact?.visibility = View.GONE
-        feeditem_option_promote?.visibility = View.GONE
+        entourage_option_stop?.visibility = View.GONE
+        entourage_option_quit?.visibility = View.GONE
+        entourage_option_edit?.visibility = View.GONE
+        entourage_option_share?.visibility = View.GONE
+        entourage_option_report?.visibility = View.GONE
+        entourage_option_join?.visibility = View.GONE
+        entourage_option_contact?.visibility = View.GONE
+        entourage_option_promote?.visibility = View.GONE
         val hideJoinButton = feedItem.isPrivate || FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus || feedItem.isFreezed
-        feeditem_option_join?.visibility =  View.GONE
-        feeditem_option_contact?.visibility = if (hideJoinButton) View.GONE else View.VISIBLE
+        entourage_option_join?.visibility =  View.GONE
+        entourage_option_contact?.visibility = if (hideJoinButton) View.GONE else View.VISIBLE
         if (feedItem.author == null) return
         val myId = EntourageApplication.me(activity)?.id ?: return
         if (feedItem.author.userID != myId) {
             if ((FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus || FeedItem.JOIN_STATUS_ACCEPTED == feedItem.joinStatus) && !feedItem.isFreezed) {
-                feeditem_option_quit?.visibility = View.VISIBLE
-                feeditem_option_quit?.setText(if (FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus) R.string.tour_info_options_cancel_request else R.string.tour_info_options_quit_tour)
+                entourage_option_quit?.visibility = View.VISIBLE
+                entourage_option_quit?.setText(if (FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus) R.string.tour_info_options_cancel_request else R.string.tour_info_options_quit_tour)
             }
         } else {
-            feeditem_option_stop?.visibility = if (feedItem.isFreezed || !feedItem.canBeClosed()) View.GONE else View.VISIBLE
-            feeditem_option_stop?.setText(if (feedItem.isClosed) R.string.tour_info_options_freeze_tour else R.string.tour_info_options_stop_tour)
+            entourage_option_stop?.visibility = if (feedItem.isFreezed || !feedItem.canBeClosed()) View.GONE else View.VISIBLE
+            entourage_option_stop?.setText(if (feedItem.isClosed) R.string.tour_info_options_freeze_tour else R.string.tour_info_options_stop_tour)
         }
     }
 
@@ -340,6 +360,13 @@ class TourInformationFragment : EntourageInformationFragment(){
         entourage_info_metadata_layout?.visibility = View.GONE
     }
 
+    override fun loadPrivateCards() {
+        super.loadPrivateCards()
+        if (feedItem.isMine(context)) {
+            presenter.getFeedItemEncounters(feedItem as Tour)
+        }
+    }
+
     // ----------------------------------
     // Bus handling
     // ----------------------------------
@@ -359,13 +386,8 @@ class TourInformationFragment : EntourageInformationFragment(){
     }
 
     @Subscribe
-    fun onEntourageUpdated(event: Events.OnEntourageUpdated) {
-        val updatedEntourage = event.entourage ?: return
-        // Check if it is our displayed entourage
-        if (feedItem.type != updatedEntourage.type || feedItem.id != updatedEntourage.id) return
-        // Update the UI
-        feedItem = updatedEntourage
-        updateFeedItemInfo()
+    override fun onEntourageUpdated(event: Events.OnEntourageUpdated) {
+        super.onEntourageUpdated(event)
         updateMap()
     }
 

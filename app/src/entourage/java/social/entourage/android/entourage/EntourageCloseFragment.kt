@@ -35,11 +35,6 @@ class EntourageCloseFragment : DialogFragment() {
     // ----------------------------------
     // Lifecycle
     // ----------------------------------
-    fun show(fragmentManager: FragmentManager, tag: String?, context: Context?) {
-        //TODO change PFP to use that kind of dialog, we use this function for compatibility
-        show(fragmentManager, tag)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         feedItem = arguments?.getSerializable(FeedItem.KEY_FEEDITEM) as FeedItem?
