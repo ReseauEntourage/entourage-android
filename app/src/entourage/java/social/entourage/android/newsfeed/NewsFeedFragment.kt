@@ -33,28 +33,21 @@ import java.util.*
 
 open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
     private val connection = ServiceConnection()
-    protected var isBound = false
 
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (!isBound) {
-            doBindService()
-        }
+        connection.doBindService()
     }
 
     override fun onDestroy() {
-        if (isBound ) {
-            entourageService?.unregisterServiceListener(this)
-            doUnbindService()
-        }
+        connection.doUnbindService()
         super.onDestroy()
     }
 
     protected open fun checkAction(action: String) {
-        if (activity == null || !isBound) return
         when (action) {
             PlusFragment.KEY_CREATE_CONTRIBUTION -> createAction(EntourageCategoryManager.getInstance().getDefaultCategory(Entourage.TYPE_CONTRIBUTION), Entourage.TYPE_ACTION)
             PlusFragment.KEY_CREATE_DEMAND -> createAction(EntourageCategoryManager.getInstance().getDefaultCategory(Entourage.TYPE_DEMAND), Entourage.TYPE_ACTION)
@@ -226,32 +219,6 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
         }
     }
 
-    // ----------------------------------
-    // SERVICE BINDING METHODS
-    // ----------------------------------
-    private fun doBindService() {
-        activity?.let {
-            if(EntourageApplication.me(it) ==null) {
-                // Don't start the service
-                return
-            }
-            try {
-                val intent = Intent(it, EntourageService::class.java)
-                it.startService(intent)
-                it.bindService(intent, connection, Context.BIND_AUTO_CREATE)
-            } catch (e: IllegalStateException) {
-                Timber.w(e)
-            }
-        }
-    }
-
-    private fun doUnbindService() {
-        if (isBound) {
-            activity?.unbindService(connection)
-            isBound = false
-        }
-    }
-
     override fun displayFeedItemOptions(feedItem: FeedItem) {
         if (activity != null) {
             FeedItemOptionsFragment.newInstance(feedItem).show(requireActivity().supportFragmentManager, FeedItemOptionsFragment.TAG)
@@ -298,14 +265,18 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
     // INNER CLASSES
     // ----------------------------------
     private inner class ServiceConnection : android.content.ServiceConnection {
+        protected var isBound = false
+
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             if (activity == null) {
+                isBound = false
                 Timber.e("No activity for service")
                 return
             }
             entourageService = (service as LocalBinder).service
             if (entourageService == null) {
                 Timber.e("Service not found")
+                isBound = false
                 return
             }
             entourageService!!.registerServiceListener(this@NewsFeedFragment)
@@ -319,6 +290,34 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
             entourageService?.unregisterServiceListener(this@NewsFeedFragment)
             entourageService?.unregisterApiListener(this@NewsFeedFragment)
             entourageService = null
+            isBound = false
         }
+        // ----------------------------------
+        // SERVICE BINDING METHODS
+        // ----------------------------------
+        fun doBindService() {
+            if(isBound) return
+            activity?.let {
+                if(EntourageApplication.me(it) ==null) {
+                    // Don't start the service
+                    return
+                }
+                try {
+                    val intent = Intent(it, EntourageService::class.java)
+                    it.startService(intent)
+                    it.bindService(intent, this, Context.BIND_AUTO_CREATE)
+                } catch (e: IllegalStateException) {
+                    Timber.w(e)
+                }
+            }
+        }
+
+        fun doUnbindService() {
+            if (!isBound) return
+            entourageService?.unregisterServiceListener(this@NewsFeedFragment)
+            activity?.unbindService(this)
+            isBound = false
+        }
+
     }
 }

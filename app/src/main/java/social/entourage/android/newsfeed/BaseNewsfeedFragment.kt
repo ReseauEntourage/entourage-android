@@ -12,7 +12,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -51,7 +50,7 @@ import social.entourage.android.map.permissions.NoLocationPermissionFragment
 import social.entourage.android.service.EntourageService
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.user.edit.UserEditActionZoneFragment.FragmentListener
-import social.entourage.android.view.EntourageSnackbar.make
+import social.entourage.android.view.EntourageSnackbar
 import java.util.*
 import javax.inject.Inject
 
@@ -242,7 +241,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                 }
             }
         } else if (fragment_map_main_layout != null) {
-            make(fragment_map_main_layout!!, R.string.tour_join_request_error, Snackbar.LENGTH_SHORT).show()
+            EntourageSnackbar.make(fragment_map_main_layout!!, R.string.tour_join_request_error, Snackbar.LENGTH_SHORT).show()
         }
     }
 
@@ -342,7 +341,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                     startActivity(browserIntent)
                 } catch (ex: ActivityNotFoundException) {
                     if (fragment_map_main_layout != null) {
-                        make(fragment_map_main_layout!!, R.string.no_browser_error, Snackbar.LENGTH_SHORT).show()
+                        EntourageSnackbar.make(fragment_map_main_layout!!, R.string.no_browser_error, Snackbar.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -378,7 +377,9 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             act(event.feedItem)
         } else if (OnUserActEvent.ACT_QUIT == event.act) {
             if (EntourageApplication.me(context) == null) {
-                Toast.makeText(context, R.string.tour_info_quit_tour_error, Toast.LENGTH_SHORT).show()
+                if(fragment_map_main_layout!=null) {
+                    EntourageSnackbar.make(fragment_map_main_layout!!, R.string.tour_info_quit_tour_error, Snackbar.LENGTH_SHORT).show()
+                }
             } else {
                 val item = event.feedItem ?:return
                 if (FeedItem.JOIN_STATUS_PENDING == item.joinStatus) {
@@ -421,7 +422,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     override fun onNetworkException() {
         if (fragment_map_main_layout != null) {
-            make(fragment_map_main_layout!!, R.string.network_error, Snackbar.LENGTH_LONG).show()
+            EntourageSnackbar.make(fragment_map_main_layout!!, R.string.network_error, Snackbar.LENGTH_LONG).show()
         }
         if (pagination.isLoading) {
             pagination.isLoading = false
@@ -438,7 +439,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     override fun onServerException(throwable: Throwable) {
         if (fragment_map_main_layout != null) {
-            make(fragment_map_main_layout!!, R.string.server_error, Snackbar.LENGTH_LONG).show()
+            EntourageSnackbar.make(fragment_map_main_layout!!, R.string.server_error, Snackbar.LENGTH_LONG).show()
         }
         if (pagination.isLoading) {
             pagination.isLoading = false
@@ -448,7 +449,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     override fun onTechnicalException(throwable: Throwable) {
         if (fragment_map_main_layout != null) {
-            make(fragment_map_main_layout!!, R.string.technical_error, Snackbar.LENGTH_LONG).show()
+            EntourageSnackbar.make(fragment_map_main_layout!!, R.string.technical_error, Snackbar.LENGTH_LONG).show()
         }
         if (pagination.isLoading) {
             pagination.isLoading = false

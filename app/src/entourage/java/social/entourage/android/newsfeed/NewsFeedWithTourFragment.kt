@@ -184,7 +184,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     override fun displayEntourageDisclaimer() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_ACTION_CREATE_CLICK)
         // if we have an ongoing tour
-        if (activity != null && isBound && entourageService?.isRunning==true) {
+        if (activity != null && entourageService?.isRunning==true) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENCOUNTER_POPUP_SHOW)
             // Show the dialog that asks the user if he really wants to create an entourage instead of encounter
             val builder = AlertDialog.Builder(requireActivity())
@@ -223,7 +223,6 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     }
 
     override fun checkAction(action: String) {
-        if (activity == null || !isBound) return
         when (action) {
             TourEndConfirmationFragment.KEY_RESUME_TOUR -> resumeTour()
             TourEndConfirmationFragment.KEY_END_TOUR-> {

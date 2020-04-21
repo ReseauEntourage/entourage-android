@@ -1,22 +1,30 @@
 package social.entourage.android.guide
 
 import android.animation.ValueAnimator
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
 import android.location.Location
 import android.os.Bundle
+import android.os.IBinder
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener
 import com.google.maps.android.clustering.view.DefaultClusterRenderer
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_guide_map.*
+import kotlinx.android.synthetic.main.fragment_guide_map.fragment_map_longclick
+import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.layout_guide_longclick.*
 import social.entourage.android.*
+import social.entourage.android.api.ApiConnectionListener
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.api.model.map.Category
 import social.entourage.android.api.model.tape.EntouragePoiRequest.OnPoiViewRequestedEvent
@@ -33,19 +41,23 @@ import social.entourage.android.guide.poi.ReadPoiFragment.Companion.newInstance
 import social.entourage.android.location.EntourageLocation
 import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
 import social.entourage.android.map.BaseMapFragment
+import social.entourage.android.service.EntourageService
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.Utils
+import social.entourage.android.view.EntourageSnackbar
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
-open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
+open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiConnectionListener {
     private var isAlertTextVisible: Boolean = false
 
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
+    private val connection = ServiceConnection()
+
     @Inject lateinit var presenter: GuideMapPresenter
 
     private var onMapReadyCallback: OnMapReadyCallback? = null
@@ -78,6 +90,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
 
     override fun onStart() {
         super.onStart()
+        connection.doBindService()
         presenter.start()
         if (map != null) {
             presenter.updatePoisNearby(map)
@@ -96,6 +109,11 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
     override fun onStop() {
         super.onStop()
         BusProvider.instance.unregister(this)
+    }
+
+    override fun onDestroy() {
+        connection.doUnbindService()
+        super.onDestroy()
     }
 
     override fun onBackPressed(): Boolean {
@@ -480,5 +498,68 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map) {
 
     init {
         eventLongClick = EntourageEvents.EVENT_GUIDE_LONGPRESS
+    }
+
+    override fun onNetworkException() {
+        if (fragment_guide_coordinator != null) {
+            EntourageSnackbar.make(fragment_guide_coordinator!!, R.string.network_error, Snackbar.LENGTH_LONG).show()
+        }
+    }
+
+    override fun onServerException(throwable: Throwable) {
+        if (fragment_guide_coordinator != null) {
+            EntourageSnackbar.make(fragment_guide_coordinator!!, R.string.network_error, Snackbar.LENGTH_LONG).show()
+        }
+    }
+
+    override fun onTechnicalException(throwable: Throwable) {
+        if (fragment_guide_coordinator != null) {
+            EntourageSnackbar.make(fragment_guide_coordinator!!, R.string.technical_error, Snackbar.LENGTH_LONG).show()
+        }
+    }
+
+    private inner class ServiceConnection : android.content.ServiceConnection {
+        private var isBound = false
+        var entourageService: EntourageService? = null
+
+        override fun onServiceConnected(name: ComponentName, service: IBinder) {
+            if (activity != null) {
+                entourageService = (service as EntourageService.LocalBinder).service
+                entourageService?.registerServiceListener(this@GuideMapFragment)
+                isBound = true
+            }
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+            entourageService?.unregisterServiceListener(this@GuideMapFragment)
+            entourageService = null
+            isBound = false
+        }
+        // ----------------------------------
+        // SERVICE BINDING METHODS
+        // ----------------------------------
+        fun doBindService() {
+            if(isBound) return
+            activity?.let {
+                if(EntourageApplication.me(it) ==null) {
+                    // Don't start the service
+                    return
+                }
+                try {
+                    val intent = Intent(it, EntourageService::class.java)
+                    it.startService(intent)
+                    it.bindService(intent, this, Context.BIND_AUTO_CREATE)
+                } catch (e: IllegalStateException) {
+                    Timber.w(e)
+                }
+            }
+        }
+
+        fun doUnbindService() {
+            if (!isBound) return
+            entourageService?.unregisterServiceListener(this@GuideMapFragment)
+            activity?.unbindService(this)
+            isBound = false
+        }
     }
 }

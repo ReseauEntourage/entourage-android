@@ -607,7 +607,9 @@ public class MainActivity extends EntourageSecuredActivity
         //Upload the photo to Amazon S3
         showProgressDialog(R.string.user_photo_uploading);
 
-        File file = new File(photoUri.getPath());
+        String path = photoUri.getPath();
+        if(path == null) return;
+        File file = new File(path);
         avatarUploadPresenter.uploadPhoto(file);
     }
 
@@ -658,7 +660,7 @@ public class MainActivity extends EntourageSecuredActivity
         }
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(() -> {
-            if (content == null  || content.getType()==null) {
+            if (content.getType() == null) {
                 return;
             }
             String contentType = content.getType();

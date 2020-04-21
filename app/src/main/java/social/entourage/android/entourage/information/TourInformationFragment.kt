@@ -88,15 +88,15 @@ class TourInformationFragment : EntourageInformationFragment(){
             mListener?.showStopTourActivity(tour)
         } else if (feedItem.status == FeedItem.STATUS_CLOSED) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE)
-            entourageService?.freezeTour(feedItem as Tour)
+            entourageServiceConnection.boundService?.freezeTour(feedItem as Tour)
         }
     }
 
     override fun onJoinTourButton() {
-        if (entourageService != null) {
+        if (entourageServiceConnection.boundService != null) {
             showProgressBar()
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN)
-            entourageService!!.requestToJoinTour(feedItem as Tour?)
+            entourageServiceConnection.boundService!!.requestToJoinTour(feedItem as Tour?)
             entourage_info_options?.visibility = View.GONE
         } else {
             EntourageSnackbar.make(entourage_information_coordinator_layout!!,  R.string.tour_join_request_message_error, Snackbar.LENGTH_SHORT).show()

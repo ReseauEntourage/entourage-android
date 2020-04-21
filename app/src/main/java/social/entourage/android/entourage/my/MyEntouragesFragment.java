@@ -1,7 +1,11 @@
 package social.entourage.android.entourage.my;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +13,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.squareup.otto.Subscribe;
 
@@ -33,6 +39,7 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
+import social.entourage.android.api.ApiConnectionListener;
 import social.entourage.android.api.model.Invitation;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.Newsfeed;
@@ -46,13 +53,15 @@ import social.entourage.android.base.EntouragePagination;
 import social.entourage.android.base.EntourageViewHolderListener;
 import social.entourage.android.entourage.my.filter.MyEntouragesFilter;
 import social.entourage.android.entourage.my.filter.MyEntouragesFilterFactory;
+import social.entourage.android.service.EntourageService;
 import social.entourage.android.tools.BusProvider;
+import social.entourage.android.view.EntourageSnackbar;
 import timber.log.Timber;
 
 /**
  * My Entourages Fragment
  */
-public class MyEntouragesFragment extends EntourageDialogFragment implements EntourageViewHolderListener, MyEntouragesAdapter.LoaderCallback {
+public class MyEntouragesFragment extends EntourageDialogFragment implements EntourageViewHolderListener, MyEntouragesAdapter.LoaderCallback, ApiConnectionListener {
 
     // ----------------------------------
     // Constants
@@ -68,6 +77,7 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Ent
     // ----------------------------------
     // Attributes
     // ----------------------------------
+    private ServiceConnection connection = new ServiceConnection();
 
     @Inject
     MyEntouragesPresenter presenter;
@@ -89,6 +99,9 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Ent
     @BindView(R.id.myentourages_no_items_details)
     TextView noItemsDetailsTextView;
 
+    @BindView(R.id.myentourages_layout)
+    CoordinatorLayout myEntouragesCoordinator;
+
     private @NonNull EntouragePagination entouragesPagination = new EntouragePagination(Constants.ITEMS_PER_PAGE);
 
     // Refresh invitations attributes
@@ -108,13 +121,14 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Ent
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        connection.doBindService();
         BusProvider.INSTANCE.getInstance().register(this);
     }
 
     @Override
     public void onDestroy() {
         BusProvider.INSTANCE.getInstance().unregister(this);
-
+        connection.doUnbindService();
         super.onDestroy();
     }
 
@@ -453,5 +467,72 @@ public class MyEntouragesFragment extends EntourageDialogFragment implements Ent
     @Override
     public void loadMoreItems() {
         retrieveMyFeeds();
+    }
+
+    @Override
+    public void onNetworkException() {
+        if (myEntouragesCoordinator != null) {
+            EntourageSnackbar.INSTANCE.make(myEntouragesCoordinator, R.string.network_error, Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onServerException(@NotNull Throwable throwable) {
+        if (myEntouragesCoordinator != null) {
+            EntourageSnackbar.INSTANCE.make(myEntouragesCoordinator, R.string.network_error, Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onTechnicalException(@NotNull Throwable throwable) {
+        if (myEntouragesCoordinator != null) {
+            EntourageSnackbar.INSTANCE.make(myEntouragesCoordinator, R.string.technical_error, Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    private class ServiceConnection implements android.content.ServiceConnection {
+        private EntourageService entourageService = null;
+        private boolean isBound = false;
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            if (getActivity() != null) {
+                entourageService = ((EntourageService.LocalBinder)service).getService();
+                entourageService.registerApiListener(MyEntouragesFragment.this);
+                isBound = true;
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            entourageService.unregisterApiListener(MyEntouragesFragment.this);
+            entourageService = null;
+            isBound = false;
+        }
+
+        // ----------------------------------
+        // SERVICE BINDING METHODS
+        // ----------------------------------
+        public void doBindService() {
+            if (getActivity() != null) {
+                try {
+                    Intent intent = new Intent(getActivity(), EntourageService.class);
+                    requireActivity().startService(intent);
+                    requireActivity().bindService(intent, this, getActivity().BIND_AUTO_CREATE);
+                } catch (IllegalStateException e) {
+                    Timber.w(e);
+                }
+            }
+        }
+
+        public void doUnbindService() {
+            if (isBound) {
+                entourageService.unregisterApiListener(MyEntouragesFragment.this);
+                if(getActivity()!=null) getActivity().unbindService(this);
+                isBound = false;
+            }
+        }
+
+
     }
 }

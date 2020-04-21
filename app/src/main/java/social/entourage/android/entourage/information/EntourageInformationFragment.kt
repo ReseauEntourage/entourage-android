@@ -85,9 +85,7 @@ open class EntourageInformationFragment : EntourageDialogFragment(), EntourageSe
     // ----------------------------------
     @Inject lateinit var presenter: EntourageInformationPresenter
 
-    var entourageService: EntourageService? = null
-    private val connection = ServiceConnection()
-    private var isBound = false
+    protected val entourageServiceConnection = ServiceConnection()
 
     val discussionAdapter = DiscussionAdapter()
 
@@ -204,16 +202,13 @@ open class EntourageInformationFragment : EntourageDialogFragment(), EntourageSe
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        doBindService()
+        entourageServiceConnection.doBindService()
         BusProvider.instance.register(this)
     }
 
     override fun onDetach() {
         super.onDetach()
-        if (isBound) {
-            entourageService?.unregisterServiceListener(this)
-        }
-        doUnbindService()
+        entourageServiceConnection.doUnbindService()
         BusProvider.instance.unregister(this)
     }
 
@@ -432,21 +427,21 @@ open class EntourageInformationFragment : EntourageDialogFragment(), EntourageSe
 
     private fun quitEntourage() {
         val me = EntourageApplication.me(activity)
-        if(me ==null || entourageService == null){
+        if(me ==null || entourageServiceConnection.boundService == null){
             EntourageSnackbar.make(entourage_information_coordinator_layout!!,  R.string.tour_info_quit_tour_error, Snackbar.LENGTH_SHORT).show()
             return
         }
         EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_QUIT)
         showProgressBar()
-        entourageService!!.removeUserFromFeedItem(feedItem, me.id)
+        entourageServiceConnection.boundService!!.removeUserFromFeedItem(feedItem, me.id)
         entourage_info_options?.visibility = View.GONE
     }
 
     protected open fun onJoinTourButton() {
-        if (entourageService != null) {
+        if (entourageServiceConnection.boundService != null) {
             showProgressBar()
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN)
-            entourageService!!.requestToJoinEntourage(feedItem as Entourage?)
+            entourageServiceConnection.boundService!!.requestToJoinEntourage(feedItem as Entourage?)
             entourage_info_options?.visibility = View.GONE
         } else {
             EntourageSnackbar.make(entourage_information_coordinator_layout!!,  R.string.tour_join_request_message_error, Snackbar.LENGTH_SHORT).show()
@@ -1456,28 +1451,6 @@ open class EntourageInformationFragment : EntourageDialogFragment(), EntourageSe
     }
 
     // ----------------------------------
-    // SERVICE BINDING METHODS
-    // ----------------------------------
-    fun doBindService() {
-        if (activity != null) {
-            try {
-                val intent = Intent(activity, EntourageService::class.java)
-                requireActivity().startService(intent)
-                requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE)
-            } catch (e: IllegalStateException) {
-                Timber.w(e)
-            }
-        }
-    }
-
-    fun doUnbindService() {
-        if (isBound) {
-            activity?.unbindService(connection)
-            isBound = false
-        }
-    }
-
-    // ----------------------------------
     // Entourage Service listener implementation
     // ----------------------------------
     override fun onFeedItemClosed(closed: Boolean, updatedFeedItem: FeedItem) {
@@ -1585,20 +1558,46 @@ open class EntourageInformationFragment : EntourageDialogFragment(), EntourageSe
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {}
     }
 
-    private inner class ServiceConnection : android.content.ServiceConnection {
+    protected inner class ServiceConnection : android.content.ServiceConnection {
+        private var isBound = false
+        var boundService: EntourageService? = null
+
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             if (activity != null) {
-                entourageService = (service as EntourageService.LocalBinder).service
-                entourageService?.registerServiceListener(this@EntourageInformationFragment)
+                boundService = (service as EntourageService.LocalBinder).service
+                boundService?.registerServiceListener(this@EntourageInformationFragment)
                 isBound = true
             }
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
-            entourageService?.unregisterServiceListener(this@EntourageInformationFragment)
-            entourageService = null
+            boundService?.unregisterServiceListener(this@EntourageInformationFragment)
+            boundService = null
             isBound = false
         }
+        // ----------------------------------
+        // SERVICE BINDING METHODS
+        // ----------------------------------
+        fun doBindService() {
+            if (activity != null) {
+                try {
+                    val intent = Intent(activity, EntourageService::class.java)
+                    requireActivity().startService(intent)
+                    requireActivity().bindService(intent, this, Context.BIND_AUTO_CREATE)
+                } catch (e: IllegalStateException) {
+                    Timber.w(e)
+                }
+            }
+        }
+
+        fun doUnbindService() {
+            if (isBound) {
+                boundService?.unregisterServiceListener(this@EntourageInformationFragment)
+                activity?.unbindService(this)
+                isBound = false
+            }
+        }
+
     }
 
     companion object {
