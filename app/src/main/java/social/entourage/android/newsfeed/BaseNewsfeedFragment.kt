@@ -197,7 +197,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             return
         }
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_OPEN_ENTOURAGE)
-        presenter.openFeedItem(feedItemUUID, feedItemType, invitationId)
+        presenter.openFeedItemFromUUID(feedItemUUID, feedItemType, invitationId)
     }
 
     fun displayChosenFeedItem(feedItem: FeedItem, feedRank: Int) {
@@ -223,7 +223,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     private fun displayChosenFeedItemFromShareURL(feedItemShareURL: String, feedItemType: Int) {
         //display the feed item
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_OPEN_ENTOURAGE)
-        presenter.openFeedItem(feedItemShareURL, feedItemType)
+        presenter.openFeedItemFromShareURL(feedItemShareURL, feedItemType)
     }
 
     private fun act(timestampedObject: TimestampedObject) {
@@ -943,7 +943,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     private fun updatePagination(newsfeedList: List<Newsfeed>?) {
         if (newsfeedList.isNullOrEmpty()) {
-            pagination.loadedItems(null, null)
+            pagination.loadedItems()
             return
         }
         when (selectedTab) {
@@ -962,7 +962,11 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                         oldestUpdateDate = feedUpdatedDate
                     }
                 }
-                pagination.loadedItems(newestUpdatedDate, oldestUpdateDate)
+                if(newestUpdatedDate==null) {
+                    pagination.loadedItems()
+                } else {
+                    pagination.loadedItems(newestUpdatedDate, oldestUpdateDate ?: newestUpdatedDate)
+                }
             }
             NewsfeedTabItem.EVENTS_TAB -> if (newsfeedAdapter != null) {
                 var position = newsfeedAdapter!!.itemCount
@@ -1049,7 +1053,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         // Check if it's a valid user and onboarding
         if (EntourageApplication.me(activity)?.isOnboardingUser == true) {
             // Retrieve the list of invitations
-            presenter.myPendingInvitations
+            presenter.getMyPendingInvitations()
         }
     }
 
@@ -1068,7 +1072,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             }
             // Show the first invitation
             val firstInvitation = invitationList[0]
-            presenter.openFeedItem(firstInvitation.entourageUUID, FeedItem.ENTOURAGE_CARD, firstInvitation.id)
+            presenter.openFeedItemFromUUID(firstInvitation.entourageUUID, FeedItem.ENTOURAGE_CARD, firstInvitation.id)
         }
     }
 

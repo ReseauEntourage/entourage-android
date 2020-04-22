@@ -86,9 +86,9 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
 
     private var apiRequestsCount = 0
     lateinit var feedItem: FeedItem
-    private var requestedFeedItemUUID: String? = null
+    //private var requestedFeedItemUUID: String? = null
     //private var requestedFeedItemType = 0
-    private var requestedFeedItemShareURL: String? = null
+    //private var requestedFeedItemShareURL: String? = null
     private var invitationId: Long = 0
     private var acceptInvitationSilently = false
     var showInfoButton = true
@@ -114,39 +114,31 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupComponent(EntourageApplication.get().entourageComponent)
-        val args = arguments
-        if (args != null) {
-            val newFeedItem = args.getSerializable(FeedItem.KEY_FEEDITEM) as FeedItem?
-            invitationId = args.getLong(KEY_INVITATION_ID)
-            if (newFeedItem != null) {
-                feedItem = newFeedItem
-                if (newFeedItem.isPrivate) {
-                    initializeView()
-                    loadPrivateCards()
-                } else {
-                    // public entourage
-                    // we need to retrieve the whole entourage again, just to send the distance and feed position
-                    val feedRank = args.getInt(KEY_FEED_POSITION)
-                    var distance = 0
-                    val startPoint = newFeedItem.startPoint
-                    if (startPoint != null) {
-                        val currentLocation = EntourageLocation.getInstance().currentLocation
-                        if (currentLocation != null) {
-                            distance = ceil(startPoint.distanceTo(TourPoint(currentLocation.latitude, currentLocation.longitude)) / 1000.toDouble()).toInt() // in kilometers
-                        }
-                    }
-                    presenter().getFeedItem(newFeedItem.uuid, newFeedItem.type, feedRank, distance)
-
-                }
-            } else {
-                requestedFeedItemShareURL = args.getString(KEY_FEED_SHARE_URL)
-                requestedFeedItemUUID = args.getString(FeedItem.KEY_FEEDITEM_UUID)
-                if (!requestedFeedItemShareURL.isNullOrEmpty()) {
-                    presenter().getFeedItem(requestedFeedItemShareURL!!, getItemType())
-                } else if(requestedFeedItemUUID != null && requestedFeedItemUUID!!.isNotBlank()){
-                    presenter().getFeedItem(requestedFeedItemUUID!!, getItemType(), 0, 0)
+        invitationId = arguments?.getLong(KEY_INVITATION_ID) ?: 0
+        val newFeedItem = arguments?.getSerializable(FeedItem.KEY_FEEDITEM) as FeedItem?
+        if (newFeedItem == null) {
+            onFeedItemNotFound()
+            dismiss()
+            return
+        }
+        feedItem = newFeedItem
+        if (newFeedItem.isPrivate) {
+            initializeView()
+            loadPrivateCards()
+        } else {
+            // public entourage
+            // we need to retrieve the whole entourage again, just to send the distance and feed position
+            val feedRank = arguments?.getInt(KEY_FEED_POSITION) ?:0
+            var distance = 0
+            val startPoint = newFeedItem.startPoint
+            if (startPoint != null) {
+                val currentLocation = EntourageLocation.getInstance().currentLocation
+                if (currentLocation != null) {
+                    distance = ceil(startPoint.distanceTo(TourPoint(currentLocation.latitude, currentLocation.longitude)) / 1000.toDouble()).toInt() // in kilometers
                 }
             }
+            presenter().getFeedItem(newFeedItem.uuid, newFeedItem.type, feedRank, distance)
+
         }
         initializeCommentEditText()
         //TODO split into smaller functions
@@ -208,7 +200,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 val handler = Handler(Looper.getMainLooper())
                 handler.post { onInviteContactsClicked() }
-            } else {
+            } else if(entourage_information_coordinator_layout!=null){
                 EntourageSnackbar.make(entourage_information_coordinator_layout!!, R.string.invite_contacts_permission_error, Snackbar.LENGTH_SHORT).show()
             }
         }
@@ -546,7 +538,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         presenter().acceptInvitation(invitationId)
     }
 
-    fun onRejectInvitationClicked(view: View) {
+    private fun onRejectInvitationClicked(view: View) {
         view.isEnabled = false
         presenter().rejectInvitation(invitationId)
     }
@@ -1036,13 +1028,17 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     }
 
     fun onFeedItemNotFound() {
-        if (activity == null || !isAdded) return
+        //if (activity == null || !isAdded) return
         hideProgressBar()
-        if (context == null) return
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setMessage(R.string.tour_info_error_retrieve_entourage)
-        builder.setPositiveButton(R.string.close) { _, _ -> dismiss() }
-        builder.create().show()
+        //if (context == null) return
+        //val builder = AlertDialog.Builder(requireContext())
+        //builder.setMessage(R.string.tour_info_error_retrieve_entourage)
+        //builder.setPositiveButton(R.string.close) { _, _ -> dismiss() }
+        //builder.create().show()
+
+        if(entourage_information_coordinator_layout!=null) {
+            EntourageSnackbar.make(entourage_information_coordinator_layout!!, R.string.tour_info_error_retrieve_entourage, Snackbar.LENGTH_SHORT).show()
+        }
     }
 
     @Synchronized
@@ -1432,7 +1428,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         private const val SCROLL_DELTA_Y_THRESHOLD = 20
         private const val KEY_INVITATION_ID = "social.entourage.android_KEY_INVITATION_ID"
         private const val KEY_FEED_POSITION = "social.entourage.android.KEY_FEED_POSITION"
-        private const val KEY_FEED_SHARE_URL = "social.entourage.android.KEY_FEED_SHARE_URL"
+        //private const val KEY_FEED_SHARE_URL = "social.entourage.android.KEY_FEED_SHARE_URL"
 
         // ----------------------------------
         // LIFECYCLE
@@ -1448,7 +1444,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             return fragment
         }
 
-        @JvmStatic
+        /*@JvmStatic
         fun newInstance(feedItemUUID: String, feedItemType: Int, invitationId: Long): FeedItemInformationFragment {
             val fragment = if (feedItemType == TimestampedObject.TOUR_CARD) TourInformationFragment() else EntourageInformationFragment()
             val args = Bundle()
@@ -1456,14 +1452,14 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             args.putLong(KEY_INVITATION_ID, invitationId)
             fragment.arguments = args
             return fragment
-        }
+        }*/
 
-        fun newInstance(shareURL: String, feedItemType: Int): FeedItemInformationFragment {
+        /*fun newInstance(shareURL: String, feedItemType: Int): FeedItemInformationFragment {
             val fragment = if (feedItemType == TimestampedObject.TOUR_CARD) TourInformationFragment() else EntourageInformationFragment()
             val args = Bundle()
             args.putString(KEY_FEED_SHARE_URL, shareURL)
             fragment.arguments = args
             return fragment
-        }
+        }*/
     }
 }

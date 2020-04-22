@@ -39,8 +39,7 @@ import java.util.*
 import javax.inject.Inject
 
 class TourInformationFragment : FeedItemInformationFragment(){
-    @Inject
-    lateinit var presenter: TourInformationPresenter
+    @Inject lateinit var presenter: TourInformationPresenter
     override fun presenter(): FeedItemInformationPresenter { return presenter}
 
     private var mListener: OnTourInformationFragmentFinish? = null

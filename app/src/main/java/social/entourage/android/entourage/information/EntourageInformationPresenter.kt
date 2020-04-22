@@ -25,16 +25,10 @@ import javax.inject.Inject
  * Presenter controlling the EntourageInformationFragment
  * @see EntourageInformationFragment
  */
-class EntourageInformationPresenter @Inject constructor(private val fragment: EntourageInformationFragment)  : FeedItemInformationPresenter() {
-
-    // ----------------------------------
-    // ATTRIBUTES
-    // ----------------------------------
-    @Inject
-    lateinit var entourageRequest: EntourageRequest
-
-    @Inject
-    lateinit var invitationRequest: InvitationRequest
+class EntourageInformationPresenter @Inject constructor(
+        private val fragment: EntourageInformationFragment,
+        private val entourageRequest: EntourageRequest,
+        private val invitationRequest: InvitationRequest)  : FeedItemInformationPresenter() {
 
     // ----------------------------------
     // Api calls
@@ -45,31 +39,6 @@ class EntourageInformationPresenter @Inject constructor(private val fragment: En
         when (feedItemType) {
             TimestampedObject.ENTOURAGE_CARD -> {
                 val call = entourageRequest.retrieveEntourageById(feedItemUUID, distance, feedRank)
-                call.enqueue(object : Callback<EntourageWrapper> {
-                    override fun onResponse(call: Call<EntourageWrapper>, response: Response<EntourageWrapper>) {
-                        if (response.isSuccessful) {
-                            fragment.onFeedItemReceived(response.body()!!.entourage)
-                        } else {
-                            fragment.onFeedItemNotFound()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<EntourageWrapper>, t: Throwable) {
-                        fragment.onFeedItemNotFound()
-                    }
-                })
-            }
-            else -> {
-                fragment.onFeedItemNotFound()
-            }
-        }
-    }
-
-    override fun getFeedItem(feedItemShareURL: String, feedItemType: Int) {
-        fragment.showProgressBar()
-        when (feedItemType) {
-            TimestampedObject.ENTOURAGE_CARD -> {
-                val call = entourageRequest.retrieveEntourageByShareURL(feedItemShareURL)
                 call.enqueue(object : Callback<EntourageWrapper> {
                     override fun onResponse(call: Call<EntourageWrapper>, response: Response<EntourageWrapper>) {
                         if (response.isSuccessful) {

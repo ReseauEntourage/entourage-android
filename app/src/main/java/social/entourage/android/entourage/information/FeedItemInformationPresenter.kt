@@ -35,7 +35,7 @@ abstract class FeedItemInformationPresenter {
     // ----------------------------------
     abstract fun getFeedItem(feedItemUUID: String, feedItemType: Int, feedRank: Int, distance: Int)
 
-    abstract fun getFeedItem(feedItemShareURL: String, feedItemType: Int)
+    //abstract fun getFeedItem(feedItemShareURL: String, feedItemType: Int)
 
     abstract fun getFeedItemMembers(feedItem: FeedItem)
 

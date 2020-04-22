@@ -29,19 +29,10 @@ import javax.inject.Inject
  * Presenter controlling the TourInformationFragment
  * @see TourInformationFragment
  */
-class TourInformationPresenter @Inject constructor(private val fragment: TourInformationFragment) : FeedItemInformationPresenter() {
-
-    // ----------------------------------
-    // ATTRIBUTES
-    // ----------------------------------
-    @Inject
-    lateinit var tourRequest: TourRequest
-
-    @Inject
-    lateinit var entourageRequest: EntourageRequest
-
-    @Inject
-    lateinit var invitationRequest: InvitationRequest
+class TourInformationPresenter @Inject constructor(
+        private val fragment: TourInformationFragment,
+        private val tourRequest: TourRequest,
+        private val invitationRequest: InvitationRequest) : FeedItemInformationPresenter() {
 
     // ----------------------------------
     // Api calls
@@ -72,9 +63,9 @@ class TourInformationPresenter @Inject constructor(private val fragment: TourInf
         }
     }
 
-    override fun getFeedItem(feedItemShareURL: String, feedItemType: Int) {
+    /*override fun getFeedItem(feedItemShareURL: String, feedItemType: Int) {
         fragment.onFeedItemNotFound()
-    }
+    }*/
 
     override fun getFeedItemMembers(feedItem: FeedItem) {
         getFeedItemUsers(feedItem, null)

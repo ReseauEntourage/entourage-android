@@ -7,9 +7,11 @@ import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
 import social.entourage.android.api.model.User;
+import social.entourage.android.api.model.map.Entourage;
 import social.entourage.android.authentication.AuthenticationController;
 
 /**
@@ -24,6 +26,7 @@ public class UserPresenter {
 
     private final UserFragment fragment;
     private final UserRequest userRequest;
+    private final EntourageRequest entourageRequest;
     private final AuthenticationController authenticationController;
 
     // ----------------------------------
@@ -33,9 +36,11 @@ public class UserPresenter {
     @Inject
     public UserPresenter(final UserFragment fragment,
                          final UserRequest userRequest,
+                         final EntourageRequest entourageRequest,
                          final AuthenticationController authenticationController) {
         this.fragment = fragment;
         this.userRequest = userRequest;
+        this.entourageRequest = entourageRequest;
         this.authenticationController = authenticationController;
     }
 
@@ -101,4 +106,26 @@ public class UserPresenter {
         }
     }
 
+    public void getConversation(final User.UserConversation conversation) {
+        if (fragment != null) {
+            Call<Entourage.EntourageWrapper> call = entourageRequest.retrieveEntourageById(conversation.getUUID(),0,0);
+            call.enqueue(new Callback<Entourage.EntourageWrapper>() {
+                @Override
+                public void onResponse(@NonNull Call<Entourage.EntourageWrapper> call, @NonNull Response<Entourage.EntourageWrapper> response) {
+                    if (response.isSuccessful() && response.body() !=null) {
+                        //show the entourage information
+                        fragment.onConversationFound(response.body().getEntourage());
+                    }
+                    else {
+                        fragment.onConversationFound(null);
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<Entourage.EntourageWrapper> call, @NonNull Throwable t) {
+                    fragment.onConversationFound(null);
+                }
+            });
+        }
+    }
 }

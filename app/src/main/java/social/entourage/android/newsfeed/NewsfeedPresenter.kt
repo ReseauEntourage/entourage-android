@@ -8,12 +8,17 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageEvents
+import social.entourage.android.api.EntourageRequest
 import social.entourage.android.api.InvitationRequest
+import social.entourage.android.api.TourRequest
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.Invitation.InvitationWrapper
 import social.entourage.android.api.model.Invitation.InvitationsWrapper
+import social.entourage.android.api.model.TimestampedObject
+import social.entourage.android.api.model.map.BaseEntourage
 import social.entourage.android.api.model.map.Encounter
 import social.entourage.android.api.model.map.FeedItem
+import social.entourage.android.api.model.map.Tour
 import social.entourage.android.api.tape.Events.OnTourEncounterViewRequestedEvent
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.entourage.EntourageDisclaimerFragment
@@ -34,6 +39,8 @@ import javax.inject.Inject
 class NewsfeedPresenter @Inject constructor(
         private val fragment: BaseNewsfeedFragment?,
         private val authenticationController: AuthenticationController?,
+        private val entourageRequest: EntourageRequest,
+        private val tourRequest: TourRequest,
         private val invitationRequest: InvitationRequest) {
 
     // ----------------------------------
@@ -64,14 +71,52 @@ class NewsfeedPresenter @Inject constructor(
         FeedItemInformationFragment.newInstance(feedItem, invitationId, feedRank).show(fragmentManager, FeedItemInformationFragment.TAG)
     }
 
-    fun openFeedItem(feedItemUUID: String, feedItemType: Int, invitationId: Long) {
-        val fragmentManager = fragment?.activity?.supportFragmentManager ?: return
-        FeedItemInformationFragment.newInstance(feedItemUUID, feedItemType, invitationId).show(fragmentManager, FeedItemInformationFragment.TAG)
+    fun openFeedItemFromUUID(feedItemUUID: String, feedItemType: Int, invitationId: Long) {
+        if(feedItemUUID.isBlank()) return
+        when (feedItemType) {
+            TimestampedObject.ENTOURAGE_CARD -> {
+                val call = entourageRequest.retrieveEntourageById(feedItemUUID, 0, 0)
+                call.enqueue(object : Callback<BaseEntourage.EntourageWrapper> {
+                    override fun onResponse(call: Call<BaseEntourage.EntourageWrapper>, response: Response<BaseEntourage.EntourageWrapper>) {
+                        if (response.isSuccessful && response.body()?.entourage is FeedItem) {
+                            openFeedItem(response.body()!!.entourage, invitationId, 0)
+                        }
+                    }
+                    override fun onFailure(call: Call<BaseEntourage.EntourageWrapper>, t: Throwable) {
+                    }
+                })
+            }
+            TimestampedObject.TOUR_CARD -> {
+                val call = tourRequest.retrieveTourById(feedItemUUID)
+                call.enqueue(object : Callback<Tour.TourWrapper> {
+                    override fun onResponse(call: Call<Tour.TourWrapper>, response: Response<Tour.TourWrapper>) {
+                        if (response.isSuccessful && response.body()?.tour is FeedItem) {
+                            openFeedItem(response.body()!!.tour, invitationId, 0)
+                        }
+                    }
+                    override fun onFailure(call: Call<Tour.TourWrapper>, t: Throwable) {
+                    }
+                })
+            }
+        }
     }
 
-    fun openFeedItem(feedItemShareURL: String, feedItemType: Int) {
-        val fragmentManager = fragment?.activity?.supportFragmentManager ?: return
-        FeedItemInformationFragment.newInstance(feedItemShareURL, feedItemType).show(fragmentManager, FeedItemInformationFragment.TAG)
+    fun openFeedItemFromShareURL(feedItemShareURL: String, feedItemType: Int) {
+        when (feedItemType) {
+            TimestampedObject.ENTOURAGE_CARD -> {
+                val call = entourageRequest.retrieveEntourageByShareURL(feedItemShareURL)
+                call.enqueue(object : Callback<BaseEntourage.EntourageWrapper> {
+                    override fun onResponse(call: Call<BaseEntourage.EntourageWrapper>, response: Response<BaseEntourage.EntourageWrapper>) {
+                        if (response.isSuccessful && response.body()?.entourage is FeedItem) {
+                            openFeedItem(response.body()!!.entourage,0,0)
+                        }
+                    }
+
+                    override fun onFailure(call: Call<BaseEntourage.EntourageWrapper>, t: Throwable) {
+                    }
+                })
+            }
+        }
     }
 
     fun createEntourage(location: LatLng?, groupType: String, category: EntourageCategory?) {
@@ -101,23 +146,22 @@ class NewsfeedPresenter @Inject constructor(
         EncounterDisclaimerFragment.newInstance().show(fragmentManager, EncounterDisclaimerFragment.TAG)
     }
 
-    val myPendingInvitations: Unit
-        get() {
-            val call = invitationRequest.retrieveUserInvitationsWithStatus(Invitation.STATUS_PENDING)
-            call.enqueue(object : Callback<InvitationsWrapper> {
-                override fun onResponse(call: Call<InvitationsWrapper>, response: Response<InvitationsWrapper>) {
-                    if (response.isSuccessful) {
-                        fragment?.onInvitationsReceived(response.body()?.invitations)
-                    } else {
-                        fragment?.onInvitationsReceived(null)
-                    }
-                }
-
-                override fun onFailure(call: Call<InvitationsWrapper>, t: Throwable) {
+    fun getMyPendingInvitations() {
+        val call = invitationRequest.retrieveUserInvitationsWithStatus(Invitation.STATUS_PENDING)
+        call.enqueue(object : Callback<InvitationsWrapper> {
+            override fun onResponse(call: Call<InvitationsWrapper>, response: Response<InvitationsWrapper>) {
+                if (response.isSuccessful) {
+                    fragment?.onInvitationsReceived(response.body()?.invitations)
+                } else {
                     fragment?.onInvitationsReceived(null)
                 }
-            })
-        }
+            }
+
+            override fun onFailure(call: Call<InvitationsWrapper>, t: Throwable) {
+                fragment?.onInvitationsReceived(null)
+            }
+        })
+    }
 
     fun acceptInvitation(invitationId: Long) {
         val call = invitationRequest.acceptInvitation(invitationId)

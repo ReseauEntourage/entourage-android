@@ -16,7 +16,9 @@ import javax.inject.Inject
  * Presenter controlling the GuideMapFragment
  * @see GuideMapFragment
  */
-class GuideMapPresenter @Inject constructor(private val fragment: GuideMapFragment, private val poiRequest: PoiRequest) {
+class GuideMapPresenter @Inject constructor(
+        private val fragment: GuideMapFragment,
+        private val poiRequest: PoiRequest) {
 
     // ----------------------------------
     // PUBLIC METHODS
