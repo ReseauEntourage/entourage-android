@@ -1,0 +1,116 @@
+package social.entourage.android.entourage.my.filter
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_my_entourages_filter.*
+import kotlinx.android.synthetic.main.layout_view_title.*
+import social.entourage.android.EntourageApplication
+import social.entourage.android.EntourageEvents
+import social.entourage.android.R
+import social.entourage.android.api.tape.Events.OnMyEntouragesForceRefresh
+import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.entourage.my.filter.MyEntouragesFilter.Companion.getMyEntouragesFilter
+import social.entourage.android.entourage.my.filter.MyEntouragesFilter.Companion.saveMyEntouragesFilter
+import social.entourage.android.tools.BusProvider.instance
+
+/**
+ * MyEntourages Filter Fragment
+ */
+class MyEntouragesFilterFragment  : EntourageDialogFragment() {
+    // ----------------------------------
+    // Lifecycle
+    // ----------------------------------
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
+        return inflater.inflate(R.layout.fragment_my_entourages_filter, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initializeView()
+        title_close_button.setOnClickListener {onBackClicked()}
+        title_action_button.setOnClickListener {onValidateClicked()}
+        myentourages_filter_unread_switch.setOnClickListener {onOrganizerSwitch()}
+        myentourages_filter_closed_switch.setOnClickListener {onClosedSwitch()}
+        myentourages_filter_demand_switch.setOnClickListener {onDemandSwitch()}
+        myentourages_filter_contribution_switch.setOnClickListener {onContributionSwitch()}
+        myentourages_filter_tours_switch.setOnClickListener {onToursSwitch()}
+    }
+
+    // ----------------------------------
+    // Buttons handling
+    // ----------------------------------
+    fun onBackClicked() {
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_EXIT)
+        dismiss()
+    }
+
+    fun onValidateClicked() {
+        // save the values to the filter
+        val filter = getMyEntouragesFilter(this.context)
+        filter.isEntourageTypeDemand = myentourages_filter_demand_switch!!.isChecked
+        filter.isEntourageTypeContribution = myentourages_filter_contribution_switch!!.isChecked
+        filter.isShowTours = myentourages_filter_tours_switch!!.isChecked
+        filter.isShowUnreadOnly = myentourages_filter_unread_switch.isChecked
+        filter.showOwnEntouragesOnly = myentourages_filter_created_by_me_switch!!.isChecked
+        filter.showPartnerEntourages = myentourages_filter_partner_switch!!.isChecked
+        filter.isClosedEntourages = myentourages_filter_closed_switch!!.isChecked
+        saveMyEntouragesFilter(filter, this.context)
+
+        // inform the app to refrehs the my entourages feed
+        instance.post(OnMyEntouragesForceRefresh(null))
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_SAVE)
+
+        // dismiss the dialog
+        dismiss()
+    }
+
+    fun onOrganizerSwitch() {
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_UNREAD)
+    }
+
+    fun onClosedSwitch() {
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_PAST)
+    }
+
+    fun onDemandSwitch() {
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_ASK)
+    }
+
+    fun onContributionSwitch() {
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_OFFER)
+    }
+
+    fun onToursSwitch() {
+        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_TOUR)
+    }
+
+    // ----------------------------------
+    // Private Methods
+    // ----------------------------------
+    private fun initializeView() {
+        val filter = getMyEntouragesFilter(this.context)
+        myentourages_filter_demand_switch?.isChecked = filter.isEntourageTypeDemand
+        myentourages_filter_contribution_switch?.isChecked = filter.isEntourageTypeContribution
+        myentourages_filter_tours_switch?.isChecked = filter.isShowTours
+        myentourages_filter_unread_switch?.isChecked = filter.isShowUnreadOnly
+        myentourages_filter_created_by_me_switch?.isChecked = filter.showOwnEntouragesOnly
+        myentourages_filter_partner_switch?.isChecked = filter.showPartnerEntourages
+        myentourages_filter_closed_switch?.isChecked = filter.isClosedEntourages
+        val me = EntourageApplication.me(activity)
+        // Tours switch is displayed only for pro users
+        myentourages_filter_tours_layout.visibility = if (me?.isPro == true) View.VISIBLE else View.GONE
+        // Partner switch is displayed only if the user has a partner organisation
+        myentourages_filter_partner_layout?.visibility = if (me?.partner != null) View.VISIBLE else View.GONE
+    }
+
+    companion object {
+        // ----------------------------------
+        // Constants
+        // ----------------------------------
+        const val TAG = "social.entourage_android.MyEntouragesFilterFragment"
+    }
+}
