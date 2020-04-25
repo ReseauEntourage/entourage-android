@@ -11,7 +11,6 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.collection.ArrayMap;
-import androidx.fragment.app.FragmentManager;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -154,11 +153,11 @@ public abstract class MainBasePresenter implements AvatarUpdatePresenter {
 
     void displayTutorial(boolean forced) {
         if (!forced && !Configuration.INSTANCE.showTutorial()) return;
+        //Configuration.INSTANCE.showTutorial() is always false
         if (activity != null && activity.isSafeToCommit()) {
-            CarouselFragment carouselFragment = new CarouselFragment();
             try {
-                FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                carouselFragment.show(fragmentManager, CarouselFragment.TAG);
+                CarouselFragment carouselFragment = new CarouselFragment();
+                carouselFragment.show(activity.getSupportFragmentManager(), CarouselFragment.TAG);
             } catch (Exception e) {
                 // This is just to see if we still get the Illegal state exception
                 Timber.e(e);

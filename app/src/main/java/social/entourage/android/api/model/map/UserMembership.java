@@ -6,6 +6,8 @@ import androidx.appcompat.content.res.AppCompatResources;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -33,7 +35,7 @@ public class UserMembership implements Serializable {
         return membershipId;
     }
 
-    public String getMembershipUUID() {
+    public @NotNull String getMembershipUUID() {
         //TODO Return an UUID from the server
         return String.valueOf(membershipId);
     }

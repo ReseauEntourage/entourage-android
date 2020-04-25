@@ -380,10 +380,6 @@ public class MainActivity extends EntourageSecuredActivity
         selectNavigationTab(navigationDataSource.getMyMessagesTabIndex());
     }
 
-    public void showTutorial() {
-        showTutorial(false);
-    }
-
     public void showTutorial(boolean forced) {
         if (presenter != null) {
             presenter.displayTutorial(forced);

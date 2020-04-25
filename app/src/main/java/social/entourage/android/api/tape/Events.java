@@ -208,14 +208,14 @@ public class Events {
             this.feedRank = feedRank;
         }
 
-        public OnFeedItemInfoViewRequestedEvent(int feedItemType, String feedItemUUID, String feedItemShareURL) {
+        public OnFeedItemInfoViewRequestedEvent(int feedItemType, @Nullable String feedItemUUID, @Nullable String feedItemShareURL) {
             this.feedItemType = feedItemType;
             this.feedItemUUID = feedItemUUID;
             this.feedItemShareURL = feedItemShareURL;
         }
 
-        public OnFeedItemInfoViewRequestedEvent(int feedItemType, String feedItemUUID, long invitationId) {
-            this.feedItemType = feedItemType;
+        public OnFeedItemInfoViewRequestedEvent(@NotNull String feedItemUUID, long invitationId) {
+            this.feedItemType = FeedItem.ENTOURAGE_CARD;
             this.feedItemUUID = feedItemUUID;
             this.invitationId = invitationId;
         }

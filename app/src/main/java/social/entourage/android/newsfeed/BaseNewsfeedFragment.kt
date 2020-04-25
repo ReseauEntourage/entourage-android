@@ -554,7 +554,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         toggleToursList()
     }
 
-    fun createAction(newEntourageCategory: EntourageCategory?, newEntourageGroupType: String?) {
+    fun createAction(newEntourageCategory: EntourageCategory?, newEntourageGroupType: String) {
         entourageCategory = newEntourageCategory
         entourageGroupType = newEntourageGroupType
         entourageCategory?.isNewlyCreated = true
@@ -1052,27 +1052,23 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     private fun initializeInvitations() {
         // Check if it's a valid user and onboarding
         if (EntourageApplication.me(activity)?.isOnboardingUser == true) {
-            // Retrieve the list of invitations
+            // Retrieve the list of invitations and then accept them automatically
             presenter.getMyPendingInvitations()
+            presenter.resetUserOnboardingFlag()
         }
     }
 
     fun onInvitationsReceived(invitationList: List<Invitation>?) {
-        // Check for errors and empty list
-        if (invitationList.isNullOrEmpty()) {
-            // Check if we need to show the carousel
-            if (EntourageApplication.me(activity)?.isOnboardingUser == true) {
-                showCarousel()
-                // Reset the onboarding flag
-                presenter.resetUserOnboardingFlag()
-            }
-        } else {
-            for (invitation in invitationList) {
-                presenter.acceptInvitation(invitation.id)
+        //during onboarding we check if the new user was invited to specific entourages and then automatically accept them
+        if ((EntourageApplication.me(activity)?.isOnboardingUser == true)
+                &&(!invitationList.isNullOrEmpty())) {
+            invitationList.forEach {
+                presenter.acceptInvitation(it.id)
             }
             // Show the first invitation
-            val firstInvitation = invitationList[0]
-            presenter.openFeedItemFromUUID(firstInvitation.entourageUUID, FeedItem.ENTOURAGE_CARD, firstInvitation.id)
+            invitationList.first().let {
+                presenter.openFeedItemFromUUID(it.entourageUUID, FeedItem.ENTOURAGE_CARD, it.id)
+            }
         }
     }
 
@@ -1104,23 +1100,6 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     private fun hideEmptyListPopup() {
         fragment_map_empty_list_popup?.visibility = View.GONE
-    }
-
-    // ----------------------------------
-    // CAROUSEL
-    // ----------------------------------
-    private fun showCarousel() {
-        val h = Handler()
-        h.postDelayed({
-
-            // Check if the activity is still running
-            if (activity == null || requireActivity().isFinishing || isStopped) {
-                return@postDelayed
-            }
-            // Check if the map fragment is still on top
-            if(fragmentLifecycleCallbacks?.topFragment == null) return@postDelayed
-            (activity as MainActivity?)!!.showTutorial()
-        }, Constants.CAROUSEL_DELAY_MILLIS)
     }
 
     // ----------------------------------

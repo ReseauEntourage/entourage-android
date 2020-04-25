@@ -241,12 +241,12 @@ class EntourageInformationPresenter @Inject constructor(
                 if (response.isSuccessful) {
                     fragment.onInvitationStatusUpdated(true, Invitation.STATUS_REJECTED)
                 } else {
-                    fragment.onInvitationStatusUpdated(false, Invitation.STATUS_REJECTED)
+                    //fragment.onInvitationStatusUpdated(false, Invitation.STATUS_REJECTED)
                 }
             }
 
             override fun onFailure(call: Call<InvitationWrapper?>, t: Throwable) {
-                fragment.onInvitationStatusUpdated(false, Invitation.STATUS_REJECTED)
+                //fragment.onInvitationStatusUpdated(false, Invitation.STATUS_REJECTED)
             }
         })
     }

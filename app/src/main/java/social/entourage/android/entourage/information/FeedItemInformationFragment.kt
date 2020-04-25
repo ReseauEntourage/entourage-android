@@ -23,7 +23,6 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.PermissionChecker
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,7 +30,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.entourage.layout_entourage_options.*
@@ -50,7 +50,6 @@ import social.entourage.android.api.model.map.*
 import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.EntourageDialogFragment
-import social.entourage.android.carousel.CarouselFragment
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.deeplinks.DeepLinksManager.linkify
 import social.entourage.android.entourage.create.BaseCreateEntourageFragment
@@ -560,17 +559,17 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         // Hide the loading view
         entourage_info_loading_view?.visibility = View.GONE
         updateFeedItemInfo()
-        if (invitationId > 0) {
+        /*if (invitationId > 0) {
             // already a member
             // send a silent accept
             acceptInvitationSilently = true
             presenter().acceptInvitation(invitationId)
             // ignore the invitation
             invitationId = 0
-        }
+        }*/
 
-        // switch to appropiate section
-        if (feedItem.isPrivate) {
+        // switch to appropiate section (in case of an invitation we swtich to public section
+        if (feedItem.isPrivate && invitationId==0L) {
             updateJoinStatus()
             switchToPrivateSection()
         } else {
@@ -586,16 +585,6 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         // for newly created entourages, open the invite friends screen automatically if the feed item is not suspended
         if (feedItem.isNewlyCreated && feedItem.showInviteViewAfterCreation() && !feedItem.isSuspended) {
             showInviteSource()
-        }
-
-        // check if we need to display the carousel
-        val me = EntourageApplication.me(context) ?: return
-        if (me.isOnboardingUser) {
-            showCarousel()
-            me.isOnboardingUser = false
-            if (activity != null) {
-                EntourageApplication.get(activity)?.entourageComponent?.authenticationController?.saveUser(me)
-            }
         }
     }
 
@@ -1003,7 +992,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         presenter().updateUserJoinRequest(event.userId, event.update, event.feedItem)
     }
 
-    open fun onEntourageUpdated(event: Events.OnEntourageUpdated) {
+    open fun onEntourageUpdated(event: OnEntourageUpdated) {
         val updatedEntourage = event.entourage ?: return
         // Check if it is our displayed entourage
         if (feedItem.type != updatedEntourage.type || feedItem.id != updatedEntourage.id) return
@@ -1324,23 +1313,6 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             initializeOptionsView()
             updateJoinStatus()
         }
-    }
-
-    // ----------------------------------
-    // RecyclerView.OnScrollListener
-    // ----------------------------------
-    private fun showCarousel() {
-        val h = Handler()
-        h.postDelayed({
-            // Check if the activity is still running
-            if (activity?.isFinishing ==true) {
-                return@postDelayed
-            }
-            if (!isVisible) {
-                return@postDelayed
-            }
-            CarouselFragment().show(parentFragmentManager, CarouselFragment.TAG)
-        }, Constants.CAROUSEL_DELAY_MILLIS)
     }
 
     // ----------------------------------

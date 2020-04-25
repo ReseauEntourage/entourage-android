@@ -285,7 +285,8 @@
         android:layout_alignParentBottom="true"
         android:background="@color/accent"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <TextView
             android:layout_width="wrap_content"

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/accent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/accent">
 
     <RelativeLayout
         android:id="@+id/login_notifications_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:paddingLeft="10dp"
@@ -20,10 +20,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:text="@string/ignore"
-            android:textAllCaps="false"
-            />
+            android:textAllCaps="false" />
     </RelativeLayout>
 
     <LinearLayout
@@ -35,10 +33,10 @@
         android:paddingRight="10dp">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
             android:contentDescription="@string/empty_description"
-            android:src="@drawable/notifications_square"/>
+            app:srcCompat="@drawable/ic_notifications_none_black_24dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -47,8 +45,7 @@
             android:text="@string/login_permission_notification_title"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/white"
-            android:textSize="@dimen/entourage_font_xtra_large"
-            />
+            android:textSize="@dimen/entourage_font_xtra_large" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -57,7 +54,7 @@
             android:text="@string/login_permission_notification_description"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/white"
-            android:textSize="@dimen/entourage_font_medium"/>
+            android:textSize="@dimen/entourage_font_medium" />
     </LinearLayout>
 
     <Button
@@ -65,11 +62,10 @@
         style="@style/WhiteButton.RoundedCorners"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:text="@string/login_permission_notification_accept"/>
+        android:layout_marginBottom="10dp"
+        android:text="@string/login_permission_notification_accept" />
 </RelativeLayout>

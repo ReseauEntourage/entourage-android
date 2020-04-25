@@ -4,17 +4,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.api.EntourageRequest
 import social.entourage.android.api.InvitationRequest
 import social.entourage.android.api.NewsfeedRequest
-import social.entourage.android.api.TourRequest
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.Invitation.InvitationsWrapper
 import social.entourage.android.api.model.Newsfeed.NewsfeedWrapper
-import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.map.BaseEntourage.EntourageWrapper
-import social.entourage.android.api.model.map.Tour.TourWrapper
-import social.entourage.android.entourage.my.filter.MyEntouragesFilterFactory
+import social.entourage.android.entourage.my.filter.MyEntouragesFilter
 import javax.inject.Inject
 
 /**
@@ -29,28 +24,28 @@ class MyEntouragesPresenter @Inject constructor(
     // Methods
     // ----------------------------------
     fun getMyFeeds(page: Int, per: Int) {
-        val filter = MyEntouragesFilterFactory.getMyEntouragesFilter(fragment!!.context) ?: return
+        val filter = MyEntouragesFilter.getMyEntouragesFilter(fragment.context)
         val call = newsfeedRequest.retrieveMyFeeds(
                 page,
                 per,
                 filter.entourageTypes,
                 filter.tourTypes,
                 filter.status,
-                filter.isShowOwnEntouragesOnly,
-                filter.isShowPartnerEntourages,
-                filter.isShowJoinedEntourages
+                filter.showOwnEntouragesOnly,
+                filter.showPartnerEntourages,
+                filter.showJoinedEntourages
         )
         call.enqueue(object : Callback<NewsfeedWrapper> {
             override fun onResponse(call: Call<NewsfeedWrapper>, response: Response<NewsfeedWrapper>) {
                 if (response.isSuccessful) {
-                    fragment?.onNewsfeedReceived(response.body()!!.newsfeed)
+                    fragment.onNewsfeedReceived(response.body()!!.newsfeed)
                 } else {
-                    fragment?.onNewsfeedReceived(null)
+                    fragment.onNewsfeedReceived(null)
                 }
             }
 
             override fun onFailure(call: Call<NewsfeedWrapper>, t: Throwable) {
-                fragment?.onNewsfeedReceived(null)
+                fragment.onNewsfeedReceived(null)
             }
         })
     }
@@ -60,14 +55,14 @@ class MyEntouragesPresenter @Inject constructor(
         call.enqueue(object : Callback<InvitationsWrapper> {
             override fun onResponse(call: Call<InvitationsWrapper>, response: Response<InvitationsWrapper>) {
                 if (response.isSuccessful) {
-                    fragment?.onInvitationsReceived(response.body()!!.invitations)
+                    fragment.onInvitationsReceived(response.body()!!.invitations)
                 } else {
-                    fragment?.onInvitationsReceived(null)
+                    fragment.onInvitationsReceived(null)
                 }
             }
 
             override fun onFailure(call: Call<InvitationsWrapper>, t: Throwable) {
-                fragment?.onInvitationsReceived(null)
+                fragment.onInvitationsReceived(null)
             }
         })
     }
