@@ -12,7 +12,7 @@ import java.util.*
 /**
  * Created by Mihai Ionescu on 19/10/2017.
  */
-class InvitationListViewHolder(view: View?) : BaseCardViewHolder(view) {
+class InvitationListViewHolder(view: View) : BaseCardViewHolder(view) {
     private lateinit var invitationsAdapter: InvitationsAdapter
 
     override fun bindFields() {

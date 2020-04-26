@@ -10,7 +10,7 @@ import social.entourage.android.entourage.EntourageViewHolder
  *
  * @see social.entourage.android.newsfeed.FeedItemViewHolder
  */
-class EntourageMiniCardViewHolder(itemView: View?) : EntourageViewHolder(itemView) {
+class EntourageMiniCardViewHolder(itemView: View) : EntourageViewHolder(itemView) {
     override fun showCategoryIcon(): Boolean {
         return true
     }

@@ -12,20 +12,18 @@ import social.entourage.android.base.BaseCardViewHolder
  * View Holder that displays information about a change in the status of a feed item
  * Created by Mihai Ionescu on 04/10/2018.
  */
-class StatusCardViewHolder(view: View?) : BaseCardViewHolder(view) {
+class StatusCardViewHolder(view: View) : BaseCardViewHolder(view) {
     override fun bindFields() {}
 
     override fun populate(data: TimestampedObject) {
         if (data !is ChatMessage) return
-        val chatMessage = data
-        val metadata = chatMessage.metadata ?: return
-        val context = itemView.context
-        val colorHex = String.format("#%06X", 0xFFFFFF and ContextCompat.getColor(context, R.color.accent))
-        val htmlText = context.getString(
+        if(data.metadata == null) return
+        val colorHex = String.format("#%06X", 0xFFFFFF and ContextCompat.getColor(itemView.context, R.color.accent))
+        val htmlText = itemView.context.getString(
                 R.string.status_message_card_details,
                 colorHex,
-                chatMessage.userName,
-                chatMessage.content
+                data.userName,
+                data.content
         )
         itemView.tic_status_message?.setHtmlString(htmlText)
     }

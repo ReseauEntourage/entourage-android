@@ -18,7 +18,7 @@ import java.util.*
 /**
  * Created by mihaiionescu on 23/05/16.
  */
-class MemberCardViewHolder(view: View?) : BaseCardViewHolder(view) {
+class MemberCardViewHolder(view: View) : BaseCardViewHolder(view) {
     private var userId = 0
     override fun bindFields() {
         itemView.setOnClickListener({

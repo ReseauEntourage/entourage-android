@@ -6,7 +6,7 @@ import social.entourage.android.R
 /**
  * Created by mihaiionescu on 02/03/16.
  */
-class ChatMessageMeCardViewHolder(view: View?) : ChatMessageCardViewHolder(view) {
+class ChatMessageMeCardViewHolder(view: View) : ChatMessageCardViewHolder(view) {
     companion object {
         @JvmStatic
         val layoutResource: Int

@@ -4,10 +4,13 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import androidx.annotation.ColorRes;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -66,6 +69,7 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     protected TourAuthor author;
 
     @SerializedName("updated_at")
+    @NotNull
     protected Date updatedTime;
 
     @Expose(serialize = false, deserialize = false)
@@ -85,6 +89,7 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
 
     @Expose(serialize = false)
     @SerializedName("last_message")
+    @Nullable
     protected LastMessage lastMessage;
 
     @Expose(serialize = false)
@@ -209,10 +214,6 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
 
     public LastMessage getLastMessage() {
         return lastMessage;
-    }
-
-    public void setLastMessage(final LastMessage lastMessage) {
-        this.lastMessage = lastMessage;
     }
 
     public void setLastMessage(final String text, final String author) {

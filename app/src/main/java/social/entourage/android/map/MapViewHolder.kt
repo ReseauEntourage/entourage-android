@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.layout_feed_map_card.view.*
 /**
  * Created by mihaiionescu on 27/06/2017.
  */
-class MapViewHolder(view: View?) : BaseCardViewHolder(view) {
+class MapViewHolder(view: View) : BaseCardViewHolder(view) {
     override fun bindFields() {
         itemView.layout_feed_map_card_mapview?.layoutParams?.height = itemView.layoutParams.height
         //Inform the map that it needs to start

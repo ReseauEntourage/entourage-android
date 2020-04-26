@@ -24,7 +24,7 @@ import timber.log.Timber
  * View Holder for the announcement card
  * Created by Mihai Ionescu on 02/11/2017.
  */
-class AnnouncementViewHolder(view: View?) : BaseCardViewHolder(view), Target {
+class AnnouncementViewHolder(view: View) : BaseCardViewHolder(view), Target {
     // ----------------------------------
     // Attributes
     // ----------------------------------

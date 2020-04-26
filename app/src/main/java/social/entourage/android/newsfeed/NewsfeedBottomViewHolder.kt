@@ -11,7 +11,7 @@ import social.entourage.android.tools.BusProvider.instance
 /**
  * Created by mihaiionescu on 10/05/2017.
  */
-class NewsfeedBottomViewHolder(view: View?) : BaseCardViewHolder(view) {
+class NewsfeedBottomViewHolder(view: View) : BaseCardViewHolder(view) {
     override fun bindFields() {
         itemView.newsfeed_load_more?.setOnClickListener { instance.post(OnNewsfeedLoadMoreEvent()) }
         itemView.newsfeed_tab_events_load_more?.setOnClickListener { instance.post(OnNewsfeedLoadMoreEvent()) }

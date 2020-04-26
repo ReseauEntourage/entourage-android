@@ -23,7 +23,7 @@ import social.entourage.android.tools.Utils
 /**
  * User Card View in tour information screen
  */
-class TourUserJoinCardViewHolder(view: View?) : BaseCardViewHolder(view) {
+class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
     private var userId = 0
     private var feedItem: FeedItem? = null
 

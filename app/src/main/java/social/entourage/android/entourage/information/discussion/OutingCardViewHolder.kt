@@ -19,7 +19,7 @@ import java.util.*
  * in the feed item details screen<br></br><br></br>
  * Created by Mihai Ionescu on 30/07/2018.
  */
-class OutingCardViewHolder(view: View?) : BaseCardViewHolder(view) {
+class OutingCardViewHolder(view: View) : BaseCardViewHolder(view) {
     private var outingUUID: String? = null
 
     override fun bindFields() {

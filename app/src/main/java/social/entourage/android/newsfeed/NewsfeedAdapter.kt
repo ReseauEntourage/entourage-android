@@ -35,11 +35,11 @@ class NewsfeedAdapter : HeaderFooterBaseAdapter() {
     init {
         viewHolderFactory.registerViewHolder(
                 TimestampedObject.TOUR_CARD,
-                ViewHolderType(TourViewHolder::class.java, TourViewHolder.getLayoutResource())
+                ViewHolderType(TourViewHolder::class.java, FeedItemViewHolder.layoutResource)
         )
         viewHolderFactory.registerViewHolder(
                 TimestampedObject.ENTOURAGE_CARD,
-                ViewHolderType(EntourageViewHolder::class.java, FeedItemViewHolder.getLayoutResource())
+                ViewHolderType(EntourageViewHolder::class.java, FeedItemViewHolder.layoutResource)
         )
         viewHolderFactory.registerViewHolder(
                 TimestampedObject.ANNOUNCEMENT_CARD,

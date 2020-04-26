@@ -14,7 +14,7 @@ import social.entourage.android.tools.Utils
 /**
  * Encounter Card View
  */
-class EncounterCardViewHolder(view: View?) : BaseCardViewHolder(view) {
+class EncounterCardViewHolder(view: View) : BaseCardViewHolder(view) {
     private var encounter: Encounter? = null
 
     override fun bindFields() {

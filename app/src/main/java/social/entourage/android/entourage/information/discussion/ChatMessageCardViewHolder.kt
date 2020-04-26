@@ -19,7 +19,7 @@ import social.entourage.android.tools.CropCircleTransformation
 /**
  * Chat Message Card for Tour Information Screen
  */
-open class ChatMessageCardViewHolder(view: View?) : BaseCardViewHolder(view) {
+open class ChatMessageCardViewHolder(view: View) : BaseCardViewHolder(view) {
     private var userId = 0
     private var deeplinkURL:String? = null
     override fun bindFields() {

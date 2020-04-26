@@ -19,7 +19,7 @@ import social.entourage.android.tools.BusProvider
  *
  * Created by mihaiionescu on 26/04/2017.
  */
-class PoiViewHolder(itemView: View?) : BaseCardViewHolder(itemView) {
+class PoiViewHolder(itemView: View) : BaseCardViewHolder(itemView) {
     private var poi: Poi? = null
 
     override fun bindFields() {

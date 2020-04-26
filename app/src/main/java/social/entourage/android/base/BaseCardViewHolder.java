@@ -14,7 +14,7 @@ abstract public class BaseCardViewHolder extends RecyclerView.ViewHolder {
 
     protected EntourageViewHolderListener viewHolderListener;
 
-    public BaseCardViewHolder(View view) {
+    public BaseCardViewHolder(@NotNull View view) {
         super(view);
         bindFields();
     }

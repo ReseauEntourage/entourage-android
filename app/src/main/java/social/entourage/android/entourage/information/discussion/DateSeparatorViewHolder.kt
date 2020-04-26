@@ -10,7 +10,7 @@ import social.entourage.android.tools.Utils
 /**
  * Created by mihaiionescu on 15/03/2017.
  */
-class DateSeparatorViewHolder(view: View?) : BaseCardViewHolder(view) {
+class DateSeparatorViewHolder(view: View) : BaseCardViewHolder(view) {
     override fun bindFields() {
     }
 

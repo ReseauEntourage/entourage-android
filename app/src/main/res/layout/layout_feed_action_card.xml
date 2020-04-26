@@ -163,6 +163,18 @@
             android:minHeight="30dp"
             tools:text="Voir plus" />
 
+        <TextView
+            android:id="@+id/tour_card_last_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tour_card_last_update_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
     </RelativeLayout>
 
 </RelativeLayout>

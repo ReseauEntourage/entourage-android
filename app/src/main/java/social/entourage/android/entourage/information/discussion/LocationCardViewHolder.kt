@@ -17,7 +17,7 @@ import java.util.*
 /**
  * Linear Layout that represents a location card in the tour info screen
  */
-class LocationCardViewHolder(view: View?) : BaseCardViewHolder(view) {
+class LocationCardViewHolder(view: View) : BaseCardViewHolder(view) {
 
     override fun bindFields() {}
 

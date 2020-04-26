@@ -13,7 +13,7 @@ import social.entourage.android.tools.BusProvider.instance
 /**
  * Created by mihaiionescu on 08/08/16.
  */
-class InvitationCardViewHolder(view: View?) : BaseCardViewHolder(view) {
+class InvitationCardViewHolder(view: View) : BaseCardViewHolder(view) {
     private var invitationId: Long = 0
     private lateinit var entourageUUID: String
     override fun bindFields() {

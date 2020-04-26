@@ -6,4 +6,4 @@ import social.entourage.android.newsfeed.FeedItemViewHolder
 /**
  * Created by mihaiionescu on 11/03/16.
  */
-class TourViewHolder(itemView: View?) : FeedItemViewHolder(itemView)
+class TourViewHolder(itemView: View) : FeedItemViewHolder(itemView)
