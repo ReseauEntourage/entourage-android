@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_logout">Déconnexion</string>
     <string name="action_about">Aide &amp; à propos</string>
@@ -16,4 +17,11 @@
     <string name="action_my_messages">messages</string>
     <string name="action_menu">menu</string>
     <string name="debug_info_clipboard">Information copiée dans le presse-papier</string>
+    <string name="action_edit_profile"><u>modifier mon profil</u></string>
+    <string name="action_update_info">Mettre à jour une information sur une personne que je voisine</string>
+    <string name="action_contact">Contacter l\'équipe Voisin-Age</string>
+    <string name="action_feedback">Donner mes retours rapides</string>
+    <string name="action_propose">Proposer une sortie</string>
+    <string name="action_how_to">Mode d\'emploi de l\'application</string>
+    <string name="action_about">À propos</string>
 </resources>

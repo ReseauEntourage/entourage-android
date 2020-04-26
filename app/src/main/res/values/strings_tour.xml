@@ -15,6 +15,9 @@
     <string name="tour_create_encounter_button">Créer une rencontre</string>
     <string name="tour_text_separator">-</string>
     <string name="tour_create_choose_type">Sélectionnez votre type de maraude:</string>
+    <string name="tour_info_text_join_html"><![CDATA[<font color=\"#00abf0\">%1$s </font>%2$s]]></string>
+    <string name="tour_info_request_join_title_entourage">vous souhaitez rejoindre ce voisinage ?</string>
+    <string name="tour_info_request_join_button_entourage">CONTACTER L’ANIMATEUR</string>
 
     <!-- Tour info -->
     <string name="tour_info_discussion">DISCUSSION</string>
@@ -68,6 +71,8 @@
     <string name="tour_info_metadata_organised_by">Organisé\u0020</string>
     <string name="tour_info_metadata_organiser_format">par %1$s</string>
     <string name="tour_info_metadata_date_format">Rendez-vous %1$s %2$s</string>
+    <string name="tour_info_request_join_title_outing">vous souhaitez rejoindre cette sortie ?</string>
+    <string name="tour_info_request_join_button_outing">PARTICIPER</string>
 
     <!-- TourService -->
     <string name="local_service_stopped">Maraude terminée</string>
@@ -96,6 +101,8 @@
     <string name="tour_cell_button_freezed">Clôturé</string>
     <string name="tour_cell_button_freezed_success">Succès</string>
     <string name="tour_cell_button_view">Voir plus</string>
+    <string name="loader_title_outing_finish">Suppression de la sortie</string>
+    <string name="loader_title_action_finish">Suppression de la sortie</string>
 
     <!-- Join Request -->
     <string name="tour_join_request_success">Demande acceptée</string>
@@ -111,12 +118,16 @@
     <string name="tour_join_request_ok_description_outing">@string/tour_join_request_ok_description_entourage</string>
     <string name="tour_join_request_ok_message_hint">Votre message…</string>
     <string name="tour_join_request_rejected">Requête envoyée</string>
+    <string name="tour_join_request_received_message_short">aimerait participer à la sortie</string>
 
     <!-- Encounter -->
+    <string name="tour_join_request_ok_title">Votre demande est transmise</string>
+    <string name="tour_join_request_ok_description_entourage">Merci pour votre intérêt !\nAjoutez un mot pour expliquer pourquoi vous voulez faire partie de ce voisinage.</string>
+    <string name="tour_join_request_ok_description_outing">Merci pour votre participation !\nAjoutez un petit mot pour l\'organisateur et les participants !</string>
 
     <!-- Report Entourage -->
     <!-- Parameters: 1 - Entourage title -->
-    <string name="report_entourage_email_title">Signalement d’un problème: %1$s</string>
+    <string name="report_entourage_email_title">Signalement d\'un problème dans le voisinage %1$s</string>
 
     <!-- Edit Entourage Email -->
     <string name="edit_entourage_email_title">Veuillez modifier la description du action "%1$s"</string>
@@ -125,5 +136,6 @@
     <!-- Promote Entourage Email -->
     <string name="promote_entourage_email_title">Veuillez envoyer une notification pour la sortie %1$s</string>
     <string name="promote_entourage_email_body">Bonjour,\nVeuillez promouvoir la sortie "%1$s" grâce à une notification envoyée aux téléphones des personnes membres des voisinages suivants :\n\nMerci</string>
+    <string name="edit_entourage_email_title">Veuillez modifier la description du voisinage "%1$s"</string>
 
 </resources>

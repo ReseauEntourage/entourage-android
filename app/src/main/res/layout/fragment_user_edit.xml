@@ -69,8 +69,7 @@
                 android:clickable="true"
                 android:orientation="horizontal"
                 android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:focusable="true">
+                android:paddingRight="20dp">
 
                 <TextView
                     style="@style/UserProfileTextViewStyle"
@@ -182,7 +181,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone" >
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/user_associations_title"
@@ -201,7 +200,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/user_associations_view"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent"
+                    >
 
                 </androidx.recyclerview.widget.RecyclerView>
 
@@ -210,8 +210,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginStart="20dp"
-                    android:visibility="gone"/>
+                    android:layout_marginStart="20dp"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -226,22 +225,20 @@
                     android:paddingTop="10dp"
                     android:text="@string/user_edit_add_association_label"
                     android:textColor="@color/greyish_brown"
-                    android:textSize="@dimen/entourage_font_medium"
-                    android:visibility="gone" />
+                    android:textSize="@dimen/entourage_font_medium"/>
 
                 <Button
                     android:id="@+id/user_add_association_button"
                     style="@style/AccentButton.RoundedCorners"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
                     android:layout_marginBottom="20dp"
                     android:layout_marginLeft="40dp"
                     android:layout_marginRight="40dp"
+                    android:maxLines="1"
                     android:text="@string/user_edit_add_association_button"
-                    android:textSize="@dimen/entourage_font_medium"
-                    android:textStyle="normal"
-                    android:visibility="gone" />
+                    android:textSize="@dimen/entourage_font_small"
+                    android:textStyle="normal"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -298,7 +295,7 @@
                     android:id="@+id/user_action_zone_button"
                     style="@style/AccentButton.RoundedCorners"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
@@ -328,8 +325,7 @@
                     android:clickable="true"
                     android:orientation="horizontal"
                     android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
-                    android:focusable="true">
+                    android:paddingTop="10dp">
 
                     <TextView
                         style="@style/UserProfileTextViewStyle"
@@ -359,8 +355,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
-                    android:focusable="true">
+                    android:paddingTop="10dp">
 
                     <TextView
                         style="@style/UserProfileTextViewStyle"

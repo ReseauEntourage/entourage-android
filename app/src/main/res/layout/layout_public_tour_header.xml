@@ -38,6 +38,7 @@
                 android:textColor="@color/greyish_brown"
                 android:textSize="15sp"
                 android:textStyle="bold"
+                android:visibility="gone"
                 tools:text="User name" />
 
             <TextView
@@ -49,6 +50,7 @@
                 android:lines="1"
                 android:textColor="@color/greyish_brown"
                 android:textSize="15sp"
+                android:visibility="gone"
                 tools:text="Demande par " />
         </LinearLayout>
 
@@ -60,6 +62,7 @@
             android:fontFamily="sans-serif-light"
             android:textColor="@color/greyish_brown"
             android:textSize="@dimen/entourage_font_small"
+            android:visibility="gone"
             tools:text="Paris (75011)"/>
     </LinearLayout>
 
@@ -73,7 +76,8 @@
 
         <RelativeLayout
             android:layout_width="39dp"
-            android:layout_height="39dp">
+            android:layout_height="39dp"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/tour_info_author_photo"

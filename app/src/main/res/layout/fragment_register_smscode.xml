@@ -56,7 +56,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:gravity="bottom"
                 android:orientation="horizontal"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -76,12 +75,6 @@
                     android:textColor="@color/accent"
                     android:textSize="@dimen/entourage_font_big"
                     android:visibility="visible"/>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/empty_description"
-                    app:srcCompat="@drawable/personnage_entourage_1"/>
 
             </LinearLayout>
 

@@ -31,7 +31,7 @@
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:text="@string/user_profile_edit_button"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/accent"
+            android:textColor="@color/white"
             android:textSize="@dimen/entourage_font_large"
             android:textStyle="bold"
             android:visibility="gone"/>
@@ -48,6 +48,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
             android:scaleType="centerInside"
+            android:tint="@color/white"
             app:srcCompat="@drawable/flag"/>
 
     </RelativeLayout>
@@ -72,12 +73,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="90dp"
-                    android:background="@color/accent"/>
+                android:background="@color/pale_grey"
+                android:paddingBottom="20dp">
 
                 <ImageView
                     android:id="@+id/user_photo"
@@ -88,6 +85,25 @@
                     android:layout_marginTop="20dp"
                     android:contentDescription="@string/user_image_add_photo"
                     android:src="@drawable/bg_user_image_button"/>
+
+                <TextView
+                    android:id="@+id/user_photo_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/user_photo"
+                    android:layout_marginBottom="-5dp"
+                    android:layout_marginLeft="-10dp"
+                    android:layout_marginStart="-10dp"
+                    android:layout_toEndOf="@+id/user_photo"
+                    android:layout_toRightOf="@+id/user_photo"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="@string/user_photo_edit"
+                    android:textColor="@color/accent"
+                    android:textSize="@dimen/entourage_font_small"
+                    android:visibility="gone"/>
 
                 <social.entourage.android.view.PartnerLogoImageView
                     android:id="@+id/user_partner_logo"
@@ -138,36 +154,37 @@
                 android:id="@+id/user_profile_about_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="10dp"
                 android:orientation="vertical"
                 android:paddingEnd="10dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingStart="10dp">
 
-                <View
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:background="@drawable/about_topleft_corner"/>
-
                 <TextView
                     android:id="@+id/user_profile_about"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="14dp"
-                    android:layout_marginLeft="14dp"
-                    android:layout_marginRight="14dp"
-                    android:layout_marginStart="14dp"
-                    android:textColor="@color/greyish_brown"
+                    android:textColor="@color/dark_grey"
                     android:textSize="@dimen/entourage_font_small"/>
 
-                <View
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:layout_gravity="end"
-                    android:background="@drawable/about_bottomright_corner"/>
+                <TextView
+                    android:id="@+id/user_about_edit_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:text="@string/user_about_edit"
+                    android:textColor="@color/accent"
+                    android:textSize="@dimen/entourage_font_small"
+                    android:visibility="gone"/>
 
             </LinearLayout>
+
+            <social.entourage.android.user.PFPUserProfileAssociationsView
+                android:id="@+id/user_profile_associations"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
 
             <RelativeLayout
                 android:id="@+id/user_number_of_entourages_layout"
@@ -182,11 +199,12 @@
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:background="@color/pale_grey"
-                    android:gravity="center_horizontal"
                     android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     android:paddingTop="20dp"
                     android:text="@string/user_number_entourages_title"
-                    android:textColor="@color/greyish_brown"
+                    android:textColor="@color/dark_grey"
                     android:textSize="@dimen/entourage_font_medium"
                     android:textStyle="bold"/>
 
@@ -196,13 +214,13 @@
                     android:layout_below="@+id/user_number_entourages_title"
                     android:paddingBottom="10dp"
                     android:paddingEnd="20dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     android:paddingStart="20dp"
                     android:paddingTop="10dp"
                     android:text="@string/user_number_entourages_label"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/greyish_brown"
+                    android:textColor="@color/dark_grey"
                     android:textSize="@dimen/entourage_font_medium"/>
 
                 <TextView
@@ -220,7 +238,7 @@
                     android:paddingStart="20dp"
                     android:paddingTop="10dp"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/greyish"
+                    android:textColor="@color/dark_grey"
                     android:textSize="@dimen/entourage_font_medium"
                     android:textStyle="bold"/>
             </RelativeLayout>
@@ -229,6 +247,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:visibility="gone"
                 android:weightSum="3">
 
                 <TextView

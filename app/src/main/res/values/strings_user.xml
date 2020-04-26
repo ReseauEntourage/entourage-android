@@ -21,6 +21,11 @@
     <string name="user_message_button">lui écrire</string>
     <string name="user_photo_edit"><u>changer ma photo</u></string>
     <string name="user_about_edit"><u>editer</u></string>
+    <!-- User Profile -->
+    <string name="user_number_entourages_title">Sorties</string>
+    <string name="user_number_entourages_label">Nombre de sorties</string>
+    <string name="user_circles_title_visitor">Je voisine</string>
+    <string name="user_circles_title_visited">Je suis voisiné(e) par</string>
 
     <string name="user_retrieval_error">Erreur de récupération du profil</string>
 
@@ -61,6 +66,8 @@
     <!-- Edit Association -->
     <string name="user_edit_asso_title">SOUTENIR</string>
     <string name="user_edit_asso_search_hint">Rechercher une association</string>
+    <string name="user_edit_action_zone_button_no_address">Définir mon adresse</string>
+    <string name="user_edit_action_zone_button">Modifier mon adresse</string>
 
     <!-- Photo wizard -->
     <string name="user_photo_choose_description_title">Ajouter une photo ?</string>
@@ -89,11 +96,15 @@
     <string name="user_report_success">✔︎ Utilisateur signalé</string>
     <string name="user_report_error_reason_empty">Ajoutez un message</string>
     <string name="user_report_error_send_failed">L\'envoi du message a échoué, veuillez réessayer</string>
+    <string name="user_photo_choose_description">Avec une photo, c’est tout de suite plus sympa.\nAffichez à la communauté votre sourire le plus chaleureux !</string>
 
     <!-- Action zone -->
     <string name="user_action_zone_title">Définissez votre zone d\'action</string>
     <string name="user_action_zone_description">Entourage, c’est utile parce que c’est local !\nPour recevoir des recommandations personnalisées à proximité, indiquez le lieu autour duquel vous souhaitez agir.</string>
+    <string name="user_action_zone_title">Quelle est votre adresse ?</string>
+    <string name="user_action_zone_description">Voisin-Age, c’est utile parce que c’est local !\nIndiquez votre adresse pour rencontrer les membres de Voisin-Age les plus proches\n\n<b>Cette information n’est pas affichée sur votre profil.</b></string>
     <string name="user_action_zone_description2">Adresse - peut être approximative</string>
+    <string name="user_action_zone_hint">adresse</string>
     <string name="user_action_zone_disclaimer">Cette information est strictement confidentielle et n’est partagée à personne. Vous pouvez la modifier dans vos réglages.</string>
     <string name="user_action_zone_hint">1 avenue Jean Jaurès…</string>
     <string name="user_action_zone_no_address_error">Veuillez ajouter une adresse</string>
@@ -101,4 +112,5 @@
     <string name="user_action_zone_send_failed">L\'adresse n\'a pas été enregistrée</string>
     <string name="user_action_zone_ignore_hint">Vous pourrez éditer la zone d\'action dans votre profil</string>
     
+
 </resources>

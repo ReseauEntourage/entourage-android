@@ -1,5 +1,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical|end"
@@ -19,18 +20,17 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginStart="5dp"
-        android:background="@drawable/bubble_discussion"
+        android:background="@drawable/bubble_discussion_me"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tic_chat_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/white"
-            android:textSize="@dimen/entourage_font_large"/>
+            android:textSize="@dimen/entourage_font_large"
+            tools:text="Chat test"/>
 
         <TextView
             android:id="@+id/tic_chat_timestamp"
@@ -39,7 +39,8 @@
             android:layout_gravity="end"
             android:layout_marginTop="5dp"
             android:textColor="@color/white"
-            android:textSize="@dimen/entourage_font_small"/>
+            android:textSize="@dimen/entourage_font_small"
+            />
     </LinearLayout>
 
     <ImageView

@@ -9,4 +9,5 @@
     <string name="about_clearing_entourage_cache">Données d\'historique locales effacées</string>
     <string name="about_rate_app">Noter l\'app</string>
     <string name="about_share_app">Partager l\'app</string>
+    <string name="about_version">Version de l’application</string>
 </resources>

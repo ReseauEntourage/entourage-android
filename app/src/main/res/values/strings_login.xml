@@ -17,6 +17,7 @@
     <string name="login_text_email_details">Nous ne l’utiliserons que pour vous envoyer notre newsletter et les dernières actualités d’Entourage</string>
     <string name="login_text_tutorial">En cours de construction…</string>
     <string name="login_text_lost_code">Redemander un code</string>
+    <string name="login_text_email_details">Nous ne l’utiliserons que pour vous envoyer notre newsletter et les dernières actualités de Voisinage</string>
 
     <string name="login_text_verify_code_back">Modifier le numéro</string>
     <string name="login_text_verify_code_title"><b>Vous avez reçu un code</b> (normalement)</string>
@@ -24,6 +25,7 @@
     <string name="login_text_verify_code_description">Si vous ne l’avez pas reçu, <u>redemandez un code.</u></string>
     <string name="login_text_verify_code_email">Le problème persiste ? écrivez à contact@entourage.social et nous en génèrerons un pour vous.</string>
     <string name="login_text_verify_code_disclaimer">Votre code est crypté : seul.e vous le connaissez. Vous pouvez le modifier dans votre Profil.</string>
+    <string name="login_text_verify_code_email">Le problème persiste ? écrivez à voisin-age@petitsfreresdespauvres.fr et nous en génèrerons un pour vous.</string>
 
     <string name="login_hint_phone">Numéro de téléphone</string>
     <string name="login_hint_code">Code</string>
@@ -39,10 +41,13 @@
 
     <string name="login_button_register">Je rejoins le réseau</string>
     <string name="login_button_login">Déjà membre</string>
+    <string name="login_button_register">S’inscrire sur Voisin-Age</string>
+    <string name="login_button_login">Connexion</string>
 
     <string name="login_permission_notification_title">Ne manquez rien !</string>
     <string name="login_permission_notification_description">Des actions solidaires sont créées tous les jours et n’attendent que vous pour aboutir !\n\nActiver les notifications vous permet d’être informé(e) des nouveautés dans votre quartier.</string>
     <string name="login_permission_notification_accept">Activer les notifications</string>
+    <string name="login_permission_notification_description">Pour vous coordonner entre voisineurs et voisinés, soyez notifié(e) des nouveaux messages reçus et de sorties à côté de chez vous.</string>
 
     <string name="login_error">Problème d\'authentification\nVeuillez réessayer</string>
     <string name="login_error_title">Veuillez réessayer</string>
@@ -55,6 +60,7 @@
     <string name="login_name_description">Seuls le prénom et la première lettre du nom apparaitront aux autres utilisateurs.</string>
     <string name="login_name_firstname_hint">Prénom</string>
     <string name="login_name_lastname_hint">Nom</string>
+    <string name="login_name_description">Seuls votre prénom et la première lettre de votre nom apparaitront.</string>
 
     <!-- Registration -->
     <string name="registration_welcome_signin">Se connecter</string>
@@ -62,11 +68,22 @@
     <string name="registration_welcome_description">Vous allez rejoindre une communauté de voisins avec et sans abris qui se rassemblent et luttent contre l’exclusion !</string>
     <string name="registration_welcome_privacy">En vous inscrivant, vous acceptez nos &lt;a href=\'%1$s\'>conditions d’utilisation&lt;/a>, vous confirmez avoir plus de 16 ans et avoir lu notre &lt;a href=\'%2$s\'>politique de confidentialité&lt;/a>.</string>
     <string name="registration_welcome_start">C\'est parti, je rejoins le réseau</string>
+    <string name="registration_welcome_title">Bienvenue\nsur Voisin-Age.</string>
+    <string name="registration_welcome_description">Voisin-Age est la communauté de voisins qui tissent des liens intergénérationnels.\nProximité, Liberté, Réciprocité : rencontrez des personnes âgées près de chez vous et créez des liens de voisinage et d’amitié.</string>
+
+    <string name="registration_number_description">Voisin-Age vous envoie un SMS afin de vérifier votre numéro de portable.</string>
+
+    <!-- Slideshow -->
+
+    <string name="login_slideshow_p1_title">Je tisse des liens</string>
+    <string name="login_slideshow_p1_details">d’amitié avec des personnes senior de mon voisinage</string>
 
     <string name="registration_number_title">Quel est votre numéro de portable ? </string>
     <string name="registration_number_description">Entourage vous envoie un SMS afin de vérifier votre numéro de portable.</string>
     <string name="registration_number_hint">Numéro de portable</string>
     <string name="registration_number_error_already_registered">Le numéro est déjà enregistré.</string>
+    <string name="login_slideshow_p2_title">Je rencontre</string>
+    <string name="login_slideshow_p2_details">les membres de Voisin-Age de mon quartier dans des groupes conviviaux</string>
 
     <string name="registration_smscode_resend">@string/login_text_lost_code</string>
     <string name="registration_smscode_title">@string/login_text_verify_code_title</string>
@@ -75,5 +92,7 @@
     <string name="registration_smscode_hint">Code SMS</string>
     <string name="registration_smscode_error_code">Veuillez saisir le code !</string>
     <string name="registration_smscode_sent">SMS envoyé</string>
+    <string name="login_slideshow_p3_title">Je me coordonne</string>
+    <string name="login_slideshow_p3_details">pour veiller sur mes voisins âgés et enrichir leur quotidien : visites, sorties</string>
 
 </resources>

@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="social.entourage.android.about.AboutFragment"
@@ -21,13 +17,13 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:background="@color/background_light" />
+        />
 
-    <LinearLayout
-        android:id="@+id/about_tutorial_layout"
+    <RelativeLayout
+        android:id="@+id/about_version_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:background="@color/sidemenu_item_background"
         android:paddingBottom="@dimen/about_items_padding"
         android:paddingEnd="0dp"
         android:paddingLeft="@dimen/about_items_padding"
@@ -36,60 +32,44 @@
         android:paddingTop="@dimen/about_items_padding">
 
         <TextView
+            android:id="@+id/about_version_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
-            android:text="@string/about_tutorial"
+            android:text="@string/about_version"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/greyish_brown"
+            android:textColor="@color/sidemenu_item_text_color"
             android:textSize="@dimen/entourage_font_medium"/>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:contentDescription="@string/empty_description"
-            android:scaleType="fitEnd"
-            android:src="@drawable/arrow_grey"/>
-    </LinearLayout>
-
-    <View
-        style="@style/SeparatorAlpha"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="@dimen/about_items_padding"
-        android:layout_marginStart="@dimen/about_items_padding"
-        />
-
-    <LinearLayout
-        android:id="@+id/faq_website_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/about_items_padding"
-        android:paddingEnd="0dp"
-        android:paddingLeft="@dimen/about_items_padding"
-        android:paddingRight="0dp"
-        android:paddingStart="@dimen/about_items_padding"
-        android:paddingTop="@dimen/about_items_padding">
 
         <TextView
+            android:id="@+id/about_version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
-            android:text="@string/action_faq"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/greyish_brown"
+            android:layout_toEndOf="@+id/about_version_description"
+            android:layout_toLeftOf="@+id/about_arrow_version"
+            android:layout_toRightOf="@+id/about_version_description"
+            android:layout_toStartOf="@+id/about_arrow_version"
+            android:gravity="end"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/accent_dark"
             android:textSize="@dimen/entourage_font_medium"/>
 
         <ImageView
-            android:layout_width="match_parent"
+            android:id="@+id/about_arrow_version"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:contentDescription="@string/empty_description"
-            android:scaleType="fitEnd"
-            android:src="@drawable/arrow_grey"/>
-    </LinearLayout>
+            android:src="@drawable/arrow_grey"
+            android:tint="@color/accent_dark"/>
+    </RelativeLayout>
 
     <View
         style="@style/SeparatorAlpha"
@@ -97,12 +77,13 @@
         android:layout_height="1dp"
         android:layout_marginLeft="@dimen/about_items_padding"
         android:layout_marginStart="@dimen/about_items_padding"
-        />
+        android:background="@color/background"/>
 
     <LinearLayout
         android:id="@+id/about_conditions_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/sidemenu_item_background"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/about_items_padding"
         android:paddingEnd="0dp"
@@ -117,7 +98,7 @@
             android:layout_gravity="center_vertical"
             android:text="@string/about_conditions"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/greyish_brown"
+            android:textColor="@color/sidemenu_item_text_color"
             android:textSize="@dimen/entourage_font_medium"/>
 
         <ImageView
@@ -126,7 +107,8 @@
             android:layout_gravity="center_vertical"
             android:contentDescription="@string/empty_description"
             android:scaleType="fitEnd"
-            android:src="@drawable/arrow_grey"/>
+            android:src="@drawable/arrow_grey"
+            android:tint="@color/accent_dark"/>
     </LinearLayout>
 
     <View
@@ -135,12 +117,13 @@
         android:layout_height="1dp"
         android:layout_marginLeft="@dimen/about_items_padding"
         android:layout_marginStart="@dimen/about_items_padding"
-        />
+        android:background="@color/background"/>
 
     <LinearLayout
         android:id="@+id/about_privacy_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/sidemenu_item_background"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/about_items_padding"
         android:paddingEnd="0dp"
@@ -155,7 +138,7 @@
             android:layout_gravity="center_vertical"
             android:text="@string/about_privacy"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/greyish_brown"
+            android:textColor="@color/sidemenu_item_text_color"
             android:textSize="@dimen/entourage_font_medium"/>
 
         <ImageView
@@ -164,92 +147,9 @@
             android:layout_gravity="center_vertical"
             android:contentDescription="@string/empty_description"
             android:scaleType="fitEnd"
-            android:src="@drawable/arrow_grey"/>
+            android:src="@drawable/arrow_grey"
+            android:tint="@color/accent_dark"/>
     </LinearLayout>
-
-    <View
-        style="@style/SeparatorAlpha"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="@dimen/about_items_padding"
-        android:layout_marginStart="@dimen/about_items_padding"
-        />
-
-    <LinearLayout
-        android:id="@+id/about_website_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/about_items_padding"
-        android:paddingEnd="0dp"
-        android:paddingLeft="@dimen/about_items_padding"
-        android:paddingRight="0dp"
-        android:paddingStart="@dimen/about_items_padding"
-        android:paddingTop="@dimen/about_items_padding">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="@string/about_website"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/greyish_brown"
-            android:textSize="@dimen/entourage_font_medium"/>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:contentDescription="@string/empty_description"
-            android:scaleType="fitEnd"
-            android:src="@drawable/arrow_grey"/>
-    </LinearLayout>
-
-    <View
-        style="@style/SeparatorAlpha"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="@dimen/about_items_padding"
-        android:layout_marginStart="@dimen/about_items_padding"
-        />
-
-    <LinearLayout
-        android:id="@+id/about_email_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/about_items_padding"
-        android:paddingEnd="0dp"
-        android:paddingLeft="@dimen/about_items_padding"
-        android:paddingRight="0dp"
-        android:paddingStart="@dimen/about_items_padding"
-        android:paddingTop="@dimen/about_items_padding">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="@string/about_email"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/greyish_brown"
-            android:textSize="@dimen/entourage_font_medium"/>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:contentDescription="@string/empty_description"
-            android:scaleType="fitEnd"
-            android:src="@drawable/arrow_grey"/>
-    </LinearLayout>
-
-    <View
-        style="@style/SeparatorAlpha"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="@dimen/about_items_padding"
-        android:layout_marginStart="@dimen/about_items_padding"
-        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -268,4 +168,3 @@
     </LinearLayout>
 
 </LinearLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>

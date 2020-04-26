@@ -1,21 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="social.entourage.android.map.permissions.NoLocationPermissionFragment">
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="false"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="false"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:contentDescription="@string/empty_description"
-        android:scaleType="centerCrop"
-        android:src="@drawable/login_startup_background"/>
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/accent"
+                tools:context="social.entourage.android.map.permissions.NoLocationPermissionFragment">
 
     <ImageButton
         android:id="@+id/no_location_back_button"
@@ -28,7 +17,7 @@
 
     <ImageView
         android:id="@+id/no_location_logo"
-        android:layout_width="75dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -36,15 +25,15 @@
         android:layout_marginTop="80dp"
         android:contentDescription="@string/empty_description"
         android:scaleType="fitCenter"
-        android:src="@drawable/entourage_logo_white"/>
+        android:src="@drawable/map_pin_square"/>
 
     <TextView
         android:id="@+id/no_location_explanation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/no_location_logo"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:gravity="center"
         android:text="@string/map_permission_explanation"
         android:textAppearance="?android:attr/textAppearanceSmall"
@@ -54,26 +43,26 @@
     <Button
         android:id="@+id/no_location_activate_button"
         style="@style/WhiteButton.RoundedCorners"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/no_location_explanation"
         android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
         android:text="@string/map_permission_activate_button"/>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/no_location_ignore_button"
+        style="@style/WhiteButton.RoundedCorners"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/no_location_activate_button"
         android:layout_centerHorizontal="true"
-        android:layout_marginEnd="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="@string/map_permission_extra"
-        android:textColor="@color/white"
-        android:textSize="@dimen/entourage_font_large"/>
+        android:alpha="0.7"
+        android:text="@string/ignore"/>
 
 </RelativeLayout>

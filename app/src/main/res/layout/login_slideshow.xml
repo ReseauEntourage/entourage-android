@@ -5,6 +5,32 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 tools:context="social.entourage.android.authentication.login.slideshow.LoginSlideshowFragment">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/empty_description"
+        android:scaleType="centerCrop"
+        android:src="@drawable/login_slideshow_background"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/empty_description"
+        android:src="@drawable/login_slideshow_voisinage_logo"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/empty_description"
+        android:src="@drawable/login_slideshow_pfp_logo"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"/>
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/login_slideshow_view"
         android:layout_width="match_parent"
@@ -14,9 +40,8 @@
         android:id="@+id/login_slideshow_indicator_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="150dp"
+        android:layout_marginTop="220dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -37,15 +62,6 @@
 
         <ImageView
             android:id="@+id/slideshow_b3"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:contentDescription="@string/empty_description"
-            app:srcCompat="@drawable/carousel_bullet_empty"/>
-
-        <ImageView
-            android:id="@+id/slideshow_b4"
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:layout_marginLeft="10dp"

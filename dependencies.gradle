@@ -18,8 +18,8 @@ ext {
     targetCompatibilityVersion = JavaVersion.VERSION_1_8
 
     // App versions
-    versionMajor = 5
-    versionMinor = 13
+    versionMajor = 6
+    versionMinor = 0
     versionPatch = "git rev-list HEAD --count".execute().text.trim().toInteger()
     versionBranchName = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
     versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -36,7 +36,6 @@ ext {
     daggerVersion = "2.24"
     dateTimePickerVersion = "4.2.3"
     espressoVersion = "3.2.0"
-    facebookVersion = "5.8.0"
     firebaseCoreVersion = "17.2.0"
     firebaseMessagingVersion = "20.0.0"
     firebaseInappVersion = "19.0.1"
@@ -48,7 +47,6 @@ ext {
     mapsVersion = "17.0.0"
     mapsUtilsVersion = "0.6.1"
     materialVersion = "1.1.0-beta01"
-    mixpanelVersion = "5.6.5"
     multidexVersion = "2.0.1"
     okHttpVersion = "3.12.6" //version 3.14+ needs API 21+
     okHttpIdlingVersion = "1.0.0"
@@ -91,11 +89,6 @@ ext {
             tape            : "com.squareup:tape:$tapeVersion",
             timber          : "com.jakewharton.timber:timber:$timberVersion",
             otto            : "com.squareup:otto:$ottoVersion"
-    ]
-
-    facebookDependencies = [
-            facebookAndroid : "com.facebook.android:facebook-android-sdk:$facebookVersion",
-            facebookCore    : "com.facebook.android:facebook-core:$facebookVersion"
     ]
 
     firebaseDependencies = [
@@ -149,7 +142,6 @@ ext {
             imageCropper            : "com.theartofdev.edmodo:android-image-cropper:$imageCropperVersion",
             mapsUtils               : "com.google.maps.android:android-maps-utils:$mapsUtilsVersion",
             material                : "com.google.android.material:material:$materialVersion",
-            mixpanel                : "com.mixpanel.android:mixpanel-android:$mixpanelVersion",
             picasso                 : "com.squareup.picasso:picasso:$picassoVersion",
             picassoTransformations  : "jp.wasabeef:picasso-transformations:$picassoTransformationsVersion",
             shortcutBadger          : "me.leolin:ShortcutBadger:$shortcutBadgerVersion@aar"

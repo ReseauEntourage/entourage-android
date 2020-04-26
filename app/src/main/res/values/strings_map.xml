@@ -26,6 +26,7 @@
     <string name="map_top_navigation_filter">Filtrer</string>
     <string name="map_top_navigation_full_map">Voir la liste</string>
     <string name="map_top_navigation_list">Voir la carte</string>
+    <string name="map_permission_explanation">Pour vous faire découvrir le réseau Voisin&#8209;Age autour de vous, Voisin&#8209;Age doit connaître votre position.</string>
 
     <!-- Map Filter -->
     <string name="map_filter_title">FILTRES</string>
@@ -46,5 +47,10 @@
     <string name="map_underconstruction_explanation_1">Ici, vous trouverez prochainement les activités de la communauté autour de vous</string>
     <string name="map_underconstruction_explanation_2">Vous pourrez demander à rejoindre des activités, en créer, et découvrir la communauté autour de vous</string>
 
+    <string name="map_filter_entourage_type_title">Types de voisinage</string>
+    <string name="map_filter_entourage_neighborhood_text">Voisinages de quartier</string>
+    <string name="map_filter_entourage_private_circle_text">Voisinages d’une personne</string>
+    <string name="map_filter_entourage_outing_text">Sorties</string>
+    <string name="map_filter_past_events_text">Voir les sorties passées</string>
 
 </resources>

@@ -7,17 +7,11 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
-    def MIXPANEL_TOKEN_DEBUG = System.env.MIXPANEL_TOKEN_DEBUG ? '"' + System.env.MIXPANEL_TOKEN_DEBUG + '"' : entourageMixpanelTokenDebug
-    def MIXPANEL_TOKEN = System.env.MIXPANEL_TOKEN ? '"' + System.env.MIXPANEL_TOKEN + '"' : entourageMixpanelToken
-    def MIXPANEL_TOKEN_PFP = System.env.MIXPANEL_TOKEN_PFP ? '"' + System.env.MIXPANEL_TOKEN_PFP + '"' : entourageMixpanelTokenPFP
-
-    def TEST_ACCOUNT_LOGIN = System.env.TEST_ACCOUNT_LOGIN ? '"' + System.env.TEST_ACCOUNT_LOGIN + '"' : entourageTestLogin
-    def TEST_ACCOUNT_PWD = System.env.TEST_ACCOUNT_PWD ? '"' + System.env.TEST_ACCOUNT_PWD + '"' : entourageTestPwd
     def TEST_PFP_ACCOUNT_LOGIN = System.env.TEST_ACCOUNT_LOGIN ? '"' + System.env.TEST_PFP_ACCOUNT_LOGIN + '"' : pfpTestLogin
     def TEST_PFP_ACCOUNT_PWD = System.env.TEST_ACCOUNT_PWD ? '"' + System.env.TEST_PFP_ACCOUNT_PWD + '"' : pfpTestPwd
 
     defaultConfig {
-        applicationId 'social.entourage.android'
+        applicationId 'social.entourage.android.pfp'
 
         resConfigs 'en', 'fr'
 
@@ -33,21 +27,20 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary true
 
+        buildConfigField 'String', 'API_KEY', '"9ebf2b47e35046e43dae5e31"'
         buildConfigField 'String', 'ENTOURAGE_URL', '"https://api.entourage.social/api/v1/"'
-        buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN
 
-        buildConfigField 'String', 'TEST_ACCOUNT_LOGIN', TEST_ACCOUNT_LOGIN
-        buildConfigField 'String', 'TEST_ACCOUNT_PWD', TEST_ACCOUNT_PWD
+        buildConfigField 'String', 'TEST_ACCOUNT_LOGIN', TEST_PFP_ACCOUNT_LOGIN
+        buildConfigField 'String', 'TEST_ACCOUNT_PWD', TEST_PFP_ACCOUNT_PWD
+
+        buildConfigField 'String', 'deepLinksHostName', "www.entourage.social/pfp"
+        buildConfigField 'String', 'deepLinksEntourageScheme', "pfp-prod"
+
+        buildConfigField 'String', 'ENTOURAGE_URL', "https://apipxtgs.entourage.social/api/v1/"
+        buildConfigField 'String', 'DEEP_LINKS_SCHEME', "pfp-prod"
     }
 
     signingConfigs {
-        googleplay {
-            keyAlias 'googleplay'
-            keyPassword "${System.env.KEYSTORE_PASS}"
-            storeFile file('../keystore/googleplay-keystore.jks')
-            storePassword "${System.env.KEYSTORE_PASS}"
-        }
-
         googleplay_pfp {
             keyAlias 'googleplay-pfp'
             keyPassword "${System.env.KEYSTORE_PASS}"
@@ -60,7 +53,7 @@ android {
         }
     }
 
-    flavorDimensions 'app', 'env'
+    flavorDimensions 'env'
 
     productFlavors {
         prod {
@@ -69,53 +62,17 @@ android {
         staging {
             dimension 'env'
             applicationIdSuffix '.preprod'
-            buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_DEBUG
+            buildConfigField 'String', 'deepLinksHostName', "entourage-landingpages-preprod.herokuapp.com"
+            buildConfigField 'String', 'deepLinksEntourageScheme', "pfp-staging"
 
-        }
-        entourage {
-            dimension 'app'
-            buildConfigField 'String', 'API_KEY', '"9de7f5860fd0b1067c1fd725"'
-            ext {
-                prod = [
-                        serverURL: "https://api.entourage.social/api/v1/",
-                        deepLinksHostName: "www.entourage.social",
-                        deepLinksScheme: "entourage"
-                ]
-                staging = [
-                        serverURL: "https://entourage-back-preprod.herokuapp.com/api/v1/",
-                        deepLinksHostName: "entourage-landingpages-preprod.herokuapp.com",
-                        deepLinksScheme: "entourage-staging"
-                ]
-            }
-        }
-        pfp {
-            dimension 'app'
-            applicationId 'social.entourage.android.pfp'
-            buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_PFP
-            buildConfigField 'String', 'API_KEY', '"9ebf2b47e35046e43dae5e31"'
-
-            buildConfigField 'String', 'TEST_ACCOUNT_LOGIN', TEST_PFP_ACCOUNT_LOGIN
-            buildConfigField 'String', 'TEST_ACCOUNT_PWD', TEST_PFP_ACCOUNT_PWD
-
-            ext {
-                prod = [
-                        serverURL: "https://apipxtgs.entourage.social/api/v1/",
-                        deepLinksHostName: "www.entourage.social/pfp",
-                        deepLinksScheme: "pfp-prod"
-                ]
-                staging = [
-                        serverURL: "https://pfp-back-preprod.herokuapp.com/api/v1/",
-                        deepLinksHostName: "entourage-landingpages-preprod.herokuapp.com",
-                        deepLinksScheme: "pfp-staging"
-                ]
-            }
+            buildConfigField 'String', 'ENTOURAGE_URL', "https://pfp-back-preprod.herokuapp.com/api/v1/"
+            buildConfigField 'String', 'DEEP_LINKS_SCHEME', "pfp-staging"
         }
     }
 
     buildTypes {
         release {
-            productFlavors.entourage.signingConfig signingConfigs.googleplay
-            productFlavors.pfp.signingConfig signingConfigs.googleplay_pfp
+            signingConfig signingConfigs.googleplay_pfp
             debuggable false
         }
 
@@ -134,22 +91,6 @@ android {
     compileOptions {
         sourceCompatibility rootProject.ext.sourceCompatibilityVersion
         targetCompatibility rootProject.ext.targetCompatibilityVersion
-    }
-
-    android.applicationVariants.all { variant ->
-        def flavors = variant.productFlavors
-        // flavorDimensions "app" -> 0, "env" -> 1
-        def app = flavors[0]
-        def environment = flavors[1]
-
-        variant.buildConfigField "String", "ENTOURAGE_URL", "\"${app[environment.name]['serverURL']}\""
-        variant.buildConfigField "String", "DEEP_LINKS_SCHEME", "\"${app[environment.name]['deepLinksScheme']}\""
-
-        variant.mergedFlavor.manifestPlaceholders = [
-                deepLinksHostName       : "${app[environment.name]['deepLinksHostName']}",
-                deepLinksEntourageScheme : "${app[environment.name]['deepLinksScheme']}"
-        ]
-
     }
 
     packagingOptions {
@@ -181,13 +122,9 @@ dependencies {
     implementation networkDependencies.values()
     implementation uiDependencies.values()
 
-    entourageImplementation facebookDependencies.values()
-
     compileOnly javaDependencies.values()
 
     annotationProcessor annotationDependencies.values()
-
-    androidTestImplementation testDependencies.values()
 }
 
 apply plugin: "com.google.gms.google-services"

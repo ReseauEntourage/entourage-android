@@ -21,8 +21,8 @@
         <item quantity="other">%1$d personnes souhaitent rejoindre votre maraude.</item>
     </plurals>
     <plurals name="notification_text_join_request_entourage_multiple">
-        <item quantity="one">%1$d personne souhaite rejoindre votre action.</item>
-        <item quantity="other">%1$d personnes souhaitent rejoindre votre action.</item>
+        <item quantity="one">%1$d personne souhaite rejoindre votre sortie.</item>
+        <item quantity="other">%1$d personnes souhaitent rejoindre votre sortie.</item>
     </plurals>
 
     <string name="default_notifiation_channel">Invitation</string>

@@ -108,16 +108,16 @@
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="vertical"
+        android:id="@+id/tic_private_info_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tic_private_info_section"
-        android:background="@drawable/rounded_dialog"
-        android:gravity="center"
+        android:layout_marginEnd="40dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginStart="40dp">
+        android:layout_marginStart="40dp"
+        android:background="@drawable/rounded_dialog_light_grey"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="66dp"
@@ -132,15 +132,15 @@
                 android:src="@drawable/ic_user_photo_small"/>
 
             <social.entourage.android.view.PartnerLogoImageView
+                android:id="@+id/tic_partner_logo"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:id="@+id/tic_partner_logo"
                 android:layout_alignBottom="@+id/tic_photo"
                 android:layout_alignEnd="@+id/tic_photo"
                 android:layout_alignRight="@+id/tic_photo"
+                android:layout_marginBottom="-6dp"
                 android:layout_marginEnd="-6dp"
-                android:layout_marginRight="-6dp"
-                android:layout_marginBottom="-6dp"/>
+                android:layout_marginRight="-6dp"/>
         </RelativeLayout>
 
         <social.entourage.android.user.UserNameView
@@ -149,7 +149,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/white"
             android:textSize="@dimen/entourage_font_large"
             android:textStyle="bold"/>
 
@@ -157,11 +156,13 @@
             android:id="@+id/tic_join_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:gravity="center_horizontal"
             android:text="@string/tour_join_request_received_message_short"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/white"
-            android:textSize="@dimen/entourage_font_large"/>
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/entourage_font_medium"/>
 
         <TextView
             android:id="@+id/tic_join_message"
@@ -172,26 +173,34 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
-            android:textColor="@color/white"
+            android:textColor="@color/dark_grey"
             android:textSize="@dimen/entourage_font_large"/>
 
-        <Button
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/accept"
-            android:id="@+id/tic_accept_button"
-            style="@style/WhiteButton.Straight"/>
+            android:layout_height="match_parent"
+            android:background="@color/accent"
+            android:orientation="vertical"
+            android:padding="1dp">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/ignore"
-            android:id="@+id/tic_refuse_button"
-            style="@style/WhiteButton.Straight"/>
+            <Button
+                android:id="@+id/tic_accept_button"
+                style="@style/WhiteButton.Straight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/accept"/>
+
+            <Button
+                android:id="@+id/tic_refuse_button"
+                style="@style/WhiteButton.Straight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ignore"/>
+        </LinearLayout>
 
         <Button
             android:id="@+id/tic_view_profile_button"
-            style="@style/WhiteButton.Straight"
+            style="@style/AccentButtonStraightTop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/user_view_profile"/>

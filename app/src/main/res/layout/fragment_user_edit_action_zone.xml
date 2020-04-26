@@ -4,43 +4,23 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@color/accent"
+              android:orientation="vertical"
               tools:context="social.entourage.android.user.edit.UserEditActionZoneFragment">
 
-    <LinearLayout
-        android:id="@+id/action_zone_title_layout"
-        android:layout_width="match_parent"
+    <ImageButton
+        android:id="@+id/title_close_button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/title_close_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:contentDescription="@string/empty_description"
-            android:padding="5dp"
-            app:srcCompat="@drawable/ic_action_back"/>
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-
-        <Button
-            android:id="@+id/action_zone_ignore_button"
-            style="@style/TransparentButton.White"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ignore"/>
-
-    </LinearLayout>
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@string/empty_description"
+        android:padding="5dp"
+        app:srcCompat="@drawable/ic_action_back"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/user_action_zone_disclaimer_layout"
-        app:layout_constraintTop_toBottomOf="@+id/action_zone_title_layout">
+        app:layout_constraintTop_toBottomOf="@+id/title_close_button">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -70,15 +50,6 @@
                 android:text="@string/user_action_zone_description"
                 android:textColor="@color/white"
                 android:textSize="@dimen/entourage_font_medium"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/user_action_zone_description2"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                android:visibility="visible"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"

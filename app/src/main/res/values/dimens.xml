@@ -8,10 +8,12 @@
     <dimen name="carousel_content">17sp</dimen>
     <dimen name="carousel_padding">20dp</dimen>
 
+    <!-- Login slideshow -->
+    <dimen name="login_slideshow_pages_top_padding">90dp</dimen>
+
     <dimen name="act_button_right_padding">10dp</dimen>
     <dimen name="entourage_category_icon_padding">6dp</dimen>
 
-    <dimen name="newsfeed_map_height">255dp</dimen>
     <dimen name="solidarity_guide_map_height">155dp</dimen>
 
     <dimen name="announcement_icon_width">29dp</dimen>
@@ -42,5 +44,6 @@
     <dimen name="role_corner_radius">5dp</dimen>
     <dimen name="role_padding_bottom">2dp</dimen>
     <dimen name="role_margin">6dp</dimen>
+    <dimen name="newsfeed_map_height">155dp</dimen>
 
 </resources>

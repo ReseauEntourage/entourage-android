@@ -31,48 +31,20 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
         android:layout_marginStart="3dp"
         android:layout_toEndOf="@+id/tour_card_icon"
+        android:layout_toLeftOf="@+id/tour_card_people_layout"
         android:layout_toRightOf="@+id/tour_card_icon"
+        android:layout_toStartOf="@+id/tour_card_people_layout"
         android:drawablePadding="@dimen/entourage_category_icon_padding"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="1"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/greyish_brown"
+        android:textColor="@color/dark_grey"
         android:textSize="@dimen/entourage_font_large"
         android:textStyle="bold"/>
-
-    <LinearLayout
-        android:id="@+id/tour_card_type_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/tour_card_title"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/tour_card_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/greyish_brown"
-            android:textSize="@dimen/entourage_font_medium"/>
-
-        <TextView
-            android:id="@+id/tour_card_author"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/greyish_brown"
-            android:textSize="@dimen/entourage_font_medium"
-            android:textStyle="bold"/>
-
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/tour_card_people_layout"
@@ -80,9 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/tour_card_type_layout"
         android:layout_gravity="end"
-        android:layout_marginTop="5dp"
         android:orientation="horizontal">
 
         <TextView
@@ -121,6 +91,37 @@
             android:textStyle="bold"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/tour_card_type_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tour_card_title"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tour_card_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/greyish_brown"
+            android:textSize="@dimen/entourage_font_medium"/>
+
+        <TextView
+            android:id="@+id/tour_card_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/greyish_brown"
+            android:textSize="@dimen/entourage_font_medium"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/tour_card_location"
         android:layout_width="wrap_content"
@@ -129,11 +130,10 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/tour_card_type_layout"
         android:layout_marginTop="5dp"
-        android:layout_toLeftOf="@+id/tour_card_people_layout"
-        android:layout_toStartOf="@+id/tour_card_people_layout"
         android:lines="1"
+        android:maxLines="1"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/greyish"
+        android:textColor="@color/warm_grey"
         android:textSize="@dimen/entourage_font_small"/>
 
 </RelativeLayout>

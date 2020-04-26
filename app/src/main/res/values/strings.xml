@@ -1,9 +1,10 @@
 <resources>
 
-    <string name="app_name">Entourage</string>
     <string name="button_loading">Chargement…</string>
     <string name="error_not_yet_implemented">Indisponible</string>
     <string name="error_google_play_store_not_installed">Le Google Play Store n\'est pas intallé</string>
+    <string name="app_name">Voisinage</string>
+    <string name="pfp_slogan">VoisinAge</string>
     <string name="error_application_update">La version d\'Entourage installée n\'est plus supportée. Pour pouvoir continuer à utiliser nos services et profiter de la meilleure expérience possible, veuillez la mettre à jour avec la dernière version en cliquant sur le lien suivant.</string>
     <string name="button_update_version">Mettre à jour</string>
     <string name="title_update_version">MISE A JOUR DISPONIBLE</string>
