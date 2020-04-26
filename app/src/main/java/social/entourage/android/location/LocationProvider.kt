@@ -14,8 +14,7 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit.MINUTES
 import java.util.concurrent.TimeUnit.SECONDS
 
-class LocationProvider(context: Context,
-                       private var userType: UserType = UserType.PUBLIC)
+class LocationProvider(context: Context)
     : GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
     companion object {
@@ -29,6 +28,7 @@ class LocationProvider(context: Context,
         PUBLIC, PRO
     }
 
+    //private var userType: UserType = UserType.PUBLIC
     private val context: Context = context.applicationContext
     private val googleApiClient: GoogleApiClient
     private var locationListener: LocationListener? = null
@@ -38,11 +38,7 @@ class LocationProvider(context: Context,
         }
 
     private val locationRequest: LocationRequest
-        get() = if (UserType.PRO == userType) {
-            createLocationRequestForProUsage()
-        } else {
-            createLocationRequestForPublicUsage()
-        }
+        get() = createLocationRequestForPublicUsage()
 
     init {
         googleApiClient = initializeGoogleApiClient(context.applicationContext)
@@ -73,13 +69,6 @@ class LocationProvider(context: Context,
 
     fun setLocationListener(listener: LocationListener) {
         locationListener = listener
-    }
-
-    fun setUserType(newUserType: UserType) {
-        if (userType != newUserType) {
-            userType = newUserType
-            requestLocationUpdates()
-        }
     }
 
     override fun onConnected(bundle: Bundle?) {

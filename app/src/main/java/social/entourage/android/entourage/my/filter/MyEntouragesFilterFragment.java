@@ -165,14 +165,12 @@ public class MyEntouragesFilterFragment extends EntourageDialogFragment {
         closedSwitch.setChecked(filter.isClosedEntourages());
 
         User me = EntourageApplication.me(getActivity());
-        boolean isPro = false;
         boolean hasPartner = false;
         if (me != null) {
-            isPro = me.isPro();
             hasPartner = me.getPartner() != null;
         }
         // Tours switch is displayed only for pro users
-        toursView.setVisibility( isPro ? View.VISIBLE : View.GONE );
+        toursView.setVisibility( View.GONE );
         // Partner switch is displayed only if the user has a partner organisation
         partnerView.setVisibility( hasPartner ? View.VISIBLE : View.GONE );
     }

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Create Entourage -->
-    <string name="entourage_create_action_title">ACTION</string>
-    <string name="entourage_create_outing_title">ÉVÈNEMENT</string>
     <string name="entourage_create_type_label">Catégorie</string>
     <string name="entourage_create_type_demand">Je cherche : %1$s</string>
     <string name="entourage_create_type_contribution">Je me propose de : %1$s</string>
@@ -42,28 +40,22 @@
 
     <!-- Entourage Title Fragment -->
     <string name="entourage_title_fragment_title">TITRE</string>
-    <string name="entourage_title_fragment_hint">Exemple : Je suis disponible pour aide administrative pour l’accès au logement </string>
     <string name="entourage_title_fragment_info">Les actions avec un titre clair attirent plus de membres et ont plus de chances d’aboutir !</string>
     <string name="entourage_title_fragment_error">Votre titre doit faire moins de 100 caractères. Vous pourrez en dire plus dans la description.</string>
-    <string name="entourage_title_fragment_hint_outing">Exemple : Appel aux bonnes volontés pour la collecte nationale des Restos du cœur</string>
-    <string name="entourage_title_fragment_info_outing">Les évènements avec un titre clair attirent plus de participants.</string>
     <string name="entourage_title_fragment_hint">Atelier de créativité</string>
     <string name="entourage_title_fragment_hint_outing">@string/entourage_title_fragment_hint</string>
     <string name="entourage_title_fragment_info_outing">Donnez un titre clair et chaleureux à votre sortie pour attirer plus de participants !</string>
 
     <!-- Entourage Description Fragment -->
     <string name="entourage_description_fragment_title">DESCRIPTION</string>
-    <string name="entourage_description_fragment_hint">Exemple : Je suis ancien employé de mairie et disponible pour aide administrative pour l’accès au logement.\nSi vous pensez avoir besoin d’aide, nous pouvons nous retrouver dans un café le weekend.</string>
     <string name="entourage_description_fragment_info">Racontez votre histoire. Les actions avec une description claire attirent plus de membres et ont plus de chances d’aboutir !</string>
-    <string name="entourage_description_fragment_hint_outing">Exemple : Besoin de bénévoles pour la collecte nationale des Restos du Cœur dans notre équipe locale</string>
-    <string name="entourage_description_fragment_info_outing">Vous pourrez modifier cette description et la date de votre évènement à tout moment.</string>
 
     <!-- Edit Entourage -->
     <string name="entourage_save_error">L\'entourage n\'a pas été enregistré.</string>
     <string name="entourage_save_ok">Entourage enregistré.</string>
     <string name="outing_save_error">L\'évènement n\'a pas pu être mis à jour.</string>
     <string name="outing_save_ok">Évènement mis à jour</string>
-    <string name="entourage_description_fragment_hint">Exemple : Je vous propose de nous retrouver pour un atelier de créativité (peinture, collage, ...) ce vendredi.</string>
+    <string name="entourage_description_fragment_hint">Exemple : Je vous propose de nous retrouver pour un atelier de créativité (peinture, collage, …) ce vendredi.</string>
     <string name="entourage_description_fragment_hint_outing">@string/entourage_description_fragment_hint</string>
     <string name="entourage_description_fragment_info_outing">Donnez une description claire à votre sortie !</string>
 
@@ -85,15 +77,10 @@
 
     <!-- Entourage Notifications -->
     <string name="entourage_info_text_join_accepted">\u0020a rejoint le groupe.</string>
-    <string name="entourage_join_request_received_nomsg">%1$s souhaite rejoindre votre action.</string>
     <string name="entourage_join_request_received_message_html"><![CDATA[<font color=\"#F55F24\">%1$s </font>souhaite rejoindre votre groupe]]></string>
     <string name="entourage_join_request_received_message_short">veut rejoindre votre groupe.</string>
 
-    <string name="entourage_info_quit_entourage_title">Quitter l\'entourage</string>
-    <string name="entourage_info_quit_entourage_description">Voulez-vous vraiment quitter l\'entourage ?</string>
     <string name="entourage_info_text_open">Entourage actif</string>
-    <string name="entourage_info_text_close">Action clôturée</string>
-    <string name="outing_info_text_close">Évènement supprimé</string>
 
     <!-- Entourage disclaimer -->
     <string name="entourage_disclaimer_title">AVANT DE COMMENCER</string>
@@ -163,7 +150,6 @@
     <string name="entourage_close_email_title_success">Mes retours sur l\'entourage \'%1$s\' qui a été un succès</string>
     <string name="entourage_close_email_title_failed">Mes retours sur l\'entourage \'%1$s\' qui n\'a pas abouti</string>
     <string name="entourage_close_email_title_help">Aide pour l\'entourage \'%1$s\'</string>
-    <string name="myentourages_no_items_details">Demandez à rejoindre les activités des voisinages autour de vous. Vous retrouverez alors vos conversations ici.</string>
 
     <!-- Share Entourage -->
     <string name="entourage_share_link">@string/contact_email</string>
@@ -175,4 +161,5 @@
     <string name="entourage_close_alert_description">Supprimer la sortie ?</string>
 
 
+    <string name="entourage_share_intent_title">Partager via</string>
 </resources>

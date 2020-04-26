@@ -726,8 +726,7 @@ public abstract class MapEntourageFragment extends BaseMapEntourageFragment impl
     public void onShowFilter() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_FILTERSCLICK);
         User me = EntourageApplication.me(getActivity());
-        boolean isPro = (me != null && me.isPro());
-        MapFilterFragment mapFilterFragment = MapFilterFragment.newInstance(isPro);
+        MapFilterFragment mapFilterFragment = MapFilterFragment.newInstance();
         mapFilterFragment.show(getFragmentManager(), MapFilterFragment.TAG);
     }
 

@@ -13,7 +13,7 @@ android {
     defaultConfig {
         applicationId 'social.entourage.android.pfp'
 
-        resConfigs 'en', 'fr'
+        resConfigs 'fr'
 
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
@@ -28,16 +28,12 @@ android {
         vectorDrawables.useSupportLibrary true
 
         buildConfigField 'String', 'API_KEY', '"9ebf2b47e35046e43dae5e31"'
-        buildConfigField 'String', 'ENTOURAGE_URL', '"https://api.entourage.social/api/v1/"'
 
         buildConfigField 'String', 'TEST_ACCOUNT_LOGIN', TEST_PFP_ACCOUNT_LOGIN
         buildConfigField 'String', 'TEST_ACCOUNT_PWD', TEST_PFP_ACCOUNT_PWD
 
-        buildConfigField 'String', 'deepLinksHostName', "www.entourage.social/pfp"
-        buildConfigField 'String', 'deepLinksEntourageScheme', "pfp-prod"
-
-        buildConfigField 'String', 'ENTOURAGE_URL', "https://apipxtgs.entourage.social/api/v1/"
-        buildConfigField 'String', 'DEEP_LINKS_SCHEME', "pfp-prod"
+        buildConfigField 'String', 'ENTOURAGE_URL', '"https://apipxtgs.entourage.social/api/v1/"'
+        buildConfigField 'String', 'DEEP_LINKS_SCHEME', '"pfp-prod"'
     }
 
     signingConfigs {
@@ -62,11 +58,9 @@ android {
         staging {
             dimension 'env'
             applicationIdSuffix '.preprod'
-            buildConfigField 'String', 'deepLinksHostName', "entourage-landingpages-preprod.herokuapp.com"
-            buildConfigField 'String', 'deepLinksEntourageScheme', "pfp-staging"
 
-            buildConfigField 'String', 'ENTOURAGE_URL', "https://pfp-back-preprod.herokuapp.com/api/v1/"
-            buildConfigField 'String', 'DEEP_LINKS_SCHEME', "pfp-staging"
+            buildConfigField 'String', 'ENTOURAGE_URL', '"https://pfp-back-preprod.herokuapp.com/api/v1/"'
+            buildConfigField 'String', 'DEEP_LINKS_SCHEME', '"pfp-staging"'
         }
     }
 

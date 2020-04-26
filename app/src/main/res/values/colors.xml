@@ -40,7 +40,9 @@
     <color name="login_edittext_hint_alpha">#b2ffffff</color>
 
     <!-- Profile -->
+    <color name="report_user_explanation">@color/tomato</color>
     <color name="profile_name">@color/dark_grey</color>
+    <color name="profile_role_text">@color/white</color>
     <color name="profile_role_pending">@color/complementary_3</color>
     <color name="profile_role_accepted">@color/accent_alt</color>
 
@@ -79,8 +81,10 @@
     <color name="tour_type_distributive">#ffc57f</color>
 
     <!-- Action types -->
+    <color name="action_type_outing_icon_tint">#78104a</color>
     <color name="action_type_private_circle">#EA118A</color>
     <color name="action_type_outing">#b10f69</color>
+    <color name="action_type_neighborhood">#025E7F</color>
 
     <!-- Partner Logo -->
     <color name="partner_logo_background">@color/background</color>
@@ -91,6 +95,10 @@
     <color name="entourage_error">@color/tomato</color>
 
     <!-- Action details screens -->
+    <color name="feeditem_details_topbar_background">@color/accent</color>
+    <color name="feeditem_details_topbar_tint">@color/white</color>
+    <color name="feeditem_details_title">@color/white</color>
+    <color name="feeditem_icon_background_solid">@color/white</color>
     <color name="feeditem_icon_background_stroke">@color/light_grey</color>
 
     <!-- FeedItem card -->

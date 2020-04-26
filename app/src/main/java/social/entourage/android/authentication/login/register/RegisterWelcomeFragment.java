@@ -22,8 +22,6 @@ import social.entourage.android.base.EntourageLinkMovementMethod;
 import social.entourage.android.tools.Utils;
 import timber.log.Timber;
 
-import static social.entourage.android.EntourageApplication.isPfpApp;
-
 
 public class RegisterWelcomeFragment extends EntourageDialogFragment {
 
@@ -134,9 +132,7 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
             privacyTextView.setText(Utils.fromHtml(text));
         }
 
-        if (isPfpApp()) {
-            logoImageView.setVisibility(View.INVISIBLE);
-        }
+        logoImageView.setVisibility(View.INVISIBLE);
 
         privacyTextView.setMovementMethod(EntourageLinkMovementMethod.getInstance());
 

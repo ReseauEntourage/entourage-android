@@ -59,7 +59,6 @@ public class PushNotificationManager {
     private static final String KEY_OBJECT = "object";
     private static final String KEY_CONTENT = "content";
     public static final String KEY_CTA = "entourage_cta";
-    static final String KEY_MIXPANEL = "mp_message";
 
     // ----------------------------------
     // ATTRIBUTES

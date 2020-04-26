@@ -256,7 +256,6 @@ public class DrawerActivity extends EntourageSecuredActivity
                 }
             }
         }
-        EntourageApplication.get().getMixpanel().getPeople().showNotificationIfAvailable(this);
 
         refreshBadgeCount();
     }

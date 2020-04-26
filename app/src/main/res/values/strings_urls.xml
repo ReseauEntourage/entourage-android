@@ -15,9 +15,6 @@
     <string name="contact_email">voisin-age@petitsfreresdespauvres.fr</string>
     <string name="edit_action_email">voisin-age@petitsfreresdespauvres.fr</string>
 
-    <string name="contact_email"></string>
-    <string name="edit_action_email">@string/contact_email</string>
-
     <string name="redirect_link_format">%1$slinks/%2$s/redirect?token=%3$s</string>
     <string name="redirect_link_no_token_format">%1$slinks/%2$s/redirect</string>
 </resources>

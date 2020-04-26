@@ -319,7 +319,7 @@ public abstract class BaseMapEntourageFragment extends Fragment implements BackP
             visibility = false;
         }
         //we force it because we don't need geoloc when Action zone is set
-        if ((me != null) && !me.isPro() && (me.getAddress() != null)) {
+        if ((me != null) && (me.getAddress() != null)) {
             visibility = false;
         }
 

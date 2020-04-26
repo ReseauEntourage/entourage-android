@@ -9,10 +9,6 @@ import social.entourage.android.authentication.AuthenticationController;
 
 public class MapFilterFactory {
 
-    public static MapFilter getMapFilter(boolean isProUser) {
-        return new MapFilter();
-    }
-
     public static MapFilter getMapFilter() {
         EntourageApplication app = EntourageApplication.get();
         if (app != null && app.getEntourageComponent() != null) {

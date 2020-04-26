@@ -139,8 +139,7 @@ public class TourServiceManager {
         final ConnectivityManager connectivityManager = (ConnectivityManager) tourService.getSystemService(CONNECTIVITY_SERVICE);
         final EntourageLocation entourageLocation = EntourageLocation.getInstance();
         final User user = controller.getUser();
-        final UserType type = user != null && user.isPro() ? PRO : PUBLIC;
-        final LocationProvider provider = new LocationProvider(tourService, type);
+        final LocationProvider provider = new LocationProvider(tourService);
         final TourServiceManager tourServiceManager = new TourServiceManager(
                 tourService,
                 controller,
@@ -164,7 +163,6 @@ public class TourServiceManager {
                 tourServiceManager.tour = savedTour;
                 tourServiceManager.tourUUID = savedTour.getUUID();
                 tourService.notifyListenersTourCreated(true, savedTour.getUUID());
-                provider.setUserType(UserType.PRO);
             }
         }
         BusProvider.getInstance().register(tourServiceManager);
@@ -688,7 +686,6 @@ public class TourServiceManager {
                     pointsToDraw.clear();
                     cancelFinishTimer();
                     tourService.notifyListenersFeedItemClosed(true, response.body().getTour());
-                    locationProvider.setUserType(UserType.PUBLIC);
                     authenticationController.saveTour(tour);
                 } else {
                     tourService.notifyListenersFeedItemClosed(false, tour);

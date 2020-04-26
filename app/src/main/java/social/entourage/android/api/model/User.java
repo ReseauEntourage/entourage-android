@@ -322,10 +322,6 @@ public class User implements Serializable {
         return encodedURL.replace('\u0026', '&');
     }
 
-    public boolean isPro() {
-        return EntourageApplication.isEntourageApp() && TYPE_PRO.equals(type);
-    }
-
     public TourAuthor asTourAuthor() {
         return new TourAuthor(avatarURL, id, displayName, partner);
     }

@@ -6,7 +6,6 @@ import androidx.annotation.Nullable;
 import androidx.multidex.MultiDexApplication;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -58,11 +57,6 @@ public class EntourageApplication extends MultiDexApplication {
 
     private LibrariesSupport librariesSupport;
 
-    static public String ENTOURAGE_APP="entourage";
-    static public String PFP_APP="pfp";
-
-    public enum WhiteLabelApp {ENTOURAGE_APP, PFP_APP}
-
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -106,10 +100,6 @@ public class EntourageApplication extends MultiDexApplication {
         return component;
     }
 
-    public MixpanelAPI getMixpanel() {
-        return librariesSupport.getMixpanel();
-    }
-
     public FirebaseAnalytics getFirebase() {
         return librariesSupport.getFirebaseAnalytics();
     }
@@ -150,9 +140,6 @@ public class EntourageApplication extends MultiDexApplication {
     public void onActivityDestroyed(EntourageActivity activity) {
         activities.remove(activity);
         saveFeedItemsStorage();
-        if (librariesSupport != null) {
-            librariesSupport.onActivityDestroyed();
-        }
     }
 
     public LoginActivity getLoginActivity() {
@@ -316,21 +303,5 @@ public class EntourageApplication extends MultiDexApplication {
             return feedItemsStorage.clear(me.getId());
         }
         return false;
-    }
-
-    // ----------------------------------
-    // Multiple App support methods
-    // ----------------------------------
-
-    static boolean isCurrentApp(String appName) {
-        return BuildConfig.FLAVOR.contains(appName);
-    }
-
-    public static boolean isEntourageApp() {
-        return isCurrentApp(ENTOURAGE_APP);
-    }
-
-    public static boolean isPfpApp() {
-        return isCurrentApp(PFP_APP);
     }
 }

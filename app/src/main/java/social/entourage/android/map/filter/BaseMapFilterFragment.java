@@ -23,14 +23,6 @@ public abstract class BaseMapFilterFragment extends EntourageDialogFragment {
 
     public static final String TAG = "social.entourage_android.MapFilterFragment";
 
-    private static final String KEY_PRO_USER = "social.entourage.android.KEY_PRO_USER";
-
-    // ----------------------------------
-    // Attributes
-    // ----------------------------------
-
-    protected boolean isProUser = false;
-
     // ----------------------------------
     // Lifecycle
     // ----------------------------------
@@ -39,10 +31,9 @@ public abstract class BaseMapFilterFragment extends EntourageDialogFragment {
         // Required empty public constructor
     }
 
-    public static MapFilterFragment newInstance(boolean isProUser) {
+    public static MapFilterFragment newInstance() {
         MapFilterFragment fragment = new MapFilterFragment();
         Bundle args = new Bundle();
-        args.putBoolean(KEY_PRO_USER, isProUser);
         fragment.setArguments(args);
 
         return fragment;
@@ -62,10 +53,6 @@ public abstract class BaseMapFilterFragment extends EntourageDialogFragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Bundle args = getArguments();
-        if (args != null) {
-            isProUser = args.getBoolean(KEY_PRO_USER, false);
-        }
         initializeView();
     }
 

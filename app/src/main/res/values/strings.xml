@@ -1,5 +1,11 @@
 <resources>
 
+
+    <string name="deepLinksHostName">www.entourage.social/pfp</string>
+    <string name="deepLinksHostNameDEBUG">entourage-landingpages-preprod.herokuapp.com</string>
+    <string name="deepLinksEntourageScheme">pfp-prod</string>
+    <string name="deepLinksEntourageSchemeDEBUG">pfp-staging</string>
+
     <string name="button_loading">Chargement…</string>
     <string name="error_not_yet_implemented">Indisponible</string>
     <string name="error_google_play_store_not_installed">Le Google Play Store n\'est pas intallé</string>

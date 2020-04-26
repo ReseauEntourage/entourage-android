@@ -60,7 +60,7 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data
-                    android:host="${deepLinksHostName}"
+                    android:host="@string/deepLinksHostName"
                     android:pathPrefix="/entourages/"
                     android:scheme="https"/>
             </intent-filter>
@@ -71,7 +71,7 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data
-                    android:host="${deepLinksHostName}"
+                    android:host="@string/deepLinksHostName"
                     android:pathPrefix="/entourages/"
                     android:scheme="http"/>
             </intent-filter>
@@ -82,7 +82,7 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data
-                    android:host="${deepLinksHostName}"
+                    android:host="@string/deepLinksHostName"
                     android:pathPrefix="/deeplink/"
                     android:scheme="https"/>
             </intent-filter>
@@ -93,7 +93,7 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data
-                    android:host="${deepLinksHostName}"
+                    android:host="@string/deepLinksHostName"
                     android:pathPrefix="/deeplink/"
                     android:scheme="http"/>
             </intent-filter>
@@ -104,7 +104,7 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data
-                    android:scheme="${deepLinksEntourageScheme}"/>
+                    android:scheme="@string/deepLinksEntourageScheme"/>
             </intent-filter>
             <meta-data android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />

@@ -7,7 +7,6 @@ import android.os.Build;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import java.util.Locale;
 
@@ -279,23 +278,14 @@ public class EntourageEvents {
     public static String TAG = EntourageEvents.class.getSimpleName();
 
     public static void logEvent(String event) {
-        if(EntourageApplication.get().getMixpanel()!= null) {
-            EntourageApplication.get().getMixpanel().track(event, null);
-        }
         if(EntourageApplication.get().getFirebase()!= null) {
             EntourageApplication.get().getFirebase().logEvent(event, null);
         }
     }
 
     static void onLocationPermissionGranted(boolean isPermissionGranted) {
-        MixpanelAPI mixpanel = EntourageApplication.get().getMixpanel();
         FirebaseAnalytics mFirebaseAnalytics = EntourageApplication.get().getFirebase();
-        if (mixpanel == null || mFirebaseAnalytics== null) return;
-        MixpanelAPI.People people = mixpanel.getPeople();
-        if (people == null) return;
-
         String geolocStatus = isPermissionGranted? "YES":"NO";
-        people.set("EntourageGeolocEnable", geolocStatus);
         mFirebaseAnalytics.setUserProperty("EntourageGeolocEnable", geolocStatus);
     }
 
@@ -306,24 +296,14 @@ public class EntourageEvents {
             logEvent(EntourageEvents.EVENT_GEOLOCATION_POPUP_ACCEPT);
         }
         FirebaseAnalytics mFirebaseAnalytics = EntourageApplication.get().getFirebase();
-        MixpanelAPI mixpanel = EntourageApplication.get().getMixpanel();
-        MixpanelAPI.People people = mixpanel.getPeople();
-
-        mixpanel.identify(String.valueOf(user.getId()));
-        people.identify(String.valueOf(user.getId()));
         mFirebaseAnalytics.setUserId(String.valueOf(user.getId()));
 
         Crashlytics.setUserIdentifier(String.valueOf(user.getId()));
         Crashlytics.setUserName(user.getDisplayName());
 
-        people.set("EntourageUserType", user.isPro()?"Pro":"Public");
-        mFirebaseAnalytics.setUserProperty("EntourageUserType", user.isPro()?"Pro":"Public");
-
-        people.set("Language", Locale.getDefault().getLanguage());
         mFirebaseAnalytics.setUserProperty("Language", Locale.getDefault().getLanguage());
 
         if(user.getPartner()!=null) {
-            people.set("EntouragePartner", user.getPartner().getName());
             mFirebaseAnalytics.setUserProperty("EntouragePartner", user.getPartner().getName());
         }
 
@@ -336,17 +316,11 @@ public class EntourageEvents {
         if (LocationUtils.INSTANCE.isLocationPermissionGranted()) {
             geolocStatus = "YES";
         }
-        people.set("EntourageGeolocEnable", geolocStatus);
         mFirebaseAnalytics.setUserProperty("EntourageGeolocEnable", geolocStatus);
 
         final SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
         boolean notificationsEnabled = sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, true);
-        people.set("EntourageNotifEnable", notificationsEnabled && areNotificationsEnabled ?"YES":"NO");
         mFirebaseAnalytics.setUserProperty("EntourageNotifEnable", notificationsEnabled && areNotificationsEnabled ?"YES":"NO");
-
-        if(notificationsEnabled) {
-            people.setPushRegistrationId(sharedPreferences.getString(EntourageApplication.KEY_REGISTRATION_ID, null));
-        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             mFirebaseAnalytics.setUserProperty("BackgroundRestriction", ((ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE)).isBackgroundRestricted()?"YES":"NO");
