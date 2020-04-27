@@ -17,7 +17,7 @@ import social.entourage.android.mainprofile.MainProfileFragment
 class BottomNavigationDataSource : BaseBottomNavigationDataSource() {
     override fun getFragmentAtIndex(menuId: Int): Fragment? {
         return when (menuId) {
-            R.id.bottom_bar_newsfeed -> if(EntourageApplication.get().me()?.isPro() == true) NewsFeedWithTourFragment() else NewsFeedFragment()
+            R.id.bottom_bar_newsfeed -> if(EntourageApplication.get().me()?.isPro == true) NewsFeedWithTourFragment() else NewsFeedFragment()
             R.id.bottom_bar_guide -> GuideMapFragment()
             R.id.bottom_bar_plus -> PlusFragment()
             R.id.bottom_bar_mymessages -> MyEntouragesFragment()

@@ -120,7 +120,7 @@ public class UserReportFragment extends EntourageDialogFragment {
 
     private boolean isValid() {
         String reason = reasonEditText.getText().toString();
-        if (reason == null || reason.trim().length() == 0) {
+        if (reason.trim().length() == 0) {
             // The reason cannot be empty
             Toast.makeText(getContext(), R.string.user_report_error_reason_empty, Toast.LENGTH_SHORT).show();
             return false;
@@ -129,7 +129,6 @@ public class UserReportFragment extends EntourageDialogFragment {
     }
 
     private void sendReport() {
-        if (EntourageApplication.get().getEntourageComponent() == null) return;
         UserRequest userRequest = EntourageApplication.get().getEntourageComponent().getUserRequest();
         if (userRequest == null) return;
         sending = true;

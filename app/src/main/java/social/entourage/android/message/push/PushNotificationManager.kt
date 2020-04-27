@@ -34,7 +34,6 @@ object PushNotificationManager {
     // ----------------------------------
     const val PUSH_MESSAGE = "social.entourage.android.PUSH_MESSAGE"
     const val KEY_CTA = "entourage_cta"
-    const val KEY_MIXPANEL = "mp_message"
 
     private const val MIN_NOTIFICATION_ID = 40
     private const val PREFERENCE_LAST_NOTIFICATION_ID = "PREFERENCE_LAST_NOTIFICATION_ID"
@@ -56,7 +55,7 @@ object PushNotificationManager {
      */
     fun handlePushNotification(message: Message, context: Context) {
         val content = message.content ?: return
-        val application = EntourageApplication.get() ?: return
+        val application = EntourageApplication.get()
         if (PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED == content.type) {
             // Remove the related join request push notification
             if (content.isTourRelated) {
@@ -175,7 +174,7 @@ object PushNotificationManager {
         if (pushType == null) {
             return 0
         }
-        val application = EntourageApplication.get() ?: return 0
+        val application = EntourageApplication.get()
         var count = 0
         // search for a push notification that matches our parameters
         val newPushNotifications = HashMap<String, MutableList<Message>>()
@@ -359,7 +358,7 @@ object PushNotificationManager {
      */
     fun getMessageFromRemoteMessage(remoteMessage: RemoteMessage, context: Context): Message? {
         val msg = remoteMessage.data
-        //first checking if content json is present (not here for mixpanel or firebase notification
+        //first checking if content json is present (not here for firebase notification
         Timber.d("%s= %s; %s= %s; %s= %s", KEY_SENDER,msg[KEY_SENDER],  KEY_OBJECT, msg[KEY_OBJECT], KEY_CONTENT, msg[KEY_CONTENT])
         if ( !msg.containsKey(KEY_CONTENT) || !msg.containsKey(KEY_SENDER)) return null
         val message = Message(msg[KEY_SENDER]!!, msg[KEY_OBJECT], msg[KEY_CONTENT]!!, 0, null)

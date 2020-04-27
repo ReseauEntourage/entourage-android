@@ -329,11 +329,10 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
 
         // check if the user is the author
         var isMyEntourage = false
-        val me = EntourageApplication.me(context)
-        if (me != null) {
+        EntourageApplication.me(context)?.let {
             val author = feedItem.author
             if (author != null) {
-                isMyEntourage = me.id == author.userID
+                isMyEntourage = it.id == author.userID
             }
         }
 
@@ -1193,7 +1192,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             }
             // Remove the push notification
             if (FeedItem.JOIN_STATUS_ACCEPTED == status) {
-                EntourageApplication.get()?.removePushNotification(feedItem, userId, PushNotificationContent.TYPE_NEW_JOIN_REQUEST)
+                EntourageApplication.get().removePushNotification(feedItem, userId, PushNotificationContent.TYPE_NEW_JOIN_REQUEST)
             }
         } else if (error == EntourageError.ERROR_BAD_REQUEST) {
             // Assume that the other user cancelled the request

@@ -323,7 +323,7 @@ public class User implements Serializable {
     }
 
     public boolean isPro() {
-        return EntourageApplication.isEntourageApp() && TYPE_PRO.equals(type);
+        return EntourageApplication.Companion.isEntourageApp() && TYPE_PRO.equals(type);
     }
 
     public TourAuthor asTourAuthor() {

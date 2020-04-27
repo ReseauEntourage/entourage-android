@@ -183,7 +183,6 @@ public class MainActivity extends EntourageSecuredActivity
                     break;
             }
         }
-        EntourageApplication.get().getMixpanel().getPeople().showNotificationIfAvailable(this);
 
         sendNewsfeedFragmentExtras();
         if (getIntent()==null || getIntent().getAction() == null) {
@@ -453,10 +452,7 @@ public class MainActivity extends EntourageSecuredActivity
                     && !content.isEntourageRelated()) {
                 showMyEntourages();
             }
-            EntourageApplication application = EntourageApplication.get();
-            if (application != null) {
-                application.removePushNotification(message);
-            }
+            EntourageApplication.get().removePushNotification(message);
             refreshBadgeCount();
         } else {
             // Handle the deep link
@@ -690,12 +686,10 @@ public class MainActivity extends EntourageSecuredActivity
 
     private void removePushNotification(PushNotificationContent content, String contentType) {
         EntourageApplication application = EntourageApplication.get();
-        if (application != null) {
-            if (content.isTourRelated()) {
-                application.removePushNotification(content.getJoinableId(), TimestampedObject.TOUR_CARD, content.getUserId(), contentType);
-            } else if (content.isEntourageRelated()) {
-                application.removePushNotification(content.getJoinableId(), TimestampedObject.ENTOURAGE_CARD, content.getUserId(), contentType);
-            }
+        if (content.isTourRelated()) {
+            application.removePushNotification(content.getJoinableId(), TimestampedObject.TOUR_CARD, content.getUserId(), contentType);
+        } else if (content.isEntourageRelated()) {
+            application.removePushNotification(content.getJoinableId(), TimestampedObject.ENTOURAGE_CARD, content.getUserId(), contentType);
         }
     }
 
@@ -793,10 +787,7 @@ public class MainActivity extends EntourageSecuredActivity
     public void onMyEntouragesForceRefresh(Events.OnMyEntouragesForceRefresh event) {
         FeedItem item = event.getFeedItem();
         if(item!=null) {
-            EntourageApplication application = EntourageApplication.get();
-            if (application != null) {
-                application.updateBadgeCountForFeedItem(item);
-            }
+            EntourageApplication.get().updateBadgeCountForFeedItem(item);
             refreshBadgeCount();
         }
     }

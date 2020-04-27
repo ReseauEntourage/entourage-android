@@ -15,7 +15,7 @@ import social.entourage.android.authentication.AuthenticationController
 class PlusFragment : Fragment(), BackPressable {
     override fun onResume() {
         super.onResume()
-        val savedTour = EntourageApplication.get().entourageComponent?.getAuthenticationController()?.savedTour
+        val savedTour = EntourageApplication.get().entourageComponent.getAuthenticationController()?.savedTour
         if (savedTour != null) {
             layout_line_add_tour_encounter?.visibility = View.VISIBLE
             layout_line_start_tour_launcher?.visibility = View.GONE

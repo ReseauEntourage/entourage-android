@@ -9,6 +9,6 @@ object MapFilterFactory {
     @JvmStatic
     val mapFilter: MapFilter
         get() {
-            return EntourageApplication.get()?.entourageComponent?.authenticationController?.mapFilter ?: MapFilter()
+            return EntourageApplication.get().entourageComponent.authenticationController?.mapFilter ?: MapFilter()
         }
 }

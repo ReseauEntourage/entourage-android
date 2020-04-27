@@ -811,10 +811,8 @@ public class LoginActivity extends EntourageActivity
         //set the tutorial as done
         SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
         HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(KEY_TUTORIAL_DONE, new HashSet<>());
-        if (loggedNumbers != null) {
         loggedNumbers.add(loggedPhoneNumber);
         sharedPreferences.edit().putStringSet(KEY_TUTORIAL_DONE, loggedNumbers).apply();
-        }
 
         startMapActivity();
     }

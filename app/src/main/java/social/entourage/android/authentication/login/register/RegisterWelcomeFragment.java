@@ -16,14 +16,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageActivity;
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.base.EntourageLinkMovementMethod;
 import social.entourage.android.tools.Utils;
 import timber.log.Timber;
-
-import static social.entourage.android.EntourageApplication.isPfpApp;
 
 
 public class RegisterWelcomeFragment extends EntourageDialogFragment {
@@ -147,7 +146,7 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
             privacyTextView.setText(Utils.fromHtml(text));
         }
 
-        if (isPfpApp()) {
+        if (EntourageApplication.Companion.isPfpApp()) {
             logoImageView.setVisibility(View.INVISIBLE);
         }
 

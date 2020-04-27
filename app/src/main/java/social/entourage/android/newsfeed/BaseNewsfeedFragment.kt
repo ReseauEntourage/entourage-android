@@ -208,7 +208,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     fun displayChosenFeedItem(feedItem: FeedItem, invitationId: Long, feedRank: Int = 0) {
         if (context == null || isStateSaved) return
         // decrease the badge count
-        EntourageApplication.get(context)?.removePushNotificationsForFeedItem(feedItem)
+        EntourageApplication.get(context).removePushNotificationsForFeedItem(feedItem)
         //check if we are not already displaying the tour
         val fragmentManager = activity?.supportFragmentManager ?: return
         val entourageInformationFragment = fragmentManager.findFragmentByTag(FeedItemInformationFragment.TAG) as EntourageInformationFragment?

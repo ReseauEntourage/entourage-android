@@ -10,10 +10,6 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
-    def MIXPANEL_TOKEN_DEBUG = System.env.MIXPANEL_TOKEN_DEBUG ? '"' + System.env.MIXPANEL_TOKEN_DEBUG + '"' : entourageMixpanelTokenDebug
-    def MIXPANEL_TOKEN = System.env.MIXPANEL_TOKEN ? '"' + System.env.MIXPANEL_TOKEN + '"' : entourageMixpanelToken
-    def MIXPANEL_TOKEN_PFP = System.env.MIXPANEL_TOKEN_PFP ? '"' + System.env.MIXPANEL_TOKEN_PFP + '"' : entourageMixpanelTokenPFP
-
     def TEST_ACCOUNT_LOGIN = System.env.TEST_ACCOUNT_LOGIN ? '"' + System.env.TEST_ACCOUNT_LOGIN + '"' : entourageTestLogin
     def TEST_ACCOUNT_PWD = System.env.TEST_ACCOUNT_PWD ? '"' + System.env.TEST_ACCOUNT_PWD + '"' : entourageTestPwd
     def TEST_PFP_ACCOUNT_LOGIN = System.env.TEST_ACCOUNT_LOGIN ? '"' + System.env.TEST_PFP_ACCOUNT_LOGIN + '"' : pfpTestLogin
@@ -41,8 +37,6 @@ android {
         vectorDrawables.useSupportLibrary true
 
         buildConfigField 'String', 'ENTOURAGE_URL', '"https://api.entourage.social/api/v1/"'
-        buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN
-
         buildConfigField 'String', 'TEST_ACCOUNT_LOGIN', TEST_ACCOUNT_LOGIN
         buildConfigField 'String', 'TEST_ACCOUNT_PWD', TEST_ACCOUNT_PWD
     }
@@ -76,7 +70,6 @@ android {
         staging {
             dimension 'env'
             applicationIdSuffix '.preprod'
-            buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_DEBUG
 
         }
         entourage {
@@ -98,7 +91,6 @@ android {
         pfp {
             dimension 'app'
             applicationId 'social.entourage.android.pfp'
-            buildConfigField 'String', 'MIXPANEL_TOKEN', MIXPANEL_TOKEN_PFP
             buildConfigField 'String', 'API_KEY', '"14fe3580873758c2a63f14aa"'
 
             buildConfigField 'String', 'TEST_ACCOUNT_LOGIN', TEST_PFP_ACCOUNT_LOGIN

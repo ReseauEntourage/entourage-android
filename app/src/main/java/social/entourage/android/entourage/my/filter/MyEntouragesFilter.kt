@@ -80,12 +80,12 @@ class MyEntouragesFilter  : Serializable {
         //MyEntouragesFilterFactory
         @JvmStatic
         fun getMyEntouragesFilter(context: Context?): MyEntouragesFilter {
-            return EntourageApplication.get(context)?.entourageComponent?.authenticationController?.myEntouragesFilter ?: MyEntouragesFilter()
+            return EntourageApplication.get(context).entourageComponent.authenticationController?.myEntouragesFilter ?: MyEntouragesFilter()
         }
 
         @JvmStatic
         fun saveMyEntouragesFilter(myEntouragesFilter: MyEntouragesFilter?, context: Context?) {
-            EntourageApplication.get(context)?.entourageComponent?.authenticationController?.saveMyEntouragesFilter()
+            EntourageApplication.get(context).entourageComponent.authenticationController?.saveMyEntouragesFilter()
         }
     }
 }

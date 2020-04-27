@@ -38,9 +38,9 @@ ext {
     espressoVersion = "3.2.0"
     exifinterfaceVersion = "1.2.0"
     facebookVersion = "6.3.0"
-    firebaseAnalyticsVersion = "17.3.0"
-    firebaseMessagingVersion = "20.1.5"
-    firebaseInappVersion = "19.0.4"
+    firebaseAnalyticsVersion = "17.4.0"
+    firebaseMessagingVersion = "20.1.6"
+    firebaseInappVersion = "19.0.6"
     firebasePerfMonitor = "19.0.5"
     floatingButtonVersion = "1.6.4"
     fragmentVersion = "1.2.4"
@@ -51,7 +51,6 @@ ext {
     mapsVersion = "17.0.0"
     mapsUtilsVersion = "1.0.2"
     materialVersion = "1.1.0"
-    mixpanelVersion = "5.7.0"
     multidexVersion = "2.0.1"
     okHttpVersion = "3.12.9" //version 3.13+ needs API 21+ //https://square.github.io/okhttp/changelog_3x/
     okHttpIdlingVersion = "1.0.0"
@@ -159,7 +158,6 @@ ext {
             imageCropper            : "com.theartofdev.edmodo:android-image-cropper:$imageCropperVersion",
             mapsUtils               : "com.google.maps.android:android-maps-utils:$mapsUtilsVersion",
             material                : "com.google.android.material:material:$materialVersion",
-            mixpanel                : "com.mixpanel.android:mixpanel-android:$mixpanelVersion",
             picasso                 : "com.squareup.picasso:picasso:$picassoVersion",
             picassoTransformations  : "jp.wasabeef:picasso-transformations:$picassoTransformationsVersion",
             shortcutBadger          : "me.leolin:ShortcutBadger:$shortcutBadgerVersion@aar",
