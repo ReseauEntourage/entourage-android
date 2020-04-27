@@ -184,7 +184,6 @@
                 android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/user_associations_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/background_light"

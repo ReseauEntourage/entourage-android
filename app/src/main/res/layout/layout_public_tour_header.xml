@@ -24,7 +24,6 @@
             tools:text="Urgent Cherche paire de lunettes"/>
 
         <LinearLayout
-            android:id="@+id/new_way_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layoutDirection="rtl" >

@@ -9,7 +9,6 @@
     <string name="map_permission_description">Sans géolocalisation Entourage ne peut pas fonctionner. Souhaitez-vous l\'activer ?</string>
     <string name="map_permission_refuse">Refuser</string>
     <string name="map_permission_activate_button">Activez la géolocalisation</string>
-    <string name="map_permission_extra">Nous concoctons une alternative qui sera disponible prochainement !</string>
     <string name="error_dialog_disabled">La géolocalisation doit être activée pour utiliser Entourage. Voulez-vous l\'activer ?</string>
     <string name="map_error_geolocation_disabled_use_entourage">Pour découvrir les actions solidaires autour de vous, vous devez activer la géolocalisation</string>
     <string name="map_error_geolocation_disabled_create_tour">Pour créer une maraude, vous devez activer la géolocalisation</string>
@@ -29,17 +28,6 @@
 
     <!-- Map Filter -->
     <string name="map_filter_title">FILTRES</string>
-    <string name="map_filter_tour_type_title">Types de maraude</string>
-    <string name="map_filter_entourage_demand_text"><b>Demandes</b> : je cherche…</string>
-    <string name="map_filter_entourage_contribution_text"><b>Contributions</b> : je me propose de…</string>
-    <string name="map_filter_tours_text">Maraudes</string>
-    <string name="map_filter_personal_title">Montrer uniquement</string>
-    <string name="map_filter_user_only_text">Mes entourages</string>
-    <string name="map_filter_partner_only_text">Crées par les sympathisants de l’association que je soutiens</string>
-    <string name="map_filter_time_title">Mis à jour il y a moins de</string>
-    <string name="map_filter_time_option1">24H</string>
-    <string name="map_filter_time_option2">8J</string>
-    <string name="map_filter_time_option3">1M</string>
 
     <!-- Under Construction -->
     <string name="map_underconstruction_explanation_1">Ici, vous trouverez prochainement les activités de la communauté autour de vous</string>

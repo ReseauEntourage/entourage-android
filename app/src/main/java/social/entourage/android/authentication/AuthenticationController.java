@@ -3,6 +3,8 @@ package social.entourage.android.authentication;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -181,12 +183,12 @@ public class AuthenticationController {
         }
     }
 
-    public MapFilter getMapFilter() {
+    @Nullable public MapFilter getMapFilter() {
         MapFilter mapFilter = null;
         if (loggedUser != null && userPreferences != null) {
             mapFilter = userPreferences.getMapFilter();
             if (mapFilter == null) {
-                mapFilter = MapFilterFactory.getMapFilter();
+                mapFilter = new MapFilter();
                 userPreferences.setMapFilter(mapFilter);
                 saveUserPreferences();
             }

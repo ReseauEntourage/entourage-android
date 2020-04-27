@@ -2,30 +2,15 @@
 <resources>
 
     <!-- Guide -->
-    <string name="map_poi_propose_button">Proposer une structure</string>
 
     <!-- POI -->
-    <string name="activity_read_poi_title">GUIDE DE SOLIDARITE</string>
-    <string name="poi_report_description">J\'ai des informations sur cette structure</string>
-    <string name="poi_report_button">Mettre à jour</string>
-    <string name="poi_report_email_subject_format">Information sur la structure \'%1$s\'</string>
 
     <!-- Empty Guide Popup -->
-    <string name="map_poi_empty_popup"><![CDATA[On dirait que c\'est calme ici!<br/><br/>
-    Déplacez la carte pour trouver des structures d’assistance: restaurants solidaires, douches publiques, centres médicaux ouverts aux personnes de la rue…<br/><br/>
-    Une structure manque sur la carte?<<br/>
-    <a href=\'%1$s\'>Proposez une structure</a>]]></string>
 
     <!-- Info Popup -->
-    <string name="map_poi_info_popup">Le Guide de solidarité vous permet de vous informer sur les structures d’assistance : restaurants solidaires, douches publiques, centres médicaux ouverts aux personnes de la rue…\n\n
-        En tant que riverain, vous pouvez suggérer un lieu à une personne de la rue, mais gardez à l’esprit que c’est le rôle des travailleurs sociaux d’accompagner chaque situation.</string>
 
     <!-- Guide Filter -->
-    <string name="guide_filter_title">FILTRES</string>
-    <string name="guide_filter_categories_title">Catégories</string>
 
     <!-- POI Card -->
-    <string name="poi_card_call">APPELER</string>
-    <string name="poi_card_bullet">•</string>
 
 </resources>

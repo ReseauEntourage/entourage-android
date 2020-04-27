@@ -31,7 +31,6 @@
     <string name="entourage_create_error_location_empty">Indiquez une localisation</string>
 
     <string name="entourage_create_menu">Créer une action</string>
-    <string name="outing_create_menu">Créer un évènement</string>
 
     <!-- Entourage Category Fragment -->
     <string name="entourage_category_fragment_title">CATÉGORIE</string>
@@ -134,22 +133,8 @@
     <string name="myentourages_filter_tours">Maraudes</string>
     
     <!-- Create entourage dialog while tour is ongoing -->
-    <string name="entourage_tour_ongoing_title">@string/tour_info_text_ongoing</string>
-    <string name="entourage_tour_ongoing_description">Souhaitez-vous créer une rencontre avec une personne de la rue, ou créer une action visible de tous?</string>
-    <string name="entourage_tour_ongoing_proceed">Rencontre</string>
-    <string name="entourage_tour_ongoing_action">Action</string>
 
     <!-- Close Entourage Popup -->
-    <string name="entourage_close_title">Comment cela s’est passé?</string>
-    <string name="entourage_close_description">En clôturant l’entourage, vous mettez fin au projet.\n\nDites-nous en plus avant de clôturer !</string>
-    <string name="entourage_close_success_button">Mon projet a réussi</string>
-    <string name="entourage_close_failed_button">Mon projet n\'a pas abouti</string>
-    <string name="entourage_close_help_button">Je demande de l\'aide</string>
-    <string name="entourage_close_help_text">Mon projet est bloqué</string>
-
-    <string name="entourage_close_email_title_success">Mes retours sur l\'entourage \'%1$s\' qui a été un succès</string>
-    <string name="entourage_close_email_title_failed">Mes retours sur l\'entourage \'%1$s\' qui n\'a pas abouti</string>
-    <string name="entourage_close_email_title_help">Aide pour l\'entourage \'%1$s\'</string>
 
     <!-- Share Entourage -->
     <string name="entourage_share_link">@string/contact_email</string>

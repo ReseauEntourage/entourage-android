@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_logout">Déconnexion</string>
-    <string name="action_blog">Conseils pour oser la rencontre</string>
     <string name="action_charter_unsigned">Signer la Charte éthique</string>
     <string name="action_charter_signed">Consulter la Charte éthique</string>
-    <string name="action_goal">Idées d\'actions dans l\'appli</string>
-    <string name="action_faq">Questions fréquentes</string>
-    <string name="action_atd">Notre partenariat avec ATD</string>
-    <string name="action_donation">Faire un don</string>
-    <string name="action_involvement">Suivre Entourage</string>
-    <string name="action_ambassador">Devenir Ambassadeur d\'Entourage</string>
     <string name="action_map">à proximité</string>
-    <string name="action_guide">annuaire</string>
     <string name="action_my_messages">messages</string>
     <string name="action_menu">menu</string>
     <string name="debug_info_clipboard">Information copiée dans le presse-papier</string>

@@ -2,9 +2,7 @@
 
 
     <string name="deepLinksHostName">www.entourage.social/pfp</string>
-    <string name="deepLinksHostNameDEBUG">entourage-landingpages-preprod.herokuapp.com</string>
     <string name="deepLinksEntourageScheme">pfp-prod</string>
-    <string name="deepLinksEntourageSchemeDEBUG">pfp-staging</string>
 
     <string name="button_loading">Chargement…</string>
     <string name="error_not_yet_implemented">Indisponible</string>

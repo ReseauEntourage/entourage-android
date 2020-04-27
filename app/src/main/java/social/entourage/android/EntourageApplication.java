@@ -2,6 +2,8 @@ package social.entourage.android;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.multidex.MultiDexApplication;
 
@@ -43,7 +45,7 @@ public class EntourageApplication extends MultiDexApplication {
     // ----------------------------------
 
     private static EntourageApplication instance;
-    public static EntourageApplication get() { return instance; }
+    @NonNull public static EntourageApplication get() { return instance; }
 
     private EntourageComponent component;
 

@@ -1,10 +1,7 @@
 <resources>
     <string name="about_title">À PROPOS</string>
-    <string name="about_tutorial">Voir le tutoriel</string>
     <string name="about_conditions">Conditions générales d’utilisation</string>
     <string name="about_privacy">Politique de Confidentialité</string>
-    <string name="about_website">Site web d’Entourage</string>
-    <string name="about_email">Contactez Entourage</string>
     <string name="about_version_format">v%1$s</string>
     <string name="about_clearing_entourage_cache">Données d\'historique locales effacées</string>
     <string name="about_rate_app">Noter l\'app</string>

@@ -2,9 +2,6 @@
 <resources>
 
     <!-- Tour -->
-    <string name="tour_create">Créer une maraude</string>
-    <string name="tour_start"> Démarrez votre maraude</string>
-    <string name="tour_creation_fail">Echec de l\'envoi de maraude</string>
     <string name="tour_resume">Reprendre</string>
     <string name="tour_stop">Arrêter</string>
     <string name="tour_pause">Pause</string>
@@ -12,9 +9,7 @@
     <string name="tour_type_medical">Médicale</string>
     <string name="tour_type_bare_hands">Sociale</string>
     <string name="tour_type_alimentary">Distributive</string>
-    <string name="tour_create_encounter_button">Créer une rencontre</string>
     <string name="tour_text_separator">-</string>
-    <string name="tour_create_choose_type">Sélectionnez votre type de maraude:</string>
     <string name="tour_info_text_join_html"><![CDATA[<font color=\"#00abf0\">%1$s </font>%2$s]]></string>
     <string name="tour_info_request_join_title_entourage">vous souhaitez rejoindre ce voisinage ?</string>
     <string name="tour_info_request_join_button_entourage">CONTACTER L’ANIMATEUR</string>
@@ -24,7 +19,6 @@
     <string name="tour_info_text_type_title">Maraude %1$s par\u0020</string>
     <string name="tour_info_text_ongoing">Maraude en cours</string>
     <string name="tour_info_text_closed">Maraude terminée</string>
-    <string name="tour_info_text_nothing_found">Aucune maraude récente trouvée</string>
     <string name="tour_info_location_card_date_format">c HH:mm</string>
 
     <string name="tour_info_text_join_accepted">\u0020est entré(e) en contact avec\u0020</string>
