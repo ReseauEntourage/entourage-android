@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import kotlinx.android.synthetic.entourage.layout_entourage_options.*
+import kotlinx.android.synthetic.main.layout_entourage_options.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageEvents
 import social.entourage.android.MainActivity

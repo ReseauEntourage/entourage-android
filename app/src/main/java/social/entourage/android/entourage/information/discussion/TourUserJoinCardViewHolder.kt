@@ -5,7 +5,7 @@ import android.text.format.DateFormat
 import android.view.View
 import android.widget.TextView
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.entourage.entourage_information_user_join_card_view.view.*
+import kotlinx.android.synthetic.main.entourage_information_user_join_card_view.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageEvents
 import social.entourage.android.R

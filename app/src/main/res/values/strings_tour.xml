@@ -121,7 +121,7 @@
 
     <!-- Report Entourage -->
     <!-- Parameters: 1 - Entourage title -->
-    <string name="report_entourage_email_title">Signalement d’un problème: %1$s</string>
+    <string name="report_entourage_email_title">Signalement d\'un problème dans l\'entourage %1$s</string>
 
     <!-- Edit Entourage Email -->
     <string name="edit_entourage_email_title">Veuillez modifier la description du action "%1$s"</string>

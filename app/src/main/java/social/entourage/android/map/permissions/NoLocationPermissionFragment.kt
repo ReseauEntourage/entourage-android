@@ -11,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.entourage.fragment_no_location_permission.*
+import kotlinx.android.synthetic.main.fragment_no_location_permission.*
 import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.authentication.login.LoginActivity
