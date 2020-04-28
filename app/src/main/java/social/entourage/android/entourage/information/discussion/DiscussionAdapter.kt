@@ -12,8 +12,7 @@ class DiscussionAdapter : EntourageBaseAdapter() {
     private val mDaySections = HashMap<Date, Int>()
 
     private fun addDateSeparator(date: Date, notifyView: Boolean) {
-        val separator = DateSeparator()
-        separator.setDate(date)
+        val separator = DateSeparator(date)
         items.add(separator)
         mDaySections[date] = items.size - 1
         if (notifyView) {
@@ -22,8 +21,7 @@ class DiscussionAdapter : EntourageBaseAdapter() {
     }
 
     private fun insertDateSeparator(date: Date, position: Int) {
-        val separator = DateSeparator()
-        separator.setDate(date)
+        val separator = DateSeparator(date)
         items.add(position, separator)
         mDaySections[date] = position
         notifyItemInserted(position)

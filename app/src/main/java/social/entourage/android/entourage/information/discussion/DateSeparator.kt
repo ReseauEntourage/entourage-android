@@ -6,14 +6,13 @@ import java.util.*
 /**
  * Created by mihaiionescu on 14/03/2017.
  */
-class DateSeparator : TimestampedObject() {
-    private var date: Date? = null
+class DateSeparator(private var date: Date) : TimestampedObject() {
     override fun getType(): Int {
         return DATE_SEPARATOR
     }
 
     override fun getTimestamp(): Date {
-        return date!!
+        return date
     }
 
     override fun hashString(): String {
@@ -22,9 +21,5 @@ class DateSeparator : TimestampedObject() {
 
     override fun getId(): Long {
         return 0
-    }
-
-    fun setDate(date: Date?) {
-        this.date = date
     }
 }

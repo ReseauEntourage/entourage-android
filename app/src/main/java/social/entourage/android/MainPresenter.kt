@@ -27,6 +27,7 @@ class MainPresenter @Inject internal constructor(
     public override fun handleMenu(menuId: Int) {
         when (menuId) {
             R.id.action_ambassador -> {
+                if(activity==null) return
                 EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_AMBASSADOR)
                 val ambassadorIntent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.AMBASSADOR_ID)))
                 try {
@@ -42,6 +43,7 @@ class MainPresenter @Inject internal constructor(
             }
             R.id.action_about -> {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_ABOUT)
+                if(activity==null) return
                 EntourageAboutFragment().show(activity.supportFragmentManager, EntourageAboutFragment.TAG)
             }
             else -> super.handleMenu(menuId)

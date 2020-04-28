@@ -15,7 +15,7 @@ class DateSeparatorViewHolder(view: View) : BaseCardViewHolder(view) {
     }
 
     override fun populate(data: TimestampedObject) {
-        itemView.tic_date_separator_timestamp?.text = Utils.dateAsStringFromNow(data.timestamp, itemView.context)
+        itemView.tic_date_separator_timestamp?.text = Utils.dateAsStringFromNow((data as DateSeparator).timestamp, itemView.context)
     }
 
     companion object {

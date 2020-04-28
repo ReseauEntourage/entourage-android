@@ -1,6 +1,10 @@
 package social.entourage.android.api.model;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.annotations.Expose;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
 import java.util.Date;
@@ -33,8 +37,10 @@ public abstract class TimestampedObject {
     @Expose(serialize = false)
     private int hashCode;
 
+    @Nullable
     public abstract Date getTimestamp();
 
+    @NotNull
     public abstract String hashString();
 
     @Override

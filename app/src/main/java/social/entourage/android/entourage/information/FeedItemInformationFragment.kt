@@ -793,7 +793,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
 
         // update description
         if(entourage_info_description!=null) {
-            if (feedItem.description != null && feedItem.description.isNotEmpty()) {
+            if (feedItem.description?.isNotEmpty() == true) {
                 entourage_info_description?.text = feedItem.description
                 entourage_info_description?.visibility = View.VISIBLE
             } else {

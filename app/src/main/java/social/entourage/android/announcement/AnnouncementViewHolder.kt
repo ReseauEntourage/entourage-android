@@ -50,11 +50,7 @@ class AnnouncementViewHolder(view: View) : BaseCardViewHolder(view), Target {
     }
 
     override fun populate(data: TimestampedObject) {
-        populateAnnouncement(data as Announcement)
-    }
-
-    private fun populateAnnouncement(announcement: Announcement?) {
-        if (announcement == null) return
+        val announcement: Announcement = data as Announcement
         //cancel previous net requests
         Picasso.get().cancelRequest(this)
         Picasso.get().cancelRequest(itemView.announcement_card_image)
