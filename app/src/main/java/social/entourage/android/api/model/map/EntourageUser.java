@@ -16,7 +16,7 @@ import social.entourage.android.api.model.TimestampedObject;
 /**
  * Created by mihaiionescu on 24/02/16.
  */
-public class TourUser extends TimestampedObject implements Serializable {
+public class EntourageUser extends TimestampedObject implements Serializable {
 
     private static final long serialVersionUID = 6896801856163434601L;
 
@@ -149,6 +149,7 @@ public class TourUser extends TimestampedObject implements Serializable {
         return requestDate;
     }
 
+    @NonNull
     @Override
     public String hashString() {
         return HASH_STRING_HEAD + userId;
@@ -168,12 +169,12 @@ public class TourUser extends TimestampedObject implements Serializable {
     public boolean equals(final Object o) {
         if (o == null || o.getClass() != this.getClass()) return false;
         //return (this.userId == ((TourUser)o).userId) && (this.status.equals(((TourUser)o).status));
-        return this.userId == ((TourUser)o).userId;
+        return this.userId == ((EntourageUser)o).userId;
     }
 
     @NonNull
-    public TourUser clone() {
-        TourUser clone = new TourUser();
+    public EntourageUser clone() {
+        EntourageUser clone = new EntourageUser();
         clone.userId = this.userId;
         clone.feedItem = this.feedItem;
         clone.displayName = this.displayName;
@@ -194,29 +195,29 @@ public class TourUser extends TimestampedObject implements Serializable {
     // INNER CLASSES
     // ----------------------------------
 
-    public static class TourUserWrapper {
+    public static class EntourageUserWrapper {
 
-        private TourUser user;
+        private EntourageUser user;
 
-        public TourUser getUser() {
+        public EntourageUser getUser() {
             return user;
         }
 
-        public void setUser(TourUser user) {
+        public void setUser(EntourageUser user) {
             this.user = user;
         }
 
     }
 
-    public static class TourUsersWrapper {
+    public static class EntourageUsersWrapper {
 
-        private List<TourUser> users;
+        private List<EntourageUser> users;
 
-        public List<TourUser> getUsers() {
+        public List<EntourageUser> getUsers() {
             return users;
         }
 
-        public void setUsers(List<TourUser> users) {
+        public void setUsers(List<EntourageUser> users) {
             this.users = users;
         }
 

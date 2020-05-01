@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 import social.entourage.android.api.model.Partner;
 
-public class TourAuthor implements Serializable {
+public class FeedItemAuthor implements Serializable {
 
     private static final long serialVersionUID = 3412722274231780458L;
 
@@ -30,7 +30,7 @@ public class TourAuthor implements Serializable {
     // CONSTRUCTORS
     // ----------------------------------
 
-    public TourAuthor(final String avatarURLAsString, final int userID, final String userName, Partner partner) {
+    public FeedItemAuthor(final String avatarURLAsString, final int userID, final String userName, Partner partner) {
         this.avatarURLAsString = avatarURLAsString;
         this.userID = userID;
         this.userName = userName;
@@ -78,7 +78,7 @@ public class TourAuthor implements Serializable {
     // PUBLIC METHODS
     // ----------------------------------
 
-    public boolean isSame(TourAuthor author) {
+    public boolean isSame(FeedItemAuthor author) {
         if (author == null) return false;
         if (userID != author.userID) return false;
         if (avatarURLAsString != null) {

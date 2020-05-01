@@ -21,13 +21,12 @@ import com.google.maps.android.clustering.view.DefaultClusterRenderer
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_guide_map.*
 import kotlinx.android.synthetic.main.fragment_guide_map.fragment_map_longclick
-import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.layout_guide_longclick.*
 import social.entourage.android.*
 import social.entourage.android.api.ApiConnectionListener
 import social.entourage.android.api.model.guide.Poi
-import social.entourage.android.api.model.map.Category
-import social.entourage.android.api.model.tape.EntouragePoiRequest.OnPoiViewRequestedEvent
+import social.entourage.android.api.model.guide.Category
+import social.entourage.android.api.tape.EntouragePoiRequest.OnPoiViewRequestedEvent
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted
 import social.entourage.android.api.tape.Events.OnSolidarityGuideFilterChanged
 import social.entourage.android.base.EntourageLinkMovementMethod

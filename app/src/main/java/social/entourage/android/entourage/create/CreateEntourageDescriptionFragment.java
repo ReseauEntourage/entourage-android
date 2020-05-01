@@ -134,12 +134,12 @@ public class CreateEntourageDescriptionFragment extends EntourageDialogFragment 
             descriptionEditText.setSelection(entourageDescription.length());
         }
         if (entourageCategory != null) {
-            String descriptionExample = entourageCategory.getDescriptionExample();
+            String descriptionExample = entourageCategory.descriptionExample;
             if (descriptionExample != null && descriptionExample.length() > 0) {
                 descriptionEditText.setHint(descriptionExample);
             }
         }
-        if (BaseEntourage.TYPE_OUTING.equalsIgnoreCase(entourageGroupType)) {
+        if (BaseEntourage.GROUPTYPE_OUTING.equalsIgnoreCase(entourageGroupType)) {
             descriptionEditText.setHint(R.string.entourage_description_fragment_hint_outing);
             infoTextView.setText(R.string.entourage_description_fragment_info_outing);
         }

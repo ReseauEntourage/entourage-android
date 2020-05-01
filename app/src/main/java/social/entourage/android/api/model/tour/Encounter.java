@@ -1,6 +1,8 @@
-package social.entourage.android.api.model.map;
+package social.entourage.android.api.model.tour;
 
 import android.location.Address;
+
+import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -157,6 +159,7 @@ public class Encounter extends TimestampedObject implements Serializable {
         return creationDate;
     }
 
+    @NonNull
     @Override
     public String hashString() {
         return HASH_STRING_HEAD + id;

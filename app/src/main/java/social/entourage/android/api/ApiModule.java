@@ -23,7 +23,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import social.entourage.android.BuildConfig;
 import social.entourage.android.Constants;
-import social.entourage.android.api.model.Newsfeed;
+import social.entourage.android.api.model.NewsfeedItem;
 import social.entourage.android.api.tape.EncounterTapeTaskQueue;
 import social.entourage.android.authentication.AuthenticationInterceptor;
 import social.entourage.android.tour.encounter.CreateEncounterPresenter;
@@ -80,7 +80,7 @@ public class ApiModule {
                 }
             })
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-            .registerTypeAdapter(Newsfeed.class, new Newsfeed.NewsfeedJsonAdapter())
+            .registerTypeAdapter(NewsfeedItem.class, new NewsfeedItem.NewsfeedItemJsonAdapter())
             .create();
 
         return new Retrofit.Builder()

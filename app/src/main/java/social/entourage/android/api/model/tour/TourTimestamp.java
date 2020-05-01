@@ -1,10 +1,13 @@
-package social.entourage.android.api.model.map;
+package social.entourage.android.api.model.tour;
 
 import android.graphics.Bitmap;
+
+import androidx.annotation.NonNull;
 
 import java.util.Date;
 
 import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.api.model.map.LocationPoint;
 
 /**
  * Created by mihaiionescu on 29/02/16.
@@ -21,7 +24,7 @@ public class TourTimestamp extends TimestampedObject {
     private Date timestamp;
     private int feedType;
     private String status;
-    private TourPoint tourPoint;
+    private LocationPoint locationPoint;
     private long duration; //millis
     private float distance; //meters
     private Bitmap snapshot;
@@ -37,12 +40,12 @@ public class TourTimestamp extends TimestampedObject {
         distance = 0.0f;
     }
 
-    public TourTimestamp(Date date, Date timestamp, int feedType, String status, TourPoint tourPoint, long duration, float distance) {
+    public TourTimestamp(Date date, Date timestamp, int feedType, String status, LocationPoint locationPoint, long duration, float distance) {
         this.date = date;
         this.timestamp = timestamp;
         this.feedType = feedType;
         this.status = status;
-        this.tourPoint = tourPoint;
+        this.locationPoint = locationPoint;
         this.duration = duration;
         this.distance = distance;
     }
@@ -83,12 +86,12 @@ public class TourTimestamp extends TimestampedObject {
         this.status = status;
     }
 
-    public TourPoint getTourPoint() {
-        return tourPoint;
+    public LocationPoint getLocationPoint() {
+        return locationPoint;
     }
 
-    public void setTourPoint(final TourPoint tourPoint) {
-        this.tourPoint = tourPoint;
+    public void setLocationPoint(final LocationPoint locationPoint) {
+        this.locationPoint = locationPoint;
     }
 
     public Bitmap getSnapshot() {
@@ -112,6 +115,7 @@ public class TourTimestamp extends TimestampedObject {
         return timestamp;
     }
 
+    @NonNull
     @Override
     public String hashString() {
         return HASH_STRING_HEAD + duration;

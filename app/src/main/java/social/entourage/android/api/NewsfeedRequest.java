@@ -4,7 +4,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import social.entourage.android.api.model.EntourageDate;
-import social.entourage.android.api.model.Newsfeed;
+import social.entourage.android.api.model.NewsfeedItem;
 
 /**
  * Created by mihaiionescu on 05/05/16.
@@ -12,7 +12,7 @@ import social.entourage.android.api.model.Newsfeed;
 public interface NewsfeedRequest {
 
     @GET("feeds")
-    Call<Newsfeed.NewsfeedWrapper> retrieveFeed(
+    Call<NewsfeedItem.NewsfeedItemWrapper> retrieveFeed(
             @Query("before") EntourageDate before,
             @Query("longitude") double longitude,
             @Query("latitude") double latitude,
@@ -27,7 +27,7 @@ public interface NewsfeedRequest {
     );
 
     @GET("feeds")
-    Call<Newsfeed.NewsfeedWrapper> retrieveFeedByPage(
+    Call<NewsfeedItem.NewsfeedItemWrapper> retrieveFeedByPage(
             @Query("page") int page,
             @Query("per") int per,
             @Query("longitude") double longitude,
@@ -40,7 +40,7 @@ public interface NewsfeedRequest {
     );
 
     @GET("myfeeds")
-    Call<Newsfeed.NewsfeedWrapper> retrieveMyFeeds(
+    Call<NewsfeedItem.NewsfeedItemWrapper> retrieveMyFeeds(
             @Query("page") int page,
             @Query("per") int per,
             @Query("entourage_types") String entourageTypes,
@@ -52,7 +52,7 @@ public interface NewsfeedRequest {
     );
 
     @GET("feeds/outings")
-    Call<Newsfeed.NewsfeedWrapper> retrieveOutings(
+    Call<NewsfeedItem.NewsfeedItemWrapper> retrieveOutings(
             @Query("longitude") double longitude,
             @Query("latitude") double latitude,
             @Query("starting_after") String startingAfterOutingUUID

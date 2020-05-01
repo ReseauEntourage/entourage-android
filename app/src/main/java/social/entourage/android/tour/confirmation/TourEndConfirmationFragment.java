@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.MainActivity;
 import social.entourage.android.R;
-import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.api.model.tour.Tour;
 import social.entourage.android.base.EntourageDialogFragment;
 
 @SuppressWarnings("WeakerAccess")

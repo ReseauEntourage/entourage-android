@@ -23,9 +23,8 @@ import social.entourage.android.R
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.map.BaseEntourage
-import social.entourage.android.api.model.map.Entourage
 import social.entourage.android.api.model.map.FeedItem
-import social.entourage.android.api.model.map.TourUser
+import social.entourage.android.api.model.map.EntourageUser
 import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.OnUserJoinRequestUpdateEvent
 import social.entourage.android.entourage.EntourageCloseFragment
@@ -98,7 +97,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         if (entourageServiceConnection.boundService != null) {
             showProgressBar()
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN)
-            entourageServiceConnection.boundService!!.requestToJoinEntourage(feedItem as Entourage?)
+            entourageServiceConnection.boundService!!.requestToJoinEntourage(feedItem as BaseEntourage?)
             entourage_info_options?.visibility = View.GONE
         } else {
             EntourageSnackbar.make(entourage_information_coordinator_layout!!,  R.string.tour_join_request_message_error, Snackbar.LENGTH_SHORT).show()
@@ -107,7 +106,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
 
     override fun showInviteSource() {
         entourage_info_invite_source_layout?.visibility = View.VISIBLE
-        invite_source_description?.setText(if (BaseEntourage.TYPE_OUTING.equals(feedItem.groupType, ignoreCase = true)) R.string.invite_source_description_outing else R.string.invite_source_description)
+        invite_source_description?.setText(if (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.groupType, ignoreCase = true)) R.string.invite_source_description_outing else R.string.invite_source_description)
     }
 
     // ----------------------------------
@@ -148,9 +147,9 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         val hideJoinButton = feedItem.isPrivate || FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus || feedItem.isFreezed
         entourage_option_join?.visibility =  if (hideJoinButton) View.GONE else View.VISIBLE
         entourage_option_contact?.visibility = View.GONE
-        if (feedItem.author == null) return
         val myId = EntourageApplication.me(activity)?.id ?: return
-        if (feedItem.author.userID != myId) {
+        if (feedItem.author == null) return
+        if (feedItem.author!!.userID != myId) {
             if ((FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus || FeedItem.JOIN_STATUS_ACCEPTED == feedItem.joinStatus) && !feedItem.isFreezed) {
                 entourage_option_quit?.visibility = View.VISIBLE
                 entourage_option_quit?.setText(if (FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus) R.string.tour_info_options_cancel_request else R.string.tour_info_options_quit_tour)
@@ -169,7 +168,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         }
         if (entourage_option_promote != null && membersList != null) {
             for (member in membersList!!) {
-                if (member !is TourUser || member.userId != myId) continue
+                if (member !is EntourageUser || member.userId != myId) continue
                 if (member.groupRole?.equals("organizer", ignoreCase = true) == true) {
                     entourage_option_promote.visibility = View.VISIBLE
                 }
@@ -200,7 +199,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         } else {
             // add marker
             val drawable = AppCompatResources.getDrawable(requireContext(), feedItem.heatmapResourceId)
-            val icon = Utils.getBitmapDescriptorFromDrawable(drawable!!, BaseEntourage.getMarkerSize(context), BaseEntourage.getMarkerSize(context))
+            val icon = Utils.getBitmapDescriptorFromDrawable(drawable!!, BaseEntourage.getMarkerSize(requireContext()), BaseEntourage.getMarkerSize(requireContext()))
             val markerOptions = MarkerOptions()
                     .icon(icon)
                     .position(position)
@@ -216,39 +215,39 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
     override fun updateMetadataView() {
         if(entourage_info_metadata_layout==null) return
         // show the view only for outing
-        val metadata: BaseEntourage.Metadata? = if (feedItem is Entourage) (feedItem as Entourage).metadata else null
-        val metadataVisible = (BaseEntourage.TYPE_OUTING.equals(feedItem.groupType, ignoreCase = true) && metadata != null)
+        val metadata: BaseEntourage.Metadata? = if (feedItem is BaseEntourage) (feedItem as BaseEntourage).metadata else null
+        val metadataVisible = (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.groupType, ignoreCase = true) && metadata != null)
         entourage_info_metadata_layout.visibility = if (metadataVisible) View.VISIBLE else View.GONE
 
         if (!metadataVisible) return
 
         // populate the data
         if (feedItem.author != null) {
-            entourage_info_metadata_organiser?.text = getString(R.string.tour_info_metadata_organiser_format, feedItem.author.userName)
+            entourage_info_metadata_organiser?.text = getString(R.string.tour_info_metadata_organiser_format, feedItem.author!!.userName)
         }
         if (metadata == null) return
-        if (BaseEntourage.TYPE_OUTING.equals(feedItem.groupType, ignoreCase = true)) {
+        if (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.groupType, ignoreCase = true)) {
             //Format dates same day or different days.
             val startCalendar = Calendar.getInstance()
-            startCalendar.time = (feedItem as Entourage).metadata.startDate
+            startCalendar.time = (feedItem as BaseEntourage).metadata!!.startDate
             val endCalendar = Calendar.getInstance()
-            endCalendar.time = (feedItem as Entourage).metadata.endDate
+            endCalendar.time = (feedItem as BaseEntourage).metadata!!.endDate
             if (startCalendar[Calendar.DAY_OF_YEAR] == endCalendar[Calendar.DAY_OF_YEAR]) {
                 entourage_info_metadata_datetime?.text = getString(R.string.tour_info_metadata_dateStart_hours_format,
-                        metadata.getStartDateFullAsString(context),
-                        metadata.getStartEndTimesAsString(context))
+                        metadata.getStartDateFullAsString(requireContext()),
+                        metadata.getStartEndTimesAsString(requireContext()))
             } else {
                 //du xx à hh au yy à hh
                 entourage_info_metadata_datetime?.text = getString(R.string.tour_info_metadata_dateStart_End_hours_format,
-                        metadata.getStartDateFullAsString(context),
-                        metadata.getStartTimeAsString(context),
-                        metadata.getEndDateFullAsString(context),
-                        metadata.getEndTimeAsString(context))
+                        metadata.getStartDateFullAsString(requireContext()),
+                        metadata.getStartTimeAsString(requireContext()),
+                        metadata.getEndDateFullAsString(requireContext()),
+                        metadata.getEndTimeAsString(requireContext()))
             }
         } else {
             entourage_info_metadata_datetime?.text = getString(R.string.tour_info_metadata_date_format,
-                    metadata.getStartDateAsString(context),
-                    metadata.getStartTimeAsString(context))
+                    metadata.getStartDateAsString(requireContext()),
+                    metadata.getStartTimeAsString(requireContext()))
         }
 
         setAddressView(metadata)

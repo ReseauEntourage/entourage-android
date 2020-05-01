@@ -1,4 +1,4 @@
-package social.entourage.android.api.model.map;
+package social.entourage.android.api.model;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import social.entourage.android.R;
+import social.entourage.android.api.model.map.BaseEntourage;
 
 /**
  * Created by Mihai Ionescu on 25/05/2018.
@@ -69,10 +70,10 @@ public class UserMembership implements Serializable {
     }
 
     public Drawable getIconDrawable(final Context context) {
-        if (Entourage.TYPE_PRIVATE_CIRCLE.equalsIgnoreCase(type)) {
+        if (BaseEntourage.GROUPTYPE_PRIVATE_CIRCLE.equalsIgnoreCase(type)) {
             return AppCompatResources.getDrawable(context, R.drawable.ic_favorite_border_black_24dp);
         }
-        if (Entourage.TYPE_NEIGHBORHOOD.equalsIgnoreCase(type)) {
+        if (BaseEntourage.GROUPTYPE_NEIGHBORHOOD.equalsIgnoreCase(type)) {
             return AppCompatResources.getDrawable(context, R.drawable.ic_neighborhood);
         }
         return null;

@@ -17,10 +17,12 @@ import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.layout_map_longclick.*
 import kotlinx.android.synthetic.main.layout_map_longclick.view.*
 import social.entourage.android.*
-import social.entourage.android.api.model.Newsfeed
+import social.entourage.android.api.model.NewsfeedItem
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.TourType
+import social.entourage.android.api.model.tour.TourType
 import social.entourage.android.api.model.map.*
+import social.entourage.android.api.model.tour.Encounter
+import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events
 import social.entourage.android.location.EntourageLocation
 import social.entourage.android.location.LocationUtils
@@ -110,8 +112,8 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     private fun onStartNewTour() {
         launcher_tour_go?.isEnabled = false
         launcher_tour_progressBar?.visibility = View.VISIBLE
-        val tourType = TourType.findByRessourceId(launcher_tour_type.checkedRadioButtonId) ?: return
-        startTour(tourType.getName())
+        val tourType = TourType.findByRessourceId(launcher_tour_type.checkedRadioButtonId)
+        startTour(tourType.typeName)
         when (tourType) {
             TourType.MEDICAL -> {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_TOUR_MEDICAL)
@@ -365,7 +367,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
         drawCurrentLocation(newPoint)
     }
 
-    override fun onTourResumed(pointsToDraw: List<TourPoint>, tourType: String, startDate: Date) {
+    override fun onTourResumed(pointsToDraw: List<LocationPoint>, tourType: String, startDate: Date) {
         if (pointsToDraw.isNotEmpty()) {
             drawCurrentTour(pointsToDraw, tourType, startDate)
             previousCoordinates = pointsToDraw[pointsToDraw.size - 1].location
@@ -397,7 +399,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
         }
     }
 
-    override fun redrawWholeNewsfeed(newsFeeds: List<Newsfeed>) {
+    override fun redrawWholeNewsfeed(newsFeeds: List<NewsfeedItem>) {
         //TODO do we need newsFeeds variable here ?
         if (map != null && newsFeeds.isNotEmpty() && newsfeedAdapter != null) {
             for (polyline in drawnToursMap) {
@@ -414,7 +416,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
                     }
                     drawNearbyTour(tour, false)
                 } else if (timestampedObject.type == TimestampedObject.ENTOURAGE_CARD) {
-                    drawNearbyEntourage(timestampedObject as Entourage)
+                    drawNearbyEntourage(timestampedObject as BaseEntourage)
                 }
             }
             mapClusterManager?.cluster()
@@ -535,7 +537,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
         }
     }
 
-    private fun drawCurrentTour(pointsToDraw: List<TourPoint>, tourType: String, startDate: Date) {
+    private fun drawCurrentTour(pointsToDraw: List<LocationPoint>, tourType: String, startDate: Date) {
         if (map != null && pointsToDraw.isNotEmpty()) {
             val line = PolylineOptions()
             color = getTrackColor(true, tourType, startDate)

@@ -29,7 +29,7 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
-import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.model.tour.Encounter;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.location.LocationFragment;
 import social.entourage.android.tools.BusProvider;

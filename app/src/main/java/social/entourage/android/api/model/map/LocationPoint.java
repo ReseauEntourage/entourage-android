@@ -12,7 +12,7 @@ import java.util.List;
 import social.entourage.android.location.EntourageLocation;
 
 @SuppressWarnings("unused")
-public class TourPoint implements Serializable {
+public class LocationPoint implements Serializable {
     
     private static final long serialVersionUID = -5620241951845660404L;
 
@@ -33,14 +33,14 @@ public class TourPoint implements Serializable {
     // CONSTRUCTORS
     // ----------------------------------
 
-    public TourPoint(double latitude, double longitude) {
+    public LocationPoint(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.accuracy = 0.0f;
         passingTime = new Date();
     }
 
-    public TourPoint(double latitude, double longitude, float accuracy) {
+    public LocationPoint(double latitude, double longitude, float accuracy) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.accuracy = accuracy;
@@ -83,7 +83,7 @@ public class TourPoint implements Serializable {
     // HELPERS
     // ----------------------------------
 
-    public float distanceTo(TourPoint otherPoint) {
+    public float distanceTo(LocationPoint otherPoint) {
         if (otherPoint == null) return 0;
         float[] result = {0};
         Location.distanceBetween(this.latitude, this.longitude, otherPoint.latitude, otherPoint.longitude, result);
@@ -95,7 +95,7 @@ public class TourPoint implements Serializable {
 
         Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
         if (currentLocation != null) {
-            float distance = distanceTo(new TourPoint(currentLocation.getLatitude(), currentLocation.getLongitude()));
+            float distance = distanceTo(new LocationPoint(currentLocation.getLatitude(), currentLocation.getLongitude()));
             if(distance<maxDistanceToShow) {
                 if (distance < 1000.0f) {
                     distanceAsString = String.format("%.0f m", distance);
@@ -115,16 +115,16 @@ public class TourPoint implements Serializable {
     public static class TourPointWrapper {
 
         @SerializedName("tour_points")
-        private List<TourPoint> tourPoints;
+        private List<LocationPoint> tourPoints;
 
         private float distance;
 
-        public List<TourPoint> getTourPoints() {
+        public List<LocationPoint> getTourPoints() {
             return tourPoints;
         }
 
-        public void setTourPoints(List<TourPoint> tourPoint) {
-            this.tourPoints = tourPoint;
+        public void setTourPoints(List<LocationPoint> locationPoint) {
+            this.tourPoints = locationPoint;
         }
 
         public void setDistance(float distance) {

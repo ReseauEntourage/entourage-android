@@ -11,9 +11,7 @@ import kotlinx.android.synthetic.main.fragment_map_filter.*
 import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.map.BaseEntourage
-import social.entourage.android.api.model.map.Entourage
 import social.entourage.android.entourage.category.EntourageCategoryManager
-import social.entourage.android.map.filter.MapFilterFactory
 import java.util.*
 
 class MapFilterFragment  : BaseMapFilterFragment() {
@@ -53,7 +51,7 @@ class MapFilterFragment  : BaseMapFilterFragment() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_ASK)
         val checked = map_filter_entourage_demand_switch.isChecked
         map_filter_entourage_demand_details_layout.visibility = if (checked) View.VISIBLE else View.GONE
-        val switchList = actionSwitches[BaseEntourage.TYPE_DEMAND]!!
+        val switchList = actionSwitches[BaseEntourage.GROUPTYPE_ACTION_DEMAND]!!
         for (categorySwitch in switchList) {
             categorySwitch.isChecked = checked
         }
@@ -63,7 +61,7 @@ class MapFilterFragment  : BaseMapFilterFragment() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_OFFERS)
         val checked = map_filter_entourage_contribution_switch.isChecked
         map_filter_entourage_contribution_details_layout.visibility = if (checked) View.VISIBLE else View.GONE
-        val switchList = actionSwitches[BaseEntourage.TYPE_CONTRIBUTION]!!
+        val switchList = actionSwitches[BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION]!!
         for (categorySwitch in switchList) {
             categorySwitch.isChecked = checked
         }
@@ -100,10 +98,10 @@ class MapFilterFragment  : BaseMapFilterFragment() {
         map_filter_past_events_switch.isChecked = mapFilter.showPastEvents
         map_filter_entourage_demand_switch.isChecked = mapFilter.entourageTypeDemand
         map_filter_entourage_demand_details_layout.visibility = if (mapFilter.entourageTypeDemand) View.VISIBLE else View.GONE
-        addEntourageCategories(BaseEntourage.TYPE_DEMAND, map_filter_entourage_demand_details_layout, mapFilter)
+        addEntourageCategories(BaseEntourage.GROUPTYPE_ACTION_DEMAND, map_filter_entourage_demand_details_layout, mapFilter)
         map_filter_entourage_contribution_switch.isChecked = mapFilter.entourageTypeContribution
         map_filter_entourage_contribution_details_layout.visibility = if (mapFilter.entourageTypeContribution) View.VISIBLE else View.GONE
-        addEntourageCategories(BaseEntourage.TYPE_CONTRIBUTION, map_filter_entourage_contribution_details_layout, mapFilter)
+        addEntourageCategories(BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION, map_filter_entourage_contribution_details_layout, mapFilter)
         when (mapFilter.getTimeFrame()) {
             MapFilter.DAYS_1 -> map_filter_time_days_1?.isChecked = true
             MapFilter.DAYS_3 -> map_filter_time_days_3?.isChecked = true
@@ -133,14 +131,12 @@ class MapFilterFragment  : BaseMapFilterFragment() {
             }
     }
 
-    private fun addEntourageCategories(entourageType: String, layout: LinearLayout?, mapFilter: MapFilter) {
+    private fun addEntourageCategories(groupType: String, layout: LinearLayout?, mapFilter: MapFilter) {
         // create the hashmap entrance
         val switchList: MutableList<Switch> = ArrayList()
-        actionSwitches[entourageType] = switchList
+        actionSwitches[groupType] = switchList
         // get the list of categories
-        val categoryManager = EntourageCategoryManager.getInstance()
-        val entourageCategoryList = categoryManager.getEntourageCategoriesForType(entourageType)
-                ?: return
+        val entourageCategoryList = EntourageCategoryManager.getEntourageCategoriesForGroup(groupType)
         for (entourageCategory in entourageCategoryList) {
             // inflate and add the view to the layout
             val view = layoutInflater.inflate(R.layout.layout_filter_item_map, layout, false)

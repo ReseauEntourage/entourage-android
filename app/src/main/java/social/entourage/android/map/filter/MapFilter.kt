@@ -1,7 +1,6 @@
 package social.entourage.android.map.filter
 
 import social.entourage.android.api.model.map.BaseEntourage
-import social.entourage.android.api.model.map.Entourage
 import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import java.io.Serializable
@@ -49,8 +48,8 @@ class MapFilter : MapFilterInterface, Serializable {
     }
 
     override fun validateCategories() {
-        if (entourageTypeDemand) validateCategoriesForType(BaseEntourage.TYPE_DEMAND)
-        if (entourageTypeContribution) validateCategoriesForType(BaseEntourage.TYPE_CONTRIBUTION)
+        if (entourageTypeDemand) validateCategoriesForGroup(BaseEntourage.GROUPTYPE_ACTION_DEMAND)
+        if (entourageTypeContribution) validateCategoriesForGroup(BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)
     }
 
     override fun isDefaultFilter(): Boolean{
@@ -76,9 +75,16 @@ class MapFilter : MapFilterInterface, Serializable {
     // ----------------------------------
     // Methods
     // ----------------------------------
-    fun isCategoryChecked(entourageCategory: EntourageCategory): Boolean {
-        if (BaseEntourage.TYPE_DEMAND == entourageCategory.entourageType) return entourageTypeDemand && entourageCategories.contains(entourageCategory.key)
-        return if (BaseEntourage.TYPE_CONTRIBUTION == entourageCategory.entourageType) entourageTypeContribution && entourageCategories.contains(entourageCategory.key) else false
+    fun isCategoryChecked(actionGroupType: EntourageCategory): Boolean {
+        return when(actionGroupType.groupType) {
+            BaseEntourage.GROUPTYPE_ACTION_DEMAND-> {
+                entourageTypeDemand && entourageCategories.contains(actionGroupType.key)
+            }
+            BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION -> {
+                entourageTypeContribution && entourageCategories.contains(actionGroupType.key)
+            }
+            else -> false
+        }
     }
 
     fun setCategoryChecked(actionCategory: String, checked: Boolean) {
@@ -94,26 +100,19 @@ class MapFilter : MapFilterInterface, Serializable {
     // ----------------------------------
     // Serialization
     // ----------------------------------
-    private fun validateCategoriesForType(actionType: String?) {
+    private fun validateCategoriesForGroup(actionGroup: String) {
         //get the list of categories for this type
-        val categoryList = EntourageCategoryManager.getInstance().getEntourageCategoriesForType(actionType)
-        if (categoryList != null) {
-            var allKeysFalse = true
-            //search for the keys
-            for(category in categoryList) {
-                if (entourageCategories.contains(category.key)) {
-                    allKeysFalse = false
-                    break
-                }
-            }
-            if (allKeysFalse) {
-                //set all keys to true
-                //search for the keys
-                for (category in categoryList) {
-                    entourageCategories.add(category.key)
-                }
+        val categoryList = EntourageCategoryManager.getEntourageCategoriesForGroup(actionGroup)
+        //search for the keys
+        for(category in categoryList) {
+            if (entourageCategories.contains(category.key)) {
+                //allKeysFalse = false
+                return
             }
         }
+        //set all keys to true
+        //search for the keys
+        categoryList.forEach {it.key?.let {key -> entourageCategories.add(key)} }
     }
 
     companion object {

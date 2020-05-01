@@ -6,8 +6,8 @@ import social.entourage.android.R
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.InvitationList
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.map.Entourage
-import social.entourage.android.api.model.map.LoaderCardItem
+import social.entourage.android.api.model.map.BaseEntourage
+import social.entourage.android.api.model.LoaderCardItem
 import social.entourage.android.base.EntourageBaseAdapter
 import social.entourage.android.base.LoaderCardViewHolder
 import social.entourage.android.base.ViewHolderFactory.ViewHolderType
@@ -67,7 +67,7 @@ class MyEntouragesAdapter : EntourageBaseAdapter() {
         }
     }
 
-    fun updateInvitation(entourage: Entourage, status: String) {
+    fun updateInvitation(entourage: BaseEntourage, status: String) {
         var shouldAddInvitation = (status == Invitation.STATUS_PENDING)
         val tempList: List<Invitation> = invitationListObject.invitationList.toList()
         tempList.forEach {

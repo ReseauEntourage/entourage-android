@@ -1,6 +1,6 @@
-package social.entourage.android.api.model.map;
+package social.entourage.android.api.model;
 
-import social.entourage.android.api.model.TimestampedObject;
+import androidx.annotation.NonNull;
 
 import java.util.Date;
 
@@ -10,9 +10,10 @@ public class LoaderCardItem extends TimestampedObject {
         return null;
     }
 
+    @NonNull
     @Override
     public String hashString() {
-        return null;
+        return "LoaderCardItem";
     }
 
     @Override

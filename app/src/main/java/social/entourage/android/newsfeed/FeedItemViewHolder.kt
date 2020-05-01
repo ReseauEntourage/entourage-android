@@ -17,7 +17,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.map.BaseEntourage
 import social.entourage.android.api.model.map.FeedItem
-import social.entourage.android.api.model.map.Tour
+import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.tools.BusProvider.instance
@@ -223,7 +223,7 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
 
     private fun onClickCardPhoto(){
         if (feedItem.author != null) {
-            instance.post(OnUserViewRequestedEvent(feedItem.author.userID))
+            instance.post(OnUserViewRequestedEvent(feedItem.author!!.userID))
         }
 
     }

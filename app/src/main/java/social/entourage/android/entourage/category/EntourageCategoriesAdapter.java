@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import social.entourage.android.R;
-import social.entourage.android.api.model.map.Entourage;
+import social.entourage.android.api.model.map.BaseEntourage;
 
 /**
  * Entourage categories adapter, with the group at index zero acting as an empty header.<br/>
@@ -92,18 +92,18 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
     private static final int GROUP_TYPE_CATEGORY = 1;
 
     private Context context;
-    private List<String> entourageTypeList;
-    private HashMap<String, List<EntourageCategory>> entourageCategoryHashMap;
+    private List<String> groupTypeList;
+    private HashMap<String, List<EntourageCategory>> groupCategoryHashMap;
 
     public EntourageCategory selectedCategory;
     private OnCheckedChangeListener onCheckedChangeListener = new OnCheckedChangeListener();
 
     private boolean isDemand;
 
-    public EntourageCategoriesAdapter(Context context, List<String> entourageTypeList, HashMap<String, List<EntourageCategory>> entourageCategoryHashMap, EntourageCategory selectedCategory,boolean isDemand) {
+    public EntourageCategoriesAdapter(Context context, List<String> groupTypeList, HashMap<String, List<EntourageCategory>> entourageCategoryHashMap, EntourageCategory selectedCategory,boolean isDemand) {
         this.context = context;
-        this.entourageTypeList = entourageTypeList;
-        this.entourageCategoryHashMap = entourageCategoryHashMap;
+        this.groupTypeList = groupTypeList;
+        this.groupCategoryHashMap = entourageCategoryHashMap;
         this.selectedCategory = selectedCategory;
         this.isDemand = isDemand;
     }
@@ -111,13 +111,13 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
     @Override
     public int getChildrenCount(final int groupPosition) {
         if (groupPosition == 0) return 0;
-       return isDemand ? this.entourageCategoryHashMap.get(Entourage.TYPE_DEMAND).size() : this.entourageCategoryHashMap.get(Entourage.TYPE_CONTRIBUTION).size();
+       return isDemand ? this.groupCategoryHashMap.get(BaseEntourage.GROUPTYPE_ACTION_DEMAND).size() : this.groupCategoryHashMap.get(BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION).size();
     }
 
     @Override
     public Object getChild(final int groupPosition, final int childPosition) {
         if (groupPosition == 0) return null;
-        return isDemand ? this.entourageCategoryHashMap.get(Entourage.TYPE_DEMAND).get(childPosition) : this.entourageCategoryHashMap.get(Entourage.TYPE_CONTRIBUTION).get(childPosition);
+        return isDemand ? this.groupCategoryHashMap.get(BaseEntourage.GROUPTYPE_ACTION_DEMAND).get(childPosition) : this.groupCategoryHashMap.get(BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION).get(childPosition);
     }
 
     @Override
@@ -145,7 +145,7 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
             viewHolder.mIcon.clearColorFilter();
             viewHolder.mIcon.setColorFilter(ContextCompat.getColor(context, category.getTypeColorRes()), PorterDuff.Mode.SRC_IN);
 
-            viewHolder.mLabel.setText(category.getTitle());
+            viewHolder.mLabel.setText(category.title);
             if (category.isSelected()) {
                 viewHolder.mLabel.setTypeface(null, Typeface.BOLD);
             } else {
@@ -171,7 +171,7 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
     @Override
     public Object getGroup(final int groupPosition) {
         if (groupPosition == 0) return null;
-        return this.entourageTypeList.get(groupPosition - 1);
+        return this.groupTypeList.get(groupPosition - 1);
     }
 
     @Override
@@ -195,8 +195,8 @@ public class EntourageCategoriesAdapter extends BaseExpandableListAdapter {
         if (groupPosition != 0) {
             TextView label = convertView.findViewById(R.id.entourage_category_group_label);
             if (label != null) {
-                String titleKey = isDemand ? this.entourageTypeList.get(0) : this.entourageTypeList.get(1);
-                label.setText(EntourageCategory.getEntourageTypeDescription(titleKey));
+                String titleKey = isDemand ? this.groupTypeList.get(0) : this.groupTypeList.get(1);
+                label.setText(EntourageCategoryManager.getGroupTypeDescription(titleKey));
             }
         }
 

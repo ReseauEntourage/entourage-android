@@ -13,10 +13,11 @@ import kotlinx.android.synthetic.main.fragment_map.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.PlusFragment
 import social.entourage.android.api.model.Message
-import social.entourage.android.api.model.Newsfeed
+import social.entourage.android.api.model.NewsfeedItem
 import social.entourage.android.api.model.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.map.*
+import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.entourage.FeedItemOptionsFragment
 import social.entourage.android.entourage.category.EntourageCategoryManager
@@ -47,9 +48,9 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
 
     protected open fun checkAction(action: String) {
         when (action) {
-            PlusFragment.KEY_CREATE_CONTRIBUTION -> createAction(EntourageCategoryManager.getInstance().getDefaultCategory(BaseEntourage.TYPE_CONTRIBUTION), BaseEntourage.TYPE_ACTION)
-            PlusFragment.KEY_CREATE_DEMAND -> createAction(EntourageCategoryManager.getInstance().getDefaultCategory(BaseEntourage.TYPE_DEMAND), BaseEntourage.TYPE_ACTION)
-            PlusFragment.KEY_CREATE_OUTING -> createAction(null, BaseEntourage.TYPE_OUTING)
+            PlusFragment.KEY_CREATE_CONTRIBUTION -> createAction(BaseEntourage.GROUPTYPE_ACTION, BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)
+            PlusFragment.KEY_CREATE_DEMAND -> createAction(BaseEntourage.GROUPTYPE_ACTION, BaseEntourage.GROUPTYPE_ACTION_DEMAND)
+            PlusFragment.KEY_CREATE_OUTING -> createAction(BaseEntourage.GROUPTYPE_OUTING)
         }
     }
 
@@ -76,7 +77,7 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
             if (author.isSame(meAsAuthor)) continue
             // Update the tour author
             meAsAuthor.userName = author.userName
-            timestampedObject.author = meAsAuthor
+            timestampedObject.setAuthor(meAsAuthor)
             // Mark as dirty
             dirtyList.add(timestampedObject)
         }
@@ -156,7 +157,7 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
         loaderStop = null
     }
 
-    override fun onUserStatusChanged(user: TourUser, feedItem: FeedItem) {
+    override fun onUserStatusChanged(user: EntourageUser, feedItem: FeedItem) {
         if (activity == null || requireActivity().isFinishing) return
         if (feedItem.type == TimestampedObject.TOUR_CARD || feedItem.type == TimestampedObject.ENTOURAGE_CARD) {
             feedItem.joinStatus = user.status
@@ -172,18 +173,18 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
         isRequestingToJoin--
     }
 
-    override fun removeRedundantNewsfeed(currentFeedList: List<Newsfeed>): List<Newsfeed> {
-        val tempList = super.removeRedundantNewsfeed(currentFeedList).toMutableList()
-        val newList = ArrayList<Newsfeed>()
+    override fun removeRedundantNewsfeed(currentFeedList: List<NewsfeedItem>): List<NewsfeedItem> {
+        val tempList = super.removeRedundantNewsfeed(currentFeedList)
+        val newList = ArrayList<NewsfeedItem>()
         try {
             for (newsfeed in tempList) {
-                val card = newsfeed.data
-                if (card !is TimestampedObject) {
-                    continue
-                }
-                val retrievedCard = newsfeedAdapter?.findCard(card)
-                if (retrievedCard!=null && (Tour.NEWSFEED_TYPE == newsfeed.type) && ((retrievedCard as Tour).isSame(card as Tour))) {
-                    continue
+                if(newsfeed.data == null) continue
+                if(newsfeed.data is Tour) {
+                    val card = newsfeed.data as Tour?
+                    val retrievedCard = newsfeedAdapter?.findCard(card) as Tour?
+                    if (card != null && retrievedCard!=null && retrievedCard.isSame(card)) {
+                        continue
+                    }
                 }
                 newList.add(newsfeed)
             }
@@ -209,7 +210,7 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
         if (content.isTourRelated) {
             val timestampedObject = newsfeedAdapter?.findCard(TimestampedObject.TOUR_CARD, content.joinableId)
             if (timestampedObject is Tour) {
-                val user = TourUser()
+                val user = EntourageUser()
                 user.userId = userId
                 user.status = status
                 entourageService?.notifyListenersUserStatusChanged(user, timestampedObject)

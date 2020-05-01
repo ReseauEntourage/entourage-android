@@ -27,7 +27,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.Stats;
 import social.entourage.android.api.model.User;
-import social.entourage.android.api.model.map.Entourage;
+import social.entourage.android.api.model.map.BaseEntourage;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.configuration.Configuration;
@@ -332,7 +332,7 @@ public class UserFragment extends EntourageDialogFragment {
         }
     }
 
-    void onConversationFound(@Nullable Entourage entourage) {
+    void onConversationFound(@Nullable BaseEntourage entourage) {
         if(entourage==null) return;
         FeedItemInformationFragment entourageInformationFragment = FeedItemInformationFragment.Companion.newInstance(entourage, 0, 0);
         entourageInformationFragment.setShowInfoButton(false);

@@ -9,7 +9,7 @@ import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.clustering.view.DefaultClusterRenderer
 import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
-import social.entourage.android.api.model.map.Category
+import social.entourage.android.api.model.guide.Category
 
 class PoiRenderer(context: Context?, map: GoogleMap?, clusterManager: ClusterManager<Poi?>?) : DefaultClusterRenderer<Poi>(context, map, clusterManager) {
     // ----------------------------------

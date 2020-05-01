@@ -27,9 +27,9 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.api.model.map.Entourage;
+import social.entourage.android.api.model.map.BaseEntourage;
 import social.entourage.android.api.model.map.FeedItem;
-import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.api.model.tour.Tour;
 
 public class TourJoinRequestFragment extends DialogFragment {
 
@@ -99,13 +99,10 @@ public class TourJoinRequestFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_tour_join_request_ok, container, false);
         ButterKnife.bind(this, view);
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                if (getActivity() == null) return;
-                InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) imm.hideSoftInputFromWindow(messageView.getWindowToken(), 0);
-            }
+        view.setOnClickListener(v -> {
+            if (getActivity() == null) return;
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) imm.hideSoftInputFromWindow(messageView.getWindowToken(), 0);
         });
 
         return view;
@@ -120,8 +117,8 @@ public class TourJoinRequestFragment extends DialogFragment {
         if (feedItem != null) {
             int descriptionTextId = R.string.tour_join_request_ok_description_tour;
             if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-                Entourage entourage = (Entourage)feedItem;
-                descriptionTextId = Entourage.TYPE_OUTING.equalsIgnoreCase(entourage.getGroupType()) ? R.string.tour_join_request_ok_description_outing : R.string.tour_join_request_ok_description_entourage;
+                BaseEntourage entourage = (BaseEntourage)feedItem;
+                descriptionTextId = BaseEntourage.GROUPTYPE_OUTING.equalsIgnoreCase(entourage.getGroupType()) ? R.string.tour_join_request_ok_description_outing : R.string.tour_join_request_ok_description_entourage;
             }
             descriptionTextView.setText(descriptionTextId);
         }

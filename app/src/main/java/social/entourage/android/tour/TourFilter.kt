@@ -1,6 +1,6 @@
 package social.entourage.android.tour
 
-import social.entourage.android.api.model.TourType
+import social.entourage.android.api.model.tour.TourType
 import java.io.Serializable
 
 object TourFilter : Serializable {

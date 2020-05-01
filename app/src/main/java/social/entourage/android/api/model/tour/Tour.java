@@ -1,14 +1,17 @@
-package social.entourage.android.api.model.map;
+package social.entourage.android.api.model.tour;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,7 +21,8 @@ import java.util.List;
 
 import social.entourage.android.Constants;
 import social.entourage.android.R;
-import social.entourage.android.api.model.TourType;
+import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.api.model.map.LocationPoint;
 
 @SuppressWarnings("unused")
 public class Tour extends FeedItem implements Serializable {
@@ -31,7 +35,7 @@ public class Tour extends FeedItem implements Serializable {
 
     private final static String HASH_STRING_HEAD = "Tour-";
 
-    public static final String TYPE_TOUR = "tour";
+    public static final String GROUPTYPE_TOUR = "tour";
 
     public static final String KEY_TOUR = "social.entourage.android.KEY_TOUR";
     public static final String KEY_TOUR_ID = "social.entourage.android.KEY_TOUR_ID";
@@ -48,7 +52,8 @@ public class Tour extends FeedItem implements Serializable {
     private int userId;
 
     @SerializedName("tour_type")
-    private String tourType = TourType.BARE_HANDS.getName();
+    @NotNull
+    private String tourType = TourType.BARE_HANDS.getTypeName();
 
     @SerializedName("start_time")
     @Expose(serialize = true, deserialize = true)
@@ -66,7 +71,7 @@ public class Tour extends FeedItem implements Serializable {
 
     @Expose(serialize = false, deserialize = true)
     @SerializedName("tour_points")
-    private List<TourPoint> tourPoints;
+    private List<LocationPoint> tourPoints;
 
     @Expose(serialize = false, deserialize = true)
     @SerializedName("organization_name")
@@ -88,7 +93,7 @@ public class Tour extends FeedItem implements Serializable {
         init();
     }
 
-    public Tour(String tourType) {
+    public Tour(@NonNull String tourType) {
         super();
         this.tourType = tourType;
         this.startTime = new Date();
@@ -108,6 +113,7 @@ public class Tour extends FeedItem implements Serializable {
         return userId;
     }
 
+    @NonNull
     public String getTourType() {
         return tourType;
     }
@@ -116,16 +122,19 @@ public class Tour extends FeedItem implements Serializable {
         return getStatus();
     }
 
+    @NonNull
     @Override
     public Date getCreationTime() { return startTime; }
 
     @Override
+    @NotNull
     public Date getStartTime() { return startTime; }
 
     public Date getEndTime() {
         return endTime;
     }
 
+    @Nullable
     public String getDisplayAddress() { return null; }
 
     public String getDuration() {
@@ -136,7 +145,7 @@ public class Tour extends FeedItem implements Serializable {
         return distance;
     }
 
-    public List<TourPoint> getTourPoints() {
+    public List<LocationPoint> getTourPoints() {
         return tourPoints;
     }
 
@@ -156,7 +165,7 @@ public class Tour extends FeedItem implements Serializable {
         this.userId = userId;
     }
 
-    public void setTourType(String tourType) {
+    public void setTourType(@NonNull String tourType) {
         this.tourType = tourType;
     }
 
@@ -168,7 +177,7 @@ public class Tour extends FeedItem implements Serializable {
         this.startTime = startTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(@NonNull Date endTime) {
         this.endTime = endTime;
     }
 
@@ -180,7 +189,7 @@ public class Tour extends FeedItem implements Serializable {
         this.distance = distance;
     }
 
-    public void setTourPoints(List<TourPoint> tourPoints) {
+    public void setTourPoints(List<LocationPoint> tourPoints) {
         this.tourPoints = tourPoints;
     }
 
@@ -198,7 +207,7 @@ public class Tour extends FeedItem implements Serializable {
         this.distance += distance;
     }
 
-    public void addCoordinate(TourPoint location) {
+    public void addCoordinate(LocationPoint location) {
         this.tourPoints.add(location);
     }
 
@@ -247,26 +256,26 @@ public class Tour extends FeedItem implements Serializable {
     }
 
     public @DrawableRes int getIconRes() {
-        if (TourType.MEDICAL.getName().equals(tourType)) {
+        if (TourType.MEDICAL.getTypeName().equals(tourType)) {
             return R.drawable.ic_tour_medical;
         }
-        else if (TourType.ALIMENTARY.getName().equals(tourType)) {
+        else if (TourType.ALIMENTARY.getTypeName().equals(tourType)) {
             return R.drawable.ic_tour_distributive;
         }
-        else if (TourType.BARE_HANDS.getName().equals(tourType)) {
+        else if (TourType.BARE_HANDS.getTypeName().equals(tourType)) {
             return R.drawable.ic_tour_social;
         }
         return 0;
     }
 
     public static @ColorRes int getTypeColorRes(String type) {
-        if (TourType.MEDICAL.getName().equals(type)) {
+        if (TourType.MEDICAL.getTypeName().equals(type)) {
             return R.color.tour_type_medical;
         }
-        else if (TourType.ALIMENTARY.getName().equals(type)) {
+        else if (TourType.ALIMENTARY.getTypeName().equals(type)) {
             return R.color.tour_type_distributive;
         }
-        else if (TourType.BARE_HANDS.getName().equals(type)) {
+        else if (TourType.BARE_HANDS.getTypeName().equals(type)) {
             return R.color.tour_type_social;
         }
         return R.color.accent;
@@ -294,6 +303,7 @@ public class Tour extends FeedItem implements Serializable {
         return startTime;
     }
 
+    @NonNull
     @Override
     public String hashString() {
         return HASH_STRING_HEAD + id;
@@ -314,25 +324,19 @@ public class Tour extends FeedItem implements Serializable {
     // ----------------------------------
 
     public String getGroupType() {
-        return TYPE_TOUR;
+        return GROUPTYPE_TOUR;
     }
 
-    public String getFeedType() {
-        return tourType;
-    }
-
+    @NonNull
     @Override
     public String getFeedTypeLong(Context context) {
-        if (tourType != null) {
-            if (tourType.equals(TourType.MEDICAL.getName())) {
-                return context.getString(R.string.tour_info_text_type_title, context.getString(R.string.tour_type_medical).toLowerCase());
-            } else if (tourType.equals(TourType.ALIMENTARY.getName())) {
-                return context.getString(R.string.tour_info_text_type_title, context.getString(R.string.tour_type_alimentary).toLowerCase());
-            } else if (tourType.equals(TourType.BARE_HANDS.getName())) {
-                return context.getString(R.string.tour_info_text_type_title, context.getString(R.string.tour_type_bare_hands).toLowerCase());
-            }
+        if (tourType.equals(TourType.MEDICAL.getTypeName())) {
+            return context.getString(R.string.tour_info_text_type_title, context.getString(R.string.tour_type_medical).toLowerCase());
+        } else if (tourType.equals(TourType.ALIMENTARY.getTypeName())) {
+            return context.getString(R.string.tour_info_text_type_title, context.getString(R.string.tour_type_alimentary).toLowerCase());
         }
-        return null;
+        ////Default Type: if (tourType.equals(TourType.BARE_HANDS.getName())) {
+        return context.getString(R.string.tour_info_text_type_title, context.getString(R.string.tour_type_bare_hands).toLowerCase());
     }
 
     @Override
@@ -345,12 +349,12 @@ public class Tour extends FeedItem implements Serializable {
         return "";
     }
 
-    public TourPoint getStartPoint() {
+    public LocationPoint getStartPoint() {
         if (tourPoints == null || tourPoints.size() == 0) return null;
         return tourPoints.get(0);
     }
 
-    public TourPoint getEndPoint() {
+    public LocationPoint getEndPoint() {
         if (tourPoints == null || tourPoints.size() < 1) return null;
         return tourPoints.get(tourPoints.size()-1);
     }
@@ -377,26 +381,18 @@ public class Tour extends FeedItem implements Serializable {
     public static class TourComparatorNewToOld implements Comparator<Tour> {
         @Override
         public int compare(Tour tour1, Tour tour2) {
-            if (tour1.getStartTime() != null && tour2.getStartTime() != null) {
-                Date date1 = tour1.getStartTime();
-                Date date2 = tour2.getStartTime();
-                return date2.compareTo(date1);
-            } else {
-                return 0;
-            }
+            Date date1 = tour1.getStartTime();
+            Date date2 = tour2.getStartTime();
+            return date2.compareTo(date1);
         }
     }
 
     public static class TourComparatorOldToNew implements Comparator<Tour> {
         @Override
         public int compare(Tour tour1, Tour tour2) {
-            if (tour1.getStartTime() != null && tour2.getStartTime() != null) {
-                Date date1 = tour1.getStartTime();
-                Date date2 = tour2.getStartTime();
-                return date1.compareTo(date2);
-            } else {
-                return 0;
-            }
+            Date date1 = tour1.getStartTime();
+            Date date2 = tour2.getStartTime();
+            return date1.compareTo(date2);
         }
     }
 

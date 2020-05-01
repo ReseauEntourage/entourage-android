@@ -16,9 +16,9 @@ import social.entourage.android.api.model.Invitation.InvitationWrapper
 import social.entourage.android.api.model.Invitation.InvitationsWrapper
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.map.BaseEntourage
-import social.entourage.android.api.model.map.Encounter
+import social.entourage.android.api.model.tour.Encounter
 import social.entourage.android.api.model.map.FeedItem
-import social.entourage.android.api.model.map.Tour
+import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.OnTourEncounterViewRequestedEvent
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.entourage.EntourageDisclaimerFragment

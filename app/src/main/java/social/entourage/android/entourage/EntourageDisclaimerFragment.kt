@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_entourage_disclaimer.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.EntourageEvents
 import social.entourage.android.R
-import social.entourage.android.api.model.map.Entourage
+import social.entourage.android.api.model.map.BaseEntourage
 import social.entourage.android.base.EntourageDialogFragment
 
 class EntourageDisclaimerFragment : EntourageDialogFragment() {
@@ -33,7 +33,7 @@ class EntourageDisclaimerFragment : EntourageDialogFragment() {
         // Inflate the layout for this fragment
         val groupType: String? = arguments?.getString(KEY_GROUP_TYPE, null)
         return inflater.inflate(
-                if (Entourage.TYPE_OUTING.equals(groupType, ignoreCase = true)) R.layout.fragment_outing_disclaimer else R.layout.fragment_entourage_disclaimer,
+                if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) R.layout.fragment_outing_disclaimer else R.layout.fragment_entourage_disclaimer,
                 container,
                 false)
     }

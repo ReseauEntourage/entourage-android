@@ -12,8 +12,8 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import social.entourage.android.location.EntourageLocation;
-import social.entourage.android.api.model.Newsfeed;
-import social.entourage.android.api.model.Newsfeed.NewsfeedWrapper;
+import social.entourage.android.api.model.NewsfeedItem;
+import social.entourage.android.api.model.NewsfeedItem.NewsfeedItemWrapper;
 import social.entourage.android.newsfeed.NewsfeedTabItem;
 import social.entourage.android.newsfeed.NewsfeedPagination;
 
@@ -64,7 +64,7 @@ public class EntourageServiceManagerTest {
 
     @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     public class NewsFeedCallbackTest {
-        @Mock private Call<NewsfeedWrapper> call;
+        @Mock private Call<NewsfeedItemWrapper> call;
         @Mock private TourServiceManager manager;
         @Mock private TourService service;
         @Captor private ArgumentCaptor<Throwable> captor;
@@ -101,7 +101,7 @@ public class EntourageServiceManagerTest {
         public class OnResponse {
             @Test
             public void newsFeedCallback_WhenRequestIsCancelled() {
-                Response<NewsfeedWrapper> response = createServerErrorResponse();
+                Response<NewsfeedItemWrapper> response = createServerErrorResponse();
                 given(call.isCanceled()).willReturn(true);
 
                 callback.onResponse(call, response);
@@ -112,7 +112,7 @@ public class EntourageServiceManagerTest {
 
             @Test
             public void newsFeedCallback_WithoutServerException() {
-                Response<NewsfeedWrapper> response = createServerErrorResponse();
+                Response<NewsfeedItemWrapper> response = createServerErrorResponse();
 
                 callback.onResponse(call, response);
 
@@ -123,9 +123,9 @@ public class EntourageServiceManagerTest {
 
             @Test
             public void newsFeedCallback_WithNullList() {
-                NewsfeedWrapper wrapper = new NewsfeedWrapper();
-                wrapper.setNewsfeed(null);
-                Response<NewsfeedWrapper> response = Response.success(wrapper);
+                NewsfeedItemWrapper wrapper = new NewsfeedItemWrapper();
+                wrapper.newsfeedItem = null;
+                Response<NewsfeedItemWrapper> response = Response.success(wrapper);
 
                 callback.onResponse(call, response);
 
@@ -136,10 +136,10 @@ public class EntourageServiceManagerTest {
 
             @Test
             public void newsFeedCallback() {
-                List<Newsfeed> newsFeeds = Collections.singletonList(mock(Newsfeed.class));
-                NewsfeedWrapper wrapper = new NewsfeedWrapper();
-                wrapper.setNewsfeed(newsFeeds);
-                Response<NewsfeedWrapper> response = Response.success(wrapper);
+                List<NewsfeedItem> newsFeeds = Collections.singletonList(mock(NewsfeedItem.class));
+                NewsfeedItemWrapper wrapper = new NewsfeedItemWrapper();
+                wrapper.newsfeedItem = newsFeeds;
+                Response<NewsfeedItemWrapper> response = Response.success(wrapper);
 
                 callback.onResponse(call, response);
 
@@ -147,7 +147,7 @@ public class EntourageServiceManagerTest {
                 verify(service).notifyListenersNewsFeedReceived(newsFeeds);
             }
 
-            private Response<NewsfeedWrapper> createServerErrorResponse() {
+            private Response<NewsfeedItemWrapper> createServerErrorResponse() {
                 ResponseBody body = ResponseBody.create(MediaType.parse("text/plain"), "Internal Server Error");
                 return Response.error(500, body);
             }

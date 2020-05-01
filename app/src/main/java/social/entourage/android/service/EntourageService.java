@@ -33,13 +33,13 @@ import social.entourage.android.api.EncounterRequest;
 import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.NewsfeedRequest;
 import social.entourage.android.api.TourRequest;
-import social.entourage.android.api.model.Newsfeed;
+import social.entourage.android.api.model.NewsfeedItem;
 import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.api.model.map.Entourage;
+import social.entourage.android.api.model.map.BaseEntourage;
+import social.entourage.android.api.model.tour.Encounter;
 import social.entourage.android.api.model.map.FeedItem;
-import social.entourage.android.api.model.map.Tour;
-import social.entourage.android.api.model.map.TourUser;
+import social.entourage.android.api.model.tour.Tour;
+import social.entourage.android.api.model.map.EntourageUser;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.location.LocationUpdateListener;
 import social.entourage.android.newsfeed.NewsfeedTabItem;
@@ -353,7 +353,7 @@ public class EntourageService extends Service {
         if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
             entourageServiceManager.finishTour((Tour) feedItem);
         } else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-            entourageServiceManager.closeEntourage((Entourage) feedItem, success);
+            entourageServiceManager.closeEntourage((BaseEntourage) feedItem, success);
         }
     }
 
@@ -369,11 +369,11 @@ public class EntourageService extends Service {
         if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
             entourageServiceManager.removeUserFromTour((Tour) feedItem, userId);
         } else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-            entourageServiceManager.removeUserFromEntourage((Entourage) feedItem, userId);
+            entourageServiceManager.removeUserFromEntourage((BaseEntourage) feedItem, userId);
         }
     }
 
-    public void requestToJoinEntourage(final Entourage entourage) {
+    public void requestToJoinEntourage(final BaseEntourage entourage) {
         entourageServiceManager.requestToJoinEntourage(entourage);
     }
 
@@ -485,7 +485,7 @@ public class EntourageService extends Service {
         }
     }
 
-    public void notifyListenersUserStatusChanged(final TourUser user, final FeedItem feedItem) {
+    public void notifyListenersUserStatusChanged(final EntourageUser user, final FeedItem feedItem) {
         if(user==null || feedItem==null) {
             return;
         }
@@ -522,7 +522,7 @@ public class EntourageService extends Service {
         }
     }
 
-    void notifyListenersNewsFeedReceived(final List<Newsfeed> newsFeeds) {
+    void notifyListenersNewsFeedReceived(final List<NewsfeedItem> newsFeeds) {
         for (final ApiConnectionListener listener : apiListeners) {
             if(listener instanceof NewsFeedListener) {
                 ((NewsFeedListener) listener).onNewsFeedReceived(newsFeeds);

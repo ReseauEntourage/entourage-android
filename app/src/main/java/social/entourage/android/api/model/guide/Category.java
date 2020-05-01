@@ -1,4 +1,4 @@
-package social.entourage.android.api.model.map;
+package social.entourage.android.api.model.guide;
 
 public class Category {
 

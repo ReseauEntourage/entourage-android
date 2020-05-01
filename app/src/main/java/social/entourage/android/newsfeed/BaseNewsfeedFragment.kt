@@ -34,6 +34,7 @@ import kotlinx.android.synthetic.main.layout_map_longclick.*
 import social.entourage.android.*
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.map.*
+import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.configuration.Configuration
@@ -82,10 +83,10 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     // keeps tracks of the attached fragments
     private var fragmentLifecycleCallbacks: NewsfeedFragmentLifecycleCallbacks? = null
 
-    // requested entourage group type
-    private var entourageGroupType: String? = null
+    // requested group type
+    private lateinit var groupType: String
 
-    // requested entourage group type
+    // requested entourage category
     private var entourageCategory: EntourageCategory? = null
 
     // current selected tab
@@ -212,7 +213,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         //check if we are not already displaying the tour
         val fragmentManager = activity?.supportFragmentManager ?: return
         val entourageInformationFragment = fragmentManager.findFragmentByTag(FeedItemInformationFragment.TAG) as EntourageInformationFragment?
-        if (entourageInformationFragment != null && entourageInformationFragment.getItemType() == feedItem.type.toInt() && entourageInformationFragment.feedItemId != null && entourageInformationFragment.feedItemId.equals(feedItem.uuid, ignoreCase = true)) {
+        if (entourageInformationFragment != null && entourageInformationFragment.getItemType() == feedItem.type && entourageInformationFragment.feedItemId != null && entourageInformationFragment.feedItemId.equals(feedItem.uuid, ignoreCase = true)) {
             //TODO refresh the tour info screen
             return
         }
@@ -235,7 +236,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                     entourageService?.requestToJoinTour(timestampedObject as Tour)
                 }
                 TimestampedObject.ENTOURAGE_CARD -> {
-                    entourageService?.requestToJoinEntourage(timestampedObject as Entourage)
+                    entourageService?.requestToJoinEntourage(timestampedObject as BaseEntourage)
                 }
                 else -> {
                     isRequestingToJoin--
@@ -252,7 +253,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
         // Check if we need to show the entourage disclaimer
         if (Configuration.showEntourageDisclaimer()) {
-            presenter.displayEntourageDisclaimer(entourageGroupType)
+            presenter.displayEntourageDisclaimer(groupType)
         } else {
             (activity as MainActivity?)?.onEntourageDisclaimerAccepted(null)
         }
@@ -260,7 +261,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     fun createEntourage() {
         var location = EntourageLocation.getInstance().lastCameraPosition.target
-        if (!BaseEntourage.TYPE_OUTING.equals(entourageGroupType, ignoreCase = true)) {
+        if (!BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) {
             // For demand/contribution, by default select the action zone location, if set
             val address = EntourageApplication.me(activity)?.address
             if (address != null) {
@@ -271,7 +272,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             location = longTapCoordinates
             longTapCoordinates = null
         }
-        presenter.createEntourage(location, entourageGroupType!!, entourageCategory)
+        presenter.createEntourage(location, groupType, entourageCategory)
     }
 
     protected fun refreshFeed() {
@@ -458,7 +459,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         }
     }
 
-    override fun onNewsFeedReceived(newsFeeds: List<Newsfeed>) {
+    override fun onNewsFeedReceived(newsFeeds: List<NewsfeedItem>) {
         if (newsfeedAdapter == null || !isAdded) {
             pagination.isLoading = false
             pagination.isRefreshing = false
@@ -497,13 +498,13 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         pagination.isRefreshing = false
     }
 
-    protected open fun redrawWholeNewsfeed(newsFeeds: List<Newsfeed>) {
+    protected open fun redrawWholeNewsfeed(newsFeeds: List<NewsfeedItem>) {
         //TODO do we need newsFeeds variable here ?
         if (map != null && newsFeeds.isNotEmpty() && newsfeedAdapter != null) {
             //redraw the whole newsfeed
             for (timestampedObject in newsfeedAdapter!!.items) {
                 if (timestampedObject.type == TimestampedObject.ENTOURAGE_CARD) {
-                    drawNearbyEntourage(timestampedObject as Entourage)
+                    drawNearbyEntourage(timestampedObject as BaseEntourage)
                 }
             }
             mapClusterManager?.cluster()
@@ -554,15 +555,21 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         toggleToursList()
     }
 
-    fun createAction(newEntourageCategory: EntourageCategory?, newEntourageGroupType: String) {
-        entourageCategory = newEntourageCategory
-        entourageGroupType = newEntourageGroupType
+    fun createAction(newGroupType: String, newActionGroupType: String) {
+        entourageCategory = EntourageCategoryManager.getDefaultCategory(newActionGroupType)
+        groupType = newGroupType
         entourageCategory?.isNewlyCreated = true
         displayEntourageDisclaimer()
     }
 
+    fun createAction(newEntourageGroupType: String) {
+        entourageCategory = null
+        groupType = newEntourageGroupType
+        displayEntourageDisclaimer()
+    }
+
     private fun onCreateEntourageHelpAction() {
-        createAction(EntourageCategoryManager.getInstance().getDefaultCategory(BaseEntourage.TYPE_DEMAND), BaseEntourage.TYPE_ACTION)
+        createAction(BaseEntourage.GROUPTYPE_ACTION_DEMAND, BaseEntourage.GROUPTYPE_ACTION_DEMAND)
     }
 
     open fun onShowFilter() {
@@ -603,7 +610,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         if (feedItem.author == null) {
             return
         }
-        if (feedItem.author.userID != myId) {
+        if (feedItem.author!!.userID != myId) {
             return
         }
         if (!feedItem.isClosed) {
@@ -778,7 +785,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         if (entourageService != null && content.isEntourageRelated) {
             val timestampedObject = newsfeedAdapter?.findCard(TimestampedObject.ENTOURAGE_CARD, content.joinableId)
                     ?: return
-            val user = TourUser()
+            val user = EntourageUser()
             user.userId = userId
             user.status = status
             entourageService!!.notifyListenersUserStatusChanged(user, timestampedObject as FeedItem)
@@ -807,22 +814,20 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         super.updateGeolocBanner(active)
     }
 
-    protected open fun removeRedundantNewsfeed(currentFeedList: List<Newsfeed>): List<Newsfeed> {
-        val newsFeedList = ArrayList<Newsfeed>()
-        for(newsfeed: Newsfeed in currentFeedList) {
-            val card = newsfeed.data
-            if (card !is TimestampedObject) {
-                continue
-            }
+    protected open fun removeRedundantNewsfeed(currentFeedList: List<NewsfeedItem>): List<NewsfeedItem> {
+        val newsFeedList = ArrayList<NewsfeedItem>()
+        for(newsfeedItem: NewsfeedItem in currentFeedList) {
+            if(newsfeedItem.data==null) continue
+            val card = (newsfeedItem.data as TimestampedObject?) ?: continue
             val retrievedCard = newsfeedAdapter?.findCard(card)
             if(retrievedCard!=null) {
-                if ((BaseEntourage.NEWSFEED_TYPE == newsfeed.type) && ((retrievedCard as Entourage).isSame(card as Entourage))) {
+                if ((retrievedCard is BaseEntourage) && (card is BaseEntourage) && (retrievedCard.isSame(card))) {
                     continue
-                } else if (Announcement.NEWSFEED_TYPE == newsfeed.type) {
+                } else if (retrievedCard is Announcement) {
                     continue
                 }
             }
-            newsFeedList.add(newsfeed)
+            newsFeedList.add(newsfeedItem)
         }
         return newsFeedList
     }
@@ -832,7 +837,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         if (feedItem?.startPoint == null) return
         if (markersMap[feedItem.hashString()] == null) {
             if (feedItem.showHeatmapAsOverlay()) {
-                val position = feedItem.startPoint.location
+                val position = feedItem.startPoint!!.location
                 val heatmapIcon = BitmapDescriptorFactory.fromResource(feedItem.heatmapResourceId)
                 val groundOverlayOptions = GroundOverlayOptions()
                         .image(heatmapIcon)
@@ -855,7 +860,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         } else {
             // set the badge count
             if (card is FeedItem) {
-                EntourageApplication.get(context)?.updateBadgeCountForFeedItem(card)
+                EntourageApplication.get(context).updateBadgeCountForFeedItem(card)
             }
             // add the card
             if (pagination.isRefreshing) {
@@ -941,8 +946,8 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         fragment_map_feeditems_view?.scrollToPosition(0)
     }
 
-    private fun updatePagination(newsfeedList: List<Newsfeed>?) {
-        if (newsfeedList.isNullOrEmpty()) {
+    private fun updatePagination(newsfeedItemList: List<NewsfeedItem>?) {
+        if (newsfeedItemList.isNullOrEmpty()) {
             pagination.loadedItems()
             return
         }
@@ -951,7 +956,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             NewsfeedTabItem.TOUR_TAB -> {
                 var newestUpdatedDate: Date? = null
                 var oldestUpdateDate: Date? = null
-                for (newsfeed in newsfeedList) {
+                for (newsfeed in newsfeedItemList) {
                     if(newsfeed.data !is FeedItem) continue
                     val feedUpdatedDate = (newsfeed.data as FeedItem?)?.updatedTime
                             ?: continue
@@ -999,12 +1004,12 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         val joinableId = content.joinableId
         val isChatMessage = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE == content.type
         if (content.isTourRelated) {
-            val tour = newsfeedAdapter?.findCard(TimestampedObject.TOUR_CARD, joinableId) as Tour ?
+            val tour = newsfeedAdapter?.findCard(TimestampedObject.TOUR_CARD, joinableId) as Tour?
                     ?: return
             tour.increaseBadgeCount(isChatMessage)
             newsfeedAdapter!!.updateCard(tour)
         } else if (content.isEntourageRelated) {
-            val entourage = newsfeedAdapter?.findCard(TimestampedObject.ENTOURAGE_CARD, joinableId) as Entourage ?
+            val entourage = newsfeedAdapter?.findCard(TimestampedObject.ENTOURAGE_CARD, joinableId) as BaseEntourage?
                     ?: return
             entourage.increaseBadgeCount(isChatMessage)
             newsfeedAdapter!!.updateCard(entourage)
@@ -1145,7 +1150,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         val entourageArrayList = ArrayList<TimestampedObject>()
         for (feedItem in newsfeedAdapter!!.items) {
             if (feedItem.type != TimestampedObject.ENTOURAGE_CARD) continue
-            val entourage = feedItem as Entourage
+            val entourage = feedItem as BaseEntourage
             if (entourage.distanceToLocation(location) < HEATZONE_SEARCH_RADIUS) {
                 entourageArrayList.add(entourage)
             }

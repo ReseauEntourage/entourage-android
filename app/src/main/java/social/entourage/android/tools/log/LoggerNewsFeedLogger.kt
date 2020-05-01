@@ -1,6 +1,6 @@
 package social.entourage.android.tools.log
 
-import social.entourage.android.api.model.Newsfeed
+import social.entourage.android.api.model.NewsfeedItem
 import social.entourage.android.newsfeed.NewsFeedListener
 import timber.log.Timber
 
@@ -22,7 +22,7 @@ class LoggerNewsFeedLogger : NewsFeedListener {
         Timber.e(throwable, "Technical exception")
     }
 
-    override fun onNewsFeedReceived(newsFeeds: List<Newsfeed>) {
+    override fun onNewsFeedReceived(newsFeeds: List<NewsfeedItem>) {
         Timber.d("NewsFeed received, size = %d", newsFeeds.size)
     }
 }

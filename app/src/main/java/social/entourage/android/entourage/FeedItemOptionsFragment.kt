@@ -43,7 +43,7 @@ abstract class FeedItemOptionsFragment : EntourageDialogFragment() {
         entourage_options?.setOnClickListener {onCancelClicked()}
         val me = EntourageApplication.me(activity) ?: return
         if (feedItem.author == null) return
-        if (feedItem.author.userID != me.id) {
+        if (feedItem.author!!.userID != me.id) {
             entourage_option_quit?.visibility = View.VISIBLE
             entourage_option_quit?.setText(if (FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus) R.string.tour_info_options_cancel_request else R.string.tour_info_options_quit_tour)
         } else {

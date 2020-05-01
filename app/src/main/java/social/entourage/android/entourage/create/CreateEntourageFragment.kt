@@ -3,7 +3,6 @@ package social.entourage.android.entourage.create
 import androidx.fragment.app.DialogFragment
 import social.entourage.android.EntourageComponent
 import social.entourage.android.api.model.map.BaseEntourage
-import social.entourage.android.api.model.map.Entourage
 import social.entourage.android.entourage.create.CreateEntourageJoinTypeFragment.CreateEntourageJoinTypeListener
 import social.entourage.android.entourage.create.wizard.CreateActionWizardListener
 import social.entourage.android.entourage.create.wizard.CreateActionWizardPage1Fragment
@@ -36,19 +35,19 @@ class CreateEntourageFragment : BaseCreateEntourageFragment(), CreateActionWizar
     // Entourage create/edit methods
     // ----------------------------------
     override fun createEntourage() {
-        if (entourageCategory != null && BaseEntourage.TYPE_DEMAND.equals(entourageCategory.entourageType, ignoreCase = true)) { // for DEMAND events, we need to show a wizard
+        if (entourageCategory != null && BaseEntourage.GROUPTYPE_ACTION_DEMAND.equals(entourageCategory.groupType, ignoreCase = true)) { // for DEMAND events, we need to show a wizard
             showCreateActionWizard()
             return
         }
         super.createEntourage()
     }
 
-    override fun postEntourageCreated(entourage: Entourage) {
+    override fun postEntourageCreated(entourage: BaseEntourage) {
         hideExtraScreens()
         super.postEntourageCreated(entourage)
     }
 
-    override fun postEntourageSaved(entourage: Entourage) {
+    override fun postEntourageSaved(entourage: BaseEntourage) {
         hideExtraScreens()
         super.postEntourageSaved(entourage)
     }

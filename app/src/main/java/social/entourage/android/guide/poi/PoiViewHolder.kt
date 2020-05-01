@@ -8,8 +8,8 @@ import social.entourage.android.Constants
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.guide.Poi
-import social.entourage.android.api.model.map.TourPoint
-import social.entourage.android.api.model.tape.EntouragePoiRequest.OnPoiViewRequestedEvent
+import social.entourage.android.api.model.map.LocationPoint
+import social.entourage.android.api.tape.EntouragePoiRequest.OnPoiViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.guide.poi.PoiRenderer.CategoryType
 import social.entourage.android.tools.BusProvider
@@ -47,7 +47,7 @@ class PoiViewHolder(itemView: View) : BaseCardViewHolder(itemView) {
         itemView.poi_card_title?.text = poi!!.name ?: ""
         itemView.poi_card_type?.text = CategoryType.findCategoryTypeById(poi!!.categoryId).displayName
         itemView.poi_card_address?.text = if (poi!!.address != null) poi!!.address else ""
-        itemView.poi_card_distance?.text = TourPoint(poi!!.latitude, poi!!.longitude).distanceToCurrentLocation(Constants.DISTANCE_MAX_DISPLAY)
+        itemView.poi_card_distance?.text = LocationPoint(poi!!.latitude, poi!!.longitude).distanceToCurrentLocation(Constants.DISTANCE_MAX_DISPLAY)
         itemView.poi_card_call_button?.visibility = if (poi!!.phone.isNullOrEmpty()) View.GONE else View.VISIBLE
     }
 

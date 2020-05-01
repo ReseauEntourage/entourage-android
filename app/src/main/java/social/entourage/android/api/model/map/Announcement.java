@@ -1,5 +1,7 @@
 package social.entourage.android.api.model.map;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -38,7 +40,7 @@ public class Announcement extends TimestampedObject {
     @SerializedName("icon_url")
     private String iconUrl;
 
-    private TourAuthor author;
+    private FeedItemAuthor author;
 
     @SerializedName("image_url")
     private String imageUrl;
@@ -71,7 +73,7 @@ public class Announcement extends TimestampedObject {
         return iconUrl;
     }
 
-    public TourAuthor getAuthor() {
+    public FeedItemAuthor getAuthor() {
         return author;
     }
 
@@ -88,6 +90,7 @@ public class Announcement extends TimestampedObject {
         return null;
     }
 
+    @NonNull
     @Override
     public String hashString() {
         return HASH_STRING_HEAD + id;

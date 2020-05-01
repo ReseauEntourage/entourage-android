@@ -20,9 +20,8 @@ import social.entourage.android.EntourageActivity;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
-import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.model.tour.Encounter;
 
-@SuppressWarnings("WeakerAccess")
 public class ReadEncounterActivity extends EntourageActivity {
 
     // ----------------------------------

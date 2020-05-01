@@ -15,8 +15,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import social.entourage.android.EntourageApplication;
-import social.entourage.android.api.model.map.TourAuthor;
-import social.entourage.android.api.model.map.UserMembership;
+import social.entourage.android.api.model.map.FeedItemAuthor;
 
 public class User implements Serializable {
 
@@ -326,8 +325,8 @@ public class User implements Serializable {
         return EntourageApplication.Companion.isEntourageApp() && TYPE_PRO.equals(type);
     }
 
-    public TourAuthor asTourAuthor() {
-        return new TourAuthor(avatarURL, id, displayName, partner);
+    public FeedItemAuthor asTourAuthor() {
+        return new FeedItemAuthor(avatarURL, id, displayName, partner);
     }
 
     public ArrayMap<String, Object> getArrayMapForUpdate() {

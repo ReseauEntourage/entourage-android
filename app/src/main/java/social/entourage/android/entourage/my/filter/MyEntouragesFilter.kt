@@ -3,8 +3,8 @@ package social.entourage.android.entourage.my.filter
 import android.content.Context
 import com.google.gson.annotations.Expose
 import social.entourage.android.EntourageApplication
-import social.entourage.android.api.model.TourType
-import social.entourage.android.api.model.map.Entourage
+import social.entourage.android.api.model.tour.TourType
+import social.entourage.android.api.model.map.BaseEntourage
 import java.io.Serializable
 
 /**
@@ -35,19 +35,19 @@ class MyEntouragesFilter  : Serializable {
     // ----------------------------------
     // Methods
     // ----------------------------------
-    val entourageTypes: String
+    val actionGroupTypes: String
         get() {
-            val entourageTypes = StringBuilder()
+            val actionGroupTypes = StringBuilder()
             isEntourageTypeContribution = true
             isEntourageTypeDemand = true // in 5.0+ force to show all entourages
             if (isEntourageTypeDemand) {
-                entourageTypes.append(Entourage.TYPE_DEMAND)
+                actionGroupTypes.append(BaseEntourage.GROUPTYPE_ACTION_DEMAND)
             }
             if (isEntourageTypeContribution) {
-                if (entourageTypes.isNotEmpty()) entourageTypes.append(",")
-                entourageTypes.append(Entourage.TYPE_CONTRIBUTION)
+                if (actionGroupTypes.isNotEmpty()) actionGroupTypes.append(",")
+                actionGroupTypes.append(BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)
             }
-            return entourageTypes.toString()
+            return actionGroupTypes.toString()
         }
 
     // in 5.0+ force to show closed entourages
@@ -63,11 +63,11 @@ class MyEntouragesFilter  : Serializable {
             isShowTours = true // in 5.0+ force to show all the tours
             if (isShowTours) {
                 if (allTourTypes == null) {
-                    allTourTypes = (TourType.MEDICAL.getName()
+                    allTourTypes = (TourType.MEDICAL.typeName
                             + ','
-                            + TourType.BARE_HANDS.getName()
+                            + TourType.BARE_HANDS.typeName
                             + ','
-                            + TourType.ALIMENTARY.getName())
+                            + TourType.ALIMENTARY.typeName)
                 }
                 return allTourTypes!!
             }

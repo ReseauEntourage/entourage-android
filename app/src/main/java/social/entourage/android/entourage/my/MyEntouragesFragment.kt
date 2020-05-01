@@ -22,7 +22,6 @@ import social.entourage.android.api.ApiConnectionListener
 import social.entourage.android.api.EntourageRequest
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.map.BaseEntourage
-import social.entourage.android.api.model.map.Entourage
 import social.entourage.android.api.model.map.FeedItem
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.EntourageDialogFragment
@@ -187,8 +186,8 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
     @Subscribe
     fun onInvitationStatusChanged(event: OnInvitationStatusChanged) {
         // Refresh the invitations list
-        if(event.feedItem !is Entourage) return
-        entouragesAdapter.updateInvitation(event.feedItem as Entourage, event.status)
+        if(event.feedItem !is BaseEntourage) return
+        entouragesAdapter.updateInvitation(event.feedItem as BaseEntourage, event.status)
         // Refresh the entourages list if invitation was accepted
         if (Invitation.STATUS_ACCEPTED == event.status) {
             refreshMyFeeds()
@@ -237,19 +236,19 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
     // ----------------------------------
     // Presenter callbacks
     // ----------------------------------
-    fun onNewsfeedReceived(newsfeedList: List<Newsfeed>?) {
+    fun onNewsfeedReceived(newsfeedItemList: List<NewsfeedItem>?) {
         //reset the loading indicator
         entouragesPagination.isLoading = false
         if (!isAdded) {
             return
         }
         //ignore errors
-        if (newsfeedList == null) return
+        if (newsfeedItemList == null) return
         //add the feed
         val showUnreadOnly = MyEntouragesFilter.getMyEntouragesFilter(this.context).isShowUnreadOnly
         entouragesAdapter.removeLoader()
-        if (newsfeedList.isNotEmpty()) {
-            for (newsfeed in newsfeedList) {
+        if (newsfeedItemList.isNotEmpty()) {
+            for (newsfeed in newsfeedItemList) {
                 val feedItem = newsfeed.data as? FeedItem ?: continue
 
                 // show only the unread ones if filter is set
@@ -262,7 +261,7 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
             }
 
             //increase page and items count
-            entouragesPagination.loadedItems(newsfeedList.size)
+            entouragesPagination.loadedItems(newsfeedItemList.size)
             if (entouragesPagination.nextPageAvailable) {
                 entouragesAdapter.addLoader()
             }
@@ -291,7 +290,7 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
             val call = entourageRequest.retrieveEntourageById(it.entourageUUID, 0, 0)
             call.enqueue(object : Callback<BaseEntourage.EntourageWrapper> {
                 override fun onResponse(call: Call<BaseEntourage.EntourageWrapper>, response: Response<BaseEntourage.EntourageWrapper>) {
-                    if (response.isSuccessful && response.body()?.entourage is Entourage) {
+                    if (response.isSuccessful && response.body()?.entourage is BaseEntourage) {
                         it.entourage = response.body()?.entourage
                         entouragesAdapter.addInvitation(it)
                     }

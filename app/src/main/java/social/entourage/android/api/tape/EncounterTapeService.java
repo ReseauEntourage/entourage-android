@@ -13,7 +13,7 @@ import com.squareup.otto.Subscribe;
 import javax.inject.Inject;
 
 import social.entourage.android.EntourageApplication;
-import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.model.tour.Encounter;
 import social.entourage.android.api.tape.Events.*;
 import social.entourage.android.tour.encounter.EncounterUploadCallback;
 import social.entourage.android.tour.encounter.CreateEncounterPresenter.EncounterUploadTask;

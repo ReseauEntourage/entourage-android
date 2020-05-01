@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 
 import java.io.Serializable;
 
-import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.api.model.tour.Tour;
 import social.entourage.android.entourage.my.filter.MyEntouragesFilter;
 import social.entourage.android.map.filter.MapFilter;
 

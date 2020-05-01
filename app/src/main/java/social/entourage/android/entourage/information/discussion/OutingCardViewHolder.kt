@@ -29,7 +29,7 @@ class OutingCardViewHolder(view: View) : BaseCardViewHolder(view) {
 
     private fun onClick() {
         if (outingUUID.isNullOrEmpty()) return
-        BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(BaseEntourage.ENTOURAGE_CARD, outingUUID, null))
+        BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(TimestampedObject.ENTOURAGE_CARD, outingUUID, null))
     }
 
     override fun populate(chatMessage: TimestampedObject) {

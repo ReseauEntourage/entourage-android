@@ -2,7 +2,7 @@ package social.entourage.android.api.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import social.entourage.android.api.model.map.Entourage
+import social.entourage.android.api.model.map.BaseEntourage
 import java.util.*
 
 /**
@@ -30,7 +30,7 @@ class Invitation (
     @Expose(serialize = false, deserialize = true)
     var entourageId = 0
 
-    var entourage: Entourage? = null
+    var entourage: BaseEntourage? = null
 
     @SerializedName("status")
     @Expose(serialize = false, deserialize = true)

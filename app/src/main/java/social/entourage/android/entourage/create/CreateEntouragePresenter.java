@@ -1,6 +1,9 @@
 package social.entourage.android.entourage.create;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
@@ -9,8 +12,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.model.map.BaseEntourage;
-import social.entourage.android.api.model.map.Entourage;
-import social.entourage.android.api.model.map.TourPoint;
+import social.entourage.android.api.model.map.LocationPoint;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.tools.BusProvider;
 
@@ -41,21 +43,23 @@ public class CreateEntouragePresenter {
     // Methods
     // ----------------------------------
 
-    protected void createEntourage(String type, String category, String title, String description, TourPoint location, boolean recipientConsentObtained, String groupType, BaseEntourage.Metadata metadata, boolean joinRequestTypePublic) {
-        Entourage entourage = new Entourage(type, category, title, description, location);
-        entourage.setGroupType(groupType);
-        entourage.setMetadata(metadata);
+    protected void createEntourage(
+            @Nullable String actionGroupType, @Nullable String category,
+            @NotNull String title, @NotNull String description, @NotNull LocationPoint location, boolean recipientConsentObtained,
+            @Nullable String groupType, @Nullable BaseEntourage.Metadata metadata, boolean joinRequestTypePublic) {
+        BaseEntourage entourage = BaseEntourage.Companion.create(groupType, actionGroupType, category, title, description, location);
+        entourage.metadata = metadata;
         entourage.setRecipientConsentObtained(recipientConsentObtained);
         entourage.setJoinRequestPublic(joinRequestTypePublic);
-        Entourage.EntourageWrapper entourageWrapper = new Entourage.EntourageWrapper();
-        entourageWrapper.setEntourage(entourage);
+        BaseEntourage.EntourageWrapper entourageWrapper = new BaseEntourage.EntourageWrapper();
+        entourageWrapper.entourage = entourage;
 
-        Call<Entourage.EntourageWrapper> call = entourageRequest.createEntourage(entourageWrapper);
-        call.enqueue(new Callback<Entourage.EntourageWrapper>() {
+        Call<BaseEntourage.EntourageWrapper> call = entourageRequest.createEntourage(entourageWrapper);
+        call.enqueue(new Callback<BaseEntourage.EntourageWrapper>() {
             @Override
-            public void onResponse(@NonNull final Call<Entourage.EntourageWrapper> call, @NonNull final Response<Entourage.EntourageWrapper> response) {
-                if (response.isSuccessful()) {
-                    Entourage receivedEntourage = response.body().getEntourage();
+            public void onResponse(@NonNull final Call<BaseEntourage.EntourageWrapper> call, @NonNull final Response<BaseEntourage.EntourageWrapper> response) {
+                if (response.isSuccessful() && response.body()!=null) {
+                    BaseEntourage receivedEntourage = response.body().entourage;
                     receivedEntourage.setNewlyCreated(true);
                     if (fragment != null) {
                         fragment.onEntourageCreated(receivedEntourage);
@@ -70,7 +74,7 @@ public class CreateEntouragePresenter {
             }
 
             @Override
-            public void onFailure(@NonNull final Call<Entourage.EntourageWrapper> call, @NonNull final Throwable t) {
+            public void onFailure(@NonNull final Call<BaseEntourage.EntourageWrapper> call, @NonNull final Throwable t) {
                 if (fragment != null) {
                     fragment.onEntourageCreated(null);
                 }
@@ -78,16 +82,16 @@ public class CreateEntouragePresenter {
         });
     }
 
-    protected void editEntourage(Entourage entourage) {
-        Entourage.EntourageWrapper entourageWrapper = new Entourage.EntourageWrapper();
-        entourageWrapper.setEntourage(entourage);
+    protected void editEntourage(BaseEntourage entourage) {
+        BaseEntourage.EntourageWrapper entourageWrapper = new BaseEntourage.EntourageWrapper();
+        entourageWrapper.entourage = entourage;
 
-        Call<Entourage.EntourageWrapper> call = entourageRequest.editEntourage(entourage.getUUID(), entourageWrapper);
-        call.enqueue(new Callback<Entourage.EntourageWrapper>() {
+        Call<BaseEntourage.EntourageWrapper> call = entourageRequest.editEntourage(entourage.getUUID(), entourageWrapper);
+        call.enqueue(new Callback<BaseEntourage.EntourageWrapper>() {
             @Override
-            public void onResponse(@NonNull final Call<Entourage.EntourageWrapper> call, @NonNull final Response<Entourage.EntourageWrapper> response) {
-                if (response.isSuccessful()) {
-                    Entourage receivedEntourage = response.body().getEntourage();
+            public void onResponse(@NonNull final Call<BaseEntourage.EntourageWrapper> call, @NonNull final Response<BaseEntourage.EntourageWrapper> response) {
+                if (response.isSuccessful() && response.body()!=null) {
+                    BaseEntourage receivedEntourage = response.body().entourage;
                     if (fragment != null) {
                         fragment.onEntourageEdited(receivedEntourage);
                     }
@@ -100,7 +104,7 @@ public class CreateEntouragePresenter {
             }
 
             @Override
-            public void onFailure(@NonNull final Call<Entourage.EntourageWrapper> call, @NonNull final Throwable t) {
+            public void onFailure(@NonNull final Call<BaseEntourage.EntourageWrapper> call, @NonNull final Throwable t) {
                 if (fragment != null) {
                     fragment.onEntourageEdited(null);
                 }

@@ -13,11 +13,11 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import social.entourage.android.api.model.ChatMessage;
-import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.api.model.map.Tour;
-import social.entourage.android.api.model.map.TourJoinMessage;
-import social.entourage.android.api.model.map.TourPoint;
-import social.entourage.android.api.model.map.TourUser;
+import social.entourage.android.api.model.tour.Encounter;
+import social.entourage.android.api.model.tour.Tour;
+import social.entourage.android.api.model.tour.TourJoinMessage;
+import social.entourage.android.api.model.map.LocationPoint;
+import social.entourage.android.api.model.map.EntourageUser;
 
 public interface TourRequest {
 
@@ -29,7 +29,7 @@ public interface TourRequest {
     @POST("tours/{tour_id}/tour_points.json")
     Call<Tour.TourWrapper> tourPoints(
             @Path("tour_id") String tourUUID,
-            @Body TourPoint.TourPointWrapper points
+            @Body LocationPoint.TourPointWrapper points
     );
 
     @PUT("tours/{id}.json")
@@ -79,12 +79,12 @@ public interface TourRequest {
     );
 
     @GET("tours/{tour_id}/users.json")
-    Call<TourUser.TourUsersWrapper> retrieveTourUsers(
+    Call<EntourageUser.EntourageUsersWrapper> retrieveTourUsers(
             @Path("tour_id") String tourUUID
     );
 
     @GET("tours/{tour_id}/users.json")
-    Call<TourUser.TourUsersWrapper> retrieveTourUsers(
+    Call<EntourageUser.EntourageUsersWrapper> retrieveTourUsers(
             @Path("tour_id") String tourUUID,
             @Query("page") int page,
             @Query("per") int per
@@ -113,12 +113,12 @@ public interface TourRequest {
     );
 
     @POST("tours/{tour_id}/users")
-    Call<TourUser.TourUserWrapper> requestToJoinTour(
+    Call<EntourageUser.EntourageUserWrapper> requestToJoinTour(
             @Path("tour_id") String tourUUID
     );
 
     @PUT("tours/{tour_id}/users/{user_id}")
-    Call<TourUser.TourUserWrapper> updateJoinTourMessage(
+    Call<EntourageUser.EntourageUserWrapper> updateJoinTourMessage(
             @Path("tour_id") String tourUUID,
             @Path("user_id") int userId,
             @Body TourJoinMessage.TourJoinMessageWrapper messageWrapper
@@ -132,7 +132,7 @@ public interface TourRequest {
     );
 
     @DELETE("tours/{tour_id}/users/{user_id}")
-    Call<TourUser.TourUserWrapper> removeUserFromTour(
+    Call<EntourageUser.EntourageUserWrapper> removeUserFromTour(
             @Path("tour_id") String tourUUID,
             @Path("user_id") int userId
     );

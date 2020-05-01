@@ -1,4 +1,4 @@
-package social.entourage.android.api.model.tape
+package social.entourage.android.api.tape
 
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.api.tape.Events

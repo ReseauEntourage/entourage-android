@@ -8,7 +8,7 @@ import social.entourage.android.api.InvitationRequest
 import social.entourage.android.api.NewsfeedRequest
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.Invitation.InvitationsWrapper
-import social.entourage.android.api.model.Newsfeed.NewsfeedWrapper
+import social.entourage.android.api.model.NewsfeedItem.NewsfeedItemWrapper
 import social.entourage.android.entourage.my.filter.MyEntouragesFilter
 import javax.inject.Inject
 
@@ -28,23 +28,23 @@ class MyEntouragesPresenter @Inject constructor(
         val call = newsfeedRequest.retrieveMyFeeds(
                 page,
                 per,
-                filter.entourageTypes,
+                filter.actionGroupTypes,
                 filter.tourTypes,
                 filter.status,
                 filter.showOwnEntouragesOnly,
                 filter.showPartnerEntourages,
                 filter.showJoinedEntourages
         )
-        call.enqueue(object : Callback<NewsfeedWrapper> {
-            override fun onResponse(call: Call<NewsfeedWrapper>, response: Response<NewsfeedWrapper>) {
+        call.enqueue(object : Callback<NewsfeedItemWrapper> {
+            override fun onResponse(call: Call<NewsfeedItemWrapper>, response: Response<NewsfeedItemWrapper>) {
                 if (response.isSuccessful) {
-                    fragment.onNewsfeedReceived(response.body()!!.newsfeed)
+                    fragment.onNewsfeedReceived(response.body()!!.newsfeedItem)
                 } else {
                     fragment.onNewsfeedReceived(null)
                 }
             }
 
-            override fun onFailure(call: Call<NewsfeedWrapper>, t: Throwable) {
+            override fun onFailure(call: Call<NewsfeedItemWrapper>, t: Throwable) {
                 fragment.onNewsfeedReceived(null)
             }
         })

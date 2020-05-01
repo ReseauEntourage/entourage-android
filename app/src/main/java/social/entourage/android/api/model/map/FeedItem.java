@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import androidx.annotation.ColorRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
@@ -62,18 +63,18 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     protected long id;
 
     @Expose(serialize = false)
-    protected String uuid;
+    @Nullable protected String uuid;
 
-    protected String status;
+    @NotNull protected String status;
 
-    protected TourAuthor author;
+    @Nullable protected FeedItemAuthor author;
 
     @SerializedName("updated_at")
     @NotNull
     protected Date updatedTime;
 
     @Expose(serialize = false, deserialize = false)
-    protected transient Address startAddress;
+    @Nullable protected transient Address startAddress;
 
     @Expose(serialize = false)
     @SerializedName("number_of_people")
@@ -85,7 +86,7 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
 
     @Expose(serialize = false)
     @SerializedName("join_status")
-    protected String joinStatus;
+    @NotNull protected String joinStatus;
 
     @Expose(serialize = false)
     @SerializedName("last_message")
@@ -94,7 +95,7 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
 
     @Expose(serialize = false)
     @SerializedName("share_url")
-    protected String shareURL;
+    @Nullable protected String shareURL;
 
     //number of notifs received that should be added to nuber of unread messages
     @Expose(serialize = false, deserialize = false)
@@ -103,10 +104,10 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     //CardInfo cache support
 
     @Expose(serialize = false, deserialize = false)
-    transient List<TimestampedObject> cachedCardInfoList;
+    @NotNull transient List<TimestampedObject> cachedCardInfoList;
 
     @Expose(serialize = false, deserialize = false)
-    transient List<TimestampedObject> addedCardInfoList;
+    @NotNull transient List<TimestampedObject> addedCardInfoList;
 
     //Flag to indicate a newly created feed item
     @Expose(serialize = false, deserialize = false)
@@ -125,11 +126,11 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     // ----------------------------------
 
 
-    public TourAuthor getAuthor() {
+    @Nullable public FeedItemAuthor getAuthor() {
         return author;
     }
 
-    public void setAuthor(final TourAuthor author) {
+    public void setAuthor(@NotNull final FeedItemAuthor author) {
         this.author = author;
     }
 
@@ -160,15 +161,15 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
         this.id = id;
     }
 
-    public String getUUID() {
+    @NotNull public String getUUID() {
         return uuid == null ? "" : uuid;
     }
 
-    public String getJoinStatus() {
+    @NotNull public String getJoinStatus() {
         return joinStatus;
     }
 
-    public void setJoinStatus(final String joinStatus) {
+    public void setJoinStatus(@NotNull final String joinStatus) {
         this.joinStatus = joinStatus;
     }
 
@@ -188,54 +189,55 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
         this.numberOfUnreadMessages = numberOfUnreadMessages;
     }
 
-    public Address getStartAddress() {
+    @Nullable public Address getStartAddress() {
         return startAddress;
     }
 
-    public void setStartAddress(final Address startAddress) {
+    public void setStartAddress(@Nullable final Address startAddress) {
         this.startAddress = startAddress;
     }
 
-    public String getStatus() {
+    @NotNull public String getStatus() {
         return status;
     }
 
-    public void setStatus(final String status) {
+    public void setStatus(@NotNull final String status) {
         this.status = status;
     }
 
-    public Date getUpdatedTime() {
+    @NotNull public Date getUpdatedTime() {
         return updatedTime;
     }
 
-    public void setUpdatedTime(final Date updatedTime) {
+    public void setUpdatedTime(@NotNull final Date updatedTime) {
         this.updatedTime = updatedTime;
     }
 
-    public LastMessage getLastMessage() {
+    @Nullable public LastMessage getLastMessage() {
         return lastMessage;
     }
 
-    public void setLastMessage(final String text, final String author) {
+    public void setLastMessage(@Nullable final String text, @Nullable final String author) {
         if(lastMessage == null) {
             lastMessage = new LastMessage();
         }
         lastMessage.setMessage(text, author);
     }
 
-    public String getShareURL() {
+    @Nullable public String getShareURL() {
         return shareURL;
     }
 
-    public void setShareURL(final String shareURL) {
+    public void setShareURL(@Nullable final String shareURL) {
         this.shareURL = shareURL;
     }
 
+    @NonNull
     public List<TimestampedObject> getCachedCardInfoList() {
         return cachedCardInfoList;
     }
 
-    public List<TimestampedObject> getAddedCardInfoList() {
+    @NotNull public List<TimestampedObject> getAddedCardInfoList() {
         return addedCardInfoList;
     }
 
@@ -281,11 +283,11 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     // UI METHODS
     // ----------------------------------
 
-    public Drawable getIconDrawable(Context context) {
+    @Nullable public Drawable getIconDrawable(Context context) {
         return null;
     }
 
-    public String getIconURL() {
+    @Nullable public String getIconURL() {
         return null;
     }
 
@@ -344,7 +346,7 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     // ----------------------------------
 
     @Override
-    public void copyLocalFields(final TimestampedObject other) {
+    public void copyLocalFields(@NotNull final TimestampedObject other) {
         super.copyLocalFields(other);
         FeedItem otherFeedItem = (FeedItem)other;
         this.badgeCount = otherFeedItem.badgeCount;
@@ -359,8 +361,7 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
         this.addedCardInfoList = new ArrayList<>();
     }
 
-    public void addCardInfo(TimestampedObject cardInfo) {
-        if (cardInfo == null) return;
+    public void addCardInfo(@NotNull TimestampedObject cardInfo) {
         if (cachedCardInfoList.contains(cardInfo)) {
             return;
         }
@@ -370,13 +371,11 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
         Collections.sort(cachedCardInfoList, new TimestampedObject.TimestampedObjectComparatorOldToNew());
     }
 
-    public void removeCardInfo(TimestampedObject cardInfo) {
-        if (cardInfo == null) return;
+    public void removeCardInfo(@NotNull TimestampedObject cardInfo) {
         cachedCardInfoList.remove(cardInfo);
     }
 
-    public int addCardInfoList(List<TimestampedObject> cardInfoList) {
-        if (cardInfoList == null) return 0;
+    public int addCardInfoList(@NotNull List<TimestampedObject> cardInfoList) {
         for (final TimestampedObject timestampedObject : cardInfoList) {
             if (cachedCardInfoList.contains(timestampedObject)) {
                 continue;
@@ -384,16 +383,17 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
             cachedCardInfoList.add(timestampedObject);
             addedCardInfoList.add(timestampedObject);
         }
-        if (addedCardInfoList.size() > 0) {
+        if(cachedCardInfoList.size() > 0) {
             Collections.sort(cachedCardInfoList, new TimestampedObject.TimestampedObjectComparatorOldToNew());
+        }
+        if (addedCardInfoList.size() > 0) {
             Collections.sort(addedCardInfoList, new TimestampedObject.TimestampedObjectComparatorOldToNew());
         }
         return addedCardInfoList.size();
     }
 
-    public List<TimestampedObject> getTypedCardInfoList(int cardType) {
+    @NotNull public List<TimestampedObject> getTypedCardInfoList(int cardType) {
         List<TimestampedObject> typedCardInfoList = new ArrayList<>();
-        if (cachedCardInfoList == null) return typedCardInfoList;
         for (final TimestampedObject timestampedObject : cachedCardInfoList) {
             if (timestampedObject.getType() == cardType) {
                 typedCardInfoList.add(timestampedObject);
@@ -410,7 +410,7 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     // SERIALIZATION METHODS
     // ----------------------------------
 
-    private void readObject(ObjectInputStream inputStream)
+    private void readObject(@NotNull ObjectInputStream inputStream)
             throws IOException, ClassNotFoundException
     {
         inputStream.defaultReadObject();
@@ -421,22 +421,23 @@ public abstract class FeedItem extends TimestampedObject implements Serializable
     // ABSTRACT METHODS
     // ----------------------------------
 
-    public abstract String getGroupType();
+    //TODO check if real groupType, not actionGroupType
+    @Nullable public abstract String getGroupType();
 
-    public abstract String getFeedType();
-    public abstract String getFeedTypeLong(Context context);
+    //@Nullable public abstract String getFeedType();
+    @NotNull public abstract String getFeedTypeLong(Context context);
 
-    public abstract String getTitle();
+    @Nullable public abstract String getTitle();
 
-    public abstract String getDescription();
+    @Nullable public abstract String getDescription();
 
-    public abstract Date getCreationTime();
-    public abstract Date getStartTime();
+    @NotNull public abstract Date getCreationTime();
+    @Nullable public abstract Date getStartTime();
 
-    public abstract Date getEndTime();
-    public abstract void setEndTime(Date endTime);
+    @Nullable public abstract Date getEndTime();
+    public abstract void setEndTime(@NotNull Date endTime);
 
-    public abstract String getDisplayAddress();
+    @Nullable public abstract String getDisplayAddress();
 
-    public abstract TourPoint getStartPoint();
+    @Nullable public abstract LocationPoint getStartPoint();
 }

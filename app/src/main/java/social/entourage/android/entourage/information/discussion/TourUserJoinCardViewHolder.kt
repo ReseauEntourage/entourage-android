@@ -11,8 +11,8 @@ import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.map.FeedItem
-import social.entourage.android.api.model.map.Tour
-import social.entourage.android.api.model.map.TourUser
+import social.entourage.android.api.model.tour.Tour
+import social.entourage.android.api.model.map.EntourageUser
 import social.entourage.android.api.tape.Events.OnUserJoinRequestUpdateEvent
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
@@ -60,7 +60,7 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
     }
 
     override fun populate(user: TimestampedObject) {
-        if(user !is TourUser) return
+        if(user !is EntourageUser) return
         if (user.displayName == null || user.status == null) return
         userId = user.userId
         feedItem = user.feedItem
@@ -71,7 +71,7 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
         }
     }
 
-    private fun populatePendingStatus(user: TourUser) {
+    private fun populatePendingStatus(user: EntourageUser) {
         itemView.tic_private_info_section?.visibility = View.VISIBLE
         itemView.tic_public_info_section?.visibility = View.GONE
         itemView.tic_private_username?.setText(user.displayName)
@@ -104,13 +104,13 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
         // If we are not the creators of the entourage, hide the Accept and Refuse buttons
         val me = EntourageApplication.me(itemView.context)
         val isMyEntourage = if (me != null && feedItem != null && feedItem!!.author != null) {
-            (me.id == feedItem!!.author.userID)
+            (me.id == feedItem!!.author!!.userID)
         } else false
         itemView.tic_accept_button?.visibility = if (isMyEntourage) View.VISIBLE else View.GONE
         itemView.tic_refuse_button?.visibility = if (isMyEntourage) View.VISIBLE else View.GONE
     }
 
-    private fun populateJoinedStatus(user: TourUser) {
+    private fun populateJoinedStatus(user: EntourageUser) {
         itemView.tic_private_info_section?.visibility = View.GONE
         itemView.tic_public_info_section?.visibility = View.VISIBLE
         itemView.tic_public_info_username?.text = user.displayName
@@ -164,7 +164,7 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
             Tour.JOIN_STATUS_ACCEPTED -> {
                 val joinString = itemView.context.getString(if (isTour) R.string.tour_info_text_join_accepted else R.string.entourage_info_text_join_accepted)
                 if (isTour && feedItem?.author != null) {
-                    joinString + feedItem!!.author.userName
+                    joinString + feedItem!!.author!!.userName
                 } else
                     joinString
             }

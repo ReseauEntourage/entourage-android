@@ -5,7 +5,7 @@ import kotlinx.android.synthetic.main.layout_entourage_options.*
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.map.FeedItem
-import social.entourage.android.api.model.map.Tour
+import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.OnFeedItemCloseRequestEvent
 import social.entourage.android.entourage.FeedItemOptionsFragment
 import social.entourage.android.tools.BusProvider.instance

@@ -24,10 +24,10 @@ import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.map.Encounter
+import social.entourage.android.api.model.tour.Encounter
 import social.entourage.android.api.model.map.FeedItem
-import social.entourage.android.api.model.map.Tour
-import social.entourage.android.api.model.map.TourTimestamp
+import social.entourage.android.api.model.tour.Tour
+import social.entourage.android.api.model.tour.TourTimestamp
 import social.entourage.android.api.tape.Events
 import social.entourage.android.entourage.information.*
 import social.entourage.android.location.EntourageLocation
@@ -157,7 +157,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
         entourage_option_contact?.visibility = if (hideJoinButton) View.GONE else View.VISIBLE
         if (feedItem.author == null) return
         val myId = EntourageApplication.me(activity)?.id ?: return
-        if (feedItem.author.userID != myId) {
+        if (feedItem.author!!.userID != myId) {
             if ((FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus || FeedItem.JOIN_STATUS_ACCEPTED == feedItem.joinStatus) && !feedItem.isFreezed) {
                 entourage_option_quit?.visibility = View.VISIBLE
                 entourage_option_quit?.setText(if (FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus) R.string.tour_info_options_cancel_request else R.string.tour_info_options_quit_tour)
@@ -238,12 +238,12 @@ class TourInformationFragment : FeedItemInformationFragment(){
                         activity, R.raw.map_styles_json))
                 if (tourTimestampList.size > 0) {
                     val tourTimestamp = tourTimestampList[0]
-                    if (tourTimestamp.tourPoint != null) {
+                    if (tourTimestamp.locationPoint != null) {
                         //put the pin
-                        val pin = MarkerOptions().position(tourTimestamp.tourPoint.location)
+                        val pin = MarkerOptions().position(tourTimestamp.locationPoint.location)
                         googleMap.addMarker(pin)
                         //move the camera
-                        val camera = CameraUpdateFactory.newLatLngZoom(tourTimestamp.tourPoint.location, MAP_SNAPSHOT_ZOOM.toFloat())
+                        val camera = CameraUpdateFactory.newLatLngZoom(tourTimestamp.locationPoint.location, MAP_SNAPSHOT_ZOOM.toFloat())
                         googleMap.moveCamera(camera)
                     }
                 } else {
@@ -280,8 +280,8 @@ class TourInformationFragment : FeedItemInformationFragment(){
             //check if we need more snapshots
             if (tourTimestampList.size > 1) {
                 val nextTourTimestamp = tourTimestampList[1]
-                if (nextTourTimestamp.tourPoint != null) {
-                    val distance = nextTourTimestamp.tourPoint.distanceTo(tourTimestamp.tourPoint)
+                if (nextTourTimestamp.locationPoint != null) {
+                    val distance = nextTourTimestamp.locationPoint.distanceTo(tourTimestamp.locationPoint)
                     val visibleRegion = hiddenGoogleMap!!.projection.visibleRegion
                     val nearLeft = visibleRegion.nearLeft
                     val nearRight = visibleRegion.nearRight
@@ -291,10 +291,10 @@ class TourInformationFragment : FeedItemInformationFragment(){
 
                     //put the pin
                     hiddenGoogleMap!!.clear()
-                    val pin = MarkerOptions().position(nextTourTimestamp.tourPoint.location)
+                    val pin = MarkerOptions().position(nextTourTimestamp.locationPoint.location)
                     hiddenGoogleMap!!.addMarker(pin)
                     //move the camera
-                    val camera = CameraUpdateFactory.newLatLngZoom(nextTourTimestamp.tourPoint.location, MAP_SNAPSHOT_ZOOM.toFloat())
+                    val camera = CameraUpdateFactory.newLatLngZoom(nextTourTimestamp.locationPoint.location, MAP_SNAPSHOT_ZOOM.toFloat())
                     hiddenGoogleMap!!.moveCamera(camera)
                 }
             } else {
@@ -312,7 +312,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
 
     private fun addDiscussionTourStartCard(now: Date) {
         val distance = 0f
-        val duration = if (feedItem.startTime != null && !feedItem.isClosed) (now.time - feedItem.startTime.time) else 0
+        val duration = if (feedItem.startTime != null && !feedItem.isClosed) (now.time - feedItem.startTime!!.time) else 0
         val startPoint = feedItem.startPoint
         val tourTimestamp = TourTimestamp(
                 feedItem.startTime,
@@ -329,7 +329,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
     override fun addDiscussionTourEndCard(now: Date) {
         var distance = 0f
         val duration = if (feedItem.startTime != null && feedItem.endTime != null) {
-            feedItem.endTime.time - feedItem.startTime.time
+            feedItem.endTime!!.time - feedItem.startTime!!.time
         } else 0
         val tour = feedItem as Tour
         val tourPointsList = tour.tourPoints

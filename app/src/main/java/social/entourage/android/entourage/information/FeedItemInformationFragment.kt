@@ -47,7 +47,7 @@ import org.joda.time.LocalDate
 import social.entourage.android.*
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.map.*
-import social.entourage.android.api.tape.Events
+import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.configuration.Configuration
@@ -133,7 +133,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             if (startPoint != null) {
                 val currentLocation = EntourageLocation.getInstance().currentLocation
                 if (currentLocation != null) {
-                    distance = ceil(startPoint.distanceTo(TourPoint(currentLocation.latitude, currentLocation.longitude)) / 1000.toDouble()).toInt() // in kilometers
+                    distance = ceil(startPoint.distanceTo(LocationPoint(currentLocation.latitude, currentLocation.longitude)) / 1000.toDouble()).toInt() // in kilometers
                 }
             }
             presenter().getFeedItem(newFeedItem.uuid, newFeedItem.type, feedRank, distance)
@@ -274,10 +274,10 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         }
 
         // For conversation, open the author profile
-        if (FeedItem.ENTOURAGE_CARD == feedItem.type && BaseEntourage.TYPE_CONVERSATION.equals(feedItem.groupType, ignoreCase = true)) {
+        if (FeedItem.ENTOURAGE_CARD == feedItem.type && BaseEntourage.GROUPTYPE_CONVERSATION.equals(feedItem.groupType, ignoreCase = true)) {
             if (showInfoButton) {
                 // only if this screen wasn't shown from the profile page
-                BusProvider.instance.post(OnUserViewRequestedEvent(feedItem.author.userID))
+                BusProvider.instance.post(OnUserViewRequestedEvent(feedItem.author!!.userID))
             }
             return
         }
@@ -304,7 +304,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
 
     private fun onAuthorClicked() {
         if(feedItem.author != null) {
-            BusProvider.instance.post(OnUserViewRequestedEvent(feedItem.author.userID))
+            BusProvider.instance.post(OnUserViewRequestedEvent(feedItem.author!!.userID))
         }
     }
 
@@ -339,11 +339,11 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         // build the share text
         val shareLink = feedItem.shareURL ?:getString(R.string.entourage_share_link)
         val shareText = when {
-            feedItem.type == TimestampedObject.ENTOURAGE_CARD && BaseEntourage.TYPE_OUTING == feedItem.groupType ->{
+            feedItem.type == TimestampedObject.ENTOURAGE_CARD && BaseEntourage.GROUPTYPE_OUTING == feedItem.groupType ->{
                 val df: DateFormat = SimpleDateFormat(getString(R.string.entourage_create_date_format), Locale.getDefault())
                 getString(R.string.entourage_share_text_for_event, feedItem.title,df.format(feedItem.startTime), feedItem.displayAddress, shareLink)
             }
-            feedItem.type == TimestampedObject.ENTOURAGE_CARD && BaseEntourage.TYPE_OUTING != feedItem.groupType ->{
+            feedItem.type == TimestampedObject.ENTOURAGE_CARD && BaseEntourage.GROUPTYPE_OUTING != feedItem.groupType ->{
                 val entourageShareVerb = getString(if (isMyEntourage) R.string.entourage_share_text_verb_for_entourage_author else if (feedItem.isPrivate) R.string.entourage_share_text_verb_for_entourage_member else R.string.entourage_share_text_verb_for_entourage_nonmember)
                 getString(R.string.entourage_share_text_for_entourage, entourageShareVerb, feedItem.title, shareLink)
             }
@@ -402,7 +402,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         if (activity == null) return
         if (feedItem.showEditEntourageView()) {
             entourage_info_options?.visibility = View.GONE
-            BaseCreateEntourageFragment.newInstance(feedItem as Entourage).show(parentFragmentManager, BaseCreateEntourageFragment.TAG)
+            BaseCreateEntourageFragment.newInstance(feedItem as BaseEntourage).show(parentFragmentManager, BaseCreateEntourageFragment.TAG)
             //hide the options
         } else {
             // just send an email
@@ -627,9 +627,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
 
         //add the cards
         val cachedCardInfoList = feedItem.cachedCardInfoList
-        if (cachedCardInfoList != null) {
-            discussionAdapter.addItems(cachedCardInfoList)
-        }
+        discussionAdapter.addItems(cachedCardInfoList)
 
         //clear the added cards info
         feedItem.clearAddedCardInfoList()
@@ -754,17 +752,17 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         entourage_info_title_full?.text = feedItem.title
         //
 
-        if (BaseEntourage.TYPE_OUTING.equals(feedItem.groupType, ignoreCase = true)) {
+        if (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.groupType, ignoreCase = true)) {
             tour_summary_group_type?.text = resources.getString(R.string.entourage_type_outing)
             tour_summary_author_name?.text = ""
             entourage_info_location?.visibility = View.GONE
         } else {
             tour_summary_group_type?.text = feedItem.getFeedTypeLong(context)
-            tour_summary_author_name?.text = feedItem.author.userName
+            tour_summary_author_name?.text = feedItem.author!!.userName
             entourage_info_location?.visibility = View.VISIBLE
             entourage_info_location?.text = feedItem.displayAddress
         }
-        val avatarURLAsString = feedItem.author.avatarURLAsString
+        val avatarURLAsString = feedItem.author!!.avatarURLAsString
         if (avatarURLAsString != null && entourage_info_author_photo!=null) {
             Picasso.get()
                     .load(Uri.parse(avatarURLAsString))
@@ -774,7 +772,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         } else {
             entourage_info_author_photo?.setImageResource(R.drawable.ic_user_photo_small)
         }
-        val partner = feedItem.author.partner
+        val partner = feedItem.author!!.partner
         if (partner != null && entourage_info_partner_logo !=null) {
             val partnerLogoURL = partner.smallLogoUrl
             if (partnerLogoURL != null) {
@@ -805,11 +803,15 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         // metadata
         updateMetadataView()
         if (entourage_info_timestamps != null) {
-            if (BaseEntourage.TYPE_ACTION.equals(feedItem.groupType, ignoreCase = true)
-                    || Tour.TYPE_TOUR.equals(feedItem.groupType, ignoreCase = true)) {
-                showActionTimestamps(feedItem.creationTime, feedItem.updatedTime)
-            } else {
-                entourage_info_timestamps?.visibility = View.GONE
+            when(feedItem.groupType) {
+                BaseEntourage.GROUPTYPE_ACTION,
+                Tour.GROUPTYPE_TOUR -> {
+                    showActionTimestamps(feedItem.creationTime, feedItem.updatedTime)
+                }
+                else -> {
+                    entourage_info_timestamps?.visibility = View.GONE
+                }
+
             }
         }
     }
@@ -943,7 +945,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     }
 
     protected fun updateDiscussionList(scrollToLastCard: Boolean = true) {
-        val addedCardInfoList = feedItem.addedCardInfoList ?: return
+        val addedCardInfoList = feedItem.addedCardInfoList
         if (addedCardInfoList.size == 0) {
             return
         }
@@ -1040,24 +1042,24 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     }
 
     @Synchronized
-    fun onFeedItemUsersReceived(tourUsers: List<TourUser>, context: String?) {
+    fun onFeedItemUsersReceived(entourageUsers: List<EntourageUser>, context: String?) {
         if (activity == null || !isAdded) return
         if (context == null) {
             // members
-            onFeedItemMembersReceived(tourUsers)
+            onFeedItemMembersReceived(entourageUsers)
             initializeOptionsView()
         } else {
-            onFeedItemJoinRequestsReceived(tourUsers)
+            onFeedItemJoinRequestsReceived(entourageUsers)
         }
 
         // users processed use standard updateUI
         onFeedItemNoUserReceived()
     }
 
-    private fun onFeedItemMembersReceived(tourUsers: List<TourUser>) {
+    private fun onFeedItemMembersReceived(entourageUsers: List<EntourageUser>) {
         membersList?.clear()
         // iterate over the received users
-        for (tourUser in tourUsers) {
+        for (tourUser in entourageUsers) {
             //show only the accepted users
             if (tourUser.status != FeedItem.JOIN_STATUS_ACCEPTED) {
                 // Remove the user from the members list, in case the user left the entourage
@@ -1074,10 +1076,10 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         initializeMembersView()
     }
 
-    private fun onFeedItemJoinRequestsReceived(tourUsers: List<TourUser>) {
+    private fun onFeedItemJoinRequestsReceived(entourageUsers: List<EntourageUser>) {
         val timestampedObjectList = ArrayList<TimestampedObject>()
         // iterate over the received users
-        for (tourUser in tourUsers) {
+        for (tourUser in entourageUsers) {
             // skip the author
             if (tourUser.userId == feedItem.author?.userID) {
                 continue
@@ -1094,7 +1096,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             tourUser.feedItem = feedItem
 
             // check if we already have this user
-            val oldUser = discussionAdapter.findCard(tourUser) as TourUser?
+            val oldUser = discussionAdapter.findCard(tourUser) as EntourageUser?
             if (oldUser != null && oldUser.status != tourUser.status) {
                 discussionAdapter.updateCard(tourUser)
             } else {
@@ -1174,7 +1176,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             val messageId = if (FeedItem.JOIN_STATUS_REJECTED == status) R.string.tour_join_request_rejected else R.string.tour_join_request_success
             EntourageSnackbar.make(entourage_information_coordinator_layout!!,  messageId, Snackbar.LENGTH_SHORT).show()
             // Update the card
-            val card = discussionAdapter.findCard(TimestampedObject.TOUR_USER_JOIN, userId.toLong()) as TourUser?
+            val card = discussionAdapter.findCard(TimestampedObject.TOUR_USER_JOIN, userId.toLong()) as EntourageUser?
             if (card != null) {
                 if (FeedItem.JOIN_STATUS_ACCEPTED == status) {
                     card.status = FeedItem.JOIN_STATUS_ACCEPTED
@@ -1196,7 +1198,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             }
         } else if (error == EntourageError.ERROR_BAD_REQUEST) {
             // Assume that the other user cancelled the request
-            val card = discussionAdapter.findCard(TimestampedObject.TOUR_USER_JOIN, userId.toLong()) as TourUser? ?:return
+            val card = discussionAdapter.findCard(TimestampedObject.TOUR_USER_JOIN, userId.toLong()) as EntourageUser? ?:return
             when (status){
                 FeedItem.JOIN_STATUS_ACCEPTED -> {
                     // Mark the user as accepted
@@ -1265,7 +1267,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         if (updatedFeedItem.id != feedItem.id) return
         if (closed) {
             feedItem.status = updatedFeedItem.status
-            feedItem.endTime = updatedFeedItem.endTime
+            if(updatedFeedItem.endTime!=null) feedItem.setEndTime(updatedFeedItem.endTime!!)
             if (updatedFeedItem.status == FeedItem.STATUS_CLOSED && updatedFeedItem.isPrivate) {
                 addDiscussionTourEndCard(Date())
                 updateDiscussionList()
@@ -1288,7 +1290,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
 
     override fun onLocationUpdated(location: LatLng) {}
     override fun onLocationStatusUpdated(active: Boolean) {}
-    override fun onUserStatusChanged(user: TourUser, feedItem: FeedItem) {
+    override fun onUserStatusChanged(user: EntourageUser, feedItem: FeedItem) {
         //ignore requests that are not related to our feed item
         if (feedItem.type != this.feedItem.type || feedItem.id != this.feedItem.id) return
         hideProgressBar()

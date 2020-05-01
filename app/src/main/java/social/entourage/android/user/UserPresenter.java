@@ -11,7 +11,7 @@ import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
 import social.entourage.android.api.model.User;
-import social.entourage.android.api.model.map.Entourage;
+import social.entourage.android.api.model.map.BaseEntourage;
 import social.entourage.android.authentication.AuthenticationController;
 
 /**
@@ -108,13 +108,13 @@ public class UserPresenter {
 
     public void getConversation(final User.UserConversation conversation) {
         if (fragment != null) {
-            Call<Entourage.EntourageWrapper> call = entourageRequest.retrieveEntourageById(conversation.getUUID(),0,0);
-            call.enqueue(new Callback<Entourage.EntourageWrapper>() {
+            Call<BaseEntourage.EntourageWrapper> call = entourageRequest.retrieveEntourageById(conversation.getUUID(),0,0);
+            call.enqueue(new Callback<BaseEntourage.EntourageWrapper>() {
                 @Override
-                public void onResponse(@NonNull Call<Entourage.EntourageWrapper> call, @NonNull Response<Entourage.EntourageWrapper> response) {
+                public void onResponse(@NonNull Call<BaseEntourage.EntourageWrapper> call, @NonNull Response<BaseEntourage.EntourageWrapper> response) {
                     if (response.isSuccessful() && response.body() !=null) {
                         //show the entourage information
-                        fragment.onConversationFound(response.body().getEntourage());
+                        fragment.onConversationFound(response.body().entourage);
                     }
                     else {
                         fragment.onConversationFound(null);
@@ -122,7 +122,7 @@ public class UserPresenter {
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<Entourage.EntourageWrapper> call, @NonNull Throwable t) {
+                public void onFailure(@NonNull Call<BaseEntourage.EntourageWrapper> call, @NonNull Throwable t) {
                     fragment.onConversationFound(null);
                 }
             });

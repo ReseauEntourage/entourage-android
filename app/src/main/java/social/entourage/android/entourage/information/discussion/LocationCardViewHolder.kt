@@ -1,14 +1,12 @@
 package social.entourage.android.entourage.information.discussion
 
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import kotlinx.android.synthetic.main.tour_information_location_card_view.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.map.FeedItem
-import social.entourage.android.api.model.map.Tour
-import social.entourage.android.api.model.map.TourTimestamp
+import social.entourage.android.api.model.tour.Tour
+import social.entourage.android.api.model.tour.TourTimestamp
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.tools.Utils
 import java.text.SimpleDateFormat
@@ -32,8 +30,8 @@ class LocationCardViewHolder(view: View) : BaseCardViewHolder(view) {
             itemView.tic_location_date?.text = locationDateFormat.format(tour.endTime).toUpperCase()
             itemView.tic_location_title?.setText(R.string.tour_info_text_closed)
             if (tour.isClosed) {
-                if (tour.startTime != null && tour.endTime != null) {
-                    itemView.tic_location_duration?.text = Utils.getDateStringFromSeconds(tour.endTime.time - tour.startTime.time)
+                if (tour.endTime != null) {
+                    itemView.tic_location_duration?.text = Utils.getDateStringFromSeconds(tour.endTime!!.time - tour.startTime.time)
                 }
                 var distance = 0f
                 var startPoint = tourPointsList[0]
@@ -47,7 +45,7 @@ class LocationCardViewHolder(view: View) : BaseCardViewHolder(view) {
         } else {
             itemView.tic_location_date?.text = locationDateFormat.format(tour.startTime).toUpperCase()
             itemView.tic_location_title?.setText(R.string.tour_info_text_ongoing)
-            if (!tour.isClosed && tour.startTime != null) {
+            if (!tour.isClosed) {
                 itemView.tic_location_duration?.text = Utils.getDateStringFromSeconds(Date().time - tour.startTime.time)
             }
             itemView.tic_location_distance?.text = ""

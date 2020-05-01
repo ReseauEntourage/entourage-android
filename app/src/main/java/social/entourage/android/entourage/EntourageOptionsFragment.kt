@@ -1,29 +1,14 @@
 package social.entourage.android.entourage
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import kotlinx.android.synthetic.main.layout_entourage_options.*
-import social.entourage.android.EntourageApplication
-import social.entourage.android.EntourageEvents
-import social.entourage.android.MainActivity
 import social.entourage.android.R
-import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.map.Entourage
+import social.entourage.android.api.model.map.BaseEntourage
 import social.entourage.android.api.model.map.FeedItem
-import social.entourage.android.api.model.map.Tour
-import social.entourage.android.api.tape.Events.OnFeedItemCloseRequestEvent
-import social.entourage.android.api.tape.Events.OnUserActEvent
-import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.entourage.create.BaseCreateEntourageFragment
-import social.entourage.android.tools.BusProvider.instance
-import social.entourage.android.tools.Utils.getDateStringFromSeconds
-import java.util.*
 
 class EntourageOptionsFragment : FeedItemOptionsFragment() {
     // ----------------------------------
@@ -49,7 +34,7 @@ class EntourageOptionsFragment : FeedItemOptionsFragment() {
 
     override fun onEditClicked() {
         if (feedItem.showEditEntourageView()) {
-            BaseCreateEntourageFragment.newInstance(feedItem as Entourage?).show(parentFragmentManager, BaseCreateEntourageFragment.TAG)
+            BaseCreateEntourageFragment.newInstance(feedItem as BaseEntourage?).show(parentFragmentManager, BaseCreateEntourageFragment.TAG)
         } else {
             if (activity == null) return
             // just send an email

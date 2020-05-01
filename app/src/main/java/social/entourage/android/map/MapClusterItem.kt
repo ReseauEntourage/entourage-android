@@ -10,6 +10,8 @@ import com.google.maps.android.ui.IconGenerator
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.map.*
+import social.entourage.android.api.model.tour.Encounter
+import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.tools.Utils
 
 /**
@@ -41,7 +43,7 @@ class MapClusterItem : ClusterItem {
                         }
                     }
                 } else if (feedItem.type == FeedItem.ENTOURAGE_CARD) {
-                    val location = (feedItem as Entourage).location
+                    val location = (feedItem as BaseEntourage).location
                     if (location != null) {
                         return LatLng(location.latitude, location.longitude)
                     }
@@ -73,7 +75,7 @@ class MapClusterItem : ClusterItem {
                 markerOptions.icon(icon)
                 markerOptions.anchor(0.5f, 1.0f)
             } else if (feedItem.type == FeedItem.ENTOURAGE_CARD) {
-                val drawable = AppCompatResources.getDrawable(context!!, (mapItem as Entourage).heatmapResourceId)
+                val drawable = AppCompatResources.getDrawable(context!!, (mapItem as BaseEntourage).heatmapResourceId)
                 val icon = Utils.getBitmapDescriptorFromDrawable(drawable!!, BaseEntourage.getMarkerSize(context), BaseEntourage.getMarkerSize(context))
                 markerOptions.icon(icon)
             }

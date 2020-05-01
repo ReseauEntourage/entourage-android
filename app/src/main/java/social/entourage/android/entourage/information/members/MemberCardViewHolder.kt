@@ -6,7 +6,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.entourage_information_member_card.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.map.TourUser
+import social.entourage.android.api.model.map.EntourageUser
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.tools.BusProvider.instance
@@ -21,18 +21,18 @@ import java.util.*
 class MemberCardViewHolder(view: View) : BaseCardViewHolder(view) {
     private var userId = 0
     override fun bindFields() {
-        itemView.setOnClickListener({
+        itemView.setOnClickListener {
             if (userId != 0) instance.post(OnUserViewRequestedEvent(userId))
-        })
+        }
     }
 
     override fun populate(data: TimestampedObject) {
-        this.populate(data as TourUser)
+        this.populate(data as EntourageUser)
     }
 
-    fun populate(tourUser: TourUser) {
-        userId = tourUser.userId
-        val avatarURL = tourUser.avatarURLAsString
+    fun populate(entourageUser: EntourageUser) {
+        userId = entourageUser.userId
+        val avatarURL = entourageUser.avatarURLAsString
         if (avatarURL != null && itemView.tic_member_photo!=null) {
             Picasso.get().load(Uri.parse(avatarURL))
                     .placeholder(R.drawable.ic_user_photo_small)
@@ -42,7 +42,7 @@ class MemberCardViewHolder(view: View) : BaseCardViewHolder(view) {
             itemView.tic_member_photo?.setImageResource(R.drawable.ic_user_photo_small)
         }
         // Partner logo
-        val partner = tourUser.partner
+        val partner = entourageUser.partner
         if (partner != null) {
             val partnerLogoURL = partner.smallLogoUrl
             if (partnerLogoURL != null && itemView.tic_member_partner_logo!= null) {
@@ -57,13 +57,13 @@ class MemberCardViewHolder(view: View) : BaseCardViewHolder(view) {
         } else {
             itemView.tic_member_partner_logo?.setImageDrawable(null)
         }
-        itemView.tic_member_name?.text = tourUser.displayName
+        itemView.tic_member_name?.text = entourageUser.displayName
         val roles = ArrayList<String>()
-        if (tourUser.groupRole != null) {
-            roles.add(tourUser.groupRole)
+        if (entourageUser.groupRole != null) {
+            roles.add(entourageUser.groupRole)
         }
-        for (role in tourUser.communityRoles) {
-            if (role != tourUser.groupRole) {
+        for (role in entourageUser.communityRoles) {
+            if (role != entourageUser.groupRole) {
                 roles.add(role)
             }
         }

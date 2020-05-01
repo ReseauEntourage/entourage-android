@@ -15,8 +15,8 @@ import java.util.List;
 import social.entourage.android.R;
 import social.entourage.android.api.model.BaseOrganization;
 import social.entourage.android.api.model.User;
-import social.entourage.android.api.model.map.Entourage;
-import social.entourage.android.api.model.map.UserMembership;
+import social.entourage.android.api.model.map.BaseEntourage;
+import social.entourage.android.api.model.UserMembership;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.ItemClickSupport;
 import social.entourage.android.tools.BusProvider;
@@ -82,12 +82,7 @@ public class EntourageUserProfileAssociationsView extends RelativeLayout impleme
             userAssociationsView.setAdapter(organizationsAdapter);
 
             ItemClickSupport.addTo(userAssociationsView)
-                    .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-                        @Override
-                        public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                            userFragment.onEditProfileClicked();
-                        }
-                    });
+                    .setOnItemClickListener((recyclerView, position, v) -> userFragment.onEditProfileClicked());
         } else {
             organizationsAdapter.setOrganizationList(organizationList);
         }
@@ -95,20 +90,17 @@ public class EntourageUserProfileAssociationsView extends RelativeLayout impleme
         userAssociationsTitle.setVisibility( organizationList.size() > 0 ? View.VISIBLE : View.GONE );
         userAssociationsView.setVisibility( organizationList.size() > 0 ? View.VISIBLE : View.GONE );
 
-        ArrayList<UserMembership> userMembershipList = user.getMemberships(Entourage.TYPE_NEIGHBORHOOD);
+        ArrayList<UserMembership> userMembershipList = user.getMemberships(BaseEntourage.GROUPTYPE_NEIGHBORHOOD);
         if (userNeighborhoodsAdapter == null) {
             userNeighborhoodsView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-            userNeighborhoodsAdapter = new UserMembershipsAdapter(userMembershipList, Entourage.TYPE_NEIGHBORHOOD);
+            userNeighborhoodsAdapter = new UserMembershipsAdapter(userMembershipList, BaseEntourage.GROUPTYPE_NEIGHBORHOOD);
 
             ItemClickSupport.addTo(userNeighborhoodsView)
-                    .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-                        @Override
-                        public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                            UserMembership userMembership = userNeighborhoodsAdapter.getItemAt(position);
-                            if (userMembership != null) {
-                                BusProvider.INSTANCE.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(Entourage.ENTOURAGE_CARD, userMembership.getMembershipUUID(), null));
-                            }
+                    .setOnItemClickListener((recyclerView, position, v) -> {
+                        UserMembership userMembership = userNeighborhoodsAdapter.getItemAt(position);
+                        if (userMembership != null) {
+                            BusProvider.INSTANCE.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(BaseEntourage.ENTOURAGE_CARD, userMembership.getMembershipUUID(), null));
                         }
                     });
         } else {

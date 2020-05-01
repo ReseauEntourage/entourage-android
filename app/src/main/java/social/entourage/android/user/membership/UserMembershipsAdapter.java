@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import social.entourage.android.R;
-import social.entourage.android.api.model.map.UserMembership;
+import social.entourage.android.api.model.UserMembership;
 
 /**
  * Created by Mihai Ionescu on 25/05/2018.
@@ -69,7 +69,7 @@ public class UserMembershipsAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
         UserMembership userMembership = membershipList.get(position);
         UserMembershipViewHolder userMembershipViewHolder = (UserMembershipViewHolder) holder;
-        if (userMembershipViewHolder != null) userMembershipViewHolder.populate(userMembership);
+        userMembershipViewHolder.populate(userMembership);
     }
 
     @Override
