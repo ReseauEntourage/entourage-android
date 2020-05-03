@@ -15,8 +15,8 @@ import social.entourage.android.Constants
 import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.map.BaseEntourage
-import social.entourage.android.api.model.map.FeedItem
+import social.entourage.android.api.model.BaseEntourage
+import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BaseCardViewHolder
@@ -45,13 +45,13 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
 
         //title
         if (itemView.tour_card_title != null) {
-            itemView.tour_card_title!!.text = String.format(res.getString(R.string.tour_cell_title), feedItem.title)
-            itemView.tour_card_title!!.setTypeface(null, if (feedItem.badgeCount == 0) Typeface.NORMAL else Typeface.BOLD)
+            itemView.tour_card_title!!.text = String.format(res.getString(R.string.tour_cell_title), feedItem.getTitle())
+            itemView.tour_card_title!!.setTypeface(null, if (feedItem.getUnreadMsgNb() == 0) Typeface.NORMAL else Typeface.BOLD)
             if (showCategoryIcon() && itemView.tour_card_icon == null) {
                 // add the icon for entourages
                 Picasso.get()
                         .cancelRequest(this)
-                val iconURL = feedItem.iconURL
+                val iconURL = feedItem.getIconURL()
                 if (iconURL != null) {
                     itemView.tour_card_title!!.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)
                     Picasso.get()
@@ -68,7 +68,7 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
         if (showCategoryIcon() && itemView.tour_card_icon != null) {
             // add the icon for entourages
             Picasso.get().cancelRequest(itemView.tour_card_icon!!)
-            val iconURL = feedItem.iconURL
+            val iconURL = feedItem.getIconURL()
             if (iconURL != null) {
                 itemView.tour_card_icon!!.setImageDrawable(null)
                 Picasso.get()
@@ -128,21 +128,21 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
 
         //Feed Item type
         itemView.tour_card_type?.text = feedItem.getFeedTypeLong(itemView.context)
-        if (feedItem.feedTypeColor != 0) {
-            itemView.tour_card_type?.setTextColor(ContextCompat.getColor(itemView.context!!, feedItem.feedTypeColor))
+        if (feedItem.getFeedTypeColor() != 0) {
+            itemView.tour_card_type?.setTextColor(ContextCompat.getColor(itemView.context!!, feedItem.getFeedTypeColor()))
         }
-        val distanceAsString = feedItem.startPoint?.distanceToCurrentLocation(Constants.DISTANCE_MAX_DISPLAY) ?: ""
+        val distanceAsString = feedItem.getStartPoint()?.distanceToCurrentLocation(Constants.DISTANCE_MAX_DISPLAY) ?: ""
         itemView.tour_card_location?.text = if (distanceAsString.equals("", ignoreCase = true)) "" else String.format(res.getString(R.string.tour_cell_location), distanceAsString)
 
         //tour members
         itemView.tour_card_people_count?.text = res.getString(R.string.tour_cell_numberOfPeople, feedItem.numberOfPeople)
 
         //badge count
-        if (feedItem.badgeCount <= 0) {
+        if (feedItem.getUnreadMsgNb() <= 0) {
             itemView.tour_card_badge_count?.visibility = View.GONE
         } else {
             itemView.tour_card_badge_count?.visibility = View.VISIBLE
-            itemView.tour_card_badge_count?.text = res.getString(R.string.badge_count_format, feedItem.badgeCount)
+            itemView.tour_card_badge_count?.text = res.getString(R.string.badge_count_format, feedItem.getUnreadMsgNb())
         }
 
         //act button
@@ -150,23 +150,23 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
             //var dividerColor = R.color.accent
             var textColor = R.color.accent
             itemView.tour_card_button_act?.visibility = View.VISIBLE
-            if (feedItem.isFreezed) {
-                itemView.tour_card_button_act?.setText(feedItem.freezedCTAText)
+            if (feedItem.isFreezed()) {
+                itemView.tour_card_button_act?.setText(feedItem.getFreezedCTAText())
                 //dividerColor = R.color.greyish
-                textColor = feedItem.freezedCTAColor
+                textColor = feedItem.getFreezedCTAColor()
             } else {
                 when(feedItem.joinStatus) {
-                    Tour.JOIN_STATUS_PENDING -> {
+                    FeedItem.JOIN_STATUS_PENDING -> {
                         itemView.tour_card_button_act?.setText(R.string.tour_cell_button_pending)
                     }
-                    Tour.JOIN_STATUS_ACCEPTED -> {
-                        if (feedItem.type == TimestampedObject.TOUR_CARD && feedItem.isOngoing) {
+                    FeedItem.JOIN_STATUS_ACCEPTED -> {
+                        if (feedItem.type == TimestampedObject.TOUR_CARD && feedItem.isOngoing()) {
                             itemView.tour_card_button_act?.setText(R.string.tour_cell_button_ongoing)
                         } else {
                             itemView.tour_card_button_act?.setText(R.string.tour_cell_button_accepted)
                         }
                     }
-                    Tour.JOIN_STATUS_REJECTED -> {
+                    FeedItem.JOIN_STATUS_REJECTED -> {
                         itemView.tour_card_button_act?.setText(R.string.tour_cell_button_rejected)
                         textColor = R.color.tomato
                     }
@@ -183,13 +183,13 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
         //last message
         itemView.tour_card_last_message?.text = feedItem.lastMessage?.text ?: ""
         itemView.tour_card_last_message?.visibility = if (itemView.tour_card_last_message?.text.isNullOrBlank()) View.GONE else View.VISIBLE
-        itemView.tour_card_last_message?.setTypeface(null, if (feedItem.badgeCount == 0) Typeface.NORMAL else Typeface.BOLD)
-        itemView.tour_card_last_message?.setTextColor(if (feedItem.badgeCount == 0) ContextCompat.getColor(itemView.context!!, R.color.feeditem_card_details_normal) else ContextCompat.getColor(itemView.context!!, R.color.feeditem_card_details_bold))
+        itemView.tour_card_last_message?.setTypeface(null, if (feedItem.getUnreadMsgNb() == 0) Typeface.NORMAL else Typeface.BOLD)
+        itemView.tour_card_last_message?.setTextColor(if (feedItem.getUnreadMsgNb() == 0) ContextCompat.getColor(itemView.context!!, R.color.feeditem_card_details_normal) else ContextCompat.getColor(itemView.context!!, R.color.feeditem_card_details_bold))
 
         //last update date
         itemView.tour_card_last_update_date?.text = formatLastUpdateDate(feedItem.updatedTime, itemView.context!!)
-        itemView.tour_card_last_update_date?.setTypeface(null, if (feedItem.badgeCount == 0) Typeface.NORMAL else Typeface.BOLD)
-        itemView.tour_card_last_update_date?.setTextColor(if (feedItem.badgeCount == 0) ContextCompat.getColor(itemView.context!!, R.color.feeditem_card_details_normal) else ContextCompat.getColor(itemView.context!!, R.color.feeditem_card_details_bold))
+        itemView.tour_card_last_update_date?.setTypeface(null, if (feedItem.getUnreadMsgNb() == 0) Typeface.NORMAL else Typeface.BOLD)
+        itemView.tour_card_last_update_date?.setTextColor(if (feedItem.getUnreadMsgNb() == 0) ContextCompat.getColor(itemView.context!!, R.color.feeditem_card_details_normal) else ContextCompat.getColor(itemView.context!!, R.color.feeditem_card_details_bold))
     }
 
     protected open fun showCategoryIcon(): Boolean {
@@ -229,15 +229,15 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
     }
     private fun onClickCardButton(){
         when (feedItem.joinStatus) {
-            Tour.JOIN_STATUS_PENDING -> {
+            FeedItem.JOIN_STATUS_PENDING -> {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_PENDING_OVERLAY)
                 instance.post(OnFeedItemCloseRequestEvent(feedItem))
             }
-            Tour.JOIN_STATUS_ACCEPTED -> {
+            FeedItem.JOIN_STATUS_ACCEPTED -> {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_OPEN_ACTIVE_OVERLAY)
                 instance.post(OnFeedItemCloseRequestEvent(feedItem))
             }
-            Tour.JOIN_STATUS_REJECTED -> {
+            FeedItem.JOIN_STATUS_REJECTED -> {
                 //TODO: What to do on rejected status ?
             }
             else -> {

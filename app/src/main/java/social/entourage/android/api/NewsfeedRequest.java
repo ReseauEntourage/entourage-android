@@ -3,8 +3,8 @@ package social.entourage.android.api;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import social.entourage.android.api.model.EntourageDate;
-import social.entourage.android.api.model.NewsfeedItem;
+import social.entourage.android.api.model.EntourageRequestDate;
+import social.entourage.android.api.model.feed.NewsfeedItem;
 
 /**
  * Created by mihaiionescu on 05/05/16.
@@ -13,7 +13,7 @@ public interface NewsfeedRequest {
 
     @GET("feeds")
     Call<NewsfeedItem.NewsfeedItemWrapper> retrieveFeed(
-            @Query("before") EntourageDate before,
+            @Query("before") EntourageRequestDate before,
             @Query("longitude") double longitude,
             @Query("latitude") double latitude,
             @Query("distance") int distance,

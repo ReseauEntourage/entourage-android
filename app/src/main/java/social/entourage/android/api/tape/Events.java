@@ -10,8 +10,8 @@ import org.jetbrains.annotations.Nullable;
 
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.Partner;
-import social.entourage.android.api.model.map.BaseEntourage;
-import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.api.model.BaseEntourage;
+import social.entourage.android.api.model.feed.FeedItem;
 import social.entourage.android.api.model.tour.Encounter;
 
 public class Events {

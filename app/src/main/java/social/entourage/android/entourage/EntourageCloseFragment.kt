@@ -1,6 +1,5 @@
 package social.entourage.android.entourage
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -13,10 +12,9 @@ import android.view.Window
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import social.entourage.android.EntourageEvents
 import social.entourage.android.R
-import social.entourage.android.api.model.map.FeedItem
+import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events.OnFeedItemCloseRequestEvent
 import social.entourage.android.tools.BusProvider
 import kotlinx.android.synthetic.main.fragment_entourage_close.*
@@ -105,8 +103,7 @@ class EntourageCloseFragment : DialogFragment() {
         val addresses = arrayOf(getString(R.string.contact_email))
         intent.putExtra(Intent.EXTRA_EMAIL, addresses)
         // Set the subject
-        var title = feedItem?.title
-        if (title == null) title = ""
+        val title = feedItem?.getTitle() ?: ""
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(emailSubjectFormat, title))
         if (activity != null && intent.resolveActivity(requireActivity().packageManager) != null) {
             // Start the intent

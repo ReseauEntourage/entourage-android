@@ -8,7 +8,7 @@ import social.entourage.android.Constants
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.guide.Poi
-import social.entourage.android.api.model.map.LocationPoint
+import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.tape.EntouragePoiRequest.OnPoiViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.guide.poi.PoiRenderer.CategoryType

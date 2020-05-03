@@ -11,7 +11,7 @@ import java.util.Locale;
  * Created by mihaiionescu on 01/06/16.
  * Class that handles the Date formating in retrofit requests (not in json body)
  */
-public class EntourageDate {
+public class EntourageRequestDate {
     private static final ThreadLocal<DateFormat> DF = new ThreadLocal<DateFormat>() {
         @Override public DateFormat initialValue() {
             return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.FRANCE);
@@ -20,7 +20,7 @@ public class EntourageDate {
 
     private final Date date;
 
-    public EntourageDate(Date date) {
+    public EntourageRequestDate(Date date) {
         this.date = date;
     }
 

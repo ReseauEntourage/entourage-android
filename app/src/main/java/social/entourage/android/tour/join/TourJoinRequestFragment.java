@@ -27,8 +27,8 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.api.model.map.BaseEntourage;
-import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.api.model.BaseEntourage;
+import social.entourage.android.api.model.feed.FeedItem;
 import social.entourage.android.api.model.tour.Tour;
 
 public class TourJoinRequestFragment extends DialogFragment {

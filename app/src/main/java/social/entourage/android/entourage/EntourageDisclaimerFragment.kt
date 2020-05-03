@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_entourage_disclaimer.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.EntourageEvents
 import social.entourage.android.R
-import social.entourage.android.api.model.map.BaseEntourage
+import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.base.EntourageDialogFragment
 
 class EntourageDisclaimerFragment : EntourageDialogFragment() {

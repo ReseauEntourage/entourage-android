@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.fragment_map_filter.*
 import social.entourage.android.EntourageEvents
 import social.entourage.android.R
-import social.entourage.android.api.model.map.BaseEntourage
+import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import java.util.*
 

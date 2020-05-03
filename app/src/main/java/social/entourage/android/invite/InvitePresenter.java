@@ -9,7 +9,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.model.MultipleInvitations;
-import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.api.model.feed.FeedItem;
 
 /**
  * Created by mihaiionescu on 12/07/16.

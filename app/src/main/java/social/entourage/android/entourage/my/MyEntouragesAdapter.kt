@@ -6,7 +6,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.InvitationList
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.map.BaseEntourage
+import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.LoaderCardItem
 import social.entourage.android.base.EntourageBaseAdapter
 import social.entourage.android.base.LoaderCardViewHolder

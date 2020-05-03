@@ -8,8 +8,9 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.ui.IconGenerator
 import social.entourage.android.R
+import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.map.*
+import social.entourage.android.api.model.feed.*
 import social.entourage.android.api.model.tour.Encounter
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.tools.Utils
@@ -34,15 +35,11 @@ class MapClusterItem : ClusterItem {
         if (mapItem != null) {
             if (mapItem is FeedItem) {
                 val feedItem = mapItem as FeedItem
-                if (feedItem.type == FeedItem.TOUR_CARD) {
+                if (feedItem.type == TimestampedObject.TOUR_CARD) {
                     val tour = mapItem as Tour
-                    if (tour.tourPoints != null) {
-                        val lastPoint = tour.tourPoints[tour.tourPoints.size - 1]
-                        if (lastPoint != null) {
-                            return LatLng(lastPoint.latitude, lastPoint.longitude)
-                        }
-                    }
-                } else if (feedItem.type == FeedItem.ENTOURAGE_CARD) {
+                    val lastPoint = tour.tourPoints[tour.tourPoints.size - 1]
+                    return LatLng(lastPoint.latitude, lastPoint.longitude)
+                } else if (feedItem.type == TimestampedObject.ENTOURAGE_CARD) {
                     val location = (feedItem as BaseEntourage).location
                     if (location != null) {
                         return LatLng(location.latitude, location.longitude)
@@ -68,14 +65,14 @@ class MapClusterItem : ClusterItem {
         if (mapItem == null) return
         if (mapItem is FeedItem) {
             val feedItem = mapItem as FeedItem
-            if (feedItem.type == FeedItem.TOUR_CARD) {
+            if (feedItem.type == TimestampedObject.TOUR_CARD) {
                 val iconGenerator = IconGenerator(context)
                 iconGenerator.setTextAppearance(R.style.OngoingTourMarker)
                 val icon = BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon((feedItem as Tour).organizationName))
                 markerOptions.icon(icon)
                 markerOptions.anchor(0.5f, 1.0f)
-            } else if (feedItem.type == FeedItem.ENTOURAGE_CARD) {
-                val drawable = AppCompatResources.getDrawable(context!!, (mapItem as BaseEntourage).heatmapResourceId)
+            } else if (feedItem.type == TimestampedObject.ENTOURAGE_CARD) {
+                val drawable = AppCompatResources.getDrawable(context!!, (mapItem as BaseEntourage).getHeatmapResourceId())
                 val icon = Utils.getBitmapDescriptorFromDrawable(drawable!!, BaseEntourage.getMarkerSize(context), BaseEntourage.getMarkerSize(context))
                 markerOptions.icon(icon)
             }

@@ -1,9 +1,8 @@
-package social.entourage.android.api.model
+package social.entourage.android.api.model.feed
 
 import com.google.gson.*
 import com.google.gson.annotations.SerializedName
-import social.entourage.android.api.model.map.Announcement
-import social.entourage.android.api.model.map.BaseEntourage
+import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.tour.Tour
 import timber.log.Timber
 import java.lang.reflect.Type
@@ -39,8 +38,7 @@ class NewsfeedItem {
     // ----------------------------------
     class NewsfeedItemWrapper {
         @SerializedName("feeds")
-        @JvmField
-        var newsfeedItem: List<NewsfeedItem>? = null
+        lateinit var newsfeedItems: List<NewsfeedItem>
 
     }
 
@@ -57,7 +55,7 @@ class NewsfeedItem {
                 val jsonData = jsonObject[DATA].asJsonObject
                 if (newsfeed.type != null && jsonData !=null) {
                     val newsfeedClass = getClassFromString(newsfeed.type!!,
-                            jsonData["group_type"]?.asString ,
+                            jsonData["group_type"]?.asString,
                             jsonData["entourage_type"]?.asString)
                     if (newsfeedClass != null) {
                         newsfeed.data = gson.fromJson<Any>(jsonData, newsfeedClass)

@@ -6,7 +6,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.entourage_information_member_card.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.map.EntourageUser
+import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.tools.BusProvider.instance

@@ -23,7 +23,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import social.entourage.android.BuildConfig;
 import social.entourage.android.Constants;
-import social.entourage.android.api.model.NewsfeedItem;
+import social.entourage.android.api.model.feed.NewsfeedItem;
 import social.entourage.android.api.tape.EncounterTapeTaskQueue;
 import social.entourage.android.authentication.AuthenticationInterceptor;
 import social.entourage.android.tour.encounter.CreateEncounterPresenter;

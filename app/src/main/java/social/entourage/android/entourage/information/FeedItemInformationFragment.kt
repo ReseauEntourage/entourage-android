@@ -46,7 +46,7 @@ import org.joda.time.Days
 import org.joda.time.LocalDate
 import social.entourage.android.*
 import social.entourage.android.api.model.*
-import social.entourage.android.api.model.map.*
+import social.entourage.android.api.model.feed.*
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.EntourageDialogFragment
@@ -121,7 +121,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             return
         }
         feedItem = newFeedItem
-        if (newFeedItem.isPrivate) {
+        if (newFeedItem.isPrivate()) {
             initializeView()
             loadPrivateCards()
         } else {
@@ -129,14 +129,14 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             // we need to retrieve the whole entourage again, just to send the distance and feed position
             val feedRank = arguments?.getInt(KEY_FEED_POSITION) ?:0
             var distance = 0
-            val startPoint = newFeedItem.startPoint
+            val startPoint = newFeedItem.getStartPoint()
             if (startPoint != null) {
                 val currentLocation = EntourageLocation.getInstance().currentLocation
                 if (currentLocation != null) {
                     distance = ceil(startPoint.distanceTo(LocationPoint(currentLocation.latitude, currentLocation.longitude)) / 1000.toDouble()).toInt() // in kilometers
                 }
             }
-            presenter().getFeedItem(newFeedItem.uuid, newFeedItem.type, feedRank, distance)
+            presenter().getFeedItem(newFeedItem.uuid ?:"", newFeedItem.type, feedRank, distance)
 
         }
         initializeCommentEditText()
@@ -246,7 +246,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         // switch to the private section
         // otherwise just close the view
         val isPublicSectionVisible = entourage_info_public_section?.visibility == View.VISIBLE
-        if (isPublicSectionVisible && feedItem.isPrivate) {
+        if (isPublicSectionVisible && feedItem.isPrivate()) {
             onSwitchSections()
             return
         }
@@ -261,7 +261,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
 
     private fun onSwitchSections() {
         // Ignore if the entourage is not loaded or is public
-        if (!feedItem.isPrivate) {
+        if (!feedItem.isPrivate()) {
             return
         }
 
@@ -274,7 +274,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         }
 
         // For conversation, open the author profile
-        if (FeedItem.ENTOURAGE_CARD == feedItem.type && BaseEntourage.GROUPTYPE_CONVERSATION.equals(feedItem.groupType, ignoreCase = true)) {
+        if (TimestampedObject.ENTOURAGE_CARD == feedItem.type && BaseEntourage.GROUPTYPE_CONVERSATION.equals(feedItem.getGroupType(), ignoreCase = true)) {
             if (showInfoButton) {
                 // only if this screen wasn't shown from the profile page
                 BusProvider.instance.post(OnUserViewRequestedEvent(feedItem.author!!.userID))
@@ -339,16 +339,16 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         // build the share text
         val shareLink = feedItem.shareURL ?:getString(R.string.entourage_share_link)
         val shareText = when {
-            feedItem.type == TimestampedObject.ENTOURAGE_CARD && BaseEntourage.GROUPTYPE_OUTING == feedItem.groupType ->{
+            feedItem.type == TimestampedObject.ENTOURAGE_CARD && BaseEntourage.GROUPTYPE_OUTING == feedItem.getGroupType() ->{
                 val df: DateFormat = SimpleDateFormat(getString(R.string.entourage_create_date_format), Locale.getDefault())
-                getString(R.string.entourage_share_text_for_event, feedItem.title,df.format(feedItem.startTime), feedItem.displayAddress, shareLink)
+                getString(R.string.entourage_share_text_for_event, feedItem.getTitle(),df.format(feedItem.getStartTime()), feedItem.getDisplayAddress(), shareLink)
             }
-            feedItem.type == TimestampedObject.ENTOURAGE_CARD && BaseEntourage.GROUPTYPE_OUTING != feedItem.groupType ->{
-                val entourageShareVerb = getString(if (isMyEntourage) R.string.entourage_share_text_verb_for_entourage_author else if (feedItem.isPrivate) R.string.entourage_share_text_verb_for_entourage_member else R.string.entourage_share_text_verb_for_entourage_nonmember)
-                getString(R.string.entourage_share_text_for_entourage, entourageShareVerb, feedItem.title, shareLink)
+            feedItem.type == TimestampedObject.ENTOURAGE_CARD && BaseEntourage.GROUPTYPE_OUTING != feedItem.getGroupType() ->{
+                val entourageShareVerb = getString(if (isMyEntourage) R.string.entourage_share_text_verb_for_entourage_author else if (feedItem.isPrivate()) R.string.entourage_share_text_verb_for_entourage_member else R.string.entourage_share_text_verb_for_entourage_nonmember)
+                getString(R.string.entourage_share_text_for_entourage, entourageShareVerb, feedItem.getTitle(), shareLink)
             }
             else -> {
-                val entourageShareText = if (isMyEntourage) R.string.entourage_share_text_author else if (feedItem.isPrivate) R.string.entourage_share_text_member else R.string.entourage_share_text_non_member
+                val entourageShareText = if (isMyEntourage) R.string.entourage_share_text_author else if (feedItem.isPrivate()) R.string.entourage_share_text_member else R.string.entourage_share_text_non_member
                 getString(entourageShareText, shareLink)
             }
         }
@@ -357,7 +357,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         sharingIntent.type = "text/plain"
         sharingIntent.putExtra(Intent.EXTRA_TEXT, shareText)
         startActivity(Intent.createChooser(sharingIntent, getString(R.string.entourage_share_intent_title)))
-        EntourageEvents.logEvent(if (feedItem.isPrivate) EntourageEvents.EVENT_ENTOURAGE_SHARE_MEMBER else EntourageEvents.EVENT_ENTOURAGE_SHARE_NONMEMBER)
+        EntourageEvents.logEvent(if (feedItem.isPrivate()) EntourageEvents.EVENT_ENTOURAGE_SHARE_MEMBER else EntourageEvents.EVENT_ENTOURAGE_SHARE_NONMEMBER)
         entourage_info_options?.visibility = View.GONE
     }
 
@@ -392,7 +392,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     protected abstract fun onJoinTourButton()
 
     private fun onActButton() {
-        if (feedItem.joinStatus == Tour.JOIN_STATUS_PENDING) {
+        if (feedItem.joinStatus == FeedItem.JOIN_STATUS_PENDING) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_PENDING_OVERLAY)
             onMoreButton()
         }
@@ -412,10 +412,10 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             val addresses = arrayOf(getString(R.string.edit_action_email))
             intent.putExtra(Intent.EXTRA_EMAIL, addresses)
             // Set the subject
-            val title = feedItem.title ?:  ""
+            val title = feedItem.getTitle() ?:  ""
             val emailSubject = getString(R.string.edit_entourage_email_title, title)
             intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject)
-            val description = feedItem.description ?: ""
+            val description = feedItem.getDescription() ?: ""
             val emailBody = getString(R.string.edit_entourage_email_body, description)
             intent.putExtra(Intent.EXTRA_TEXT, emailBody)
             if (intent.resolveActivity(requireActivity().packageManager) != null) {
@@ -440,7 +440,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         val addresses = arrayOf(getString(R.string.contact_email))
         intent.putExtra(Intent.EXTRA_EMAIL, addresses)
         // Set the subject
-        val title = feedItem.title ?: ""
+        val title = feedItem.getTitle() ?: ""
         val emailSubject = getString(R.string.report_entourage_email_title, title)
         intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject)
         if (intent.resolveActivity(requireActivity().packageManager) != null) {
@@ -462,7 +462,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         // Set the email to
         intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.contact_email)))
         // Set the subject
-        val title = feedItem.title ?: ""
+        val title = feedItem.getTitle() ?: ""
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.promote_entourage_email_title, title))
         // Set the body
         intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.promote_entourage_email_body, title))
@@ -478,7 +478,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     }
 
     private fun onUserAddClicked() {
-        if (feedItem.isSuspended) {
+        if (feedItem.isSuspended()) {
             EntourageSnackbar.make(entourage_information_coordinator_layout!!,  R.string.tour_info_members_add_not_allowed, Snackbar.LENGTH_SHORT).show()
             return
         }
@@ -487,7 +487,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     }
 
     private fun onMembersAddClicked() {
-        if (feedItem.isPrivate && Configuration.showInviteView()) {
+        if (feedItem.isPrivate() && Configuration.showInviteView()) {
             // For members show the invite screen
             onUserAddClicked()
         } else {
@@ -568,7 +568,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         }*/
 
         // switch to appropiate section (in case of an invitation we swtich to public section
-        if (feedItem.isPrivate && invitationId==0L) {
+        if (feedItem.isPrivate() && invitationId==0L) {
             updateJoinStatus()
             switchToPrivateSection()
         } else {
@@ -582,7 +582,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         updatePublicScrollViewLayout()
 
         // for newly created entourages, open the invite friends screen automatically if the feed item is not suspended
-        if (feedItem.isNewlyCreated && feedItem.showInviteViewAfterCreation() && !feedItem.isSuspended) {
+        if (feedItem.isNewlyCreated && feedItem.showInviteViewAfterCreation() && !feedItem.isSuspended()) {
             showInviteSource()
         }
     }
@@ -626,8 +626,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         entourage_info_discussion_view?.adapter = discussionAdapter
 
         //add the cards
-        val cachedCardInfoList = feedItem.cachedCardInfoList
-        discussionAdapter.addItems(cachedCardInfoList)
+        discussionAdapter.addItems(feedItem.cachedCardInfoList)
 
         //clear the added cards info
         feedItem.clearAddedCardInfoList()
@@ -643,8 +642,8 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
 
     private fun initOldestChatMessageDate() {
         for (timestampedObject in feedItem.cachedCardInfoList) {
-            if (timestampedObject.javaClass != ChatMessage::class.java) continue
-            val chatCreationDate = (timestampedObject as ChatMessage).creationDate ?: continue
+            if (timestampedObject !is ChatMessage) continue
+            val chatCreationDate = timestampedObject.creationDate
             if (oldestChatMessageDate == null) {
                 oldestChatMessageDate = chatCreationDate
             } else if (chatCreationDate.before(oldestChatMessageDate)) {
@@ -730,8 +729,8 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
 
     private fun updateFeedItemInfo() {
         // Update the header
-        entourage_info_title?.text = feedItem.title
-        val iconURL = feedItem.iconURL
+        entourage_info_title?.text = feedItem.getTitle()
+        val iconURL = feedItem.getIconURL()
         if (iconURL != null && entourage_info_icon!= null) {
             Picasso.get().cancelRequest(entourage_info_icon!!)
             Picasso.get()
@@ -741,7 +740,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
                     .into(entourage_info_icon)
             entourage_info_icon!!.visibility = View.VISIBLE
         } else {
-            val iconDrawable = feedItem.getIconDrawable(context)
+            val iconDrawable = feedItem.getIconDrawable(requireContext())
             if (iconDrawable == null) {
                 entourage_info_icon?.visibility = View.GONE
             } else {
@@ -749,18 +748,18 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
                 entourage_info_icon?.setImageDrawable(iconDrawable)
             }
         }
-        entourage_info_title_full?.text = feedItem.title
+        entourage_info_title_full?.text = feedItem.getTitle()
         //
 
-        if (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.groupType, ignoreCase = true)) {
+        if (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.getGroupType(), ignoreCase = true)) {
             tour_summary_group_type?.text = resources.getString(R.string.entourage_type_outing)
             tour_summary_author_name?.text = ""
             entourage_info_location?.visibility = View.GONE
         } else {
-            tour_summary_group_type?.text = feedItem.getFeedTypeLong(context)
+            tour_summary_group_type?.text = feedItem.getFeedTypeLong(requireContext())
             tour_summary_author_name?.text = feedItem.author!!.userName
             entourage_info_location?.visibility = View.VISIBLE
-            entourage_info_location?.text = feedItem.displayAddress
+            entourage_info_location?.text = feedItem.getDisplayAddress()
         }
         val avatarURLAsString = feedItem.author!!.avatarURLAsString
         if (avatarURLAsString != null && entourage_info_author_photo!=null) {
@@ -791,8 +790,8 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
 
         // update description
         if(entourage_info_description!=null) {
-            if (feedItem.description?.isNotEmpty() == true) {
-                entourage_info_description?.text = feedItem.description
+            if (feedItem.getDescription()?.isNotEmpty() == true) {
+                entourage_info_description?.text = feedItem.getDescription()
                 entourage_info_description?.visibility = View.VISIBLE
             } else {
                 entourage_info_description?.visibility = View.GONE
@@ -803,10 +802,10 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         // metadata
         updateMetadataView()
         if (entourage_info_timestamps != null) {
-            when(feedItem.groupType) {
+            when(feedItem.getGroupType()) {
                 BaseEntourage.GROUPTYPE_ACTION,
                 Tour.GROUPTYPE_TOUR -> {
-                    showActionTimestamps(feedItem.creationTime, feedItem.updatedTime)
+                    showActionTimestamps(feedItem.getCreationTime(), feedItem.updatedTime)
                 }
                 else -> {
                     entourage_info_timestamps?.visibility = View.GONE
@@ -854,7 +853,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         updateJoinStatus()
         initializeMap()
         initializeMembersView()
-        if (feedItem.isPrivate) {
+        if (feedItem.isPrivate()) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_PUBLIC_VIEW_MEMBER)
         } else {
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_PUBLIC_VIEW_NONMEMBER)
@@ -862,7 +861,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     }
 
     private fun switchToPrivateSection() {
-        entourage_info_act_layout?.visibility = if (feedItem.isFreezed) View.VISIBLE else View.GONE
+        entourage_info_act_layout?.visibility = if (feedItem.isFreezed()) View.VISIBLE else View.GONE
         entourage_info_request_join_layout?.visibility = View.GONE
         entourage_info_public_section?.visibility = View.GONE
         entourage_info_private_section?.visibility = View.VISIBLE
@@ -874,7 +873,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         initializeOptionsView()
 
         //hide the comment section if the user is not accepted or tour is freezed
-        if (feedItem.joinStatus != FeedItem.JOIN_STATUS_ACCEPTED || feedItem.isFreezed) {
+        if (feedItem.joinStatus != FeedItem.JOIN_STATUS_ACCEPTED || feedItem.isFreezed()) {
             entourage_info_comment_layout?.visibility = View.GONE
             entourage_info_discussion_view?.setBackgroundResource(R.color.background_login_grey)
         } else {
@@ -899,29 +898,29 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         entourage_info_act_layout?.visibility = View.VISIBLE
         entourage_info_act_button?.setPadding(0, 0, 0, 0)
         entourage_info_act_button?.setPaddingRelative(0, 0, 0, 0)
-        if (feedItem.isFreezed) {
+        if (feedItem.isFreezed()) {
             // MI: Instead of hiding it, display the freezed text
             //tour_info_act_button.setEnabled(false);
-            entourage_info_act_button?.setTextColor(ResourcesCompat.getColor(resources, feedItem.freezedCTAColor, null))
-            entourage_info_act_button?.setText(feedItem.freezedCTAText)
+            entourage_info_act_button?.setTextColor(ResourcesCompat.getColor(resources, feedItem.getFreezedCTAColor(), null))
+            entourage_info_act_button?.setText(feedItem.getFreezedCTAText())
             entourage_info_act_button?.setPadding(resources.getDimensionPixelOffset(R.dimen.act_button_right_padding), 0, 0, 0)
             entourage_info_act_button?.setPaddingRelative(resources.getDimensionPixelOffset(R.dimen.act_button_right_padding), 0, 0, 0)
             entourage_info_act_button?.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
         } else {
             when (feedItem.joinStatus) {
-                Tour.JOIN_STATUS_PENDING -> {
+                FeedItem.JOIN_STATUS_PENDING -> {
                     entourage_info_act_button?.isEnabled = true
                     entourage_info_act_button?.setText(R.string.tour_cell_button_pending)
                     entourage_info_act_button?.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
                 }
-                Tour.JOIN_STATUS_ACCEPTED -> {
+                FeedItem.JOIN_STATUS_ACCEPTED -> {
                     entourage_info_act_button?.setPadding(0, 0, resources.getDimensionPixelOffset(R.dimen.act_button_right_padding), 0)
                     entourage_info_act_button?.setPaddingRelative(0, 0, resources.getDimensionPixelOffset(R.dimen.act_button_right_padding), 0)
                     entourage_info_act_button?.isEnabled = false
                     entourage_info_act_button?.setText(R.string.tour_cell_button_accepted)
                     entourage_info_act_button?.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
                 }
-                Tour.JOIN_STATUS_REJECTED -> {
+                FeedItem.JOIN_STATUS_REJECTED -> {
                     entourage_info_act_button?.isEnabled = false
                     entourage_info_act_button?.setText(R.string.tour_cell_button_rejected)
                     entourage_info_act_button?.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
@@ -931,8 +930,8 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
                     // Different layout for requesting to join
                     entourage_info_act_layout?.visibility = View.INVISIBLE
                     entourage_info_request_join_layout?.visibility = View.VISIBLE
-                    entourage_info_request_join_title?.setText(feedItem.joinRequestTitle)
-                    entourage_info_request_join_button?.setText(feedItem.joinRequestButton)
+                    entourage_info_request_join_title?.setText(feedItem.getJoinRequestTitle())
+                    entourage_info_request_join_button?.setText(feedItem.getJoinRequestButton())
                     updatePublicScrollViewLayout()
                     return
                 }
@@ -1010,7 +1009,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         hideProgressBar()
         this.feedItem = feedItem
         initializeView()
-        if (feedItem.isPrivate) {
+        if (feedItem.isPrivate()) {
             loadPrivateCards()
         } else {
             presenter().getFeedItemMembers(feedItem)
@@ -1267,13 +1266,13 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         if (updatedFeedItem.id != feedItem.id) return
         if (closed) {
             feedItem.status = updatedFeedItem.status
-            if(updatedFeedItem.endTime!=null) feedItem.setEndTime(updatedFeedItem.endTime!!)
-            if (updatedFeedItem.status == FeedItem.STATUS_CLOSED && updatedFeedItem.isPrivate) {
+            if(updatedFeedItem.getEndTime()!=null) feedItem.setEndTime(updatedFeedItem.getEndTime()!!)
+            if (updatedFeedItem.status == FeedItem.STATUS_CLOSED && updatedFeedItem.isPrivate()) {
                 addDiscussionTourEndCard(Date())
                 updateDiscussionList()
                 setReadOnly()
             }
-            if (updatedFeedItem.isFreezed) {
+            if (updatedFeedItem.isFreezed()) {
                 entourage_info_comment_layout?.visibility = View.GONE
             }
             entourage_info_options?.visibility = View.GONE
@@ -1300,10 +1299,10 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         //update the local tour info
         val oldPrivateStatus = entourage_info_private_section?.visibility == View.VISIBLE
         feedItem.joinStatus = user.status
-        val currentPrivateStatus = feedItem.isPrivate
+        val currentPrivateStatus = feedItem.isPrivate()
         //update UI
         if (oldPrivateStatus != currentPrivateStatus) {
-            if (feedItem.isPrivate) {
+            if (feedItem.isPrivate()) {
                 switchToPrivateSection()
                 loadPrivateCards()
             } else {

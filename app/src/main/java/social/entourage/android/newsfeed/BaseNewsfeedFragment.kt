@@ -33,7 +33,7 @@ import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.layout_map_longclick.*
 import social.entourage.android.*
 import social.entourage.android.api.model.*
-import social.entourage.android.api.model.map.*
+import social.entourage.android.api.model.feed.*
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.HeaderBaseAdapter
@@ -613,10 +613,10 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         if (feedItem.author!!.userID != myId) {
             return
         }
-        if (!feedItem.isClosed) {
+        if (!feedItem.isClosed()) {
             // close
             stopFeedItem(feedItem, event.isSuccess)
-        } else if (feedItem.type == TimestampedObject.TOUR_CARD && !feedItem.isFreezed) {
+        } else if (feedItem.type == TimestampedObject.TOUR_CARD && !feedItem.isFreezed()) {
             // freeze
             freezeTour(feedItem as Tour)
         }
@@ -763,7 +763,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                         && (!entourageService!!.isRunning
                                 || feedItem.type != TimestampedObject.TOUR_CARD || entourageService!!.currentTourId.equals(feedItem.uuid, ignoreCase = true))) {
                     // Not ongoing tour, just stop the feed item
-                    loaderStop = ProgressDialog.show(activity, requireActivity().getString(feedItem.closingLoaderMessage), requireActivity().getString(R.string.button_loading), true)
+                    loaderStop = ProgressDialog.show(activity, requireActivity().getString(feedItem.getClosingLoaderMessage()), requireActivity().getString(R.string.button_loading), true)
                     loaderStop?.setCancelable(true)
                     EntourageEvents.logEvent(EntourageEvents.EVENT_STOP_TOUR)
                     entourageService?.stopFeedItem(feedItem, success)
@@ -834,11 +834,11 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     protected fun drawNearbyEntourage(feedItem: FeedItem?) {
         if (map == null) return
-        if (feedItem?.startPoint == null) return
+        if (feedItem?.getStartPoint() == null) return
         if (markersMap[feedItem.hashString()] == null) {
             if (feedItem.showHeatmapAsOverlay()) {
-                val position = feedItem.startPoint!!.location
-                val heatmapIcon = BitmapDescriptorFactory.fromResource(feedItem.heatmapResourceId)
+                val position = feedItem.getStartPoint()!!.location
+                val heatmapIcon = BitmapDescriptorFactory.fromResource(feedItem.getHeatmapResourceId())
                 val groundOverlayOptions = GroundOverlayOptions()
                         .image(heatmapIcon)
                         .position(position, BaseEntourage.HEATMAP_SIZE, BaseEntourage.HEATMAP_SIZE)
@@ -1063,7 +1063,10 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         }
     }
 
-    fun onInvitationsReceived(invitationList: List<Invitation>?) {
+    fun onNoInvitationReceived() {
+    }
+
+    fun onInvitationsReceived(invitationList: List<Invitation>) {
         //during onboarding we check if the new user was invited to specific entourages and then automatically accept them
         if ((EntourageApplication.me(activity)?.isOnboardingUser == true)
                 &&(!invitationList.isNullOrEmpty())) {
@@ -1072,7 +1075,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             }
             // Show the first invitation
             invitationList.first().let {
-                presenter.openFeedItemFromUUID(it.entourageUUID, FeedItem.ENTOURAGE_CARD, it.id)
+                presenter.openFeedItemFromUUID(it.entourageUUID, TimestampedObject.ENTOURAGE_CARD, it.id)
             }
         }
     }

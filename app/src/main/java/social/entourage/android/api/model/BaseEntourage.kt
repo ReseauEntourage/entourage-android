@@ -1,4 +1,4 @@
-package social.entourage.android.api.model.map
+package social.entourage.android.api.model
 
 import android.content.Context
 import android.graphics.PorterDuff
@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.R
-import social.entourage.android.api.model.TimestampedObject
+import social.entourage.android.api.model.feed.*
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.location.EntourageLocation
 import timber.log.Timber
@@ -58,6 +58,12 @@ open class BaseEntourage : FeedItem, Serializable {
     // ----------------------------------
     // CONSTRUCTORS
     // ----------------------------------
+    //needed for deserialize
+    constructor() : super() {
+        this.groupType = GROUPTYPE_ACTION
+        this.actionGroupType = GROUPTYPE_ACTION_CONTRIBUTION
+    }
+
     constructor(groupType: String, actionGroupType: String) : super() {
         this.groupType = groupType
         this.actionGroupType = actionGroupType
@@ -100,7 +106,7 @@ open class BaseEntourage : FeedItem, Serializable {
         this.title = title
     }
 
-    override fun getGroupType(): String? {
+    override fun getGroupType(): String {
         return groupType
     }
 
@@ -123,7 +129,7 @@ open class BaseEntourage : FeedItem, Serializable {
         if (numberOfUnreadMessages != entourage.numberOfUnreadMessages) return false
         if (actionGroupType != entourage.actionGroupType) return false
         if (category != null && category != entourage.category) return false
-        if (getAuthor() != null &&  !getAuthor()!!.isSame(entourage.getAuthor())) return false
+        if (author != null &&  !author!!.isSame(entourage.author)) return false
 
         return isJoinRequestPublic == entourage.isJoinRequestPublic
     }
@@ -134,8 +140,8 @@ open class BaseEntourage : FeedItem, Serializable {
      * @return distance in kilometers
      */
     fun distanceToCurrentLocation(): Int {
-        val location = EntourageLocation.getInstance().currentLocation ?: return 0
-        val distance = startPoint?.distanceTo(LocationPoint(location.latitude, location.longitude)) ?:0.0f
+        val newLocation = EntourageLocation.getInstance().currentLocation ?: return 0
+        val distance = this.location?.distanceTo(LocationPoint(newLocation.latitude, newLocation.longitude)) ?:0.0f
         return floor(distance /1000.0f).toInt()
     }
 
@@ -144,11 +150,11 @@ open class BaseEntourage : FeedItem, Serializable {
      * If the location or the starting point is null, it returns Integer.MAX_VALUE
      * @return distance in meters
      */
-    fun distanceToLocation(location: LatLng?): Int {
-        if (location == null || startPoint == null) {
+    fun distanceToLocation(newLocation: LatLng?): Int {
+        if (newLocation == null || this.location == null) {
             return Int.MAX_VALUE
         }
-        val distance = startPoint!!.distanceTo(LocationPoint(location.latitude, location.longitude))
+        val distance = this.location!!.distanceTo(LocationPoint(newLocation.latitude, newLocation.longitude))
         return floor(distance).toInt()
     }
 
@@ -164,7 +170,7 @@ open class BaseEntourage : FeedItem, Serializable {
         return entourageCategory?.typeColorRes ?: super.getFeedTypeColor()
     }
 
-    override fun getStartTime(): Date? {
+    override fun getStartTime(): Date {
         return createdTime
     }
 
@@ -253,9 +259,8 @@ open class BaseEntourage : FeedItem, Serializable {
     class EntourageJoinInfo(var distance: Int)
 
     class Metadata : Serializable {
-        constructor() {
-            Timber.d("receiving metadata")
-        }
+        constructor() {}
+
         @SerializedName("starts_at")
         var startDate: Date? = null
             private set

@@ -2,7 +2,6 @@ package social.entourage.android.api.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import social.entourage.android.api.model.map.BaseEntourage
 import java.util.*
 
 /**
@@ -74,7 +73,7 @@ class Invitation (
 
     class InvitationsWrapper {
         @SerializedName("invitations")
-        var invitations: List<Invitation>? = null
+        lateinit var invitations: List<Invitation>
 
     }
 

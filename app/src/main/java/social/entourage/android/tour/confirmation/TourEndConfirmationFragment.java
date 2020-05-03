@@ -102,10 +102,10 @@ public class TourEndConfirmationFragment extends EntourageDialogFragment {
         if (tour != null) {
             Resources res = getResources();
             int encountersCount = tour.getEncounters().size();
-            int distanceInt = (int) tour.getDistance();
+            int distanceInt = (int) tour.distance;
             encountersView.setText(res.getString(R.string.encounter_count_format, encountersCount));
-            distanceView.setText(getString(R.string.tour_end_distance_value_in_km, tour.getDistance()/1000.0f));
-            durationView.setText(tour.getDuration());
+            distanceView.setText(getString(R.string.tour_end_distance_value_in_km, tour.distance /1000.0f));
+            durationView.setText(tour.duration);
         }
     }
 

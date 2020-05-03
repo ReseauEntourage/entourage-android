@@ -2,7 +2,7 @@ package social.entourage.android.entourage.create
 
 import androidx.fragment.app.DialogFragment
 import social.entourage.android.EntourageComponent
-import social.entourage.android.api.model.map.BaseEntourage
+import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.entourage.create.CreateEntourageJoinTypeFragment.CreateEntourageJoinTypeListener
 import social.entourage.android.entourage.create.wizard.CreateActionWizardListener
 import social.entourage.android.entourage.create.wizard.CreateActionWizardPage1Fragment

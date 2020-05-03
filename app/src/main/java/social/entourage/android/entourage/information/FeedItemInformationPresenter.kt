@@ -1,6 +1,6 @@
 package social.entourage.android.entourage.information
 
-import social.entourage.android.api.model.map.FeedItem
+import social.entourage.android.api.model.feed.FeedItem
 import java.util.*
 
 /**

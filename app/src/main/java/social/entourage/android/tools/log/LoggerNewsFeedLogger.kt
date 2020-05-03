@@ -1,6 +1,6 @@
 package social.entourage.android.tools.log
 
-import social.entourage.android.api.model.NewsfeedItem
+import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.newsfeed.NewsFeedListener
 import timber.log.Timber
 

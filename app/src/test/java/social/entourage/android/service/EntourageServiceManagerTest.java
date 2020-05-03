@@ -12,8 +12,8 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import social.entourage.android.location.EntourageLocation;
-import social.entourage.android.api.model.NewsfeedItem;
-import social.entourage.android.api.model.NewsfeedItem.NewsfeedItemWrapper;
+import social.entourage.android.api.model.feed.NewsfeedItem;
+import social.entourage.android.api.model.feed.NewsfeedItem.NewsfeedItemWrapper;
 import social.entourage.android.newsfeed.NewsfeedTabItem;
 import social.entourage.android.newsfeed.NewsfeedPagination;
 
@@ -124,7 +124,7 @@ public class EntourageServiceManagerTest {
             @Test
             public void newsFeedCallback_WithNullList() {
                 NewsfeedItemWrapper wrapper = new NewsfeedItemWrapper();
-                wrapper.newsfeedItem = null;
+                wrapper.newsfeedItems = null;
                 Response<NewsfeedItemWrapper> response = Response.success(wrapper);
 
                 callback.onResponse(call, response);
@@ -138,7 +138,7 @@ public class EntourageServiceManagerTest {
             public void newsFeedCallback() {
                 List<NewsfeedItem> newsFeeds = Collections.singletonList(mock(NewsfeedItem.class));
                 NewsfeedItemWrapper wrapper = new NewsfeedItemWrapper();
-                wrapper.newsfeedItem = newsFeeds;
+                wrapper.newsfeedItems = newsFeeds;
                 Response<NewsfeedItemWrapper> response = Response.success(wrapper);
 
                 callback.onResponse(call, response);

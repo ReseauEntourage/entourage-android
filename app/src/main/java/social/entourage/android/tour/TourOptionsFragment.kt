@@ -4,7 +4,7 @@ import android.app.Activity
 import kotlinx.android.synthetic.main.layout_entourage_options.*
 import social.entourage.android.MainActivity
 import social.entourage.android.R
-import social.entourage.android.api.model.map.FeedItem
+import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.OnFeedItemCloseRequestEvent
 import social.entourage.android.entourage.FeedItemOptionsFragment
@@ -17,7 +17,7 @@ class TourOptionsFragment : FeedItemOptionsFragment() {
     // ATTRIBUTES
     // ----------------------------------
     override fun initializeView() {
-        if (feedItem.isClosed) {
+        if (feedItem.isClosed()) {
             entourage_option_stop?.setText(R.string.tour_info_options_freeze_tour)
         } else {
             entourage_option_stop?.setText(R.string.tour_info_options_stop_tour)
@@ -49,7 +49,7 @@ class TourOptionsFragment : FeedItemOptionsFragment() {
 
             //duration
             val now = Date()
-            tour.duration = getDateStringFromSeconds(now.time - tour.startTime.time)
+            tour.duration = getDateStringFromSeconds(now.time - tour.getStartTime().time)
 
             //show stop tour activity
             val activity: Activity? = activity

@@ -2,10 +2,9 @@ package social.entourage.android.entourage.category
 
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.R
-import social.entourage.android.api.model.map.BaseEntourage
+import social.entourage.android.api.model.BaseEntourage
 import java.io.Serializable
 
 /**

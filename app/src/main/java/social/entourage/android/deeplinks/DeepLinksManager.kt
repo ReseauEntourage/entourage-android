@@ -8,7 +8,8 @@ import android.widget.TextView
 import social.entourage.android.BuildConfig
 import social.entourage.android.MainActivity
 import social.entourage.android.R
-import social.entourage.android.api.model.map.FeedItem
+import social.entourage.android.api.model.TimestampedObject
+import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.tools.BusProvider
@@ -83,7 +84,7 @@ object DeepLinksManager {
             if (requestedView.equals(DeepLinksView.ENTOURAGES.view, ignoreCase = true)
                     ||requestedView.equals(DeepLinksView.ENTOURAGE.view, ignoreCase = true)) {
                 //path like /entourage/UUID...
-                BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, "", key))
+                BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(TimestampedObject.ENTOURAGE_CARD, "", key))
             } else if (requestedView.equals(DeepLinksView.DEEPLINK.view, ignoreCase = true)) {
                 //path like /deeplink/key/...
                 //Remove the requested view and the key from path segments
@@ -139,7 +140,7 @@ object DeepLinksManager {
             activity.createEntourage()
         } else if (key == DeepLinksView.ENTOURAGE.view || key == DeepLinksView.ENTOURAGES.view) {
             if (pathSegments != null && pathSegments.isNotEmpty()) {
-                BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, "", pathSegments[0]))
+                BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(TimestampedObject.ENTOURAGE_CARD, "", pathSegments[0]))
             }
         } else if (key == DeepLinksView.TUTORIAL.view) {
             activity.showTutorial(true)

@@ -13,7 +13,7 @@ import retrofit2.Response;
 import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.tour.Tour;
-import social.entourage.android.api.model.map.EntourageUser;
+import social.entourage.android.api.model.EntourageUser;
 
 public class TourJoinRequestReceivedPresenter {
 

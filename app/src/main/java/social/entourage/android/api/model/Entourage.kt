@@ -1,4 +1,4 @@
-package social.entourage.android.api.model.map
+package social.entourage.android.api.model
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -6,6 +6,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
 import social.entourage.android.R
+import timber.log.Timber
 import java.io.Serializable
 import java.util.*
 
@@ -17,7 +18,8 @@ class EntourageEvent : BaseEntourage, Serializable {
         const val serialVersionUID = -16560L
     }
 
-    constructor() : super(GROUPTYPE_OUTING, GROUPTYPE_OUTING) {}
+    //needed for deserialize
+    constructor() : super(GROUPTYPE_OUTING, GROUPTYPE_OUTING)
 
     constructor(category: String?,
                 title: String, description: String, location: LocationPoint) : super(GROUPTYPE_OUTING, GROUPTYPE_OUTING, category, title, description, location)
@@ -85,7 +87,8 @@ class EntourageNeighborhood : BaseEntourage, Serializable {
         const val serialVersionUID = -113L
     }
 
-    constructor() : super(GROUPTYPE_NEIGHBORHOOD, GROUPTYPE_NEIGHBORHOOD) {}
+    //needed for deserialize
+    constructor() : super(GROUPTYPE_NEIGHBORHOOD, GROUPTYPE_NEIGHBORHOOD)
 
     constructor(category: String?,
                 title: String, description: String, location: LocationPoint) : super(GROUPTYPE_NEIGHBORHOOD, GROUPTYPE_NEIGHBORHOOD, category, title, description, location)
@@ -124,7 +127,8 @@ class EntourageConversation : BaseEntourage, Serializable {
         const val serialVersionUID = -967689727L
     }
 
-    constructor() : super(GROUPTYPE_CONVERSATION, GROUPTYPE_CONVERSATION) {}
+    //needed for deserialize
+    constructor() : super(GROUPTYPE_CONVERSATION, GROUPTYPE_CONVERSATION)
 
     constructor(category: String?,
                 title: String, description: String, location: LocationPoint) : super(GROUPTYPE_CONVERSATION, GROUPTYPE_CONVERSATION, category, title, description, location)
@@ -134,7 +138,7 @@ class EntourageConversation : BaseEntourage, Serializable {
     }
 
     override fun getIconURL(): String? {
-        return getAuthor()?.avatarURLAsString ?: super.getIconURL()
+        return author?.avatarURLAsString ?: super.getIconURL()
     }
 }
 
@@ -143,7 +147,8 @@ class EntouragePrivateCircle : BaseEntourage, Serializable {
         const val serialVersionUID = -23482L
     }
 
-    constructor() : super(GROUPTYPE_PRIVATE_CIRCLE, GROUPTYPE_PRIVATE_CIRCLE) {}
+    //needed for deserialize
+    constructor() : super(GROUPTYPE_PRIVATE_CIRCLE, GROUPTYPE_PRIVATE_CIRCLE)
 
     constructor(category: String?,
                 title: String, description: String, location: LocationPoint) : super(GROUPTYPE_PRIVATE_CIRCLE, GROUPTYPE_PRIVATE_CIRCLE, category, title, description, location)
@@ -158,6 +163,9 @@ abstract class EntourageAction : BaseEntourage, Serializable {
         const val serialVersionUID = -1803751L
     }
 
+    //needed for deserialize
+    constructor() : super(GROUPTYPE_ACTION, GROUPTYPE_ACTION_CONTRIBUTION)
+
     constructor(actionGroupType: String) : super(GROUPTYPE_ACTION, actionGroupType) {}
 
     constructor(actionGroupType: String, category: String?,
@@ -170,7 +178,8 @@ class EntourageDemand : EntourageAction, Serializable {
         const val serialVersionUID = -19L
     }
 
-    constructor() : super(GROUPTYPE_ACTION_DEMAND) {}
+    //needed for deserialize
+    constructor() : super(GROUPTYPE_ACTION_DEMAND)
 
     constructor(category: String?,
                 title: String, description: String, location: LocationPoint) : super(GROUPTYPE_ACTION_DEMAND, category, title, description, location)
@@ -184,7 +193,8 @@ class EntourageContribution : EntourageAction, Serializable {
         const val serialVersionUID = -16548L
     }
 
-    constructor() : super(GROUPTYPE_ACTION_CONTRIBUTION) {}
+    //needed for deserialize
+    constructor() : super(GROUPTYPE_ACTION_CONTRIBUTION)
 
     constructor(category: String?,
                 title: String, description: String, location: LocationPoint) : super(GROUPTYPE_ACTION_CONTRIBUTION, category, title, description, location)

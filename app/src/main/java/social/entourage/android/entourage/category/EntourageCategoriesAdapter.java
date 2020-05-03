@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import social.entourage.android.R;
-import social.entourage.android.api.model.map.BaseEntourage;
+import social.entourage.android.api.model.BaseEntourage;
 
 /**
  * Entourage categories adapter, with the group at index zero acting as an empty header.<br/>

@@ -1,4 +1,4 @@
-package social.entourage.android.api.model.map;
+package social.entourage.android.api.model.feed;
 
 import androidx.annotation.NonNull;
 

@@ -15,7 +15,7 @@ import com.squareup.picasso.Target
 import kotlinx.android.synthetic.main.layout_card_announcement.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.map.Announcement
+import social.entourage.android.api.model.feed.Announcement
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.view.EntourageSnackbar
 import timber.log.Timber

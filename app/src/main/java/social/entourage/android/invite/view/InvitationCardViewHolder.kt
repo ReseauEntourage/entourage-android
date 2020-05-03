@@ -29,7 +29,7 @@ class InvitationCardViewHolder(view: View) : BaseCardViewHolder(view) {
             instance.post(OnFeedItemInfoViewRequestedEvent(entourageUUID, invitationId))
         }
         itemView.invitation_card_inviter?.text = itemView.resources.getString(R.string.invitation_card_inviter, invitation.inviterName)
-        itemView.invitation_card_description?.text = invitation.entourage?.title ?: itemView.resources.getString(R.string.invitation_card_description)
+        itemView.invitation_card_description?.text = invitation.entourage?.getTitle() ?: itemView.resources.getString(R.string.invitation_card_description)
     }
 
     companion object {

@@ -8,7 +8,7 @@ import social.entourage.android.api.InvitationRequest
 import social.entourage.android.api.NewsfeedRequest
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.Invitation.InvitationsWrapper
-import social.entourage.android.api.model.NewsfeedItem.NewsfeedItemWrapper
+import social.entourage.android.api.model.feed.NewsfeedItem.NewsfeedItemWrapper
 import social.entourage.android.entourage.my.filter.MyEntouragesFilter
 import javax.inject.Inject
 
@@ -38,7 +38,7 @@ class MyEntouragesPresenter @Inject constructor(
         call.enqueue(object : Callback<NewsfeedItemWrapper> {
             override fun onResponse(call: Call<NewsfeedItemWrapper>, response: Response<NewsfeedItemWrapper>) {
                 if (response.isSuccessful) {
-                    fragment.onNewsfeedReceived(response.body()!!.newsfeedItem)
+                    fragment.onNewsfeedReceived(response.body()!!.newsfeedItems)
                 } else {
                     fragment.onNewsfeedReceived(null)
                 }
@@ -57,12 +57,12 @@ class MyEntouragesPresenter @Inject constructor(
                 if (response.isSuccessful) {
                     fragment.onInvitationsReceived(response.body()!!.invitations)
                 } else {
-                    fragment.onInvitationsReceived(null)
+                    fragment.onNoInvitationReceived()
                 }
             }
 
             override fun onFailure(call: Call<InvitationsWrapper>, t: Throwable) {
-                fragment.onInvitationsReceived(null)
+                fragment.onNoInvitationReceived()
             }
         })
     }

@@ -8,7 +8,7 @@ import java.util.List;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.api.model.feed.FeedItem;
 import timber.log.Timber;
 
 /**
@@ -120,7 +120,7 @@ public class FeedItemsStorage implements Serializable {
                 return;
             }
         }
-        if(feedItem.getBadgeCount()>0) {
+        if(feedItem.getUnreadMsgNb()>0) {
             userFeeds.add(new FeedItemStorage(feedItem));
             hasChanged = true;
         }
@@ -168,7 +168,7 @@ public class FeedItemsStorage implements Serializable {
         FeedItemStorage(FeedItem feedItem) {
             this.type = feedItem.getType();
             this.feedId = feedItem.getId();
-            this.badgeCount = feedItem.getBadgeCount();
+            this.badgeCount = feedItem.getUnreadMsgNb();
         }
 
         FeedItemStorage(PushNotificationContent pushNotificationContent) {
@@ -179,8 +179,8 @@ public class FeedItemsStorage implements Serializable {
 
         boolean updateFrom(FeedItem feedItem) {
             boolean isChanged = false;
-            if(this.badgeCount != feedItem.getBadgeCount()) {
-                this.badgeCount = feedItem.getBadgeCount();
+            if(this.badgeCount != feedItem.getUnreadMsgNb()) {
+                this.badgeCount = feedItem.getUnreadMsgNb();
                 isChanged = true;
             }
             return isChanged;
@@ -188,11 +188,11 @@ public class FeedItemsStorage implements Serializable {
 
         boolean updateTo(FeedItem feedItem) {
             boolean isChanged = false;
-            if(feedItem.getBadgeCount()!= badgeCount) {
-                badgeCount = feedItem.getBadgeCount();
+            if(feedItem.getUnreadMsgNb()!= badgeCount) {
+                badgeCount = feedItem.getUnreadMsgNb();
                 isChanged = true;
             }
-            if(feedItem.getBadgeCount()!= 0) {
+            if(feedItem.getUnreadMsgNb()!= 0) {
                 Timber.d("New unread messages");
             }
             return isChanged;

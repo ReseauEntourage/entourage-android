@@ -14,10 +14,10 @@ import social.entourage.android.api.model.ChatMessage.ChatMessagesWrapper
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.Invitation.InvitationWrapper
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.map.BaseEntourage.EntourageWrapper
-import social.entourage.android.api.model.map.FeedItem
-import social.entourage.android.api.model.map.EntourageUser.EntourageUserWrapper
-import social.entourage.android.api.model.map.EntourageUser.EntourageUsersWrapper
+import social.entourage.android.api.model.BaseEntourage.EntourageWrapper
+import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.api.model.EntourageUser.EntourageUserWrapper
+import social.entourage.android.api.model.EntourageUser.EntourageUsersWrapper
 import java.util.*
 import javax.inject.Inject
 

@@ -1,8 +1,9 @@
 package social.entourage.android.service
 
 import com.google.android.gms.maps.model.LatLng
+import org.jetbrains.annotations.NotNull
 import social.entourage.android.api.model.tour.Tour
-import social.entourage.android.api.model.map.LocationPoint
+import social.entourage.android.api.model.LocationPoint
 import java.util.*
 
 interface TourServiceListener : EntourageServiceListener {
@@ -13,5 +14,6 @@ interface TourServiceListener : EntourageServiceListener {
 
     fun onTourResumed(pointsToDraw: List<LocationPoint>, tourType: String, startDate: Date)
 
+    @NotNull
     fun onRetrieveToursByUserId(tours: List<Tour>)
 }

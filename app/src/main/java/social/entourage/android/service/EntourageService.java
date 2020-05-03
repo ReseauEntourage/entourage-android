@@ -33,13 +33,13 @@ import social.entourage.android.api.EncounterRequest;
 import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.NewsfeedRequest;
 import social.entourage.android.api.TourRequest;
-import social.entourage.android.api.model.NewsfeedItem;
+import social.entourage.android.api.model.feed.NewsfeedItem;
 import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.api.model.map.BaseEntourage;
+import social.entourage.android.api.model.BaseEntourage;
 import social.entourage.android.api.model.tour.Encounter;
-import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.api.model.feed.FeedItem;
 import social.entourage.android.api.model.tour.Tour;
-import social.entourage.android.api.model.map.EntourageUser;
+import social.entourage.android.api.model.EntourageUser;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.location.LocationUpdateListener;
 import social.entourage.android.newsfeed.NewsfeedTabItem;
@@ -388,7 +388,7 @@ public class EntourageService extends Service {
     public void registerServiceListener(final LocationUpdateListener listener) {
         locationUpdateListeners.add(listener);
         if (entourageServiceManager.isRunning() && listener instanceof TourServiceListener) {
-            ((TourServiceListener)listener).onTourResumed(entourageServiceManager.getPointsToDraw(), entourageServiceManager.getTour().getTourType(), entourageServiceManager.getTour().getStartTime());
+            ((TourServiceListener)listener).onTourResumed(entourageServiceManager.getPointsToDraw(), entourageServiceManager.getTour().tourType, entourageServiceManager.getTour().getStartTime());
         }
     }
 
@@ -432,7 +432,7 @@ public class EntourageService extends Service {
         }
         for (final LocationUpdateListener listener : locationUpdateListeners) {
             if(listener instanceof TourServiceListener) {
-                ((TourServiceListener) listener).onTourResumed(entourageServiceManager.getPointsToDraw(), entourageServiceManager.getTour().getTourType(), entourageServiceManager.getTour().getStartTime());
+                ((TourServiceListener) listener).onTourResumed(entourageServiceManager.getPointsToDraw(), entourageServiceManager.getTour().tourType, entourageServiceManager.getTour().getStartTime());
             }
         }
     }

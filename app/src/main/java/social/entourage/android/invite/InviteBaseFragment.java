@@ -11,7 +11,7 @@ import javax.inject.Inject;
 
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
-import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.api.model.feed.FeedItem;
 import social.entourage.android.base.EntourageDialogFragment;
 
 /**

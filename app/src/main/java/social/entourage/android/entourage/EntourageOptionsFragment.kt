@@ -6,8 +6,8 @@ import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.layout_entourage_options.*
 import social.entourage.android.R
-import social.entourage.android.api.model.map.BaseEntourage
-import social.entourage.android.api.model.map.FeedItem
+import social.entourage.android.api.model.BaseEntourage
+import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.entourage.create.BaseCreateEntourageFragment
 
 class EntourageOptionsFragment : FeedItemOptionsFragment() {
@@ -44,12 +44,10 @@ class EntourageOptionsFragment : FeedItemOptionsFragment() {
             val addresses = arrayOf(getString(R.string.edit_action_email))
             intent.putExtra(Intent.EXTRA_EMAIL, addresses)
             // Set the subject
-            var title = feedItem.title
-            if (title == null) title = ""
+            val title = feedItem.getTitle() ?: ""
             val emailSubject = getString(R.string.edit_entourage_email_title, title)
             intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject)
-            var description = feedItem.description
-            if (description == null) description = ""
+            val description = feedItem.getDescription() ?:""
             val emailBody = getString(R.string.edit_entourage_email_body, description)
             intent.putExtra(Intent.EXTRA_TEXT, emailBody)
             if (intent.resolveActivity(requireActivity().packageManager) != null) {

@@ -49,15 +49,15 @@ public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ChoiceView
     public void onBindViewHolder(@NonNull ChoiceViewHolder holder, int position) {
         Tour tour = tours.get(position);
 
-        if (tour.getTourType().equals(TourType.MEDICAL.getTypeName())) {
+        if (tour.tourType.equals(TourType.MEDICAL.getTypeName())) {
             holder.cardImage.setImageResource(R.drawable.ic_medical_active);
             holder.cardTextType.setText(R.string.tour_type_medical);
         }
-        else if (tour.getTourType().equals(TourType.ALIMENTARY.getTypeName())) {
+        else if (tour.tourType.equals(TourType.ALIMENTARY.getTypeName())) {
             holder.cardImage.setImageResource(R.drawable.ic_distributive_active);
             holder.cardTextType.setText(R.string.tour_type_alimentary);
         }
-        else if (tour.getTourType().equals(TourType.BARE_HANDS.getTypeName())) {
+        else if (tour.tourType.equals(TourType.BARE_HANDS.getTypeName())) {
             holder.cardImage.setImageResource(R.drawable.ic_social_active);
             holder.cardTextType.setText(R.string.tour_type_bare_hands);
         }
@@ -66,7 +66,7 @@ public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ChoiceView
         String date = dateFormat.format(tour.getStartTime());
         holder.cardTextDate.setText(date);
 
-        holder.cardTextOrganization.setText(tour.getOrganizationName());
+        holder.cardTextOrganization.setText(tour.organizationName);
     }
 
     public class ChoiceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

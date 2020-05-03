@@ -6,7 +6,6 @@ import kotlinx.android.synthetic.main.entourage_information_outing_card_view.vie
 import social.entourage.android.R
 import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.map.BaseEntourage
 import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.tools.BusProvider

@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import com.google.gson.reflect.TypeToken
 import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.R
-import social.entourage.android.api.model.map.BaseEntourage
+import social.entourage.android.api.model.BaseEntourage
 import java.util.*
 
 /**

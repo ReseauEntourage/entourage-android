@@ -4,7 +4,7 @@ import android.content.Context
 import com.google.gson.annotations.Expose
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.tour.TourType
-import social.entourage.android.api.model.map.BaseEntourage
+import social.entourage.android.api.model.BaseEntourage
 import java.io.Serializable
 
 /**

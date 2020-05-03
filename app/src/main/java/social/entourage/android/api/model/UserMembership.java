@@ -12,7 +12,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import social.entourage.android.R;
-import social.entourage.android.api.model.map.BaseEntourage;
 
 /**
  * Created by Mihai Ionescu on 25/05/2018.

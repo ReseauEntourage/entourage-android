@@ -15,7 +15,7 @@ import java.util.List;
 import social.entourage.android.R;
 import social.entourage.android.api.model.BaseOrganization;
 import social.entourage.android.api.model.User;
-import social.entourage.android.api.model.map.BaseEntourage;
+import social.entourage.android.api.model.BaseEntourage;
 import social.entourage.android.api.model.UserMembership;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.ItemClickSupport;

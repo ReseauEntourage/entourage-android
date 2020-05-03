@@ -10,7 +10,7 @@ import net.danlew.android.joda.JodaTimeAndroid
 import social.entourage.android.api.ApiModule
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.User
-import social.entourage.android.api.model.map.FeedItem
+import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.authentication.AuthenticationModule
 import social.entourage.android.authentication.login.LoginActivity
 import social.entourage.android.message.push.PushNotificationManager

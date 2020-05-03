@@ -16,8 +16,8 @@ import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.tour.Encounter;
 import social.entourage.android.api.model.tour.Tour;
 import social.entourage.android.api.model.tour.TourJoinMessage;
-import social.entourage.android.api.model.map.LocationPoint;
-import social.entourage.android.api.model.map.EntourageUser;
+import social.entourage.android.api.model.LocationPoint;
+import social.entourage.android.api.model.EntourageUser;
 
 public interface TourRequest {
 

@@ -21,8 +21,9 @@ import social.entourage.android.*
 import social.entourage.android.api.ApiConnectionListener
 import social.entourage.android.api.EntourageRequest
 import social.entourage.android.api.model.*
-import social.entourage.android.api.model.map.BaseEntourage
-import social.entourage.android.api.model.map.FeedItem
+import social.entourage.android.api.model.BaseEntourage
+import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.base.EntouragePagination
@@ -252,7 +253,7 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
                 val feedItem = newsfeed.data as? FeedItem ?: continue
 
                 // show only the unread ones if filter is set
-                if (!showUnreadOnly || feedItem.badgeCount > 0) {
+                if (!showUnreadOnly || feedItem.getUnreadMsgNb() > 0) {
                     if (entouragesAdapter.findCard(feedItem) == null) {
                         entouragesAdapter.addCardInfo(feedItem)
                     }
@@ -275,13 +276,13 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
         }
     }
 
-    fun onInvitationsReceived(invitationList: List<Invitation?>?) {
+    fun onNoInvitationReceived() {
+        // ignore errors
+    }
+
+    fun onInvitationsReceived(invitationList: List<Invitation?>) {
         // check if the fragment is still attached
         if (!isAdded) {
-            return
-        }
-        // ignore errors
-        if (invitationList == null) {
             return
         }
         entouragesAdapter.removeOldInvitations(invitationList)

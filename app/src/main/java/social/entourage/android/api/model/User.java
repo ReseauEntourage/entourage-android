@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import social.entourage.android.EntourageApplication;
-import social.entourage.android.api.model.map.FeedItemAuthor;
+import social.entourage.android.api.model.feed.FeedItemAuthor;
 
 public class User implements Serializable {
 

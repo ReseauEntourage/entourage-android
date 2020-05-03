@@ -15,8 +15,8 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.MultipleInvitations;
-import social.entourage.android.api.model.map.BaseEntourage;
-import social.entourage.android.api.model.map.EntourageUser;
+import social.entourage.android.api.model.BaseEntourage;
+import social.entourage.android.api.model.EntourageUser;
 
 public interface EntourageRequest {
 

@@ -17,10 +17,12 @@ import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.layout_map_longclick.*
 import kotlinx.android.synthetic.main.layout_map_longclick.view.*
 import social.entourage.android.*
-import social.entourage.android.api.model.NewsfeedItem
+import social.entourage.android.api.model.BaseEntourage
+import social.entourage.android.api.model.LocationPoint
+import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.tour.TourType
-import social.entourage.android.api.model.map.*
+import social.entourage.android.api.model.feed.*
 import social.entourage.android.api.model.tour.Encounter
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events
@@ -502,7 +504,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
                     entourageService?.notifyListenersTourResumed()
                 }
                 if (fragment_map_main_layout != null) {
-                    EntourageSnackbar.make(fragment_map_main_layout, feedItem.closedToastMessage, Snackbar.LENGTH_SHORT).show()
+                    EntourageSnackbar.make(fragment_map_main_layout, feedItem.getClosedToastMessage(), Snackbar.LENGTH_SHORT).show()
                 }
                 if (userHistory) {
                     entourageService?.updateUserHistory(userId, 1, 1)
@@ -554,9 +556,9 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     private fun drawNearbyTour(tour: Tour, isHistory: Boolean) {
         if (map != null && tour.tourPoints.isNotEmpty()) {
             val line = PolylineOptions()
-            line.zIndex(if (isToday(tour.startTime)) 1f else 0f)
+            line.zIndex(if (isToday(tour.getStartTime())) 1f else 0f)
             line.width(15f)
-            line.color(getTrackColor(isHistory, tour.tourType, tour.startTime))
+            line.color(getTrackColor(isHistory, tour.tourType, tour.getStartTime()))
             for (tourPoint in tour.tourPoints) {
                 line.add(tourPoint.location)
             }
@@ -566,9 +568,6 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
             } else {
                 drawnToursMap.add(map!!.addPolyline(line))
                 //addTourCard(tour);
-            }
-            if (tour.tourStatus == null) {
-                tour.tourStatus = FeedItem.STATUS_CLOSED
             }
             addTourHead(tour)
         }
@@ -617,14 +616,14 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     private fun hideUserHistory() {
         for (tour in retrievedHistory.values) {
             val line = drawnUserHistory[tour.id] ?: continue
-            line.color = getTrackColor(true, tour.tourType, tour.startTime)
+            line.color = getTrackColor(true, tour.tourType, tour.getStartTime())
         }
     }
 
     private fun showUserHistory() {
         for ((key, line) in drawnUserHistory) {
             val tour = retrievedHistory[key] ?: continue
-            line.color = getTrackColor(true, tour.tourType, tour.startTime)
+            line.color = getTrackColor(true, tour.tourType, tour.getStartTime())
         }
     }
 

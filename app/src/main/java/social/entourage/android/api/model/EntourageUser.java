@@ -1,4 +1,4 @@
-package social.entourage.android.api.model.map;
+package social.entourage.android.api.model;
 
 import androidx.annotation.NonNull;
 
@@ -10,8 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import social.entourage.android.api.model.Partner;
-import social.entourage.android.api.model.TimestampedObject;
+import social.entourage.android.api.model.feed.FeedItem;
 
 /**
  * Created by mihaiionescu on 24/02/16.

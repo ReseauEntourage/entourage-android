@@ -39,7 +39,7 @@ import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.model.tour.Encounter;
-import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.api.model.feed.FeedItem;
 import social.entourage.android.api.model.tour.Tour;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.api.tape.Events.OnCheckIntentActionEvent;

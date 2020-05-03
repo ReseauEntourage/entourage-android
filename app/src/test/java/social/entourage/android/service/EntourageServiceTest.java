@@ -3,7 +3,7 @@ package social.entourage.android.service;
 import java.util.Collections;
 import java.util.List;
 
-import social.entourage.android.api.model.NewsfeedItem;
+import social.entourage.android.api.model.feed.NewsfeedItem;
 import social.entourage.android.newsfeed.NewsFeedListener;
 
 import static social.entourage.android.service.EntourageService;

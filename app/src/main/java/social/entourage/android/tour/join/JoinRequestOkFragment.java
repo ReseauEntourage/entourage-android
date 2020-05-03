@@ -10,7 +10,7 @@ import android.view.Window;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.api.model.feed.FeedItem;
 import social.entourage.android.R;
 
 public class JoinRequestOkFragment extends DialogFragment {

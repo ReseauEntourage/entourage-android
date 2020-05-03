@@ -1,6 +1,6 @@
 package social.entourage.android.map.filter
 
-import social.entourage.android.api.model.map.BaseEntourage
+import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import java.io.Serializable

@@ -11,7 +11,7 @@ import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.UserRequest;
 import social.entourage.android.api.UserResponse;
 import social.entourage.android.api.model.User;
-import social.entourage.android.api.model.map.BaseEntourage;
+import social.entourage.android.api.model.BaseEntourage;
 import social.entourage.android.authentication.AuthenticationController;
 
 /**

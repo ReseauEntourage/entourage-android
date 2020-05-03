@@ -20,7 +20,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.map.FeedItem
+import social.entourage.android.api.model.feed.FeedItem
 import timber.log.Timber
 import java.util.*
 
@@ -99,8 +99,8 @@ object PushNotificationManager {
             for(message in pushNotifications[key]!!) {
                 val content = message.content
                 if (content != null && content.joinableId == feedItemId) {
-                    if((FeedItem.TOUR_CARD == feedType && content.isTourRelated)
-                            || (FeedItem.ENTOURAGE_CARD == feedType && content.isEntourageRelated)){
+                    if((TimestampedObject.TOUR_CARD == feedType && content.isTourRelated)
+                            || (TimestampedObject.ENTOURAGE_CARD == feedType && content.isEntourageRelated)){
                         nbNotifsFound++
                         messageListChanged = true
                         if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST == content.type) {
@@ -185,8 +185,8 @@ object PushNotificationManager {
             for(message in pushNotifications[key]!!) {
                 val content = message.content
                 if (content != null && content.joinableId == feedId && content.type != null && content.type == pushType) {
-                    if (FeedItem.TOUR_CARD == feedType && content.isTourRelated
-                            || FeedItem.ENTOURAGE_CARD == feedType && content.isEntourageRelated) {
+                    if (TimestampedObject.TOUR_CARD == feedType && content.isTourRelated
+                            || TimestampedObject.ENTOURAGE_CARD == feedType && content.isEntourageRelated) {
                         messageListChanged = true
                         if (message.isVisible) {
                             application.storeNewPushNotification(message, false)

@@ -11,8 +11,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import social.entourage.android.api.EntourageRequest;
-import social.entourage.android.api.model.map.BaseEntourage;
-import social.entourage.android.api.model.map.LocationPoint;
+import social.entourage.android.api.model.BaseEntourage;
+import social.entourage.android.api.model.LocationPoint;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.tools.BusProvider;
 
@@ -86,7 +86,7 @@ public class CreateEntouragePresenter {
         BaseEntourage.EntourageWrapper entourageWrapper = new BaseEntourage.EntourageWrapper();
         entourageWrapper.entourage = entourage;
 
-        Call<BaseEntourage.EntourageWrapper> call = entourageRequest.editEntourage(entourage.getUUID(), entourageWrapper);
+        Call<BaseEntourage.EntourageWrapper> call = entourageRequest.editEntourage(entourage.getUuid(), entourageWrapper);
         call.enqueue(new Callback<BaseEntourage.EntourageWrapper>() {
             @Override
             public void onResponse(@NonNull final Call<BaseEntourage.EntourageWrapper> call, @NonNull final Response<BaseEntourage.EntourageWrapper> response) {

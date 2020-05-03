@@ -12,15 +12,11 @@ import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_map.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.PlusFragment
-import social.entourage.android.api.model.Message
-import social.entourage.android.api.model.NewsfeedItem
-import social.entourage.android.api.model.PushNotificationContent
-import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.map.*
+import social.entourage.android.api.model.*
+import social.entourage.android.api.model.feed.*
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.entourage.FeedItemOptionsFragment
-import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.service.EntourageService
 import social.entourage.android.service.EntourageService.LocalBinder
@@ -77,7 +73,7 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
             if (author.isSame(meAsAuthor)) continue
             // Update the tour author
             meAsAuthor.userName = author.userName
-            timestampedObject.setAuthor(meAsAuthor)
+            timestampedObject.author = meAsAuthor
             // Mark as dirty
             dirtyList.add(timestampedObject)
         }
@@ -150,7 +146,7 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
         if (closed) {
             refreshFeed()
             if (fragment_map_main_layout != null) {
-                make(fragment_map_main_layout, feedItem.closedToastMessage, Snackbar.LENGTH_SHORT).show()
+                make(fragment_map_main_layout, feedItem.getClosedToastMessage(), Snackbar.LENGTH_SHORT).show()
             }
         }
         loaderStop?.dismiss()
@@ -161,7 +157,7 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
         if (activity == null || requireActivity().isFinishing) return
         if (feedItem.type == TimestampedObject.TOUR_CARD || feedItem.type == TimestampedObject.ENTOURAGE_CARD) {
             feedItem.joinStatus = user.status
-            if (user.status == Tour.JOIN_STATUS_PENDING) {
+            if (user.status == FeedItem.JOIN_STATUS_PENDING) {
                 try {
                     TourJoinRequestFragment.newInstance(feedItem).show(requireActivity().supportFragmentManager, TourJoinRequestFragment.TAG)
                 } catch (e: IllegalStateException) {

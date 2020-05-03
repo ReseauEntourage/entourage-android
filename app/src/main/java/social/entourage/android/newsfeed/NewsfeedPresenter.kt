@@ -15,9 +15,9 @@ import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.Invitation.InvitationWrapper
 import social.entourage.android.api.model.Invitation.InvitationsWrapper
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.map.BaseEntourage
+import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.tour.Encounter
-import social.entourage.android.api.model.map.FeedItem
+import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.OnTourEncounterViewRequestedEvent
 import social.entourage.android.authentication.AuthenticationController
@@ -90,7 +90,7 @@ class NewsfeedPresenter @Inject constructor(
                 val call = tourRequest.retrieveTourById(feedItemUUID)
                 call.enqueue(object : Callback<Tour.TourWrapper> {
                     override fun onResponse(call: Call<Tour.TourWrapper>, response: Response<Tour.TourWrapper>) {
-                        if (response.isSuccessful && response.body()?.tour is FeedItem) {
+                        if (response.isSuccessful && response.body() != null) {
                             openFeedItem(response.body()!!.tour, invitationId, 0)
                         }
                     }
@@ -150,15 +150,15 @@ class NewsfeedPresenter @Inject constructor(
         val call = invitationRequest.retrieveUserInvitationsWithStatus(Invitation.STATUS_PENDING)
         call.enqueue(object : Callback<InvitationsWrapper> {
             override fun onResponse(call: Call<InvitationsWrapper>, response: Response<InvitationsWrapper>) {
-                if (response.isSuccessful) {
-                    fragment?.onInvitationsReceived(response.body()?.invitations)
+                if (response.isSuccessful && response.body()!=null) {
+                    fragment?.onInvitationsReceived(response.body()!!.invitations)
                 } else {
-                    fragment?.onInvitationsReceived(null)
+                    fragment?.onNoInvitationReceived()
                 }
             }
 
             override fun onFailure(call: Call<InvitationsWrapper>, t: Throwable) {
-                fragment?.onInvitationsReceived(null)
+                fragment?.onNoInvitationReceived()
             }
         })
     }
@@ -225,7 +225,7 @@ class NewsfeedPresenter @Inject constructor(
             } else {
                 val mapItem: Any? = mapClusterItem.mapItem ?: return true
                 if (mapItem is FeedItem) {
-                    if (FeedItem.TOUR_CARD == mapItem.type) {
+                    if (TimestampedObject.TOUR_CARD == mapItem.type) {
                         openFeedItem(mapItem, 0, 0)
                     } else {
                         fragment?.handleHeatzoneClick(mapClusterItem.position)

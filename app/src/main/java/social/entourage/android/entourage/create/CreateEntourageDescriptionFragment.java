@@ -14,7 +14,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.R;
-import social.entourage.android.api.model.map.BaseEntourage;
+import social.entourage.android.api.model.BaseEntourage;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.entourage.category.EntourageCategory;
 import social.entourage.android.entourage.category.EntourageCategoryFragment;

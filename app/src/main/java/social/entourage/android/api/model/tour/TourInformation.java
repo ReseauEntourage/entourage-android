@@ -7,12 +7,12 @@ import androidx.annotation.NonNull;
 import java.util.Date;
 
 import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.api.model.map.LocationPoint;
+import social.entourage.android.api.model.LocationPoint;
 
 /**
  * Created by mihaiionescu on 29/02/16.
  */
-public class TourTimestamp extends TimestampedObject {
+public class TourInformation extends TimestampedObject {
 
     private final static String HASH_STRING_HEAD = "TourTimestamp-";
 
@@ -33,14 +33,14 @@ public class TourTimestamp extends TimestampedObject {
     // CONSTRUCTORS
     // ----------------------------------
 
-    public TourTimestamp() {
+    public TourInformation() {
         date = new Date();
         status = "";
         duration = 0;
         distance = 0.0f;
     }
 
-    public TourTimestamp(Date date, Date timestamp, int feedType, String status, LocationPoint locationPoint, long duration, float distance) {
+    public TourInformation(Date date, Date timestamp, int feedType, String status, LocationPoint locationPoint, long duration, float distance) {
         this.date = date;
         this.timestamp = timestamp;
         this.feedType = feedType;
@@ -125,7 +125,7 @@ public class TourTimestamp extends TimestampedObject {
     public boolean equals(final Object o) {
         if (o == null || o.getClass() != this.getClass()) return false;
         //return this.date.equals( ((TourTimestamp)o).date );
-        return this.duration == ((TourTimestamp)o).duration;
+        return this.duration == ((TourInformation)o).duration;
     }
 
     @Override
