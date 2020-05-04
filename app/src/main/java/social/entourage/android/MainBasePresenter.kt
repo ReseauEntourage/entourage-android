@@ -121,7 +121,7 @@ abstract class MainBasePresenter internal constructor(
     fun displayTutorial(forced: Boolean) {
         if (!forced && !Configuration.showTutorial()) return
         //Configuration.INSTANCE.showTutorial() is always false
-        if (activity != null && activity.isSafeToCommit) {
+        if (activity != null) {
             try {
                 CarouselFragment().show(activity.supportFragmentManager, CarouselFragment.TAG)
             } catch (e: Exception) {

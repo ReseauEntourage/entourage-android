@@ -111,7 +111,7 @@ class EntourageDisclaimerFragment : EntourageDialogFragment() {
         // ----------------------------------
         const val TAG = "social.entourage.android.entourage.disclaimer"
         private const val KEY_GROUP_TYPE = "social.entourage.android.KEY_GROUP_TYPE"
-        fun newInstance(groupType: String?): EntourageDisclaimerFragment {
+        fun newInstance(groupType: String): EntourageDisclaimerFragment {
             val fragment = EntourageDisclaimerFragment()
             val args = Bundle()
             args.putString(KEY_GROUP_TYPE, groupType)

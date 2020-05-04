@@ -105,6 +105,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupComponent(EntourageApplication.get(activity).entourageComponent)
+        groupType = BaseEntourage.GROUPTYPE_ACTION
         presenter.start()
         if (fragmentLifecycleCallbacks == null) {
             fragmentLifecycleCallbacks = NewsfeedFragmentLifecycleCallbacks()

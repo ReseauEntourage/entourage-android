@@ -9,7 +9,7 @@ import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.Onboarding.PreOnboardingStartActivity;
 
 /**
- * Base Activity that only runs if the user is currently logged
+ * Base Activity that only runs if the user is currently logged in
  */
 public abstract class EntourageSecuredActivity extends EntourageActivity {
 

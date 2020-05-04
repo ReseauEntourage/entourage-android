@@ -126,7 +126,7 @@ class NewsfeedPresenter @Inject constructor(
         }
     }
 
-    fun displayEntourageDisclaimer(groupType: String?) {
+    fun displayEntourageDisclaimer(groupType: String) {
         if (fragment != null && !fragment.isStateSaved) {
             val fragmentManager = fragment.activity?.supportFragmentManager ?:return
             EntourageDisclaimerFragment.newInstance(groupType).show(fragmentManager, EntourageDisclaimerFragment.TAG)
