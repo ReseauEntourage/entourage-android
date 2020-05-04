@@ -321,10 +321,9 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
 
     @OnClick(R.id.create_entourage_description_layout)
     protected void onEditDescriptionClicked() {
-        if (getFragmentManager() == null) return;
         CreateEntourageDescriptionFragment descriptionFragment = CreateEntourageDescriptionFragment.newInstance(descriptionEditText.getText().toString(), entourageCategory, groupType);
         descriptionFragment.setListener(this);
-        descriptionFragment.show(getFragmentManager(), CreateEntourageDescriptionFragment.TAG);
+        descriptionFragment.show(getParentFragmentManager(), CreateEntourageDescriptionFragment.TAG);
     }
 
     @OnClick(R.id.create_entourage_date_start_layout)

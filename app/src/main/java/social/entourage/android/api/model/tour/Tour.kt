@@ -10,7 +10,6 @@ import com.google.gson.annotations.SerializedName
 import social.entourage.android.Constants
 import social.entourage.android.R
 import social.entourage.android.api.model.LocationPoint
-import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
 import java.io.Serializable
 import java.util.*

@@ -9,7 +9,6 @@ import social.entourage.android.BuildConfig
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.tools.BusProvider

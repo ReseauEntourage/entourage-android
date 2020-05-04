@@ -47,7 +47,7 @@ class ReadPoiFragment : EntourageDialogFragment() {
         poi_report_button?.setOnClickListener {onReportButtonClicked()}
     }
 
-    protected fun setupComponent(entourageComponent: EntourageComponent?) {
+    private fun setupComponent(entourageComponent: EntourageComponent?) {
         DaggerReadPoiComponent.builder()
                 .entourageComponent(entourageComponent)
                 .readPoiModule(ReadPoiModule(this))

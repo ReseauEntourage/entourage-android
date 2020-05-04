@@ -260,7 +260,7 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
     // INNER CLASSES
     // ----------------------------------
     private inner class ServiceConnection : android.content.ServiceConnection {
-        protected var isBound = false
+        private var isBound = false
 
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             if (activity == null) {

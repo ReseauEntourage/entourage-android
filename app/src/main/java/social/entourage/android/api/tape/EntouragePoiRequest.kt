@@ -1,7 +1,6 @@
 package social.entourage.android.api.tape
 
 import social.entourage.android.api.model.guide.Poi
-import social.entourage.android.api.tape.Events
 
 /**
  * Events specific to Entourage app

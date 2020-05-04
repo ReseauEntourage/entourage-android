@@ -27,7 +27,7 @@ class RoundedCornersView : View {
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         init()
 
-        val a = context.getTheme().obtainStyledAttributes(
+        val a = context.theme.obtainStyledAttributes(
                 attrs,
                 R.styleable.RoundedCornersView,
                 0, 0)
@@ -48,9 +48,9 @@ class RoundedCornersView : View {
     private fun setColor(color: Int) {
         mColor = color
         mPaint = Paint()
-        mPaint!!.setColor(mColor)
-        mPaint!!.setStyle(Paint.Style.FILL)
-        mPaint!!.setAntiAlias(true)
+        mPaint!!.color = mColor
+        mPaint!!.style = Paint.Style.FILL
+        mPaint!!.isAntiAlias = true
 
         invalidate()
     }
@@ -70,8 +70,8 @@ class RoundedCornersView : View {
 
         /*This just draws 4 little inverted corners */
 
-        val w = getWidth().toFloat()
-        val h = getHeight().toFloat()
+        val w = width.toFloat()
+        val h = height.toFloat()
         mPath?.let { mPaint?.let { it1 -> canvas.drawPath(it, it1) } }
         canvas.save()
         canvas.translate(w, 0f)

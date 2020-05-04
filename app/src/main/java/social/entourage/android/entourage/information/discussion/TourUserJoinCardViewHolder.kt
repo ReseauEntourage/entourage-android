@@ -9,10 +9,9 @@ import kotlinx.android.synthetic.main.entourage_information_user_join_card_view.
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageEvents
 import social.entourage.android.R
+import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
-import social.entourage.android.api.model.tour.Tour
-import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.tape.Events.OnUserJoinRequestUpdateEvent
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder

@@ -56,8 +56,8 @@ class MainProfileItemView : RelativeLayout {
 
             //Title
             val title = styledAttributes.getString(R.styleable.MainProfileItemView_android_title)
-            mainprofile_item_title.setText(title)
-            val defaultTextColor = mainprofile_item_title.getCurrentTextColor()
+            mainprofile_item_title.text = title
+            val defaultTextColor = mainprofile_item_title.currentTextColor
             val textColor = styledAttributes.getResourceId(R.styleable.MainProfileItemView_android_textColor, defaultTextColor)
             if (textColor != defaultTextColor) {
                 mainprofile_item_title.setTextColor(ContextCompat.getColor(context, textColor))
@@ -72,7 +72,7 @@ class MainProfileItemView : RelativeLayout {
             }
             val centerText = styledAttributes.getBoolean(R.styleable.MainProfileItemView_centerText, false)
             if (centerText) {
-                mainprofile_item_title.setGravity(Gravity.CENTER)
+                mainprofile_item_title.gravity = Gravity.CENTER
             }
 
             //Right arrow

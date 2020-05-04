@@ -41,7 +41,7 @@ ext {
     firebaseAnalyticsVersion = "17.4.0"
     firebaseMessagingVersion = "20.1.6"
     firebaseInappVersion = "19.0.6"
-    firebasePerfMonitor = "19.0.5"
+    firebasePerfMonitor = "19.0.7"
     floatingButtonVersion = "1.6.4"
     fragmentVersion = "1.2.4"
     guavaVersion = "28.2-android"
@@ -107,6 +107,7 @@ ext {
             firebaseAnalytics   : "com.google.firebase:firebase-analytics:$firebaseAnalyticsVersion",
             firebaseMessaging   : "com.google.firebase:firebase-messaging:$firebaseMessagingVersion",
             firebaseInapp       : "com.google.firebase:firebase-inappmessaging-display-ktx:$firebaseInappVersion",
+            //BETA: firebaseCrashlytics : "com.google.firebase:firebase-crashlytics:17.0.0", //https://firebase.google.com/docs/crashlytics/upgrade-sdk?platform=android
             firebasePerfMonitor : "com.google.firebase:firebase-perf:$firebasePerfMonitor"
     ]
 

@@ -18,13 +18,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:background="@color/accent"
+                android:background="@color/white"
                 android:elevation="10dp"
-                app:tabIndicatorColor="@color/white"
+                app:tabIndicatorColor="@color/accent"
+                app:tabIconTint="@color/accent"
                 app:tabInlineLabel="true"
                 app:tabMode="auto"
-                app:tabSelectedTextColor="@color/white"
-                app:tabTextColor="@color/white_88">
+                app:tabSelectedTextColor="@color/accent"
+                app:tabTextColor="@color/battleship_grey">
 
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"

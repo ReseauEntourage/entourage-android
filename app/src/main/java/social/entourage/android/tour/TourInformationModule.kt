@@ -2,7 +2,6 @@ package social.entourage.android.tour
 
 import dagger.Module
 import dagger.Provides
-import social.entourage.android.tour.TourInformationFragment
 
 /**
  * Module related to TourInformationFragment

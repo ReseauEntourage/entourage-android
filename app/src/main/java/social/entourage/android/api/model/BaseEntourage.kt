@@ -10,10 +10,9 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.R
-import social.entourage.android.api.model.feed.*
+import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.location.EntourageLocation
-import timber.log.Timber
 import java.io.Serializable
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -250,7 +249,7 @@ open class BaseEntourage : FeedItem, Serializable {
     }
 
     override fun getType(): Int {
-        return TimestampedObject.ENTOURAGE_CARD
+        return ENTOURAGE_CARD
     }
 
     // ----------------------------------

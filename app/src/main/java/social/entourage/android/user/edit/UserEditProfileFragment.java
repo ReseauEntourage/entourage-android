@@ -83,7 +83,7 @@ public class UserEditProfileFragment extends DialogFragment {
     }
 
     private void configureView() {
-        UserEditFragment userEditFragment = (UserEditFragment) getFragmentManager().findFragmentByTag(UserEditFragment.TAG);
+        UserEditFragment userEditFragment = (UserEditFragment) getParentFragmentManager().findFragmentByTag(UserEditFragment.TAG);
         if (userEditFragment == null) {
             return;
         }
@@ -127,7 +127,7 @@ public class UserEditProfileFragment extends DialogFragment {
         user.setFirstName(firstname);
         user.setLastName(lastname);
         user.setEmail(email);
-        UserEditFragment userEditFragment = (UserEditFragment) getFragmentManager().findFragmentByTag(UserEditFragment.TAG);
+        UserEditFragment userEditFragment = (UserEditFragment) getParentFragmentManager().findFragmentByTag(UserEditFragment.TAG);
         if (userEditFragment != null) {
             userEditFragment.configureView();
         }

@@ -124,7 +124,7 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
         if (mListener.registerStart()) {
             try {
                 RegisterNumberFragment registerNumberFragment = new RegisterNumberFragment();
-                registerNumberFragment.show(getFragmentManager(), RegisterNumberFragment.TAG);
+                registerNumberFragment.show(getParentFragmentManager(), RegisterNumberFragment.TAG);
             } catch(IllegalStateException e) {
                 Timber.w(e);
             }

@@ -12,7 +12,6 @@ import social.entourage.android.R
 import social.entourage.android.api.model.LastMessage
 import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.model.TimestampedObject
-import timber.log.Timber
 import java.io.IOException
 import java.io.ObjectInputStream
 import java.io.Serializable

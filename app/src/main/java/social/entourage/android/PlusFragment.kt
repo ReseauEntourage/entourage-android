@@ -5,17 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_plus.*
 import kotlinx.android.synthetic.main.layout_map_longclick.*
 import kotlinx.android.synthetic.main.layout_plus_overlay.*
-import social.entourage.android.authentication.AuthenticationController
 
 class PlusFragment : Fragment(), BackPressable {
     override fun onResume() {
         super.onResume()
-        val savedTour = EntourageApplication.get().entourageComponent.getAuthenticationController()?.savedTour
+        val savedTour = EntourageApplication.get().entourageComponent.authenticationController?.savedTour
         if (savedTour != null) {
             layout_line_add_tour_encounter?.visibility = View.VISIBLE
             layout_line_start_tour_launcher?.visibility = View.GONE

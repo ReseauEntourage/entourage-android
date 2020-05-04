@@ -16,13 +16,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:background="@color/accent"
+            android:background="@color/white"
             android:elevation="10dp"
             app:layout_constraintBottom_toTopOf="@id/myentourages_swipeRefreshLayout"
             app:layout_constraintTop_toTopOf="parent"
-            app:tabIndicatorColor="@color/white"
-            app:tabSelectedTextColor="@color/white"
-            app:tabTextColor="@color/white_88">
+            app:tabIndicatorColor="@color/accent"
+            app:tabSelectedTextColor="@color/accent"
+            app:tabTextColor="@color/battleship_grey">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"

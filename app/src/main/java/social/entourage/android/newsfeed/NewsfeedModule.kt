@@ -2,7 +2,6 @@ package social.entourage.android.newsfeed
 
 import dagger.Module
 import dagger.Provides
-import social.entourage.android.newsfeed.BaseNewsfeedFragment
 
 /**
  * Module related to BaseNewsfeedFragment

@@ -332,7 +332,7 @@ public class PhotoChooseSourceFragment extends EntourageDialogFragment {
             return;
         }
         PhotoEditFragment fragment = PhotoEditFragment.newInstance(photoUri, photoSource);
-        fragment.show(getFragmentManager(), PhotoEditFragment.TAG);
+        fragment.show(getParentFragmentManager(), PhotoEditFragment.TAG);
     }
 
     // ----------------------------------

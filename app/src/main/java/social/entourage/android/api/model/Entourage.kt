@@ -6,7 +6,6 @@ import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
 import social.entourage.android.R
-import timber.log.Timber
 import java.io.Serializable
 import java.util.*
 

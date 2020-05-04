@@ -184,7 +184,7 @@ public class UserDiscussionFragment extends EntourageDialogFragment {
     protected void onInfoButtonClicked() {
         if (showInfoButton) {
             UserFragment userFragment = UserFragment.newInstance(otherUser.getId());
-            userFragment.show(getFragmentManager(), UserFragment.TAG);
+            userFragment.show(getParentFragmentManager(), UserFragment.TAG);
         }
     }
 
