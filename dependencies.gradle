@@ -37,9 +37,9 @@ ext {
     dateTimePickerVersion = "4.2.3"
     espressoVersion = "3.2.0"
     exifinterfaceVersion = "1.2.0"
-    facebookVersion = "6.3.0"
-    firebaseAnalyticsVersion = "17.4.0"
-    firebaseMessagingVersion = "20.1.6"
+    facebookVersion = "7.0.0"
+    firebaseAnalyticsVersion = "17.4.1"
+    firebaseMessagingVersion = "20.1.7"
     firebaseInappVersion = "19.0.6"
     firebasePerfMonitor = "19.0.7"
     floatingButtonVersion = "1.6.4"
@@ -47,9 +47,9 @@ ext {
     guavaVersion = "28.2-android"
     imageCropperVersion = "2.8.0"
     javaAnnotationVersion = "10.0-b28"
-    jodaVersion = "2.10.3"
+    jodaVersion = "2.10.6"
     mapsVersion = "17.0.0"
-    mapsUtilsVersion = "1.0.2"
+    mapsUtilsVersion = "1.2.1"
     materialVersion = "1.1.0"
     multidexVersion = "2.0.1"
     okHttpVersion = "3.12.9" //version 3.13+ needs API 21+ //https://square.github.io/okhttp/changelog_3x/
@@ -79,7 +79,7 @@ ext {
             legacyV13        : "androidx.legacy:legacy-support-v13:$supportVersion",
             multidex         : "androidx.multidex:multidex:$multidexVersion",
             recyclerview     : "androidx.recyclerview:recyclerview:$recyclerViewVersion",
-            preference       : "androidx.preference:preference-ktx:1.1.0"
+            preference       : "androidx.preference:preference-ktx:1.1.1"
     ]
 
     annotationDependencies = [

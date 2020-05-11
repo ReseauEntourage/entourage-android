@@ -28,7 +28,8 @@ import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events
 import social.entourage.android.location.EntourageLocation
 import social.entourage.android.location.LocationUtils
-import social.entourage.android.map.MapClusterItem
+import social.entourage.android.map.MapClusterEncounterItem
+import social.entourage.android.map.MapClusterTourItem
 import social.entourage.android.map.filter.MapFilterFactory
 import social.entourage.android.map.filter.MapFilterFragment
 import social.entourage.android.service.EntourageService
@@ -212,16 +213,16 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
         super.displayEntourageDisclaimer()
     }
 
-    private fun putEncounterOnMap(encounter: Encounter?) {
+    private fun putEncounterOnMap(encounter: Encounter) {
         if (map == null) {
             // The map is not yet initialized or the google play services are outdated on the phone
             return
         }
-        if(presenter.onClickListener?.getEncounterMapClusterItem(encounter!!.id) != null) {
+        if(presenter.onClickListener?.getEncounterMapClusterItem(encounter.id) != null) {
             //the item aalready exists
             return
         }
-        val mapClusterItem = MapClusterItem(encounter)
+        val mapClusterItem = MapClusterEncounterItem(encounter)
         presenter.onClickListener?.addEncounterMapClusterItem(mapClusterItem, encounter)
         mapClusterManager?.addItem(mapClusterItem)
     }
@@ -598,7 +599,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
             return
         }
         displayedTourHeads++
-        MapClusterItem(tour).let {
+        MapClusterTourItem(tour).let {
             markersMap[tour.hashString()] = it
             mapClusterManager?.addItem(it)
         }

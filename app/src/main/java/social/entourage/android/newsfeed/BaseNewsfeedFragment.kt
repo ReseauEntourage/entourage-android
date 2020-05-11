@@ -652,7 +652,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     override val renderer: DefaultClusterRenderer<ClusterItem>?
-        get() = MapClusterItemRenderer(requireActivity(), map, mapClusterManager as ClusterManager<MapClusterItem?>?) as DefaultClusterRenderer<ClusterItem>?
+        get() = MapClusterItemRenderer(requireActivity(), map, mapClusterManager)
 
 
     protected fun onMapReady(googleMap: GoogleMap?) {
@@ -833,7 +833,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         return newsFeedList
     }
 
-    protected fun drawNearbyEntourage(feedItem: FeedItem?) {
+    protected fun drawNearbyEntourage(feedItem: BaseEntourage?) {
         if (map == null) return
         if (feedItem?.getStartPoint() == null) return
         if (markersMap[feedItem.hashString()] == null) {
@@ -848,7 +848,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                 markersMap[feedItem.hashString()] = map!!.addGroundOverlay(groundOverlayOptions)
                 presenter.onGroundOverlayClickListener?.addEntourageGroundOverlay(position, feedItem)
             } else {
-                val mapClusterItem = MapClusterItem(feedItem)
+                val mapClusterItem = MapClusterEntourageItem(feedItem)
                 markersMap[feedItem.hashString()] = mapClusterItem
                 mapClusterManager?.addItem(mapClusterItem)
             }

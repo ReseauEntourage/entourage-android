@@ -39,8 +39,7 @@ public class ViewHolderFactory {
         View view = LayoutInflater.from(parent.getContext()).inflate(viewHolderType.layoutResource, parent, false);
         BaseCardViewHolder cardViewHolder = null;
         try {
-            Constructor ctor;
-            ctor = viewHolderType.cardViewHolderClass.getConstructor(View.class);
+            Constructor ctor = viewHolderType.cardViewHolderClass.getConstructor(View.class);
             cardViewHolder = (BaseCardViewHolder)ctor.newInstance(view);
         } catch (Exception e) {
             Timber.e(e);

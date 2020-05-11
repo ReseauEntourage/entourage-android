@@ -9,8 +9,6 @@ import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.ui.IconGenerator
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
-import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.feed.*
 import social.entourage.android.api.model.tour.Encounter
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.tools.Utils
@@ -19,66 +17,54 @@ import social.entourage.android.tools.Utils
  *
  * Created by Mihai Ionescu on 18/09/2018.
  */
-class MapClusterItem : ClusterItem {
-    var mapItem: TimestampedObject?
-        private set
+abstract class MapClusterItem() : ClusterItem {
+    abstract fun applyMarkerOptions(context: Context, markerOptions: MarkerOptions)
 
-    constructor(feedItem: FeedItem?) {
-        mapItem = feedItem
+    override fun getTitle(): String? { return null }
+
+    override fun getSnippet(): String? { return null }
+}
+
+class MapClusterEntourageItem(mapEntourage: BaseEntourage) : MapClusterItem() {
+    private var entourage: BaseEntourage = mapEntourage
+
+    override fun getPosition(): LatLng {
+        val location = entourage.location
+        return LatLng(location!!.latitude, location.longitude)
     }
 
-    constructor(encounter: Encounter?) {
-        mapItem = encounter
+    override fun applyMarkerOptions(context: Context, markerOptions: MarkerOptions) {
+        val drawable = AppCompatResources.getDrawable(context, entourage.getHeatmapResourceId()) ?: return
+        val icon = Utils.getBitmapDescriptorFromDrawable(drawable, BaseEntourage.getMarkerSize(context), BaseEntourage.getMarkerSize(context))
+        markerOptions.icon(icon)
+    }
+}
+
+class MapClusterTourItem(mapTour: Tour) : MapClusterItem() {
+    var tour: Tour = mapTour
+
+    override fun getPosition(): LatLng {
+        val lastPoint = tour.tourPoints[tour.tourPoints.size - 1]
+        return LatLng(lastPoint.latitude, lastPoint.longitude)
     }
 
-    override fun getPosition(): LatLng? {
-        if (mapItem != null) {
-            if (mapItem is FeedItem) {
-                val feedItem = mapItem as FeedItem
-                if (feedItem.type == TimestampedObject.TOUR_CARD) {
-                    val tour = mapItem as Tour
-                    val lastPoint = tour.tourPoints[tour.tourPoints.size - 1]
-                    return LatLng(lastPoint.latitude, lastPoint.longitude)
-                } else if (feedItem.type == TimestampedObject.ENTOURAGE_CARD) {
-                    val location = (feedItem as BaseEntourage).location
-                    if (location != null) {
-                        return LatLng(location.latitude, location.longitude)
-                    }
-                }
-            } else if (mapItem is Encounter) {
-                val encounter = mapItem as Encounter
-                return LatLng(encounter.latitude, encounter.longitude)
-            }
-        }
-        return null
+    override fun applyMarkerOptions(context: Context, markerOptions: MarkerOptions) {
+        val iconGenerator = IconGenerator(context)
+        iconGenerator.setTextAppearance(R.style.OngoingTourMarker)
+        val icon = BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon(tour.organizationName))
+        markerOptions.icon(icon)
+        markerOptions.anchor(0.5f, 1.0f)
+    }
+}
+
+class MapClusterEncounterItem(mapEncounter: Encounter) : MapClusterItem() {
+    private var encounter: Encounter = mapEncounter
+
+    override fun getPosition(): LatLng {
+        return LatLng(encounter.latitude, encounter.longitude)
     }
 
-    override fun getTitle(): String? {
-        return null
-    }
-
-    override fun getSnippet(): String? {
-        return null
-    }
-
-    fun applyMarkerOptions(context: Context?, markerOptions: MarkerOptions) {
-        if (mapItem == null) return
-        if (mapItem is FeedItem) {
-            val feedItem = mapItem as FeedItem
-            if (feedItem.type == TimestampedObject.TOUR_CARD) {
-                val iconGenerator = IconGenerator(context)
-                iconGenerator.setTextAppearance(R.style.OngoingTourMarker)
-                val icon = BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon((feedItem as Tour).organizationName))
-                markerOptions.icon(icon)
-                markerOptions.anchor(0.5f, 1.0f)
-            } else if (feedItem.type == TimestampedObject.ENTOURAGE_CARD) {
-                val drawable = AppCompatResources.getDrawable(context!!, (mapItem as BaseEntourage).getHeatmapResourceId())
-                val icon = Utils.getBitmapDescriptorFromDrawable(drawable!!, BaseEntourage.getMarkerSize(context), BaseEntourage.getMarkerSize(context))
-                markerOptions.icon(icon)
-            }
-        } else if (mapItem is Encounter) {
-            val encounterIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_encounter)
-            markerOptions.icon(encounterIcon)
-        }
+    override fun applyMarkerOptions(context: Context, markerOptions: MarkerOptions) {
+        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_encounter))
     }
 }

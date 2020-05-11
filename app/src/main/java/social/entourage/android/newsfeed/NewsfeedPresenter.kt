@@ -3,6 +3,7 @@ package social.entourage.android.newsfeed
 import com.google.android.gms.maps.GoogleMap.OnGroundOverlayClickListener
 import com.google.android.gms.maps.model.GroundOverlay
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,7 +26,8 @@ import social.entourage.android.entourage.EntourageDisclaimerFragment
 import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.create.BaseCreateEntourageFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
-import social.entourage.android.map.MapClusterItem
+import social.entourage.android.map.MapClusterEntourageItem
+import social.entourage.android.map.MapClusterTourItem
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tour.encounter.EncounterDisclaimerFragment
 import java.util.*
@@ -192,13 +194,13 @@ class NewsfeedPresenter @Inject constructor(
     // ----------------------------------
     // INNER CLASS
     // ----------------------------------
-    inner class OnEntourageMarkerClickListener : OnClusterItemClickListener<MapClusterItem> {
-        val encounterMarkerHashMap: MutableMap<MapClusterItem, Encounter?> = HashMap()
-        fun addEncounterMapClusterItem(mapClusterItem: MapClusterItem, encounter: Encounter?) {
+    inner class OnEntourageMarkerClickListener : OnClusterItemClickListener<ClusterItem> {
+        val encounterMarkerHashMap: MutableMap<ClusterItem, Encounter?> = HashMap()
+        fun addEncounterMapClusterItem(mapClusterItem: ClusterItem, encounter: Encounter?) {
             encounterMarkerHashMap[mapClusterItem] = encounter
         }
 
-        fun getEncounterMapClusterItem(encounterId: Long): MapClusterItem? {
+        fun getEncounterMapClusterItem(encounterId: Long): ClusterItem? {
             for (mapClusterItem in encounterMarkerHashMap.keys) {
                 if (encounterMarkerHashMap[mapClusterItem]?.id == encounterId) {
                     return mapClusterItem
@@ -207,11 +209,9 @@ class NewsfeedPresenter @Inject constructor(
             return null
         }
 
-        fun removeEncounterMapClusterItem(encounterId: Long): MapClusterItem? {
-            val mapClusterItem = getEncounterMapClusterItem(encounterId)
-            if (mapClusterItem != null) {
-                encounterMarkerHashMap.remove(mapClusterItem)
-            }
+        fun removeEncounterMapClusterItem(encounterId: Long): ClusterItem? {
+            val mapClusterItem = getEncounterMapClusterItem(encounterId) ?: return null
+            encounterMarkerHashMap.remove(mapClusterItem)
             return mapClusterItem
         }
 
@@ -219,18 +219,13 @@ class NewsfeedPresenter @Inject constructor(
             encounterMarkerHashMap.clear()
         }
 
-        override fun onClusterItemClick(mapClusterItem: MapClusterItem): Boolean {
+        override fun onClusterItemClick(mapClusterItem: ClusterItem): Boolean {
             if (encounterMarkerHashMap[mapClusterItem] != null) {
                 openEncounter(encounterMarkerHashMap[mapClusterItem])
-            } else {
-                val mapItem: Any? = mapClusterItem.mapItem ?: return true
-                if (mapItem is FeedItem) {
-                    if (TimestampedObject.TOUR_CARD == mapItem.type) {
-                        openFeedItem(mapItem, 0, 0)
-                    } else {
-                        fragment?.handleHeatzoneClick(mapClusterItem.position)
-                    }
-                }
+            } else if(mapClusterItem is MapClusterEntourageItem){
+                fragment?.handleHeatzoneClick(mapClusterItem.position)
+            } else if(mapClusterItem is MapClusterTourItem) {
+                openFeedItem(mapClusterItem.tour, 0, 0)
             }
             return true
         }

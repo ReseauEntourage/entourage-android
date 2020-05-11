@@ -4,21 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    android:orientation="vertical"
-    android:focusable="true">
+    android:elevation="16dp"
+    android:focusable="true"
+    android:orientation="vertical">
 
     <View
         android:id="@+id/launcher_tour_outer_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/background_transparent"/>
+        android:background="@color/background_transparent" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/separator"
-        android:visibility="visible"/>
+        android:visibility="visible" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,7 +34,7 @@
             android:gravity="center_horizontal"
             android:text="@string/tour_create_choose_type"
             android:textColor="@color/greyish_brown"
-            android:textSize="@dimen/entourage_font_large"/>
+            android:textSize="@dimen/entourage_font_large" />
 
         <RadioGroup
             android:id="@+id/launcher_tour_type"
@@ -56,7 +57,7 @@
                 android:padding="10dp"
                 android:text="@string/tour_type_medical"
                 android:textColor="@drawable/textcolor_radio_tab_medical"
-                android:textSize="@dimen/entourage_font_large"/>
+                android:textSize="@dimen/entourage_font_large" />
 
             <View
                 android:layout_width="2dp"
@@ -64,7 +65,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@color/separator"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <RadioButton
                 android:id="@+id/launcher_tour_type_bare_hands"
@@ -78,7 +79,7 @@
                 android:padding="10dp"
                 android:text="@string/tour_type_bare_hands"
                 android:textColor="@drawable/textcolor_radio_tab_social"
-                android:textSize="@dimen/entourage_font_large"/>
+                android:textSize="@dimen/entourage_font_large" />
 
             <View
                 android:layout_width="2dp"
@@ -86,7 +87,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@color/separator"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <RadioButton
                 android:id="@+id/launcher_tour_type_alimentary"
@@ -100,7 +101,7 @@
                 android:padding="10dp"
                 android:text="@string/tour_type_alimentary"
                 android:textColor="@drawable/textcolor_radio_tab_distributive"
-                android:textSize="@dimen/entourage_font_large"/>
+                android:textSize="@dimen/entourage_font_large" />
 
         </RadioGroup>
 
@@ -118,12 +119,14 @@
                 android:text="@string/tour_start"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/greyish_brown"
-                android:textSize="@dimen/entourage_font_big"/>
+                android:textSize="@dimen/entourage_font_big" />
+
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/textView"
                 android:layout_centerHorizontal="true">
+
                 <ImageView
                     android:id="@+id/launcher_tour_go"
                     android:layout_width="wrap_content"
@@ -131,7 +134,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
                     android:contentDescription="@string/empty_description"
-                    android:src="@drawable/tour_start"/>
+                    android:src="@drawable/tour_start" />
 
                 <ProgressBar
                     android:id="@+id/launcher_tour_progressBar"
@@ -142,7 +145,7 @@
                     android:layout_centerVertical="true"
                     android:indeterminate="true"
                     android:visibility="gone"
-                    tools:visibility="visible"/>
+                    tools:visibility="visible" />
             </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
