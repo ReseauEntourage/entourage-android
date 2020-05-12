@@ -421,7 +421,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
     // INNER CLASSES
     // ----------------------------------
     interface OnTourInformationFragmentFinish {
-        fun showStopTourActivity(tour: Tour?)
+        fun showStopTourActivity(tour: Tour)
     }
 
     companion object {

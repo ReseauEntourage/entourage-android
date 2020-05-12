@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <!-- Action details screens -->
-    <color name="feeditem_icon_background_stroke">@color/white</color>
-
-    <!-- Profile -->
-    <color name="profile_role_ambassador">@color/accent</color>
-</resources>

@@ -517,7 +517,7 @@ public class MainActivity extends EntourageSecuredActivity
     }
 
     @Override
-    public void showStopTourActivity(Tour tour) {
+    public void showStopTourActivity(@NotNull Tour tour) {
         BaseNewsfeedFragment mapFragment  = getNewsfeedFragment();
         if(mapFragment !=null) {
             mapFragment.pauseTour(tour);

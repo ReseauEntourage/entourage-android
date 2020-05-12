@@ -11,8 +11,6 @@ import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events.OnMyEntouragesForceRefresh
 import social.entourage.android.base.EntourageDialogFragment
-import social.entourage.android.entourage.my.filter.MyEntouragesFilter.Companion.getMyEntouragesFilter
-import social.entourage.android.entourage.my.filter.MyEntouragesFilter.Companion.saveMyEntouragesFilter
 import social.entourage.android.tools.BusProvider.instance
 
 /**
@@ -50,7 +48,7 @@ class MyEntouragesFilterFragment  : EntourageDialogFragment() {
 
     fun onValidateClicked() {
         // save the values to the filter
-        val filter = getMyEntouragesFilter(this.context)
+        val filter = MyEntouragesFilter.get(this.context)
         filter.isEntourageTypeDemand = myentourages_filter_demand_switch!!.isChecked
         filter.isEntourageTypeContribution = myentourages_filter_contribution_switch!!.isChecked
         filter.isShowTours = myentourages_filter_tours_switch!!.isChecked
@@ -58,7 +56,7 @@ class MyEntouragesFilterFragment  : EntourageDialogFragment() {
         filter.showOwnEntouragesOnly = myentourages_filter_created_by_me_switch!!.isChecked
         filter.showPartnerEntourages = myentourages_filter_partner_switch!!.isChecked
         filter.isClosedEntourages = myentourages_filter_closed_switch!!.isChecked
-        saveMyEntouragesFilter(filter, this.context)
+        MyEntouragesFilter.save(filter, this.context)
 
         // inform the app to refrehs the my entourages feed
         instance.post(OnMyEntouragesForceRefresh(null))
@@ -92,7 +90,7 @@ class MyEntouragesFilterFragment  : EntourageDialogFragment() {
     // Private Methods
     // ----------------------------------
     private fun initializeView() {
-        val filter = getMyEntouragesFilter(this.context)
+        val filter = MyEntouragesFilter.get(this.context)
         myentourages_filter_demand_switch?.isChecked = filter.isEntourageTypeDemand
         myentourages_filter_contribution_switch?.isChecked = filter.isEntourageTypeContribution
         myentourages_filter_tours_switch?.isChecked = filter.isShowTours

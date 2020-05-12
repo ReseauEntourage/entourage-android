@@ -78,13 +78,11 @@ class MyEntouragesFilter  : Serializable {
         private const val serialVersionUID = 8192790767027490636L
 
         //MyEntouragesFilterFactory
-        @JvmStatic
-        fun getMyEntouragesFilter(context: Context?): MyEntouragesFilter {
+        fun get(context: Context?): MyEntouragesFilter {
             return EntourageApplication.get(context).entourageComponent.authenticationController?.myEntouragesFilter ?: MyEntouragesFilter()
         }
 
-        @JvmStatic
-        fun saveMyEntouragesFilter(myEntouragesFilter: MyEntouragesFilter?, context: Context?) {
+        fun save(myEntouragesFilter: MyEntouragesFilter?, context: Context?) {
             EntourageApplication.get(context).entourageComponent.authenticationController?.saveMyEntouragesFilter()
         }
     }

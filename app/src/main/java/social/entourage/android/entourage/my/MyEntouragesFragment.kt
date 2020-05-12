@@ -14,12 +14,8 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_my_entourages.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import social.entourage.android.*
 import social.entourage.android.api.ApiConnectionListener
-import social.entourage.android.api.EntourageRequest
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.feed.FeedItem
@@ -45,18 +41,16 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
     // ----------------------------------
     // Attributes
     // ----------------------------------
-    private val connection = ServiceConnection()
-
     @Inject lateinit var presenter: MyEntouragesPresenter
 
-    @Inject lateinit var entourageRequest: EntourageRequest
+    private val connection = ServiceConnection()
 
-    private lateinit var entouragesAdapter: MyEntouragesAdapter
+    private val entouragesAdapter: MyEntouragesAdapter = MyEntouragesAdapter()
 
     private val entouragesPagination = EntouragePagination(Constants.ITEMS_PER_PAGE)
 
     // Refresh invitations attributes
-    private var isRefreshingInvitations = false
+    internal var isRefreshingInvitations = false
 
     // ----------------------------------
     // Lifecycle
@@ -82,7 +76,6 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupComponent(EntourageApplication.get(activity).entourageComponent)
-        entouragesAdapter = MyEntouragesAdapter()
         initializeView()
         refreshInvitations()
         refreshMyFeeds()
@@ -108,7 +101,7 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
     private fun initializeFilterTab() {
         myentourages_tab?.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                val filter = MyEntouragesFilter.getMyEntouragesFilter(context)
+                val filter = MyEntouragesFilter.get(context)
                 when (tab.position) {
                     FILTER_TAB_INDEX_ALL -> filter.isShowUnreadOnly = false
                     FILTER_TAB_INDEX_UNREAD -> {
@@ -126,7 +119,7 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
         // The tab is initialised ALL
         // So we need to reset the filter flag and no item view in case the user switched to another screen
         // while the UNREAD tab was active
-        MyEntouragesFilter.getMyEntouragesFilter(context).isShowUnreadOnly = false
+        MyEntouragesFilter.get(context).isShowUnreadOnly = false
         myentourages_layout_no_items?.visibility = View.GONE
     }
 
@@ -246,7 +239,7 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
         //ignore errors
         if (newsfeedItemList == null) return
         //add the feed
-        val showUnreadOnly = MyEntouragesFilter.getMyEntouragesFilter(this.context).isShowUnreadOnly
+        val showUnreadOnly = MyEntouragesFilter.get(this.context).isShowUnreadOnly
         entouragesAdapter.removeLoader()
         if (newsfeedItemList.isNotEmpty()) {
             for (newsfeed in newsfeedItemList) {
@@ -278,30 +271,6 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
 
     fun onNoInvitationReceived() {
         // ignore errors
-    }
-
-    fun onInvitationsReceived(invitationList: List<Invitation?>) {
-        // check if the fragment is still attached
-        if (!isAdded) {
-            return
-        }
-        entouragesAdapter.removeOldInvitations(invitationList)
-        invitationList.forEach {
-            if(it == null) return
-            val call = entourageRequest.retrieveEntourageById(it.entourageUUID, 0, 0)
-            call.enqueue(object : Callback<BaseEntourage.EntourageWrapper> {
-                override fun onResponse(call: Call<BaseEntourage.EntourageWrapper>, response: Response<BaseEntourage.EntourageWrapper>) {
-                    if (response.isSuccessful && response.body()?.entourage is BaseEntourage) {
-                        it.entourage = response.body()?.entourage
-                        entouragesAdapter.addInvitation(it)
-                    }
-                }
-                override fun onFailure(call: Call<BaseEntourage.EntourageWrapper>, t: Throwable) {
-                    Timber.w("Entourage for Invitation not found")
-                }
-            })
-        }
-        // reset the semaphore
         isRefreshingInvitations = false
     }
 
@@ -332,6 +301,14 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
         if (myentourages_layout != null) {
             make(myentourages_layout!!, R.string.technical_error, Snackbar.LENGTH_LONG).show()
         }
+    }
+
+    fun removeOldInvitations(invitationList: List<Invitation?>) {
+        entouragesAdapter.removeOldInvitations(invitationList)
+    }
+
+    fun addInvitation(it: Invitation) {
+        entouragesAdapter.addInvitation(it)
     }
 
     private inner class ServiceConnection : android.content.ServiceConnection {

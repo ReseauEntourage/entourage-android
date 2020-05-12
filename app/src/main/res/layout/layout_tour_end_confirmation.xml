@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
-    >
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
@@ -13,10 +12,10 @@
         android:layout_weight="1"/>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background">
+        android:background="@color/background"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
@@ -32,9 +31,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:textSize="60sp"
             android:gravity="center"
             android:textColor="@color/greyish"
+            android:textSize="60sp"
             />
 
         <TextView
@@ -49,15 +48,15 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/greyish"
             android:layout_marginTop="20dp"
-            android:alpha="0.5"/>
+            android:alpha="0.5"
+            android:background="@color/greyish"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:baselineAligned="false"
             android:gravity="start"
             android:orientation="horizontal"
@@ -122,47 +121,49 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:baselineAligned="false"
             android:background="@color/background_light"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
             android:paddingTop="20dp"
             android:paddingBottom="20dp">
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <Button
                     android:id="@+id/confirmation_end_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/tour_stop"
-                    android:drawableBottom="@drawable/tour_stop"
-                    android:textColor="@color/greyish_brown"
                     android:background="?android:attr/selectableItemBackground"
-                    android:textSize="25sp"
-                    android:textAllCaps="false"/>
+                    android:drawableBottom="@drawable/ic_stop_circle_filled_black_96dp"
+                    app:drawableTint="@color/tomato"
+                    android:text="@string/tour_stop"
+                    android:textAllCaps="false"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="25sp"/>
 
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <Button
                     android:id="@+id/confirmation_resume_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:text="@string/tour_resume"
                     android:background="?android:attr/selectableItemBackground"
-                    android:drawableBottom="@drawable/tour_start"
+                    android:drawableBottom="@drawable/ic_play_circle_filled_black_96dp"
+                    app:drawableTint="@color/bright_blue"
+                    android:text="@string/tour_resume"
                     android:textAllCaps="false"
                     android:textColor="@color/greyish_brown"
                     android:textSize="25sp"/>

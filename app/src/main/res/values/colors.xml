@@ -39,6 +39,7 @@
     <color name="profile_name">@color/greyish_brown</color>
     <color name="profile_role_text">@color/white</color>
     <color name="report_user_explanation">@color/tomato</color>
+    <color name="profile_role_ambassador">@color/accent</color>
 
     <!-- Map -->
     <color name="map_announcement_background">#344055</color>
@@ -91,7 +92,7 @@
     <color name="feeditem_details_topbar_tint">@color/white</color>
     <color name="feeditem_details_title">@color/white</color>
     <color name="feeditem_icon_background_solid">@color/white</color>
-    <color name="feeditem_icon_background_stroke">@color/warm_grey</color>
+    <color name="feeditem_icon_background_stroke">@color/white</color>
     
     <!-- FeedItem card -->
     <color name="feeditem_card_details_normal">@color/greyish</color>

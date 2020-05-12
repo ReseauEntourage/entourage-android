@@ -133,4 +133,18 @@
     <string name="entourage_create_submenu_add_tour_encounter">lors de votre maraude</string>
     <string name="entourage_create_submenu_start_tour_launcher">Pour votre association</string>
 
+    <!-- Newsfeed -->
+    <string name="newsfeed_load_more_description">C\'est tout pour les actions dans ce rayon !</string>
+    <string name="newsfeed_no_more_items">Aucun autre entourage près de cette position</string>
+
+    <!-- Map Filter -->
+    <string name="map_filter_outing_title">Évènements</string>
+    <string name="map_filter_entourage_outing_text">Évènements</string>
+    <string name="map_filter_past_events_text">Inclure passés</string>
+
+    <!-- Map Tab -->
+    <string name="map_tab_all">Tous</string>
+    <string name="map_tab_events">Evènements</string>
+    <string name="map_tab_tours">Maraudes</string>
+
 </resources>

@@ -438,9 +438,6 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
         }
     }
 
-    private val currentTour: Tour?
-        get() = entourageService?.currentTour
-
     private fun startTour(type: String) {
         if (entourageService!=null && !entourageService!!.isRunning) {
             color = getTrackColor(false, type, Date())
@@ -463,7 +460,9 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
 
     private fun launchConfirmationFragment() {
         pauseTour()
-        TourEndConfirmationFragment.newInstance(currentTour).show(parentFragmentManager, TourEndConfirmationFragment.TAG)
+        entourageService?.currentTour?.let {
+            TourEndConfirmationFragment.newInstance(it).show(parentFragmentManager, TourEndConfirmationFragment.TAG)
+        }
     }
 
     private fun addEncounter(encounter: Encounter?) {
