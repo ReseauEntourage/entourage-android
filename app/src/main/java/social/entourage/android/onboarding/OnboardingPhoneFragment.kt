@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.fragment_onboarding_phone.*
 import social.entourage.android.R
 import social.entourage.android.tools.Logger
 import social.entourage.android.tools.hideKeyboard
+import social.entourage.android.view.countrycodepicker.CountryCodePicker
 
 
 private const val ARG_FIRSTNAME = "firstname"
@@ -28,6 +29,7 @@ class OnboardingPhoneFragment : Fragment() {
 
     private var callback:OnboardingCallback? = null
 
+    private var viewPickerCountry:CountryCodePicker? = null
     //**********//**********//**********
     // Lifecycle
     //**********//**********//**********
@@ -49,6 +51,7 @@ class OnboardingPhoneFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewPickerCountry = view.findViewById(R.id.ui_onboard_phone_ccp_code)
         getActivity()?.getWindow()?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         if (phone?.length ?: 0  >= minimumPhoneCharacters) {
@@ -101,7 +104,7 @@ class OnboardingPhoneFragment : Fragment() {
         if (ui_onboard_phone_et_phone.text?.length ?: 0  >= minimumPhoneCharacters) {
             phone = ui_onboard_phone_et_phone?.text.toString()
             callback?.upadteButtonNext(true)
-            val countryCode = ui_onboard_phone_ccp_code?.getSelectedCountryCodeWithPlus()
+            val countryCode = viewPickerCountry?.selectedCountryCodeWithPlus //ui_onboard_phone_ccp_code?.getSelectedCountryCodeWithPlus()
             callback?.validatePhoneNumber(countryCode,ui_onboard_phone_et_phone.text.toString())
         }
         else {
