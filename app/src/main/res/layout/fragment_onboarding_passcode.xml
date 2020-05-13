@@ -1,0 +1,278 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/white"
+android:clickable="true"
+android:focusable="true"
+android:focusableInTouchMode="true"
+android:id="@+id/onboard_passcode_mainlayout"
+tools:context="social.entourage.android.onboarding.OnboardingPasscodeFragment">
+
+
+    <TextView
+        android:id="@+id/ui_onboard_code_tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/onboard_sms_title"
+        android:textColor="@color/onboard_black_36"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ui_onboard_code_tv_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/onboard_phone_sub"
+        android:textColor="@color/onboard_black_36"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/ui_onboard_code_tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_code_tv_title" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_code_tv_description">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/ui_onboard_code_et_1"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:background="@color/onboard_textfield_bg"
+                android:ems="10"
+                android:fontFamily="sans-serif-medium"
+                android:hint="•"
+                android:inputType="phone"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:textAlignment="center"
+                android:textColor="@color/pre_onboard_black"
+                android:textSize="32sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <FrameLayout
+                android:id="@+id/ui_onboard_passcode_line_1"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/pre_onboard_black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/ui_onboard_code_et_2"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:background="@color/onboard_textfield_bg"
+                android:ems="10"
+                android:fontFamily="sans-serif-medium"
+                android:hint="•"
+                android:inputType="phone"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:textAlignment="center"
+                android:textColor="@color/pre_onboard_black"
+                android:textSize="32sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <FrameLayout
+                android:id="@+id/ui_onboard_passcode_line_2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/pre_onboard_black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/ui_onboard_code_et_3"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:background="@color/onboard_textfield_bg"
+                android:ems="10"
+                android:fontFamily="sans-serif-medium"
+                android:hint="•"
+                android:inputType="phone"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:textAlignment="center"
+                android:textColor="@color/pre_onboard_black"
+                android:textSize="32sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <FrameLayout
+                android:id="@+id/ui_onboard_passcode_line_3"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/pre_onboard_black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/ui_onboard_code_et_4"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:background="@color/onboard_textfield_bg"
+                android:ems="10"
+                android:fontFamily="sans-serif-medium"
+                android:hint="•"
+                android:inputType="phone"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:textAlignment="center"
+                android:textColor="@color/pre_onboard_black"
+                android:textSize="32sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <FrameLayout
+                android:id="@+id/ui_onboard_passcode_line_4"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/pre_onboard_black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/ui_onboard_code_et_5"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:background="@color/onboard_textfield_bg"
+                android:ems="10"
+                android:fontFamily="sans-serif-medium"
+                android:hint="•"
+                android:inputType="phone"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:textAlignment="center"
+                android:textColor="@color/pre_onboard_black"
+                android:textSize="32sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <FrameLayout
+                android:id="@+id/ui_onboard_passcode_line_5"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/pre_onboard_black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/ui_onboard_code_et_6"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:background="@color/onboard_textfield_bg"
+                android:ems="10"
+                android:fontFamily="sans-serif-medium"
+                android:hint="•"
+                android:inputType="phone"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:textAlignment="center"
+                android:textColor="@color/pre_onboard_black"
+                android:textSize="32sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <FrameLayout
+                android:id="@+id/ui_onboard_passcode_line_6"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/pre_onboard_black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/ui_onboard_bt_code_retry"
+        style="@style/TransparentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/onboard_sms_wait_retry"
+        android:textColor="@color/onboard_black_36"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

@@ -122,4 +122,8 @@
     <color name="pre_onboard_black">#1E1E1E</color>
     <color name="pre_onboard_dot_unselect">#E1E1E1</color>
 
+    <color name="onboard_black_36">#363636</color>
+    <color name="onboard_textfield_bg">#F6F6F6</color>
+    <color name="onboard_button_unselect">#80FFFFFF</color>
+    <color name="onboard_white_246">#F6F6F6</color>
 </resources>

@@ -48,7 +48,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
-import social.entourage.android.Onboarding.PreOnboardingChoiceActivity;
+import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity;
 import social.entourage.android.authentication.UserPreferences;
 import social.entourage.android.authentication.login.register.OnRegisterUserListener;
 import social.entourage.android.authentication.login.register.RegisterNumberFragment;

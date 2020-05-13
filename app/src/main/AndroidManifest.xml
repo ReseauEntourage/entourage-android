@@ -39,6 +39,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:fullBackupContent="@xml/backup_descriptor">
+        android:requestLegacyExternalStorage="true"><!-- use for accessing Storage Android 10+ -->
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -175,10 +176,14 @@
             android:theme="@style/EntourageOSSLicenses.Theme" />
         <activity android:name=".involvement.ShareActivity" />
         <activity android:name=".involvement.RateActivity" />
+        <activity
+            android:name=".onboarding.pre_onboarding.PreOnboardingChoiceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".onboarding.pre_onboarding.PreOnboardingStartActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".Onboarding.PreOnboardingChoiceActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Onboarding.PreOnboardingStartActivity"
+        <activity android:name=".onboarding.OnboardingMainActivity"
             android:screenOrientation="portrait"/>
 
         <service

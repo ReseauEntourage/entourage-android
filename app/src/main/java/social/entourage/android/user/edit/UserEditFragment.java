@@ -311,8 +311,14 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
 
     @OnClick(R.id.user_photo_button)
     protected void onPhotoClicked() {
-        PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
-        fragment.show(getParentFragmentManager(), PhotoChooseSourceFragment.TAG);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
+            fragment.show(getParentFragmentManager(), PhotoChooseSourceFragment.TAG);
+        }
+        else {
+            UserChoosePhotoFragment fragment = UserChoosePhotoFragment.newInstance();
+            fragment.show(getParentFragmentManager(), UserChoosePhotoFragment.TAG);
+        }
     }
 
     @OnClick(R.id.user_add_association_button)
@@ -459,9 +465,16 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
 
     @OnClick(R.id.user_action_zone_button)
     protected void onActionZoneEditClicked() {
-        UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(editedUser.getAddress());
-        userEditActionZoneFragment.setFragmentListener(this);
-        userEditActionZoneFragment.show(getParentFragmentManager(), UserEditActionZoneFragment.TAG);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(editedUser.getAddress());
+            userEditActionZoneFragment.setFragmentListener(this);
+            userEditActionZoneFragment.show(getParentFragmentManager(), UserEditActionZoneFragment.TAG);
+        }
+        else {
+            EditUserPlaceFragment frag = EditUserPlaceFragment.newInstance(null);
+            frag.setupListener(this);
+            frag.show(getParentFragmentManager(), EditUserPlaceFragment.TAG);
+        }
     }
 
     @Override

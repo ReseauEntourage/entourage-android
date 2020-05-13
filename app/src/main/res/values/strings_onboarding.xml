@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pre_onboard_button_connect">Me connecter</string>
+    <string name="pre_onboard_button_next">Suivant</string>
+    <string name="pre_onboard_tutorial_title1">Bienvenue\nsur Entourage</string>
+    <string name="pre_onboard_tutorial_title1_colored">Entourage</string>
+    <string name="pre_onboard_tutorial_description1">Quand on est en précarité, le plus dur est la solitude. Rejoignez une communauté d’entraide et de partage au coeur de votre quartier.</string>
+
+    <string name="pre_onboard_tutorial_title2">Entraidez-vous et créez du lien !</string>
+    <string name="pre_onboard_tutorial_title2_colored">créez du lien</string>
+    <string name="pre_onboard_tutorial_description2">Proposez ou demandez de l’aide et rencontrez-vous entre voisins, avec et sans domicile, d’un même quartier.</string>
+
+    <string name="pre_onboard_tutorial_title3">Participez à des événements solidaires</string>
+    <string name="pre_onboard_tutorial_title3_colored">événements solidaires</string>
+
+    <string name="pre_onboard_tutorial_title4">Entourage\nvous guide</string>
+    <string name="pre_onboard_tutorial_title4_colored">Entourage</string>
+    <string name="pre_onboard_tutorial_description4">L’équipe d’accompagnement et ses ambassadeurs sont là pour vous aider ! Orientation, ateliers, informations : trouvez des réponses au sein du réseau.</string>
+
+    <string name="pre_onboard_choice_description_title">Le réseau de ceux qui n’ont pas de réseau</string>
+    <string name="pre_onboard_choice_login">J’ai déjà un compte</string>
+    <string name="pre_onboard_choice_signup">Je m’inscris</string>
+    <string name="pre_onboard_choice_about">Qui est l’association Entourage ?</string>
+
+    <!-- ONBOARDING -->
+
+    <string name="onboard_button_pass">Passer</string>
+    <string name="onboard_welcome_title">Bienvenue !</string>
+    <string name="onboard_welcome_sub">Tout d\'abord...\nComment vous appelez-vous ?</string>
+    <string name="onboard_welcome_info">Seule la première lettre sera visible par les autres membres.</string>
+    <string name="onboard_welcome_placeholder_firstname">Votre prénom</string>
+    <string name="onboard_welcome_placeholder_lastname">Votre nom</string>
+    <string name="onboard_phone_title">Enchantés, %s.</string>
+    <string name="onboard_phone_sub">Quel est votre numéro de téléphone ?</string>
+    <string name="onboard_phone_info">Cette information restera confidentielle. Nous voulons juste vérifier que vous n’êtes pas un robot, mais un humain au grand coeur !</string>
+    <string name="onboard_phone_placeholder_phone">Téléphone</string>
+    <string name="onboard_sms_title">Entrez le code reçu par SMS</string>
+    <string name="onboard_sms_sub">Un SMS vient juste de vous être envoyé au ** ** ** ** %s</string>
+    <string name="onboard_sms_no_code">Pas de code ? Réessayez dans 1 min</string>
+    <string name="onboard_sms_wait_retry">Pas de code ? Réessayer dans 1 min</string>
+    <string name="attention_pop_title">Attention</string>
+    <string name="onboard_sms_pop_alert">Veuillez patienter encore %s sec avant de renouveller la demande.</string>
+    <string name="onboard_sms_no_pwd">Veuillez remplir le password</string>
+    <string name="onboard_type_title">Enchantés, %s.</string>
+    <string name="onboard_type_sub">Qu\'est ce qui vous amène ?</string>
+    <string name="onboard_type_description">Entourage vous pose ces quelques questions pour vous accueillir et vous accompagner au mieux !\n<i>(Cette information ne sera pas visible par les autres membres du réseau).</i></string>
+    <string name="onboard_type_choice1">Je suis un voisin solidaire</string>
+    <string name="onboard_type_choice2">Je suis une personne isolée ou en précarité</string>
+    <string name="onboard_type_choice3">Je fais partie d’une association ou service public</string>
+    <string name="onboard_place_title">Quel est votre quartier ?</string>
+    <string name="onboard_place_description">Vous pourrez répondre aux demandes de personnes en difficulté et d’associations de votre quartier, et vous pourrez vous-même proposer des dons de votre temps ou matériels.</string>
+    <string name="onboard_place_info">Entourage ne communique pas cette adresse.</string>
+    <string name="onboard_place_placeholder">Ex : 35000</string>
+    <string name="onboard_email_pwd_title">Ok super !</string>
+    <string name="onboard_email_pwd_description">Maintenant, finalisons la création de votre compte !</string>
+    <string name="onboard_email_pwd_info_length">Inclure au moins 8 caractères.</string>
+    <string name="onboard_email_pwd_placeholder_email">E-mail</string>
+    <string name="onboard_email_pwd_placeholder_pwd">Mot de passe</string>
+    <string name="onboard_email_pwd_placeholder_confirm_pwd">Confirmer votre mot de passe</string>
+    <string name="onboard_email_pwd_error_email">Adresse e-mail invalide</string>
+    <string name="onboard_email_pwd_error_pwd_match">Les 2 mots de passes ne sont pas identiques</string>
+    <string name="onboard_photo_title">Merci, %s !</string>
+    <string name="onboard_photo_description">La touche finale : vous pouvez ajouter votre photo. Les membres d’Entourage de votre quartier ont hâte de faire votre connaissance !</string>
+    <string name="onboard_photo_bt_take_photo">Prendre une photo</string>
+    <string name="onboard_photo_bt_take_gallery">Importer depuis la galerie</string>
+    <string name="onboard_waiting_dialog"></string>
+
+    <string name="take_photo_title">Ajouter une photo ?</string>
+    <string name="take_photo_description">Avec une photo, c’est tout de suite plus sympa.\nMontrez-nous votre sourire le plus chaleureux.</string>
+</resources>
