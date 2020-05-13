@@ -66,7 +66,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <social.entourage.android.view.countrycodepicker.CountryCodePicker
+            <social.entourage.android.view.CountryCodePicker.CountryCodePicker
                 android:id="@+id/login_ccp"
                 android:layout_width="70dp"
                 android:layout_height="match_parent"
@@ -79,7 +79,7 @@
                 app:ccp_showFlag="false"
                 app:ccp_textColor="@color/white">
 
-            </social.entourage.android.view.countrycodepicker.CountryCodePicker>
+            </social.entourage.android.view.CountryCodePicker.CountryCodePicker>
 
             <EditText
                 android:id="@+id/login_edit_phone"

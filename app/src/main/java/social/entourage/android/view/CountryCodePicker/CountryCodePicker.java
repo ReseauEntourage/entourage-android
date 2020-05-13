@@ -1,4 +1,4 @@
-package social.entourage.android.view.countrycodepicker;
+package social.entourage.android.view.CountryCodePicker;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -15,7 +15,6 @@ import android.telephony.TelephonyManager;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;

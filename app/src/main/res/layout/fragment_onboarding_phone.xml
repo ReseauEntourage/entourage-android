@@ -77,7 +77,7 @@ tools:context="social.entourage.android.onboarding.OnboardingPhoneFragment">
     app:layout_constraintEnd_toEndOf="@+id/ui_onboard_phone_et_phone"
     app:layout_constraintStart_toStartOf="@+id/ui_onboard_phone_et_phone"/>
 
-    <social.entourage.android.view.countrycodepicker.CountryCodePicker
+    <social.entourage.android.view.CountryCodePicker.CountryCodePicker
         android:id="@+id/ui_onboard_phone_ccp_code"
         android:layout_width="70dp"
         android:layout_height="0dp"

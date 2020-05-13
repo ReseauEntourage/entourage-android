@@ -1,4 +1,4 @@
-package social.entourage.android.view.countrycodepicker;
+package social.entourage.android.view.CountryCodePicker;
 
 import android.app.Dialog;
 import android.content.Context;
