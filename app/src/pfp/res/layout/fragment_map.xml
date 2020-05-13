@@ -167,7 +167,7 @@
                     android:layout_marginEnd="0dp"
                     android:contentDescription="@string/empty_description"
                     android:padding="3dp"
-                    android:src="@drawable/ic_close_white" />
+                    app:src="@drawable/ic_close_black_24dp" />
 
                 <TextView
                     android:layout_width="match_parent"

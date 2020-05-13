@@ -28,7 +28,7 @@
             android:layout_marginTop="@dimen/entourage_padding_10"
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
-            android:src="@drawable/ic_close"
+            app:srcCompat="@drawable/ic_close_black_24dp"
             android:tint="@color/accent"/>
 
         <TextView

@@ -27,7 +27,7 @@
             android:paddingLeft="0dp"
             android:paddingRight="5dp"
             android:paddingStart="0dp"
-            app:srcCompat="@drawable/ic_close_white"
+            app:srcCompat="@drawable/ic_close_black_24dp"
             android:tint="@color/accent"/>
 
     </RelativeLayout>

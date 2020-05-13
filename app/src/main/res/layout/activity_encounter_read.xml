@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:entourageTitle="@string/activity_read_encounter_title"
-        app:entourageTitleCloseDrawable="@drawable/ic_close"/>
+        app:entourageTitleCloseDrawableTint="@color/accent"
+        app:entourageTitleCloseDrawable="@drawable/ic_close_black_24dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

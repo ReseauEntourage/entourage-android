@@ -22,7 +22,8 @@
                 android:layout_height="wrap_content"
                 app:entourageTitle="@string/activity_create_encounter_title"
                 app:entourageTitleAction="@string/validate"
-                app:entourageTitleCloseDrawable="@drawable/ic_close"/>
+                app:entourageTitleCloseDrawableTint="@color/accent"
+                app:entourageTitleCloseDrawable="@drawable/ic_close_black_24dp"/>
 
             <RelativeLayout
                 android:id="@+id/create_encounter_position_layout"

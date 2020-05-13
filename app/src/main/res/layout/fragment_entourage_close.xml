@@ -20,7 +20,7 @@
             android:layout_alignParentTop="true"
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
-            app:srcCompat="@drawable/ic_close_white"/>
+            app:srcCompat="@drawable/ic_close_black_24dp"/>
 
     </RelativeLayout>
 

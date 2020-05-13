@@ -145,7 +145,7 @@ class NewsfeedPresenter @Inject constructor(
 
     fun displayEncounterDisclaimer() {
         val fragmentManager = fragment?.activity?.supportFragmentManager ?: return
-        EncounterDisclaimerFragment.newInstance().show(fragmentManager, EncounterDisclaimerFragment.TAG)
+        EncounterDisclaimerFragment().show(fragmentManager, EncounterDisclaimerFragment.TAG)
     }
 
     fun getMyPendingInvitations() {
