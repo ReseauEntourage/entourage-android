@@ -42,7 +42,7 @@ public class EntourageLinkMovementMethod extends LinkMovementMethod {
                 if (action == MotionEvent.ACTION_DOWN) {
                     if (links[0] instanceof  URLSpan) {
                         String url = ((URLSpan) links[0]).getURL();
-                        BusProvider.getInstance().post(new Events.OnShowURLEvent(url));
+                        BusProvider.INSTANCE.getInstance().post(new Events.OnShowURLEvent(url));
                     }
 
                 }

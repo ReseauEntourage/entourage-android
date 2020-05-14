@@ -4,7 +4,7 @@ import android.view.View
 import kotlinx.android.synthetic.main.layout_loader_card.view.*
 import social.entourage.android.api.model.TimestampedObject
 
-class LoaderCardViewHolder(view: View?) : BaseCardViewHolder(view) {
+class LoaderCardViewHolder(view: View) : BaseCardViewHolder(view) {
     override fun bindFields() {
     }
 

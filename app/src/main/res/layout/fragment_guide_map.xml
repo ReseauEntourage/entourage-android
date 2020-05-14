@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_guide_coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -19,6 +19,7 @@
                 android:id="@+id/fragment_guide_alert_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:elevation="16dp"
                 app:layout_constraintEnd_toStartOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -30,12 +31,12 @@
                     android:layout_centerVertical="true"
                     android:adjustViewBounds="true"
                     android:background="@drawable/bg_clickable_layout_alert"
+                    android:contentDescription="@string/guide_alert_info_desc"
                     android:tint="@color/white"
                     app:layout_constraintBottom_toBottomOf="@+id/fragment_guide_alert"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_info_white_24dp"
-                    android:contentDescription="@string/guide_alert_info_desc" />
+                    app:srcCompat="@drawable/ic_info_white_24dp" />
 
                 <TextView
                     android:id="@+id/fragment_guide_alert"
@@ -60,32 +61,32 @@
                     android:layout_centerVertical="true"
                     android:adjustViewBounds="true"
                     android:background="@drawable/bg_clickable_layout_alert"
+                    android:contentDescription="@string/guide_alert_arrow_desc"
                     android:tint="@color/white"
                     app:layout_constraintBottom_toBottomOf="@+id/fragment_guide_alert"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_expand_more_black_24dp"
-                    android:contentDescription="@string/guide_alert_arrow_desc" />
+                    app:srcCompat="@drawable/ic_expand_more_black_24dp" />
 
                 <social.entourage.android.view.HtmlTextView
                     android:id="@+id/fragment_guide_alert_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_clickable_layout_alert"
+                    android:linksClickable="true"
                     android:paddingStart="32dp"
+                    android:paddingTop="10dp"
                     android:paddingEnd="32dp"
                     android:paddingBottom="32dp"
-                    android:paddingTop="10dp"
-                    android:linksClickable="true"
                     android:text="@string/guide_alert_info_text"
                     android:textColor="@color/white"
                     android:textColorHint="@color/light_grey"
                     android:textColorLink="@color/light_grey"
                     android:textSize="@dimen/entourage_font_medium"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/fragment_guide_alert"
-                    android:visibility="gone"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/fragment_guide_alert" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -107,12 +108,13 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:contentDescription="@string/guide_filter_title"
+                android:elevation="16dp"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
                 android:paddingStart="8dp"
+                android:paddingTop="8dp"
                 android:paddingEnd="16dp"
+                android:paddingBottom="8dp"
                 android:text="@string/guide_filters_activated"
                 android:textColor="@color/white"
                 android:textSize="@dimen/entourage_font_large"
@@ -133,6 +135,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:contentDescription="@string/map_poi_propose_button"
+                android:elevation="16dp"
                 android:visibility="visible"
                 app:backgroundTint="@color/accent"
                 app:fabSize="mini"
@@ -150,6 +153,7 @@
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
             android:background="@drawable/rounded_dialog"
+            android:elevation="16dp"
             android:orientation="vertical"
             android:visibility="gone"
             tools:visibility="visible">
@@ -224,6 +228,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:contentDescription="@string/map_poi_propose_button"
+            android:elevation="16dp"
             android:visibility="visible"
             app:backgroundTint="@color/accent"
             app:fabSize="auto"

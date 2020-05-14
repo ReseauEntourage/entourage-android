@@ -10,9 +10,9 @@ import org.jetbrains.annotations.Nullable;
 
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.Partner;
-import social.entourage.android.api.model.map.FeedItem;
-import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.api.model.map.Entourage;
+import social.entourage.android.api.model.BaseEntourage;
+import social.entourage.android.api.model.feed.FeedItem;
+import social.entourage.android.api.model.tour.Encounter;
 
 public class Events {
 
@@ -208,14 +208,14 @@ public class Events {
             this.feedRank = feedRank;
         }
 
-        public OnFeedItemInfoViewRequestedEvent(int feedItemType, String feedItemUUID, String feedItemShareURL) {
+        public OnFeedItemInfoViewRequestedEvent(int feedItemType, @Nullable String feedItemUUID, @Nullable String feedItemShareURL) {
             this.feedItemType = feedItemType;
             this.feedItemUUID = feedItemUUID;
             this.feedItemShareURL = feedItemShareURL;
         }
 
-        public OnFeedItemInfoViewRequestedEvent(int feedItemType, String feedItemUUID, long invitationId) {
-            this.feedItemType = feedItemType;
+        public OnFeedItemInfoViewRequestedEvent(@NotNull String feedItemUUID, long invitationId) {
+            this.feedItemType = FeedItem.ENTOURAGE_CARD;
             this.feedItemUUID = feedItemUUID;
             this.invitationId = invitationId;
         }
@@ -364,13 +364,13 @@ public class Events {
      */
     public static class OnEntourageCreated {
 
-        private Entourage entourage;
+        private BaseEntourage entourage;
 
-        public OnEntourageCreated(Entourage entourage) {
+        public OnEntourageCreated(BaseEntourage entourage) {
             this.entourage = entourage;
         }
 
-        public Entourage getEntourage() {
+        public BaseEntourage getEntourage() {
             return entourage;
         }
 
@@ -381,13 +381,13 @@ public class Events {
      */
     public static class OnEntourageUpdated {
 
-        private Entourage entourage;
+        private BaseEntourage entourage;
 
-        public OnEntourageUpdated(Entourage entourage) {
+        public OnEntourageUpdated(BaseEntourage entourage) {
             this.entourage = entourage;
         }
 
-        public Entourage getEntourage() {
+        public BaseEntourage getEntourage() {
             return entourage;
         }
 

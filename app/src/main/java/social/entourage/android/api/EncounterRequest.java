@@ -5,7 +5,7 @@ import retrofit2.http.Body;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.model.tour.Encounter;
 
 public interface EncounterRequest {
 

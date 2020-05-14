@@ -110,11 +110,9 @@ public class UserEditAboutFragment extends DialogFragment {
                 if (userEditFragment != null) {
                     userEditFragment.configureView();
                 } else {
-                    if (getFragmentManager() != null) {
-                        UserFragment userFragment = (UserFragment) getFragmentManager().findFragmentByTag(UserFragment.TAG);
-                        if (userFragment != null) {
-                            userFragment.saveAccount(user);
-                        }
+                    UserFragment userFragment = (UserFragment) getParentFragmentManager().findFragmentByTag(UserFragment.TAG);
+                    if (userFragment != null) {
+                        userFragment.saveAccount(user);
                     }
                 }
             }
@@ -127,17 +125,15 @@ public class UserEditAboutFragment extends DialogFragment {
     // ----------------------------------
 
     private void configureView() {
-        if (getFragmentManager() != null) {
-            userEditFragment = (UserEditFragment) getFragmentManager().findFragmentByTag(UserEditFragment.TAG);
-            if (userEditFragment == null) {
-                //Try to see if we can find the User View fragment
-                UserFragment userFragment = (UserFragment) getFragmentManager().findFragmentByTag(UserFragment.TAG);
-                if (userFragment != null) {
-                    user = userFragment.getEditedUser();
-                }
-            } else {
-                user = userEditFragment.getEditedUser();
+        userEditFragment = (UserEditFragment) getParentFragmentManager().findFragmentByTag(UserEditFragment.TAG);
+        if (userEditFragment == null) {
+            //Try to see if we can find the User View fragment
+            UserFragment userFragment = (UserFragment) getParentFragmentManager().findFragmentByTag(UserFragment.TAG);
+            if (userFragment != null) {
+                user = userFragment.getEditedUser();
             }
+        } else {
+            user = userEditFragment.getEditedUser();
         }
         if (user == null) {
             return;

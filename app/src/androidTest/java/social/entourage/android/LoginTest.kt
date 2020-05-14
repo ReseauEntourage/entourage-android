@@ -40,7 +40,7 @@ class LoginTest {
 
     private fun checkTCDisplay() {
         //PFP we have a TC validation screen
-        if (EntourageApplication.isPfpApp()) {
+        if (EntourageApplication.isPfpApp) {
             Espresso.onView(ViewMatchers.withId(R.id.register_welcome_start_button)).perform(ViewActions.click())
         }
     }

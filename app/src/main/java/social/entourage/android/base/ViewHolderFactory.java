@@ -4,6 +4,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 
@@ -15,25 +17,29 @@ import timber.log.Timber;
 public class ViewHolderFactory {
 
     private HashMap<Integer, ViewHolderType> viewHolderTypeHashMap;
+    private ViewHolderType viewHolderTypeDefault = null;
 
-    public ViewHolderFactory() {
+    ViewHolderFactory() {
         viewHolderTypeHashMap = new HashMap<>();
     }
 
     public void registerViewHolder(int viewType, ViewHolderType viewHolderType) {
+        if(viewHolderTypeHashMap.isEmpty()) {
+            viewHolderTypeDefault = viewHolderType;
+        }
         viewHolderTypeHashMap.put(viewType, viewHolderType);
     }
 
+    @NotNull
     public BaseCardViewHolder getViewHolder(ViewGroup parent, int viewType) {
         ViewHolderType viewHolderType = viewHolderTypeHashMap.get(viewType);
         if (viewHolderType == null) {
-            return null;
+            viewHolderType = viewHolderTypeDefault;
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(viewHolderType.layoutResource, parent, false);
         BaseCardViewHolder cardViewHolder = null;
         try {
-            Constructor ctor;
-            ctor = viewHolderType.cardViewHolderClass.getConstructor(View.class);
+            Constructor ctor = viewHolderType.cardViewHolderClass.getConstructor(View.class);
             cardViewHolder = (BaseCardViewHolder)ctor.newInstance(view);
         } catch (Exception e) {
             Timber.e(e);

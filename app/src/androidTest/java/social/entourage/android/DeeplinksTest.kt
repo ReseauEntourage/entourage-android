@@ -150,6 +150,27 @@ class DeepLinkingTest {
     }
 
     @Test
+    fun connectedEventsDeeplink() {
+        connectedEventsDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://events")
+    }
+
+    @Test
+    fun connectedEventsDeeplinkHTTP() {
+        connectedEventsDeeplink("http://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/events")
+    }
+
+    @Test
+    fun connectedEventsDeeplinkHTTPS() {
+        connectedEventsDeeplink("https://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/events")
+    }
+
+    private fun connectedEventsDeeplink(uri: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+        startIntent(intent)
+        Espresso.onView(ViewMatchers.withText("Evènements")).check(ViewAssertions.matches(ViewMatchers.isSelected()))
+    }
+
+    @Test
     fun connectedFeedDeeplink() {
         connectedFeedDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://feed")
     }
@@ -393,7 +414,7 @@ class DeepLinkingTest {
     private fun connectedEntourageDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
-        Espresso.onView(ViewMatchers.withId(R.id.tour_info_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withId(R.id.entourage_info_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
     @Test

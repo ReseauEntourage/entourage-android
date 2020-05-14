@@ -20,7 +20,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.map.FeedItem
+import social.entourage.android.api.model.feed.FeedItem
 import timber.log.Timber
 import java.util.*
 
@@ -34,7 +34,6 @@ object PushNotificationManager {
     // ----------------------------------
     const val PUSH_MESSAGE = "social.entourage.android.PUSH_MESSAGE"
     const val KEY_CTA = "entourage_cta"
-    const val KEY_MIXPANEL = "mp_message"
 
     private const val MIN_NOTIFICATION_ID = 40
     private const val PREFERENCE_LAST_NOTIFICATION_ID = "PREFERENCE_LAST_NOTIFICATION_ID"
@@ -56,7 +55,7 @@ object PushNotificationManager {
      */
     fun handlePushNotification(message: Message, context: Context) {
         val content = message.content ?: return
-        val application = EntourageApplication.get() ?: return
+        val application = EntourageApplication.get()
         if (PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED == content.type) {
             // Remove the related join request push notification
             if (content.isTourRelated) {
@@ -100,8 +99,8 @@ object PushNotificationManager {
             for(message in pushNotifications[key]!!) {
                 val content = message.content
                 if (content != null && content.joinableId == feedItemId) {
-                    if((FeedItem.TOUR_CARD == feedType && content.isTourRelated)
-                            || (FeedItem.ENTOURAGE_CARD == feedType && content.isEntourageRelated)){
+                    if((TimestampedObject.TOUR_CARD == feedType && content.isTourRelated)
+                            || (TimestampedObject.ENTOURAGE_CARD == feedType && content.isEntourageRelated)){
                         nbNotifsFound++
                         messageListChanged = true
                         if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST == content.type) {
@@ -175,7 +174,7 @@ object PushNotificationManager {
         if (pushType == null) {
             return 0
         }
-        val application = EntourageApplication.get() ?: return 0
+        val application = EntourageApplication.get()
         var count = 0
         // search for a push notification that matches our parameters
         val newPushNotifications = HashMap<String, MutableList<Message>>()
@@ -186,8 +185,8 @@ object PushNotificationManager {
             for(message in pushNotifications[key]!!) {
                 val content = message.content
                 if (content != null && content.joinableId == feedId && content.type != null && content.type == pushType) {
-                    if (FeedItem.TOUR_CARD == feedType && content.isTourRelated
-                            || FeedItem.ENTOURAGE_CARD == feedType && content.isEntourageRelated) {
+                    if (TimestampedObject.TOUR_CARD == feedType && content.isTourRelated
+                            || TimestampedObject.ENTOURAGE_CARD == feedType && content.isEntourageRelated) {
                         messageListChanged = true
                         if (message.isVisible) {
                             application.storeNewPushNotification(message, false)
@@ -278,7 +277,7 @@ object PushNotificationManager {
         }
         val ctaIntent = Intent(Intent.ACTION_VIEW, Uri.parse(fcmMessage.data[KEY_CTA]))
         val builder = NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.drawable.ic_entourage_logo_one_color)
+                .setSmallIcon(if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) R.drawable.ic_entourage_logo_one_color else R.mipmap.ic_launcher)
                 .setContentIntent(PendingIntent.getActivity(context, 0, ctaIntent, PendingIntent.FLAG_UPDATE_CURRENT))
                 .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.ic_entourage_logo_two_colors))
                 .setContentTitle(notif.title)
@@ -359,7 +358,7 @@ object PushNotificationManager {
      */
     fun getMessageFromRemoteMessage(remoteMessage: RemoteMessage, context: Context): Message? {
         val msg = remoteMessage.data
-        //first checking if content json is present (not here for mixpanel or firebase notification
+        //first checking if content json is present (not here for firebase notification
         Timber.d("%s= %s; %s= %s; %s= %s", KEY_SENDER,msg[KEY_SENDER],  KEY_OBJECT, msg[KEY_OBJECT], KEY_CONTENT, msg[KEY_CONTENT])
         if ( !msg.containsKey(KEY_CONTENT) || !msg.containsKey(KEY_SENDER)) return null
         val message = Message(msg[KEY_SENDER]!!, msg[KEY_OBJECT], msg[KEY_CONTENT]!!, 0, null)

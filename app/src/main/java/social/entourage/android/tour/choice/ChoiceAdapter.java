@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.LocaleList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +16,8 @@ import java.util.List;
 import java.util.Locale;
 
 import social.entourage.android.R;
-import social.entourage.android.api.model.TourType;
-import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.api.model.tour.TourType;
+import social.entourage.android.api.model.tour.Tour;
 
 /**
  * Items Adapter for the ChoiceFragment RecyclerView
@@ -50,26 +49,24 @@ public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ChoiceView
     public void onBindViewHolder(@NonNull ChoiceViewHolder holder, int position) {
         Tour tour = tours.get(position);
 
-        if (tour.getTourType() != null) {
-            if (tour.getTourType().equals(TourType.MEDICAL.getName())) {
-                holder.cardImage.setImageResource(R.drawable.ic_medical_active);
-                holder.cardTextType.setText(R.string.tour_type_medical);
-            }
-            else if (tour.getTourType().equals(TourType.ALIMENTARY.getName())) {
-                holder.cardImage.setImageResource(R.drawable.ic_distributive_active);
-                holder.cardTextType.setText(R.string.tour_type_alimentary);
-            }
-            else if (tour.getTourType().equals(TourType.BARE_HANDS.getName())) {
-                holder.cardImage.setImageResource(R.drawable.ic_social_active);
-                holder.cardTextType.setText(R.string.tour_type_bare_hands);
-            }
+        if (tour.tourType.equals(TourType.MEDICAL.getTypeName())) {
+            holder.cardImage.setImageResource(R.drawable.ic_medical_active);
+            holder.cardTextType.setText(R.string.tour_type_medical);
+        }
+        else if (tour.tourType.equals(TourType.ALIMENTARY.getTypeName())) {
+            holder.cardImage.setImageResource(R.drawable.ic_distributive_active);
+            holder.cardTextType.setText(R.string.tour_type_alimentary);
+        }
+        else if (tour.tourType.equals(TourType.BARE_HANDS.getTypeName())) {
+            holder.cardImage.setImageResource(R.drawable.ic_social_active);
+            holder.cardTextType.setText(R.string.tour_type_bare_hands);
         }
 
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
         String date = dateFormat.format(tour.getStartTime());
         holder.cardTextDate.setText(date);
 
-        holder.cardTextOrganization.setText(tour.getOrganizationName());
+        holder.cardTextOrganization.setText(tour.organizationName);
     }
 
     public class ChoiceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

@@ -3,6 +3,8 @@ package social.entourage.android.base;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
+import org.jetbrains.annotations.NotNull;
+
 import social.entourage.android.api.model.TimestampedObject;
 
 /**
@@ -12,7 +14,7 @@ abstract public class BaseCardViewHolder extends RecyclerView.ViewHolder {
 
     protected EntourageViewHolderListener viewHolderListener;
 
-    public BaseCardViewHolder(View view) {
+    public BaseCardViewHolder(@NotNull View view) {
         super(view);
         bindFields();
     }
@@ -27,6 +29,6 @@ abstract public class BaseCardViewHolder extends RecyclerView.ViewHolder {
 
     abstract protected void bindFields();
 
-    abstract public void populate(TimestampedObject data);
+    abstract public void populate(@NotNull TimestampedObject data);
 
 }

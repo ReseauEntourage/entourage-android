@@ -4,6 +4,7 @@
     <!-- Invite Source -->
     <string name="invite_source_title">Inviter vos amis</string>
     <string name="invite_source_description">à rejoindre votre entourage !</string>
+    <string name="invite_source_to_tour_description">à rejoindre votre maraude !</string>
     <string name="invite_source_description_outing">à participer à cet évènement</string>
     <string name="invite_source_share">Partager le lien</string>
     <string name="invite_source_contacts">Contacts</string>
@@ -27,7 +28,7 @@
 
     <!-- Invitation Card -->
     <string name="invitation_card_description">1 nouvelle invitation à rejoindre un entourage</string>
-    <string name="invitation_card_inviter">De %s</string>
+    <string name="invitation_card_inviter">%1$s vous invite à rejoindre</string>
 
     <!-- Invited -->
     <string name="invited_description">Vous êtes invités à rejoindre cet entourage</string>

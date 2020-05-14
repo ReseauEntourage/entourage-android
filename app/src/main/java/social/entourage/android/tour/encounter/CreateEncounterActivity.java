@@ -29,7 +29,7 @@ import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
-import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.model.tour.Encounter;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.location.LocationFragment;
 import social.entourage.android.tools.BusProvider;
@@ -167,7 +167,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
 
     @OnClick(R.id.title_close_button)
     public void onCloseButton() {
-        BusProvider.getInstance().post(new Events.OnEncounterCreated(null));
+        BusProvider.INSTANCE.getInstance().post(new Events.OnEncounterCreated(null));
         finish();
     }
 
@@ -222,7 +222,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
         if (errorMessage == null) {
             getAuthenticationController().incrementUserEncountersCount();
             message = getString(R.string.create_encounter_success);
-            BusProvider.getInstance().post(new Events.OnEncounterCreated(encounterResponse));
+            BusProvider.INSTANCE.getInstance().post(new Events.OnEncounterCreated(encounterResponse));
 
             finish();
             EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_OK);
@@ -241,7 +241,7 @@ public class CreateEncounterActivity extends EntourageSecuredActivity implements
         if (errorMessage == null) {
             getAuthenticationController().incrementUserEncountersCount();
             message = getString(R.string.update_encounter_success);
-            BusProvider.getInstance().post(new Events.OnEncounterUpdated(editedEncounter));
+            BusProvider.INSTANCE.getInstance().post(new Events.OnEncounterUpdated(editedEncounter));
 
             finish();
             //EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_OK);

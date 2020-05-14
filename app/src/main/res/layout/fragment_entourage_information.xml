@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".entourage.information.EntourageInformationFragment"
+    android:id="@+id/entourage_information_coordinator_layout">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/entourage_info_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/feeditem_details_topbar_background"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/entourage_info_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/empty_description"
+            android:padding="5dp"
+            android:tint="@color/feeditem_details_topbar_tint"
+            app:srcCompat="@drawable/ic_action_back"/>
+
+        <ImageView
+            android:id="@+id/entourage_info_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/entourage_info_close"
+            android:background="@drawable/bg_feeditem_icon"
+            android:contentDescription="@string/empty_description"
+            android:padding="3dp"
+            android:scaleType="centerInside"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_entourage_category_question_chat"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/entourage_info_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/entourage_info_top_buttons"
+            android:layout_toEndOf="@+id/entourage_info_icon"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:lines="1"
+            android:textColor="@color/feeditem_details_title"
+            android:textSize="@dimen/entourage_font_medium"
+            android:textStyle="bold"
+            tools:text="Test description"
+            tools:visibility="visible" />
+
+        <include
+            android:id="@+id/entourage_info_top_buttons"
+            layout="@layout/layout_entourage_information_top_buttons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            tools:visibility="visible" />
+
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/entourage_info_private_section"
+        layout="@layout/layout_private_entourage_information"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/entourage_info_title_layout"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <include
+        android:id="@+id/entourage_info_public_section"
+        layout="@layout/layout_public_entourage_information"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/entourage_info_title_layout"
+        tools:visibility="visible" />
+
+    <View
+        android:id="@+id/entourage_info_loading_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/entourage_info_title_layout"
+        android:background="@color/white"
+        tools:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/entourage_info_progress_bar"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/circular_progress_bar"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <include
+        android:id="@+id/entourage_info_invite_source_layout"
+        layout="@layout/layout_invite_source"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <include
+        android:id="@+id/entourage_info_invite_success_layout"
+        layout="@layout/layout_invite_success"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <include
+        android:id="@+id/entourage_info_options"
+        layout="@layout/layout_entourage_options"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible" />
+    </RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -12,8 +12,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.TourRequest;
-import social.entourage.android.api.model.map.Tour;
-import social.entourage.android.api.model.map.TourUser;
+import social.entourage.android.api.model.tour.Tour;
+import social.entourage.android.api.model.EntourageUser;
 
 public class TourJoinRequestReceivedPresenter {
 
@@ -70,10 +70,10 @@ public class TourJoinRequestReceivedPresenter {
     }
 
     protected void rejectJoinTourRequest(String tourUUID, int userId) {
-        Call<TourUser.TourUserWrapper> call = tourRequest.removeUserFromTour(tourUUID, userId);
-        call.enqueue(new Callback<TourUser.TourUserWrapper>() {
+        Call<EntourageUser.EntourageUserWrapper> call = tourRequest.removeUserFromTour(tourUUID, userId);
+        call.enqueue(new Callback<EntourageUser.EntourageUserWrapper>() {
             @Override
-            public void onResponse(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Response<TourUser.TourUserWrapper> response) {
+            public void onResponse(@NonNull final Call<EntourageUser.EntourageUserWrapper> call, @NonNull final Response<EntourageUser.EntourageUserWrapper> response) {
                 if (activity != null) {
                     if (response.isSuccessful()) {
                         activity.onUserTourStatusChanged(Tour.JOIN_STATUS_REJECTED, true);
@@ -84,7 +84,7 @@ public class TourJoinRequestReceivedPresenter {
             }
 
             @Override
-            public void onFailure(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Throwable t) {
+            public void onFailure(@NonNull final Call<EntourageUser.EntourageUserWrapper> call, @NonNull final Throwable t) {
                 if (activity != null) {
                     activity.onUserTourStatusChanged(Tour.JOIN_STATUS_REJECTED, false);
                 }
@@ -121,10 +121,10 @@ public class TourJoinRequestReceivedPresenter {
     }
 
     protected void rejectJoinEntourageRequest(String entourageUUID, int userId) {
-        Call<TourUser.TourUserWrapper> call = entourageRequest.removeUserFromEntourage(entourageUUID, userId);
-        call.enqueue(new Callback<TourUser.TourUserWrapper>() {
+        Call<EntourageUser.EntourageUserWrapper> call = entourageRequest.removeUserFromEntourage(entourageUUID, userId);
+        call.enqueue(new Callback<EntourageUser.EntourageUserWrapper>() {
             @Override
-            public void onResponse(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Response<TourUser.TourUserWrapper> response) {
+            public void onResponse(@NonNull final Call<EntourageUser.EntourageUserWrapper> call, @NonNull final Response<EntourageUser.EntourageUserWrapper> response) {
                 if (activity != null) {
                     if (response.isSuccessful()) {
                         activity.onUserTourStatusChanged(Tour.JOIN_STATUS_REJECTED, true);
@@ -135,7 +135,7 @@ public class TourJoinRequestReceivedPresenter {
             }
 
             @Override
-            public void onFailure(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Throwable t) {
+            public void onFailure(@NonNull final Call<EntourageUser.EntourageUserWrapper> call, @NonNull final Throwable t) {
                 if (activity != null) {
                     activity.onUserTourStatusChanged(Tour.JOIN_STATUS_REJECTED, false);
                 }

@@ -27,11 +27,12 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.Partner;
 import social.entourage.android.api.model.Stats;
 import social.entourage.android.api.model.User;
-import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.api.model.BaseEntourage;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.configuration.Configuration;
 import social.entourage.android.entourage.information.EntourageInformationFragment;
+import social.entourage.android.entourage.information.FeedItemInformationFragment;
 import social.entourage.android.partner.PartnerFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
@@ -175,14 +176,14 @@ public class UserFragment extends EntourageDialogFragment {
     public void onStart() {
         super.onStart();
 
-        BusProvider.getInstance().register(this);
+        BusProvider.INSTANCE.getInstance().register(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
 
-        BusProvider.getInstance().unregister(this);
+        BusProvider.INSTANCE.getInstance().unregister(this);
     }
 
     // ----------------------------------
@@ -311,7 +312,7 @@ public class UserFragment extends EntourageDialogFragment {
         configureView();
     }
 
-    protected void onUserUpdated(User user) {
+    void onUserUpdated(User user) {
         if (getActivity() == null || getActivity().isFinishing()) {
             return;
         }
@@ -323,14 +324,19 @@ public class UserFragment extends EntourageDialogFragment {
             this.user = user;
             configureView();
             //update the edit view, if available
-            if (getFragmentManager() != null) {
-                UserEditFragment userEditFragment = (UserEditFragment) getFragmentManager().findFragmentByTag(UserEditFragment.TAG);
-                if (userEditFragment != null) {
-                    userEditFragment.dismiss();
-                }
+            UserEditFragment userEditFragment = (UserEditFragment) getParentFragmentManager().findFragmentByTag(UserEditFragment.TAG);
+            if (userEditFragment != null) {
+                userEditFragment.dismiss();
             }
             displayToast(R.string.user_text_update_ok);
         }
+    }
+
+    void onConversationFound(@Nullable BaseEntourage entourage) {
+        if(entourage==null) return;
+        FeedItemInformationFragment entourageInformationFragment = FeedItemInformationFragment.Companion.newInstance(entourage, 0, 0);
+        entourageInformationFragment.setShowInfoButton(false);
+        entourageInformationFragment.show(getParentFragmentManager(), EntourageInformationFragment.TAG);
     }
 
     // ----------------------------------
@@ -362,36 +368,18 @@ public class UserFragment extends EntourageDialogFragment {
     @OnClick(R.id.user_profile_report_button)
     protected void onReportUserClicked() {
         if (user == null) return;
-        // Build the email intent
-//        Intent intent = new Intent(Intent.ACTION_SENDTO);
-//        intent.setData(Uri.parse("mailto:"));
-//        // Set the email to
-//        String[] addresses = {Constants.EMAIL_CONTACT};
-//        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
-//        // Set the subject
-//        String emailSubject = getString(R.string.user_report_email_subject, user.getDisplayName());
-//        intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
-//        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-//            // Start the intent
-//            startActivity(intent);
-//        } else {
-//            // No Email clients
-//            Toast.makeText(getContext(), R.string.error_no_email, Toast.LENGTH_SHORT).show();
-//        }
 
         UserReportFragment userReportFragment = UserReportFragment.newInstance(user.getId());
-        userReportFragment.show(getFragmentManager(), UserReportFragment.TAG);
+        userReportFragment.show(getParentFragmentManager(), UserReportFragment.TAG);
     }
 
     @Optional
     @OnClick(R.id.user_message_button)
-    protected void onMessageUserClicked() {
+    void onMessageUserClicked() {
 //        UserDiscussionFragment userDiscussionFragment = UserDiscussionFragment.newInstance(user, false);
-//        userDiscussionFragment.show(getFragmentManager(), UserDiscussionFragment.TAG);
+//        userDiscussionFragment.show(getParentFragmentManager(), UserDiscussionFragment.TAG);
         if (user.getConversation() == null) return;
-        EntourageInformationFragment entourageInformationFragment = EntourageInformationFragment.newInstance(user.getConversation().getUUID(), FeedItem.ENTOURAGE_CARD, 0);
-        entourageInformationFragment.setShowInfoButton(false);
-        entourageInformationFragment.show(getParentFragmentManager(), EntourageInformationFragment.TAG);
+        presenter.getConversation(user.getConversation());
     }
 
     @Optional
@@ -444,5 +432,4 @@ public class UserFragment extends EntourageDialogFragment {
             Timber.w(e);
         }
     }
-
 }

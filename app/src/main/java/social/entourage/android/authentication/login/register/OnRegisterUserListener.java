@@ -10,4 +10,5 @@ public interface OnRegisterUserListener {
     void registerSavePhoneNumber(String phoneNumber);
     void registerCheckCode(String smsCode);
     void registerResendCode();
+    void registerClosePop(Boolean isShowLogin);  //Hack en attendant la nouvelle version de l'onboarding
 }

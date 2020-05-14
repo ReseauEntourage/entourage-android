@@ -88,7 +88,7 @@ public class UserEditPasswordFragment extends EntourageDialogFragment {
     protected void onSaveButton() {
         if (validatePassword()) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_09_4_SUBMIT);
-            UserEditFragment userEditFragment = (UserEditFragment) getFragmentManager().findFragmentByTag(UserEditFragment.TAG);
+            UserEditFragment userEditFragment = (UserEditFragment) getParentFragmentManager().findFragmentByTag(UserEditFragment.TAG);
             if (userEditFragment != null) {
                 userEditFragment.saveNewPassword(newPasswordEditText.getText().toString().trim());
             }
@@ -119,7 +119,7 @@ public class UserEditPasswordFragment extends EntourageDialogFragment {
         String newPassword = newPasswordEditText.getText().toString().trim();
         String confirmPassword = confirmPasswordEditText.getText().toString().trim();
         String userPassword = "";
-        UserEditFragment userEditFragment = (UserEditFragment) getFragmentManager().findFragmentByTag(UserEditFragment.TAG);
+        UserEditFragment userEditFragment = (UserEditFragment) getParentFragmentManager().findFragmentByTag(UserEditFragment.TAG);
         if (userEditFragment != null) {
             User user = userEditFragment.getEditedUser();
             userPassword = user.getSmsCode();

@@ -231,7 +231,7 @@ public class LocationFragment extends EntourageDialogFragment {
                 for (int index = 0; index < permissions.length; index++) {
                 if (permissions[index].equalsIgnoreCase(ACCESS_FINE_LOCATION)) {
                     boolean isGranted = grantResults[index] == PackageManager.PERMISSION_GRANTED;
-                    BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(isGranted));
+                    BusProvider.INSTANCE.getInstance().post(new Events.OnLocationPermissionGranted(isGranted));
                     if (map != null) {
                         try {
                             map.setMyLocationEnabled(isGranted);

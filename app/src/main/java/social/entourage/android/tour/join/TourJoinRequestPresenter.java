@@ -16,11 +16,11 @@ import social.entourage.android.R;
 import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.TourRequest;
 import social.entourage.android.api.model.User;
-import social.entourage.android.api.model.map.Entourage;
-import social.entourage.android.api.model.map.FeedItem;
-import social.entourage.android.api.model.map.Tour;
-import social.entourage.android.api.model.map.TourJoinMessage;
-import social.entourage.android.api.model.map.TourUser;
+import social.entourage.android.api.model.BaseEntourage;
+import social.entourage.android.api.model.feed.FeedItem;
+import social.entourage.android.api.model.tour.Tour;
+import social.entourage.android.api.model.tour.TourJoinMessage;
+import social.entourage.android.api.model.EntourageUser;
 import timber.log.Timber;
 
 /**
@@ -69,7 +69,7 @@ public class TourJoinRequestPresenter {
             sendMessage(message, (Tour)feedItem);
         }
         else if (feedItem.getType() == FeedItem.ENTOURAGE_CARD) {
-            sendMessage(message, (Entourage)feedItem);
+            sendMessage(message, (BaseEntourage)feedItem);
         }
     }
 
@@ -79,10 +79,10 @@ public class TourJoinRequestPresenter {
         TourJoinMessage joinMessage = new TourJoinMessage(message.trim());
         TourJoinMessage.TourJoinMessageWrapper joinMessageWrapper = new TourJoinMessage.TourJoinMessageWrapper();
         joinMessageWrapper.setJoinMessage(joinMessage);
-        Call<TourUser.TourUserWrapper> call = tourRequest.updateJoinTourMessage(tour.getUUID(), me.getId(), joinMessageWrapper);
-        call.enqueue(new Callback<TourUser.TourUserWrapper>() {
+        Call<EntourageUser.EntourageUserWrapper> call = tourRequest.updateJoinTourMessage(tour.getUuid(), me.getId(), joinMessageWrapper);
+        call.enqueue(new Callback<EntourageUser.EntourageUserWrapper>() {
             @Override
-            public void onResponse(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Response<TourUser.TourUserWrapper> response) {
+            public void onResponse(@NonNull final Call<EntourageUser.EntourageUserWrapper> call, @NonNull final Response<EntourageUser.EntourageUserWrapper> response) {
                 if (response.isSuccessful()) {
                     if (fragment.getActivity() != null) {
                         Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_sent, Toast.LENGTH_SHORT).show();
@@ -97,7 +97,7 @@ public class TourJoinRequestPresenter {
             }
 
             @Override
-            public void onFailure(@NonNull final Call<TourUser.TourUserWrapper> call, @NonNull final Throwable t) {
+            public void onFailure(@NonNull final Call<EntourageUser.EntourageUserWrapper> call, @NonNull final Throwable t) {
                 if (fragment.getActivity() != null) {
                     Toast.makeText(fragment.getActivity().getApplicationContext(), R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show();
                 }
@@ -105,7 +105,7 @@ public class TourJoinRequestPresenter {
         });
     }
 
-    protected void sendMessage(String message, Entourage entourage) {
+    protected void sendMessage(String message, BaseEntourage entourage) {
         User me = EntourageApplication.me(fragment.getContext());
 
         HashMap<String, Object> info = new HashMap<>();
@@ -113,7 +113,7 @@ public class TourJoinRequestPresenter {
         messageHashMap.put("message", message);
         info.put("request", messageHashMap);
 
-        Call<ResponseBody> call = entourageRequest.updateUserEntourageStatus(entourage.getUUID(), me.getId(), info);
+        Call<ResponseBody> call = entourageRequest.updateUserEntourageStatus(entourage.getUuid(), me.getId(), info);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull final Call<ResponseBody> call, @NonNull final Response<ResponseBody> response) {

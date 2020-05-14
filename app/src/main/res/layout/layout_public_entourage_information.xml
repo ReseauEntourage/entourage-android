@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="1"
+                android:background="@color/background">
+
+    <ScrollView
+        android:id="@+id/entourage_info_public_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/entourage_info_act_layout"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                layout="@layout/layout_public_entourage_header"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:visibility="visible" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/greyish" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:id="@+id/entourage_info_metadata_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-medium"
+                            android:text="@string/tour_info_metadata_organised_by"
+                            android:textColor="@color/greyish_brown"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/entourage_info_metadata_organiser"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-medium"
+                            android:textColor="@color/greyish_brown"
+                            android:textSize="15sp"
+                            tools:text="par User name" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/empty_description"
+                            app:srcCompat="@drawable/ic_calendar"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingStart="10dp">
+
+                            <TextView
+                                android:id="@+id/entourage_info_metadata_datetime"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-medium"
+                                android:textColor="@color/greyish_brown"
+                                android:textSize="@dimen/entourage_font_medium"
+                                android:textIsSelectable="true"
+                                android:autoLink="all"
+                                tools:text="Rendez-vous jeudi 28 mars 2018 à 8h"/>
+
+                            <TextView
+                                android:id="@+id/entourage_info_metadata_address"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-medium"
+                                android:maxLines="2"
+                                android:textColor="@color/greyish_brown"
+                                android:textSize="@dimen/entourage_font_medium"
+                                tools:text="Café la Renaissance, 44 rue de l’Assomption, 75016 Paris"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/entourage_info_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/greyish_brown"
+                    android:textIsSelectable="true"
+                    android:textSize="@dimen/entourage_font_medium"
+                    android:autoLink="all"
+                    tools:text="Marcel a cassé ses lunettes, et il ne peut plus lire du tout, lui qui aime tant ça ! Si quelqu'un a chez lui une paire pour la lecture dont il ne se sert plus, rejoignez l'entourage !" />
+
+                <TextView
+                    android:id="@+id/entourage_info_timestamps"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8sp"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="13sp"
+                    tools:text="Créé il y a 9 jours - mis à jour il y a 2 jours " />
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/entourage_info_map_layout"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                tools:background="@color/quantum_brown100"
+                />
+
+            <LinearLayout
+                android:id="@+id/entourage_info_members_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/entourage_info_member_count"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="5dp"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"
+                    android:textStyle="bold"/>
+
+                <LinearLayout
+                    android:id="@+id/entourage_info_member_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:contentDescription="@string/empty_description"
+                        android:tint="@color/accent"
+                        app:srcCompat="@drawable/ic_plus"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/tour_info_members_add"
+                        android:textColor="@color/accent"
+                        android:textSize="@dimen/entourage_font_large"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/entourage_info_members"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/entourage_info_act_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:weightSum="5">
+
+        <ImageView
+            android:id="@+id/entourage_info_act_divider_left"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="fill_horizontal"
+            android:layout_toStartOf="@+id/entourage_info_act_button"
+            android:alpha="0.5"
+            android:background="@color/greyish"
+            android:contentDescription="@string/empty_description"/>
+
+        <Button
+            android:id="@+id/entourage_info_act_button"
+            style="@style/ActButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="@dimen/act_button_right_padding"
+            android:drawableStart="@drawable/button_act_join"
+            android:enabled="true"
+            android:text="@string/tour_cell_button_join"/>
+
+        <ImageView
+            android:id="@+id/entourage_info_act_divider_right"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="fill_horizontal"
+            android:layout_toEndOf="@+id/entourage_info_act_button"
+            android:alpha="0.5"
+            android:background="@color/greyish"
+            android:contentDescription="@string/empty_description"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/entourage_info_request_join_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_transparent_rounded_top"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/entourage_info_request_join_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tour_info_request_join_title_entourage"
+            android:textColor="@color/accent"
+            android:textSize="@dimen/entourage_font_medium"/>
+
+        <Button
+            android:id="@+id/entourage_info_request_join_button"
+            style="@style/AccentButton.BigRoundedCorners"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/tour_info_request_join_button_entourage"
+            android:textSize="@dimen/entourage_font_medium"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/entourage_info_invited_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:background="@color/accent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="@string/invited_description"
+            android:textColor="@color/white"
+            android:textSize="@dimen/entourage_font_medium"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"/>
+
+            <Button
+                android:id="@+id/entourage_info_invited_reject_button"
+                style="@style/WhiteButtonTransparent"
+                android:layout_width="140dp"
+                android:layout_height="35dp"
+                android:layout_marginEnd="5dp"
+                android:text="@string/ignore"
+                android:textSize="@dimen/entourage_font_medium"/>
+
+            <Button
+                android:id="@+id/entourage_info_invited_accept_button"
+                style="@style/WhiteButton.RoundedCorners"
+                android:layout_width="140dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="5dp"
+                android:text="@string/accept"
+                android:textSize="@dimen/entourage_font_medium"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"/>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

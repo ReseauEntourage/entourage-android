@@ -68,11 +68,11 @@ public class TakePhotoActivity extends AppCompatActivity {
         if (requestCode == REQUEST_TAKE_PHOTO) {
             if (resultCode == Activity.RESULT_OK) {
                 if (intent != null && intent.getData() != null) {
-                    BusProvider.getInstance().post(new Events.OnPhotoChosen(intent.getData()));
+                    BusProvider.INSTANCE.getInstance().post(new Events.OnPhotoChosen(intent.getData()));
                     return;
                 }
                 if (mCurrentPhotoPath != null) {
-                    BusProvider.getInstance().post(new Events.OnPhotoChosen(Uri.fromFile(new File(mCurrentPhotoPath))));
+                    BusProvider.INSTANCE.getInstance().post(new Events.OnPhotoChosen(Uri.fromFile(new File(mCurrentPhotoPath))));
                 }
             }
             finish();

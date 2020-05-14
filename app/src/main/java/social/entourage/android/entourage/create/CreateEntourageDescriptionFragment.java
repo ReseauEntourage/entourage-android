@@ -14,7 +14,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.R;
-import social.entourage.android.api.model.map.BaseEntourage;
+import social.entourage.android.api.model.BaseEntourage;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.entourage.category.EntourageCategory;
 import social.entourage.android.entourage.category.EntourageCategoryFragment;
@@ -134,12 +134,12 @@ public class CreateEntourageDescriptionFragment extends EntourageDialogFragment 
             descriptionEditText.setSelection(entourageDescription.length());
         }
         if (entourageCategory != null) {
-            String descriptionExample = entourageCategory.getDescriptionExample();
+            String descriptionExample = entourageCategory.descriptionExample;
             if (descriptionExample != null && descriptionExample.length() > 0) {
                 descriptionEditText.setHint(descriptionExample);
             }
         }
-        if (BaseEntourage.TYPE_OUTING.equalsIgnoreCase(entourageGroupType)) {
+        if (BaseEntourage.GROUPTYPE_OUTING.equalsIgnoreCase(entourageGroupType)) {
             descriptionEditText.setHint(R.string.entourage_description_fragment_hint_outing);
             infoTextView.setText(R.string.entourage_description_fragment_info_outing);
         }

@@ -12,7 +12,7 @@ import java.util.Map;
 
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.api.model.User;
-import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.api.model.tour.Tour;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.entourage.my.filter.MyEntouragesFilter;
 import social.entourage.android.map.filter.MapFilter;
@@ -73,7 +73,7 @@ public class AuthenticationController {
 
         if (shouldLoadUserPreferences) loadUserPreferences();
 
-        BusProvider.getInstance().post(new Events.OnUserInfoUpdatedEvent());
+        BusProvider.INSTANCE.getInstance().post(new Events.OnUserInfoUpdatedEvent());
     }
 
     public void saveUserPhoneAndCode(String phone, String smsCode) {
@@ -186,9 +186,7 @@ public class AuthenticationController {
             mapFilter = userPreferences.getMapFilter();
             if (mapFilter == null) {
                 mapFilter = new MapFilter();
-                if(loggedUser!=null) {
-                    mapFilter.setDefaultValues(loggedUser.isPro());
-                }
+                mapFilter.setDefaultValues();
                 userPreferences.setMapFilter(mapFilter);
                 saveUserPreferences();
             }

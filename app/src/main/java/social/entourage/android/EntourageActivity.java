@@ -18,8 +18,6 @@ public abstract class EntourageActivity extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
 
-    private boolean safeToCommit = true;
-
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
 
@@ -32,21 +30,17 @@ public abstract class EntourageActivity extends AppCompatActivity {
 
     @Override
     protected void onPostResume() {
-        safeToCommit = true;
         super.onPostResume();
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull final Bundle outState) {
-        safeToCommit = false;
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
-        safeToCommit = false;
     }
 
     @Override
@@ -97,10 +91,6 @@ public abstract class EntourageActivity extends AppCompatActivity {
         if (view != null && imm != null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
-    }
-
-    public boolean isSafeToCommit() {
-        return safeToCommit;
     }
 
     public void showWebView(String url) {

@@ -15,7 +15,7 @@ import com.squareup.picasso.Target
 import kotlinx.android.synthetic.main.layout_card_announcement.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.map.Announcement
+import social.entourage.android.api.model.feed.Announcement
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.view.EntourageSnackbar
 import timber.log.Timber
@@ -24,7 +24,7 @@ import timber.log.Timber
  * View Holder for the announcement card
  * Created by Mihai Ionescu on 02/11/2017.
  */
-class AnnouncementViewHolder(view: View?) : BaseCardViewHolder(view), Target {
+class AnnouncementViewHolder(view: View) : BaseCardViewHolder(view), Target {
     // ----------------------------------
     // Attributes
     // ----------------------------------
@@ -50,11 +50,7 @@ class AnnouncementViewHolder(view: View?) : BaseCardViewHolder(view), Target {
     }
 
     override fun populate(data: TimestampedObject) {
-        populateAnnouncement(data as Announcement)
-    }
-
-    private fun populateAnnouncement(announcement: Announcement?) {
-        if (announcement == null) return
+        val announcement: Announcement = data as Announcement
         //cancel previous net requests
         Picasso.get().cancelRequest(this)
         Picasso.get().cancelRequest(itemView.announcement_card_image)

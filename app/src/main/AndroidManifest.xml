@@ -168,9 +168,6 @@
         <activity android:name=".user.edit.photo.ChoosePhotoActivity"></activity>
         <activity android:name=".user.edit.photo.TakePhotoActivity"></activity>
         <activity
-            android:name="com.mixpanel.android.takeoverinapp.TakeoverInAppActivity"
-            android:theme="@style/com_mixpanel_android_TakeoverInAppActivityTheme" />
-        <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
             android:theme="@style/EntourageOSSLicenses.Theme" />
         <activity
@@ -179,6 +176,10 @@
         <activity android:name=".involvement.ShareActivity" />
         <activity android:name=".involvement.RateActivity" />
 
+        <activity android:name=".Onboarding.PreOnboardingChoiceActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Onboarding.PreOnboardingStartActivity"
+            android:screenOrientation="portrait"/>
 
         <service
             android:name=".service.EntourageService"
@@ -227,18 +228,6 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="2eca3faf46139913c216b9ee9cf8bee49e70fe20" />
-
-        <meta-data
-            android:name="com.mixpanel.android.MPConfig.AutoShowMixpanelUpdates"
-            android:value="false" />
-
-        <meta-data
-            android:name="com.mixpanel.android.MPConfig.ResourcePackageName"
-            android:value="${applicationId}" />
-
-        <meta-data
-            android:name="com.mixpanel.android.MPConfig.MinimumSessionDuration"
-            android:value="0" />
 
         <uses-library
             android:name="org.apache.http.legacy"

@@ -10,5 +10,5 @@ interface MapFilterInterface {
     fun entourageCreated()
     fun validateCategories()
     fun isDefaultFilter(): Boolean
-    fun setDefaultValues(isProUser: Boolean = false)
+    fun setDefaultValues()
 }

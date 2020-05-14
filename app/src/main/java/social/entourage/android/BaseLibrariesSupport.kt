@@ -5,15 +5,8 @@ import android.content.Context
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.mixpanel.android.mpmetrics.MixpanelAPI
-
-import org.json.JSONException
-import org.json.JSONObject
-
 import io.fabric.sdk.android.Fabric
 import timber.log.Timber
-
-import social.entourage.android.BuildConfig.FLAVOR
 import social.entourage.android.tools.log.CrashlyticsLog
 
 /**
@@ -24,9 +17,7 @@ abstract class BaseLibrariesSupport {
     // ----------------------------------
     // Members
     // ----------------------------------
-    var mixpanel: MixpanelAPI? = null
-        private set
-    var firebaseAnalytics: FirebaseAnalytics? = null
+    lateinit var firebaseAnalytics: FirebaseAnalytics
         private set
 
     // ----------------------------------
@@ -36,12 +27,7 @@ abstract class BaseLibrariesSupport {
     open fun setupLibraries(context: Context) {
         setupFabric(context)
         setupTimberTree()
-        setupMixpanel(context)
         firebaseAnalytics = FirebaseAnalytics.getInstance(context)
-    }
-
-    fun onActivityDestroyed() {
-        mixpanel?.flush()
     }
 
     // ----------------------------------
@@ -55,17 +41,6 @@ abstract class BaseLibrariesSupport {
                 .build()
 
         Fabric.with(context, crashlyticsKit)
-    }
-
-    private fun setupMixpanel(context: Context) {
-        mixpanel = MixpanelAPI.getInstance(context, BuildConfig.MIXPANEL_TOKEN)
-        val props = JSONObject()
-        try {
-            props.put("Flavor", FLAVOR)
-            mixpanel?.registerSuperProperties(props)
-        } catch (e: JSONException) {
-            Timber.e(e)
-        }
     }
 
     private fun setupTimberTree() {

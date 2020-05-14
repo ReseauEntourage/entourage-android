@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.api.model.feed.FeedItem;
 import timber.log.Timber;
 
 /**
@@ -27,10 +27,6 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
 
         BaseCardViewHolder cardViewHolder = viewHolderFactory.getViewHolder(parent, viewType);
-        if (cardViewHolder == null) {
-            return null;
-        }
-
         cardViewHolder.setViewHolderListener(viewHolderListener);
         return cardViewHolder;
     }
@@ -157,7 +153,7 @@ public class EntourageBaseAdapter extends RecyclerView.Adapter<RecyclerView.View
             TimestampedObject timestampedObject = items.get(i);
             if (timestampedObject.getType() == type && timestampedObject instanceof FeedItem) {
                 FeedItem feedItem = (FeedItem) timestampedObject;
-                if (feedItem.getUUID().equalsIgnoreCase(uuid)) {
+                if (feedItem.getUuid().equalsIgnoreCase(uuid)) {
                     return timestampedObject;
                 }
             }

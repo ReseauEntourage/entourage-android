@@ -9,7 +9,7 @@ import com.google.android.gms.location.LocationAvailability
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.maps.model.LatLng
-import social.entourage.android.api.model.map.TourPoint
+import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.service.EntourageService
 import social.entourage.android.service.EntourageServiceManager
 import timber.log.Timber
@@ -32,7 +32,7 @@ class LocationListener(private val manager: EntourageServiceManager,
         manager.entourageService.notifyListenersPosition(LatLng(location.latitude, location.longitude))
 
         if (manager.tour != null && !manager.entourageService.isPaused) {
-            val point = TourPoint(location.latitude, location.longitude, location.accuracy)
+            val point = LocationPoint(location.latitude, location.longitude, location.accuracy)
             manager.onLocationChanged(location, point)
         }
     }

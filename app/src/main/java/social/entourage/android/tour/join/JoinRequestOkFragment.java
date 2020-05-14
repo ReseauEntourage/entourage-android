@@ -10,7 +10,7 @@ import android.view.Window;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.api.model.feed.FeedItem;
 import social.entourage.android.R;
 
 public class JoinRequestOkFragment extends DialogFragment {
@@ -79,7 +79,7 @@ public class JoinRequestOkFragment extends DialogFragment {
     @OnClick(R.id.tour_join_request_ok_message_button)
     protected void onMessageClicked() {
         TourJoinRequestFragment joinRequestFragment = TourJoinRequestFragment.newInstance(feedItem);
-        joinRequestFragment.show(getFragmentManager(), TourJoinRequestFragment.TAG);
+        joinRequestFragment.show(getParentFragmentManager(), TourJoinRequestFragment.TAG);
 
         dismiss();
     }

@@ -18,7 +18,7 @@ import social.entourage.android.EntourageSecuredActivity;
 import social.entourage.android.R;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
-import social.entourage.android.api.model.map.FeedItem;
+import social.entourage.android.api.model.feed.FeedItem;
 import social.entourage.android.message.push.PushNotificationManager;
 import social.entourage.android.user.UserFragment;
 import social.entourage.android.view.HtmlTextView;

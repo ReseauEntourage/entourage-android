@@ -19,7 +19,7 @@ ext {
 
     // App versions
     versionMajor = 6
-    versionMinor = 1
+    versionMinor = 2
     versionPatch = "git rev-list HEAD --count".execute().text.trim().toInteger()
     versionBranchName = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
     versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -37,21 +37,20 @@ ext {
     dateTimePickerVersion = "4.2.3"
     espressoVersion = "3.2.0"
     exifinterfaceVersion = "1.2.0"
-    facebookVersion = "6.3.0"
-    firebaseAnalyticsVersion = "17.3.0"
-    firebaseMessagingVersion = "20.1.5"
-    firebaseInappVersion = "19.0.4"
-    firebasePerfMonitor = "19.0.5"
+    facebookVersion = "7.0.0"
+    firebaseAnalyticsVersion = "17.4.1"
+    firebaseMessagingVersion = "20.1.7"
+    firebaseInappVersion = "19.0.6"
+    firebasePerfMonitor = "19.0.7"
     floatingButtonVersion = "1.6.4"
     fragmentVersion = "1.2.4"
     guavaVersion = "28.2-android"
     imageCropperVersion = "2.8.0"
     javaAnnotationVersion = "10.0-b28"
-    jodaVersion = "2.10.3"
+    jodaVersion = "2.10.6"
     mapsVersion = "17.0.0"
-    mapsUtilsVersion = "1.0.2"
+    mapsUtilsVersion = "1.2.1"
     materialVersion = "1.1.0"
-    mixpanelVersion = "5.7.0"
     multidexVersion = "2.0.1"
     okHttpVersion = "3.12.9" //version 3.13+ needs API 21+ //https://square.github.io/okhttp/changelog_3x/
     okHttpIdlingVersion = "1.0.0"
@@ -80,7 +79,7 @@ ext {
             legacyV13        : "androidx.legacy:legacy-support-v13:$supportVersion",
             multidex         : "androidx.multidex:multidex:$multidexVersion",
             recyclerview     : "androidx.recyclerview:recyclerview:$recyclerViewVersion",
-            preference       : "androidx.preference:preference-ktx:1.1.0"
+            preference       : "androidx.preference:preference-ktx:1.1.1"
     ]
 
     annotationDependencies = [
@@ -108,6 +107,7 @@ ext {
             firebaseAnalytics   : "com.google.firebase:firebase-analytics:$firebaseAnalyticsVersion",
             firebaseMessaging   : "com.google.firebase:firebase-messaging:$firebaseMessagingVersion",
             firebaseInapp       : "com.google.firebase:firebase-inappmessaging-display-ktx:$firebaseInappVersion",
+            //BETA: firebaseCrashlytics : "com.google.firebase:firebase-crashlytics:17.0.0", //https://firebase.google.com/docs/crashlytics/upgrade-sdk?platform=android
             firebasePerfMonitor : "com.google.firebase:firebase-perf:$firebasePerfMonitor"
     ]
 
@@ -159,7 +159,6 @@ ext {
             imageCropper            : "com.theartofdev.edmodo:android-image-cropper:$imageCropperVersion",
             mapsUtils               : "com.google.maps.android:android-maps-utils:$mapsUtilsVersion",
             material                : "com.google.android.material:material:$materialVersion",
-            mixpanel                : "com.mixpanel.android:mixpanel-android:$mixpanelVersion",
             picasso                 : "com.squareup.picasso:picasso:$picassoVersion",
             picassoTransformations  : "jp.wasabeef:picasso-transformations:$picassoTransformationsVersion",
             shortcutBadger          : "me.leolin:ShortcutBadger:$shortcutBadgerVersion@aar",

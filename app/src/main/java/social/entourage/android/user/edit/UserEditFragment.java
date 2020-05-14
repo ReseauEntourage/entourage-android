@@ -156,14 +156,14 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
 
         configureNotifications();
 
-        BusProvider.getInstance().register(this);
+        BusProvider.INSTANCE.getInstance().register(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
 
-        BusProvider.getInstance().unregister(this);
+        BusProvider.INSTANCE.getInstance().unregister(this);
     }
 
     public void configureView() {
@@ -267,14 +267,14 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
     @OnClick(R.id.user_password_layout)
     protected void onEditPassword() {
         UserEditPasswordFragment fragment = new UserEditPasswordFragment();
-        fragment.show(getFragmentManager(), UserEditPasswordFragment.TAG);
+        fragment.show(getParentFragmentManager(), UserEditPasswordFragment.TAG);
     }
 
     @OnClick(R.id.user_about_edit_button)
     protected void onEditAboutClicked() {
         scrollViewY = scrollView.getScrollY();
         UserEditAboutFragment editAboutFragment = new UserEditAboutFragment();
-        editAboutFragment.show(getFragmentManager(), UserEditAboutFragment.TAG);
+        editAboutFragment.show(getParentFragmentManager(), UserEditAboutFragment.TAG);
     }
 
     @OnClick(R.id.user_delete_account_button)
@@ -300,7 +300,7 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
     protected void onSaveButtonClicked() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_USER_SAVE);
         // If we have an user fragment in the stack, let it handle the update
-        UserFragment fragment = (UserFragment)getFragmentManager().findFragmentByTag(UserFragment.TAG);
+        UserFragment fragment = (UserFragment)getParentFragmentManager().findFragmentByTag(UserFragment.TAG);
         if (fragment != null) {
             fragment.saveAccount(editedUser);
         } else if (presenter != null) {
@@ -312,14 +312,14 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
     @OnClick(R.id.user_photo_button)
     protected void onPhotoClicked() {
         PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
-        fragment.show(getFragmentManager(), PhotoChooseSourceFragment.TAG);
+        fragment.show(getParentFragmentManager(), PhotoChooseSourceFragment.TAG);
     }
 
     @OnClick(R.id.user_add_association_button)
     public void onAddAssociationClicked() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_USER_TOBADGE);
         UserEditPartnerFragment userEditPartnerFragment = new UserEditPartnerFragment();
-        userEditPartnerFragment.show(getFragmentManager(), UserEditPartnerFragment.TAG);
+        userEditPartnerFragment.show(getParentFragmentManager(), UserEditPartnerFragment.TAG);
     }
 
     @OnClick(R.id.user_notifications_layout)
@@ -361,7 +361,7 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
 
     private void showEditProfile(int editType) {
         UserEditProfileFragment fragment = UserEditProfileFragment.newInstance(editType);
-        fragment.show(getFragmentManager(), UserEditProfileFragment.TAG);
+        fragment.show(getParentFragmentManager(), UserEditProfileFragment.TAG);
     }
 
     private void configureNotifications() {
@@ -459,10 +459,9 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
 
     @OnClick(R.id.user_action_zone_button)
     protected void onActionZoneEditClicked() {
-        if (getFragmentManager() == null) return;
         UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(editedUser.getAddress());
         userEditActionZoneFragment.setFragmentListener(this);
-        userEditActionZoneFragment.show(getFragmentManager(), UserEditActionZoneFragment.TAG);
+        userEditActionZoneFragment.show(getParentFragmentManager(), UserEditActionZoneFragment.TAG);
     }
 
     @Override
@@ -487,7 +486,7 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
             userPreferences.setIgnoringActionZone(ignoreActionZone);
             authenticationController.saveUserPreferences();
         }
-        UserEditActionZoneFragment userEditActionZoneFragment = (UserEditActionZoneFragment)getFragmentManager().findFragmentByTag(UserEditActionZoneFragment.TAG);
+        UserEditActionZoneFragment userEditActionZoneFragment = (UserEditActionZoneFragment)getParentFragmentManager().findFragmentByTag(UserEditActionZoneFragment.TAG);
         if (userEditActionZoneFragment != null && !userEditActionZoneFragment.isStateSaved()) {
             userEditActionZoneFragment.dismiss();
         }

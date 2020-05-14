@@ -48,6 +48,7 @@ import social.entourage.android.R;
 import social.entourage.android.api.model.User;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.Onboarding.PreOnboardingChoiceActivity;
 import social.entourage.android.authentication.UserPreferences;
 import social.entourage.android.authentication.login.register.OnRegisterUserListener;
 import social.entourage.android.authentication.login.register.RegisterNumberFragment;
@@ -105,6 +106,8 @@ public class LoginActivity extends EntourageActivity
     private User onboardingUser;
 
     private boolean goToNextActionAfterActionZone = false;
+
+    private Boolean isFromChoice = false;
     /************************
      * Signin View
      ************************/
@@ -269,7 +272,21 @@ public class LoginActivity extends EntourageActivity
                 }
             }
         }
+
+        //Hack en attendant la nouvelle version de l'onboarding pour simuler les clicks sur signup / login
+        String key = getIntent().getStringExtra("fromChoice");
+        if (key != null && key.equalsIgnoreCase("login")) {
+            isFromChoice = true;
+            loginStartup.setVisibility(View.GONE);
+            onStartupLoginClicked();
+        }
+        else if (key != null && key.equalsIgnoreCase("signup")) {
+            isFromChoice = true;
+            loginStartup.setVisibility(View.GONE);
+            showRegisterScreen();
+        }
     }
+
 
     @Override
     protected void setupComponent(EntourageComponent entourageComponent) {
@@ -283,11 +300,18 @@ public class LoginActivity extends EntourageActivity
     @Override
     public void onBackPressed() {
         if (loginSignin.getVisibility() == View.VISIBLE) {
+            //Hack en attendant la nouvelle version de l'onboarding (On retourne au choix login/signin)
+            if (isFromChoice) {
+                startActivity(new Intent(this,PreOnboardingChoiceActivity.class));
+                finish();
+                return;
+            }
             phoneEditText.setText("");
             passwordEditText.setText("");
             hideKeyboard();
             loginSignin.setVisibility(View.GONE);
             loginStartup.setVisibility(View.VISIBLE);
+
         } else if (loginLostCode.getVisibility() == View.VISIBLE) {
             lostCodePhone.setText("");
             loginLostCode.setVisibility(View.GONE);
@@ -307,19 +331,25 @@ public class LoginActivity extends EntourageActivity
         } else if (loginVerifyCode.getVisibility() == View.VISIBLE) {
             showLostCodeScreen();
         } else {
+            //Hack en attendant la nouvelle version de l'onboarding (On retourne au choix login/signin)
+            if (isFromChoice) {
+                startActivity(new Intent(this,PreOnboardingChoiceActivity.class));
+                finish();
+                return;
+            }
             super.onBackPressed();
         }
     }
 
     @Override
     protected void onStart() {
-        BusProvider.getInstance().register(this);
+        BusProvider.INSTANCE.getInstance().register(this);
         super.onStart();
     }
 
     @Override
     protected void onStop() {
-        BusProvider.getInstance().unregister(this);
+        BusProvider.INSTANCE.getInstance().unregister(this);
         super.onStop();
     }
 
@@ -328,7 +358,7 @@ public class LoginActivity extends EntourageActivity
         if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
             for (int index = 0; index < permissions.length; index++) {
                 if (permissions[index].equalsIgnoreCase(ACCESS_FINE_LOCATION)) {
-                    BusProvider.getInstance().post(new Events.OnLocationPermissionGranted(grantResults[index] == PackageManager.PERMISSION_GRANTED));
+                    BusProvider.INSTANCE.getInstance().post(new Events.OnLocationPermissionGranted(grantResults[index] == PackageManager.PERMISSION_GRANTED));
                 }
             }
             // We don't care if the user allowed/denied the location, just show the notifications view
@@ -431,6 +461,10 @@ public class LoginActivity extends EntourageActivity
             }
             fragment = (DialogFragment) getSupportFragmentManager().findFragmentByTag(RegisterWelcomeFragment.TAG);
             if (fragment != null) {
+                //Hack en attente du onboarding nouvelle version ( pour éviter de fermer l'activity sur le dismiss depuis le choix)
+                if (fragment.getClass() == RegisterWelcomeFragment.class) {
+                    ((RegisterWelcomeFragment)fragment).isFromChoice = false;
+                }
                 fragment.dismiss();
             }
 
@@ -777,10 +811,8 @@ public class LoginActivity extends EntourageActivity
         //set the tutorial as done
         SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
         HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(KEY_TUTORIAL_DONE, new HashSet<>());
-        if (loggedNumbers != null) {
         loggedNumbers.add(loggedPhoneNumber);
         sharedPreferences.edit().putStringSet(KEY_TUTORIAL_DONE, loggedNumbers).apply();
-        }
 
         startMapActivity();
     }
@@ -829,6 +861,7 @@ public class LoginActivity extends EntourageActivity
         EntourageEvents.logEvent(EntourageEvents.EVENT_SPLASH_SIGNUP);
         this.onboardingUser = new User();
         RegisterWelcomeFragment registerWelcomeFragment = new RegisterWelcomeFragment();
+        registerWelcomeFragment.isFromChoice = isFromChoice;
         registerWelcomeFragment.show(getSupportFragmentManager(), RegisterWelcomeFragment.TAG);
     }
 
@@ -880,6 +913,14 @@ public class LoginActivity extends EntourageActivity
     public void registerShowSignIn() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_02_1);
         showLoginScreen();
+    }
+
+    //Hack en attendant la nouvelle version de l'onboarding
+    @Override
+    public void registerClosePop(Boolean isShowLogin) {
+        if (!isShowLogin) {
+            onBackPressed();
+        }
     }
 
     @Override

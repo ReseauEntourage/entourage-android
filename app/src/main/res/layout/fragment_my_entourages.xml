@@ -1,94 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/myentourages_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_light">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/myentourages_tab"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@color/accent"
-        android:elevation="10dp"
-        app:tabIndicatorColor="@color/white"
-        app:tabSelectedTextColor="@color/white"
-        app:tabTextColor="@color/white_88">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/myentourages_all"/>
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/myentourages_unread"/>
-
-    </com.google.android.material.tabs.TabLayout>
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/myentourages_swipeRefreshLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/myentourages_tab">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/myentourages_list_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <LinearLayout
-        android:id="@+id/myentourages_layout_no_items"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/myentourages_tab"
-        android:background="@color/white"
-        android:clickable="true"
-        android:focusable="true"
-        android:orientation="vertical"
-        android:visibility="gone"
-        tools:visibility="gone">
-
-        <LinearLayout
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/myentourages_tab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/myentourages_no_items_background"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingBottom="40dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="40dp">
+            android:layout_alignParentTop="true"
+            android:background="@color/white"
+            android:elevation="10dp"
+            app:layout_constraintBottom_toTopOf="@id/myentourages_swipeRefreshLayout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabIndicatorColor="@color/accent"
+            app:tabSelectedTextColor="@color/accent"
+            app:tabTextColor="@color/battleship_grey">
 
-            <TextView
-                android:id="@+id/myentourages_no_items_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="@string/myentourages_no_items_title"
-                android:textColor="@color/myentourages_no_items_title"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/myentourages_no_items_details"
+            <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/entourage_padding_10"
-                android:text="@string/myentourages_no_items_details"
-                android:textColor="@color/myentourages_no_items_details"/>
+                android:text="@string/myentourages_all" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/myentourages_unread" />
+
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/myentourages_swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignParentStart="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/myentourages_tab">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/myentourages_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <LinearLayout
+            android:id="@+id/myentourages_layout_no_items"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/myentourages_tab"
+            tools:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/myentourages_no_items_background"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingLeft="20dp"
+                android:paddingTop="40dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="40dp">
+
+                <TextView
+                    android:id="@+id/myentourages_no_items_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="@string/myentourages_no_items_title"
+                    android:textColor="@color/myentourages_no_items_title"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/myentourages_no_items_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/entourage_padding_10"
+                    android:text="@string/myentourages_no_items_details"
+                    android:textColor="@color/myentourages_no_items_details" />
+
+            </LinearLayout>
+
+            <social.entourage.android.view.HalfCircleView
+                android:layout_width="match_parent"
+                android:layout_height="60dp" />
 
         </LinearLayout>
 
-        <social.entourage.android.view.HalfCircleView
-            android:layout_width="match_parent"
-            android:layout_height="60dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
-
-</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -45,7 +45,7 @@ public class UserOrganizationsAdapter extends RecyclerView.Adapter<RecyclerView.
                     @Override
                     public void onClick(final View view) {
                         if (partner != null) {
-                            BusProvider.getInstance().post(new Events.OnPartnerViewRequestedEvent(partner));
+                            BusProvider.INSTANCE.getInstance().post(new Events.OnPartnerViewRequestedEvent(partner));
                         }
                     }
                 });

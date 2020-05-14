@@ -100,7 +100,7 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
         if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
             for (index in permissions.indices) {
                 if (permissions[index].equals(permission.ACCESS_FINE_LOCATION, ignoreCase = true)) {
-                    BusProvider.getInstance().post(OnLocationPermissionGranted(grantResults[index] == PackageManager.PERMISSION_GRANTED))
+                    BusProvider.instance.post(OnLocationPermissionGranted(grantResults[index] == PackageManager.PERMISSION_GRANTED))
                 }
             }
         }

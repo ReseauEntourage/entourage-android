@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainProfileCoordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mainprofile_background"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/mainprofile_items_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/background_light">
+
+                <ImageView
+                    android:id="@+id/drawer_header_user_photo"
+                    android:layout_width="136dp"
+                    android:layout_height="136dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="15dp"
+                    android:contentDescription="@string/empty_description"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_user_photo" />
+
+                <social.entourage.android.view.PartnerLogoImageView
+                    android:id="@+id/drawer_header_user_partner_logo"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignEnd="@+id/drawer_header_user_photo"
+                    android:layout_alignBottom="@+id/drawer_header_user_photo" />
+
+                <TextView
+                    android:id="@+id/drawer_header_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/drawer_header_user_photo"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_big" />
+
+                <TextView
+                    android:id="@+id/action_edit_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/drawer_header_user_name"
+                    android:layout_marginBottom="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_horizontal"
+                    android:text="@string/action_edit_profile"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"
+                    android:textStyle="italic" />
+
+            </RelativeLayout>
+
+            <social.entourage.android.mainprofile.MainProfileItemView
+                android:id="@+id/action_user"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:visibility="gone" />
+
+            <social.entourage.android.mainprofile.MainProfileItemView
+                android:id="@+id/action_blog"
+                style="@style/mainprofile_item_style"
+                android:icon="@drawable/ic_blog"
+                android:title="@string/action_blog"
+                app:iconTint="@color/greyish"
+                app:showDivider="true" />
+
+            <social.entourage.android.mainprofile.MainProfileItemView
+                android:id="@+id/action_goal"
+                style="@style/mainprofile_item_style"
+                android:icon="@drawable/ic_goal"
+                android:title="@string/action_goal"
+                app:showDivider="true" />
+
+            <social.entourage.android.mainprofile.MainProfileItemView
+                android:id="@+id/action_ambassador"
+                style="@style/mainprofile_item_style"
+                android:icon="@drawable/ic_ambassador"
+                android:title="@string/action_ambassador"
+                app:iconTint="@color/greyish"
+                app:showDivider="true" />
+
+            <social.entourage.android.mainprofile.MainProfileItemView
+                android:id="@+id/action_donation"
+                style="@style/mainprofile_item_style"
+                android:icon="@drawable/ic_heart"
+                android:title="@string/action_donation"
+                app:iconTint="@color/accent"
+                app:showDivider="true" />
+
+            <social.entourage.android.mainprofile.MainProfileItemView
+                android:id="@+id/action_involvement"
+                style="@style/mainprofile_item_style"
+                android:icon="@drawable/ic_broadcast"
+                android:title="@string/action_involvement"
+                app:iconTint="@color/greyish"
+                app:showDivider="true" />
+
+            <social.entourage.android.mainprofile.MainProfileItemView
+                android:id="@+id/action_charte"
+                style="@style/mainprofile_item_style"
+                android:icon="@drawable/ic_charte"
+                android:title="@string/action_charter_unsigned"
+                app:iconTint="@color/greyish"
+                app:showDivider="true" />
+
+            <social.entourage.android.mainprofile.MainProfileItemView
+                android:id="@+id/action_about"
+                style="@style/mainprofile_item_style"
+                android:icon="@drawable/ic_about"
+                android:title="@string/action_about"
+                app:iconTint="@color/greyish"
+                app:showDivider="false" />
+
+            <social.entourage.android.mainprofile.MainProfileItemView
+                android:id="@+id/action_logout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/mainprofile_item_background"
+                android:textColor="@color/accent"
+                android:title="@string/action_logout"
+                app:centerText="true"
+                app:showDivider="false" />
+
+            <include layout="@layout/layout_mainprofile_appversion" />
+        </LinearLayout>
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

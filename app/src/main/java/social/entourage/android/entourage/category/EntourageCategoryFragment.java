@@ -98,7 +98,7 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
             if (category != null && !category.isNewlyCreated()) {
                 category.setSelected(true);
             } else {
-                category = EntourageCategoryManager.getInstance().getDefaultCategory();
+                category = EntourageCategoryManager.getDefaultCategory();
                 category.setNewlyCreated(true);
                 category.setSelected(false);
             }
@@ -137,9 +137,9 @@ public class EntourageCategoryFragment extends EntourageDialogFragment {
     }
 
     private void initializeListView() {
-        HashMap<String, List<EntourageCategory>> entourageCategoryHashMap = EntourageCategoryManager.getInstance().getEntourageCategories();
-        List<String> entourageTypeList = EntourageCategoryManager.getInstance().getEntourageTypes();
-        adapter = new EntourageCategoriesAdapter(getContext(), entourageTypeList, entourageCategoryHashMap, category,isDemand);
+        HashMap<String, List<EntourageCategory>> entourageCategoryHashMap = EntourageCategoryManager.getEntourageCategories();
+        List<String> groupTypeList = EntourageCategoryManager.getGroupTypes();
+        adapter = new EntourageCategoriesAdapter(getContext(), groupTypeList, entourageCategoryHashMap, category, isDemand);
         listView.setAdapter(adapter);
         int count = adapter.getGroupCount();
         for (int position = 0; position < count; position++) {

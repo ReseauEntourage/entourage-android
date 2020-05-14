@@ -7,7 +7,6 @@ import android.os.Build;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -136,6 +135,7 @@ public class EntourageEvents {
     public static final String EVENT_GUIDE_ACTIVATE_GEOLOC_FROM_BANNER = "ActivateGeolocFromGuideBanner";
     public static final String EVENT_FEED_TAB_ALL = "ShowAllFeed";
     public static final String EVENT_FEED_TAB_EVENTS = "ShowEventFeed";
+    public static final String TOUR_FEED_TAB_EVENTS = "ShowTourFeed";
 
     //MAP Events
     public static final String EVENT_MAP_MAPVIEW_CLICK = "MapViewClick";
@@ -162,7 +162,7 @@ public class EntourageEvents {
 
     //ENTOURAGE VIEW Events
     public static final String EVENT_ENTOURAGE_DISCUSSION_VIEW = "Screen14_1DiscussionView";
-    public static final String EVENT_ENTOURAGE_PUBLIC_VIEW_MEMBER = "Screen14_2PublicPageViewAsMemberOrCreator";
+    public static final String EVENT_ENTOURAGE_PUBLIC_VIEW_MEMBER = "Screen14_2PublicPageViewAsMember";
     public static final String EVENT_ENTOURAGE_PUBLIC_VIEW_NONMEMBER = "Screen14_2PublicPageViewAsNonMember";
     public static final String EVENT_ENTOURAGE_VIEW_WRITE_MESSAGE = "WriteMessage";
     public static final String EVENT_ENTOURAGE_VIEW_SPEECH = "SpeechRecognitionMessage";
@@ -225,8 +225,8 @@ public class EntourageEvents {
     public static final String EVENT_CREATE_ENCOUNTER_START = "Open_Create_Encounter_From_Tour";
     public static final String EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_OK = "Encounter_Voice_Message_Recorded_OK";
     public static final String EVENT_CREATE_ENCOUNTER_OK = "Encounter_Created";
-    public static final String EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_STARTED = "Encounter_Voice_Message_Recording_Started";
-    public static final String EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_NOT_SUPPORTED = "Encounter_Voice_Message_Recording_Not_Supported";
+    public static final String EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_STARTED = "Encounter_VoiceMsgRecord_Started";
+    public static final String EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_NOT_SUPPORTED = "Encounter_VoiceMsgRecord_Not_Supported";
     public static final String EVENT_CREATE_ENCOUNTER_FAILED = "Encounter_Create_Failed";
 
     //MAP Filter Events
@@ -276,7 +276,6 @@ public class EntourageEvents {
     //Notifications
     public static final String EVENT_NOTIFICATION_RECEIVED="NotificationReceived";
     public static final String EVENT_NOTIFICATION_FCM_RECEIVED="NotificationReceivedFromFCM";
-    public static final String EVENT_NOTIFICATION_MIXPANEL_RECEIVED="NotificationReceivedFromMixpanel";
     public static final String EVENT_NOTIFICATION_ENTOURAGE_RECEIVED="NotificationReceivedFromEntourage";
 
     //PLUS Screen
@@ -285,23 +284,12 @@ public class EntourageEvents {
     public static String TAG = EntourageEvents.class.getSimpleName();
 
     public static void logEvent(String event) {
-        if(EntourageApplication.get().getMixpanel()!= null) {
-            EntourageApplication.get().getMixpanel().track(event, null);
-        }
-        if(EntourageApplication.get().getFirebase()!= null) {
-            EntourageApplication.get().getFirebase().logEvent(event, null);
-        }
+        EntourageApplication.get().getFirebase().logEvent(event, null);
     }
 
     static void onLocationPermissionGranted(boolean isPermissionGranted) {
-        MixpanelAPI mixpanel = EntourageApplication.get().getMixpanel();
         FirebaseAnalytics mFirebaseAnalytics = EntourageApplication.get().getFirebase();
-        if (mixpanel == null || mFirebaseAnalytics== null) return;
-        MixpanelAPI.People people = mixpanel.getPeople();
-        if (people == null) return;
-
         String geolocStatus = isPermissionGranted? "YES":"NO";
-        people.set("EntourageGeolocEnable", geolocStatus);
         mFirebaseAnalytics.setUserProperty("EntourageGeolocEnable", geolocStatus);
     }
 
@@ -314,24 +302,16 @@ public class EntourageEvents {
         }
          */
         FirebaseAnalytics mFirebaseAnalytics = EntourageApplication.get().getFirebase();
-        MixpanelAPI mixpanel = EntourageApplication.get().getMixpanel();
-        MixpanelAPI.People people = mixpanel.getPeople();
-
-        mixpanel.identify(String.valueOf(user.getId()));
-        people.identify(String.valueOf(user.getId()));
         mFirebaseAnalytics.setUserId(String.valueOf(user.getId()));
 
         Crashlytics.setUserIdentifier(String.valueOf(user.getId()));
         Crashlytics.setUserName(user.getDisplayName());
 
-        people.set("EntourageUserType", user.isPro()?"Pro":"Public");
         mFirebaseAnalytics.setUserProperty("EntourageUserType", user.isPro()?"Pro":"Public");
 
-        people.set("Language", Locale.getDefault().getLanguage());
         mFirebaseAnalytics.setUserProperty("Language", Locale.getDefault().getLanguage());
 
         if(user.getPartner()!=null) {
-            people.set("EntouragePartner", user.getPartner().getName());
             mFirebaseAnalytics.setUserProperty("EntouragePartner", user.getPartner().getName());
         }
 
@@ -344,17 +324,11 @@ public class EntourageEvents {
         if (LocationUtils.INSTANCE.isLocationPermissionGranted()) {
             geolocStatus = "YES";
         }
-        people.set("EntourageGeolocEnable", geolocStatus);
         mFirebaseAnalytics.setUserProperty("EntourageGeolocEnable", geolocStatus);
 
         final SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
         boolean notificationsEnabled = sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, true);
-        people.set("EntourageNotifEnable", notificationsEnabled && areNotificationsEnabled ?"YES":"NO");
         mFirebaseAnalytics.setUserProperty("EntourageNotifEnable", notificationsEnabled && areNotificationsEnabled ?"YES":"NO");
-
-        if(notificationsEnabled) {
-            people.setPushRegistrationId(sharedPreferences.getString(EntourageApplication.KEY_REGISTRATION_ID, null));
-        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             mFirebaseAnalytics.setUserProperty("BackgroundRestriction", ((ActivityManager) Objects.requireNonNull(context.getSystemService(Context.ACTIVITY_SERVICE))).isBackgroundRestricted()?"YES":"NO");

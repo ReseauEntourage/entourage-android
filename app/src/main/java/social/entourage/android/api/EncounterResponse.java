@@ -1,6 +1,6 @@
 package social.entourage.android.api;
 
-import social.entourage.android.api.model.map.Encounter;
+import social.entourage.android.api.model.tour.Encounter;
 
 public class EncounterResponse {
 

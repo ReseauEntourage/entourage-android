@@ -16,5 +16,5 @@ import social.entourage.android.EntourageComponent;
 public interface TourJoinRequestComponent {
     void inject(TourJoinRequestFragment fragment);
 
-    TourJoinRequestPresenter getEntourageInformationPresenter();
+    TourJoinRequestPresenter getTourInformationPresenter();
 }

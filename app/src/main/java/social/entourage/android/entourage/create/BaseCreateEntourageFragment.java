@@ -46,10 +46,9 @@ import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
-import social.entourage.android.api.model.map.BaseEntourage;
-import social.entourage.android.api.model.map.Entourage;
-import social.entourage.android.api.model.map.FeedItem;
-import social.entourage.android.api.model.map.TourPoint;
+import social.entourage.android.api.model.BaseEntourage;
+import social.entourage.android.api.model.feed.FeedItem;
+import social.entourage.android.api.model.LocationPoint;
 import social.entourage.android.api.tape.Events;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.base.EntourageLinkMovementMethod;
@@ -169,7 +168,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
 
     protected boolean isSaving = false;
 
-    protected Entourage editedEntourage;
+    protected BaseEntourage editedEntourage;
 
     protected Boolean isStartDateEdited = true;
 
@@ -194,7 +193,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         return fragment;
     }
 
-    public static CreateEntourageFragment newInstance(Entourage entourage) {
+    public static CreateEntourageFragment newInstance(BaseEntourage entourage) {
         CreateEntourageFragment fragment = new CreateEntourageFragment();
         Bundle args = new Bundle();
         args.putSerializable(FeedItem.KEY_FEEDITEM, entourage);
@@ -221,7 +220,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
 
         initializeView();
         //To show choice type at launch (if not an event)
-        if (!Entourage.TYPE_OUTING.equalsIgnoreCase(groupType) && entourageCategory.isNewlyCreated()) {
+        if (!BaseEntourage.GROUPTYPE_OUTING.equalsIgnoreCase(groupType) && entourageCategory.isNewlyCreated()) {
             onEditTypeClicked();
         }
     }
@@ -273,7 +272,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         if (isSaving) return;
         if (isValid()) {
             if (presenter != null) {
-                if (Entourage.TYPE_OUTING.equalsIgnoreCase(groupType)) {
+                if (BaseEntourage.GROUPTYPE_OUTING.equalsIgnoreCase(groupType)) {
                     joinRequestTypePublic = privacySwitch.isChecked();
                 }
                 if (editedEntourage != null) {
@@ -289,46 +288,42 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
 
     @OnClick(R.id.create_entourage_category_layout)
     protected void onEditTypeClicked() {
-        if (getFragmentManager() == null) return;
         Boolean isDemand = true;
 
         if (editedEntourage != null) {
-            if (editedEntourage.getEntourageType().equalsIgnoreCase(Entourage.TYPE_CONTRIBUTION)) isDemand = false;
+            if (editedEntourage.actionGroupType.equalsIgnoreCase(BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)) isDemand = false;
         } else {
-            if (entourageCategory.getEntourageType().equalsIgnoreCase(Entourage.TYPE_CONTRIBUTION)) isDemand = false;
+            if (entourageCategory.groupType.equalsIgnoreCase(BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)) isDemand = false;
         }
 
         EntourageCategoryFragment fragment = EntourageCategoryFragment.newInstance(entourageCategory,isDemand);
         fragment.setListener(this);
-        fragment.show(getFragmentManager(), EntourageCategoryFragment.TAG);
+        fragment.show(getParentFragmentManager(), EntourageCategoryFragment.TAG);
     }
 
     @OnClick(R.id.create_entourage_position_layout)
     protected void onPositionClicked() {
-        if (getFragmentManager() == null) return;
         EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_CREATE_CHANGE_LOCATION);
         LocationFragment fragment = LocationFragment.newInstance(
                 location,
                 positionTextView.getText().toString(),
-                Entourage.TYPE_OUTING.equalsIgnoreCase(groupType),
+                BaseEntourage.GROUPTYPE_OUTING.equalsIgnoreCase(groupType),
                 this);
-        fragment.show(getFragmentManager(), LocationFragment.TAG);
+        fragment.show(getParentFragmentManager(), LocationFragment.TAG);
     }
 
     @OnClick(R.id.create_entourage_title_layout)
     protected void onEditTitleClicked() {
-        if (getFragmentManager() == null) return;
         CreateEntourageTitleFragment entourageTitleFragment = CreateEntourageTitleFragment.newInstance(titleEditText.getText().toString(), entourageCategory, groupType);
         entourageTitleFragment.setListener(this);
-        entourageTitleFragment.show(getFragmentManager(), CreateEntourageTitleFragment.TAG);
+        entourageTitleFragment.show(getParentFragmentManager(), CreateEntourageTitleFragment.TAG);
     }
 
     @OnClick(R.id.create_entourage_description_layout)
     protected void onEditDescriptionClicked() {
-        if (getFragmentManager() == null) return;
         CreateEntourageDescriptionFragment descriptionFragment = CreateEntourageDescriptionFragment.newInstance(descriptionEditText.getText().toString(), entourageCategory, groupType);
         descriptionFragment.setListener(this);
-        descriptionFragment.show(getFragmentManager(), CreateEntourageDescriptionFragment.TAG);
+        descriptionFragment.show(getParentFragmentManager(), CreateEntourageDescriptionFragment.TAG);
     }
 
     @OnClick(R.id.create_entourage_date_start_layout)
@@ -394,13 +389,13 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     // Presenter callbacks
     // ----------------------------------
 
-    protected void onEntourageCreated(Entourage entourage) {
+    protected void onEntourageCreated(BaseEntourage entourage) {
         isSaving = false;
         if (getActivity() != null) {
             if (entourage == null) {
                 Toast.makeText(
                         getActivity(),
-                        Entourage.TYPE_OUTING.equalsIgnoreCase(groupType) ? R.string.outing_create_error : R.string.entourage_create_error,
+                        BaseEntourage.GROUPTYPE_OUTING.equalsIgnoreCase(groupType) ? R.string.outing_create_error : R.string.entourage_create_error,
                         Toast.LENGTH_SHORT
                 ).show();
             } else {
@@ -409,13 +404,13 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         }
     }
 
-    protected void onEntourageEdited(Entourage entourage) {
+    protected void onEntourageEdited(BaseEntourage entourage) {
         isSaving = false;
         if (getActivity() != null) {
             if (entourage == null) {
                 Toast.makeText(
                         getActivity(),
-                        Entourage.TYPE_OUTING.equalsIgnoreCase(groupType) ? R.string.outing_save_error : R.string.entourage_save_error,
+                        BaseEntourage.GROUPTYPE_OUTING.equalsIgnoreCase(groupType) ? R.string.outing_save_error : R.string.entourage_save_error,
                         Toast.LENGTH_SHORT
                 ).show();
             } else {
@@ -431,14 +426,14 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     protected void createEntourage() {
         if (isSaving) return;
         isSaving = true;
-        TourPoint entourageLocation = new TourPoint(0, 0);
+        LocationPoint entourageLocation = new LocationPoint(0, 0);
         if (location != null) {
             entourageLocation.setLatitude(location.latitude);
             entourageLocation.setLongitude(location.longitude);
         }
         presenter.createEntourage(
-                entourageCategory != null ? entourageCategory.getEntourageType() : null,
-                entourageCategory != null ? entourageCategory.getCategory() : null,
+                entourageCategory != null ? entourageCategory.groupType : null,
+                entourageCategory != null ? entourageCategory.category : null,
                 titleEditText.getText().toString(),
                 descriptionEditText.getText().toString(),
                 entourageLocation,
@@ -448,10 +443,10 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
                 joinRequestTypePublic);
     }
 
-    protected void postEntourageCreated(Entourage entourage) {
+    protected void postEntourageCreated(BaseEntourage entourage) {
         Toast.makeText(
                 getActivity(),
-                Entourage.TYPE_OUTING.equalsIgnoreCase(groupType) ? R.string.outing_create_ok : R.string.entourage_create_ok,
+                BaseEntourage.GROUPTYPE_OUTING.equalsIgnoreCase(groupType) ? R.string.outing_create_ok : R.string.entourage_create_ok,
                 Toast.LENGTH_SHORT
         ).show();
         try {
@@ -459,33 +454,34 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         } catch(IllegalStateException e) {
             Timber.w(e);
         }
-        BusProvider.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(entourage));
+        BusProvider.INSTANCE.getInstance().post(new Events.OnFeedItemInfoViewRequestedEvent(entourage));
     }
 
     protected void saveEditedEntourage() {
         isSaving = true;
-        TourPoint entourageLocation = new TourPoint(0, 0);
+        LocationPoint entourageLocation = new LocationPoint(0, 0);
         if (location != null) {
             entourageLocation.setLatitude(location.latitude);
             entourageLocation.setLongitude(location.longitude);
         }
         editedEntourage.setTitle(titleEditText.getText().toString());
         editedEntourage.setDescription(descriptionEditText.getText().toString());
-        editedEntourage.setLocation(entourageLocation);
+        editedEntourage.location = entourageLocation;
+        //TODO check if entourageType==groupType
         if (entourageCategory != null) {
-            editedEntourage.setEntourageType(entourageCategory.getEntourageType());
-            editedEntourage.setCategory(entourageCategory.getCategory());
+            editedEntourage.actionGroupType = entourageCategory.groupType;
+            editedEntourage.category = entourageCategory.category;
         }
         editedEntourage.setGroupType(groupType);
-        editedEntourage.setMetadata(entourageMetadata);
+        editedEntourage.metadata = entourageMetadata;
         editedEntourage.setJoinRequestPublic(joinRequestTypePublic);
         presenter.editEntourage(editedEntourage);
     }
 
-    protected void postEntourageSaved(Entourage entourage) {
+    protected void postEntourageSaved(BaseEntourage entourage) {
         Toast.makeText(
                 getActivity(),
-                Entourage.TYPE_OUTING.equalsIgnoreCase(groupType) ? R.string.outing_save_ok : R.string.entourage_save_ok,
+                BaseEntourage.GROUPTYPE_OUTING.equalsIgnoreCase(groupType) ? R.string.outing_save_ok : R.string.entourage_save_ok,
                 Toast.LENGTH_SHORT
         ).show();
         dismiss();
@@ -498,9 +494,9 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     protected void initializeView() {
         Bundle args = getArguments();
         if (args != null) {
-            editedEntourage = (Entourage)args.getSerializable(FeedItem.KEY_FEEDITEM);
+            editedEntourage = (BaseEntourage)args.getSerializable(FeedItem.KEY_FEEDITEM);
             if (editedEntourage != null) {
-                entourageMetadata = editedEntourage.getMetadata();
+                entourageMetadata = editedEntourage.metadata;
             }
             groupType = args.getString(KEY_ENTOURAGE_GROUP_TYPE, null);
             entourageCategory = (EntourageCategory)args.getSerializable(KEY_ENTOURAGE_CATEGORY);
@@ -517,7 +513,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
 
     protected void initializeCategory() {
         if (editedEntourage != null) {
-            entourageCategory = EntourageCategoryManager.getInstance().findCategory(editedEntourage.getEntourageType(), editedEntourage.getCategory());
+            entourageCategory = EntourageCategoryManager.findCategory(editedEntourage.actionGroupType, editedEntourage.category);
             groupType = editedEntourage.getGroupType();
             if(entourageCategory!=null) {
                 entourageCategory.setSelected(true);
@@ -525,9 +521,9 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         }
         if(entourageCategory==null) {
             if(groupType != null){
-                entourageCategory = EntourageCategoryManager.getInstance().getDefaultCategory(groupType);
+                entourageCategory = EntourageCategoryManager.getDefaultCategory(groupType);
             } else {
-                entourageCategory = EntourageCategoryManager.getInstance().getDefaultCategory();
+                entourageCategory = EntourageCategoryManager.getDefaultCategory();
             }
             if(entourageCategory!=null) {
                 entourageCategory.setSelected(false);
@@ -545,16 +541,16 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         } else {
             categoryTextView.setText(
                     getString(
-                            Entourage.TYPE_DEMAND.equalsIgnoreCase(entourageCategory.getEntourageType()) ? R.string.entourage_create_type_demand : R.string.entourage_create_type_contribution,
-                            entourageCategory.getTitle()
+                            BaseEntourage.GROUPTYPE_ACTION_DEMAND.equalsIgnoreCase(entourageCategory.groupType) ? R.string.entourage_create_type_demand : R.string.entourage_create_type_contribution,
+                            entourageCategory.title
                     )
             );
         }
-        categoryLayout.setVisibility((groupType != null && groupType.equalsIgnoreCase(Entourage.TYPE_OUTING)) ? View.GONE : View.VISIBLE);
+        categoryLayout.setVisibility((groupType != null && groupType.equalsIgnoreCase(BaseEntourage.GROUPTYPE_OUTING)) ? View.GONE : View.VISIBLE);
     }
 
     protected void updateFragmentTitle() {
-        if (Entourage.TYPE_OUTING.equalsIgnoreCase(groupType)) {
+        if (BaseEntourage.GROUPTYPE_OUTING.equalsIgnoreCase(groupType)) {
             if (getView() != null) {
                 EntourageTitleView fragmentTitleView = getView().findViewById(R.id.create_entourage_fragment_title);
                 if (fragmentTitleView != null) {
@@ -568,17 +564,17 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         Bundle args = getArguments();
         if (args != null) {
             if (editedEntourage != null) {
-                location = editedEntourage.getLocation().getLocation();
-                if (Entourage.TYPE_OUTING.equalsIgnoreCase(groupType)) {
-                    BaseEntourage.Metadata metadata = editedEntourage.getMetadata();
+                location = editedEntourage.location.getLocation();
+                if (BaseEntourage.GROUPTYPE_OUTING.equalsIgnoreCase(groupType)) {
+                    BaseEntourage.Metadata metadata = editedEntourage.metadata;
                     if (metadata != null) {
-                        positionTextView.setText(metadata.getDisplayAddress());
+                        positionTextView.setText(metadata.displayAddress);
                     }
                 }
             } else {
                 location = args.getParcelable(KEY_ENTOURAGE_LOCATION);
             }
-            if (location != null && !Entourage.TYPE_OUTING.equalsIgnoreCase(groupType)) {
+            if (location != null && !BaseEntourage.GROUPTYPE_OUTING.equalsIgnoreCase(groupType)) {
                 GeocoderTask geocoderTask = new GeocoderTask();
                 geocoderTask.execute(location);
             }
@@ -599,7 +595,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
 
     protected void initializeDate() {
         if (editedEntourage != null) {
-            BaseEntourage.Metadata metadata = editedEntourage.getMetadata();
+            BaseEntourage.Metadata metadata = editedEntourage.metadata;
             if (metadata != null && metadata.getStartDate() != null) {
                 entourageDateStart = Calendar.getInstance();
                 entourageDateStart.setTime(metadata.getStartDate());
@@ -611,12 +607,12 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
             updateDateStartTextView();
             updateDateEndTextView();
         }
-        entourageDateStartLayout.setVisibility((groupType != null && groupType.equalsIgnoreCase(Entourage.TYPE_OUTING)) ? View.VISIBLE : View.GONE);
-        entourageDateEndLayout.setVisibility((groupType != null && groupType.equalsIgnoreCase(Entourage.TYPE_OUTING)) ? View.VISIBLE : View.GONE);
+        entourageDateStartLayout.setVisibility((groupType != null && groupType.equalsIgnoreCase(BaseEntourage.GROUPTYPE_OUTING)) ? View.VISIBLE : View.GONE);
+        entourageDateEndLayout.setVisibility((groupType != null && groupType.equalsIgnoreCase(BaseEntourage.GROUPTYPE_OUTING)) ? View.VISIBLE : View.GONE);
     }
 
     protected void initializeJoinRequestType() {
-        privacyLayout.setVisibility(Entourage.TYPE_OUTING.equalsIgnoreCase(groupType) ? View.VISIBLE : View.GONE);
+        privacyLayout.setVisibility(BaseEntourage.GROUPTYPE_OUTING.equalsIgnoreCase(groupType) ? View.VISIBLE : View.GONE);
         if (editedEntourage != null) {
             privacySwitch.setChecked(editedEntourage.isJoinRequestPublic());
             onPrivacySwitchClicked();
@@ -635,7 +631,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     }
 
     private void initializePrivacyAction() {
-        if (Entourage.TYPE_OUTING.equalsIgnoreCase(groupType)) {
+        if (BaseEntourage.GROUPTYPE_OUTING.equalsIgnoreCase(groupType)) {
             ui_privacyActionLayout.setVisibility(View.GONE);
         }
         else {
@@ -669,7 +665,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
             Toast.makeText(getActivity(), R.string.entourage_create_error_title_empty, Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (Entourage.TYPE_OUTING.equalsIgnoreCase(groupType)) {
+        if (BaseEntourage.GROUPTYPE_OUTING.equalsIgnoreCase(groupType)) {
             String dateString = entourageDateStartTextView.getText().toString().trim();
             if (dateString.length() == 0) {
                 Toast.makeText(getActivity(), R.string.entourage_create_error_date_empty, Toast.LENGTH_SHORT).show();
@@ -681,7 +677,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
                 return false;
             }
         }
-        if (Entourage.TYPE_OUTING.equalsIgnoreCase(groupType)) {
+        if (BaseEntourage.GROUPTYPE_OUTING.equalsIgnoreCase(groupType)) {
             if (entourageMetadata == null || entourageMetadata.getGooglePlaceId() == null || entourageMetadata.getGooglePlaceId().length() == 0) {
                 Toast.makeText(getActivity(), R.string.entourage_create_error_location_empty, Toast.LENGTH_SHORT).show();
                 return false;
@@ -733,12 +729,12 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
     // ----------------------------------
 
     public void onEntourageLocationChosen(LatLng location, String address, Place place) {
-        if (Entourage.TYPE_OUTING.equalsIgnoreCase(groupType)) {
+        if (BaseEntourage.GROUPTYPE_OUTING.equalsIgnoreCase(groupType)) {
             if (place != null) {
                 if (entourageMetadata == null) entourageMetadata = new BaseEntourage.Metadata();
-                entourageMetadata.setPlaceName(place.getName().toString());
+                entourageMetadata.placeName = place.getName().toString();
                 if (place.getAddress() != null) {
-                    entourageMetadata.setStreetAddress(place.getAddress().toString());
+                    entourageMetadata.streetAddress = place.getAddress().toString();
                     positionTextView.setText(place.getAddress().toString());
                 }
                 entourageMetadata.setGooglePlaceId(place.getId());

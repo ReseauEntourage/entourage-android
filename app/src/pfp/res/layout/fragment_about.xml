@@ -23,7 +23,7 @@
         android:id="@+id/about_version_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/sidemenu_item_background"
+        android:background="@color/mainprofile_item_background"
         android:paddingBottom="@dimen/about_items_padding"
         android:paddingEnd="0dp"
         android:paddingLeft="@dimen/about_items_padding"
@@ -41,7 +41,7 @@
             android:layout_gravity="center_vertical"
             android:text="@string/about_version"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/sidemenu_item_text_color"
+            android:textColor="@color/mainprofile_item_text_color"
             android:textSize="@dimen/entourage_font_medium"/>
 
         <TextView
@@ -83,7 +83,7 @@
         android:id="@+id/about_conditions_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/sidemenu_item_background"
+        android:background="@color/mainprofile_item_background"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/about_items_padding"
         android:paddingEnd="0dp"
@@ -98,7 +98,7 @@
             android:layout_gravity="center_vertical"
             android:text="@string/about_conditions"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/sidemenu_item_text_color"
+            android:textColor="@color/mainprofile_item_text_color"
             android:textSize="@dimen/entourage_font_medium"/>
 
         <ImageView
@@ -123,7 +123,7 @@
         android:id="@+id/about_privacy_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/sidemenu_item_background"
+        android:background="@color/mainprofile_item_background"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/about_items_padding"
         android:paddingEnd="0dp"
@@ -138,7 +138,7 @@
             android:layout_gravity="center_vertical"
             android:text="@string/about_privacy"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/sidemenu_item_text_color"
+            android:textColor="@color/mainprofile_item_text_color"
             android:textSize="@dimen/entourage_font_medium"/>
 
         <ImageView
@@ -156,7 +156,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/sidemenu_item_background"
+        android:background="@color/mainprofile_item_background"
         android:paddingBottom="@dimen/about_items_padding"
         android:paddingEnd="0dp"
         android:paddingLeft="@dimen/about_items_padding"
@@ -170,7 +170,7 @@
             android:layout_gravity="center_vertical"
             android:text="@string/about_oss_licenses"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/sidemenu_item_text_color"
+            android:textColor="@color/mainprofile_item_text_color"
             android:textSize="@dimen/entourage_font_medium"/>
 
         <ImageView

@@ -20,12 +20,8 @@ import com.google.android.gms.maps.model.LatLng;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 import javax.inject.Inject;
 
@@ -37,18 +33,19 @@ import social.entourage.android.api.EncounterRequest;
 import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.NewsfeedRequest;
 import social.entourage.android.api.TourRequest;
-import social.entourage.android.api.model.Newsfeed;
+import social.entourage.android.api.model.feed.NewsfeedItem;
 import social.entourage.android.api.model.TimestampedObject;
-import social.entourage.android.api.model.map.Encounter;
-import social.entourage.android.api.model.map.Entourage;
-import social.entourage.android.api.model.map.FeedItem;
-import social.entourage.android.api.model.map.Tour;
-import social.entourage.android.api.model.map.TourUser;
+import social.entourage.android.api.model.BaseEntourage;
+import social.entourage.android.api.model.tour.Encounter;
+import social.entourage.android.api.model.feed.FeedItem;
+import social.entourage.android.api.model.tour.Tour;
+import social.entourage.android.api.model.EntourageUser;
 import social.entourage.android.authentication.AuthenticationController;
 import social.entourage.android.location.LocationUpdateListener;
-import social.entourage.android.map.MapTabItem;
+import social.entourage.android.newsfeed.NewsfeedTabItem;
 import social.entourage.android.newsfeed.NewsFeedListener;
 import social.entourage.android.newsfeed.NewsfeedPagination;
+import social.entourage.android.tools.Utils;
 import social.entourage.android.tools.log.CrashlyticsNewsFeedLogger;
 import social.entourage.android.tools.log.LoggerNewsFeedLogger;
 
@@ -291,7 +288,7 @@ public class EntourageService extends Service {
         stopSelf();
     }
 
-    public boolean updateNewsfeed(final NewsfeedPagination pagination, final MapTabItem selectedTab) {
+    public boolean updateNewsfeed(final NewsfeedPagination pagination, final NewsfeedTabItem selectedTab) {
         if (pagination.isLoading && !pagination.isRefreshing) {
             return false;
         }
@@ -330,12 +327,8 @@ public class EntourageService extends Service {
             chronometer = new Chronometer(this);
         }
 
-        final Date duration = new Date(SystemClock.elapsedRealtime() - chronometer.getBase());
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
-
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         if (entourageServiceManager != null) {
-            entourageServiceManager.setTourDuration(dateFormat.format(duration));
+            entourageServiceManager.setTourDuration(Utils.getDateStringFromSeconds(SystemClock.elapsedRealtime() - chronometer.getBase()));
         }
         pauseNotification();
         isPaused = true;
@@ -360,7 +353,7 @@ public class EntourageService extends Service {
         if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
             entourageServiceManager.finishTour((Tour) feedItem);
         } else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-            entourageServiceManager.closeEntourage((Entourage) feedItem, success);
+            entourageServiceManager.closeEntourage((BaseEntourage) feedItem, success);
         }
     }
 
@@ -376,11 +369,11 @@ public class EntourageService extends Service {
         if (feedItem.getType() == TimestampedObject.TOUR_CARD) {
             entourageServiceManager.removeUserFromTour((Tour) feedItem, userId);
         } else if (feedItem.getType() == TimestampedObject.ENTOURAGE_CARD) {
-            entourageServiceManager.removeUserFromEntourage((Entourage) feedItem, userId);
+            entourageServiceManager.removeUserFromEntourage((BaseEntourage) feedItem, userId);
         }
     }
 
-    public void requestToJoinEntourage(final Entourage entourage) {
+    public void requestToJoinEntourage(final BaseEntourage entourage) {
         entourageServiceManager.requestToJoinEntourage(entourage);
     }
 
@@ -395,7 +388,7 @@ public class EntourageService extends Service {
     public void registerServiceListener(final LocationUpdateListener listener) {
         locationUpdateListeners.add(listener);
         if (entourageServiceManager.isRunning() && listener instanceof TourServiceListener) {
-            ((TourServiceListener)listener).onTourResumed(entourageServiceManager.getPointsToDraw(), entourageServiceManager.getTour().getTourType(), entourageServiceManager.getTour().getStartTime());
+            ((TourServiceListener)listener).onTourResumed(entourageServiceManager.getPointsToDraw(), entourageServiceManager.getTour().tourType, entourageServiceManager.getTour().getStartTime());
         }
     }
 
@@ -439,7 +432,7 @@ public class EntourageService extends Service {
         }
         for (final LocationUpdateListener listener : locationUpdateListeners) {
             if(listener instanceof TourServiceListener) {
-                ((TourServiceListener) listener).onTourResumed(entourageServiceManager.getPointsToDraw(), entourageServiceManager.getTour().getTourType(), entourageServiceManager.getTour().getStartTime());
+                ((TourServiceListener) listener).onTourResumed(entourageServiceManager.getPointsToDraw(), entourageServiceManager.getTour().tourType, entourageServiceManager.getTour().getStartTime());
             }
         }
     }
@@ -492,7 +485,7 @@ public class EntourageService extends Service {
         }
     }
 
-    public void notifyListenersUserStatusChanged(final TourUser user, final FeedItem feedItem) {
+    public void notifyListenersUserStatusChanged(final EntourageUser user, final FeedItem feedItem) {
         if(user==null || feedItem==null) {
             return;
         }
@@ -529,7 +522,7 @@ public class EntourageService extends Service {
         }
     }
 
-    void notifyListenersNewsFeedReceived(final List<Newsfeed> newsFeeds) {
+    void notifyListenersNewsFeedReceived(final List<NewsfeedItem> newsFeeds) {
         for (final ApiConnectionListener listener : apiListeners) {
             if(listener instanceof NewsFeedListener) {
                 ((NewsFeedListener) listener).onNewsFeedReceived(newsFeeds);

@@ -7,10 +7,10 @@
               android:background="@color/background_transparent"
               android:paddingLeft="10dp"
               android:paddingRight="10dp"
-              android:id="@+id/feeditem_options">
+              android:id="@+id/entourage_options">
 
     <Button
-        android:id="@+id/feeditem_option_join"
+        android:id="@+id/entourage_option_join"
         style="@style/WhiteButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         android:visibility="gone"/>
 
     <Button
-        android:id="@+id/feeditem_option_contact"
+        android:id="@+id/entourage_option_contact"
         style="@style/WhiteButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
         android:visibility="gone"/>
 
     <Button
-        android:id="@+id/feeditem_option_share"
+        android:id="@+id/entourage_option_share"
         style="@style/WhiteButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
         android:visibility="gone"/>
 
     <Button
-        android:id="@+id/feeditem_option_report"
+        android:id="@+id/entourage_option_report"
         style="@style/WhiteButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
         android:visibility="gone"/>
 
     <Button
-        android:id="@+id/feeditem_option_stop"
+        android:id="@+id/entourage_option_stop"
         style="@style/WhiteButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
         android:visibility="gone"/>
 
     <Button
-        android:id="@+id/feeditem_option_edit"
+        android:id="@+id/entourage_option_edit"
         style="@style/WhiteButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
         android:visibility="gone"/>
 
     <Button
-        android:id="@+id/feeditem_option_quit"
+        android:id="@+id/entourage_option_quit"
         style="@style/WhiteButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
         android:visibility="gone"/>
 
     <Button
-        android:id="@+id/feeditem_option_promote"
+        android:id="@+id/entourage_option_promote"
         style="@style/WhiteButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
         android:visibility="gone"/>
 
     <Button
-        android:id="@+id/feeditem_option_cancel"
+        android:id="@+id/entourage_option_cancel"
         style="@style/AccentButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

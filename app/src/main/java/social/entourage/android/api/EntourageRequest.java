@@ -15,50 +15,50 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import social.entourage.android.api.model.ChatMessage;
 import social.entourage.android.api.model.MultipleInvitations;
-import social.entourage.android.api.model.map.Entourage;
-import social.entourage.android.api.model.map.TourUser;
+import social.entourage.android.api.model.BaseEntourage;
+import social.entourage.android.api.model.EntourageUser;
 
 public interface EntourageRequest {
 
     @POST("entourages.json")
-    Call<Entourage.EntourageWrapper> createEntourage(
-            @Body Entourage.EntourageWrapper entourageWrapper
+    Call<BaseEntourage.EntourageWrapper> createEntourage(
+            @Body BaseEntourage.EntourageWrapper entourageWrapper
     );
 
     @PATCH("entourages/{entourage_id}")
-    Call<Entourage.EntourageWrapper> editEntourage(
+    Call<BaseEntourage.EntourageWrapper> editEntourage(
             @Path("entourage_id") String entourageUUID,
-            @Body Entourage.EntourageWrapper entourageWrapper
+            @Body BaseEntourage.EntourageWrapper entourageWrapper
     );
 
     @GET("entourages/{entourage_id}")
-    Call<Entourage.EntourageWrapper> retrieveEntourageById(
+    Call<BaseEntourage.EntourageWrapper> retrieveEntourageById(
             @Path("entourage_id") String entourageUUID,
             @Query("distance") Integer distance,
             @Query("feed_rank") Integer feedRank
     );
 
     @GET("entourages/{entourage_id}")
-    Call<Entourage.EntourageWrapper> retrieveEntourageByShareURL(
+    Call<BaseEntourage.EntourageWrapper> retrieveEntourageByShareURL(
             @Path("entourage_id") String entourageShareURL
     );
 
     @PUT("entourages/{id}")
-    Call<Entourage.EntourageWrapper> closeEntourage(
+    Call<BaseEntourage.EntourageWrapper> closeEntourage(
             @Path("id") String entourageUUID,
-            @Body Entourage.EntourageWrapper entourageWrapper
+            @Body BaseEntourage.EntourageWrapper entourageWrapper
     );
 
     @GET("entourages/{entourage_id}/users")
-    Call<TourUser.TourUsersWrapper> retrieveEntourageUsers(
+    Call<EntourageUser.EntourageUsersWrapper> retrieveEntourageUsers(
             @Path("entourage_id") String entourageUUID,
             @Query("context") String context
     );
 
     @POST("entourages/{entourage_id}/users")
-    Call<TourUser.TourUserWrapper> requestToJoinEntourage(
+    Call<EntourageUser.EntourageUserWrapper> requestToJoinEntourage(
             @Path("entourage_id") String entourageUUID,
-            @Body Entourage.EntourageJoinInfo info
+            @Body BaseEntourage.EntourageJoinInfo info
     );
 
     @PUT("entourages/{entourage_id}/users/{user_id}")
@@ -69,7 +69,7 @@ public interface EntourageRequest {
     );
 
     @DELETE("entourages/{entourage_id}/users/{user_id}")
-    Call<TourUser.TourUserWrapper> removeUserFromEntourage(
+    Call<EntourageUser.EntourageUserWrapper> removeUserFromEntourage(
             @Path("entourage_id") String entourageUUID,
             @Path("user_id") int userId
     );

@@ -10,7 +10,7 @@ object PushNotificationService : JobIntentService() {
     override fun onHandleWork(intent: Intent) {
         val message = PushNotificationManager.getMessageFromIntent(intent, applicationContext) ?: return
         PushNotificationManager.handlePushNotification(message, this)
-        BusProvider.getInstance().post(OnPushNotificationReceived(message))
+        BusProvider.instance.post(OnPushNotificationReceived(message))
     }
     /**
      * Unique job ID for this service.

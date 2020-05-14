@@ -1,6 +1,7 @@
 package social.entourage.android.authentication.login.register;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,14 +16,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import social.entourage.android.Constants;
 import social.entourage.android.EntourageActivity;
+import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageEvents;
 import social.entourage.android.R;
 import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.base.EntourageLinkMovementMethod;
 import social.entourage.android.tools.Utils;
 import timber.log.Timber;
-
-import static social.entourage.android.EntourageApplication.isPfpApp;
 
 
 public class RegisterWelcomeFragment extends EntourageDialogFragment {
@@ -91,6 +91,17 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
         mListener = null;
     }
 
+    //Hack temporaire (en attendant la nouvelle version de l'onboarding)
+    public Boolean isFromChoice = false;
+    public Boolean isShowLogin = false;
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (isFromChoice) {
+            mListener.registerClosePop(isShowLogin);
+        }
+    }
+
     // ----------------------------------
     // Click handlers
     // ----------------------------------
@@ -103,6 +114,7 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
     @OnClick(R.id.register_welcome_signin_button)
     protected void onSigninClicked() {
         mListener.registerShowSignIn();
+        isShowLogin = true;
         dismiss();
     }
 
@@ -112,7 +124,7 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
         if (mListener.registerStart()) {
             try {
                 RegisterNumberFragment registerNumberFragment = new RegisterNumberFragment();
-                registerNumberFragment.show(getFragmentManager(), RegisterNumberFragment.TAG);
+                registerNumberFragment.show(getParentFragmentManager(), RegisterNumberFragment.TAG);
             } catch(IllegalStateException e) {
                 Timber.w(e);
             }
@@ -134,7 +146,7 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
             privacyTextView.setText(Utils.fromHtml(text));
         }
 
-        if (isPfpApp()) {
+        if (EntourageApplication.Companion.isPfpApp()) {
             logoImageView.setVisibility(View.INVISIBLE);
         }
 

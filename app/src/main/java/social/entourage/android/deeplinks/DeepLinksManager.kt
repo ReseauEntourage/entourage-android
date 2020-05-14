@@ -8,14 +8,13 @@ import android.widget.TextView
 import social.entourage.android.BuildConfig
 import social.entourage.android.MainActivity
 import social.entourage.android.R
-import social.entourage.android.api.model.map.FeedItem
+import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.user.edit.UserEditFragment
 import timber.log.Timber
 import java.util.*
-import java.util.regex.Pattern
 
 /**
  * Handles the deep links received by the app
@@ -84,7 +83,7 @@ object DeepLinksManager {
             if (requestedView.equals(DeepLinksView.ENTOURAGES.view, ignoreCase = true)
                     ||requestedView.equals(DeepLinksView.ENTOURAGE.view, ignoreCase = true)) {
                 //path like /entourage/UUID...
-                BusProvider.getInstance().post(OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, "", key))
+                BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(TimestampedObject.ENTOURAGE_CARD, "", key))
             } else if (requestedView.equals(DeepLinksView.DEEPLINK.view, ignoreCase = true)) {
                 //path like /deeplink/key/...
                 //Remove the requested view and the key from path segments
@@ -101,7 +100,7 @@ object DeepLinksManager {
     private fun handleDeepLink(activity: MainActivity, key: String, pathSegments: List<String>?) {
         if (key == DeepLinksView.FEED.view) {
             activity.showFeed()
-            activity.dismissMapFragmentDialogs()
+            activity.dismissNewsfeedFragmentDialogs()
             if (pathSegments != null && pathSegments.isNotEmpty()) {
                 if (DeepLinksView.FILTERS.view.equals(pathSegments[0], ignoreCase = true)) {
                     activity.showMapFilters()
@@ -122,7 +121,7 @@ object DeepLinksManager {
                         urlToOpen = "https://$urlToOpen"
                     }
                     activity.showFeed()
-                    activity.dismissMapFragmentDialogs()
+                    activity.dismissNewsfeedFragmentDialogs()
                     activity.showWebView(urlToOpen)
                 }
             } catch (ignored: Exception) {
@@ -131,14 +130,16 @@ object DeepLinksManager {
             activity.selectItem(R.id.action_edit_profile)
         } else if (key == DeepLinksView.GUIDE.view) {
             activity.showGuide()
+        } else if (key == DeepLinksView.EVENTS.view) {
+            activity.showEvents()
         } else if (key == DeepLinksView.MY_CONVERSATIONS.view) {
-            activity.dismissMapFragmentDialogs()
+            activity.dismissNewsfeedFragmentDialogs()
             activity.showMyEntourages()
         } else if (key == DeepLinksView.CREATE_ACTION.view) {
             activity.createEntourage()
         } else if (key == DeepLinksView.ENTOURAGE.view || key == DeepLinksView.ENTOURAGES.view) {
             if (pathSegments != null && pathSegments.isNotEmpty()) {
-                BusProvider.getInstance().post(OnFeedItemInfoViewRequestedEvent(FeedItem.ENTOURAGE_CARD, "", pathSegments[0]))
+                BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(TimestampedObject.ENTOURAGE_CARD, "", pathSegments[0]))
             }
         } else if (key == DeepLinksView.TUTORIAL.view) {
             activity.showTutorial(true)
@@ -158,6 +159,7 @@ object DeepLinksManager {
         WEBVIEW("webview"),
         PROFILE("profile"),
         FILTERS("filters"),
+        EVENTS("events"),
         GUIDE("guide"),
         MY_CONVERSATIONS("messages"),
         CREATE_ACTION("create-action"),
@@ -187,7 +189,22 @@ object DeepLinksManager {
     }
 
     fun findFirstDeeplinkInText(content: String): String? {
-        val pattern  = (BuildConfig.DEEP_LINKS_SCHEME + "://\\S+").toRegex()
-        return pattern.find(content)?.value
+        val patternDeepLink  = (BuildConfig.DEEP_LINKS_SCHEME + "://\\S+").toRegex()
+        patternDeepLink.find(content)?.let {
+            return it.value
+        }
+        val patternHTTPDeepLink  = ("http.?://"+BuildConfig.DEEP_LINKS_URL + "/deeplink/\\S+").toRegex()
+        patternHTTPDeepLink.find(content)?.let {
+            return it.value
+        }
+        val patternHTTPWWWDeepLink  = ("http.?://www\\."+BuildConfig.DEEP_LINKS_URL + "/deeplink/\\S+").toRegex()
+        patternHTTPWWWDeepLink.find(content)?.let {
+            return it.value
+        }
+        val patternHTTPEntourage  = ("http.?://www\\."+BuildConfig.DEEP_LINKS_URL + "/entourage\\S+").toRegex()
+        patternHTTPEntourage.find(content)?.let {
+            return it.value
+        }
+        return null
     }
 }

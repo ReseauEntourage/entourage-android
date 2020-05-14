@@ -1,7 +1,11 @@
 package social.entourage.android.api.model;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -28,6 +32,7 @@ public class ChatMessage extends TimestampedObject implements Serializable {
 
     @Expose(serialize = false)
     @SerializedName("created_at")
+    @NotNull
     private Date creationDate;
 
     @Expose(serialize = false)
@@ -70,11 +75,12 @@ public class ChatMessage extends TimestampedObject implements Serializable {
         this.content = content;
     }
 
+    @NonNull
     public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(final Date creationDate) {
+    public void setCreationDate(@NonNull final Date creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -117,10 +123,12 @@ public class ChatMessage extends TimestampedObject implements Serializable {
     }
 
     @Override
+    @NotNull
     public Date getTimestamp() {
         return creationDate;
     }
 
+    @NonNull
     @Override
     public String hashString() {
         return HASH_STRING_HEAD + chatId;

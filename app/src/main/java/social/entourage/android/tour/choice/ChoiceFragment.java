@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.EntourageComponent;
 import social.entourage.android.R;
-import social.entourage.android.api.model.map.Tour;
+import social.entourage.android.api.model.tour.Tour;
 
 public class ChoiceFragment extends DialogFragment implements ChoiceAdapter.RecyclerViewClickListener {
 
