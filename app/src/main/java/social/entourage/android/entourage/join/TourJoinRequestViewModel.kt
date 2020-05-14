@@ -1,61 +1,59 @@
 package social.entourage.android.entourage.join
 
 import android.widget.Toast
-import okhttp3.ResponseBody
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageApplication.Companion.me
 import social.entourage.android.R
-import social.entourage.android.api.EntourageRequest
 import social.entourage.android.api.TourRequest
-import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.EntourageUser.EntourageUserWrapper
-import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.model.tour.TourJoinMessage
 import social.entourage.android.api.model.tour.TourJoinMessage.TourJoinMessageWrapper
-import timber.log.Timber
-import java.util.*
 import javax.inject.Inject
 
 /**
  * Created by mihaiionescu on 07/03/16.
  */
-class TourJoinRequestPresenter @Inject constructor(
-        private var tourRequest: TourRequest) {
+class TourJoinRequestViewModel : ViewModel() {
+    var tourRequest: TourRequest =  EntourageApplication.get().entourageComponent.tourRequest
+
+    var requestResult: MutableLiveData<Int> = MutableLiveData<Int>(EntourageJoinRequestViewModel.REQUEST_NORESULT)
+
     // ----------------------------------
     // API CALLS
     // ----------------------------------
-    fun sendMessage(fragment: TourJoinRequestFragment, message: String, tour: Tour) {
+    fun sendMessage(message: String, tour: Tour) {
         if (message.isBlank()) {
-            fragment.dismiss()
+            requestResult.value = REQUEST_OK
             return
         }
-        val me = me(fragment.context) ?: return
+        val me = EntourageApplication.get().me() ?: return
         val joinMessageWrapper = TourJoinMessageWrapper()
         joinMessageWrapper.joinMessage = TourJoinMessage(message.trim { it <= ' ' })
         val call = tourRequest.updateJoinTourMessage(tour.uuid, me.id, joinMessageWrapper)
         call.enqueue(object : Callback<EntourageUserWrapper?> {
             override fun onResponse(call: Call<EntourageUserWrapper?>, response: Response<EntourageUserWrapper?>) {
                 if (response.isSuccessful) {
-                    if (fragment.activity != null) {
-                        Toast.makeText(fragment.requireActivity().applicationContext, R.string.tour_join_request_message_sent, Toast.LENGTH_SHORT).show()
-                    }
-                    fragment.dismiss()
+                    requestResult.value = REQUEST_OK
                 } else {
-                    if (fragment.activity != null) {
-                        Toast.makeText(fragment.requireActivity().applicationContext, R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show()
-                    }
+                    requestResult.value = REQUEST_ERROR
                 }
             }
 
             override fun onFailure(call: Call<EntourageUserWrapper?>, t: Throwable) {
-                if (fragment.activity != null) {
-                    Toast.makeText(fragment.requireActivity().applicationContext, R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show()
-                }
+                requestResult.value = REQUEST_ERROR
             }
         })
+    }
+
+    companion object {
+        const val REQUEST_NORESULT =0
+        const val REQUEST_OK =1
+        const val REQUEST_ERROR =-1
     }
 }

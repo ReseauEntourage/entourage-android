@@ -8,17 +8,14 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_tour_join_request_ok.*
-import social.entourage.android.EntourageApplication.Companion.get
-import social.entourage.android.EntourageComponent
 import social.entourage.android.EntourageEvents
 import social.entourage.android.R
-import social.entourage.android.api.model.BaseEntourage
-import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.tour.Tour
-import javax.inject.Inject
 
 class TourJoinRequestFragment  : DialogFragment() {
 
@@ -26,10 +23,7 @@ class TourJoinRequestFragment  : DialogFragment() {
     // PRIVATE MEMBERS
     // ----------------------------------
     private lateinit var feedItem: Tour
-
-    @Inject
-    lateinit var presenter: TourJoinRequestPresenter
-
+    private var viewModel: TourJoinRequestViewModel  = TourJoinRequestViewModel()
     private var startedTyping = false
 
     // ----------------------------------
@@ -47,7 +41,6 @@ class TourJoinRequestFragment  : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupComponent(get().entourageComponent)
         val newFeedItem = arguments?.getSerializable(FeedItem.KEY_FEEDITEM) as Tour?
         if(newFeedItem == null) {
             dismiss()
@@ -74,20 +67,24 @@ class TourJoinRequestFragment  : DialogFragment() {
         })
         tour_join_request_ok_message_button.setOnClickListener {onMessageSend()}
         tour_join_request_ok_x_button.setOnClickListener { dismiss() }
+        viewModel.requestResult.observe(viewLifecycleOwner, Observer {
+            when(it) {
+                TourJoinRequestViewModel.REQUEST_ERROR ->{
+                    Toast.makeText(context, R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show()
+                }
+                TourJoinRequestViewModel.REQUEST_OK ->{
+                    Toast.makeText(context, R.string.tour_join_request_message_sent, Toast.LENGTH_SHORT).show()
+                    dismiss()
+                }
+            }
+        })
     }
 
     fun onMessageSend() {
         if (!tour_join_request_ok_message?.text.isNullOrBlank()) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_SUBMIT)
-            presenter.sendMessage(this, tour_join_request_ok_message!!.text.toString(), feedItem)
+            viewModel.sendMessage(tour_join_request_ok_message!!.text.toString(), feedItem)
         }
-    }
-
-    protected fun setupComponent(entourageComponent: EntourageComponent?) {
-        DaggerTourJoinRequestComponent.builder()
-                .entourageComponent(entourageComponent)
-                .build()
-                .inject(this)
     }
 
     companion object {

@@ -9,26 +9,22 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_tour_join_request_ok.*
-import social.entourage.android.EntourageApplication.Companion.get
-import social.entourage.android.EntourageComponent
 import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.feed.FeedItem
-import javax.inject.Inject
 
 class EntourageJoinRequestFragment  : DialogFragment() {
 
     // ----------------------------------
     // PRIVATE MEMBERS
     // ----------------------------------
-    private lateinit var feedItem: BaseEntourage
-
-    @Inject
-    lateinit var presenter: EntourageJoinRequestPresenter
-
+    private lateinit var entourage: BaseEntourage
+    private var viewModel: EntourageJoinRequestViewModel = EntourageJoinRequestViewModel()
     private var startedTyping = false
 
     // ----------------------------------
@@ -46,14 +42,13 @@ class EntourageJoinRequestFragment  : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupComponent(get().entourageComponent)
         val newFeedItem = arguments?.getSerializable(FeedItem.KEY_FEEDITEM) as BaseEntourage?
         if(newFeedItem == null) {
             dismiss()
             return
         }
-        feedItem = newFeedItem
-        val descriptionTextId = if (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.getGroupType(), ignoreCase = true)) R.string.tour_join_request_ok_description_outing
+        entourage = newFeedItem
+        val descriptionTextId = if (BaseEntourage.GROUPTYPE_OUTING.equals(entourage.getGroupType(), ignoreCase = true)) R.string.tour_join_request_ok_description_outing
                 else R.string.tour_join_request_ok_description_entourage
         tour_join_request_ok_description?.setText(descriptionTextId)
         view.setOnClickListener {
@@ -74,20 +69,24 @@ class EntourageJoinRequestFragment  : DialogFragment() {
         })
         tour_join_request_ok_message_button.setOnClickListener {onMessageSend()}
         tour_join_request_ok_x_button.setOnClickListener { dismiss() }
+        viewModel.requestResult.observe(viewLifecycleOwner, Observer {
+            when(it) {
+                EntourageJoinRequestViewModel.REQUEST_ERROR ->{
+                    Toast.makeText(context, R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show()
+                }
+                EntourageJoinRequestViewModel.REQUEST_OK ->{
+                    Toast.makeText(context, R.string.tour_join_request_message_sent, Toast.LENGTH_SHORT).show();
+                    dismiss()
+                }
+            }
+        })
     }
 
     private fun onMessageSend() {
         if (!tour_join_request_ok_message?.text.isNullOrBlank()) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_SUBMIT)
-            presenter.sendMessage(this, tour_join_request_ok_message!!.text.toString(), feedItem)
+            viewModel.sendMessage(tour_join_request_ok_message!!.text.toString(), entourage)
         }
-    }
-
-    private fun setupComponent(entourageComponent: EntourageComponent?) {
-        DaggerEntourageJoinRequestComponent.builder()
-                .entourageComponent(entourageComponent)
-                .build()
-                .inject(this)
     }
 
     companion object {
