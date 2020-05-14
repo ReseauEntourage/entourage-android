@@ -21,7 +21,8 @@ import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.service.EntourageService
 import social.entourage.android.service.EntourageService.LocalBinder
 import social.entourage.android.service.EntourageServiceListener
-import social.entourage.android.tour.join.TourJoinRequestFragment
+import social.entourage.android.entourage.join.EntourageJoinRequestFragment
+import social.entourage.android.entourage.join.TourJoinRequestFragment
 import social.entourage.android.view.EntourageSnackbar.make
 import timber.log.Timber
 import java.util.*
@@ -155,15 +156,17 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
 
     override fun onUserStatusChanged(user: EntourageUser, feedItem: FeedItem) {
         if (activity == null || requireActivity().isFinishing) return
-        if (feedItem.type == TimestampedObject.TOUR_CARD || feedItem.type == TimestampedObject.ENTOURAGE_CARD) {
+        try {
             feedItem.joinStatus = user.status
             if (user.status == FeedItem.JOIN_STATUS_PENDING) {
-                try {
+                if (feedItem is Tour) {
                     TourJoinRequestFragment.newInstance(feedItem).show(requireActivity().supportFragmentManager, TourJoinRequestFragment.TAG)
-                } catch (e: IllegalStateException) {
-                    Timber.w(e)
+                }  else if (feedItem is BaseEntourage) {
+                    EntourageJoinRequestFragment.newInstance(feedItem).show(requireActivity().supportFragmentManager, EntourageJoinRequestFragment.TAG)
                 }
             }
+        } catch (e: IllegalStateException) {
+            Timber.w(e)
         }
         updateNewsfeedJoinStatus(feedItem)
         isRequestingToJoin--

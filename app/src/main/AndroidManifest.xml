@@ -164,7 +164,7 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize"></activity>
         <activity
-            android:name=".tour.join.received.TourJoinRequestReceivedActivity"
+            android:name="social.entourage.android.entourage.join.received.EntourageJoinRequestReceivedActivity"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".user.edit.photo.ChoosePhotoActivity"></activity>
         <activity android:name=".user.edit.photo.TakePhotoActivity"></activity>

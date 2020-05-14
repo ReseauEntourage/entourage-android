@@ -28,8 +28,6 @@
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
             android:paddingEnd="5dp"
-            android:paddingLeft="0dp"
-            android:paddingRight="5dp"
             android:paddingStart="0dp"
             app:srcCompat="@drawable/ic_close_black_24dp"/>
 
@@ -95,13 +93,5 @@
             android:text="@string/send"/>
 
     </LinearLayout>
-
-    <!--<ScrollView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_above="@+id/tour_join_request_ok_message_button"-->
-    <!--android:layout_below="@+id/haxor">-->
-
-    <!--</ScrollView>-->
 
 </RelativeLayout>

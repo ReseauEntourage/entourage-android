@@ -184,10 +184,10 @@ class TourInformationPresenter @Inject constructor(
                 // Tour user update status
                 when {
                     FeedItem.JOIN_STATUS_ACCEPTED == status -> {
-                        acceptTourJoinRequest(feedItem.uuid, userId)
+                        acceptJoinRequest(feedItem.uuid, userId)
                     }
                     FeedItem.JOIN_STATUS_REJECTED == status -> {
-                        rejectJoinTourRequest(feedItem.uuid, userId)
+                        rejectJoinRequest(feedItem.uuid, userId)
                     }
                     else -> {
                         fragment.onUserJoinRequestUpdated(userId, status, EntourageError.ERROR_UNKNOWN)
@@ -201,7 +201,7 @@ class TourInformationPresenter @Inject constructor(
         }
     }
 
-    private fun acceptTourJoinRequest(tourUUID: String?, userId: Int) {
+    private fun acceptJoinRequest(tourUUID: String?, userId: Int) {
         val status = HashMap<String, String>()
         status["status"] = FeedItem.JOIN_STATUS_ACCEPTED
         val user = HashMap<String, Any>()
@@ -222,7 +222,7 @@ class TourInformationPresenter @Inject constructor(
         })
     }
 
-    private fun rejectJoinTourRequest(tourUUID: String?, userId: Int) {
+    private fun rejectJoinRequest(tourUUID: String?, userId: Int) {
         val call = tourRequest.removeUserFromTour(tourUUID, userId)
         call.enqueue(object : Callback<EntourageUserWrapper?> {
             override fun onResponse(call: Call<EntourageUserWrapper?>, response: Response<EntourageUserWrapper?>) {
