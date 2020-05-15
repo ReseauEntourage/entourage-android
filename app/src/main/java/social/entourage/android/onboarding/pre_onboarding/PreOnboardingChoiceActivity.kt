@@ -5,7 +5,7 @@ import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_pre_onboarding_choice.*
 import social.entourage.android.EntourageActivity
 import social.entourage.android.R
-import social.entourage.android.authentication.login.LoginActivity
+import social.entourage.android.onboarding.LoginNewActivity
 import social.entourage.android.onboarding.OnboardingMainActivity
 
 class PreOnboardingChoiceActivity : EntourageActivity() {
@@ -21,8 +21,7 @@ class PreOnboardingChoiceActivity : EntourageActivity() {
             finish()
         }
         ui_button_login?.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            intent.putExtra("fromChoice","Login")
+            val intent = Intent(this, LoginNewActivity::class.java)
             startActivity(intent)
             finish()
         }

@@ -1,8 +1,6 @@
-@file:Suppress("DEPRECATION")
 
 package social.entourage.android.onboarding
 
-import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -24,6 +22,7 @@ import social.entourage.android.tools.Logger
 import social.entourage.android.tools.Utils.checkPhoneNumberFormat
 import social.entourage.android.tools.disable
 import social.entourage.android.tools.enable
+import social.entourage.android.view.CustomProgressDialog
 import java.io.File
 import java.util.*
 
@@ -52,6 +51,8 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     private var temporaryPlaceAddress:User.Address? = null
 
+    lateinit var alertDialog: CustomProgressDialog
+
     //**********//**********//**********
     // Lifecycle
     //**********//**********//**********
@@ -61,6 +62,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
         setContentView(R.layout.activity_onboarding_main)
 
+        alertDialog = CustomProgressDialog(this)
         temporaryUser = User()
 
         if (savedInstanceState == null) {
@@ -104,35 +106,14 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         ui_bt_next?.disable()
     }
 
-    var progressDialog:ProgressDialog? = null
-    fun showProgressDialog(resId: Int) {
-        if (progressDialog != null && progressDialog!!.isShowing()) {
-            progressDialog?.setTitle(resId)
-        } else {
-            progressDialog = ProgressDialog(this)
-            if (resId != 0) {
-                progressDialog?.setTitle(resId)
-            }
-            progressDialog?.setCancelable(false)
-            progressDialog?.setCanceledOnTouchOutside(false)
-            progressDialog?.setIndeterminate(true)
-            progressDialog?.show()
-        }
-    }
-
-    fun dismissProgressDialog() {
-        progressDialog?.dismiss()
-        progressDialog = null
-    }
-
     //**********//**********//**********
     // Network
     //**********//**********//**********
 
     fun callSignup() {
-        showProgressDialog(R.string.onboard_waiting_dialog)
+        alertDialog.show(R.string.onboard_waiting_dialog)
         OnboardingAPI.getInstance(get()).createUser(temporaryUser) { isOK, error ->
-            dismissProgressDialog()
+            alertDialog.dismiss()
             if (isOK) {
                 showSmsAndGo(R.string.registration_smscode_sent)
             }
@@ -161,7 +142,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     }
 
     fun sendPasscode() {
-        showProgressDialog(R.string.onboard_waiting_dialog)
+        alertDialog.show(R.string.onboard_waiting_dialog)
         val phoneNumber = checkPhoneNumberFormat(null, temporaryUser.phone)
         OnboardingAPI.getInstance(get()).login(phoneNumber,temporaryPasscode!!) { isOK, loginResponse, error ->
             if (isOK) {
@@ -179,11 +160,11 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 val loggedNumbers = sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, HashSet()) as HashSet<String>?
                 loggedNumbers!!.add(phoneNumber!!)
                 sharedPreferences.edit().putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers).apply()
-                dismissProgressDialog()
+                alertDialog.dismiss()
                 goNextStep()
             }
             else {
-                dismissProgressDialog()
+                alertDialog.dismiss()
                 if (error != null) {
                     if (error.contains("INVALID_PHONE_FORMAT")) {
                         showLoginFail(LOGIN_ERROR_INVALID_PHONE_FORMAT)
@@ -244,7 +225,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     }
 
     fun sendAddress() {
-        showProgressDialog(R.string.onboard_waiting_dialog)
+        alertDialog.show(R.string.onboard_waiting_dialog)
         OnboardingAPI.getInstance(get()).updateAddress(temporaryPlaceAddress!!) { isOK, userResponse ->
             if (isOK) {
                 val authenticationController = get().entourageComponent.authenticationController
@@ -254,32 +235,32 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                     authenticationController.saveUser(me)
                 }
                 displayToast(R.string.user_action_zone_send_ok)
-                dismissProgressDialog()
+                alertDialog.dismiss()
                 goNextStep()
             }
             else {
-                dismissProgressDialog()
+                alertDialog.dismiss()
                 displayToast(R.string.user_action_zone_send_failed)
             }
         }
     }
 
     fun updateUserEmailPwd() {
-        showProgressDialog(R.string.onboard_waiting_dialog)
+        alertDialog.show(R.string.onboard_waiting_dialog)
         OnboardingAPI.getInstance(get()).updateUser(temporaryEmail) { isOK, userResponse ->
             Logger("Return update useremail ?")
             if (isOK && userResponse != null) {
                 val authenticationController = get().entourageComponent.authenticationController
                 authenticationController.saveUser(userResponse.user)
             }
-            dismissProgressDialog()
+            alertDialog.dismiss()
             goNextStep()
         }
     }
 
     fun updateUserPhoto() {
         Logger("Send upload Photo Prépare")
-        showProgressDialog(R.string.user_photo_uploading)
+        alertDialog.show(R.string.user_photo_uploading)
         OnboardingAPI.getInstance(get()).prepareUploadPhoto { avatarKey, presignedUrl, error ->
             Logger("Send upload Photo Return")
             if (!avatarKey.isNullOrEmpty() && !presignedUrl.isNullOrEmpty()) {
@@ -291,12 +272,12 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                     if (isOk) {
                         updateUserPhoto(avatarKey)
                     }
-                    dismissProgressDialog()
+                    alertDialog.dismiss()
                     goMain()
                 }
             }
             else {
-                dismissProgressDialog()
+                alertDialog.dismiss()
                 showErrorUpload()
             }
         }

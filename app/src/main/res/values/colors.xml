@@ -126,4 +126,6 @@
     <color name="onboard_textfield_bg">#F6F6F6</color>
     <color name="onboard_button_unselect">#80FFFFFF</color>
     <color name="onboard_white_246">#F6F6F6</color>
+    <color name="login_orange_light">#60F55F24</color>
+    <color name="login_grey_light">#E1E4E8</color>
 </resources>
