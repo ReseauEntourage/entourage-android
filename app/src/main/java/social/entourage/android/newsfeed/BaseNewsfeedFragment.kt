@@ -190,7 +190,6 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         fragmentLifecycleCallbacks?.dismissAllDialogs()
     }
 
-    @JvmOverloads
     fun displayChosenFeedItem(feedItemUUID: String, feedItemType: Int, invitationId: Long = 0) {
         //display the feed item
         val feedItem = newsfeedAdapter?.findCard(feedItemType, feedItemUUID) as FeedItem?
@@ -206,7 +205,6 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         displayChosenFeedItem(feedItem, 0, feedRank)
     }
 
-    @JvmOverloads
     fun displayChosenFeedItem(feedItem: FeedItem, invitationId: Long, feedRank: Int = 0) {
         if (context == null || isStateSaved) return
         // decrease the badge count

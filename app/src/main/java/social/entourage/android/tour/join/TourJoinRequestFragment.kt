@@ -1,4 +1,4 @@
-package social.entourage.android.entourage.join
+package social.entourage.android.tour.join
 
 import android.content.Context
 import android.graphics.Color
@@ -23,7 +23,7 @@ class TourJoinRequestFragment  : DialogFragment() {
     // PRIVATE MEMBERS
     // ----------------------------------
     private lateinit var feedItem: Tour
-    private var viewModel: TourJoinRequestViewModel  = TourJoinRequestViewModel()
+    private var viewModel: TourJoinRequestViewModel = TourJoinRequestViewModel()
     private var startedTyping = false
 
     // ----------------------------------

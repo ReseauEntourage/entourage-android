@@ -296,7 +296,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
             if (entourageCategory.groupType.equalsIgnoreCase(BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)) isDemand = false;
         }
 
-        EntourageCategoryFragment fragment = EntourageCategoryFragment.newInstance(entourageCategory,isDemand);
+        EntourageCategoryFragment fragment = EntourageCategoryFragment.newInstance(entourageCategory);
         fragment.setListener(this);
         fragment.show(getParentFragmentManager(), EntourageCategoryFragment.TAG);
     }

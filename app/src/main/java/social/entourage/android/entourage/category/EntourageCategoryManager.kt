@@ -6,6 +6,7 @@ import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * Created by Mihai Ionescu on 20/09/2017.
@@ -14,13 +15,9 @@ object EntourageCategoryManager {
     // ----------------------------------
     // Attributes
     // ----------------------------------
-    @JvmStatic
-    var groupTypes: MutableList<String?> = ArrayList()
-        private set
     private var defaultType: EntourageCategory? = null
-    @JvmStatic
-    val entourageCategories = HashMap<String?, MutableList<EntourageCategory>>()
-    private val defaultGroup: MutableList<EntourageCategory>
+    val entourageCategories = HashMap<String, List<EntourageCategory>>()
+    private val defaultGroup: List<EntourageCategory>
 
     // ----------------------------------
     // Public methods
@@ -29,12 +26,12 @@ object EntourageCategoryManager {
         return entourageCategories[categoryGroup] ?: defaultGroup
     }
 
-    fun findCategory(entourage: BaseEntourage?): EntourageCategory? {
-        return if (entourage == null) null else findCategory(entourage.actionGroupType, entourage.category)
+    fun findCategory(entourage: BaseEntourage): EntourageCategory? {
+        return findCategory(entourage.actionGroupType, entourage.category)
     }
 
     @JvmStatic
-    fun findCategory(entourageType: String?, entourageCategory: String?): EntourageCategory? {
+    fun findCategory(entourageType: String, entourageCategory: String?): EntourageCategory? {
         val categoryToSearch = entourageCategory ?: "other"
         val list: List<EntourageCategory> = entourageCategories[entourageType] ?: return null
         for (category in list) {
@@ -46,11 +43,11 @@ object EntourageCategoryManager {
     }
 
     @JvmStatic
-    val defaultCategory: EntourageCategory?
+    val defaultCategory: EntourageCategory
         get() = getDefaultCategory(BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)
 
     @JvmStatic
-    fun getDefaultCategory(groupType: String?): EntourageCategory {
+    fun getDefaultCategory(groupType: String): EntourageCategory {
         var list: List<EntourageCategory>? = entourageCategories[groupType]
         if (list == null) {
             list = entourageCategories[BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION] ?: defaultGroup
@@ -63,7 +60,6 @@ object EntourageCategoryManager {
         return defaultType!!
     }
 
-    @JvmStatic
     @StringRes
     fun getGroupTypeDescription(groupType: String): Int {
         return when (groupType.toLowerCase()) {
@@ -78,23 +74,17 @@ object EntourageCategoryManager {
         val reader = JSONResourceReader(get().resources, R.raw.display_categories)
         val listType = object : TypeToken<ArrayList<EntourageCategory?>?>() {}.type
         val readEntourageCategories = reader.constructUsingGson<List<EntourageCategory>>(listType)
-        // To preserve the required order, we add the know types in the required order and the other types will get added after them
-        groupTypes.add(BaseEntourage.GROUPTYPE_ACTION_DEMAND)
-        groupTypes.add(BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)
-        // Construct the hashmap
-        defaultGroup = ArrayList()
-        entourageCategories[BaseEntourage.GROUPTYPE_ACTION_DEMAND] = defaultGroup
-        entourageCategories[BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION] = ArrayList<EntourageCategory>()
+        val tempGroup: HashMap<String, MutableList<EntourageCategory>> = HashMap()
         for (category in readEntourageCategories) {
-            val group = category.groupType
-            var list: MutableList<EntourageCategory>? = entourageCategories.get(group)
-            if (list == null) {
-                groupTypes.add(group)
-                list = ArrayList()
-                entourageCategories[group] = list as MutableList<EntourageCategory>
+            val group = category.groupType ?: continue
+            if (tempGroup[group] == null) {
+                tempGroup[group] = ArrayList<EntourageCategory>(0).toMutableList()
             }
-            list!!.add(category)
+            tempGroup[group]!!.add(category)
             if (defaultType == null && category.isDefault) defaultType = category
         }
+        entourageCategories[BaseEntourage.GROUPTYPE_ACTION_DEMAND] = tempGroup[BaseEntourage.GROUPTYPE_ACTION_DEMAND]!!
+        defaultGroup = tempGroup[BaseEntourage.GROUPTYPE_ACTION_DEMAND]!!
+        entourageCategories[BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION] = tempGroup[BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION]!!
     }
 }

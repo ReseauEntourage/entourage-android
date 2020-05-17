@@ -22,7 +22,7 @@ import social.entourage.android.service.EntourageService
 import social.entourage.android.service.EntourageService.LocalBinder
 import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.entourage.join.EntourageJoinRequestFragment
-import social.entourage.android.entourage.join.TourJoinRequestFragment
+import social.entourage.android.tour.join.TourJoinRequestFragment
 import social.entourage.android.view.EntourageSnackbar.make
 import timber.log.Timber
 import java.util.*
