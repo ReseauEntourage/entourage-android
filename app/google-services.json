@@ -30,30 +30,26 @@
       "api_key": [
         {
           "current_key": "AIzaSyBwBr8Zro0P1GJDeI4-VPOF3QpVg91q3uk"
+        },
+        {
+          "current_key": "AIzaSyALjX51bCgeLbuf2b3ajTaOp3E0_JwJlG0"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "1085027645289-3r36uobiuhk380o0pgb21pfepkbhgvnn.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "1085027645289-42otkketnp5ha26miutp5tjbndqdjais.apps.googleusercontent.com",
+              "client_id": "1085027645289-67u3fc70mb0j4dnbig9rs1hicg866tsv.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "social.entourage.entourageios.pfp"
+                "bundle_id": "social.entourage.entourageios.pfp.beta"
               }
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     },
@@ -81,30 +77,26 @@
       "api_key": [
         {
           "current_key": "AIzaSyBwBr8Zro0P1GJDeI4-VPOF3QpVg91q3uk"
+        },
+        {
+          "current_key": "AIzaSyALjX51bCgeLbuf2b3ajTaOp3E0_JwJlG0"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "1085027645289-3r36uobiuhk380o0pgb21pfepkbhgvnn.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "1085027645289-42otkketnp5ha26miutp5tjbndqdjais.apps.googleusercontent.com",
+              "client_id": "1085027645289-67u3fc70mb0j4dnbig9rs1hicg866tsv.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "social.entourage.entourageios.pfp"
+                "bundle_id": "social.entourage.entourageios.pfp.beta"
               }
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     },
@@ -132,30 +124,26 @@
       "api_key": [
         {
           "current_key": "AIzaSyBwBr8Zro0P1GJDeI4-VPOF3QpVg91q3uk"
+        },
+        {
+          "current_key": "AIzaSyALjX51bCgeLbuf2b3ajTaOp3E0_JwJlG0"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "1085027645289-3r36uobiuhk380o0pgb21pfepkbhgvnn.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "1085027645289-42otkketnp5ha26miutp5tjbndqdjais.apps.googleusercontent.com",
+              "client_id": "1085027645289-67u3fc70mb0j4dnbig9rs1hicg866tsv.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "social.entourage.entourageios.pfp"
+                "bundle_id": "social.entourage.entourageios.pfp.beta"
               }
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     },
@@ -175,18 +163,26 @@
       "api_key": [
         {
           "current_key": "AIzaSyBwBr8Zro0P1GJDeI4-VPOF3QpVg91q3uk"
+        },
+        {
+          "current_key": "AIzaSyALjX51bCgeLbuf2b3ajTaOp3E0_JwJlG0"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1085027645289-3r36uobiuhk380o0pgb21pfepkbhgvnn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1085027645289-67u3fc70mb0j4dnbig9rs1hicg866tsv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "social.entourage.entourageios.pfp.beta"
+              }
+            }
+          ]
         }
       }
     },
@@ -199,6 +195,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1085027645289-36diu73hr2b53hvr1875v4i773otrtmj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "social.entourage.android.pfp.preprod",
+            "certificate_hash": "a628764af4684c0c01a31b13286778c496f056b5"
+          }
+        },
+        {
           "client_id": "1085027645289-3r36uobiuhk380o0pgb21pfepkbhgvnn.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -206,18 +210,26 @@
       "api_key": [
         {
           "current_key": "AIzaSyBwBr8Zro0P1GJDeI4-VPOF3QpVg91q3uk"
+        },
+        {
+          "current_key": "AIzaSyALjX51bCgeLbuf2b3ajTaOp3E0_JwJlG0"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1085027645289-3r36uobiuhk380o0pgb21pfepkbhgvnn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1085027645289-67u3fc70mb0j4dnbig9rs1hicg866tsv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "social.entourage.entourageios.pfp.beta"
+              }
+            }
+          ]
         }
       }
     },
@@ -230,6 +242,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1085027645289-18d8ick3d57ava9kg67gpql6lcq673rg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "social.entourage.android.pfp.preprod.debug",
+            "certificate_hash": "a628764af4684c0c01a31b13286778c496f056b5"
+          }
+        },
+        {
           "client_id": "1085027645289-3r36uobiuhk380o0pgb21pfepkbhgvnn.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -237,18 +257,26 @@
       "api_key": [
         {
           "current_key": "AIzaSyBwBr8Zro0P1GJDeI4-VPOF3QpVg91q3uk"
+        },
+        {
+          "current_key": "AIzaSyALjX51bCgeLbuf2b3ajTaOp3E0_JwJlG0"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1085027645289-3r36uobiuhk380o0pgb21pfepkbhgvnn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1085027645289-67u3fc70mb0j4dnbig9rs1hicg866tsv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "social.entourage.entourageios.pfp.beta"
+              }
+            }
+          ]
         }
       }
     },
@@ -261,11 +289,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "1085027645289-6vjklfbh235vpc9f5o4cl0i2qro0jj88.apps.googleusercontent.com",
+          "client_id": "1085027645289-9ootql2r0iiebsrdgifujbkis5a5h6ub.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "social.entourage.android.preprod",
-            "certificate_hash": "5ab374848b9b5402a442152615cbd0bc2637347d"
+            "certificate_hash": "a628764af4684c0c01a31b13286778c496f056b5"
           }
         },
         {
@@ -276,30 +304,26 @@
       "api_key": [
         {
           "current_key": "AIzaSyBwBr8Zro0P1GJDeI4-VPOF3QpVg91q3uk"
+        },
+        {
+          "current_key": "AIzaSyALjX51bCgeLbuf2b3ajTaOp3E0_JwJlG0"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "1085027645289-3r36uobiuhk380o0pgb21pfepkbhgvnn.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "1085027645289-42otkketnp5ha26miutp5tjbndqdjais.apps.googleusercontent.com",
+              "client_id": "1085027645289-67u3fc70mb0j4dnbig9rs1hicg866tsv.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "social.entourage.entourageios.pfp"
+                "bundle_id": "social.entourage.entourageios.pfp.beta"
               }
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     },
@@ -312,7 +336,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "1085027645289-nhm0jic546lshhggbd4jna91ge3nea6n.apps.googleusercontent.com",
+          "client_id": "1085027645289-9rol5leuemfk2ntal17tog0n4aacncu6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "social.entourage.android.preprod.debug",
@@ -327,30 +351,26 @@
       "api_key": [
         {
           "current_key": "AIzaSyBwBr8Zro0P1GJDeI4-VPOF3QpVg91q3uk"
+        },
+        {
+          "current_key": "AIzaSyALjX51bCgeLbuf2b3ajTaOp3E0_JwJlG0"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "1085027645289-3r36uobiuhk380o0pgb21pfepkbhgvnn.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "1085027645289-42otkketnp5ha26miutp5tjbndqdjais.apps.googleusercontent.com",
+              "client_id": "1085027645289-67u3fc70mb0j4dnbig9rs1hicg866tsv.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "social.entourage.entourageios.pfp"
+                "bundle_id": "social.entourage.entourageios.pfp.beta"
               }
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }
