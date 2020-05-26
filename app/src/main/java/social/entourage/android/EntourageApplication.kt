@@ -96,10 +96,8 @@ class EntourageApplication : MultiDexApplication() {
         }
 
     fun finishLoginActivity() {
-        if (loginActivity != null) {
-            Timber.d("Finishing login activity")
-            loginActivity!!.finish()
-        }
+        Timber.d("Finishing login activity")
+        loginActivity?.finish()
     }
 
     // ----------------------------------

@@ -94,13 +94,13 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
     }
 
     override fun onJoinTourButton() {
-        if (entourageServiceConnection.boundService != null) {
+        entourageServiceConnection.boundService?.let {
             showProgressBar()
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN)
-            entourageServiceConnection.boundService!!.requestToJoinEntourage(feedItem as BaseEntourage?)
+            it.requestToJoinEntourage(feedItem as BaseEntourage?)
             entourage_info_options?.visibility = View.GONE
-        } else {
-            EntourageSnackbar.make(entourage_information_coordinator_layout!!,  R.string.tour_join_request_message_error, Snackbar.LENGTH_SHORT).show()
+        } ?: if(entourage_information_coordinator_layout!=null) {
+            EntourageSnackbar.make(entourage_information_coordinator_layout,  R.string.tour_join_request_message_error, Snackbar.LENGTH_SHORT).show()
         }
     }
 
@@ -148,8 +148,8 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         entourage_option_join?.visibility =  if (hideJoinButton) View.GONE else View.VISIBLE
         entourage_option_contact?.visibility = View.GONE
         val myId = EntourageApplication.me(activity)?.id ?: return
-        if (feedItem.author == null) return
-        if (feedItem.author!!.userID != myId) {
+        val author = feedItem.author ?: return
+        if (author.userID != myId) {
             if ((FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus || FeedItem.JOIN_STATUS_ACCEPTED == feedItem.joinStatus) && !feedItem.isFreezed()) {
                 entourage_option_quit?.visibility = View.VISIBLE
                 entourage_option_quit?.setText(if (FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus) R.string.tour_info_options_cancel_request else R.string.tour_info_options_quit_tour)
@@ -166,13 +166,11 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             // Share button available only for entourages and non-members
             entourage_option_share?.visibility = View.VISIBLE
         }
-        if (entourage_option_promote != null && membersList != null) {
-            for (member in membersList!!) {
-                if (member !is EntourageUser || member.userId != myId) continue
-                if (member.groupRole?.equals("organizer", ignoreCase = true) == true) {
-                    entourage_option_promote.visibility = View.VISIBLE
-                }
-                break
+        membersList?.forEach { member ->
+            if (member is EntourageUser
+                    && member.userId == myId
+                    && member.groupRole?.equals("organizer", ignoreCase = true) == true) {
+                entourage_option_promote?.visibility = View.VISIBLE
             }
         }
     }
@@ -198,14 +196,15 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             googleMap.addGroundOverlay(groundOverlayOptions)
         } else {
             // add marker
-            val drawable = AppCompatResources.getDrawable(requireContext(), feedItem.getHeatmapResourceId())
-            val icon = Utils.getBitmapDescriptorFromDrawable(drawable!!, BaseEntourage.getMarkerSize(requireContext()), BaseEntourage.getMarkerSize(requireContext()))
-            val markerOptions = MarkerOptions()
-                    .icon(icon)
-                    .position(position)
-                    .draggable(false)
-                    .anchor(0.5f, 0.5f)
-            googleMap.addMarker(markerOptions)
+            AppCompatResources.getDrawable(requireContext(), feedItem.getHeatmapResourceId())?.let {drawable ->
+                val icon = Utils.getBitmapDescriptorFromDrawable(drawable, BaseEntourage.getMarkerSize(requireContext()), BaseEntourage.getMarkerSize(requireContext()))
+                val markerOptions = MarkerOptions()
+                        .icon(icon)
+                        .position(position)
+                        .draggable(false)
+                        .anchor(0.5f, 0.5f)
+                googleMap.addMarker(markerOptions)
+            }
         }
     }
 
@@ -222,16 +221,16 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         if (!metadataVisible) return
 
         // populate the data
-        if (feedItem.author != null) {
-            entourage_info_metadata_organiser?.text = getString(R.string.tour_info_metadata_organiser_format, feedItem.author!!.userName)
+        feedItem.author?.let {
+            entourage_info_metadata_organiser?.text = getString(R.string.tour_info_metadata_organiser_format, it.userName)
         }
         if (metadata == null) return
         if (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.getGroupType(), ignoreCase = true)) {
             //Format dates same day or different days.
             val startCalendar = Calendar.getInstance()
-            startCalendar.time = (feedItem as BaseEntourage).metadata!!.startDate
+            startCalendar.time = metadata.startDate ?: Date()
             val endCalendar = Calendar.getInstance()
-            endCalendar.time = (feedItem as BaseEntourage).metadata!!.endDate
+            endCalendar.time = metadata.endDate ?: Date()
             if (startCalendar[Calendar.DAY_OF_YEAR] == endCalendar[Calendar.DAY_OF_YEAR]) {
                 entourage_info_metadata_datetime?.text = getString(R.string.tour_info_metadata_dateStart_hours_format,
                         metadata.getStartDateFullAsString(requireContext()),

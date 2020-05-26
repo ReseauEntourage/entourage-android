@@ -128,9 +128,9 @@ open class BaseEntourage : FeedItem, Serializable {
         if (numberOfUnreadMessages != entourage.numberOfUnreadMessages) return false
         if (actionGroupType != entourage.actionGroupType) return false
         if (category != null && category != entourage.category) return false
-        if (author != null &&  !author!!.isSame(entourage.author)) return false
+        if (isJoinRequestPublic != entourage.isJoinRequestPublic) return false
 
-        return isJoinRequestPublic == entourage.isJoinRequestPublic
+        return (author?.isSame(entourage.author)==true)
     }
 
     /**
@@ -150,10 +150,11 @@ open class BaseEntourage : FeedItem, Serializable {
      * @return distance in meters
      */
     fun distanceToLocation(newLocation: LatLng?): Int {
-        if (newLocation == null || this.location == null) {
+        if (newLocation == null) {
             return Int.MAX_VALUE
         }
-        val distance = this.location!!.distanceTo(LocationPoint(newLocation.latitude, newLocation.longitude))
+        val distance: Float = this.location?.distanceTo(LocationPoint(newLocation.latitude, newLocation.longitude))
+                ?: return Int.MAX_VALUE
         return floor(distance).toInt()
     }
 
@@ -295,22 +296,24 @@ open class BaseEntourage : FeedItem, Serializable {
         }
 
         fun getStartDateFullAsString(context: Context): String {
-            if (startDate == null) return ""
-            val df: DateFormat = SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_format_full), Locale.FRENCH)
-            return df.format(startDate!!)
+            startDate?.let {
+                val df = SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_format_full), Locale.FRENCH)
+                return df.format(it)
+            }
+            return ""
         }
 
         fun getStartTimeAsString(context: Context): String {
-            if (startDate == null) return ""
-            //round the minutes to multiple of 15
-            val calendar = Calendar.getInstance(Locale.getDefault())
-            calendar.time = startDate!!
-            var minutes = calendar[Calendar.MINUTE]
-            minutes = minutes / 15 * 15
-            calendar[Calendar.MINUTE] = minutes
-            //format it
-            val df: DateFormat = SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_time_format), Locale.FRENCH)
-            return df.format(calendar.time)
+            startDate?.let {
+                //round the minutes to multiple of 15
+                val calendar = Calendar.getInstance(Locale.getDefault())
+                calendar.time = it
+                calendar[Calendar.MINUTE] = calendar[Calendar.MINUTE] / 15 * 15
+                //format it
+                val df = SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_time_format), Locale.FRENCH)
+                return df.format(calendar.time)
+            }
+            return ""
         }
 
         fun setEndDate(endDate: Date) {
@@ -318,43 +321,43 @@ open class BaseEntourage : FeedItem, Serializable {
         }
 
         fun getEndDateFullAsString(context: Context): String {
-            if (endDate == null) return ""
-            val df: DateFormat = SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_format_full), Locale.FRENCH)
-            return df.format(endDate!!)
+            endDate?.let {
+                val df = SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_format_full), Locale.FRENCH)
+                return df.format(it)
+            }
+            return ""
         }
 
         fun getEndTimeAsString(context: Context): String {
-            if (endDate == null) return ""
-            //round the minutes to multiple of 15
-            val calendar = Calendar.getInstance(Locale.getDefault())
-            calendar.time = endDate!!
-            var minutes = calendar[Calendar.MINUTE]
-            minutes = minutes / 15 * 15
-            calendar[Calendar.MINUTE] = minutes
-            //format it
-            val df = SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_time_format), Locale.FRENCH)
-            return df.format(calendar.time)
+            endDate?.let {
+                //round the minutes to multiple of 15
+                val calendar = Calendar.getInstance(Locale.getDefault())
+                calendar.time = it
+                calendar[Calendar.MINUTE] = calendar[Calendar.MINUTE]  / 15 * 15
+                //format it
+                val df = SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_time_format), Locale.FRENCH)
+                return df.format(calendar.time)
+            }
+            return ""
         }
 
         fun getStartEndDatesAsString(context: Context): String {
-            if (startDate == null || endDate == null) return ""
-            val df = SimpleDateFormat("dd/MM", Locale.FRENCH)
-            return String.format(context.getString(R.string.entourage_metadata_date_startAt_endAt), df.format(startDate!!), df.format(endDate!!))
+            startDate?.let { start->
+                endDate?.let{ end ->
+                    val df = SimpleDateFormat("dd/MM", Locale.FRENCH)
+                    return String.format(context.getString(R.string.entourage_metadata_date_startAt_endAt), df.format(start), df.format(end))
+                }
+            }
+            return ""
         }
 
         fun getStartEndTimesAsString(context: Context): String {
-            if (startDate == null || endDate == null) return ""
             val calendarStart = Calendar.getInstance(Locale.getDefault())
             val calendarEnd = Calendar.getInstance(Locale.getDefault())
-            calendarStart.time = startDate!!
-            calendarEnd.time = endDate!!
-            var minutesStart = calendarStart[Calendar.MINUTE]
-            var minutesEnd = calendarEnd[Calendar.MINUTE]
-            minutesStart = minutesStart / 15 * 15
-            minutesEnd = minutesEnd / 15 * 15
-            calendarStart[Calendar.MINUTE] = minutesStart
-            calendarEnd[Calendar.MINUTE] = minutesEnd
-            //format it
+            calendarStart.time = startDate ?: return ""
+            calendarEnd.time = endDate ?: return ""
+            calendarStart[Calendar.MINUTE] = calendarStart[Calendar.MINUTE] / 15 * 15
+            calendarEnd[Calendar.MINUTE] = calendarEnd[Calendar.MINUTE] / 15 * 15
             val df = SimpleDateFormat("HH'h'mm", Locale.FRENCH)
             return String.format(context.resources.getString(R.string.entourage_metadata_time_startAt_endAt), df.format(calendarStart.time), df.format(calendarEnd.time))
         }

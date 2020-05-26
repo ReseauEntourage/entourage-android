@@ -30,8 +30,8 @@ class LocationCardViewHolder(view: View) : BaseCardViewHolder(view) {
             itemView.tic_location_date?.text = locationDateFormat.format(tour.getEndTime()).toUpperCase()
             itemView.tic_location_title?.setText(R.string.tour_info_text_closed)
             if (tour.isClosed()) {
-                if (tour.getEndTime() != null) {
-                    itemView.tic_location_duration?.text = Utils.getDateStringFromSeconds(tour.getEndTime()!!.time - tour.getStartTime().time)
+                tour.getEndTime()?.let {endTime->
+                    itemView.tic_location_duration?.text = Utils.getDateStringFromSeconds(endTime.time - tour.getStartTime().time)
                 }
                 var distance = 0f
                 var startPoint = tourPointsList[0]

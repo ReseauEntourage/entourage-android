@@ -70,7 +70,7 @@ open class EntouragePagination {
         if (!isRefreshing) {
             beforeDate = oldestDate
         } else {
-            if (this.newestDate!!.before(newestDate)) {
+            if (this.newestDate?.before(newestDate)==true) {
                 this.newestDate = newestDate
                 newItemsAvailable = true
             }

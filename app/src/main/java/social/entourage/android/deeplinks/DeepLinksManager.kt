@@ -44,17 +44,17 @@ object DeepLinksManager {
      * @param activity
      */
     fun handleCurrentDeepLink(activity: MainActivity) {
-        if (intent == null) return
-        currentUri = intent!!.data
-        if (currentUri == null || currentUri?.scheme == null) {
-            intent = null
-            return
-        }
-        Timber.i("New deeplink : %s", currentUri.toString())
-        if (currentUri!!.scheme!!.contains(BuildConfig.DEEP_LINKS_SCHEME)) {
-            handleEntourageDeepLink(activity)
-        } else {
-            handleHttpDeepLink(activity)
+        intent?.let {
+            currentUri = it.data
+            currentUri?.scheme?.let { scheme ->
+                if (scheme.contains(BuildConfig.DEEP_LINKS_SCHEME)) {
+                    handleEntourageDeepLink(activity)
+                } else {
+                    handleHttpDeepLink(activity)
+                }
+            } ?: {
+                intent = null
+            }
         }
     }
 
@@ -76,22 +76,24 @@ object DeepLinksManager {
      * @param activity
      */
     private fun handleHttpDeepLink(activity: MainActivity) {
-        val pathSegments: ArrayList<String> = ArrayList(currentUri!!.pathSegments)
-        if (pathSegments.size >= 2) {
-            val requestedView = pathSegments[0]
-            val key = pathSegments[1]
-            if (requestedView.equals(DeepLinksView.ENTOURAGES.view, ignoreCase = true)
-                    ||requestedView.equals(DeepLinksView.ENTOURAGE.view, ignoreCase = true)) {
-                //path like /entourage/UUID...
-                BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(TimestampedObject.ENTOURAGE_CARD, "", key))
-            } else if (requestedView.equals(DeepLinksView.DEEPLINK.view, ignoreCase = true)) {
-                //path like /deeplink/key/...
-                //Remove the requested view and the key from path segments
-                pathSegments.removeAt(0)
-                pathSegments.removeAt(0) // zero, because it was shifted when we removed requestedview
-                //Handle the deep link
-                handleDeepLink(activity, key, pathSegments)
-                return  // we don't suppress the intent in this case
+        currentUri?.let {
+            val pathSegments: ArrayList<String> = ArrayList(it.pathSegments)
+            if (pathSegments.size >= 2) {
+                val requestedView = pathSegments[0]
+                val key = pathSegments[1]
+                if (requestedView.equals(DeepLinksView.ENTOURAGES.view, ignoreCase = true)
+                        || requestedView.equals(DeepLinksView.ENTOURAGE.view, ignoreCase = true)) {
+                    //path like /entourage/UUID...
+                    BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(TimestampedObject.ENTOURAGE_CARD, "", key))
+                } else if (requestedView.equals(DeepLinksView.DEEPLINK.view, ignoreCase = true)) {
+                    //path like /deeplink/key/...
+                    //Remove the requested view and the key from path segments
+                    pathSegments.removeAt(0)
+                    pathSegments.removeAt(0) // zero, because it was shifted when we removed requestedview
+                    //Handle the deep link
+                    handleDeepLink(activity, key, pathSegments)
+                    return  // we don't suppress the intent in this case
+                }
             }
         }
         intent = null

@@ -42,8 +42,8 @@ class Poi : TimestampedObject(), Serializable, ClusterItem {
         return LatLng(latitude, longitude)
     }
 
-    override fun getTitle(): String {
-        return name!!
+    override fun getTitle(): String? {
+        return name
     }
 
     override fun getSnippet(): String? {

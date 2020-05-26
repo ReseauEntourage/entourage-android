@@ -19,12 +19,12 @@ class EncounterCardViewHolder(view: View) : BaseCardViewHolder(view) {
 
     override fun bindFields() {
         itemView.tic_encounter_author?.setOnClickListener(View.OnClickListener {
-            if (!encounter!!.isMyEncounter) return@OnClickListener
-            BusProvider.instance.post(OnTourEncounterViewRequestedEvent(encounter))
+            if (encounter?.isMyEncounter==true)
+                BusProvider.instance.post(OnTourEncounterViewRequestedEvent(encounter))
         })
         itemView.tic_encounter_street_name?.setOnClickListener(View.OnClickListener {
-            if (!encounter!!.isMyEncounter) return@OnClickListener
-            BusProvider.instance.post(OnTourEncounterViewRequestedEvent(encounter))
+            if (encounter?.isMyEncounter==true)
+                BusProvider.instance.post(OnTourEncounterViewRequestedEvent(encounter))
         })
     }
 

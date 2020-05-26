@@ -34,7 +34,7 @@ import timber.log.Timber
  * Created by Mihai Ionescu on 27/04/2018.
  */
 abstract class MainBasePresenter internal constructor(
-        protected val activity: MainActivity?,
+        protected val activity: MainActivity,
         private val appRequest: AppRequest,
         private val userRequest: UserRequest) : AvatarUpdatePresenter {
     // ----------------------------------
@@ -46,15 +46,12 @@ abstract class MainBasePresenter internal constructor(
     // MENU HANDLING
     // ----------------------------------
     protected open fun handleMenu(@IdRes menuId: Int) {
-        if (activity == null) return
         when (menuId) {
             R.id.action_user -> {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_TAP_MY_PROFILE)
-                var userFragment = activity.supportFragmentManager.findFragmentByTag(UserFragment.TAG) as UserFragment?
-                if (userFragment == null) {
-                    userFragment = UserFragment.newInstance(activity.getAuthenticationController().user.id)
-                }
-                userFragment!!.show(activity.supportFragmentManager, UserFragment.TAG)
+                val userFragment = activity.supportFragmentManager.findFragmentByTag(UserFragment.TAG) as UserFragment?
+                        ?: UserFragment.newInstance(activity.getAuthenticationController().user.id)
+                userFragment.show(activity.supportFragmentManager, UserFragment.TAG)
             }
             R.id.action_edit_profile -> {
                 val fragment = UserEditFragment()
@@ -101,7 +98,7 @@ abstract class MainBasePresenter internal constructor(
     // DISPLAY SCREENS METHODS
     // ----------------------------------
     private fun displayAppUpdateDialog() {
-        val builder = AlertDialog.Builder(activity!!)
+        val builder = AlertDialog.Builder(activity)
         val dialog = builder.setView(R.layout.dialog_version_update)
                 .setCancelable(false)
                 .create()
@@ -121,13 +118,11 @@ abstract class MainBasePresenter internal constructor(
     fun displayTutorial(forced: Boolean) {
         if (!forced && !Configuration.showTutorial()) return
         //Configuration.INSTANCE.showTutorial() is always false
-        if (activity != null) {
-            try {
-                CarouselFragment().show(activity.supportFragmentManager, CarouselFragment.TAG)
-            } catch (e: Exception) {
-                // This is just to see if we still get the Illegal state exception
-                Timber.e(e)
-            }
+        try {
+            CarouselFragment().show(activity.supportFragmentManager, CarouselFragment.TAG)
+        } catch (e: Exception) {
+            // This is just to see if we still get the Illegal state exception
+            Timber.e(e)
         }
     }
 
@@ -167,81 +162,77 @@ abstract class MainBasePresenter internal constructor(
     }
 
     fun updateUser(email: String?, smsCode: String?, phone: String?, location: Location?) {
-        if (activity != null) {
-            val deviceId = deviceID ?: return
-            val user = ArrayMap<String, Any>()
-            if (email != null) {
-                user[KEY_EMAIL] = email
-            }
-            if (smsCode != null) {
-                user[KEY_SMS_COE] = smsCode
-            }
-            if (phone != null) {
-                user[KEY_PHONE] = phone
-            }
-            if (location != null) {
-                user[KEY_DEVICE_LOCATION] = location
-            }
-            user[KEY_DEVICE_ID] = deviceId
-            user[KEY_DEVICE_TYPE] = ANDROID_DEVICE
-            val call = userRequest.updateUser(user)
-            call.enqueue(object : Callback<UserResponse?> {
-                override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
-                    if (response.isSuccessful) {
-                        if (activity.authenticationController.isAuthenticated) {
-                            val responseBody = response.body()
-                            if (responseBody != null) activity.authenticationController.saveUser(responseBody.user)
-                        }
-                        Timber.d("success")
-                    }
-                }
-
-                override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
-                    Timber.e(t)
-                }
-            })
+        val deviceId = deviceID ?: return
+        val user = ArrayMap<String, Any>()
+        if (email != null) {
+            user[KEY_EMAIL] = email
         }
+        if (smsCode != null) {
+            user[KEY_SMS_COE] = smsCode
+        }
+        if (phone != null) {
+            user[KEY_PHONE] = phone
+        }
+        if (location != null) {
+            user[KEY_DEVICE_LOCATION] = location
+        }
+        user[KEY_DEVICE_ID] = deviceId
+        user[KEY_DEVICE_TYPE] = ANDROID_DEVICE
+        val call = userRequest.updateUser(user)
+        call.enqueue(object : Callback<UserResponse?> {
+            override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
+                if (response.isSuccessful) {
+                    if (activity.authenticationController.isAuthenticated) {
+                        val responseBody = response.body()
+                        if (responseBody != null) activity.authenticationController.saveUser(responseBody.user)
+                    }
+                    Timber.d("success")
+                }
+            }
+
+            override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
+                Timber.e(t)
+            }
+        })
     }
 
     override fun updateUserPhoto(amazonFile: String) {
-        if (activity != null) {
-            val user = ArrayMap<String, Any>()
-            user["avatar_key"] = amazonFile
-            val request = ArrayMap<String, Any>()
-            request["user"] = user
-            val call = userRequest.updateUser(request)
-            call.enqueue(object : Callback<UserResponse?> {
-                override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
-                    activity.dismissProgressDialog()
-                    if (response.isSuccessful) {
-                        if (activity.authenticationController.isAuthenticated) {
-                            val responseBody = response.body()
-                            if (responseBody != null) activity.authenticationController.saveUser(responseBody.user)
-                        }
-                        val photoEditFragment = activity.supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as PhotoEditFragment?
-                        if (photoEditFragment != null) {
-                            if (photoEditFragment.onPhotoSent(true)) {
-                                val photoChooseSourceFragment = activity.supportFragmentManager.findFragmentByTag(PhotoChooseSourceFragment.TAG) as PhotoChooseSourceFragment?
-                                photoChooseSourceFragment?.dismiss()
-                            }
-                        }
-                    } else {
-                        Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show()
-                        val photoEditFragment = activity.supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as PhotoEditFragment?
-                        photoEditFragment?.onPhotoSent(false)
-                        Timber.e(activity.getString(R.string.user_photo_error_not_saved))
+        val user = ArrayMap<String, Any>()
+        user["avatar_key"] = amazonFile
+        val request = ArrayMap<String, Any>()
+        request["user"] = user
+        val call = userRequest.updateUser(request)
+        call.enqueue(object : Callback<UserResponse?> {
+            override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
+                activity.dismissProgressDialog()
+                if (response.isSuccessful) {
+                    if (activity.authenticationController.isAuthenticated) {
+                        val responseBody = response.body()
+                        if (responseBody != null) activity.authenticationController.saveUser(responseBody.user)
                     }
-                }
-
-                override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
-                    activity.dismissProgressDialog()
-                    Timber.e(t)
+                    val photoEditFragment = activity.supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as PhotoEditFragment?
+                    if (photoEditFragment != null) {
+                        if (photoEditFragment.onPhotoSent(true)) {
+                            val photoChooseSourceFragment = activity.supportFragmentManager.findFragmentByTag(PhotoChooseSourceFragment.TAG) as PhotoChooseSourceFragment?
+                            photoChooseSourceFragment?.dismiss()
+                        }
+                    }
+                } else {
                     Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show()
                     val photoEditFragment = activity.supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as PhotoEditFragment?
                     photoEditFragment?.onPhotoSent(false)
+                    Timber.e(activity.getString(R.string.user_photo_error_not_saved))
                 }
-            })
-        }
+            }
+
+            override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
+                activity.dismissProgressDialog()
+                Timber.e(t)
+                Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show()
+                val photoEditFragment = activity.supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as PhotoEditFragment?
+                photoEditFragment?.onPhotoSent(false)
+            }
+        })
     }
 
     fun deleteApplicationInfo() {
@@ -270,9 +261,6 @@ abstract class MainBasePresenter internal constructor(
     }
 
     fun updateApplicationInfo(pushNotificationToken: String) {
-        if (activity == null) {
-            return
-        }
         //delete old one if existing
         if (pushNotificationToken != deviceID) {
             deleteApplicationInfo()

@@ -15,7 +15,7 @@ object EntourageCategoryManager {
     // ----------------------------------
     // Attributes
     // ----------------------------------
-    private var defaultType: EntourageCategory? = null
+    private lateinit var defaultType: EntourageCategory
     val entourageCategories = HashMap<String, List<EntourageCategory>>()
     private val defaultGroup: List<EntourageCategory>
 
@@ -57,7 +57,7 @@ object EntourageCategoryManager {
                 return category
             }
         }
-        return defaultType!!
+        return defaultType
     }
 
     @StringRes
@@ -80,11 +80,16 @@ object EntourageCategoryManager {
             if (tempGroup[group] == null) {
                 tempGroup[group] = ArrayList<EntourageCategory>(0).toMutableList()
             }
-            tempGroup[group]!!.add(category)
-            if (defaultType == null && category.isDefault) defaultType = category
+            tempGroup[group]?.add(category)
+            if (!this::defaultType.isInitialized && category.isDefault) defaultType = category
         }
-        entourageCategories[BaseEntourage.GROUPTYPE_ACTION_DEMAND] = tempGroup[BaseEntourage.GROUPTYPE_ACTION_DEMAND]!!
-        defaultGroup = tempGroup[BaseEntourage.GROUPTYPE_ACTION_DEMAND]!!
-        entourageCategories[BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION] = tempGroup[BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION]!!
+        tempGroup[BaseEntourage.GROUPTYPE_ACTION_DEMAND]?.let{
+            entourageCategories[BaseEntourage.GROUPTYPE_ACTION_DEMAND] = it
+        }
+        tempGroup[BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION]?.let {
+            entourageCategories[BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION] = it
+        }
+        //TODO make sure we have this category
+        defaultGroup = entourageCategories[BaseEntourage.GROUPTYPE_ACTION_DEMAND]!!
     }
 }

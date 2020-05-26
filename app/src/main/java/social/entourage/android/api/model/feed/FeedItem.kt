@@ -117,7 +117,7 @@ abstract class FeedItem : TimestampedObject, Serializable {
         if (lastMessage == null) {
             lastMessage = LastMessage()
         }
-        lastMessage!!.setMessage(text, author)
+        lastMessage?.setMessage(text, author)
     }
 
     fun isClosed(): Boolean { return STATUS_CLOSED == status || STATUS_FREEZED == status}
@@ -129,10 +129,9 @@ abstract class FeedItem : TimestampedObject, Serializable {
     open fun isFreezed(): Boolean {return STATUS_FREEZED == status}
 
     fun isMine(context: Context?): Boolean {
-        if (author != null) {
-            val me = me(context)
-            if (me != null) {
-                return author!!.userID == me.id
+        author?.let {
+            me(context)?.let { me ->
+                return it.userID == me.id
             }
         }
         return false

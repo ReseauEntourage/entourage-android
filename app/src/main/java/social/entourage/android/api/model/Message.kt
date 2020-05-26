@@ -66,9 +66,11 @@ class Message(var author: String, var msgObject: String?, content: String, pushN
                     }
                 }
             }
-        }
-        if(content?.message?.isNotEmpty() == true) {
-            return content!!.message
+            content.message?.let {
+                if(it.isNotEmpty()) {
+                    return it
+                }
+            }
         }
         return msgObject ?: ""
     }

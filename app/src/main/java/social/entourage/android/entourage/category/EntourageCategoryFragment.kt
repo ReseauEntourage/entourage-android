@@ -96,11 +96,11 @@ class EntourageCategoryFragment : EntourageDialogFragment() {
     }
 
     private fun initializeHelpHtmlView() {
-        if (activity != null && activity is MainActivity) {
-            val goalLink = (activity as MainActivity?)!!.getLink(Constants.GOAL_LINK_ID)
+        (activity as MainActivity?)?.let { mainActivity ->
+            val goalLink = mainActivity.getLink(Constants.GOAL_LINK_ID)
             entourage_category_help_link?.setHtmlString(getString(R.string.entourage_create_help_text, goalLink), EntourageLinkMovementMethod.getInstance())
         }
-}
+    }
 
     // ----------------------------------
     // Interactions handling

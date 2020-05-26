@@ -48,7 +48,7 @@ class Invitation (
     }*/
 
     val inviterName: String
-        get() = if (inviter == null) "" else inviter!!.displayName
+        get() = inviter?.displayName ?: ""
 
     override fun getTimestamp(): Date {
         return Date()

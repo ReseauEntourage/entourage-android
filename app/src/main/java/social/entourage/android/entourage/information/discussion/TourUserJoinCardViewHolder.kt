@@ -76,26 +76,29 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
         itemView.tic_private_username?.setText(user.displayName)
         //TODO Set the user role once they are sent from the server
         itemView.tic_private_username?.setRoles(null)
-        val avatarURL = user.avatarURLAsString
-        if (avatarURL != null  && itemView.tic_photo != null) {
-            Picasso.get().load(Uri.parse(avatarURL))
-                    .placeholder(R.drawable.ic_user_photo_small)
-                    .transform(CropCircleTransformation())
-                    .into(itemView.tic_photo!!)
-        } else {
-            itemView.tic_photo?.setImageResource(R.drawable.ic_user_photo_small)
+
+        itemView.tic_photo?.let { photoView ->
+            user.avatarURLAsString?.let {avatarURL ->
+                Picasso.get().load(Uri.parse(avatarURL))
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .transform(CropCircleTransformation())
+                        .into(photoView)
+            } ?: {
+                photoView.setImageResource(R.drawable.ic_user_photo_small)
+            }
         }
 
         // Partner logo
-        val partner = user.partner
-        if ( partner?.smallLogoUrl != null && itemView.tic_partner_logo != null) {
-            Picasso.get()
-                    .load(Uri.parse( partner.smallLogoUrl))
-                    .placeholder(R.drawable.partner_placeholder)
-                    .transform(CropCircleTransformation())
-                    .into(itemView.tic_partner_logo!!)
-        } else {
-            itemView.tic_partner_logo?.setImageDrawable(null)
+        itemView.tic_partner_logo?.let { partnerLogoView ->
+            user.partner?.smallLogoUrl?.let {url ->
+                Picasso.get()
+                        .load(Uri.parse(url))
+                        .placeholder(R.drawable.partner_placeholder)
+                        .transform(CropCircleTransformation())
+                        .into(partnerLogoView)
+            } ?: {
+                partnerLogoView.setImageDrawable(null)
+            }
         }
         itemView.tic_join_description?.text = getJoinStatus(user.status, user.feedItem.type == TimestampedObject.TOUR_CARD)
         itemView.tic_join_message?.text = user.message
@@ -113,32 +116,31 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
         itemView.tic_private_info_section?.visibility = View.GONE
         itemView.tic_public_info_section?.visibility = View.VISIBLE
         itemView.tic_public_info_username?.text = user.displayName
-        val avatarURL = user.avatarURLAsString
-        if (avatarURL != null && itemView.tic_public_info_photo !=null) {
-            Picasso.get().load(Uri.parse(avatarURL))
-                    .placeholder(R.drawable.ic_user_photo_small)
-                    .transform(CropCircleTransformation())
-                    .into(itemView.tic_public_info_photo!!)
-        } else {
-            itemView.tic_public_info_photo?.setImageResource(R.drawable.ic_user_photo_small)
+
+        itemView.tic_public_info_photo?.let { photoView ->
+            user.avatarURLAsString?.let { avatarURL ->
+                Picasso.get().load(Uri.parse(avatarURL))
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .transform(CropCircleTransformation())
+                        .into(photoView)
+            } ?: {
+                photoView.setImageResource(R.drawable.ic_user_photo_small)
+            }
         }
 
         // Partner logo
-        val partner = user.partner
-        if (partner != null && itemView.tic_public_info_partner_logo !=null) {
-            val partnerLogoURL = partner.smallLogoUrl
-            if (partnerLogoURL != null) {
-                Picasso.get()
-                        .load(Uri.parse(partnerLogoURL))
-                        .placeholder(R.drawable.partner_placeholder)
-                        .transform(CropCircleTransformation())
-                        .into(itemView.tic_public_info_partner_logo!!)
-            } else {
-                itemView.tic_public_info_partner_logo?.setImageDrawable(null)
+        itemView.tic_public_info_partner_logo?.let { partnerLogoView ->
+            user.partner?.smallLogoUrl?.let {partnerLogoURL ->
+                    Picasso.get()
+                            .load(Uri.parse(partnerLogoURL))
+                            .placeholder(R.drawable.partner_placeholder)
+                            .transform(CropCircleTransformation())
+                            .into(partnerLogoView)
+            } ?: {
+                partnerLogoView.setImageDrawable(null)
             }
-        } else {
-            itemView.tic_public_info_partner_logo?.setImageDrawable(null)
         }
+
         val joinStatus = getJoinStatus(user.status, user.feedItem.type == TimestampedObject.TOUR_CARD)
         itemView.tic_join_status?.setText(Utils.fromHtml(itemView.context.getString(R.string.tour_info_text_join_html, user.displayName, joinStatus)), TextView.BufferType.SPANNABLE)
         when(user.status) {
@@ -161,11 +163,10 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
     private fun getJoinStatus(joinStatus: String, isTour: Boolean): String {
         return when (joinStatus) {
             FeedItem.JOIN_STATUS_ACCEPTED -> {
-                val joinString = itemView.context.getString(if (isTour) R.string.tour_info_text_join_accepted else R.string.entourage_info_text_join_accepted)
-                if (isTour && feedItem?.author != null) {
-                    joinString + feedItem!!.author!!.userName
-                } else
-                    joinString
+                if (isTour)
+                    itemView.context.getString(R.string.tour_info_text_join_accepted) + (feedItem?.author?.userName ?: "")
+                else
+                    itemView.context.getString(R.string.entourage_info_text_join_accepted)
             }
             FeedItem.JOIN_STATUS_REJECTED -> itemView.context.getString(R.string.tour_info_text_join_rejected)
             FeedItem.JOIN_STATUS_PENDING -> itemView.context.getString(if (isTour) R.string.tour_join_request_received_message_short else R.string.entourage_join_request_received_message_short)

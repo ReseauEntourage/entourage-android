@@ -11,7 +11,7 @@ import social.entourage.android.carousel.pages.CarouselPage4Fragment
 /**
  * Created by mihaiionescu on 14/02/2017.
  */
-class CarouselPageAdapter(fm: FragmentManager?) : FragmentStatePagerAdapter(fm!!, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class CarouselPageAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     override fun getItem(position: Int): Fragment {
         return when (position) {
             1 -> CarouselPage2Fragment()

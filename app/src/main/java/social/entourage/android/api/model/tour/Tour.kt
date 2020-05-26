@@ -134,10 +134,8 @@ class Tour : FeedItem, Serializable {
         if (status != tour.status) return false
         if (numberOfPeople != tour.numberOfPeople) return false
         if (numberOfUnreadMessages != tour.numberOfUnreadMessages) return false
-        if (author != null) {
-            if (!author!!.isSame(tour.author)) return false
-        }
-        return joinStatus == tour.joinStatus
+        if (joinStatus != tour.joinStatus) return false
+        return author?.isSame(tour.author) ?: false
     }
 
     @get:DrawableRes

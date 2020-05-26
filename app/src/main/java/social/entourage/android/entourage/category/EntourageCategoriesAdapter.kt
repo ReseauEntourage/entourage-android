@@ -68,12 +68,12 @@ class EntourageCategoriesAdapter(
 
     override fun getChildrenCount(groupPosition: Int): Int {
         if (groupPosition == 0) return 0
-        return categories[selectedCategory.groupType]!!.size
+        return categories[selectedCategory.groupType]?.size ?:0
     }
 
     override fun getChild(groupPosition: Int, childPosition: Int): EntourageCategory? {
         if (groupPosition == 0) return null
-        return categories[selectedCategory.groupType]!![childPosition]
+        return categories[selectedCategory.groupType]?.get(childPosition)
     }
 
     override fun getChildId(groupPosition: Int, childPosition: Int): Long {
@@ -138,7 +138,7 @@ class EntourageCategoriesAdapter(
         }
         // populate the group
         if (groupPosition != 0) {
-            val label = groupView!!.findViewById<TextView>(R.id.entourage_category_group_label)
+            val label = groupView?.findViewById<TextView>(R.id.entourage_category_group_label)
             label?.setText(EntourageCategoryManager.getGroupTypeDescription(selectedCategory.groupType!!))
         }
         return groupView!!
