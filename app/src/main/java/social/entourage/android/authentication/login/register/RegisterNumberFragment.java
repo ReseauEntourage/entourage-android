@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import social.entourage.android.EntourageEvents;
-import social.entourage.android.view.CountryCodePicker.CountryCodePicker;
+import social.entourage.android.view.countrycodepicker.CountryCodePicker;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

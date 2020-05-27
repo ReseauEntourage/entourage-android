@@ -81,7 +81,7 @@ tools:context="social.entourage.android.onboarding.LoginNewActivity">
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2">
 
-        <social.entourage.android.view.CountryCodePicker.CountryCodePicker
+        <social.entourage.android.view.countrycodepicker.CountryCodePicker
             android:id="@+id/ui_login_phone_ccp_code"
             android:layout_width="70dp"
             android:layout_height="48dp"

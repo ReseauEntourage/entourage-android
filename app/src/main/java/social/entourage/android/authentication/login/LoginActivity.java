@@ -64,7 +64,7 @@ import social.entourage.android.user.edit.UserEditActionZoneFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
-import social.entourage.android.view.CountryCodePicker.CountryCodePicker;
+import social.entourage.android.view.countrycodepicker.CountryCodePicker;
 import social.entourage.android.view.EntourageSnackbar;
 import social.entourage.android.view.HtmlTextView;
 import timber.log.Timber;
