@@ -24,6 +24,10 @@ public interface UserRequest {
     @POST("users/me/presigned_avatar_upload.json")
     Call<PrepareAvatarUploadRepository.Response> prepareAvatarUpload(@Body PrepareAvatarUploadRepository.Request params);
 
+    //New version for onboarding
+    @POST("users/me/presigned_avatar_upload.json")
+    Call<Response> prepareAvatarUpload(@Body Request params);
+
     @PATCH("users/me/code.json")
     Call<UserResponse> regenerateSecretCode(@Body ArrayMap<String, Object> userInfo);
 
@@ -51,4 +55,6 @@ public interface UserRequest {
     @POST("users/me/address")
     Call<User.AddressWrapper> updateAddress(@Body User.AddressWrapper addressWrapper);
 
+    @POST("users/me/address")
+    Call<User.AddressWrapper> updateAddressLocation(@Body ArrayMap<String, Object> address);
 }

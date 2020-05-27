@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/white"
+    android:id="@+id/onboard_login_mainlayout"
+tools:context="social.entourage.android.onboarding.LoginNewActivity">
+
+    <FrameLayout
+        android:id="@+id/frameLayout4"
+        android:layout_width="369dp"
+        android:layout_height="8dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="1dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ui_login_bt_back"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/ui_login_bt_back"
+        style="@style/TransparentButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/frameLayout4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout4" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/frameLayout4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout4"
+        app:srcCompat="@drawable/onboard_back" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="62dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="62dp"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/login_title"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="172dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/empty_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout4"
+        app:srcCompat="@drawable/logo_entourage_txt" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_rounded_login_orange_light_stroke"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+        <social.entourage.android.view.CountryCodePicker.CountryCodePicker
+            android:id="@+id/ui_login_phone_ccp_code"
+            android:layout_width="70dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/bg_rounded_login_grey_light_stroke"
+            android:gravity="center_vertical"
+            app:ccp_alternative_layout="true"
+            app:ccp_backgroundColor="@color/partner_logo_transparent"
+            app:ccp_countryPreference="FR,BE,CA,GP,GF,MQ,MU,YT,PF,RE"
+            app:ccp_defaultNameCode="FR"
+            app:ccp_hideNameCode="true"
+            app:ccp_hidePhoneCode="false"
+            app:ccp_selectionDialogShowSearch="false"
+            app:ccp_showFlag="false"
+            app:ccp_textColor="@color/pre_onboard_black"
+            app:ccp_textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+        <EditText
+            android:id="@+id/ui_login_phone_et_phone"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bg_rounded_login_grey_light_stroke"
+            android:ems="10"
+            android:hint="@string/login_phone_placeholder"
+            android:inputType="phone"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textColor="@color/pre_onboard_black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ui_login_phone_ccp_code"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/ui_login_phone_ccp_code"
+            app:layout_constraintTop_toTopOf="@+id/ui_login_phone_ccp_code" />
+
+        <EditText
+            android:id="@+id/ui_login_et_code"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/bg_rounded_login_grey_light_stroke"
+            android:ems="10"
+            android:maxLength="6"
+            android:hint="@string/login_placeholder_code"
+            android:inputType="numberPassword"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textColor="@color/pre_onboard_black"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/ui_login_phone_et_phone"
+            app:layout_constraintStart_toStartOf="@+id/ui_login_phone_ccp_code"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        <Button
+            android:id="@+id/ui_login_button_signup"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="60dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/bg_button_rounded_pre_onboard_orange_plain"
+            android:text="@string/login_button_connect"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ui_login_button_resend_code" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/login_label_code"
+            android:textColor="@color/onboard_black_36"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/ui_login_et_code"
+            app:layout_constraintTop_toBottomOf="@+id/ui_login_phone_ccp_code" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/login_label_country"
+            android:textColor="@color/pre_onboard_black"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/ui_login_phone_ccp_code"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_label_phone"
+            android:textColor="@color/onboard_black_36"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/textView7"
+            app:layout_constraintStart_toStartOf="@+id/ui_login_phone_et_phone"
+            app:layout_constraintTop_toTopOf="@+id/textView7" />
+
+        <Button
+            android:id="@+id/ui_login_button_resend_code"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:background="@drawable/btn_clear"
+            android:text="@string/login_button_resend_code"
+            android:textAllCaps="false"
+            android:textColor="@color/pre_onboard_orange"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="@+id/ui_login_et_code"
+            app:layout_constraintTop_toBottomOf="@+id/ui_login_et_code" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

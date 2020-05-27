@@ -38,6 +38,7 @@
         <attr format="boolean" name="ccp_enableHint"/>
         <attr format="boolean" name="ccp_enablePhoneAutoFormatter"/>
         <attr format="boolean" name="ccp_setCountryByTimeZone"/>
+        <attr format="boolean" name="ccp_alternative_layout"/>
     </declare-styleable>
     <declare-styleable name="EntourageTitleView">
         <attr name="entourageTitle" format="string"/>
@@ -53,5 +54,9 @@
     <declare-styleable name="UserNameView">
         <attr name="android:textColor"/>
         <attr name="android:textSize"/>
+    </declare-styleable>
+
+    <declare-styleable name="ProgressBarView">
+        <attr name="percent" format="float"/>
     </declare-styleable>
 </resources>

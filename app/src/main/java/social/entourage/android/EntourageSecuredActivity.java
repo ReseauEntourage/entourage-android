@@ -6,7 +6,7 @@ import android.os.Bundle;
 import javax.inject.Inject;
 
 import social.entourage.android.authentication.AuthenticationController;
-import social.entourage.android.Onboarding.PreOnboardingStartActivity;
+import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity;
 
 /**
  * Base Activity that only runs if the user is currently logged in

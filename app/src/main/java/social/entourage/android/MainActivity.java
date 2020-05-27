@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -54,6 +55,9 @@ import social.entourage.android.configuration.Configuration;
 import social.entourage.android.deeplinks.DeepLinksManager;
 import social.entourage.android.entourage.EntourageDisclaimerFragment;
 import social.entourage.android.entourage.information.EntourageInformationFragment;
+import social.entourage.android.user.edit.EditUserPlaceFragment;
+import social.entourage.android.onboarding.OnboardingPhotoFragment;
+import social.entourage.android.user.edit.UserEditActionZoneFragment;
 import social.entourage.android.tour.TourInformationFragment;
 import social.entourage.android.entourage.my.MyEntouragesFragment;
 import social.entourage.android.location.EntourageLocation;
@@ -71,9 +75,7 @@ import social.entourage.android.tour.encounter.ReadEncounterActivity;
 import social.entourage.android.user.AvatarUploadPresenter;
 import social.entourage.android.user.AvatarUploadView;
 import social.entourage.android.user.UserFragment;
-import social.entourage.android.user.edit.UserEditActionZoneFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
-import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
 import timber.log.Timber;
 
@@ -592,7 +594,7 @@ public class MainActivity extends EntourageSecuredActivity
     @Override
     public void onPhotoChosen(final Uri photoUri, int photoSource) {
 
-        if (photoSource == PhotoChooseSourceFragment.TAKE_PHOTO_REQUEST) {
+        if (photoSource == OnboardingPhotoFragment.TAKE_PHOTO_REQUEST) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_PHOTO_SUBMIT);
         }
 
@@ -741,12 +743,20 @@ public class MainActivity extends EntourageSecuredActivity
         if (noNeedToShowEditScreen) {
             return;
         }
-
-        UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null);
-        userEditActionZoneFragment.addFragmentListener(this);
-        userEditActionZoneFragment.addFragmentListener(extraFragmentListener);
-        userEditActionZoneFragment.setFromLogin(true);
-        userEditActionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null);
+            userEditActionZoneFragment.addFragmentListener(this);
+            userEditActionZoneFragment.addFragmentListener(extraFragmentListener);
+            userEditActionZoneFragment.setFromLogin(true);
+            userEditActionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
+        }
+        else {
+            EditUserPlaceFragment editUserPlaceFragment = EditUserPlaceFragment.newInstance(null);
+            editUserPlaceFragment.setupListener(this);
+            editUserPlaceFragment.setupListener(extraFragmentListener);
+            editUserPlaceFragment.show(getSupportFragmentManager(),EditUserPlaceFragment.TAG);
+        }
+        
         me.setEditActionZoneShown(true);
     }
 

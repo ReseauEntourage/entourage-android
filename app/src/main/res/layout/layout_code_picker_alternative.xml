@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/country_code_holder_rly"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+  <RelativeLayout
+      android:id="@+id/click_consumer_rly"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="?android:attr/selectableItemBackground"
+      android:gravity="center">
+    <!--    <LinearLayout
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tvSelectedCountry"
+            android:layout_alignBottom="@+id/tvSelectedCountry"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/google_1x">-->
+    <LinearLayout
+        android:id="@+id/flag_holder_lly"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="@dimen/google_1x"
+        android:layout_marginRight="@dimen/google_1x"
+        android:visibility="gone">
+
+      <androidx.appcompat.widget.AppCompatImageView
+          android:id="@+id/flag_imv"
+          android:layout_width="wrap_content"
+          android:layout_height="18dp"
+          android:adjustViewBounds="true" />
+    </LinearLayout>
+
+    <!--</LinearLayout>-->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/selected_country_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/flag_holder_lly"
+        android:layout_toRightOf="@+id/flag_holder_lly"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="+62"
+        android:textAlignment="center"
+        android:textColor="@color/pre_onboard_black"
+        android:textSize="16sp" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/arrow_imv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/selected_country_tv"
+        android:layout_toRightOf="@+id/selected_country_tv"
+        android:adjustViewBounds="true"
+        android:alpha="0.6"
+        android:tint="@android:color/black"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_expand_more_black_24dp" />
+  </RelativeLayout>
+</RelativeLayout>

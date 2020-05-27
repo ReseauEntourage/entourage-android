@@ -1,4 +1,4 @@
-package social.entourage.android.Onboarding
+package social.entourage.android.onboarding.pre_onboarding
 
 import android.graphics.Rect
 import android.view.View

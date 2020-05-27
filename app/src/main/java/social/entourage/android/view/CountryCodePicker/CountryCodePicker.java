@@ -1,4 +1,4 @@
-package social.entourage.android.view.countrycodepicker;
+package social.entourage.android.view.CountryCodePicker;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -126,7 +126,16 @@ public class CountryCodePicker extends RelativeLayout {
     }
 
     private void init(AttributeSet attrs) {
-        inflate(getContext(), R.layout.layout_code_picker, this);
+        TypedArray a =
+                getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.CountryCodePicker, 0, 0);
+        boolean isAlternative = a.getBoolean(R.styleable.CountryCodePicker_ccp_alternative_layout, false);
+        if (isAlternative) {
+            inflate(getContext(), R.layout.layout_code_picker_alternative, this);
+        }
+        else {
+            inflate(getContext(), R.layout.layout_code_picker, this);
+        }
+
 
         mTvSelectedCountry = findViewById(R.id.selected_country_tv);
         mRlyHolder = findViewById(R.id.country_code_holder_rly);

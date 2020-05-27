@@ -1,4 +1,4 @@
-package social.entourage.android.view.countrycodepicker;
+package social.entourage.android.view.CountryCodePicker;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
