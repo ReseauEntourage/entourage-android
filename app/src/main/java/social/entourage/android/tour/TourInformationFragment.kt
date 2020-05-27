@@ -115,10 +115,10 @@ class TourInformationFragment : FeedItemInformationFragment(){
         if (entourageServiceConnection.boundService != null) {
             showProgressBar()
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN)
-            entourageServiceConnection.boundService!!.requestToJoinTour(feedItem as Tour?)
+            entourageServiceConnection.boundService?.requestToJoinTour(feedItem as Tour?)
             entourage_info_options?.visibility = View.GONE
         } else {
-            EntourageSnackbar.make(entourage_information_coordinator_layout!!,  R.string.tour_join_request_message_error, Snackbar.LENGTH_SHORT).show()
+            entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.tour_join_request_message_error, Snackbar.LENGTH_SHORT).show()}
         }
     }
 
@@ -155,9 +155,9 @@ class TourInformationFragment : FeedItemInformationFragment(){
         val hideJoinButton = feedItem.isPrivate() || FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus || feedItem.isFreezed()
         entourage_option_join?.visibility =  View.GONE
         entourage_option_contact?.visibility = if (hideJoinButton) View.GONE else View.VISIBLE
-        if (feedItem.author == null) return
+        val authorId = feedItem.author?.userID ?: return
         val myId = EntourageApplication.me(activity)?.id ?: return
-        if (feedItem.author!!.userID != myId) {
+        if (authorId != myId) {
             if ((FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus || FeedItem.JOIN_STATUS_ACCEPTED == feedItem.joinStatus) && !feedItem.isFreezed()) {
                 entourage_option_quit?.visibility = View.VISIBLE
                 entourage_option_quit?.setText(if (FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus) R.string.tour_info_options_cancel_request else R.string.tour_info_options_quit_tour)
@@ -184,10 +184,10 @@ class TourInformationFragment : FeedItemInformationFragment(){
     }
 
     private fun updateMap() {
-        if (mapFragment == null || !mapFragment!!.isAdded) {
-            initializeMap()
-        } else {
+        if (mapFragment?.isAdded == true) {
             drawFeedItemOnMap()
+        } else {
+            initializeMap()
         }
     }
 
@@ -229,34 +229,36 @@ class TourInformationFragment : FeedItemInformationFragment(){
         try {
             val googleMapOptions = GoogleMapOptions()
             googleMapOptions.zOrderOnTop(true)
-            hiddenMapFragment = SupportMapFragment.newInstance(googleMapOptions)
-            childFragmentManager.beginTransaction().replace(R.id.tour_info_hidden_map_layout, hiddenMapFragment!!).commit()
-            hiddenMapFragment!!.getMapAsync { googleMap ->
-                googleMap.uiSettings.isMyLocationButtonEnabled = false
-                googleMap.uiSettings.isMapToolbarEnabled = false
-                googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-                        activity, R.raw.map_styles_json))
-                if (tourInformationList.size > 0) {
-                    val tourTimestamp = tourInformationList[0]
-                    if (tourTimestamp.locationPoint != null) {
-                        //put the pin
-                        val pin = MarkerOptions().position(tourTimestamp.locationPoint.location)
-                        googleMap.addMarker(pin)
-                        //move the camera
-                        val camera = CameraUpdateFactory.newLatLngZoom(tourTimestamp.locationPoint.location, MAP_SNAPSHOT_ZOOM.toFloat())
-                        googleMap.moveCamera(camera)
+            SupportMapFragment.newInstance(googleMapOptions)?.let {
+                hiddenMapFragment = it
+                childFragmentManager.beginTransaction().replace(R.id.tour_info_hidden_map_layout, it).commit()
+                it.getMapAsync { googleMap ->
+                    googleMap.uiSettings.isMyLocationButtonEnabled = false
+                    googleMap.uiSettings.isMapToolbarEnabled = false
+                    googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                            activity, R.raw.map_styles_json))
+                    if (tourInformationList.size > 0) {
+                        val tourTimestamp = tourInformationList[0]
+                        if (tourTimestamp.locationPoint != null) {
+                            //put the pin
+                            val pin = MarkerOptions().position(tourTimestamp.locationPoint.location)
+                            googleMap.addMarker(pin)
+                            //move the camera
+                            val camera = CameraUpdateFactory.newLatLngZoom(tourTimestamp.locationPoint.location, MAP_SNAPSHOT_ZOOM.toFloat())
+                            googleMap.moveCamera(camera)
+                        }
+                    } else {
+                        googleMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_SNAPSHOT_ZOOM.toFloat()))
                     }
-                } else {
-                    googleMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_SNAPSHOT_ZOOM.toFloat()))
-                }
-                googleMap.setOnMapLoadedCallback { getMapSnapshot() }
-                googleMap.setOnCameraIdleListener {
-                    if (takeSnapshotOnCameraMove) {
-                        getMapSnapshot()
-                        hiddenGoogleMap = null
+                    googleMap.setOnMapLoadedCallback { getMapSnapshot() }
+                    googleMap.setOnCameraIdleListener {
+                        if (takeSnapshotOnCameraMove) {
+                            getMapSnapshot()
+                            hiddenGoogleMap = null
+                        }
                     }
+                    hiddenGoogleMap = googleMap
                 }
-                hiddenGoogleMap = googleMap
             }
         } catch (e: IllegalStateException) {
             Timber.w(e)
@@ -272,35 +274,37 @@ class TourInformationFragment : FeedItemInformationFragment(){
         val tourTimestamp = tourInformationList[0]
         isTakingSnapshot = true
         //take the snapshot
-        hiddenGoogleMap!!.snapshot { bitmap -> //save the snapshot
-            mapSnapshot = bitmap
-            snapshotTaken(tourTimestamp)
-            //signal it has finished taking the snapshot
-            isTakingSnapshot = false
-            //check if we need more snapshots
-            if (tourInformationList.size > 1) {
-                val nextTourTimestamp = tourInformationList[1]
-                if (nextTourTimestamp.locationPoint != null) {
-                    val distance = nextTourTimestamp.locationPoint.distanceTo(tourTimestamp.locationPoint)
-                    val visibleRegion = hiddenGoogleMap!!.projection.visibleRegion
-                    val nearLeft = visibleRegion.nearLeft
-                    val nearRight = visibleRegion.nearRight
-                    val result = floatArrayOf(0f)
-                    Location.distanceBetween(nearLeft.latitude, nearLeft.longitude, nearRight.latitude, nearRight.longitude, result)
-                    takeSnapshotOnCameraMove = distance < result[0]
+        hiddenGoogleMap?.let { hiddenMap ->
+            hiddenMap.snapshot { bitmap -> //save the snapshot
+                mapSnapshot = bitmap
+                snapshotTaken(tourTimestamp)
+                //signal it has finished taking the snapshot
+                isTakingSnapshot = false
+                //check if we need more snapshots
+                if (tourInformationList.size > 1) {
+                    val nextTourTimestamp = tourInformationList[1]
+                    if (nextTourTimestamp.locationPoint != null) {
+                        val distance = nextTourTimestamp.locationPoint.distanceTo(tourTimestamp.locationPoint)
+                        val visibleRegion = hiddenMap.projection.visibleRegion
+                        val nearLeft = visibleRegion.nearLeft
+                        val nearRight = visibleRegion.nearRight
+                        val result = floatArrayOf(0f)
+                        Location.distanceBetween(nearLeft.latitude, nearLeft.longitude, nearRight.latitude, nearRight.longitude, result)
+                        takeSnapshotOnCameraMove = distance < result[0]
 
-                    //put the pin
-                    hiddenGoogleMap!!.clear()
-                    val pin = MarkerOptions().position(nextTourTimestamp.locationPoint.location)
-                    hiddenGoogleMap!!.addMarker(pin)
-                    //move the camera
-                    val camera = CameraUpdateFactory.newLatLngZoom(nextTourTimestamp.locationPoint.location, MAP_SNAPSHOT_ZOOM.toFloat())
-                    hiddenGoogleMap!!.moveCamera(camera)
+                        //put the pin
+                        hiddenMap.clear()
+                        val pin = MarkerOptions().position(nextTourTimestamp.locationPoint.location)
+                        hiddenMap.addMarker(pin)
+                        //move the camera
+                        val camera = CameraUpdateFactory.newLatLngZoom(nextTourTimestamp.locationPoint.location, MAP_SNAPSHOT_ZOOM.toFloat())
+                        hiddenMap.moveCamera(camera)
+                    }
+                } else {
+                    hiddenGoogleMap = null
                 }
-            } else {
-                hiddenGoogleMap = null
+                tourInformationList.remove(tourTimestamp)
             }
-            tourInformationList.remove(tourTimestamp)
         }
     }
 
@@ -328,9 +332,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
 
     override fun addDiscussionTourEndCard(now: Date) {
         var distance = 0f
-        val duration = if (feedItem.getEndTime() != null) {
-            feedItem.getEndTime()!!.time - feedItem.getStartTime().time
-        } else 0L
+        val duration = feedItem.getEndTime()?.let {it.time - feedItem.getStartTime().time } ?: 0L
         val tour = feedItem as Tour
         val tourPointsList = tour.tourPoints
         if (tourPointsList.size > 1) {

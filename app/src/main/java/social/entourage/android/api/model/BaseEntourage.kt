@@ -188,12 +188,13 @@ open class BaseEntourage : FeedItem, Serializable {
     }
 
     override fun getIconDrawable(context: Context): Drawable? {
-        val entourageCategory = EntourageCategoryManager.findCategory(this)
-        if (entourageCategory != null) {
-            val categoryIcon = AppCompatResources.getDrawable(context, entourageCategory.iconRes)!!.mutate()
-            categoryIcon.clearColorFilter()
-            categoryIcon.setColorFilter(ContextCompat.getColor(context, entourageCategory.typeColorRes), PorterDuff.Mode.SRC_IN)
-            return categoryIcon
+        EntourageCategoryManager.findCategory(this)?.let { entourageCategory ->
+            AppCompatResources.getDrawable(context, entourageCategory.iconRes)?.let { categoryIcon ->
+                categoryIcon.mutate()
+                categoryIcon.clearColorFilter()
+                categoryIcon.setColorFilter(ContextCompat.getColor(context, entourageCategory.typeColorRes), PorterDuff.Mode.SRC_IN)
+                return categoryIcon
+            }
         }
         return super.getIconDrawable(context)
     }
@@ -218,12 +219,12 @@ open class BaseEntourage : FeedItem, Serializable {
 
     @StringRes
     override fun getFreezedCTAText(): Int {
-        return if (outcome == null || !outcome!!.success) super.getFreezedCTAText() else R.string.tour_cell_button_freezed_success
+        return if (outcome?.success==true) R.string.tour_cell_button_freezed_success else super.getFreezedCTAText()
     }
 
     @ColorRes
     override fun getFreezedCTAColor(): Int {
-        return if (outcome == null || !outcome!!.success) super.getFreezedCTAColor() else R.color.accent
+        return if (outcome?.success==true) R.color.accent else super.getFreezedCTAColor()
     }
 
     override fun getClosingLoaderMessage(): Int {
@@ -290,15 +291,17 @@ open class BaseEntourage : FeedItem, Serializable {
         }
 
         fun getStartDateAsString(context: Context): String {
-            if (startDate == null) return ""
-            val df: DateFormat = SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_format), Locale.FRENCH)
-            return df.format(startDate!!)
+            startDate?.let {
+                return SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_format), Locale.FRENCH)
+                        .format(it)
+            }
+            return ""
         }
 
         fun getStartDateFullAsString(context: Context): String {
             startDate?.let {
-                val df = SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_format_full), Locale.FRENCH)
-                return df.format(it)
+                return SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_format_full), Locale.FRENCH)
+                        .format(it)
             }
             return ""
         }

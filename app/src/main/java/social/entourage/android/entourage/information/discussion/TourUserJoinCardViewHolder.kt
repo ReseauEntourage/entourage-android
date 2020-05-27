@@ -83,7 +83,7 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
                         .placeholder(R.drawable.ic_user_photo_small)
                         .transform(CropCircleTransformation())
                         .into(photoView)
-            } ?: {
+            } ?: run {
                 photoView.setImageResource(R.drawable.ic_user_photo_small)
             }
         }
@@ -96,7 +96,7 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
                         .placeholder(R.drawable.partner_placeholder)
                         .transform(CropCircleTransformation())
                         .into(partnerLogoView)
-            } ?: {
+            } ?: run {
                 partnerLogoView.setImageDrawable(null)
             }
         }
@@ -105,9 +105,8 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
 
         // If we are not the creators of the entourage, hide the Accept and Refuse buttons
         val me = EntourageApplication.me(itemView.context)
-        val isMyEntourage = if (me != null && feedItem != null && feedItem!!.author != null) {
-            (me.id == feedItem!!.author!!.userID)
-        } else false
+        val author = feedItem?.author
+        val isMyEntourage = (me != null && author != null && me.id == author.userID)
         itemView.tic_accept_button?.visibility = if (isMyEntourage) View.VISIBLE else View.GONE
         itemView.tic_refuse_button?.visibility = if (isMyEntourage) View.VISIBLE else View.GONE
     }
@@ -123,7 +122,7 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
                         .placeholder(R.drawable.ic_user_photo_small)
                         .transform(CropCircleTransformation())
                         .into(photoView)
-            } ?: {
+            } ?: run {
                 photoView.setImageResource(R.drawable.ic_user_photo_small)
             }
         }
@@ -136,7 +135,7 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
                             .placeholder(R.drawable.partner_placeholder)
                             .transform(CropCircleTransformation())
                             .into(partnerLogoView)
-            } ?: {
+            } ?: run {
                 partnerLogoView.setImageDrawable(null)
             }
         }

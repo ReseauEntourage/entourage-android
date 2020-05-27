@@ -69,7 +69,7 @@ class MyEntouragesFilter  : Serializable {
                             + ','
                             + TourType.ALIMENTARY.typeName)
                 }
-                return allTourTypes!!
+                return allTourTypes ?: ""
             }
             return ""
         }

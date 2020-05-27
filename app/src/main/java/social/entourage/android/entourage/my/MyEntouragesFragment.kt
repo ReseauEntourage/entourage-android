@@ -286,21 +286,15 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
     }
 
     override fun onNetworkException() {
-        if (myentourages_layout != null) {
-            make(myentourages_layout!!, R.string.network_error, Snackbar.LENGTH_LONG).show()
-        }
+        myentourages_layout?.let {make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()}
     }
 
     override fun onServerException(throwable: Throwable) {
-        if (myentourages_layout != null) {
-            make(myentourages_layout!!, R.string.network_error, Snackbar.LENGTH_LONG).show()
-        }
+        myentourages_layout?.let {make(it, R.string.network_error, Snackbar.LENGTH_LONG).show() }
     }
 
     override fun onTechnicalException(throwable: Throwable) {
-        if (myentourages_layout != null) {
-            make(myentourages_layout!!, R.string.technical_error, Snackbar.LENGTH_LONG).show()
-        }
+        myentourages_layout?.let { make(it, R.string.technical_error, Snackbar.LENGTH_LONG).show() }
     }
 
     fun removeOldInvitations(invitationList: List<Invitation?>) {

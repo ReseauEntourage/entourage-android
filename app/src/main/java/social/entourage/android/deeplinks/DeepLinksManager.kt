@@ -46,13 +46,13 @@ object DeepLinksManager {
     fun handleCurrentDeepLink(activity: MainActivity) {
         intent?.let {
             currentUri = it.data
-            currentUri?.scheme?.let { scheme ->
+            it.data?.scheme?.let { scheme ->
                 if (scheme.contains(BuildConfig.DEEP_LINKS_SCHEME)) {
                     handleEntourageDeepLink(activity)
                 } else {
                     handleHttpDeepLink(activity)
                 }
-            } ?: {
+            } ?: run {
                 intent = null
             }
         }

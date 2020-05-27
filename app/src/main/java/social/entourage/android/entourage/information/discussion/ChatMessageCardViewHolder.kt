@@ -40,7 +40,7 @@ open class ChatMessageCardViewHolder(view: View) : BaseCardViewHolder(view) {
                         .placeholder(R.drawable.ic_user_photo_small)
                         .transform(CropCircleTransformation())
                         .into(userPhotoView)
-            } ?: {
+            } ?: run {
                 userPhotoView.setImageResource(R.drawable.ic_user_photo_small)
             }
         }
@@ -51,7 +51,7 @@ open class ChatMessageCardViewHolder(view: View) : BaseCardViewHolder(view) {
                         .placeholder(R.drawable.partner_placeholder)
                         .transform(CropCircleTransformation())
                         .into(partnerLogoView)
-            } ?: {
+            } ?: run {
                 partnerLogoView.setImageDrawable(null)
             }
         }

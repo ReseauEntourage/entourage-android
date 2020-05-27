@@ -47,9 +47,8 @@ class TourJoinRequestFragment  : DialogFragment() {
             return
         }
         feedItem = newFeedItem
-        var descriptionTextId = R.string.tour_join_request_ok_description_tour
-        tour_join_request_ok_description?.setText(descriptionTextId)
-        view.setOnClickListener { v: View? ->
+        tour_join_request_ok_description?.setText(R.string.tour_join_request_ok_description_tour)
+        view.setOnClickListener {
             val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager? ?:return@setOnClickListener
             tour_join_request_ok_message?.windowToken?.let {
                 imm.hideSoftInputFromWindow(it, 0)
@@ -81,9 +80,11 @@ class TourJoinRequestFragment  : DialogFragment() {
     }
 
     fun onMessageSend() {
-        if (!tour_join_request_ok_message?.text.isNullOrBlank()) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_SUBMIT)
-            viewModel.sendMessage(tour_join_request_ok_message!!.text.toString(), feedItem)
+        tour_join_request_ok_message?.text?.let {
+            if (!it.isBlank()) {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_SUBMIT)
+                viewModel.sendMessage(it.toString(), feedItem)
+            }
         }
     }
 

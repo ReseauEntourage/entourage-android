@@ -43,40 +43,26 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
         val res = itemView.resources
 
         //title
-        if (itemView.tour_card_title != null) {
-            itemView.tour_card_title!!.text = String.format(res.getString(R.string.tour_cell_title), feedItem.getTitle())
-            itemView.tour_card_title!!.setTypeface(null, if (feedItem.getUnreadMsgNb() == 0) Typeface.NORMAL else Typeface.BOLD)
-            if (showCategoryIcon() && itemView.tour_card_icon == null) {
-                // add the icon for entourages
-                Picasso.get()
-                        .cancelRequest(this)
-                val iconURL = feedItem.getIconURL()
-                if (iconURL != null) {
-                    itemView.tour_card_title!!.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)
-                    Picasso.get()
-                            .load(iconURL)
-                            .error(R.drawable.ic_user_photo_small)
-                            .transform(CropCircleTransformation())
-                            .into(this)
-                } else {
-                    itemView.tour_card_title?.setCompoundDrawablesWithIntrinsicBounds(feedItem.getIconDrawable(itemView.context), null, null, null)
-                }
-            }
+        itemView.tour_card_title?.let {titleView ->
+            titleView.text = String.format(res.getString(R.string.tour_cell_title), feedItem.getTitle())
+            titleView.setTypeface(null, if (feedItem.getUnreadMsgNb() == 0) Typeface.NORMAL else Typeface.BOLD)
         }
         //icon
-        if (showCategoryIcon() && itemView.tour_card_icon != null) {
+        if (showCategoryIcon() ) {
             // add the icon for entourages
-            Picasso.get().cancelRequest(itemView.tour_card_icon!!)
-            val iconURL = feedItem.getIconURL()
-            if (iconURL != null) {
-                itemView.tour_card_icon!!.setImageDrawable(null)
-                Picasso.get()
-                        .load(iconURL)
-                        .placeholder(R.drawable.ic_user_photo_small)
-                        .transform(CropCircleTransformation())
-                        .into(itemView.tour_card_icon)
-            } else {
-                itemView.tour_card_icon!!.setImageDrawable(feedItem.getIconDrawable(itemView.context))
+            itemView.tour_card_icon?.let {iconView ->
+                Picasso.get().cancelRequest(iconView)
+                val iconURL = feedItem.getIconURL()
+                if (iconURL != null) {
+                    iconView.setImageDrawable(null)
+                    Picasso.get()
+                            .load(iconURL)
+                            .placeholder(R.drawable.ic_user_photo_small)
+                            .transform(CropCircleTransformation())
+                            .into(iconView)
+                } else {
+                    iconView.setImageDrawable(feedItem.getIconDrawable(itemView.context))
+                }
             }
         }
         val author = feedItem.author
@@ -99,15 +85,15 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
                 }
             }
             // Partner logo
-            if (itemView.tour_card_partner_logo != null) {
+            itemView.tour_card_partner_logo?.let {logoView->
                 if (author.partner?.smallLogoUrl != null) {
                     Picasso.get()
                             .load(Uri.parse(author.partner.smallLogoUrl))
                             .placeholder(R.drawable.partner_placeholder)
                             .transform(CropCircleTransformation())
-                            .into(itemView.tour_card_partner_logo!!)
+                            .into(logoView)
                 } else {
-                    itemView.tour_card_partner_logo?.setImageDrawable(null)
+                    logoView.setImageDrawable(null)
                 }
             }
 
@@ -128,7 +114,7 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
         //Feed Item type
         itemView.tour_card_type?.text = feedItem.getFeedTypeLong(itemView.context)
         if (feedItem.getFeedTypeColor() != 0) {
-            itemView.tour_card_type?.setTextColor(ContextCompat.getColor(itemView.context!!, feedItem.getFeedTypeColor()))
+            itemView.tour_card_type?.setTextColor(ContextCompat.getColor(itemView.context, feedItem.getFeedTypeColor()))
         }
         val distanceAsString = feedItem.getStartPoint()?.distanceToCurrentLocation(Constants.DISTANCE_MAX_DISPLAY) ?: ""
         itemView.tour_card_location?.text = if (distanceAsString.equals("", ignoreCase = true)) "" else String.format(res.getString(R.string.tour_cell_location), distanceAsString)
@@ -176,19 +162,19 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
                     }
                 }
             }
-            itemView.tour_card_button_act?.setTextColor(ContextCompat.getColor(itemView.context!!, textColor))
+            itemView.tour_card_button_act?.setTextColor(ContextCompat.getColor(itemView.context, textColor))
         }
 
         //last message
         itemView.tour_card_last_message?.text = feedItem.lastMessage?.text ?: ""
         itemView.tour_card_last_message?.visibility = if (itemView.tour_card_last_message?.text.isNullOrBlank()) View.GONE else View.VISIBLE
         itemView.tour_card_last_message?.setTypeface(null, if (feedItem.getUnreadMsgNb() == 0) Typeface.NORMAL else Typeface.BOLD)
-        itemView.tour_card_last_message?.setTextColor(if (feedItem.getUnreadMsgNb() == 0) ContextCompat.getColor(itemView.context!!, R.color.feeditem_card_details_normal) else ContextCompat.getColor(itemView.context!!, R.color.feeditem_card_details_bold))
+        itemView.tour_card_last_message?.setTextColor(if (feedItem.getUnreadMsgNb() == 0) ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_normal) else ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_bold))
 
         //last update date
-        itemView.tour_card_last_update_date?.text = formatLastUpdateDate(feedItem.updatedTime, itemView.context!!)
+        itemView.tour_card_last_update_date?.text = formatLastUpdateDate(feedItem.updatedTime, itemView.context)
         itemView.tour_card_last_update_date?.setTypeface(null, if (feedItem.getUnreadMsgNb() == 0) Typeface.NORMAL else Typeface.BOLD)
-        itemView.tour_card_last_update_date?.setTextColor(if (feedItem.getUnreadMsgNb() == 0) ContextCompat.getColor(itemView.context!!, R.color.feeditem_card_details_normal) else ContextCompat.getColor(itemView.context!!, R.color.feeditem_card_details_bold))
+        itemView.tour_card_last_update_date?.setTextColor(if (feedItem.getUnreadMsgNb() == 0) ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_normal) else ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_bold))
     }
 
     protected open fun showCategoryIcon(): Boolean {
@@ -201,7 +187,7 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
     override fun onBitmapLoaded(bitmap: Bitmap, from: LoadedFrom) {
         val targetWidth = itemView.resources.getDimensionPixelOffset(R.dimen.feeditem_icon_width)
         val targetHeight = itemView.resources.getDimensionPixelOffset(R.dimen.feeditem_icon_height)
-        val drawable = BitmapDrawable(itemView.context!!.resources, Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, false))
+        val drawable = BitmapDrawable(itemView.resources, Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, false))
         itemView.tour_card_title?.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
     }
 
@@ -221,8 +207,8 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
     }
 
     private fun onClickCardPhoto(){
-        if (feedItem.author != null) {
-            instance.post(OnUserViewRequestedEvent(feedItem.author!!.userID))
+        feedItem.author?.let {
+            instance.post(OnUserViewRequestedEvent(it.userID))
         }
 
     }

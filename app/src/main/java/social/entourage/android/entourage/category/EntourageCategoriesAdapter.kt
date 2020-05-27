@@ -138,8 +138,10 @@ class EntourageCategoriesAdapter(
         }
         // populate the group
         if (groupPosition != 0) {
-            val label = groupView?.findViewById<TextView>(R.id.entourage_category_group_label)
-            label?.setText(EntourageCategoryManager.getGroupTypeDescription(selectedCategory.groupType!!))
+            selectedCategory.groupType?.let {
+                groupView?.findViewById<TextView>(R.id.entourage_category_group_label)?.setText(
+                        EntourageCategoryManager.getGroupTypeDescription(it))
+            }
         }
         return groupView!!
     }

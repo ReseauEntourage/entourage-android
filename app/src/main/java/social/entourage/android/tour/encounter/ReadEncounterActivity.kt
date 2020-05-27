@@ -53,25 +53,27 @@ class ReadEncounterActivity : EntourageActivity() {
     }
 
     private fun displayEncounter() {
-        if (encounter == null || isFinishing) return
-        val location = if (encounter!!.address != null && encounter!!.address.maxAddressLineIndex >= 0) {
-            encounter!!.address.getAddressLine(0)
-        } else ""
-        val encounterDate: String? = if (encounter!!.creationDate != null) DateFormat.getDateFormat(applicationContext).format(encounter!!.creationDate) else ""
-        val encounterLocation: String = if (location.isEmpty()) {
-            resources.getString(R.string.encounter_read_location_no_address,
-                    encounter!!.userName,
-                    encounter!!.streetPersonName,
-                    encounterDate)
-        } else {
-            resources.getString(R.string.encounter_read_location,
-                    encounter!!.userName,
-                    encounter!!.streetPersonName,
-                    location,
-                    encounterDate)
+        if (isFinishing) return
+        encounter?.let {
+            val location = if (it.address != null && it.address.maxAddressLineIndex >= 0) {
+                it.address.getAddressLine(0)
+            } else ""
+            val encounterDate: String? = if (it.creationDate != null) DateFormat.getDateFormat(applicationContext).format(it.creationDate) else ""
+            val encounterLocation: String = if (location.isEmpty()) {
+                resources.getString(R.string.encounter_read_location_no_address,
+                        it.userName,
+                        it.streetPersonName,
+                        encounterDate)
+            } else {
+                resources.getString(R.string.encounter_read_location,
+                        it.userName,
+                        it.streetPersonName,
+                        location,
+                        encounterDate)
+            }
+            edittext_street_person_name?.setText(encounterLocation)
+            edittext_message?.setText(it.message)
         }
-        edittext_street_person_name?.setText(encounterLocation)
-        edittext_message?.setText(encounter!!.message)
     }
 
     private class GeocoderTask internal constructor(context: ReadEncounterActivity) : AsyncTask<Encounter?, Void?, Encounter?>() {

@@ -48,10 +48,11 @@ class RoundedCornersView : View {
     private fun setColor(color: Int) {
         mColor = color
         mPaint = Paint()
-        mPaint!!.color = mColor
-        mPaint!!.style = Paint.Style.FILL
-        mPaint!!.isAntiAlias = true
-
+        mPaint?.let {
+            it.color = mColor
+            it.style = Paint.Style.FILL
+            it.isAntiAlias = true
+        }
         invalidate()
     }
 
@@ -59,17 +60,18 @@ class RoundedCornersView : View {
         mRadius = radius
         val r = RectF(0f, 0f, 2 * mRadius, 2 * mRadius)
         mPath = Path()
-        mPath!!.moveTo(0f, 0f)
-        mPath!!.lineTo(0f, mRadius)
-        mPath!!.arcTo(r, 180f, 90f)
-        mPath!!.lineTo(0f, 0f)
+        mPath?.let {
+            it.moveTo(0f, 0f)
+            it.lineTo(0f, mRadius)
+            it.arcTo(r, 180f, 90f)
+            it.lineTo(0f, 0f)
+        }
         invalidate()
     }
 
     override fun onDraw(canvas: Canvas) {
 
         /*This just draws 4 little inverted corners */
-
         val w = width.toFloat()
         val h = height.toFloat()
         mPath?.let { mPaint?.let { it1 -> canvas.drawPath(it, it1) } }

@@ -11,7 +11,7 @@ import social.entourage.android.tools.Utils
 class HtmlTextView : AppCompatTextView {
     private var htmlString: String? = null
 
-    constructor(context: Context?) : super(context!!)
+    constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         buildAttrs(context, attrs)
     }
@@ -23,9 +23,13 @@ class HtmlTextView : AppCompatTextView {
     private fun buildAttrs(context: Context, attrs: AttributeSet?) {
         val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.HtmlTextView, 0, 0)
         try {
-            htmlString = typedArray.getString(R.styleable.HtmlTextView_htmlText) ?: return
-            setText(Utils.fromHtml(htmlString!!), BufferType.SPANNABLE)
-            movementMethod = LinkMovementMethod.getInstance()
+            typedArray.getString(R.styleable.HtmlTextView_htmlText)?.let {
+                htmlString = it
+                setText(Utils.fromHtml(it), BufferType.SPANNABLE)
+                movementMethod = LinkMovementMethod.getInstance()
+            } ?: run {
+                htmlString = null
+            }
         } finally {
             typedArray.recycle()
         }
@@ -41,7 +45,7 @@ class HtmlTextView : AppCompatTextView {
 
     fun setHtmlString(newHtmlString: String?, movementMethod: MovementMethod?) {
         this.htmlString = newHtmlString ?: ""
-        setText(Utils.fromHtml(htmlString!!), BufferType.SPANNABLE)
+        setText(Utils.fromHtml(htmlString ?: ""), BufferType.SPANNABLE)
         this.movementMethod = movementMethod
     }
 }

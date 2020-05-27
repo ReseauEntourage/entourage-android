@@ -201,8 +201,10 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 val handler = Handler(Looper.getMainLooper())
                 handler.post { onInviteContactsClicked() }
-            } else if(entourage_information_coordinator_layout!=null){
-                EntourageSnackbar.make(entourage_information_coordinator_layout!!, R.string.invite_contacts_permission_error, Snackbar.LENGTH_SHORT).show()
+            } else {
+                entourage_information_coordinator_layout?.let {
+                    EntourageSnackbar.make(it, R.string.invite_contacts_permission_error, Snackbar.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -320,7 +322,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_SPEECH)
             startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE)
         } catch (e: ActivityNotFoundException) {
-            EntourageSnackbar.make(entourage_information_coordinator_layout!!, R.string.encounter_voice_message_not_supported, Snackbar.LENGTH_SHORT).show()
+            entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it, R.string.encounter_voice_message_not_supported, Snackbar.LENGTH_SHORT).show()}
             EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_NOT_SUPPORTED)
         }
     }
@@ -382,7 +384,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     private fun quitEntourage() {
         val me = EntourageApplication.me(activity)
         if(me ==null || entourageServiceConnection.boundService == null){
-            EntourageSnackbar.make(entourage_information_coordinator_layout!!,  R.string.tour_info_quit_tour_error, Snackbar.LENGTH_SHORT).show()
+            entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.tour_info_quit_tour_error, Snackbar.LENGTH_SHORT).show()}
             return
         }
         EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_QUIT)
@@ -452,7 +454,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             startActivity(intent)
         } else {
             // No Email clients
-            EntourageSnackbar.make(entourage_information_coordinator_layout!!,  R.string.error_no_email, Snackbar.LENGTH_SHORT).show()
+            entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.error_no_email, Snackbar.LENGTH_SHORT).show()}
         }
     }
 
@@ -743,11 +745,11 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
                         .transform(CropCircleTransformation())
                         .into(iconView)
                 iconView.visibility = View.VISIBLE
-            } ?: {
+            } ?: run {
                 feedItem.getIconDrawable(requireContext())?.let { iconDrawable ->
                     iconView.visibility = View.VISIBLE
                     iconView.setImageDrawable(iconDrawable)
-                } ?: {
+                } ?: run {
                     iconView.visibility = View.GONE
                 }
             }
@@ -772,7 +774,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
                     .placeholder(R.drawable.ic_user_photo_small)
                     .transform(CropCircleTransformation())
                     .into(authorPhotoView)
-            } ?: {
+            } ?: run {
                 authorPhotoView.setImageResource(R.drawable.ic_user_photo_small)
             }
         }
@@ -783,7 +785,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
                     .placeholder(R.drawable.partner_placeholder)
                     .transform(CropCircleTransformation())
                     .into(partnerLogoView)
-            } ?: {
+            } ?: run {
                 partnerLogoView.setImageDrawable(null)
             }
         }
@@ -1024,7 +1026,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         //if (context == null) return
         //val builder = AlertDialog.Builder(requireContext())
         //builder.setMessage(R.string.tour_info_error_retrieve_entourage)
-        //builder.setPositiveButton(R.string.close) { _, _ -> dismiss() }
+        //builder.setPositiveButton(R.string.close) { dismiss() }
         //builder.create().show()
 
         entourage_information_coordinator_layout?.let {
@@ -1177,7 +1179,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         if (error == EntourageError.ERROR_NONE) {
             // Updated ok
             val messageId = if (FeedItem.JOIN_STATUS_REJECTED == status) R.string.tour_join_request_rejected else R.string.tour_join_request_success
-            EntourageSnackbar.make(entourage_information_coordinator_layout!!,  messageId, Snackbar.LENGTH_SHORT).show()
+            entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  messageId, Snackbar.LENGTH_SHORT).show()}
             // Update the card
             val card = discussionAdapter.findCard(TimestampedObject.TOUR_USER_JOIN, userId.toLong()) as EntourageUser?
             if (card != null) {
@@ -1228,7 +1230,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             feedItem.removeCardInfo(card)
         } else {
             // other Error
-            EntourageSnackbar.make(entourage_information_coordinator_layout!!,  R.string.tour_join_request_error, Snackbar.LENGTH_SHORT).show()
+            entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.tour_join_request_error, Snackbar.LENGTH_SHORT).show()}
         }
     }
 

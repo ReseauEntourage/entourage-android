@@ -93,31 +93,33 @@ object PushNotificationManager {
         var nbNotifsFound = 0
         val newPushNotifications =  HashMap<String, MutableList<Message>>()
         for(key in pushNotifications.keys) {
-            if (pushNotifications[key] == null) continue
-            var messageListChanged = false
-            val newMessageList = ArrayList<Message>()
-            for(message in pushNotifications[key]!!) {
-                val content = message.content
-                if (content != null && content.joinableId == feedItemId) {
-                    if((TimestampedObject.TOUR_CARD == feedType && content.isTourRelated)
-                            || (TimestampedObject.ENTOURAGE_CARD == feedType && content.isEntourageRelated)){
-                        nbNotifsFound++
-                        messageListChanged = true
-                        if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST == content.type) {
-                            // Don't delete the join requests push, just hide them
-                            message.isVisible = false
-                        } else {
-                            continue
+            pushNotifications[key]?.let {messageList->
+                var messageListChanged = false
+                val newMessageList = ArrayList<Message>()
+                for(message in messageList) {
+                    val content = message.content
+                    if (content != null && content.joinableId == feedItemId) {
+                        if((TimestampedObject.TOUR_CARD == feedType && content.isTourRelated)
+                                || (TimestampedObject.ENTOURAGE_CARD == feedType && content.isEntourageRelated)){
+                            nbNotifsFound++
+                            messageListChanged = true
+                            if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST == content.type) {
+                                // Don't delete the join requests push, just hide them
+                                message.isVisible = false
+                            } else {
+                                continue
+                            }
                         }
                     }
+                    newMessageList.add(message)
                 }
-                newMessageList.add(message)
+                if (!messageListChanged
+                        ||updateNotificationGroup(key, newMessageList)
+                        ||newMessageList.isNotEmpty()) {
+                    // list not empty we keep it
+                    newPushNotifications[key] = newMessageList
+                }
             }
-            if (messageListChanged && !updateNotificationGroup(key, newMessageList)) {
-                // no more notifications in the group, remove the key
-                continue
-            }
-            if(newMessageList.isNotEmpty()) newPushNotifications[key] = newMessageList
         }
         pushNotifications = newPushNotifications
         return nbNotifsFound
@@ -133,16 +135,17 @@ object PushNotificationManager {
         var nbMsgFound = 0
         val newPushNotifications = HashMap<String, MutableList<Message>>()
         for (key in pushNotifications.keys) {
-            if (pushNotifications[key] == null) continue
-            val newMessageList = ArrayList<Message>()
-            for(message in pushNotifications[key]!!) {
-                if (message.hash == msg.hash) {
-                    nbMsgFound++
-                    continue
+            pushNotifications[key]?.let { messageList ->
+                val newMessageList = ArrayList<Message>()
+                for (message in messageList) {
+                    if (message.hash == msg.hash) {
+                        nbMsgFound++
+                        continue
+                    }
+                    newMessageList.add(message)
                 }
-                newMessageList.add(message)
+                if (newMessageList.isNotEmpty()) newPushNotifications[key] = newMessageList
             }
-            if(newMessageList.isNotEmpty()) newPushNotifications[key] = newMessageList
         }
         pushNotifications = newPushNotifications
         return nbMsgFound
@@ -179,32 +182,30 @@ object PushNotificationManager {
         // search for a push notification that matches our parameters
         val newPushNotifications = HashMap<String, MutableList<Message>>()
         for(key in pushNotifications.keys) {
-            if (pushNotifications[key] == null) continue
-            val messageList = ArrayList<Message>()
-            var messageListChanged = false
-            for(message in pushNotifications[key]!!) {
-                val content = message.content
-                if (content != null && content.joinableId == feedId && content.type != null && content.type == pushType) {
-                    if (TimestampedObject.TOUR_CARD == feedType && content.isTourRelated
-                            || TimestampedObject.ENTOURAGE_CARD == feedType && content.isEntourageRelated) {
-                        messageListChanged = true
-                        if (message.isVisible) {
-                            application.storeNewPushNotification(message, false)
-                            count++
+            pushNotifications[key]?.let { oldMessageList ->
+                val newMessageList = ArrayList<Message>()
+                var messageListChanged = false
+                for (message in oldMessageList) {
+                    val content = message.content
+                    if (content != null && content.joinableId == feedId && content.type != null && content.type == pushType) {
+                        if (TimestampedObject.TOUR_CARD == feedType && content.isTourRelated
+                                || TimestampedObject.ENTOURAGE_CARD == feedType && content.isEntourageRelated) {
+                            messageListChanged = true
+                            if (message.isVisible) {
+                                application.storeNewPushNotification(message, false)
+                                count++
+                            }
+                            continue
                         }
-                        continue
                     }
+                    newMessageList.add(message)
                 }
-                messageList.add(message)
-            }
-            if (messageListChanged) {
-                // refresh the android notifications
-                if (!updateNotificationGroup(key, messageList)) {
-                    // no more notifications in the group, remove the key
-                    continue
+                if (!messageListChanged
+                        ||updateNotificationGroup(key, newMessageList)
+                        ||newMessageList.isNotEmpty()) {
+                    newPushNotifications[key] = newMessageList
                 }
             }
-            if(messageList.isNotEmpty()) newPushNotifications[key] = messageList
         }
         pushNotifications = newPushNotifications
         return count
@@ -236,7 +237,7 @@ object PushNotificationManager {
         val messageList: List<Message>? = pushNotifications[message.hash]
         val count = messageList?.size ?: 0
         if(count>0) {
-            message.pushNotificationId = messageList?.first()!!.pushNotificationId
+            messageList?.first()?.let {message.pushNotificationId = it.pushNotificationId}
         }
 
         val channelId = context.getString(R.string.app_name)
@@ -359,9 +360,9 @@ object PushNotificationManager {
     fun getMessageFromRemoteMessage(remoteMessage: RemoteMessage, context: Context): Message? {
         val msg = remoteMessage.data
         //first checking if content json is present (not here for firebase notification
-        Timber.d("%s= %s; %s= %s; %s= %s", KEY_SENDER,msg[KEY_SENDER],  KEY_OBJECT, msg[KEY_OBJECT], KEY_CONTENT, msg[KEY_CONTENT])
-        if ( !msg.containsKey(KEY_CONTENT) || !msg.containsKey(KEY_SENDER)) return null
-        val message = Message(msg[KEY_SENDER]!!, msg[KEY_OBJECT], msg[KEY_CONTENT]!!, 0, null)
+        val content = msg[KEY_CONTENT] ?: return null
+        val sender = msg[KEY_SENDER] ?: return null
+        val message = Message(sender, msg[KEY_OBJECT], content, 0, null)
         message.pushNotificationId = getNotificationId(context, message)
         message.pushNotificationTag = message.content?.notificationTag ?: ""
         return message
@@ -375,9 +376,9 @@ object PushNotificationManager {
      */
     fun getMessageFromIntent(intent: Intent, context: Context): Message? {
         val args = intent.extras ?: return null
-        Timber.d("%s= %s;%s = %s;%s = %s", KEY_SENDER, args.getString(KEY_SENDER), KEY_OBJECT, args.getString(KEY_OBJECT), KEY_CONTENT, args.getString(KEY_CONTENT))
-        if ( args.getString(KEY_CONTENT)==null || args.getString(KEY_SENDER)==null) return null
-        val message = Message(args.getString(KEY_SENDER)!!, args.getString(KEY_OBJECT), args.getString(KEY_CONTENT)!!, 0, null)
+        val content = args.getString(KEY_CONTENT) ?: return null
+        val sender = args.getString(KEY_SENDER) ?: return null
+        val message = Message(sender, args.getString(KEY_OBJECT), content, 0, null)
         message.pushNotificationId = getNotificationId(context, message)
         message.pushNotificationTag = message.content?.notificationTag
         return message

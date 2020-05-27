@@ -41,11 +41,13 @@ class MyEntouragesPresenter @Inject constructor(
         )
         call.enqueue(object : Callback<NewsfeedItemWrapper> {
             override fun onResponse(call: Call<NewsfeedItemWrapper>, response: Response<NewsfeedItemWrapper>) {
-                if (response.isSuccessful) {
-                    fragment.onNewsfeedReceived(response.body()!!.newsfeedItems)
-                } else {
-                    fragment.onNewsfeedReceived(null)
+                response.body()?.let {
+                    if (response.isSuccessful) {
+                        fragment.onNewsfeedReceived(it.newsfeedItems)
+                        return
+                    }
                 }
+                fragment.onNewsfeedReceived(null)
             }
 
             override fun onFailure(call: Call<NewsfeedItemWrapper>, t: Throwable) {
@@ -58,11 +60,13 @@ class MyEntouragesPresenter @Inject constructor(
         val call = invitationRequest.retrieveUserInvitationsWithStatus(Invitation.STATUS_PENDING)
         call.enqueue(object : Callback<InvitationsWrapper> {
             override fun onResponse(call: Call<InvitationsWrapper>, response: Response<InvitationsWrapper>) {
-                if (response.isSuccessful && response.body()?.invitations !=null) {
-                    onInvitationsReceived(response.body()!!.invitations)
-                } else {
-                    fragment.onNoInvitationReceived()
+                response.body()?.invitations?.let {
+                    if (response.isSuccessful) {
+                        onInvitationsReceived(it)
+                        return
+                    }
                 }
+                fragment.onNoInvitationReceived()
             }
 
             override fun onFailure(call: Call<InvitationsWrapper>, t: Throwable) {

@@ -29,8 +29,7 @@ class MapClusterEntourageItem(mapEntourage: BaseEntourage) : MapClusterItem() {
     private var entourage: BaseEntourage = mapEntourage
 
     override fun getPosition(): LatLng {
-        val location = entourage.location
-        return LatLng(location!!.latitude, location.longitude)
+        return entourage.location?.let {location -> LatLng(location.latitude, location.longitude)} ?: LatLng(0.0,0.0)
     }
 
     override fun applyMarkerOptions(context: Context, markerOptions: MarkerOptions) {

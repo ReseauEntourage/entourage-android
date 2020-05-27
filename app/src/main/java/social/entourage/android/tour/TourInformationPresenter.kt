@@ -44,11 +44,13 @@ class TourInformationPresenter @Inject constructor(
                 val call = tourRequest.retrieveTourById(feedItemUUID)
                 call.enqueue(object : Callback<TourWrapper> {
                     override fun onResponse(call: Call<TourWrapper>, response: Response<TourWrapper>) {
-                        if (response.isSuccessful) {
-                            fragment.onFeedItemReceived(response.body()!!.tour)
-                        } else {
-                            fragment.onFeedItemNotFound()
+                        response.body()?.tour?.let {
+                            if (response.isSuccessful) {
+                                fragment.onFeedItemReceived(it)
+                                return
+                            }
                         }
+                        fragment.onFeedItemNotFound()
                     }
 
                     override fun onFailure(call: Call<TourWrapper>, t: Throwable) {
@@ -81,11 +83,13 @@ class TourInformationPresenter @Inject constructor(
                 val call = tourRequest.retrieveTourUsers(feedItem.uuid)
                 call.enqueue(object : Callback<EntourageUsersWrapper> {
                     override fun onResponse(call: Call<EntourageUsersWrapper>, response: Response<EntourageUsersWrapper>) {
-                        if (response.isSuccessful) {
-                            fragment.onFeedItemUsersReceived(response.body()!!.users, context)
-                        } else {
-                            fragment.onFeedItemNoUserReceived()
+                        response.body()?.users?.let {
+                            if (response.isSuccessful) {
+                                fragment.onFeedItemUsersReceived(it, context)
+                                return
+                            }
                         }
+                        fragment.onFeedItemNoUserReceived()
                     }
 
                     override fun onFailure(call: Call<EntourageUsersWrapper>, t: Throwable) {
@@ -110,11 +114,13 @@ class TourInformationPresenter @Inject constructor(
                 val call = tourRequest.retrieveTourMessages(feedItem.uuid, lastMessageDate)
                 call.enqueue(object : Callback<ChatMessagesWrapper> {
                     override fun onResponse(call: Call<ChatMessagesWrapper>, response: Response<ChatMessagesWrapper>) {
-                        if (response.isSuccessful) {
-                            fragment.onFeedItemMessagesReceived(response.body()!!.chatMessages)
-                        } else {
-                            fragment.onFeedItemNoNewMessages()
+                        response.body()?.chatMessages?.let {
+                            if (response.isSuccessful) {
+                                fragment.onFeedItemMessagesReceived(it)
+                                return
+                            }
                         }
+                        fragment.onFeedItemNoNewMessages()
                     }
 
                     override fun onFailure(call: Call<ChatMessagesWrapper>, t: Throwable) {
@@ -138,11 +144,13 @@ class TourInformationPresenter @Inject constructor(
                 val call = tourRequest.chatMessage(feedItem.uuid, chatMessageWrapper)
                 call.enqueue(object : Callback<ChatMessageWrapper> {
                     override fun onResponse(call: Call<ChatMessageWrapper>, response: Response<ChatMessageWrapper>) {
-                        if (response.isSuccessful) {
-                            fragment.onFeedItemMessageSent(response.body()!!.chatMessage)
-                        } else {
-                            fragment.onFeedItemMessageSent(null)
+                        response.body()?.chatMessage?.let {
+                            if (response.isSuccessful) {
+                                fragment.onFeedItemMessageSent(it)
+                                return
+                            }
                         }
+                        fragment.onFeedItemMessageSent(null)
                     }
 
                     override fun onFailure(call: Call<ChatMessageWrapper>, t: Throwable) {
@@ -161,11 +169,13 @@ class TourInformationPresenter @Inject constructor(
         val call = tourRequest.retrieveTourEncounters(tour.uuid)
         call.enqueue(object : Callback<EncountersWrapper> {
             override fun onResponse(call: Call<EncountersWrapper>, response: Response<EncountersWrapper>) {
-                if (response.isSuccessful) {
-                    fragment.onFeedItemEncountersReceived(response.body()!!.encounters)
-                } else {
-                    fragment.onFeedItemEncountersReceived(null)
+                response.body()?.encounters?.let {
+                    if (response.isSuccessful) {
+                        fragment.onFeedItemEncountersReceived(it)
+                        return
+                    }
                 }
+                fragment.onFeedItemEncountersReceived(null)
             }
 
             override fun onFailure(call: Call<EncountersWrapper>, t: Throwable) {

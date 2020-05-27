@@ -80,8 +80,10 @@ class NewsfeedPresenter @Inject constructor(
                 val call = entourageRequest.retrieveEntourageById(feedItemUUID, 0, 0)
                 call.enqueue(object : Callback<BaseEntourage.EntourageWrapper> {
                     override fun onResponse(call: Call<BaseEntourage.EntourageWrapper>, response: Response<BaseEntourage.EntourageWrapper>) {
-                        if (response.isSuccessful && response.body()?.entourage is FeedItem) {
-                            openFeedItem(response.body()!!.entourage, invitationId, 0)
+                        response.body()?.entourage?.let {
+                            if (response.isSuccessful) {
+                                openFeedItem(it, invitationId, 0)
+                            }
                         }
                     }
                     override fun onFailure(call: Call<BaseEntourage.EntourageWrapper>, t: Throwable) {
@@ -92,8 +94,10 @@ class NewsfeedPresenter @Inject constructor(
                 val call = tourRequest.retrieveTourById(feedItemUUID)
                 call.enqueue(object : Callback<Tour.TourWrapper> {
                     override fun onResponse(call: Call<Tour.TourWrapper>, response: Response<Tour.TourWrapper>) {
-                        if (response.isSuccessful && response.body() != null) {
-                            openFeedItem(response.body()!!.tour, invitationId, 0)
+                        response.body()?.tour?.let {
+                            if (response.isSuccessful) {
+                                openFeedItem(it, invitationId, 0)
+                            }
                         }
                     }
                     override fun onFailure(call: Call<Tour.TourWrapper>, t: Throwable) {
@@ -109,8 +113,10 @@ class NewsfeedPresenter @Inject constructor(
                 val call = entourageRequest.retrieveEntourageByShareURL(feedItemShareURL)
                 call.enqueue(object : Callback<BaseEntourage.EntourageWrapper> {
                     override fun onResponse(call: Call<BaseEntourage.EntourageWrapper>, response: Response<BaseEntourage.EntourageWrapper>) {
-                        if (response.isSuccessful && response.body()?.entourage is FeedItem) {
-                            openFeedItem(response.body()!!.entourage,0,0)
+                        response.body()?.entourage?.let {
+                            if (response.isSuccessful && it is FeedItem) {
+                                openFeedItem(it,0,0)
+                            }
                         }
                     }
 
@@ -152,11 +158,13 @@ class NewsfeedPresenter @Inject constructor(
         val call = invitationRequest.retrieveUserInvitationsWithStatus(Invitation.STATUS_PENDING)
         call.enqueue(object : Callback<InvitationsWrapper> {
             override fun onResponse(call: Call<InvitationsWrapper>, response: Response<InvitationsWrapper>) {
-                if (response.isSuccessful && response.body()!=null) {
-                    fragment?.onInvitationsReceived(response.body()!!.invitations)
-                } else {
-                    fragment?.onNoInvitationReceived()
+                response.body()?.invitations?.let {
+                    if (response.isSuccessful) {
+                        fragment?.onInvitationsReceived(it)
+                        return
+                    }
                 }
+                fragment?.onNoInvitationReceived()
             }
 
             override fun onFailure(call: Call<InvitationsWrapper>, t: Throwable) {

@@ -64,23 +64,25 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
         val meAsAuthor = EntourageApplication.me(context)?.asTourAuthor() ?: return
         val dirtyList: MutableList<TimestampedObject> = ArrayList()
         // See which cards needs updating
-        for (timestampedObject in newsfeedAdapter!!.items) {
-            if (timestampedObject !is FeedItem) continue
-            // Skip null author
-            val author = timestampedObject.author ?: continue
-            // Skip not same author id
-            if (author.userID != meAsAuthor.userID) continue
-            // Skip if nothing changed
-            if (author.isSame(meAsAuthor)) continue
-            // Update the tour author
-            meAsAuthor.userName = author.userName
-            timestampedObject.author = meAsAuthor
-            // Mark as dirty
-            dirtyList.add(timestampedObject)
+        newsfeedAdapter?.items?.forEach { timestampedObject ->
+            if (timestampedObject is FeedItem) {
+                // Skip null author
+                val author = timestampedObject.author ?: return@forEach
+                // Skip not same author id
+                if (author.userID != meAsAuthor.userID) return@forEach
+                // Skip if nothing changed
+                if (!author.isSame(meAsAuthor)) {
+                    // Update the tour author
+                    meAsAuthor.userName = author.userName
+                    timestampedObject.author = meAsAuthor
+                    // Mark as dirty
+                    dirtyList.add(timestampedObject)
+                }
+            }
         }
         // Update the dirty cards
         for (dirty in dirtyList) {
-            newsfeedAdapter!!.updateCard(dirty)
+            newsfeedAdapter?.updateCard(dirty)
         }
     }
 
@@ -272,16 +274,16 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
                 return
             }
             entourageService = (service as LocalBinder).service
-            if (entourageService == null) {
+            entourageService?.let {
+                it.registerServiceListener(this@NewsFeedFragment)
+                it.registerApiListener(this@NewsFeedFragment)
+                updateFragmentFromService()
+                it.updateNewsfeed(pagination, selectedTab)
+                isBound = true
+            } ?: run {
                 Timber.e("Service not found")
                 isBound = false
-                return
             }
-            entourageService!!.registerServiceListener(this@NewsFeedFragment)
-            entourageService!!.registerApiListener(this@NewsFeedFragment)
-            updateFragmentFromService()
-            entourageService!!.updateNewsfeed(pagination, selectedTab)
-            isBound = true
         }
 
         override fun onServiceDisconnected(name: ComponentName) {

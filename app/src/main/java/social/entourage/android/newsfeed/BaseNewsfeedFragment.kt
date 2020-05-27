@@ -108,8 +108,10 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         groupType = BaseEntourage.GROUPTYPE_ACTION
         presenter.start()
         if (fragmentLifecycleCallbacks == null) {
-            fragmentLifecycleCallbacks = NewsfeedFragmentLifecycleCallbacks()
-            activity?.supportFragmentManager?.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks!!, false)
+            NewsfeedFragmentLifecycleCallbacks()?.let {
+                fragmentLifecycleCallbacks = it
+                activity?.supportFragmentManager?.registerFragmentLifecycleCallbacks(it, false)
+            }
         }
         initializeMap()
         initializeFloatingMenu()
@@ -242,7 +244,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                 }
             }
         } else if (fragment_map_main_layout != null) {
-            EntourageSnackbar.make(fragment_map_main_layout!!, R.string.tour_join_request_error, Snackbar.LENGTH_SHORT).show()
+            fragment_map_main_layout?.let {EntourageSnackbar.make(it, R.string.tour_join_request_error, Snackbar.LENGTH_SHORT).show()}
         }
     }
 
@@ -341,9 +343,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                 try {
                     startActivity(browserIntent)
                 } catch (ex: ActivityNotFoundException) {
-                    if (fragment_map_main_layout != null) {
-                        EntourageSnackbar.make(fragment_map_main_layout!!, R.string.no_browser_error, Snackbar.LENGTH_SHORT).show()
-                    }
+                    fragment_map_main_layout?.let {EntourageSnackbar.make(it, R.string.no_browser_error, Snackbar.LENGTH_SHORT).show()}
                 }
             }
         }
@@ -378,9 +378,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             act(event.feedItem)
         } else if (OnUserActEvent.ACT_QUIT == event.act) {
             if (EntourageApplication.me(context) == null) {
-                if(fragment_map_main_layout!=null) {
-                    EntourageSnackbar.make(fragment_map_main_layout!!, R.string.tour_info_quit_tour_error, Snackbar.LENGTH_SHORT).show()
-                }
+                fragment_map_main_layout?.let {EntourageSnackbar.make(it, R.string.tour_info_quit_tour_error, Snackbar.LENGTH_SHORT).show() }
             } else {
                 val item = event.feedItem ?:return
                 if (FeedItem.JOIN_STATUS_PENDING == item.joinStatus) {
@@ -422,9 +420,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     override fun onNetworkException() {
-        if (fragment_map_main_layout != null) {
-            EntourageSnackbar.make(fragment_map_main_layout!!, R.string.network_error, Snackbar.LENGTH_LONG).show()
-        }
+        fragment_map_main_layout?.let {EntourageSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()}
         if (pagination.isLoading) {
             pagination.isLoading = false
             pagination.isRefreshing = false
@@ -439,9 +435,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     override fun onServerException(throwable: Throwable) {
-        if (fragment_map_main_layout != null) {
-            EntourageSnackbar.make(fragment_map_main_layout!!, R.string.server_error, Snackbar.LENGTH_LONG).show()
-        }
+        fragment_map_main_layout?.let {EntourageSnackbar.make(it, R.string.server_error, Snackbar.LENGTH_LONG).show()}
         if (pagination.isLoading) {
             pagination.isLoading = false
             pagination.isRefreshing = false
@@ -449,9 +443,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     override fun onTechnicalException(throwable: Throwable) {
-        if (fragment_map_main_layout != null) {
-            EntourageSnackbar.make(fragment_map_main_layout!!, R.string.technical_error, Snackbar.LENGTH_LONG).show()
-        }
+        fragment_map_main_layout?.let { EntourageSnackbar.make(it, R.string.technical_error, Snackbar.LENGTH_LONG).show() }
         if (pagination.isLoading) {
             pagination.isLoading = false
             pagination.isRefreshing = false
@@ -464,7 +456,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             pagination.isRefreshing = false
             return
         }
-        val previousItemCount = newsfeedAdapter!!.dataItemCount
+        val previousItemCount = newsfeedAdapter?.dataItemCount ?: 0
         val newNewsFeeds = removeRedundantNewsfeed(newsFeeds)
         //add or update the received newsfeed
         for (newsfeed in newNewsFeeds) {
@@ -478,9 +470,9 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
         // update the bottom view, if not refreshing
         if (!pagination.isRefreshing) {
-            showNewsfeedBottomView(if (selectedTab == NewsfeedTabItem.ALL_TAB) newNewsFeeds.size < pagination.itemsPerPage else newsfeedAdapter!!.dataItemCount == 0)
+            showNewsfeedBottomView(if (selectedTab == NewsfeedTabItem.ALL_TAB) newNewsFeeds.size < pagination.itemsPerPage else newsfeedAdapter?.dataItemCount == 0)
         }
-        if (newsfeedAdapter!!.dataItemCount == 0) {
+        if (newsfeedAdapter?.dataItemCount == 0) {
             if (!pagination.isRefreshing) {
                 displayFullMap()
             }
@@ -499,9 +491,9 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     protected open fun redrawWholeNewsfeed(newsFeeds: List<NewsfeedItem>) {
         //TODO do we need newsFeeds variable here ?
-        if (map != null && newsFeeds.isNotEmpty() && newsfeedAdapter != null) {
+        if (newsFeeds.isNotEmpty()) {
             //redraw the whole newsfeed
-            for (timestampedObject in newsfeedAdapter!!.items) {
+            newsfeedAdapter?.items?.forEach { timestampedObject ->
                 if (timestampedObject.type == TimestampedObject.ENTOURAGE_CARD) {
                     drawNearbyEntourage(timestampedObject as BaseEntourage)
                 }
@@ -606,10 +598,8 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         // Only the author can close entourages/tours
         val myId = EntourageApplication.me(context)?.id
                 ?: return
-        if (feedItem.author == null) {
-            return
-        }
-        if (feedItem.author!!.userID != myId) {
+        val author = feedItem.author ?: return
+        if (author.userID != myId) {
             return
         }
         if (!feedItem.isClosed()) {
@@ -639,27 +629,25 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     override fun initializeMap() {
         originalMapLayoutHeight = resources.getDimensionPixelOffset(R.dimen.newsfeed_map_height)
         if (onMapReadyCallback == null) {
-            onMapReadyCallback = OnMapReadyCallback { googleMap: GoogleMap? -> this.onMapReady(googleMap) }
+            onMapReadyCallback = OnMapReadyCallback { googleMap: GoogleMap -> this.onMapReady(googleMap) }
         }
     }
 
     public override fun saveCameraPosition() {
-        if (map != null) {
-            EntourageLocation.getInstance().saveLastCameraPosition(map!!.cameraPosition)
-        }
+        map?.cameraPosition?.let { EntourageLocation.getInstance().saveLastCameraPosition(it)}
     }
 
     override val renderer: DefaultClusterRenderer<ClusterItem>?
         get() = MapClusterItemRenderer(requireActivity(), map, mapClusterManager)
 
 
-    protected fun onMapReady(googleMap: GoogleMap?) {
+    protected fun onMapReady(googleMap: GoogleMap) {
         super.onMapReady(googleMap,
                 presenter.onClickListener as ClusterManager.OnClusterItemClickListener<ClusterItem>?,
                 presenter.onGroundOverlayClickListener
         )
         map?.setOnCameraIdleListener {
-            val cameraPosition = map!!.cameraPosition
+            val cameraPosition = map?.cameraPosition ?: return@setOnCameraIdleListener
             EntourageLocation.getInstance().saveCurrentCameraPosition(cameraPosition)
             val currentLocation = EntourageLocation.getInstance().currentLocation
             val newLocation = EntourageLocation.cameraPositionToLocation(null, cameraPosition)
@@ -712,10 +700,11 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     private fun initializeNewsfeedView() {
         if (newsfeedAdapter == null) {
             fragment_map_feeditems_view?.layoutManager = LinearLayoutManager(context)
-            newsfeedAdapter = NewsfeedAdapter()
-            newsfeedAdapter!!.setOnMapReadyCallback(onMapReadyCallback)
-            newsfeedAdapter!!.setOnFollowButtonClickListener { onFollowGeolocation() }
-            fragment_map_feeditems_view?.adapter = newsfeedAdapter
+            newsfeedAdapter = NewsfeedAdapter().apply {
+                this.setOnMapReadyCallback(onMapReadyCallback)
+                this.setOnFollowButtonClickListener { onFollowGeolocation() }
+                fragment_map_feeditems_view?.adapter = this
+            }
         }
     }
 
@@ -757,19 +746,20 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     fun stopFeedItem(feedItem: FeedItem?, success: Boolean) {
         if (activity != null) {
-            if (entourageService != null) {
+            entourageService?.let {service ->
                 if (feedItem != null
-                        && (!entourageService!!.isRunning
-                                || feedItem.type != TimestampedObject.TOUR_CARD || entourageService!!.currentTourId.equals(feedItem.uuid, ignoreCase = true))) {
+                        && (!service.isRunning
+                                || feedItem.type != TimestampedObject.TOUR_CARD
+                                || service.currentTourId.equals(feedItem.uuid, ignoreCase = true))) {
                     // Not ongoing tour, just stop the feed item
                     loaderStop = ProgressDialog.show(activity, requireActivity().getString(feedItem.getClosingLoaderMessage()), requireActivity().getString(R.string.button_loading), true)
                     loaderStop?.setCancelable(true)
                     EntourageEvents.logEvent(EntourageEvents.EVENT_STOP_TOUR)
-                    entourageService?.stopFeedItem(feedItem, success)
-                } else if (entourageService!!.isRunning) {
+                    service.stopFeedItem(feedItem, success)
+                } else if (service.isRunning) {
                     loaderStop = ProgressDialog.show(activity, requireActivity().getString(R.string.loader_title_tour_finish), requireActivity().getString(R.string.button_loading), true)
                     loaderStop?.setCancelable(true)
-                    entourageService?.endTreatment()
+                    service.endTreatment()
                     EntourageEvents.logEvent(EntourageEvents.EVENT_STOP_TOUR)
                 }
             }
@@ -787,7 +777,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             val user = EntourageUser()
             user.userId = userId
             user.status = status
-            entourageService!!.notifyListenersUserStatusChanged(user, timestampedObject as FeedItem)
+            entourageService?.notifyListenersUserStatusChanged(user, timestampedObject as FeedItem)
         }
     }
 
@@ -831,19 +821,17 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         return newsFeedList
     }
 
-    protected fun drawNearbyEntourage(feedItem: BaseEntourage?) {
-        if (map == null) return
-        if (feedItem?.getStartPoint() == null) return
+    protected fun drawNearbyEntourage(feedItem: BaseEntourage) {
         if (markersMap[feedItem.hashString()] == null) {
             if (feedItem.showHeatmapAsOverlay()) {
-                val position = feedItem.getStartPoint()!!.location
+                val position = feedItem.getStartPoint()?.location ?:return
                 val heatmapIcon = BitmapDescriptorFactory.fromResource(feedItem.getHeatmapResourceId())
                 val groundOverlayOptions = GroundOverlayOptions()
                         .image(heatmapIcon)
                         .position(position, BaseEntourage.HEATMAP_SIZE, BaseEntourage.HEATMAP_SIZE)
                         .clickable(true)
                         .anchor(0.5f, 0.5f)
-                markersMap[feedItem.hashString()] = map!!.addGroundOverlay(groundOverlayOptions)
+                markersMap[feedItem.hashString()] = map?.addGroundOverlay(groundOverlayOptions) ?: return
                 presenter.onGroundOverlayClickListener?.addEntourageGroundOverlay(position, feedItem)
             } else {
                 val mapClusterItem = MapClusterEntourageItem(feedItem)
@@ -894,7 +882,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             return
         }
         // show the empty list popup if necessary
-        if (newsfeedAdapter!!.dataItemCount == 0) {
+        if (newsfeedAdapter?.dataItemCount == 0) {
             showEmptyListPopup()
         }
         if (isFullMapShown) {
@@ -972,10 +960,10 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                     pagination.loadedItems(newestUpdatedDate, oldestUpdateDate ?: newestUpdatedDate)
                 }
             }
-            NewsfeedTabItem.EVENTS_TAB -> if (newsfeedAdapter != null) {
-                var position = newsfeedAdapter!!.itemCount
+            NewsfeedTabItem.EVENTS_TAB -> newsfeedAdapter?.let { adapter->
+                var position = adapter.itemCount
                 while (position >= 0) {
-                    val card = newsfeedAdapter!!.getCardAt(position)
+                    val card = adapter.getCardAt(position)
                     if (card is FeedItem) {
                         pagination.lastFeedItemUUID = card.uuid
                         break
@@ -993,7 +981,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         //refresh the newsfeed
         if (entourageService != null) {
             pagination.isRefreshing = true
-            entourageService!!.updateNewsfeed(pagination, selectedTab)
+            entourageService?.updateNewsfeed(pagination, selectedTab)
         }
         //update the badge count on tour card
         val content = message.content ?: return
@@ -1006,12 +994,12 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             val tour = newsfeedAdapter?.findCard(TimestampedObject.TOUR_CARD, joinableId) as Tour?
                     ?: return
             tour.increaseBadgeCount(isChatMessage)
-            newsfeedAdapter!!.updateCard(tour)
+            newsfeedAdapter?.updateCard(tour)
         } else if (content.isEntourageRelated) {
             val entourage = newsfeedAdapter?.findCard(TimestampedObject.ENTOURAGE_CARD, joinableId) as BaseEntourage?
                     ?: return
             entourage.increaseBadgeCount(isChatMessage)
-            newsfeedAdapter!!.updateCard(entourage)
+            newsfeedAdapter?.updateCard(entourage)
         }
     }
 
@@ -1035,7 +1023,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                     if (entourageService != null) {
                         if (selectedTab != NewsfeedTabItem.EVENTS_TAB) {
                             pagination.isRefreshing = true
-                            entourageService!!.updateNewsfeed(pagination, selectedTab)
+                            entourageService?.updateNewsfeed(pagination, selectedTab)
                         }
                     }
                 }
@@ -1088,21 +1076,20 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     private fun showEmptyListPopup() {
-        previousEmptyListPopupLocation = if (previousEmptyListPopupLocation == null) {
-            EntourageLocation.getInstance().currentLocation
-        } else {
+        previousEmptyListPopupLocation?.let {
             // Show the popup only we moved from the last position we show it
             val currentLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.getInstance().currentCameraPosition)
-            if (previousEmptyListPopupLocation!!.distanceTo(currentLocation) < Constants.EMPTY_POPUP_DISPLAY_LIMIT) {
+            if (it.distanceTo(currentLocation) < Constants.EMPTY_POPUP_DISPLAY_LIMIT) {
                 return
             }
-            currentLocation
+            previousEmptyListPopupLocation = currentLocation
+        } ?: run {
+            previousEmptyListPopupLocation = EntourageLocation.getInstance().currentLocation
         }
         // Check if we need to show the popup
         if (presenter.isShowNoEntouragesPopup) {
             fragment_map_empty_list_popup?.visibility = View.VISIBLE
         }
-
     }
 
     private fun hideEmptyListPopup() {
@@ -1119,7 +1106,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                         // we can increase the distance
                         NewsfeedBottomViewHolder.CONTENT_TYPE_LOAD_MORE
                     }
-                    newsfeedAdapter!!.dataItemCount == 0 -> {
+                    newsfeedAdapter?.dataItemCount == 0 -> {
                         // max distance and still no items, show no items info
                         NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS
                     }
@@ -1150,11 +1137,12 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         }
         // get the list of entourages near this location
         val entourageArrayList = ArrayList<TimestampedObject>()
-        for (feedItem in newsfeedAdapter!!.items) {
-            if (feedItem.type != TimestampedObject.ENTOURAGE_CARD) continue
-            val entourage = feedItem as BaseEntourage
-            if (entourage.distanceToLocation(location) < HEATZONE_SEARCH_RADIUS) {
-                entourageArrayList.add(entourage)
+        newsfeedAdapter?.items?.forEach { feedItem ->
+            if (feedItem.type == TimestampedObject.ENTOURAGE_CARD) {
+                val entourage = feedItem as BaseEntourage
+                if (entourage.distanceToLocation(location) < HEATZONE_SEARCH_RADIUS) {
+                    entourageArrayList.add(entourage)
+                }
             }
         }
         if (entourageArrayList.size == 0) return
@@ -1196,7 +1184,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             return
         }
         val newHeight = valueAnimator.animatedValue as Int
-        newsfeedAdapter!!.setMapHeight(newHeight)
+        newsfeedAdapter?.setMapHeight(newHeight)
         fragment_map_feeditems_view?.layoutManager?.requestLayout()
     }
 
@@ -1216,7 +1204,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                 val firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition()
                 val totalItemCount = linearLayoutManager.itemCount
                 if (totalItemCount - visibleItemCount <= firstVisibleItem + 2) {
-                    if (entourageService != null && entourageService!!.updateNewsfeed(pagination, selectedTab)) {
+                    if (entourageService?.updateNewsfeed(pagination, selectedTab) == true) {
                         //if update returns false no need to log this...
                         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_SCROLL_LIST)
                     }

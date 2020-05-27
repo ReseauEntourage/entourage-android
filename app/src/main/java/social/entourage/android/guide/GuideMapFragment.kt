@@ -62,7 +62,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     private var onMapReadyCallback: OnMapReadyCallback? = null
     private var poisMap: MutableMap<Long, Poi> = TreeMap()
     private var previousEmptyListPopupLocation: Location? = null
-    private var poisAdapter: PoisAdapter? = null
+    private val poisAdapter: PoisAdapter = PoisAdapter()
     private var mapClusterItemRenderer: PoiRenderer? = null
 
     // ----------------------------------
@@ -149,7 +149,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         initializeFilterButton()
         mapClusterManager?.clearItems()
         poisMap.clear()
-        poisAdapter?.removeAll()
+        poisAdapter.removeAll()
         presenter.updatePoisNearby(map)
     }
 
@@ -172,14 +172,16 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
             clearOldPois()
             if (pois != null && pois.isNotEmpty()) {
                 val poiCollection = removeRedundantPois(pois)
-                if (map != null && mapClusterManager != null) {
-                    mapClusterManager?.addItems(poiCollection)
-                    mapClusterManager?.cluster()
+                if (map != null) {
+                    mapClusterManager?.let {
+                        it.addItems(poiCollection)
+                        it.cluster()
+                    }
                     hideEmptyListPopup()
                 }
-                if (poisAdapter != null) {
-                    val previousPoiCount = poisAdapter!!.dataItemCount
-                    poisAdapter!!.addItems(poiCollection)
+                poisAdapter.let {
+                    val previousPoiCount = it.dataItemCount
+                    it.addItems(poiCollection)
                     if (previousPoiCount == 0) {
                         fragment_guide_pois_view?.scrollToPosition(0)
                     }
@@ -188,7 +190,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
                 if (!isInfoPopupVisible) {
                     showEmptyListPopup()
                 }
-                if (poisAdapter != null && poisAdapter!!.dataItemCount == 0) {
+                if (poisAdapter.dataItemCount == 0) {
                     hidePOIList(false)
                 }
             }
@@ -209,7 +211,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
 
     override val renderer: DefaultClusterRenderer<ClusterItem>?
         get() {
-            if(mapClusterItemRenderer==null) mapClusterItemRenderer = PoiRenderer(activity, map, mapClusterManager as ClusterManager<Poi?>?)
+            if(mapClusterItemRenderer==null) mapClusterItemRenderer = PoiRenderer(activity, map, mapClusterManager as ClusterManager<Poi>?)
             return mapClusterItemRenderer as DefaultClusterRenderer<ClusterItem>?
         }
 
@@ -233,7 +235,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     private fun clearOldPois() {
         poisMap.clear()
         mapClusterManager?.clearItems()
-        poisAdapter?.removeAll()
+        poisAdapter.removeAll()
     }
 
     private fun onMapReady(googleMap: GoogleMap) {
@@ -242,13 +244,14 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
                 null
         )
         map?.setOnCameraIdleListener {
-            val position = map!!.cameraPosition
-            val newLocation = EntourageLocation.cameraPositionToLocation(null, position)
-            val newZoom = position.zoom
-            if (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
-                previousCameraZoom = newZoom
-                previousCameraLocation = newLocation
-                presenter.updatePoisNearby(map)
+            map?.cameraPosition?.let {position ->
+                val newLocation = EntourageLocation.cameraPositionToLocation(null, position)
+                val newZoom = position.zoom
+                if (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
+                    previousCameraZoom = newZoom
+                    previousCameraLocation = newLocation
+                    presenter.updatePoisNearby(map)
+                }
             }
         }
         presenter.updatePoisNearby(map)
@@ -317,20 +320,21 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     }
 
     private fun showEmptyListPopup() {
-        if (map != null) {
-            previousEmptyListPopupLocation = if (previousEmptyListPopupLocation == null) {
-                EntourageLocation.cameraPositionToLocation(null, map!!.cameraPosition)
-            } else {
+        map?.let { googleMap ->
+            previousEmptyListPopupLocation?.let {
                 // Show the popup only we moved from the last position we show it
-                val currentLocation = EntourageLocation.cameraPositionToLocation(null, map!!.cameraPosition)
-                if (previousEmptyListPopupLocation!!.distanceTo(currentLocation) < Constants.EMPTY_POPUP_DISPLAY_LIMIT) {
+                val currentLocation = EntourageLocation.cameraPositionToLocation(null, googleMap.cameraPosition)
+                if (it.distanceTo(currentLocation) < Constants.EMPTY_POPUP_DISPLAY_LIMIT) {
                     return
                 }
-                currentLocation
+                //We need to update the class object
+                previousEmptyListPopupLocation = currentLocation
+            } ?: run {
+                previousEmptyListPopupLocation = EntourageLocation.cameraPositionToLocation(null, googleMap.cameraPosition)
             }
         }
-        val authenticationController = EntourageApplication.get(context).entourageComponent.authenticationController
-        if (authenticationController != null && !authenticationController.isShowNoPOIsPopup) {
+        val isShowNoPOIsPopup = EntourageApplication.get(context).entourageComponent.authenticationController?.isShowNoPOIsPopup ?:false
+        if (!isShowNoPOIsPopup) {
             return
         }
         fragment_guide_empty_list_popup?.visibility = View.VISIBLE
@@ -377,13 +381,10 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     // POI List
     // ----------------------------------
     private fun initializePOIList() {
-        if (poisAdapter == null) {
-            fragment_guide_pois_view?.layoutManager = LinearLayoutManager(context)
-            poisAdapter = PoisAdapter()
-            poisAdapter!!.setOnMapReadyCallback(onMapReadyCallback)
-            poisAdapter!!.setOnFollowButtonClickListener { onFollowGeolocation() }
-            fragment_guide_pois_view?.adapter = poisAdapter
-        }
+        fragment_guide_pois_view?.layoutManager = LinearLayoutManager(context)
+        poisAdapter.setOnMapReadyCallback(onMapReadyCallback)
+        poisAdapter.setOnFollowButtonClickListener { onFollowGeolocation() }
+        fragment_guide_pois_view?.adapter = poisAdapter
     }
 
     private fun togglePOIList() {
@@ -407,7 +408,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
             anim.addUpdateListener { valueAnimator: ValueAnimator -> onAnimationUpdate(valueAnimator) }
             anim.start()
         } else {
-            poisAdapter?.setMapHeight(targetHeight)
+            poisAdapter.setMapHeight(targetHeight)
             fragment_guide_pois_view?.layoutManager?.requestLayout()
         }
     }
@@ -428,7 +429,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
             anim.addUpdateListener { valueAnimator: ValueAnimator -> onAnimationUpdate(valueAnimator) }
             anim.start()
         } else {
-            poisAdapter?.setMapHeight(originalMapLayoutHeight)
+            poisAdapter.setMapHeight(originalMapLayoutHeight)
             fragment_guide_pois_view?.layoutManager?.requestLayout()
         }
     }
@@ -473,7 +474,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     }
 
     private fun onAnimationUpdate(valueAnimator: ValueAnimator) {
-        poisAdapter?.setMapHeight(valueAnimator.animatedValue as Int)
+        poisAdapter.setMapHeight(valueAnimator.animatedValue as Int)
         fragment_guide_pois_view?.layoutManager?.requestLayout()
     }
 
@@ -500,20 +501,20 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     }
 
     override fun onNetworkException() {
-        if (fragment_guide_coordinator != null) {
-            EntourageSnackbar.make(fragment_guide_coordinator!!, R.string.network_error, Snackbar.LENGTH_LONG).show()
+        fragment_guide_coordinator?.let {
+            EntourageSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()
         }
     }
 
     override fun onServerException(throwable: Throwable) {
-        if (fragment_guide_coordinator != null) {
-            EntourageSnackbar.make(fragment_guide_coordinator!!, R.string.network_error, Snackbar.LENGTH_LONG).show()
+        fragment_guide_coordinator?.let {
+            EntourageSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()
         }
     }
 
     override fun onTechnicalException(throwable: Throwable) {
-        if (fragment_guide_coordinator != null) {
-            EntourageSnackbar.make(fragment_guide_coordinator!!, R.string.technical_error, Snackbar.LENGTH_LONG).show()
+        fragment_guide_coordinator?.let {
+            EntourageSnackbar.make(it, R.string.technical_error, Snackbar.LENGTH_LONG).show()
         }
     }
 

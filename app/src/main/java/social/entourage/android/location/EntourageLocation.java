@@ -5,6 +5,9 @@ import android.location.Location;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import social.entourage.android.EntourageApplication;
 import social.entourage.android.api.model.User;
 
@@ -68,8 +71,15 @@ public class EntourageLocation {
         return currentCameraPosition;
     }
 
+    @NotNull
     public LatLng getLatLng() {
         return new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+    }
+
+    @Nullable
+    public LatLng getCurrentLatLng() {
+        if(currentLocation!=null) return new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+        else return null;
     }
 
     public void saveLocation(Location l) {

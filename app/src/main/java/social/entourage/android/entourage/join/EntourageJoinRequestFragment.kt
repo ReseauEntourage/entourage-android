@@ -83,9 +83,11 @@ class EntourageJoinRequestFragment  : DialogFragment() {
     }
 
     private fun onMessageSend() {
-        if (!tour_join_request_ok_message?.text.isNullOrBlank()) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_SUBMIT)
-            viewModel.sendMessage(tour_join_request_ok_message!!.text.toString(), entourage)
+        tour_join_request_ok_message?.text?.let {
+            if (!it.isBlank()) {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_SUBMIT)
+                viewModel.sendMessage(it.toString(), entourage)
+            }
         }
     }
 

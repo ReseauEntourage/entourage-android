@@ -67,7 +67,7 @@ class EncounterDisclaimerFragment : DialogFragment() {
             //inform the listener that the user accepted the CGU
             mListener?.onEncounterDisclaimerAccepted(this)
         } else {
-            EntourageSnackbar.make(view!!, R.string.encounter_disclaimer_error_notaccepted, Snackbar.LENGTH_SHORT).show()
+            view?.let {EntourageSnackbar.make(it, R.string.encounter_disclaimer_error_notaccepted, Snackbar.LENGTH_SHORT).show()}
         }
     }
 

@@ -54,14 +54,14 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
     private fun initialiseView() {
         mainprofile_app_version?.text = getString(R.string.about_version_format, BuildConfig.VERSION_FULL_NAME)
         mainprofile_app_debug_info?.text = getString(R.string.about_debug_info_format, BuildConfig.VERSION_DISPLAY_BRANCH_NAME, FirebaseInstanceId.getInstance().id)
-        mainprofile_app_version?.setOnLongClickListener { v: View? -> handleLongPress() }
-        mainprofile_app_debug_info?.setOnLongClickListener { v: View? -> handleLongPress() }
+        mainprofile_app_version?.setOnLongClickListener { handleLongPress() }
+        mainprofile_app_debug_info?.setOnLongClickListener { handleLongPress() }
 
         //add listener to user photo and name, that opens the user profile screen
-        drawer_header_user_photo?.setOnClickListener { v: View? -> selectMenuAction(R.id.action_user) }
-        drawer_header_user_name?.setOnClickListener { v: View? -> selectMenuAction(R.id.action_user) }
+        drawer_header_user_photo?.setOnClickListener { selectMenuAction(R.id.action_user) }
+        drawer_header_user_name?.setOnClickListener { selectMenuAction(R.id.action_user) }
         //add listener to modify profile text view
-        action_edit_profile?.setOnClickListener { v: View? -> selectMenuAction(R.id.action_edit_profile) }
+        action_edit_profile?.setOnClickListener { selectMenuAction(R.id.action_edit_profile) }
 
         //add listeners to side menu items
         if (mainprofile_items_layout != null) {
@@ -75,31 +75,31 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
     private fun updateUserView() {
         val user = EntourageApplication.me(activity) ?: return
         drawer_header_user_name?.text = user.displayName
-        val avatarURL = user.avatarURL
-        if (avatarURL != null && drawer_header_user_photo!=null) {
-            Picasso.get()
-                    .load(Uri.parse(avatarURL))
-                    .placeholder(R.drawable.ic_user_photo_small)
-                    .transform(CropCircleTransformation())
-                    .into(drawer_header_user_photo!!)
-        } else {
-            drawer_header_user_photo?.setImageResource(R.drawable.ic_user_photo_small)
+
+        drawer_header_user_photo?.let { photoView ->
+            user.avatarURL?.let {avatarURL ->
+                Picasso.get()
+                        .load(Uri.parse(avatarURL))
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .transform(CropCircleTransformation())
+                        .into(photoView)
+            } ?: run {
+                photoView.setImageResource(R.drawable.ic_user_photo_small)
+            }
         }
         // Show partner logo
-        var partnerURL: String? = null
-        val partner = user.partner
-        if (partner != null) {
-            partnerURL = partner.smallLogoUrl
+        drawer_header_user_partner_logo?.let {logoView->
+            user.partner?.smallLogoUrl?.let { partnerURL ->
+                Picasso.get()
+                        .load(Uri.parse(partnerURL))
+                        .placeholder(R.drawable.partner_placeholder)
+                        .transform(CropCircleTransformation())
+                        .into(logoView)
+            } ?: run {
+                logoView.setImageDrawable(null)
+            }
         }
-        if (partnerURL != null && drawer_header_user_partner_logo!=null) {
-            Picasso.get()
-                    .load(Uri.parse(partnerURL))
-                    .placeholder(R.drawable.partner_placeholder)
-                    .transform(CropCircleTransformation())
-                    .into(drawer_header_user_partner_logo!!)
-        } else {
-            drawer_header_user_partner_logo!!.setImageDrawable(null)
-        }
+
         // Show Update Private Circle item only if the user is member of any
         //TODO ADD THIS TO PFP : action_update_info?.visibility = if (user.getMemberships(Entourage.TYPE_NEIGHBORHOOD).size > 0) View.VISIBLE else View.GONE
         // Changed the ethics charter text depending on signed/unsigned
