@@ -24,7 +24,7 @@ import java.util.*
  */
 class EntourageApplication : MultiDexApplication() {
     lateinit var entourageComponent: EntourageComponent
-    private lateinit var activities: ArrayList<EntourageActivity>
+    private val activities: ArrayList<EntourageActivity>  = ArrayList()
     var badgeCount = 0
         private set
     private lateinit var feedItemsStorage: FeedItemsStorage
@@ -40,7 +40,7 @@ class EntourageApplication : MultiDexApplication() {
     // ----------------------------------
     override fun onCreate() {
         super.onCreate()
-        activities = ArrayList()
+        activities.clear()
         instance = this
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         librariesSupport = LibrariesSupport()
@@ -232,11 +232,5 @@ class EntourageApplication : MultiDexApplication() {
         private fun isCurrentApp(appName: String): Boolean {
             return BuildConfig.FLAVOR.contains(appName)
         }
-
-        val isEntourageApp: Boolean
-            get() = isCurrentApp(ENTOURAGE_APP)
-
-        val isPfpApp: Boolean
-            get() = isCurrentApp(PFP_APP)
     }
 }

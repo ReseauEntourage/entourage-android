@@ -88,7 +88,7 @@ class CreateEncounterPresenter
     // INNER CLASSES
     // ----------------------------------
     inner class EncounterUploadTask(val encounter: Encounter) : Task<EncounterUploadCallback?>, Serializable {
-        private lateinit var callback: EncounterUploadCallback
+        private var callback: EncounterUploadCallback? = null
 
         override fun execute(callback: EncounterUploadCallback?) {
             if(callback==null) return
@@ -104,12 +104,12 @@ class CreateEncounterPresenter
             val operationType = result.operationType
             if (resultEncounter != null && encounter.creationDate == resultEncounter.creationDate) {
                 if (result.isSuccess) {
-                    callback.onSuccess(resultEncounter, operationType)
+                    callback?.onSuccess(resultEncounter, operationType)
                 } else {
-                    callback.onFailure(resultEncounter, operationType)
+                    callback?.onFailure(resultEncounter, operationType)
                 }
             } else {
-                callback.onFailure(resultEncounter, operationType)
+                callback?.onFailure(resultEncounter, operationType)
             }
         }
 

@@ -286,13 +286,15 @@ public class MainActivity extends EntourageSecuredActivity
                 if(shouldBypassNavigation(item.getItemId())) {
                     return false;
                 }
-                loadFragment(item.getItemId());
+                if(bottomBar.getSelectedItemId()!=item.getItemId()) {
+                    loadFragment(item.getItemId());
+                }
                 return true;
             });
 
             int defaultId = navigationDataSource.getDefaultSelectedTab();
-            //loadFragment(defaultId);
-            bottomBar.setSelectedItemId(defaultId);
+            //bottomBar.setSelectedItemId(defaultId);
+            loadFragment(defaultId);
 
             BadgeDrawable messageBadge = bottomBar.getOrCreateBadge(navigationDataSource.getMyMessagesTabIndex());
             messageBadge.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.map_announcement_background, null));

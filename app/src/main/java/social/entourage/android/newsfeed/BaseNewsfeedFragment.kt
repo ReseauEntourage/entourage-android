@@ -212,8 +212,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         // decrease the badge count
         EntourageApplication.get(context).removePushNotificationsForFeedItem(feedItem)
         //check if we are not already displaying the tour
-        val fragmentManager = activity?.supportFragmentManager ?: return
-        val entourageInformationFragment = fragmentManager.findFragmentByTag(FeedItemInformationFragment.TAG) as EntourageInformationFragment?
+        val entourageInformationFragment = activity?.supportFragmentManager?.findFragmentByTag(FeedItemInformationFragment.TAG) as EntourageInformationFragment?
         if (entourageInformationFragment != null && entourageInformationFragment.getItemType() == feedItem.type && entourageInformationFragment.feedItemId != null && entourageInformationFragment.feedItemId.equals(feedItem.uuid, ignoreCase = true)) {
             //TODO refresh the tour info screen
             return

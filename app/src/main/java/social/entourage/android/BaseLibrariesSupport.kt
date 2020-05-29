@@ -23,18 +23,18 @@ abstract class BaseLibrariesSupport {
     // ----------------------------------
 
     open fun setupLibraries(context: Context) {
-        setupFabric(context)
+        setupFirebase(context)
         setupTimberTree()
-        firebaseAnalytics = FirebaseAnalytics.getInstance(context)
     }
 
     // ----------------------------------
     // Libraries setup
     // ----------------------------------
 
-    private fun setupFabric(context: Context) {
+    private fun setupFirebase(context: Context) {
         // Set up Crashlytics, disabled for debug builds
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
+        firebaseAnalytics = FirebaseAnalytics.getInstance(context)
     }
 
     private fun setupTimberTree() {
