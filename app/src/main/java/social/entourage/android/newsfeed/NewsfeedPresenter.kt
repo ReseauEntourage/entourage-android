@@ -30,6 +30,8 @@ import social.entourage.android.map.MapClusterEntourageItem
 import social.entourage.android.map.MapClusterTourItem
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tour.encounter.EncounterDisclaimerFragment
+import timber.log.Timber
+import java.lang.IllegalStateException
 import java.util.*
 import javax.inject.Inject
 
@@ -69,8 +71,12 @@ class NewsfeedPresenter @Inject constructor(
         }
 
     fun openFeedItem(feedItem: FeedItem, invitationId: Long, feedRank: Int) {
-        val fragmentManager = fragment?.activity?.supportFragmentManager ?: return
-        FeedItemInformationFragment.newInstance(feedItem, invitationId, feedRank).show(fragmentManager, FeedItemInformationFragment.TAG)
+        try {
+            val fragmentManager = fragment?.activity?.supportFragmentManager ?: return
+            FeedItemInformationFragment.newInstance(feedItem, invitationId, feedRank).show(fragmentManager, FeedItemInformationFragment.TAG)
+        } catch (e: IllegalStateException) {
+            Timber.w(e)
+        }
     }
 
     fun openFeedItemFromUUID(feedItemUUID: String, feedItemType: Int, invitationId: Long) {
