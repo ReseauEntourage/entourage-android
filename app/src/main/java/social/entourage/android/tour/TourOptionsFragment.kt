@@ -17,11 +17,7 @@ class TourOptionsFragment : FeedItemOptionsFragment() {
     // ATTRIBUTES
     // ----------------------------------
     override fun initializeView() {
-        if (feedItem.isClosed()) {
-            entourage_option_stop?.setText(R.string.tour_info_options_freeze_tour)
-        } else {
-            entourage_option_stop?.setText(R.string.tour_info_options_stop_tour)
-        }
+        entourage_option_stop?.setText(if (feedItem.isClosed()) R.string.tour_info_options_freeze_tour else R.string.tour_info_options_stop_tour)
     }
 
     override fun getSlideStyle(): Int {

@@ -145,23 +145,23 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         entourage_info_icon?.setOnClickListener {onSwitchSections()}
         entourage_info_title?.setOnClickListener {onSwitchSections()}
         entourage_info_description_button?.setOnClickListener {onSwitchSections()}
-        entourage_info_comment_send_button.setOnClickListener {onAddCommentButton()}
+        entourage_info_comment_send_button?.setOnClickListener {onAddCommentButton()}
         tour_card_photo?.setOnClickListener {onAuthorClicked()}
         tour_card_author?.setOnClickListener {onAuthorClicked()}
-        entourage_info_comment_record_button.setOnClickListener {onRecord()}
+        entourage_info_comment_record_button?.setOnClickListener {onRecord()}
         entourage_option_share?.setOnClickListener {onShareButton()}
         invite_source_share_button?.setOnClickListener {onShareButton()}
         entourage_info_more_button?.setOnClickListener {onMoreButton()}
-        entourage_info_options.setOnClickListener {onCloseOptionsButton()}
-        entourage_option_cancel.setOnClickListener {onCloseOptionsButton()}
-        entourage_option_stop.setOnClickListener {onStopTourButton()}
-        entourage_option_quit.setOnClickListener {quitEntourage()}
-        entourage_info_request_join_button.setOnClickListener {onJoinTourButton()}
-        entourage_option_contact.setOnClickListener {onJoinTourButton()}
-        entourage_option_join.setOnClickListener {onJoinTourButton()}
-        entourage_info_act_button.setOnClickListener {onActButton()}
-        entourage_option_edit.setOnClickListener {onEditEntourageButton()}
-        entourage_option_report.setOnClickListener {onReportEntourageButton()}
+        entourage_info_options?.setOnClickListener {onCloseOptionsButton()}
+        entourage_option_cancel?.setOnClickListener {onCloseOptionsButton()}
+        entourage_option_stop?.setOnClickListener {onStopTourButton()}
+        entourage_option_quit?.setOnClickListener {quitEntourage()}
+        entourage_info_request_join_button?.setOnClickListener {onJoinTourButton()}
+        entourage_option_contact?.setOnClickListener {onJoinTourButton()}
+        entourage_option_join?.setOnClickListener {onJoinTourButton()}
+        entourage_info_act_button?.setOnClickListener {onActButton()}
+        entourage_option_edit?.setOnClickListener {onEditEntourageButton()}
+        entourage_option_report?.setOnClickListener {onReportEntourageButton()}
         entourage_option_promote?.setOnClickListener {onPromoteEntourageButton()}
         entourage_info_member_add?.setOnClickListener {onMembersAddClicked()}
         invite_source_close_button?.setOnClickListener {onCloseInviteSourceClicked()}
@@ -183,7 +183,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
                 val textMatchList: List<String> = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS) ?: return
                 if (textMatchList.isNotEmpty()) {
                     entourage_info_comment?.let {
-                        if (it.text.toString().isNullOrBlank()) {
+                        if (it.text.toString().isBlank()) {
                             it.setText(textMatchList[0])
                         } else {
                             it.setText(it.text.toString() + " " + textMatchList[0])
@@ -805,16 +805,13 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
 
         // metadata
         updateMetadataView()
-        if (entourage_info_timestamps != null) {
-            when(feedItem.getGroupType()) {
-                BaseEntourage.GROUPTYPE_ACTION,
-                Tour.GROUPTYPE_TOUR -> {
-                    showActionTimestamps(feedItem.getCreationTime(), feedItem.updatedTime)
-                }
-                else -> {
-                    entourage_info_timestamps?.visibility = View.GONE
-                }
-
+        when(feedItem.getGroupType()) {
+            BaseEntourage.GROUPTYPE_ACTION,
+            Tour.GROUPTYPE_TOUR -> {
+                showActionTimestamps(feedItem.getCreationTime(), feedItem.updatedTime)
+            }
+            else -> {
+                entourage_info_timestamps?.visibility = View.GONE
             }
         }
     }

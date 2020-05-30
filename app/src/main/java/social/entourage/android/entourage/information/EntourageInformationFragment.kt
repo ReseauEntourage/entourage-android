@@ -99,9 +99,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN)
             it.requestToJoinEntourage(feedItem as BaseEntourage?)
             entourage_info_options?.visibility = View.GONE
-        } ?: if(entourage_information_coordinator_layout!=null) {
-            EntourageSnackbar.make(entourage_information_coordinator_layout,  R.string.tour_join_request_message_error, Snackbar.LENGTH_SHORT).show()
-        }
+        } ?: run {entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.tour_join_request_message_error, Snackbar.LENGTH_SHORT).show()}}
     }
 
     override fun showInviteSource() {
@@ -216,7 +214,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         // show the view only for outing
         val metadata: BaseEntourage.Metadata? = if (feedItem is BaseEntourage) (feedItem as BaseEntourage).metadata else null
         val metadataVisible = (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.getGroupType(), ignoreCase = true) && metadata != null)
-        entourage_info_metadata_layout.visibility = if (metadataVisible) View.VISIBLE else View.GONE
+        entourage_info_metadata_layout?.visibility = if (metadataVisible) View.VISIBLE else View.GONE
 
         if (!metadataVisible) return
 

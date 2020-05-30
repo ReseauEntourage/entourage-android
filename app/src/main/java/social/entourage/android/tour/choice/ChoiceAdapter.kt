@@ -31,21 +31,21 @@ class ChoiceAdapter(private val itemListener: RecyclerViewClickListener, var tou
         val tour = tours[position]
         when (tour.tourType) {
             TourType.MEDICAL.typeName -> {
-                holder.itemView.choice_card_image.setImageResource(R.drawable.ic_medical_active)
-                holder.itemView.choice_card_type.setText(R.string.tour_type_medical)
+                holder.itemView.choice_card_image?.setImageResource(R.drawable.ic_medical_active)
+                holder.itemView.choice_card_type?.setText(R.string.tour_type_medical)
             }
             TourType.ALIMENTARY.typeName -> {
-                holder.itemView.choice_card_image.setImageResource(R.drawable.ic_distributive_active)
-                holder.itemView.choice_card_type.setText(R.string.tour_type_alimentary)
+                holder.itemView.choice_card_image?.setImageResource(R.drawable.ic_distributive_active)
+                holder.itemView.choice_card_type?.setText(R.string.tour_type_alimentary)
             }
             TourType.BARE_HANDS.typeName -> {
-                holder.itemView.choice_card_image.setImageResource(R.drawable.ic_social_active)
-                holder.itemView.choice_card_type.setText(R.string.tour_type_bare_hands)
+                holder.itemView.choice_card_image?.setImageResource(R.drawable.ic_social_active)
+                holder.itemView.choice_card_type?.setText(R.string.tour_type_bare_hands)
             }
         }
-        holder.itemView.choice_card_date.text = SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE)
+        holder.itemView.choice_card_date?.text = SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE)
                 .format(tour.getStartTime())
-        holder.itemView.choice_card_organization.text = tour.organizationName
+        holder.itemView.choice_card_organization?.text = tour.organizationName
     }
 
     inner class ChoiceViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
@@ -54,7 +54,7 @@ class ChoiceAdapter(private val itemListener: RecyclerViewClickListener, var tou
         }
 
         init {
-            itemView.choice_card_view.setOnClickListener(this)
+            itemView.choice_card_view?.setOnClickListener(this)
         }
     }
 

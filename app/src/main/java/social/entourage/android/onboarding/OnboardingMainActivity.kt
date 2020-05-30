@@ -381,14 +381,14 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     }
 
     fun updateButtons() {
-        ui_bt_pass.visibility = View.INVISIBLE
+        ui_bt_pass?.visibility = View.INVISIBLE
         when(currentFragmentPosition) {
-            PositionType.Names.pos, PositionType.Type.pos -> ui_bt_previous.visibility = View.INVISIBLE
+            PositionType.Names.pos, PositionType.Type.pos -> ui_bt_previous?.visibility = View.INVISIBLE
             else -> ui_bt_previous.visibility = View.VISIBLE
         }
 
         if (currentFragmentPosition == PositionType.Type.pos || currentFragmentPosition == PositionType.Photo.pos ) {
-            ui_bt_pass.visibility = View.VISIBLE
+            ui_bt_pass?.visibility = View.VISIBLE
         }
     }
 

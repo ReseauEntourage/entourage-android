@@ -63,13 +63,13 @@ open class ChatMessageCardViewHolder(view: View) : BaseCardViewHolder(view) {
         val deeplink = DeepLinksManager.findFirstDeeplinkInText(chatMessage.content)
         if(deeplink?.isNotBlank() ==true) {
             deeplinkURL = deeplink
-            itemView.tic_chat_deeplink.visibility = View.VISIBLE
-            itemView.tic_chat_deeplink.setOnClickListener {
+            itemView.tic_chat_deeplink?.visibility = View.VISIBLE
+            itemView.tic_chat_deeplink?.setOnClickListener {
                 onDeeplinkClick(it)}
             itemView.setOnClickListener {onDeeplinkClick(it)}
         } else {
             deeplinkURL = null
-            itemView.tic_chat_deeplink.visibility = View.GONE
+            itemView.tic_chat_deeplink?.visibility = View.GONE
         }
 
         //linkify(it)

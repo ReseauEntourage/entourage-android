@@ -117,7 +117,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
 
     override fun onBackPressed(): Boolean {
         if (fragment_map_longclick?.visibility == View.VISIBLE) {
-            fragment_map_longclick.visibility = View.GONE
+            fragment_map_longclick?.visibility = View.GONE
             //fabProposePOI.setVisibility(View.VISIBLE);
             return true
         }
@@ -402,7 +402,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         isFullMapShown = true
         fragment_guide_display_toggle?.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_list_white_24dp))
         ensureMapVisible()
-        val targetHeight = fragment_guide_main_layout.measuredHeight
+        val targetHeight = fragment_guide_main_layout?.measuredHeight ?: originalMapLayoutHeight
         if (animated) {
             val anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight)
             anim.addUpdateListener { valueAnimator: ValueAnimator -> onAnimationUpdate(valueAnimator) }
@@ -463,13 +463,9 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     }
 
     private fun initializeFilterButton() {
-        fragment_guide_filter_button?.setOnClickListener {onShowFilter()}
-        if (instance.hasFilteredCategories()) {
-            //fragment_guide_filter_button.extend();
-            (fragment_guide_filter_button as ExtendedFloatingActionButton).setText(R.string.guide_filters_activated)
-        } else {
-            (fragment_guide_filter_button as ExtendedFloatingActionButton).setText(R.string.guide_no_filter)
-            //fragment_guide_filter_button.shrink();
+        fragment_guide_filter_button?.let {
+            it.setOnClickListener {onShowFilter()}
+            it.setText(if (instance.hasFilteredCategories()) R.string.guide_filters_activated else R.string.guide_no_filter)
         }
     }
 

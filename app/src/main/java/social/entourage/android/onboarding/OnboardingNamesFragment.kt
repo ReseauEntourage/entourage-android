@@ -80,7 +80,7 @@ class OnboardingNamesFragment : Fragment() {
             if (b) isAllreadyCall = false
         }
 
-        ui_onboard_names_et_lastname.setOnEditorActionListener { _, event, _ ->
+        ui_onboard_names_et_lastname?.setOnEditorActionListener { _, event, _ ->
             Logger("ON key listener $event -- ${EditorInfo.IME_ACTION_DONE}")
             if (event == EditorInfo.IME_ACTION_DONE) {
                 Logger("Call from Editor Action")
@@ -90,8 +90,8 @@ class OnboardingNamesFragment : Fragment() {
             false
         }
 
-        ui_onboard_names_et_firstname.setText(firstname)
-        ui_onboard_names_et_lastname.setText(lastname)
+        ui_onboard_names_et_firstname?.setText(firstname)
+        ui_onboard_names_et_lastname?.setText(lastname)
     }
 
     fun updateButtonNext(isValidate:Boolean) {

@@ -119,7 +119,7 @@ class OnboardingPasscodeFragment : Fragment() {
         setupEditText(ui_onboard_code_et_5)
         setupEditText(ui_onboard_code_et_6)
 
-        ui_onboard_code_tv_description.text = String.format(getString(R.string.onboard_sms_sub),temporaryPhone?.takeLast(2))
+        ui_onboard_code_tv_description?.text = String.format(getString(R.string.onboard_sms_sub),temporaryPhone?.takeLast(2))
     }
 
     fun setupEditText(_editText: EditText?) {
@@ -175,7 +175,7 @@ class OnboardingPasscodeFragment : Fragment() {
             }
             ui_onboard_code_et_6 -> {
                 ui_onboard_passcode_line_6.setBackgroundColor(resources.getColor(R.color.accent))
-                 onboard_passcode_mainlayout.hideKeyboard()
+                 onboard_passcode_mainlayout?.hideKeyboard()
 //                val imm: InputMethodManager? = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
 //                imm?.hideSoftInputFromWindow(ui_onboard_code_et_6.getWindowToken(), 0)
                 checkInputs()
@@ -192,9 +192,9 @@ class OnboardingPasscodeFragment : Fragment() {
         val input6 = ui_onboard_code_et_6?.text?.length ?:0 == 1
 
         val isInputsOk = input1 == input2 == input3 == input4 == input5 == input6
-        val tempCode = ui_onboard_code_et_1.text.toString() + ui_onboard_code_et_2.text.toString() +
-                ui_onboard_code_et_3.text.toString() + ui_onboard_code_et_4.text.toString() +
-                ui_onboard_code_et_5.text.toString() + ui_onboard_code_et_6.text.toString()
+        val tempCode = ui_onboard_code_et_1?.text.toString() + ui_onboard_code_et_2?.text.toString() +
+                ui_onboard_code_et_3?.text.toString() + ui_onboard_code_et_4?.text.toString() +
+                ui_onboard_code_et_5?.text.toString() + ui_onboard_code_et_6?.text.toString()
         callback?.validatePasscode(tempCode)
         callback?.upadteButtonNext(isInputsOk)
     }

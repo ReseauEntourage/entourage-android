@@ -36,8 +36,8 @@ class NoLocationPermissionFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        no_location_back_button.setOnClickListener {onBackButton()}
-        no_location_activate_button.setOnClickListener {onActivateButton()}
+        no_location_back_button?.setOnClickListener {onBackButton()}
+        no_location_activate_button?.setOnClickListener {onActivateButton()}
         no_location_ignore_button?.setOnClickListener {onBackButton()} //optional button
     }
 

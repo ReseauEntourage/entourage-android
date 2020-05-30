@@ -52,8 +52,8 @@ class EntourageCategoryFragment : EntourageDialogFragment() {
             category.isSelected = false
         }
         initializeView()
-        title_close_button.setOnClickListener {onCloseClicked()}
-        title_action_button.setOnClickListener {onValidateClicked()}
+        title_close_button?.setOnClickListener {onCloseClicked()}
+        title_action_button?.setOnClickListener {onValidateClicked()}
     }
 
     override fun onDismiss(dialog: DialogInterface) {
@@ -68,7 +68,7 @@ class EntourageCategoryFragment : EntourageDialogFragment() {
 
     private fun resetSelectedCategory() {
         // Reset the flag so consequent fragment shows will not appear broken
-        adapter.selectedCategory?.isSelected = false
+        adapter.selectedCategory.isSelected = false
     }
 
     fun setListener(mListener: CreateEntourageListener) {

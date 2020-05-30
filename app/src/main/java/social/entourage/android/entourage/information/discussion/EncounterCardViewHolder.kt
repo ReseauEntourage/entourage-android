@@ -30,16 +30,17 @@ class EncounterCardViewHolder(view: View) : BaseCardViewHolder(view) {
 
     override fun populate(encounter: TimestampedObject) {
         if(encounter !is Encounter) return
-        itemView.tic_encounter_author?.text = itemView.context.getString(R.string.encounter_author_format, encounter.userName)
-        itemView.tic_encounter_author.paintFlags = itemView.tic_encounter_author.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        itemView.tic_encounter_author?.let {
+            it.text = itemView.context.getString(R.string.encounter_author_format, encounter.userName)
+            it.paintFlags = it.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        }
         val encounterLocation = itemView.resources.getString(
                 if (encounter.isMyEncounter) R.string.tour_info_encounter_location_mine else R.string.tour_info_encounter_location,
                 encounter.streetPersonName)
         val s = Utils.fromHtml(encounterLocation)
         itemView.tic_encounter_street_name?.text = s
         //itemView.tic_encounter_message.setText(encounter.getMessage());
-        this.encounter = encounter
-    }
+        this.encounter = encounter}
 
     companion object {
         @JvmStatic

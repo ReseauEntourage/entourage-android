@@ -19,12 +19,12 @@ class PreOnboardingRVAdapter(val context:Context,private val myDataset: ArrayLis
         fun bind(res: Int) {
             //To create a fake rounded imageview overlay -> Kitkat
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                itemView.ui_view_rounded.visibility = View.GONE
+                itemView.ui_view_rounded?.visibility = View.GONE
             }
             else {
-                itemView.ui_view_rounded.visibility = View.VISIBLE
+                itemView.ui_view_rounded?.visibility = View.VISIBLE
             }
-            itemView.ui_iv_cell_preonboard.setImageResource(res)
+            itemView.ui_iv_cell_preonboard?.setImageResource(res)
         }
     }
 

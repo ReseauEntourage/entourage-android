@@ -28,7 +28,7 @@ class EntourageAboutFragment : AboutFragment() {
         try {
             startActivity(browserIntent)
         } catch (ex: ActivityNotFoundException) {
-            EntourageSnackbar.make(about_coordinator_layout, R.string.no_browser_error, Snackbar.LENGTH_SHORT).show()
+            about_coordinator_layout?.let {EntourageSnackbar.make(it, R.string.no_browser_error, Snackbar.LENGTH_SHORT).show()}
         }
     }
 
@@ -41,7 +41,7 @@ class EntourageAboutFragment : AboutFragment() {
         if (activity != null && intent.resolveActivity(requireActivity().packageManager) != null) {
             startActivity(intent)
         } else {
-            EntourageSnackbar.make(about_coordinator_layout, R.string.error_no_email, Snackbar.LENGTH_SHORT).show()
+            about_coordinator_layout?.let {EntourageSnackbar.make(it, R.string.error_no_email, Snackbar.LENGTH_SHORT).show()}
         }
     }
 

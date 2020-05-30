@@ -53,7 +53,6 @@ class AnnouncementViewHolder(view: View) : BaseCardViewHolder(view), Target {
         val announcement: Announcement = data as Announcement
         //cancel previous net requests
         Picasso.get().cancelRequest(this)
-        Picasso.get().cancelRequest(itemView.announcement_card_image)
         //title
         itemView.announcement_card_title?.text = announcement.title
         val iconUrl = announcement.iconUrl
@@ -68,20 +67,24 @@ class AnnouncementViewHolder(view: View) : BaseCardViewHolder(view), Target {
         //body
         itemView.announcement_card_body?.text = announcement.body
         //image
-        val imageUrl = announcement.imageUrl
-        if (imageUrl == null || imageUrl.trim { it <= ' ' }.isEmpty()) {
-            itemView.announcement_card_image?.visibility = View.GONE
-            itemView.announcement_card_divider_left?.visibility = View.VISIBLE
-            itemView.announcement_card_divider_right?.visibility = View.VISIBLE
-        } else {
-            itemView.announcement_card_image?.visibility = View.VISIBLE
-            itemView.announcement_card_divider_left?.visibility = View.GONE
-            itemView.announcement_card_divider_right?.visibility = View.GONE
-            Picasso.get().load(Uri.parse(imageUrl)).let {
-                AppCompatResources.getDrawable(itemView.context, R.drawable.ic_announcement_image_placeholder)?.let {
-                    itPlaceholder -> it.placeholder(itPlaceholder)
+        //cancel previous net requests
+        itemView.announcement_card_image?.let {imageView ->
+            Picasso.get().cancelRequest(imageView)
+            val imageUrl = announcement.imageUrl
+            if (imageUrl == null || imageUrl.trim { it <= ' ' }.isEmpty()) {
+                imageView.visibility = View.GONE
+                itemView.announcement_card_divider_left?.visibility = View.VISIBLE
+                itemView.announcement_card_divider_right?.visibility = View.VISIBLE
+            } else {
+                imageView.visibility = View.VISIBLE
+                itemView.announcement_card_divider_left?.visibility = View.GONE
+                itemView.announcement_card_divider_right?.visibility = View.GONE
+                Picasso.get().load(Uri.parse(imageUrl)).let {
+                    AppCompatResources.getDrawable(itemView.context, R.drawable.ic_announcement_image_placeholder)?.let {
+                        itPlaceholder -> it.placeholder(itPlaceholder)
+                    }
+                    it.into(imageView)
                 }
-                it.into(itemView.announcement_card_image)
             }
         }
         //act button

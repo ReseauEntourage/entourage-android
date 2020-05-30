@@ -29,13 +29,13 @@ class MyEntouragesFilterFragment  : EntourageDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeView()
-        title_close_button.setOnClickListener {onBackClicked()}
-        title_action_button.setOnClickListener {onValidateClicked()}
-        myentourages_filter_unread_switch.setOnClickListener {onOrganizerSwitch()}
-        myentourages_filter_closed_switch.setOnClickListener {onClosedSwitch()}
-        myentourages_filter_demand_switch.setOnClickListener {onDemandSwitch()}
-        myentourages_filter_contribution_switch.setOnClickListener {onContributionSwitch()}
-        myentourages_filter_tours_switch.setOnClickListener {onToursSwitch()}
+        title_close_button?.setOnClickListener {onBackClicked()}
+        title_action_button?.setOnClickListener {onValidateClicked()}
+        myentourages_filter_unread_switch?.setOnClickListener {onOrganizerSwitch()}
+        myentourages_filter_closed_switch?.setOnClickListener {onClosedSwitch()}
+        myentourages_filter_demand_switch?.setOnClickListener {onDemandSwitch()}
+        myentourages_filter_contribution_switch?.setOnClickListener {onContributionSwitch()}
+        myentourages_filter_tours_switch?.setOnClickListener {onToursSwitch()}
     }
 
     // ----------------------------------
@@ -100,7 +100,7 @@ class MyEntouragesFilterFragment  : EntourageDialogFragment() {
         myentourages_filter_closed_switch?.isChecked = filter.isClosedEntourages
         val me = EntourageApplication.me(activity)
         // Tours switch is displayed only for pro users
-        myentourages_filter_tours_layout.visibility = if (me?.isPro == true) View.VISIBLE else View.GONE
+        myentourages_filter_tours_layout?.visibility = if (me?.isPro == true) View.VISIBLE else View.GONE
         // Partner switch is displayed only if the user has a partner organisation
         myentourages_filter_partner_layout?.visibility = if (me?.partner != null) View.VISIBLE else View.GONE
     }

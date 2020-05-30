@@ -58,8 +58,8 @@ class EntourageDisclaimerFragment : EntourageDialogFragment() {
                 handler.postDelayed({ onOkClicked() }, 1000)
             }
         }
-        title_close_button.setOnClickListener {onCloseClicked()}
-        entourage_disclaimer_ok_button.setOnClickListener  {onOkClicked()}
+        title_close_button?.setOnClickListener {onCloseClicked()}
+        entourage_disclaimer_ok_button?.setOnClickListener  {onOkClicked()}
     }
 
     override fun onAttach(context: Context) {

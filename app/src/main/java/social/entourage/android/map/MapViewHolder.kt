@@ -4,10 +4,10 @@ import android.os.Build
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import com.google.android.gms.maps.OnMapReadyCallback
+import kotlinx.android.synthetic.main.layout_feed_map_card.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.base.BaseCardViewHolder
-import kotlinx.android.synthetic.main.layout_feed_map_card.view.*
 
 /**
  * Created by mihaiionescu on 27/06/2017.
@@ -41,7 +41,7 @@ class MapViewHolder(view: View) : BaseCardViewHolder(view) {
 
     fun setGeolocStatusIcon(active: Boolean) {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            itemView.layout_feed_map_card_recenter_button?.setImageDrawable(AppCompatResources.getDrawable(itemView.layout_feed_map_card_recenter_button.context, if (active) R.drawable.ic_my_location else R.drawable.ic_my_location_off))
+            itemView.layout_feed_map_card_recenter_button?.setImageDrawable(AppCompatResources.getDrawable(itemView.context, if (active) R.drawable.ic_my_location else R.drawable.ic_my_location_off))
         } else {
             itemView.layout_feed_map_card_recenter_button?.isSelected = active
         }

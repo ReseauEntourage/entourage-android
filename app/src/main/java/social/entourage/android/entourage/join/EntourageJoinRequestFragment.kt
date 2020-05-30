@@ -67,8 +67,8 @@ class EntourageJoinRequestFragment  : DialogFragment() {
                 }
             }
         })
-        tour_join_request_ok_message_button.setOnClickListener {onMessageSend()}
-        tour_join_request_ok_x_button.setOnClickListener { dismiss() }
+        tour_join_request_ok_message_button?.setOnClickListener {onMessageSend()}
+        tour_join_request_ok_x_button?.setOnClickListener { dismiss() }
         viewModel.requestResult.observe(viewLifecycleOwner, Observer {
             when(it) {
                 EntourageJoinRequestViewModel.REQUEST_ERROR ->{

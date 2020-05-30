@@ -273,15 +273,17 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
     override fun onPhotoEdited(photoURI: Uri?, photoSource: Int) {
         pickedImageEditedUri = photoURI
 
-        if (pickedImageEditedUri != null) {
-            Picasso.get().load(pickedImageEditedUri)
-                    .placeholder(R.drawable.ic_user_photo)
-                    .transform(CropCircleTransformation())
-                    .into(ui_onboard_photo_image)
-        } else {
-            Picasso.get().load(R.drawable.ic_user_photo)
-                    .transform(CropCircleTransformation())
-                    .into(ui_onboard_photo_image)
+        ui_onboard_photo_image?.let {
+            if (pickedImageEditedUri != null) {
+                Picasso.get().load(pickedImageEditedUri)
+                        .placeholder(R.drawable.ic_user_photo)
+                        .transform(CropCircleTransformation())
+                        .into(it)
+            } else {
+                Picasso.get().load(R.drawable.ic_user_photo)
+                        .transform(CropCircleTransformation())
+                        .into(it)
+            }
         }
 
         callback?.updateUserPhoto(pickedImageEditedUri)

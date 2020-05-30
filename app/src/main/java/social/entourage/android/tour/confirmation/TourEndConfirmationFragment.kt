@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.layout_tour_end_confirmation.*
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.tools.Utils
-import social.entourage.android.view.EntourageSnackbar
 import java.util.*
 
 class TourEndConfirmationFragment  : EntourageDialogFragment() {
@@ -40,8 +38,8 @@ class TourEndConfirmationFragment  : EntourageDialogFragment() {
         }
         tour = currentTour
         initializeView()
-        confirmation_end_button.setOnClickListener { startTourActivity(KEY_END_TOUR)}
-        confirmation_resume_button.setOnClickListener { startTourActivity(KEY_RESUME_TOUR)}
+        confirmation_end_button?.setOnClickListener { startTourActivity(KEY_END_TOUR)}
+        confirmation_resume_button?.setOnClickListener { startTourActivity(KEY_RESUME_TOUR)}
     }
 
     override fun getSlideStyle(): Int {
@@ -60,7 +58,7 @@ class TourEndConfirmationFragment  : EntourageDialogFragment() {
     // ----------------------------------
     // CLICK CALLBACKS
     // ----------------------------------
-    fun startTourActivity(action: String) {
+    private fun startTourActivity(action: String) {
         val args = Bundle()
         args.putBoolean(action, true)
         args.putSerializable(Tour.KEY_TOUR, tour)

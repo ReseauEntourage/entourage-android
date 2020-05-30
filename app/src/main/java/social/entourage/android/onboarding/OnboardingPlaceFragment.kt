@@ -101,7 +101,7 @@ open class OnboardingPlaceFragment : EntourageDialogFragment() {
         }
 
         if (userAddress != null) {
-            ui_onboard_place_tv_location.text = userAddress?.displayAddress
+            ui_onboard_place_tv_location?.text = userAddress?.displayAddress
         } else {
             ui_onboard_place_tv_location?.text = ""
             ui_onboard_place_tv_location?.hint = getString(R.string.onboard_place_placeholder)

@@ -6,7 +6,6 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
-import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
@@ -39,47 +38,54 @@ class MainProfileItemView : RelativeLayout {
             //Handle divider
             val bShowDivider = styledAttributes.getBoolean(R.styleable.MainProfileItemView_showDivider, true)
             if (!bShowDivider) {
-                mainprofile_item_divider.visibility = View.GONE
+                mainprofile_item_divider?.visibility = View.GONE
             }
 
             //Icon
-            val iconResourceID = styledAttributes.getResourceId(R.styleable.MainProfileItemView_android_icon, 0)
-            if (iconResourceID == 0) {
-                mainprofile_item_icon.visibility = View.GONE
-            } else {
-                mainprofile_item_icon.setImageResource(iconResourceID)
-            }
-            val iconTint = styledAttributes.getColor(R.styleable.MainProfileItemView_iconTint, 0)
-            if (iconTint != 0) {
-                ImageViewCompat.setImageTintList(mainprofile_item_icon, ColorStateList.valueOf(iconTint))
+            mainprofile_item_icon?.let {
+                val iconResourceID = styledAttributes.getResourceId(R.styleable.MainProfileItemView_android_icon, 0)
+                if (iconResourceID == 0) {
+                    it.visibility = View.GONE
+                } else {
+                    it.setImageResource(iconResourceID)
+                }
+                val iconTint = styledAttributes.getColor(R.styleable.MainProfileItemView_iconTint, 0)
+                if (iconTint != 0) {
+                    ImageViewCompat.setImageTintList(it, ColorStateList.valueOf(iconTint))
+                }
             }
 
             //Title
-            val title = styledAttributes.getString(R.styleable.MainProfileItemView_android_title)
-            mainprofile_item_title.text = title
-            val defaultTextColor = mainprofile_item_title.currentTextColor
-            val textColor = styledAttributes.getResourceId(R.styleable.MainProfileItemView_android_textColor, defaultTextColor)
-            if (textColor != defaultTextColor) {
-                mainprofile_item_title.setTextColor(ContextCompat.getColor(context, textColor))
-            }
-            val textSize = styledAttributes.getDimensionPixelSize(R.styleable.MainProfileItemView_android_textSize, 0).toFloat()
-            if (textSize > 0) {
-                mainprofile_item_title.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
-            }
-            val backgroundResourceID = styledAttributes.getResourceId(R.styleable.MainProfileItemView_textBackground, 0)
-            if (backgroundResourceID != 0) {
-                mainprofile_item_title.setBackgroundResource(backgroundResourceID)
-            }
-            val centerText = styledAttributes.getBoolean(R.styleable.MainProfileItemView_centerText, false)
-            if (centerText) {
-                mainprofile_item_title.gravity = Gravity.CENTER
+            mainprofile_item_title?.let {
+                it.text = styledAttributes.getString(R.styleable.MainProfileItemView_android_title)
+
+                val defaultTextColor = it.currentTextColor
+                val textColor = styledAttributes.getResourceId(R.styleable.MainProfileItemView_android_textColor, defaultTextColor)
+                if (textColor != defaultTextColor) {
+                    it.setTextColor(ContextCompat.getColor(context, textColor))
+                }
+
+                val textSize = styledAttributes.getDimensionPixelSize(R.styleable.MainProfileItemView_android_textSize, 0).toFloat()
+                if (textSize > 0) {
+                    it.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
+                }
+
+                val backgroundResourceID = styledAttributes.getResourceId(R.styleable.MainProfileItemView_textBackground, 0)
+                if (backgroundResourceID != 0) {
+                    it.setBackgroundResource(backgroundResourceID)
+                }
+
+                val centerText = styledAttributes.getBoolean(R.styleable.MainProfileItemView_centerText, false)
+                if (centerText) {
+                    it.gravity = Gravity.CENTER
+                }
             }
         } finally {
             styledAttributes.recycle()
         }
     }
 
-    fun setTitle(@StringRes resid: Int) {
-        mainprofile_item_title?.setText(resid)
+    fun setTitle(@StringRes resId: Int) {
+        mainprofile_item_title?.setText(resId)
     }
 }

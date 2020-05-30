@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_encounter_disclaimer.*
@@ -32,8 +31,8 @@ class EncounterDisclaimerFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        encounter_disclaimer_close_button.setOnClickListener {onCloseClicked()}
-        encounter_disclaimer_ok_button.setOnClickListener {onOkClicked()}
+        encounter_disclaimer_close_button?.setOnClickListener {onCloseClicked()}
+        encounter_disclaimer_ok_button?.setOnClickListener {onOkClicked()}
     }
 
     override fun onAttach(context: Context) {
@@ -62,7 +61,7 @@ class EncounterDisclaimerFragment : DialogFragment() {
         dismiss()
     }
 
-    fun onOkClicked() {
+    private fun onOkClicked() {
         if (encounter_disclaimer_checkbox?.isChecked == true) {
             //inform the listener that the user accepted the CGU
             mListener?.onEncounterDisclaimerAccepted(this)

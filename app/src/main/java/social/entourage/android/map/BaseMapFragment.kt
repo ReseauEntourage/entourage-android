@@ -164,30 +164,31 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
     // Long clicks on map handler
     // ----------------------------------
     protected open fun showLongClickOnMapOptions(latLng: LatLng) {
-        //get the click point
-        val clickPoint = map?.projection?.toScreenLocation(latLng) ?: return
-        //adjust the buttons holder layout
-        val wm = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val display = wm.defaultDisplay
-        val screenSize = Point()
-        display.getSize(screenSize)
-        map_longclick_buttons.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
-        val bW = map_longclick_buttons.measuredWidth
-        val bH = map_longclick_buttons.measuredHeight
-        val lp = map_longclick_buttons.layoutParams as RelativeLayout.LayoutParams
-        var marginLeft = clickPoint.x - bW / 2
-        if (marginLeft + bW > screenSize.x) {
-            marginLeft -= bW / 2
+        map_longclick_buttons?.let {
+            //get the click point
+            val clickPoint = map?.projection?.toScreenLocation(latLng) ?: return
+            //adjust the buttons holder layout
+            val wm = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            val screenSize = Point()
+            wm.defaultDisplay.getSize(screenSize)
+            it.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+            val bW = it.measuredWidth
+            val bH = it.measuredHeight
+            val lp = it.layoutParams as RelativeLayout.LayoutParams
+            var marginLeft = clickPoint.x - bW / 2
+            if (marginLeft + bW > screenSize.x) {
+                marginLeft -= bW / 2
+            }
+            if (marginLeft < 0) {
+                marginLeft = 0
+            }
+            var marginTop = clickPoint.y - bH / 2
+            if (marginTop < 0) {
+                marginTop = clickPoint.y
+            }
+            lp.setMargins(marginLeft, marginTop, 0, 0)
+            it.layoutParams = lp
         }
-        if (marginLeft < 0) {
-            marginLeft = 0
-        }
-        var marginTop = clickPoint.y - bH / 2
-        if (marginTop < 0) {
-            marginTop = clickPoint.y
-        }
-        lp.setMargins(marginLeft, marginTop, 0, 0)
-        map_longclick_buttons.layoutParams = lp
         //show the view
         fragment_map_longclick?.visibility = View.VISIBLE
     }

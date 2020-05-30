@@ -44,7 +44,7 @@ class OnboardingEmailPwdFragment : Fragment() {
             callback?.upadteButtonNext(false)
         }
         else {
-            ui_onboard_email_pwd_et_mail.setText(tempEmail)
+            ui_onboard_email_pwd_et_mail?.setText(tempEmail)
             callback?.upadteButtonNext(true)
         }
 
@@ -66,12 +66,12 @@ class OnboardingEmailPwdFragment : Fragment() {
     //**********//**********//**********
 
     fun setupViews() {
-        onboard_email_pwd_mainlayout.setOnTouchListener { view, _ ->
+        onboard_email_pwd_mainlayout?.setOnTouchListener { view, _ ->
             view.hideKeyboard()
             true
         }
 
-        ui_onboard_email_pwd_et_mail.setOnEditorActionListener { _, event, _ ->
+        ui_onboard_email_pwd_et_mail?.setOnEditorActionListener { _, event, _ ->
             Logger("ON key listener $event -- ${EditorInfo.IME_ACTION_DONE}")
             if (event == EditorInfo.IME_ACTION_DONE) {
                 Logger("Call from Editor Action")
@@ -93,7 +93,7 @@ class OnboardingEmailPwdFragment : Fragment() {
     //**********//**********//**********
 
     fun updateButtonNext() {
-        if (ui_onboard_email_pwd_et_mail.text.toString().isValidEmail()) {
+        if (ui_onboard_email_pwd_et_mail?.text!= null && ui_onboard_email_pwd_et_mail.text.toString().isValidEmail()) {
             callback?.upadteButtonNext(true)
             callback?.updateEmailPwd(ui_onboard_email_pwd_et_mail.text.toString(),null,null)
         }

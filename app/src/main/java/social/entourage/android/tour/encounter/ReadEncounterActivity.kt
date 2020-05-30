@@ -4,21 +4,15 @@ import android.location.Geocoder
 import android.os.AsyncTask
 import android.os.Bundle
 import android.text.format.DateFormat
-import android.widget.EditText
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
 import kotlinx.android.synthetic.main.activity_encounter_read.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.EntourageActivity
-import social.entourage.android.EntourageComponent
 import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.tour.Encounter
 import java.io.IOException
 import java.lang.ref.WeakReference
 import java.util.*
-import javax.inject.Inject
 
 class ReadEncounterActivity : EntourageActivity() {
     // ----------------------------------
@@ -34,7 +28,7 @@ class ReadEncounterActivity : EntourageActivity() {
         setContentView(R.layout.activity_encounter_read)
         EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_ENCOUNTER_FROM_MAP)
         encounter = intent?.extras?.get(BUNDLE_KEY_ENCOUNTER) as Encounter?
-        title_close_button.setOnClickListener {onCloseButton()}
+        title_close_button?.setOnClickListener {onCloseButton()}
     }
 
     override fun onStart() {

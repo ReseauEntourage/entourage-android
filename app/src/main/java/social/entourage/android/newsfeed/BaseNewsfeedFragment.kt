@@ -108,7 +108,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         groupType = BaseEntourage.GROUPTYPE_ACTION
         presenter.start()
         if (fragmentLifecycleCallbacks == null) {
-            NewsfeedFragmentLifecycleCallbacks()?.let {
+            NewsfeedFragmentLifecycleCallbacks().let {
                 fragmentLifecycleCallbacks = it
                 activity?.supportFragmentManager?.registerFragmentLifecycleCallbacks(it, false)
             }
@@ -708,7 +708,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     private fun initializeFilterTab() {
-        if(EntourageApplication.me(activity)?.isPro ==false && fragment_map_top_tab.getTabAt(NewsfeedTabItem.TOUR_TAB.id)!=null) {
+        if(EntourageApplication.me(activity)?.isPro ==false && fragment_map_top_tab?.getTabAt(NewsfeedTabItem.TOUR_TAB.id)!=null) {
             fragment_map_top_tab?.removeTabAt(NewsfeedTabItem.TOUR_TAB.id)
             fragment_map_top_tab?.tabMode = TabLayout.MODE_FIXED
         }
@@ -792,8 +792,8 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         if (fragment_map_gps != null) {
             //we force it because we don't need geoloc when Action zone is set
             val visibility = (!isLocationEnabled() || !isLocationPermissionGranted()) && needForGeoloc()
-            fragment_map_gps.text = if (isLocationEnabled()) getString(R.string.map_gps_no_permission) else getString(R.string.map_gps_unavailable)
-            fragment_map_gps.visibility = if (visibility) View.VISIBLE else View.GONE
+            fragment_map_gps?.text = if (isLocationEnabled()) getString(R.string.map_gps_no_permission) else getString(R.string.map_gps_unavailable)
+            fragment_map_gps?.visibility = if (visibility) View.VISIBLE else View.GONE
             if(!visibility && isFullMapShown) {
                 animFullMap()
             }

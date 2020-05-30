@@ -74,8 +74,8 @@ class ReadPoiFragment : EntourageDialogFragment() {
         poi_type_image?.setImageResource(categoryType.resourceTransparentId)
     }
 
-    private fun setActionButton(btn: Button, value: String?) {
-        if (value != null && value.isNotEmpty()) {
+    private fun setActionButton(btn: Button?, value: String?) {
+        if (btn !=null && value != null && value.isNotEmpty()) {
             btn.visibility = View.VISIBLE
             btn.text = value
             btn.paintFlags = btn.paintFlags or Paint.UNDERLINE_TEXT_FLAG

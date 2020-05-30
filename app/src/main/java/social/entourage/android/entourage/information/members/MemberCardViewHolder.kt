@@ -32,30 +32,27 @@ class MemberCardViewHolder(view: View) : BaseCardViewHolder(view) {
 
     fun populate(entourageUser: EntourageUser) {
         userId = entourageUser.userId
-        val avatarURL = entourageUser.avatarURLAsString
-        if (avatarURL != null && itemView.tic_member_photo!=null) {
+        itemView.tic_member_photo?.let {
+            entourageUser.avatarURLAsString?.let {avatarURL ->
             Picasso.get().load(Uri.parse(avatarURL))
                     .placeholder(R.drawable.ic_user_photo_small)
                     .transform(CropCircleTransformation())
-                    .into(itemView.tic_member_photo)
-        } else {
-            itemView.tic_member_photo?.setImageResource(R.drawable.ic_user_photo_small)
+                    .into(it)
+            } ?: run {
+                it.setImageResource(R.drawable.ic_user_photo_small)
+            }
         }
         // Partner logo
-        val partner = entourageUser.partner
-        if (partner != null) {
-            val partnerLogoURL = partner.smallLogoUrl
-            if (partnerLogoURL != null && itemView.tic_member_partner_logo!= null) {
+        itemView.tic_member_partner_logo?.let {
+            entourageUser.partner?.smallLogoUrl?.let {partnerLogoURL->
                 Picasso.get()
                         .load(Uri.parse(partnerLogoURL))
                         .placeholder(R.drawable.partner_placeholder)
                         .transform(CropCircleTransformation())
-                        .into(itemView.tic_member_partner_logo)
-            } else {
-                itemView.tic_member_partner_logo?.setImageDrawable(null)
+                        .into(it)
+            } ?: run {
+                it.setImageDrawable(null)
             }
-        } else {
-            itemView.tic_member_partner_logo?.setImageDrawable(null)
         }
         itemView.tic_member_name?.text = entourageUser.displayName
         val roles = ArrayList<String>()

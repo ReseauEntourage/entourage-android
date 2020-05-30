@@ -67,11 +67,11 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //bind views here
-        map_longclick_button_start_tour_launcher.setOnClickListener {onStartTourLauncher()}
-        launcher_tour_outer_view.setOnClickListener {hideTourLauncher()}
-        tour_stop_button.setOnClickListener {onStartStopConfirmation()}
-        map_longclick_button_create_encounter.setOnClickListener {onAddEncounter()}
-        launcher_tour_go.setOnClickListener {onStartNewTour()}
+        map_longclick_button_start_tour_launcher?.setOnClickListener {onStartTourLauncher()}
+        launcher_tour_outer_view?.setOnClickListener {hideTourLauncher()}
+        tour_stop_button?.setOnClickListener {onStartStopConfirmation()}
+        map_longclick_button_create_encounter?.setOnClickListener {onAddEncounter()}
+        launcher_tour_go?.setOnClickListener {onStartNewTour()}
     }
 
     override fun onBackPressed(): Boolean {
@@ -113,22 +113,20 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     }
 
     private fun onStartNewTour() {
-        launcher_tour_go?.isEnabled = false
-        launcher_tour_progressBar?.visibility = View.VISIBLE
-        val tourType = TourType.findByRessourceId(launcher_tour_type.checkedRadioButtonId)
-        startTour(tourType.typeName)
-        when (tourType) {
-            TourType.MEDICAL -> {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_TOUR_MEDICAL)
-            }
-            TourType.BARE_HANDS -> {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_TOUR_SOCIAL)
-            }
-            TourType.ALIMENTARY -> {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_TOUR_DISTRIBUTION)
-            }
+        launcher_tour_type?.let {
+            launcher_tour_go?.isEnabled = false
+            launcher_tour_progressBar?.visibility = View.VISIBLE
+            val tourType = TourType.findByRessourceId(it.checkedRadioButtonId)
+            startTour(tourType.typeName)
+            EntourageEvents.logEvent(
+                    when (tourType) {
+                        TourType.MEDICAL -> EntourageEvents.EVENT_TOUR_MEDICAL
+                        TourType.BARE_HANDS -> EntourageEvents.EVENT_TOUR_SOCIAL
+                        TourType.ALIMENTARY -> EntourageEvents.EVENT_TOUR_DISTRIBUTION
+                    }
+            )
+            EntourageEvents.logEvent(EntourageEvents.EVENT_START_TOUR)
         }
-        EntourageEvents.logEvent(EntourageEvents.EVENT_START_TOUR)
     }
 
     private fun onStartStopConfirmation() {
@@ -388,7 +386,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     // ----------------------------------
     override fun hideTourLauncher() {
         if (layout_map_launcher?.visibility == View.VISIBLE) {
-            layout_map_launcher.visibility = View.GONE
+            layout_map_launcher?.visibility = View.GONE
         }
     }
 

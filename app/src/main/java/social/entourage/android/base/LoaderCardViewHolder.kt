@@ -9,6 +9,6 @@ class LoaderCardViewHolder(view: View) : BaseCardViewHolder(view) {
     }
 
     override fun populate(data: TimestampedObject) {
-        itemView.layout_loader_card_progressbar.visibility = View.VISIBLE
+        itemView.layout_loader_card_progressbar?.visibility = View.VISIBLE
     }
 }

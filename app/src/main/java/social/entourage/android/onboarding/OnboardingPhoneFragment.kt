@@ -76,8 +76,8 @@ class OnboardingPhoneFragment : Fragment() {
     //**********//**********//**********
 
     fun setupViews() {
-        ui_onboard_phone_tv_title.text = String.format(getString(R.string.onboard_phone_title),firstname)
-        ui_onboard_phone_et_phone.setText(phone)
+        ui_onboard_phone_tv_title?.text = String.format(getString(R.string.onboard_phone_title),firstname)
+        ui_onboard_phone_et_phone?.setText(phone)
 
         ui_onboard_phone_et_phone?.setOnFocusChangeListener { _view, b ->
             checkAndUpdate()
@@ -98,11 +98,11 @@ class OnboardingPhoneFragment : Fragment() {
     }
 
     fun checkAndUpdate() {
-        if (ui_onboard_phone_et_phone.text?.length ?: 0  >= minimumPhoneCharacters) {
+        if (ui_onboard_phone_et_phone?.text?.length ?: 0  >= minimumPhoneCharacters) {
             phone = ui_onboard_phone_et_phone?.text.toString()
             callback?.upadteButtonNext(true)
             val countryCode = ui_onboard_phone_ccp_code?.getSelectedCountryCodeWithPlus()
-            callback?.validatePhoneNumber(countryCode,ui_onboard_phone_et_phone.text.toString())
+            callback?.validatePhoneNumber(countryCode,ui_onboard_phone_et_phone?.text.toString())
         }
         else {
             callback?.upadteButtonNext(false)

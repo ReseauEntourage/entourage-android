@@ -31,14 +31,14 @@ class PlusFragment : Fragment(), BackPressable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        plus_help_button.setOnClickListener {onHelpButton()}
-        layout_line_create_entourage_ask_help.setOnClickListener {onCreateEntourageHelpAction()}
-        layout_line_create_entourage_contribute.setOnClickListener {onCreateEntourageContributionAction()}
+        plus_help_button?.setOnClickListener {onHelpButton()}
+        layout_line_create_entourage_ask_help?.setOnClickListener {onCreateEntourageHelpAction()}
+        layout_line_create_entourage_contribute?.setOnClickListener {onCreateEntourageContributionAction()}
         layout_line_create_outing?.setOnClickListener {onCreateOuting()}
         layout_line_start_tour_launcher?.setOnClickListener {onStartTourLauncher()}
         layout_line_add_tour_encounter?.setOnClickListener {onAddEncounter()}
         map_longclick_button_create_encounter?.setOnClickListener {onAddEncounter()}
-        fragment_plus_overlay.setOnClickListener {onBackPressed()}
+        fragment_plus_overlay?.setOnClickListener {onBackPressed()}
     }
 
     private fun onHelpButton() {

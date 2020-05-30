@@ -53,7 +53,7 @@ abstract class AboutFragment : EntourageDialogFragment() {
         try {
             startActivity(browserIntent)
         } catch (ex: ActivityNotFoundException) {
-            EntourageSnackbar.make(about_coordinator_layout, R.string.no_browser_error, Snackbar.LENGTH_SHORT).show()
+            about_coordinator_layout?.let{EntourageSnackbar.make(it, R.string.no_browser_error, Snackbar.LENGTH_SHORT).show()}
         }
     }
 

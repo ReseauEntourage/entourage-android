@@ -36,12 +36,12 @@ class PreOnboardingStartActivity : AppCompatActivity() {
     }
 
     private fun setupViews() {
-        ui_button_connect.setOnClickListener {
+        ui_button_connect?.setOnClickListener {
             startActivity(Intent(this, PreOnboardingChoiceActivity::class.java))
             finish()
         }
 
-        ui_button_next.setOnClickListener {
+        ui_button_next?.setOnClickListener {
             if (currentDotPosition < 3) {
                 currentDotPosition = currentDotPosition + 1
                 ui_recyclerView?.smoothScrollToPosition(currentDotPosition)
@@ -61,7 +61,7 @@ class PreOnboardingStartActivity : AppCompatActivity() {
         datas.add(R.drawable.pre_onboard_4)
         val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         ui_recyclerView?.setHasFixedSize(true)
-        ui_recyclerView.layoutManager = linearLayoutManager
+        ui_recyclerView?.layoutManager = linearLayoutManager
         ui_recyclerView?.addItemDecoration(RecyclerViewItemDecorationCenterFirstLast(CELL_SPACING))
 
         val scrollListener = object : RecyclerView.OnScrollListener() {
@@ -80,15 +80,15 @@ class PreOnboardingStartActivity : AppCompatActivity() {
 
         linearLayoutManager.scrollToPosition(0)
         mAdapter = PreOnboardingRVAdapter(this, datas)
-        ui_recyclerView.adapter = mAdapter
+        ui_recyclerView?.adapter = mAdapter
 
         mAdapter.notifyDataSetChanged()
 
         //Calculate padding and white view width
         val diff = (Utils.getScreenWidth(this) - Utils.convertDpToPixel(228.toFloat(),this)) / 2
-        ui_fl_trans_left.layoutParams.width = (diff - CELL_SPACING).toInt()
-        ui_fl_trans_right.layoutParams.width = (diff - CELL_SPACING).toInt()
-        ui_recyclerView.setPaddingRelative(diff.toInt(),0,diff.toInt(),0)
+        ui_fl_trans_left?.layoutParams?.width = (diff - CELL_SPACING).toInt()
+        ui_fl_trans_right?.layoutParams?.width = (diff - CELL_SPACING).toInt()
+        ui_recyclerView?.setPaddingRelative(diff.toInt(),0,diff.toInt(),0)
     }
 
     private fun updateViewAndDots() {
