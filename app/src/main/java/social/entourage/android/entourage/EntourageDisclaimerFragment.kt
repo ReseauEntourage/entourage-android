@@ -93,7 +93,7 @@ class EntourageDisclaimerFragment : EntourageDialogFragment() {
         if (entourage_disclaimer_switch?.isChecked == true) {
             //inform the listener that the user accepted the CGU
             mListener?.onEntourageDisclaimerAccepted(this)
-        } else {
+        } else if(activity != null){
             Toast.makeText(activity, R.string.entourage_disclaimer_error_notaccepted, Toast.LENGTH_SHORT).show()
         }
     }
