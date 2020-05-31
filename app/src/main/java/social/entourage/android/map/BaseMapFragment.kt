@@ -52,44 +52,48 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
     protected var previousCameraZoom = 1.0f
     protected var map: GoogleMap? = null
     protected var mapClusterManager: ClusterManager<ClusterItem>? = null
+    protected abstract val adapter: HeaderBaseAdapter?
+
     //protected var mapClusterItemRenderer: DefaultClusterRenderer<ClusterItem>? = null
     protected var originalMapLayoutHeight = 0
     private var toReturn: View? = null
 
-    override fun onBackPressed(): Boolean {
-        return false
-    }
+    override fun onBackPressed(): Boolean = false
 
     protected open fun initializeMap() {}
+
     fun centerMap(latLng: LatLng?) {
         val cameraPosition = CameraPosition(latLng, EntourageLocation.getInstance().lastCameraPosition.zoom, 0F, 0F)
         centerMap(cameraPosition)
     }
 
     protected fun centerMapAndZoom(latLng: LatLng?, zoom: Float, animated: Boolean) {
-        val cameraPosition = CameraUpdateFactory.newCameraPosition(CameraPosition(latLng, zoom, 0F, 0F))
-        if (animated) {
-            map?.animateCamera(cameraPosition, 300, null)
-        } else {
-            map?.moveCamera(cameraPosition)
+        val cameraPosition = CameraPosition(latLng, zoom, 0F, 0F)
+        map?.let {
+            if (animated) {
+                it.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 300, null)
+            } else {
+                it.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+            }
+            saveCameraPosition()
         }
-        saveCameraPosition()
     }
 
     private fun centerMap(cameraPosition: CameraPosition) {
-        if (isFollowing) {
-            map?.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        if(!isFollowing) return
+        map?.let {
+            it.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
             saveCameraPosition()
         }
     }
 
     protected open fun saveCameraPosition() {}
+
     private fun initializeMapZoom() {
-        val address = EntourageApplication.get().entourageComponent.authenticationController.user?.address
-        if (address != null) {
-            centerMap(LatLng(address.latitude, address.longitude))
+        EntourageApplication.get().entourageComponent.authenticationController.user?.address?.let {
+            centerMap(LatLng(it.latitude, it.longitude))
             isFollowing = false
-        } else {
+        } ?: run {
             centerMap(EntourageLocation.getInstance().lastCameraPosition)
         }
     }
@@ -106,33 +110,46 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
     }
 
     @SuppressLint("MissingPermission")
-    protected fun onMapReady(googleMap: GoogleMap, onClickListener: OnClusterItemClickListener<ClusterItem>?, onGroundOverlayClickListener: OnGroundOverlayClickListener?) {
-        map = googleMap
+    protected fun onMapReady(
+       googleMap: GoogleMap?,
+       onClickListener: OnClusterItemClickListener<ClusterItem>?,
+       onGroundOverlayClickListener: OnGroundOverlayClickListener?
+    ) {
         //we forced the setting of the map anyway
         if (activity == null) {
             Timber.e("No activity found")
             return
         }
-        googleMap.isMyLocationEnabled = isLocationPermissionGranted()
 
-        //mylocation is handled in MapViewHolder
-        googleMap.uiSettings.isMyLocationButtonEnabled = false
-        googleMap.uiSettings.isMapToolbarEnabled = false
-        googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_styles_json))
-        val newClusterMgr = ClusterManager<ClusterItem>(activity, map)
-        //mapClusterItemRenderer = renderer
-        mapClusterManager = newClusterMgr
-        newClusterMgr.renderer = renderer as ClusterRenderer<ClusterItem>
-        newClusterMgr.setOnClusterItemClickListener(onClickListener)
-        initializeMapZoom()
-        googleMap.setOnMarkerClickListener(newClusterMgr)
-        if (onGroundOverlayClickListener != null) {
-            googleMap.setOnGroundOverlayClickListener(onGroundOverlayClickListener)
+        googleMap?.apply {
+            isMyLocationEnabled = isLocationPermissionGranted()
+            uiSettings.isMyLocationButtonEnabled = false
+            uiSettings.isMapToolbarEnabled = false
+            setMapStyle(MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_styles_json))
+
+            createCluster(onClickListener, this)
+
+            onGroundOverlayClickListener?.let { setOnGroundOverlayClickListener(it) }
+            setOnMapLongClickListener(createOnMapLongClickListener())
+        }.also { map = it }
+    }
+
+    private fun createCluster(onClickListener: OnClusterItemClickListener<ClusterItem>?, map: GoogleMap) {
+        ClusterManager<ClusterItem>(activity, map).apply {
+            renderer = renderer as ClusterRenderer<ClusterItem>
+            setOnClusterItemClickListener(onClickListener)
+            initializeMapZoom()
+        }.also {
+            map.setOnMarkerClickListener(it)
+            mapClusterManager = it
         }
-        googleMap.setOnMapLongClickListener { latLng: LatLng ->
+    }
+
+    private fun createOnMapLongClickListener() = object : GoogleMap.OnMapLongClickListener {
+        override fun onMapLongClick(latLng: LatLng) {
             //only show when map is in full screen and not visible
             if (!isFullMapShown || fragment_map_longclick?.visibility == View.VISIBLE) {
-                return@setOnMapLongClickListener
+                return
             }
             if (activity != null) {
                 EntourageEvents.logEvent(eventLongClick)
@@ -157,114 +174,109 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         previousCameraLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.getInstance().lastCameraPosition)
-        fragment_map_longclick?.setOnClickListener {hideLongClickView()}
+        fragment_map_longclick?.setOnClickListener { hideLongClickView() }
     }
 
     // ----------------------------------
     // Long clicks on map handler
     // ----------------------------------
     protected open fun showLongClickOnMapOptions(latLng: LatLng) {
-        map_longclick_buttons?.let {
-            //get the click point
-            val clickPoint = map?.projection?.toScreenLocation(latLng) ?: return
+        //get the click point
+        map?.let {
+            val clickPoint = it.projection.toScreenLocation(latLng)
             //adjust the buttons holder layout
             val wm = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            val display = wm.defaultDisplay
             val screenSize = Point()
-            wm.defaultDisplay.getSize(screenSize)
-            it.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
-            val bW = it.measuredWidth
-            val bH = it.measuredHeight
-            val lp = it.layoutParams as RelativeLayout.LayoutParams
-            var marginLeft = clickPoint.x - bW / 2
-            if (marginLeft + bW > screenSize.x) {
-                marginLeft -= bW / 2
+            display.getSize(screenSize)
+            map_longclick_buttons?.let { buttons ->
+                buttons.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+                val bW = buttons.measuredWidth
+                val bH = buttons.measuredHeight
+                val lp = buttons.layoutParams as RelativeLayout.LayoutParams
+                var marginLeft = clickPoint.x - bW / 2
+                if (marginLeft + bW > screenSize.x) {
+                    marginLeft -= bW / 2
+                }
+                if (marginLeft < 0) {
+                    marginLeft = 0
+                }
+                var marginTop = clickPoint.y - bH / 2
+                if (marginTop < 0) {
+                    marginTop = clickPoint.y
+                }
+                lp.setMargins(marginLeft, marginTop, 0, 0)
+                buttons.layoutParams = lp
             }
-            if (marginLeft < 0) {
-                marginLeft = 0
-            }
-            var marginTop = clickPoint.y - bH / 2
-            if (marginTop < 0) {
-                marginTop = clickPoint.y
-            }
-            lp.setMargins(marginLeft, marginTop, 0, 0)
-            it.layoutParams = lp
+            //show the view
+            fragment_map_longclick?.visibility = View.VISIBLE
         }
-        //show the view
-        fragment_map_longclick?.visibility = View.VISIBLE
     }
 
-    private fun hideLongClickView() {
-        onBackPressed()
-    }
+    private fun hideLongClickView() = onBackPressed()
 
     fun showAllowGeolocationDialog(source: Int) {
-        if (activity == null) {
-            return
-        }
-        @StringRes var messagedId = R.string.map_error_geolocation_disabled_use_entourage
-        var eventName = EntourageEvents.EVENT_FEED_ACTIVATE_GEOLOC_FROM_BANNER
-        when (source) {
-            GEOLOCATION_POPUP_RECENTER -> {
-                messagedId = R.string.map_error_geolocation_disabled_recenter
-                eventName = EntourageEvents.EVENT_FEED_ACTIVATE_GEOLOC_RECENTER
-            }
-            GEOLOCATION_POPUP_GUIDE_RECENTER -> {
-                messagedId = R.string.map_error_geolocation_disabled_recenter
-                eventName = EntourageEvents.EVENT_GUIDE_ACTIVATE_GEOLOC_RECENTER
-            }
-            GEOLOCATION_POPUP_TOUR -> {
-                messagedId = R.string.map_error_geolocation_disabled_create_tour
-                eventName = EntourageEvents.EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR
-            }
-            GEOLOCATION_POPUP_GUIDE_BANNER -> eventName = EntourageEvents.EVENT_GUIDE_ACTIVATE_GEOLOC_FROM_BANNER
-            GEOLOCATION_POPUP_BANNER -> {
-            }
-            else -> {
-            }
-        }
-        val finalEventName = eventName // needs to be final for later functions
-        AlertDialog.Builder(requireActivity())
-                .setMessage(messagedId)
-                .setPositiveButton(R.string.activate) { _: DialogInterface?, _: Int ->
-                    EntourageEvents.logEvent(finalEventName)
-                    try {
-                        if (isLocationEnabled() || shouldShowRequestPermissionRationale(permission.ACCESS_FINE_LOCATION)) {
-                            requestPermissions(arrayOf(permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_LOCATION)
-                        } else {
-                            // User selected "Never ask again", so show the settings page
-                            displayGeolocationPreferences(true)
-                        }
-                    } catch (e: IllegalStateException) {
-                        Timber.w(e)
-                    }
+        activity?.let {
+            @StringRes var messagedId = R.string.map_error_geolocation_disabled_use_entourage
+            val eventName = when (source) {
+                GEOLOCATION_POPUP_RECENTER -> {
+                    messagedId = R.string.map_error_geolocation_disabled_recenter
+                    EntourageEvents.EVENT_FEED_ACTIVATE_GEOLOC_RECENTER
                 }
-                .setNegativeButton(R.string.map_permission_refuse, null)
-                .show()
+                GEOLOCATION_POPUP_GUIDE_RECENTER -> {
+                    messagedId = R.string.map_error_geolocation_disabled_recenter
+                    EntourageEvents.EVENT_GUIDE_ACTIVATE_GEOLOC_RECENTER
+                }
+                GEOLOCATION_POPUP_TOUR -> {
+                    messagedId = R.string.map_error_geolocation_disabled_create_tour
+                    EntourageEvents.EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR
+                }
+                GEOLOCATION_POPUP_GUIDE_BANNER -> EntourageEvents.EVENT_GUIDE_ACTIVATE_GEOLOC_FROM_BANNER
+                GEOLOCATION_POPUP_BANNER -> EntourageEvents.EVENT_FEED_ACTIVATE_GEOLOC_FROM_BANNER
+                else -> EntourageEvents.EVENT_FEED_ACTIVATE_GEOLOC_FROM_BANNER
+            }
+
+            AlertDialog.Builder(it)
+               .setMessage(messagedId)
+               .setPositiveButton(R.string.activate) { _: DialogInterface?, _: Int ->
+                   EntourageEvents.logEvent(eventName)
+                   try {
+                       if (isLocationEnabled() || shouldShowRequestPermissionRationale(permission.ACCESS_FINE_LOCATION)) {
+                           requestPermissions(arrayOf(permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_LOCATION)
+                       } else {
+                           // User selected "Never ask again", so show the settings page
+                           displayGeolocationPreferences(true)
+                       }
+                   } catch (e: IllegalStateException) {
+                       Timber.w(e)
+                   }
+               }
+               .setNegativeButton(R.string.map_permission_refuse, null)
+               .show()
+        }
     }
 
     fun displayGeolocationPreferences(forceDisplaySettings: Boolean) {
-        if (forceDisplaySettings || !isLocationEnabled()) {
-            if (activity != null) {
-                startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+        activity?.let {
+            if (forceDisplaySettings || !isLocationEnabled()) {
+                it.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+            } else if (!isLocationPermissionGranted()) {
+                showAllowGeolocationDialog(GEOLOCATION_POPUP_BANNER)
             }
-        } else if (!isLocationPermissionGranted()) {
-            showAllowGeolocationDialog(GEOLOCATION_POPUP_BANNER)
         }
     }
 
-    open fun onLocationPermissionGranted(event: OnLocationPermissionGranted) {
-        updateGeolocBanner(event.isPermissionGranted)
-    }
+    open fun onLocationPermissionGranted(event: OnLocationPermissionGranted) = updateGeolocBanner(event.isPermissionGranted)
 
     protected open fun updateGeolocBanner(active: Boolean) {
         adapter?.setGeolocStatusIcon(isLocationEnabled() && isLocationPermissionGranted())
         try {
             map?.isMyLocationEnabled = isLocationEnabled()
-        } catch (ignored: SecurityException) {
+        } catch (ex: SecurityException) {
+            Timber.w(ex)
         }
     }
 
-    protected abstract val adapter: HeaderBaseAdapter?
     protected fun onFollowGeolocation() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_RECENTERCLICK)
         // Check if geolocation is enabled
@@ -279,16 +291,10 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
     }
 
     override fun onLocationUpdated(location: LatLng) {}
-    override fun onLocationStatusUpdated(active: Boolean) {
-        updateGeolocBanner(active)
-    }
+
+    override fun onLocationStatusUpdated(active: Boolean) = updateGeolocBanner(active)
 
     companion object {
-        // ----------------------------------
-        // CONSTANTS
-        // ----------------------------------
-        const val TAG = "social.entourage.android.base_fragment_map"
-
         // Constants used to track the source call of the geolocation popup
         const val GEOLOCATION_POPUP_TOUR = 0
         private const val GEOLOCATION_POPUP_RECENTER = 1
@@ -299,5 +305,4 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
         const val ZOOM_REDRAW_LIMIT = 1.1f
         const val REDRAW_LIMIT = 300
     }
-
 }
