@@ -58,19 +58,24 @@ class PartnerFragment : EntourageDialogFragment() {
             Timber.e("No partner for Partner View")
             return
         }
+        
         user_title_layout?.title_close_button?.setOnClickListener {dismiss()}
         // url
-        Picasso.get()
-                .load(Uri.parse(partner!!.largeLogoUrl))
-                .placeholder(R.drawable.partner_placeholder)
-                .transform(CropCircleTransformation())
-                .into(partner_view_logo!!)
+        partner_view_logo?.let {logoView->
+            partner?.largeLogoUrl?.let {
+                Picasso.get()
+                        .load(Uri.parse(it))
+                        .placeholder(R.drawable.partner_placeholder)
+                        .transform(CropCircleTransformation())
+                        .into(logoView)
+            }
+        }
         // name
-        partner_view_name?.text = partner!!.name
+        partner_view_name?.text = partner?.name
         // description
-        partner_view_details?.text = partner!!.description
+        partner_view_details?.text = partner?.description
         // phone
-        val phone = partner!!.phone
+        val phone = partner?.phone
         if (phone.isNullOrEmpty()) {
             partner_view_phone_layout?.visibility = View.GONE
         } else {
@@ -78,7 +83,7 @@ class PartnerFragment : EntourageDialogFragment() {
             partner_view_phone?.text = phone
         }
         // address
-        val address = partner!!.address
+        val address = partner?.address
         if (address.isNullOrEmpty()) {
             partner_view_address_layout?.visibility = View.GONE
         } else {
@@ -86,7 +91,7 @@ class PartnerFragment : EntourageDialogFragment() {
             partner_view_address?.text = address
         }
         // website
-        val website = partner!!.websiteUrl
+        val website = partner?.websiteUrl
         if (website.isNullOrEmpty()) {
             partner_view_website_layout?.visibility = View.GONE
         } else {
@@ -94,7 +99,7 @@ class PartnerFragment : EntourageDialogFragment() {
             partner_view_website?.text = website
         }
         // email
-        val email = partner!!.email
+        val email = partner?.email
         if (email.isNullOrEmpty()) {
             partner_view_email_layout?.visibility = View.GONE
         } else {

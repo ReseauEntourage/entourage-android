@@ -15,13 +15,11 @@ import social.entourage.android.base.ViewHolderFactory.ViewHolderType
 class EntourageMiniCardsAdapter : EntourageBaseAdapter() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val cardViewHolder = viewHolderFactory.getViewHolder(parent, viewType)
-        if (cardViewHolder != null) {
-            // Make the width of the mini card to be a percentage of the parent
-            val params = cardViewHolder.itemView.layoutParams
-            params.width = (parent.width * MINICARD_WIDTH_PERCENTAGE).toInt()
-            cardViewHolder.itemView.layoutParams = params
-            cardViewHolder.viewHolderListener = viewHolderListener
-        }
+        // Make the width of the mini card to be a percentage of the parent
+        val params = cardViewHolder.itemView.layoutParams
+        params.width = (parent.width * MINICARD_WIDTH_PERCENTAGE).toInt()
+        cardViewHolder.itemView.layoutParams = params
+        cardViewHolder.viewHolderListener = viewHolderListener
         return cardViewHolder
     }
 

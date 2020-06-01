@@ -25,19 +25,20 @@ class EntourageEvent : BaseEntourage, Serializable {
 
 
     override fun getFeedTypeLong(context: Context): String {
-        if (metadata != null && metadata!!.startDate != null && metadata!!.endDate != null) {
-            //check si les dates de début et fin sont le même jour ou pas
-            val startCalendar = Calendar.getInstance()
-            startCalendar.time = metadata!!.startDate!!
-            val endCalendar = Calendar.getInstance()
-            endCalendar.time = metadata!!.endDate!!
-            return if (startCalendar[Calendar.DAY_OF_YEAR] == endCalendar[Calendar.DAY_OF_YEAR]) {
-                String.format("%1\$s %2\$s", context.getString(R.string.entourage_type_outing), metadata!!.getStartDateAsString(context))
-            } else {
-                String.format("%1\$s %2\$s", context.getString(R.string.entourage_type_outing), metadata!!.getStartEndDatesAsString(context))
+        metadata?.let{
+            if(it.startDate != null && it.endDate != null) {
+                //check if start and end dates are on the same day
+                val startCalendar = Calendar.getInstance()
+                startCalendar.time = it.startDate ?: return ""
+                val endCalendar = Calendar.getInstance()
+                endCalendar.time = it.endDate ?: return ""
+                return if (startCalendar[Calendar.DAY_OF_YEAR] == endCalendar[Calendar.DAY_OF_YEAR]) {
+                    String.format("%1\$s %2\$s", context.getString(R.string.entourage_type_outing), it.getStartDateAsString(context))
+                } else {
+                    String.format("%1\$s %2\$s", context.getString(R.string.entourage_type_outing), it.getStartEndDatesAsString(context))
+                }
             }
         }
-
         return ""
     }
 

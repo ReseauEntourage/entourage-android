@@ -11,8 +11,6 @@ import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events.OnMyEntouragesForceRefresh
 import social.entourage.android.base.EntourageDialogFragment
-import social.entourage.android.entourage.my.filter.MyEntouragesFilter.Companion.getMyEntouragesFilter
-import social.entourage.android.entourage.my.filter.MyEntouragesFilter.Companion.saveMyEntouragesFilter
 import social.entourage.android.tools.BusProvider.instance
 
 /**
@@ -50,15 +48,15 @@ class MyEntouragesFilterFragment  : EntourageDialogFragment() {
 
     fun onValidateClicked() {
         // save the values to the filter
-        val filter = getMyEntouragesFilter(this.context)
-        filter.isEntourageTypeDemand = myentourages_filter_demand_switch!!.isChecked
-        filter.isEntourageTypeContribution = myentourages_filter_contribution_switch!!.isChecked
-        filter.isShowTours = myentourages_filter_tours_switch!!.isChecked
-        filter.isShowUnreadOnly = myentourages_filter_unread_switch.isChecked
-        filter.showOwnEntouragesOnly = myentourages_filter_created_by_me_switch!!.isChecked
-        filter.showPartnerEntourages = myentourages_filter_partner_switch!!.isChecked
-        filter.isClosedEntourages = myentourages_filter_closed_switch!!.isChecked
-        saveMyEntouragesFilter(filter, this.context)
+        val filter = MyEntouragesFilter.get(context)
+        myentourages_filter_demand_switch?.let {filter.isEntourageTypeDemand = it.isChecked}
+        myentourages_filter_contribution_switch?.let {filter.isEntourageTypeContribution = it.isChecked}
+        myentourages_filter_tours_switch?.let {filter.isShowTours = it.isChecked}
+        myentourages_filter_unread_switch?.let {filter.isShowUnreadOnly = it.isChecked}
+        myentourages_filter_created_by_me_switch?.let {filter.showOwnEntouragesOnly = it.isChecked}
+        myentourages_filter_partner_switch?.let {filter.showPartnerEntourages = it.isChecked}
+        myentourages_filter_closed_switch?.let {filter.isClosedEntourages = it.isChecked}
+        MyEntouragesFilter.save(filter, context)
 
         // inform the app to refrehs the my entourages feed
         instance.post(OnMyEntouragesForceRefresh(null))
@@ -92,7 +90,7 @@ class MyEntouragesFilterFragment  : EntourageDialogFragment() {
     // Private Methods
     // ----------------------------------
     private fun initializeView() {
-        val filter = getMyEntouragesFilter(this.context)
+        val filter = MyEntouragesFilter.get(this.context)
         myentourages_filter_demand_switch?.isChecked = filter.isEntourageTypeDemand
         myentourages_filter_contribution_switch?.isChecked = filter.isEntourageTypeContribution
         myentourages_filter_tours_switch?.isChecked = filter.isShowTours

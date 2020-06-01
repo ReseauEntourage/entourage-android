@@ -12,14 +12,9 @@ import social.entourage.android.map.OnAddressClickListener
  */
 class ReadPoiPresenter(private val fragment: ReadPoiFragment) {
     fun displayPoi(poi: Poi) {
-        var listenerAddress: OnAddressClickListener? = null
-        var listenerPhone: OnPhoneClickListener? = null
-        if (poi.address != null) {
-            listenerAddress = OnAddressClickListener(fragment.requireActivity(), poi.address!!)
-        }
-        if (poi.phone != null) {
-            listenerPhone = OnPhoneClickListener(poi.phone!!)
-        }
+        //var listenerAddress: OnAddressClickListener? = null
+        val listenerAddress = poi.address?.let { OnAddressClickListener(fragment.requireActivity(), it) }
+        val listenerPhone = poi.phone?.let { OnPhoneClickListener(it)}
         fragment.onDisplayedPoi(poi, listenerAddress, listenerPhone)
     }
 

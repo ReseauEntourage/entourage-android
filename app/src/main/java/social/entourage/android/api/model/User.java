@@ -322,7 +322,7 @@ public class User implements Serializable {
     }
 
     public boolean isPro() {
-        return EntourageApplication.Companion.isEntourageApp() && TYPE_PRO.equals(type);
+        return TYPE_PRO.equals(type);
     }
 
     public FeedItemAuthor asTourAuthor() {

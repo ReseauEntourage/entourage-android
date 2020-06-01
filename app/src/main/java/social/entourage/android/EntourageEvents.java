@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -304,8 +304,9 @@ public class EntourageEvents {
         FirebaseAnalytics mFirebaseAnalytics = EntourageApplication.get().getFirebase();
         mFirebaseAnalytics.setUserId(String.valueOf(user.getId()));
 
-        Crashlytics.setUserIdentifier(String.valueOf(user.getId()));
-        Crashlytics.setUserName(user.getDisplayName());
+        FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
+        crashlytics.setUserId(String.valueOf(user.getId()));
+        //crashlytics.setUserName(user.getDisplayName());
 
         mFirebaseAnalytics.setUserProperty("EntourageUserType", user.isPro()?"Pro":"Public");
 

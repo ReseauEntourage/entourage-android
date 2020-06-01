@@ -20,9 +20,11 @@ import social.entourage.android.message.push.PushNotificationManager
 @RunWith(AndroidJUnit4::class)
 class PushNotificationTest {
 
+    private val isAppStarted = true
+
     @Rule
     @JvmField
-    val activityTestRule = ActivityTestRule(MainActivity::class.java)
+    val activityTestRule = ActivityTestRule(MainActivity::class.java, isAppStarted, isAppStarted)
     //Staging
     //private val entourageHash =
     //private val entourageID = "2300"
@@ -32,6 +34,14 @@ class PushNotificationTest {
 
     @Before
     fun setUp() {
+    }
+
+    private fun startIntent(intent: Intent) {
+        if(!isAppStarted) {
+            activityTestRule.launchActivity(intent)
+        } else {
+            activityTestRule.activity.startActivity(intent)
+        }
     }
 
     @Test
@@ -44,7 +54,7 @@ class PushNotificationTest {
         val message = Message("test Entourage", myobject, content,  0, null)
         args.putSerializable(PushNotificationManager.PUSH_MESSAGE, message)
         intent.putExtras(args);
-        activityTestRule.activity.startActivity(intent)
+        startIntent(intent)
         Espresso.onView(ViewMatchers.withId(R.id.entourage_info_comment)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 }

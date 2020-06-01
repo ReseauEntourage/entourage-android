@@ -67,20 +67,18 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
     }
 
     protected fun centerMapAndZoom(latLng: LatLng?, zoom: Float, animated: Boolean) {
-        val cameraPosition = CameraPosition(latLng, zoom, 0F, 0F)
-        if (map != null) {
-            if (animated) {
-                map!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 300, null)
-            } else {
-                map!!.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
-            }
-            saveCameraPosition()
+        val cameraPosition = CameraUpdateFactory.newCameraPosition(CameraPosition(latLng, zoom, 0F, 0F))
+        if (animated) {
+            map?.animateCamera(cameraPosition, 300, null)
+        } else {
+            map?.moveCamera(cameraPosition)
         }
+        saveCameraPosition()
     }
 
     private fun centerMap(cameraPosition: CameraPosition) {
-        if (map != null && isFollowing) {
-            map!!.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        if (isFollowing) {
+            map?.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
             saveCameraPosition()
         }
     }
@@ -108,29 +106,30 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
     }
 
     @SuppressLint("MissingPermission")
-    protected fun onMapReady(googleMap: GoogleMap?, onClickListener: OnClusterItemClickListener<ClusterItem>?, onGroundOverlayClickListener: OnGroundOverlayClickListener?) {
-        map = googleMap ?: return
+    protected fun onMapReady(googleMap: GoogleMap, onClickListener: OnClusterItemClickListener<ClusterItem>?, onGroundOverlayClickListener: OnGroundOverlayClickListener?) {
+        map = googleMap
         //we forced the setting of the map anyway
         if (activity == null) {
             Timber.e("No activity found")
             return
         }
-        map!!.isMyLocationEnabled = isLocationPermissionGranted()
+        googleMap.isMyLocationEnabled = isLocationPermissionGranted()
 
         //mylocation is handled in MapViewHolder
-        map!!.uiSettings.isMyLocationButtonEnabled = false
-        map!!.uiSettings.isMapToolbarEnabled = false
-        map!!.setMapStyle(MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_styles_json))
-        mapClusterManager = ClusterManager<ClusterItem>(activity, map)
+        googleMap.uiSettings.isMyLocationButtonEnabled = false
+        googleMap.uiSettings.isMapToolbarEnabled = false
+        googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_styles_json))
+        val newClusterMgr = ClusterManager<ClusterItem>(activity, map)
         //mapClusterItemRenderer = renderer
-        mapClusterManager!!.renderer = renderer as ClusterRenderer<ClusterItem>
-        mapClusterManager!!.setOnClusterItemClickListener(onClickListener)
+        mapClusterManager = newClusterMgr
+        newClusterMgr.renderer = renderer as ClusterRenderer<ClusterItem>
+        newClusterMgr.setOnClusterItemClickListener(onClickListener)
         initializeMapZoom()
-        map!!.setOnMarkerClickListener(mapClusterManager)
+        googleMap.setOnMarkerClickListener(newClusterMgr)
         if (onGroundOverlayClickListener != null) {
-            map!!.setOnGroundOverlayClickListener(onGroundOverlayClickListener)
+            googleMap.setOnGroundOverlayClickListener(onGroundOverlayClickListener)
         }
-        map!!.setOnMapLongClickListener { latLng: LatLng ->
+        googleMap.setOnMapLongClickListener { latLng: LatLng ->
             //only show when map is in full screen and not visible
             if (!isFullMapShown || fragment_map_longclick?.visibility == View.VISIBLE) {
                 return@setOnMapLongClickListener
@@ -166,7 +165,7 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
     // ----------------------------------
     protected open fun showLongClickOnMapOptions(latLng: LatLng) {
         //get the click point
-        val clickPoint = map!!.projection.toScreenLocation(latLng)
+        val clickPoint = map?.projection?.toScreenLocation(latLng) ?: return
         //adjust the buttons holder layout
         val wm = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = wm.defaultDisplay

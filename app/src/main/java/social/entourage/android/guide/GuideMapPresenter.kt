@@ -49,8 +49,10 @@ class GuideMapPresenter @Inject constructor(
         val call = poiRequest.retrievePoisNearby(location.latitude, location.longitude, distance, GuideFilter.instance.requestedCategories)
         call?.enqueue(object : Callback<PoiResponse?> {
             override fun onResponse(call: Call<PoiResponse?>, response: Response<PoiResponse?>) {
-                if (response.isSuccessful) {
-                    fragment.putPoiOnMap(response.body()!!.categories, response.body()!!.pois)
+                response.body()?.let {
+                    if (response.isSuccessful) {
+                        fragment.putPoiOnMap(it.categories, it.pois)
+                    }
                 }
             }
 

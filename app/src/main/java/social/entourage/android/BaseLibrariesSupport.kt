@@ -2,10 +2,8 @@ package social.entourage.android
 
 import android.content.Context
 
-import com.crashlytics.android.Crashlytics
-import com.crashlytics.android.core.CrashlyticsCore
 import com.google.firebase.analytics.FirebaseAnalytics
-import io.fabric.sdk.android.Fabric
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import timber.log.Timber
 import social.entourage.android.tools.log.CrashlyticsLog
 
@@ -25,22 +23,18 @@ abstract class BaseLibrariesSupport {
     // ----------------------------------
 
     open fun setupLibraries(context: Context) {
-        setupFabric(context)
+        setupFirebase(context)
         setupTimberTree()
-        firebaseAnalytics = FirebaseAnalytics.getInstance(context)
     }
 
     // ----------------------------------
     // Libraries setup
     // ----------------------------------
 
-    private fun setupFabric(context: Context) {
+    private fun setupFirebase(context: Context) {
         // Set up Crashlytics, disabled for debug builds
-        val crashlyticsKit = Crashlytics.Builder()
-                .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
-                .build()
-
-        Fabric.with(context, crashlyticsKit)
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
+        firebaseAnalytics = FirebaseAnalytics.getInstance(context)
     }
 
     private fun setupTimberTree() {

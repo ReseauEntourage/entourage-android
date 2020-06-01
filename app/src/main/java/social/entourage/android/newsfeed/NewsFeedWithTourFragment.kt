@@ -101,15 +101,15 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
 
     private fun onStartTourLauncher() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_TOUR_CREATE_CLICK)
-        if (entourageService!=null && !entourageService!!.isRunning) {
-            // Check if the geolocation is permitted
-            if (!LocationUtils.isLocationEnabled() || !LocationUtils.isLocationPermissionGranted()) {
-                showAllowGeolocationDialog(GEOLOCATION_POPUP_TOUR)
-                return
-            }
-            fragment_map_longclick?.visibility = View.GONE
-            layout_map_launcher?.visibility = View.VISIBLE
+        if (entourageService==null || entourageService?.isRunning==true) return
+
+        // Check if the geolocation is permitted
+        if (!LocationUtils.isLocationEnabled() || !LocationUtils.isLocationPermissionGranted()) {
+            showAllowGeolocationDialog(GEOLOCATION_POPUP_TOUR)
+            return
         }
+        fragment_map_longclick?.visibility = View.GONE
+        layout_map_launcher?.visibility = View.VISIBLE
     }
 
     private fun onStartNewTour() {
@@ -158,25 +158,14 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
 
     override fun addEncounter() {
         if (activity != null) {
-            val intent = Intent(activity, CreateEncounterActivity::class.java)
             saveCameraPosition()
             val args = Bundle()
             args.putString(CreateEncounterActivity.BUNDLE_KEY_TOUR_ID, currentTourUUID)
-            when {
-                longTapCoordinates != null -> {
-                    args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, longTapCoordinates!!.latitude)
-                    args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, longTapCoordinates!!.longitude)
-                    longTapCoordinates = null
-                }
-                EntourageLocation.getInstance().currentLocation != null -> {
-                    args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, EntourageLocation.getInstance().currentLocation.latitude)
-                    args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, EntourageLocation.getInstance().currentLocation.longitude)
-                }
-                else -> {
-                    args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, EntourageLocation.getInstance().lastCameraPosition.target.latitude)
-                    args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, EntourageLocation.getInstance().lastCameraPosition.target.longitude)
-                }
-            }
+            val encounterPosition  = longTapCoordinates ?: EntourageLocation.getInstance().currentLatLng ?: EntourageLocation.getInstance().lastCameraPosition.target
+            args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, encounterPosition.latitude)
+            args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, encounterPosition.longitude)
+            longTapCoordinates = null
+            val intent = Intent(activity, CreateEncounterActivity::class.java)
             intent.putExtras(args)
             //startActivityForResult(intent, Constants.REQUEST_CREATE_ENCOUNTER);
             startActivity(intent)
@@ -200,7 +189,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
                         EntourageEvents.logEvent(EntourageEvents.EVENT_ENCOUNTER_POPUP_ENCOUNTER)
                         onAddEncounter()
                     }
-                    .setNegativeButton(R.string.entourage_tour_ongoing_action) { _: DialogInterface?, _: Int ->
+                    .setNegativeButton(R.string.entourage_tour_ongoing_action) { _, _ ->
                         EntourageEvents.logEvent(EntourageEvents.EVENT_ENCOUNTER_POPUP_ENTOURAGE)
                         super.displayEntourageDisclaimer()
                     }
@@ -349,14 +338,15 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
         launcher_tour_progressBar?.visibility = View.GONE
 
         if (activity != null) {
-            if (created && entourageService?.currentTour !=null) {
+            val currentTour = entourageService?.currentTour
+            if (created && currentTour !=null) {
                 isFollowing = true
                 currentTourUUID = tourUUID
                 layout_map_launcher?.visibility = View.GONE
                 if (fragment_map_feeditems_view?.visibility == View.VISIBLE) {
                     displayFullMap()
                 }
-                addTourCard(entourageService!!.currentTour)
+                addTourCard(currentTour)
                 tour_stop_button?.visibility = View.VISIBLE
                 presenter.incrementUserToursCount()
                 presenter.setDisplayEncounterDisclaimer(true)
@@ -411,11 +401,11 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
             drawnToursMap.clear()
 
             //redraw the whole newsfeed
-            for (timestampedObject in newsfeedAdapter!!.items) {
+            newsfeedAdapter?.items?.forEach {timestampedObject->
                 if (timestampedObject.type == TimestampedObject.TOUR_CARD) {
                     val tour = timestampedObject as Tour
                     if (tour.uuid.equals(currentTourUUID, ignoreCase = true)) {
-                        continue
+                        return@forEach
                     }
                     drawNearbyTour(tour, false)
                 } else if (timestampedObject.type == TimestampedObject.ENTOURAGE_CARD) {
@@ -432,20 +422,16 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
                 line.zIndex(2f)
                 line.width(15f)
                 line.color(color)
-                drawnToursMap.add(map!!.addPolyline(line))
+                map?.addPolyline(line)?.let {drawnToursMap.add(it)}
                 addCurrentTourEncounters()
             }
         }
     }
 
-    private val currentTour: Tour?
-        get() = entourageService?.currentTour
-
     private fun startTour(type: String) {
-        if (entourageService!=null && !entourageService!!.isRunning) {
-            color = getTrackColor(false, type, Date())
-            entourageService?.beginTreatment(type)
-        }
+        if (entourageService?.isRunning==true) return
+        color = getTrackColor(false, type, Date())
+        entourageService?.beginTreatment(type)
     }
 
     private fun pauseTour() {
@@ -455,15 +441,16 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     }
 
     private fun resumeTour() {
-        if (entourageService!=null && !entourageService!!.isRunning) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_RESTART_TOUR)
-            entourageService?.resumeTreatment()
-        }
+        if (entourageService?.isRunning==true) return
+        EntourageEvents.logEvent(EntourageEvents.EVENT_RESTART_TOUR)
+        entourageService?.resumeTreatment()
     }
 
     private fun launchConfirmationFragment() {
         pauseTour()
-        TourEndConfirmationFragment.newInstance(currentTour).show(parentFragmentManager, TourEndConfirmationFragment.TAG)
+        entourageService?.currentTour?.let {
+            TourEndConfirmationFragment.newInstance(it).show(parentFragmentManager, TourEndConfirmationFragment.TAG)
+        }
     }
 
     private fun addEncounter(encounter: Encounter?) {
@@ -550,7 +537,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
             for (tourPoint in pointsToDraw) {
                 line.add(tourPoint.location)
             }
-            currentTourLines.add(map!!.addPolyline(line))
+            map?.addPolyline(line)?.let {currentTourLines.add(it)}
         }
     }
 
@@ -563,25 +550,27 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
             for (tourPoint in tour.tourPoints) {
                 line.add(tourPoint.location)
             }
-            if (isHistory) {
-                retrievedHistory[tour.id] = tour
-                drawnUserHistory[tour.id] = map!!.addPolyline(line)
-            } else {
-                drawnToursMap.add(map!!.addPolyline(line))
-                //addTourCard(tour);
+            map?.addPolyline(line)?.let {
+                if (isHistory) {
+                    retrievedHistory[tour.id] = tour
+                    drawnUserHistory[tour.id] = it
+                } else {
+                    drawnToursMap.add(it)
+                    //addTourCard(tour);
+                }
             }
             addTourHead(tour)
         }
     }
 
     private fun drawCurrentLocation(location: LatLng) {
-        if (previousCoordinates != null && map != null) {
+        if (previousCoordinates != null) {
             val line = PolylineOptions()
             line.add(previousCoordinates, location)
             line.zIndex(2f)
             line.width(15f)
             line.color(color)
-            currentTourLines.add(map!!.addPolyline(line))
+            map?.addPolyline(line)?.let {currentTourLines.add(it)}
         }
         previousCoordinates = location
     }
@@ -644,14 +633,16 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     }
 
     override fun updateFragmentFromService() {
-        if (entourageService?.isRunning==true) {
-            updateFloatingMenuOptions()
-            currentTourUUID = entourageService!!.currentTourId
-            //bottomTitleTextView.setText(R.string.tour_info_text_ongoing);
-            addCurrentTourEncounters()
-        }
-        if (userHistory) {
-            entourageService!!.updateUserHistory(userId, 1, 500)
+        entourageService?.let {
+            if (it.isRunning) {
+                updateFloatingMenuOptions()
+                currentTourUUID = it.currentTourId
+                //bottomTitleTextView.setText(R.string.tour_info_text_ongoing);
+                addCurrentTourEncounters()
+            }
+            if (userHistory) {
+                it.updateUserHistory(userId, 1, 500)
+            }
         }
     }
 

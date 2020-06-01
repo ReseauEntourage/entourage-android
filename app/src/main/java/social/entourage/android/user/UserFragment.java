@@ -1,6 +1,7 @@
 package social.entourage.android.user;
 
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +34,7 @@ import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.configuration.Configuration;
 import social.entourage.android.entourage.information.EntourageInformationFragment;
 import social.entourage.android.entourage.information.FeedItemInformationFragment;
+import social.entourage.android.user.edit.UserChoosePhotoFragment;
 import social.entourage.android.partner.PartnerFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
@@ -385,8 +387,14 @@ public class UserFragment extends EntourageDialogFragment {
     @Optional
     @OnClick(R.id.user_photo_button)
     protected void onPhotoEditClicked() {
-        PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
-        fragment.show(getParentFragmentManager(), PhotoChooseSourceFragment.TAG);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
+            fragment.show(getParentFragmentManager(), PhotoChooseSourceFragment.TAG);
+        }
+        else {
+            UserChoosePhotoFragment fragment = UserChoosePhotoFragment.newInstance();
+            fragment.show(getParentFragmentManager(), UserChoosePhotoFragment.TAG);
+        }
     }
 
     @Optional

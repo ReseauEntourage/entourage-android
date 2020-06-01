@@ -34,24 +34,26 @@ open class ChatMessageCardViewHolder(view: View) : BaseCardViewHolder(view) {
 
     fun populate(chatMessage: ChatMessage) {
         // user avatar
-        val avatarURL = chatMessage.userAvatarURL
-        if (avatarURL != null && itemView.tic_chat_user_photo!=null) {
-            Picasso.get().load(Uri.parse(avatarURL))
-                    .placeholder(R.drawable.ic_user_photo_small)
-                    .transform(CropCircleTransformation())
-                    .into(itemView.tic_chat_user_photo!!)
-        } else {
-            itemView.tic_chat_user_photo?.setImageResource(R.drawable.ic_user_photo_small)
+        itemView.tic_chat_user_photo?.let { userPhotoView->
+            chatMessage.userAvatarURL?.let { avatarURL ->
+                Picasso.get().load(Uri.parse(avatarURL))
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .transform(CropCircleTransformation())
+                        .into(userPhotoView)
+            } ?: run {
+                userPhotoView.setImageResource(R.drawable.ic_user_photo_small)
+            }
         }
         // Partner logo
-        val partnerLogoURL = chatMessage.partnerLogoSmall
-        if (partnerLogoURL != null && itemView.tic_chat_user_partner_logo != null) {
-            Picasso.get().load(Uri.parse(partnerLogoURL))
-                    .placeholder(R.drawable.partner_placeholder)
-                    .transform(CropCircleTransformation())
-                    .into(itemView.tic_chat_user_partner_logo!!)
-        } else {
-            itemView.tic_chat_user_partner_logo?.setImageDrawable(null)
+        itemView.tic_chat_user_partner_logo?.let { partnerLogoView ->
+            chatMessage.partnerLogoSmall?.let { partnerLogoURL ->
+                Picasso.get().load(Uri.parse(partnerLogoURL))
+                        .placeholder(R.drawable.partner_placeholder)
+                        .transform(CropCircleTransformation())
+                        .into(partnerLogoView)
+            } ?: run {
+                partnerLogoView.setImageDrawable(null)
+            }
         }
 
         // user name

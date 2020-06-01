@@ -165,7 +165,7 @@
                 android:layout_marginTop="3dp"
                 android:contentDescription="@string/empty_description"
                 android:padding="3dp"
-                android:src="@drawable/ic_close_white" />
+                app:srcCompat="@drawable/ic_close_black_24dp" />
 
             <TextView
                 android:id="@+id/fragment_guide_empty_list_popup_text"
@@ -206,7 +206,7 @@
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
                 android:contentDescription="@string/empty_description"
-                app:srcCompat="@drawable/ic_close_white" />
+                app:srcCompat="@drawable/ic_close_black_24dp" />
 
             <TextView
                 android:layout_width="match_parent"

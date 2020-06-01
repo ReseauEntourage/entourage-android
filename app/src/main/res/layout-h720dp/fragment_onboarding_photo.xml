@@ -1,0 +1,94 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context="social.entourage.android.onboarding.OnboardingPhotoFragment">
+
+    <social.entourage.android.view.EntourageTitleView
+        android:id="@+id/user_edit_title_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:entourageTitle=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ui_onboard_photo_tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="--"
+        android:textColor="@color/onboard_black_36"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_edit_title_layout" />
+
+    <TextView
+        android:id="@+id/ui_onboard_photo_tv_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/onboard_photo_description"
+        android:textColor="@color/onboard_black_36"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/ui_onboard_photo_tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_photo_tv_title" />
+
+    <Button
+        android:id="@+id/ui_bt_pick"
+        style="@style/TransparentButton"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="45dp"
+        android:background="@drawable/bg_rounded_onboard_grey_plain"
+        android:text="@string/onboard_photo_bt_take_gallery"
+        android:textAllCaps="true"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_photo_image" />
+
+    <Button
+        android:id="@+id/ui_bt_take"
+        style="@style/TransparentButton"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="45dp"
+        android:background="@drawable/bg_rounded_onboard_orange_stroke"
+        android:text="@string/onboard_photo_bt_take_photo"
+        android:textAllCaps="true"
+        android:textColor="@color/pre_onboard_orange"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ui_bt_pick" />
+
+    <ImageView
+        android:id="@+id/ui_onboard_photo_image"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="75dp"
+        android:src="@drawable/ic_user_photo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_photo_tv_description" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

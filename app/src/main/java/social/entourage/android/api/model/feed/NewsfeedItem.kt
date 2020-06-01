@@ -45,24 +45,25 @@ class NewsfeedItem {
     class NewsfeedItemJsonAdapter : JsonDeserializer<NewsfeedItem> {
         @Throws(JsonParseException::class)
         override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): NewsfeedItem {
-            val gson = GsonBuilder()
-                    .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-                    .create()
             val newsfeed = NewsfeedItem()
             val jsonObject = json.asJsonObject
-            try {
-                newsfeed.type = jsonObject[TYPE].asString
+            jsonObject[TYPE].asString?.let {
+                newsfeed.type = it
                 val jsonData = jsonObject[DATA].asJsonObject
-                if (newsfeed.type != null && jsonData !=null) {
-                    val newsfeedClass = getClassFromString(newsfeed.type!!,
-                            jsonData["group_type"]?.asString,
-                            jsonData["entourage_type"]?.asString)
-                    if (newsfeedClass != null) {
-                        newsfeed.data = gson.fromJson<Any>(jsonData, newsfeedClass)
+                if (jsonData !=null) {
+                    try {
+                        getClassFromString(it,
+                                jsonData["group_type"]?.asString,
+                                jsonData["entourage_type"]?.asString)?.let { newsfeedClass ->
+                            val gson = GsonBuilder()
+                                    .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+                                    .create()
+                            newsfeed.data = gson.fromJson<Any>(jsonData, newsfeedClass)
+                        }
+                    } catch (e: Exception) {
+                        Timber.e(e)
                     }
                 }
-            } catch (e: Exception) {
-                Timber.e(e)
             }
             return newsfeed
         }

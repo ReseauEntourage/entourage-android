@@ -1,11 +1,14 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              tools:context=".tour.encounter.EncounterDisclaimerFragment"
-              android:background="@color/background"
-              android:orientation="vertical">
+              tools:context=".tour.encounter.EncounterDisclaimerFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,12 +20,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
+            android:layout_margin="10dp"
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
-            android:padding="5dp"
-            app:srcCompat="@drawable/ic_close"/>
+            android:tint="@color/accent"
+            app:srcCompat="@drawable/ic_close_black_24dp"/>
 
     </RelativeLayout>
 
@@ -67,4 +69,6 @@
         android:id="@+id/encounter_disclaimer_ok_button"
         style="@style/AccentButton"
         />
-</LinearLayout>
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

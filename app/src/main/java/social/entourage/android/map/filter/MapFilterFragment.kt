@@ -49,22 +49,16 @@ class MapFilterFragment  : BaseMapFilterFragment() {
 
     private fun onDemandSwitch() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_ASK)
-        val checked = map_filter_entourage_demand_switch.isChecked
-        map_filter_entourage_demand_details_layout.visibility = if (checked) View.VISIBLE else View.GONE
-        val switchList = actionSwitches[BaseEntourage.GROUPTYPE_ACTION_DEMAND]!!
-        for (categorySwitch in switchList) {
-            categorySwitch.isChecked = checked
-        }
+        val checked = map_filter_entourage_demand_switch?.isChecked ?: false
+        map_filter_entourage_demand_details_layout?.visibility = if (checked) View.VISIBLE else View.GONE
+        actionSwitches[BaseEntourage.GROUPTYPE_ACTION_DEMAND]?.forEach { categorySwitch-> categorySwitch.isChecked = checked}
     }
 
     private fun onContributionSwitch() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_OFFERS)
-        val checked = map_filter_entourage_contribution_switch.isChecked
-        map_filter_entourage_contribution_details_layout.visibility = if (checked) View.VISIBLE else View.GONE
-        val switchList = actionSwitches[BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION]!!
-        for (categorySwitch in switchList) {
-            categorySwitch.isChecked = checked
-        }
+        val checked = map_filter_entourage_contribution_switch?.isChecked ?: false
+        map_filter_entourage_contribution_details_layout?.visibility = if (checked) View.VISIBLE else View.GONE
+        actionSwitches[BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION]?.forEach { categorySwitch -> categorySwitch.isChecked = checked}
     }
 
     //TODO find another way to have both constraintlayout and radiogroup
@@ -131,7 +125,7 @@ class MapFilterFragment  : BaseMapFilterFragment() {
             }
     }
 
-    private fun addEntourageCategories(groupType: String, layout: LinearLayout?, mapFilter: MapFilter) {
+    private fun addEntourageCategories(groupType: String, layout: LinearLayout, mapFilter: MapFilter) {
         // create the hashmap entrance
         val switchList: MutableList<Switch> = ArrayList()
         actionSwitches[groupType] = switchList
@@ -143,7 +137,7 @@ class MapFilterFragment  : BaseMapFilterFragment() {
             view.layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT)
-            layout!!.addView(view)
+            layout.addView(view)
 
             // populate the view
             val mFilterName = view.findViewById<TextView>(R.id.filter_item_text)

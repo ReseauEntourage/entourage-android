@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="social.entourage.android.Onboarding.PreOnboardingChoiceActivity">
+    tools:context="social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity">
 
     <ImageView
         android:id="@+id/imageView3"

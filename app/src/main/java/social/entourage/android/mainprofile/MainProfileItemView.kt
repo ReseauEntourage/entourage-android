@@ -74,13 +74,6 @@ class MainProfileItemView : RelativeLayout {
             if (centerText) {
                 mainprofile_item_title.gravity = Gravity.CENTER
             }
-
-            //Right arrow
-            val bShowRightArrow = styledAttributes.getBoolean(R.styleable.MainProfileItemView_showRightArrow, true)
-            if (!bShowRightArrow) {
-                val rightArrow = findViewById<ImageView>(R.id.mainprofile_item_arrow)
-                if (rightArrow != null) rightArrow.visibility = View.GONE
-            }
         } finally {
             styledAttributes.recycle()
         }

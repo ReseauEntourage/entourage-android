@@ -24,15 +24,16 @@ class PoiViewHolder(itemView: View) : BaseCardViewHolder(itemView) {
 
     override fun bindFields() {
         itemView.setOnClickListener(View.OnClickListener {
-            if (poi == null) return@OnClickListener
-            BusProvider.instance.post(OnPoiViewRequestedEvent(poi!!))
+            poi?.let { BusProvider.instance.post(OnPoiViewRequestedEvent(it))}
         })
         itemView.poi_card_call_button?.setOnClickListener {
-            val intent = Intent(Intent.ACTION_DIAL)
-            intent.data = Uri.parse("tel:${poi!!.phone}")
-            if (itemView.context != null) {
-                if (intent.resolveActivity(itemView.context.packageManager) != null) {
-                    itemView.context.startActivity(intent)
+            poi?.phone?.let {phone ->
+                val intent = Intent(Intent.ACTION_DIAL)
+                intent.data = Uri.parse("tel:${phone}")
+                itemView.context?.let { context ->
+                    if (intent.resolveActivity(context.packageManager) != null) {
+                        context.startActivity(intent)
+                    }
                 }
             }
         }
@@ -44,11 +45,11 @@ class PoiViewHolder(itemView: View) : BaseCardViewHolder(itemView) {
 
     private fun populatePoi(newPoi: Poi) {
         this.poi = newPoi
-        itemView.poi_card_title?.text = poi!!.name ?: ""
-        itemView.poi_card_type?.text = CategoryType.findCategoryTypeById(poi!!.categoryId).displayName
-        itemView.poi_card_address?.text = if (poi!!.address != null) poi!!.address else ""
-        itemView.poi_card_distance?.text = LocationPoint(poi!!.latitude, poi!!.longitude).distanceToCurrentLocation(Constants.DISTANCE_MAX_DISPLAY)
-        itemView.poi_card_call_button?.visibility = if (poi!!.phone.isNullOrEmpty()) View.GONE else View.VISIBLE
+        itemView.poi_card_title?.text = newPoi.name ?: ""
+        itemView.poi_card_type?.text = CategoryType.findCategoryTypeById(newPoi.categoryId).displayName
+        itemView.poi_card_address?.text = newPoi.address ?: ""
+        itemView.poi_card_distance?.text = LocationPoint(newPoi.latitude, newPoi.longitude).distanceToCurrentLocation(Constants.DISTANCE_MAX_DISPLAY)
+        itemView.poi_card_call_button?.visibility = if (newPoi.phone.isNullOrEmpty()) View.GONE else View.VISIBLE
     }
 
     companion object {

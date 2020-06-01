@@ -11,7 +11,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.api.model.guide.Category
 
-class PoiRenderer(context: Context?, map: GoogleMap?, clusterManager: ClusterManager<Poi?>?) : DefaultClusterRenderer<Poi>(context, map, clusterManager) {
+class PoiRenderer(context: Context?, map: GoogleMap?, clusterManager: ClusterManager<Poi>?) : DefaultClusterRenderer<Poi>(context, map, clusterManager) {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -26,16 +26,14 @@ class PoiRenderer(context: Context?, map: GoogleMap?, clusterManager: ClusterMan
     }
 
     private fun categoryForCategoryId(categoryId: Int): CategoryType {
-        if (categories != null) {
-            for (category in categories!!) {
+        categories?.let {
+            for (category in it) {
                 if (category.id == categoryId.toLong()) {
                     return CategoryType.findCategoryTypeByName(category.name)
                 }
             }
-        } else {
-            return CategoryType.findCategoryTypeById(categoryId)
-        }
-        return CategoryType.OTHER
+            return CategoryType.OTHER
+        } ?: return CategoryType.findCategoryTypeById(categoryId)
     }
 
     fun setCategories(categories: List<Category>) {

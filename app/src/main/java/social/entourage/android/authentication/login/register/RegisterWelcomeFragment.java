@@ -146,10 +146,6 @@ public class RegisterWelcomeFragment extends EntourageDialogFragment {
             privacyTextView.setText(Utils.fromHtml(text));
         }
 
-        if (EntourageApplication.Companion.isPfpApp()) {
-            logoImageView.setVisibility(View.INVISIBLE);
-        }
-
         privacyTextView.setMovementMethod(EntourageLinkMovementMethod.getInstance());
 
     }

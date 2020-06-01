@@ -182,12 +182,14 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             if (resultCode == Activity.RESULT_OK) {
                 val textMatchList: List<String> = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS) ?: return
                 if (textMatchList.isNotEmpty()) {
-                    if (entourage_info_comment?.text.toString() == "") {
-                        entourage_info_comment?.setText(textMatchList[0])
-                    } else {
-                        entourage_info_comment?.setText(entourage_info_comment!!.text.toString() + " " + textMatchList[0])
+                    entourage_info_comment?.let {
+                        if (it.text.toString().isNullOrBlank()) {
+                            it.setText(textMatchList[0])
+                        } else {
+                            it.setText(it.text.toString() + " " + textMatchList[0])
+                        }
+                        it.setSelection(it.text.length)
                     }
-                    entourage_info_comment?.setSelection(entourage_info_comment!!.text.length)
                     EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_OK)
                 }
             }
@@ -199,8 +201,10 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 val handler = Handler(Looper.getMainLooper())
                 handler.post { onInviteContactsClicked() }
-            } else if(entourage_information_coordinator_layout!=null){
-                EntourageSnackbar.make(entourage_information_coordinator_layout!!, R.string.invite_contacts_permission_error, Snackbar.LENGTH_SHORT).show()
+            } else {
+                entourage_information_coordinator_layout?.let {
+                    EntourageSnackbar.make(it, R.string.invite_contacts_permission_error, Snackbar.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -277,7 +281,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         if (TimestampedObject.ENTOURAGE_CARD == feedItem.type && BaseEntourage.GROUPTYPE_CONVERSATION.equals(feedItem.getGroupType(), ignoreCase = true)) {
             if (showInfoButton) {
                 // only if this screen wasn't shown from the profile page
-                BusProvider.instance.post(OnUserViewRequestedEvent(feedItem.author!!.userID))
+                feedItem.author?.let {BusProvider.instance.post(OnUserViewRequestedEvent(it.userID))}
             }
             return
         }
@@ -303,8 +307,8 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     }
 
     private fun onAuthorClicked() {
-        if(feedItem.author != null) {
-            BusProvider.instance.post(OnUserViewRequestedEvent(feedItem.author!!.userID))
+        feedItem.author?.let {
+            BusProvider.instance.post(OnUserViewRequestedEvent(it.userID))
         }
     }
 
@@ -318,7 +322,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_SPEECH)
             startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE)
         } catch (e: ActivityNotFoundException) {
-            EntourageSnackbar.make(entourage_information_coordinator_layout!!, R.string.encounter_voice_message_not_supported, Snackbar.LENGTH_SHORT).show()
+            entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it, R.string.encounter_voice_message_not_supported, Snackbar.LENGTH_SHORT).show()}
             EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_NOT_SUPPORTED)
         }
     }
@@ -380,12 +384,12 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     private fun quitEntourage() {
         val me = EntourageApplication.me(activity)
         if(me ==null || entourageServiceConnection.boundService == null){
-            EntourageSnackbar.make(entourage_information_coordinator_layout!!,  R.string.tour_info_quit_tour_error, Snackbar.LENGTH_SHORT).show()
+            entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.tour_info_quit_tour_error, Snackbar.LENGTH_SHORT).show()}
             return
         }
         EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_QUIT)
         showProgressBar()
-        entourageServiceConnection.boundService!!.removeUserFromFeedItem(feedItem, me.id)
+        entourageServiceConnection.boundService?.removeUserFromFeedItem(feedItem, me.id)
         entourage_info_options?.visibility = View.GONE
     }
 
@@ -420,12 +424,12 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             intent.putExtra(Intent.EXTRA_TEXT, emailBody)
             if (intent.resolveActivity(requireActivity().packageManager) != null) {
                 //hide the options
-                entourage_info_options!!.visibility = View.GONE
+                entourage_info_options?.visibility = View.GONE
                 // Start the intent
                 startActivity(intent)
             } else {
                 // No Email clients
-                EntourageSnackbar.make(entourage_information_coordinator_layout!!,  R.string.error_no_email, Snackbar.LENGTH_SHORT).show()
+                entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.error_no_email, Snackbar.LENGTH_SHORT).show()}
             }
         }
         EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_EDIT)
@@ -450,7 +454,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             startActivity(intent)
         } else {
             // No Email clients
-            EntourageSnackbar.make(entourage_information_coordinator_layout!!,  R.string.error_no_email, Snackbar.LENGTH_SHORT).show()
+            entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.error_no_email, Snackbar.LENGTH_SHORT).show()}
         }
     }
 
@@ -473,13 +477,13 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             startActivity(intent)
         } else {
             // No Email clients
-            EntourageSnackbar.make(entourage_information_coordinator_layout!!,  R.string.error_no_email, Snackbar.LENGTH_SHORT).show()
+            entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.error_no_email, Snackbar.LENGTH_SHORT).show()}
         }
     }
 
     private fun onUserAddClicked() {
         if (feedItem.isSuspended()) {
-            EntourageSnackbar.make(entourage_information_coordinator_layout!!,  R.string.tour_info_members_add_not_allowed, Snackbar.LENGTH_SHORT).show()
+            entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.tour_info_members_add_not_allowed, Snackbar.LENGTH_SHORT).show()}
             return
         }
         EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_INVITE_FRIENDS)
@@ -660,8 +664,10 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
                 googleMapOptions.zOrderOnTop(true)
                 mapFragment = SupportMapFragment.newInstance(googleMapOptions)
             }
-            childFragmentManager.beginTransaction().replace(R.id.entourage_info_map_layout, mapFragment!!).commit()
-            drawFeedItemOnMap()
+            mapFragment?.let {
+                childFragmentManager.beginTransaction().replace(R.id.entourage_info_map_layout, it).commit()
+                drawFeedItemOnMap()
+            }
         } catch (e: IllegalStateException) {
             Timber.w(e)
         }
@@ -701,9 +707,9 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             }
         })
         entourage_info_comment?.setOnClickListener {
-            if (entourage_info_discussion_view != null) {
-                val lastVisibleItemPosition = (entourage_info_discussion_view!!.layoutManager as LinearLayoutManager?)!!.findLastVisibleItemPosition()
-                entourage_info_discussion_view!!.postDelayed({ entourage_info_discussion_view?.scrollToPosition(lastVisibleItemPosition) }, 500)
+            entourage_info_discussion_view?.let {
+                val lastVisibleItemPosition = (it.layoutManager as LinearLayoutManager?)?.findLastVisibleItemPosition() ?: return@let
+                it.postDelayed({ it.scrollToPosition(lastVisibleItemPosition) }, 500)
             }
         }
     }
@@ -730,26 +736,25 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     private fun updateFeedItemInfo() {
         // Update the header
         entourage_info_title?.text = feedItem.getTitle()
-        val iconURL = feedItem.getIconURL()
-        if (iconURL != null && entourage_info_icon!= null) {
-            Picasso.get().cancelRequest(entourage_info_icon!!)
-            Picasso.get()
-                    .load(iconURL)
-                    .placeholder(R.drawable.ic_user_photo_small)
-                    .transform(CropCircleTransformation())
-                    .into(entourage_info_icon)
-            entourage_info_icon!!.visibility = View.VISIBLE
-        } else {
-            val iconDrawable = feedItem.getIconDrawable(requireContext())
-            if (iconDrawable == null) {
-                entourage_info_icon?.visibility = View.GONE
-            } else {
-                entourage_info_icon?.visibility = View.VISIBLE
-                entourage_info_icon?.setImageDrawable(iconDrawable)
+        entourage_info_icon?.let { iconView ->
+            feedItem.getIconURL()?.let { iconURL ->
+                Picasso.get().cancelRequest(iconView)
+                Picasso.get()
+                        .load(iconURL)
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .transform(CropCircleTransformation())
+                        .into(iconView)
+                iconView.visibility = View.VISIBLE
+            } ?: run {
+                feedItem.getIconDrawable(requireContext())?.let { iconDrawable ->
+                    iconView.visibility = View.VISIBLE
+                    iconView.setImageDrawable(iconDrawable)
+                } ?: run {
+                    iconView.visibility = View.GONE
+                }
             }
         }
         entourage_info_title_full?.text = feedItem.getTitle()
-        //
 
         if (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.getGroupType(), ignoreCase = true)) {
             tour_summary_group_type?.text = resources.getString(R.string.entourage_type_outing)
@@ -757,35 +762,34 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             entourage_info_location?.visibility = View.GONE
         } else {
             tour_summary_group_type?.text = feedItem.getFeedTypeLong(requireContext())
-            tour_summary_author_name?.text = feedItem.author!!.userName
+            tour_summary_author_name?.text = feedItem.author?.userName ?: ""
             entourage_info_location?.visibility = View.VISIBLE
             entourage_info_location?.text = feedItem.getDisplayAddress()
         }
-        val avatarURLAsString = feedItem.author!!.avatarURLAsString
-        if (avatarURLAsString != null && entourage_info_author_photo!=null) {
-            Picasso.get()
+
+        entourage_info_author_photo?.let { authorPhotoView ->
+            feedItem.author?.avatarURLAsString?.let { avatarURLAsString ->
+                Picasso.get()
                     .load(Uri.parse(avatarURLAsString))
                     .placeholder(R.drawable.ic_user_photo_small)
                     .transform(CropCircleTransformation())
-                    .into(entourage_info_author_photo)
-        } else {
-            entourage_info_author_photo?.setImageResource(R.drawable.ic_user_photo_small)
-        }
-        val partner = feedItem.author!!.partner
-        if (partner != null && entourage_info_partner_logo !=null) {
-            val partnerLogoURL = partner.smallLogoUrl
-            if (partnerLogoURL != null) {
-                Picasso.get()
-                        .load(Uri.parse(partnerLogoURL))
-                        .placeholder(R.drawable.partner_placeholder)
-                        .transform(CropCircleTransformation())
-                        .into(entourage_info_partner_logo)
-            } else {
-                entourage_info_partner_logo!!.setImageDrawable(null)
+                    .into(authorPhotoView)
+            } ?: run {
+                authorPhotoView.setImageResource(R.drawable.ic_user_photo_small)
             }
-        } else {
-            entourage_info_partner_logo?.setImageDrawable(null)
         }
+        entourage_info_partner_logo?.let { partnerLogoView ->
+            feedItem.author?.partner?.smallLogoUrl?.let { partnerLogoURL ->
+                Picasso.get()
+                    .load(Uri.parse(partnerLogoURL))
+                    .placeholder(R.drawable.partner_placeholder)
+                    .transform(CropCircleTransformation())
+                    .into(partnerLogoView)
+            } ?: run {
+                partnerLogoView.setImageDrawable(null)
+            }
+        }
+
         entourage_info_people_count?.text = getString(R.string.tour_cell_numberOfPeople, feedItem.numberOfPeople)
 
         // update description
@@ -1022,11 +1026,11 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         //if (context == null) return
         //val builder = AlertDialog.Builder(requireContext())
         //builder.setMessage(R.string.tour_info_error_retrieve_entourage)
-        //builder.setPositiveButton(R.string.close) { _, _ -> dismiss() }
+        //builder.setPositiveButton(R.string.close) { dismiss() }
         //builder.create().show()
 
-        if(entourage_information_coordinator_layout!=null) {
-            EntourageSnackbar.make(entourage_information_coordinator_layout!!, R.string.tour_info_error_retrieve_entourage, Snackbar.LENGTH_SHORT).show()
+        entourage_information_coordinator_layout?.let {
+            EntourageSnackbar.make(it, R.string.tour_info_error_retrieve_entourage, Snackbar.LENGTH_SHORT).show()
         }
     }
 
@@ -1150,16 +1154,18 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         entourage_info_comment?.isEnabled = true
         entourage_info_comment_send_button?.isEnabled = true
         if (chatMessage == null) {
-            if(entourage_information_coordinator_layout!=null) {
-                EntourageSnackbar.make(entourage_information_coordinator_layout!!, R.string.tour_info_error_chat_message, Snackbar.LENGTH_SHORT).show()
+            entourage_information_coordinator_layout?.let {
+                EntourageSnackbar.make(it, R.string.tour_info_error_chat_message, Snackbar.LENGTH_SHORT).show()
             }
             return
         }
         entourage_info_comment?.setText("")
 
         //hide the keyboard
-        if (entourage_info_comment?.hasFocus() == true && activity != null) {
-            (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?)?.hideSoftInputFromWindow(entourage_info_comment!!.windowToken, 0)
+        entourage_info_comment?.let{
+            if (it.hasFocus() && activity != null) {
+                (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?)?.hideSoftInputFromWindow(it.windowToken, 0)
+            }
         }
 
         //add the message to the list
@@ -1173,7 +1179,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         if (error == EntourageError.ERROR_NONE) {
             // Updated ok
             val messageId = if (FeedItem.JOIN_STATUS_REJECTED == status) R.string.tour_join_request_rejected else R.string.tour_join_request_success
-            EntourageSnackbar.make(entourage_information_coordinator_layout!!,  messageId, Snackbar.LENGTH_SHORT).show()
+            entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  messageId, Snackbar.LENGTH_SHORT).show()}
             // Update the card
             val card = discussionAdapter.findCard(TimestampedObject.TOUR_USER_JOIN, userId.toLong()) as EntourageUser?
             if (card != null) {
@@ -1224,7 +1230,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             feedItem.removeCardInfo(card)
         } else {
             // other Error
-            EntourageSnackbar.make(entourage_information_coordinator_layout!!,  R.string.tour_join_request_error, Snackbar.LENGTH_SHORT).show()
+            entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.tour_join_request_error, Snackbar.LENGTH_SHORT).show()}
         }
     }
 
@@ -1238,7 +1244,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             } else {
                 // Update UI
                 entourage_info_invited_layout?.visibility = View.GONE
-                EntourageSnackbar.make(entourage_information_coordinator_layout!!,  R.string.invited_updated_ok, Snackbar.LENGTH_SHORT).show()
+                entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.invited_updated_ok, Snackbar.LENGTH_SHORT).show()}
                 if (Invitation.STATUS_ACCEPTED == status) {
                     // Invitation accepted, refresh the lists and status
                     feedItem.joinStatus = FeedItem.JOIN_STATUS_ACCEPTED
@@ -1253,7 +1259,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             // Post an event
             BusProvider.instance.post(OnInvitationStatusChanged(feedItem, status))
         } else if (!acceptInvitationSilently) {
-            EntourageSnackbar.make(entourage_information_coordinator_layout!!,  R.string.invited_updated_error, Snackbar.LENGTH_SHORT).show()
+            entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.invited_updated_error, Snackbar.LENGTH_SHORT).show()}
         }
     }
 
@@ -1266,7 +1272,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         if (updatedFeedItem.id != feedItem.id) return
         if (closed) {
             feedItem.status = updatedFeedItem.status
-            if(updatedFeedItem.getEndTime()!=null) feedItem.setEndTime(updatedFeedItem.getEndTime()!!)
+            updatedFeedItem.getEndTime()?.let { feedItem.setEndTime(it) }
             if (updatedFeedItem.status == FeedItem.STATUS_CLOSED && updatedFeedItem.isPrivate()) {
                 addDiscussionTourEndCard(Date())
                 updateDiscussionList()
@@ -1280,7 +1286,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             updateHeaderButtons()
             updateJoinStatus()
         } else {
-            EntourageSnackbar.make(entourage_information_coordinator_layout!!, R.string.tour_close_fail, Snackbar.LENGTH_SHORT).show()
+            entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it, R.string.tour_close_fail, Snackbar.LENGTH_SHORT).show()}
         }
     }
 
@@ -1334,12 +1340,12 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             scrollDeltaY += dy
             //check if user is scrolling up and pass the threshold
             if (dy < 0 && abs(scrollDeltaY) >= SCROLL_DELTA_Y_THRESHOLD) {
-                val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
-                val firstVisibleItemPosition = layoutManager!!.findFirstVisibleItemPosition()
-                val adapterPosition = recyclerView.findViewHolderForLayoutPosition(firstVisibleItemPosition)!!.adapterPosition
-                val timestamp = discussionAdapter.getCardAt(adapterPosition)?.timestamp
-                if (timestamp != null && oldestChatMessageDate != null && timestamp.before(oldestChatMessageDate)) {
-                    presenter().getFeedItemMessages(feedItem, oldestChatMessageDate)
+                (recyclerView.layoutManager as LinearLayoutManager?)?.findFirstVisibleItemPosition()?.let { firstVisibleItemPosition ->
+                    val adapterPosition = recyclerView.findViewHolderForLayoutPosition(firstVisibleItemPosition)?.adapterPosition ?: return@let
+                    val timestamp = discussionAdapter.getCardAt(adapterPosition)?.timestamp ?: return@let
+                    if (oldestChatMessageDate != null && timestamp.before(oldestChatMessageDate)) {
+                        presenter().getFeedItemMessages(feedItem, oldestChatMessageDate)
+                    }
                 }
                 scrollDeltaY = 0
             }

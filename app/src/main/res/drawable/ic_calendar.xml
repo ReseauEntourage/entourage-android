@@ -1,3 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <bitmap android:src="@drawable/ic_calendar_blue"
-        xmlns:android="http://schemas.android.com/apk/res/android"/>
+    android:tint="@color/bright_blue"
+    xmlns:android="http://schemas.android.com/apk/res/android"/>

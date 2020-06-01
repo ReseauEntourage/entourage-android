@@ -15,6 +15,7 @@ import social.entourage.android.authentication.AuthenticationModule
 import social.entourage.android.authentication.login.LoginActivity
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.newsfeed.FeedItemsStorage
+import social.entourage.android.onboarding.LoginNewActivity
 import timber.log.Timber
 import java.util.*
 
@@ -23,7 +24,7 @@ import java.util.*
  */
 class EntourageApplication : MultiDexApplication() {
     lateinit var entourageComponent: EntourageComponent
-    private lateinit var activities: ArrayList<EntourageActivity>
+    private val activities: ArrayList<EntourageActivity>  = ArrayList()
     var badgeCount = 0
         private set
     private lateinit var feedItemsStorage: FeedItemsStorage
@@ -39,7 +40,7 @@ class EntourageApplication : MultiDexApplication() {
     // ----------------------------------
     override fun onCreate() {
         super.onCreate()
-        activities = ArrayList()
+        activities.clear()
         instance = this
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         librariesSupport = LibrariesSupport()
@@ -84,10 +85,10 @@ class EntourageApplication : MultiDexApplication() {
         saveFeedItemsStorage()
     }
 
-    private val loginActivity: LoginActivity?
+    private val loginActivity: LoginNewActivity?
         get() {
             for (activity in activities) {
-                if (activity is LoginActivity) {
+                if (activity is LoginNewActivity) {
                     return activity
                 }
             }
@@ -95,10 +96,8 @@ class EntourageApplication : MultiDexApplication() {
         }
 
     fun finishLoginActivity() {
-        if (loginActivity != null) {
-            Timber.d("Finishing login activity")
-            loginActivity!!.finish()
-        }
+        Timber.d("Finishing login activity")
+        loginActivity?.finish()
     }
 
     // ----------------------------------
@@ -233,11 +232,5 @@ class EntourageApplication : MultiDexApplication() {
         private fun isCurrentApp(appName: String): Boolean {
             return BuildConfig.FLAVOR.contains(appName)
         }
-
-        val isEntourageApp: Boolean
-            get() = isCurrentApp(ENTOURAGE_APP)
-
-        val isPfpApp: Boolean
-            get() = isCurrentApp(PFP_APP)
     }
 }

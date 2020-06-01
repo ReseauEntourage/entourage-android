@@ -41,11 +41,13 @@ class EntourageInformationPresenter @Inject constructor(
                 val call = entourageRequest.retrieveEntourageById(feedItemUUID, distance, feedRank)
                 call.enqueue(object : Callback<EntourageWrapper> {
                     override fun onResponse(call: Call<EntourageWrapper>, response: Response<EntourageWrapper>) {
-                        if (response.isSuccessful) {
-                            fragment.onFeedItemReceived(response.body()!!.entourage)
-                        } else {
-                            fragment.onFeedItemNotFound()
+                        response.body()?.let {
+                            if (response.isSuccessful) {
+                                fragment.onFeedItemReceived(it.entourage)
+                                return
+                            }
                         }
+                        fragment.onFeedItemNotFound()
                     }
 
                     override fun onFailure(call: Call<EntourageWrapper>, t: Throwable) {
@@ -74,11 +76,13 @@ class EntourageInformationPresenter @Inject constructor(
                 val call = entourageRequest.retrieveEntourageUsers(feedItem.uuid, context)
                 call.enqueue(object : Callback<EntourageUsersWrapper> {
                     override fun onResponse(call: Call<EntourageUsersWrapper>, response: Response<EntourageUsersWrapper>) {
-                        if (response.isSuccessful) {
-                            fragment.onFeedItemUsersReceived(response.body()!!.users, context)
-                        } else {
-                            fragment.onFeedItemNoUserReceived()
+                        response.body()?.let {
+                            if (response.isSuccessful) {
+                                fragment.onFeedItemUsersReceived(it.users, context)
+                                return
+                            }
                         }
+                        fragment.onFeedItemNoUserReceived()
                     }
 
                     override fun onFailure(call: Call<EntourageUsersWrapper>, t: Throwable) {
@@ -103,11 +107,13 @@ class EntourageInformationPresenter @Inject constructor(
                 val call = entourageRequest.retrieveEntourageMessages(feedItem.uuid, lastMessageDate)
                 call.enqueue(object : Callback<ChatMessagesWrapper> {
                     override fun onResponse(call: Call<ChatMessagesWrapper>, response: Response<ChatMessagesWrapper>) {
-                        if (response.isSuccessful) {
-                            fragment.onFeedItemMessagesReceived(response.body()!!.chatMessages)
-                        } else {
-                            fragment.onFeedItemNoNewMessages()
+                        response.body()?.let {
+                            if (response.isSuccessful) {
+                                fragment.onFeedItemMessagesReceived(it.chatMessages)
+                                return
+                            }
                         }
+                        fragment.onFeedItemNoNewMessages()
                     }
 
                     override fun onFailure(call: Call<ChatMessagesWrapper>, t: Throwable) {
@@ -131,11 +137,13 @@ class EntourageInformationPresenter @Inject constructor(
                 val call = entourageRequest.chatMessage(feedItem.uuid, chatMessageWrapper)
                 call.enqueue(object : Callback<ChatMessageWrapper> {
                     override fun onResponse(call: Call<ChatMessageWrapper>, response: Response<ChatMessageWrapper>) {
-                        if (response.isSuccessful) {
-                            fragment.onFeedItemMessageSent(response.body()!!.chatMessage)
-                        } else {
-                            fragment.onFeedItemMessageSent(null)
+                        response.body()?.let {
+                            if (response.isSuccessful) {
+                                fragment.onFeedItemMessageSent(it.chatMessage)
+                                return
+                            }
                         }
+                        fragment.onFeedItemMessageSent(null)
                     }
 
                     override fun onFailure(call: Call<ChatMessageWrapper>, t: Throwable) {

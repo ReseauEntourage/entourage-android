@@ -39,7 +39,7 @@ class GuideFilterFragment : EntourageDialogFragment() {
     // ----------------------------------
     fun onValidateClicked() {
         // Save the filter
-        for (filterItem in filterAdapter?.items!!) {
+        filterAdapter?.items?.forEach { filterItem ->
             GuideFilter.instance.setValueForCategoryId(filterItem.categoryType.categoryId, filterItem.isChecked)
         }
         // Apply the filter

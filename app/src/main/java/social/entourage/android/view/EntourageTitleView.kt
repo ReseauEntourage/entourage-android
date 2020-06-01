@@ -1,10 +1,12 @@
 package social.entourage.android.view
 
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import kotlinx.android.synthetic.main.layout_view_title.view.*
 import social.entourage.android.R
 
@@ -35,8 +37,24 @@ class EntourageTitleView : RelativeLayout {
             title_text?.setTextColor(attributes.getColor(R.styleable.EntourageTitleView_android_textColor, ContextCompat.getColor(context, R.color.greyish_brown)))
         }
         if (attributes.hasValue(R.styleable.EntourageTitleView_entourageTitleCloseDrawable)) {
-            title_close_button?.setImageDrawable(attributes.getDrawable(
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                title_close_button?.setImageDrawable(attributes.getDrawable(
                     R.styleable.EntourageTitleView_entourageTitleCloseDrawable))
+            } else {
+                title_close_button?.setImageDrawable(ContextCompat.getDrawable(getContext(),attributes.getResourceId(
+                        R.styleable.EntourageTitleView_entourageTitleCloseDrawable, 0)))
+            }
+
+        }
+        if (attributes.hasValue(R.styleable.EntourageTitleView_entourageTitleCloseDrawableTint)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                title_close_button?.imageTintList = attributes.getColorStateList(
+                        R.styleable.EntourageTitleView_entourageTitleCloseDrawableTint)
+            } else {
+                ContextCompat.getDrawable(getContext(),attributes.getResourceId(R.styleable.EntourageTitleView_entourageTitleCloseDrawable, 0))?.let {
+                    DrawableCompat.setTint(it, attributes.getColor(R.styleable.EntourageTitleView_entourageTitleCloseDrawableTint, ContextCompat.getColor(context, R.color.accent)))
+                }
+            }
         }
         title_action_button?.text = attributes.getString(R.styleable.EntourageTitleView_entourageTitleAction)
         setBackgroundResource(attributes.getResourceId(R.styleable.EntourageTitleView_android_background, R.color.background))
