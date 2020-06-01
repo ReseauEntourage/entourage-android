@@ -23,7 +23,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
             android:padding="5dp"
-            app:srcCompat="@drawable/ic_action_back"
+            app:srcCompat="@drawable/ic_baseline_arrow_back_36"
             android:tint="@color/accent"/>
 
         <Button
@@ -32,10 +32,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
             android:text="@string/registration_smscode_resend"
             android:textAllCaps="false"
             android:visibility="gone"/>
@@ -67,8 +65,6 @@
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
                     android:paddingEnd="10dp"
-                    android:paddingLeft="0dp"
-                    android:paddingRight="10dp"
                     android:paddingStart="0dp"
                     android:text="@string/registration_smscode_title"
                     android:textAppearance="?android:attr/textAppearanceLarge"
@@ -174,13 +170,12 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:contentDescription="@string/empty_description"
-                android:tint="@color/white"
+                app:tint="@color/white"
                 app:srcCompat="@drawable/password"/>
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:gravity="start"

@@ -25,7 +25,7 @@
             android:contentDescription="@string/empty_description"
             android:padding="5dp"
             android:tint="@color/accent"
-            app:srcCompat="@drawable/ic_action_back"/>
+            app:srcCompat="@drawable/ic_baseline_arrow_back_36"/>
 
         <TextView
             android:id="@+id/login_verify_code_back"
@@ -66,8 +66,6 @@
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
                     android:paddingEnd="10dp"
-                    android:paddingLeft="0dp"
-                    android:paddingRight="10dp"
                     android:paddingStart="0dp"
                     android:text="@string/login_text_verify_code_title"
                     android:textAppearance="?android:attr/textAppearanceLarge"
@@ -174,13 +172,12 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:contentDescription="@string/empty_description"
-                android:tint="@color/white"
+                app:tint="@color/white"
                 app:srcCompat="@drawable/password"/>
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:gravity="start"

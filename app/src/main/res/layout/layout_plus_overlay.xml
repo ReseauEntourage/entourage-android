@@ -22,7 +22,7 @@
             android:contentDescription="@string/action_overlay_close"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:tint="@color/accent"
+            app:tint="@color/accent"
             app:srcCompat="@drawable/ic_close_black_24dp" />
 
         <Button

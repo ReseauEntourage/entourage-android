@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/empty_description"
-            android:tint="@color/bright_blue"
+            app:tint="@color/bright_blue"
             app:srcCompat="@drawable/ic_entourage_category_friendly_time"/>
 
         <TextView
@@ -49,7 +49,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.7dp"
-        android:layout_marginLeft="40dp"
         android:layout_marginStart="40dp"
         android:background="@color/greyish"/>
 

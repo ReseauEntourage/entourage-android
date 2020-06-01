@@ -18,8 +18,8 @@
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
             android:padding="5dp"
-            app:srcCompat="@drawable/ic_action_back"
-            android:tint="@color/accent"
+            app:srcCompat="@drawable/ic_baseline_arrow_back_36"
+            app:tint="@color/accent"
             />
 
         <TextView

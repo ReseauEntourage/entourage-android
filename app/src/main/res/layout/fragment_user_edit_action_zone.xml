@@ -19,7 +19,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
             android:padding="5dp"
-            app:srcCompat="@drawable/ic_action_back"/>
+            app:srcCompat="@drawable/ic_baseline_arrow_back_36"/>
 
         <Space
             android:layout_width="0dp"
@@ -139,15 +139,13 @@
             android:layout_height="42dp"
             android:contentDescription="@string/empty_description"
             android:src="@drawable/password"
-            android:tint="@color/white"/>
+            app:tint="@color/white" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingEnd="0dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="0dp"
             android:paddingStart="10dp"
             android:text="@string/user_action_zone_disclaimer"
             android:textColor="@color/white"

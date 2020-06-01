@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:padding="5dp"
         android:background="@color/feeditem_details_topbar_background"
         android:orientation="vertical">
 
@@ -32,7 +33,7 @@
             android:contentDescription="@string/empty_description"
             android:padding="5dp"
             android:tint="@color/feeditem_details_topbar_tint"
-            app:srcCompat="@drawable/ic_action_back"/>
+            app:srcCompat="@drawable/ic_baseline_arrow_back_36"/>
 
         <ImageView
             android:id="@+id/entourage_info_icon"
@@ -42,7 +43,7 @@
             android:layout_toEndOf="@+id/entourage_info_close"
             android:background="@drawable/bg_feeditem_icon"
             android:contentDescription="@string/empty_description"
-            android:padding="3dp"
+            android:padding="5dp"
             android:scaleType="centerInside"
             android:visibility="gone"
             app:srcCompat="@drawable/ic_entourage_category_question_chat"
@@ -100,7 +101,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/entourage_info_title_layout"
         android:background="@color/white"
-        tools:visibility="visible" />
+        tools:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/entourage_info_progress_bar"
@@ -111,7 +112,7 @@
         android:indeterminate="true"
         android:indeterminateDrawable="@drawable/circular_progress_bar"
         android:visibility="gone"
-        tools:visibility="visible" />
+        tools:visibility="gone" />
 
     <include
         android:id="@+id/entourage_info_invite_source_layout"
@@ -119,7 +120,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        tools:visibility="visible" />
+        tools:visibility="gone" />
 
     <include
         android:id="@+id/entourage_info_invite_success_layout"
@@ -127,7 +128,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        tools:visibility="visible" />
+        tools:visibility="gone" />
 
     <include
         android:id="@+id/entourage_info_options"
@@ -135,6 +136,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        tools:visibility="visible" />
+        tools:visibility="gone" />
     </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
