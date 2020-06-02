@@ -41,7 +41,7 @@ ext {
     firebaseCrashlyticsVersion = "17.0.0"
     firebaseMessagingVersion = "20.2.0"
     firebaseInappVersion = "19.0.7"
-    //firebasePerfMonitor = "19.0.7"
+    firebasePerfMonitor = "19.0.7"
     floatingButtonVersion = "1.6.4"
     fragmentVersion = "1.2.4"
     guavaVersion = "29.0-android"

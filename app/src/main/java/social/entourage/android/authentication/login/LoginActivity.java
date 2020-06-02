@@ -191,16 +191,6 @@ public class LoginActivity extends EntourageActivity
     FloatingActionButton nameGoButton;
 
     /************************
-     * Tutorial View
-     ************************/
-
-    @BindView(R.id.login_include_tutorial)
-    View loginTutorial;
-
-    @BindView(R.id.login_button_finish_tutorial)
-    Button finishTutorial;
-
-    /************************
      * Startup View
      ************************/
 
@@ -246,7 +236,6 @@ public class LoginActivity extends EntourageActivity
         loginVerifyCode.setVisibility(View.GONE);
         loginEmail.setVisibility(View.GONE);
         loginNameView.setVisibility(View.GONE);
-        loginTutorial.setVisibility(View.GONE);
         loginNotificationsView.setVisibility(View.GONE);
 
         passwordEditText.setTypeface(Typeface.DEFAULT);
@@ -317,9 +306,6 @@ public class LoginActivity extends EntourageActivity
             loginLostCode.setVisibility(View.GONE);
             loginSignin.setVisibility(View.VISIBLE);
             showKeyboard(phoneEditText);
-        } else if (loginTutorial.getVisibility() == View.VISIBLE) {
-            loginTutorial.setVisibility(View.GONE);
-            showEmailView();
         } else if (loginEmail.getVisibility() == View.VISIBLE) {
             loginEmail.setVisibility(View.GONE);
             loginNameView.setVisibility(View.VISIBLE);
@@ -816,21 +802,6 @@ public class LoginActivity extends EntourageActivity
 
         startMapActivity();
     }
-
-    /************************
-     * Tutorial View
-     ************************/
-
-    /*
-    TODO: put this back when the tutorial content is ready
-    @OnClick(R.id.login_button_go)
-    void startTutorial() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_TUTORIAL_START);
-        loginPresenter.updateUserEmail(profileEmail.getText().toString());
-        loginEmail.setVisibility(View.GONE);
-        loginTutorial.setVisibility(View.VISIBLE);
-    }
-    */
 
     /************************
      * Startup View

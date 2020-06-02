@@ -43,10 +43,6 @@
         android:id="@+id/login_include_notifications"/>
 
     <include
-        android:id="@+id/login_include_tutorial"
-        layout="@layout/login_tutorial"/>
-
-    <include
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         layout="@layout/login_startup"
