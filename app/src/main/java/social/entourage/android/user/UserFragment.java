@@ -338,7 +338,11 @@ public class UserFragment extends EntourageDialogFragment {
         if(entourage==null) return;
         FeedItemInformationFragment entourageInformationFragment = FeedItemInformationFragment.Companion.newInstance(entourage, 0, 0);
         entourageInformationFragment.setShowInfoButton(false);
-        entourageInformationFragment.show(getParentFragmentManager(), EntourageInformationFragment.TAG);
+        try {
+            entourageInformationFragment.show(getParentFragmentManager(), EntourageInformationFragment.TAG);
+        } catch (IllegalStateException e) {
+            Timber.e(e);
+        }
     }
 
     // ----------------------------------
