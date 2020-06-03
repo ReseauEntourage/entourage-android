@@ -102,7 +102,7 @@ class OnboardingPhoneFragment : Fragment() {
         if (ui_onboard_phone_et_phone?.text?.length ?: 0  >= minimumPhoneCharacters) {
             phone = ui_onboard_phone_et_phone?.text.toString()
             callback?.updateButtonNext(true)
-            val countryCode = ui_onboard_phone_ccp_code?.getSelectedCountryCodeWithPlus()
+            val countryCode = ui_onboard_phone_ccp_code?.selectedCountryCodeWithPlus
             callback?.validatePhoneNumber(countryCode,ui_onboard_phone_et_phone?.text.toString())
         }
         else {

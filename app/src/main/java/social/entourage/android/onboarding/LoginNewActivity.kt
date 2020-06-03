@@ -108,7 +108,7 @@ class LoginNewActivity : EntourageActivity() {
      ********************************/
 
     fun validateInputsAndLogin() {
-        val countryCode = ui_login_phone_ccp_code?.getSelectedCountryCodeWithPlus()
+        val countryCode = ui_login_phone_ccp_code?.selectedCountryCodeWithPlus
         val phoneNumber = ui_login_phone_et_phone?.text.toString()
         val codePwd = ui_login_et_code?.text.toString()
 
@@ -144,7 +144,7 @@ class LoginNewActivity : EntourageActivity() {
 
     fun checkAndResendCode() {
 
-        val countryCode = ui_login_phone_ccp_code?.getSelectedCountryCodeWithPlus()
+        val countryCode = ui_login_phone_ccp_code?.selectedCountryCodeWithPlus
         val phoneNumber = ui_login_phone_et_phone?.text.toString()
 
         if (phoneNumber.length <= minimumPhoneCharacters) {

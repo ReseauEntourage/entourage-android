@@ -32,7 +32,6 @@
         <attr format="boolean" name="ccp_selectionDialogShowSearch"/>
         <attr format="boolean" name="ccp_clickable"/>
         <attr format="boolean" name="ccp_hidePhoneCode"/>
-        <attr format="boolean" name="ccp_enableHint"/>
         <attr format="boolean" name="ccp_enablePhoneAutoFormatter"/>
         <attr format="boolean" name="ccp_setCountryByTimeZone"/>
         <attr format="boolean" name="ccp_alternative_layout"/>
