@@ -9,6 +9,7 @@ import android.widget.Toast
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import kotlinx.android.synthetic.main.fragment_user_report.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -23,22 +24,19 @@ import social.entourage.android.base.EntourageDialogFragment
 /**
  * User Report Fragment
  */
-class UserReportFragment  // ----------------------------------
-// LIFECYCLE
-// ----------------------------------
-    : EntourageDialogFragment() {
+class UserReportFragment  : EntourageDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
     private var userId = 0
-
-    @BindView(R.id.user_report_reason_edittext)
-    var reasonEditText: EditText? = null
     private var sending = false
+    // ----------------------------------
+    // LIFECYCLE
+    // ----------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments != null) {
-            userId = arguments!!.getInt(User.KEY_USER_ID)
+        arguments?.let {
+            userId = it.getInt(User.KEY_USER_ID)
         }
     }
 
@@ -46,14 +44,14 @@ class UserReportFragment  // ----------------------------------
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_user_report, container, false)
-        ButterKnife.bind(this, view)
-        return view
+        return inflater.inflate(R.layout.fragment_user_report, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         showKeyboard()
+        user_report_close_button.setOnClickListener  {onCloseClicked()}
+        user_report_send_button.setOnClickListener {onSendClicked() }
     }
 
     override fun getSlideStyle(): Int {
@@ -63,29 +61,28 @@ class UserReportFragment  // ----------------------------------
     // ----------------------------------
     // ONCLICK CALLBACKS
     // ----------------------------------
-    @OnClick(R.id.user_report_close_button)
     fun onCloseClicked() {
         dismiss()
     }
 
-    @OnClick(R.id.user_report_send_button)
-    fun onSendClicked() {
+    private fun onSendClicked() {
         if (sending) return
         if (isValid) {
             sendReport()
         }
-    }// The reason cannot be empty
+    }
 
     // ----------------------------------
     // Private methods
     // ----------------------------------
     private val isValid: Boolean
-        private get() {
-            val reason = reasonEditText!!.text.toString()
-            if (reason.trim { it <= ' ' }.length == 0) {
-                // The reason cannot be empty
-                Toast.makeText(context, R.string.user_report_error_reason_empty, Toast.LENGTH_SHORT).show()
-                return false
+        get() {
+            user_report_reason_edittext?.text?.toString()?.let { reason ->
+                if (reason.isBlank()) {
+                    // The reason cannot be empty
+                    Toast.makeText(context, R.string.user_report_error_reason_empty, Toast.LENGTH_SHORT).show()
+                    return false
+                }
             }
             return true
         }
@@ -93,7 +90,7 @@ class UserReportFragment  // ----------------------------------
     private fun sendReport() {
         val userRequest = get().entourageComponent.userRequest ?: return
         sending = true
-        val reason = reasonEditText!!.text.toString()
+        val reason = user_report_reason_edittext?.text.toString()
         val call = userRequest.reportUser(userId, UserReportWrapper(UserReport(reason)))
         call.enqueue(object : Callback<ResponseBody?> {
             override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
@@ -119,6 +116,7 @@ class UserReportFragment  // ----------------------------------
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
+        @JvmField
         val TAG = UserReportFragment::class.java.simpleName
 
         /**
@@ -128,6 +126,7 @@ class UserReportFragment  // ----------------------------------
          * @param userId The id of the reported user.
          * @return A new instance of fragment UserReportFragment.
          */
+        @JvmStatic
         fun newInstance(userId: Int): UserReportFragment {
             val fragment = UserReportFragment()
             val args = Bundle()

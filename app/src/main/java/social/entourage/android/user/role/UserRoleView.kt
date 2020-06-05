@@ -1,6 +1,7 @@
 package social.entourage.android.user.role
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import androidx.annotation.ColorRes
@@ -56,6 +57,10 @@ class UserRoleView : AppCompatTextView {
     fun changeBackgroundColor(@ColorRes backgroundColor: Int) {
         this.backgroundColor = backgroundColor
         setCustomBackground()
+    }
+
+    override fun setBackgroundColor(color: Int) {
+        super.setBackgroundColor(color)
     }
 
     private fun setCustomBackground() {

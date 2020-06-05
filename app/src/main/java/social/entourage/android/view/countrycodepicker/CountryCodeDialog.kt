@@ -25,7 +25,7 @@ internal class CountryCodeDialog(private val mCountryCodePicker: CountryCodePick
     private var mInputMethodManager: InputMethodManager? = null
     private var mAdapter: CountryCodeAdapter? = null
 
-    override fun onCreate(savedInstanceState: Bundle) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.layout_code_picker_dialog)

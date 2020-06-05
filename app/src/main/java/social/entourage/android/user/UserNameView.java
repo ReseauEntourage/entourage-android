@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import social.entourage.android.R;
 import social.entourage.android.user.role.UserRole;
-import social.entourage.android.user.role.RoleView;
+import social.entourage.android.user.role.UserRoleView;
 import social.entourage.android.user.role.UserRolesFactory;
 
 /**
@@ -83,10 +83,10 @@ public class UserNameView extends LinearLayout {
     }
 
     public void addRoleView(UserRole role) {
-        RoleView roleView = new RoleView(getContext());
-        roleView.setRole(role);
-        roleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.entourage_font_medium));
-        tagsHolder.addView(roleView);
+        UserRoleView userRoleView = new UserRoleView(getContext());
+        userRoleView.setRole(role);
+        userRoleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.entourage_font_medium));
+        tagsHolder.addView(userRoleView);
         tagsHolder.setVisibility(VISIBLE);
     }
 

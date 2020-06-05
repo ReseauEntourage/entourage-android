@@ -11,7 +11,7 @@ import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.tools.BusProvider.instance
 import social.entourage.android.tools.CropCircleTransformation
-import social.entourage.android.user.role.RoleView
+import social.entourage.android.user.role.UserRoleView
 import social.entourage.android.user.role.UserRolesFactory
 import java.util.*
 
@@ -70,9 +70,9 @@ class MemberCardViewHolder(view: View) : BaseCardViewHolder(view) {
             if (userRole == null || !userRole.isVisible) {
                 continue
             }
-            val roleView = RoleView(itemView.context)
-            roleView.setRole(userRole)
-            itemView.tic_member_tags?.addView(roleView)
+            val userRoleView = UserRoleView(itemView.context)
+            userRoleView.setRole(userRole)
+            itemView.tic_member_tags?.addView(userRoleView)
         }
     }
 

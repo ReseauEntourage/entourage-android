@@ -375,8 +375,7 @@ public class UserFragment extends EntourageDialogFragment {
     protected void onReportUserClicked() {
         if (user == null) return;
 
-        UserReportFragment userReportFragment = UserReportFragment.newInstance(user.getId());
-        userReportFragment.show(getParentFragmentManager(), UserReportFragment.TAG);
+        UserReportFragment.newInstance(user.getId()).show(getParentFragmentManager(), UserReportFragment.TAG);
     }
 
     @Optional
