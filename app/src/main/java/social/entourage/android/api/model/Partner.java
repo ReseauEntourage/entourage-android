@@ -46,6 +46,11 @@ public class Partner extends BaseOrganization implements Serializable {
     @SerializedName("user_role_title")
     private String userRoleTitle;
 
+    @SerializedName("postal_code")
+    private String postal_code;
+
+    private boolean isCreation;
+
     // ----------------------------------
     // GETTERS & SETTERS
     // ----------------------------------
@@ -109,6 +114,30 @@ public class Partner extends BaseOrganization implements Serializable {
 
     public String getWebsiteUrl() {
         return websiteUrl;
+    }
+
+    public String getPostal_code() {
+        return postal_code;
+    }
+
+    public void setPostal_code(String postal_code) {
+        this.postal_code = postal_code;
+    }
+
+    public boolean isCreation() {
+        return isCreation;
+    }
+
+    public void setCreation(boolean creation) {
+        isCreation = creation;
+    }
+
+    public String getUserRoleTitle() {
+        return userRoleTitle;
+    }
+
+    public void setUserRoleTitle(String userRoleTitle) {
+        this.userRoleTitle = userRoleTitle;
     }
 
     @Override

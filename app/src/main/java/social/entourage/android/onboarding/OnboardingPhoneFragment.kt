@@ -52,10 +52,10 @@ class OnboardingPhoneFragment : Fragment() {
         getActivity()?.getWindow()?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         if (phone?.length ?: 0  >= minimumPhoneCharacters) {
-            callback?.upadteButtonNext(true)
+            callback?.updateButtonNext(true)
         }
         else {
-            callback?.upadteButtonNext(false)
+            callback?.updateButtonNext(false)
         }
 
         setupViews()
@@ -93,6 +93,7 @@ class OnboardingPhoneFragment : Fragment() {
 
         onboard_phone_mainlayout?.setOnTouchListener { view, motionEvent ->
             view.hideKeyboard()
+            view.performClick()
             true
         }
     }
@@ -100,12 +101,12 @@ class OnboardingPhoneFragment : Fragment() {
     fun checkAndUpdate() {
         if (ui_onboard_phone_et_phone?.text?.length ?: 0  >= minimumPhoneCharacters) {
             phone = ui_onboard_phone_et_phone?.text.toString()
-            callback?.upadteButtonNext(true)
+            callback?.updateButtonNext(true)
             val countryCode = ui_onboard_phone_ccp_code?.getSelectedCountryCodeWithPlus()
             callback?.validatePhoneNumber(countryCode,ui_onboard_phone_et_phone?.text.toString())
         }
         else {
-            callback?.upadteButtonNext(false)
+            callback?.updateButtonNext(false)
             callback?.validatePhoneNumber(null,null)
         }
     }

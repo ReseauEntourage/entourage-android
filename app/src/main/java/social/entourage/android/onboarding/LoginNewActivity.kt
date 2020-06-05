@@ -46,6 +46,7 @@ class LoginNewActivity : EntourageActivity() {
 
         onboard_login_mainlayout?.setOnTouchListener { view, motionEvent ->
             view.hideKeyboard()
+            view.performClick()
             true
         }
 

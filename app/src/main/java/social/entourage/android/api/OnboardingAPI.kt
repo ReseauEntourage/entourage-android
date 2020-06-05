@@ -10,6 +10,7 @@ import com.google.gson.annotations.SerializedName
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,6 +19,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
+import social.entourage.android.EntourageApplication.Companion.get
+import social.entourage.android.api.model.Partner
+import social.entourage.android.api.model.Partner.PartnersWrapper
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.authentication.AuthenticationController
@@ -26,6 +30,7 @@ import social.entourage.android.tools.Logger
 import java.io.File
 import java.io.IOException
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.set
 
 /**
@@ -280,6 +285,30 @@ class OnboardingAPI(val application: EntourageApplication) {
         })
     }
 
+    fun updateUserGoal(goalString:String, listener:(isOK:Boolean, userResponse:UserResponse?) -> Unit) {
+
+        val user = ArrayMap<String, Any>()
+        user["goal"] = goalString
+
+        val request = ArrayMap<String, Any>()
+        request["user"] = user
+        val call = getOnboardingService().updateUser(request)
+        call.enqueue(object : Callback<UserResponse?> {
+            override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
+                if (response.isSuccessful) {
+                    listener(true,response.body())
+                }
+                else {
+                    listener(false,null)
+                }
+            }
+
+            override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
+                listener(false,null)
+            }
+        })
+    }
+
     fun updateUserPhoto(avatarKey:String, listener: (isOK: Boolean, userResponse:UserResponse?) -> Unit) {
         val user = ArrayMap<String, Any>()
         user["avatar_key"] = avatarKey
@@ -343,6 +372,86 @@ class OnboardingAPI(val application: EntourageApplication) {
             override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
                 listener(true)
             }
+        })
+    }
+
+    /**********************
+     * Onboarding Asso
+     */
+    fun updateAssoInfos(asso:Partner?, listener:(isOK:Boolean, response:ResponseBody?) -> Unit) {
+
+        if (asso == null) {
+            listener(false,null)
+            return
+        }
+
+        val request = ArrayMap<String, Any>()
+        if (asso.id > 0) {
+            request["partner_id"] =asso.id
+        }
+
+        if (asso.isCreation) {
+            request["new_partner_name"] = asso.name
+        }
+
+        request["postal_code"] = asso.postal_code
+        request["partner_role_title"] = asso.userRoleTitle
+
+        val call = getOnboardingService().updateAssoInfos(request)
+
+        call.enqueue(object : Callback<ResponseBody?> {
+            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+                if (response.isSuccessful) {
+                    listener(true,response.body())
+                }
+                else {
+                    listener(false,null)
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                listener(false,null)
+            }
+        })
+    }
+
+    fun updateUserInterests(interrest:ArrayList<String>, listener:(isOK:Boolean, userResponse:UserResponse?) -> Unit) {
+
+        val user = ArrayMap<String, Any>()
+        user["interests"] = interrest
+
+        val request = ArrayMap<String, Any>()
+        request["user"] = user
+        val call = getOnboardingService().updateUser(request)
+        call.enqueue(object : Callback<UserResponse?> {
+            override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
+                if (response.isSuccessful) {
+                    listener(true,response.body())
+                }
+                else {
+                    listener(false,null)
+                }
+            }
+
+            override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
+                listener(false,null)
+            }
+        })
+    }
+
+    fun getAssociationsList(listener:(arrayAssociations:ArrayList<Partner>?) -> Unit) {
+        val request = get(get()).entourageComponent.partnerRequest
+        request.allPartners.enqueue(object : Callback<PartnersWrapper> {
+            override fun onResponse(call: Call<PartnersWrapper>, response: Response<PartnersWrapper>) {
+                if (response.isSuccessful) {
+                    val partnerList = response.body()!!.partners
+                    val arrayPartners = ArrayList<Partner>(partnerList)
+                    listener(arrayPartners)
+                }
+                else {
+                    listener(null)
+                }
+            }
+            override fun onFailure(call: Call<PartnersWrapper>, t: Throwable) { listener(null) }
         })
     }
 }

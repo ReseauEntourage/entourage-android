@@ -16,7 +16,12 @@ import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
+import social.entourage.android.api.model.Partner
 import social.entourage.android.api.model.User
+import social.entourage.android.onboarding.asso.AssoActivities
+import social.entourage.android.onboarding.asso.OnboardingAssoActivitiesFragment
+import social.entourage.android.onboarding.asso.OnboardingAssoFillFragment
+import social.entourage.android.onboarding.asso.OnboardingAssoStartFragment
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
 import social.entourage.android.tools.Logger
 import social.entourage.android.tools.Utils.checkPhoneNumberFormat
@@ -47,9 +52,12 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     private var temporaryEmail:String? = null
     private var temporaryImageUri:Uri? = null
 
-    private var userTypeSelected = UserTypeSelection.NONE
+    private var userTypeSelected:UserTypeSelection = UserTypeSelection.NONE
+    private var currentPositionAsso = 0
 
     private var temporaryPlaceAddress:User.Address? = null
+    private var temporaryAssoInfo:Partner? = null
+    private var temporaryAssoActivities: AssoActivities? = null
 
     lateinit var alertDialog: CustomProgressDialog
 
@@ -72,16 +80,12 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         setupViews()
     }
 
-
-
     override fun onBackPressed() {
-        if (currentFragmentPosition == PositionType.Names.pos || currentFragmentPosition == PositionType.Type.pos) {
-//            startActivity(Intent(this, PreOnboardingChoiceActivity::class.java))
-//            finish()
+        if (currentFragmentPosition == PositionType.Names.pos || (currentFragmentPosition == PositionType.Type.pos && userTypeSelected == UserTypeSelection.NONE)) {
             return
         }
-        currentFragmentPosition = currentFragmentPosition - 1
-        changeFragment()
+
+        goPrevious()
     }
 
     private fun setupViews() {
@@ -94,6 +98,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         }
 
         ui_bt_back?.setOnClickListener {
+            if (currentFragmentPosition >= PositionType.Type.pos) return@setOnClickListener
             startActivity(Intent(this, PreOnboardingChoiceActivity::class.java))
             finish()
         }
@@ -298,6 +303,64 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         Toast.makeText(this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show()
     }
 
+    fun updateGoal(isAsso:Boolean) {
+        alertDialog.show(R.string.onboard_waiting_dialog)
+        val _currentGoal = userTypeSelected.getGoalString()
+        OnboardingAPI.getInstance(get()).updateUserGoal(_currentGoal) { isOK, userResponse ->
+            if (isOK && userResponse != null) {
+                val authenticationController = get().entourageComponent.authenticationController
+                authenticationController.saveUser(userResponse.user)
+            }
+            alertDialog.dismiss()
+            if (isAsso) {
+                currentPositionAsso = currentPositionAsso + 1
+                moveToTunnelAsso()
+            }
+            else {
+                goNextStep()
+            }
+        }
+    }
+
+    //**********
+    // Network Asso
+
+    fun updateAssoInfos() {
+        if (temporaryAssoInfo?.name?.length ?:0 > 0 && temporaryAssoInfo?.postal_code?.length ?:0 > 0 && temporaryAssoInfo?.userRoleTitle?.length ?:0 > 0) {
+            alertDialog.show(R.string.onboard_waiting_dialog)
+            OnboardingAPI.getInstance(get()).updateAssoInfos(temporaryAssoInfo) { isOK, response ->
+                alertDialog.dismiss()
+                currentPositionAsso = currentPositionAsso + 1
+                moveToTunnelAsso()
+            }
+        }
+        else {
+            AlertDialog.Builder(this)
+                    .setTitle(R.string.attention_pop_title)
+                    .setMessage(R.string.onboard_asso_fill_error)
+                    .setPositiveButton("OK") { dialog, which -> }
+                    .create()
+                    .show()
+        }
+    }
+
+    fun updateAssoActivities() {
+        if (temporaryAssoActivities?.hasOneSelectionMin() == true) {
+            OnboardingAPI.getInstance(get()).updateUserInterests(temporaryAssoActivities!!.getArrayForWs()) { isOK, userResponse ->
+                currentFragmentPosition = currentFragmentPosition + 2
+                changeFragment()
+            }
+        }
+        else {
+            AlertDialog.Builder(this)
+                    .setTitle(R.string.attention_pop_title)
+                    .setMessage(R.string.onboard_asso_activity_error)
+                    .setPositiveButton("OK") { dialog, which -> }
+                    .create()
+                    .show()
+        }
+    }
+
     //**********//**********//**********
     // Navigation
     //**********//**********//**********
@@ -316,6 +379,12 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             7 -> fragment = OnboardingPhotoFragment.newInstance(temporaryUser.firstName)
         }
 
+        if (currentFragmentPosition >= PositionType.Type.pos) {
+            ui_onboard_main_iv_back?.visibility = View.INVISIBLE
+        }
+        else {
+            ui_onboard_main_iv_back?.visibility = View.VISIBLE
+        }
         supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.ui_container, fragment)
@@ -327,10 +396,71 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         ui_view_progress?.updatePercent(percent)
     }
 
+    //**********
+    // Navigation Asso
+
+    fun moveToTunnelAsso() {
+        ui_bt_next?.enable(R.drawable.ic_onboard_bt_next)
+        val fragment: Fragment
+
+        when(currentPositionAsso) {
+            1 -> fragment = OnboardingAssoStartFragment.newInstance(true)
+            2 -> fragment = OnboardingAssoStartFragment.newInstance(false)
+            3 -> {
+                fragment = OnboardingAssoFillFragment.newInstance(temporaryAssoInfo)
+            }
+            4 -> {
+                fragment = OnboardingAssoActivitiesFragment.newInstance(temporaryAssoActivities,temporaryUser.firstName)
+            }
+            else -> {
+                changeFragment()
+                return
+            }
+        }
+
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.ui_container, fragment)
+                .commit()
+
+        updateButtons()
+
+        val percent = (currentFragmentPosition.toFloat() + currentPositionAsso.toFloat() + 1.5f ) / (numberOfSteps.toFloat() + 4.5f) * 100
+        ui_view_progress?.updatePercent(percent)
+    }
+
+    //**********
+    // Navigation Methods
+
     fun goNext() {
-        Logger("Call button next pos : $currentFragmentPosition")
         when(currentFragmentPosition) {
             PositionType.Phone.pos -> {callSignup(); return}
+            PositionType.Type.pos -> {
+                if (userTypeSelected == UserTypeSelection.ASSOS) {
+                    if (currentPositionAsso == AssoPositionType.NONE.pos) {
+                        updateGoal(true)
+                        return
+                    }
+
+                    if (currentPositionAsso == AssoPositionType.FILL.pos) {
+                        updateAssoInfos()
+                        return
+                    }
+
+                    if (currentPositionAsso == AssoPositionType.ACTIVITIES.pos) {
+                        updateAssoActivities()
+                        return
+                    }
+
+                    currentPositionAsso = currentPositionAsso+ 1
+                    moveToTunnelAsso()
+                    return
+                }
+                else {
+                    updateGoal(false)
+                    return
+                }
+            }
             PositionType.Place.pos -> {sendAddress(); return}
             PositionType.EmailPwd.pos -> {updateUserEmailPwd(); return}
             PositionType.Photo.pos -> {updateUserPhoto(); return}
@@ -352,6 +482,27 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     }
 
     fun goPrevious() {
+
+        if (currentFragmentPosition == PositionType.Type.pos) {
+            if (userTypeSelected == UserTypeSelection.ASSOS) {
+                if (currentPositionAsso != AssoPositionType.NONE.pos) {
+                    currentPositionAsso = currentPositionAsso - 1
+                }
+                moveToTunnelAsso()
+                return
+            }
+        }
+
+        if (currentFragmentPosition == PositionType.EmailPwd.pos) {
+            if (userTypeSelected == UserTypeSelection.ASSOS) {
+                if (currentPositionAsso != AssoPositionType.NONE.pos) {
+                    currentFragmentPosition = currentFragmentPosition - 2
+                }
+                moveToTunnelAsso()
+                return
+            }
+        }
+
         currentFragmentPosition = currentFragmentPosition - 1
         if (currentFragmentPosition < 1) currentFragmentPosition = 1
 
@@ -383,11 +534,19 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     fun updateButtons() {
         ui_bt_pass?.visibility = View.INVISIBLE
         when(currentFragmentPosition) {
-            PositionType.Names.pos, PositionType.Type.pos -> ui_bt_previous?.visibility = View.INVISIBLE
-            else -> ui_bt_previous.visibility = View.VISIBLE
+            PositionType.Names.pos -> ui_bt_previous?.visibility = View.INVISIBLE
+            PositionType.Type.pos -> {
+                if (currentPositionAsso == AssoPositionType.NONE.pos) {
+                    ui_bt_previous?.visibility = View.INVISIBLE
+                    ui_bt_pass?.visibility = View.VISIBLE
+                } else {
+                    ui_bt_previous?.visibility = View.VISIBLE
+                }
+            }
+            else -> ui_bt_previous?.visibility = View.VISIBLE
         }
 
-        if (currentFragmentPosition == PositionType.Type.pos || currentFragmentPosition == PositionType.Photo.pos ) {
+        if (currentFragmentPosition == PositionType.Photo.pos ) {
             ui_bt_pass?.visibility = View.VISIBLE
         }
     }
@@ -433,15 +592,20 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     override fun updateUsertype(userTypeSelected: UserTypeSelection) {
         this.userTypeSelected = userTypeSelected
+
+        temporaryAssoInfo = null
+        temporaryAssoActivities?.reset()
+        temporaryEmail = ""
+        temporaryPlaceAddress = null
     }
 
     override fun updateAddress(placeAddress: User.Address?) {
         temporaryPlaceAddress = placeAddress
         if (temporaryPlaceAddress != null) {
-            upadteButtonNext(true)
+            updateButtonNext(true)
         }
         else {
-            upadteButtonNext(false)
+            updateButtonNext(false)
         }
     }
 
@@ -453,20 +617,31 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     override fun updateUserPhoto(imageUri: Uri?) {
         temporaryImageUri = imageUri
         if (temporaryImageUri != null) {
-            upadteButtonNext(true)
+            updateButtonNext(true)
         }
         else {
-            upadteButtonNext(false)
+            updateButtonNext(false)
         }
     }
 
-    override fun upadteButtonNext(isValid:Boolean) {
+    override fun updateButtonNext(isValid:Boolean) {
         if (isValid) {
             ui_bt_next?.enable(R.drawable.ic_onboard_bt_next)
         }
         else {
             ui_bt_next?.disable()
         }
+    }
+
+    //**********
+    // Callbacks Asso
+
+    override fun updateAssoInfos(asso: Partner?) {
+        this.temporaryAssoInfo = asso
+    }
+
+    override fun updateAssoActivities(assoActivities: AssoActivities) {
+        this.temporaryAssoActivities = assoActivities
     }
 }
 
@@ -484,11 +659,28 @@ enum class PositionType(val pos:Int) {
     Photo(7)
 }
 
+enum class AssoPositionType(val pos:Int) {
+    START(1),
+    INFO(2),
+    FILL(3),
+    ACTIVITIES(4),
+    NONE(0)
+}
+
 enum class UserTypeSelection {
     NEIGHBOUR,
     ALONE,
     ASSOS,
-    NONE
+    NONE;
+
+    fun getGoalString() : String {
+       return when(this) {
+            NEIGHBOUR -> "offer_help"
+            ALONE -> "ask_for_help"
+            ASSOS -> "organization"
+            NONE -> ""
+        }
+    }
 }
 
 //**********//**********//**********
@@ -504,5 +696,8 @@ interface OnboardingCallback {
     fun updateAddress(placeAddress:User.Address?)
     fun updateEmailPwd(email:String?,pwd:String?,pwdConfirm:String?)
     fun updateUserPhoto(imageUri:Uri?)
-    fun upadteButtonNext(isValid:Boolean)
+    fun updateButtonNext(isValid:Boolean)
+
+    fun updateAssoInfos(asso:Partner?)
+    fun updateAssoActivities(assoActivities:AssoActivities)
 }

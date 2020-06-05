@@ -41,11 +41,11 @@ class OnboardingEmailPwdFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (tempEmail == null || !tempEmail!!.isValidEmail()) {
-            callback?.upadteButtonNext(false)
+            callback?.updateButtonNext(false)
         }
         else {
             ui_onboard_email_pwd_et_mail?.setText(tempEmail)
-            callback?.upadteButtonNext(true)
+            callback?.updateButtonNext(true)
         }
 
         setupViews()
@@ -68,6 +68,7 @@ class OnboardingEmailPwdFragment : Fragment() {
     fun setupViews() {
         onboard_email_pwd_mainlayout?.setOnTouchListener { view, _ ->
             view.hideKeyboard()
+            view.performClick()
             true
         }
 
@@ -92,13 +93,13 @@ class OnboardingEmailPwdFragment : Fragment() {
     // Methods
     //**********//**********//**********
 
-    fun updateButtonNext() {
+    private fun updateButtonNext() {
         if (ui_onboard_email_pwd_et_mail?.text!= null && ui_onboard_email_pwd_et_mail.text.toString().isValidEmail()) {
-            callback?.upadteButtonNext(true)
+            callback?.updateButtonNext(true)
             callback?.updateEmailPwd(ui_onboard_email_pwd_et_mail.text.toString(),null,null)
         }
         else {
-            callback?.upadteButtonNext(false)
+            callback?.updateButtonNext(false)
             callback?.updateEmailPwd(null,null,null)
         }
     }

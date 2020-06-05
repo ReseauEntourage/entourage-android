@@ -6,6 +6,7 @@ import android.graphics.PorterDuff
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
+import androidx.core.content.res.ResourcesCompat
 import social.entourage.android.R
 
 /**
@@ -20,12 +21,17 @@ fun ImageButton.disable() {
 
 fun ImageButton.enable(res:Int) {
     Logger("Call enable")
-    setImageDrawable(resources.getDrawable(res))
+    setImageDrawable(ResourcesCompat.getDrawable(resources,res,null))
     isClickable = true
 }
 
 fun View.hideKeyboard() {
     clearFocus()
+    val inputMethodManager = context?.getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+    inputMethodManager?.hideSoftInputFromWindow(this.windowToken, 0)
+}
+
+fun View.hideKeyboardFromLayout() {
     val inputMethodManager = context?.getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as? InputMethodManager
     inputMethodManager?.hideSoftInputFromWindow(this.windowToken, 0)
 }

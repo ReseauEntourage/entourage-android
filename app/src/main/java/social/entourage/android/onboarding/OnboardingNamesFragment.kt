@@ -45,7 +45,7 @@ class OnboardingNamesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        callback?.upadteButtonNext(checkAndValidateInput())
+        callback?.updateButtonNext(checkAndValidateInput())
 
         setupViews()
     }
@@ -67,6 +67,7 @@ class OnboardingNamesFragment : Fragment() {
     fun setupViews() {
         onboard_names_mainlayout?.setOnTouchListener { view, motionEvent ->
             view.hideKeyboard()
+            view.performClick()
             true
         }
 
@@ -96,11 +97,11 @@ class OnboardingNamesFragment : Fragment() {
 
     fun updateButtonNext(isValidate:Boolean) {
         if (checkAndValidateInput()) {
-            callback?.upadteButtonNext(true)
+            callback?.updateButtonNext(true)
             callback?.validateNames(ui_onboard_names_et_firstname?.text?.toString(),ui_onboard_names_et_lastname?.text?.toString(),isValidate)
         }
         else {
-            callback?.upadteButtonNext(false)
+            callback?.updateButtonNext(false)
             callback?.validateNames(null,null,false)
         }
     }

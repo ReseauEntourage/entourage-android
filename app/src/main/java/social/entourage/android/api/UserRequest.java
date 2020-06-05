@@ -57,4 +57,8 @@ public interface UserRequest {
 
     @POST("users/me/address")
     Call<User.AddressWrapper> updateAddressLocation(@Body ArrayMap<String, Object> address);
+
+    //Onboarding Asso
+    @POST("partners/join_request")
+    Call<ResponseBody> updateAssoInfos(@Body ArrayMap<String, Object> asso);
 }

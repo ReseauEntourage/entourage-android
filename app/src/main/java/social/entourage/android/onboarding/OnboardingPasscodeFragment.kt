@@ -47,7 +47,7 @@ class OnboardingPasscodeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        callback?.upadteButtonNext(false)
+        callback?.updateButtonNext(false)
 
         setupViews()
 
@@ -94,6 +94,7 @@ class OnboardingPasscodeFragment : Fragment() {
         onboard_passcode_mainlayout?.setOnTouchListener { view, motionEvent ->
             view.hideKeyboard()
             checkInputs()
+            view.performClick()
             true
         }
 
@@ -196,7 +197,7 @@ class OnboardingPasscodeFragment : Fragment() {
                 ui_onboard_code_et_3?.text.toString() + ui_onboard_code_et_4?.text.toString() +
                 ui_onboard_code_et_5?.text.toString() + ui_onboard_code_et_6?.text.toString()
         callback?.validatePasscode(tempCode)
-        callback?.upadteButtonNext(isInputsOk)
+        callback?.updateButtonNext(isInputsOk)
     }
 
     //**********//**********//**********

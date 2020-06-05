@@ -190,6 +190,8 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"/>
 
+        <activity android:name=".onboarding.asso.OnboardingAssoSearchActivity"
+            android:screenOrientation="portrait"/>
         <service
             android:name=".service.EntourageService"
             android:exported="false" />

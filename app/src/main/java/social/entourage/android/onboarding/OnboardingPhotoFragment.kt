@@ -62,7 +62,7 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        callback?.upadteButtonNext(false)
+        callback?.updateButtonNext(false)
         setupViews()
     }
 

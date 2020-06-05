@@ -98,6 +98,9 @@ public class User implements Serializable {
     @Expose(serialize = false, deserialize = false)
     public boolean editActionZoneShown = false;
 
+    @SerializedName("goal")
+    private String goal = "";
+
     // ----------------------------------
     // CONSTRUCTOR
     // ----------------------------------
@@ -265,6 +268,9 @@ public class User implements Serializable {
     public void setAddress(final Address address) {
         this.address = address;
     }
+
+    public String getGoal() { return goal; }
+    public void setGoal(String goal) { this.goal = goal; }
 
     // ----------------------------------
     // Other methods
