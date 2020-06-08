@@ -150,24 +150,24 @@
             android:name=".authentication.login.LoginActivity"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".tour.encounter.ReadEncounterActivity"
             android:label="@string/activity_read_encounter_title"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".tour.encounter.CreateEncounterActivity"
             android:label="@string/activity_create_encounter_title"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name="social.entourage.android.entourage.join.received.EntourageJoinRequestReceivedActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".user.edit.photo.ChoosePhotoActivity"></activity>
-        <activity android:name=".user.edit.photo.TakePhotoActivity"></activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".user.edit.photo.ChoosePhotoActivity" />
+        <activity android:name=".user.edit.photo.TakePhotoActivity" />
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
             android:theme="@style/EntourageOSSLicenses.Theme" />
@@ -197,10 +197,6 @@
             android:exported="false" />
         <service
             android:name=".api.tape.EncounterTapeService"
-            android:exported="false" />
-        <service
-            android:name=".message.push.PushNotificationService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="false" />
         <service android:name=".message.push.EntourageFirebaseMessagingService">
             <intent-filter>

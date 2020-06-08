@@ -375,7 +375,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:contentDescription="@string/empty_description"
                         android:src="@drawable/arrow_grey"/>
@@ -385,7 +384,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@+id/user_change_password_arrow"
                         android:layout_toStartOf="@+id/user_change_password_arrow"
                         android:text="@string/user_edit_password_button"
                         android:textColor="@color/accent"
