@@ -207,7 +207,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         displayChosenFeedItem(feedItem, 0, feedRank)
     }
 
-    fun displayChosenFeedItem(feedItem: FeedItem, invitationId: Long, feedRank: Int = 0) {
+    private fun displayChosenFeedItem(feedItem: FeedItem, invitationId: Long, feedRank: Int = 0) {
         if (context == null || isStateSaved) return
         // decrease the badge count
         EntourageApplication.get(context).removePushNotificationsForFeedItem(feedItem)
@@ -636,8 +636,9 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         map?.cameraPosition?.let { EntourageLocation.getInstance().saveLastCameraPosition(it)}
     }
 
-    override val renderer: DefaultClusterRenderer<ClusterItem>?
-        get() = MapClusterItemRenderer(requireActivity(), map, mapClusterManager)
+    override fun getClusterRenderer(): DefaultClusterRenderer<ClusterItem> {
+        return MapClusterItemRenderer(requireActivity(), map, mapClusterManager)
+    }
 
 
     protected fun onMapReady(googleMap: GoogleMap) {

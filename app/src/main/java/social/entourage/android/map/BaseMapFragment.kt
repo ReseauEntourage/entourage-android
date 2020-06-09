@@ -27,7 +27,6 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener
-import com.google.maps.android.clustering.view.ClusterRenderer
 import com.google.maps.android.clustering.view.DefaultClusterRenderer
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.layout_map_longclick.*
@@ -54,7 +53,6 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
     protected var mapClusterManager: ClusterManager<ClusterItem>? = null
     protected abstract val adapter: HeaderBaseAdapter?
 
-    //protected var mapClusterItemRenderer: DefaultClusterRenderer<ClusterItem>? = null
     protected var originalMapLayoutHeight = 0
     private var toReturn: View? = null
 
@@ -80,9 +78,8 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
     }
 
     private fun centerMap(cameraPosition: CameraPosition) {
-        if(!isFollowing) return
-        map?.let {
-            it.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        if (isFollowing) {
+            map?.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
             saveCameraPosition()
         }
     }
@@ -110,46 +107,34 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
     }
 
     @SuppressLint("MissingPermission")
-    protected fun onMapReady(
-       googleMap: GoogleMap?,
-       onClickListener: OnClusterItemClickListener<ClusterItem>?,
-       onGroundOverlayClickListener: OnGroundOverlayClickListener?
-    ) {
+    protected fun onMapReady(googleMap: GoogleMap, onClickListener: OnClusterItemClickListener<ClusterItem>?, onGroundOverlayClickListener: OnGroundOverlayClickListener?) {
+        map = googleMap
         //we forced the setting of the map anyway
         if (activity == null) {
             Timber.e("No activity found")
             return
         }
+        googleMap.isMyLocationEnabled = isLocationPermissionGranted()
 
-        googleMap?.apply {
-            isMyLocationEnabled = isLocationPermissionGranted()
-            uiSettings.isMyLocationButtonEnabled = false
-            uiSettings.isMapToolbarEnabled = false
-            setMapStyle(MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_styles_json))
-
-            createCluster(onClickListener, this)
-
-            onGroundOverlayClickListener?.let { setOnGroundOverlayClickListener(it) }
-            setOnMapLongClickListener(createOnMapLongClickListener())
-        }.also { map = it }
-    }
-
-    private fun createCluster(onClickListener: OnClusterItemClickListener<ClusterItem>?, map: GoogleMap) {
-        ClusterManager<ClusterItem>(activity, map).apply {
-            renderer = renderer as ClusterRenderer<ClusterItem>
-            setOnClusterItemClickListener(onClickListener)
+        //mylocation is handled in MapViewHolder
+        googleMap.uiSettings.isMyLocationButtonEnabled = false
+        googleMap.uiSettings.isMapToolbarEnabled = false
+        googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_styles_json))
+        mapClusterManager = ClusterManager<ClusterItem>(activity, googleMap)
+        //we need to assign this parameter as it is used during the following step
+        mapClusterManager?.apply {
+            this.renderer = getClusterRenderer()
+            this.setOnClusterItemClickListener(onClickListener)
             initializeMapZoom()
-        }.also {
-            map.setOnMarkerClickListener(it)
-            mapClusterManager = it
+            googleMap.setOnMarkerClickListener(this)
         }
-    }
-
-    private fun createOnMapLongClickListener() = object : GoogleMap.OnMapLongClickListener {
-        override fun onMapLongClick(latLng: LatLng) {
+        if (onGroundOverlayClickListener != null) {
+            googleMap.setOnGroundOverlayClickListener(onGroundOverlayClickListener)
+        }
+        googleMap.setOnMapLongClickListener { latLng: LatLng ->
             //only show when map is in full screen and not visible
             if (!isFullMapShown || fragment_map_longclick?.visibility == View.VISIBLE) {
-                return
+                return@setOnMapLongClickListener
             }
             if (activity != null) {
                 EntourageEvents.logEvent(eventLongClick)
@@ -158,8 +143,7 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
         }
     }
 
-    protected open val renderer: DefaultClusterRenderer<ClusterItem>?
-        get() = null
+    protected abstract fun getClusterRenderer(): DefaultClusterRenderer<ClusterItem>
 
     // ----------------------------------
     // LIFECYCLE

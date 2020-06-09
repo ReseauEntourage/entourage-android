@@ -1,6 +1,5 @@
 package social.entourage.android.newsfeed
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -12,19 +11,19 @@ import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Subscribe
-import kotlinx.android.synthetic.main.layout_map_launcher.*
 import kotlinx.android.synthetic.main.fragment_map.*
+import kotlinx.android.synthetic.main.layout_map_launcher.*
 import kotlinx.android.synthetic.main.layout_map_longclick.*
 import kotlinx.android.synthetic.main.layout_map_longclick.view.*
 import social.entourage.android.*
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.LocationPoint
-import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.tour.TourType
-import social.entourage.android.api.model.feed.*
+import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.api.model.tour.Encounter
 import social.entourage.android.api.model.tour.Tour
+import social.entourage.android.api.model.tour.TourType
 import social.entourage.android.api.tape.Events
 import social.entourage.android.location.EntourageLocation
 import social.entourage.android.location.LocationUtils
@@ -206,7 +205,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
             return
         }
         if(presenter.onClickListener?.getEncounterMapClusterItem(encounter.id) != null) {
-            //the item aalready exists
+            //the item already exists
             return
         }
         val mapClusterItem = MapClusterEncounterItem(encounter)
@@ -526,38 +525,42 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     }
 
     private fun drawCurrentTour(pointsToDraw: List<LocationPoint>, tourType: String, startDate: Date) {
-        if (map != null && pointsToDraw.isNotEmpty()) {
-            val line = PolylineOptions()
-            color = getTrackColor(true, tourType, startDate)
-            line.zIndex(2f)
-            line.width(15f)
-            line.color(color)
-            for (tourPoint in pointsToDraw) {
-                line.add(tourPoint.location)
+        map?.let {
+            if (pointsToDraw.isNotEmpty()) {
+                val line = PolylineOptions()
+                color = getTrackColor(true, tourType, startDate)
+                line.zIndex(2f)
+                line.width(15f)
+                line.color(color)
+                for (tourPoint in pointsToDraw) {
+                    line.add(tourPoint.location)
+                }
+                it.addPolyline(line)?.let { newline -> currentTourLines.add(newline)}
             }
-            map?.addPolyline(line)?.let {currentTourLines.add(it)}
         }
     }
 
     private fun drawNearbyTour(tour: Tour, isHistory: Boolean) {
-        if (map != null && tour.tourPoints.isNotEmpty()) {
-            val line = PolylineOptions()
-            line.zIndex(if (isToday(tour.getStartTime())) 1f else 0f)
-            line.width(15f)
-            line.color(getTrackColor(isHistory, tour.tourType, tour.getStartTime()))
-            for (tourPoint in tour.tourPoints) {
-                line.add(tourPoint.location)
-            }
-            map?.addPolyline(line)?.let {
-                if (isHistory) {
-                    retrievedHistory[tour.id] = tour
-                    drawnUserHistory[tour.id] = it
-                } else {
-                    drawnToursMap.add(it)
-                    //addTourCard(tour);
+        map?.let { gMap ->
+            if (tour.tourPoints.isNotEmpty()) {
+                val line = PolylineOptions()
+                line.zIndex(if (isToday(tour.getStartTime())) 1f else 0f)
+                line.width(15f)
+                line.color(getTrackColor(isHistory, tour.tourType, tour.getStartTime()))
+                for (tourPoint in tour.tourPoints) {
+                    line.add(tourPoint.location)
                 }
+                gMap.addPolyline(line)?.let {
+                    if (isHistory) {
+                        retrievedHistory[tour.id] = tour
+                        drawnUserHistory[tour.id] = it
+                    } else {
+                        drawnToursMap.add(it)
+                        //addTourCard(tour);
+                    }
+                }
+                addTourHead(tour)
             }
-            addTourHead(tour)
         }
     }
 

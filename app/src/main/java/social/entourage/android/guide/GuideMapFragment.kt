@@ -12,7 +12,6 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.clustering.ClusterManager
@@ -91,10 +90,8 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         super.onStart()
         connection.doBindService()
         presenter.start()
-        if (map != null) {
-            presenter.updatePoisNearby(map)
-        }
-      //  showInfoPopup()
+        presenter.updatePoisNearby(map)
+        showInfoPopup()
         EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_GUIDE_FROM_TAB)
         BusProvider.instance.register(this)
     }
@@ -209,11 +206,10 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         super.onLocationPermissionGranted(event)
     }
 
-    override val renderer: DefaultClusterRenderer<ClusterItem>?
-        get() {
-            if(mapClusterItemRenderer==null) mapClusterItemRenderer = PoiRenderer(activity, map, mapClusterManager as ClusterManager<Poi>?)
-            return mapClusterItemRenderer as DefaultClusterRenderer<ClusterItem>?
-        }
+    override fun getClusterRenderer(): DefaultClusterRenderer<ClusterItem> {
+        if(mapClusterItemRenderer==null) mapClusterItemRenderer = PoiRenderer(activity, map, mapClusterManager as ClusterManager<Poi>?)
+        return mapClusterItemRenderer as DefaultClusterRenderer<ClusterItem>
+    }
 
 
     private fun proposePOI() {
