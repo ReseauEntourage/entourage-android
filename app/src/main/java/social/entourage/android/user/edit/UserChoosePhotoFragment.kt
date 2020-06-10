@@ -40,7 +40,8 @@ class UserChoosePhotoFragment : OnboardingPhotoFragment() {
             dismiss()
         }
         user_edit_title_layout?.visibility = View.VISIBLE
-        ui_onboard_photo_tv_title?.text = getString(R.string.take_photo_title)
+        user_edit_title_layout?.setTitle(getString(R.string.take_photo_title))
+        ui_onboard_photo_tv_title?.visibility = View.INVISIBLE
         ui_onboard_photo_tv_description?.text = getString(R.string.take_photo_description)
     }
 
