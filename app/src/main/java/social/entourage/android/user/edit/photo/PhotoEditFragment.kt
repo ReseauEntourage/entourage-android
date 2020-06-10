@@ -132,7 +132,7 @@ class PhotoEditFragment  : EntourageDialogFragment(), CropImageView.OnSetImageUr
     // ----------------------------------
     // CropImageView.OnSetImageUriCompleteListener
     // ----------------------------------
-    override fun onSetImageUriComplete(view: CropImageView, uri: Uri, error: Exception) {
+    override fun onSetImageUriComplete(view: CropImageView, uri: Uri, error: Exception?) {
         photo_edit_progressBar?.visibility = View.GONE
     }
 
@@ -160,7 +160,6 @@ class PhotoEditFragment  : EntourageDialogFragment(), CropImageView.OnSetImageUr
         private const val PHOTO_PARAM = "social.entourage.android.photo_param"
         private const val PHOTO_SOURCE = "social.entourage.android.photo_source"
         private const val ROTATE_DEGREES_STEP = -90
-        @JvmStatic
         fun newInstance(photoUri: Uri, photoSource: Int): PhotoEditFragment {
             val fragment = PhotoEditFragment()
             val args = Bundle()

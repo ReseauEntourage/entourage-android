@@ -15,34 +15,30 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.core.content.PermissionChecker
-import butterknife.ButterKnife
-import butterknife.OnClick
 import com.squareup.otto.Subscribe
 import com.theartofdev.edmodo.cropper.CropImage
+import kotlinx.android.synthetic.main.fragment_photo_choose_source.*
 import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events.OnPhotoChosen
 import social.entourage.android.base.EntourageDialogFragment
-import social.entourage.android.tools.BusProvider.instance
-import social.entourage.android.user.edit.photo.ChoosePhotoActivity
-import social.entourage.android.user.edit.photo.PhotoEditFragment.Companion.newInstance
-import social.entourage.android.user.edit.photo.TakePhotoActivity
+import social.entourage.android.tools.BusProvider
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class PhotoChooseSourceFragment  // ----------------------------------
-// LIFECYCLE
-// ----------------------------------
-    : EntourageDialogFragment() {
+class PhotoChooseSourceFragment : EntourageDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
     private var mListener: PhotoChooseInterface? = null
-    var mCurrentPhotoPath: String? = null
-    var pickedImageUri: Uri? = null
-    var photoSource = 0
+    private var mCurrentPhotoPath: String? = null
+    private var pickedImageUri: Uri? = null
+    private var photoSource = 0
+    // ----------------------------------
+    // LIFECYCLE
+    // ----------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState != null) {
@@ -56,9 +52,16 @@ class PhotoChooseSourceFragment  // ----------------------------------
         super.onCreateView(inflater, container, savedInstanceState)
         EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_09_6)
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_photo_choose_source, container, false)
-        ButterKnife.bind(this, view)
-        return view
+        return inflater.inflate(R.layout.fragment_photo_choose_source, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        photo_choose_back_button.setOnClickListener { onBackClicked() }
+        photo_choose_ignore_button.setOnClickListener {onIgnoreClicked()}
+        photo_choose_photo_button.setOnClickListener { onChoosePhotoClicked()}
+        photo_choose_take_photo_button.setOnClickListener {onTakePhotoClicked()}
+
     }
 
     override fun onAttach(context: Context) {
@@ -66,17 +69,13 @@ class PhotoChooseSourceFragment  // ----------------------------------
         if (context is PhotoChooseInterface) {
             mListener = context
         }
-        instance.register(this)
-        //        else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
+        BusProvider.instance.register(this)
     }
 
     override fun onDetach() {
         super.onDetach()
         mListener = null
-        instance.unregister(this)
+        BusProvider.instance.unregister(this)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -92,7 +91,7 @@ class PhotoChooseSourceFragment  // ----------------------------------
         // i.e. the pickedImageUri is set
         if (pickedImageUri != null) {
             // Check if we have reading rights
-            if (PermissionChecker.checkSelfPermission(activity!!, Manifest.permission.READ_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
+            if (PermissionChecker.checkSelfPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
                 requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PICK_AND_CROP_IMAGE_PERMISSION_CODE)
             } else {
                 // Proceed to next step
@@ -103,60 +102,61 @@ class PhotoChooseSourceFragment  // ----------------------------------
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && intent != null && intent.data != null) {
-            photoSource = requestCode
-            val uri = intent.data
-            if (PermissionChecker.checkSelfPermission(activity!!, Manifest.permission.READ_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
-                pickedImageUri = uri
-                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PICK_AND_CROP_IMAGE_PERMISSION_CODE)
-            } else {
-                loadPickedImage(uri)
+        if(resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                PICK_IMAGE_REQUEST-> {
+                    intent?.data?.let { uri ->
+                        photoSource = requestCode
+                        if (PermissionChecker.checkSelfPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
+                            pickedImageUri = uri
+                            requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PICK_AND_CROP_IMAGE_PERMISSION_CODE)
+                        } else {
+                            loadPickedImage(uri)
+                        }
+                    }
+                }
+                TAKE_PHOTO_REQUEST-> {
+                    photoSource = requestCode
+                    intent?.data?.let {
+                        showNextStep(it)
+                    } ?: run {
+                        mCurrentPhotoPath?.let { photoPath -> showNextStep(Uri.fromFile(File(photoPath))) }
+                    }
+                }
             }
-            return
-        }
-        if (requestCode == TAKE_PHOTO_REQUEST && resultCode == Activity.RESULT_OK) {
-            photoSource = requestCode
-            if (intent != null && intent.data != null) {
-                showNextStep(intent.data)
-                return
-            }
-            showNextStep(Uri.fromFile(File(mCurrentPhotoPath)))
-            /*
-            Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, null);
-            showNextStep(bitmap);
-            */
         }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        if (requestCode == CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE) {
-            if (grantResults.size > 0 && grantResults[0] == PermissionChecker.PERMISSION_GRANTED) {
-                if (PermissionChecker.checkSelfPermission(activity!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
-                    requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), WRITE_STORAGE_PERMISSION_CODE)
+        when (requestCode) {
+            CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PermissionChecker.PERMISSION_GRANTED) {
+                    if (PermissionChecker.checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
+                        requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), WRITE_STORAGE_PERMISSION_CODE)
+                    } else {
+                        showTakePhotoActivity()
+                    }
                 } else {
+                    Toast.makeText(activity, R.string.user_photo_error_camera_permission, Toast.LENGTH_LONG).show()
+                }
+            }
+            PICK_AND_CROP_IMAGE_PERMISSION_CODE-> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (pickedImageUri != null) {
+                        loadPickedImage(pickedImageUri)
+                    } else {
+                        showChoosePhotoActivity()
+                    }
+                } else {
+                    Toast.makeText(activity, R.string.user_photo_error_read_permission, Toast.LENGTH_LONG).show()
+                }
+            }
+            WRITE_STORAGE_PERMISSION_CODE-> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     showTakePhotoActivity()
-                }
-            } else {
-                Toast.makeText(activity, R.string.user_photo_error_camera_permission, Toast.LENGTH_LONG).show()
-            }
-            return
-        }
-        if (requestCode == PICK_AND_CROP_IMAGE_PERMISSION_CODE) {
-            if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (pickedImageUri != null) {
-                    loadPickedImage(pickedImageUri)
                 } else {
-                    showChoosePhotoActivity()
+                    Toast.makeText(activity, R.string.user_photo_error_read_permission, Toast.LENGTH_LONG).show()
                 }
-            } else {
-                Toast.makeText(activity, R.string.user_photo_error_read_permission, Toast.LENGTH_LONG).show()
-            }
-        }
-        if (requestCode == WRITE_STORAGE_PERMISSION_CODE) {
-            if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                showTakePhotoActivity()
-            } else {
-                Toast.makeText(activity, R.string.user_photo_error_read_permission, Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -164,35 +164,32 @@ class PhotoChooseSourceFragment  // ----------------------------------
     // ----------------------------------
     // Button handling
     // ----------------------------------
-    @OnClick(R.id.photo_choose_back_button)
     fun onBackClicked() {
-        mListener!!.onPhotoBack()
+        mListener?.onPhotoBack()
         dismiss()
     }
 
-    @OnClick(R.id.photo_choose_ignore_button)
     fun onIgnoreClicked() {
-        mListener!!.onPhotoIgnore()
+        mListener?.onPhotoIgnore()
         dismiss()
     }
 
-    @OnClick(R.id.photo_choose_photo_button)
     fun onChoosePhotoClicked() {
-
-        // write permission is used to store the cropped image before upload
-        if (PermissionChecker.checkSelfPermission(activity!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), PICK_AND_CROP_IMAGE_PERMISSION_CODE)
-        } else {
-            showChoosePhotoActivity()
+        activity?.let {
+            // write permission is used to store the cropped image before upload
+            if (PermissionChecker.checkSelfPermission(it, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
+                requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), PICK_AND_CROP_IMAGE_PERMISSION_CODE)
+            } else {
+                showChoosePhotoActivity()
+            }
         }
     }
 
-    @OnClick(R.id.photo_choose_take_photo_button)
     fun onTakePhotoClicked() {
-        if (CropImage.isExplicitCameraPermissionRequired(activity!!)) {
-            requestPermissions(arrayOf(Manifest.permission.CAMERA), CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE)
-        } else {
-            if (PermissionChecker.checkSelfPermission(activity!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
+        activity?.let {
+            if (CropImage.isExplicitCameraPermissionRequired(it)) {
+                requestPermissions(arrayOf(Manifest.permission.CAMERA), CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE)
+            } else if (PermissionChecker.checkSelfPermission(it, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
                 requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), WRITE_STORAGE_PERMISSION_CODE)
             } else {
                 showTakePhotoActivity()
@@ -226,35 +223,34 @@ class PhotoChooseSourceFragment  // ----------------------------------
     }
 
     private fun showTakePhotoActivity() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_PHOTO_TAKE_SUBMIT)
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(activity!!.packageManager) == null) {
-            Toast.makeText(activity, R.string.user_photo_error_no_camera, Toast.LENGTH_SHORT).show()
-        } else {
-            // Create the File where the photo should go
-            var photoFileUri: Uri? = null
-            try {
-                photoFileUri = createImageFile()
-            } catch (ex: IOException) {
-                // Error occurred while creating the File
-                Toast.makeText(activity, R.string.user_photo_error_photo_path, Toast.LENGTH_SHORT).show()
-            }
-            // Continue only if the File was successfully created
-            if (photoFileUri != null) {
-                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                    // Start a separate activity, to handle the issue with onActivityResult
-                    val intent = Intent(context, TakePhotoActivity::class.java)
-                    intent.data = photoFileUri
-                    if (mCurrentPhotoPath != null) {
-                        intent.putExtra(TakePhotoActivity.KEY_PHOTO_PATH, mCurrentPhotoPath)
+        activity?.let {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_PHOTO_TAKE_SUBMIT)
+            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            // Ensure that there's a camera activity to handle the intent
+            if (takePictureIntent.resolveActivity(it.packageManager) == null) {
+                Toast.makeText(activity, R.string.user_photo_error_no_camera, Toast.LENGTH_SHORT).show()
+            } else {
+                // Create the File where the photo should go
+                try {
+                    val photoFileUri = createImageFile()
+                    // Continue only if the File was successfully created
+                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                        // Start a separate activity, to handle the issue with onActivityResult
+                        val intent = Intent(context, TakePhotoActivity::class.java)
+                        intent.data = photoFileUri
+                        if (mCurrentPhotoPath != null) {
+                            intent.putExtra(TakePhotoActivity.KEY_PHOTO_PATH, mCurrentPhotoPath)
+                        }
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(intent)
+                    } else {
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri)
+                        takePictureIntent.flags = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                        startActivityForResult(takePictureIntent, TAKE_PHOTO_REQUEST)
                     }
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
-                } else {
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri)
-                    takePictureIntent.flags = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                    startActivityForResult(takePictureIntent, TAKE_PHOTO_REQUEST)
+                } catch (ex: IOException) {
+                    // Error occurred while creating the File
+                    Toast.makeText(activity, R.string.user_photo_error_photo_path, Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -262,30 +258,28 @@ class PhotoChooseSourceFragment  // ----------------------------------
 
     @Throws(IOException::class)
     private fun createImageFile(): Uri {
-        // Create an image file name
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.FRANCE).format(Date())
-        val imageFileName = "ENTOURAGE_" + timeStamp + "_"
-        val storageDir = File(context!!.filesDir, "images")
-        if (!storageDir.exists()) {
-            if (!storageDir.mkdir()) {
+        context?.let {
+            // Create an image file name
+            val storageDir = File(it.filesDir, "images")
+            if (!storageDir.exists() && !storageDir.mkdir()) {
                 // Failed to create the folder
                 throw IOException()
             }
-        }
-        val image = File(storageDir, "$imageFileName.jpg")
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.absolutePath
-        // Return the URI
-        return FileProvider.getUriForFile(context!!, context!!.applicationContext.packageName + ".fileprovider", image)
+            val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss_", Locale.FRANCE).format(Date())
+            val image = File(storageDir, "ENTOURAGE_$timeStamp.jpg")
+            // Save a file: path for use with ACTION_VIEW intents
+            mCurrentPhotoPath = image.absolutePath
+            // Return the URI
+            return FileProvider.getUriForFile(it, it.applicationContext.packageName + ".fileprovider", image)
+        } ?: run { throw IOException() }
     }
 
     private fun showNextStep(photoUri: Uri?) {
-        if (photoUri == null) {
+        photoUri?.let {
+            PhotoEditFragment.newInstance(it, photoSource).show(parentFragmentManager, PhotoEditFragment.TAG)
+        } ?: run {
             Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
-            return
         }
-        val fragment = newInstance(photoUri, photoSource)
-        fragment.show(parentFragmentManager, PhotoEditFragment.TAG)
     }
 
     // ----------------------------------
