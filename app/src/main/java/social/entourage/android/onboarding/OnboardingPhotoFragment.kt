@@ -19,6 +19,7 @@ import androidx.core.content.PermissionChecker
 import com.squareup.picasso.Picasso
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_onboarding_photo.*
+import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.tools.CropCircleTransformation
@@ -43,6 +44,8 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
 
     private var callback:OnboardingCallback? = null
 
+    protected var isFromProfile = false
+
     //**********//**********//**********
     // Lifecycle
     //**********//**********//**********
@@ -64,6 +67,13 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
 
         callback?.updateButtonNext(false)
         setupViews()
+
+        if (isFromProfile) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_PROFILE_CHOOSE_PHOTO)
+        }
+        else {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING_CHOOSE_PHOTO)
+        }
     }
 
     override fun onResume() {
@@ -131,7 +141,12 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
     }
 
     open fun showChoosePhotoActivity() {
-        Logger("")
+        if (isFromProfile) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_UPLOAD_PHOTO)
+        }
+        else {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_UPLOAD_PHOTO)
+        }
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
@@ -139,6 +154,13 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
     }
 
     open fun showTakePhotoActivity() {
+        if (isFromProfile) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_TAKE_PHOTO)
+        }
+        else {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_TAKE_PHOTO)
+        }
+
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(requireActivity().packageManager) == null) {

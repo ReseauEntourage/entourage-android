@@ -9,6 +9,7 @@ import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_onboarding_phone.*
+import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.tools.Logger
 import social.entourage.android.tools.hideKeyboard
@@ -59,6 +60,7 @@ class OnboardingPhoneFragment : Fragment() {
         }
 
         setupViews()
+        EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING_PHONE)
     }
 
     override fun onAttach(context: Context) {

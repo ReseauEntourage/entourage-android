@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import kotlinx.android.synthetic.main.fragment_onboarding_type.*
+import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.tools.Logger
 
@@ -49,6 +50,8 @@ class OnboardingTypeFragment : Fragment() {
         else {
             callback?.updateButtonNext(true)
         }
+
+        EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING_CHOOSE_PROFILE)
     }
 
     override fun onAttach(context: Context) {

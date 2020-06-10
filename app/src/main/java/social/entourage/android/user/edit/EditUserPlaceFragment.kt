@@ -6,6 +6,7 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_onboarding_place.*
 import kotlinx.android.synthetic.main.layout_view_title.view.*
 import social.entourage.android.EntourageApplication
+import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
@@ -22,6 +23,7 @@ class EditUserPlaceFragment : OnboardingPlaceFragment() {
     // Lifecycle
     //**********//**********//**********
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        isFromProfile = true
         super.onViewCreated(view, savedInstanceState)
 
         edit_place_title_layout?.visibility = View.VISIBLE
@@ -45,6 +47,7 @@ class EditUserPlaceFragment : OnboardingPlaceFragment() {
 
     fun sendNetwork() {
         if (userAddress != null) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_ACTION_ZONE_SUBMIT)
             OnboardingAPI.getInstance(EntourageApplication.get()).updateAddress(userAddress!!) { isOK, userResponse ->
                 if (isOK) {
                     val authenticationController = EntourageApplication.get().entourageComponent.authenticationController

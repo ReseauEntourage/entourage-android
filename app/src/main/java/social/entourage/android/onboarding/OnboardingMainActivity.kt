@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_onboarding_main.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageApplication.Companion.get
+import social.entourage.android.EntourageEvents
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
@@ -117,24 +118,30 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     fun callSignup() {
         alertDialog.show(R.string.onboard_waiting_dialog)
+        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_PHONE_SUBMIT)
         OnboardingAPI.getInstance(get()).createUser(temporaryUser) { isOK, error ->
             alertDialog.dismiss()
             if (isOK) {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_PHONE_SUBMIT_SUCCESS)
                 showSmsAndGo(R.string.registration_smscode_sent)
             }
             else {
                 if (error != null) {
                     if (error.contains("PHONE_ALREADY_EXIST")) {
                         showSmsAndGo(R.string.registration_number_error_already_registered)
+                        EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_EXIST)
                     }
                     else if (error.contains("INVALID_PHONE_FORMAT")) {
                         displayToast(R.string.login_text_invalid_format)
+                        EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_ERROR)
                     }
                     else {
+                        EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_ERROR)
                         displayToast(R.string.login_error_network)
                     }
                     return@createUser
                 }
+                EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_ERROR)
                 displayToast(R.string.login_error)
             }
         }
@@ -148,9 +155,11 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     fun sendPasscode() {
         alertDialog.show(R.string.onboard_waiting_dialog)
+        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SIGNUP_SUBMIT)
         val phoneNumber = checkPhoneNumberFormat(null, temporaryUser.phone)
         OnboardingAPI.getInstance(get()).login(phoneNumber,temporaryPasscode!!) { isOK, loginResponse, error ->
             if (isOK) {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SIGNUP_SUCCESS)
                 val authController = get().entourageComponent.authenticationController
                 Logger("Inside login, auth controller : $authController")
                 Logger("Inside login, auth controller : ${authController.isAuthenticated}")
@@ -170,6 +179,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             }
             else {
                 alertDialog.dismiss()
+                EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_ONBOARDING_SINGUP_FAIL)
                 if (error != null) {
                     if (error.contains("INVALID_PHONE_FORMAT")) {
                         showLoginFail(LOGIN_ERROR_INVALID_PHONE_FORMAT)
@@ -214,6 +224,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     }
 
     fun resendCode() {
+        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SMS)
         OnboardingAPI.getInstance(get()).resendCode(temporaryPhone!!) { isOK, loginResponse, error ->
             if (isOK) {
                 displayToast(R.string.registration_smscode_sent)
@@ -231,6 +242,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     fun sendAddress() {
         alertDialog.show(R.string.onboard_waiting_dialog)
+        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_ACTION_ZONE_SUBMIT)
         OnboardingAPI.getInstance(get()).updateAddress(temporaryPlaceAddress!!) { isOK, userResponse ->
             if (isOK) {
                 val authenticationController = get().entourageComponent.authenticationController
@@ -252,11 +264,15 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     fun updateUserEmailPwd() {
         alertDialog.show(R.string.onboard_waiting_dialog)
+        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_EMAIL_SUBMIT)
         OnboardingAPI.getInstance(get()).updateUser(temporaryEmail) { isOK, userResponse ->
             Logger("Return update useremail ?")
             if (isOK && userResponse != null) {
                 val authenticationController = get().entourageComponent.authenticationController
                 authenticationController.saveUser(userResponse.user)
+            }
+            else {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_ONBOARDING_EMAIL_SUBMIT_ERROR)
             }
             alertDialog.dismiss()
             goNextStep()
@@ -266,6 +282,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     fun updateUserPhoto() {
         Logger("Send upload Photo Prépare")
         alertDialog.show(R.string.user_photo_uploading)
+        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_PHOTO_SUBMIT)
         OnboardingAPI.getInstance(get()).prepareUploadPhoto { avatarKey, presignedUrl, error ->
             Logger("Send upload Photo Return")
             if (!avatarKey.isNullOrEmpty() && !presignedUrl.isNullOrEmpty()) {
@@ -306,6 +323,14 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     fun updateGoal(isAsso:Boolean) {
         alertDialog.show(R.string.onboard_waiting_dialog)
         val _currentGoal = userTypeSelected.getGoalString()
+
+        if (userTypeSelected == UserTypeSelection.NONE) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_CHOOSE_PROFILE_SKIP)
+        }
+        else {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_CHOOSE_PROFILE_SIGNUP)
+        }
+
         OnboardingAPI.getInstance(get()).updateUserGoal(_currentGoal) { isOK, userResponse ->
             if (isOK && userResponse != null) {
                 val authenticationController = get().entourageComponent.authenticationController
@@ -328,8 +353,15 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     fun updateAssoInfos() {
         if (temporaryAssoInfo?.name?.length ?:0 > 0 && temporaryAssoInfo?.postal_code?.length ?:0 > 0 && temporaryAssoInfo?.userRoleTitle?.length ?:0 > 0) {
             alertDialog.show(R.string.onboard_waiting_dialog)
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_PRO_SIGNUP_SUBMIT)
             OnboardingAPI.getInstance(get()).updateAssoInfos(temporaryAssoInfo) { isOK, response ->
                 alertDialog.dismiss()
+                if (!isOK) {
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_ONBOARDING_PRO_SIGNUP_ERROR)
+                }
+                else {
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_PRO_SIGNUP_SUCCESS)
+                }
                 currentPositionAsso = currentPositionAsso + 1
                 moveToTunnelAsso()
             }
@@ -346,6 +378,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     fun updateAssoActivities() {
         if (temporaryAssoActivities?.hasOneSelectionMin() == true) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_PRO_MOSAIC)
             OnboardingAPI.getInstance(get()).updateUserInterests(temporaryAssoActivities!!.getArrayForWs()) { isOK, userResponse ->
                 currentFragmentPosition = currentFragmentPosition + 2
                 changeFragment()
@@ -474,6 +507,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 return
             }
             else -> {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_NAMES)
                 currentFragmentPosition = currentFragmentPosition + 1
                 if (currentFragmentPosition > numberOfSteps) currentFragmentPosition = numberOfSteps
                 changeFragment()
@@ -519,6 +553,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             userTypeSelected = UserTypeSelection.NONE
         }
         if (currentFragmentPosition == PositionType.Photo.pos) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_IGNORE_PHOTO)
             goMain()
             return
         }

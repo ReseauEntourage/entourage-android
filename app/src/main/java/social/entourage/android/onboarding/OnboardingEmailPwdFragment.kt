@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import kotlinx.android.synthetic.main.fragment_onboarding_email_pwd.*
+import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.tools.Logger
 import social.entourage.android.tools.hideKeyboard
@@ -49,6 +50,8 @@ class OnboardingEmailPwdFragment : Fragment() {
         }
 
         setupViews()
+
+        EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING_INPUT_EMAIL)
     }
 
     override fun onAttach(context: Context) {

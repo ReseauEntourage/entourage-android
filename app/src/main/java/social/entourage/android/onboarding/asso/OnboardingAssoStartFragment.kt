@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.fragment_onboarding_asso_info.*
 import kotlinx.android.synthetic.main.fragment_onboarding_asso_start.*
+import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.tools.Utils
 
@@ -39,6 +40,7 @@ class OnboardingAssoStartFragment : Fragment() {
             val _txt = getString(R.string.onboard_asso_start_description)
             val _txtBold = getString(R.string.onboard_asso_start_description_bold)
             ui_onboard_asso_start_tv_description?.text = Utils.formatTextWithBoldSpanAndColor(color,true,_txt,_txtBold)
+            EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING_PRO_STORIES)
         }
         else {
             val color = ContextCompat.getColor(requireContext(),R.color.onboard_black_36)
@@ -51,6 +53,7 @@ class OnboardingAssoStartFragment : Fragment() {
             val _txt3 = getString(R.string.onboard_asso_info_3)
             val _txtBold3 = getString(R.string.onboard_asso_info_3_bold)
             ui_onboard_asso_info_tv_3?.text = Utils.formatTextWithBoldSpanAndColor(color,true,_txt3,_txtBold3)
+            EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING_PRO_FEATURES)
         }
 
     }

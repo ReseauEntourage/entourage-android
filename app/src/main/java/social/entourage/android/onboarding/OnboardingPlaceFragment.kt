@@ -18,6 +18,7 @@ import com.google.android.gms.location.*
 import com.google.android.libraries.places.compat.ui.PlaceAutocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import kotlinx.android.synthetic.main.fragment_onboarding_place.*
+import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.User
 import social.entourage.android.base.EntourageDialogFragment
@@ -49,6 +50,7 @@ open class OnboardingPlaceFragment : EntourageDialogFragment() {
     protected var userAddress:User.Address? = null
     protected var callback:OnboardingCallback? = null
 
+    protected var isFromProfile = false
     //**********//**********//**********
     // Lifecycle
     //**********//**********//**********
@@ -73,6 +75,13 @@ open class OnboardingPlaceFragment : EntourageDialogFragment() {
         callback?.updateAddress(userAddress)
 
         setupViews()
+
+        if (isFromProfile) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_PROFILE_ACTION_ZONE)
+        }
+        else {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING_ACTION_ZONE)
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -93,11 +102,25 @@ open class OnboardingPlaceFragment : EntourageDialogFragment() {
     protected fun setupViews() {
         ui_onboard_bt_location?.setOnClickListener {
             onCurrentLocationClicked()
+
+            if (isFromProfile) {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE_GEOLOC)
+            }
+            else {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SETACTION_ZONE_GEOLOC)
+            }
         }
 
         ui_onboard_place_tv_location?.setOnClickListener {
             onSearchCalled()
             mFusedLocationClient?.removeLocationUpdates(mLocationCallback)
+
+            if (isFromProfile) {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE_SEARCH)
+            }
+            else {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SETACTION_ZONE_SEARCH)
+            }
         }
 
         if (userAddress != null) {

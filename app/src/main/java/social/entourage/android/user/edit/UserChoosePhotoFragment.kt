@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.fragment_onboarding_photo.*
 import kotlinx.android.synthetic.main.layout_view_title.*
+import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.onboarding.OnboardingPhotoFragment
 import social.entourage.android.user.edit.photo.PhotoChooseInterface
@@ -18,6 +19,7 @@ class UserChoosePhotoFragment : OnboardingPhotoFragment() {
     //**********//**********//**********
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        isFromProfile = true
         super.onViewCreated(view, savedInstanceState)
         if (context is PhotoChooseInterface) {
             mListener = requireContext() as PhotoChooseInterface
@@ -51,7 +53,7 @@ class UserChoosePhotoFragment : OnboardingPhotoFragment() {
 
     override fun onPhotoEdited(photoURI: Uri?, photoSource: Int) {
         super.onPhotoEdited(photoURI, photoSource)
-
+        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_PHOTO_SUBMIT)
         mListener?.onPhotoChosen(photoURI,photoSource)
         dismiss()
     }
