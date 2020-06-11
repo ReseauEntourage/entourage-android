@@ -10,9 +10,9 @@ import android.view.inputmethod.EditorInfo
 import kotlinx.android.synthetic.main.fragment_onboarding_email_pwd.*
 import social.entourage.android.EntourageEvents
 import social.entourage.android.R
-import social.entourage.android.tools.Logger
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.isValidEmail
+import timber.log.Timber
 
 private const val ARG_EMAIL = "email"
 
@@ -76,9 +76,9 @@ class OnboardingEmailPwdFragment : Fragment() {
         }
 
         ui_onboard_email_pwd_et_mail?.setOnEditorActionListener { _, event, _ ->
-            Logger("ON key listener $event -- ${EditorInfo.IME_ACTION_DONE}")
+            Timber.d("ON key listener $event -- ${EditorInfo.IME_ACTION_DONE}")
             if (event == EditorInfo.IME_ACTION_DONE) {
-                Logger("Call from Editor Action")
+                Timber.d("Call from Editor Action")
                 isAllreadyCall = true
                 updateButtonNext()
             }
@@ -86,7 +86,7 @@ class OnboardingEmailPwdFragment : Fragment() {
         }
 
         ui_onboard_email_pwd_et_mail?.setOnFocusChangeListener { _, b ->
-            Logger("Call from Focus change")
+            Timber.d("Call from Focus change")
             if (!b && !isAllreadyCall) updateButtonNext()
             if (b) isAllreadyCall = false
         }

@@ -11,8 +11,8 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_onboarding_phone.*
 import social.entourage.android.EntourageEvents
 import social.entourage.android.R
-import social.entourage.android.tools.Logger
 import social.entourage.android.tools.hideKeyboard
+import timber.log.Timber
 
 
 private const val ARG_FIRSTNAME = "firstname"
@@ -86,7 +86,7 @@ class OnboardingPhoneFragment : Fragment() {
         }
 
         ui_onboard_phone_et_phone?.setOnEditorActionListener { _, event, _ ->
-            Logger("ON key listener $event -- ${EditorInfo.IME_ACTION_DONE}")
+            Timber.d("ON key listener $event -- ${EditorInfo.IME_ACTION_DONE}")
             if (event == EditorInfo.IME_ACTION_DONE) {
                 checkAndUpdate()
             }

@@ -11,7 +11,7 @@ import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
 import social.entourage.android.onboarding.OnboardingPlaceFragment
-import social.entourage.android.tools.Logger
+import timber.log.Timber
 
 private const val ARG_PLACE = "place"
 
@@ -28,7 +28,7 @@ class EditUserPlaceFragment : OnboardingPlaceFragment() {
 
         edit_place_title_layout?.visibility = View.VISIBLE
         edit_place_title_layout?.title_action_button?.setOnClickListener {
-            Logger("Click valider")
+            Timber.d("Click valider")
             sendNetwork()
         }
         edit_place_title_layout?.title_close_button?.setOnClickListener {

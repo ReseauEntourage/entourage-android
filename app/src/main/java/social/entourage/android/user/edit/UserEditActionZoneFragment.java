@@ -88,7 +88,7 @@ public class UserEditActionZoneFragment extends EntourageDialogFragment {
      * @param userAddress User Address.
      * @return A new instance of fragment UserEditActionZoneFragment.
      */
-    public static UserEditActionZoneFragment newInstance(User.Address userAddress) {
+    public static UserEditActionZoneFragment newInstance(@Nullable User.Address userAddress) {
         UserEditActionZoneFragment fragment = new UserEditActionZoneFragment();
         Bundle args = new Bundle();
         args.putSerializable(KEY_USER_ADDRESS, userAddress);

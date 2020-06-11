@@ -18,7 +18,7 @@ class MyEntouragesFilter  : Serializable {
         get() = false // in 5.0+ we ignore this setting
 
     // in 5.0+ we ignore this setting
-    var showJoinedEntourages = false
+    val showJoinedEntourages
         get() = false // in 5.0+ we ignore this setting
     var isShowUnreadOnly = false
 

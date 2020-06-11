@@ -75,7 +75,7 @@ class EntourageJoinRequestFragment  : DialogFragment() {
                     Toast.makeText(context, R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show()
                 }
                 EntourageJoinRequestViewModel.REQUEST_OK ->{
-                    Toast.makeText(context, R.string.tour_join_request_message_sent, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.tour_join_request_message_sent, Toast.LENGTH_SHORT).show()
                     dismiss()
                 }
             }

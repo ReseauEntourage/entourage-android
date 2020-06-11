@@ -11,7 +11,7 @@ import androidx.core.content.res.ResourcesCompat
 import kotlinx.android.synthetic.main.fragment_onboarding_type.*
 import social.entourage.android.EntourageEvents
 import social.entourage.android.R
-import social.entourage.android.tools.Logger
+import timber.log.Timber
 
 private const val ARG_FIRSTNAME = "firstname"
 private const val ARG_USERTYPE = "usertype"
@@ -79,7 +79,7 @@ class OnboardingTypeFragment : Fragment() {
             changeLayoutSelection(ui_onboard_type_layout_assos)
         }
 
-        Logger("Firstname ? $firstname")
+        Timber.d("Firstname ? $firstname")
         ui_onboard_type_tv_title?.text = String.format(getString(R.string.onboard_type_title),firstname)
 
         selectInitialType()

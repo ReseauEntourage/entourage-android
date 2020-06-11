@@ -23,7 +23,7 @@ import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.tools.CropCircleTransformation
-import social.entourage.android.tools.Logger
+import timber.log.Timber
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -78,7 +78,7 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
 
     override fun onResume() {
         super.onResume()
-        Logger("On resume Fragment ? $pickedImageUri")
+        Timber.d("On resume Fragment ? $pickedImageUri")
         // Check if we are returning from photo picker
         // i.e. the pickedImageUri is set
         if (pickedImageUri != null) {
@@ -227,17 +227,17 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
-        Logger("Return Act return $requestCode - result $resultCode - intent ? ${intent?.data}")
+        Timber.d("Return Act return $requestCode - result $resultCode - intent ? ${intent?.data}")
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && intent != null && intent.data != null) {
             photoSource = requestCode
             val uri = intent.data
-            Logger("Return Image REQUEST uri ? $uri")
+            Timber.d("Return Image REQUEST uri ? $uri")
             if (PermissionChecker.checkSelfPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
                 pickedImageUri = uri
-                Logger("Return Image REQUEST ici")
+                Timber.d("Return Image REQUEST ici")
                 requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PICK_AND_CROP_IMAGE_PERMISSION_CODE)
             } else {
-                Logger("Return Image REQUEST LA")
+                Timber.d("Return Image REQUEST LA")
                 loadPickedImage(uri)
             }
             return

@@ -26,7 +26,7 @@ import social.entourage.android.api.model.User
 import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.authentication.AuthenticationInterceptor_Factory
-import social.entourage.android.tools.Logger
+import timber.log.Timber
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -52,7 +52,7 @@ class OnboardingAPI(val application: EntourageApplication) {
                 instance = OnboardingAPI(application)
             }
             instance?.authenticationController = application.entourageComponent.authenticationController
-            Logger("On create Dagger ? ${instance?.authenticationController}")
+            Timber.d("On create Dagger ? ${instance?.authenticationController}")
             instance?.setupRetrofit()
 
             return instance!!
@@ -138,13 +138,13 @@ class OnboardingAPI(val application: EntourageApplication) {
         call.enqueue(object : Callback<UserResponse?> {
             override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
                 if (response.isSuccessful) {
-                    Logger("Response ok create user ?")
+                    Timber.d("Response ok create user ?")
                     listener(true,null)
                 } else {
-                    Logger("Response nok create user")
+                    Timber.d("Response nok create user")
                     if (response.errorBody() != null) {
                         val errorString = response.errorBody()?.string()
-                        Logger("Response nok create user error : $errorString")
+                        Timber.d("Response nok create user error : $errorString")
                         listener(false,errorString)
                     }
                 }

@@ -8,19 +8,20 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import androidx.core.content.res.ResourcesCompat
 import social.entourage.android.R
+import timber.log.Timber
 
 /**
  * Created by Jr (MJ-DEVS) on 04/05/2020.
  */
 
 fun ImageButton.disable() {
-    Logger("Call disable")
+    Timber.d("Call disable")
     drawable.setColorFilter(resources.getColor(R.color.onboard_button_unselect), PorterDuff.Mode.LIGHTEN)
     isClickable = false
 }
 
 fun ImageButton.enable(res:Int) {
-    Logger("Call enable")
+    Timber.d("Call enable")
     setImageDrawable(ResourcesCompat.getDrawable(resources,res,null))
     isClickable = true
 }

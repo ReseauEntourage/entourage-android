@@ -26,7 +26,7 @@
 
     <string name="onboard_button_pass">Passer</string>
     <string name="onboard_welcome_title">Bienvenue !</string>
-    <string name="onboard_welcome_sub">Tout d\'abord...\nComment vous appelez-vous ?</string>
+    <string name="onboard_welcome_sub">Tout d\'abord…\nComment vous appelez-vous ?</string>
     <string name="onboard_welcome_info">Seule la première lettre sera visible par les autres membres.</string>
     <string name="onboard_welcome_placeholder_firstname">Votre prénom</string>
     <string name="onboard_welcome_placeholder_lastname">Votre nom</string>

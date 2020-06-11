@@ -12,9 +12,9 @@ import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.Partner
-import social.entourage.android.tools.Logger
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.view.CustomProgressDialog
+import timber.log.Timber
 
 
 class OnboardingAssoSearchActivity : AppCompatActivity() {
@@ -32,7 +32,7 @@ class OnboardingAssoSearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_onboard_asso_search)
         alertDialog = CustomProgressDialog(this)
-        Logger("Taille Array on act : ${arrayAssos.size}")
+        Timber.d("Taille Array on act : ${arrayAssos.size}")
         setupViews()
         getAssosList()
     }

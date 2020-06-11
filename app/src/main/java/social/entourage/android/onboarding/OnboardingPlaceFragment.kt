@@ -24,7 +24,6 @@ import social.entourage.android.api.model.User
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.location.LocationUtils.isLocationEnabled
 import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
-import social.entourage.android.tools.Logger
 import java.util.*
 
 private const val ARG_PLACE = "place"

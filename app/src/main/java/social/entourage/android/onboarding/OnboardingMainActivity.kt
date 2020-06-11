@@ -24,11 +24,11 @@ import social.entourage.android.onboarding.asso.OnboardingAssoActivitiesFragment
 import social.entourage.android.onboarding.asso.OnboardingAssoFillFragment
 import social.entourage.android.onboarding.asso.OnboardingAssoStartFragment
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
-import social.entourage.android.tools.Logger
 import social.entourage.android.tools.Utils.checkPhoneNumberFormat
 import social.entourage.android.tools.disable
 import social.entourage.android.tools.enable
 import social.entourage.android.view.CustomProgressDialog
+import timber.log.Timber
 import java.io.File
 import java.util.*
 
@@ -161,10 +161,10 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             if (isOK) {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SIGNUP_SUCCESS)
                 val authController = get().entourageComponent.authenticationController
-                Logger("Inside login, auth controller : $authController")
-                Logger("Inside login, auth controller : ${authController.isAuthenticated}")
+                Timber.d("Inside login, auth controller : $authController")
+                Timber.d("Inside login, auth controller : ${authController.isAuthenticated}")
                 loginResponse?.let { authController.saveUser(loginResponse.user)
-                    Logger("Inside login, auth controller after : ${authController.isAuthenticated}")
+                    Timber.d("Inside login, auth controller after : ${authController.isAuthenticated}")
                 }
                 authController.saveUserPhoneAndCode(phoneNumber, temporaryPasscode)
                 authController.saveUserToursOnly(false)
@@ -266,7 +266,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         alertDialog.show(R.string.onboard_waiting_dialog)
         EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_EMAIL_SUBMIT)
         OnboardingAPI.getInstance(get()).updateUser(temporaryEmail) { isOK, userResponse ->
-            Logger("Return update useremail ?")
+            Timber.d("Return update useremail ?")
             if (isOK && userResponse != null) {
                 val authenticationController = get().entourageComponent.authenticationController
                 authenticationController.saveUser(userResponse.user)
@@ -280,16 +280,16 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     }
 
     fun updateUserPhoto() {
-        Logger("Send upload Photo Prépare")
+        Timber.d("Send upload Photo Prépare")
         alertDialog.show(R.string.user_photo_uploading)
         EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_PHOTO_SUBMIT)
         OnboardingAPI.getInstance(get()).prepareUploadPhoto { avatarKey, presignedUrl, error ->
-            Logger("Send upload Photo Return")
+            Timber.d("Send upload Photo Return")
             if (!avatarKey.isNullOrEmpty() && !presignedUrl.isNullOrEmpty()) {
                 val path: String? = temporaryImageUri?.getPath()
                 if (path == null) return@prepareUploadPhoto
                 val file = File(path)
-                Logger("Send upload Photo file")
+                Timber.d("Send upload Photo file")
                 OnboardingAPI.getInstance(get()).uploadPhotoFile(presignedUrl,file) { isOk ->
                     if (isOk) {
                         updateUserPhoto(avatarKey)
@@ -597,8 +597,8 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     override fun validateNames(firstname: String?, lastname: String?,isValidate:Boolean) {
         temporaryUser.firstName = firstname ?: ""
         temporaryUser.lastName = lastname ?: ""
-        Logger("Validarte name : $firstname -- $lastname -- Validate : $isValidate")
-        Logger("Validate name from temp : ${temporaryUser.firstName} -- ${temporaryUser.lastName}  - tempuser: $temporaryUser")
+        Timber.d("Validarte name : $firstname -- $lastname -- Validate : $isValidate")
+        Timber.d("Validate name from temp : ${temporaryUser.firstName} -- ${temporaryUser.lastName}  - tempuser: $temporaryUser")
         if (isValidate) goNext()
     }
 
