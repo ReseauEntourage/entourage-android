@@ -280,5 +280,32 @@
         <item name="android:background">@color/mainprofile_item_background</item>
     </style>
 
+    <style name="UserProfileTextViewStyle.PwdEditText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/entourage_font_medium</item>
+    </style>
+
+    <style name="CustomEditTextTheme.PwdEditView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:ellipsize">start</item>
+        <item name="android:ems">10</item>
+        <item name="android:gravity">end</item>
+        <item name="android:inputType">numberPassword</item>
+        <item name="android:maxLength">6</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textColorHint">@color/login_edittext_hint</item>
+        <item name="android:textSize">@dimen/entourage_font_medium</item>
+    </style>
+
+    <style name="CustomEditTextTheme.PwdEditSeparator">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/greyish</item>
+    </style>
+
 
 </resources>
