@@ -29,11 +29,10 @@ import timber.log.Timber
 import java.util.*
 
 /**
- * A [EntourageDialogFragment] subclass, used to edit the action zone for an user
- * Use the [UserEditActionZoneFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * Deprecated
  */
-class UserEditActionZoneFragment  : EntourageDialogFragment() {
+@Deprecated(message="Migrate to class EditUserPlaceFragment", replaceWith = ReplaceWith("EditUserPlaceFragment", "social.entourage.android.user.edit.EditUserPlaceFragment"))
+class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -233,7 +232,7 @@ class UserEditActionZoneFragment  : EntourageDialogFragment() {
         // CONSTANTS
         // ----------------------------------
         @JvmField
-        val TAG = UserEditActionZoneFragment::class.java.simpleName
+        val TAG = UserEditActionZoneFragmentCompat::class.java.simpleName
         private const val KEY_USER_ADDRESS = "social.entourage.android.KEY_USER_ADDRESS"
 
         /**
@@ -244,8 +243,8 @@ class UserEditActionZoneFragment  : EntourageDialogFragment() {
          * @return A new instance of fragment UserEditActionZoneFragment.
          */
         @JvmStatic
-        fun newInstance(userAddress: User.Address?): UserEditActionZoneFragment {
-            val fragment = UserEditActionZoneFragment()
+        fun newInstance(userAddress: User.Address?): UserEditActionZoneFragmentCompat {
+            val fragment = UserEditActionZoneFragmentCompat()
             val args = Bundle()
             args.putSerializable(KEY_USER_ADDRESS, userAddress)
             fragment.arguments = args

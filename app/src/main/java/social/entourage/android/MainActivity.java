@@ -57,7 +57,7 @@ import social.entourage.android.entourage.EntourageDisclaimerFragment;
 import social.entourage.android.entourage.information.EntourageInformationFragment;
 import social.entourage.android.user.edit.EditUserPlaceFragment;
 import social.entourage.android.onboarding.OnboardingPhotoFragment;
-import social.entourage.android.user.edit.UserEditActionZoneFragment;
+import social.entourage.android.user.edit.UserEditActionZoneFragmentCompat;
 import social.entourage.android.tour.TourInformationFragment;
 import social.entourage.android.entourage.my.MyEntouragesFragment;
 import social.entourage.android.location.EntourageLocation;
@@ -85,7 +85,7 @@ public class MainActivity extends EntourageSecuredActivity
     EntourageDisclaimerFragment.OnFragmentInteractionListener,
     EncounterDisclaimerFragment.OnFragmentInteractionListener,
     PhotoChooseInterface,
-    UserEditActionZoneFragment.FragmentListener,
+    UserEditActionZoneFragmentCompat.FragmentListener,
     AvatarUploadView {
 
     // ----------------------------------
@@ -722,7 +722,7 @@ public class MainActivity extends EntourageSecuredActivity
         showEditActionZoneFragment( null);
     }
 
-    public void showEditActionZoneFragment(UserEditActionZoneFragment.FragmentListener extraFragmentListener) {
+    public void showEditActionZoneFragment(UserEditActionZoneFragmentCompat.FragmentListener extraFragmentListener) {
         if (!authenticationController.isAuthenticated()) {
             return;
         }
@@ -746,11 +746,11 @@ public class MainActivity extends EntourageSecuredActivity
             return;
         }
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null);
-            userEditActionZoneFragment.addFragmentListener(this);
-            userEditActionZoneFragment.addFragmentListener(extraFragmentListener);
-            userEditActionZoneFragment.setFromLogin(true);
-            userEditActionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
+            UserEditActionZoneFragmentCompat userEditActionZoneFragmentCompat = UserEditActionZoneFragmentCompat.newInstance(null);
+            userEditActionZoneFragmentCompat.addFragmentListener(this);
+            userEditActionZoneFragmentCompat.addFragmentListener(extraFragmentListener);
+            userEditActionZoneFragmentCompat.setFromLogin(true);
+            userEditActionZoneFragmentCompat.show(getSupportFragmentManager(), UserEditActionZoneFragmentCompat.TAG);
         }
         else {
             EditUserPlaceFragment editUserPlaceFragment = EditUserPlaceFragment.newInstance(null);
@@ -785,7 +785,7 @@ public class MainActivity extends EntourageSecuredActivity
                 authenticationController.saveUserPreferences();
             }
         }
-        UserEditActionZoneFragment fragment = (UserEditActionZoneFragment)getSupportFragmentManager().findFragmentByTag(UserEditActionZoneFragment.TAG);
+        UserEditActionZoneFragmentCompat fragment = (UserEditActionZoneFragmentCompat)getSupportFragmentManager().findFragmentByTag(UserEditActionZoneFragmentCompat.TAG);
         if (fragment != null && !fragment.isStateSaved()) {
             fragment.dismiss();
         }

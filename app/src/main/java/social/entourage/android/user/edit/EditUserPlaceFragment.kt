@@ -18,7 +18,7 @@ private const val ARG_PLACE = "place"
 class EditUserPlaceFragment : OnboardingPlaceFragment() {
 
 
-    private var mListener: UserEditActionZoneFragment.FragmentListener? = null
+    private var mListener: UserEditActionZoneFragmentCompat.FragmentListener? = null
     //**********//**********//**********
     // Lifecycle
     //**********//**********//**********
@@ -36,7 +36,7 @@ class EditUserPlaceFragment : OnboardingPlaceFragment() {
         }
     }
 
-    fun setupListener(listener: UserEditActionZoneFragment.FragmentListener?) {
+    fun setupListener(listener: UserEditActionZoneFragmentCompat.FragmentListener?) {
         if (listener == null) return
         mListener = listener
     }

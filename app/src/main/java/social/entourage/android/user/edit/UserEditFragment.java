@@ -56,7 +56,7 @@ import social.entourage.android.user.edit.partner.UserEditPartnerFragment;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import timber.log.Timber;
 
-public class UserEditFragment extends EntourageDialogFragment implements UserEditActionZoneFragment.FragmentListener {
+public class UserEditFragment extends EntourageDialogFragment implements UserEditActionZoneFragmentCompat.FragmentListener {
 
     // ----------------------------------
     // CONSTANTS
@@ -465,16 +465,9 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
 
     @OnClick(R.id.user_action_zone_button)
     protected void onActionZoneEditClicked() {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(editedUser.getAddress());
-            userEditActionZoneFragment.setFragmentListener(this);
-            userEditActionZoneFragment.show(getParentFragmentManager(), UserEditActionZoneFragment.TAG);
-        }
-        else {
-            EditUserPlaceFragment frag = EditUserPlaceFragment.newInstance(null);
-            frag.setupListener(this);
-            frag.show(getParentFragmentManager(), EditUserPlaceFragment.TAG);
-        }
+        EditUserPlaceFragment frag = EditUserPlaceFragment.newInstance(editedUser.getAddress());
+        frag.setupListener(this);
+        frag.show(getParentFragmentManager(), EditUserPlaceFragment.TAG);
     }
 
     @Override
@@ -499,9 +492,9 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
             userPreferences.setIgnoringActionZone(ignoreActionZone);
             authenticationController.saveUserPreferences();
         }
-        UserEditActionZoneFragment userEditActionZoneFragment = (UserEditActionZoneFragment)getParentFragmentManager().findFragmentByTag(UserEditActionZoneFragment.TAG);
-        if (userEditActionZoneFragment != null && !userEditActionZoneFragment.isStateSaved()) {
-            userEditActionZoneFragment.dismiss();
+        UserEditActionZoneFragmentCompat userEditActionZoneFragmentCompat = (UserEditActionZoneFragmentCompat)getParentFragmentManager().findFragmentByTag(UserEditActionZoneFragmentCompat.TAG);
+        if (userEditActionZoneFragmentCompat != null && !userEditActionZoneFragmentCompat.isStateSaved()) {
+            userEditActionZoneFragmentCompat.dismiss();
         }
     }
 }

@@ -5,7 +5,7 @@
               android:layout_height="match_parent"
               android:background="@color/accent"
               android:orientation="vertical"
-              tools:context="social.entourage.android.user.edit.UserEditActionZoneFragment">
+              tools:context="social.entourage.android.user.edit.UserEditActionZoneFragmentCompat">
 
     <ImageButton
         android:id="@+id/title_close_button"

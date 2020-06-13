@@ -60,7 +60,7 @@ import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
 import social.entourage.android.user.AvatarUploadPresenter;
 import social.entourage.android.user.AvatarUploadView;
-import social.entourage.android.user.edit.UserEditActionZoneFragment;
+import social.entourage.android.user.edit.UserEditActionZoneFragmentCompat;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
@@ -76,7 +76,7 @@ import static social.entourage.android.EntourageApplication.KEY_TUTORIAL_DONE;
  * Activity providing the login steps
  */
 public class LoginActivity extends EntourageActivity
-        implements OnRegisterUserListener, PhotoChooseInterface, UserEditActionZoneFragment.FragmentListener, AvatarUploadView {
+        implements OnRegisterUserListener, PhotoChooseInterface, UserEditActionZoneFragmentCompat.FragmentListener, AvatarUploadView {
 
     // ----------------------------------
     // CONSTANTS
@@ -1020,11 +1020,11 @@ public class LoginActivity extends EntourageActivity
             return;
         }
         User me = loginPresenter.authenticationController.getUser();
-        UserEditActionZoneFragment actionZoneFragment = UserEditActionZoneFragment.newInstance(me != null ? me.getAddress() : null);
+        UserEditActionZoneFragmentCompat actionZoneFragment = UserEditActionZoneFragmentCompat.newInstance(me != null ? me.getAddress() : null);
         actionZoneFragment.setFragmentListener(this);
         actionZoneFragment.setFromLogin(true);
         try {
-            actionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
+            actionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragmentCompat.TAG);
         } catch (IllegalStateException e) {
             Timber.w(e);
         }
@@ -1033,7 +1033,7 @@ public class LoginActivity extends EntourageActivity
     private void hideActionZoneView() {
         if (isFinishing()) return;
         try{
-            UserEditActionZoneFragment actionZoneFragment = (UserEditActionZoneFragment)getSupportFragmentManager().findFragmentByTag(UserEditActionZoneFragment.TAG);
+            UserEditActionZoneFragmentCompat actionZoneFragment = (UserEditActionZoneFragmentCompat)getSupportFragmentManager().findFragmentByTag(UserEditActionZoneFragmentCompat.TAG);
             if (actionZoneFragment != null) {
                 actionZoneFragment.dismiss();
             }
