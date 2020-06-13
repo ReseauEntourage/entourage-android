@@ -240,7 +240,7 @@ class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
          * this fragment using the provided parameters.
          *
          * @param userAddress User Address.
-         * @return A new instance of fragment UserEditActionZoneFragment.
+         * @return A new instance of fragment UserEditActionZoneFragmentCompat.
          */
         @JvmStatic
         fun newInstance(userAddress: User.Address?): UserEditActionZoneFragmentCompat {

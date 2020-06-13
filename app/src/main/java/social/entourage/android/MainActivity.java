@@ -55,7 +55,7 @@ import social.entourage.android.configuration.Configuration;
 import social.entourage.android.deeplinks.DeepLinksManager;
 import social.entourage.android.entourage.EntourageDisclaimerFragment;
 import social.entourage.android.entourage.information.EntourageInformationFragment;
-import social.entourage.android.user.edit.EditUserPlaceFragment;
+import social.entourage.android.user.edit.UserEditActionZoneFragment;
 import social.entourage.android.onboarding.OnboardingPhotoFragment;
 import social.entourage.android.user.edit.UserEditActionZoneFragmentCompat;
 import social.entourage.android.tour.TourInformationFragment;
@@ -753,10 +753,10 @@ public class MainActivity extends EntourageSecuredActivity
             userEditActionZoneFragmentCompat.show(getSupportFragmentManager(), UserEditActionZoneFragmentCompat.TAG);
         }
         else {
-            EditUserPlaceFragment editUserPlaceFragment = EditUserPlaceFragment.newInstance(null);
-            editUserPlaceFragment.setupListener(this);
-            editUserPlaceFragment.setupListener(extraFragmentListener);
-            editUserPlaceFragment.show(getSupportFragmentManager(),EditUserPlaceFragment.TAG);
+            UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null);
+            userEditActionZoneFragment.setupListener(this);
+            userEditActionZoneFragment.setupListener(extraFragmentListener);
+            userEditActionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
         }
         
         me.setEditActionZoneShown(true);

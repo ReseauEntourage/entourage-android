@@ -15,7 +15,7 @@ import timber.log.Timber
 
 private const val ARG_PLACE = "place"
 
-class EditUserPlaceFragment : OnboardingPlaceFragment() {
+class UserEditActionZoneFragment : OnboardingPlaceFragment() {
 
 
     private var mListener: UserEditActionZoneFragmentCompat.FragmentListener? = null
@@ -78,7 +78,7 @@ class EditUserPlaceFragment : OnboardingPlaceFragment() {
         const val TAG = "social.entourage.android.user.edit.EditUserPlaceFragment"//EditUserPlaceFragment::class.java.simpleName
         @JvmStatic
         fun newInstance(googlePlaceAddress: User.Address?) =
-                EditUserPlaceFragment().apply {
+                UserEditActionZoneFragment().apply {
                     arguments = Bundle().apply {
                         putSerializable(ARG_PLACE, googlePlaceAddress)
                     }

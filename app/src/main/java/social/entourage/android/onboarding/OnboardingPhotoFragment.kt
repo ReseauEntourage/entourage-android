@@ -176,15 +176,15 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
             }
             // Continue only if the File was successfully created
             if (photoFileUri != null) {
-                //HAck Kitkat version return activity
+                //Hack Kitkat version return activity
                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                    val _takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                    val takePictureIntentCompat = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                     val clip = ClipData.newUri(activity?.getContentResolver(), "A photo", photoFileUri)
 
-                    _takePictureIntent.clipData = clip
-                    _takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                    _takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri)
-                    startActivityForResult(_takePictureIntent, TAKE_PHOTO_REQUEST)
+                    takePictureIntentCompat.clipData = clip
+                    takePictureIntentCompat.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                    takePictureIntentCompat.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri)
+                    startActivityForResult(takePictureIntentCompat, TAKE_PHOTO_REQUEST)
                 } else {
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri)
                     takePictureIntent.flags = Intent.FLAG_GRANT_WRITE_URI_PERMISSION

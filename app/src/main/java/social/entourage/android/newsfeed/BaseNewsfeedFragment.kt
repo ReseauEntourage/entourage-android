@@ -1154,7 +1154,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     // ----------------------------------
-    // UserEditActionZoneFragment.FragmentListener
+    // UserEditActionZoneFragmentCompat.FragmentListener
     // ----------------------------------
     override fun onUserEditActionZoneFragmentDismiss() {}
     override fun onUserEditActionZoneFragmentAddressSaved() {
