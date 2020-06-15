@@ -9,7 +9,6 @@ import android.view.*
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
-import butterknife.OnClick
 import kotlinx.android.synthetic.main.fragment_user_edit_about.*
 import social.entourage.android.R
 import social.entourage.android.api.model.User
@@ -55,14 +54,14 @@ class UserEditAboutFragment  : DialogFragment() {
         dismiss()
     }
 
-    fun onSaveClicked() {
+    private fun onSaveClicked() {
         user_edit_about?.text.toString().let { about ->
             if (about.length > ABOUT_MAX_CHAR_COUNT) {
                 Toast.makeText(context, R.string.user_edit_about_error, Toast.LENGTH_SHORT).show()
             } else {
                 user?.let {u ->
                     u.about = about.trim { it <= ' ' }
-                    userEditFragment?.configureView() ?: run {
+                    userEditFragment?.initUserData() ?: run {
                         (parentFragmentManager.findFragmentByTag(UserFragment.TAG) as UserFragment?)?.saveAccount(u)
                     }
                 }

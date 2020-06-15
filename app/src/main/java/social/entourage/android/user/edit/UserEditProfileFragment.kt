@@ -76,7 +76,7 @@ class UserEditProfileFragment  : DialogFragment() {
                     lastName = lastname
                     this.email = email
                 }
-                (parentFragmentManager.findFragmentByTag(UserEditFragment.TAG) as UserEditFragment?)?.configureView()
+                (parentFragmentManager.findFragmentByTag(UserEditFragment.TAG) as UserEditFragment?)?.initUserData()
                 dismiss()
             }
         }
