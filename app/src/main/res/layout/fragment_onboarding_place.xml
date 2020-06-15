@@ -37,7 +37,7 @@ tools:context="social.entourage.android.onboarding.OnboardingPlaceFragment">
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <TextView
-        android:id="@+id/ui_onboard_phone_tv_title"
+        android:id="@+id/ui_onboard_place_tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -49,7 +49,7 @@ tools:context="social.entourage.android.onboarding.OnboardingPlaceFragment">
         app:layout_constraintTop_toBottomOf="@+id/edit_place_title_layout" />
 
     <TextView
-        android:id="@+id/ui_onboard_phone_tv_info"
+        android:id="@+id/ui_onboard_place_tv_info"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -59,8 +59,8 @@ tools:context="social.entourage.android.onboarding.OnboardingPlaceFragment">
         android:textColor="@color/onboard_black_36"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/ui_onboard_phone_tv_title"
-        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_phone_tv_title" />
+        app:layout_constraintStart_toStartOf="@+id/ui_onboard_place_tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_place_tv_title" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -72,7 +72,7 @@ tools:context="social.entourage.android.onboarding.OnboardingPlaceFragment">
         android:background="@color/onboard_white_246"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_phone_tv_info">
+        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_place_tv_info">
 
         <TextView
             android:id="@+id/ui_onboard_place_tv_location"

@@ -24,6 +24,8 @@ import social.entourage.android.onboarding.asso.OnboardingAssoActivitiesFragment
 import social.entourage.android.onboarding.asso.OnboardingAssoFillFragment
 import social.entourage.android.onboarding.asso.OnboardingAssoStartFragment
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
+import social.entourage.android.onboarding.sdf_neighbour.OnboardingSdfNeighbourActivitiesFragment
+import social.entourage.android.onboarding.sdf_neighbour.SdfNeighbourActivities
 import social.entourage.android.tools.Utils.checkPhoneNumberFormat
 import social.entourage.android.tools.disable
 import social.entourage.android.tools.enable
@@ -55,10 +57,16 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     private var userTypeSelected:UserTypeSelection = UserTypeSelection.NONE
     private var currentPositionAsso = 0
+    private var currentPositionAlone = 0
+    private var currentPositionNeighbour = 0
 
     private var temporaryPlaceAddress:User.Address? = null
     private var temporaryAssoInfo:Partner? = null
     private var temporaryAssoActivities: AssoActivities? = null
+
+    private var temporary2ndPlaceAddress:User.Address? = null
+    private var temporarySdfActivities: SdfNeighbourActivities? = null
+    private var temporaryNeighbourActivities: SdfNeighbourActivities? = null
 
     lateinit var alertDialog: CustomProgressDialog
 
@@ -394,6 +402,62 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         }
     }
 
+
+    fun update2ndAddress() {
+        //TODO: a faire WS
+        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_ACTION_ZONE2_SUBMIT)
+        goNextStepSdfNeighbour()
+        /*
+        alertDialog.show(R.string.onboard_waiting_dialog)
+        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_ACTION_ZONE_SUBMIT)
+        OnboardingAPI.getInstance(get()).updateAddress(temporaryPlaceAddress!!) { isOK, userResponse ->
+            if (isOK) {
+                val authenticationController = get().entourageComponent.authenticationController
+                val me = authenticationController.user
+                if (me != null && userResponse != null) {
+                    me.address = userResponse.address
+                    authenticationController.saveUser(me)
+                }
+                displayToast(R.string.user_action_zone_send_ok)
+                alertDialog.dismiss()
+                goNextStep()
+            }
+            else {
+                alertDialog.dismiss()
+                displayToast(R.string.user_action_zone_send_failed)
+            }
+        }
+        */
+    }
+
+    fun updateAlone() {
+        updateActivities(temporarySdfActivities,true)
+    }
+
+    fun updateNeighbour() {
+        updateActivities(temporaryNeighbourActivities,false)
+    }
+
+    fun updateActivities(activities:SdfNeighbourActivities?,isSdf:Boolean) {
+        if (activities?.hasOneSelectionMin() == true) {
+            if (isSdf) { EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_INNEED_MOSAIC) }
+            else { EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_NEIGHBOR_MOSAIC) }
+
+            OnboardingAPI.getInstance(get()).updateUserInterests(activities.getArrayForWs()) { isOK, userResponse ->
+                currentFragmentPosition = currentFragmentPosition + 1
+                changeFragment()
+            }
+        }
+        else {
+            AlertDialog.Builder(this)
+                    .setTitle(R.string.attention_pop_title)
+                    .setMessage(R.string.onboard_asso_activity_error)
+                    .setPositiveButton("OK") { dialog, which -> }
+                    .create()
+                    .show()
+        }
+    }
+
     //**********//**********//**********
     // Navigation
     //**********//**********//**********
@@ -407,7 +471,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             2 -> fragment = OnboardingPhoneFragment.newInstance(temporaryUser.firstName, temporaryCountrycode, temporaryPhone)
             3 -> fragment = OnboardingPasscodeFragment.newInstance(temporaryPhone)
             4 -> fragment = OnboardingTypeFragment.newInstance(temporaryUser.firstName, userTypeSelected)
-            5 -> fragment = OnboardingPlaceFragment.newInstance(temporaryPlaceAddress)
+            5 -> fragment = OnboardingPlaceFragment.newInstance(temporaryPlaceAddress,false,false)
             6 -> fragment = OnboardingEmailPwdFragment.newInstance(temporaryEmail)
             7 -> fragment = OnboardingPhotoFragment.newInstance(temporaryUser.firstName)
         }
@@ -462,6 +526,58 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         ui_view_progress?.updatePercent(percent)
     }
 
+    fun moveToTunnelAlone() {
+        ui_bt_next?.enable(R.drawable.ic_onboard_bt_next)
+        val fragment: Fragment
+
+        when(currentPositionAlone) {
+            1 ->  {
+                fragment = OnboardingPlaceFragment.newInstance(temporary2ndPlaceAddress,true,true)
+            }
+            2 -> fragment = OnboardingSdfNeighbourActivitiesFragment.newInstance(temporarySdfActivities,temporaryUser.firstName,true)
+            else -> {
+                changeFragment()
+                return
+            }
+        }
+
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.ui_container, fragment)
+                .commit()
+
+        updateButtons()
+
+        val percent = (currentFragmentPosition.toFloat() + currentPositionAlone.toFloat() ) / (numberOfSteps.toFloat() + currentPositionAlone.toFloat()) * 100
+        ui_view_progress?.updatePercent(percent)
+    }
+
+    fun moveToTunnelNeighbour() {
+        ui_bt_next?.enable(R.drawable.ic_onboard_bt_next)
+        val fragment: Fragment
+
+        when(currentPositionNeighbour) {
+            1 ->  {
+                fragment = OnboardingPlaceFragment.newInstance(temporary2ndPlaceAddress,true,false)
+            }
+            2 -> fragment = OnboardingSdfNeighbourActivitiesFragment.newInstance(temporaryNeighbourActivities,temporaryUser.firstName,false)
+            else -> {
+                changeFragment()
+                return
+            }
+        }
+
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.ui_container, fragment)
+                .commit()
+
+        updateButtons()
+
+        val percent = (currentFragmentPosition.toFloat() + currentPositionNeighbour.toFloat() ) / (numberOfSteps.toFloat() + currentPositionNeighbour.toFloat()) * 100
+        ui_view_progress?.updatePercent(percent)
+    }
+
     //**********
     // Navigation Methods
 
@@ -494,7 +610,37 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                     return
                 }
             }
-            PositionType.Place.pos -> {sendAddress(); return}
+            PositionType.Place.pos -> {
+                if (userTypeSelected == UserTypeSelection.ALONE) {
+                    if (currentPositionAlone == AlonePositionType.PLACE.pos) {
+                        update2ndAddress()
+                        return
+                    }
+                    if (currentPositionAlone == AlonePositionType.ACTIVITIES.pos) {
+                        updateAlone()
+                        return
+                    }
+                    currentPositionAlone = currentPositionAlone + 1
+                    moveToTunnelAlone()
+                    return
+                }
+
+                if (userTypeSelected == UserTypeSelection.NEIGHBOUR) {
+                    if (currentPositionNeighbour == NeighbourPositionType.PLACE.pos) {
+                        update2ndAddress()
+                        return
+                    }
+                    if (currentPositionNeighbour == NeighbourPositionType.ACTIVITIES.pos) {
+                        updateNeighbour()
+                        return
+                    }
+                    currentPositionNeighbour = currentPositionNeighbour + 1
+                    moveToTunnelNeighbour()
+                    return
+                }
+
+                sendAddress(); return
+            }
             PositionType.EmailPwd.pos -> {updateUserEmailPwd(); return}
             PositionType.Photo.pos -> {updateUserPhoto(); return}
             PositionType.Passcode.pos -> {
@@ -527,12 +673,49 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             }
         }
 
+        if (currentFragmentPosition == PositionType.Place.pos) {
+            if (userTypeSelected == UserTypeSelection.ALONE) {
+                if (currentPositionAlone != AlonePositionType.NONE.pos) {
+                    currentPositionAlone = currentPositionAlone - 1
+                }
+                else {
+                    currentFragmentPosition = currentFragmentPosition - 1
+                }
+                moveToTunnelAlone()
+                return
+            }
+            if (userTypeSelected == UserTypeSelection.NEIGHBOUR) {
+                if (currentPositionNeighbour != NeighbourPositionType.NONE.pos) {
+                    currentPositionNeighbour = currentPositionNeighbour - 1
+                }
+                else {
+                    currentFragmentPosition = currentFragmentPosition - 1
+                }
+                moveToTunnelNeighbour()
+                return
+            }
+        }
+
         if (currentFragmentPosition == PositionType.EmailPwd.pos) {
             if (userTypeSelected == UserTypeSelection.ASSOS) {
                 if (currentPositionAsso != AssoPositionType.NONE.pos) {
                     currentFragmentPosition = currentFragmentPosition - 2
                 }
                 moveToTunnelAsso()
+                return
+            }
+            if (userTypeSelected == UserTypeSelection.ALONE) {
+                if (currentPositionAlone != AlonePositionType.NONE.pos) {
+                    currentFragmentPosition = currentFragmentPosition - 1
+                }
+                moveToTunnelAlone()
+                return
+            }
+            if (userTypeSelected == UserTypeSelection.NEIGHBOUR) {
+                if (currentPositionNeighbour != NeighbourPositionType.NONE.pos) {
+                    currentFragmentPosition = currentFragmentPosition - 1
+                }
+                moveToTunnelNeighbour()
                 return
             }
         }
@@ -548,7 +731,30 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         changeFragment()
     }
 
+    fun goNextStepSdfNeighbour() {
+        if (userTypeSelected == UserTypeSelection.ALONE) {
+            currentPositionAlone = currentPositionAlone + 1
+            moveToTunnelAlone()
+        }
+        else {
+            currentPositionNeighbour = currentPositionNeighbour + 1
+            moveToTunnelNeighbour()
+        }
+    }
+
     fun action_pass() {
+        if (currentFragmentPosition == PositionType.Place.pos) {
+            if ((userTypeSelected == UserTypeSelection.ALONE && currentPositionAlone == AlonePositionType.PLACE.pos) ||
+                    (userTypeSelected == UserTypeSelection.NEIGHBOUR && currentPositionNeighbour == NeighbourPositionType.PLACE.pos)) {
+                temporary2ndPlaceAddress = null
+                temporarySdfActivities = null
+                temporaryNeighbourActivities = null
+                EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_ACTION_ZONE2_SKIP)
+                goNextStepSdfNeighbour()
+                return
+            }
+        }
+
         if (currentFragmentPosition == PositionType.Type.pos) {
             userTypeSelected = UserTypeSelection.NONE
         }
@@ -577,6 +783,13 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 } else {
                     ui_bt_previous?.visibility = View.VISIBLE
                 }
+            }
+            PositionType.Place.pos -> {
+                if ((userTypeSelected == UserTypeSelection.ALONE && currentPositionAlone == AlonePositionType.PLACE.pos) ||
+                        (userTypeSelected == UserTypeSelection.NEIGHBOUR && currentPositionNeighbour == NeighbourPositionType.PLACE.pos)) {
+                    ui_bt_pass?.visibility = View.VISIBLE
+                }
+                ui_bt_previous?.visibility = View.VISIBLE
             }
             else -> ui_bt_previous?.visibility = View.VISIBLE
         }
@@ -630,13 +843,22 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
         temporaryAssoInfo = null
         temporaryAssoActivities?.reset()
+        temporarySdfActivities?.reset()
+        temporaryNeighbourActivities?.reset()
         temporaryEmail = ""
         temporaryPlaceAddress = null
+        temporary2ndPlaceAddress = null
     }
 
-    override fun updateAddress(placeAddress: User.Address?) {
-        temporaryPlaceAddress = placeAddress
-        if (temporaryPlaceAddress != null) {
+    override fun updateAddress(placeAddress: User.Address?,is2ndAddress:Boolean) {
+        if (is2ndAddress) {
+            temporary2ndPlaceAddress= placeAddress
+        }
+        else {
+            temporaryPlaceAddress = placeAddress
+        }
+
+        if (placeAddress != null) {
             updateButtonNext(true)
         }
         else {
@@ -678,6 +900,15 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     override fun updateAssoActivities(assoActivities: AssoActivities) {
         this.temporaryAssoActivities = assoActivities
     }
+
+    override fun updateSdfNeighbourActivities(sdfNeighbourActivities: SdfNeighbourActivities,isSdf:Boolean) {
+        if (isSdf) {
+            this.temporarySdfActivities = sdfNeighbourActivities
+        }
+        else {
+            this.temporaryNeighbourActivities = sdfNeighbourActivities
+        }
+    }
 }
 
 //**********//**********//**********
@@ -699,6 +930,16 @@ enum class AssoPositionType(val pos:Int) {
     INFO(2),
     FILL(3),
     ACTIVITIES(4),
+    NONE(0)
+}
+enum class AlonePositionType(val pos:Int) {
+    PLACE(1),
+    ACTIVITIES(2),
+    NONE(0)
+}
+enum class NeighbourPositionType(val pos:Int) {
+    PLACE(1),
+    ACTIVITIES(2),
     NONE(0)
 }
 
@@ -728,11 +969,12 @@ interface OnboardingCallback {
     fun validatePasscode(password:String)
     fun requestNewCode()
     fun updateUsertype(userTypeSelected:UserTypeSelection)
-    fun updateAddress(placeAddress:User.Address?)
+    fun updateAddress(placeAddress:User.Address?,is2ndAddress:Boolean)
     fun updateEmailPwd(email:String?,pwd:String?,pwdConfirm:String?)
     fun updateUserPhoto(imageUri:Uri?)
     fun updateButtonNext(isValid:Boolean)
 
     fun updateAssoInfos(asso:Partner?)
     fun updateAssoActivities(assoActivities:AssoActivities)
+    fun updateSdfNeighbourActivities(sdfNeighbourActivities:SdfNeighbourActivities,isSdf: Boolean)
 }
