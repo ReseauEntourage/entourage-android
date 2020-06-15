@@ -53,7 +53,8 @@ import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.user.UserFragment;
 import social.entourage.android.user.UserOrganizationsAdapter;
 import social.entourage.android.user.edit.partner.UserEditPartnerFragment;
-import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
+import social.entourage.android.user.edit.photo.PhotoChooseSourceFragmentCompat;
+import social.entourage.android.user.edit.photo.ChoosePhotoFragment;
 import timber.log.Timber;
 
 public class UserEditFragment extends EntourageDialogFragment implements UserEditActionZoneFragmentCompat.FragmentListener {
@@ -312,12 +313,12 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
     @OnClick(R.id.user_photo_button)
     protected void onPhotoClicked() {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
-            fragment.show(getParentFragmentManager(), PhotoChooseSourceFragment.TAG);
+            PhotoChooseSourceFragmentCompat fragment = new PhotoChooseSourceFragmentCompat();
+            fragment.show(getParentFragmentManager(), PhotoChooseSourceFragmentCompat.TAG);
         }
         else {
-            UserChoosePhotoFragment fragment = UserChoosePhotoFragment.newInstance();
-            fragment.show(getParentFragmentManager(), UserChoosePhotoFragment.TAG);
+            ChoosePhotoFragment fragment = ChoosePhotoFragment.newInstance();
+            fragment.show(getParentFragmentManager(), ChoosePhotoFragment.TAG);
         }
     }
 

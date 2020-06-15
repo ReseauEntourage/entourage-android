@@ -38,13 +38,6 @@ class LoginTest {
         afM?.disableAutofillServices()
     }
 
-    private fun checkTCDisplay() {
-        //PFP we have a TC validation screen
-        if (EntourageApplication.isPfpApp) {
-            Espresso.onView(ViewMatchers.withId(R.id.register_welcome_start_button)).perform(ViewActions.click())
-        }
-    }
-
     private fun checkNoUserIsLoggedIn() {
         EntourageApplication.get(activityRule.activity).entourageComponent.authenticationController?.logOutUser()
     }
@@ -59,7 +52,6 @@ class LoginTest {
     fun loginOK() {
         checkNoUserIsLoggedIn()
         Espresso.onView(ViewMatchers.withId(R.id.login_button_login)).perform(ViewActions.click())
-        checkTCDisplay()
         Espresso.onView(ViewMatchers.withId(R.id.login_edit_phone)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_LOGIN), ViewActions.closeSoftKeyboard())
         closeAutofill()
         Espresso.onView(ViewMatchers.withId(R.id.login_edit_code)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_PWD), ViewActions.closeSoftKeyboard())
@@ -72,7 +64,6 @@ class LoginTest {
     @Test
     fun loginOKwithoutCountryCode() {
         Espresso.onView(ViewMatchers.withId(R.id.login_button_login)).perform(ViewActions.click())
-        checkTCDisplay()
         Espresso.onView(ViewMatchers.withId(R.id.login_edit_phone)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_LOGIN.replaceFirst("\\+33".toRegex(), "0")), ViewActions.closeSoftKeyboard())
         closeAutofill()
         Espresso.onView(ViewMatchers.withId(R.id.login_edit_code)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_PWD), ViewActions.closeSoftKeyboard())
@@ -94,7 +85,6 @@ class LoginTest {
     fun loginFailureWrongPassword() {
         checkNoUserIsLoggedIn()
         Espresso.onView(ViewMatchers.withId(R.id.login_button_login)).perform(ViewActions.click())
-        checkTCDisplay()
         Espresso.onView(ViewMatchers.withId(R.id.login_edit_phone)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_LOGIN), ViewActions.closeSoftKeyboard())
         closeAutofill()
         Espresso.onView(ViewMatchers.withId(R.id.login_edit_code)).perform(ViewActions.typeText("999999"), ViewActions.closeSoftKeyboard())
@@ -108,7 +98,6 @@ class LoginTest {
     @Test
     fun loginFailureWrongPhoneNumberFormat() {
         Espresso.onView(ViewMatchers.withId(R.id.login_button_login)).perform(ViewActions.click())
-        checkTCDisplay()
         Espresso.onView(ViewMatchers.withId(R.id.login_edit_phone)).perform(ViewActions.typeText("012345678"), ViewActions.closeSoftKeyboard())
         closeAutofill()
         Espresso.onView(ViewMatchers.withId(R.id.login_edit_code)).perform(ViewActions.typeText("000000"), ViewActions.closeSoftKeyboard())

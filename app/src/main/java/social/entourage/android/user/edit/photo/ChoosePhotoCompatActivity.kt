@@ -7,7 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import social.entourage.android.api.tape.Events.OnPhotoChosen
 import social.entourage.android.tools.BusProvider
 
-class ChoosePhotoActivity : AppCompatActivity() {
+@Deprecated(message="Only for Android 4.4")
+class ChoosePhotoCompatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val intent = Intent()

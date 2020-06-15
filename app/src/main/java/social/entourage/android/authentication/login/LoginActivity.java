@@ -62,7 +62,7 @@ import social.entourage.android.user.AvatarUploadPresenter;
 import social.entourage.android.user.AvatarUploadView;
 import social.entourage.android.user.edit.UserEditActionZoneFragmentCompat;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
-import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
+import social.entourage.android.user.edit.photo.PhotoChooseSourceFragmentCompat;
 import social.entourage.android.user.edit.photo.PhotoEditFragment;
 import social.entourage.android.view.countrycodepicker.CountryCodePicker;
 import social.entourage.android.view.EntourageSnackbar;
@@ -496,7 +496,7 @@ public class LoginActivity extends EntourageActivity
     @Override
     public void onPhotoChosen(final Uri photoUri, int photoSource) {
 
-        if (photoSource == PhotoChooseSourceFragment.TAKE_PHOTO_REQUEST) {
+        if (photoSource == PhotoChooseSourceFragmentCompat.TAKE_PHOTO_REQUEST) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_PHOTO_SUBMIT);
         }
 
@@ -744,8 +744,8 @@ public class LoginActivity extends EntourageActivity
 
                 User user = loginPresenter.authenticationController.getUser();
                 if (user == null || user.getAvatarURL() == null || user.getAvatarURL().length() == 0) {
-                    PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
-                    fragment.show(getSupportFragmentManager(), PhotoChooseSourceFragment.TAG);
+                    PhotoChooseSourceFragmentCompat fragment = new PhotoChooseSourceFragmentCompat();
+                    fragment.show(getSupportFragmentManager(), PhotoChooseSourceFragmentCompat.TAG);
                 } else if (loginPresenter.shouldShowActionZoneView()) {
                     showActionZoneView();
                 } else {
@@ -768,7 +768,7 @@ public class LoginActivity extends EntourageActivity
                 photoEditFragment.onPhotoSent(updated);
             }
             if (updated) {
-                PhotoChooseSourceFragment fragment = (PhotoChooseSourceFragment) getSupportFragmentManager().findFragmentByTag(PhotoChooseSourceFragment.TAG);
+                PhotoChooseSourceFragmentCompat fragment = (PhotoChooseSourceFragmentCompat) getSupportFragmentManager().findFragmentByTag(PhotoChooseSourceFragmentCompat.TAG);
                 if (fragment != null && !fragment.isStopped()) {
                     fragment.dismiss();
                 }

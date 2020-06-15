@@ -166,7 +166,7 @@
         <activity
             android:name="social.entourage.android.entourage.join.received.EntourageJoinRequestReceivedActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".user.edit.photo.ChoosePhotoActivity" />
+        <activity android:name=".user.edit.photo.ChoosePhotoCompatActivity" />
         <activity android:name=".user.edit.photo.TakePhotoActivity" />
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"

@@ -34,13 +34,13 @@ import social.entourage.android.base.EntourageDialogFragment;
 import social.entourage.android.configuration.Configuration;
 import social.entourage.android.entourage.information.EntourageInformationFragment;
 import social.entourage.android.entourage.information.FeedItemInformationFragment;
-import social.entourage.android.user.edit.UserChoosePhotoFragment;
+import social.entourage.android.user.edit.photo.ChoosePhotoFragment;
 import social.entourage.android.partner.PartnerFragment;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.CropCircleTransformation;
 import social.entourage.android.user.edit.UserEditAboutFragment;
 import social.entourage.android.user.edit.UserEditFragment;
-import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment;
+import social.entourage.android.user.edit.photo.PhotoChooseSourceFragmentCompat;
 import social.entourage.android.user.report.UserReportFragment;
 import social.entourage.android.view.PartnerLogoImageView;
 import timber.log.Timber;
@@ -391,12 +391,12 @@ public class UserFragment extends EntourageDialogFragment {
     @OnClick(R.id.user_photo_button)
     protected void onPhotoEditClicked() {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            PhotoChooseSourceFragment fragment = new PhotoChooseSourceFragment();
-            fragment.show(getParentFragmentManager(), PhotoChooseSourceFragment.TAG);
+            PhotoChooseSourceFragmentCompat fragment = new PhotoChooseSourceFragmentCompat();
+            fragment.show(getParentFragmentManager(), PhotoChooseSourceFragmentCompat.TAG);
         }
         else {
-            UserChoosePhotoFragment fragment = UserChoosePhotoFragment.newInstance();
-            fragment.show(getParentFragmentManager(), UserChoosePhotoFragment.TAG);
+            ChoosePhotoFragment fragment = ChoosePhotoFragment.newInstance();
+            fragment.show(getParentFragmentManager(), ChoosePhotoFragment.TAG);
         }
     }
 

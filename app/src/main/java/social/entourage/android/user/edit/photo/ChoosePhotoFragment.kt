@@ -1,4 +1,4 @@
-package social.entourage.android.user.edit
+package social.entourage.android.user.edit.photo
 
 import android.net.Uri
 import android.os.Bundle
@@ -8,9 +8,8 @@ import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.onboarding.OnboardingPhotoFragment
-import social.entourage.android.user.edit.photo.PhotoChooseInterface
 
-class UserChoosePhotoFragment : OnboardingPhotoFragment() {
+class ChoosePhotoFragment : OnboardingPhotoFragment() {
 
     private var mListener: PhotoChooseInterface? = null
 
@@ -63,9 +62,9 @@ class UserChoosePhotoFragment : OnboardingPhotoFragment() {
     //**********//**********//**********
 
     companion object {
-        const val TAG = "social.entourage.android.user.edit.UserChoosePhotoFragment"
+        const val TAG = "social.entourage.android.user.edit.photo.UserChoosePhotoFragment"
 
         @JvmStatic
-        fun newInstance() = UserChoosePhotoFragment()
+        fun newInstance() = ChoosePhotoFragment()
     }
 }

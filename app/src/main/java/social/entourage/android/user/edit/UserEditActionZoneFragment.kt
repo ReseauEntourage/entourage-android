@@ -81,7 +81,7 @@ class UserEditActionZoneFragment : OnboardingPlaceFragment() {
     //**********//**********//**********
 
     companion object {
-        const val TAG = "social.entourage.android.user.edit.EditUserPlaceFragment"//EditUserPlaceFragment::class.java.simpleName
+        const val TAG = "social.entourage.android.user.edit.UserEditActionZoneFragment"//EditUserPlaceFragment::class.java.simpleName
         @JvmStatic
         fun newInstance(googlePlaceAddress: User.Address?,isSecondary:Boolean) =
                 UserEditActionZoneFragment().apply {

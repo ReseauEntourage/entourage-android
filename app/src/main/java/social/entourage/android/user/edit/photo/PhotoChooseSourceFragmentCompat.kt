@@ -28,7 +28,8 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class PhotoChooseSourceFragment : EntourageDialogFragment() {
+@Deprecated(message="Migrate to class ChoosePhotoFragment", replaceWith = ReplaceWith("ChoosePhotoFragment", "social.entourage.android.user.edit.photo.ChoosePhotoFragment"))
+class PhotoChooseSourceFragmentCompat : EntourageDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -209,7 +210,7 @@ class PhotoChooseSourceFragment : EntourageDialogFragment() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_PHOTO_UPLOAD_SUBMIT)
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             // Start a separate activity, to handle the issue with onActivityResult
-            val intent = Intent(context, ChoosePhotoActivity::class.java)
+            val intent = Intent(context, ChoosePhotoCompatActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         } else {

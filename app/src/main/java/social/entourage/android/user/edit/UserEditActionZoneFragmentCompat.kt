@@ -32,7 +32,7 @@ import java.util.*
 /**
  * Deprecated
  */
-@Deprecated(message="Migrate to class EditUserPlaceFragment", replaceWith = ReplaceWith("EditUserPlaceFragment", "social.entourage.android.user.edit.EditUserPlaceFragment"))
+@Deprecated(message="Migrate to class UserEditActionZoneFragment", replaceWith = ReplaceWith("UserEditActionZoneFragment", "social.entourage.android.user.edit.UserEditActionZoneFragment"))
 class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
