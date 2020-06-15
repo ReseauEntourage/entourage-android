@@ -40,7 +40,7 @@ class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
     private var userAddress: User.Address? = null
     private var saving = false
     private lateinit var autocompleteFragment: SupportPlaceAutocompleteFragment
-    private val fragmentListeners: MutableList<FragmentListener> = ArrayList()
+    private val fragmentListeners: MutableList<UserEditActionZoneFragment.FragmentListener> = ArrayList()
     private var isFromLogin = false
     private var isSecondaryAddress = false
     // ----------------------------------
@@ -86,15 +86,15 @@ class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
         return if (isFromLogin) 0 else super.getSlideStyle()
     }
 
-    fun setFragmentListener(fragmentListener: FragmentListener) {
+    fun setFragmentListener(fragmentListener: UserEditActionZoneFragment.FragmentListener) {
         fragmentListeners.add(fragmentListener)
     }
 
-    fun addFragmentListener(fragmentListener: FragmentListener) {
+    fun addFragmentListener(fragmentListener: UserEditActionZoneFragment.FragmentListener) {
         fragmentListeners.add(fragmentListener)
     }
 
-    fun removeFragmentListener(fragmentListener: FragmentListener) {
+    fun removeFragmentListener(fragmentListener: UserEditActionZoneFragment.FragmentListener) {
         fragmentListeners.remove(fragmentListener)
     }
 
@@ -248,12 +248,6 @@ class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
                 }
             }
         }
-    }
-
-    interface FragmentListener {
-        fun onUserEditActionZoneFragmentDismiss()
-        fun onUserEditActionZoneFragmentAddressSaved()
-        fun onUserEditActionZoneFragmentIgnore()
     }
 
     companion object {

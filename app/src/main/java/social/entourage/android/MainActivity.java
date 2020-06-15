@@ -92,7 +92,7 @@ public class MainActivity extends EntourageSecuredActivity
     EntourageDisclaimerFragment.OnFragmentInteractionListener,
     EncounterDisclaimerFragment.OnFragmentInteractionListener,
     PhotoChooseInterface,
-    UserEditActionZoneFragmentCompat.FragmentListener,
+    UserEditActionZoneFragment.FragmentListener,
     AvatarUploadView {
 
     // ----------------------------------
@@ -856,7 +856,7 @@ public class MainActivity extends EntourageSecuredActivity
         showEditActionZoneFragment( null,false);
     }
 
-    public void showEditActionZoneFragment(UserEditActionZoneFragmentCompat.FragmentListener extraFragmentListener,Boolean isSecondaryAddress) {
+    public void showEditActionZoneFragment(UserEditActionZoneFragment.FragmentListener extraFragmentListener,Boolean isSecondaryAddress) {
         if (!authenticationController.isAuthenticated()) {
             return;
         }

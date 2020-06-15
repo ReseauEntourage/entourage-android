@@ -60,6 +60,7 @@ import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
 import social.entourage.android.user.AvatarUploadPresenter;
 import social.entourage.android.user.AvatarUploadView;
+import social.entourage.android.user.edit.UserEditActionZoneFragment;
 import social.entourage.android.user.edit.UserEditActionZoneFragmentCompat;
 import social.entourage.android.user.edit.photo.PhotoChooseInterface;
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragmentCompat;
@@ -76,7 +77,7 @@ import static social.entourage.android.EntourageApplication.KEY_TUTORIAL_DONE;
  * Activity providing the login steps
  */
 public class LoginActivity extends EntourageActivity
-        implements OnRegisterUserListener, PhotoChooseInterface, UserEditActionZoneFragmentCompat.FragmentListener, AvatarUploadView {
+        implements OnRegisterUserListener, PhotoChooseInterface, UserEditActionZoneFragment.FragmentListener, AvatarUploadView {
 
     // ----------------------------------
     // CONSTANTS

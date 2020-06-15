@@ -51,7 +51,7 @@ import social.entourage.android.map.filter.MapFilterFragment
 import social.entourage.android.map.permissions.NoLocationPermissionFragment
 import social.entourage.android.service.EntourageService
 import social.entourage.android.tools.BusProvider
-import social.entourage.android.user.edit.UserEditActionZoneFragmentCompat.FragmentListener
+import social.entourage.android.user.edit.UserEditActionZoneFragment.FragmentListener
 import social.entourage.android.view.EntourageSnackbar
 import java.util.*
 import javax.inject.Inject
@@ -1154,7 +1154,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     // ----------------------------------
-    // UserEditActionZoneFragmentCompat.FragmentListener
+    // UserEditActionZoneFragment.FragmentListener
     // ----------------------------------
     override fun onUserEditActionZoneFragmentDismiss() {}
     override fun onUserEditActionZoneFragmentAddressSaved() {

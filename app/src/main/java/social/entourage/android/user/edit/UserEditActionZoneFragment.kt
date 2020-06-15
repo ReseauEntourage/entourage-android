@@ -17,9 +17,7 @@ private const val ARG_PLACE = "place"
 private const val ARG_2ND = "is2ndAddress"
 
 class UserEditActionZoneFragment : OnboardingPlaceFragment() {
-
-
-    private var mListener: UserEditActionZoneFragmentCompat.FragmentListener? = null
+    private var mListener: FragmentListener? = null
     //**********//**********//**********
     // Lifecycle
     //**********//**********//**********
@@ -37,7 +35,7 @@ class UserEditActionZoneFragment : OnboardingPlaceFragment() {
         }
     }
 
-    fun setupListener(listener: UserEditActionZoneFragmentCompat.FragmentListener?) {
+    fun setupListener(listener: FragmentListener?) {
         if (listener == null) return
         mListener = listener
     }
@@ -46,7 +44,7 @@ class UserEditActionZoneFragment : OnboardingPlaceFragment() {
     // Methods
     //**********//**********//**********
 
-    fun sendNetwork() {
+    private fun sendNetwork() {
         if (userAddress != null) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_ACTION_ZONE_SUBMIT)
             OnboardingAPI.getInstance(EntourageApplication.get()).updateAddress(userAddress!!,isSecondaryAddress) { isOK, userResponse ->
@@ -76,6 +74,12 @@ class UserEditActionZoneFragment : OnboardingPlaceFragment() {
     }
 
 
+    interface FragmentListener {
+        fun onUserEditActionZoneFragmentDismiss()
+        fun onUserEditActionZoneFragmentAddressSaved()
+        fun onUserEditActionZoneFragmentIgnore()
+    }
+
     //**********//**********//**********
     // Companion
     //**********//**********//**********
@@ -91,9 +95,4 @@ class UserEditActionZoneFragment : OnboardingPlaceFragment() {
                     }
                 }
     }
-}
-
-interface UserEditPlaceListener {
-    fun onUserEditPlaceAddressSaved()
-    fun onUserEditPlaceIgnore()
 }

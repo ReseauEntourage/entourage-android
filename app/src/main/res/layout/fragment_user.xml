@@ -169,7 +169,7 @@
 
             </LinearLayout>
 
-            <social.entourage.android.user.EntourageUserProfileAssociationsView
+            <social.entourage.android.user.UserAssociationsLayout
                 android:id="@+id/user_profile_associations"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>

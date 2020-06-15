@@ -8,7 +8,6 @@ import android.view.Window
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.DialogFragment
-import butterknife.OnClick
 import kotlinx.android.synthetic.main.fragment_user_edit_profile.*
 import social.entourage.android.EntourageEvents
 import social.entourage.android.R

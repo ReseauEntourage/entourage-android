@@ -186,7 +186,7 @@ class PhotoChooseSourceFragmentCompat : EntourageDialogFragment() {
         }
     }
 
-    fun onTakePhotoClicked() {
+    private fun onTakePhotoClicked() {
         activity?.let {
             if (CropImage.isExplicitCameraPermissionRequired(it)) {
                 requestPermissions(arrayOf(Manifest.permission.CAMERA), CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE)

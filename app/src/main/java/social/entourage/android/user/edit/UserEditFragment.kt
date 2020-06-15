@@ -29,7 +29,7 @@ import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.user.UserFragment
 import social.entourage.android.user.UserOrganizationsAdapter
-import social.entourage.android.user.edit.UserEditActionZoneFragmentCompat.FragmentListener
+import social.entourage.android.user.edit.UserEditActionZoneFragment.FragmentListener
 import social.entourage.android.user.edit.partner.UserEditPartnerFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragmentCompat
@@ -64,18 +64,18 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupComponent(EntourageApplication.get(activity).entourageComponent)
-        title_close_button.setOnClickListener { onCloseButtonClicked() }
-        user_firstname_layout.setOnClickListener { onEditFirstname() }
-        user_lastname_layout.setOnClickListener { onEditFirstname() }
-        user_email_layout.setOnClickListener { onEditEmail() }
-        user_password_layout.setOnClickListener { onEditPassword() }
-        user_about_edit_button.setOnClickListener { onEditAboutClicked() }
-        user_delete_account_button.setOnClickListener { onDeleteAccountClicked() }
-        title_action_button.setOnClickListener { onSaveButtonClicked()  }
-        user_photo_button.setOnClickListener { onPhotoClicked() }
-        user_add_association_button.setOnClickListener { onAddAssociationClicked() }
-        user_notifications_layout.setOnClickListener { onShowNotificationsSettingsClicked() }
-        user_action_zone_button.setOnClickListener { onActionZoneEditClicked()}
+        title_close_button?.setOnClickListener { onCloseButtonClicked() }
+        user_firstname_layout?.setOnClickListener { onEditFirstname() }
+        user_lastname_layout?.setOnClickListener { onEditFirstname() }
+        user_email_layout?.setOnClickListener { onEditEmail() }
+        user_password_layout?.setOnClickListener { onEditPassword() }
+        user_about_edit_button?.setOnClickListener { onEditAboutClicked() }
+        user_delete_account_button?.setOnClickListener { onDeleteAccountClicked() }
+        title_action_button?.setOnClickListener { onSaveButtonClicked()  }
+        user_photo_button?.setOnClickListener { onPhotoClicked() }
+        user_add_association_button?.setOnClickListener { onAddAssociationClicked() }
+        user_notifications_layout?.setOnClickListener { onShowNotificationsSettingsClicked() }
+        user_action_zone_button?.setOnClickListener { onActionZoneEditClicked()}
         initUserData()
     }
 

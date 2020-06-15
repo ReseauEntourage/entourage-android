@@ -207,7 +207,7 @@ public abstract class BaseLoginPresenter implements AvatarUpdatePresenter {
         }
     }
 
-    public void updateUserPhoto(String amazonFile) {
+    public void updateUserPhoto(@NonNull String amazonFile) {
         if (activity != null) {
 
             ArrayMap<String, Object> user = new ArrayMap<>();

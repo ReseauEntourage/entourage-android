@@ -112,7 +112,6 @@ class UserEditAboutFragment  : DialogFragment() {
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        @JvmField
         val TAG = UserEditAboutFragment::class.java.simpleName
         private const val ABOUT_MAX_CHAR_COUNT = 200
     }
