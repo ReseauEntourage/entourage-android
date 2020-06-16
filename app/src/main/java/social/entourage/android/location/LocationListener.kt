@@ -24,8 +24,8 @@ class LocationListener(private val manager: EntourageServiceManager,
     }
 
     private fun onUpdateLocation(location: Location) {
-        if (manager.entourageLocation.currentLocation == null) {
-            manager.entourageLocation.initialLocation = location
+        if (EntourageLocation.currentLocation == null) {
+            EntourageLocation.initialLocation = location
         }
 
         manager.updateLocation(location)

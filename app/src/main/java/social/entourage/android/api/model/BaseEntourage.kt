@@ -139,7 +139,7 @@ open class BaseEntourage : FeedItem, Serializable {
      * @return distance in kilometers
      */
     fun distanceToCurrentLocation(): Int {
-        val newLocation = EntourageLocation.getInstance().currentLocation ?: return 0
+        val newLocation = EntourageLocation.currentLocation ?: return 0
         val distance = this.location?.distanceTo(LocationPoint(newLocation.latitude, newLocation.longitude)) ?:0.0f
         return floor(distance /1000.0f).toInt()
     }

@@ -158,7 +158,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
             saveCameraPosition()
             val args = Bundle()
             args.putString(CreateEncounterActivity.BUNDLE_KEY_TOUR_ID, currentTourUUID)
-            val encounterPosition  = longTapCoordinates ?: EntourageLocation.getInstance().currentLatLng ?: EntourageLocation.getInstance().lastCameraPosition.target
+            val encounterPosition  = longTapCoordinates ?: EntourageLocation.currentLatLng ?: EntourageLocation.lastCameraPosition.target
             args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, encounterPosition.latitude)
             args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, encounterPosition.longitude)
             longTapCoordinates = null
@@ -361,8 +361,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
         if (pointsToDraw.isNotEmpty()) {
             drawCurrentTour(pointsToDraw, tourType, startDate)
             previousCoordinates = pointsToDraw[pointsToDraw.size - 1].location
-            val currentLocation = EntourageLocation.getInstance().currentLocation
-            centerMap(LatLng(currentLocation.latitude, currentLocation.longitude))
+            EntourageLocation.currentLocation?.let { centerMap(LatLng(it.latitude, it.longitude)) }
             isFollowing = true
         }
         tour_stop_button?.visibility = View.VISIBLE

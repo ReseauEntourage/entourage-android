@@ -61,7 +61,7 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
     protected open fun initializeMap() {}
 
     fun centerMap(latLng: LatLng?) {
-        val cameraPosition = CameraPosition(latLng, EntourageLocation.getInstance().lastCameraPosition.zoom, 0F, 0F)
+        val cameraPosition = CameraPosition(latLng, EntourageLocation.lastCameraPosition.zoom, 0F, 0F)
         centerMap(cameraPosition)
     }
 
@@ -91,7 +91,7 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
             centerMap(LatLng(it.latitude, it.longitude))
             isFollowing = false
         } ?: run {
-            centerMap(EntourageLocation.getInstance().lastCameraPosition)
+            centerMap(EntourageLocation.lastCameraPosition)
         }
     }
 
@@ -157,7 +157,7 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        previousCameraLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.getInstance().lastCameraPosition)
+        previousCameraLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.lastCameraPosition)
         fragment_map_longclick?.setOnClickListener { hideLongClickView() }
     }
 
@@ -269,7 +269,7 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
             return
         }
         isFollowing = true
-        EntourageLocation.getInstance().currentLocation?.let {
+        EntourageLocation.currentLocation?.let {
             centerMap(LatLng(it.latitude, it.longitude))
         }
     }

@@ -260,7 +260,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     fun createEntourage() {
-        var location = EntourageLocation.getInstance().lastCameraPosition.target
+        var location = EntourageLocation.lastCameraPosition.target
         if (!BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) {
             // For demand/contribution, by default select the action zone location, if set
             val address = EntourageApplication.me(activity)?.address
@@ -633,7 +633,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     public override fun saveCameraPosition() {
-        map?.cameraPosition?.let { EntourageLocation.getInstance().saveLastCameraPosition(it)}
+        map?.cameraPosition?.let { EntourageLocation.lastCameraPosition = it}
     }
 
     override fun getClusterRenderer(): DefaultClusterRenderer<ClusterItem> {
@@ -648,8 +648,8 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         )
         map?.setOnCameraIdleListener {
             val cameraPosition = map?.cameraPosition ?: return@setOnCameraIdleListener
-            EntourageLocation.getInstance().saveCurrentCameraPosition(cameraPosition)
-            val currentLocation = EntourageLocation.getInstance().currentLocation
+            EntourageLocation.currentCameraPosition = cameraPosition
+            val currentLocation = EntourageLocation.currentLocation
             val newLocation = EntourageLocation.cameraPositionToLocation(null, cameraPosition)
             val newZoom = cameraPosition.zoom
             if (entourageService != null && (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT)) {
@@ -1078,13 +1078,13 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     private fun showEmptyListPopup() {
         previousEmptyListPopupLocation?.let {
             // Show the popup only we moved from the last position we show it
-            val currentLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.getInstance().currentCameraPosition)
+            val currentLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.currentCameraPosition)
             if (it.distanceTo(currentLocation) < Constants.EMPTY_POPUP_DISPLAY_LIMIT) {
                 return
             }
             previousEmptyListPopupLocation = currentLocation
         } ?: run {
-            previousEmptyListPopupLocation = EntourageLocation.getInstance().currentLocation
+            previousEmptyListPopupLocation = EntourageLocation.currentLocation
         }
         // Check if we need to show the popup
         if (presenter.isShowNoEntouragesPopup) {

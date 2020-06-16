@@ -131,7 +131,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             var distance = 0
             val startPoint = newFeedItem.getStartPoint()
             if (startPoint != null) {
-                val currentLocation = EntourageLocation.getInstance().currentLocation
+                val currentLocation = EntourageLocation.currentLocation
                 if (currentLocation != null) {
                     distance = ceil(startPoint.distanceTo(LocationPoint(currentLocation.latitude, currentLocation.longitude)) / 1000.toDouble()).toInt() // in kilometers
                 }

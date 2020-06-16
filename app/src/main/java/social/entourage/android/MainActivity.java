@@ -168,7 +168,7 @@ public class MainActivity extends EntourageSecuredActivity
         User user = getAuthenticationController().getUser();
         if (user != null) {
             //refresh the user info from the server
-            Location location = EntourageLocation.getInstance().getCurrentLocation();
+            Location location = EntourageLocation.getCurrentLocation();
             presenter.updateUser(null, null, null, location);
             //initialize the push notifications
             initializePushNotifications();
