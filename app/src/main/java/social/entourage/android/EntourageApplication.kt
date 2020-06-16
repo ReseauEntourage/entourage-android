@@ -159,7 +159,7 @@ class EntourageApplication : MultiDexApplication() {
         updateBadgeCount()
     }
 
-    fun updateBadgeCountForFeedItem(feedItem: FeedItem?) {
+    fun updateBadgeCountForFeedItem(feedItem: FeedItem) {
         updateStorageFeedItem(feedItem)
         updateBadgeCount()
     }
@@ -177,7 +177,7 @@ class EntourageApplication : MultiDexApplication() {
         preferences.commit()
     }
 
-    fun storeNewPushNotification(message: Message?, isAdded: Boolean): Int {
+    fun storeNewPushNotification(message: Message, isAdded: Boolean): Int {
         val me = entourageComponent.authenticationController?.user ?: return -1
         return feedItemsStorage.saveFeedItem(me.id, message, isAdded)
     }
@@ -186,7 +186,7 @@ class EntourageApplication : MultiDexApplication() {
         feedItemsStorage.updateInvitationCount(count)
     }
 
-    private fun updateStorageFeedItem(feedItem: FeedItem?) {
+    private fun updateStorageFeedItem(feedItem: FeedItem) {
         val me = entourageComponent.authenticationController?.user ?: return
         feedItemsStorage.updateFeedItem(me.id, feedItem)
     }
