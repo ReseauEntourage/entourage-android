@@ -12,9 +12,8 @@ import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.authentication.AuthenticationModule
-import social.entourage.android.authentication.login.LoginActivity
 import social.entourage.android.message.push.PushNotificationManager
-import social.entourage.android.newsfeed.FeedItemsStorage
+import social.entourage.android.newsfeed.UserFeedItemListCache
 import social.entourage.android.onboarding.LoginNewActivity
 import timber.log.Timber
 import java.util.*
@@ -27,7 +26,7 @@ class EntourageApplication : MultiDexApplication() {
     private val activities: ArrayList<EntourageActivity>  = ArrayList()
     var badgeCount = 0
         private set
-    private lateinit var feedItemsStorage: FeedItemsStorage
+    private lateinit var userFeedItemListCache: UserFeedItemListCache
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var librariesSupport: LibrariesSupport
 
@@ -105,10 +104,10 @@ class EntourageApplication : MultiDexApplication() {
     // ----------------------------------
     private fun updateBadgeCount() {
         val me = me() ?:return
-        if (badgeCount == feedItemsStorage.getBadgeCount(me.id)) {
+        if (badgeCount == userFeedItemListCache.getBadgeCount(me.id)) {
             return
         }
-        badgeCount = feedItemsStorage.getBadgeCount(me.id)
+        badgeCount = userFeedItemListCache.getBadgeCount(me.id)
         if (badgeCount == 0) {
             ShortcutBadger.removeCount(applicationContext)
         } else {
@@ -168,32 +167,32 @@ class EntourageApplication : MultiDexApplication() {
     // FeedItemsStorage
     // ----------------------------------
     private fun setupFeedItemsStorage() {
-        feedItemsStorage = entourageComponent.complexPreferences?.getObject(FeedItemsStorage.KEY, FeedItemsStorage::class.java) ?: FeedItemsStorage()
+        userFeedItemListCache = entourageComponent.complexPreferences?.getObject(UserFeedItemListCache.KEY, UserFeedItemListCache::class.java) ?: UserFeedItemListCache()
     }
 
     private fun saveFeedItemsStorage() {
         val preferences = entourageComponent.complexPreferences ?: return
-        preferences.putObject(FeedItemsStorage.KEY, feedItemsStorage)
+        preferences.putObject(UserFeedItemListCache.KEY, userFeedItemListCache)
         preferences.commit()
     }
 
     fun storeNewPushNotification(message: Message, isAdded: Boolean): Int {
         val me = entourageComponent.authenticationController?.user ?: return -1
-        return feedItemsStorage.saveFeedItem(me.id, message, isAdded)
+        return userFeedItemListCache.saveFeedItemFromNotification(me.id, message, isAdded)
     }
 
     fun updateStorageInvitationCount(count: Int) {
-        feedItemsStorage.updateInvitationCount(count)
+        userFeedItemListCache.updateInvitationCount(count)
     }
 
     private fun updateStorageFeedItem(feedItem: FeedItem) {
         val me = entourageComponent.authenticationController?.user ?: return
-        feedItemsStorage.updateFeedItem(me.id, feedItem)
+        userFeedItemListCache.updateFeedItem(me.id, feedItem)
     }
 
     fun clearFeedStorage(): Boolean {
         val me = entourageComponent.authenticationController?.user ?: return false
-        return feedItemsStorage.clear(me.id)
+        return userFeedItemListCache.clear(me.id)
     }
 
     companion object {

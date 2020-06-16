@@ -7,12 +7,13 @@ import social.entourage.android.api.model.feed.FeedItem
 import timber.log.Timber
 import java.io.Serializable
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Local storage class for feed items
  * Created by mihaiionescu on 20/03/2017.
  */
-class FeedItemsStorage : Serializable {
+class UserFeedItemListCache : Serializable {
     //cache
     private var cacheCount = 0
     private var cacheInvitationCount = 0
@@ -21,31 +22,27 @@ class FeedItemsStorage : Serializable {
     // ----------------------------------
     // Attributes
     // ----------------------------------
-    private val feeds = HashMap<Int, MutableList<FeedItemStorage>>()
+    private val items = HashMap<Int, MutableList<FeedItemCache>>()
 
     // ----------------------------------
     // Methods
     // ----------------------------------
-    private fun getUserFeeds(userId: Int): MutableList<FeedItemStorage> {
+    private fun getUserCache(userId: Int): MutableList<FeedItemCache> {
         // get the list
-        var userFeeds = feeds[userId]
-        // check if there is one
-        if (userFeeds == null) {
-            // create a list
-            userFeeds = ArrayList()
-            // save the list
-            feeds[userId] = userFeeds
+        return items[userId] ?: run {
+            val userCache = ArrayList<FeedItemCache>()
+            items[userId] = userCache
+            return userCache
         }
-        return userFeeds
     }
 
-    fun saveFeedItem(userId: Int, message: Message, isAdded: Boolean): Int {
+    fun saveFeedItemFromNotification(userId: Int, message: Message, isAdded: Boolean): Int {
         // sanity checks
         val content = message.content ?: return -1
         // get the list
-        val userFeeds = getUserFeeds(userId)
+        val userCache = getUserCache(userId)
         // search for a saved feeditem
-        for (feedItemStorage in userFeeds) {
+        for (feedItemStorage in userCache) {
             if (feedItemStorage.feedId != content.joinableId) {
                 continue
             }
@@ -61,7 +58,7 @@ class FeedItemsStorage : Serializable {
         }
         if (isAdded) {
             // none found, add one
-            userFeeds.add(FeedItemStorage(content))
+            userCache.add(FeedItemCache(content))
             hasChanged = true
             return 1
         }
@@ -77,22 +74,22 @@ class FeedItemsStorage : Serializable {
 
     fun updateFeedItem(userId: Int, feedItem: FeedItem) {
         // get the list
-        val userFeeds = getUserFeeds(userId)
+        val userCache = getUserCache(userId)
         // search for a saved feeditem
-        for (feedItemStorage in userFeeds) {
-            if (feedItemStorage.feedId == feedItem.id && feedItemStorage.type == feedItem.type) {
-                hasChanged = hasChanged or feedItemStorage.updateTo(feedItem)
+        for (feedItemCache in userCache) {
+            if (feedItemCache.feedId == feedItem.id && feedItemCache.type == feedItem.type) {
+                hasChanged = hasChanged or feedItemCache.update(feedItem)
                 return
             }
         }
         if (feedItem.getUnreadMsgNb() > 0) {
-            userFeeds.add(FeedItemStorage(feedItem))
+            userCache.add(FeedItemCache(feedItem))
             hasChanged = true
         }
     }
 
     fun clear(userId: Int): Boolean {
-        getUserFeeds(userId).clear()
+        getUserCache(userId).clear()
         hasChanged = false
         cacheCount = 0
         cacheInvitationCount = 0
@@ -106,7 +103,7 @@ class FeedItemsStorage : Serializable {
         Timber.d("old cacheCount=%d", cacheCount)
         cacheCount = 0
         hasChanged = false
-        for (feedItem in getUserFeeds(userId)) {
+        for (feedItem in getUserCache(userId)) {
             cacheCount += feedItem.badgeCount
         }
         Timber.d("new cacheCount=%d", cacheCount)
@@ -116,7 +113,7 @@ class FeedItemsStorage : Serializable {
     // ----------------------------------
     // INNER CLASSES
     // ----------------------------------
-    private class FeedItemStorage : Serializable {
+    private class FeedItemCache : Serializable {
         var type: Int
         var feedId: Long
         var badgeCount: Int
@@ -133,7 +130,7 @@ class FeedItemsStorage : Serializable {
             badgeCount = 1
         }
 
-        fun updateTo(feedItem: FeedItem): Boolean {
+        fun update(feedItem: FeedItem): Boolean {
             var isChanged = false
             if (feedItem.getUnreadMsgNb() != badgeCount) {
                 badgeCount = feedItem.getUnreadMsgNb()
@@ -146,7 +143,7 @@ class FeedItemsStorage : Serializable {
         }
 
         companion object {
-            private const val serialVersionUID = 6917587786160136512L
+            private const val serialVersionUID = 6917587914260136512L
         }
     }
 
@@ -154,7 +151,7 @@ class FeedItemsStorage : Serializable {
         // ----------------------------------
         // Constants
         // ----------------------------------
-        private const val serialVersionUID = -7135458066881059190L
+        private const val serialVersionUID = -7135455534881059190L
         const val KEY = "FeedItemsStorage"
     }
 }
