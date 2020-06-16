@@ -1,4 +1,4 @@
-package social.entourage.android.announcement
+package social.entourage.android.newsfeed.announcement
 
 import android.content.Intent
 import android.content.res.Resources
