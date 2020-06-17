@@ -768,6 +768,9 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     }
 
     fun goMain() {
+        val sharedPreferences = get().sharedPreferences
+        sharedPreferences.edit().putInt(EntourageApplication.KEY_ONBOARDING_USER_TYPE,userTypeSelected.pos).apply()
+        sharedPreferences.edit().putBoolean(EntourageApplication.KEY_IS_FROM_ONBOARDING,true).apply()
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
@@ -943,11 +946,11 @@ enum class NeighbourPositionType(val pos:Int) {
     NONE(0)
 }
 
-enum class UserTypeSelection {
-    NEIGHBOUR,
-    ALONE,
-    ASSOS,
-    NONE;
+enum class UserTypeSelection(val pos:Int) {
+    NEIGHBOUR(1),
+    ALONE(2),
+    ASSOS(3),
+    NONE(0);
 
     fun getGoalString() : String {
        return when(this) {

@@ -112,6 +112,15 @@ public class EntourageEvents {
     public static final String EVENT_ACTION_ONBOARDING_UPLOAD_PHOTO = "Action__Onboarding__UploadPhoto";
     public static final String EVENT_ACTION_ONBOARDING_TAKE_PHOTO = "Action__Onboarding__TakePhoto";
 
+    //------TOOLTIP
+    public static final String EVENT_ACTION_TOOLTIP_FILTER_NEXT = "Action__Tooltip__FilterNext";
+    public static final String EVENT_ACTION_TOOLTIP_FILTER_CLOSE = "Action__Tooltip__FilterClose";
+    public static final String EVENT_ACTION_TOOLTIP_GUIDE_NEXT = "Action__Tooltip__GuideNext";
+    public static final String EVENT_ACTION_TOOLTIP_GUIDE_CLOSE = "Action__Tooltip__GuideClose";
+    public static final String EVENT_ACTION_TOOLTIP_PLUS_NEXT = "Action__Tooltip__PlusNext";
+    public static final String EVENT_ACTION_TOOLTIP_PLUS_CLOSE = "Action__Tooltip__PlusClose";
+
+
     //-------
     // ONBOARDING - END
     //----------------------------//

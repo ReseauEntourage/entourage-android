@@ -3,6 +3,7 @@ package social.entourage.android.map.filter
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryManager
+import social.entourage.android.entourage.category.EntourageCategoryManager.getEntourageCategoriesForGroup
 import java.io.Serializable
 import java.util.*
 
@@ -94,6 +95,39 @@ class MapFilter : MapFilterInterface, Serializable {
             }
         } else {
             entourageCategories.remove(actionCategory)
+        }
+    }
+
+    //Setup Filters for specific user type
+    fun setNeighbourFilters() {
+        entourageTypeDemand = true
+        entourageTypeContribution = false
+        entourageTypeOuting = true
+        timeframe = DAYS_3
+        showPastEvents = false
+        //Remove contrib types
+        val entourageCategoryList = getEntourageCategoriesForGroup(BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)
+
+        for (entourageCategory in entourageCategoryList) {
+            entourageCategory.key?.let {
+                setCategoryChecked(entourageCategory.key!!, false)
+            }
+        }
+    }
+
+    fun setAloneFilters() {
+        entourageTypeDemand = false
+        entourageTypeContribution = true
+        entourageTypeOuting = true
+        timeframe = DAYS_3
+        showPastEvents = false
+        //Remove demand types
+        val entourageCategoryList = getEntourageCategoriesForGroup(BaseEntourage.GROUPTYPE_ACTION_DEMAND)
+
+        for (entourageCategory in entourageCategoryList) {
+            entourageCategory.key?.let {
+                setCategoryChecked(entourageCategory.key!!, false)
+            }
         }
     }
 

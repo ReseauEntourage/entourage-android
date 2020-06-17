@@ -37,4 +37,12 @@
     <string name="plus_image_subtitle">L’essentiel, c’est la rencontre !</string>
     <string name="plus_help_text">Vous ne vous sentez pas prêt ?</string>
 
+    //Tooltips
+    <string name="tooltip_desc1">Votre fil d’actualité a été filtré en fonction de vos préférences. Modifiez vos paramètres en cliquant sur ce bouton.</string>
+    <string name="tooltip_title2">Annuaire solidaire</string>
+    <string name="tooltip_desc2">Besoin d’informations ? Retrouvez tous les lieux solidaires autour de vous.</string>
+    <string name="tooltip_title3">Passez à l’action</string>
+    <string name="tooltip_desc3">Vous pouvez maintenant proposer ou demander de l’aide au réseau !</string>
+    <string name="tooltip_step_format">%s sur 3</string>
+
 </resources>

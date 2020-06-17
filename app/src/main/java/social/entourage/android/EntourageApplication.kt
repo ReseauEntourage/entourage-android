@@ -205,6 +205,8 @@ class EntourageApplication : MultiDexApplication() {
         const val KEY_NOTIFICATIONS_ENABLED = "ENTOURAGE_NOTIFICATION_ENABLED"
         const val KEY_GEOLOCATION_ENABLED = "ENTOURAGE_GEOLOCATION_ENABLED"
 
+        const val KEY_IS_FROM_ONBOARDING = "isFromOnboarding"
+        const val KEY_ONBOARDING_USER_TYPE = "userType"
         // ----------------------------------
         // MEMBERS
         // ----------------------------------
