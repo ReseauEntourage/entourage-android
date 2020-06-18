@@ -86,6 +86,9 @@ public class User implements Serializable {
 
     private Address address;
 
+    @SerializedName("address_2")
+    private Address addressSecondary;
+
     @Expose(serialize = false)
     private boolean entourageDisclaimerShown = false;
 
@@ -267,6 +270,14 @@ public class User implements Serializable {
 
     public void setAddress(final Address address) {
         this.address = address;
+    }
+
+    public Address getAddressSecondary() {
+        return addressSecondary;
+    }
+
+    public void setAddressSecondary(Address addressSecondary) {
+        this.addressSecondary = addressSecondary;
     }
 
     public String getGoal() { return goal; }

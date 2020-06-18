@@ -138,7 +138,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     override fun onStart() {
         super.onStart()
         if (!isLocationEnabled() && !isLocationPermissionGranted()) {
-            (activity as MainActivity?)?.showEditActionZoneFragment(this)
+            (activity as MainActivity?)?.showEditActionZoneFragment(this,false)
         }
         fragment_map_feeditems_view?.addOnScrollListener(scrollListener)
         EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_FEED_FROM_TAB)

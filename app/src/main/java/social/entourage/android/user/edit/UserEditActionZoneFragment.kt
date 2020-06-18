@@ -14,6 +14,7 @@ import social.entourage.android.onboarding.OnboardingPlaceFragment
 import timber.log.Timber
 
 private const val ARG_PLACE = "place"
+private const val ARG_2ND = "is2ndAddress"
 
 class UserEditActionZoneFragment : OnboardingPlaceFragment() {
 
@@ -48,12 +49,17 @@ class UserEditActionZoneFragment : OnboardingPlaceFragment() {
     fun sendNetwork() {
         if (userAddress != null) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_ACTION_ZONE_SUBMIT)
-            OnboardingAPI.getInstance(EntourageApplication.get()).updateAddress(userAddress!!) { isOK, userResponse ->
+            OnboardingAPI.getInstance(EntourageApplication.get()).updateAddress(userAddress!!,isSecondaryAddress) { isOK, userResponse ->
                 if (isOK) {
                     val authenticationController = EntourageApplication.get().entourageComponent.authenticationController
                     val me = authenticationController.user
                     if (me != null && userResponse != null) {
-                        me.address = userResponse.address
+                        if (!isSecondaryAddress) {
+                            me.address = userResponse.address
+                        }
+                        else {
+                            me.addressSecondary = userResponse.address
+                        }
                         authenticationController.saveUser(me)
                         mListener?.onUserEditActionZoneFragmentAddressSaved()
                         dismiss()
@@ -77,10 +83,11 @@ class UserEditActionZoneFragment : OnboardingPlaceFragment() {
     companion object {
         const val TAG = "social.entourage.android.user.edit.EditUserPlaceFragment"//EditUserPlaceFragment::class.java.simpleName
         @JvmStatic
-        fun newInstance(googlePlaceAddress: User.Address?) =
+        fun newInstance(googlePlaceAddress: User.Address?,isSecondary:Boolean) =
                 UserEditActionZoneFragment().apply {
                     arguments = Bundle().apply {
                         putSerializable(ARG_PLACE, googlePlaceAddress)
+                        putBoolean(ARG_2ND,isSecondary)
                     }
                 }
     }

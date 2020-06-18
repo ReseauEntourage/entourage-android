@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.maps.model.LatLng
@@ -41,6 +42,7 @@ class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
     private lateinit var autocompleteFragment: SupportPlaceAutocompleteFragment
     private val fragmentListeners: MutableList<FragmentListener> = ArrayList()
     private var isFromLogin = false
+    private var isSecondaryAddress = false
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -48,6 +50,7 @@ class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             userAddress = it.getSerializable(KEY_USER_ADDRESS) as User.Address?
+            isSecondaryAddress = it.getBoolean(KEY_SECONDARY)
         }
     }
 
@@ -154,14 +157,40 @@ class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
         }
         saving = true
         val userRequest = get().entourageComponent.userRequest
-        val call = userRequest.updateAddress(AddressWrapper(userAddress))
+        val call:Call<AddressWrapper>
+
+        val address: MutableMap<String, Any> = ArrayMap()
+        if (userAddress?.googlePlaceId.isNullOrEmpty()) {
+            address["latitude"] = userAddress?.latitude ?: 0.0
+            address["longitude"] = userAddress?.longitude ?: 0.0
+            address["place_name"] = userAddress?.displayAddress ?: ""
+        }
+        else {
+            address["google_place_id"] = userAddress?.googlePlaceId ?: ""
+        }
+
+        val request = ArrayMap<String, Any>()
+        request["address"] = address
+
+        if (!isSecondaryAddress) {
+            call = userRequest.updatePrimaryAddressLocation(request)
+        }
+        else {
+            call = userRequest.updateSecondaryAddressLocation(request)
+        }
+
         call.enqueue(object : Callback<AddressWrapper?> {
             override fun onResponse(call: Call<AddressWrapper?>, response: Response<AddressWrapper?>) {
                 if (response.isSuccessful) {
                     response.body()?.address?.let {
                         val authenticationController = get().entourageComponent.authenticationController
                         authenticationController.user?.let { me->
-                            me.address = it
+                            if (!isSecondaryAddress) {
+                                me.address = it
+                            }
+                            else {
+                                me.addressSecondary = it
+                            }
                             authenticationController.saveUser(me)
                         }
                     }
@@ -234,6 +263,7 @@ class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
         @JvmField
         val TAG = UserEditActionZoneFragmentCompat::class.java.simpleName
         private const val KEY_USER_ADDRESS = "social.entourage.android.KEY_USER_ADDRESS"
+        private const val KEY_SECONDARY = "social.entourage.android.KEY_SECONDARY"
 
         /**
          * Use this factory method to create a new instance of
@@ -243,10 +273,11 @@ class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
          * @return A new instance of fragment UserEditActionZoneFragmentCompat.
          */
         @JvmStatic
-        fun newInstance(userAddress: User.Address?): UserEditActionZoneFragmentCompat {
+        fun newInstance(userAddress: User.Address?,isSecondaryAddress:Boolean): UserEditActionZoneFragmentCompat {
             val fragment = UserEditActionZoneFragmentCompat()
             val args = Bundle()
             args.putSerializable(KEY_USER_ADDRESS, userAddress)
+            args.putBoolean(KEY_SECONDARY,isSecondaryAddress)
             fragment.arguments = args
             return fragment
         }

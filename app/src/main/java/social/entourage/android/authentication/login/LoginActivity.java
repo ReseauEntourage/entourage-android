@@ -1020,7 +1020,7 @@ public class LoginActivity extends EntourageActivity
             return;
         }
         User me = loginPresenter.authenticationController.getUser();
-        UserEditActionZoneFragmentCompat actionZoneFragment = UserEditActionZoneFragmentCompat.newInstance(me != null ? me.getAddress() : null);
+        UserEditActionZoneFragmentCompat actionZoneFragment = UserEditActionZoneFragmentCompat.newInstance(me != null ? me.getAddress() : null,false);
         actionZoneFragment.setFragmentListener(this);
         actionZoneFragment.setFromLogin(true);
         try {

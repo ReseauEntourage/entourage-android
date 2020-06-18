@@ -223,21 +223,26 @@ class OnboardingAPI(val application: EntourageApplication) {
     /**********************
      * user
      */
-    fun updateAddress(userAddress: User.Address,listener:(isOK:Boolean,userResponse:User.AddressWrapper?) -> Unit) {
+    fun updateAddress(userAddress: User.Address, isSecondary:Boolean, listener:(isOK:Boolean,userResponse:User.AddressWrapper?) -> Unit) {
 
         val call:Call<User.AddressWrapper>
+        val address: MutableMap<String, Any> = ArrayMap()
         if (userAddress.googlePlaceId.isNullOrEmpty()) {
-            val address: MutableMap<String, Any> = ArrayMap()
             address["latitude"] = userAddress.latitude
             address["longitude"] = userAddress.longitude
             address["place_name"] = userAddress.displayAddress
-
-            val request = ArrayMap<String, Any>()
-            request["address"] = address
-            call = getOnboardingService().updateAddressLocation(request)
         }
         else {
-            call = getOnboardingService().updateAddress(User.AddressWrapper(userAddress))
+            address["google_place_id"] = userAddress.googlePlaceId
+        }
+        val request = ArrayMap<String, Any>()
+        request["address"] = address
+
+        if (!isSecondary) {
+            call = getOnboardingService().updatePrimaryAddressLocation(request)
+        }
+        else {
+            call = getOnboardingService().updateSecondaryAddressLocation(request)
         }
 
         call.enqueue(object : Callback<User.AddressWrapper?> {

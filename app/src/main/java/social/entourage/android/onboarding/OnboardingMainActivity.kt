@@ -251,7 +251,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     fun sendAddress() {
         alertDialog.show(R.string.onboard_waiting_dialog)
         EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_ACTION_ZONE_SUBMIT)
-        OnboardingAPI.getInstance(get()).updateAddress(temporaryPlaceAddress!!) { isOK, userResponse ->
+        OnboardingAPI.getInstance(get()).updateAddress(temporaryPlaceAddress!!,false) { isOK, userResponse ->
             if (isOK) {
                 val authenticationController = get().entourageComponent.authenticationController
                 val me = authenticationController.user
@@ -261,7 +261,12 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 }
                 displayToast(R.string.user_action_zone_send_ok)
                 alertDialog.dismiss()
-                goNextStep()
+                if (userTypeSelected == UserTypeSelection.NONE) {
+                    goNextStep()
+                }
+                else {
+                    goNextStepSdfNeighbour()
+                }
             }
             else {
                 alertDialog.dismiss()
@@ -402,32 +407,26 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         }
     }
 
-
     fun update2ndAddress() {
-        //TODO: a faire WS
-        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_ACTION_ZONE2_SUBMIT)
-        goNextStepSdfNeighbour()
-        /*
         alertDialog.show(R.string.onboard_waiting_dialog)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_ACTION_ZONE_SUBMIT)
-        OnboardingAPI.getInstance(get()).updateAddress(temporaryPlaceAddress!!) { isOK, userResponse ->
+        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_ACTION_ZONE2_SUBMIT)
+        OnboardingAPI.getInstance(get()).updateAddress(temporary2ndPlaceAddress!!,true) { isOK, userResponse ->
             if (isOK) {
                 val authenticationController = get().entourageComponent.authenticationController
                 val me = authenticationController.user
                 if (me != null && userResponse != null) {
-                    me.address = userResponse.address
+                    me.addressSecondary = userResponse.address
                     authenticationController.saveUser(me)
                 }
                 displayToast(R.string.user_action_zone_send_ok)
                 alertDialog.dismiss()
-                goNextStep()
+                goNextStepSdfNeighbour()
             }
             else {
                 alertDialog.dismiss()
                 displayToast(R.string.user_action_zone_send_failed)
             }
         }
-        */
     }
 
     fun updateAlone() {
@@ -620,6 +619,10 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                         updateAlone()
                         return
                     }
+                    if (currentPositionAlone == AlonePositionType.NONE.pos) {
+                        sendAddress()
+                        return
+                    }
                     currentPositionAlone = currentPositionAlone + 1
                     moveToTunnelAlone()
                     return
@@ -632,6 +635,10 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                     }
                     if (currentPositionNeighbour == NeighbourPositionType.ACTIVITIES.pos) {
                         updateNeighbour()
+                        return
+                    }
+                    if (currentPositionNeighbour == NeighbourPositionType.NONE.pos) {
+                        sendAddress()
                         return
                     }
                     currentPositionNeighbour = currentPositionNeighbour + 1

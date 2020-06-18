@@ -465,7 +465,7 @@ public class UserEditFragment extends EntourageDialogFragment implements UserEdi
 
     @OnClick(R.id.user_action_zone_button)
     protected void onActionZoneEditClicked() {
-        UserEditActionZoneFragment frag = UserEditActionZoneFragment.newInstance(editedUser.getAddress());
+        UserEditActionZoneFragment frag = UserEditActionZoneFragment.newInstance(editedUser.getAddress(),false);
         frag.setupListener(this);
         frag.show(getParentFragmentManager(), UserEditActionZoneFragment.TAG);
     }

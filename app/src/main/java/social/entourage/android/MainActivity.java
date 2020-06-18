@@ -853,10 +853,10 @@ public class MainActivity extends EntourageSecuredActivity
     // ----------------------------------
 
     public void showEditActionZoneFragment() {
-        showEditActionZoneFragment( null);
+        showEditActionZoneFragment( null,false);
     }
 
-    public void showEditActionZoneFragment(UserEditActionZoneFragmentCompat.FragmentListener extraFragmentListener) {
+    public void showEditActionZoneFragment(UserEditActionZoneFragmentCompat.FragmentListener extraFragmentListener,Boolean isSecondaryAddress) {
         if (!authenticationController.isAuthenticated()) {
             return;
         }
@@ -880,14 +880,14 @@ public class MainActivity extends EntourageSecuredActivity
             return;
         }
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            UserEditActionZoneFragmentCompat userEditActionZoneFragmentCompat = UserEditActionZoneFragmentCompat.newInstance(null);
+            UserEditActionZoneFragmentCompat userEditActionZoneFragmentCompat = UserEditActionZoneFragmentCompat.newInstance(null,false);
             userEditActionZoneFragmentCompat.addFragmentListener(this);
             userEditActionZoneFragmentCompat.addFragmentListener(extraFragmentListener);
             userEditActionZoneFragmentCompat.setFromLogin(true);
             userEditActionZoneFragmentCompat.show(getSupportFragmentManager(), UserEditActionZoneFragmentCompat.TAG);
         }
         else {
-            UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null);
+            UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null,isSecondaryAddress);
             userEditActionZoneFragment.setupListener(this);
             userEditActionZoneFragment.setupListener(extraFragmentListener);
             userEditActionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
