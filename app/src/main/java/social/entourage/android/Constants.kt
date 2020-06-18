@@ -25,6 +25,7 @@ object Constants {
     const val TERMS_LINK_ID = "terms"
     const val PRIVACY_LINK_ID = "privacy-policy"
     const val AMBASSADOR_ID = "devenir-ambassadeur"
+    const val EVENTS_GUIDE_ID = "events-guide"
 
     // Geolocation
     const val UPDATE_TIMER_MILLIS_OFF_TOUR: Long = 20000

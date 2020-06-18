@@ -624,7 +624,7 @@ public class BaseCreateEntourageFragment extends EntourageDialogFragment impleme
         HtmlTextView helpHtmlTextView = getView().findViewById(R.id.create_entourage_help_link);
         if (helpHtmlTextView != null) {
             if (getActivity() != null && getActivity() instanceof MainActivity) {
-                String goalLink = ((MainActivity) getActivity()).getLink(Constants.GOAL_LINK_ID);
+                String goalLink = ((MainActivity) getActivity()).getLink(Constants.EVENTS_GUIDE_ID);
                 helpHtmlTextView.setHtmlString(getString(R.string.entourage_create_help_text, goalLink), EntourageLinkMovementMethod.getInstance());
             }
         }

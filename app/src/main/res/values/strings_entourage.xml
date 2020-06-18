@@ -12,7 +12,7 @@
     <string name="entourage_create_title_hint">Exemple : %1$s</string>
     <string name="entourage_create_title_char_count_format">%1$d/%2$d</string>
     <string name="entourage_create_description_label">Description</string>
-    <string name="entourage_create_help_text"><![CDATA[<a href=\"%1$s\">Besoin d\'idées d\'action?</a>]]></string>
+    <string name="entourage_create_help_text"><![CDATA[<a href=\"%1$s\">Quels évènements diffuser ?</a>]]></string>
     <string name="entourage_create_date_label">Date *</string>
     <string name="entourage_create_date_format">\'le\' EEEE dd MMMM \'à\' HH\'h\'mm</string>
 
