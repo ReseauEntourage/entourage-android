@@ -5,6 +5,7 @@ package social.entourage.android.tools
 import android.graphics.PorterDuff
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.ImageButton
 import androidx.core.content.res.ResourcesCompat
 import social.entourage.android.R
@@ -23,6 +24,16 @@ fun ImageButton.disable() {
 fun ImageButton.enable(res:Int) {
     Timber.d("Call enable")
     setImageDrawable(ResourcesCompat.getDrawable(resources,res,null))
+    isClickable = true
+}
+
+fun Button.disable() {
+    alpha = 0.5f
+    isClickable = false
+}
+
+fun Button.enable() {
+    alpha = 1f
     isClickable = true
 }
 

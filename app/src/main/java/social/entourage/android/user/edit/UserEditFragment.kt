@@ -316,10 +316,8 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
     }
 
     private fun onActionSelectType() {
-        //TODO: call edit type action
-        // val frag = UserEditProfileType()
-        // frag.setupListener(this)
-        // frag.show(parentFragmentManager, UserEditProfileType.TAG)
+         val frag = UserEditProfileType()
+         frag.show(parentFragmentManager, UserEditProfileType.TAG)
     }
 
     private fun onActionAddSecondaryZone() {
