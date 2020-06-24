@@ -23,6 +23,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.R
+import social.entourage.android.api.UserResponse
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.User.AddressWrapper
 import social.entourage.android.base.EntourageDialogFragment
@@ -157,7 +158,7 @@ class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
         }
         saving = true
         val userRequest = get().entourageComponent.userRequest
-        val call:Call<AddressWrapper>
+        val call:Call<UserResponse>
 
         val address: MutableMap<String, Any> = ArrayMap()
         if (userAddress?.googlePlaceId.isNullOrEmpty()) {
@@ -179,19 +180,15 @@ class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
             call = userRequest.updateSecondaryAddressLocation(request)
         }
 
-        call.enqueue(object : Callback<AddressWrapper?> {
-            override fun onResponse(call: Call<AddressWrapper?>, response: Response<AddressWrapper?>) {
+        call.enqueue(object : Callback<UserResponse?> {
+            override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
                 if (response.isSuccessful) {
-                    response.body()?.address?.let {
+                    response.body()?.user?.let {
                         val authenticationController = get().entourageComponent.authenticationController
                         authenticationController.user?.let { me->
-                            if (!isSecondaryAddress) {
-                                me.address = it
-                            }
-                            else {
-                                me.addressSecondary = it
-                            }
-                            authenticationController.saveUser(me)
+
+                            it.phone = me.phone
+                            authenticationController.saveUser(it)
                         }
                     }
                     for (fragmentListener in fragmentListeners) {
@@ -207,7 +204,7 @@ class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
                 saving = false
             }
 
-            override fun onFailure(call: Call<AddressWrapper?>, t: Throwable) {
+            override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
                 if (activity != null) {
                     Toast.makeText(activity, R.string.user_action_zone_send_failed, Toast.LENGTH_SHORT).show()
                 }

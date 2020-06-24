@@ -25,6 +25,9 @@ class UserEditActionZoneFragment : OnboardingPlaceFragment() {
         isFromProfile = true
         super.onViewCreated(view, savedInstanceState)
 
+        ui_onboard_place_tv_title?.text = getString(R.string.profile_edit_zone_title)
+        ui_onboard_place_tv_info?.text = getString(R.string.profile_edit_zone_description)
+
         edit_place_title_layout?.visibility = View.VISIBLE
         edit_place_title_layout?.title_action_button?.setOnClickListener {
             Timber.d("Click valider")
@@ -46,19 +49,21 @@ class UserEditActionZoneFragment : OnboardingPlaceFragment() {
 
     private fun sendNetwork() {
         if (userAddress != null) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_ACTION_ZONE_SUBMIT)
+            if (isSecondaryAddress) {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_ACTION_ZONE2_SUBMIT)
+            }
+            else {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_ACTION_ZONE_SUBMIT)
+            }
             OnboardingAPI.getInstance(EntourageApplication.get()).updateAddress(userAddress!!,isSecondaryAddress) { isOK, userResponse ->
                 if (isOK) {
                     val authenticationController = EntourageApplication.get().entourageComponent.authenticationController
                     val me = authenticationController.user
                     if (me != null && userResponse != null) {
-                        if (!isSecondaryAddress) {
-                            me.address = userResponse.address
-                        }
-                        else {
-                            me.addressSecondary = userResponse.address
-                        }
-                        authenticationController.saveUser(me)
+                        val newUser = userResponse.user
+                        newUser.phone = me.phone
+
+                        authenticationController.saveUser(newUser)
                         mListener?.onUserEditActionZoneFragmentAddressSaved()
                         dismiss()
                     }

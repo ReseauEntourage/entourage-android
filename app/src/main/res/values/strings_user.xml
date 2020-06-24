@@ -101,4 +101,36 @@
     <string name="user_action_zone_send_failed">L\'adresse n\'a pas été enregistrée</string>
     <string name="user_setting_ignore_hint">Vous pourrez modifier cette info dans votre profil</string>
 
+    <!-- Edit profile -->
+    //Profile mod action zone / type
+    <string name="profile_edit_zone_title">Où souhaitez-vous agir ?</string>
+    <string name="profile_edit_zone_description">Entourage est un réseau local !\nDécouvrez les initiatives solidaires de votre quartier et tissez des liens avec vos voisins</string>
+    <string name="profile_action_not_selected">"Mode d'action non sélectionné</string>
+    <string name="profile_title_action_mode">Mon mode d’action</string>
+    <string name="profile_activities">Activité(s) : %s</string>
+    <string name="profile_activity_not_selected">Activité non sélectionnée</string>
+
+    <string name="profile_my_zones">Mes zones d\'actions</string>
+    <string name="profile_my_zones_description">Soyez notifié.e des initiatives solidaires et besoins dans ces zones</string>
+    <string name="profile_button_add2nd_zone">Ajouter une zone d\'action</string>
+
+
+    //Info mosaic choice from ws
+  <string name="rencontrer_sdf">Me faire un cercle d’amis</string>
+  <string name="event_sdf">Participer à des évènements</string>
+  <string name="questions_sdf">Poser des questions</string>
+  <string name="aide_sdf">Demander de l’aide</string>
+  <string name="m_orienter_sdf">M’orienter</string>
+  <string name="trouver_asso_sdf">Trouver des associations</string>
+
+  <string name="m_informer_riverain">M’informer</string>
+  <string name="event_riverain">Participer à des évènements</string>
+  <string name="entourer_riverain">Entourer une personne isolée</string>
+  <string name="dons_riverain">Faire des dons matériels</string>
+  <string name="benevolat_riverain">M’investir dans l’associatif</string>
+
+  <string name="aide_pers_asso">Aide aux personnes</string>
+  <string name="cult_sport_asso">Initiatives culturelles et sportives</string>
+  <string name="serv_pub_asso">Service Public</string>
+  <string name="autre_asso">Autres</string>
 </resources>

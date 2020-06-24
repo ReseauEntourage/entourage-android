@@ -256,8 +256,8 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 val authenticationController = get().entourageComponent.authenticationController
                 val me = authenticationController.user
                 if (me != null && userResponse != null) {
-                    me.address = userResponse.address
-                    authenticationController.saveUser(me)
+                    userResponse.user.phone = me.phone
+                    authenticationController.saveUser(userResponse.user)
                 }
                 displayToast(R.string.user_action_zone_send_ok)
                 alertDialog.dismiss()
@@ -415,8 +415,8 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 val authenticationController = get().entourageComponent.authenticationController
                 val me = authenticationController.user
                 if (me != null && userResponse != null) {
-                    me.addressSecondary = userResponse.address
-                    authenticationController.saveUser(me)
+                    userResponse.user.phone = me.phone
+                    authenticationController.saveUser(userResponse.user)
                 }
                 displayToast(R.string.user_action_zone_send_ok)
                 alertDialog.dismiss()
@@ -775,11 +775,21 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     }
 
     fun goMain() {
-        val sharedPreferences = get().sharedPreferences
-        sharedPreferences.edit().putInt(EntourageApplication.KEY_ONBOARDING_USER_TYPE,userTypeSelected.pos).apply()
-        sharedPreferences.edit().putBoolean(EntourageApplication.KEY_IS_FROM_ONBOARDING,true).apply()
-        startActivity(Intent(this, MainActivity::class.java))
-        finish()
+        val authenticationController = get().entourageComponent.authenticationController
+        val me = authenticationController.user
+        OnboardingAPI.getInstance(get()).getUser(me.id) { isOK, userResponse ->
+            if (isOK) {
+                if (me != null && userResponse != null) {
+                    userResponse.user.phone = me.phone
+                    authenticationController.saveUser(userResponse.user)
+                }
+            }
+            val sharedPreferences = get().sharedPreferences
+            sharedPreferences.edit().putInt(EntourageApplication.KEY_ONBOARDING_USER_TYPE,userTypeSelected.pos).apply()
+            sharedPreferences.edit().putBoolean(EntourageApplication.KEY_IS_FROM_ONBOARDING,true).apply()
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
     }
 
     fun updateButtons() {

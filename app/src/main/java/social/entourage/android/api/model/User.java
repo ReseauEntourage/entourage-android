@@ -1,5 +1,7 @@
 package social.entourage.android.api.model;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.collection.ArrayMap;
 
@@ -12,10 +14,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import social.entourage.android.EntourageApplication;
+import social.entourage.android.R;
 import social.entourage.android.api.model.feed.FeedItemAuthor;
+import timber.log.Timber;
 
 public class User implements Serializable {
 
@@ -103,6 +108,8 @@ public class User implements Serializable {
 
     @SerializedName("goal")
     private String goal = "";
+
+    private ArrayList<String> interests;
 
     // ----------------------------------
     // CONSTRUCTOR
@@ -283,6 +290,14 @@ public class User implements Serializable {
     public String getGoal() { return goal; }
     public void setGoal(String goal) { this.goal = goal; }
 
+    public ArrayList<String> getInterests() {
+        return interests;
+    }
+
+    public void setInterests(ArrayList<String> interests) {
+        this.interests = interests;
+    }
+
     // ----------------------------------
     // Other methods
     // ----------------------------------
@@ -364,6 +379,31 @@ public class User implements Serializable {
 
     public boolean hasSignedEthicsCharter() {
         return roles != null && roles.contains(USER_ROLE_ETHICS_CHARTER_SIGNED);
+    }
+
+    public String getFormatedInterests(Context context) {
+        StringBuilder interests = new StringBuilder();
+
+        int i = 0;
+        for (String interest: this.interests) {
+            interests.append(" ").append(context.getString(getStringId(interest)));
+            if (i < this.interests.size() - 1) {
+                interests.append(",");
+            }
+            i = i + 1;
+        }
+
+        return interests.toString();
+    }
+
+    private static int getStringId(String resourceName) {
+        try {
+            Field stringId = R.string.class.getDeclaredField(resourceName);
+            return stringId.getInt(stringId);
+        } catch (Exception e) {
+            Timber.d("Resource not found : "+resourceName);
+            return -1;
+        }
     }
 
     // ----------------------------------

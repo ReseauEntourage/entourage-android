@@ -53,10 +53,13 @@ public interface UserRequest {
     Call<Partner.PartnerWrapper> updatePartner(@Path("user_id") int userId, @Path("partner_id") long partnerId, @Body Partner.PartnerWrapper partner);
 
     @POST("users/me/addresses/1")
-    Call<User.AddressWrapper> updatePrimaryAddressLocation(@Body ArrayMap<String, Object> address);
+    Call<UserResponse> updatePrimaryAddressLocation(@Body ArrayMap<String, Object> address);
 
     @POST("users/me/addresses/2")
-    Call<User.AddressWrapper> updateSecondaryAddressLocation(@Body ArrayMap<String, Object> address);
+    Call<UserResponse> updateSecondaryAddressLocation(@Body ArrayMap<String, Object> address);
+
+    @DELETE("users/me/addresses/2")
+    Call<Response> deleteSecondaryAddressLocation();
 
     //Onboarding Asso
     @POST("partners/join_request")

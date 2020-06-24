@@ -81,7 +81,12 @@ open class OnboardingPlaceFragment : EntourageDialogFragment() {
         setupViews()
 
         if (isFromProfile) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_PROFILE_ACTION_ZONE)
+            if (isSecondaryAddress) {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_PROFILE_ACTION_ZONE2)
+            }
+            else {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_PROFILE_ACTION_ZONE)
+            }
         }
         else {
             if (!isSecondaryAddress) {
@@ -124,7 +129,12 @@ open class OnboardingPlaceFragment : EntourageDialogFragment() {
             onCurrentLocationClicked()
 
             if (isFromProfile) {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE_GEOLOC)
+                if (isSecondaryAddress) {
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE2_GEOLOC)
+                }
+                else {
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE_GEOLOC)
+                }
             }
             else {
                 if (isSecondaryAddress) {
@@ -141,7 +151,12 @@ open class OnboardingPlaceFragment : EntourageDialogFragment() {
             mFusedLocationClient?.removeLocationUpdates(mLocationCallback)
 
             if (isFromProfile) {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE_SEARCH)
+                if (isSecondaryAddress) {
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE2_SEARCH)
+                }
+                else {
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE_SEARCH)
+                }
             }
             else {
                 if (isSecondaryAddress) {

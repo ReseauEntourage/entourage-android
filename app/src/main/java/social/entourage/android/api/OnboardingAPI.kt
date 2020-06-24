@@ -223,9 +223,9 @@ class OnboardingAPI(val application: EntourageApplication) {
     /**********************
      * user
      */
-    fun updateAddress(userAddress: User.Address, isSecondary:Boolean, listener:(isOK:Boolean,userResponse:User.AddressWrapper?) -> Unit) {
+    fun updateAddress(userAddress: User.Address, isSecondary:Boolean, listener:(isOK:Boolean,userResponse:UserResponse?) -> Unit) {
 
-        val call:Call<User.AddressWrapper>
+        val call:Call<UserResponse>
         val address: MutableMap<String, Any> = ArrayMap()
         if (userAddress.googlePlaceId.isNullOrEmpty()) {
             address["latitude"] = userAddress.latitude
@@ -245,8 +245,8 @@ class OnboardingAPI(val application: EntourageApplication) {
             call = getOnboardingService().updateSecondaryAddressLocation(request)
         }
 
-        call.enqueue(object : Callback<User.AddressWrapper?> {
-            override fun onResponse(call: Call<User.AddressWrapper?>, response: Response<User.AddressWrapper?>) {
+        call.enqueue(object : Callback<UserResponse?> {
+            override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
                 if (response.isSuccessful) {
                     listener(true,response.body())
                 } else {
@@ -254,7 +254,7 @@ class OnboardingAPI(val application: EntourageApplication) {
                 }
             }
 
-            override fun onFailure(call: Call<User.AddressWrapper?>, t: Throwable) {
+            override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
                 listener(false,null)
             }
         })
@@ -331,6 +331,25 @@ class OnboardingAPI(val application: EntourageApplication) {
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                listener(false,null)
+            }
+        })
+    }
+
+    fun getUser(userId:Int, listener:(isOK:Boolean,userResponse:UserResponse?) -> Unit) {
+
+        val call = getOnboardingService().getUser(userId)
+
+        call.enqueue(object : Callback<UserResponse?> {
+            override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
+                if (response.isSuccessful) {
+                    listener(true,response.body())
+                } else {
+                    listener(false,null)
+                }
+            }
+
+            override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
                 listener(false,null)
             }
         })

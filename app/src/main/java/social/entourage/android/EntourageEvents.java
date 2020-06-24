@@ -139,6 +139,20 @@ public class EntourageEvents {
     public static final String EVENT_ACTION_PROFILE_SETACTION_ZONE_GEOLOC = "Action__Profile__SetActionZoneGeoloc";
     public static final String EVENT_ACTION_PROFILE_SETACTION_ZONE_SEARCH = "Action__Profile__SetActionZoneSearch";
     public static final String EVENT_ACTION_PROFILE_ACTION_ZONE_SUBMIT = "Action__Profile__ActionZoneSubmit";
+    public static final String EVENT_VIEW_PROFILE_ACTION_ZONE2 = "View__Profile__ActionZone2";
+    public static final String EVENT_ACTION_PROFILE_SETACTION_ZONE2_GEOLOC = "Action__Profile__SetActionZone2Geoloc";
+    public static final String EVENT_ACTION_PROFILE_SETACTION_ZONE2_SEARCH = "Action__Profile__SetActionZone2Search";
+    public static final String EVENT_ACTION_PROFILE_ACTION_ZONE2_SUBMIT = "Action__Profile__ActionZone2Submit";
+    //------TYPE
+    public static final String EVENT_VIEW_PROFILE_CHOOSE_PROFILE = "View__Profile__ChooseProfile";
+    public static final String EVENT_ACTION_PROFILE_CHOOSE_PROFILE_SIGNUP = "Action__Profile__ChooseProfile";
+    //------MOSAIC
+    public static final String EVENT_VIEW_PROFILE_PRO_MOSAIC = "View__Profile__ProMosaic";
+    public static final String EVENT_ACTION_PROFILE_PRO_MOSAIC = "Action__Profile__ProMosaic";
+    public static final String EVENT_VIEW_PROFILE_NEIGHBOR_MOSAIC = "View__Profile__NeighborMosaic";
+    public static final String EVENT_VIEW_PROFILE_INNEED_MOSAIC = "View__Profile__InNeedMosaic";
+    public static final String EVENT_ACTION_PROFILE_NEIGHBOR_MOSAIC = "Action__Profile__NeighborMosaic";
+    public static final String EVENT_ACTION_PROFILE_INNEED_MOSAIC = "Action__Profile__InNeedMosaic";
 
     //-------
     // PROFILE EDIT - END
