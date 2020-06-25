@@ -468,14 +468,14 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         when(currentFragmentPosition) {
             1 -> fragment = OnboardingNamesFragment.newInstance(temporaryUser.firstName,temporaryUser.lastName)
             2 -> fragment = OnboardingPhoneFragment.newInstance(temporaryUser.firstName, temporaryCountrycode, temporaryPhone)
-            3 -> fragment = OnboardingPasscodeFragment.newInstance(temporaryPhone)
+            3 -> fragment = OnboardingPasscodeFragment.newInstance(temporaryCountrycode,temporaryPhone)
             4 -> fragment = OnboardingTypeFragment.newInstance(temporaryUser.firstName, userTypeSelected)
             5 -> fragment = OnboardingPlaceFragment.newInstance(temporaryPlaceAddress,false,false)
             6 -> fragment = OnboardingEmailPwdFragment.newInstance(temporaryEmail)
             7 -> fragment = OnboardingPhotoFragment.newInstance(temporaryUser.firstName)
         }
 
-        if (currentFragmentPosition >= PositionType.Type.pos) {
+        if (currentFragmentPosition == PositionType.Passcode.pos || currentFragmentPosition >= PositionType.Type.pos) {
             ui_onboard_main_iv_back?.visibility = View.INVISIBLE
         }
         else {
@@ -910,6 +910,11 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         }
     }
 
+    override fun goPreviousManually() {
+        temporaryPhone = null
+        goPrevious()
+    }
+
     //**********
     // Callbacks Asso
 
@@ -993,6 +998,7 @@ interface OnboardingCallback {
     fun updateEmailPwd(email:String?,pwd:String?,pwdConfirm:String?)
     fun updateUserPhoto(imageUri:Uri?)
     fun updateButtonNext(isValid:Boolean)
+    fun goPreviousManually()
 
     fun updateAssoInfos(asso:Partner?)
     fun updateAssoActivities(assoActivities:AssoActivities)

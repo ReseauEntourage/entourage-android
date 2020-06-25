@@ -37,6 +37,19 @@ tools:context="social.entourage.android.onboarding.OnboardingPasscodeFragment">
         app:layout_constraintStart_toStartOf="@+id/ui_onboard_code_tv_title"
         app:layout_constraintTop_toBottomOf="@+id/ui_onboard_code_tv_title" />
 
+    <TextView
+        android:id="@+id/ui_onboard_code_tv_phone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-light"
+        android:text="0000000000"
+        android:textColor="@color/onboard_black_36"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/ui_onboard_code_tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_code_tv_description" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
@@ -48,7 +61,7 @@ tools:context="social.entourage.android.onboarding.OnboardingPasscodeFragment">
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_code_tv_description">
+        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_code_tv_phone">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
@@ -273,6 +286,19 @@ tools:context="social.entourage.android.onboarding.OnboardingPasscodeFragment">
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <TextView
+        android:id="@+id/ui_onboard_code_tv_phone_mod"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center_vertical"
+        android:text="@string/mod_phone_code"
+        android:textColor="@color/accent"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ui_onboard_code_tv_phone"
+        app:layout_constraintStart_toEndOf="@+id/ui_onboard_code_tv_phone"
+        app:layout_constraintTop_toTopOf="@+id/ui_onboard_code_tv_phone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
