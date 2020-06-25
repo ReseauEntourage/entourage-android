@@ -340,6 +340,7 @@ public class MainActivity extends EntourageSecuredActivity
         }
 
         EntourageApplication.get().entourageComponent.getAuthenticationController().saveMapFilter();
+        BusProvider.INSTANCE.getInstance().post(new Events.OnMapFilterChanged());
     }
 
     private void displayLocationProviderDisabledAlert() {
