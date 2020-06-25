@@ -135,6 +135,7 @@ tools:context="social.entourage.android.onboarding.LoginNewActivity">
             android:inputType="numberPassword"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
+            android:importantForAutofill="no"
             android:textColor="@color/pre_onboard_black"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@+id/ui_login_phone_et_phone"
