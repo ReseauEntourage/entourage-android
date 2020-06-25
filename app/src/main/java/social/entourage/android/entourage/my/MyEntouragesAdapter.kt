@@ -12,7 +12,7 @@ import social.entourage.android.base.EntourageBaseAdapter
 import social.entourage.android.base.LoaderCardViewHolder
 import social.entourage.android.base.ViewHolderFactory.ViewHolderType
 import social.entourage.android.entourage.EntourageViewHolder
-import social.entourage.android.invite.view.InvitationListViewHolder
+import social.entourage.android.entourage.my.invitations.InvitationListViewHolder
 import social.entourage.android.tour.TourViewHolder
 
 /**

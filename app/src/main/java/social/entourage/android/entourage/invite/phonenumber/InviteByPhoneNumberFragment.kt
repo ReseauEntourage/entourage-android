@@ -1,4 +1,4 @@
-package social.entourage.android.invite.phonenumber
+package social.entourage.android.entourage.invite.phonenumber
 
 import android.os.Bundle
 import android.text.Editable
@@ -13,7 +13,7 @@ import social.entourage.android.EntourageActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.MultipleInvitations
-import social.entourage.android.invite.InviteBaseFragment
+import social.entourage.android.entourage.invite.InviteBaseFragment
 import social.entourage.android.tools.Utils.checkPhoneNumberFormat
 
 /**
@@ -55,7 +55,7 @@ class InviteByPhoneNumberFragment  : InviteBaseFragment() {
                 // Send the request to server
                 val invitations = MultipleInvitations(Invitation.INVITE_BY_SMS)
                 invitations.addPhoneNumber(phoneNumber)
-                presenter?.inviteBySMS(feedItemUUID, feedItemType, invitations)
+                feedItemUUID?.let { presenter?.inviteBySMS(it, feedItemType, invitations) }
             } ?: run {
                 Toast.makeText(activity, R.string.login_text_invalid_format, Toast.LENGTH_SHORT).show()
             }

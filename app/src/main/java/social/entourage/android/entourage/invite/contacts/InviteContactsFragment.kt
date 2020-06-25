@@ -1,4 +1,4 @@
-package social.entourage.android.invite.contacts
+package social.entourage.android.entourage.invite.contacts
 
 import android.annotation.SuppressLint
 import android.database.Cursor
@@ -20,7 +20,7 @@ import social.entourage.android.EntourageActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.MultipleInvitations
-import social.entourage.android.invite.InviteBaseFragment
+import social.entourage.android.entourage.invite.InviteBaseFragment
 import social.entourage.android.tools.Utils.checkPhoneNumberFormat
 import java.util.*
 
@@ -144,7 +144,7 @@ class InviteContactsFragment  : InviteBaseFragment(), LoaderManager.LoaderCallba
         (activity as EntourageActivity?)?.showProgressDialog(R.string.invite_contacts_inviting)
         // Send the phone number to server
         serverRequestsCount++
-        presenter.inviteBySMS(feedItemUUID, feedItemType, invitations)
+        feedItemUUID?.let { presenter?.inviteBySMS(it, feedItemType, invitations) }
     }
 
     // ----------------------------------
@@ -229,7 +229,7 @@ class InviteContactsFragment  : InviteBaseFragment(), LoaderManager.LoaderCallba
                 }
                 // Send the phone number to server
                 serverRequestsCount++
-                presenter.inviteBySMS(feedItemUUID, feedItemType, invitations)
+                feedItemUUID?.let { presenter?.inviteBySMS(it, feedItemType, invitations) }
             }
         }
     }

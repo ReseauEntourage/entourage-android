@@ -56,16 +56,15 @@ import social.entourage.android.entourage.create.BaseCreateEntourageFragment
 import social.entourage.android.entourage.information.discussion.DiscussionAdapter
 import social.entourage.android.entourage.information.members.MembersAdapter
 import social.entourage.android.entourage.information.report.EntourageReportFragment
-import social.entourage.android.invite.InviteFriendsListener
-import social.entourage.android.invite.contacts.InviteContactsFragment
-import social.entourage.android.invite.phonenumber.InviteByPhoneNumberFragment
+import social.entourage.android.entourage.invite.InviteFriendsListener
+import social.entourage.android.entourage.invite.contacts.InviteContactsFragment
+import social.entourage.android.entourage.invite.phonenumber.InviteByPhoneNumberFragment
 import social.entourage.android.location.EntourageLocation
 import social.entourage.android.service.EntourageService
 import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.tour.TourInformationFragment
-import social.entourage.android.user.report.UserReportFragment
 import social.entourage.android.view.EntourageSnackbar
 import timber.log.Timber
 import java.text.DateFormat
@@ -505,7 +504,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         val fragment = InviteContactsFragment.newInstance(feedItem.uuid, feedItem.type)
         fragment.show(parentFragmentManager, InviteContactsFragment.TAG)
         // set the listener
-        fragment.setInviteFriendsListener(this)
+        fragment.inviteFriendsListener = this
     }
 
     private fun onInvitePhoneNumberClicked() {
@@ -516,7 +515,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         val fragment = InviteByPhoneNumberFragment.newInstance(feedItem.uuid, feedItem.type)
         fragment.show(parentFragmentManager, InviteByPhoneNumberFragment.TAG)
         // set the listener
-        fragment.setInviteFriendsListener(this)
+        fragment.inviteFriendsListener = this
     }
 
     private fun onAcceptInvitationClicked(view: View) {

@@ -1,4 +1,4 @@
-package social.entourage.android.invite.contacts
+package social.entourage.android.entourage.invite.contacts
 
 import android.content.Context
 import android.database.Cursor
@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.CheckBox
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.R
 import java.util.*
 

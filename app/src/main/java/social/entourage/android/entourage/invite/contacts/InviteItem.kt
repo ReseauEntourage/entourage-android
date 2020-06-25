@@ -1,4 +1,4 @@
-package social.entourage.android.invite.contacts
+package social.entourage.android.entourage.invite.contacts
 
 /**
  * Created by mihaiionescu on 28/07/16.
