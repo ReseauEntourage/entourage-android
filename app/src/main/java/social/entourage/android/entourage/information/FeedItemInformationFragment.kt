@@ -55,6 +55,7 @@ import social.entourage.android.deeplinks.DeepLinksManager.linkify
 import social.entourage.android.entourage.create.BaseCreateEntourageFragment
 import social.entourage.android.entourage.information.discussion.DiscussionAdapter
 import social.entourage.android.entourage.information.members.MembersAdapter
+import social.entourage.android.entourage.information.report.EntourageReportFragment
 import social.entourage.android.invite.InviteFriendsListener
 import social.entourage.android.invite.contacts.InviteContactsFragment
 import social.entourage.android.invite.phonenumber.InviteByPhoneNumberFragment
@@ -64,6 +65,7 @@ import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.tour.TourInformationFragment
+import social.entourage.android.user.report.UserReportFragment
 import social.entourage.android.view.EntourageSnackbar
 import timber.log.Timber
 import java.text.DateFormat
@@ -437,25 +439,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
 
     private fun onReportEntourageButton() {
         if (activity == null) return
-        // Build the email intent
-        val intent = Intent(Intent.ACTION_SENDTO)
-        intent.data = Uri.parse("mailto:")
-        // Set the email to
-        val addresses = arrayOf(getString(R.string.contact_email))
-        intent.putExtra(Intent.EXTRA_EMAIL, addresses)
-        // Set the subject
-        val title = feedItem.getTitle() ?: ""
-        val emailSubject = getString(R.string.report_entourage_email_title, title)
-        intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject)
-        if (intent.resolveActivity(requireActivity().packageManager) != null) {
-            //hide the options
-            entourage_info_options?.visibility = View.GONE
-            // Start the intent
-            startActivity(intent)
-        } else {
-            // No Email clients
-            entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.error_no_email, Snackbar.LENGTH_SHORT).show()}
-        }
+        EntourageReportFragment.newInstance(feedItem.id.toInt()).show(parentFragmentManager,EntourageReportFragment.TAG)
     }
 
     private fun onPromoteEntourageButton() {

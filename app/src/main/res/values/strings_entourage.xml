@@ -210,4 +210,13 @@
     <string name="entourage_join_type_fragment_option_public">Pas besoin de vérifier</string>
     <string name="entourage_join_type_fragment_disclaimer">En cas de problème avec un utilisateur, vous pouvez toujours le signaler à notre équipe</string>
 
+    <!-- User Report -->
+    <string name="entourage_report_explanation">Vous allez signaler cet Entourage à nos administrateurs.</string>
+    <string name="entourage_report_reason">Merci de préciser pourquoi\nvous signalez cet Entourage :</string>
+    <string name="entourage_report_reason_hint">Ecrivez quelque chose…</string>
+    <string name="entourage_report_success">✔︎ Entourage signalé</string>
+    <string name="entourage_report_error_reason_empty">Ajoutez un message</string>
+    <string name="entourage_report_error_send_failed">L\'envoi du message a échoué, veuillez réessayer</string>
+
+
 </resources>

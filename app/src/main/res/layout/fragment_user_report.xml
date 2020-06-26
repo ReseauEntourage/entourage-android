@@ -32,6 +32,7 @@
             android:tint="@color/accent"/>
 
         <TextView
+            android:id="@+id/ui_report_tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/entourage_padding_10"
@@ -39,20 +40,21 @@
             android:gravity="center_horizontal"
             android:text="@string/user_report_explanation"
             android:textColor="@color/report_user_explanation"
-            android:textSize="@dimen/entourage_font_large"/>
+            android:textSize="@dimen/entourage_font_large" />
 
         <TextView
+            android:id="@+id/ui_report_tv_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/entourage_padding_10"
             android:layout_marginLeft="@dimen/entourage_padding_10"
-            android:layout_marginRight="@dimen/entourage_padding_10"
             android:layout_marginTop="@dimen/entourage_padding_10"
+            android:layout_marginRight="@dimen/entourage_padding_10"
+            android:layout_marginBottom="@dimen/entourage_padding_10"
             android:gravity="center_horizontal"
             android:text="@string/user_report_reason"
             android:textColor="@color/greyish_brown"
             android:textSize="@dimen/entourage_font_large"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/user_report_reason_edittext"

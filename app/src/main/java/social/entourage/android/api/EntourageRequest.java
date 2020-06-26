@@ -14,6 +14,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import social.entourage.android.api.model.ChatMessage;
+import social.entourage.android.api.model.EntourageReport;
 import social.entourage.android.api.model.MultipleInvitations;
 import social.entourage.android.api.model.BaseEntourage;
 import social.entourage.android.api.model.EntourageUser;
@@ -97,4 +98,6 @@ public interface EntourageRequest {
             @Body MultipleInvitations.MultipleInvitationsWrapper invitations
             );
 
+    @POST("entourages/{entourage_id}/report")
+    Call<ResponseBody> reportEntourage(@Path("entourage_id") int userId, @Body EntourageReport.EntourageReportWrapper entourageReportWrapper);
 }
