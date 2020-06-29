@@ -30,11 +30,13 @@ fun ImageButton.enable(res:Int) {
 fun Button.disable() {
     alpha = 0.5f
     isClickable = false
+    isEnabled = false
 }
 
 fun Button.enable() {
     alpha = 1f
     isClickable = true
+    isEnabled = true
 }
 
 fun View.hideKeyboard() {
