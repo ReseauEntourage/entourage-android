@@ -45,7 +45,7 @@
     <string name="onboard_type_title">Enchantés, %s.</string>
     <string name="onboard_type_sub">Qu\'est ce qui vous amène ?</string>
     <string name="onboard_type_description">Entourage vous pose ces quelques questions pour vous accueillir et vous accompagner au mieux !\n<i>(Cette information ne sera pas visible par les autres membres du réseau).</i></string>
-    <string name="onboard_type_choice1">Je suis un voisin solidaire</string>
+    <string name="onboard_type_choice1">Je suis un.e voisin.e solidaire</string>
     <string name="onboard_type_choice2">Je suis une personne isolée ou en précarité</string>
     <string name="onboard_type_choice3">Je fais partie d’une association ou service public</string>
     <string name="onboard_place_title">Quel est votre quartier ?</string>
@@ -115,8 +115,8 @@
     <string name="onboard_asso_search">Recherche</string>
 
     <!-- Onboarding SDF -->
-    <string name="onboard_sdf_activity_title">%s, que cherchez-vous ?</string>
-    <string name="onboard_sdf_activity_description">Plusieurs choix possibles.\nNous vous ferons des propositions adaptées.</string>
+    <string name="onboard_sdf_activity_title">%s, dans quel quartier avez-vous vos habitudes ?</string>
+    <string name="onboard_sdf_activity_description">Vous pourrez demander de l\'aide à vos voisins et rencontrer de nouvelles personnes lors d\'événements conviviaux du réseau.</string>
     <string name="onboard_sdf_activity_error">Veuillez renseigner au minimum 1 centre d\'intéret.\nMerci</string>
     <string name="onboard_sdf_activity_choice_1">Me faire un\ncercle d’amis</string>
     <string name="onboard_sdf_activity_choice_2">Participer à des\névènements</string>

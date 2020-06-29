@@ -65,8 +65,6 @@ class UserEditProfileType : EntourageDialogFragment(),ValidateActionsDelegate {
             changeLayoutSelection(ui_onboard_type_layout_assos)
         }
 
-        ui_onboard_type_tv_title?.text = String.format(getString(R.string.onboard_type_title),"blablb")
-
         selectInitialType()
     }
 

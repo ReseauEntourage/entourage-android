@@ -115,7 +115,7 @@
     <string name="profile_button_add2nd_zone">Ajouter une zone d\'action</string>
 
     <string name="profile_asso_activity_title">Quel est votre coeur d’activité ?</string>
-    <string name="profile_sdf_activity_title">Que cherchez-vous ?</string>
+    <string name="profile_sdf_activity_title">Dans quel quartier avez-vous vos habitudes ?</string>
     <string name="profile_neighbour_activity_title">Que souhaitez-vous faire dans votre quartier ?</string>
 
     //Info mosaic choice from ws
