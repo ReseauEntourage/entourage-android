@@ -3,7 +3,6 @@ package social.entourage.android.entourage.create
 import androidx.fragment.app.DialogFragment
 import social.entourage.android.EntourageComponent
 import social.entourage.android.api.model.BaseEntourage
-import social.entourage.android.entourage.create.CreateEntourageJoinTypeFragment.CreateEntourageJoinTypeListener
 import social.entourage.android.entourage.create.wizard.CreateActionWizardListener
 import social.entourage.android.entourage.create.wizard.CreateActionWizardPage1Fragment
 import social.entourage.android.entourage.create.wizard.CreateActionWizardPage2Fragment
@@ -13,7 +12,7 @@ import timber.log.Timber
 /**
  *
  */
-class CreateEntourageFragment : BaseCreateEntourageFragment(), CreateActionWizardListener, CreateEntourageJoinTypeListener {
+class CreateEntourageFragment : BaseCreateEntourageFragment(), CreateActionWizardListener {
     // ----------------------------------
     // Constants
     // ----------------------------------
@@ -57,8 +56,6 @@ class CreateEntourageFragment : BaseCreateEntourageFragment(), CreateActionWizar
             (parentFragmentManager.findFragmentByTag(CreateActionWizardPage1Fragment.TAG) as DialogFragment?)?.dismiss()
             (parentFragmentManager.findFragmentByTag(CreateActionWizardPage2Fragment.TAG) as DialogFragment?)?.dismiss()
             (parentFragmentManager.findFragmentByTag(CreateActionWizardPage3Fragment.TAG) as DialogFragment?)?.dismiss()
-            //Hide the join type fragment
-            (parentFragmentManager.findFragmentByTag(CreateEntourageJoinTypeFragment.TAG) as DialogFragment?)?.dismiss()
         } catch (e: IllegalStateException) {
             Timber.w(e)
         }
@@ -134,28 +131,6 @@ class CreateEntourageFragment : BaseCreateEntourageFragment(), CreateActionWizar
                 super.createEntourage()
                 recipientConsentObtained = true
             }
-        }
-    }
-
-    // ----------------------------------
-    // CreateEntourageJoinType
-    // ----------------------------------
-    private fun showCreateEntourageJoinFragment() {
-        try {
-            val createEntourageJoinTypeFragment = CreateEntourageJoinTypeFragment()
-            createEntourageJoinTypeFragment.setListener(this)
-            createEntourageJoinTypeFragment.show(parentFragmentManager, CreateEntourageJoinTypeFragment.TAG)
-        } catch (e: IllegalStateException) {
-            Timber.w(e)
-        }
-    }
-
-    override fun createEntourageWithJoinTypePublic(joinType: Boolean) {
-        joinRequestTypePublic = joinType
-        if (editedEntourage != null) {
-            super.saveEditedEntourage()
-        } else {
-            super.createEntourage()
         }
     }
 }
