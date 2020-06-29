@@ -683,6 +683,7 @@ public class MainActivity extends EntourageSecuredActivity
         // Save the entourage disclaimer shown flag
         try{
             User me = EntourageApplication.me(this);
+            if(me==null) return;
             me.setEntourageDisclaimerShown(true);
             getAuthenticationController().saveUser(me);
 

@@ -35,7 +35,7 @@ class CreateEntourageFragment : BaseCreateEntourageFragment(), CreateActionWizar
     // Entourage create/edit methods
     // ----------------------------------
     override fun createEntourage() {
-        if (entourageCategory != null && BaseEntourage.GROUPTYPE_ACTION_DEMAND.equals(entourageCategory.groupType, ignoreCase = true)) { // for DEMAND events, we need to show a wizard
+        if (BaseEntourage.GROUPTYPE_ACTION_DEMAND.equals(entourageCategory?.groupType, ignoreCase = true)) { // for DEMAND events, we need to show a wizard
             showCreateActionWizard()
             return
         }

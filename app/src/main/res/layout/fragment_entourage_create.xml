@@ -185,8 +185,6 @@
                     android:layout_weight="1"
                     android:gravity="end"
                     android:paddingEnd="0dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="0dp"
                     android:paddingStart="5dp"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/accent"
@@ -228,8 +226,6 @@
                     android:layout_weight="1"
                     android:gravity="end"
                     android:paddingEnd="0dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="0dp"
                     android:paddingStart="5dp"
                     android:textColor="@color/accent"
                     android:textSize="@dimen/entourage_font_medium"/>
@@ -268,8 +264,6 @@
                     android:layout_weight="1"
                     android:gravity="end"
                     android:paddingEnd="0dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="0dp"
                     android:paddingStart="5dp"
                     android:textColor="@color/accent"
                     android:textSize="@dimen/entourage_font_medium"/>
@@ -305,7 +299,7 @@
                         android:textSize="@dimen/entourage_font_medium"
                         android:textStyle="bold"/>
 
-                    <Switch
+                    <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/create_entourage_privacy_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
