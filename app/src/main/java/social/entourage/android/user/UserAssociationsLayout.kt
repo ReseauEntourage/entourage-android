@@ -60,9 +60,11 @@ class UserAssociationsLayout : RelativeLayout {
                 it.layoutManager = LinearLayoutManager(context)
                 organizationsAdapter = UserOrganizationsAdapter(organizationList)
                 it.adapter = organizationsAdapter
-                ItemClickSupport.addTo(it).setOnItemClickListener { _: RecyclerView, _: Int, _: View ->
-                    userFragment.onEditProfileClicked()
-                }
+                ItemClickSupport.addTo(it).setOnItemClickListener(object : ItemClickSupport.OnItemClickListener {
+                    override fun onItemClicked(recyclerView: RecyclerView?, position: Int, v: View?) {
+                        userFragment.onEditProfileClicked()
+                    }
+                })
             }
         }
         user_associations_title?.visibility = if (organizationList.size > 0) View.VISIBLE else View.GONE
@@ -73,11 +75,13 @@ class UserAssociationsLayout : RelativeLayout {
                 view.layoutManager = LinearLayoutManager(context)
                 userNeighborhoodsAdapter = UserMembershipsAdapter(userMembershipList, BaseEntourage.GROUPTYPE_NEIGHBORHOOD)
                 ItemClickSupport.addTo(view)
-                        .setOnItemClickListener { _: RecyclerView?, position: Int, _: View? ->
-                            userNeighborhoodsAdapter?.getItemAt(position)?.let { userMembership ->
-                                BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(TimestampedObject.ENTOURAGE_CARD, userMembership.membershipUUID, null))
+                        .setOnItemClickListener(object : ItemClickSupport.OnItemClickListener {
+                            override fun onItemClicked(recyclerView: RecyclerView?, position: Int, v: View?) {
+                                userNeighborhoodsAdapter?.getItemAt(position)?.let { userMembership ->
+                                    BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(TimestampedObject.ENTOURAGE_CARD, userMembership.membershipUUID, null))
+                                }
                             }
-                        }
+                        })
             }
         }
         user_neighborhoods_title?.visibility = if (userMembershipList.size > 0) View.VISIBLE else View.GONE

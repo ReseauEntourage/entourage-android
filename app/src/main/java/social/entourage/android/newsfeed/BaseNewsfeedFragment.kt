@@ -701,8 +701,8 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         if (newsfeedAdapter == null) {
             fragment_map_feeditems_view?.layoutManager = LinearLayoutManager(context)
             newsfeedAdapter = NewsfeedAdapter().apply {
-                this.setOnMapReadyCallback(onMapReadyCallback)
-                this.setOnFollowButtonClickListener { onFollowGeolocation() }
+                onMapReadyCallback?.let { this.setOnMapReadyCallback(it) }
+                this.setOnFollowButtonClickListener(View.OnClickListener { onFollowGeolocation() })
                 fragment_map_feeditems_view?.adapter = this
             }
         }

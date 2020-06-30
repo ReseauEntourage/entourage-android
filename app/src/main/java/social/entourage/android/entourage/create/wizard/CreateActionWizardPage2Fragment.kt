@@ -35,7 +35,7 @@ class CreateActionWizardPage2Fragment : EntourageDialogFragment() {
             val mainActivity = activity as MainActivity
             val text = getString(R.string.create_action_wizard_disclaimer, mainActivity.getLink(Constants.CHARTE_LINK_ID))
             create_action_wizard_disclaimer?.text = Utils.fromHtml(text)
-            create_action_wizard_disclaimer?.movementMethod = EntourageLinkMovementMethod.getInstance()
+            create_action_wizard_disclaimer?.movementMethod = EntourageLinkMovementMethod
         }
         title_close_button?.setOnClickListener { onCloseClicked()        }
         create_action_wizard_p2_option1_button?.setOnClickListener {onOption1Clicked()}

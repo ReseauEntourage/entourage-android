@@ -275,7 +275,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
 
     private fun initializeAlertBanner() {
         isAlertTextVisible = false
-        fragment_guide_alert_description?.setHtmlString(getString(R.string.guide_alert_info_text), EntourageLinkMovementMethod.getInstance())
+        fragment_guide_alert_description?.setHtmlString(getString(R.string.guide_alert_info_text), EntourageLinkMovementMethod)
         fragment_guide_alert_arrow?.setOnClickListener {onClickAlertArrow()}
         fragment_guide_alert?.setOnClickListener {onClickAlertArrow()}
     }
@@ -304,7 +304,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
             proposePOIUrl = (activity as MainActivity).getLink(Constants.PROPOSE_POI_ID)
         }
         hideInfoPopup()
-        fragment_guide_empty_list_popup_text?.movementMethod = EntourageLinkMovementMethod.getInstance()
+        fragment_guide_empty_list_popup_text?.movementMethod = EntourageLinkMovementMethod
         fragment_guide_empty_list_popup_text?.text = Utils.fromHtml(getString(R.string.map_poi_empty_popup, proposePOIUrl))
     }
 
@@ -378,8 +378,8 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     // ----------------------------------
     private fun initializePOIList() {
         fragment_guide_pois_view?.layoutManager = LinearLayoutManager(context)
-        poisAdapter.setOnMapReadyCallback(onMapReadyCallback)
-        poisAdapter.setOnFollowButtonClickListener { onFollowGeolocation() }
+        onMapReadyCallback?.let { poisAdapter.setOnMapReadyCallback(it) }
+        poisAdapter.setOnFollowButtonClickListener(View.OnClickListener { onFollowGeolocation() })
         fragment_guide_pois_view?.adapter = poisAdapter
     }
 

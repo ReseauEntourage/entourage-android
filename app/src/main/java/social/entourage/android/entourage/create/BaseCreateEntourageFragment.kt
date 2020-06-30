@@ -446,7 +446,7 @@ open class BaseCreateEntourageFragment
                 } else {
                     getString(R.string.entourage_create_help_text, mainActivity.getLink(Constants.GOAL_LINK_ID))
                 }
-                it.setHtmlString(htmlString, EntourageLinkMovementMethod.getInstance())
+                it.setHtmlString(htmlString, EntourageLinkMovementMethod)
             }
         }
     }
