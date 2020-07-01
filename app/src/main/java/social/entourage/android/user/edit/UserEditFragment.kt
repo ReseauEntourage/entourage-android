@@ -27,7 +27,7 @@ import social.entourage.android.api.model.User
 import social.entourage.android.api.tape.Events.OnPartnerViewRequestedEvent
 import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
 import social.entourage.android.base.EntourageDialogFragment
-import social.entourage.android.partner.PartnerFragment
+import social.entourage.android.partner.PartnerFragmentV2
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.user.UserFragment
@@ -377,9 +377,7 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
             return
         }
         if (event.partner != null) {
-            PartnerFragment.newInstance(event.partner).show(parentFragmentManager, PartnerFragment.TAG)
-        } else {
-            PartnerFragment.newInstance(event.partnerId).show(parentFragmentManager, PartnerFragment.TAG)
+            PartnerFragmentV2.newInstance(event.partner).show(parentFragmentManager, PartnerFragmentV2.TAG)
         }
     }
 

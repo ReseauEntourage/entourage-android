@@ -51,6 +51,9 @@ public class Partner extends BaseOrganization implements Serializable {
 
     private boolean isCreation;
 
+    private String donations_needs;
+    private String volunteers_needs;
+
     // ----------------------------------
     // GETTERS & SETTERS
     // ----------------------------------
@@ -148,6 +151,22 @@ public class Partner extends BaseOrganization implements Serializable {
     @Override
     public String getTypeAsString(Context context) {
         return userRoleTitle;//context.getString(R.string.member_type_partner);
+    }
+
+    public String getDonations_needs() {
+        return donations_needs;
+    }
+
+    public void setDonations_needs(String donations_needs) {
+        this.donations_needs = donations_needs;
+    }
+
+    public String getVolunteers_needs() {
+        return volunteers_needs;
+    }
+
+    public void setVolunteers_needs(String volunteers_needs) {
+        this.volunteers_needs = volunteers_needs;
     }
 
     // ----------------------------------

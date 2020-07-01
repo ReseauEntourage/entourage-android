@@ -137,4 +137,18 @@
   <string name="serv_pub_asso">Service Public</string>
   <string name="autre_asso">Autres</string>
     <string name="next_">Suivant</string>
+
+    //Asso detail page
+    <string name="title_association">Association</string>
+    <string name="title_asso_donation">Accepte les dons</string>
+    <string name="title_asso_volunteer">Cherche des bénévoles</string>
+    <string name="title_asso_information">Informations</string>
+    <string name="title_asso_needs">Besoins</string>
+    <string name="title_asso_accept_needs">Accepte des dons</string>
+    <string name="title_asso_accept_volunteers">Recherche des bénévoles</string>
+    <string name="title_asso_contact">Contact</string>
+    <string name="title_asso_phone">Numéro de téléphone</string>
+    <string name="title_asso_phone_light">Téléphone</string>
+    <string name="title_asso_website">Site Web</string>
+    <string name="title_asso_address">Adresse</string>
 </resources>

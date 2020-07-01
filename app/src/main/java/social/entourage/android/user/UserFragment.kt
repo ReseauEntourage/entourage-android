@@ -25,8 +25,7 @@ import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.entourage.information.FeedItemInformationFragment
-import social.entourage.android.partner.PartnerFragment
-import social.entourage.android.partner.PartnerFragment.Companion.newInstance
+import social.entourage.android.partner.PartnerFragmentV2
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.user.edit.UserEditAboutFragment
@@ -302,9 +301,7 @@ class UserFragment : EntourageDialogFragment() {
                 return
             }
             if (event.partner != null) {
-                newInstance(event.partner).show(parentFragmentManager, PartnerFragment.TAG)
-            } else {
-                newInstance(event.partnerId).show(parentFragmentManager, PartnerFragment.TAG)
+                PartnerFragmentV2.newInstance(event.partner).show(parentFragmentManager,PartnerFragmentV2.TAG)
             }
         } catch (e: IllegalStateException) {
             Timber.w(e)
