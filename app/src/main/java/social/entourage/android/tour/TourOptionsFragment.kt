@@ -20,9 +20,8 @@ class TourOptionsFragment : FeedItemOptionsFragment() {
         entourage_option_stop?.setText(if (feedItem.isClosed()) R.string.tour_info_options_freeze_tour else R.string.tour_info_options_stop_tour)
     }
 
-    override fun getSlideStyle(): Int {
-        return R.style.CustomDialogFragmentSlide
-    }
+    override val slideStyle: Int
+        get() = R.style.CustomDialogFragmentSlide
 
     // ----------------------------------
     // BUTTON HANDLING

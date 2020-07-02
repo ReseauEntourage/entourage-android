@@ -172,7 +172,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginBottom="10dp"
             android:visibility="invisible"
-            tools:visibility="gone" />
+            tools:visibility="invisible" />
 
         <LinearLayout
             android:id="@+id/fragment_map_empty_list_popup"

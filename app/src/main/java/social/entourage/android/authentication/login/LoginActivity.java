@@ -54,7 +54,6 @@ import social.entourage.android.authentication.login.register.OnRegisterUserList
 import social.entourage.android.authentication.login.register.RegisterNumberFragment;
 import social.entourage.android.authentication.login.register.RegisterSMSCodeFragment;
 import social.entourage.android.authentication.login.register.RegisterWelcomeFragment;
-import social.entourage.android.authentification.login.LoginPresenter;
 import social.entourage.android.configuration.Configuration;
 import social.entourage.android.tools.BusProvider;
 import social.entourage.android.tools.Utils;
@@ -933,10 +932,8 @@ public class LoginActivity extends EntourageActivity
 
     protected void registerPhoneNumberSent(String phoneNumber, boolean smsSent) {
         if (isFinishing()) return;
-        if (getSupportFragmentManager() != null) {
-            RegisterNumberFragment numberFragment = (RegisterNumberFragment)getSupportFragmentManager().findFragmentByTag(RegisterNumberFragment.TAG);
-            if (numberFragment != null) numberFragment.savedPhoneNumber(smsSent);
-        }
+        RegisterNumberFragment numberFragment = (RegisterNumberFragment)getSupportFragmentManager().findFragmentByTag(RegisterNumberFragment.TAG);
+        if (numberFragment != null) numberFragment.savedPhoneNumber(smsSent);
         if (smsSent) {
             displayToast(R.string.registration_smscode_sent);
             if (onboardingUser != null) {

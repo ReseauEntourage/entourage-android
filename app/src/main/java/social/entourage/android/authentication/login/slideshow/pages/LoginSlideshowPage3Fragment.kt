@@ -1,4 +1,4 @@
-package social.entourage.android.authentification.login.slideshow.pages
+package social.entourage.android.authentication.login.slideshow.pages
 
 
 import social.entourage.android.R

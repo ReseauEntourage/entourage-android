@@ -63,10 +63,8 @@ class WebViewFragment : EntourageDialogFragment() {
         webview_navigation_bar_menu_background.setOnClickListener {toggleMenu()}
     }
 
-    @StyleRes
-    override fun getSlideStyle(): Int {
-        return 0
-    }
+    override val slideStyle: Int
+        get() = 0
 
     override fun dismiss() {
         webview?.stopLoading()

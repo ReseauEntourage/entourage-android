@@ -376,7 +376,6 @@ class LocationFragment  : EntourageDialogFragment() {
          * @param listener The listener
          * @return A new instance of fragment LocationFragment.
          */
-        @JvmStatic
         fun newInstance(location: LatLng?, address: String?, useGooglePlacesOnly: Boolean, listener: OnFragmentInteractionListener?): LocationFragment {
             val args = Bundle()
             args.putParcelable(KEY_ENTOURAGE_LOCATION, location)

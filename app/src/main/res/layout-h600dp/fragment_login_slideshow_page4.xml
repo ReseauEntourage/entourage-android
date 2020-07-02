@@ -4,7 +4,7 @@
                                              android:layout_width="match_parent"
                                              android:layout_height="match_parent"
                                              android:background="@drawable/login_slideshow_p4_bg"
-                                             tools:context="social.entourage.android.authentification.login.slideshow.pages.LoginSlideshowPage4Fragment"
+                                             tools:context="social.entourage.android.authentication.login.slideshow.pages.LoginSlideshowPage4Fragment"
                                              tools:ignore="MissingDefaultResource">
 
 

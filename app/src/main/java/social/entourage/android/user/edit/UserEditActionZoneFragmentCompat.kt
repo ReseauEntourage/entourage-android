@@ -83,9 +83,8 @@ class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
         }
     }
 
-    override fun getSlideStyle(): Int {
-        return if (isFromLogin) 0 else super.getSlideStyle()
-    }
+    override val slideStyle: Int
+        get() = if (isFromLogin) 0 else super.slideStyle
 
     fun setFragmentListener(fragmentListener: UserEditActionZoneFragment.FragmentListener) {
         fragmentListeners.add(fragmentListener)

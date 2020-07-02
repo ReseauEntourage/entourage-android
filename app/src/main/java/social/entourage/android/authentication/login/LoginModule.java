@@ -2,7 +2,6 @@ package social.entourage.android.authentication.login;
 
 import dagger.Module;
 import dagger.Provides;
-import social.entourage.android.authentification.login.LoginPresenter;
 import social.entourage.android.user.AvatarUpdatePresenter;
 import social.entourage.android.user.AvatarUploadView;
 

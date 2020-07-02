@@ -120,7 +120,7 @@ class NewsfeedPresenter @Inject constructor(
                 call.enqueue(object : Callback<BaseEntourage.EntourageWrapper> {
                     override fun onResponse(call: Call<BaseEntourage.EntourageWrapper>, response: Response<BaseEntourage.EntourageWrapper>) {
                         response.body()?.entourage?.let {
-                            if (response.isSuccessful && it is FeedItem) {
+                            if (response.isSuccessful) {
                                 openFeedItem(it,0,0)
                             }
                         }

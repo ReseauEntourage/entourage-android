@@ -8,15 +8,11 @@ open class HeaderFooterBaseAdapter : HeaderBaseAdapter() {
     protected fun showBottomView(showBottomView: Boolean, bottomViewContentType: Int) {
         this.showBottomView = showBottomView
         this.bottomViewContentType = bottomViewContentType
-        if (items != null) {
-            notifyItemChanged(bottomViewPosition)
-        }
+        notifyItemChanged(bottomViewPosition)
     }
 
     override fun getItemCount(): Int {
-        return if (items == null) {
-            0
-        } else items.size + positionOffset + 1
+        return items.size + positionOffset + 1
         // +1 for the footer
     }
 
@@ -27,7 +23,5 @@ open class HeaderFooterBaseAdapter : HeaderBaseAdapter() {
     }
 
     private val bottomViewPosition: Int
-        get() = if (items != null) {
-            items.size + positionOffset
-        } else 0
+        get() = items.size + positionOffset
 }

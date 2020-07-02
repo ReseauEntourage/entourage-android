@@ -641,7 +641,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
 
-    protected fun onMapReady(googleMap: GoogleMap) {
+    private fun onMapReady(googleMap: GoogleMap) {
         super.onMapReady(googleMap,
                 presenter.onClickListener as ClusterManager.OnClusterItemClickListener<ClusterItem>?,
                 presenter.onGroundOverlayClickListener

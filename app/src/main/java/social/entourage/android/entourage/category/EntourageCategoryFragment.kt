@@ -120,7 +120,6 @@ class EntourageCategoryFragment : EntourageDialogFragment() {
         // ----------------------------------
         // Constants
         // ----------------------------------
-        @JvmField
         val TAG = EntourageCategoryFragment::class.java.simpleName
 
         // ----------------------------------
@@ -128,7 +127,6 @@ class EntourageCategoryFragment : EntourageDialogFragment() {
         // ----------------------------------
         const val KEY_ENTOURAGE_CATEGORY = "ENTOURAGE_CATEGORY"
 
-        @JvmStatic
         fun newInstance(category: EntourageCategory): EntourageCategoryFragment {
             val fragment = EntourageCategoryFragment()
             val args = Bundle()

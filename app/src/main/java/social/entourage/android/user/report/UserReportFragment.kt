@@ -51,9 +51,8 @@ class UserReportFragment  : EntourageDialogFragment() {
         user_report_send_button.setOnClickListener {onSendClicked() }
     }
 
-    override fun getSlideStyle(): Int {
-        return R.style.CustomDialogFragmentSlide
-    }
+    override val slideStyle: Int
+        get() = R.style.CustomDialogFragmentSlide
 
     // ----------------------------------
     // ONCLICK CALLBACKS
@@ -113,7 +112,6 @@ class UserReportFragment  : EntourageDialogFragment() {
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        @JvmField
         val TAG = UserReportFragment::class.java.simpleName
 
         /**
@@ -123,7 +121,6 @@ class UserReportFragment  : EntourageDialogFragment() {
          * @param userId The id of the reported user.
          * @return A new instance of fragment UserReportFragment.
          */
-        @JvmStatic
         fun newInstance(userId: Int): UserReportFragment {
             val fragment = UserReportFragment()
             val args = Bundle()

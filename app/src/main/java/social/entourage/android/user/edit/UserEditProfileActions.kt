@@ -348,7 +348,6 @@ class UserEditProfileActions : EntourageDialogFragment() {
     companion object {
         const val TAG = "social.entourage.android.user.edit.UserEditProfileActions"
 
-        @JvmStatic
         fun newInstance(userTypeSelection: UserTypeSelection) =
                 UserEditProfileActions().apply {
                     arguments = Bundle().apply {

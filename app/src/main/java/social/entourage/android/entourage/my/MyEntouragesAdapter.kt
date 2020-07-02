@@ -33,9 +33,8 @@ class MyEntouragesAdapter : EntourageBaseAdapter() {
         }
     }
 
-    override fun getPositionOffset(): Int {
-        return 1
-    }
+    override val positionOffset: Int
+        get() = 1
 
     fun setLoaderCallback(loaderCallback: LoaderCallback?) {
         this.loaderCallback = loaderCallback
@@ -102,9 +101,8 @@ class MyEntouragesAdapter : EntourageBaseAdapter() {
         fun loadMoreItems()
     }
 
-    override fun getDataItemCount(): Int {
-        return (if (items == null) 0 else items.size) + invitationListObject.invitationList.size
-    }
+    override val dataItemCount: Int
+        get() = items.size + invitationListObject.invitationList.size
 
     init {
         viewHolderFactory.registerViewHolder(

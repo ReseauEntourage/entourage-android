@@ -104,7 +104,6 @@ class ReadPoiFragment : EntourageDialogFragment() {
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        @JvmField
         val TAG = ReadPoiFragment::class.java.simpleName
         const val BUNDLE_KEY_POI = "BUNDLE_KEY_POI"
         // ----------------------------------

@@ -57,9 +57,8 @@ class CreateEntourageTitleFragment  : EntourageDialogFragment() {
         showKeyboard()
     }
 
-    override fun getSlideStyle(): Int {
-        return R.style.CustomDialogFragmentFromRight
-    }
+    override val slideStyle: Int
+        get() = R.style.CustomDialogFragmentFromRight
 
     fun setListener(mListener: CreateEntourageListener?) {
         this.mListener = mListener
@@ -122,11 +121,10 @@ class CreateEntourageTitleFragment  : EntourageDialogFragment() {
         // ----------------------------------
         // Constants
         // ----------------------------------
-        @JvmField
         val TAG = CreateEntourageTitleFragment::class.java.simpleName
         private const val KEY_ENTOURAGE_TITLE = "KEY_ENTOURAGE_TITLE"
         private const val TITLE_MAX_CHAR_COUNT = 100
-        @JvmStatic
+
         fun newInstance(title: String?, entourageCategory: EntourageCategory?, groupType: String?): CreateEntourageTitleFragment {
             val fragment = CreateEntourageTitleFragment()
             val args = Bundle()

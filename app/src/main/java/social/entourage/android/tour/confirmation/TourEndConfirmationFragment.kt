@@ -42,9 +42,8 @@ class TourEndConfirmationFragment  : EntourageDialogFragment() {
         confirmation_resume_button?.setOnClickListener { startTourActivity(KEY_RESUME_TOUR)}
     }
 
-    override fun getSlideStyle(): Int {
-        return R.style.CustomDialogFragmentSlide
-    }
+    override val slideStyle: Int
+        get() = R.style.CustomDialogFragmentSlide
 
     // ----------------------------------
     // PRIVATE METHODS

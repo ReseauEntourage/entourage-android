@@ -99,10 +99,9 @@ class CreateEntourageDescriptionFragment  : EntourageDialogFragment() {
         // ----------------------------------
         // Constants
         // ----------------------------------
-        @JvmField
         val TAG = CreateEntourageDescriptionFragment::class.java.simpleName
         private const val ENTOURAGE_DESCRIPTION = "ENTOURAGE_DESCRIPTION"
-        @JvmStatic
+
         fun newInstance(description: String?, entourageCategory: EntourageCategory?, groupType: String?): CreateEntourageDescriptionFragment {
             val fragment = CreateEntourageDescriptionFragment()
             val args = Bundle()

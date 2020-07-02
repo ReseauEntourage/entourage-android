@@ -233,9 +233,8 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         inviteSuccessHandler.removeCallbacks(inviteSuccessRunnable)
     }
 
-    override fun getBackgroundDrawable(): ColorDrawable {
-        return ColorDrawable(ResourcesCompat.getColor(resources, R.color.background, null))
-    }
+    override val backgroundDrawable: ColorDrawable?
+        get() = ColorDrawable(ResourcesCompat.getColor(resources, R.color.background, null))
 
     val feedItemId: String?
         get() = feedItem.uuid
@@ -706,7 +705,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         }
 
         // add the members
-        membersAdapter?.addItems(membersList)
+        membersList?.let { membersAdapter?.addItems(it) }
 
         // Show the members count
         val membersCount = feedItem.numberOfPeople
@@ -1401,23 +1400,5 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             fragment.arguments = args
             return fragment
         }
-
-        /*@JvmStatic
-        fun newInstance(feedItemUUID: String, feedItemType: Int, invitationId: Long): FeedItemInformationFragment {
-            val fragment = if (feedItemType == TimestampedObject.TOUR_CARD) TourInformationFragment() else EntourageInformationFragment()
-            val args = Bundle()
-            args.putString(FeedItem.KEY_FEEDITEM_UUID, feedItemUUID)
-            args.putLong(KEY_INVITATION_ID, invitationId)
-            fragment.arguments = args
-            return fragment
-        }*/
-
-        /*fun newInstance(shareURL: String, feedItemType: Int): FeedItemInformationFragment {
-            val fragment = if (feedItemType == TimestampedObject.TOUR_CARD) TourInformationFragment() else EntourageInformationFragment()
-            val args = Bundle()
-            args.putString(KEY_FEED_SHARE_URL, shareURL)
-            fragment.arguments = args
-            return fragment
-        }*/
     }
 }

@@ -44,9 +44,8 @@ open class HeaderBaseAdapter : EntourageBaseAdapter() {
         mapViewHolder?.displayGeolocStatusIcon(active)
     }
 
-    override fun getPositionOffset(): Int {
-        return 1
-    }
+    override val positionOffset: Int
+        get() = 1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val cardViewHolder = super.onCreateViewHolder(parent, viewType)
