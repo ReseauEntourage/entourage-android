@@ -470,7 +470,10 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             2 -> fragment = OnboardingPhoneFragment.newInstance(temporaryUser.firstName, temporaryCountrycode, temporaryPhone)
             3 -> fragment = OnboardingPasscodeFragment.newInstance(temporaryCountrycode,temporaryPhone)
             4 -> fragment = OnboardingTypeFragment.newInstance(temporaryUser.firstName, userTypeSelected)
-            5 -> fragment = OnboardingPlaceFragment.newInstance(temporaryPlaceAddress,false,false)
+            5 -> {
+                val isSdf = userTypeSelected == UserTypeSelection.ALONE
+                fragment = OnboardingPlaceFragment.newInstance(temporaryPlaceAddress, false, isSdf)
+            }
             6 -> fragment = OnboardingEmailPwdFragment.newInstance(temporaryEmail)
             7 -> fragment = OnboardingPhotoFragment.newInstance(temporaryUser.firstName)
         }

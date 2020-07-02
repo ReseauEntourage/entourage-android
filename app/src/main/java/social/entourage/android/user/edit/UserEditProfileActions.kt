@@ -103,7 +103,7 @@ class UserEditProfileActions : EntourageDialogFragment() {
 
         val _txt = if (isSdf) getString(R.string.profile_sdf_activity_title) else getString(R.string.profile_neighbour_activity_title)
         ui_onboard_type_tv_title?.text = _txt
-        val _desc = if (isSdf) getString(R.string.onboard_sdf_activity_description) else getString(R.string.onboard_neighbour_activity_description)
+        val _desc = if (isSdf) getString(R.string.profile_sdf_activity_description) else getString(R.string.onboard_neighbour_activity_description)
         ui_onboard_type_tv_info?.text = _desc
 
         val _choice1Key = if (isSdf) getString(R.string.onboard_sdf_activity_choice_1) else getString(R.string.onboard_neighbour_activity_choice_1)
