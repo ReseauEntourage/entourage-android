@@ -22,7 +22,8 @@
                 android:elevation="16dp"
                 app:layout_constraintEnd_toStartOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone">
 
                 <ImageButton
                     android:id="@+id/fragment_guide_alert_info"
