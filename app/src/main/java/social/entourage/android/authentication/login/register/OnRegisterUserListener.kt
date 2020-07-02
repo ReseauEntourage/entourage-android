@@ -9,5 +9,5 @@ interface OnRegisterUserListener {
     fun registerSavePhoneNumber(phoneNumber: String)
     fun registerCheckCode(smsCode: String)
     fun registerResendCode()
-    fun registerClosePop(isShowLogin: Boolean?) //Hack en attendant la nouvelle version de l'onboarding
+    fun registerClosePop(isShowLogin: Boolean) //Hack en attendant la nouvelle version de l'onboarding
 }

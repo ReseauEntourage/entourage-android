@@ -115,14 +115,12 @@
             android:gravity="end"
             android:orientation="horizontal">
 
-            <com.github.clans.fab.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/login_name_go_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_forward_tint"
-                app:fab_colorNormal="@color/white"
-                app:fab_colorPressed="@color/custom_button_white_pressed"
-                app:fab_colorRipple="@color/white"
+                app:backgroundTint="@color/white"
                 />
         </LinearLayout>
 
