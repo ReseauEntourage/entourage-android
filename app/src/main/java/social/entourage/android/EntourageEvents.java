@@ -326,7 +326,7 @@ public class EntourageEvents {
     public static final String EVENT_MYENTOURAGES_BANNER_MOVE = "MoveBannerClick"; //A lot of code needs to be written to detect this
     public static final String EVENT_MYENTOURAGES_BACK_CLICK = "BackToFeedClick";
 
-    public static final String EVENT_PLUS_GOOD_WAVES = "ShowGoodWavesClick";
+    public static final String ACTION_PLUS_GOOD_WAVES = "Action__Plus__GoodWaves";
     //MY ENTOURAGES FILTER Events
     public static final String EVENT_MYENTOURAGES_FILTER_EXIT = "ExitMessagesFilter";
     public static final String EVENT_MYENTOURAGES_FILTER_SAVE = "SaveMessagesFilter";
