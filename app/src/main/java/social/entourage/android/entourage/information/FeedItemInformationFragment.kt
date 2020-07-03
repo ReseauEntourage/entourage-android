@@ -171,6 +171,8 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         entourage_info_invited_accept_button?.setOnClickListener { v -> onAcceptInvitationClicked(v)}
         entourage_info_invited_reject_button?.setOnClickListener { v -> onRejectInvitationClicked(v)}
         invite_source_number_button?.setOnClickListener { onInvitePhoneNumberClicked() }
+
+        ui_iv_button_faq?.setOnClickListener { onShowFaq() }
     }
 
     protected abstract fun setupComponent(entourageComponent: EntourageComponent?)
@@ -525,6 +527,13 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     private fun onRejectInvitationClicked(view: View) {
         view.isEnabled = false
         presenter().rejectInvitation(invitationId)
+    }
+
+    private fun onShowFaq() {
+        EntourageEvents.logEvent(EntourageEvents.ACTION_FEEDITEMINFO_FAQ)
+        val url = (activity as MainActivity?)?.getLink(Constants.FAQ_LINK_ID)
+
+        (activity as MainActivity?)?.showWebView(url)
     }
     // ----------------------------------
     // Chat push notification

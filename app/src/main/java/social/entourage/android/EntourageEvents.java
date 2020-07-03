@@ -416,6 +416,10 @@ public class EntourageEvents {
     //PLUS Screen
     public static final String EVENT_PLUS_NOT_READY = "NotReadyToHelpClick";
 
+    //Feed item info
+    public static final String ACTION_FEEDITEMINFO_FAQ = "Action__FeedItemInfo__FAQ";
+
+
     public static String TAG = EntourageEvents.class.getSimpleName();
 
     public static void logEvent(String event) {
