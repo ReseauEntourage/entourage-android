@@ -104,6 +104,7 @@ class PlusFragment : Fragment(), BackPressable {
     }
 
     private fun onShowGoodWaves() {
+        EntourageEvents.logEvent(EntourageEvents.EVENT_PLUS_GOOD_WAVES)
         val url = (activity as MainActivity?)?.getLink(Constants.GOOD_WAVES_ID)
 
         (activity as MainActivity?)?.showWebView(url)
