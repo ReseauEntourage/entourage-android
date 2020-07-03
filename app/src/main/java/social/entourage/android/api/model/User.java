@@ -406,6 +406,16 @@ public class User implements Serializable {
         }
     }
 
+    public boolean isUserTypeAlone() {
+        boolean isAlone = true;
+
+        if (!goal.equalsIgnoreCase("ask_for_help")) {
+            isAlone = false;
+        }
+
+        return isAlone;
+    }
+
     // ----------------------------------
     // BUILDER
     // ----------------------------------

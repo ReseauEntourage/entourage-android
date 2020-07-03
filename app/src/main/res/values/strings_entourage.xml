@@ -43,7 +43,7 @@
     <string name="entourage_create_menu_contribute">Proposer un don</string>
     <string name="entourage_create_submenu_contribute">Donner un bien, du temps, …</string>
     <string name="outing_create_menu">Annoncer un évènement</string>
-    <string name="outing_create_submenu">Se rassembler à une date précise</string>
+    <string name="outing_create_submenu">à une date précise</string>
 
     <!-- Entourage Category Fragment -->
     <string name="entourage_category_fragment_title">CATÉGORIE</string>

@@ -39,10 +39,33 @@ class PlusFragment : Fragment(), BackPressable {
         layout_line_add_tour_encounter?.setOnClickListener {onAddEncounter()}
         map_longclick_button_create_encounter?.setOnClickListener {onAddEncounter()}
         fragment_plus_overlay?.setOnClickListener {onBackPressed()}
+        layout_line_create_good_waves?.setOnClickListener { onShowGoodWaves() }
+
+        setupTexts()
+    }
+
+    private fun setupTexts() {
+       EntourageApplication.get().me()?.let { currentUser ->
+           if (currentUser.isUserTypeAlone) {
+               plus_help_button?.text = getString(R.string.agir_new_button_title_alone)
+               ui_tv_agir_good_waves_subtitle?.text = getString(R.string.agir_bonnes_ondes_alone)
+           }
+           else {
+               plus_help_button?.text = getString(R.string.plus_help_text)
+               ui_tv_agir_good_waves_subtitle?.text = getString(R.string.agir_bonnes_ondes_others)
+           }
+       }
     }
 
     private fun onHelpButton() {
-        (activity as MainActivity?)?.showWebViewForLinkId(Constants.SCB_LINK_ID)
+        EntourageApplication.get().me()?.let { currentUser ->
+            if (currentUser.isUserTypeAlone) {
+                (activity as MainActivity?)?.showWebViewForLinkId(Constants.AGIR_FAQ_ID)
+            }
+            else {
+                (activity as MainActivity?)?.showWebViewForLinkId(Constants.SCB_LINK_ID)
+            }
+        }
     }
 
     private fun onCreateEntourageHelpAction() {
@@ -78,6 +101,12 @@ class PlusFragment : Fragment(), BackPressable {
         newIntent.action = KEY_ADD_ENCOUNTER
         startActivity(newIntent)
         (activity as MainActivity?)?.showFeed()
+    }
+
+    private fun onShowGoodWaves() {
+        val url = (activity as MainActivity?)?.getLink(Constants.GOOD_WAVES_ID)
+
+        (activity as MainActivity?)?.showWebView(url)
     }
 
     override fun onBackPressed(): Boolean {

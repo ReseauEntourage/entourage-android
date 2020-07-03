@@ -37,6 +37,11 @@
     <string name="plus_image_subtitle">L’essentiel, c’est la rencontre !</string>
     <string name="plus_help_text">Vous ne vous sentez pas prêt ?</string>
 
+    <string name="agir_new_button_title_alone">Voir nos conseils</string>
+    <string name="agir_bonnes_ondes_others">soutenir en groupe une personne isolée</string>
+    <string name="agir_bonnes_ondes_alone">se créer un cercle d\'amis Entourage</string>
+    <string name="agir_title_bonnes_ondes">Rejoindre les Bonnes Ondes</string>
+
     //Tooltips
     <string name="tooltip_desc1">Votre fil d’actualité a été filtré en fonction de vos préférences. Modifiez vos paramètres en cliquant sur ce bouton.</string>
     <string name="tooltip_title2">Annuaire solidaire</string>
