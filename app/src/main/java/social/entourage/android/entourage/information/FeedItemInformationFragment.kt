@@ -742,6 +742,9 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             tour_summary_group_type?.text = resources.getString(R.string.entourage_type_outing)
             tour_summary_author_name?.text = ""
             entourage_info_location?.visibility = View.GONE
+            entourage_info_icon?.visibility = View.VISIBLE
+            entourage_info_icon?.setImageDrawable(ResourcesCompat.getDrawable(resources,R.drawable.ic_event_accent_24dp,null))
+            entourage_info_request_join_title?.text = getString(R.string.tour_info_request_join_title_entourage_new)
         } else {
             tour_summary_group_type?.text = feedItem.getFeedTypeLong(requireContext())
             tour_summary_author_name?.text = feedItem.author?.userName ?: ""
@@ -913,7 +916,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
                     // Different layout for requesting to join
                     entourage_info_act_layout?.visibility = View.INVISIBLE
                     entourage_info_request_join_layout?.visibility = View.VISIBLE
-                    entourage_info_request_join_title?.setText(feedItem.getJoinRequestTitle())
+//                    entourage_info_request_join_title?.setText(feedItem.getJoinRequestTitle())
                     entourage_info_request_join_button?.setText(feedItem.getJoinRequestButton())
                     updatePublicScrollViewLayout()
                     return
