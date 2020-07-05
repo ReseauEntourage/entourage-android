@@ -14,7 +14,6 @@ import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.location.EntourageLocation
 import java.io.Serializable
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.floor
@@ -259,8 +258,7 @@ open class BaseEntourage : FeedItem, Serializable {
     // ----------------------------------
     class EntourageJoinInfo(var distance: Int)
 
-    class Metadata : Serializable {
-        constructor() {}
+    class Metadata() : Serializable {
 
         @SerializedName("starts_at")
         var startDate: Date? = null

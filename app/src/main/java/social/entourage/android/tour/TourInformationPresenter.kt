@@ -192,11 +192,11 @@ class TourInformationPresenter @Inject constructor(
         when (feedItem.type) {
             TimestampedObject.TOUR_CARD -> {
                 // Tour user update status
-                when {
-                    FeedItem.JOIN_STATUS_ACCEPTED == status -> {
+                when (status) {
+                    FeedItem.JOIN_STATUS_ACCEPTED -> {
                         acceptJoinRequest(feedItem.uuid, userId)
                     }
-                    FeedItem.JOIN_STATUS_REJECTED == status -> {
+                    FeedItem.JOIN_STATUS_REJECTED -> {
                         rejectJoinRequest(feedItem.uuid, userId)
                     }
                     else -> {

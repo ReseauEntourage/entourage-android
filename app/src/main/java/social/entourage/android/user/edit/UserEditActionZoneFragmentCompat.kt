@@ -25,7 +25,6 @@ import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.R
 import social.entourage.android.api.UserResponse
 import social.entourage.android.api.model.User
-import social.entourage.android.api.model.User.AddressWrapper
 import social.entourage.android.base.EntourageDialogFragment
 import timber.log.Timber
 import java.util.*

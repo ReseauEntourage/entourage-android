@@ -20,7 +20,6 @@ import android.view.animation.AnimationUtils
 import android.webkit.*
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.annotation.StyleRes
 import androidx.core.view.GestureDetectorCompat
 import kotlinx.android.synthetic.main.fragment_webview.*
 import social.entourage.android.R
@@ -38,10 +37,6 @@ class WebViewFragment : EntourageDialogFragment() {
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment

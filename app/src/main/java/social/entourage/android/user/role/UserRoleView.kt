@@ -1,7 +1,6 @@
 package social.entourage.android.user.role
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import androidx.annotation.ColorRes

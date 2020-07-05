@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.choice_tour_card.view.*
+import kotlinx.android.synthetic.main.layout_choice_tour_card.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.model.tour.TourType
@@ -23,7 +23,7 @@ class ChoiceAdapter(private val itemListener: RecyclerViewClickListener, var tou
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChoiceViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.choice_tour_card, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_choice_tour_card, parent, false)
         return ChoiceViewHolder(view)
     }
 

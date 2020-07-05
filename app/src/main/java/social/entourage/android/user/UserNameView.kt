@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.layout_user_name.view.*
 import social.entourage.android.R

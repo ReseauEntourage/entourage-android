@@ -234,12 +234,16 @@ class NewsfeedPresenter @Inject constructor(
         }
 
         override fun onClusterItemClick(mapClusterItem: ClusterItem): Boolean {
-            if (encounterMarkerHashMap[mapClusterItem] != null) {
-                openEncounter(encounterMarkerHashMap[mapClusterItem])
-            } else if(mapClusterItem is MapClusterEntourageItem){
-                fragment?.handleHeatzoneClick(mapClusterItem.position)
-            } else if(mapClusterItem is MapClusterTourItem) {
-                openFeedItem(mapClusterItem.tour, 0, 0)
+            when {
+                encounterMarkerHashMap[mapClusterItem] != null -> {
+                    openEncounter(encounterMarkerHashMap[mapClusterItem])
+                }
+                mapClusterItem is MapClusterEntourageItem -> {
+                    fragment?.handleHeatzoneClick(mapClusterItem.position)
+                }
+                mapClusterItem is MapClusterTourItem -> {
+                    openFeedItem(mapClusterItem.tour, 0, 0)
+                }
             }
             return true
         }

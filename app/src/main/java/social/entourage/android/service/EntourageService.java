@@ -232,7 +232,7 @@ public class EntourageService extends Service {
                 .setPriority(NotificationCompat.PRIORITY_MAX);
         final PendingIntent pauseTourIntent = createPendingIntent(KEY_NOTIFICATION_PAUSE_TOUR);
         final PendingIntent stopTourIntent = createPendingIntent(KEY_NOTIFICATION_STOP_TOUR);
-        notificationRemoteView = new RemoteViews(getPackageName(), R.layout.notification_tour_service_small);
+        notificationRemoteView = new RemoteViews(getPackageName(), R.layout.layout_notification_tour_service_small);
         notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_pause_button, pauseTourIntent);
         notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_stop_button, stopTourIntent);
         builder = builder.setContent(notificationRemoteView);

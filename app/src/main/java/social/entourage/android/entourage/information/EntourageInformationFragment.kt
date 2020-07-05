@@ -48,10 +48,6 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         return inflater.inflate(R.layout.fragment_entourage_information, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     override fun getItemType(): Int {
         return TimestampedObject.ENTOURAGE_CARD
 

@@ -1,6 +1,5 @@
 package social.entourage.android.entourage.join
 
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import okhttp3.ResponseBody
@@ -12,7 +11,6 @@ import social.entourage.android.api.EntourageRequest
 import social.entourage.android.api.model.BaseEntourage
 import timber.log.Timber
 import java.util.*
-import javax.inject.Inject
 
 /**
  * Created by mihaiionescu on 07/03/16.

@@ -94,16 +94,16 @@ class OnboardingEditPhotoFragment : DialogFragment(), OnSetImageUriCompleteListe
 
     private fun setupViews() {
         if (context != null) {
-            ui_photo_edit_progressBar?.getIndeterminateDrawable()?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.white), PorterDuff.Mode.SRC_ATOP)
+            ui_photo_edit_progressBar?.indeterminateDrawable?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.white), PorterDuff.Mode.SRC_ATOP)
         }
 
         ui_photo_edit_cropImageView?.setOnSetImageUriCompleteListener(this)
         if (photoUri != null) {
-            ui_photo_edit_progressBar?.setVisibility(View.VISIBLE)
+            ui_photo_edit_progressBar?.visibility = View.VISIBLE
             ui_photo_edit_cropImageView?.setImageUriAsync(photoUri)
         }
-        ui_photo_edit_cropImageView?.setCropShape(CropImageView.CropShape.OVAL)
-        ui_photo_edit_cropImageView?.setGuidelines(CropImageView.Guidelines.OFF)
+        ui_photo_edit_cropImageView?.cropShape = CropImageView.CropShape.OVAL
+        ui_photo_edit_cropImageView?.guidelines = CropImageView.Guidelines.OFF
         ui_photo_edit_cropImageView?.setAspectRatio(1, 1)
 
         ui_edit_photo_cancel?.setOnClickListener {
@@ -115,14 +115,14 @@ class OnboardingEditPhotoFragment : DialogFragment(), OnSetImageUriCompleteListe
         }
 
         ui_edit_photo_validate?.setOnClickListener {
-            ui_edit_photo_validate?.setEnabled(false)
+            ui_edit_photo_validate?.isEnabled = false
             ui_photo_edit_cropImageView?.setOnCropImageCompleteListener { view, result ->
                 if (result.isSuccessful) {
                     mListener?.onPhotoEdited(result.uri, photoSource)
                     dismiss()
                 } else {
                     Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
-                    ui_edit_photo_validate.setEnabled(true)
+                    ui_edit_photo_validate.isEnabled = true
                 }
             }
             try {
@@ -161,7 +161,7 @@ class OnboardingEditPhotoFragment : DialogFragment(), OnSetImageUriCompleteListe
     //**********//**********//**********
 
     override fun onSetImageUriComplete(view: CropImageView?, uri: Uri?, error: Exception?) {
-        ui_photo_edit_progressBar?.setVisibility(View.GONE)
+        ui_photo_edit_progressBar?.visibility = View.GONE
     }
 
     //**********//**********//**********

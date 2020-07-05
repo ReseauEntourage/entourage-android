@@ -99,7 +99,7 @@ abstract class MainBasePresenter internal constructor(
     // ----------------------------------
     private fun displayAppUpdateDialog() {
         val builder = AlertDialog.Builder(activity)
-        val dialog = builder.setView(R.layout.dialog_version_update)
+        val dialog = builder.setView(R.layout.layout_dialog_version_update)
                 .setCancelable(false)
                 .create()
         dialog.show()

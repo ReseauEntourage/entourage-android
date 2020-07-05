@@ -147,11 +147,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".authentication.login.LoginActivity"
-            android:label="@string/title_activity_login"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
             android:name=".tour.encounter.ReadEncounterActivity"
             android:label="@string/activity_read_encounter_title"
             android:noHistory="true"

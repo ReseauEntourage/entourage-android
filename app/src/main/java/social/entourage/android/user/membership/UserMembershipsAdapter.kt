@@ -3,8 +3,6 @@ package social.entourage.android.user.membership
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.layout_membership_item.view.*
 import social.entourage.android.R

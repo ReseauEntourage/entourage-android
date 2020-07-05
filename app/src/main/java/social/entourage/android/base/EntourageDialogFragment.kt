@@ -8,7 +8,6 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.StyleRes
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentActivity
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.deeplinks.DeepLinksManager.handleCurrentDeepLink
@@ -29,7 +28,7 @@ open class EntourageDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity?)?.let {handleCurrentDeepLink(it) }
+        (activity as? MainActivity)?.let {handleCurrentDeepLink(it) }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

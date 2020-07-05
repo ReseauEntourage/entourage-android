@@ -167,17 +167,17 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
     protected open fun showLongClickOnMapOptions(latLng: LatLng) {
         //get the click point
         map?.let {
-            val clickPoint = it.projection.toScreenLocation(latLng)
-            //adjust the buttons holder layout
-            val wm = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-            val display = wm.defaultDisplay
-            val screenSize = Point()
-            display.getSize(screenSize)
             map_longclick_buttons?.let { buttons ->
                 buttons.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
                 val bW = buttons.measuredWidth
                 val bH = buttons.measuredHeight
                 val lp = buttons.layoutParams as RelativeLayout.LayoutParams
+                val clickPoint = it.projection.toScreenLocation(latLng)
+                //adjust the buttons holder layout
+                val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+                val screenSize = Point()
+                display.getSize(screenSize)
+
                 var marginLeft = clickPoint.x - bW / 2
                 if (marginLeft + bW > screenSize.x) {
                     marginLeft -= bW / 2

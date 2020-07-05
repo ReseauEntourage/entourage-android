@@ -216,10 +216,8 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         // Close the overlays
         onBackPressed()
         // Open the link to propose a POI
-        if (activity is MainActivity) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_PROPOSE_POI)
-            (activity as MainActivity).showWebViewForLinkId(Constants.PROPOSE_POI_ID)
-        }
+        EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_PROPOSE_POI)
+        (activity as? MainActivity)?.showWebViewForLinkId(Constants.PROPOSE_POI_ID)
     }
 
     override val adapter: HeaderBaseAdapter?
@@ -299,10 +297,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         fragment_guide_empty_list_popup?.setOnClickListener {onEmptyListPopupClose()}
         fragment_guide_info_popup_close?.setOnClickListener {onInfoPopupClose()}
         fragment_guide_info_popup?.setOnClickListener {onInfoPopupClose()}
-        var proposePOIUrl: String? = ""
-        if (activity != null && activity is MainActivity) {
-            proposePOIUrl = (activity as MainActivity).getLink(Constants.PROPOSE_POI_ID)
-        }
+        val proposePOIUrl = (activity as? MainActivity)?.getLink(Constants.PROPOSE_POI_ID) ?: ""
         hideInfoPopup()
         fragment_guide_empty_list_popup_text?.movementMethod = EntourageLinkMovementMethod
         fragment_guide_empty_list_popup_text?.text = Utils.fromHtml(getString(R.string.map_poi_empty_popup, proposePOIUrl))

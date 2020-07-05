@@ -3,9 +3,7 @@ package social.entourage.android.user
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Callback
-import retrofit2.Response
 import social.entourage.android.api.UserRequest
-import timber.log.Timber
 import javax.inject.Inject
 
 class PrepareAvatarUploadRepository @Inject constructor(private val userRequest: UserRequest) : Callback<PrepareAvatarUploadRepository.Response?> {

@@ -49,7 +49,7 @@ class CountryCodePicker : RelativeLayout {
     /**
      * SelectionDialogSearch is the facility to search through the list of country while selecting.
      *
-     * @param selectionDialogShowSearch true will allow search and false will hide search box
+     * @param isSelectionDialogShowSearch true will allow search and false will hide search box
      */
     var isSelectionDialogShowSearch = true
     var preferredCountries: List<Country>? = null

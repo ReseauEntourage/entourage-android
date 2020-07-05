@@ -43,7 +43,6 @@ class JSONResourceReader(resources: Resources, id: Int) {
      * Read from a resources file and create a [JSONResourceReader] object that will allow the creation of other
      * objects from this resource.
      *
-     * @param resources An application [Resources] object.
      * @param id The id for the resource to load, typically held in the raw/ folder.
      */
     init {

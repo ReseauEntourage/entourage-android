@@ -51,9 +51,9 @@ class PartnerFragmentV2 : EntourageDialogFragment() {
             ui_asso_tv_title?.text = it.name
             ui_asso_tv_subtitle?.text = ""
             ui_asso_iv_logo?.let { logoView ->
-                partner?.largeLogoUrl?.let {
+                partner?.largeLogoUrl?.let { url ->
                     Picasso.get()
-                            .load(Uri.parse(it))
+                            .load(Uri.parse(url))
                             .placeholder(R.drawable.partner_placeholder)
                             .transform(CropCircleTransformation())
                             .into(logoView)

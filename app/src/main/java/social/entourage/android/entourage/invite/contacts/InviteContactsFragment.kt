@@ -141,7 +141,7 @@ class InviteContactsFragment  : InviteBaseFragment(), LoaderManager.LoaderCallba
             }
         }
         // Update the progress dialog
-        (activity as EntourageActivity?)?.showProgressDialog(R.string.invite_contacts_inviting)
+        (activity as? EntourageActivity)?.showProgressDialog(R.string.invite_contacts_inviting)
         // Send the phone number to server
         serverRequestsCount++
         feedItemUUID?.let { presenter?.inviteBySMS(it, feedItemType, invitations) }
@@ -219,7 +219,7 @@ class InviteContactsFragment  : InviteBaseFragment(), LoaderManager.LoaderCallba
                 mContactsAdapter?.swapCursor(cursor)
             PHONE_LOADER_ID -> {
                 // Update the progress dialog
-                (activity as EntourageActivity?)?.showProgressDialog(R.string.invite_contacts_inviting)
+                (activity as? EntourageActivity)?.showProgressDialog(R.string.invite_contacts_inviting)
                 // Get the phone numbers
                 val invitations = MultipleInvitations(Invitation.INVITE_BY_SMS)
                 while (cursor.moveToNext()) {
@@ -250,7 +250,7 @@ class InviteContactsFragment  : InviteBaseFragment(), LoaderManager.LoaderCallba
         if (serverRequestsCount <= 0) {
             serverRequestsCount = 0
             // Hide the progress dialog
-            (activity as EntourageActivity?)!!.dismissProgressDialog()
+            (activity as? EntourageActivity)?.dismissProgressDialog()
             // Re-enable the send button
             title_action_button?.isEnabled = true
             // If success, close the fragment

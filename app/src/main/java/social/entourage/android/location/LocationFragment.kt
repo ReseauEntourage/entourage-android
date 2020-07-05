@@ -140,7 +140,7 @@ class LocationFragment  : EntourageDialogFragment() {
     }
 
     private fun onCurrentLocationClicked() {
-        (activity as EntourageSecuredActivity?)?.let {
+        (activity as? EntourageSecuredActivity)?.let {
             if (LocationUtils.isLocationPermissionGranted()) {
                 EntourageLocation.currentLocation?.let { currentLocation ->
                     map?.moveCamera(CameraUpdateFactory.newLatLng(LatLng(currentLocation.latitude, currentLocation.longitude)))

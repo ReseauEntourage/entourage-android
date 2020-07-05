@@ -117,7 +117,7 @@ open class BaseCreateEntourageFragment
                         if (descriptionEditText.text.toString() == "") {
                             descriptionEditText.text = textMatchList[0]
                         } else {
-                            descriptionEditText.text = descriptionEditText!!.text.toString() + " " + textMatchList[0]
+                            descriptionEditText.text = descriptionEditText.text.toString() + " " + textMatchList[0]
                         }
                         //descriptionEditText.setSelection(descriptionEditText.getText().length());
                     }
@@ -440,7 +440,7 @@ open class BaseCreateEntourageFragment
 
     private fun initializeHelpHtmlView() {
         create_entourage_help_link?.let {
-            (activity as MainActivity?)?.let { mainActivity ->
+            (activity as? MainActivity)?.let { mainActivity ->
                 val htmlString: String = if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) {
                     getString(R.string.entourage_create_help_text_event, mainActivity.getLink(Constants.EVENTS_GUIDE_ID))
                 } else {

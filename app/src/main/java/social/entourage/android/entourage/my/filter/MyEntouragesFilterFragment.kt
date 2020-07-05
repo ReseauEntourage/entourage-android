@@ -53,8 +53,8 @@ class MyEntouragesFilterFragment  : EntourageDialogFragment() {
         myentourages_filter_contribution_switch?.let {filter.isEntourageTypeContribution = it.isChecked}
         myentourages_filter_tours_switch?.let {filter.isShowTours = it.isChecked}
         myentourages_filter_unread_switch?.let {filter.isShowUnreadOnly = it.isChecked}
-        myentourages_filter_created_by_me_switch?.let {filter.showOwnEntouragesOnly = it.isChecked}
-        myentourages_filter_partner_switch?.let {filter.showPartnerEntourages = it.isChecked}
+        //myentourages_filter_created_by_me_switch?.let {filter.showOwnEntouragesOnly = it.isChecked}
+        //myentourages_filter_partner_switch?.let {filter.showPartnerEntourages = it.isChecked}
         myentourages_filter_closed_switch?.let {filter.isClosedEntourages = it.isChecked}
         MyEntouragesFilter.save(filter, context)
 

@@ -13,7 +13,6 @@ import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.user.edit.UserEditFragment
-import timber.log.Timber
 import java.util.*
 
 /**

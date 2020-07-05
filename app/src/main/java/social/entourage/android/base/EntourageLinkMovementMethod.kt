@@ -22,7 +22,7 @@ object EntourageLinkMovementMethod : LinkMovementMethod() {
             val line = layout.getLineForVertical(y)
             val off = layout.getOffsetForHorizontal(line, x.toFloat())
             val links = buffer.getSpans(off, off, ClickableSpan::class.java)
-            if (links.size != 0) {
+            if (links.isNotEmpty()) {
                 // to avoid double handling, we handle the link only on down
                 if (action == MotionEvent.ACTION_DOWN) {
                     if (links[0] is URLSpan) {

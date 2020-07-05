@@ -3,18 +3,17 @@ package social.entourage.android.onboarding.sdf_neighbour
 import android.content.Context
 import android.graphics.Typeface
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_onboarding_sdf_neighbour_activities.*
 import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.onboarding.OnboardingCallback
-import social.entourage.android.onboarding.asso.AssoActivities
 import java.io.Serializable
 
 private const val ARG_PARAM1 = "param1"

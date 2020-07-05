@@ -55,7 +55,7 @@ class InviteByPhoneNumberFragment  : InviteBaseFragment() {
                 // Send the request to server
                 val invitations = MultipleInvitations(Invitation.INVITE_BY_SMS)
                 invitations.addPhoneNumber(phoneNumber)
-                feedItemUUID?.let { presenter?.inviteBySMS(it, feedItemType, invitations) }
+                feedItemUUID?.let { uuid -> presenter?.inviteBySMS(uuid, feedItemType, invitations) }
             } ?: run {
                 Toast.makeText(activity, R.string.login_text_invalid_format, Toast.LENGTH_SHORT).show()
             }
@@ -80,7 +80,7 @@ class InviteByPhoneNumberFragment  : InviteBaseFragment() {
     // ----------------------------------
     override fun onInviteSent(success: Boolean) {
         // Hide the progress dialog
-        (activity as EntourageActivity?)?.dismissProgressDialog() ?: return
+        (activity as? EntourageActivity)?.dismissProgressDialog() ?: return
         // Enable the send button
         title_action_button?.isEnabled = true
         if (success) {

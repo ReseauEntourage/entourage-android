@@ -47,26 +47,22 @@ class EntourageAboutFragment : AboutFragment() {
 
     private fun onFAQClicked() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_ABOUT_FAQ)
-        val mainActivity = activity as MainActivity?
-        mainActivity?.showWebViewForLinkId(Constants.FAQ_LINK_ID)
+        (activity as? MainActivity)?.showWebViewForLinkId(Constants.FAQ_LINK_ID)
     }
 
     private fun onTutorialClicked() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_ABOUT_TUTORIAL)
-        val mainActivity = activity as MainActivity?
-        mainActivity?.showTutorial(true)
+        (activity as? MainActivity)?.showTutorial(true)
     }
 
     private fun onSuggestionClicked() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_ABOUT_SUGGESTION)
-        val mainActivity = activity as MainActivity?
-        mainActivity?.showWebViewForLinkId(Constants.SUGGESTION_ID)
+        (activity as? MainActivity)?.showWebViewForLinkId(Constants.SUGGESTION_ID)
     }
 
     private fun onFeedbackClicked() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_ABOUT_FEEDBACK)
-        val mainActivity = activity as MainActivity?
-        mainActivity?.showWebViewForLinkId(Constants.FEEDBACK_ID)
+        (activity as? MainActivity)?.showWebViewForLinkId(Constants.FEEDBACK_ID)
     }
 
     companion object {

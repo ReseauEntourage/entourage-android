@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
 import social.entourage.android.R
-import social.entourage.android.entourage.category.EntourageCategoryManager
 import java.util.*
 
 /**
@@ -39,28 +38,24 @@ class EntourageCategoriesAdapter(
 
     inner class OnCheckedChangeListener : CompoundButton.OnCheckedChangeListener {
         override fun onCheckedChanged(compoundButton: CompoundButton, isChecked: Boolean) {
-            // if no tag, exit
-            if (compoundButton.tag == null) {
-                return
-            }
-            // get the category
-            val category = compoundButton.tag as EntourageCategory
-            // unset the previously selected partner, if different than the current
-            if (selectedCategory != category) {
-                selectedCategory.isSelected = false
-            }
+            (compoundButton.tag as? EntourageCategory)?.let { category ->
+                // unset the previously selected partner, if different than the current
+                if (selectedCategory != category) {
+                    selectedCategory.isSelected = false
+                }
 
-            // save the state
-            category.isSelected = isChecked
-            if (selectedCategory != category) {
-                selectedCategory = category
-                selectedCategory.isNewlyCreated = false
-            } else {
-                selectedCategory.isNewlyCreated = !category.isSelected
-            }
+                // save the state
+                category.isSelected = isChecked
+                if (selectedCategory != category) {
+                    selectedCategory = category
+                    selectedCategory.isNewlyCreated = false
+                } else {
+                    selectedCategory.isNewlyCreated = !category.isSelected
+                }
 
-            // refresh the list view
-            notifyDataSetChanged()
+                // refresh the list view
+                notifyDataSetChanged()
+            }
         }
     }
 

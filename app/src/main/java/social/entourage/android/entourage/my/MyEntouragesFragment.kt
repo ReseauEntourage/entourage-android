@@ -79,7 +79,7 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
         initializeView()
         refreshInvitations()
         refreshMyFeeds()
-        (activity as MainActivity?)?.showEditActionZoneFragment()
+        (activity as? MainActivity)?.showEditActionZoneFragment()
     }
 
     private fun setupComponent(entourageComponent: EntourageComponent?) {

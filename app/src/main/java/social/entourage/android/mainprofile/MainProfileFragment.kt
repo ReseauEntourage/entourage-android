@@ -107,8 +107,7 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
     }
 
     private fun selectMenuAction(action: Int) {
-        if (activity == null || activity !is MainActivity) return
-        (activity as MainActivity).selectItem(action)
+        (activity as? MainActivity)?.selectItem(action)
     }
 
     private fun handleLongPress(): Boolean {

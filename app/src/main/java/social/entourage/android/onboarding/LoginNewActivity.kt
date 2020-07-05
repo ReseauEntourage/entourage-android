@@ -75,7 +75,7 @@ class LoginNewActivity : EntourageActivity() {
             }
 
             override fun onTick(p0: Long) {
-                timeOut = timeOut - 1
+                timeOut -= 1
             }
         }
 
@@ -187,9 +187,10 @@ class LoginNewActivity : EntourageActivity() {
 
                 //set the tutorial as done
                 val sharedPreferences = EntourageApplication.get().sharedPreferences
-                val loggedNumbers = sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, HashSet()) as HashSet<String>?
-                loggedNumbers!!.add(phone)
-                sharedPreferences.edit().putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers).apply()
+                (sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, HashSet()) as HashSet<String>?)?.let { loggedNumbers ->
+                    loggedNumbers.add(phone)
+                    sharedPreferences.edit().putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers).apply()
+                }
                 alertDialog.dismiss()
                 goMain()
             }

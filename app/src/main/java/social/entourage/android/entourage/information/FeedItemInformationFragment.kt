@@ -115,31 +115,29 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         super.onViewCreated(view, savedInstanceState)
         setupComponent(EntourageApplication.get().entourageComponent)
         invitationId = arguments?.getLong(KEY_INVITATION_ID) ?: 0
-        val newFeedItem = arguments?.getSerializable(FeedItem.KEY_FEEDITEM) as FeedItem?
-        if (newFeedItem == null) {
+        (arguments?.getSerializable(FeedItem.KEY_FEEDITEM) as? FeedItem)?.let { newFeedItem ->
+            feedItem = newFeedItem
+            if (newFeedItem.isPrivate()) {
+                initializeView()
+                loadPrivateCards()
+            } else {
+                // public entourage
+                // we need to retrieve the whole entourage again, just to send the distance and feed position
+                val feedRank = arguments?.getInt(KEY_FEED_POSITION) ?: 0
+                val distance = newFeedItem.getStartPoint()?.let { startPoint ->
+                    EntourageLocation.currentLocation?.let { currentLocation ->
+                        ceil(startPoint.distanceTo(LocationPoint(currentLocation.latitude, currentLocation.longitude)) / 1000.toDouble()).toInt() // in kilometers
+                    } ?: 0
+                } ?: 0
+                presenter().getFeedItem(newFeedItem.uuid
+                        ?: "", newFeedItem.type, feedRank, distance)
+            }
+        } ?: run {
             onFeedItemNotFound()
             dismiss()
             return
         }
-        feedItem = newFeedItem
-        if (newFeedItem.isPrivate()) {
-            initializeView()
-            loadPrivateCards()
-        } else {
-            // public entourage
-            // we need to retrieve the whole entourage again, just to send the distance and feed position
-            val feedRank = arguments?.getInt(KEY_FEED_POSITION) ?:0
-            var distance = 0
-            val startPoint = newFeedItem.getStartPoint()
-            if (startPoint != null) {
-                val currentLocation = EntourageLocation.currentLocation
-                if (currentLocation != null) {
-                    distance = ceil(startPoint.distanceTo(LocationPoint(currentLocation.latitude, currentLocation.longitude)) / 1000.toDouble()).toInt() // in kilometers
-                }
-            }
-            presenter().getFeedItem(newFeedItem.uuid ?:"", newFeedItem.type, feedRank, distance)
 
-        }
         initializeCommentEditText()
         //TODO split into smaller functions
         entourage_info_close?.setOnClickListener {onCloseButton()}
@@ -592,8 +590,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     }
 
     private fun updatePublicScrollViewLayout() {
-        if (entourage_info_public_scrollview == null) return
-        val lp = entourage_info_public_scrollview.layoutParams as RelativeLayout.LayoutParams
+        val lp = (entourage_info_public_scrollview?.layoutParams as? RelativeLayout.LayoutParams) ?: return
         val oldRule = lp.rules[RelativeLayout.ABOVE]
         val newRule:Int? = when {
             entourage_info_invited_layout?.visibility == View.VISIBLE -> {
@@ -697,10 +694,11 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
                 }
             }
         })
-        entourage_info_comment?.setOnClickListener {
-            entourage_info_discussion_view?.let {
-                val lastVisibleItemPosition = (it.layoutManager as LinearLayoutManager?)?.findLastVisibleItemPosition() ?: return@let
-                it.postDelayed({ it.scrollToPosition(lastVisibleItemPosition) }, 500)
+        entourage_info_comment?.setOnClickListener {v->
+            entourage_info_discussion_view?.let {view ->
+                (view.layoutManager as? LinearLayoutManager)?.findLastVisibleItemPosition()?.let { lastVisibleItemPosition ->
+                    view.postDelayed({ view.scrollToPosition(lastVisibleItemPosition) }, 500)
+                }
             }
         }
     }
@@ -1090,7 +1088,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             tourUser.feedItem = feedItem
 
             // check if we already have this user
-            val oldUser = discussionAdapter.findCard(tourUser) as EntourageUser?
+            val oldUser = discussionAdapter.findCard(tourUser) as? EntourageUser
             if (oldUser != null && oldUser.status != tourUser.status) {
                 discussionAdapter.updateCard(tourUser)
             } else {
@@ -1172,8 +1170,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             val messageId = if (FeedItem.JOIN_STATUS_REJECTED == status) R.string.tour_join_request_rejected else R.string.tour_join_request_success
             entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  messageId, Snackbar.LENGTH_SHORT).show()}
             // Update the card
-            val card = discussionAdapter.findCard(TimestampedObject.TOUR_USER_JOIN, userId.toLong()) as EntourageUser?
-            if (card != null) {
+            (discussionAdapter.findCard(TimestampedObject.TOUR_USER_JOIN, userId.toLong()) as? EntourageUser)?.let { card ->
                 if (FeedItem.JOIN_STATUS_ACCEPTED == status) {
                     card.status = FeedItem.JOIN_STATUS_ACCEPTED
                     discussionAdapter.updateCard(card)
@@ -1194,31 +1191,32 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             }
         } else if (error == EntourageError.ERROR_BAD_REQUEST) {
             // Assume that the other user cancelled the request
-            val card = discussionAdapter.findCard(TimestampedObject.TOUR_USER_JOIN, userId.toLong()) as EntourageUser? ?:return
-            when (status){
-                FeedItem.JOIN_STATUS_ACCEPTED -> {
-                    // Mark the user as accepted
-                    card.status = FeedItem.JOIN_STATUS_ACCEPTED
-                    discussionAdapter.updateCard(card)
-                    // Add a quited card
-                    val clone = card.clone()
-                    clone.status = FeedItem.JOIN_STATUS_QUITED
-                    discussionAdapter.addCardInfoAfterTimestamp(clone)
+            (discussionAdapter.findCard(TimestampedObject.TOUR_USER_JOIN, userId.toLong()) as? EntourageUser)?.let { card ->
+                when (status) {
+                    FeedItem.JOIN_STATUS_ACCEPTED -> {
+                        // Mark the user as accepted
+                        card.status = FeedItem.JOIN_STATUS_ACCEPTED
+                        discussionAdapter.updateCard(card)
+                        // Add a quited card
+                        val clone = card.clone()
+                        clone.status = FeedItem.JOIN_STATUS_QUITED
+                        discussionAdapter.addCardInfoAfterTimestamp(clone)
+                    }
+                    FeedItem.JOIN_STATUS_REJECTED -> {
+                        // Mark the user as cancelled
+                        card.status = FeedItem.JOIN_STATUS_CANCELLED
+                        // Remove the message
+                        card.message = ""
+                        discussionAdapter.updateCard(card)
+                    }
+                    else -> {
+                        // remove from the adapter
+                        discussionAdapter.removeCard(card)
+                    }
                 }
-                FeedItem.JOIN_STATUS_REJECTED -> {
-                    // Mark the user as cancelled
-                    card.status = FeedItem.JOIN_STATUS_CANCELLED
-                    // Remove the message
-                    card.message = ""
-                    discussionAdapter.updateCard(card)
-                }
-                else -> {
-                    // remove from the adapter
-                    discussionAdapter.removeCard(card)
-                }
+                // remove from cached cards
+                feedItem.removeCardInfo(card)
             }
-            // remove from cached cards
-            feedItem.removeCardInfo(card)
         } else {
             // other Error
             entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.tour_join_request_error, Snackbar.LENGTH_SHORT).show()}
