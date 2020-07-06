@@ -17,7 +17,6 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import social.entourage.android.EntourageApplication;
 import social.entourage.android.R;
 import social.entourage.android.api.model.feed.FeedItemAuthor;
 import timber.log.Timber;
@@ -37,6 +36,12 @@ public class User implements Serializable {
     public static final String TYPE_PRO = "pro";
 
     private static final String USER_ROLE_ETHICS_CHARTER_SIGNED = "ethics_charter_signed";
+
+    public static final String USER_GOAL_NEIGHBOUR = "offer_help";
+    public static final String USER_GOAL_ALONE =  "ask_for_help";
+    public static final String USER_GOAL_ASSO =  "organization";
+    public static final String USER_GOAL_NONE = "";
+
 
     // ----------------------------------
     // ATTRIBUTES
@@ -409,7 +414,7 @@ public class User implements Serializable {
     public boolean isUserTypeAlone() {
         boolean isAlone = true;
 
-        if (!goal.equalsIgnoreCase("ask_for_help")) {
+        if (!USER_GOAL_ALONE.equalsIgnoreCase(goal)) {
             isAlone = false;
         }
 

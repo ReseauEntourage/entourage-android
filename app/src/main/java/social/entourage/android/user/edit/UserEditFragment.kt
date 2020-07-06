@@ -176,9 +176,9 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
             user.goal?.let {
                 var message = ""
                 when(user.goal) {
-                    "offer_help" -> message = getString(R.string.onboard_type_choice1)
-                    "ask_for_help" -> message = getString(R.string.onboard_type_choice2)
-                    "organization" -> message = getString(R.string.onboard_type_choice3)
+                    User.USER_GOAL_NEIGHBOUR -> message = getString(R.string.onboard_type_choice1)
+                    User.USER_GOAL_ALONE -> message = getString(R.string.onboard_type_choice2)
+                    User.USER_GOAL_ASSO -> message = getString(R.string.onboard_type_choice3)
                     else -> {
                         message = getString(R.string.profile_action_not_selected)
                     }

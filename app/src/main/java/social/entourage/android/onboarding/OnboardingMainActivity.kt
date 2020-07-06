@@ -979,11 +979,11 @@ enum class UserTypeSelection(val pos:Int) {
 
     fun getGoalString() : String {
        return when(this) {
-            NEIGHBOUR -> "offer_help"
-            ALONE -> "ask_for_help"
-            ASSOS -> "organization"
-            NONE -> ""
-        }
+           NEIGHBOUR -> User.USER_GOAL_NEIGHBOUR
+           ALONE -> User.USER_GOAL_ALONE
+           ASSOS -> User.USER_GOAL_ASSO
+           NONE -> User.USER_GOAL_NONE
+       }
     }
 }
 
