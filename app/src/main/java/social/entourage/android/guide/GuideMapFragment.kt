@@ -364,7 +364,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     // FAB HANDLING
     // ----------------------------------
     private fun onPOIProposeClicked() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_PLUS_CLICK)
+        EntourageEvents.logEvent(EntourageEvents.ACTION_PLUS_STRUCTURE)
         proposePOI()
     }
 

@@ -419,6 +419,9 @@ public class EntourageEvents {
     //Feed item info
     public static final String ACTION_FEEDITEMINFO_FAQ = "Action__FeedItemInfo__FAQ";
 
+    //Action plus button agir / structure
+    public static final String ACTION_PLUS_AGIR = "Action__Plus__Agir";
+    public static final String ACTION_PLUS_STRUCTURE = "Action__Plus__Structure";
 
     public static String TAG = EntourageEvents.class.getSimpleName();
 
