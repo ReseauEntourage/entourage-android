@@ -50,7 +50,7 @@ class UserEditPresenter @Inject constructor(
             override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
                 if (response.isSuccessful) {
                     //inform the fragment
-                    authenticationController.user?.phone?.let { phone ->
+                    authenticationController.me?.phone?.let { phone ->
                         authenticationController.saveUserPhoneAndCode(phone, newPassword)
                     }
                     fragment?.onSaveNewPassword(newPassword)

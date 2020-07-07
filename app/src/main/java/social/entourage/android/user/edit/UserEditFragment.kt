@@ -304,7 +304,7 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
             override fun onResponse(call: Call<social.entourage.android.api.Response?>, response: Response<social.entourage.android.api.Response?>) {
                 if (response.isSuccessful) {
                     val authenticationController = EntourageApplication.get().entourageComponent.authenticationController
-                    authenticationController.user?.let { me->
+                    authenticationController.me?.let { me->
                         me.addressSecondary = null
                         authenticationController.saveUser(me)
                         initUserData()
@@ -468,12 +468,8 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
     }
 
     private fun storeActionZone(ignoreActionZone: Boolean) {
-        EntourageApplication.get().entourageComponent.authenticationController?.let { authenticationController ->
-            authenticationController.userPreferences?.let { userPreferences ->
-                userPreferences.isIgnoringActionZone = ignoreActionZone
-                authenticationController.saveUserPreferences()
-            }
-        }
+        EntourageApplication.get().entourageComponent.authenticationController?.isIgnoringActionZone = ignoreActionZone
+
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             (parentFragmentManager.findFragmentByTag(UserEditActionZoneFragmentCompat.TAG) as UserEditActionZoneFragmentCompat?)?.let { userEditActionZoneFragmentCompat ->
                 if (!userEditActionZoneFragmentCompat.isStateSaved) {

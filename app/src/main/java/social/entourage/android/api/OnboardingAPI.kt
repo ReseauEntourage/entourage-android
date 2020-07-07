@@ -25,7 +25,7 @@ import social.entourage.android.api.model.Partner.PartnersWrapper
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.authentication.AuthenticationController
-import social.entourage.android.authentication.AuthenticationInterceptor_Factory
+import social.entourage.android.authentication.AuthenticationInterceptor
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
@@ -98,11 +98,7 @@ class OnboardingAPI(val application: EntourageApplication) {
     private fun providesOkHttpClient(): OkHttpClient {
         val builder = OkHttpClient.Builder()
 
-        val intercp = AuthenticationInterceptor_Factory.create {
-            authenticationController
-        }.get()
-
-        builder.addInterceptor(intercp)
+        builder.addInterceptor(AuthenticationInterceptor)
         if (BuildConfig.DEBUG) {
             val loggingInterceptor = HttpLoggingInterceptor()
             loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY

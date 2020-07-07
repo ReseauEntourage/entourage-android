@@ -165,7 +165,7 @@ public class MainActivity extends EntourageSecuredActivity
             DeepLinksManager.INSTANCE.storeIntent(getIntent());
         }
 
-        User user = getAuthenticationController().getUser();
+        User user = getAuthenticationController().getMe();
         if (user != null) {
             //refresh the user info from the server
             Location location = EntourageLocation.getCurrentLocation();
@@ -368,10 +368,10 @@ public class MainActivity extends EntourageSecuredActivity
 
     private void sendNewsfeedFragmentExtras() {
         AuthenticationController authenticationController = getAuthenticationController();
-        if (authenticationController == null || authenticationController.getUser() == null) return;
+        if (authenticationController == null || authenticationController.getMe() == null) return;
         BaseNewsfeedFragment newsfeedFRagment  = getNewsfeedFragment();
         if(newsfeedFRagment !=null) {
-            newsfeedFRagment.onNotificationExtras(authenticationController.getUser().getId(), authenticationController.isUserToursOnly());
+            newsfeedFRagment.onNotificationExtras(authenticationController.getMe().getId(), authenticationController.isUserToursOnly());
         }
     }
 
@@ -535,7 +535,7 @@ public class MainActivity extends EntourageSecuredActivity
     }
 
     private void updateAnalyticsInfo() {
-        User user = getAuthenticationController().getUser();
+        User user = getAuthenticationController().getMe();
         if (user == null) return;
         EntourageEvents.updateUserInfo(user, getApplicationContext(), NotificationManagerCompat.from(this).areNotificationsEnabled());
     }
@@ -862,18 +862,13 @@ public class MainActivity extends EntourageSecuredActivity
         if (!authenticationController.isAuthenticated()) {
             return;
         }
-        User me = authenticationController.getUser();
+        User me = authenticationController.getMe();
         if(me==null) {
             return;
         }
 
-        UserPreferences userPreferences = authenticationController.getUserPreferences();
-        if(userPreferences== null) {
-            return;
-        }
-
         boolean noNeedToShowEditScreen = me.isEditActionZoneShown()
-                || userPreferences.isIgnoringActionZone()
+                || authenticationController.isIgnoringActionZone()
                 || (me.getAddress()!=null
                     && me.getAddress().getDisplayAddress() != null
                     && me.getAddress().getDisplayAddress().length() > 0
@@ -915,11 +910,7 @@ public class MainActivity extends EntourageSecuredActivity
 
     private void storeActionZone(final boolean ignoreZone) {
         if (authenticationController.isAuthenticated()) {
-            UserPreferences userPreferences = authenticationController.getUserPreferences();
-            if (userPreferences != null) {
-                userPreferences.setIgnoringActionZone(ignoreZone);
-                authenticationController.saveUserPreferences();
-            }
+            authenticationController.setIgnoringActionZone(ignoreZone);
         }
         UserEditActionZoneFragmentCompat fragment = (UserEditActionZoneFragmentCompat)getSupportFragmentManager().findFragmentByTag(UserEditActionZoneFragmentCompat.TAG);
         if (fragment != null && !fragment.isStateSaved()) {

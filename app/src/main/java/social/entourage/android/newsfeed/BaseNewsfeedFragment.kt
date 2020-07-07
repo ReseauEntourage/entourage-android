@@ -1166,7 +1166,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     private fun storeActionZoneInfo(ignoreAddress: Boolean) {
         val authenticationController = EntourageApplication.get().entourageComponent.authenticationController
-        authenticationController.userPreferences.isIgnoringActionZone = ignoreAddress
+        authenticationController.isIgnoringActionZone = ignoreAddress
         authenticationController.saveUserPreferences()
         if (!ignoreAddress) {
             EntourageApplication.me(activity)?.address?.let {

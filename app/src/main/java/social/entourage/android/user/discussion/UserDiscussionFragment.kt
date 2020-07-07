@@ -142,9 +142,7 @@ class UserDiscussionFragment  : EntourageDialogFragment() {
                 if (response.isSuccessful) {
                     response.body()?.chatMessages?.let { chatMessageList ->
                         //check who sent the message
-                        val authenticationController = get(activity).entourageComponent.authenticationController
-                        if (authenticationController.isAuthenticated) {
-                            val me = authenticationController.user.id
+                        get(activity).entourageComponent.authenticationController.me?.id?.let { me ->
                             for (chatMessage in chatMessageList) {
                                 chatMessage.setIsMe(chatMessage.userId == me)
                             }

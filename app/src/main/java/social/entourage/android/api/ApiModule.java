@@ -35,13 +35,12 @@ import timber.log.Timber;
  */
 @Module
 public class ApiModule {
-    @Inject AuthenticationInterceptor interceptor;
 
     @Provides
     @Singleton
-    public OkHttpClient providesOkHttpClient(final AuthenticationInterceptor interceptor) {
+    public OkHttpClient providesOkHttpClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.addInterceptor(interceptor);
+        builder.addInterceptor(AuthenticationInterceptor.INSTANCE);
 
         if (BuildConfig.DEBUG) {
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();

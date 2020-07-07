@@ -58,7 +58,7 @@ class UserEditActionZoneFragment : OnboardingPlaceFragment() {
             OnboardingAPI.getInstance(EntourageApplication.get()).updateAddress(userAddress!!,isSecondaryAddress) { isOK, userResponse ->
                 if (isOK) {
                     val authenticationController = EntourageApplication.get().entourageComponent.authenticationController
-                    val me = authenticationController.user
+                    val me = authenticationController.me
                     if (me != null && userResponse != null) {
                         val newUser = userResponse.user
                         newUser.phone = me.phone

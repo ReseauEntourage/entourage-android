@@ -170,9 +170,8 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SIGNUP_SUCCESS)
                 val authController = get().entourageComponent.authenticationController
                 Timber.d("Inside login, auth controller : $authController")
-                Timber.d("Inside login, auth controller : ${authController.isAuthenticated}")
-                loginResponse?.let { authController.saveUser(loginResponse.user)
-                    Timber.d("Inside login, auth controller after : ${authController.isAuthenticated}")
+                loginResponse?.let {
+                    authController.saveUser(loginResponse.user)
                 }
                 authController.saveUserPhoneAndCode(phoneNumber, temporaryPasscode)
                 authController.saveUserToursOnly(false)
@@ -254,7 +253,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         OnboardingAPI.getInstance(get()).updateAddress(temporaryPlaceAddress!!,false) { isOK, userResponse ->
             if (isOK) {
                 val authenticationController = get().entourageComponent.authenticationController
-                val me = authenticationController.user
+                val me = authenticationController.me
                 if (me != null && userResponse != null) {
                     userResponse.user.phone = me.phone
                     authenticationController.saveUser(userResponse.user)
@@ -413,7 +412,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         OnboardingAPI.getInstance(get()).updateAddress(temporary2ndPlaceAddress!!,true) { isOK, userResponse ->
             if (isOK) {
                 val authenticationController = get().entourageComponent.authenticationController
-                val me = authenticationController.user
+                val me = authenticationController.me
                 if (me != null && userResponse != null) {
                     userResponse.user.phone = me.phone
                     authenticationController.saveUser(userResponse.user)
@@ -779,19 +778,20 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     fun goMain() {
         val authenticationController = get().entourageComponent.authenticationController
-        val me = authenticationController.user
-        OnboardingAPI.getInstance(get()).getUser(me.id) { isOK, userResponse ->
-            if (isOK) {
-                if (me != null && userResponse != null) {
-                    userResponse.user.phone = me.phone
-                    authenticationController.saveUser(userResponse.user)
+        authenticationController.me?.let { me ->
+            OnboardingAPI.getInstance(get()).getUser(me.id) { isOK, userResponse ->
+                if (isOK) {
+                    if (userResponse != null) {
+                        userResponse.user.phone = me.phone
+                        authenticationController.saveUser(userResponse.user)
+                    }
                 }
+                val sharedPreferences = get().sharedPreferences
+                sharedPreferences.edit().putInt(EntourageApplication.KEY_ONBOARDING_USER_TYPE, userTypeSelected.pos).apply()
+                sharedPreferences.edit().putBoolean(EntourageApplication.KEY_IS_FROM_ONBOARDING, true).apply()
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
             }
-            val sharedPreferences = get().sharedPreferences
-            sharedPreferences.edit().putInt(EntourageApplication.KEY_ONBOARDING_USER_TYPE,userTypeSelected.pos).apply()
-            sharedPreferences.edit().putBoolean(EntourageApplication.KEY_IS_FROM_ONBOARDING,true).apply()
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
         }
     }
 

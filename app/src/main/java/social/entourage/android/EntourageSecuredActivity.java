@@ -20,7 +20,7 @@ public abstract class EntourageSecuredActivity extends EntourageActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(!authenticationController.isAuthenticated() || !authenticationController.isTutorialDone(getApplicationContext())) {
+        if(!authenticationController.isAuthenticated() || !authenticationController.isTutorialDone()) {
             startActivity(new Intent(this, PreOnboardingStartActivity.class));
             finish();
         } else {
@@ -43,8 +43,8 @@ public abstract class EntourageSecuredActivity extends EntourageActivity {
 
     @Override
     public String getLink(String linkId) {
-        if (authenticationController != null && authenticationController.getUser() != null) {
-            return getString(R.string.redirect_link_format, BuildConfig.ENTOURAGE_URL, linkId, authenticationController.getUser().getToken());
+        if (authenticationController != null && authenticationController.getMe() != null) {
+            return getString(R.string.redirect_link_format, BuildConfig.ENTOURAGE_URL, linkId, authenticationController.getMe().getToken());
         }
         return super.getLink(linkId);
     }

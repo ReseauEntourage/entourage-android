@@ -126,18 +126,18 @@ public class EntourageServiceManager {
 
     public static EntourageServiceManager newInstance(final EntourageService entourageService,
                                                       final TourRequest tourRequest,
-                                                      final AuthenticationController controller,
+                                                      final AuthenticationController authenticationController,
                                                       final EncounterRequest encounterRequest,
                                                       final NewsfeedRequest newsfeedRequest,
                                                       final EntourageRequest entourageRequest) {
         Timber.d("newInstance");
         final ConnectivityManager connectivityManager = (ConnectivityManager) entourageService.getSystemService(CONNECTIVITY_SERVICE);
-        final User user = controller.getUser();
-        final UserType type = user != null && user.isPro() ? UserType.PRO : UserType.PUBLIC;
+        final User me = authenticationController.getMe();
+        final UserType type = me != null && me.isPro() ? UserType.PRO : UserType.PUBLIC;
         final LocationProvider provider = new LocationProvider(entourageService, type);
         final EntourageServiceManager entourageServiceManager = new EntourageServiceManager(
                 entourageService,
-                controller,
+                authenticationController,
                 tourRequest,
                 encounterRequest,
                 newsfeedRequest,
@@ -147,12 +147,12 @@ public class EntourageServiceManager {
 
         provider.setLocationListener(new LocationListener(entourageServiceManager, entourageService));
         provider.start();
-        final Tour savedTour = controller.getSavedTour();
-        if (savedTour != null && user != null) {
+        final Tour savedTour = authenticationController.getSavedTour();
+        if (savedTour != null && me != null) {
             final FeedItemAuthor author = savedTour.getAuthor();
-            if (author == null || author.getUserID() != user.getId()) {
+            if (author == null || author.getUserID() != me.getId()) {
                 // it's not the user's tour, so remove it from preferences
-                controller.saveTour(null);
+                authenticationController.saveTour(null);
             } else {
                 entourageServiceManager.currentTour = savedTour;
                 entourageServiceManager.tourUUID = savedTour.getUuid();

@@ -50,7 +50,7 @@ abstract class MainBasePresenter internal constructor(
             R.id.action_user -> {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_TAP_MY_PROFILE)
                 val userFragment = activity.supportFragmentManager.findFragmentByTag(UserFragment.TAG) as UserFragment?
-                        ?: UserFragment.newInstance(activity.getAuthenticationController().user.id)
+                        ?: UserFragment.newInstance(activity.getAuthenticationController().me!!.id)
                 userFragment.show(activity.supportFragmentManager, UserFragment.TAG)
             }
             R.id.action_edit_profile -> {

@@ -30,7 +30,7 @@ class CreateEncounterPresenter
     // ----------------------------------
     fun createEncounter(message: String?, streetPersonName: String?) {
         val encounter = Encounter()
-        encounter.userName = authenticationController.user.displayName
+        encounter.userName = authenticationController.me?.displayName
         encounter.message = message
         encounter.streetPersonName = streetPersonName
         encounter.creationDate = Date()
@@ -63,9 +63,7 @@ class CreateEncounterPresenter
     }
 
     val author: String
-        get() = if (!authenticationController.isAuthenticated) {
-            ""
-        } else authenticationController.user.displayName
+        get() = authenticationController.me?.displayName ?: ""
 
     // ----------------------------------
     // EncounterUploadCallback

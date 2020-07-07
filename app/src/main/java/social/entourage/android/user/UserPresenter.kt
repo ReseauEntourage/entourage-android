@@ -25,8 +25,8 @@ class UserPresenter @Inject constructor(
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
-    val authenticatedUser: User
-        get() = authenticationController.user
+    val authenticatedUser: User?
+        get() = authenticationController.me
 
     fun getUser(userId: Int) {
         userRequest.getUser(userId).enqueue(object : Callback<UserResponse> {

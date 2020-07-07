@@ -183,7 +183,7 @@ class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
                 if (response.isSuccessful) {
                     response.body()?.user?.let {
                         val authenticationController = get().entourageComponent.authenticationController
-                        authenticationController.user?.let { me->
+                        authenticationController.me?.let { me->
 
                             it.phone = me.phone
                             authenticationController.saveUser(it)

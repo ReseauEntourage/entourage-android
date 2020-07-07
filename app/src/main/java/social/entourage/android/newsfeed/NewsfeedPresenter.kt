@@ -188,9 +188,10 @@ class NewsfeedPresenter @Inject constructor(
     }
 
     fun resetUserOnboardingFlag() {
-        val me = authenticationController?.user ?: return
-        me.isOnboardingUser = false
-        authenticationController.saveUser(me)
+        authenticationController?.me?.let { me ->
+            me.isOnboardingUser = false
+            authenticationController.saveUser(me)
+        }
     }
 
     fun saveMapFilter() {

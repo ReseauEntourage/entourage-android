@@ -137,10 +137,10 @@ class UserEditPartnerFragment  : EntourageDialogFragment() {
                 user_edit_partner_progressBar?.visibility = View.GONE
                 if (response.isSuccessful) {
                     val authenticationController = get(context).entourageComponent.authenticationController
-                    authenticationController.user?.let { user ->
+                    authenticationController.me?.let { me ->
                         response.body()?.partner?.let {
-                            user.partner = it
-                            authenticationController.saveUser(user)
+                            me.partner = it
+                            authenticationController.saveUser(me)
                         }
                  }
                     Toast.makeText(activity, R.string.partner_add_ok, Toast.LENGTH_SHORT).show()
@@ -168,9 +168,9 @@ class UserEditPartnerFragment  : EntourageDialogFragment() {
                     currentPartner?.let {
                         addPartner(currentPartner)
                     } ?: run {
-                        get(context).entourageComponent.authenticationController.user?.let { user ->
-                            user.partner = null
-                            get(context).entourageComponent.authenticationController.saveUser(user)
+                        get(context).entourageComponent.authenticationController.me?.let { me ->
+                            me.partner = null
+                            get(context).entourageComponent.authenticationController.saveUser(me)
                         }
                         Toast.makeText(activity, R.string.partner_remove_ok, Toast.LENGTH_SHORT).show()
                         dismiss()
