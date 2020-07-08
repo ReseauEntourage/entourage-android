@@ -150,7 +150,7 @@ public class EntourageServiceManager {
         final Tour savedTour = authenticationController.getSavedTour();
         if (savedTour != null && me != null) {
             final FeedItemAuthor author = savedTour.getAuthor();
-            if (author == null || author.getUserID() != me.getId()) {
+            if (author == null || author.getUserID() != me.id) {
                 // it's not the user's tour, so remove it from preferences
                 authenticationController.saveTour(null);
             } else {

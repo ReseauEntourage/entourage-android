@@ -9,14 +9,13 @@ import social.entourage.android.entourage.my.filter.MyEntouragesFilter
 import social.entourage.android.map.filter.MapFilter
 import social.entourage.android.tools.BusProvider
 import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * Controller that managed the authenticated user and persist it on the phone
  */
 class AuthenticationController(private val appSharedPref: ComplexPreferences) {
     private var user: User? = null
-        private set
-
     private var userPreferences: UserPreferences = UserPreferences()
     private var userPreferencesHashMap: MutableMap<Int, UserPreferences?> = HashMap()
 
@@ -35,19 +34,15 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
     fun saveUser(updatedUser: User) {
         val shouldLoadUserPreferences = user?.let { user ->
             if (user.id == updatedUser.id) {
-                user.phone = updatedUser.phone
-                user.smsCode = updatedUser.smsCode
-                if (updatedUser !== user) {
-                    user.isEntourageDisclaimerShown = updatedUser.isEntourageDisclaimerShown
-                    user.isEncounterDisclaimerShown = updatedUser.isEncounterDisclaimerShown
-                    user.isOnboardingUser = updatedUser.isOnboardingUser
-                    user.isEditActionZoneShown = updatedUser.isEditActionZoneShown
-                }
+                //updatedUser doesnot contain all current user info
+                updatedUser.phone = user.phone
+                updatedUser.smsCode = user.smsCode
                 false
             } else true
         } ?: true
+
         user = updatedUser
-        saveCurrentUserPreferences()
+        saveCurrentUser()
         if (shouldLoadUserPreferences) loadUserPreferences()
         BusProvider.instance.post(OnUserInfoUpdatedEvent())
     }
@@ -56,26 +51,26 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
         user?.let { user ->
             user.phone = phone
             user.smsCode = smsCode
-            saveCurrentUserPreferences()
+            saveCurrentUser()
         }
     }
 
     fun incrementUserToursCount() {
         user?.let { user ->
             user.incrementTours()
-            saveCurrentUserPreferences()
+            saveCurrentUser()
         }
     }
 
     fun incrementUserEncountersCount() {
         user?.let { user ->
             user.incrementEncouters()
-            saveCurrentUserPreferences()
+            saveCurrentUser()
         }
     }
 
     fun logOutUser() {
-        saveCurrentUserPreferences()
+        saveCurrentUser()
         user = null
         userPreferences = UserPreferences()
     }
@@ -94,14 +89,13 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
 
     private fun loadUserPreferences() {
         val type = object : TypeToken<Map<Int?, UserPreferences?>?>() {}.type
-        userPreferencesHashMap = appSharedPref.getObjectFromType<MutableMap<Int, UserPreferences?>>(PREF_KEY_USER_PREFERENCES, type) ?: HashMap()
+        userPreferencesHashMap = (appSharedPref.getObjectFromType<MutableMap<Int, UserPreferences?>>(PREF_KEY_USER_PREFERENCES, type) ?: HashMap()).toMutableMap()
+
         // since we save the user preferences for all the users
         // we just need to check for an existing user preferences to see if it's a new user or not
-        user?.let { user ->
-            userPreferences = userPreferencesHashMap[user.id] ?: UserPreferences()
-        } ?: run {
-            userPreferences = UserPreferences()
-        }
+        userPreferences = user?.let { user ->
+            userPreferencesHashMap[user.id]
+        } ?: UserPreferences()
         // Check if we have an old version of saving the map filter with hashmap
         val typeMapFilterHashMap = object : TypeToken<Map<Int?, MapFilter?>?>() {}.type
         appSharedPref.getObjectFromType<Map<Int, MapFilter>>(PREF_KEY_MAP_FILTER_HASHMAP, typeMapFilterHashMap)?.let { mapFilterHashMap ->
@@ -131,6 +125,34 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
         userPreferences.isUserToursOnly = choice
         saveUserPreferences()
     }
+
+    var entourageDisclaimerShown: Boolean
+        get() = userPreferences.isEntourageDisclaimerShown
+        set(isEntourageDisclaimerShown: Boolean) {
+            userPreferences.isEntourageDisclaimerShown = isEntourageDisclaimerShown
+            saveUserPreferences()
+        }
+
+    var encounterDisclaimerShown: Boolean
+        get() = userPreferences.isEncounterDisclaimerShown
+        set(isEncounterDisclaimerShown: Boolean) {
+            userPreferences.isEncounterDisclaimerShown = isEncounterDisclaimerShown
+            saveUserPreferences()
+        }
+
+    var isOnboardingUser: Boolean
+        get() = userPreferences.isOnboardingUser
+        set(isOnboardingUser: Boolean) {
+            userPreferences.isOnboardingUser = isOnboardingUser
+            saveUserPreferences()
+        }
+
+    var editActionZoneShown: Boolean
+        get() = userPreferences.isEditActionZoneShown
+        set(isEditActionZoneShown: Boolean) {
+            userPreferences.isEditActionZoneShown = isEditActionZoneShown
+            saveUserPreferences()
+        }
 
     val isUserToursOnly: Boolean
         get() = userPreferences.isUserToursOnly
@@ -203,9 +225,9 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
         }
     }
 
-    private fun saveCurrentUserPreferences() {
+    private fun saveCurrentUser() {
         user?.let {
-            appSharedPref.putObject(PREF_KEY_USER, userPreferences)
+            appSharedPref.putObject(PREF_KEY_USER, it)
             appSharedPref.commit()
         }
     }
@@ -221,7 +243,7 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
     // userPreferencesHashMap
     fun saveUserPreferences() {
         user?.let { user ->
-            saveCurrentUserPreferences()
+            saveCurrentUser()
             userPreferencesHashMap[user.id] = userPreferences
             appSharedPref.putObject(PREF_KEY_USER_PREFERENCES, userPreferencesHashMap)
             appSharedPref.commit()

@@ -169,7 +169,7 @@ public class MainActivity extends EntourageSecuredActivity
         if (user != null) {
             //refresh the user info from the server
             Location location = EntourageLocation.getCurrentLocation();
-            presenter.updateUser(null, null, null, location);
+            presenter.updateUserLocation(location);
             //initialize the push notifications
             initializePushNotifications();
 
@@ -371,7 +371,7 @@ public class MainActivity extends EntourageSecuredActivity
         if (authenticationController == null || authenticationController.getMe() == null) return;
         BaseNewsfeedFragment newsfeedFRagment  = getNewsfeedFragment();
         if(newsfeedFRagment !=null) {
-            newsfeedFRagment.onNotificationExtras(authenticationController.getMe().getId(), authenticationController.isUserToursOnly());
+            newsfeedFRagment.onNotificationExtras(authenticationController.getMe().id, authenticationController.isUserToursOnly());
         }
     }
 
@@ -552,7 +552,7 @@ public class MainActivity extends EntourageSecuredActivity
         User me = EntourageApplication.me(getApplicationContext());
         if(me != null) {
             HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, new HashSet<>());
-            loggedNumbers.remove(me.getPhone());
+            loggedNumbers.remove(me.phone);
             editor.putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers);
         }
 
@@ -682,10 +682,7 @@ public class MainActivity extends EntourageSecuredActivity
     public void onEntourageDisclaimerAccepted(final EntourageDisclaimerFragment fragment) {
         // Save the entourage disclaimer shown flag
         try{
-            User me = EntourageApplication.me(this);
-            if(me==null) return;
-            me.setEntourageDisclaimerShown(true);
-            getAuthenticationController().saveUser(me);
+            getAuthenticationController().setEntourageDisclaimerShown(true);
 
             // Dismiss the disclaimer fragment
             if (fragment != null) fragment.dismiss();
@@ -704,11 +701,7 @@ public class MainActivity extends EntourageSecuredActivity
     @Override
     public void onEncounterDisclaimerAccepted(EncounterDisclaimerFragment fragment) {
         // Save the entourage disclaimer shown flag
-        User me = EntourageApplication.me(this);
-        if(me==null) return;
-
-        me.setEncounterDisclaimerShown(true);
-        getAuthenticationController().saveUser(me);
+        getAuthenticationController().setEncounterDisclaimerShown(true);
 
         // Dismiss the disclaimer fragment
         fragment.dismiss();
@@ -863,19 +856,14 @@ public class MainActivity extends EntourageSecuredActivity
             return;
         }
         User me = authenticationController.getMe();
-        if(me==null) {
+        if(me==null || ( me.address !=null && me.address.displayAddress.length() > 0)) {
             return;
         }
 
-        boolean noNeedToShowEditScreen = me.isEditActionZoneShown()
-                || authenticationController.isIgnoringActionZone()
-                || (me.getAddress()!=null
-                    && me.getAddress().getDisplayAddress() != null
-                    && me.getAddress().getDisplayAddress().length() > 0
-        );
-        if (noNeedToShowEditScreen) {
-            return;
+        if(authenticationController.getEditActionZoneShown() || authenticationController.isIgnoringActionZone()) {
+            return; //noNeedToShowEditScreen
         }
+
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             UserEditActionZoneFragmentCompat userEditActionZoneFragmentCompat = UserEditActionZoneFragmentCompat.newInstance(null,false);
             userEditActionZoneFragmentCompat.addFragmentListener(this);
@@ -889,8 +877,8 @@ public class MainActivity extends EntourageSecuredActivity
             userEditActionZoneFragment.setupListener(extraFragmentListener);
             userEditActionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
         }
-        
-        me.setEditActionZoneShown(true);
+
+        authenticationController.setEditActionZoneShown(true);
     }
 
     @Override

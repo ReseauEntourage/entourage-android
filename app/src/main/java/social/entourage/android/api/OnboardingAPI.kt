@@ -122,9 +122,9 @@ class OnboardingAPI(val application: EntourageApplication) {
     fun createUser(tempUser: User,listener:(isOK:Boolean,error:String?) -> Unit) {
 
         val user: MutableMap<String, String> = ArrayMap()
-        user["phone"] = tempUser.phone
-        user["first_name"] = tempUser.firstName
-        user["last_name"] = tempUser.lastName
+        user["phone"] = tempUser.phone ?: ""
+        user["first_name"] = tempUser.firstName ?: ""
+        user["last_name"] = tempUser.lastName ?:""
 
         val request = ArrayMap<String, Any>()
         request["user"] = user
@@ -155,7 +155,7 @@ class OnboardingAPI(val application: EntourageApplication) {
     /**********************
      * Login
      */
-    fun login(phoneNumber:String?,smsCode:String,listener:(isOK:Boolean,loginREsponse:LoginResponse?,error:String?) -> Unit) {
+    fun login(phoneNumber:String?,smsCode:String,listener:(isOK:Boolean, loginResponse:LoginResponse?, error:String?) -> Unit) {
         if (phoneNumber != null) {
             val user = HashMap<String, String>()
             user["phone"] = phoneNumber
@@ -229,7 +229,7 @@ class OnboardingAPI(val application: EntourageApplication) {
             address["place_name"] = userAddress.displayAddress
         }
         else {
-            address["google_place_id"] = userAddress.googlePlaceId
+            address["google_place_id"] = userAddress.googlePlaceId!!
         }
         val request = ArrayMap<String, Any>()
         request["address"] = address

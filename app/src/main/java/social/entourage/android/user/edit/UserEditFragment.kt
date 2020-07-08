@@ -155,46 +155,30 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
                 user_associations_layout?.visibility = View.VISIBLE
             }
             user.address?.let { address->
-
-                ui_tv_action_zone1_title?.text = user.address.displayAddress
-
+                ui_tv_action_zone1_title?.text = address.displayAddress
             } ?: run {
                 ui_tv_action_zone1_title?.text = getString(R.string.user_edit_action_zone_button_no_address)
             }
 
-            user.addressSecondary?.let {
-                ui_tv_action_zone2_title?.text = user.addressSecondary.displayAddress
+            user.addressSecondary?.let {addressSecondary ->
+                ui_tv_action_zone2_title?.text = addressSecondary.displayAddress
                 ui_layout_2nd_zone?.visibility = View.VISIBLE
                 ui_layout_add_zone?.visibility = View.GONE
-
             } ?: run {
                 ui_layout_2nd_zone?.visibility = View.GONE
                 ui_layout_add_zone?.visibility = View.VISIBLE
             }
 
             //Type
-            user.goal?.let {
-                var message = ""
-                when(user.goal) {
-                    User.USER_GOAL_NEIGHBOUR -> message = getString(R.string.onboard_type_choice1)
-                    User.USER_GOAL_ALONE -> message = getString(R.string.onboard_type_choice2)
-                    User.USER_GOAL_ASSO -> message = getString(R.string.onboard_type_choice3)
-                    else -> {
-                        message = getString(R.string.profile_action_not_selected)
-                    }
-                }
-                ui_tv_action_type_desc?.text = message
-
-                user.interests?.let {
-                    val interests = user.getFormatedInterests(requireContext())
-                    ui_tv_action_type_title?.text = String.format(getString(R.string.profile_activities),interests)
-                } ?: run {
-                    ui_tv_action_type_title?.text = getString(R.string.profile_activity_not_selected)
-                }
-            } ?: run {
-                ui_tv_action_type_title?.text = getString(R.string.profile_activity_not_selected)
-                ui_tv_action_type_desc?.text = getString(R.string.profile_action_not_selected)
+            ui_tv_action_type_desc?.text = when(user.goal) {
+                User.USER_GOAL_NEIGHBOUR -> getString(R.string.onboard_type_choice1)
+                User.USER_GOAL_ALONE -> getString(R.string.onboard_type_choice2)
+                User.USER_GOAL_ASSO -> getString(R.string.onboard_type_choice3)
+                else -> {getString(R.string.profile_action_not_selected) }
             }
+
+            val interests = user.getFormattedInterests(requireContext())
+            ui_tv_action_type_title?.text = String.format(getString(R.string.profile_activities),interests)
         }
     }
 
@@ -360,7 +344,8 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
                     user.partner = me.partner
                     user.address = me.address
                     user.addressSecondary = me.addressSecondary
-                    user.interests = me.interests
+                    user.interests.clear()
+                    user.interests.addAll(me.interests)
                     user.goal = me.goal
                     initUserData()
                 }

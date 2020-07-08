@@ -44,7 +44,7 @@ public abstract class EntourageSecuredActivity extends EntourageActivity {
     @Override
     public String getLink(String linkId) {
         if (authenticationController != null && authenticationController.getMe() != null) {
-            return getString(R.string.redirect_link_format, BuildConfig.ENTOURAGE_URL, linkId, authenticationController.getMe().getToken());
+            return getString(R.string.redirect_link_format, BuildConfig.ENTOURAGE_URL, linkId, authenticationController.getMe().token);
         }
         return super.getLink(linkId);
     }

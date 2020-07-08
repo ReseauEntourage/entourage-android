@@ -11,19 +11,26 @@ import java.io.Serializable
  * Created by Mihai Ionescu on 20/10/2017.
  */
 class UserPreferences : Serializable {
+
     var isUserToursOnly = false
     var isShowInfoPOIsPopup = true
     var isShowEncounterDisclaimer = false
-    @JvmField
     var mapFilter: MapFilter? = null
-    @JvmField
     var myEntouragesFilter: MyEntouragesFilter? = null
-    @JvmField
     var ongoingTour: Tour? = null
+
     @Expose(serialize = false)
     var isShowNoEntouragesPopup = true
     @Expose(serialize = false)
     var isShowNoPOIsPopup = true
     @Expose(serialize = false)
     var isIgnoringActionZone = false
+    @Expose(serialize = false)
+    var isEntourageDisclaimerShown = false
+    @Expose(serialize = false)
+    var isEncounterDisclaimerShown = false
+    @Expose(serialize = false)
+    var isOnboardingUser = false
+    @Expose(serialize = false)
+    var isEditActionZoneShown = false
 }

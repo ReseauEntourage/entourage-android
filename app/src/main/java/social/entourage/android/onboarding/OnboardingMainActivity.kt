@@ -164,8 +164,8 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     fun sendPasscode() {
         alertDialog.show(R.string.onboard_waiting_dialog)
         EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SIGNUP_SUBMIT)
-        val phoneNumber = checkPhoneNumberFormat(null, temporaryUser.phone)
-        OnboardingAPI.getInstance(get()).login(phoneNumber,temporaryPasscode!!) { isOK, loginResponse, error ->
+        val phoneNumber = checkPhoneNumberFormat(null, temporaryUser.phone ?:"")
+        OnboardingAPI.getInstance(get()).login(phoneNumber,temporaryPasscode ?: "") { isOK, loginResponse, error ->
             if (isOK) {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SIGNUP_SUCCESS)
                 val authController = get().entourageComponent.authenticationController
@@ -474,7 +474,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 fragment = OnboardingPlaceFragment.newInstance(temporaryPlaceAddress, false, isSdf)
             }
             6 -> fragment = OnboardingEmailPwdFragment.newInstance(temporaryEmail)
-            7 -> fragment = OnboardingPhotoFragment.newInstance(temporaryUser.firstName)
+            7 -> fragment = OnboardingPhotoFragment.newInstance(temporaryUser.firstName ?: "")
         }
 
         if (currentFragmentPosition == PositionType.Passcode.pos || currentFragmentPosition >= PositionType.Type.pos) {

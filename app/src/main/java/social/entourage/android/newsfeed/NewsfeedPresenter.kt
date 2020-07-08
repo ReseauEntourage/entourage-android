@@ -47,6 +47,9 @@ class NewsfeedPresenter @Inject constructor(
         private val tourRequest: TourRequest,
         private val invitationRequest: InvitationRequest) {
 
+    val isOnboardingUser: Boolean
+      get() = authenticationController?.isOnboardingUser == true
+
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
@@ -188,10 +191,7 @@ class NewsfeedPresenter @Inject constructor(
     }
 
     fun resetUserOnboardingFlag() {
-        authenticationController?.me?.let { me ->
-            me.isOnboardingUser = false
-            authenticationController.saveUser(me)
-        }
+        authenticationController?.isOnboardingUser = false
     }
 
     fun saveMapFilter() {

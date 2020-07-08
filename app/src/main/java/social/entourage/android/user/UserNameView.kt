@@ -55,14 +55,12 @@ class UserNameView : LinearLayout {
     // ----------------------------------
     // USER TAGS HANDLING
     // ----------------------------------
-    fun setRoles(roles: ArrayList<String?>?) {
+    fun setRoles(roles: ArrayList<String>?) {
         removeAllRoleViews()
         roles?.forEach { role ->
-            if (role != null) {
-                findByName(role)?.let {
-                    if (it.isVisible) {
-                        addRoleView(it)
-                    }
+            findByName(role)?.let {
+                if (it.isVisible) {
+                    addRoleView(it)
                 }
             }
         }

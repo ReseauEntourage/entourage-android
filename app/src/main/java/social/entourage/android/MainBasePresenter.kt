@@ -161,18 +161,9 @@ abstract class MainBasePresenter internal constructor(
         }
     }
 
-    fun updateUser(email: String?, smsCode: String?, phone: String?, location: Location?) {
+    fun updateUserLocation(location: Location?) {
         val deviceId = deviceID ?: return
         val user = ArrayMap<String, Any>()
-        if (email != null) {
-            user[KEY_EMAIL] = email
-        }
-        if (smsCode != null) {
-            user[KEY_SMS_COE] = smsCode
-        }
-        if (phone != null) {
-            user[KEY_PHONE] = phone
-        }
         if (location != null) {
             user[KEY_DEVICE_LOCATION] = location
         }
@@ -186,7 +177,6 @@ abstract class MainBasePresenter internal constructor(
                         val responseBody = response.body()
                         if (responseBody != null) activity.authenticationController.saveUser(responseBody.user)
                     }
-                    Timber.d("success")
                 }
             }
 

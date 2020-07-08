@@ -44,7 +44,7 @@ import social.entourage.android.tools.BusProvider
 import timber.log.Timber
 
 abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPressable, LocationUpdateListener {
-    protected var eventLongClick: String? = null
+    protected lateinit var eventLongClick: String
     var isFollowing = true
     protected var isFullMapShown = true
     protected var previousCameraLocation: Location? = null

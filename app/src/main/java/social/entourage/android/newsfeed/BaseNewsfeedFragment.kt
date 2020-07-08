@@ -1041,7 +1041,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     // ----------------------------------
     private fun initializeInvitations() {
         // Check if it's a valid user and onboarding
-        if (EntourageApplication.me(activity)?.isOnboardingUser == true) {
+        if (presenter.isOnboardingUser == true) {
             // Retrieve the list of invitations and then accept them automatically
             presenter.getMyPendingInvitations()
             presenter.resetUserOnboardingFlag()
@@ -1053,8 +1053,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     fun onInvitationsReceived(invitationList: List<Invitation>) {
         //during onboarding we check if the new user was invited to specific entourages and then automatically accept them
-        if ((EntourageApplication.me(activity)?.isOnboardingUser == true)
-                &&(!invitationList.isNullOrEmpty())) {
+        if (presenter.isOnboardingUser == true &&(!invitationList.isNullOrEmpty())) {
             invitationList.forEach {
                 presenter.acceptInvitation(it.id)
             }

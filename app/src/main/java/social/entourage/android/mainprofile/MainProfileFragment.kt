@@ -100,8 +100,6 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
             }
         }
 
-        // Show Update Private Circle item only if the user is member of any
-        //TODO ADD THIS TO PFP : action_update_info?.visibility = if (user.getMemberships(Entourage.TYPE_NEIGHBORHOOD).size > 0) View.VISIBLE else View.GONE
         // Changed the ethics charter text depending on signed/unsigned
         action_charte?.setTitle(if (user.hasSignedEthicsCharter()) R.string.action_charter_signed else R.string.action_charter_unsigned)
     }

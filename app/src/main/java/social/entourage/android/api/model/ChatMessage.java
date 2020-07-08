@@ -86,14 +86,14 @@ public class ChatMessage extends TimestampedObject implements Serializable {
 
     public int getUserId() {
         if (user != null) {
-            return user.getId();
+            return user.id;
         }
         return 0;
     }
 
     public String getUserAvatarURL() {
         if (user == null) return null;
-        return user.getAvatarURL();
+        return user.avatarURL;
     }
 
     public String getUserName() {
@@ -102,8 +102,8 @@ public class ChatMessage extends TimestampedObject implements Serializable {
     }
 
     public String getPartnerLogoSmall() {
-        if (user == null || user.getPartner() == null) return null;
-        return user.getPartner().getSmallLogoUrl();
+        if (user == null || user.partner == null) return null;
+        return user.partner.getSmallLogoUrl();
     }
 
     public boolean isMe() {
