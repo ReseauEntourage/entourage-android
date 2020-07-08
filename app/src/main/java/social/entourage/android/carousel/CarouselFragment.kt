@@ -51,10 +51,12 @@ class CarouselFragment  : EntourageDialogFragment() {
     }
 
     private fun addDots() {
-        dots.add(carousel_indicator_layout.carousel_b1)
-        dots.add(carousel_indicator_layout.carousel_b2)
-        dots.add(carousel_indicator_layout.carousel_b3)
-        dots.add(carousel_indicator_layout.carousel_b4)
+        carousel_indicator_layout?.let {
+            dots.add(it.carousel_b1)
+            dots.add(it.carousel_b2)
+            dots.add(it.carousel_b3)
+            dots.add(it.carousel_b4)   
+        }
     }
 
     fun selectDot(idx: Int) {

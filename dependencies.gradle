@@ -9,7 +9,7 @@ ext {
 
     // SDK versions
     compileSdkVersion = 29
-    buildToolsVersion = "29.0.3"
+    buildToolsVersion = "30.0.0"
     minSdkVersion = 19 /*October 2013: Android 4.4, KitKat*/
     targetSdkVersion = 29
 
@@ -19,7 +19,7 @@ ext {
 
     // App versions
     versionMajor = 6
-    versionMinor = 2
+    versionMinor = 3
     versionPatch = "git rev-list HEAD --count".execute().text.trim().toInteger()
     versionBranchName = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
     versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -28,28 +28,28 @@ ext {
 
     // Libraries versions
     annotationVersion = "1.1.0"
-    appCompatVersion = "1.2.0-beta01"
+    appCompatVersion = "1.2.0-rc01"
     butterKnifeVersion = "10.2.1"
     constraintlayoutVersion = "1.1.3"
     coordinatorlayoutVersion="1.1.0"
-    daggerVersion = "2.27"
+    daggerVersion = "2.28.1"
     dateTimePickerVersion = "4.2.3"
     espressoVersion = "3.2.0"
     exifinterfaceVersion = "1.2.0"
-    facebookVersion = "7.0.0"
-    firebaseAnalyticsVersion = "17.4.1"
-    firebaseCrashlyticsVersion = "17.0.0"
-    firebaseMessagingVersion = "20.1.7"
-    firebaseInappVersion = "19.0.6"
+    facebookVersion = "7.1.0"
+    firebaseAnalyticsVersion = "17.4.3"
+    firebaseCrashlyticsVersion = "17.1.0"
+    firebaseMessagingVersion = "20.2.1"
+    firebaseInappVersion = "19.0.7"
     firebasePerfMonitor = "19.0.7"
     floatingButtonVersion = "1.6.4"
-    fragmentVersion = "1.2.4"
-    guavaVersion = "28.2-android"
+    fragmentVersion = "1.2.5"
+    guavaVersion = "29.0-android"
     imageCropperVersion = "2.8.0"
     javaAnnotationVersion = "10.0-b28"
     jodaVersion = "2.10.6"
     mapsVersion = "17.0.0"
-    mapsUtilsVersion = "1.5.0"
+    mapsUtilsVersion = "1.8.0"
     materialVersion = "1.1.0"
     multidexVersion = "2.0.1"
     okHttpVersion = "3.12.9" //version 3.13+ needs API 21+ //https://square.github.io/okhttp/changelog_3x/

@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <declare-styleable name="FontTextView">
-        <attr name="fontName" format="string" />
-    </declare-styleable>
     <declare-styleable name="HtmlTextView">
         <attr name="htmlText" format="string" />
     </declare-styleable>
@@ -35,7 +32,6 @@
         <attr format="boolean" name="ccp_selectionDialogShowSearch"/>
         <attr format="boolean" name="ccp_clickable"/>
         <attr format="boolean" name="ccp_hidePhoneCode"/>
-        <attr format="boolean" name="ccp_enableHint"/>
         <attr format="boolean" name="ccp_enablePhoneAutoFormatter"/>
         <attr format="boolean" name="ccp_setCountryByTimeZone"/>
         <attr format="boolean" name="ccp_alternative_layout"/>

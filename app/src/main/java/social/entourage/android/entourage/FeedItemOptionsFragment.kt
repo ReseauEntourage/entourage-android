@@ -54,9 +54,8 @@ abstract class FeedItemOptionsFragment : EntourageDialogFragment() {
 
     abstract fun initializeView()
 
-    override fun getSlideStyle(): Int {
-        return R.style.CustomDialogFragmentSlide
-    }
+    override val slideStyle: Int
+        get() = R.style.CustomDialogFragmentSlide
 
     // ----------------------------------
     // BUTTON HANDLING

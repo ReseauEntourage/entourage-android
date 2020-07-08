@@ -50,10 +50,6 @@ class TourInformationFragment : FeedItemInformationFragment(){
     private var takeSnapshotOnCameraMove = false
     private var tourInformationList: MutableList<TourInformation> = ArrayList()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     override fun setupComponent(entourageComponent: EntourageComponent?) {
         DaggerTourInformationComponent.builder()
                 .entourageComponent(entourageComponent)

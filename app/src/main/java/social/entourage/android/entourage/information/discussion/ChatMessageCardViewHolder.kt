@@ -6,7 +6,7 @@ import android.text.format.DateFormat
 import android.view.View
 import androidx.core.content.ContextCompat.startActivity
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.entourage_information_chat_message_others_card_view.view.*
+import kotlinx.android.synthetic.main.layout_entourage_information_chat_message_others_card_view.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.model.TimestampedObject
@@ -63,13 +63,13 @@ open class ChatMessageCardViewHolder(view: View) : BaseCardViewHolder(view) {
         val deeplink = DeepLinksManager.findFirstDeeplinkInText(chatMessage.content)
         if(deeplink?.isNotBlank() ==true) {
             deeplinkURL = deeplink
-            itemView.tic_chat_deeplink.visibility = View.VISIBLE
-            itemView.tic_chat_deeplink.setOnClickListener {
+            itemView.tic_chat_deeplink?.visibility = View.VISIBLE
+            itemView.tic_chat_deeplink?.setOnClickListener {
                 onDeeplinkClick(it)}
             itemView.setOnClickListener {onDeeplinkClick(it)}
         } else {
             deeplinkURL = null
-            itemView.tic_chat_deeplink.visibility = View.GONE
+            itemView.tic_chat_deeplink?.visibility = View.GONE
         }
 
         //linkify(it)
@@ -91,6 +91,6 @@ open class ChatMessageCardViewHolder(view: View) : BaseCardViewHolder(view) {
     companion object {
         @JvmStatic
         val layoutResource: Int
-            get() = R.layout.entourage_information_chat_message_others_card_view
+            get() = R.layout.layout_entourage_information_chat_message_others_card_view
     }
 }

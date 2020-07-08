@@ -14,7 +14,6 @@ import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.fragment_no_location_permission.*
 import social.entourage.android.EntourageEvents
 import social.entourage.android.R
-import social.entourage.android.authentication.login.LoginActivity
 
 class NoLocationPermissionFragment : DialogFragment() {
     private var showingGeolocationSettings = false
@@ -36,8 +35,8 @@ class NoLocationPermissionFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        no_location_back_button.setOnClickListener {onBackButton()}
-        no_location_activate_button.setOnClickListener {onActivateButton()}
+        no_location_back_button?.setOnClickListener {onBackButton()}
+        no_location_activate_button?.setOnClickListener {onActivateButton()}
         no_location_ignore_button?.setOnClickListener {onBackButton()} //optional button
     }
 
@@ -57,11 +56,6 @@ class NoLocationPermissionFragment : DialogFragment() {
     }
 
     fun onBackButton() {
-        if (activity != null && activity is LoginActivity) {
-            val loginActivity = activity as LoginActivity
-            loginActivity.saveGeolocationPreference(enableGeolocation)
-            loginActivity.showNotificationPermissionView()
-        }
         dismiss()
     }
 

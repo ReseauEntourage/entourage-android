@@ -7,8 +7,11 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.*
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_pre_onboarding_start.*
+import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.tools.Utils
 
@@ -36,12 +39,12 @@ class PreOnboardingStartActivity : AppCompatActivity() {
     }
 
     private fun setupViews() {
-        ui_button_connect.setOnClickListener {
+        ui_button_connect?.setOnClickListener {
             startActivity(Intent(this, PreOnboardingChoiceActivity::class.java))
             finish()
         }
 
-        ui_button_next.setOnClickListener {
+        ui_button_next?.setOnClickListener {
             if (currentDotPosition < 3) {
                 currentDotPosition = currentDotPosition + 1
                 ui_recyclerView?.smoothScrollToPosition(currentDotPosition)
@@ -61,7 +64,7 @@ class PreOnboardingStartActivity : AppCompatActivity() {
         datas.add(R.drawable.pre_onboard_4)
         val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         ui_recyclerView?.setHasFixedSize(true)
-        ui_recyclerView.layoutManager = linearLayoutManager
+        ui_recyclerView?.layoutManager = linearLayoutManager
         ui_recyclerView?.addItemDecoration(RecyclerViewItemDecorationCenterFirstLast(CELL_SPACING))
 
         val scrollListener = object : RecyclerView.OnScrollListener() {
@@ -80,15 +83,15 @@ class PreOnboardingStartActivity : AppCompatActivity() {
 
         linearLayoutManager.scrollToPosition(0)
         mAdapter = PreOnboardingRVAdapter(this, datas)
-        ui_recyclerView.adapter = mAdapter
+        ui_recyclerView?.adapter = mAdapter
 
         mAdapter.notifyDataSetChanged()
 
         //Calculate padding and white view width
         val diff = (Utils.getScreenWidth(this) - Utils.convertDpToPixel(228.toFloat(),this)) / 2
-        ui_fl_trans_left.layoutParams.width = (diff - CELL_SPACING).toInt()
-        ui_fl_trans_right.layoutParams.width = (diff - CELL_SPACING).toInt()
-        ui_recyclerView.setPaddingRelative(diff.toInt(),0,diff.toInt(),0)
+        ui_fl_trans_left?.layoutParams?.width = (diff - CELL_SPACING).toInt()
+        ui_fl_trans_right?.layoutParams?.width = (diff - CELL_SPACING).toInt()
+        ui_recyclerView?.setPaddingRelative(diff.toInt(),0,diff.toInt(),0)
     }
 
     private fun updateViewAndDots() {
@@ -108,22 +111,26 @@ class PreOnboardingStartActivity : AppCompatActivity() {
                 title = getString(R.string.pre_onboard_tutorial_title1)
                 titleColored = getString(R.string.pre_onboard_tutorial_title1_colored)
                 description = getString(R.string.pre_onboard_tutorial_description1)
+                EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_START_CARROUSEL1)
             }
             1 -> {
                 title = getString(R.string.pre_onboard_tutorial_title2)
                 titleColored = getString(R.string.pre_onboard_tutorial_title2_colored)
                 description = getString(R.string.pre_onboard_tutorial_description2)
+                EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_START_CARROUSEL2)
             }
             2 -> {
                 title = getString(R.string.pre_onboard_tutorial_title3)
                 titleColored = getString(R.string.pre_onboard_tutorial_title3_colored)
                 description = ""
                 ui_iv_pre3?.visibility = View.VISIBLE
+                EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_START_CARROUSEL3)
             }
             else -> {
                 title = getString(R.string.pre_onboard_tutorial_title4)
                 titleColored = getString(R.string.pre_onboard_tutorial_title4_colored)
                 description = getString(R.string.pre_onboard_tutorial_description4)
+                EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_START_CARROUSEL4)
             }
         }
         ui_tv_title?.text = Utils.formatTextWithBoldSpanAndColor(color,false,title,titleColored)

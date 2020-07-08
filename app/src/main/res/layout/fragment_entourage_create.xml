@@ -185,8 +185,6 @@
                     android:layout_weight="1"
                     android:gravity="end"
                     android:paddingEnd="0dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="0dp"
                     android:paddingStart="5dp"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/accent"
@@ -228,8 +226,6 @@
                     android:layout_weight="1"
                     android:gravity="end"
                     android:paddingEnd="0dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="0dp"
                     android:paddingStart="5dp"
                     android:textColor="@color/accent"
                     android:textSize="@dimen/entourage_font_medium"/>
@@ -268,8 +264,6 @@
                     android:layout_weight="1"
                     android:gravity="end"
                     android:paddingEnd="0dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="0dp"
                     android:paddingStart="5dp"
                     android:textColor="@color/accent"
                     android:textSize="@dimen/entourage_font_medium"/>
@@ -305,7 +299,7 @@
                         android:textSize="@dimen/entourage_font_medium"
                         android:textStyle="bold"/>
 
-                    <Switch
+                    <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/create_entourage_privacy_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -442,17 +436,36 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
 
-            <view
-                android:id="@+id/create_entourage_help_link"
-                class="social.entourage.android.view.HtmlTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_marginTop="16dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:textSize="@dimen/entourage_font_medium"
-                app:htmlText="@string/entourage_create_help_text" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
+                <ImageView
+                    android:id="@+id/imageView13"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    app:srcCompat="@drawable/ic_tip"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <view
+                    android:id="@+id/create_entourage_help_link"
+                    class="social.entourage.android.view.HtmlTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:textSize="@dimen/entourage_font_medium"
+                    app:htmlText="@string/entourage_create_help_text"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView13"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView13"
+                    app:layout_constraintTop_toTopOf="@+id/imageView13" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
     </ScrollView>

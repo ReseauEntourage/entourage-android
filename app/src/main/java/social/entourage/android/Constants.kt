@@ -13,6 +13,7 @@ object Constants {
 
     // Link IDs
     const val SCB_LINK_ID = "pedagogic-content"
+    const val AGIR_FAQ_ID = "action_faq"
     const val GOAL_LINK_ID = "action-examples"
     const val DONATE_LINK_ID = "donation"
     const val ATD_LINK_ID = "atd-partnership"
@@ -25,6 +26,8 @@ object Constants {
     const val TERMS_LINK_ID = "terms"
     const val PRIVACY_LINK_ID = "privacy-policy"
     const val AMBASSADOR_ID = "devenir-ambassadeur"
+    const val EVENTS_GUIDE_ID = "events-guide"
+    const val GOOD_WAVES_ID = "good_waves"
 
     // Geolocation
     const val UPDATE_TIMER_MILLIS_OFF_TOUR: Long = 20000

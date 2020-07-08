@@ -63,10 +63,7 @@ class ChoiceFragment : DialogFragment(), RecyclerViewClickListener {
     }
 
     private val onChoiceFragmentFinish: OnChoiceFragmentFinish?
-        get() {
-            //val activity: Activity? = activity
-            return if (activity != null) activity as OnChoiceFragmentFinish? else null
-        }
+        get() = activity as? OnChoiceFragmentFinish?
 
     override fun recyclerViewListClicked(tour: Tour) {
         onChoiceFragmentFinish?.closeChoiceFragment(this, tour)

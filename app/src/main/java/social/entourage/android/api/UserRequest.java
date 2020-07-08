@@ -52,9 +52,16 @@ public interface UserRequest {
     @PUT("users/{user_id}/partners/{partner_id}")
     Call<Partner.PartnerWrapper> updatePartner(@Path("user_id") int userId, @Path("partner_id") long partnerId, @Body Partner.PartnerWrapper partner);
 
-    @POST("users/me/address")
-    Call<User.AddressWrapper> updateAddress(@Body User.AddressWrapper addressWrapper);
+    @POST("users/me/addresses/1")
+    Call<UserResponse> updatePrimaryAddressLocation(@Body ArrayMap<String, Object> address);
 
-    @POST("users/me/address")
-    Call<User.AddressWrapper> updateAddressLocation(@Body ArrayMap<String, Object> address);
+    @POST("users/me/addresses/2")
+    Call<UserResponse> updateSecondaryAddressLocation(@Body ArrayMap<String, Object> address);
+
+    @DELETE("users/me/addresses/2")
+    Call<Response> deleteSecondaryAddressLocation();
+
+    //Onboarding Asso
+    @POST("partners/join_request")
+    Call<ResponseBody> updateAssoInfos(@Body ArrayMap<String, Object> asso);
 }

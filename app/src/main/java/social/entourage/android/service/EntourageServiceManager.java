@@ -89,7 +89,6 @@ public class EntourageServiceManager {
     private final EntourageRequest entourageRequest;
     private final ConnectivityManager connectivityManager;
     private final LocationProvider locationProvider;
-    public final EntourageLocation entourageLocation;
 
     private Tour currentTour;
     private Location previousLocation;
@@ -110,7 +109,6 @@ public class EntourageServiceManager {
                                     final NewsfeedRequest newsfeedRequest,
                                     final EntourageRequest entourageRequest,
                                     final ConnectivityManager connectivityManager,
-                                    final EntourageLocation entourageLocation,
                                     final LocationProvider locationProvider) {
         this.entourageService = entourageService;
         this.authenticationController = authenticationController;
@@ -124,7 +122,6 @@ public class EntourageServiceManager {
         pointsToDraw = new ArrayList<>();
         isTourClosing = false;
         this.connectivityManager = connectivityManager;
-        this.entourageLocation = entourageLocation;
     }
 
     public static EntourageServiceManager newInstance(final EntourageService entourageService,
@@ -135,7 +132,6 @@ public class EntourageServiceManager {
                                                       final EntourageRequest entourageRequest) {
         Timber.d("newInstance");
         final ConnectivityManager connectivityManager = (ConnectivityManager) entourageService.getSystemService(CONNECTIVITY_SERVICE);
-        final EntourageLocation entourageLocation = EntourageLocation.getInstance();
         final User user = controller.getUser();
         final UserType type = user != null && user.isPro() ? UserType.PRO : UserType.PUBLIC;
         final LocationProvider provider = new LocationProvider(entourageService, type);
@@ -147,7 +143,6 @@ public class EntourageServiceManager {
                 newsfeedRequest,
                 entourageRequest,
                 connectivityManager,
-                entourageLocation,
                 provider);
 
         provider.setLocationListener(new LocationListener(entourageServiceManager, entourageService));
@@ -393,7 +388,7 @@ public class EntourageServiceManager {
             return;
         }
 
-        final CameraPosition currentPosition = entourageLocation.getCurrentCameraPosition();
+        final CameraPosition currentPosition = EntourageLocation.getCurrentCameraPosition();
         if (currentPosition != null) {
             final LatLng location = currentPosition.target;
             currentNewsFeedCall = createNewsfeedWrapperCall(location, pagination, selectedTab);
@@ -656,7 +651,7 @@ public class EntourageServiceManager {
             @Override
             public void onResponse(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Response<Tour.TourWrapper> response) {
                 if (response.isSuccessful()) {
-                    final Location currentLocation = entourageLocation.getCurrentLocation();
+                    final Location currentLocation = EntourageLocation.getCurrentLocation();
                     if (currentLocation != null) {
                         final LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
                         BusProvider.INSTANCE.getInstance().post(new OnBetterLocationEvent(latLng));
@@ -769,11 +764,11 @@ public class EntourageServiceManager {
     }
 
     public void updateLocation(final Location location) {
-        entourageLocation.saveCurrentLocation(location);
-        final Location bestLocation = entourageLocation.getLocation();
+        EntourageLocation.setCurrentLocation(location);
+        final Location bestLocation = EntourageLocation.getLocation();
         boolean shouldCenterMap = false;
         if (bestLocation == null || (location.getAccuracy() > 0.0 && bestLocation.getAccuracy() == 0.0)) {
-            entourageLocation.saveLocation(location);
+            EntourageLocation.setLocation(location);
             isBetterLocationUpdated = true;
             shouldCenterMap = true;
         }
@@ -781,7 +776,10 @@ public class EntourageServiceManager {
         if (isBetterLocationUpdated) {
             isBetterLocationUpdated = false;
             if (shouldCenterMap) {
-                BusProvider.INSTANCE.getInstance().post(new OnBetterLocationEvent(entourageLocation.getLatLng()));
+                LatLng newLoc = EntourageLocation.getLatLng();
+                if(newLoc!= null) {
+                    BusProvider.INSTANCE.getInstance().post(new OnBetterLocationEvent(newLoc));
+                }
             }
         }
     }

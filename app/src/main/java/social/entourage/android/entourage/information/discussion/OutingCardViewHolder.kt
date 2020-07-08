@@ -2,7 +2,7 @@ package social.entourage.android.entourage.information.discussion
 
 import android.view.View
 import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.entourage_information_outing_card_view.view.*
+import kotlinx.android.synthetic.main.layout_entourage_information_outing_card_view.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.model.TimestampedObject
@@ -53,6 +53,6 @@ class OutingCardViewHolder(view: View) : BaseCardViewHolder(view) {
     companion object {
         @JvmStatic
         val layoutResource: Int
-            get() = R.layout.entourage_information_outing_card_view
+            get() = R.layout.layout_entourage_information_outing_card_view
     }
 }

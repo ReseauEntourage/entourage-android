@@ -1,7 +1,7 @@
 package social.entourage.android.entourage.information.discussion
 
 import android.view.View
-import kotlinx.android.synthetic.main.tour_information_location_card_view.view.*
+import kotlinx.android.synthetic.main.layout_tour_information_location_card_view.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
@@ -93,6 +93,6 @@ class LocationCardViewHolder(view: View) : BaseCardViewHolder(view) {
     companion object {
         @JvmStatic
         val layoutResource: Int
-            get() = R.layout.tour_information_location_card_view
+            get() = R.layout.layout_tour_information_location_card_view
     }
 }

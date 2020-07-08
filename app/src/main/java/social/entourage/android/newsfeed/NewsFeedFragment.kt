@@ -157,21 +157,23 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
     }
 
     override fun onUserStatusChanged(user: EntourageUser, feedItem: FeedItem) {
-        if (activity == null || requireActivity().isFinishing) return
-        try {
-            feedItem.joinStatus = user.status
-            if (user.status == FeedItem.JOIN_STATUS_PENDING) {
-                if (feedItem is Tour) {
-                    TourJoinRequestFragment.newInstance(feedItem).show(requireActivity().supportFragmentManager, TourJoinRequestFragment.TAG)
-                }  else if (feedItem is BaseEntourage) {
-                    EntourageJoinRequestFragment.newInstance(feedItem).show(requireActivity().supportFragmentManager, EntourageJoinRequestFragment.TAG)
+        activity?.let {activity ->
+            if (activity.isFinishing) return
+            try {
+                feedItem.joinStatus = user.status
+                if (user.status == FeedItem.JOIN_STATUS_PENDING) {
+                    if (feedItem is Tour) {
+                        TourJoinRequestFragment.newInstance(feedItem).show(activity.supportFragmentManager, TourJoinRequestFragment.TAG)
+                    } else if (feedItem is BaseEntourage) {
+                        EntourageJoinRequestFragment.newInstance(feedItem).show(activity.supportFragmentManager, EntourageJoinRequestFragment.TAG)
+                    }
                 }
+            } catch (e: IllegalStateException) {
+                Timber.w(e)
             }
-        } catch (e: IllegalStateException) {
-            Timber.w(e)
+            updateNewsfeedJoinStatus(feedItem)
+            isRequestingToJoin--
         }
-        updateNewsfeedJoinStatus(feedItem)
-        isRequestingToJoin--
     }
 
     override fun removeRedundantNewsfeed(currentFeedList: List<NewsfeedItem>): List<NewsfeedItem> {
@@ -179,15 +181,16 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
         val newList = ArrayList<NewsfeedItem>()
         try {
             for (newsfeed in tempList) {
-                if(newsfeed.data == null) continue
-                if(newsfeed.data is Tour) {
-                    val card = newsfeed.data as Tour?
-                    val retrievedCard = newsfeedAdapter?.findCard(card) as Tour?
-                    if (card != null && retrievedCard!=null && retrievedCard.isSame(card)) {
-                        continue
+                (newsfeed.data as? Tour)?.let {card ->
+                    //TODO verify if we can write !=true instead of !()==true when not a tour
+                    if (!((newsfeedAdapter?.findCard(card) as? Tour)?.isSame(card)==true)) {
+                        newList.add(newsfeed)
+                    }
+                } ?: run {
+                    if(newsfeed.data != null) {
+                        newList.add(newsfeed)
                     }
                 }
-                newList.add(newsfeed)
             }
         } catch (e: IllegalStateException) {
             Timber.w(e)
@@ -237,11 +240,8 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
             return
         }
         checkAction(event.action)
-        val message: Message = event.extras?.getSerializable(PushNotificationManager.PUSH_MESSAGE) as Message?
+        val content = (event.extras?.getSerializable(PushNotificationManager.PUSH_MESSAGE) as? Message)?.content
                 ?: return
-        val content = message.content
-                ?: return
-        val extra = content.extra
         when (event.action) {
             PushNotificationContent.TYPE_NEW_CHAT_MESSAGE,
             PushNotificationContent.TYPE_NEW_JOIN_REQUEST,
@@ -250,11 +250,13 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
             } else if (content.isEntourageRelated) {
                 displayChosenFeedItem(content.joinableUUID, TimestampedObject.ENTOURAGE_CARD)
             }
-            PushNotificationContent.TYPE_ENTOURAGE_INVITATION -> if (extra != null) {
+            PushNotificationContent.TYPE_ENTOURAGE_INVITATION -> content.extra?.let { extra ->
                 displayChosenFeedItem(extra.entourageId.toString(), TimestampedObject.ENTOURAGE_CARD, extra.invitationId.toLong())
             }
-            PushNotificationContent.TYPE_INVITATION_STATUS -> if (extra != null && (content.isEntourageRelated || content.isTourRelated)) {
-                displayChosenFeedItem(content.joinableUUID, if (content.isTourRelated) TimestampedObject.TOUR_CARD else TimestampedObject.ENTOURAGE_CARD)
+            PushNotificationContent.TYPE_INVITATION_STATUS -> content.extra?.let {
+                if (content.isEntourageRelated || content.isTourRelated) {
+                    displayChosenFeedItem(content.joinableUUID, if (content.isTourRelated) TimestampedObject.TOUR_CARD else TimestampedObject.ENTOURAGE_CARD)
+                }
             }
         }
     }

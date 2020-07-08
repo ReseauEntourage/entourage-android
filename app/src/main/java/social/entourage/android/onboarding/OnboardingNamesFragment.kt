@@ -8,9 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import kotlinx.android.synthetic.main.fragment_onboarding_names.*
+import social.entourage.android.EntourageEvents
 import social.entourage.android.R
-import social.entourage.android.tools.Logger
 import social.entourage.android.tools.hideKeyboard
+import timber.log.Timber
 
 private const val ARG_FIRSTNAME = "firstname"
 private const val ARG_LASTNAME = "lastname"
@@ -45,9 +46,10 @@ class OnboardingNamesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        callback?.upadteButtonNext(checkAndValidateInput())
+        callback?.updateButtonNext(checkAndValidateInput())
 
         setupViews()
+        EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING_NAMES)
     }
 
     override fun onAttach(context: Context) {
@@ -67,6 +69,7 @@ class OnboardingNamesFragment : Fragment() {
     fun setupViews() {
         onboard_names_mainlayout?.setOnTouchListener { view, motionEvent ->
             view.hideKeyboard()
+            view.performClick()
             true
         }
 
@@ -75,32 +78,32 @@ class OnboardingNamesFragment : Fragment() {
         }
 
         ui_onboard_names_et_lastname?.setOnFocusChangeListener { view, b ->
-            Logger("Call from Focus change")
+            Timber.d("Call from Focus change")
             if (!b && !isAllreadyCall) updateButtonNext(false)
             if (b) isAllreadyCall = false
         }
 
-        ui_onboard_names_et_lastname.setOnEditorActionListener { _, event, _ ->
-            Logger("ON key listener $event -- ${EditorInfo.IME_ACTION_DONE}")
+        ui_onboard_names_et_lastname?.setOnEditorActionListener { _, event, _ ->
+            Timber.d("ON key listener $event -- ${EditorInfo.IME_ACTION_DONE}")
             if (event == EditorInfo.IME_ACTION_DONE) {
-                Logger("Call from Editor Action")
+                Timber.d("Call from Editor Action")
                 isAllreadyCall = true
                 updateButtonNext(true)
             }
             false
         }
 
-        ui_onboard_names_et_firstname.setText(firstname)
-        ui_onboard_names_et_lastname.setText(lastname)
+        ui_onboard_names_et_firstname?.setText(firstname)
+        ui_onboard_names_et_lastname?.setText(lastname)
     }
 
     fun updateButtonNext(isValidate:Boolean) {
         if (checkAndValidateInput()) {
-            callback?.upadteButtonNext(true)
+            callback?.updateButtonNext(true)
             callback?.validateNames(ui_onboard_names_et_firstname?.text?.toString(),ui_onboard_names_et_lastname?.text?.toString(),isValidate)
         }
         else {
-            callback?.upadteButtonNext(false)
+            callback?.updateButtonNext(false)
             callback?.validateNames(null,null,false)
         }
     }

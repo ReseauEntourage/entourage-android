@@ -13,13 +13,26 @@ import kotlinx.android.synthetic.main.layout_plus_overlay.*
 class PlusFragment : Fragment(), BackPressable {
     override fun onResume() {
         super.onResume()
-        val savedTour = EntourageApplication.get().entourageComponent.authenticationController?.savedTour
-        if (savedTour != null) {
+        EntourageApplication.get().entourageComponent.authenticationController?.savedTour?.let {
             layout_line_add_tour_encounter?.visibility = View.VISIBLE
             layout_line_start_tour_launcher?.visibility = View.GONE
-        } else {
+            val tag = layout_line_start_tour_launcher?.tag as String
+            if (tag.equals("normal")) {
+                ui_image_plus?.visibility = View.GONE
+            }
+        } ?: run {
             layout_line_add_tour_encounter?.visibility = View.GONE
-            layout_line_start_tour_launcher?.visibility = if (EntourageApplication.me(activity)?.isPro == true) View.VISIBLE else View.GONE
+
+            if (EntourageApplication.me(activity)?.isPro == true) {
+                layout_line_start_tour_launcher?.visibility = View.VISIBLE
+                val tag = layout_line_start_tour_launcher?.tag as String
+                if (tag.equals("normal")) {
+                    ui_image_plus?.visibility = View.GONE
+                }
+            }
+            else {
+                layout_line_start_tour_launcher?.visibility = View.GONE
+            }
         }
     }
 
@@ -31,57 +44,58 @@ class PlusFragment : Fragment(), BackPressable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        plus_help_button.setOnClickListener {onHelpButton()}
-        layout_line_create_entourage_ask_help.setOnClickListener {onCreateEntourageHelpAction()}
-        layout_line_create_entourage_contribute.setOnClickListener {onCreateEntourageContributionAction()}
-        layout_line_create_outing?.setOnClickListener {onCreateOuting()}
-        layout_line_start_tour_launcher?.setOnClickListener {onStartTourLauncher()}
-        layout_line_add_tour_encounter?.setOnClickListener {onAddEncounter()}
-        map_longclick_button_create_encounter?.setOnClickListener {onAddEncounter()}
-        fragment_plus_overlay.setOnClickListener {onBackPressed()}
+        plus_help_button?.setOnClickListener {onHelpButton()}
+        layout_line_create_entourage_ask_help?.setOnClickListener {onAction(KEY_CREATE_DEMAND)}
+        layout_line_create_entourage_contribute?.setOnClickListener {onAction(KEY_CREATE_CONTRIBUTION)}
+        layout_line_create_outing?.setOnClickListener {onAction(KEY_CREATE_OUTING)}
+        layout_line_start_tour_launcher?.setOnClickListener {onAction(KEY_START_TOUR)}
+        layout_line_add_tour_encounter?.setOnClickListener {onAction(KEY_ADD_ENCOUNTER)}
+        fragment_plus_overlay?.setOnClickListener {onBackPressed()}
+        layout_line_create_good_waves?.setOnClickListener { onShowGoodWaves() }
+
+        setupTexts()
+    }
+
+    private fun setupTexts() {
+       EntourageApplication.get().me()?.let { currentUser ->
+           if (currentUser.isUserTypeAlone) {
+               plus_help_button?.text = getString(R.string.agir_new_button_title_alone)
+               ui_tv_agir_good_waves_subtitle?.text = getString(R.string.agir_bonnes_ondes_alone)
+           }
+           else {
+               plus_help_button?.text = getString(R.string.plus_help_text)
+               ui_tv_agir_good_waves_subtitle?.text = getString(R.string.agir_bonnes_ondes_others)
+           }
+       }
     }
 
     private fun onHelpButton() {
-        (activity as MainActivity?)?.showWebViewForLinkId(Constants.SCB_LINK_ID)
+        EntourageApplication.get().me()?.let { currentUser ->
+            (activity as? MainActivity)?.showWebViewForLinkId(
+                    if (currentUser.isUserTypeAlone)
+                        Constants.AGIR_FAQ_ID
+                    else
+                        Constants.SCB_LINK_ID
+            )
+        }
     }
 
-    private fun onCreateEntourageHelpAction() {
+    private fun onAction(action: String) {
         val newIntent = Intent(context, MainActivity::class.java)
-        newIntent.action = KEY_CREATE_DEMAND
+        newIntent.action = action
         startActivity(newIntent)
-        (activity as MainActivity?)?.showFeed()
+        (activity as? MainActivity)?.showFeed()
     }
 
-    private fun onCreateEntourageContributionAction() {
-        val newIntent = Intent(context, MainActivity::class.java)
-        newIntent.action = KEY_CREATE_CONTRIBUTION
-        startActivity(newIntent)
-        (activity as MainActivity?)?.showFeed()
-    }
+    private fun onShowGoodWaves() {
+        EntourageEvents.logEvent(EntourageEvents.ACTION_PLUS_GOOD_WAVES)
+        val url = (activity as MainActivity?)?.getLink(Constants.GOOD_WAVES_ID)
 
-    private fun onCreateOuting() {
-        val newIntent = Intent(context, MainActivity::class.java)
-        newIntent.action = KEY_CREATE_OUTING
-        startActivity(newIntent)
-        (activity as MainActivity?)?.showFeed()
-    }
-
-    private fun onStartTourLauncher() {
-        val newIntent = Intent(context, MainActivity::class.java)
-        newIntent.action = KEY_START_TOUR
-        startActivity(newIntent)
-        (activity as MainActivity?)?.showFeed()
-    }
-
-    private fun onAddEncounter() {
-        val newIntent = Intent(context, MainActivity::class.java)
-        newIntent.action = KEY_ADD_ENCOUNTER
-        startActivity(newIntent)
-        (activity as MainActivity?)?.showFeed()
+        (activity as MainActivity?)?.showWebView(url)
     }
 
     override fun onBackPressed(): Boolean {
-        (activity as MainActivity?)?.showFeed()
+        (activity as? MainActivity)?.showFeed()
         return true
     }
 

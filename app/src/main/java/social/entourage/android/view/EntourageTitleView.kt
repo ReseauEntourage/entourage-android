@@ -41,7 +41,7 @@ class EntourageTitleView : RelativeLayout {
                 title_close_button?.setImageDrawable(attributes.getDrawable(
                     R.styleable.EntourageTitleView_entourageTitleCloseDrawable))
             } else {
-                title_close_button?.setImageDrawable(ContextCompat.getDrawable(getContext(),attributes.getResourceId(
+                title_close_button?.setImageDrawable(ContextCompat.getDrawable(context,attributes.getResourceId(
                         R.styleable.EntourageTitleView_entourageTitleCloseDrawable, 0)))
             }
 
@@ -51,7 +51,7 @@ class EntourageTitleView : RelativeLayout {
                 title_close_button?.imageTintList = attributes.getColorStateList(
                         R.styleable.EntourageTitleView_entourageTitleCloseDrawableTint)
             } else {
-                ContextCompat.getDrawable(getContext(),attributes.getResourceId(R.styleable.EntourageTitleView_entourageTitleCloseDrawable, 0))?.let {
+                ContextCompat.getDrawable(context,attributes.getResourceId(R.styleable.EntourageTitleView_entourageTitleCloseDrawable, 0))?.let {
                     DrawableCompat.setTint(it, attributes.getColor(R.styleable.EntourageTitleView_entourageTitleCloseDrawableTint, ContextCompat.getColor(context, R.color.accent)))
                 }
             }

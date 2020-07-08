@@ -14,10 +14,9 @@ import social.entourage.android.R
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.base.EntourageLinkMovementMethod
 import social.entourage.android.entourage.create.CreateEntourageListener
-import java.util.*
 
 /**
- * A simple [Fragment] subclass.
+ * A simple [EntourageDialogFragment] subclass.
  * Activities that contain this fragment must implement the
  * [CreateEntourageListener] interface
  * to handle interaction events.
@@ -52,8 +51,8 @@ class EntourageCategoryFragment : EntourageDialogFragment() {
             category.isSelected = false
         }
         initializeView()
-        title_close_button.setOnClickListener {onCloseClicked()}
-        title_action_button.setOnClickListener {onValidateClicked()}
+        title_close_button?.setOnClickListener {onCloseClicked()}
+        title_action_button?.setOnClickListener {onValidateClicked()}
     }
 
     override fun onDismiss(dialog: DialogInterface) {
@@ -68,7 +67,7 @@ class EntourageCategoryFragment : EntourageDialogFragment() {
 
     private fun resetSelectedCategory() {
         // Reset the flag so consequent fragment shows will not appear broken
-        adapter.selectedCategory?.isSelected = false
+        adapter.selectedCategory.isSelected = false
     }
 
     fun setListener(mListener: CreateEntourageListener) {
@@ -96,9 +95,9 @@ class EntourageCategoryFragment : EntourageDialogFragment() {
     }
 
     private fun initializeHelpHtmlView() {
-        (activity as MainActivity?)?.let { mainActivity ->
+        (activity as? MainActivity)?.let { mainActivity ->
             val goalLink = mainActivity.getLink(Constants.GOAL_LINK_ID)
-            entourage_category_help_link?.setHtmlString(getString(R.string.entourage_create_help_text, goalLink), EntourageLinkMovementMethod.getInstance())
+            entourage_category_help_link?.setHtmlString(getString(R.string.entourage_create_help_text, goalLink), EntourageLinkMovementMethod)
         }
     }
 
@@ -120,7 +119,6 @@ class EntourageCategoryFragment : EntourageDialogFragment() {
         // ----------------------------------
         // Constants
         // ----------------------------------
-        @JvmField
         val TAG = EntourageCategoryFragment::class.java.simpleName
 
         // ----------------------------------
@@ -128,7 +126,6 @@ class EntourageCategoryFragment : EntourageDialogFragment() {
         // ----------------------------------
         const val KEY_ENTOURAGE_CATEGORY = "ENTOURAGE_CATEGORY"
 
-        @JvmStatic
         fun newInstance(category: EntourageCategory): EntourageCategoryFragment {
             val fragment = EntourageCategoryFragment()
             val args = Bundle()

@@ -7,16 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.ResourcesCompat
 import kotlinx.android.synthetic.main.fragment_onboarding_type.*
+import social.entourage.android.EntourageEvents
 import social.entourage.android.R
-import social.entourage.android.tools.Logger
+import timber.log.Timber
 
 private const val ARG_FIRSTNAME = "firstname"
 private const val ARG_USERTYPE = "usertype"
 
 class OnboardingTypeFragment : Fragment() {
     private var firstname: String? = null
-    private var userTypeSelected = UserTypeSelection.NONE
+    private var userTypeSelected:UserTypeSelection = UserTypeSelection.NONE
 
     private var callback:OnboardingCallback? = null
 
@@ -43,11 +45,13 @@ class OnboardingTypeFragment : Fragment() {
         setupViews()
 
         if (userTypeSelected == UserTypeSelection.NONE) {
-            callback?.upadteButtonNext(false)
+            callback?.updateButtonNext(false)
         }
         else {
-            callback?.upadteButtonNext(true)
+            callback?.updateButtonNext(true)
         }
+
+        EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING_CHOOSE_PROFILE)
     }
 
     override fun onAttach(context: Context) {
@@ -75,7 +79,7 @@ class OnboardingTypeFragment : Fragment() {
             changeLayoutSelection(ui_onboard_type_layout_assos)
         }
 
-        Logger("Firstname ? $firstname")
+        Timber.d("Firstname ? $firstname")
         ui_onboard_type_tv_title?.text = String.format(getString(R.string.onboard_type_title),firstname)
 
         selectInitialType()
@@ -94,26 +98,26 @@ class OnboardingTypeFragment : Fragment() {
         when(selectedLayout) {
             ui_onboard_type_layout_neighbour -> {
                 userTypeSelected = UserTypeSelection.NEIGHBOUR
-                ui_onboard_type_layout_neighbour?.background = resources.getDrawable(R.drawable.bg_rounded_onboard_orange_stroke)
-                ui_onboard_type_layout_alone?.background = resources.getDrawable(R.drawable.bg_rounded_onboard_grey_plain)
-                ui_onboard_type_layout_assos?.background = resources.getDrawable(R.drawable.bg_rounded_onboard_grey_plain)
+                ui_onboard_type_layout_neighbour?.background = ResourcesCompat.getDrawable(resources,R.drawable.bg_rounded_onboard_orange_stroke,null)
+                ui_onboard_type_layout_alone?.background = ResourcesCompat.getDrawable(resources,R.drawable.bg_rounded_onboard_grey_plain,null)
+                ui_onboard_type_layout_assos?.background = ResourcesCompat.getDrawable(resources,R.drawable.bg_rounded_onboard_grey_plain,null)
             }
             ui_onboard_type_layout_alone -> {
                 userTypeSelected = UserTypeSelection.ALONE
-                ui_onboard_type_layout_neighbour?.background = resources.getDrawable(R.drawable.bg_rounded_onboard_grey_plain)
-                ui_onboard_type_layout_alone?.background = resources.getDrawable(R.drawable.bg_rounded_onboard_orange_stroke)
-                ui_onboard_type_layout_assos?.background = resources.getDrawable(R.drawable.bg_rounded_onboard_grey_plain)
+                ui_onboard_type_layout_neighbour?.background = ResourcesCompat.getDrawable(resources,R.drawable.bg_rounded_onboard_grey_plain,null)
+                ui_onboard_type_layout_alone?.background = ResourcesCompat.getDrawable(resources,R.drawable.bg_rounded_onboard_orange_stroke,null)
+                ui_onboard_type_layout_assos?.background = ResourcesCompat.getDrawable(resources,R.drawable.bg_rounded_onboard_grey_plain,null)
             }
             ui_onboard_type_layout_assos -> {
                 userTypeSelected = UserTypeSelection.ASSOS
-                ui_onboard_type_layout_neighbour?.background = resources.getDrawable(R.drawable.bg_rounded_onboard_grey_plain)
-                ui_onboard_type_layout_alone?.background = resources.getDrawable(R.drawable.bg_rounded_onboard_grey_plain)
-                ui_onboard_type_layout_assos?.background = resources.getDrawable(R.drawable.bg_rounded_onboard_orange_stroke)
+                ui_onboard_type_layout_neighbour?.background = ResourcesCompat.getDrawable(resources,R.drawable.bg_rounded_onboard_grey_plain,null)
+                ui_onboard_type_layout_alone?.background = ResourcesCompat.getDrawable(resources,R.drawable.bg_rounded_onboard_grey_plain,null)
+                ui_onboard_type_layout_assos?.background = ResourcesCompat.getDrawable(resources,R.drawable.bg_rounded_onboard_orange_stroke,null)
             }
         }
 
         callback?.updateUsertype(userTypeSelected)
-        callback?.upadteButtonNext(true)
+        callback?.updateButtonNext(true)
     }
 
     //**********//**********//**********

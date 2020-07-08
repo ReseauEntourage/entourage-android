@@ -19,10 +19,11 @@ import androidx.core.content.PermissionChecker
 import com.squareup.picasso.Picasso
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_onboarding_photo.*
+import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.tools.CropCircleTransformation
-import social.entourage.android.tools.Logger
+import timber.log.Timber
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -43,6 +44,8 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
 
     private var callback:OnboardingCallback? = null
 
+    protected var isFromProfile = false
+
     //**********//**********//**********
     // Lifecycle
     //**********//**********//**********
@@ -62,13 +65,20 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        callback?.upadteButtonNext(false)
+        callback?.updateButtonNext(false)
         setupViews()
+
+        if (isFromProfile) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_PROFILE_CHOOSE_PHOTO)
+        }
+        else {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING_CHOOSE_PHOTO)
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        Logger("On resume Fragment ? $pickedImageUri")
+        Timber.d("On resume Fragment ? $pickedImageUri")
         // Check if we are returning from photo picker
         // i.e. the pickedImageUri is set
         if (pickedImageUri != null) {
@@ -131,7 +141,12 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
     }
 
     open fun showChoosePhotoActivity() {
-        Logger("")
+        if (isFromProfile) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_UPLOAD_PHOTO)
+        }
+        else {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_UPLOAD_PHOTO)
+        }
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
@@ -139,6 +154,13 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
     }
 
     open fun showTakePhotoActivity() {
+        if (isFromProfile) {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_TAKE_PHOTO)
+        }
+        else {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_TAKE_PHOTO)
+        }
+
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(requireActivity().packageManager) == null) {
@@ -154,15 +176,15 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
             }
             // Continue only if the File was successfully created
             if (photoFileUri != null) {
-                //HAck Kitkat version return activity
+                //Hack Kitkat version return activity
                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                    val _takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                    val takePictureIntentCompat = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                     val clip = ClipData.newUri(activity?.getContentResolver(), "A photo", photoFileUri)
 
-                    _takePictureIntent.clipData = clip
-                    _takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                    _takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri)
-                    startActivityForResult(_takePictureIntent, TAKE_PHOTO_REQUEST)
+                    takePictureIntentCompat.clipData = clip
+                    takePictureIntentCompat.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                    takePictureIntentCompat.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri)
+                    startActivityForResult(takePictureIntentCompat, TAKE_PHOTO_REQUEST)
                 } else {
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri)
                     takePictureIntent.flags = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
@@ -205,17 +227,17 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
-        Logger("Return Act return $requestCode - result $resultCode - intent ? ${intent?.data}")
+        Timber.d("Return Act return $requestCode - result $resultCode - intent ? ${intent?.data}")
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && intent != null && intent.data != null) {
             photoSource = requestCode
             val uri = intent.data
-            Logger("Return Image REQUEST uri ? $uri")
+            Timber.d("Return Image REQUEST uri ? $uri")
             if (PermissionChecker.checkSelfPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
                 pickedImageUri = uri
-                Logger("Return Image REQUEST ici")
+                Timber.d("Return Image REQUEST ici")
                 requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PICK_AND_CROP_IMAGE_PERMISSION_CODE)
             } else {
-                Logger("Return Image REQUEST LA")
+                Timber.d("Return Image REQUEST LA")
                 loadPickedImage(uri)
             }
             return
@@ -273,15 +295,17 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
     override fun onPhotoEdited(photoURI: Uri?, photoSource: Int) {
         pickedImageEditedUri = photoURI
 
-        if (pickedImageEditedUri != null) {
-            Picasso.get().load(pickedImageEditedUri)
-                    .placeholder(R.drawable.ic_user_photo)
-                    .transform(CropCircleTransformation())
-                    .into(ui_onboard_photo_image)
-        } else {
-            Picasso.get().load(R.drawable.ic_user_photo)
-                    .transform(CropCircleTransformation())
-                    .into(ui_onboard_photo_image)
+        ui_onboard_photo_image?.let {
+            if (pickedImageEditedUri != null) {
+                Picasso.get().load(pickedImageEditedUri)
+                        .placeholder(R.drawable.ic_user_photo)
+                        .transform(CropCircleTransformation())
+                        .into(it)
+            } else {
+                Picasso.get().load(R.drawable.ic_user_photo)
+                        .transform(CropCircleTransformation())
+                        .into(it)
+            }
         }
 
         callback?.updateUserPhoto(pickedImageEditedUri)

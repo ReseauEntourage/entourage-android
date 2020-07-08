@@ -1,7 +1,7 @@
 package social.entourage.android.entourage.information.discussion
 
 import android.view.View
-import kotlinx.android.synthetic.main.entourage_information_date_separator_card.view.*
+import kotlinx.android.synthetic.main.layout_entourage_information_date_separator_card.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.base.BaseCardViewHolder
@@ -21,6 +21,6 @@ class DateSeparatorViewHolder(view: View) : BaseCardViewHolder(view) {
     companion object {
         @JvmStatic
         val layoutResource: Int
-            get() = R.layout.entourage_information_date_separator_card
+            get() = R.layout.layout_entourage_information_date_separator_card
     }
 }

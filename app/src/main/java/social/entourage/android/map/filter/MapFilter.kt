@@ -97,6 +97,39 @@ class MapFilter : MapFilterInterface, Serializable {
         }
     }
 
+    //Setup Filters for specific user type
+    fun setNeighbourFilters() {
+        entourageTypeDemand = true
+        entourageTypeContribution = false
+        entourageTypeOuting = true
+        timeframe = DAYS_3
+        showPastEvents = false
+        //Remove contrib types
+        val entourageCategoryList = EntourageCategoryManager.getEntourageCategoriesForGroup(BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)
+
+        for (entourageCategory in entourageCategoryList) {
+            entourageCategory.key?.let {
+                setCategoryChecked(entourageCategory.key!!, false)
+            }
+        }
+    }
+
+    fun setAloneFilters() {
+        entourageTypeDemand = false
+        entourageTypeContribution = true
+        entourageTypeOuting = true
+        timeframe = DAYS_3
+        showPastEvents = false
+        //Remove demand types
+        val entourageCategoryList = EntourageCategoryManager.getEntourageCategoriesForGroup(BaseEntourage.GROUPTYPE_ACTION_DEMAND)
+
+        for (entourageCategory in entourageCategoryList) {
+            entourageCategory.key?.let {
+                setCategoryChecked(entourageCategory.key!!, false)
+            }
+        }
+    }
+
     // ----------------------------------
     // Serialization
     // ----------------------------------

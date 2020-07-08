@@ -72,16 +72,15 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
             itemView.tour_card_photo?.setImageResource(R.drawable.ic_user_photo_small)
         } else {
             //author photo
-            if (itemView.tour_card_photo != null) {
-                val avatarURLAsString = author.avatarURLAsString
-                if (avatarURLAsString != null) {
+            itemView.tour_card_photo?.let {
+                author.avatarURLAsString?.let {avatarURLAsString ->
                     Picasso.get()
                             .load(Uri.parse(avatarURLAsString))
                             .placeholder(R.drawable.ic_user_photo_small)
                             .transform(CropCircleTransformation())
-                            .into(itemView.tour_card_photo)
-                } else {
-                    itemView.tour_card_photo?.setImageResource(R.drawable.ic_user_photo_small)
+                            .into(it)
+                } ?: run {
+                    it.setImageResource(R.drawable.ic_user_photo_small)
                 }
             }
             // Partner logo

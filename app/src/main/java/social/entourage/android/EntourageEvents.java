@@ -25,7 +25,141 @@ public class EntourageEvents {
     public static final String EVENT_OPEN_ENCOUNTER_FROM_MAP = "Open_Encounter_From_Map";
     public static final String EVENT_OPEN_POI_FROM_MAP = "Open_POI_From_Map";
 
-    //LOG IN Events
+
+    //----------------------------//
+    // PREONBOARDING EVENTS
+    //----------------------------//
+
+    public static final String EVENT_VIEW_START_CARROUSEL1 = "View__Start__Carrousel1";
+    public static final String EVENT_VIEW_START_CARROUSEL2 = "View__Start__Carrousel2";
+    public static final String EVENT_VIEW_START_CARROUSEL3 = "View__Start__Carrousel3";
+    public static final String EVENT_VIEW_START_CARROUSEL4 = "View__Start__Carrousel4";
+    public static final String EVENT_VIEW_START_SIGNUPLOGIN = "View__Start__SignUpOrLogin";
+    public static final String EVENT_ACTION_START_LOGINSTART = "Action__Start__LoginStart";
+    public static final String EVENT_ACTION_START_SIGNUPSTART = "Action__Start__SignUpStart";
+
+    //----------------------------//
+    // LOGIN EVENTS
+    //----------------------------//
+    public static final String EVENT_VIEW_LOGIN_LOGIN = "View__Login__Login";
+    public static final String EVENT_ACTION_LOGIN_SMS = "Action__Login__SMSCodeRequest";
+    public static final String EVENT_ACTION_LOGIN_SUBMIT = "Action__Login__LoginSubmit";
+    public static final String EVENT_ACTION_LOGIN_SUCCESS = "Action__Login__LoginSuccess";
+    public static final String EVENT_ERROR_LOGIN_ERROR = "Error__Login__LoginError";
+    public static final String EVENT_ERROR_LOGIN_FAIL = "Error__Login__LoginFail";
+    public static final String EVENT_ERROR_LOGIN_PHONE = "Error__Login__TelephoneSubmitError";
+
+    //----------------------------//
+    // ONBOARDING - START
+    //-------
+
+    //------INPUT NAMES
+    public static final String EVENT_VIEW_ONBOARDING_NAMES = "View__Onboarding__InputNames";
+    public static final String EVENT_ACTION_ONBOARDING_NAMES = "Action__Onboarding__NameSubmit";
+
+    //------PHONE
+    public static final String EVENT_VIEW_ONBOARDING_PHONE = "View__Onboarding__InputPhone";
+    public static final String EVENT_ACTION_ONBOARDING_PHONE_SUBMIT = "Action__Onboarding__PhoneSubmit";
+    public static final String EVENT_ACTION_ONBOARDING_PHONE_SUBMIT_SUCCESS = "Action__Onboarding__PhoneSubmitSuccess";
+    public static final String EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_ERROR = "Error__Onboarding__PhoneSubmitError";
+    public static final String EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_EXIST = "Error__Onboarding__PhoneAlreadyExistErro";
+    //------CODE
+    public static final String EVENT_VIEW_ONBOARDING__PASSCODE = "View__Onboarding__InputPasscode";
+    public static final String EVENT_ACTION_ONBOARDING_SMS = "Action__Onboarding__SMSCodeRequest";
+    public static final String EVENT_ACTION_ONBOARDING_SIGNUP_SUBMIT = "Action__Onboarding__SignUpSubmit";
+    public static final String EVENT_ACTION_ONBOARDING_SIGNUP_SUCCESS = "Action__Onboarding__SignUpSuccess";
+    //------public static final String EVENT_ERROR_ONBOARDING_SIGNUP_ERROR = "Error__Onboarding__SignUpError";
+    public static final String EVENT_ERROR_ONBOARDING_SINGUP_FAIL = "Error__Onboarding__SignUpFail";
+
+    //------PROFILE
+    public static final String EVENT_VIEW_ONBOARDING_CHOOSE_PROFILE = "View__Onboarding__ChooseProfile";
+    public static final String EVENT_ACTION_ONBOARDING_CHOOSE_PROFILE_SIGNUP = "Action__Onboarding__ChooseProfile";
+    public static final String EVENT_ACTION_ONBOARDING_CHOOSE_PROFILE_SKIP = "Action__Onboarding__ChooseProfileSkip";
+
+    //------Riverain__Sdf
+    public static final String EVENT_VIEW_ONBOARDING_ACTION_ZONE = "View__Onboarding__ActionZone";
+    public static final String EVENT_ACTION_ONBOARDING_SETACTION_ZONE_GEOLOC = "Action__Onboarding__SetActionZoneGeoloc";
+    public static final String EVENT_ACTION_ONBOARDING_SETACTION_ZONE_SEARCH = "Action__Onboarding__SetActionZoneSearch";
+    public static final String EVENT_ACTION_ONBOARDING_ACTION_ZONE_SUBMIT = "Action__Onboarding__ActionZoneSubmit";
+    public static final String EVENT_VIEW_ONBOARDING_ACTION_ZONE2 = "View__Onboarding__ActionZone2";
+    public static final String EVENT_ACTION_ONBOARDING_SETACTION_ZONE2_GEOLOC = "Action__Onboarding__SetActionZone2Geoloc";
+    public static final String EVENT_ACTION_ONBOARDING_SETACTION_ZONE2_SEARCH = "Action__Onboarding__SetActionZone2Search";
+    public static final String EVENT_ACTION_ONBOARDING_ACTION_ZONE2_SUBMIT = "Action__Onboarding__ActionZone2Submit";
+    public static final String EVENT_ACTION_ONBOARDING_ACTION_ZONE2_SKIP = "Action__Onboarding__ActionZone2Skip";
+    //------Riverain__Sdf Mosaïc
+    public static final String EVENT_VIEW_ONBOARDING_NEIGHBOR_MOSAIC = "View__Onboarding__NeighborMosaic";
+    public static final String EVENT_VIEW_ONBOARDING_INNEED_MOSAIC = "View__Onboarding__InNeedMosaic";
+    public static final String EVENT_ACTION_ONBOARDING_NEIGHBOR_MOSAIC = "Action__Onboarding__NeighborMosaic";
+    public static final String EVENT_ACTION_ONBOARDING_INNEED_MOSAIC = "Action__Onboarding__InNeedMosaic";
+    //------ASSO
+    public static final String EVENT_VIEW_ONBOARDING_PRO_STORIES = "View__Onboarding__ProStoriesPage";
+    public static final String EVENT_VIEW_ONBOARDING_PRO_FEATURES = "View__Onboarding__ProFeaturesPage";
+    public static final String EVENT_VIEW_ONBOARDING_PRO_SIGNUP = "View__Onboarding__ProSignUp";
+    public static final String EVENT_ACTION_ONBOARDING_PRO_SIGNUP_SUBMIT = "Action__Onboarding__ProSignUpSubmit";
+    public static final String EVENT_ACTION_ONBOARDING_PRO_SIGNUP_SUCCESS = "Action__Onboarding__ProSignUpSuccess";
+    public static final String EVENT_ERROR_ONBOARDING_PRO_SIGNUP_ERROR = "Error__Onboarding__ProSignUpError";
+    //------Asso Mosaïc
+    public static final String EVENT_VIEW_ONBOARDING_PRO_MOSAIC = "View__Onboarding__ProMosaic";
+    public static final String EVENT_ACTION_ONBOARDING_PRO_MOSAIC = "Action__Onboarding__ProMosaic";
+    //------EMAIL
+    public static final String EVENT_VIEW_ONBOARDING_INPUT_EMAIL = "View__Onboarding__InputEmail";
+    public static final String EVENT_ACTION_ONBOARDING_EMAIL_SUBMIT = "Action__Onboarding__EmailSubmit";
+    public static final String EVENT_ERROR_ONBOARDING_EMAIL_SUBMIT_ERROR = "Error__Onboarding__EmailSubmitError";
+    //------PHOTO
+    public static final String EVENT_VIEW_ONBOARDING_CHOOSE_PHOTO = "View__Onboarding__ChoosePhoto";
+    public static final String EVENT_ACTION_ONBOARDING_PHOTO_SUBMIT = "Action__Onboarding__PhotoSubmit";
+    public static final String EVENT_ACTION_ONBOARDING_IGNORE_PHOTO = "Action__Onboarding__IgnorePhoto";
+    public static final String EVENT_ACTION_ONBOARDING_UPLOAD_PHOTO = "Action__Onboarding__UploadPhoto";
+    public static final String EVENT_ACTION_ONBOARDING_TAKE_PHOTO = "Action__Onboarding__TakePhoto";
+
+    //------TOOLTIP
+    public static final String EVENT_ACTION_TOOLTIP_FILTER_NEXT = "Action__Tooltip__FilterNext";
+    public static final String EVENT_ACTION_TOOLTIP_FILTER_CLOSE = "Action__Tooltip__FilterClose";
+    public static final String EVENT_ACTION_TOOLTIP_GUIDE_NEXT = "Action__Tooltip__GuideNext";
+    public static final String EVENT_ACTION_TOOLTIP_GUIDE_CLOSE = "Action__Tooltip__GuideClose";
+    public static final String EVENT_ACTION_TOOLTIP_PLUS_NEXT = "Action__Tooltip__PlusNext";
+    public static final String EVENT_ACTION_TOOLTIP_PLUS_CLOSE = "Action__Tooltip__PlusClose";
+
+
+    //-------
+    // ONBOARDING - END
+    //----------------------------//
+
+    //----------------------------//
+    // PROFILE EDIT - START
+    //-------
+
+    //------PHOTO
+    public static final String EVENT_VIEW_PROFILE_CHOOSE_PHOTO = "View__Profile__ChoosePhoto";
+    public static final String EVENT_ACTION_PROFILE_PHOTO_SUBMIT = "Action__Profile__PhotoSubmit";
+    public static final String EVENT_ACTION_PROFILE_UPLOAD_PHOTO = "Action__Profile__UploadPhoto";
+    public static final String EVENT_ACTION_PROFILE_TAKE_PHOTO = "Action__Profile__TakePhoto";
+    //------ZONE
+    public static final String EVENT_VIEW_PROFILE_ACTION_ZONE = "View__Profile__ActionZone";
+    public static final String EVENT_ACTION_PROFILE_SETACTION_ZONE_GEOLOC = "Action__Profile__SetActionZoneGeoloc";
+    public static final String EVENT_ACTION_PROFILE_SETACTION_ZONE_SEARCH = "Action__Profile__SetActionZoneSearch";
+    public static final String EVENT_ACTION_PROFILE_ACTION_ZONE_SUBMIT = "Action__Profile__ActionZoneSubmit";
+    public static final String EVENT_VIEW_PROFILE_ACTION_ZONE2 = "View__Profile__ActionZone2";
+    public static final String EVENT_ACTION_PROFILE_SETACTION_ZONE2_GEOLOC = "Action__Profile__SetActionZone2Geoloc";
+    public static final String EVENT_ACTION_PROFILE_SETACTION_ZONE2_SEARCH = "Action__Profile__SetActionZone2Search";
+    public static final String EVENT_ACTION_PROFILE_ACTION_ZONE2_SUBMIT = "Action__Profile__ActionZone2Submit";
+    //------TYPE
+    public static final String EVENT_VIEW_PROFILE_CHOOSE_PROFILE = "View__Profile__ChooseProfile";
+    public static final String EVENT_ACTION_PROFILE_CHOOSE_PROFILE_SIGNUP = "Action__Profile__ChooseProfile";
+    //------MOSAIC
+    public static final String EVENT_VIEW_PROFILE_PRO_MOSAIC = "View__Profile__ProMosaic";
+    public static final String EVENT_ACTION_PROFILE_PRO_MOSAIC = "Action__Profile__ProMosaic";
+    public static final String EVENT_VIEW_PROFILE_NEIGHBOR_MOSAIC = "View__Profile__NeighborMosaic";
+    public static final String EVENT_VIEW_PROFILE_INNEED_MOSAIC = "View__Profile__InNeedMosaic";
+    public static final String EVENT_ACTION_PROFILE_NEIGHBOR_MOSAIC = "Action__Profile__NeighborMosaic";
+    public static final String EVENT_ACTION_PROFILE_INNEED_MOSAIC = "Action__Profile__InNeedMosaic";
+
+    //-------
+    // PROFILE EDIT - END
+    //----------------------------//
+
+
+    //LOG IN Events OLD VALUES
     public static final String EVENT_LOGOUT = "Logout";
     public static final String EVENT_LOGIN_START = "Login_Start";
     public static final String EVENT_LOGIN_OK = "Login_Success";
@@ -192,6 +326,7 @@ public class EntourageEvents {
     public static final String EVENT_MYENTOURAGES_BANNER_MOVE = "MoveBannerClick"; //A lot of code needs to be written to detect this
     public static final String EVENT_MYENTOURAGES_BACK_CLICK = "BackToFeedClick";
 
+    public static final String ACTION_PLUS_GOOD_WAVES = "Action__Plus__GoodWaves";
     //MY ENTOURAGES FILTER Events
     public static final String EVENT_MYENTOURAGES_FILTER_EXIT = "ExitMessagesFilter";
     public static final String EVENT_MYENTOURAGES_FILTER_SAVE = "SaveMessagesFilter";
@@ -280,6 +415,13 @@ public class EntourageEvents {
 
     //PLUS Screen
     public static final String EVENT_PLUS_NOT_READY = "NotReadyToHelpClick";
+
+    //Feed item info
+    public static final String ACTION_FEEDITEMINFO_FAQ = "Action__FeedItemInfo__FAQ";
+
+    //Action plus button agir / structure
+    public static final String ACTION_PLUS_AGIR = "Action__Plus__Agir";
+    public static final String ACTION_PLUS_STRUCTURE = "Action__Plus__Structure";
 
     public static String TAG = EntourageEvents.class.getSimpleName();
 

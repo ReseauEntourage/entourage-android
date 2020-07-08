@@ -165,11 +165,11 @@ class EntourageInformationPresenter @Inject constructor(
         when (feedItem.type) {
             TimestampedObject.ENTOURAGE_CARD -> {
                 // Entourage user update status
-                when {
-                    FeedItem.JOIN_STATUS_ACCEPTED == status -> {
+                when (status) {
+                    FeedItem.JOIN_STATUS_ACCEPTED -> {
                         acceptEntourageJoinRequest(feedItem.uuid, userId)
                     }
-                    FeedItem.JOIN_STATUS_REJECTED == status -> {
+                    FeedItem.JOIN_STATUS_REJECTED -> {
                         rejectJoinEntourageRequest(feedItem.uuid, userId)
                     }
                     else -> {

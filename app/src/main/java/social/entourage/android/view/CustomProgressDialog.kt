@@ -21,11 +21,11 @@ class CustomProgressDialog(val context:Context) {
             val builder = AlertDialog.Builder(context)
             builder.setCancelable(false)
 
-            builder.setView(R.layout.custom_progress_dialog)
+            builder.setView(R.layout.layout_custom_progress_dialog)
             alertDialog = builder.create()
         }
 
-        if (alertDialog!!.isShowing()) alertDialog?.dismiss()
+        if (alertDialog!!.isShowing) alertDialog?.dismiss()
 
         val text = alertDialog?.findViewById<TextView>(R.id.ui_progressdialog_tv_title)
         resId?.let {text?.text = context.getText(resId)  }

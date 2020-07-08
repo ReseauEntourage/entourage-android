@@ -33,7 +33,7 @@ public class ChatMessage extends TimestampedObject implements Serializable {
     @Expose(serialize = false)
     @SerializedName("created_at")
     @NotNull
-    private Date creationDate;
+    private Date creationDate = new Date();
 
     @Expose(serialize = false)
     private User user;

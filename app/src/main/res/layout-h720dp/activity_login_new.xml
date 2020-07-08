@@ -34,13 +34,14 @@ tools:context="social.entourage.android.onboarding.LoginNewActivity">
 
     <ImageView
         android:id="@+id/imageView5"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/frameLayout4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/frameLayout4"
-        app:srcCompat="@drawable/onboard_back" />
+        app:srcCompat="@drawable/ic_baseline_arrow_back_24"
+        app:tint="@color/accent"/>
 
     <TextView
         android:id="@+id/textView2"
@@ -134,6 +135,7 @@ tools:context="social.entourage.android.onboarding.LoginNewActivity">
             android:inputType="numberPassword"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
+            android:importantForAutofill="no"
             android:textColor="@color/pre_onboard_black"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@+id/ui_login_phone_et_phone"

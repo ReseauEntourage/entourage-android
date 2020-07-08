@@ -1,17 +1,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:background="@color/pale_grey"
-              tools:context=".entourage.category.EntourageCategoryFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pale_grey"
+    tools:context=".entourage.category.EntourageCategoryFragment">
 
     <social.entourage.android.view.EntourageTitleView
         android:id="@+id/entourage_category_header_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:entourageTitle="@string/entourage_category_fragment_title"
-        app:entourageTitleAction="@string/validate"/>
+        app:entourageTitleAction="@string/validate" />
 
     <ExpandableListView
         android:id="@+id/entourage_category_listview"
@@ -21,8 +21,7 @@
         android:layout_below="@+id/entourage_category_header_layout"
         android:background="@color/white"
         android:divider="@android:color/transparent"
-        android:groupIndicator="@null"
-        />
+        android:groupIndicator="@null" />
 
     <view
         android:id="@+id/entourage_category_help_link"
@@ -31,10 +30,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:clickable="true"
+        android:focusable="true"
         android:textSize="18sp"
-        app:htmlText="@string/entourage_create_help_text"/>
+        app:htmlText="@string/entourage_create_help_text" />
 
 </RelativeLayout>

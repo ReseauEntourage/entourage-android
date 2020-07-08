@@ -13,17 +13,10 @@ import java.io.Serializable
 class MyEntouragesFilter  : Serializable {
     var isClosedEntourages = true
 
-    // in 5.0+ we ignore this setting
-    var showOwnEntouragesOnly = false
-        get() = false // in 5.0+ we ignore this setting
-
-    // in 5.0+ we ignore this setting
-    var showJoinedEntourages = false
-        get() = false // in 5.0+ we ignore this setting
     var isShowUnreadOnly = false
 
     // in 5.0+ we ignore this setting
-    var showPartnerEntourages = false
+    val showPartnerEntourages
         get() = false // in 5.0+ we ignore this setting
     var isEntourageTypeDemand = true
     var isEntourageTypeContribution = true
@@ -31,6 +24,14 @@ class MyEntouragesFilter  : Serializable {
 
     @Expose(serialize = false, deserialize = false)
     private var allTourTypes: String? = null// in 5.0+ force to show all entourages
+
+    // in 5.0+ we ignore this setting
+    val showOwnEntouragesOnly
+        get() = false // in 5.0+ we ignore this setting
+
+    // in 5.0+ we ignore this setting
+    val showJoinedEntourages
+        get() = false // in 5.0+ we ignore this setting
 
     // ----------------------------------
     // Methods

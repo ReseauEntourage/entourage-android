@@ -19,8 +19,9 @@ import java.util.*
 
 /**
  * Created by mihaiionescu on 18/05/16.
+ * needed for deserialize
  */
-abstract class FeedItem : TimestampedObject, Serializable {
+abstract class FeedItem() : TimestampedObject(), Serializable {
     // ----------------------------------
     // Attributes
     // ----------------------------------
@@ -89,9 +90,6 @@ abstract class FeedItem : TimestampedObject, Serializable {
     init {
         initializeCardLists()
     }
-
-    //needed for deserialize
-    constructor() : super()
 
     fun getUnreadMsgNb(): Int { return badgeCount + numberOfUnreadMessages}
 

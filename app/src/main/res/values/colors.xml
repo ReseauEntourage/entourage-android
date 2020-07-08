@@ -19,10 +19,6 @@
     <color name="brownish_grey">#5d5d5d</color>
     <color name="light_grey">#ededed</color>
 
-    <color name="accent_alt">@color/accent</color>
-
-    <color name="complementary_3">@color/accent</color>
-
     <!-- Backgrounds -->
     <color name="background">@color/primary</color>
     <color name="background_light">@color/primary_light</color>
@@ -104,7 +100,6 @@
     <color name="carousel_bullet_empty_stroke">#00000000</color>
 
     <!-- Others -->
-    <color name="login_view">#333333</color>
     <color name="separator">@color/greyish</color>
     <color name="grey_contour">#DADADA</color>
     <color name="blue_dark">#007ea9</color>

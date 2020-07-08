@@ -62,7 +62,6 @@ class GuideFilterFragment : EntourageDialogFragment() {
         // ----------------------------------
         // Constants
         // ----------------------------------
-        @JvmField
         val TAG = GuideFilterFragment::class.java.simpleName
     }
 }

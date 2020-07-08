@@ -12,7 +12,8 @@
     <string name="entourage_create_title_hint">Exemple : %1$s</string>
     <string name="entourage_create_title_char_count_format">%1$d/%2$d</string>
     <string name="entourage_create_description_label">Description</string>
-    <string name="entourage_create_help_text"><![CDATA[<a href=\"%1$s\">Besoin d\'idées d\'action?</a>]]></string>
+    <string name="entourage_create_help_text_event"><![CDATA[<a href=\"%1$s\">Quels évènements diffuser ?</a>]]></string>
+    <string name="entourage_create_help_text"><![CDATA[<a href=\"%1$s\">Besoin d\'idées d\'action ?</a>]]></string>
     <string name="entourage_create_date_label">Date *</string>
     <string name="entourage_create_date_format">\'le\' EEEE dd MMMM \'à\' HH\'h\'mm</string>
 
@@ -42,7 +43,7 @@
     <string name="entourage_create_menu_contribute">Proposer un don</string>
     <string name="entourage_create_submenu_contribute">Donner un bien, du temps, …</string>
     <string name="outing_create_menu">Annoncer un évènement</string>
-    <string name="outing_create_submenu">Se rassembler à une date précise</string>
+    <string name="outing_create_submenu">à une date précise</string>
 
     <!-- Entourage Category Fragment -->
     <string name="entourage_category_fragment_title">CATÉGORIE</string>
@@ -208,5 +209,14 @@
     <string name="entourage_join_type_fragment_option_private">Je préfère valider</string>
     <string name="entourage_join_type_fragment_option_public">Pas besoin de vérifier</string>
     <string name="entourage_join_type_fragment_disclaimer">En cas de problème avec un utilisateur, vous pouvez toujours le signaler à notre équipe</string>
+
+    <!-- User Report -->
+    <string name="entourage_report_explanation">Vous allez signaler cet Entourage à nos administrateurs.</string>
+    <string name="entourage_report_reason">Merci de préciser pourquoi\nvous signalez cet Entourage :</string>
+    <string name="entourage_report_reason_hint">Ecrivez quelque chose…</string>
+    <string name="entourage_report_success">✔︎ Entourage signalé</string>
+    <string name="entourage_report_error_reason_empty">Ajoutez un message</string>
+    <string name="entourage_report_error_send_failed">L\'envoi du message a échoué, veuillez réessayer</string>
+
 
 </resources>

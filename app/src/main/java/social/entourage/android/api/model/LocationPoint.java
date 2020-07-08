@@ -93,7 +93,7 @@ public class LocationPoint implements Serializable {
     public String distanceToCurrentLocation(float maxDistanceToShow) {
         String distanceAsString = "";
 
-        Location currentLocation = EntourageLocation.getInstance().getCurrentLocation();
+        Location currentLocation = EntourageLocation.getCurrentLocation();
         if (currentLocation != null) {
             float distance = distanceTo(new LocationPoint(currentLocation.getLatitude(), currentLocation.getLongitude()));
             if(distance<maxDistanceToShow) {

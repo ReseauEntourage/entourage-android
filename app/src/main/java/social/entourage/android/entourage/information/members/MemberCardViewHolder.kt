@@ -3,7 +3,7 @@ package social.entourage.android.entourage.information.members
 import android.net.Uri
 import android.view.View
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.entourage_information_member_card.view.*
+import kotlinx.android.synthetic.main.layout_entourage_information_member_card.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.EntourageUser
@@ -11,7 +11,7 @@ import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.tools.BusProvider.instance
 import social.entourage.android.tools.CropCircleTransformation
-import social.entourage.android.user.role.RoleView
+import social.entourage.android.user.role.UserRoleView
 import social.entourage.android.user.role.UserRolesFactory
 import java.util.*
 
@@ -32,30 +32,27 @@ class MemberCardViewHolder(view: View) : BaseCardViewHolder(view) {
 
     fun populate(entourageUser: EntourageUser) {
         userId = entourageUser.userId
-        val avatarURL = entourageUser.avatarURLAsString
-        if (avatarURL != null && itemView.tic_member_photo!=null) {
+        itemView.tic_member_photo?.let {
+            entourageUser.avatarURLAsString?.let {avatarURL ->
             Picasso.get().load(Uri.parse(avatarURL))
                     .placeholder(R.drawable.ic_user_photo_small)
                     .transform(CropCircleTransformation())
-                    .into(itemView.tic_member_photo)
-        } else {
-            itemView.tic_member_photo?.setImageResource(R.drawable.ic_user_photo_small)
+                    .into(it)
+            } ?: run {
+                it.setImageResource(R.drawable.ic_user_photo_small)
+            }
         }
         // Partner logo
-        val partner = entourageUser.partner
-        if (partner != null) {
-            val partnerLogoURL = partner.smallLogoUrl
-            if (partnerLogoURL != null && itemView.tic_member_partner_logo!= null) {
+        itemView.tic_member_partner_logo?.let {
+            entourageUser.partner?.smallLogoUrl?.let {partnerLogoURL->
                 Picasso.get()
                         .load(Uri.parse(partnerLogoURL))
                         .placeholder(R.drawable.partner_placeholder)
                         .transform(CropCircleTransformation())
-                        .into(itemView.tic_member_partner_logo)
-            } else {
-                itemView.tic_member_partner_logo?.setImageDrawable(null)
+                        .into(it)
+            } ?: run {
+                it.setImageDrawable(null)
             }
-        } else {
-            itemView.tic_member_partner_logo?.setImageDrawable(null)
         }
         itemView.tic_member_name?.text = entourageUser.displayName
         val roles = ArrayList<String>()
@@ -73,14 +70,14 @@ class MemberCardViewHolder(view: View) : BaseCardViewHolder(view) {
             if (userRole == null || !userRole.isVisible) {
                 continue
             }
-            val roleView = RoleView(itemView.context)
-            roleView.setRole(userRole)
-            itemView.tic_member_tags?.addView(roleView)
+            val userRoleView = UserRoleView(itemView.context)
+            userRoleView.setRole(userRole)
+            itemView.tic_member_tags?.addView(userRoleView)
         }
     }
 
     companion object {
         val layoutResource: Int
-            get() = R.layout.entourage_information_member_card
+            get() = R.layout.layout_entourage_information_member_card
     }
 }

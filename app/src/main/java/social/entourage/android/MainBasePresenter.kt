@@ -24,7 +24,7 @@ import social.entourage.android.involvement.GetInvolvedFragment
 import social.entourage.android.user.AvatarUpdatePresenter
 import social.entourage.android.user.UserFragment
 import social.entourage.android.user.edit.UserEditFragment
-import social.entourage.android.user.edit.photo.PhotoChooseSourceFragment
+import social.entourage.android.user.edit.photo.PhotoChooseSourceFragmentCompat
 import social.entourage.android.user.edit.photo.PhotoEditFragment
 import timber.log.Timber
 
@@ -99,7 +99,7 @@ abstract class MainBasePresenter internal constructor(
     // ----------------------------------
     private fun displayAppUpdateDialog() {
         val builder = AlertDialog.Builder(activity)
-        val dialog = builder.setView(R.layout.dialog_version_update)
+        val dialog = builder.setView(R.layout.layout_dialog_version_update)
                 .setCancelable(false)
                 .create()
         dialog.show()
@@ -213,7 +213,7 @@ abstract class MainBasePresenter internal constructor(
                     val photoEditFragment = activity.supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as PhotoEditFragment?
                     if (photoEditFragment != null) {
                         if (photoEditFragment.onPhotoSent(true)) {
-                            val photoChooseSourceFragment = activity.supportFragmentManager.findFragmentByTag(PhotoChooseSourceFragment.TAG) as PhotoChooseSourceFragment?
+                            val photoChooseSourceFragment = activity.supportFragmentManager.findFragmentByTag(PhotoChooseSourceFragmentCompat.TAG) as PhotoChooseSourceFragmentCompat?
                             photoChooseSourceFragment?.dismiss()
                         }
                     }

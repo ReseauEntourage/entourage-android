@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.choice_tour_card.view.*
+import kotlinx.android.synthetic.main.layout_choice_tour_card.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.model.tour.TourType
@@ -23,7 +23,7 @@ class ChoiceAdapter(private val itemListener: RecyclerViewClickListener, var tou
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChoiceViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.choice_tour_card, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_choice_tour_card, parent, false)
         return ChoiceViewHolder(view)
     }
 
@@ -31,21 +31,21 @@ class ChoiceAdapter(private val itemListener: RecyclerViewClickListener, var tou
         val tour = tours[position]
         when (tour.tourType) {
             TourType.MEDICAL.typeName -> {
-                holder.itemView.choice_card_image.setImageResource(R.drawable.ic_medical_active)
-                holder.itemView.choice_card_type.setText(R.string.tour_type_medical)
+                holder.itemView.choice_card_image?.setImageResource(R.drawable.ic_medical_active)
+                holder.itemView.choice_card_type?.setText(R.string.tour_type_medical)
             }
             TourType.ALIMENTARY.typeName -> {
-                holder.itemView.choice_card_image.setImageResource(R.drawable.ic_distributive_active)
-                holder.itemView.choice_card_type.setText(R.string.tour_type_alimentary)
+                holder.itemView.choice_card_image?.setImageResource(R.drawable.ic_distributive_active)
+                holder.itemView.choice_card_type?.setText(R.string.tour_type_alimentary)
             }
             TourType.BARE_HANDS.typeName -> {
-                holder.itemView.choice_card_image.setImageResource(R.drawable.ic_social_active)
-                holder.itemView.choice_card_type.setText(R.string.tour_type_bare_hands)
+                holder.itemView.choice_card_image?.setImageResource(R.drawable.ic_social_active)
+                holder.itemView.choice_card_type?.setText(R.string.tour_type_bare_hands)
             }
         }
-        holder.itemView.choice_card_date.text = SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE)
+        holder.itemView.choice_card_date?.text = SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE)
                 .format(tour.getStartTime())
-        holder.itemView.choice_card_organization.text = tour.organizationName
+        holder.itemView.choice_card_organization?.text = tour.organizationName
     }
 
     inner class ChoiceViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
@@ -54,7 +54,7 @@ class ChoiceAdapter(private val itemListener: RecyclerViewClickListener, var tou
         }
 
         init {
-            itemView.choice_card_view.setOnClickListener(this)
+            itemView.choice_card_view?.setOnClickListener(this)
         }
     }
 

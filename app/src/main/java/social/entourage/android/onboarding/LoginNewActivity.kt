@@ -6,10 +6,7 @@ import android.os.CountDownTimer
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.activity_login_new.*
-import social.entourage.android.EntourageActivity
-import social.entourage.android.EntourageApplication
-import social.entourage.android.MainActivity
-import social.entourage.android.R
+import social.entourage.android.*
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
 import social.entourage.android.tools.Utils
@@ -35,6 +32,8 @@ class LoginNewActivity : EntourageActivity() {
 
         alertDialog = CustomProgressDialog(this)
         setupViews()
+
+        EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_LOGIN_LOGIN)
     }
 
     override fun onDestroy() {
@@ -46,6 +45,7 @@ class LoginNewActivity : EntourageActivity() {
 
         onboard_login_mainlayout?.setOnTouchListener { view, motionEvent ->
             view.hideKeyboard()
+            view.performClick()
             true
         }
 
@@ -75,7 +75,7 @@ class LoginNewActivity : EntourageActivity() {
             }
 
             override fun onTick(p0: Long) {
-                timeOut = timeOut - 1
+                timeOut -= 1
             }
         }
 
@@ -107,7 +107,7 @@ class LoginNewActivity : EntourageActivity() {
      ********************************/
 
     fun validateInputsAndLogin() {
-        val countryCode = ui_login_phone_ccp_code?.getSelectedCountryCodeWithPlus()
+        val countryCode = ui_login_phone_ccp_code?.selectedCountryCodeWithPlus
         val phoneNumber = ui_login_phone_et_phone?.text.toString()
         val codePwd = ui_login_et_code?.text.toString()
 
@@ -143,7 +143,7 @@ class LoginNewActivity : EntourageActivity() {
 
     fun checkAndResendCode() {
 
-        val countryCode = ui_login_phone_ccp_code?.getSelectedCountryCodeWithPlus()
+        val countryCode = ui_login_phone_ccp_code?.selectedCountryCodeWithPlus
         val phoneNumber = ui_login_phone_et_phone?.text.toString()
 
         if (phoneNumber.length <= minimumPhoneCharacters) {
@@ -172,9 +172,11 @@ class LoginNewActivity : EntourageActivity() {
 
     fun login(phone:String,codePwd:String) {
         alertDialog.show(R.string.onboard_waiting_dialog)
+        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_LOGIN_SUBMIT)
         OnboardingAPI.getInstance(EntourageApplication.get()).login(phone,codePwd) { isOK, loginResponse, error ->
             isLoading = false
             if (isOK) {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_LOGIN_SUCCESS)
                 val authController = EntourageApplication.get().entourageComponent.authenticationController
 
                 loginResponse?.let {
@@ -185,9 +187,10 @@ class LoginNewActivity : EntourageActivity() {
 
                 //set the tutorial as done
                 val sharedPreferences = EntourageApplication.get().sharedPreferences
-                val loggedNumbers = sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, HashSet()) as HashSet<String>?
-                loggedNumbers!!.add(phone)
-                sharedPreferences.edit().putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers).apply()
+                (sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, HashSet()) as HashSet<String>?)?.let { loggedNumbers ->
+                    loggedNumbers.add(phone)
+                    sharedPreferences.edit().putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers).apply()
+                }
                 alertDialog.dismiss()
                 goMain()
             }
@@ -197,12 +200,15 @@ class LoginNewActivity : EntourageActivity() {
                 if (error != null) {
                     when {
                         error.contains("INVALID_PHONE_FORMAT") -> {
+                            EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_LOGIN_PHONE)
                             errorId = R.string.login_error_invalid_phone_format
                         }
                         error.contains("UNAUTHORIZED") -> {
+                            EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_LOGIN_FAIL)
                             errorId = R.string.login_error_invalid_credentials
                         }
                         else -> {
+                            EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_LOGIN_ERROR)
                             errorId = R.string.login_error
                         }
                     }
@@ -215,6 +221,7 @@ class LoginNewActivity : EntourageActivity() {
     }
 
     fun resendCode(phone:String) {
+        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_LOGIN_SMS)
         OnboardingAPI.getInstance(EntourageApplication.get()).resendCode(phone) { isOK, loginResponse, error ->
             if (isOK) {
                 Toast.makeText(this, R.string.registration_smscode_sent, Toast.LENGTH_LONG).show()

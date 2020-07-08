@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.widget.Chronometer;
@@ -219,17 +220,19 @@ public class EntourageService extends Service {
     }
 
     private void createNotification() {
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return;
+
         final Intent notificationIntent = new Intent(this, MainActivity.class);
         final PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getString(R.string.local_service_notification_title))
-                .setSmallIcon(R.drawable.tour_record)
+                .setSmallIcon(R.drawable.ic_baseline_play_arrow_24)
                 .setContentTitle(getString(R.string.local_service_running))
                 .setContentIntent(contentIntent)
                 .setOngoing(true)
                 .setPriority(NotificationCompat.PRIORITY_MAX);
         final PendingIntent pauseTourIntent = createPendingIntent(KEY_NOTIFICATION_PAUSE_TOUR);
         final PendingIntent stopTourIntent = createPendingIntent(KEY_NOTIFICATION_STOP_TOUR);
-        notificationRemoteView = new RemoteViews(getPackageName(), R.layout.notification_tour_service_small);
+        notificationRemoteView = new RemoteViews(getPackageName(), R.layout.layout_notification_tour_service_small);
         notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_pause_button, pauseTourIntent);
         notificationRemoteView.setOnClickPendingIntent(R.id.notification_tour_stop_button, stopTourIntent);
         builder = builder.setContent(notificationRemoteView);

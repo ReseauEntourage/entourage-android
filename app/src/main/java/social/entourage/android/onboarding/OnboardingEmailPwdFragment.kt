@@ -8,10 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import kotlinx.android.synthetic.main.fragment_onboarding_email_pwd.*
+import social.entourage.android.EntourageEvents
 import social.entourage.android.R
-import social.entourage.android.tools.Logger
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.isValidEmail
+import timber.log.Timber
 
 private const val ARG_EMAIL = "email"
 
@@ -41,14 +42,16 @@ class OnboardingEmailPwdFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (tempEmail == null || !tempEmail!!.isValidEmail()) {
-            callback?.upadteButtonNext(false)
+            callback?.updateButtonNext(false)
         }
         else {
-            ui_onboard_email_pwd_et_mail.setText(tempEmail)
-            callback?.upadteButtonNext(true)
+            ui_onboard_email_pwd_et_mail?.setText(tempEmail)
+            callback?.updateButtonNext(true)
         }
 
         setupViews()
+
+        EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING_INPUT_EMAIL)
     }
 
     override fun onAttach(context: Context) {
@@ -66,15 +69,16 @@ class OnboardingEmailPwdFragment : Fragment() {
     //**********//**********//**********
 
     fun setupViews() {
-        onboard_email_pwd_mainlayout.setOnTouchListener { view, _ ->
+        onboard_email_pwd_mainlayout?.setOnTouchListener { view, _ ->
             view.hideKeyboard()
+            view.performClick()
             true
         }
 
-        ui_onboard_email_pwd_et_mail.setOnEditorActionListener { _, event, _ ->
-            Logger("ON key listener $event -- ${EditorInfo.IME_ACTION_DONE}")
+        ui_onboard_email_pwd_et_mail?.setOnEditorActionListener { _, event, _ ->
+            Timber.d("ON key listener $event -- ${EditorInfo.IME_ACTION_DONE}")
             if (event == EditorInfo.IME_ACTION_DONE) {
-                Logger("Call from Editor Action")
+                Timber.d("Call from Editor Action")
                 isAllreadyCall = true
                 updateButtonNext()
             }
@@ -82,7 +86,7 @@ class OnboardingEmailPwdFragment : Fragment() {
         }
 
         ui_onboard_email_pwd_et_mail?.setOnFocusChangeListener { _, b ->
-            Logger("Call from Focus change")
+            Timber.d("Call from Focus change")
             if (!b && !isAllreadyCall) updateButtonNext()
             if (b) isAllreadyCall = false
         }
@@ -92,13 +96,13 @@ class OnboardingEmailPwdFragment : Fragment() {
     // Methods
     //**********//**********//**********
 
-    fun updateButtonNext() {
-        if (ui_onboard_email_pwd_et_mail.text.toString().isValidEmail()) {
-            callback?.upadteButtonNext(true)
+    private fun updateButtonNext() {
+        if (ui_onboard_email_pwd_et_mail?.text!= null && ui_onboard_email_pwd_et_mail.text.toString().isValidEmail()) {
+            callback?.updateButtonNext(true)
             callback?.updateEmailPwd(ui_onboard_email_pwd_et_mail.text.toString(),null,null)
         }
         else {
-            callback?.upadteButtonNext(false)
+            callback?.updateButtonNext(false)
             callback?.updateEmailPwd(null,null,null)
         }
     }

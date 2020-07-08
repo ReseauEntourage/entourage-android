@@ -13,20 +13,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import com.google.android.gms.location.*
 import com.google.android.libraries.places.compat.ui.PlaceAutocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import kotlinx.android.synthetic.main.fragment_onboarding_place.*
+import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.User
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.location.LocationUtils.isLocationEnabled
 import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
-import social.entourage.android.tools.Logger
 import java.util.*
 
 private const val ARG_PLACE = "place"
+private const val ARG_SDF = "isSdf"
+private const val ARG_2ND = "is2ndAddress"
 
 open class OnboardingPlaceFragment : EntourageDialogFragment() {
     protected val PERMISSIONS_REQUEST_LOCATION = 1
@@ -49,6 +50,9 @@ open class OnboardingPlaceFragment : EntourageDialogFragment() {
     protected var userAddress:User.Address? = null
     protected var callback:OnboardingCallback? = null
 
+    protected var isFromProfile = false
+    protected var isSecondaryAddress = false
+    protected var isSdf = false
     //**********//**********//**********
     // Lifecycle
     //**********//**********//**********
@@ -57,6 +61,8 @@ open class OnboardingPlaceFragment : EntourageDialogFragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             userAddress = it.getSerializable(ARG_PLACE) as? User.Address
+            isSdf = it.getBoolean(ARG_SDF)
+            isSecondaryAddress = it.getBoolean(ARG_2ND)
         }
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
@@ -70,9 +76,37 @@ open class OnboardingPlaceFragment : EntourageDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        callback?.updateAddress(userAddress)
+        callback?.updateAddress(userAddress,isSecondaryAddress)
 
         setupViews()
+
+        if (isFromProfile) {
+            if (isSecondaryAddress) {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_PROFILE_ACTION_ZONE2)
+            }
+            else {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_PROFILE_ACTION_ZONE)
+            }
+        }
+        else {
+            if (!isSecondaryAddress) {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING_ACTION_ZONE)
+                val _title = if (isSdf) R.string.onboard_place_title_sdf else R.string.onboard_place_title
+                val _desc = if (isSdf) R.string.onboard_place_description_sdf else R.string.onboard_place_description
+
+                ui_onboard_place_tv_title.text = getString(_title)
+                ui_onboard_place_tv_info.text = getString(_desc)
+            }
+            else {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING_ACTION_ZONE2)
+                val _title = if (isSdf) R.string.onboard_place_title2_sdf else R.string.onboard_place_title2
+                val _desc = if (isSdf) R.string.onboard_place_description2_sdf else R.string.onboard_place_description2
+
+                ui_onboard_place_tv_title.text = getString(_title)
+                ui_onboard_place_tv_info.text = getString(_desc)
+            }
+
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -93,15 +127,49 @@ open class OnboardingPlaceFragment : EntourageDialogFragment() {
     protected fun setupViews() {
         ui_onboard_bt_location?.setOnClickListener {
             onCurrentLocationClicked()
+
+            if (isFromProfile) {
+                if (isSecondaryAddress) {
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE2_GEOLOC)
+                }
+                else {
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE_GEOLOC)
+                }
+            }
+            else {
+                if (isSecondaryAddress) {
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SETACTION_ZONE2_GEOLOC)
+                }
+                else {
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SETACTION_ZONE_GEOLOC)
+                }
+            }
         }
 
         ui_onboard_place_tv_location?.setOnClickListener {
             onSearchCalled()
             mFusedLocationClient?.removeLocationUpdates(mLocationCallback)
+
+            if (isFromProfile) {
+                if (isSecondaryAddress) {
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE2_SEARCH)
+                }
+                else {
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE_SEARCH)
+                }
+            }
+            else {
+                if (isSecondaryAddress) {
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SETACTION_ZONE2_SEARCH)
+                }
+                else {
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SETACTION_ZONE_SEARCH)
+                }
+            }
         }
 
         if (userAddress != null) {
-            ui_onboard_place_tv_location.text = userAddress?.displayAddress
+            ui_onboard_place_tv_location?.text = userAddress?.displayAddress
         } else {
             ui_onboard_place_tv_location?.text = ""
             ui_onboard_place_tv_location?.hint = getString(R.string.onboard_place_placeholder)
@@ -116,7 +184,7 @@ open class OnboardingPlaceFragment : EntourageDialogFragment() {
         else if (temporaryAddressPlace != null) {
             userAddress = temporaryAddressPlace!!
         }
-        callback?.updateAddress(userAddress)
+        callback?.updateAddress(userAddress,isSecondaryAddress)
     }
 
     //**********//**********//**********
@@ -253,10 +321,12 @@ open class OnboardingPlaceFragment : EntourageDialogFragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(googlePlaceAddress: User.Address?) =
+        fun newInstance(googlePlaceAddress: User.Address?,is2ndAddress:Boolean,isSdf:Boolean) =
                 OnboardingPlaceFragment().apply {
                     arguments = Bundle().apply {
                         putSerializable(ARG_PLACE, googlePlaceAddress)
+                        putBoolean(ARG_SDF,isSdf)
+                        putBoolean(ARG_2ND,is2ndAddress)
                     }
                 }
     }

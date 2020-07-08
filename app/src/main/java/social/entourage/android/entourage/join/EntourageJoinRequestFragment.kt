@@ -67,15 +67,15 @@ class EntourageJoinRequestFragment  : DialogFragment() {
                 }
             }
         })
-        tour_join_request_ok_message_button.setOnClickListener {onMessageSend()}
-        tour_join_request_ok_x_button.setOnClickListener { dismiss() }
+        tour_join_request_ok_message_button?.setOnClickListener {onMessageSend()}
+        tour_join_request_ok_x_button?.setOnClickListener { dismiss() }
         viewModel.requestResult.observe(viewLifecycleOwner, Observer {
             when(it) {
                 EntourageJoinRequestViewModel.REQUEST_ERROR ->{
                     Toast.makeText(context, R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show()
                 }
                 EntourageJoinRequestViewModel.REQUEST_OK ->{
-                    Toast.makeText(context, R.string.tour_join_request_message_sent, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.tour_join_request_message_sent, Toast.LENGTH_SHORT).show()
                     dismiss()
                 }
             }

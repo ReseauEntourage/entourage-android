@@ -9,12 +9,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
@@ -55,9 +60,11 @@ import social.entourage.android.configuration.Configuration;
 import social.entourage.android.deeplinks.DeepLinksManager;
 import social.entourage.android.entourage.EntourageDisclaimerFragment;
 import social.entourage.android.entourage.information.EntourageInformationFragment;
-import social.entourage.android.user.edit.EditUserPlaceFragment;
-import social.entourage.android.onboarding.OnboardingPhotoFragment;
+import social.entourage.android.map.filter.MapFilter;
+import social.entourage.android.map.filter.MapFilterFactory;
 import social.entourage.android.user.edit.UserEditActionZoneFragment;
+import social.entourage.android.onboarding.OnboardingPhotoFragment;
+import social.entourage.android.user.edit.UserEditActionZoneFragmentCompat;
 import social.entourage.android.tour.TourInformationFragment;
 import social.entourage.android.entourage.my.MyEntouragesFragment;
 import social.entourage.android.location.EntourageLocation;
@@ -101,6 +108,43 @@ public class MainActivity extends EntourageSecuredActivity
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomBar;
 
+    //Tooltips
+    @BindView(R.id.ui_layout_tooltips)
+    ConstraintLayout ui_layout_tooltips_main;
+
+    @BindView(R.id.ui_layout_tooltips_ignore)
+    ConstraintLayout ui_layout_tooltips_ignore;
+
+    @BindView(R.id.ui_tooltip_layout_top)
+    ConstraintLayout ui_tooltip_layout_top;
+    @BindView(R.id.ui_tooltip_layout_bottom)
+    ConstraintLayout ui_tooltip_layout_bottom;
+
+    @BindView(R.id.ui_tooltip_button_filter)
+    View ui_tooltip_button_filter;
+
+    @BindView(R.id.ui_tooltip_button_next_top)
+    Button ui_tooltip_button_next_top;
+
+    @BindView(R.id.ui_tooltip_tv_title)
+    TextView ui_tooltip_tv_title;
+    @BindView(R.id.ui_tooltip_tv_step)
+    TextView ui_tooltip_tv_step;
+    @BindView(R.id.ui_tooltip_tv_bottom)
+    TextView ui_tooltip_tv_bottom;
+    @BindView(R.id.ui_tooltip_button_next_bottom)
+    Button ui_tooltip_button_next_bottom;
+    @BindView(R.id.ui_tooltip_iv_bottom1)
+    ImageView ui_tooltip_iv_bottom1;
+    @BindView(R.id.ui_tooltip_iv_bottom2)
+    ImageView ui_tooltip_iv_bottom2;
+    @BindView(R.id.ui_tooltip_iv_bottom_bt1)
+    ImageView ui_tooltip_iv_bottom_bt1;
+    @BindView(R.id.ui_tooltip_iv_bottom_bt2)
+    ImageView ui_tooltip_iv_bottom_bt2;
+    private int postionTooltip = 0;
+
+
     private BottomNavigationDataSource navigationDataSource;
 
     // ----------------------------------
@@ -124,7 +168,7 @@ public class MainActivity extends EntourageSecuredActivity
         User user = getAuthenticationController().getUser();
         if (user != null) {
             //refresh the user info from the server
-            Location location = EntourageLocation.getInstance().getCurrentLocation();
+            Location location = EntourageLocation.getCurrentLocation();
             presenter.updateUser(null, null, null, location);
             //initialize the push notifications
             initializePushNotifications();
@@ -196,6 +240,8 @@ public class MainActivity extends EntourageSecuredActivity
         if (getIntent()!=null && getIntent().getAction() != null) {
             BusProvider.INSTANCE.getInstance().post(new OnCheckIntentActionEvent(getIntent().getAction(), getIntent().getExtras()));
         }
+
+        checkOnboarding();
     }
 
     @Override
@@ -207,6 +253,95 @@ public class MainActivity extends EntourageSecuredActivity
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
+
+    private void checkOnboarding() {
+        final SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
+        boolean isFromOnboarding = sharedPreferences.getBoolean(EntourageApplication.KEY_IS_FROM_ONBOARDING, false);
+
+        if (isFromOnboarding) {
+            sharedPreferences.edit().putBoolean(EntourageApplication.KEY_IS_FROM_ONBOARDING,false).apply();
+
+            ui_tooltip_layout_bottom.setVisibility(View.INVISIBLE);
+            ui_tooltip_iv_bottom2.setVisibility(View.INVISIBLE);
+            ui_tooltip_iv_bottom1.setVisibility(View.INVISIBLE);
+            ui_tooltip_iv_bottom_bt1.setVisibility(View.INVISIBLE);
+            ui_tooltip_iv_bottom_bt2.setVisibility(View.INVISIBLE);
+            ui_layout_tooltips_main.setVisibility(View.VISIBLE);
+
+            ui_layout_tooltips_ignore.setOnClickListener(v -> {
+                ui_layout_tooltips_main.setVisibility(View.GONE);
+                switch (postionTooltip) {
+                    case 0:
+                        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_TOOLTIP_FILTER_CLOSE);
+                        break;
+                    case 1:
+                        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_TOOLTIP_GUIDE_CLOSE);
+                        break;
+                    default:
+                        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_TOOLTIP_PLUS_CLOSE);
+                        break;
+                }
+            });
+            ui_tooltip_button_next_top.setOnClickListener(v -> {
+                ui_tooltip_layout_top.setVisibility(View.GONE);
+                ui_tooltip_button_filter.setVisibility(View.GONE);
+
+                String _txt = String.format(getString(R.string.tooltip_step_format),"2");
+                ui_tooltip_tv_step.setText(_txt);
+                ui_tooltip_tv_bottom.setText(R.string.tooltip_desc2);
+                ui_tooltip_tv_title.setText(R.string.tooltip_title2);
+
+                ui_tooltip_iv_bottom1.setVisibility(View.VISIBLE);
+                ui_tooltip_iv_bottom2.setVisibility(View.INVISIBLE);
+                ui_tooltip_iv_bottom_bt1.setVisibility(View.VISIBLE);
+                ui_tooltip_iv_bottom_bt2.setVisibility(View.INVISIBLE);
+                ui_tooltip_layout_bottom.setVisibility(View.VISIBLE);
+                EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_TOOLTIP_FILTER_NEXT);
+            });
+            ui_tooltip_button_next_bottom.setOnClickListener(v -> {
+                postionTooltip++;
+                if (postionTooltip == 1) {
+                    String _txt = String.format(getString(R.string.tooltip_step_format),"3");
+                    ui_tooltip_tv_step.setText(_txt);
+                    ui_tooltip_tv_bottom.setText(R.string.tooltip_desc3);
+                    ui_tooltip_tv_title.setText(R.string.tooltip_title3);
+                    ui_tooltip_iv_bottom2.setVisibility(View.VISIBLE);
+                    ui_tooltip_iv_bottom1.setVisibility(View.INVISIBLE);
+                    ui_tooltip_iv_bottom_bt1.setVisibility(View.INVISIBLE);
+                    ui_tooltip_iv_bottom_bt2.setVisibility(View.VISIBLE);
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_TOOLTIP_GUIDE_NEXT);
+                }
+                else {
+                    ui_layout_tooltips_main.setVisibility(View.GONE);
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_TOOLTIP_PLUS_NEXT);
+                }
+            });
+
+            int usertype = sharedPreferences.getInt(EntourageApplication.KEY_ONBOARDING_USER_TYPE,0);
+            setupFiltersAfterOnboarding(usertype);
+        }
+        else {
+            ui_layout_tooltips_main.setVisibility(View.GONE);
+        }
+    }
+
+    private void setupFiltersAfterOnboarding(int userType) {
+        MapFilter mapFilter = MapFilterFactory.getMapFilter();
+        switch (userType) {
+            case 1: //Neighbour
+                mapFilter.setNeighbourFilters();
+                break;
+            case 2: //Alone
+                mapFilter.setAloneFilters();
+                break;
+            case 3: //Asso
+            default:
+                mapFilter.setDefaultValues();
+        }
+
+        EntourageApplication.get().entourageComponent.getAuthenticationController().saveMapFilter();
+        BusProvider.INSTANCE.getInstance().post(new Events.OnMapFilterChanged());
+    }
 
     private void displayLocationProviderDisabledAlert() {
         if(LocationUtils.INSTANCE.isLocationEnabled() && LocationUtils.INSTANCE.isLocationPermissionGranted()) {
@@ -548,6 +683,7 @@ public class MainActivity extends EntourageSecuredActivity
         // Save the entourage disclaimer shown flag
         try{
             User me = EntourageApplication.me(this);
+            if(me==null) return;
             me.setEntourageDisclaimerShown(true);
             getAuthenticationController().saveUser(me);
 
@@ -719,10 +855,10 @@ public class MainActivity extends EntourageSecuredActivity
     // ----------------------------------
 
     public void showEditActionZoneFragment() {
-        showEditActionZoneFragment( null);
+        showEditActionZoneFragment( null,false);
     }
 
-    public void showEditActionZoneFragment(UserEditActionZoneFragment.FragmentListener extraFragmentListener) {
+    public void showEditActionZoneFragment(UserEditActionZoneFragment.FragmentListener extraFragmentListener,Boolean isSecondaryAddress) {
         if (!authenticationController.isAuthenticated()) {
             return;
         }
@@ -746,17 +882,17 @@ public class MainActivity extends EntourageSecuredActivity
             return;
         }
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null);
-            userEditActionZoneFragment.addFragmentListener(this);
-            userEditActionZoneFragment.addFragmentListener(extraFragmentListener);
-            userEditActionZoneFragment.setFromLogin(true);
-            userEditActionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
+            UserEditActionZoneFragmentCompat userEditActionZoneFragmentCompat = UserEditActionZoneFragmentCompat.newInstance(null,false);
+            userEditActionZoneFragmentCompat.addFragmentListener(this);
+            userEditActionZoneFragmentCompat.addFragmentListener(extraFragmentListener);
+            userEditActionZoneFragmentCompat.setFromLogin(true);
+            userEditActionZoneFragmentCompat.show(getSupportFragmentManager(), UserEditActionZoneFragmentCompat.TAG);
         }
         else {
-            EditUserPlaceFragment editUserPlaceFragment = EditUserPlaceFragment.newInstance(null);
-            editUserPlaceFragment.setupListener(this);
-            editUserPlaceFragment.setupListener(extraFragmentListener);
-            editUserPlaceFragment.show(getSupportFragmentManager(),EditUserPlaceFragment.TAG);
+            UserEditActionZoneFragment userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null,isSecondaryAddress);
+            userEditActionZoneFragment.setupListener(this);
+            userEditActionZoneFragment.setupListener(extraFragmentListener);
+            userEditActionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
         }
         
         me.setEditActionZoneShown(true);
@@ -785,7 +921,7 @@ public class MainActivity extends EntourageSecuredActivity
                 authenticationController.saveUserPreferences();
             }
         }
-        UserEditActionZoneFragment fragment = (UserEditActionZoneFragment)getSupportFragmentManager().findFragmentByTag(UserEditActionZoneFragment.TAG);
+        UserEditActionZoneFragmentCompat fragment = (UserEditActionZoneFragmentCompat)getSupportFragmentManager().findFragmentByTag(UserEditActionZoneFragmentCompat.TAG);
         if (fragment != null && !fragment.isStateSaved()) {
             fragment.dismiss();
         }

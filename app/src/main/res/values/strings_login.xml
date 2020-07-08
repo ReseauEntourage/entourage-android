@@ -5,7 +5,6 @@
     <string name="login_title_welcome">Connexion</string>
     <string name="login_title_lost_code">REDEMANDER UN CODE</string>
     <string name="login_title_lost_code_long">Nouveau code de vérification</string>
-    <string name="login_title_tutorial"><![CDATA[<font color=\"#FF6907\">T</font>UTORIEL DE <font color=\"#FF6907\">B</font>IENVENUE]]></string>
     <string name="login_text_lost_code_description">Afin de recevoir votre nouveau code, saisissez votre numéro de portable.</string>
     <string name="login_text_lost_code_ok">Votre code vient de vous être envoyé</string>
     <string name="login_text_lost_code_ko">Impossible de renvoyer un code</string>

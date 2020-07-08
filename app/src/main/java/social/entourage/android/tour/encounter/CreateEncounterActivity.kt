@@ -194,12 +194,13 @@ class CreateEncounterActivity : EntourageSecuredActivity(), LocationFragment.OnF
     // ----------------------------------
     // LocationFragment.OnFragmentInteractionListener
     // ----------------------------------
-    override fun onEntourageLocationChosen(location: LatLng, address: String, place: Place) {
-        this.location = location
-        presenter.setLatitude(location.latitude)
-        presenter.setLongitude(location.longitude)
-        editedEncounter?.latitude = location.latitude
-        editedEncounter?.longitude = location.longitude
+    override fun onEntourageLocationChosen(newLocation: LatLng?, address: String?, place: Place?) {
+        val curLocation  = newLocation ?: place?.latLng ?: return
+        this.location = curLocation
+        presenter.setLatitude(curLocation.latitude)
+        presenter.setLongitude(curLocation.longitude)
+        editedEncounter?.latitude = curLocation.latitude
+        editedEncounter?.longitude = curLocation.longitude
         create_encounter_position?.text = address
     }
 

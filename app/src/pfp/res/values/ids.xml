@@ -22,8 +22,6 @@
 
     <item name="button_create_outing" type="id" />
 
-    <item name="action_zone_ignore_button" type="id" />
-
     <item name="title_separator" type="id" />
 
     <item name="launcher_tour_type_medical" type="id" />

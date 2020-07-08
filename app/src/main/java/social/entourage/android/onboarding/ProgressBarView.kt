@@ -5,7 +5,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import social.entourage.android.R
-import social.entourage.android.tools.Logger
+import kotlin.math.floor
 
 /**
  * Created by Jr (MJ-DEVS) on 04/05/2020.
@@ -76,7 +76,7 @@ object ProgressBar {
 
         // progressBackground
         val progressBackgroundRect = CacheForProgressBar.progressBackgroundRect
-        progressBackgroundRect[frame.left, frame.top, frame.left + Math.floor(frame.width() + 0.5f.toDouble()).toFloat()] = frame.bottom
+        progressBackgroundRect[frame.left, frame.top, frame.left + floor(frame.width() + 0.5f.toDouble()).toFloat()] = frame.bottom
         val progressBackgroundPath = CacheForProgressBar.progressBackgroundPath
         progressBackgroundPath.reset()
         progressBackgroundPath.addRoundRect(progressBackgroundRect, frame.bottom, frame.bottom, Path.Direction.CW)

@@ -46,6 +46,14 @@ public class Partner extends BaseOrganization implements Serializable {
     @SerializedName("user_role_title")
     private String userRoleTitle;
 
+    @SerializedName("postal_code")
+    private String postal_code;
+
+    private boolean isCreation;
+
+    private String donations_needs;
+    private String volunteers_needs;
+
     // ----------------------------------
     // GETTERS & SETTERS
     // ----------------------------------
@@ -111,6 +119,30 @@ public class Partner extends BaseOrganization implements Serializable {
         return websiteUrl;
     }
 
+    public String getPostal_code() {
+        return postal_code;
+    }
+
+    public void setPostal_code(String postal_code) {
+        this.postal_code = postal_code;
+    }
+
+    public boolean isCreation() {
+        return isCreation;
+    }
+
+    public void setCreation(boolean creation) {
+        isCreation = creation;
+    }
+
+    public String getUserRoleTitle() {
+        return userRoleTitle;
+    }
+
+    public void setUserRoleTitle(String userRoleTitle) {
+        this.userRoleTitle = userRoleTitle;
+    }
+
     @Override
     public int getType() {
         return TYPE_PARTNER;
@@ -119,6 +151,22 @@ public class Partner extends BaseOrganization implements Serializable {
     @Override
     public String getTypeAsString(Context context) {
         return userRoleTitle;//context.getString(R.string.member_type_partner);
+    }
+
+    public String getDonations_needs() {
+        return donations_needs;
+    }
+
+    public void setDonations_needs(String donations_needs) {
+        this.donations_needs = donations_needs;
+    }
+
+    public String getVolunteers_needs() {
+        return volunteers_needs;
+    }
+
+    public void setVolunteers_needs(String volunteers_needs) {
+        this.volunteers_needs = volunteers_needs;
     }
 
     // ----------------------------------

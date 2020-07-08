@@ -77,13 +77,14 @@
         app:layout_constraintTop_toTopOf="@+id/ui_bt_back" />
 
     <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
+        android:id="@+id/ui_onboard_main_iv_back"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/ui_view_progress"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/ui_view_progress"
-        app:srcCompat="@drawable/onboard_back" />
+        app:srcCompat="@drawable/ic_baseline_arrow_back_24"
+        app:tint="@color/accent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

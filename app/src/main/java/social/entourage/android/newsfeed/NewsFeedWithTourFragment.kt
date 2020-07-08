@@ -1,6 +1,5 @@
 package social.entourage.android.newsfeed
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -12,19 +11,19 @@ import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Subscribe
-import kotlinx.android.synthetic.main.layout_map_launcher.*
 import kotlinx.android.synthetic.main.fragment_map.*
+import kotlinx.android.synthetic.main.layout_map_launcher.*
 import kotlinx.android.synthetic.main.layout_map_longclick.*
 import kotlinx.android.synthetic.main.layout_map_longclick.view.*
 import social.entourage.android.*
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.LocationPoint
-import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.tour.TourType
-import social.entourage.android.api.model.feed.*
+import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.api.model.tour.Encounter
 import social.entourage.android.api.model.tour.Tour
+import social.entourage.android.api.model.tour.TourType
 import social.entourage.android.api.tape.Events
 import social.entourage.android.location.EntourageLocation
 import social.entourage.android.location.LocationUtils
@@ -67,11 +66,11 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //bind views here
-        map_longclick_button_start_tour_launcher.setOnClickListener {onStartTourLauncher()}
-        launcher_tour_outer_view.setOnClickListener {hideTourLauncher()}
-        tour_stop_button.setOnClickListener {onStartStopConfirmation()}
-        map_longclick_button_create_encounter.setOnClickListener {onAddEncounter()}
-        launcher_tour_go.setOnClickListener {onStartNewTour()}
+        map_longclick_button_start_tour_launcher?.setOnClickListener {onStartTourLauncher()}
+        launcher_tour_outer_view?.setOnClickListener {hideTourLauncher()}
+        tour_stop_button?.setOnClickListener {onStartStopConfirmation()}
+        map_longclick_button_create_encounter?.setOnClickListener {onAddEncounter()}
+        launcher_tour_go?.setOnClickListener {onStartNewTour()}
     }
 
     override fun onBackPressed(): Boolean {
@@ -113,22 +112,20 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     }
 
     private fun onStartNewTour() {
-        launcher_tour_go?.isEnabled = false
-        launcher_tour_progressBar?.visibility = View.VISIBLE
-        val tourType = TourType.findByRessourceId(launcher_tour_type.checkedRadioButtonId)
-        startTour(tourType.typeName)
-        when (tourType) {
-            TourType.MEDICAL -> {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_TOUR_MEDICAL)
-            }
-            TourType.BARE_HANDS -> {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_TOUR_SOCIAL)
-            }
-            TourType.ALIMENTARY -> {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_TOUR_DISTRIBUTION)
-            }
+        launcher_tour_type?.let {
+            launcher_tour_go?.isEnabled = false
+            launcher_tour_progressBar?.visibility = View.VISIBLE
+            val tourType = TourType.findByRessourceId(it.checkedRadioButtonId)
+            startTour(tourType.typeName)
+            EntourageEvents.logEvent(
+                    when (tourType) {
+                        TourType.MEDICAL -> EntourageEvents.EVENT_TOUR_MEDICAL
+                        TourType.BARE_HANDS -> EntourageEvents.EVENT_TOUR_SOCIAL
+                        TourType.ALIMENTARY -> EntourageEvents.EVENT_TOUR_DISTRIBUTION
+                    }
+            )
+            EntourageEvents.logEvent(EntourageEvents.EVENT_START_TOUR)
         }
-        EntourageEvents.logEvent(EntourageEvents.EVENT_START_TOUR)
     }
 
     private fun onStartStopConfirmation() {
@@ -161,7 +158,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
             saveCameraPosition()
             val args = Bundle()
             args.putString(CreateEncounterActivity.BUNDLE_KEY_TOUR_ID, currentTourUUID)
-            val encounterPosition  = longTapCoordinates ?: EntourageLocation.getInstance().currentLatLng ?: EntourageLocation.getInstance().lastCameraPosition.target
+            val encounterPosition  = longTapCoordinates ?: EntourageLocation.currentLatLng ?: EntourageLocation.lastCameraPosition.target
             args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, encounterPosition.latitude)
             args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, encounterPosition.longitude)
             longTapCoordinates = null
@@ -208,7 +205,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
             return
         }
         if(presenter.onClickListener?.getEncounterMapClusterItem(encounter.id) != null) {
-            //the item aalready exists
+            //the item already exists
             return
         }
         val mapClusterItem = MapClusterEncounterItem(encounter)
@@ -364,8 +361,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
         if (pointsToDraw.isNotEmpty()) {
             drawCurrentTour(pointsToDraw, tourType, startDate)
             previousCoordinates = pointsToDraw[pointsToDraw.size - 1].location
-            val currentLocation = EntourageLocation.getInstance().currentLocation
-            centerMap(LatLng(currentLocation.latitude, currentLocation.longitude))
+            EntourageLocation.currentLocation?.let { centerMap(LatLng(it.latitude, it.longitude)) }
             isFollowing = true
         }
         tour_stop_button?.visibility = View.VISIBLE
@@ -388,7 +384,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     // ----------------------------------
     override fun hideTourLauncher() {
         if (layout_map_launcher?.visibility == View.VISIBLE) {
-            layout_map_launcher.visibility = View.GONE
+            layout_map_launcher?.visibility = View.GONE
         }
     }
 
@@ -528,38 +524,42 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     }
 
     private fun drawCurrentTour(pointsToDraw: List<LocationPoint>, tourType: String, startDate: Date) {
-        if (map != null && pointsToDraw.isNotEmpty()) {
-            val line = PolylineOptions()
-            color = getTrackColor(true, tourType, startDate)
-            line.zIndex(2f)
-            line.width(15f)
-            line.color(color)
-            for (tourPoint in pointsToDraw) {
-                line.add(tourPoint.location)
+        map?.let {
+            if (pointsToDraw.isNotEmpty()) {
+                val line = PolylineOptions()
+                color = getTrackColor(true, tourType, startDate)
+                line.zIndex(2f)
+                line.width(15f)
+                line.color(color)
+                for (tourPoint in pointsToDraw) {
+                    line.add(tourPoint.location)
+                }
+                it.addPolyline(line)?.let { newline -> currentTourLines.add(newline)}
             }
-            map?.addPolyline(line)?.let {currentTourLines.add(it)}
         }
     }
 
     private fun drawNearbyTour(tour: Tour, isHistory: Boolean) {
-        if (map != null && tour.tourPoints.isNotEmpty()) {
-            val line = PolylineOptions()
-            line.zIndex(if (isToday(tour.getStartTime())) 1f else 0f)
-            line.width(15f)
-            line.color(getTrackColor(isHistory, tour.tourType, tour.getStartTime()))
-            for (tourPoint in tour.tourPoints) {
-                line.add(tourPoint.location)
-            }
-            map?.addPolyline(line)?.let {
-                if (isHistory) {
-                    retrievedHistory[tour.id] = tour
-                    drawnUserHistory[tour.id] = it
-                } else {
-                    drawnToursMap.add(it)
-                    //addTourCard(tour);
+        map?.let { gMap ->
+            if (tour.tourPoints.isNotEmpty()) {
+                val line = PolylineOptions()
+                line.zIndex(if (isToday(tour.getStartTime())) 1f else 0f)
+                line.width(15f)
+                line.color(getTrackColor(isHistory, tour.tourType, tour.getStartTime()))
+                for (tourPoint in tour.tourPoints) {
+                    line.add(tourPoint.location)
                 }
+                gMap.addPolyline(line)?.let {
+                    if (isHistory) {
+                        retrievedHistory[tour.id] = tour
+                        drawnUserHistory[tour.id] = it
+                    } else {
+                        drawnToursMap.add(it)
+                        //addTourCard(tour);
+                    }
+                }
+                addTourHead(tour)
             }
-            addTourHead(tour)
         }
     }
 

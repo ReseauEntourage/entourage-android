@@ -30,6 +30,8 @@ import social.entourage.android.map.MapClusterEntourageItem
 import social.entourage.android.map.MapClusterTourItem
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tour.encounter.EncounterDisclaimerFragment
+import timber.log.Timber
+import java.lang.IllegalStateException
 import java.util.*
 import javax.inject.Inject
 
@@ -69,8 +71,12 @@ class NewsfeedPresenter @Inject constructor(
         }
 
     fun openFeedItem(feedItem: FeedItem, invitationId: Long, feedRank: Int) {
-        val fragmentManager = fragment?.activity?.supportFragmentManager ?: return
-        FeedItemInformationFragment.newInstance(feedItem, invitationId, feedRank).show(fragmentManager, FeedItemInformationFragment.TAG)
+        try {
+            val fragmentManager = fragment?.activity?.supportFragmentManager ?: return
+            FeedItemInformationFragment.newInstance(feedItem, invitationId, feedRank).show(fragmentManager, FeedItemInformationFragment.TAG)
+        } catch (e: IllegalStateException) {
+            Timber.w(e)
+        }
     }
 
     fun openFeedItemFromUUID(feedItemUUID: String, feedItemType: Int, invitationId: Long) {
@@ -114,7 +120,7 @@ class NewsfeedPresenter @Inject constructor(
                 call.enqueue(object : Callback<BaseEntourage.EntourageWrapper> {
                     override fun onResponse(call: Call<BaseEntourage.EntourageWrapper>, response: Response<BaseEntourage.EntourageWrapper>) {
                         response.body()?.entourage?.let {
-                            if (response.isSuccessful && it is FeedItem) {
+                            if (response.isSuccessful) {
                                 openFeedItem(it,0,0)
                             }
                         }
@@ -228,12 +234,16 @@ class NewsfeedPresenter @Inject constructor(
         }
 
         override fun onClusterItemClick(mapClusterItem: ClusterItem): Boolean {
-            if (encounterMarkerHashMap[mapClusterItem] != null) {
-                openEncounter(encounterMarkerHashMap[mapClusterItem])
-            } else if(mapClusterItem is MapClusterEntourageItem){
-                fragment?.handleHeatzoneClick(mapClusterItem.position)
-            } else if(mapClusterItem is MapClusterTourItem) {
-                openFeedItem(mapClusterItem.tour, 0, 0)
+            when {
+                encounterMarkerHashMap[mapClusterItem] != null -> {
+                    openEncounter(encounterMarkerHashMap[mapClusterItem])
+                }
+                mapClusterItem is MapClusterEntourageItem -> {
+                    fragment?.handleHeatzoneClick(mapClusterItem.position)
+                }
+                mapClusterItem is MapClusterTourItem -> {
+                    openFeedItem(mapClusterItem.tour, 0, 0)
+                }
             }
             return true
         }

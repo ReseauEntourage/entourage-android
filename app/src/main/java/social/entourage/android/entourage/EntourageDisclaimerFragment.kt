@@ -58,8 +58,8 @@ class EntourageDisclaimerFragment : EntourageDialogFragment() {
                 handler.postDelayed({ onOkClicked() }, 1000)
             }
         }
-        title_close_button.setOnClickListener {onCloseClicked()}
-        entourage_disclaimer_ok_button.setOnClickListener  {onOkClicked()}
+        title_close_button?.setOnClickListener {onCloseClicked()}
+        entourage_disclaimer_ok_button?.setOnClickListener  {onOkClicked()}
     }
 
     override fun onAttach(context: Context) {
@@ -77,9 +77,8 @@ class EntourageDisclaimerFragment : EntourageDialogFragment() {
         mListener = null
     }
 
-    override fun getSlideStyle(): Int {
-        return R.style.CustomDialogFragmentSlide
-    }
+    override val slideStyle: Int
+        get() = R.style.CustomDialogFragmentSlide
 
     // ----------------------------------
     // Button handling
@@ -93,7 +92,7 @@ class EntourageDisclaimerFragment : EntourageDialogFragment() {
         if (entourage_disclaimer_switch?.isChecked == true) {
             //inform the listener that the user accepted the CGU
             mListener?.onEntourageDisclaimerAccepted(this)
-        } else {
+        } else if(activity != null){
             Toast.makeText(activity, R.string.entourage_disclaimer_error_notaccepted, Toast.LENGTH_SHORT).show()
         }
     }

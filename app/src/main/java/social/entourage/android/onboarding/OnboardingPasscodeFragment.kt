@@ -13,15 +13,18 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_onboarding_passcode.*
+import social.entourage.android.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.tools.hideKeyboard
 
 
 private const val ARG_PHONE = "phone"
+private const val ARG_COUNTRY = "country"
 
 class OnboardingPasscodeFragment : Fragment() {
     private val TIME_BEFORE_CALL = 60
     private var temporaryPhone: String? = null
+    private var temporaryCountrycode: String? = null
 
     private var callback:OnboardingCallback? = null
 
@@ -36,6 +39,7 @@ class OnboardingPasscodeFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             temporaryPhone = it.getString(ARG_PHONE)
+            temporaryCountrycode = it.getString(ARG_COUNTRY)
         }
     }
 
@@ -47,11 +51,13 @@ class OnboardingPasscodeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        callback?.upadteButtonNext(false)
+        callback?.updateButtonNext(false)
 
         setupViews()
 
         activateTimer()
+
+        EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING__PASSCODE)
     }
 
     fun activateTimer() {
@@ -60,12 +66,28 @@ class OnboardingPasscodeFragment : Fragment() {
         countDownTimer = object  : CountDownTimer(600000 ,1000L) {
             override fun onFinish() {
                 cancelTimer()
+                ui_onboard_bt_code_retry?.text = getString(R.string.onboard_sms_wait_retry_end)
+                ui_onboard_code_tv_phone_mod?.visibility = View.VISIBLE
+                ui_onboard_bt_code_retry?.isClickable = true
             }
 
             override fun onTick(p0: Long) {
                 timeOut = timeOut - 1
+
+                if (timeOut == 0) {
+                    ui_onboard_bt_code_retry?.text = getString(R.string.onboard_sms_wait_retry_end)
+                    ui_onboard_code_tv_phone_mod?.visibility = View.VISIBLE
+                    ui_onboard_bt_code_retry?.isClickable = true
+                    cancelTimer()
+                }
+                else {
+                    val _time = if (timeOut < 10) "00:0$timeOut" else "00:$timeOut"
+                    val _retryTxt = String.format(getString(R.string.onboard_sms_wait_retry),_time)
+                    ui_onboard_bt_code_retry?.text = _retryTxt
+                }
             }
         }
+        ui_onboard_bt_code_retry?.text = String.format(getString(R.string.onboard_sms_wait_retry),"00:0$timeOut")
 
         countDownTimer?.start()
     }
@@ -94,6 +116,7 @@ class OnboardingPasscodeFragment : Fragment() {
         onboard_passcode_mainlayout?.setOnTouchListener { view, motionEvent ->
             view.hideKeyboard()
             checkInputs()
+            view.performClick()
             true
         }
 
@@ -119,7 +142,18 @@ class OnboardingPasscodeFragment : Fragment() {
         setupEditText(ui_onboard_code_et_5)
         setupEditText(ui_onboard_code_et_6)
 
-        ui_onboard_code_tv_description.text = String.format(getString(R.string.onboard_sms_sub),temporaryPhone?.takeLast(2))
+        ui_onboard_code_tv_description?.text = getString(R.string.onboard_sms_sub)
+
+        ui_onboard_code_tv_phone?.text = temporaryCountrycode + temporaryPhone
+
+        ui_onboard_bt_code_retry?.text = String.format(getString(R.string.onboard_sms_wait_retry),"00:0$timeOut")
+
+        ui_onboard_code_tv_phone_mod?.visibility = View.INVISIBLE
+        ui_onboard_bt_code_retry?.isClickable = false
+
+        ui_onboard_code_tv_phone_mod?.setOnClickListener {
+            callback?.goPreviousManually()
+        }
     }
 
     fun setupEditText(_editText: EditText?) {
@@ -175,7 +209,7 @@ class OnboardingPasscodeFragment : Fragment() {
             }
             ui_onboard_code_et_6 -> {
                 ui_onboard_passcode_line_6.setBackgroundColor(resources.getColor(R.color.accent))
-                 onboard_passcode_mainlayout.hideKeyboard()
+                 onboard_passcode_mainlayout?.hideKeyboard()
 //                val imm: InputMethodManager? = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
 //                imm?.hideSoftInputFromWindow(ui_onboard_code_et_6.getWindowToken(), 0)
                 checkInputs()
@@ -192,11 +226,11 @@ class OnboardingPasscodeFragment : Fragment() {
         val input6 = ui_onboard_code_et_6?.text?.length ?:0 == 1
 
         val isInputsOk = input1 == input2 == input3 == input4 == input5 == input6
-        val tempCode = ui_onboard_code_et_1.text.toString() + ui_onboard_code_et_2.text.toString() +
-                ui_onboard_code_et_3.text.toString() + ui_onboard_code_et_4.text.toString() +
-                ui_onboard_code_et_5.text.toString() + ui_onboard_code_et_6.text.toString()
+        val tempCode = ui_onboard_code_et_1?.text.toString() + ui_onboard_code_et_2?.text.toString() +
+                ui_onboard_code_et_3?.text.toString() + ui_onboard_code_et_4?.text.toString() +
+                ui_onboard_code_et_5?.text.toString() + ui_onboard_code_et_6?.text.toString()
         callback?.validatePasscode(tempCode)
-        callback?.upadteButtonNext(isInputsOk)
+        callback?.updateButtonNext(isInputsOk)
     }
 
     //**********//**********//**********
@@ -205,10 +239,11 @@ class OnboardingPasscodeFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(temporaryPhone: String?) =
+        fun newInstance(temporaryCountrycode :String?,temporaryPhone: String?) =
                 OnboardingPasscodeFragment().apply {
                     arguments = Bundle().apply {
                         putString(ARG_PHONE, temporaryPhone)
+                        putString(ARG_COUNTRY, temporaryCountrycode)
                     }
                 }
     }
