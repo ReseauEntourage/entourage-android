@@ -128,28 +128,28 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
 
     var entourageDisclaimerShown: Boolean
         get() = userPreferences.isEntourageDisclaimerShown
-        set(isEntourageDisclaimerShown: Boolean) {
+        set(isEntourageDisclaimerShown) {
             userPreferences.isEntourageDisclaimerShown = isEntourageDisclaimerShown
             saveUserPreferences()
         }
 
     var encounterDisclaimerShown: Boolean
         get() = userPreferences.isEncounterDisclaimerShown
-        set(isEncounterDisclaimerShown: Boolean) {
+        set(isEncounterDisclaimerShown) {
             userPreferences.isEncounterDisclaimerShown = isEncounterDisclaimerShown
             saveUserPreferences()
         }
 
     var isOnboardingUser: Boolean
         get() = userPreferences.isOnboardingUser
-        set(isOnboardingUser: Boolean) {
+        set(isOnboardingUser) {
             userPreferences.isOnboardingUser = isOnboardingUser
             saveUserPreferences()
         }
 
     var editActionZoneShown: Boolean
         get() = userPreferences.isEditActionZoneShown
-        set(isEditActionZoneShown: Boolean) {
+        set(isEditActionZoneShown) {
             userPreferences.isEditActionZoneShown = isEditActionZoneShown
             saveUserPreferences()
         }

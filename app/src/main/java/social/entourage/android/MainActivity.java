@@ -165,8 +165,7 @@ public class MainActivity extends EntourageSecuredActivity
             DeepLinksManager.INSTANCE.storeIntent(getIntent());
         }
 
-        User user = getAuthenticationController().getMe();
-        if (user != null) {
+        if(getAuthenticationController().isAuthenticated()) {
             //refresh the user info from the server
             Location location = EntourageLocation.getCurrentLocation();
             presenter.updateUserLocation(location);
@@ -549,7 +548,7 @@ public class MainActivity extends EntourageSecuredActivity
         //remove user phone
         final SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        User me = EntourageApplication.me(getApplicationContext());
+        User me = authenticationController.getMe();
         if(me != null) {
             HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, new HashSet<>());
             loggedNumbers.remove(me.phone);

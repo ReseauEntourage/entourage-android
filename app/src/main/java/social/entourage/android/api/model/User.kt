@@ -42,6 +42,8 @@ class User : Serializable {
     var addressSecondary: Address? = null
     var goal = ""
     val interests: ArrayList<String> = ArrayList()
+    var stats: Stats? = null
+    var organization: Organization? = null
 
     // ----------------------------------
     // ATTRIBUTES (Not Serialized)
@@ -52,10 +54,6 @@ class User : Serializable {
     var smsCode: String? = null
     @JvmField @Expose(serialize = false)
     val token: String?
-    @Expose(serialize = false)
-    val stats: Stats?
-    @Expose(serialize = false)
-    val organization: Organization?
 
     // ----------------------------------
     // CONSTRUCTOR
@@ -94,26 +92,6 @@ class User : Serializable {
     // ----------------------------------
     // Other methods
     // ----------------------------------
-    /*fun getDisplayName(): String {
-        return displayName ?: ""
-    }
-
-    fun getFirstName(): String {
-        return if (firstName == null) "" else firstName!!
-    }
-
-    fun getLastName(): String {
-        return if (lastName == null) "" else lastName!!
-    }
-
-    fun setFirstName(firstName: String?) {
-        this.firstName = firstName
-    }
-
-    fun setLastName(lastName: String?) {
-        this.lastName = lastName
-    }*/
-
     fun getMemberships(type: String?): ArrayList<UserMembership> {
         type?.let {
             memberships?.forEach { membershipList ->
@@ -126,14 +104,14 @@ class User : Serializable {
     }
 
     fun incrementTours() {
-        if (stats != null) {
-            stats.tourCount += 1
+        stats?.let { stat ->
+            stat.tourCount += 1
         }
     }
 
     fun incrementEncouters() {
-        if (stats != null) {
-            stats.encounterCount += 1
+        stats?.let { stat ->
+            stat.encounterCount += 1
         }
     }
 
@@ -179,74 +157,6 @@ class User : Serializable {
 
     val isUserTypeAlone: Boolean
         get() = USER_GOAL_ALONE.equals(goal, ignoreCase = true)
-
-    // ----------------------------------
-    // BUILDER
-    // ----------------------------------
-    /*class Builder {
-        private var id = 0
-        private var email: String? = null
-        private var displayName: String? = null
-        private var token: String? = null
-        private var avatarURL: String? = null
-        private var stats: Stats? = null
-        private var organization: Organization? = null
-        fun withId(id: Int): Builder {
-            this.id = id
-            return this
-        }
-
-        fun withEmail(email: String?): Builder {
-            this.email = email
-            return this
-        }
-
-        fun withDisplayName(displayName: String?): Builder {
-            this.displayName = displayName
-            return this
-        }
-
-        fun withStats(stats: Stats?): Builder {
-            this.stats = stats
-            return this
-        }
-
-        fun withOrganization(organization: Organization?): Builder {
-            this.organization = organization
-            return this
-        }
-
-        fun withToken(token: String?): Builder {
-            this.token = token
-            return this
-        }
-
-        fun withAvatarURL(avatarURL: String?): Builder {
-            this.avatarURL = avatarURL
-            return this
-        }
-
-        fun build(): User? {
-            if (id == -1) {
-                return null
-            }
-            if (email == null) {
-                return null
-            }
-            if (displayName == null) {
-                return null
-            }
-            if (stats == null) {
-                return null
-            }
-            if (organization == null) {
-                return null
-            }
-            return if (token == null) {
-                null
-            } else User(id, email!!, displayName!!, stats!!, organization!!, token!!, avatarURL)
-        }
-    }*/
 
     // ----------------------------------
     // User Conversation
