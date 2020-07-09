@@ -115,8 +115,8 @@
     <string name="onboard_asso_search">Recherche</string>
 
     <!-- Onboarding SDF -->
-    <string name="onboard_sdf_activity_title">%s, dans quel quartier avez-vous vos habitudes ?</string>
-    <string name="onboard_sdf_activity_description">Vous pourrez demander de l\'aide à vos voisins et rencontrer de nouvelles personnes lors d\'événements conviviaux du réseau.</string>
+    <string name="onboard_sdf_activity_title">%s, que cherchez-vous ?</string>
+    <string name="onboard_sdf_activity_description">Plusieurs choix possibles.\nIl y a mille manières d\'être entouré et aidé.</string>
     <string name="onboard_sdf_activity_error">Veuillez renseigner au minimum 1 centre d\'intéret.\nMerci</string>
     <string name="onboard_sdf_activity_choice_1">Me faire un\ncercle d’amis</string>
     <string name="onboard_sdf_activity_choice_2">Participer à des\névènements</string>
