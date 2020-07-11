@@ -20,6 +20,7 @@
 * feature:Add new Login page (2020-05-15) by <Jr>
 * feature: EN-665 Onboarding V1 (2020-05-13) by <Jr>
 
+* Fix: wording onboarding [EN-2621]
 * Fix: layout [EN-2569] (2020-07-08) by <Jr>
 * fix: Add / Modify Analytic for + button (2020-07-07) by <Jr>
 * Fix: layout plus for small devices (2020-07-06) by <Jr>
