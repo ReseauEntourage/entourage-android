@@ -20,8 +20,8 @@ import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.EntourageApplication.Companion.me
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
-import social.entourage.android.api.model.Partner.PartnerWrapper
-import social.entourage.android.api.model.Partner.PartnersWrapper
+import social.entourage.android.api.model.Partner.PartnerResponse
+import social.entourage.android.api.model.Partner.PartnersResponse
 import social.entourage.android.api.model.User
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.user.edit.UserEditFragment
@@ -109,8 +109,8 @@ class UserEditPartnerFragment  : EntourageDialogFragment() {
     // Network
     // ----------------------------------
     private fun getAllPartners() {
-        get(context).entourageComponent.partnerRequest.allPartners.enqueue(object : Callback<PartnersWrapper> {
-            override fun onResponse(call: Call<PartnersWrapper>, response: Response<PartnersWrapper>) {
+        get(context).entourageComponent.partnerRequest.allPartners.enqueue(object : Callback<PartnersResponse> {
+            override fun onResponse(call: Call<PartnersResponse>, response: Response<PartnersResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.partners?.let { partnerList ->
                         adapter.partnerList = partnerList
@@ -124,16 +124,16 @@ class UserEditPartnerFragment  : EntourageDialogFragment() {
                 }
             }
 
-            override fun onFailure(call: Call<PartnersWrapper>, t: Throwable) {}
+            override fun onFailure(call: Call<PartnersResponse>, t: Throwable) {}
         })
     }
 
     private fun addPartner(partner: Partner) {
         val userID = user?.id ?: return
         user_edit_partner_progressBar?.visibility = View.VISIBLE
-        get(context).entourageComponent.userRequest.addPartner(userID, PartnerWrapper(partner))
-                .enqueue(object : Callback<PartnerWrapper> {
-            override fun onResponse(call: Call<PartnerWrapper>, response: Response<PartnerWrapper>) {
+        get(context).entourageComponent.userRequest.addPartner(userID, PartnerResponse(partner))
+                .enqueue(object : Callback<PartnerResponse> {
+            override fun onResponse(call: Call<PartnerResponse>, response: Response<PartnerResponse>) {
                 user_edit_partner_progressBar?.visibility = View.GONE
                 if (response.isSuccessful) {
                     val authenticationController = get(context).entourageComponent.authenticationController
@@ -150,7 +150,7 @@ class UserEditPartnerFragment  : EntourageDialogFragment() {
                 }
             }
 
-            override fun onFailure(call: Call<PartnerWrapper>, t: Throwable) {
+            override fun onFailure(call: Call<PartnerResponse>, t: Throwable) {
                 user_edit_partner_progressBar?.visibility = View.GONE
                 Toast.makeText(context, R.string.partner_add_error, Toast.LENGTH_SHORT).show()
             }

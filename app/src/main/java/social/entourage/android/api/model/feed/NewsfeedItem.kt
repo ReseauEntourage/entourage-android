@@ -22,15 +22,14 @@ class NewsfeedItem {
     // ----------------------------------
     val id: Long
         get() {
-            var id: Long = 0
             if (data != null) {
                 if (data is Tour) {
-                    id = (data as Tour).id
+                    return (data as Tour).id
                 } else if (data is BaseEntourage) {
-                    id = (data as BaseEntourage).id
+                    return (data as BaseEntourage).id
                 }
             }
-            return id
+            return 0
         }
 
     // ----------------------------------

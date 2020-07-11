@@ -17,6 +17,7 @@ import com.squareup.otto.Subscribe
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_user_edit.*
 import kotlinx.android.synthetic.main.layout_view_title.*
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -284,8 +285,8 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
         val userRequest = EntourageApplication.get().entourageComponent.userRequest
         val call = userRequest.deleteSecondaryAddressLocation()
 
-        call.enqueue(object : Callback<social.entourage.android.api.Response?> {
-            override fun onResponse(call: Call<social.entourage.android.api.Response?>, response: Response<social.entourage.android.api.Response?>) {
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     val authenticationController = EntourageApplication.get().entourageComponent.authenticationController
                     authenticationController.me?.let { me->
@@ -295,7 +296,7 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
                     }
                 }
             }
-            override fun onFailure(call: Call<social.entourage.android.api.Response?>, t: Throwable) {}
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {}
         })
     }
 

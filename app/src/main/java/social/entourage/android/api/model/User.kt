@@ -5,7 +5,7 @@ import androidx.collection.ArrayMap
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.R.string
-import social.entourage.android.api.model.UserMembership.MembershipList
+import social.entourage.android.api.model.UserMembership.UserMembershipList
 import social.entourage.android.api.model.feed.FeedItemAuthor
 import timber.log.Timber
 import java.io.*
@@ -34,7 +34,7 @@ class User : Serializable {
     val firebaseProperties: UserFirebaseProperties? = null
     var about: String = ""
     val roles: ArrayList<String>? = null
-    private val memberships: ArrayList<MembershipList>? = null
+    private val memberships: ArrayList<UserMembershipList>? = null
     val conversation: UserConversation? = null
     @JvmField
     var address: Address? = null
@@ -122,9 +122,9 @@ class User : Serializable {
         return FeedItemAuthor(avatarURL, id, displayName, partner)
     }
 
-    val arrayMapForUpdate: ArrayMap<String, Any?>
+    val arrayMapForUpdate: ArrayMap<String, Any>
         get() {
-            val userMap = ArrayMap<String, Any?>()
+            val userMap = ArrayMap<String, Any>()
             userMap["first_name"] = firstName
             userMap["last_name"] = lastName
             if (email != null) {
@@ -214,20 +214,13 @@ class User : Serializable {
         }
     }
 
-    // ----------------------------------
-    // WRAPPERS
-    // ----------------------------------
-    class UserWrapper(var user: User)
-
-    class AddressWrapper(var address: Address)
-
     companion object {
         private const val serialVersionUID: Long = -90000034L
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
         const val KEY_USER_ID = "social.entourage.android.KEY_USER_ID"
-        const val KEY_USER = "social.entourage.android.KEY_USER"
+        //const val KEY_USER = "social.entourage.android.KEY_USER"
         //const val TYPE_PUBLIC = "public"
         const val TYPE_PRO = "pro"
         private const val USER_ROLE_ETHICS_CHARTER_SIGNED = "ethics_charter_signed"

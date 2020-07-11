@@ -187,12 +187,12 @@ public class Partner extends BaseOrganization implements Serializable {
     // WRAPPERS
     // ----------------------------------
 
-    public static class PartnerWrapper {
+    public static class PartnerResponse {
 
         @SerializedName("partner")
         private Partner partner;
 
-        public PartnerWrapper(final Partner partner) {
+        public PartnerResponse(final Partner partner) {
             this.partner = partner;
         }
 
@@ -206,7 +206,7 @@ public class Partner extends BaseOrganization implements Serializable {
 
     }
 
-    public static class PartnersWrapper {
+    public static class PartnersResponse {
 
         @SerializedName("partners")
         private List<Partner> partners;

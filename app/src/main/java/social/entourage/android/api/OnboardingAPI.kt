@@ -21,7 +21,7 @@ import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.api.model.Partner
-import social.entourage.android.api.model.Partner.PartnersWrapper
+import social.entourage.android.api.model.Partner.PartnersResponse
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.authentication.AuthenticationController
@@ -108,8 +108,7 @@ class OnboardingAPI(val application: EntourageApplication) {
     }
 
     private fun getOnboardingService() : UserRequest {
-        if (service != null) return service!!
-        return retrofit!!.create(UserRequest::class.java)
+        return service ?: retrofit!!.create(UserRequest::class.java)
     }
 
     private fun getLoginService() : LoginRequest {
@@ -355,11 +354,11 @@ class OnboardingAPI(val application: EntourageApplication) {
      * Upload Photo
      */
     fun prepareUploadPhoto(listener: (avatarKey:String?, presignedUrl:String?, error: String?) -> Unit) {
-        val request = Request("image/jpeg")
+        val request = AvatarUploadRequest("image/jpeg")
         val call = getOnboardingService().prepareAvatarUpload(request)
 
-        call.enqueue(object : Callback<social.entourage.android.api.Response?> {
-            override fun onResponse(call: Call<social.entourage.android.api.Response?>, response: Response<social.entourage.android.api.Response?>) {
+        call.enqueue(object : Callback<social.entourage.android.api.AvatarUploadResponse?> {
+            override fun onResponse(call: Call<social.entourage.android.api.AvatarUploadResponse?>, response: Response<social.entourage.android.api.AvatarUploadResponse?>) {
                 if (response.isSuccessful) {
                     listener(response.body()?.avatarKey, response.body()?.presignedUrl, null)
                 }
@@ -369,7 +368,7 @@ class OnboardingAPI(val application: EntourageApplication) {
                 }
             }
 
-            override fun onFailure(call: Call<social.entourage.android.api.Response?>, t: Throwable) {
+            override fun onFailure(call: Call<social.entourage.android.api.AvatarUploadResponse?>, t: Throwable) {
                 listener(null,null,null)
             }
         })
@@ -460,8 +459,8 @@ class OnboardingAPI(val application: EntourageApplication) {
 
     fun getAssociationsList(listener:(arrayAssociations:ArrayList<Partner>?) -> Unit) {
         val request = get(get()).entourageComponent.partnerRequest
-        request.allPartners.enqueue(object : Callback<PartnersWrapper> {
-            override fun onResponse(call: Call<PartnersWrapper>, response: Response<PartnersWrapper>) {
+        request.allPartners.enqueue(object : Callback<PartnersResponse> {
+            override fun onResponse(call: Call<PartnersResponse>, response: Response<PartnersResponse>) {
                 if (response.isSuccessful) {
                     val partnerList = response.body()!!.partners
                     val arrayPartners = ArrayList<Partner>(partnerList)
@@ -471,7 +470,7 @@ class OnboardingAPI(val application: EntourageApplication) {
                     listener(null)
                 }
             }
-            override fun onFailure(call: Call<PartnersWrapper>, t: Throwable) { listener(null) }
+            override fun onFailure(call: Call<PartnersResponse>, t: Throwable) { listener(null) }
         })
     }
 }
@@ -479,9 +478,9 @@ class OnboardingAPI(val application: EntourageApplication) {
 /**********************
  * Class For network
  */
-class Request constructor(protected var content_type: String)
+class AvatarUploadRequest constructor(protected var content_type: String)
 
-class Response(avatarKey: String, presignedUrl: String) {
+class AvatarUploadResponse(avatarKey: String, presignedUrl: String) {
     @SerializedName("avatar_key")
     var avatarKey: String = avatarKey
 

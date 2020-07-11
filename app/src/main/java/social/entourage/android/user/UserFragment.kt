@@ -141,7 +141,7 @@ class UserFragment : EntourageDialogFragment() {
         user?.let { u ->
             user_name?.setText(u.displayName)
             user_name?.setRoles(u.roles)
-            user_tours_count?.text = getString(R.string.user_entourage_count_format, u.stats?.entourageCount ?: 0)
+            user_tours_count?.text = getString(R.string.user_entourage_count_format, u.stats?.getActionCount() ?: 0)
             val userAbout = u.about
             user_profile_about_layout?.visibility = if (userAbout?.isNotBlank() == true) View.VISIBLE else View.GONE
             user_profile_about?.text = userAbout

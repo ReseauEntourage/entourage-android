@@ -11,6 +11,6 @@ import social.entourage.android.api.model.Partner;
 public interface PartnerRequest {
 
     @GET("partners")
-    Call<Partner.PartnersWrapper> getAllPartners();
+    Call<Partner.PartnersResponse> getAllPartners();
 
 }
