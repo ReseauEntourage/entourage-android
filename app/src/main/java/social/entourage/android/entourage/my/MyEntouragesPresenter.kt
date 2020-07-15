@@ -6,11 +6,11 @@ import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.EntourageRequest
 import social.entourage.android.api.InvitationRequest
+import social.entourage.android.api.NewsfeedItemResponse
 import social.entourage.android.api.NewsfeedRequest
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.Invitation.InvitationsWrapper
-import social.entourage.android.api.model.feed.NewsfeedItem.NewsfeedItemWrapper
 import social.entourage.android.entourage.my.filter.MyEntouragesFilter
 import timber.log.Timber
 import javax.inject.Inject
@@ -39,8 +39,8 @@ class MyEntouragesPresenter @Inject constructor(
                 filter.showPartnerEntourages,
                 filter.showJoinedEntourages
         )
-        call.enqueue(object : Callback<NewsfeedItemWrapper> {
-            override fun onResponse(call: Call<NewsfeedItemWrapper>, response: Response<NewsfeedItemWrapper>) {
+        call.enqueue(object : Callback<NewsfeedItemResponse> {
+            override fun onResponse(call: Call<NewsfeedItemResponse>, response: Response<NewsfeedItemResponse>) {
                 response.body()?.let {
                     if (response.isSuccessful) {
                         fragment.onNewsfeedReceived(it.newsfeedItems)
@@ -50,7 +50,7 @@ class MyEntouragesPresenter @Inject constructor(
                 fragment.onNewsfeedReceived(null)
             }
 
-            override fun onFailure(call: Call<NewsfeedItemWrapper>, t: Throwable) {
+            override fun onFailure(call: Call<NewsfeedItemResponse>, t: Throwable) {
                 fragment.onNewsfeedReceived(null)
             }
         })

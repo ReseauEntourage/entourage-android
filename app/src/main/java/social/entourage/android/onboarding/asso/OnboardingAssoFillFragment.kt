@@ -76,7 +76,7 @@ class OnboardingAssoFillFragment : Fragment() {
         }
 
         updateAssoNameLabel()
-        ui_onboard_asso_fill_postal_code?.setText(currentAssoInfo?.postal_code ?: "")
+        ui_onboard_asso_fill_postal_code?.setText(currentAssoInfo?.postalCode ?: "")
         ui_onboard_asso_fill_function?.setText(currentAssoInfo?.userRoleTitle ?: "")
 
         updateDelegateButtonNext()
@@ -91,7 +91,7 @@ class OnboardingAssoFillFragment : Fragment() {
             currentAssoInfo?.userRoleTitle = editText?.text.toString()
         }
         else {
-            currentAssoInfo?.postal_code = editText?.text.toString()
+            currentAssoInfo?.postalCode = editText?.text.toString()
         }
 
         updateDelegateButtonNext()
@@ -120,7 +120,7 @@ class OnboardingAssoFillFragment : Fragment() {
 
     fun updateAssoInfo() {
         updateAssoNameLabel()
-        ui_onboard_asso_fill_postal_code?.setText(currentAssoInfo?.postal_code ?: "")
+        ui_onboard_asso_fill_postal_code?.setText(currentAssoInfo?.postalCode ?: "")
 
         updateDelegateButtonNext()
 
@@ -153,8 +153,8 @@ class OnboardingAssoFillFragment : Fragment() {
                 currentAssoInfo = newAsso
             }
             else {
-                currentAssoInfo?.name = newAsso.name
-                currentAssoInfo?.postal_code = newAsso.postal_code
+                currentAssoInfo?.name= newAsso.name
+                currentAssoInfo?.postalCode = newAsso.postalCode
                 currentAssoInfo?.id = newAsso.id
                 currentAssoInfo?.isCreation = newAsso.isCreation
             }

@@ -24,6 +24,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import social.entourage.android.Constants;
+import social.entourage.android.api.NewsfeedItemResponse;
 import social.entourage.android.location.EntourageLocation;
 import social.entourage.android.api.EncounterRequest;
 import social.entourage.android.api.EncounterResponse;
@@ -98,7 +99,7 @@ public class EntourageServiceManager {
     private final List<LocationPoint> pointsToDraw;
     private Timer timerFinish;
     private boolean isTourClosing;
-    private Call<NewsfeedItem.NewsfeedItemWrapper> currentNewsFeedCall;
+    private Call<NewsfeedItemResponse> currentNewsFeedCall;
 
     private boolean isBetterLocationUpdated;
 
@@ -578,7 +579,7 @@ public class EntourageServiceManager {
     }
 
     private @Nullable
-    Call<NewsfeedItem.NewsfeedItemWrapper> createNewsfeedWrapperCall(final LatLng location, final NewsfeedPagination pagination, final NewsfeedTabItem selectedTab) {
+    Call<NewsfeedItemResponse> createNewsfeedWrapperCall(final LatLng location, final NewsfeedPagination pagination, final NewsfeedTabItem selectedTab) {
         switch (selectedTab) {
             case ALL_TAB: {
                 final MapFilter mapFilter = MapFilterFactory.getMapFilter();
@@ -803,7 +804,7 @@ public class EntourageServiceManager {
     // INNER CLASSES
     // ----------------------------------
 
-    static class NewsFeedCallback implements Callback<NewsfeedItem.NewsfeedItemWrapper> {
+    static class NewsFeedCallback implements Callback<NewsfeedItemResponse> {
         private static final String EMPTY_STRING = "";
         private final EntourageServiceManager manager;
         private final EntourageService service;
@@ -814,7 +815,7 @@ public class EntourageServiceManager {
         }
 
         @Override
-        public void onResponse(@NonNull final Call<NewsfeedItem.NewsfeedItemWrapper> call, @NonNull final Response<NewsfeedItem.NewsfeedItemWrapper> response) {
+        public void onResponse(@NonNull final Call<NewsfeedItemResponse> call, @NonNull final Response<NewsfeedItemResponse> response) {
             manager.resetCurrentNewsfeedCall();
             if (call.isCanceled()) {
                 return;
@@ -832,7 +833,7 @@ public class EntourageServiceManager {
         }
 
         @Override
-        public void onFailure(@NonNull final Call<NewsfeedItem.NewsfeedItemWrapper> call, @NonNull final Throwable t) {
+        public void onFailure(@NonNull final Call<NewsfeedItemResponse> call, @NonNull final Throwable t) {
             manager.resetCurrentNewsfeedCall();
             if (!call.isCanceled()) {
                 service.notifyListenersTechnicalException(t);
@@ -840,7 +841,7 @@ public class EntourageServiceManager {
         }
 
         @NonNull
-        private String getErrorMessage(@NonNull final Call<NewsfeedItem.NewsfeedItemWrapper> call, @NonNull final Response<NewsfeedItem.NewsfeedItemWrapper> response) {
+        private String getErrorMessage(@NonNull final Call<NewsfeedItemResponse> call, @NonNull final Response<NewsfeedItemResponse> response) {
             final String errorBody = getErrorBody(response);
             String errorMessage = "Response code = " + response.code();
             call.request();
@@ -852,7 +853,7 @@ public class EntourageServiceManager {
         }
 
         @NonNull
-        private String getErrorBody(final Response<NewsfeedItem.NewsfeedItemWrapper> response) {
+        private String getErrorBody(final Response<NewsfeedItemResponse> response) {
             try {
                 if (response.errorBody() != null) {
                     return response.errorBody().string();

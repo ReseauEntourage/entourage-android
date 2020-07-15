@@ -3,6 +3,16 @@ package social.entourage.android.api
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
+import social.entourage.android.api.model.guide.Category
+import social.entourage.android.api.model.guide.Poi
+import social.entourage.android.api.model.tour.Encounter
+
+class PoiResponse {
+    var encounters: List<Encounter>? = null
+    var pois: List<Poi>? = null
+    var categories: List<Category>? = null
+
+}
 
 interface PoiRequest {
     @GET("pois.json")

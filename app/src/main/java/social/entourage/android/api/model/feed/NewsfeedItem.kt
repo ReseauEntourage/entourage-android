@@ -32,15 +32,6 @@ class NewsfeedItem {
             return 0
         }
 
-    // ----------------------------------
-    // WRAPPERS
-    // ----------------------------------
-    class NewsfeedItemWrapper {
-        @SerializedName("feeds")
-        lateinit var newsfeedItems: List<NewsfeedItem>
-
-    }
-
     class NewsfeedItemJsonAdapter : JsonDeserializer<NewsfeedItem> {
         @Throws(JsonParseException::class)
         override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): NewsfeedItem {

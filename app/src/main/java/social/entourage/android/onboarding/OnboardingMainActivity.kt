@@ -363,7 +363,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     // Network Asso
 
     fun updateAssoInfos() {
-        if (temporaryAssoInfo?.name?.length ?:0 > 0 && temporaryAssoInfo?.postal_code?.length ?:0 > 0 && temporaryAssoInfo?.userRoleTitle?.length ?:0 > 0) {
+        if (temporaryAssoInfo?.name?.length ?:0 > 0 && temporaryAssoInfo?.postalCode?.length ?:0 > 0 && temporaryAssoInfo?.userRoleTitle?.length ?:0 > 0) {
             alertDialog.show(R.string.onboard_waiting_dialog)
             EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_PRO_SIGNUP_SUBMIT)
             OnboardingAPI.getInstance(get()).updateAssoInfos(temporaryAssoInfo) { isOK, response ->

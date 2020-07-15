@@ -19,9 +19,9 @@ import retrofit2.Response
 import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.EntourageApplication.Companion.me
 import social.entourage.android.R
+import social.entourage.android.api.PartnerResponse
+import social.entourage.android.api.PartnersResponse
 import social.entourage.android.api.model.Partner
-import social.entourage.android.api.model.Partner.PartnerResponse
-import social.entourage.android.api.model.Partner.PartnersResponse
 import social.entourage.android.api.model.User
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.user.edit.UserEditFragment

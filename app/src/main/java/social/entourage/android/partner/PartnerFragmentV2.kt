@@ -62,7 +62,7 @@ class PartnerFragmentV2 : EntourageDialogFragment() {
 
             ui_asso_tv_description?.text = it.description
 
-            if (it.donations_needs.isNullOrEmpty() && it.volunteers_needs.isNullOrEmpty()) {
+            if (it.donationsNeeds.isNullOrEmpty() && it.volunteersNeeds.isNullOrEmpty()) {
                 ui_asso_layout_top_needs?.visibility = View.GONE
                 ui_asso_layout_needs?.visibility = View.GONE
             }
@@ -70,23 +70,23 @@ class PartnerFragmentV2 : EntourageDialogFragment() {
                 ui_asso_layout_top_needs?.visibility = View.VISIBLE
                 ui_asso_layout_needs?.visibility = View.VISIBLE
 
-                if (it.donations_needs.isNullOrEmpty()) {
+                if (it.donationsNeeds.isNullOrEmpty()) {
                     ui_asso_layout_top_donates?.visibility = View.GONE
                     ui_layout_description_donates?.visibility = View.GONE
                 }
                 else {
                     ui_asso_layout_top_donates?.visibility = View.VISIBLE
                     ui_layout_description_donates?.visibility = View.VISIBLE
-                    ui_asso_tv_donates_description?.text = it.donations_needs
+                    ui_asso_tv_donates_description?.text = it.donationsNeeds
                 }
-                if (it.volunteers_needs.isNullOrEmpty()) {
+                if (it.volunteersNeeds.isNullOrEmpty()) {
                     ui_asso_layout_top_volunteers?.visibility = View.GONE
                     ui_layout_description_volunteers?.visibility = View.GONE
                 }
                 else {
                     ui_asso_layout_top_volunteers?.visibility = View.VISIBLE
                     ui_layout_description_volunteers?.visibility = View.VISIBLE
-                    ui_asso_tv_volunteers_description?.text = it.volunteers_needs
+                    ui_asso_tv_volunteers_description?.text = it.volunteersNeeds
                 }
             }
             ui_asso_tv_website?.text = it.websiteUrl

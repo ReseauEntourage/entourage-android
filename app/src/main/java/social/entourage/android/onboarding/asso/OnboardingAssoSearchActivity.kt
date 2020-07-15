@@ -98,7 +98,7 @@ class OnboardingAssoSearchActivity : AppCompatActivity() {
                 arrayAssosSearch.clear()
                 selectedAsso = null
 
-                arrayAssosSearch = arrayAssos.filter { asso -> asso.name.contains(s,true) } as ArrayList<Partner>
+                arrayAssosSearch = arrayAssos.filter { asso -> asso.name?.contains(s,true)==true } as ArrayList<Partner>
                 if (s.length == 0) {
                     arrayAssosSearch.clear()
                     isFiltered = false
