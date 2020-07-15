@@ -9,7 +9,7 @@ ext {
 
     // SDK versions
     compileSdkVersion = 29
-    buildToolsVersion = "30.0.0"
+    buildToolsVersion = "30.0.1"
     minSdkVersion = 19 /*October 2013: Android 4.4, KitKat*/
     targetSdkVersion = 29
 
