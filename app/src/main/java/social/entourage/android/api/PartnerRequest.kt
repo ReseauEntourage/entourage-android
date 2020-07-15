@@ -13,6 +13,8 @@ interface PartnerRequest {
     val allPartners: Call<PartnersResponse>
 }
 
+class PartnerWrapper(@field:SerializedName("partner") var partner: Partner)
+
 class PartnerResponse(@field:SerializedName("partner") var partner: Partner)
 
 class PartnersResponse {

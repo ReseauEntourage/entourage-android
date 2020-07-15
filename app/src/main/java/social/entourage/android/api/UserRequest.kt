@@ -5,7 +5,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.api.model.User
-import social.entourage.android.api.model.UserReportResponse
+import social.entourage.android.api.model.UserReportWrapper
 import social.entourage.android.user.PrepareAvatarUploadRepository
 
 
@@ -35,16 +35,16 @@ interface UserRequest {
     fun registerUser(@Body userInfo: ArrayMap<String, Any>): Call<UserResponse>
 
     @POST("users/{user_id}/report")
-    fun reportUser(@Path("user_id") userId: Int, @Body userReportResponse: UserReportResponse): Call<ResponseBody>
+    fun reportUser(@Path("user_id") userId: Int, @Body userReportWrapper: UserReportWrapper): Call<ResponseBody>
 
     @POST("users/{user_id}/partners")
-    fun addPartner(@Path("user_id") userId: Int, @Body partner: PartnerResponse): Call<PartnerResponse>
+    fun addPartner(@Path("user_id") userId: Int, @Body partner: PartnerWrapper): Call<PartnerResponse>
 
     @DELETE("users/{user_id}/partners/{partner_id}")
     fun removePartnerFromUser(@Path("user_id") userId: Int, @Path("partner_id") partnerId: Long): Call<ResponseBody>
 
     @PUT("users/{user_id}/partners/{partner_id}")
-    fun updatePartner(@Path("user_id") userId: Int, @Path("partner_id") partnerId: Long, @Body partner: PartnerResponse): Call<PartnerResponse>
+    fun updatePartner(@Path("user_id") userId: Int, @Path("partner_id") partnerId: Long, @Body partner: PartnerWrapper): Call<PartnerResponse>
 
     @POST("users/me/addresses/1")
     fun updatePrimaryAddressLocation(@Body address: ArrayMap<String, Any>): Call<UserResponse>

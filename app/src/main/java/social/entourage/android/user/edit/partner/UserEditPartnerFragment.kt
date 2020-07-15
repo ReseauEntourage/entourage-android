@@ -20,6 +20,7 @@ import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.EntourageApplication.Companion.me
 import social.entourage.android.R
 import social.entourage.android.api.PartnerResponse
+import social.entourage.android.api.PartnerWrapper
 import social.entourage.android.api.PartnersResponse
 import social.entourage.android.api.model.Partner
 import social.entourage.android.api.model.User
@@ -131,7 +132,7 @@ class UserEditPartnerFragment  : EntourageDialogFragment() {
     private fun addPartner(partner: Partner) {
         val userID = user?.id ?: return
         user_edit_partner_progressBar?.visibility = View.VISIBLE
-        get(context).entourageComponent.userRequest.addPartner(userID, PartnerResponse(partner))
+        get(context).entourageComponent.userRequest.addPartner(userID, PartnerWrapper(partner))
                 .enqueue(object : Callback<PartnerResponse> {
             override fun onResponse(call: Call<PartnerResponse>, response: Response<PartnerResponse>) {
                 user_edit_partner_progressBar?.visibility = View.GONE

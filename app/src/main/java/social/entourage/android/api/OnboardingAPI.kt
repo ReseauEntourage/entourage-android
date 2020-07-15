@@ -75,11 +75,7 @@ class OnboardingAPI(val application: EntourageApplication) {
      */
     fun login(phoneNumber:String?,smsCode:String,listener:(isOK:Boolean, loginResponse:LoginResponse?, error:String?) -> Unit) {
         if (phoneNumber != null) {
-            val user = HashMap<String, String>()
-            user["phone"] = phoneNumber
-            user["sms_code"] = smsCode
-
-            val call: Call<LoginResponse> = loginService.login(user)
+            val call: Call<LoginResponse> = loginService.login(LoginWrapper(phoneNumber, smsCode))
             call.enqueue(object : Callback<LoginResponse> {
                 override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                     if (response.isSuccessful) {

@@ -7,4 +7,4 @@ import com.google.gson.annotations.SerializedName
  */
 class UserReport(var message: String)
 
-class UserReportResponse(@field:SerializedName("user_report") var userReport: UserReport)
+class UserReportWrapper(@field:SerializedName("user_report") var userReport: UserReport)
