@@ -164,7 +164,10 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     fun sendPasscode() {
         alertDialog.show(R.string.onboard_waiting_dialog)
         EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SIGNUP_SUBMIT)
-        val phoneNumber = checkPhoneNumberFormat(null, temporaryUser.phone ?:"")
+        val phoneNumber = checkPhoneNumberFormat(null, temporaryUser.phone ?:"") ?: run {
+            showLoginFail(LOGIN_ERROR_INVALID_PHONE_FORMAT)
+            return
+        }
         OnboardingAPI.getInstance(get()).login(phoneNumber,temporaryPasscode ?: "") { isOK, loginResponse, error ->
             if (isOK) {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SIGNUP_SUCCESS)

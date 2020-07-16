@@ -4,13 +4,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.api.EntourageRequest
-import social.entourage.android.api.InvitationRequest
-import social.entourage.android.api.NewsfeedItemResponse
-import social.entourage.android.api.NewsfeedRequest
+import social.entourage.android.api.*
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.Invitation
-import social.entourage.android.api.model.Invitation.InvitationsWrapper
 import social.entourage.android.entourage.my.filter.MyEntouragesFilter
 import timber.log.Timber
 import javax.inject.Inject
@@ -58,8 +54,8 @@ class MyEntouragesPresenter @Inject constructor(
 
     fun getMyPendingInvitations() {
         val call = invitationRequest.retrieveUserInvitationsWithStatus(Invitation.STATUS_PENDING)
-        call.enqueue(object : Callback<InvitationsWrapper> {
-            override fun onResponse(call: Call<InvitationsWrapper>, response: Response<InvitationsWrapper>) {
+        call.enqueue(object : Callback<InvitationListResponse> {
+            override fun onResponse(call: Call<InvitationListResponse>, response: Response<InvitationListResponse>) {
                 response.body()?.invitations?.let {
                     if (response.isSuccessful) {
                         onInvitationsReceived(it)
@@ -69,7 +65,7 @@ class MyEntouragesPresenter @Inject constructor(
                 fragment.onNoInvitationReceived()
             }
 
-            override fun onFailure(call: Call<InvitationsWrapper>, t: Throwable) {
+            override fun onFailure(call: Call<InvitationListResponse>, t: Throwable) {
                 fragment.onNoInvitationReceived()
             }
         })

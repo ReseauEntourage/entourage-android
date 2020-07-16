@@ -32,20 +32,21 @@ class TourJoinRequestViewModel : ViewModel() {
         val me = EntourageApplication.get().me() ?: return
         val joinMessageWrapper = TourJoinMessageWrapper()
         joinMessageWrapper.joinMessage = TourJoinMessage(message.trim { it <= ' ' })
-        val call = tourRequest.updateJoinTourMessage(tour.uuid, me.id, joinMessageWrapper)
-        call.enqueue(object : Callback<EntourageUserWrapper?> {
-            override fun onResponse(call: Call<EntourageUserWrapper?>, response: Response<EntourageUserWrapper?>) {
-                if (response.isSuccessful) {
-                    requestResult.value = REQUEST_OK
-                } else {
+        tour.uuid?.let {
+            tourRequest.updateJoinTourMessage(it, me.id, joinMessageWrapper).enqueue(object : Callback<EntourageUserWrapper> {
+                override fun onResponse(call: Call<EntourageUserWrapper>, response: Response<EntourageUserWrapper>) {
+                    if (response.isSuccessful) {
+                        requestResult.value = REQUEST_OK
+                    } else {
+                        requestResult.value = REQUEST_ERROR
+                    }
+                }
+
+                override fun onFailure(call: Call<EntourageUserWrapper>, t: Throwable) {
                     requestResult.value = REQUEST_ERROR
                 }
-            }
-
-            override fun onFailure(call: Call<EntourageUserWrapper?>, t: Throwable) {
-                requestResult.value = REQUEST_ERROR
-            }
-        })
+            })
+        }
     }
 
     companion object {

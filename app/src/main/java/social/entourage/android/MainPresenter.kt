@@ -9,7 +9,7 @@ import android.widget.Toast
 import com.google.firebase.iid.FirebaseInstanceId
 import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.about.EntourageAboutFragment
-import social.entourage.android.api.AppRequest
+import social.entourage.android.api.ApplicationInfoRequest
 import social.entourage.android.api.UserRequest
 import javax.inject.Inject
 
@@ -19,8 +19,8 @@ import javax.inject.Inject
  */
 class MainPresenter @Inject internal constructor(
         activity: MainActivity,
-        appRequest: AppRequest,
-        userRequest: UserRequest) : MainBasePresenter(activity, appRequest, userRequest) {
+        applicationInfoRequest: ApplicationInfoRequest,
+        userRequest: UserRequest) : MainBasePresenter(activity, applicationInfoRequest, userRequest) {
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------

@@ -19,14 +19,14 @@ class EntourageJoinRequestReceivedPresenter @Inject constructor(
     // ----------------------------------
     // API CALLS
     // ----------------------------------
-    internal fun acceptTourJoinRequest(tourUUID: String?, userId: Int) {
+    internal fun acceptTourJoinRequest(tourUUID: String, userId: Int) {
         val status = HashMap<String, String>()
         status["status"] = FeedItem.JOIN_STATUS_ACCEPTED
         val user = HashMap<String, Any>()
         user["user"] = status
         val call = tourRequest.updateUserTourStatus(tourUUID, userId, user)
-        call.enqueue(object : Callback<ResponseBody?> {
-            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (activity != null) {
                     if (response.isSuccessful) {
                         activity.onUserTourStatusChanged(FeedItem.JOIN_STATUS_ACCEPTED, true)
@@ -36,16 +36,16 @@ class EntourageJoinRequestReceivedPresenter @Inject constructor(
                 }
             }
 
-            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 activity?.onUserTourStatusChanged(FeedItem.JOIN_STATUS_ACCEPTED, false)
             }
         })
     }
 
-    internal fun rejectTourJoinRequest(tourUUID: String?, userId: Int) {
+    internal fun rejectTourJoinRequest(tourUUID: String, userId: Int) {
         val call = tourRequest.removeUserFromTour(tourUUID, userId)
-        call.enqueue(object : Callback<EntourageUserWrapper?> {
-            override fun onResponse(call: Call<EntourageUserWrapper?>, response: Response<EntourageUserWrapper?>) {
+        call.enqueue(object : Callback<EntourageUserWrapper> {
+            override fun onResponse(call: Call<EntourageUserWrapper>, response: Response<EntourageUserWrapper>) {
                 if (activity != null) {
                     if (response.isSuccessful) {
                         activity.onUserTourStatusChanged(FeedItem.JOIN_STATUS_REJECTED, true)
@@ -55,7 +55,7 @@ class EntourageJoinRequestReceivedPresenter @Inject constructor(
                 }
             }
 
-            override fun onFailure(call: Call<EntourageUserWrapper?>, t: Throwable) {
+            override fun onFailure(call: Call<EntourageUserWrapper>, t: Throwable) {
                 activity?.onUserTourStatusChanged(FeedItem.JOIN_STATUS_REJECTED, false)
             }
         })
@@ -67,8 +67,8 @@ class EntourageJoinRequestReceivedPresenter @Inject constructor(
         val user = HashMap<String, Any>()
         user["user"] = status
         val call = entourageRequest.updateUserEntourageStatus(entourageUUID, userId, user)
-        call.enqueue(object : Callback<ResponseBody?> {
-            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (activity != null) {
                     if (response.isSuccessful) {
                         activity.onUserTourStatusChanged(FeedItem.JOIN_STATUS_ACCEPTED, true)
@@ -78,7 +78,7 @@ class EntourageJoinRequestReceivedPresenter @Inject constructor(
                 }
             }
 
-            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 activity?.onUserTourStatusChanged(FeedItem.JOIN_STATUS_ACCEPTED, false)
             }
         })
@@ -86,8 +86,8 @@ class EntourageJoinRequestReceivedPresenter @Inject constructor(
 
     internal fun rejectEntourageJoinRequest(entourageUUID: String?, userId: Int) {
         val call = entourageRequest.removeUserFromEntourage(entourageUUID, userId)
-        call.enqueue(object : Callback<EntourageUserWrapper?> {
-            override fun onResponse(call: Call<EntourageUserWrapper?>, response: Response<EntourageUserWrapper?>) {
+        call.enqueue(object : Callback<EntourageUserWrapper> {
+            override fun onResponse(call: Call<EntourageUserWrapper>, response: Response<EntourageUserWrapper>) {
                 if (activity != null) {
                     if (response.isSuccessful) {
                         activity.onUserTourStatusChanged(FeedItem.JOIN_STATUS_REJECTED, true)
@@ -97,7 +97,7 @@ class EntourageJoinRequestReceivedPresenter @Inject constructor(
                 }
             }
 
-            override fun onFailure(call: Call<EntourageUserWrapper?>, t: Throwable) {
+            override fun onFailure(call: Call<EntourageUserWrapper>, t: Throwable) {
                 activity?.onUserTourStatusChanged(FeedItem.JOIN_STATUS_REJECTED, false)
             }
         })

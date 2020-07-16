@@ -13,11 +13,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication.Companion.get
-import social.entourage.android.api.AppRequest
+import social.entourage.android.api.ApplicationInfoRequest
+import social.entourage.android.api.ApplicationWrapper
 import social.entourage.android.api.UserRequest
 import social.entourage.android.api.UserResponse
 import social.entourage.android.api.model.ApplicationInfo
-import social.entourage.android.api.model.ApplicationInfo.ApplicationWrapper
 import social.entourage.android.carousel.CarouselFragment
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.involvement.GetInvolvedFragment
@@ -35,7 +35,7 @@ import timber.log.Timber
  */
 abstract class MainBasePresenter internal constructor(
         protected val activity: MainActivity,
-        private val appRequest: AppRequest,
+        private val applicationInfoRequest: ApplicationInfoRequest,
         private val userRequest: UserRequest) : AvatarUpdatePresenter {
     // ----------------------------------
     // ATTRIBUTES
@@ -143,9 +143,9 @@ abstract class MainBasePresenter internal constructor(
     // ----------------------------------
     fun checkForUpdate() {
         if (checkForUpdate) {
-            val call = appRequest.checkForUpdate()
-            call.enqueue(object : Callback<ResponseBody?> {
-                override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+            val call = applicationInfoRequest.checkForUpdate()
+            call.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     if (response.code() == 426) {
                         if (!BuildConfig.DEBUG) {
                             displayAppUpdateDialog()
@@ -153,7 +153,7 @@ abstract class MainBasePresenter internal constructor(
                     }
                 }
 
-                override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     Timber.w(t, "Error connecting to API")
                 }
             })
@@ -170,8 +170,8 @@ abstract class MainBasePresenter internal constructor(
         user[KEY_DEVICE_ID] = deviceId
         user[KEY_DEVICE_TYPE] = ANDROID_DEVICE
         val call = userRequest.updateUser(user)
-        call.enqueue(object : Callback<UserResponse?> {
-            override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
+        call.enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
                     if (activity.authenticationController.isAuthenticated) {
                         val responseBody = response.body()
@@ -180,7 +180,7 @@ abstract class MainBasePresenter internal constructor(
                 }
             }
 
-            override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 Timber.e(t)
             }
         })
@@ -192,8 +192,8 @@ abstract class MainBasePresenter internal constructor(
         val request = ArrayMap<String, Any>()
         request["user"] = user
         val call = userRequest.updateUser(request)
-        call.enqueue(object : Callback<UserResponse?> {
-            override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
+        call.enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 activity.dismissProgressDialog()
                 if (response.isSuccessful) {
                     if (activity.authenticationController.isAuthenticated) {
@@ -215,7 +215,7 @@ abstract class MainBasePresenter internal constructor(
                 }
             }
 
-            override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 activity.dismissProgressDialog()
                 Timber.e(t)
                 Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show()
@@ -231,11 +231,9 @@ abstract class MainBasePresenter internal constructor(
             return
         }
         val applicationInfo = ApplicationInfo(previousDeviceID)
-        val applicationWrapper = ApplicationWrapper()
-        applicationWrapper.applicationInfo = applicationInfo
-        val call = appRequest.deleteApplicationInfo(applicationWrapper)
-        call.enqueue(object : Callback<ResponseBody?> {
-            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+        val call = applicationInfoRequest.deleteApplicationInfo(ApplicationWrapper(applicationInfo))
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     Timber.d("deleting application info with success")
                 } else {
@@ -243,7 +241,7 @@ abstract class MainBasePresenter internal constructor(
                 }
             }
 
-            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Timber.e(t)
             }
         })
@@ -258,12 +256,11 @@ abstract class MainBasePresenter internal constructor(
         //then add new one
         deviceID = pushNotificationToken
         val applicationInfo = ApplicationInfo(pushNotificationToken)
-        val applicationWrapper = ApplicationWrapper()
-        applicationWrapper.applicationInfo = applicationInfo
+        val applicationWrapper = ApplicationWrapper(applicationInfo)
         applicationWrapper.setNotificationStatus(ApplicationInfo.NOTIF_PERMISSION_AUTHORIZED)
-        val call = appRequest.updateApplicationInfo(applicationWrapper)
-        call.enqueue(object : Callback<ResponseBody?> {
-            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+        val call = applicationInfoRequest.updateApplicationInfo(applicationWrapper)
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     Timber.d("updating application info with success")
                 } else {
@@ -271,7 +268,7 @@ abstract class MainBasePresenter internal constructor(
                 }
             }
 
-            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Timber.e(t)
             }
         })

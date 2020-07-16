@@ -89,13 +89,13 @@ class EntourageReportFragment  : EntourageDialogFragment() {
         val reason = user_report_reason_edittext?.text.toString()
         val call = userRequest.reportEntourage(entourageId, EntourageReport.EntourageReportWrapper(EntourageReport(reason)))
 
-        call.enqueue(object : Callback<ResponseBody?> {
-            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Toast.makeText(activity, R.string.entourage_report_error_send_failed, Toast.LENGTH_SHORT).show()
                 sending = false
             }
 
-            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     Toast.makeText(activity, R.string.entourage_report_success, Toast.LENGTH_SHORT).show()
                     if (!isStopped) {

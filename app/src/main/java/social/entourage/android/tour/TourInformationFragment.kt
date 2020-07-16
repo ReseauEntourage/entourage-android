@@ -398,14 +398,14 @@ class TourInformationFragment : FeedItemInformationFragment(){
     }
 
     fun onFeedItemEncountersReceived(encounterList: List<Encounter>?) {
-        if (encounterList != null) {
-            EntourageApplication.me(context)?.let {
-                for (encounter in encounterList) {
-                    encounter.setIsMyEncounter(encounter.userId == it.id)
+        encounterList?.let { list->
+            EntourageApplication.me(context)?.let {user ->
+                list.forEach {encounter ->
+                    encounter.isMyEncounter = encounter.userId == user.id
                     encounter.isReadOnly = feedItem.isClosed()
                 }
             }
-            feedItem.addCardInfoList(encounterList)
+            feedItem.addCardInfoList(list)
         }
 
         //hide the progress bar

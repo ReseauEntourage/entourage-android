@@ -24,7 +24,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import social.entourage.android.Constants;
+import social.entourage.android.api.EncounterWrapper;
 import social.entourage.android.api.NewsfeedItemResponse;
+import social.entourage.android.api.TourWrapper;
+import social.entourage.android.api.ToursWrapper;
 import social.entourage.android.location.EntourageLocation;
 import social.entourage.android.api.EncounterRequest;
 import social.entourage.android.api.EncounterResponse;
@@ -254,10 +257,10 @@ public class EntourageServiceManager {
         final LocationPoint.TourPointWrapper tourPointWrapper = new LocationPoint.TourPointWrapper();
         tourPointWrapper.setTourPoints(new ArrayList<>(pointsToSend));
         tourPointWrapper.setDistance(currentTour.distance);
-        final Call<Tour.TourWrapper> call = tourRequest.tourPoints(tourUUID, tourPointWrapper);
-        call.enqueue(new Callback<Tour.TourWrapper>() {
+        final Call<TourWrapper> call = tourRequest.tourPoints(tourUUID, tourPointWrapper);
+        call.enqueue(new Callback<TourWrapper>() {
             @Override
-            public void onResponse(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Response<Tour.TourWrapper> response) {
+            public void onResponse(@NonNull final Call<TourWrapper> call, @NonNull final Response<TourWrapper> response) {
                 if (response.isSuccessful()) {
                     pointsToSend.removeAll(tourPointWrapper.getTourPoints());
                     if (isTourClosing) {
@@ -272,7 +275,7 @@ public class EntourageServiceManager {
             }
 
             @Override
-            public void onFailure(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Throwable t) {
+            public void onFailure(@NonNull final Call<TourWrapper> call, @NonNull final Throwable t) {
                 if (isTourClosing) {
                     entourageService.notifyListenersFeedItemClosed(false, currentTour);
                 }
@@ -343,12 +346,12 @@ public class EntourageServiceManager {
             return;
         }
         tour.status = FeedItem.STATUS_FREEZED;
-        final Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
+        final TourWrapper tourWrapper = new TourWrapper();
         tourWrapper.tour = tour;
-        final Call<Tour.TourWrapper> call = tourRequest.closeTour(tour.getUuid(), tourWrapper);
-        call.enqueue(new Callback<Tour.TourWrapper>() {
+        final Call<TourWrapper> call = tourRequest.closeTour(tour.getUuid(), tourWrapper);
+        call.enqueue(new Callback<TourWrapper>() {
             @Override
-            public void onResponse(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Response<Tour.TourWrapper> response) {
+            public void onResponse(@NonNull final Call<TourWrapper> call, @NonNull final Response<TourWrapper> response) {
                 if (response.isSuccessful()) {
                     Timber.d(response.body().tour.toString());
                     entourageService.notifyListenersFeedItemClosed(true, response.body().tour);
@@ -358,7 +361,7 @@ public class EntourageServiceManager {
             }
 
             @Override
-            public void onFailure(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Throwable t) {
+            public void onFailure(@NonNull final Call<TourWrapper> call, @NonNull final Throwable t) {
                 Timber.e(t);
                 entourageService.notifyListenersFeedItemClosed(false, tour);
             }
@@ -366,17 +369,17 @@ public class EntourageServiceManager {
     }
 
     void retrieveToursByUserId(final int userId, final int page, final int per) {
-        final Call<Tour.ToursWrapper> call = tourRequest.retrieveToursByUserId(userId, page, per);
-        call.enqueue(new Callback<Tour.ToursWrapper>() {
+        final Call<ToursWrapper> call = tourRequest.retrieveToursByUserId(userId, page, per);
+        call.enqueue(new Callback<ToursWrapper>() {
             @Override
-            public void onResponse(@NonNull final Call<Tour.ToursWrapper> call, @NonNull final Response<Tour.ToursWrapper> response) {
+            public void onResponse(@NonNull final Call<ToursWrapper> call, @NonNull final Response<ToursWrapper> response) {
                 if (response.isSuccessful()) {
                     entourageService.notifyListenersUserToursFound(response.body().tours);
                 }
             }
 
             @Override
-            public void onFailure(@NonNull final Call<Tour.ToursWrapper> call, @NonNull final Throwable t) {
+            public void onFailure(@NonNull final Call<ToursWrapper> call, @NonNull final Throwable t) {
                 Timber.e(t);
             }
         });
@@ -414,8 +417,7 @@ public class EntourageServiceManager {
     private void sendEncounter(final Encounter encounter) {
         final NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnected()) {
-            final Encounter.EncounterWrapper encounterWrapper = new Encounter.EncounterWrapper();
-            encounterWrapper.setEncounter(encounter);
+            final EncounterWrapper encounterWrapper = new EncounterWrapper(encounter);
             final Call<EncounterResponse> call = encounterRequest.create(encounter.getTourId(), encounterWrapper);
             call.enqueue(new Callback<EncounterResponse>() {
                 @Override
@@ -441,8 +443,7 @@ public class EntourageServiceManager {
     private void updateEncounterToServer(final Encounter encounter) {
         final NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnected()) {
-            final Encounter.EncounterWrapper encounterWrapper = new Encounter.EncounterWrapper();
-            encounterWrapper.setEncounter(encounter);
+            final EncounterWrapper encounterWrapper = new EncounterWrapper(encounter);
             final Call<EncounterResponse> call = encounterRequest.update(encounter.getId(), encounterWrapper);
             call.enqueue(new Callback<EncounterResponse>() {
                 @Override
@@ -645,12 +646,12 @@ public class EntourageServiceManager {
     // ----------------------------------
 
     private void sendTour() {
-        final Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
+        final TourWrapper tourWrapper = new TourWrapper();
         tourWrapper.tour = currentTour;
-        final Call<Tour.TourWrapper> call = tourRequest.tour(tourWrapper);
-        call.enqueue(new Callback<Tour.TourWrapper>() {
+        final Call<TourWrapper> call = tourRequest.tour(tourWrapper);
+        call.enqueue(new Callback<TourWrapper>() {
             @Override
-            public void onResponse(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Response<Tour.TourWrapper> response) {
+            public void onResponse(@NonNull final Call<TourWrapper> call, @NonNull final Response<TourWrapper> response) {
                 if (response.isSuccessful()) {
                     final Location currentLocation = EntourageLocation.getCurrentLocation();
                     if (currentLocation != null) {
@@ -670,7 +671,7 @@ public class EntourageServiceManager {
             }
 
             @Override
-            public void onFailure(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Throwable t) {
+            public void onFailure(@NonNull final Call<TourWrapper> call, @NonNull final Throwable t) {
                 Timber.e(t);
                 currentTour = null;
                 entourageService.notifyListenersTourCreated(false, "");
@@ -681,12 +682,12 @@ public class EntourageServiceManager {
     private void closeTour() {
         currentTour.status = FeedItem.STATUS_CLOSED;
         currentTour.setEndTime(new Date());
-        final Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
+        final TourWrapper tourWrapper = new TourWrapper();
         tourWrapper.tour = currentTour;
-        final Call<Tour.TourWrapper> call = tourRequest.closeTour(tourUUID, tourWrapper);
-        call.enqueue(new Callback<Tour.TourWrapper>() {
+        final Call<TourWrapper> call = tourRequest.closeTour(tourUUID, tourWrapper);
+        call.enqueue(new Callback<TourWrapper>() {
             @Override
-            public void onResponse(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Response<Tour.TourWrapper> response) {
+            public void onResponse(@NonNull final Call<TourWrapper> call, @NonNull final Response<TourWrapper> response) {
                 if (response.isSuccessful()) {
                     Timber.d(response.body().tour.toString());
                     currentTour = null;
@@ -702,7 +703,7 @@ public class EntourageServiceManager {
             }
 
             @Override
-            public void onFailure(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Throwable t) {
+            public void onFailure(@NonNull final Call<TourWrapper> call, @NonNull final Throwable t) {
                 Timber.e(t);
                 entourageService.notifyListenersFeedItemClosed(false, currentTour);
             }
@@ -712,12 +713,12 @@ public class EntourageServiceManager {
     private void closeTour(final Tour tour) {
         tour.status = FeedItem.STATUS_CLOSED;
         tour.setEndTime(new Date());
-        final Tour.TourWrapper tourWrapper = new Tour.TourWrapper();
+        final TourWrapper tourWrapper = new TourWrapper();
         tourWrapper.tour = tour;
-        final Call<Tour.TourWrapper> call = tourRequest.closeTour(tour.getUuid(), tourWrapper);
-        call.enqueue(new Callback<Tour.TourWrapper>() {
+        final Call<TourWrapper> call = tourRequest.closeTour(tour.getUuid(), tourWrapper);
+        call.enqueue(new Callback<TourWrapper>() {
             @Override
-            public void onResponse(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Response<Tour.TourWrapper> response) {
+            public void onResponse(@NonNull final Call<TourWrapper> call, @NonNull final Response<TourWrapper> response) {
                 if (response.isSuccessful()) {
                     entourageService.notifyListenersFeedItemClosed(true, response.body().tour);
                     if (tour.getUuid().equalsIgnoreCase(tourUUID)) {
@@ -729,7 +730,7 @@ public class EntourageServiceManager {
             }
 
             @Override
-            public void onFailure(@NonNull final Call<Tour.TourWrapper> call, @NonNull final Throwable t) {
+            public void onFailure(@NonNull final Call<TourWrapper> call, @NonNull final Throwable t) {
                 Timber.e(t);
                 entourageService.notifyListenersFeedItemClosed(false, tour);
             }

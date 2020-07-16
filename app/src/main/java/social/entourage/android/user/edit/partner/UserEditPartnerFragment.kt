@@ -162,8 +162,8 @@ class UserEditPartnerFragment  : EntourageDialogFragment() {
         user_edit_partner_progressBar?.visibility = View.VISIBLE
         val userId = user?.id ?: return
         get(context).entourageComponent.userRequest.removePartnerFromUser(userId, oldPartner.id)
-                .enqueue(object : Callback<ResponseBody?> {
-            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+                .enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 user_edit_partner_progressBar?.visibility = View.GONE
                 if (response.isSuccessful) {
                     currentPartner?.let {
@@ -181,7 +181,7 @@ class UserEditPartnerFragment  : EntourageDialogFragment() {
                 }
             }
 
-            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 user_edit_partner_progressBar?.visibility = View.GONE
                 Toast.makeText(context, R.string.partner_remove_error, Toast.LENGTH_SHORT).show()
             }

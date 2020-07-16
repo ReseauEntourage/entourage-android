@@ -12,7 +12,6 @@ import com.squareup.tape.FileObjectQueue;
 import java.io.File;
 import java.io.IOException;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -97,8 +96,8 @@ public class ApiModule {
 
     @Provides
     @Singleton
-    public AppRequest providesAppRequest(final Retrofit restAdapter) {
-        return restAdapter.create(AppRequest.class);
+    public ApplicationInfoRequest providesApplicationInfoRequest(final Retrofit restAdapter) {
+        return restAdapter.create(ApplicationInfoRequest.class);
     }
 
     @Provides

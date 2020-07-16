@@ -87,8 +87,8 @@ class UserReportFragment  : EntourageDialogFragment() {
         sending = true
         val reason = user_report_reason_edittext?.text.toString()
         val call = userRequest.reportUser(userId, UserReportWrapper(UserReport(reason)))
-        call.enqueue(object : Callback<ResponseBody?> {
-            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     Toast.makeText(activity, R.string.user_report_success, Toast.LENGTH_SHORT).show()
                     if (!isStopped) {
@@ -100,7 +100,7 @@ class UserReportFragment  : EntourageDialogFragment() {
                 }
             }
 
-            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Toast.makeText(activity, R.string.user_report_error_send_failed, Toast.LENGTH_SHORT).show()
                 sending = false
             }

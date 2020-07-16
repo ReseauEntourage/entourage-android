@@ -49,8 +49,8 @@ class OnboardingAPI(val application: EntourageApplication) {
 
         val call = onboardingService.registerUser(request)
 
-        call.enqueue(object : Callback<UserResponse?> {
-            override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
+        call.enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
                     Timber.d("Response ok create user ?")
                     listener(true,null)
@@ -64,7 +64,7 @@ class OnboardingAPI(val application: EntourageApplication) {
                 }
             }
 
-            override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 listener(false,null)
             }
         })
@@ -73,32 +73,28 @@ class OnboardingAPI(val application: EntourageApplication) {
     /**********************
      * Login
      */
-    fun login(phoneNumber:String?,smsCode:String,listener:(isOK:Boolean, loginResponse:LoginResponse?, error:String?) -> Unit) {
-        if (phoneNumber != null) {
-            val call: Call<LoginResponse> = loginService.login(LoginWrapper(phoneNumber, smsCode))
-            call.enqueue(object : Callback<LoginResponse> {
-                override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                    if (response.isSuccessful) {
-                        response.body()?.user?.let {
-                            authenticationController.saveUser(it)
-                            authenticationController.saveUserPhoneAndCode(phoneNumber, smsCode)
-                            authenticationController.saveUserToursOnly(false)
-                        }
-
-                        listener(true,response.body(),null)
-                    } else {
-                        val errorString = response.errorBody()?.string()
-                        listener(false,null,errorString)
+    fun login(phoneNumber:String,smsCode:String,listener:(isOK:Boolean, loginResponse:LoginResponse?, error:String?) -> Unit) {
+        loginService.login(LoginWrapper(phoneNumber, smsCode))
+                .enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                if (response.isSuccessful) {
+                    response.body()?.user?.let {
+                        authenticationController.saveUser(it)
+                        authenticationController.saveUserPhoneAndCode(phoneNumber, smsCode)
+                        authenticationController.saveUserToursOnly(false)
                     }
-                }
 
-                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                    listener(false,null,null)
+                    listener(true,response.body(),null)
+                } else {
+                    val errorString = response.errorBody()?.string()
+                    listener(false,null,errorString)
                 }
-            })
-        } else {
-            listener(false,null,"INVALID_PHONE_FORMAT")
-        }
+            }
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                listener(false,null,null)
+            }
+        })
     }
 
     /**********************
@@ -156,8 +152,8 @@ class OnboardingAPI(val application: EntourageApplication) {
             onboardingService.updateSecondaryAddressLocation(request)
         }
 
-        call.enqueue(object : Callback<UserResponse?> {
-            override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
+        call.enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
                     listener(true,response.body())
                 } else {
@@ -165,7 +161,7 @@ class OnboardingAPI(val application: EntourageApplication) {
                 }
             }
 
-            override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 listener(false,null)
             }
         })
@@ -185,8 +181,8 @@ class OnboardingAPI(val application: EntourageApplication) {
         val request = ArrayMap<String, Any>()
         request["user"] = user
         val call = onboardingService.updateUser(request)
-        call.enqueue(object : Callback<UserResponse?> {
-            override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
+        call.enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
                     listener(true,response.body())
                 }
@@ -195,7 +191,7 @@ class OnboardingAPI(val application: EntourageApplication) {
                 }
             }
 
-            override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 listener(false,null)
             }
         })
@@ -209,8 +205,8 @@ class OnboardingAPI(val application: EntourageApplication) {
         val request = ArrayMap<String, Any>()
         request["user"] = user
         val call = onboardingService.updateUser(request)
-        call.enqueue(object : Callback<UserResponse?> {
-            override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
+        call.enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
                     listener(true,response.body())
                 }
@@ -219,7 +215,7 @@ class OnboardingAPI(val application: EntourageApplication) {
                 }
             }
 
-            override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 listener(false,null)
             }
         })
@@ -250,9 +246,8 @@ class OnboardingAPI(val application: EntourageApplication) {
     fun getUser(userId:Int, listener:(isOK:Boolean,userResponse:UserResponse?) -> Unit) {
 
         val call = onboardingService.getUser(userId)
-
-        call.enqueue(object : Callback<UserResponse?> {
-            override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
+        call.enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
                     listener(true,response.body())
                 } else {
@@ -260,7 +255,7 @@ class OnboardingAPI(val application: EntourageApplication) {
                 }
             }
 
-            override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 listener(false,null)
             }
         })
@@ -273,8 +268,8 @@ class OnboardingAPI(val application: EntourageApplication) {
         val request = AvatarUploadRequest("image/jpeg")
         val call = onboardingService.prepareAvatarUpload(request)
 
-        call.enqueue(object : Callback<AvatarUploadResponse?> {
-            override fun onResponse(call: Call<AvatarUploadResponse?>, response: Response<AvatarUploadResponse?>) {
+        call.enqueue(object : Callback<AvatarUploadResponse> {
+            override fun onResponse(call: Call<AvatarUploadResponse>, response: Response<AvatarUploadResponse>) {
                 if (response.isSuccessful) {
                     listener(response.body()?.avatarKey, response.body()?.presignedUrl, null)
                 }
@@ -284,7 +279,7 @@ class OnboardingAPI(val application: EntourageApplication) {
                 }
             }
 
-            override fun onFailure(call: Call<AvatarUploadResponse?>, t: Throwable) {
+            override fun onFailure(call: Call<AvatarUploadResponse>, t: Throwable) {
                 listener(null,null,null)
             }
         })
@@ -333,8 +328,8 @@ class OnboardingAPI(val application: EntourageApplication) {
 
         val call = onboardingService.updateAssoInfos(request)
 
-        call.enqueue(object : Callback<ResponseBody?> {
-            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     listener(true,response.body())
                 }
@@ -342,7 +337,7 @@ class OnboardingAPI(val application: EntourageApplication) {
                     listener(false,null)
                 }
             }
-            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 listener(false,null)
             }
         })
@@ -356,8 +351,8 @@ class OnboardingAPI(val application: EntourageApplication) {
         val request = ArrayMap<String, Any>()
         request["user"] = user
         val call = onboardingService.updateUser(request)
-        call.enqueue(object : Callback<UserResponse?> {
-            override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
+        call.enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
                     listener(true,response.body())
                 }
@@ -366,7 +361,7 @@ class OnboardingAPI(val application: EntourageApplication) {
                 }
             }
 
-            override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 listener(false,null)
             }
         })

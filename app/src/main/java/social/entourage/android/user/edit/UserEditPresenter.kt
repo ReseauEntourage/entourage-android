@@ -46,8 +46,8 @@ class UserEditPresenter @Inject constructor(
     fun saveNewPassword(newPassword: String) {
         val userMap = ArrayMap<String, Any>()
         userMap["sms_code"] = newPassword
-        userRequest.updateUser(userMap).enqueue(object : Callback<UserResponse?> {
-            override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
+        userRequest.updateUser(userMap).enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
                     //inform the fragment
                     authenticationController.me?.phone?.let { phone ->
@@ -59,19 +59,19 @@ class UserEditPresenter @Inject constructor(
                 }
             }
 
-            override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 fragment?.onSavePasswordError()
             }
         })
     }
 
     fun deleteAccount() {
-        userRequest.deleteUser().enqueue(object : Callback<UserResponse?> {
-            override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
+        userRequest.deleteUser().enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 fragment?.onDeletedAccount(response.isSuccessful)
             }
 
-            override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 fragment?.onDeletedAccount(false)
             }
         })

@@ -12,7 +12,6 @@ import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.model.ChatMessage.ChatMessageWrapper
 import social.entourage.android.api.model.ChatMessage.ChatMessagesWrapper
 import social.entourage.android.api.model.Invitation
-import social.entourage.android.api.model.Invitation.InvitationWrapper
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.BaseEntourage.EntourageWrapper
 import social.entourage.android.api.model.feed.FeedItem
@@ -190,8 +189,8 @@ class EntourageInformationPresenter @Inject constructor(
         val user = HashMap<String, Any>()
         user["user"] = status
         val call = entourageRequest.updateUserEntourageStatus(entourageUUID, userId, user)
-        call.enqueue(object : Callback<ResponseBody?> {
-            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, EntourageError.ERROR_NONE)
                 } else {
@@ -199,7 +198,7 @@ class EntourageInformationPresenter @Inject constructor(
                 }
             }
 
-            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, EntourageError.ERROR_NETWORK)
             }
         })
@@ -207,8 +206,8 @@ class EntourageInformationPresenter @Inject constructor(
 
     private fun rejectJoinEntourageRequest(entourageUUID: String?, userId: Int) {
         val call = entourageRequest.removeUserFromEntourage(entourageUUID, userId)
-        call.enqueue(object : Callback<EntourageUserWrapper?> {
-            override fun onResponse(call: Call<EntourageUserWrapper?>, response: Response<EntourageUserWrapper?>) {
+        call.enqueue(object : Callback<EntourageUserWrapper> {
+            override fun onResponse(call: Call<EntourageUserWrapper>, response: Response<EntourageUserWrapper>) {
                 if (response.isSuccessful) {
                     fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, EntourageError.ERROR_NONE)
                 } else {
@@ -216,7 +215,7 @@ class EntourageInformationPresenter @Inject constructor(
                 }
             }
 
-            override fun onFailure(call: Call<EntourageUserWrapper?>, t: Throwable) {
+            override fun onFailure(call: Call<EntourageUserWrapper>, t: Throwable) {
                 fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, EntourageError.ERROR_NETWORK)
             }
         })
@@ -227,8 +226,8 @@ class EntourageInformationPresenter @Inject constructor(
     // ----------------------------------
     override fun acceptInvitation(invitationId: Long) {
         val call = invitationRequest.acceptInvitation(invitationId)
-        call.enqueue(object : Callback<InvitationWrapper?> {
-            override fun onResponse(call: Call<InvitationWrapper?>, response: Response<InvitationWrapper?>) {
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     fragment.onInvitationStatusUpdated(true, Invitation.STATUS_ACCEPTED)
                 } else {
@@ -236,7 +235,7 @@ class EntourageInformationPresenter @Inject constructor(
                 }
             }
 
-            override fun onFailure(call: Call<InvitationWrapper?>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 fragment.onInvitationStatusUpdated(false, Invitation.STATUS_ACCEPTED)
             }
         })
@@ -244,8 +243,8 @@ class EntourageInformationPresenter @Inject constructor(
 
     override fun rejectInvitation(invitationId: Long) {
         val call = invitationRequest.refuseInvitation(invitationId)
-        call.enqueue(object : Callback<InvitationWrapper?> {
-            override fun onResponse(call: Call<InvitationWrapper?>, response: Response<InvitationWrapper?>) {
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     fragment.onInvitationStatusUpdated(true, Invitation.STATUS_REJECTED)
                 } else {
@@ -253,7 +252,7 @@ class EntourageInformationPresenter @Inject constructor(
                 }
             }
 
-            override fun onFailure(call: Call<InvitationWrapper?>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 //fragment.onInvitationStatusUpdated(false, Invitation.STATUS_REJECTED)
             }
         })

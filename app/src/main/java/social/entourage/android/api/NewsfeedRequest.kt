@@ -30,7 +30,7 @@ interface NewsfeedRequest {
             @Query("show_my_partner_only") onlyMyPartnerEntourages: Boolean,
             @Query("announcements") announcementsVersion: String?,
             @Query("show_past_events") showPastEvents: Boolean
-    ): Call<NewsfeedItemResponse>?
+    ): Call<NewsfeedItemResponse>
 
     @GET("feeds")
     fun retrieveFeedByPage(
@@ -43,7 +43,7 @@ interface NewsfeedRequest {
             @Query("show_my_entourages_only") onlyMyEntourages: Boolean,
             @Query("entourage_types") entourageTypes: String?,
             @Query("time_range") timeFrame: Int
-    ): Call<NewsfeedItemResponse>?
+    ): Call<NewsfeedItemResponse>
 
     @GET("myfeeds")
     fun retrieveMyFeeds(
@@ -62,5 +62,5 @@ interface NewsfeedRequest {
             @Query("longitude") longitude: Double,
             @Query("latitude") latitude: Double,
             @Query("starting_after") startingAfterOutingUUID: String?
-    ): Call<NewsfeedItemResponse>?
+    ): Call<NewsfeedItemResponse>
 }

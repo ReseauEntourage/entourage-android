@@ -31,8 +31,8 @@ class InvitePresenter @Inject constructor(
 
     private fun inviteBySMSEntourage(entourageUUID: String, invitations: MultipleInvitations) {
         entourageRequest.inviteBySMS(entourageUUID, MultipleInvitationsWrapper(invitations))
-                .enqueue(object : Callback<MultipleInvitationsResponse?> {
-            override fun onResponse(call: Call<MultipleInvitationsResponse?>, response: Response<MultipleInvitationsResponse?>) {
+                .enqueue(object : Callback<MultipleInvitationsResponse> {
+            override fun onResponse(call: Call<MultipleInvitationsResponse>, response: Response<MultipleInvitationsResponse>) {
                 if (response.isSuccessful) {
                     fragment?.onInviteSent(true)
                 } else {
@@ -40,7 +40,7 @@ class InvitePresenter @Inject constructor(
                 }
             }
 
-            override fun onFailure(call: Call<MultipleInvitationsResponse?>, t: Throwable) {
+            override fun onFailure(call: Call<MultipleInvitationsResponse>, t: Throwable) {
                 fragment?.onInviteSent(false)
             }
         })

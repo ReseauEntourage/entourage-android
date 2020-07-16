@@ -34,8 +34,8 @@ class EntourageJoinRequestViewModel : ViewModel() {
         messageHashMap["message"] = message
         info["request"] = messageHashMap
         val call = entourageRequest.updateUserEntourageStatus(entourage.uuid, me.id, info)
-        call.enqueue(object : Callback<ResponseBody?> {
-            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 try {
                     if (response.isSuccessful) {
                         requestResult.value = REQUEST_OK
@@ -47,7 +47,7 @@ class EntourageJoinRequestViewModel : ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 requestResult.value = REQUEST_ERROR
             }
         })

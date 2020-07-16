@@ -33,8 +33,8 @@ class CreateEntouragePresenter @Inject constructor(
         entourage.isJoinRequestPublic = joinRequestTypePublic
         val entourageWrapper = EntourageWrapper()
         entourageWrapper.entourage = entourage
-        entourageRequest.createEntourage(entourageWrapper)?.enqueue(object : Callback<EntourageWrapper?> {
-            override fun onResponse(call: Call<EntourageWrapper?>, response: Response<EntourageWrapper?>) {
+        entourageRequest.createEntourage(entourageWrapper)?.enqueue(object : Callback<EntourageWrapper> {
+            override fun onResponse(call: Call<EntourageWrapper>, response: Response<EntourageWrapper>) {
                 if (response.isSuccessful) {
                     response.body()?.entourage?.let { receivedEntourage ->
                         receivedEntourage.isNewlyCreated = true
@@ -48,7 +48,7 @@ class CreateEntouragePresenter @Inject constructor(
                 }
             }
 
-            override fun onFailure(call: Call<EntourageWrapper?>, t: Throwable) {
+            override fun onFailure(call: Call<EntourageWrapper>, t: Throwable) {
                 fragment?.onEntourageCreationFailed()
             }
         })
@@ -57,8 +57,8 @@ class CreateEntouragePresenter @Inject constructor(
     fun editEntourage(entourage: BaseEntourage) {
         val entourageWrapper = EntourageWrapper()
         entourageWrapper.entourage = entourage
-        entourageRequest.editEntourage(entourage.uuid, entourageWrapper)?.enqueue(object : Callback<EntourageWrapper?> {
-            override fun onResponse(call: Call<EntourageWrapper?>, response: Response<EntourageWrapper?>) {
+        entourageRequest.editEntourage(entourage.uuid, entourageWrapper)?.enqueue(object : Callback<EntourageWrapper> {
+            override fun onResponse(call: Call<EntourageWrapper>, response: Response<EntourageWrapper>) {
                 if (response.isSuccessful) {
                     response.body()?.entourage?.let { receivedEntourage ->
                         fragment?.onEntourageEdited(receivedEntourage)
@@ -71,7 +71,7 @@ class CreateEntouragePresenter @Inject constructor(
                 }
             }
 
-            override fun onFailure(call: Call<EntourageWrapper?>, t: Throwable) {
+            override fun onFailure(call: Call<EntourageWrapper>, t: Throwable) {
                 fragment?.onEntourageEditionFailed()
             }
         })

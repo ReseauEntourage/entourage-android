@@ -75,8 +75,8 @@ class UserPresenter @Inject constructor(
 
     fun getConversation(conversation: UserConversation) {
         entourageRequest.retrieveEntourageById(conversation.uuid, 0, 0)
-                .enqueue(object : Callback<EntourageWrapper?> {
-            override fun onResponse(call: Call<EntourageWrapper?>, response: Response<EntourageWrapper?>) {
+                .enqueue(object : Callback<EntourageWrapper> {
+            override fun onResponse(call: Call<EntourageWrapper>, response: Response<EntourageWrapper>) {
                 if (response.isSuccessful) {
                     //show the entourage information
                     response.body()?.entourage?.let { fragment?.onConversationFound(it) }
@@ -85,7 +85,7 @@ class UserPresenter @Inject constructor(
                 }
             }
 
-            override fun onFailure(call: Call<EntourageWrapper?>, t: Throwable) {
+            override fun onFailure(call: Call<EntourageWrapper>, t: Throwable) {
                 fragment?.onConversationNotFound()
             }
         })

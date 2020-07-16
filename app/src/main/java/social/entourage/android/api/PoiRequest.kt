@@ -5,13 +5,10 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import social.entourage.android.api.model.guide.Category
 import social.entourage.android.api.model.guide.Poi
-import social.entourage.android.api.model.tour.Encounter
 
 class PoiResponse {
-    var encounters: List<Encounter>? = null
     var pois: List<Poi>? = null
     var categories: List<Category>? = null
-
 }
 
 interface PoiRequest {
@@ -19,5 +16,5 @@ interface PoiRequest {
     fun retrievePoisNearby(@Query("latitude") latitude: Double,
                            @Query("longitude") longitude: Double,
                            @Query("distance") distance: Double,
-                           @Query("category_ids") categoryIDs: String?): Call<PoiResponse?>?
+                           @Query("category_ids") categoryIDs: String?): Call<PoiResponse>
 }

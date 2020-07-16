@@ -178,8 +178,8 @@ class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
             call = userRequest.updateSecondaryAddressLocation(request)
         }
 
-        call.enqueue(object : Callback<UserResponse?> {
-            override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
+        call.enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.user?.let {
                         val authenticationController = get().entourageComponent.authenticationController
@@ -202,7 +202,7 @@ class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
                 saving = false
             }
 
-            override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 if (activity != null) {
                     Toast.makeText(activity, R.string.user_action_zone_send_failed, Toast.LENGTH_SHORT).show()
                 }
