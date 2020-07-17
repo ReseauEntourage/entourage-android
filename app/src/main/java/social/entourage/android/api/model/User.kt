@@ -17,7 +17,7 @@ class User : Serializable {
     // ----------------------------------
     @JvmField
     val id: Int
-    var email: String?
+    var email: String? = null
     @SerializedName("first_name")
     var firstName: String? = null
     @SerializedName("last_name")
@@ -40,7 +40,7 @@ class User : Serializable {
     var address: Address? = null
     @SerializedName("address_2")
     var addressSecondary: Address? = null
-    var goal = ""
+    var goal:String? = null
     val interests: ArrayList<String> = ArrayList()
     var stats: Stats? = null
     var organization: Organization? = null

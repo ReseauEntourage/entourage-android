@@ -1,4 +1,4 @@
-package social.entourage.android.onboarding
+package social.entourage.android.onboarding.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,6 +12,7 @@ import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceAct
 import social.entourage.android.tools.Utils
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.view.CustomProgressDialog
+import timber.log.Timber
 import java.util.*
 
 
@@ -93,6 +94,36 @@ class LoginNewActivity : EntourageActivity() {
     }
 
     fun goMain() {
+        val authController = EntourageApplication.get().entourageComponent.authenticationController
+
+        if (authController.me?.address == null || (authController.me?.email == null || authController.me?.email?.length ?: -1 == 0) ) {
+            goLoginNext()
+        }
+        else {
+            if (authController.me?.goal == null || authController.me?.goal?.length == 0) {
+
+                AlertDialog.Builder(this)
+                        .setTitle(R.string.login_pop_information)
+                        .setMessage(R.string.login_info_pop_action)
+                        .setPositiveButton(R.string.button_OK) { dialog, which ->
+                            dialog.dismiss()
+
+                            goRealMain()
+                        }
+                        .create()
+                        .show()
+                return
+            }
+            goRealMain()
+        }
+    }
+
+    fun goLoginNext() {
+        startActivity(Intent(this, LoginNextActivity::class.java))
+        finish()
+    }
+
+    fun goRealMain() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }

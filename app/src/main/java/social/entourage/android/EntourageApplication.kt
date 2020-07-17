@@ -14,7 +14,7 @@ import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.authentication.AuthenticationModule
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.newsfeed.UserFeedItemListCache
-import social.entourage.android.onboarding.LoginNewActivity
+import social.entourage.android.onboarding.login.LoginNewActivity
 import timber.log.Timber
 import java.util.*
 

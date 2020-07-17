@@ -40,6 +40,16 @@ object EntourageEvents {
     const val EVENT_ERROR_LOGIN_FAIL = "Error__Login__LoginFail"
     const val EVENT_ERROR_LOGIN_PHONE = "Error__Login__TelephoneSubmitError"
 
+    const val EVENT_VIEW_LOGIN_ACTION_ZONE = "View__Login__ActionZone"
+    const val EVENT_ACTION_LOGIN_SETACTION_ZONE_GEOLOC = "Action__Login__SetActionZoneGeoloc"
+    const val EVENT_ACTION_LOGIN_SETACTION_ZONE_SEARCH = "Action__Login__SetActionZoneSearch"
+    const val EVENT_ACTION_LOGIN_ACTION_ZONE_SUBMIT = "Action__Login__ActionZoneSubmit"
+    const val EVENT_VIEW_LOGIN_INPUT_EMAIL = "View__Login__InputEmail"
+
+    const val EVENT_ACTION_LOGIN_EMAIL_SUBMIT = "Action__Login__EmailSubmit"
+    const val EVENT_ERROR_LOGIN_EMAIL_SUBMIT_ERROR = "Error__Login__EmailSubmitError"
+
+
     //----------------------------//
     // ONBOARDING - START
     //-------

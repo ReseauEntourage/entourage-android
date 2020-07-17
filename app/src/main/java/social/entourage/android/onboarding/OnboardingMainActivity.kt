@@ -136,7 +136,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             else {
                 if (error != null) {
                     if (error.contains("PHONE_ALREADY_EXIST")) {
-                        showSmsAndGo(R.string.registration_number_error_already_registered)
+                        showPopAlreadySigned()
                         EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_EXIST)
                     }
                     else if (error.contains("INVALID_PHONE_FORMAT")) {
@@ -153,6 +153,22 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 displayToast(R.string.login_error)
             }
         }
+    }
+
+    private fun showPopAlreadySigned() {
+        AlertDialog.Builder(this)
+                .setTitle("")
+                .setMessage(R.string.alreadyRegistereMessageGoBack)
+                .setPositiveButton(R.string.button_OK) { dialog, which ->
+                    dialog.dismiss()
+
+                    val intent = Intent(this, PreOnboardingChoiceActivity::class.java)
+                    intent.putExtra("isFromOnboarding",true)
+                    startActivity(intent)
+                    finish()
+                }
+                .create()
+                .show()
     }
 
     private fun showSmsAndGo(textId:Int) {
