@@ -132,6 +132,12 @@ public class ApiModule {
 
     @Provides
     @Singleton
+    public PoiRequest providesMapService(final Retrofit restAdapter) {
+        return restAdapter.create(PoiRequest.class);
+    }
+
+    @Provides
+    @Singleton
     public InvitationRequest providesInvitationRequest(final Retrofit restAdapter) {
         return restAdapter.create(InvitationRequest.class);
     }

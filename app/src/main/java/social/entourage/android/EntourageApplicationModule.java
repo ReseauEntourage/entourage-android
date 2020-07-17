@@ -8,11 +8,11 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-final class EntourageModule {
+final class EntourageApplicationModule {
 
     private final EntourageApplication app;
 
-    public EntourageModule(final EntourageApplication app) {
+    public EntourageApplicationModule(final EntourageApplication app) {
         this.app = app;
     }
 

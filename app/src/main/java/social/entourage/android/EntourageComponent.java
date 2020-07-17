@@ -9,7 +9,6 @@ import okhttp3.OkHttpClient;
 import social.entourage.android.api.ApiModule;
 import social.entourage.android.api.ApplicationInfoRequest;
 import social.entourage.android.api.EncounterRequest;
-import social.entourage.android.api.EntourageApiModule;
 import social.entourage.android.api.EntourageRequest;
 import social.entourage.android.api.InvitationRequest;
 import social.entourage.android.api.LoginRequest;
@@ -32,9 +31,8 @@ import social.entourage.android.service.EntourageService;
 @Singleton
 @Component(
         modules = {
-                EntourageModule.class,
+                EntourageApplicationModule.class,
                 ApiModule.class,
-                EntourageApiModule.class,
                 AuthenticationModule.class
         }
 )

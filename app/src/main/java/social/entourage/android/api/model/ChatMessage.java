@@ -227,7 +227,18 @@ public class ChatMessage extends TimestampedObject implements Serializable {
 
     }
 
-    public static class ChatMessagesWrapper {
+    public static class ChatMessageResponse {
+        @SerializedName("chat_message")
+        private ChatMessage chatMessage;
+        public ChatMessage getChatMessage() {
+            return chatMessage;
+        }
+        public void setChatMessage(final ChatMessage chatMessage) {
+            this.chatMessage = chatMessage;
+        }
+    }
+
+    public static class ChatMessageListResponse {
 
         @SerializedName("chat_messages")
         private List<ChatMessage> chatMessages;

@@ -6,19 +6,17 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageError
 import social.entourage.android.EntourageEvents
-import social.entourage.android.api.EncounterListWrapper
-import social.entourage.android.api.InvitationRequest
-import social.entourage.android.api.TourRequest
-import social.entourage.android.api.TourWrapper
+import social.entourage.android.api.*
 import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.model.ChatMessage.ChatMessageWrapper
-import social.entourage.android.api.model.ChatMessage.ChatMessagesWrapper
+import social.entourage.android.api.model.ChatMessage.ChatMessageResponse
+import social.entourage.android.api.model.ChatMessage.ChatMessageListResponse
+import social.entourage.android.api.model.EntourageUser.EntourageUserResponse
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.tour.Tour
-import social.entourage.android.api.model.EntourageUser.EntourageUserWrapper
-import social.entourage.android.api.model.EntourageUser.EntourageUsersWrapper
+import social.entourage.android.api.model.EntourageUser.EntourageUserListResponse
 import social.entourage.android.entourage.information.FeedItemInformationPresenter
 import java.util.*
 import javax.inject.Inject
@@ -41,8 +39,8 @@ class TourInformationPresenter @Inject constructor(
         when (feedItemType) {
             TimestampedObject.TOUR_CARD -> {
                 val call = tourRequest.retrieveTourById(feedItemUUID)
-                call.enqueue(object : Callback<TourWrapper> {
-                    override fun onResponse(call: Call<TourWrapper>, response: Response<TourWrapper>) {
+                call.enqueue(object : Callback<TourResponse> {
+                    override fun onResponse(call: Call<TourResponse>, response: Response<TourResponse>) {
                         response.body()?.tour?.let {
                             if (response.isSuccessful) {
                                 fragment.onFeedItemReceived(it)
@@ -52,7 +50,7 @@ class TourInformationPresenter @Inject constructor(
                         fragment.onFeedItemNotFound()
                     }
 
-                    override fun onFailure(call: Call<TourWrapper>, t: Throwable) {
+                    override fun onFailure(call: Call<TourResponse>, t: Throwable) {
                         fragment.onFeedItemNotFound()
                     }
                 })
@@ -79,19 +77,19 @@ class TourInformationPresenter @Inject constructor(
         fragment.showProgressBar()
         when (feedItem.type) {
             TimestampedObject.TOUR_CARD -> {
-                feedItem.uuid?.let {
-                    tourRequest.retrieveTourUsers(it).enqueue(object : Callback<EntourageUsersWrapper> {
-                        override fun onResponse(call: Call<EntourageUsersWrapper>, response: Response<EntourageUsersWrapper>) {
-                            response.body()?.users?.let {
+                feedItem.uuid?.let { uuid ->
+                    tourRequest.retrieveTourUsers(uuid).enqueue(object : Callback<EntourageUserListResponse> {
+                        override fun onResponse(call: Call<EntourageUserListResponse>, response: Response<EntourageUserListResponse>) {
+                            response.body()?.users?.let { users->
                                 if (response.isSuccessful) {
-                                    fragment.onFeedItemUsersReceived(it, context)
+                                    fragment.onFeedItemUsersReceived(users, context)
                                     return
                                 }
                             }
                             fragment.onFeedItemNoUserReceived()
                         }
 
-                        override fun onFailure(call: Call<EntourageUsersWrapper>, t: Throwable) {
+                        override fun onFailure(call: Call<EntourageUserListResponse>, t: Throwable) {
                             fragment.onFeedItemNoUserReceived()
                         }
                     })
@@ -113,19 +111,19 @@ class TourInformationPresenter @Inject constructor(
         fragment.showProgressBar()
         when (feedItem.type) {
             TimestampedObject.TOUR_CARD -> {
-                feedItem.uuid?.let {
-                    tourRequest.retrieveTourMessages(it, lastMessageDate).enqueue(object : Callback<ChatMessagesWrapper> {
-                        override fun onResponse(call: Call<ChatMessagesWrapper>, response: Response<ChatMessagesWrapper>) {
-                            response.body()?.chatMessages?.let {
+                feedItem.uuid?.let {uuid->
+                    tourRequest.retrieveTourMessages(uuid, lastMessageDate).enqueue(object : Callback<ChatMessageListResponse> {
+                        override fun onResponse(call: Call<ChatMessageListResponse>, response: Response<ChatMessageListResponse>) {
+                            response.body()?.chatMessages?.let {messages->
                                 if (response.isSuccessful) {
-                                    fragment.onFeedItemMessagesReceived(it)
+                                    fragment.onFeedItemMessagesReceived(messages)
                                     return
                                 }
                             }
                             fragment.onFeedItemNoNewMessages()
                         }
 
-                        override fun onFailure(call: Call<ChatMessagesWrapper>, t: Throwable) {
+                        override fun onFailure(call: Call<ChatMessageListResponse>, t: Throwable) {
                             fragment.onFeedItemNoNewMessages()
                         }
                     })
@@ -147,18 +145,18 @@ class TourInformationPresenter @Inject constructor(
         when (feedItem.type) {
             TimestampedObject.TOUR_CARD -> {
                 feedItem.uuid?.let {
-                    tourRequest.chatMessage(it, chatMessageWrapper).enqueue(object : Callback<ChatMessageWrapper> {
-                        override fun onResponse(call: Call<ChatMessageWrapper>, response: Response<ChatMessageWrapper>) {
-                            response.body()?.chatMessage?.let {
+                    tourRequest.addChatMessage(it, chatMessageWrapper).enqueue(object : Callback<ChatMessageResponse> {
+                        override fun onResponse(call: Call<ChatMessageResponse>, response: Response<ChatMessageResponse>) {
+                            response.body()?.chatMessage?.let {message->
                                 if (response.isSuccessful) {
-                                    fragment.onFeedItemMessageSent(it)
+                                    fragment.onFeedItemMessageSent(message)
                                     return
                                 }
                             }
                             fragment.onFeedItemMessageSent(null)
                         }
 
-                        override fun onFailure(call: Call<ChatMessageWrapper>, t: Throwable) {
+                        override fun onFailure(call: Call<ChatMessageResponse>, t: Throwable) {
                             fragment.onFeedItemMessageSent(null)
                         }
                     })
@@ -175,18 +173,18 @@ class TourInformationPresenter @Inject constructor(
     fun getFeedItemEncounters(tour: Tour) {
         tour.uuid?.let {
             fragment.showProgressBar()
-            tourRequest.retrieveTourEncounters(it).enqueue(object : Callback<EncounterListWrapper> {
-                override fun onResponse(call: Call<EncounterListWrapper>, response: Response<EncounterListWrapper>) {
-                    response.body()?.encounters?.let {
+            tourRequest.retrieveTourEncounters(it).enqueue(object : Callback<EncounterListResponse> {
+                override fun onResponse(call: Call<EncounterListResponse>, response: Response<EncounterListResponse>) {
+                    response.body()?.encounters?.let {encounters ->
                         if (response.isSuccessful) {
-                            fragment.onFeedItemEncountersReceived(it)
+                            fragment.onFeedItemEncountersReceived(encounters)
                             return
                         }
                     }
                     fragment.onFeedItemEncountersReceived(null)
                 }
 
-                override fun onFailure(call: Call<EncounterListWrapper>, t: Throwable) {
+                override fun onFailure(call: Call<EncounterListResponse>, t: Throwable) {
                     fragment.onFeedItemEncountersReceived(null)
                 }
             })
@@ -241,8 +239,8 @@ class TourInformationPresenter @Inject constructor(
 
     private fun rejectJoinRequest(tourUUID: String, userId: Int) {
         val call = tourRequest.removeUserFromTour(tourUUID, userId)
-        call.enqueue(object : Callback<EntourageUserWrapper> {
-            override fun onResponse(call: Call<EntourageUserWrapper>, response: Response<EntourageUserWrapper>) {
+        call.enqueue(object : Callback<EntourageUserResponse> {
+            override fun onResponse(call: Call<EntourageUserResponse>, response: Response<EntourageUserResponse>) {
                 if (response.isSuccessful) {
                     fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, EntourageError.ERROR_NONE)
                 } else {
@@ -250,7 +248,7 @@ class TourInformationPresenter @Inject constructor(
                 }
             }
 
-            override fun onFailure(call: Call<EntourageUserWrapper>, t: Throwable) {
+            override fun onFailure(call: Call<EntourageUserResponse>, t: Throwable) {
                 fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, EntourageError.ERROR_NETWORK)
             }
         })

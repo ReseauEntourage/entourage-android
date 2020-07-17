@@ -12,10 +12,7 @@ import social.entourage.android.api.model.Invitation
 
 //class InvitationWrapper(@field:SerializedName("invite") var invitation: Invitation)
 
-class InvitationListResponse {
-    @SerializedName("invitations")
-    lateinit var invitations: List<Invitation>
-}
+class InvitationListResponse(@field:SerializedName("invitations") var invitations: List<Invitation>)
 
 interface InvitationRequest {
     @PUT("invitations/{invitation_id}")

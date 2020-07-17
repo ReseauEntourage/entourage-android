@@ -17,7 +17,4 @@ class PartnerWrapper(@field:SerializedName("partner") var partner: Partner)
 
 class PartnerResponse(@field:SerializedName("partner") var partner: Partner)
 
-class PartnersResponse {
-    @SerializedName("partners")
-    var partners: List<Partner>? = null
-}
+class PartnersResponse(@field:SerializedName("partners") var partners: List<Partner>)

@@ -51,7 +51,7 @@ public interface EntourageRequest {
     );
 
     @GET("entourages/{entourage_id}/users")
-    Call<EntourageUser.EntourageUsersWrapper> retrieveEntourageUsers(
+    Call<EntourageUser.EntourageUserListResponse> retrieveEntourageUsers(
             @Path("entourage_id") String entourageUUID,
             @Query("context") String context
     );
@@ -82,12 +82,12 @@ public interface EntourageRequest {
     );
 
     @GET("entourages/{entourage_id}/chat_messages.json")
-    Call<ChatMessage.ChatMessagesWrapper> retrieveEntourageMessages(
+    Call<ChatMessage.ChatMessageListResponse> retrieveEntourageMessages(
             @Path("entourage_id") String entourageUUID
     );
 
     @GET("entourages/{entourage_id}/chat_messages.json")
-    Call<ChatMessage.ChatMessagesWrapper> retrieveEntourageMessages(
+    Call<ChatMessage.ChatMessageListResponse> retrieveEntourageMessages(
             @Path("entourage_id") String entourageUUID,
             @Query("before") Date pagination
     );

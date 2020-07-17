@@ -98,15 +98,15 @@ class NewsfeedPresenter @Inject constructor(
             }
             TimestampedObject.TOUR_CARD -> {
                 val call = tourRequest.retrieveTourById(feedItemUUID)
-                call.enqueue(object : Callback<TourWrapper> {
-                    override fun onResponse(call: Call<TourWrapper>, response: Response<TourWrapper>) {
+                call.enqueue(object : Callback<TourResponse> {
+                    override fun onResponse(call: Call<TourResponse>, response: Response<TourResponse>) {
                         response.body()?.tour?.let {
                             if (response.isSuccessful) {
                                 openFeedItem(it, invitationId, 0)
                             }
                         }
                     }
-                    override fun onFailure(call: Call<TourWrapper>, t: Throwable) {
+                    override fun onFailure(call: Call<TourResponse>, t: Throwable) {
                     }
                 })
             }

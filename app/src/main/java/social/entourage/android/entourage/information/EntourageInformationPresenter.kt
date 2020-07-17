@@ -10,13 +10,13 @@ import social.entourage.android.api.EntourageRequest
 import social.entourage.android.api.InvitationRequest
 import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.model.ChatMessage.ChatMessageWrapper
-import social.entourage.android.api.model.ChatMessage.ChatMessagesWrapper
+import social.entourage.android.api.model.ChatMessage.ChatMessageListResponse
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.BaseEntourage.EntourageWrapper
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.EntourageUser.EntourageUserWrapper
-import social.entourage.android.api.model.EntourageUser.EntourageUsersWrapper
+import social.entourage.android.api.model.EntourageUser.EntourageUserListResponse
 import java.util.*
 import javax.inject.Inject
 
@@ -73,8 +73,8 @@ class EntourageInformationPresenter @Inject constructor(
         when (feedItem.type) {
             TimestampedObject.ENTOURAGE_CARD -> {
                 val call = entourageRequest.retrieveEntourageUsers(feedItem.uuid, context)
-                call.enqueue(object : Callback<EntourageUsersWrapper> {
-                    override fun onResponse(call: Call<EntourageUsersWrapper>, response: Response<EntourageUsersWrapper>) {
+                call.enqueue(object : Callback<EntourageUserListResponse> {
+                    override fun onResponse(call: Call<EntourageUserListResponse>, response: Response<EntourageUserListResponse>) {
                         response.body()?.let {
                             if (response.isSuccessful) {
                                 fragment.onFeedItemUsersReceived(it.users, context)
@@ -84,7 +84,7 @@ class EntourageInformationPresenter @Inject constructor(
                         fragment.onFeedItemNoUserReceived()
                     }
 
-                    override fun onFailure(call: Call<EntourageUsersWrapper>, t: Throwable) {
+                    override fun onFailure(call: Call<EntourageUserListResponse>, t: Throwable) {
                         fragment.onFeedItemNoUserReceived()
                     }
                 })
@@ -104,8 +104,8 @@ class EntourageInformationPresenter @Inject constructor(
         when (feedItem.type) {
             TimestampedObject.ENTOURAGE_CARD -> {
                 val call = entourageRequest.retrieveEntourageMessages(feedItem.uuid, lastMessageDate)
-                call.enqueue(object : Callback<ChatMessagesWrapper> {
-                    override fun onResponse(call: Call<ChatMessagesWrapper>, response: Response<ChatMessagesWrapper>) {
+                call.enqueue(object : Callback<ChatMessageListResponse> {
+                    override fun onResponse(call: Call<ChatMessageListResponse>, response: Response<ChatMessageListResponse>) {
                         response.body()?.let {
                             if (response.isSuccessful) {
                                 fragment.onFeedItemMessagesReceived(it.chatMessages)
@@ -115,7 +115,7 @@ class EntourageInformationPresenter @Inject constructor(
                         fragment.onFeedItemNoNewMessages()
                     }
 
-                    override fun onFailure(call: Call<ChatMessagesWrapper>, t: Throwable) {
+                    override fun onFailure(call: Call<ChatMessageListResponse>, t: Throwable) {
                         fragment.onFeedItemNoNewMessages()
                     }
                 })

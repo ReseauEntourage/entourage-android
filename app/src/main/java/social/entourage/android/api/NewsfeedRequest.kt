@@ -10,11 +10,7 @@ import social.entourage.android.api.model.feed.NewsfeedItem
 /**
  * Created by mihaiionescu on 05/05/16.
  */
-class NewsfeedItemResponse {
-    @SerializedName("feeds")
-    lateinit var newsfeedItems: List<NewsfeedItem>
-
-}
+class NewsfeedItemResponse(@field:SerializedName("feeds") var newsfeedItems: List<NewsfeedItem>)
 
 interface NewsfeedRequest {
     @GET("feeds")

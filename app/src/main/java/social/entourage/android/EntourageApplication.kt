@@ -53,7 +53,7 @@ class EntourageApplication : MultiDexApplication() {
 
     private fun setupDagger() {
         entourageComponent = DaggerEntourageComponent.builder()
-                .entourageModule(EntourageModule(this))
+                .entourageApplicationModule(EntourageApplicationModule(this))
                 .apiModule(ApiModule())
                 .authenticationModule(AuthenticationModule())
                 .build()

@@ -2,6 +2,7 @@ package social.entourage.android.tour.join
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,8 +34,8 @@ class TourJoinRequestViewModel : ViewModel() {
         val joinMessageWrapper = TourJoinMessageWrapper()
         joinMessageWrapper.joinMessage = TourJoinMessage(message.trim { it <= ' ' })
         tour.uuid?.let {
-            tourRequest.updateJoinTourMessage(it, me.id, joinMessageWrapper).enqueue(object : Callback<EntourageUserWrapper> {
-                override fun onResponse(call: Call<EntourageUserWrapper>, response: Response<EntourageUserWrapper>) {
+            tourRequest.updateJoinTourMessage(it, me.id, joinMessageWrapper).enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     if (response.isSuccessful) {
                         requestResult.value = REQUEST_OK
                     } else {
@@ -42,7 +43,7 @@ class TourJoinRequestViewModel : ViewModel() {
                     }
                 }
 
-                override fun onFailure(call: Call<EntourageUserWrapper>, t: Throwable) {
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     requestResult.value = REQUEST_ERROR
                 }
             })

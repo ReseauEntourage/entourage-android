@@ -9,9 +9,9 @@ import social.entourage.android.api.model.tour.Encounter
 
 class EncounterResponse(val encounter: Encounter)
 
-class EncounterWrapper (var encounter: Encounter? = null)
+class EncounterWrapper (var encounter: Encounter)
 
-class EncounterListWrapper (var encounters: List<Encounter>? = null)
+class EncounterListResponse (var encounters: List<Encounter>)
 
 interface EncounterRequest {
     @POST("tours/{tour_id}/encounters.json")
