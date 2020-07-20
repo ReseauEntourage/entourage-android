@@ -15,13 +15,13 @@ import javax.inject.Singleton
 class AuthenticationModule {
     @Provides
     @Singleton
-    fun providesAuthenticationController(userSharedPref: ComplexPreferences?): AuthenticationController {
-        return AuthenticationController(userSharedPref!!).init()
+    fun providesAuthenticationController(userSharedPref: ComplexPreferences): AuthenticationController {
+        return AuthenticationController(userSharedPref).init()
     }
 
     @Provides
     @Singleton
-    fun providesUserSharedPreferences(application: Application?): ComplexPreferences {
-        return getComplexPreferences(application!!, "userPref", Context.MODE_PRIVATE)
+    fun providesUserSharedPreferences(application: Application): ComplexPreferences {
+        return getComplexPreferences(application, "userPref", Context.MODE_PRIVATE)
     }
 }

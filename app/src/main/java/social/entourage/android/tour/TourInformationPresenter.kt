@@ -4,8 +4,8 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import social.entourage.android.EntourageError
-import social.entourage.android.EntourageEvents
+import social.entourage.android.tools.EntourageError
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.model.ChatMessage.ChatMessageWrapper
 import social.entourage.android.api.model.ChatMessage.ChatMessageResponse

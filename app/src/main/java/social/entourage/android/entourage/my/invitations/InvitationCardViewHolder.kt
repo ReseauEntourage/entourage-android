@@ -2,7 +2,7 @@ package social.entourage.android.entourage.my.invitations
 
 import android.view.View
 import kotlinx.android.synthetic.main.layout_invitation_card.view.*
-import social.entourage.android.EntourageEvents
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.TimestampedObject

@@ -55,13 +55,15 @@ import social.entourage.android.api.tape.Events.OnTourEncounterViewRequestedEven
 import social.entourage.android.api.tape.Events.OnUnauthorizedEvent;
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent;
 import social.entourage.android.authentication.AuthenticationController;
-import social.entourage.android.authentication.UserPreferences;
+import social.entourage.android.base.BackPressable;
+import social.entourage.android.base.EntourageSecuredActivity;
 import social.entourage.android.configuration.Configuration;
 import social.entourage.android.deeplinks.DeepLinksManager;
 import social.entourage.android.entourage.EntourageDisclaimerFragment;
 import social.entourage.android.entourage.information.EntourageInformationFragment;
 import social.entourage.android.map.filter.MapFilter;
 import social.entourage.android.map.filter.MapFilterFactory;
+import social.entourage.android.tools.log.EntourageEvents;
 import social.entourage.android.user.edit.UserEditActionZoneFragment;
 import social.entourage.android.onboarding.OnboardingPhotoFragment;
 import social.entourage.android.user.edit.UserEditActionZoneFragmentCompat;
@@ -446,7 +448,7 @@ public class MainActivity extends EntourageSecuredActivity
                 createEntourage();
                 return true;
             }
-            else if (authenticationController != null && authenticationController.getSavedTour()!=null) {
+            else if (getAuthenticationController() != null && getAuthenticationController().getSavedTour()!=null) {
                 // Show directly the create encounter
                 //TODO should be bound to service
                 addEncounter();
@@ -548,7 +550,7 @@ public class MainActivity extends EntourageSecuredActivity
         //remove user phone
         final SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        User me = authenticationController.getMe();
+        User me = getAuthenticationController().getMe();
         if(me != null) {
             HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, new HashSet<>());
             loggedNumbers.remove(me.phone);
@@ -851,15 +853,15 @@ public class MainActivity extends EntourageSecuredActivity
     }
 
     public void showEditActionZoneFragment(UserEditActionZoneFragment.FragmentListener extraFragmentListener,Boolean isSecondaryAddress) {
-        if (!authenticationController.isAuthenticated()) {
+        if (!getAuthenticationController().isAuthenticated()) {
             return;
         }
-        User me = authenticationController.getMe();
+        User me = getAuthenticationController().getMe();
         if(me==null || ( me.address !=null && me.address.displayAddress.length() > 0)) {
             return;
         }
 
-        if(authenticationController.getEditActionZoneShown() || authenticationController.isIgnoringActionZone()) {
+        if(getAuthenticationController().getEditActionZoneShown() || getAuthenticationController().isIgnoringActionZone()) {
             return; //noNeedToShowEditScreen
         }
 
@@ -877,7 +879,7 @@ public class MainActivity extends EntourageSecuredActivity
             userEditActionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
         }
 
-        authenticationController.setEditActionZoneShown(true);
+        getAuthenticationController().setEditActionZoneShown(true);
     }
 
     @Override
@@ -896,8 +898,8 @@ public class MainActivity extends EntourageSecuredActivity
     }
 
     private void storeActionZone(final boolean ignoreZone) {
-        if (authenticationController.isAuthenticated()) {
-            authenticationController.setIgnoringActionZone(ignoreZone);
+        if (getAuthenticationController().isAuthenticated()) {
+            getAuthenticationController().setIgnoringActionZone(ignoreZone);
         }
         UserEditActionZoneFragmentCompat fragment = (UserEditActionZoneFragmentCompat)getSupportFragmentManager().findFragmentByTag(UserEditActionZoneFragmentCompat.TAG);
         if (fragment != null && !fragment.isStateSaved()) {

@@ -29,7 +29,8 @@ import social.entourage.android.entourage.my.filter.MyEntouragesFilter
 import social.entourage.android.service.EntourageService
 import social.entourage.android.service.EntourageService.LocalBinder
 import social.entourage.android.tools.BusProvider.instance
-import social.entourage.android.view.EntourageSnackbar.make
+import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.view.EntourageSnackbar.make
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject

@@ -4,8 +4,8 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import social.entourage.android.EntourageActivity
-import social.entourage.android.EntourageEvents
+import social.entourage.android.base.EntourageActivity
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 
 class RateActivity : EntourageActivity() {

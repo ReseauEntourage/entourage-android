@@ -26,7 +26,7 @@ import com.google.android.libraries.places.compat.ui.PlaceSelectionListener
 import com.google.android.libraries.places.compat.ui.SupportPlaceAutocompleteFragment
 import kotlinx.android.synthetic.main.fragment_entourage_location.*
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.EntourageSecuredActivity
+import social.entourage.android.base.EntourageSecuredActivity
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted
 import social.entourage.android.base.EntourageDialogFragment

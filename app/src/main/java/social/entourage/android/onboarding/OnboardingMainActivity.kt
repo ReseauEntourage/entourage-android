@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_onboarding_main.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageApplication.Companion.get
-import social.entourage.android.EntourageEvents
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
@@ -29,7 +29,7 @@ import social.entourage.android.onboarding.sdf_neighbour.SdfNeighbourActivities
 import social.entourage.android.tools.Utils.checkPhoneNumberFormat
 import social.entourage.android.tools.disable
 import social.entourage.android.tools.enable
-import social.entourage.android.view.CustomProgressDialog
+import social.entourage.android.tools.view.CustomProgressDialog
 import timber.log.Timber
 import java.io.File
 import java.util.*

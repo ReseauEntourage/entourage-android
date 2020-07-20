@@ -33,11 +33,12 @@ import social.entourage.android.user.edit.UserEditFragment
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragmentCompat
 import social.entourage.android.user.edit.photo.PhotoEditFragment
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * Created by Mihai Ionescu on 27/04/2018.
  */
-abstract class MainPresenter internal constructor(
+ class MainPresenter @Inject internal constructor(
         protected val activity: MainActivity,
         private val applicationInfoRequest: ApplicationInfoRequest,
         private val userRequest: UserRequest) : AvatarUpdatePresenter {
@@ -49,7 +50,7 @@ abstract class MainPresenter internal constructor(
     // ----------------------------------
     // MENU HANDLING
     // ----------------------------------
-    protected open fun handleMenu(@IdRes menuId: Int) {
+    fun handleMenu(@IdRes menuId: Int) {
         when (menuId) {
             R.id.action_user -> {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_TAP_MY_PROFILE)

@@ -51,8 +51,9 @@ import social.entourage.android.map.filter.MapFilterFragment
 import social.entourage.android.map.permissions.NoLocationPermissionFragment
 import social.entourage.android.service.EntourageService
 import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.user.edit.UserEditActionZoneFragment.FragmentListener
-import social.entourage.android.view.EntourageSnackbar
+import social.entourage.android.tools.view.EntourageSnackbar
 import java.util.*
 import javax.inject.Inject
 

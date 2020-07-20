@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.text.format.DateFormat
 import kotlinx.android.synthetic.main.activity_encounter_read.*
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.EntourageActivity
-import social.entourage.android.EntourageEvents
+import social.entourage.android.base.EntourageActivity
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.tour.Encounter
 import java.io.IOException

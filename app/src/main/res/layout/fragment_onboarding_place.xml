@@ -10,7 +10,7 @@ android:focusableInTouchMode="true"
 android:id="@+id/onboard_phone_mainlayout"
 tools:context="social.entourage.android.onboarding.OnboardingPlaceFragment">
 
-    <social.entourage.android.view.EntourageTitleView
+    <social.entourage.android.tools.view.EntourageTitleView
         android:id="@+id/edit_place_title_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

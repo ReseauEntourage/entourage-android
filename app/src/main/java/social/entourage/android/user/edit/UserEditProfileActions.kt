@@ -10,7 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import kotlinx.android.synthetic.main.fragment_user_edit_profile_actions.*
 import social.entourage.android.EntourageApplication
-import social.entourage.android.EntourageEvents
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.base.EntourageDialogFragment
@@ -19,7 +19,7 @@ import social.entourage.android.onboarding.asso.AssoActivities
 import social.entourage.android.onboarding.sdf_neighbour.SdfNeighbourActivities
 import social.entourage.android.tools.disable
 import social.entourage.android.tools.enable
-import social.entourage.android.view.CustomProgressDialog
+import social.entourage.android.tools.view.CustomProgressDialog
 import timber.log.Timber
 
 private const val ARG_PARAM1 = "param1"

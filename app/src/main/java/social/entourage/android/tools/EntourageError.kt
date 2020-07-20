@@ -1,4 +1,4 @@
-package social.entourage.android
+package social.entourage.android.tools
 
 /**
  * Entourage Errors

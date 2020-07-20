@@ -12,9 +12,11 @@ import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.authentication.AuthenticationModule
+import social.entourage.android.base.EntourageActivity
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.newsfeed.UserFeedItemListCache
 import social.entourage.android.onboarding.login.LoginNewActivity
+import social.entourage.android.tools.LibrariesSupport
 import timber.log.Timber
 import java.util.*
 

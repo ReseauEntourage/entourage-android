@@ -8,11 +8,12 @@ import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.activity_login_new.*
 import social.entourage.android.*
 import social.entourage.android.api.OnboardingAPI
+import social.entourage.android.base.EntourageActivity
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
 import social.entourage.android.tools.Utils
 import social.entourage.android.tools.hideKeyboard
-import social.entourage.android.view.CustomProgressDialog
-import timber.log.Timber
+import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.view.CustomProgressDialog
 import java.util.*
 
 

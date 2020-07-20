@@ -1,4 +1,4 @@
-package social.entourage.android;
+package social.entourage.android.base;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,6 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import social.entourage.android.BuildConfig;
+import social.entourage.android.EntourageApplication;
+import social.entourage.android.EntourageComponent;
+import social.entourage.android.R;
 import social.entourage.android.tools.view.WebViewFragment;
 
 /**

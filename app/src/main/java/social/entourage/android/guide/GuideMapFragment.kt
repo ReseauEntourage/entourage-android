@@ -42,7 +42,8 @@ import social.entourage.android.map.BaseMapFragment
 import social.entourage.android.service.EntourageService
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.Utils
-import social.entourage.android.view.EntourageSnackbar
+import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.view.EntourageSnackbar
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject

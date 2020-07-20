@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.layout_invite_source.*
 import kotlinx.android.synthetic.main.layout_public_entourage_information.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageComponent
-import social.entourage.android.EntourageEvents
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.TimestampedObject
@@ -32,7 +32,7 @@ import social.entourage.android.location.EntourageLocation
 import social.entourage.android.map.OnAddressClickListener
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.Utils
-import social.entourage.android.view.EntourageSnackbar
+import social.entourage.android.tools.view.EntourageSnackbar
 import java.util.*
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package social.entourage.android.view.countrycodepicker
+package social.entourage.android.tools.view.countrycodepicker
 
 class Country(var iso: String, var phoneCode: String, var name: String) {
 

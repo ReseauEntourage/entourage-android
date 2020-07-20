@@ -6,7 +6,7 @@
     android:background="@color/pale_grey"
     tools:context=".entourage.category.EntourageCategoryFragment">
 
-    <social.entourage.android.view.EntourageTitleView
+    <social.entourage.android.tools.view.EntourageTitleView
         android:id="@+id/entourage_category_header_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
 
     <view
         android:id="@+id/entourage_category_help_link"
-        class="social.entourage.android.view.HtmlTextView"
+        class="social.entourage.android.tools.view.HtmlTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

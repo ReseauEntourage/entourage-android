@@ -27,10 +27,12 @@ import social.entourage.android.api.model.BaseOrganization
 import social.entourage.android.api.model.User
 import social.entourage.android.api.tape.Events.OnPartnerViewRequestedEvent
 import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
+import social.entourage.android.base.EntourageActivity
 import social.entourage.android.base.EntourageDialogFragment
-import social.entourage.android.partner.PartnerFragmentV2
+import social.entourage.android.user.partner.PartnerFragmentV2
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.CropCircleTransformation
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.user.UserFragment
 import social.entourage.android.user.UserOrganizationsAdapter
 import social.entourage.android.user.edit.UserEditActionZoneFragment.FragmentListener

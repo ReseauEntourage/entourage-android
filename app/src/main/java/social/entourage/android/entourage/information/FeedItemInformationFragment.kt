@@ -64,8 +64,10 @@ import social.entourage.android.service.EntourageService
 import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.CropCircleTransformation
+import social.entourage.android.tools.EntourageError
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.tour.TourInformationFragment
-import social.entourage.android.view.EntourageSnackbar
+import social.entourage.android.tools.view.EntourageSnackbar
 import timber.log.Timber
 import java.text.DateFormat
 import java.text.SimpleDateFormat

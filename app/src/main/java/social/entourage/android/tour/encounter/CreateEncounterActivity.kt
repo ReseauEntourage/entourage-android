@@ -14,8 +14,8 @@ import com.google.android.libraries.places.compat.Place
 import kotlinx.android.synthetic.main.activity_encounter_create.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.EntourageComponent
-import social.entourage.android.EntourageEvents
-import social.entourage.android.EntourageSecuredActivity
+import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.base.EntourageSecuredActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.tour.Encounter
 import social.entourage.android.api.tape.Events.OnEncounterCreated

@@ -1,4 +1,4 @@
-package social.entourage.android.view.countrycodepicker
+package social.entourage.android.tools.view.countrycodepicker
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.layout_code_picker_tile.view.*
 import social.entourage.android.R
-import social.entourage.android.view.countrycodepicker.CountryCodeAdapter.CountryCodeViewHolder
+import social.entourage.android.tools.view.countrycodepicker.CountryCodeAdapter.CountryCodeViewHolder
 
 internal class CountryCodeAdapter(private val mCountries: List<Country?>, private val mCountryCodePicker: CountryCodePicker, private val mCallback: Callback) : RecyclerView.Adapter<CountryCodeViewHolder>() {
 

@@ -7,7 +7,7 @@
               android:background="@color/background_light"
               tools:context=".MainActivity">
 
-    <social.entourage.android.view.EntourageTitleView
+    <social.entourage.android.tools.view.EntourageTitleView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:entourageTitle="@string/activity_read_encounter_title"

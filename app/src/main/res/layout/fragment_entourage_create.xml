@@ -9,7 +9,7 @@
     android:windowSoftInputMode="adjustPan"
     tools:context=".entourage.create.CreateEntourageFragment">
 
-    <social.entourage.android.view.EntourageTitleView
+    <social.entourage.android.tools.view.EntourageTitleView
         android:id="@+id/create_entourage_fragment_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -452,7 +452,7 @@
 
                 <view
                     android:id="@+id/create_entourage_help_link"
-                    class="social.entourage.android.view.HtmlTextView"
+                    class="social.entourage.android.tools.view.HtmlTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"

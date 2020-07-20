@@ -25,7 +25,7 @@
             android:scaleType="centerInside"
             android:src="@drawable/ic_user_photo_small"/>
 
-        <social.entourage.android.view.PartnerLogoImageView
+        <social.entourage.android.tools.view.PartnerLogoImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:id="@+id/tic_chat_user_partner_logo"
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bubble_left">
 
-            <social.entourage.android.view.HtmlTextView
+            <social.entourage.android.tools.view.HtmlTextView
                 android:id="@+id/tic_chat_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

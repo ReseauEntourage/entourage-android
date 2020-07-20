@@ -11,10 +11,10 @@ import androidx.annotation.StringRes
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_user_edit_password.*
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.EntourageEvents
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.base.EntourageDialogFragment
-import social.entourage.android.view.EntourageSnackbar
+import social.entourage.android.tools.view.EntourageSnackbar
 
 class UserEditPasswordFragment  : EntourageDialogFragment() {
     // ----------------------------------

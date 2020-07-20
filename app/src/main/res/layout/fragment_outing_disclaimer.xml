@@ -7,7 +7,7 @@
               android:background="@color/pale_grey"
     >
 
-    <social.entourage.android.view.EntourageTitleView
+    <social.entourage.android.tools.view.EntourageTitleView
         android:id="@+id/entourage_disclaimer_title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

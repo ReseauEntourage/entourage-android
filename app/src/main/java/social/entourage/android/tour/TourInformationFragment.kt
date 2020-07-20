@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.location.Location
-import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -20,7 +19,7 @@ import kotlinx.android.synthetic.main.layout_invite_source.*
 import kotlinx.android.synthetic.main.layout_public_entourage_information.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageComponent
-import social.entourage.android.EntourageEvents
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.TimestampedObject
@@ -33,7 +32,7 @@ import social.entourage.android.entourage.information.*
 import social.entourage.android.location.EntourageLocation
 import social.entourage.android.newsfeed.BaseNewsfeedFragment
 import social.entourage.android.tools.Utils
-import social.entourage.android.view.EntourageSnackbar
+import social.entourage.android.tools.view.EntourageSnackbar
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject

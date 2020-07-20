@@ -1,4 +1,4 @@
-package social.entourage.android.partner
+package social.entourage.android.user.partner
 
 import android.content.Intent
 import android.net.Uri

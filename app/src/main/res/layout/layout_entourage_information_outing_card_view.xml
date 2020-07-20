@@ -22,7 +22,7 @@
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/ic_event_accent_24dp"/>
 
-    <social.entourage.android.view.HtmlTextView
+    <social.entourage.android.tools.view.HtmlTextView
         android:id="@+id/tic_outing_author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -2,7 +2,7 @@ package social.entourage.android.message.push
 
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import social.entourage.android.EntourageEvents
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.api.tape.Events.OnGCMTokenObtainedEvent
 import social.entourage.android.api.tape.Events.OnPushNotificationReceived
 import social.entourage.android.tools.BusProvider

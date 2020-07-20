@@ -15,7 +15,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
 
-        <social.entourage.android.view.EntourageTitleView
+        <social.entourage.android.tools.view.EntourageTitleView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:entourageTitle="@string/user_profile_display_title"/>
@@ -89,7 +89,7 @@
                     android:contentDescription="@string/user_image_add_photo"
                     android:src="@drawable/bg_user_image_button"/>
 
-                <social.entourage.android.view.PartnerLogoImageView
+                <social.entourage.android.tools.view.PartnerLogoImageView
                     android:id="@+id/user_partner_logo"
                     android:layout_width="63dp"
                     android:layout_height="63dp"

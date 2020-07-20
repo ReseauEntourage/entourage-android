@@ -11,9 +11,10 @@ import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.material.snackbar.Snackbar
 import social.entourage.android.*
 import social.entourage.android.base.EntourageDialogFragment
-import social.entourage.android.view.EntourageSnackbar
+import social.entourage.android.tools.view.EntourageSnackbar
 import kotlinx.android.synthetic.main.fragment_about.*
 import kotlinx.android.synthetic.main.layout_view_title.*
+import social.entourage.android.tools.log.EntourageEvents
 
 abstract class AboutFragment : EntourageDialogFragment() {
     // ----------------------------------

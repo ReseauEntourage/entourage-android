@@ -1,4 +1,4 @@
-package social.entourage.android;
+package social.entourage.android.base;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

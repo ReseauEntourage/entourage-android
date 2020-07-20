@@ -1,4 +1,4 @@
-package social.entourage.android.view
+package social.entourage.android.tools.view
 
 import android.app.Activity
 import androidx.annotation.IdRes

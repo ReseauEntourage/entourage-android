@@ -7,7 +7,7 @@
     android:background="@color/background"
     tools:context=".guide.poi.ReadPoiFragment">
 
-    <social.entourage.android.view.EntourageTitleView
+    <social.entourage.android.tools.view.EntourageTitleView
         android:id="@+id/poi_read_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

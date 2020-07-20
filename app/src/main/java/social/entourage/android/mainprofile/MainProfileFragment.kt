@@ -17,7 +17,7 @@ import social.entourage.android.R
 import social.entourage.android.api.tape.Events
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.CropCircleTransformation
-import social.entourage.android.view.EntourageSnackbar
+import social.entourage.android.tools.view.EntourageSnackbar
 
 /**
  * Side menu fragment

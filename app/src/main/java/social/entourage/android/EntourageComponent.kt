@@ -23,18 +23,18 @@ interface EntourageComponent {
     fun inject(application: Application?)
     fun inject(service: EntourageService?)
     fun inject(service: EncounterTapeService?)
-    val authenticationController: AuthenticationController?
-    val encounterTapeTaskQueue: EncounterTapeTaskQueue?
-    val applicationInfoRequest: ApplicationInfoRequest?
-    val encounterRequest: EncounterRequest?
-    val loginRequest: LoginRequest?
-    val poiRequest: PoiRequest?
-    val tourRequest: TourRequest?
-    val userRequest: UserRequest?
-    val entourageRequest: EntourageRequest?
-    val newsfeedRequest: NewsfeedRequest?
-    val invitationRequest: InvitationRequest?
-    val partnerRequest: PartnerRequest?
-    val okHttpClient: OkHttpClient?
+    val authenticationController: AuthenticationController
+    val encounterTapeTaskQueue: EncounterTapeTaskQueue
+    val applicationInfoRequest: ApplicationInfoRequest
+    //val encounterRequest: EncounterRequest?
+    val loginRequest: LoginRequest
+    val poiRequest: PoiRequest
+    val tourRequest: TourRequest
+    val userRequest: UserRequest
+    val entourageRequest: EntourageRequest
+    val newsfeedRequest: NewsfeedRequest
+    val invitationRequest: InvitationRequest
+    val partnerRequest: PartnerRequest
+    val okHttpClient: OkHttpClient
     val complexPreferences: ComplexPreferences?
 }

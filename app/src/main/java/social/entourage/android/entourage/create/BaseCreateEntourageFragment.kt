@@ -32,6 +32,7 @@ import social.entourage.android.entourage.category.EntourageCategoryFragment
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.location.LocationFragment
 import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.log.EntourageEvents
 import timber.log.Timber
 import java.io.IOException
 import java.text.DateFormat

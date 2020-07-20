@@ -33,11 +33,12 @@ import social.entourage.android.map.filter.MapFilterFactory
 import social.entourage.android.map.filter.MapFilterFragment
 import social.entourage.android.service.EntourageService
 import social.entourage.android.service.TourServiceListener
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.tour.TourFilter
 import social.entourage.android.tour.TourFilterFragment
 import social.entourage.android.tour.confirmation.TourEndConfirmationFragment
 import social.entourage.android.tour.encounter.CreateEncounterActivity
-import social.entourage.android.view.EntourageSnackbar
+import social.entourage.android.tools.view.EntourageSnackbar
 import java.util.*
 
 class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {

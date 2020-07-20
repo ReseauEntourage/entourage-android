@@ -1,11 +1,15 @@
-package social.entourage.android;
+package social.entourage.android.base;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import javax.inject.Inject;
 
+import social.entourage.android.BuildConfig;
+import social.entourage.android.EntourageApplication;
+import social.entourage.android.R;
 import social.entourage.android.authentication.AuthenticationController;
+import social.entourage.android.base.EntourageActivity;
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity;
 
 /**
@@ -29,7 +33,7 @@ public abstract class EntourageSecuredActivity extends EntourageActivity {
         }
     }
 
-    protected AuthenticationController getAuthenticationController() {
+    public AuthenticationController getAuthenticationController() {
         return authenticationController;
     }
 

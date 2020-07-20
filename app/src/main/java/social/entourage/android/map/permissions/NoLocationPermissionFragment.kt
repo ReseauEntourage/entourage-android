@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.fragment_no_location_permission.*
-import social.entourage.android.EntourageEvents
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 
 class NoLocationPermissionFragment : DialogFragment() {

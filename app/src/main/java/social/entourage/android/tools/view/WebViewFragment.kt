@@ -1,4 +1,4 @@
-package social.entourage.android.webview
+package social.entourage.android.tools.view
 
 import android.annotation.TargetApi
 import android.content.ClipData
