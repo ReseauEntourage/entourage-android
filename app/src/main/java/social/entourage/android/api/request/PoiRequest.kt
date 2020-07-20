@@ -1,4 +1,4 @@
-package social.entourage.android.api
+package social.entourage.android.api.request
 
 import retrofit2.Call
 import retrofit2.http.GET

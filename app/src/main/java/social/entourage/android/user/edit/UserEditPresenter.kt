@@ -4,8 +4,8 @@ import androidx.collection.ArrayMap
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import social.entourage.android.api.UserRequest
-import social.entourage.android.api.UserResponse
+import social.entourage.android.api.request.UserRequest
+import social.entourage.android.api.request.UserResponse
 import social.entourage.android.api.model.User
 import social.entourage.android.authentication.AuthenticationController
 import javax.inject.Inject

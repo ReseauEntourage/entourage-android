@@ -1,4 +1,4 @@
-package social.entourage.android
+package social.entourage.android.tools.log
 
 import android.app.ActivityManager
 import android.content.Context
@@ -429,7 +429,7 @@ object EntourageEvents {
     const val ACTION_PLUS_AGIR = "Action__Plus__Agir"
     const val ACTION_PLUS_STRUCTURE = "Action__Plus__Structure"
 
-    var TAG = EntourageEvents::class.java.simpleName
+    var TAG = _root_ide_package_.social.entourage.android.tools.log.EntourageEvents::class.java.simpleName
 
     @JvmStatic
     fun logEvent(event: String) {
@@ -466,7 +466,7 @@ object EntourageEvents {
         val geolocStatus = if (isLocationPermissionGranted()) "YES" else "NO"
         mFirebaseAnalytics.setUserProperty("EntourageGeolocEnable", geolocStatus)
 
-        val notificationsEnabled = get().sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, true)
+        val notificationsEnabled = get().sharedPreferences.getBoolean(_root_ide_package_.social.entourage.android.EntourageApplication.Companion.KEY_NOTIFICATIONS_ENABLED, true)
         mFirebaseAnalytics.setUserProperty("EntourageNotifEnable", if (notificationsEnabled && areNotificationsEnabled) "YES" else "NO")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {

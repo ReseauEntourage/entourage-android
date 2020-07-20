@@ -4,10 +4,9 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import social.entourage.android.api.EntourageRequest
-import social.entourage.android.api.TourRequest
+import social.entourage.android.api.request.EntourageRequest
+import social.entourage.android.api.request.TourRequest
 import social.entourage.android.api.model.EntourageUser.EntourageUserResponse
-import social.entourage.android.api.model.EntourageUser.EntourageUserWrapper
 import social.entourage.android.api.model.feed.FeedItem
 import java.util.*
 import javax.inject.Inject
@@ -50,7 +49,7 @@ class EntourageJoinRequestReceivedPresenter @Inject constructor(
         })
     }
 
-    internal fun acceptEntourageJoinRequest(entourageUUID: String?, userId: Int) {
+    internal fun acceptEntourageJoinRequest(entourageUUID: String, userId: Int) {
         val status = HashMap<String, String>()
         status["status"] = FeedItem.JOIN_STATUS_ACCEPTED
         val user = HashMap<String, Any>()
@@ -67,14 +66,14 @@ class EntourageJoinRequestReceivedPresenter @Inject constructor(
         })
     }
 
-    internal fun rejectEntourageJoinRequest(entourageUUID: String?, userId: Int) {
+    internal fun rejectEntourageJoinRequest(entourageUUID: String, userId: Int) {
         entourageRequest.removeUserFromEntourage(entourageUUID, userId)
-                .enqueue(object : Callback<EntourageUserWrapper> {
-            override fun onResponse(call: Call<EntourageUserWrapper>, response: Response<EntourageUserWrapper>) {
+                .enqueue(object : Callback<EntourageUserResponse> {
+            override fun onResponse(call: Call<EntourageUserResponse>, response: Response<EntourageUserResponse>) {
                 activity?.onUserTourStatusChanged(FeedItem.JOIN_STATUS_REJECTED, response.isSuccessful)
             }
 
-            override fun onFailure(call: Call<EntourageUserWrapper>, t: Throwable) {
+            override fun onFailure(call: Call<EntourageUserResponse>, t: Throwable) {
                 activity?.onUserTourStatusChanged(FeedItem.JOIN_STATUS_REJECTED, false)
             }
         })

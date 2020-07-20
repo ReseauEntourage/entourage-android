@@ -12,11 +12,11 @@ import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.Partner
 import social.entourage.android.api.model.User
+import social.entourage.android.api.request.*
 import social.entourage.android.authentication.AuthenticationController
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.set
 
@@ -73,7 +73,7 @@ class OnboardingAPI(val application: EntourageApplication) {
     /**********************
      * Login
      */
-    fun login(phoneNumber:String,smsCode:String,listener:(isOK:Boolean, loginResponse:LoginResponse?, error:String?) -> Unit) {
+    fun login(phoneNumber:String,smsCode:String,listener:(isOK:Boolean, loginResponse: LoginResponse?, error:String?) -> Unit) {
         loginService.login(LoginWrapper(phoneNumber, smsCode))
                 .enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
@@ -100,7 +100,7 @@ class OnboardingAPI(val application: EntourageApplication) {
     /**********************
      * Send code
      */
-    fun resendCode(phone:String,listener:(isOK:Boolean,loginResponse:UserResponse?,error:String?) -> Unit) {
+    fun resendCode(phone:String,listener:(isOK:Boolean, loginResponse: UserResponse?, error:String?) -> Unit) {
         val user: MutableMap<String, String> = ArrayMap()
         user["phone"] = phone
 
@@ -131,7 +131,7 @@ class OnboardingAPI(val application: EntourageApplication) {
     /**********************
      * user
      */
-    fun updateAddress(userAddress: User.Address, isSecondary:Boolean, listener:(isOK:Boolean,userResponse:UserResponse?) -> Unit) {
+    fun updateAddress(userAddress: User.Address, isSecondary:Boolean, listener:(isOK:Boolean,userResponse: UserResponse?) -> Unit) {
 
         val address: MutableMap<String, Any> = ArrayMap()
         if (userAddress.googlePlaceId.isNullOrEmpty()) {
@@ -167,7 +167,7 @@ class OnboardingAPI(val application: EntourageApplication) {
         })
     }
 
-    fun updateUser(email:String?, listener:(isOK:Boolean, userResponse:UserResponse?) -> Unit) {
+    fun updateUser(email:String?, listener:(isOK:Boolean, userResponse: UserResponse?) -> Unit) {
 
         val user = ArrayMap<String, Any>()
         if (email != null) {
@@ -197,7 +197,7 @@ class OnboardingAPI(val application: EntourageApplication) {
         })
     }
 
-    fun updateUserGoal(goalString:String, listener:(isOK:Boolean, userResponse:UserResponse?) -> Unit) {
+    fun updateUserGoal(goalString:String, listener:(isOK:Boolean, userResponse: UserResponse?) -> Unit) {
 
         val user = ArrayMap<String, Any>()
         user["goal"] = goalString
@@ -221,7 +221,7 @@ class OnboardingAPI(val application: EntourageApplication) {
         })
     }
 
-    fun updateUserPhoto(avatarKey:String, listener: (isOK: Boolean, userResponse:UserResponse?) -> Unit) {
+    fun updateUserPhoto(avatarKey:String, listener: (isOK: Boolean, userResponse: UserResponse?) -> Unit) {
         val user = ArrayMap<String, Any>()
         user["avatar_key"] = avatarKey
         val request = ArrayMap<String, Any>()
@@ -243,7 +243,7 @@ class OnboardingAPI(val application: EntourageApplication) {
         })
     }
 
-    fun getUser(userId:Int, listener:(isOK:Boolean,userResponse:UserResponse?) -> Unit) {
+    fun getUser(userId:Int, listener:(isOK:Boolean,userResponse: UserResponse?) -> Unit) {
 
         val call = onboardingService.getUser(userId)
         call.enqueue(object : Callback<UserResponse> {
@@ -343,7 +343,7 @@ class OnboardingAPI(val application: EntourageApplication) {
         })
     }
 
-    fun updateUserInterests(interest:ArrayList<String>, listener:(isOK:Boolean, userResponse:UserResponse?) -> Unit) {
+    fun updateUserInterests(interest:ArrayList<String>, listener:(isOK:Boolean, userResponse: UserResponse?) -> Unit) {
 
         val user = ArrayMap<String, Any>()
         user["interests"] = interest

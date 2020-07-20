@@ -4,9 +4,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.api.*
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.Invitation
+import social.entourage.android.api.request.*
 import social.entourage.android.entourage.my.filter.MyEntouragesFilter
 import timber.log.Timber
 import javax.inject.Inject
@@ -79,14 +79,14 @@ class MyEntouragesPresenter @Inject constructor(
         fragment.removeOldInvitations(invitationList)
         invitationList.forEach {
             val call = entourageRequest.retrieveEntourageById(it.entourageUUID, 0, 0)
-            call.enqueue(object : Callback<BaseEntourage.EntourageWrapper> {
-                override fun onResponse(call: Call<BaseEntourage.EntourageWrapper>, response: Response<BaseEntourage.EntourageWrapper>) {
+            call.enqueue(object : Callback<EntourageResponse> {
+                override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
                     if (response.isSuccessful && response.body()?.entourage is BaseEntourage) {
                         it.entourage = response.body()?.entourage
                         fragment.addInvitation(it)
                     }
                 }
-                override fun onFailure(call: Call<BaseEntourage.EntourageWrapper>, t: Throwable) {
+                override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
                     Timber.w("Entourage for Invitation not found")
                 }
             })

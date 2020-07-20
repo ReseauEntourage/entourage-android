@@ -1,4 +1,4 @@
-package social.entourage.android.carousel.pages
+package social.entourage.android.about.carousel.pages
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,11 +8,11 @@ import androidx.fragment.app.Fragment
 import social.entourage.android.R
 
 /**
- * Carousel Page 2
+ * Carousel page 4
  */
-class CarouselPage2Fragment : Fragment() {
+class CarouselPage4Fragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? { // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_carousel_page2, container, false)
+        return inflater.inflate(R.layout.fragment_carousel_page4, container, false)
     }
 }

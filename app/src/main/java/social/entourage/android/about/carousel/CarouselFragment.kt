@@ -1,4 +1,4 @@
-package social.entourage.android.carousel
+package social.entourage.android.about.carousel
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -70,6 +70,6 @@ class CarouselFragment  : EntourageDialogFragment() {
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        const val TAG = "social.entourage.android.carousel"
+        const val TAG = "social.entourage.android.about.carousel"
     }
 }

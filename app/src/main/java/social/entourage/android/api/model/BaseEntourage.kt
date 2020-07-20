@@ -368,10 +368,6 @@ open class BaseEntourage : FeedItem, Serializable {
         }
     }
 
-    class EntourageWrapper {
-        lateinit var entourage: BaseEntourage
-    }
-
     class EntourageCloseOutcome(val success: Boolean) : Serializable {
 
         companion object {

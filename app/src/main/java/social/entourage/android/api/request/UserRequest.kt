@@ -1,9 +1,11 @@
-package social.entourage.android.api
+package social.entourage.android.api.request
 
 import androidx.collection.ArrayMap
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
+import social.entourage.android.api.AvatarUploadRequest
+import social.entourage.android.api.AvatarUploadResponse
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserReportWrapper
 import social.entourage.android.user.PrepareAvatarUploadRepository

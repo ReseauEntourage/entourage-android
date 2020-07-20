@@ -10,13 +10,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageEvents
-import social.entourage.android.api.*
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.BaseEntourage
-import social.entourage.android.api.model.tour.Encounter
 import social.entourage.android.api.model.feed.FeedItem
-import social.entourage.android.api.model.tour.Tour
+import social.entourage.android.api.model.tour.Encounter
+import social.entourage.android.api.request.*
 import social.entourage.android.api.tape.Events.OnTourEncounterViewRequestedEvent
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.entourage.EntourageDisclaimerFragment
@@ -28,7 +26,6 @@ import social.entourage.android.map.MapClusterTourItem
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tour.encounter.EncounterDisclaimerFragment
 import timber.log.Timber
-import java.lang.IllegalStateException
 import java.util.*
 import javax.inject.Inject
 
@@ -84,15 +81,15 @@ class NewsfeedPresenter @Inject constructor(
         when (feedItemType) {
             TimestampedObject.ENTOURAGE_CARD -> {
                 val call = entourageRequest.retrieveEntourageById(feedItemUUID, 0, 0)
-                call.enqueue(object : Callback<BaseEntourage.EntourageWrapper> {
-                    override fun onResponse(call: Call<BaseEntourage.EntourageWrapper>, response: Response<BaseEntourage.EntourageWrapper>) {
+                call.enqueue(object : Callback<EntourageResponse> {
+                    override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
                         response.body()?.entourage?.let {
                             if (response.isSuccessful) {
                                 openFeedItem(it, invitationId, 0)
                             }
                         }
                     }
-                    override fun onFailure(call: Call<BaseEntourage.EntourageWrapper>, t: Throwable) {
+                    override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
                     }
                 })
             }
@@ -117,8 +114,8 @@ class NewsfeedPresenter @Inject constructor(
         when (feedItemType) {
             TimestampedObject.ENTOURAGE_CARD -> {
                 val call = entourageRequest.retrieveEntourageByShareURL(feedItemShareURL)
-                call.enqueue(object : Callback<BaseEntourage.EntourageWrapper> {
-                    override fun onResponse(call: Call<BaseEntourage.EntourageWrapper>, response: Response<BaseEntourage.EntourageWrapper>) {
+                call.enqueue(object : Callback<EntourageResponse> {
+                    override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
                         response.body()?.entourage?.let {
                             if (response.isSuccessful) {
                                 openFeedItem(it,0,0)
@@ -126,7 +123,7 @@ class NewsfeedPresenter @Inject constructor(
                         }
                     }
 
-                    override fun onFailure(call: Call<BaseEntourage.EntourageWrapper>, t: Throwable) {
+                    override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
                     }
                 })
             }

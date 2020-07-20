@@ -1,4 +1,4 @@
-package social.entourage.android.api
+package social.entourage.android.api.request
 
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call

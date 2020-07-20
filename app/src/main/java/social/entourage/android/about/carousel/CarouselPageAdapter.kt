@@ -1,12 +1,12 @@
-package social.entourage.android.carousel
+package social.entourage.android.about.carousel
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import social.entourage.android.carousel.pages.CarouselPage1Fragment
-import social.entourage.android.carousel.pages.CarouselPage2Fragment
-import social.entourage.android.carousel.pages.CarouselPage3Fragment
-import social.entourage.android.carousel.pages.CarouselPage4Fragment
+import social.entourage.android.about.carousel.pages.CarouselPage1Fragment
+import social.entourage.android.about.carousel.pages.CarouselPage2Fragment
+import social.entourage.android.about.carousel.pages.CarouselPage3Fragment
+import social.entourage.android.about.carousel.pages.CarouselPage4Fragment
 
 /**
  * Created by mihaiionescu on 14/02/2017.

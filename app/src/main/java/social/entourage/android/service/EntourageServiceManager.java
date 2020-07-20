@@ -25,18 +25,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import social.entourage.android.Constants;
-import social.entourage.android.api.EncounterWrapper;
-import social.entourage.android.api.NewsfeedItemResponse;
-import social.entourage.android.api.TourResponse;
-import social.entourage.android.api.TourWrapper;
-import social.entourage.android.api.TourListResponse;
-import social.entourage.android.api.model.EntourageUser;
+import social.entourage.android.api.request.EncounterWrapper;
+import social.entourage.android.api.request.EntourageResponse;
+import social.entourage.android.api.request.EntourageWrapper;
+import social.entourage.android.api.request.NewsfeedItemResponse;
+import social.entourage.android.api.request.TourResponse;
+import social.entourage.android.api.request.TourWrapper;
+import social.entourage.android.api.request.TourListResponse;
 import social.entourage.android.location.EntourageLocation;
-import social.entourage.android.api.EncounterRequest;
-import social.entourage.android.api.EncounterResponse;
-import social.entourage.android.api.EntourageRequest;
-import social.entourage.android.api.NewsfeedRequest;
-import social.entourage.android.api.TourRequest;
+import social.entourage.android.api.request.EncounterRequest;
+import social.entourage.android.api.request.EncounterResponse;
+import social.entourage.android.api.request.EntourageRequest;
+import social.entourage.android.api.request.NewsfeedRequest;
+import social.entourage.android.api.request.TourRequest;
 import social.entourage.android.api.model.EntourageRequestDate;
 import social.entourage.android.api.model.feed.NewsfeedItem;
 import social.entourage.android.api.model.User;
@@ -515,15 +516,14 @@ public class EntourageServiceManager {
         entourage.status = FeedItem.STATUS_CLOSED;
         entourage.setEndTime(new Date());
         entourage.outcome = new BaseEntourage.EntourageCloseOutcome(success);
-        final BaseEntourage.EntourageWrapper entourageWrapper = new BaseEntourage.EntourageWrapper();
-        entourageWrapper.entourage = entourage;
-        final Call<BaseEntourage.EntourageWrapper> call = entourageRequest.closeEntourage(entourage.getUuid(), entourageWrapper);
-        call.enqueue(new Callback<BaseEntourage.EntourageWrapper>() {
+        final EntourageWrapper entourageWrapper = new EntourageWrapper(entourage);
+        final Call<EntourageResponse> call = entourageRequest.closeEntourage(entourage.getUuid(), entourageWrapper);
+        call.enqueue(new Callback<EntourageResponse>() {
             @Override
-            public void onResponse(@NonNull final Call<BaseEntourage.EntourageWrapper> call, @NonNull final Response<BaseEntourage.EntourageWrapper> response) {
+            public void onResponse(@NonNull final Call<EntourageResponse> call, @NonNull final Response<EntourageResponse> response) {
                 if (response.isSuccessful()) {
-                    Timber.d(response.body().entourage.toString());
-                    entourageService.notifyListenersFeedItemClosed(true, response.body().entourage);
+                    Timber.d(response.body().getEntourage().toString());
+                    entourageService.notifyListenersFeedItemClosed(true, response.body().getEntourage());
                 } else {
                     entourage.status = oldStatus;
                     entourageService.notifyListenersFeedItemClosed(false, entourage);
@@ -531,7 +531,7 @@ public class EntourageServiceManager {
             }
 
             @Override
-            public void onFailure(@NonNull final Call<BaseEntourage.EntourageWrapper> call, @NonNull final Throwable t) {
+            public void onFailure(@NonNull final Call<EntourageResponse> call, @NonNull final Throwable t) {
                 Timber.e(t);
                 entourage.status = oldStatus;
                 entourageService.notifyListenersFeedItemClosed(false, entourage);
@@ -543,17 +543,17 @@ public class EntourageServiceManager {
         final NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnected()) {
             final BaseEntourage.EntourageJoinInfo joinInfo = new BaseEntourage.EntourageJoinInfo(entourage.distanceToCurrentLocation());
-            final Call<EntourageUser.EntourageUserWrapper> call = entourageRequest.requestToJoinEntourage(entourage.getUuid(), joinInfo);
-            call.enqueue(new Callback<EntourageUser.EntourageUserWrapper>() {
+            final Call<EntourageUserResponse> call = entourageRequest.requestToJoinEntourage(entourage.getUuid(), joinInfo);
+            call.enqueue(new Callback<EntourageUserResponse>() {
                 @Override
-                public void onResponse(@NonNull final Call<EntourageUser.EntourageUserWrapper> call, @NonNull final Response<EntourageUser.EntourageUserWrapper> response) {
+                public void onResponse(@NonNull final Call<EntourageUserResponse> call, @NonNull final Response<EntourageUserResponse> response) {
                     if (response.isSuccessful()) {
                         entourageService.notifyListenersUserStatusChanged(response.body().getUser(), entourage);
                     }
                 }
 
                 @Override
-                public void onFailure(@NonNull final Call<EntourageUser.EntourageUserWrapper> call, @NonNull final Throwable t) {
+                public void onFailure(@NonNull final Call<EntourageUserResponse> call, @NonNull final Throwable t) {
                     Timber.e(t);
                 }
             });
@@ -563,10 +563,10 @@ public class EntourageServiceManager {
     void removeUserFromEntourage(final BaseEntourage entourage, final int userId) {
         final NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnected()) {
-            final Call<EntourageUser.EntourageUserWrapper> call = entourageRequest.removeUserFromEntourage(entourage.getUuid(), userId);
-            call.enqueue(new Callback<EntourageUser.EntourageUserWrapper>() {
+            final Call<EntourageUserResponse> call = entourageRequest.removeUserFromEntourage(entourage.getUuid(), userId);
+            call.enqueue(new Callback<EntourageUserResponse>() {
                 @Override
-                public void onResponse(@NonNull final Call<EntourageUser.EntourageUserWrapper> call, @NonNull final Response<EntourageUser.EntourageUserWrapper> response) {
+                public void onResponse(@NonNull final Call<EntourageUserResponse> call, @NonNull final Response<EntourageUserResponse> response) {
                     if (response.isSuccessful()) {
                         entourageService.notifyListenersUserStatusChanged(response.body().getUser(), entourage);
                     }

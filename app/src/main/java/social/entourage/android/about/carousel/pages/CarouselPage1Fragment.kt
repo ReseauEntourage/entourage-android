@@ -1,4 +1,4 @@
-package social.entourage.android.carousel.pages
+package social.entourage.android.about.carousel.pages
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -15,15 +15,4 @@ class MultipleInvitations(@field:SerializedName("mode") private val invitationMo
         phoneNumbers.add(phoneNumber)
     }
 
-    class MultipleInvitationsWrapper(@field:SerializedName("invite") var invitations: MultipleInvitations)
-
-    class MultipleInvitationsResponse {
-        @SerializedName("successfull_numbers")
-        val successfullNumbers: ArrayList<String>? = null
-
-        @SerializedName("failed_numbers")
-        val failedNumbers: ArrayList<String>? = null
-
-    }
-
 }

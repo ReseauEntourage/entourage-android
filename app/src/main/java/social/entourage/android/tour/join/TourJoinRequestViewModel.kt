@@ -7,8 +7,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.api.TourRequest
-import social.entourage.android.api.model.EntourageUser.EntourageUserWrapper
+import social.entourage.android.api.request.TourRequest
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.model.tour.TourJoinMessage
 import social.entourage.android.api.model.tour.TourJoinMessage.TourJoinMessageWrapper

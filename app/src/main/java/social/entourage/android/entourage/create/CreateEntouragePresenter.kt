@@ -3,14 +3,15 @@ package social.entourage.android.entourage.create
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import social.entourage.android.api.EntourageRequest
+import social.entourage.android.api.request.EntourageRequest
+import social.entourage.android.api.request.EntourageResponse
+import social.entourage.android.api.request.EntourageWrapper
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.BaseEntourage.Companion.create
-import social.entourage.android.api.model.BaseEntourage.EntourageWrapper
 import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.tape.Events.OnEntourageCreated
 import social.entourage.android.api.tape.Events.OnEntourageUpdated
-import social.entourage.android.tools.BusProvider.instance
+import social.entourage.android.tools.BusProvider
 import javax.inject.Inject
 
 /**
@@ -31,15 +32,14 @@ class CreateEntouragePresenter @Inject constructor(
         entourage.metadata = metadata
         entourage.isRecipientConsentObtained = recipientConsentObtained
         entourage.isJoinRequestPublic = joinRequestTypePublic
-        val entourageWrapper = EntourageWrapper()
-        entourageWrapper.entourage = entourage
-        entourageRequest.createEntourage(entourageWrapper)?.enqueue(object : Callback<EntourageWrapper> {
-            override fun onResponse(call: Call<EntourageWrapper>, response: Response<EntourageWrapper>) {
+        val entourageWrapper = EntourageWrapper(entourage)
+        entourageRequest.createEntourage(entourageWrapper).enqueue(object : Callback<EntourageResponse> {
+            override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.entourage?.let { receivedEntourage ->
                         receivedEntourage.isNewlyCreated = true
                         fragment?.onEntourageCreated(receivedEntourage)
-                        instance.post(OnEntourageCreated(receivedEntourage))
+                        BusProvider.instance.post(OnEntourageCreated(receivedEntourage))
                     } ?: run {
                         fragment?.onEntourageCreationFailed()
                     }
@@ -48,21 +48,24 @@ class CreateEntouragePresenter @Inject constructor(
                 }
             }
 
-            override fun onFailure(call: Call<EntourageWrapper>, t: Throwable) {
+            override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
                 fragment?.onEntourageCreationFailed()
             }
         })
     }
 
     fun editEntourage(entourage: BaseEntourage) {
-        val entourageWrapper = EntourageWrapper()
-        entourageWrapper.entourage = entourage
-        entourageRequest.editEntourage(entourage.uuid, entourageWrapper)?.enqueue(object : Callback<EntourageWrapper> {
-            override fun onResponse(call: Call<EntourageWrapper>, response: Response<EntourageWrapper>) {
+        val uuid = entourage.uuid ?: run {
+            fragment?.onEntourageEditionFailed()
+            return
+        }
+        val entourageWrapper = EntourageWrapper(entourage)
+        entourageRequest.editEntourage(uuid, entourageWrapper).enqueue(object : Callback<EntourageResponse> {
+            override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.entourage?.let { receivedEntourage ->
                         fragment?.onEntourageEdited(receivedEntourage)
-                        instance.post(OnEntourageUpdated(receivedEntourage))
+                        BusProvider.instance.post(OnEntourageUpdated(receivedEntourage))
                     } ?: run {
                         fragment?.onEntourageEditionFailed()
                     }
@@ -71,7 +74,7 @@ class CreateEntouragePresenter @Inject constructor(
                 }
             }
 
-            override fun onFailure(call: Call<EntourageWrapper>, t: Throwable) {
+            override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
                 fragment?.onEntourageEditionFailed()
             }
         })

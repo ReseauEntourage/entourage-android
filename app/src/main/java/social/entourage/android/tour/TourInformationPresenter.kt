@@ -6,7 +6,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageError
 import social.entourage.android.EntourageEvents
-import social.entourage.android.api.*
 import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.model.ChatMessage.ChatMessageWrapper
 import social.entourage.android.api.model.ChatMessage.ChatMessageResponse
@@ -17,6 +16,10 @@ import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.model.EntourageUser.EntourageUserListResponse
+import social.entourage.android.api.request.EncounterListResponse
+import social.entourage.android.api.request.InvitationRequest
+import social.entourage.android.api.request.TourRequest
+import social.entourage.android.api.request.TourResponse
 import social.entourage.android.entourage.information.FeedItemInformationPresenter
 import java.util.*
 import javax.inject.Inject
