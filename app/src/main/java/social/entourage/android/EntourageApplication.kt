@@ -15,7 +15,7 @@ import social.entourage.android.authentication.AuthenticationModule
 import social.entourage.android.base.EntourageActivity
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.newsfeed.UserFeedItemListCache
-import social.entourage.android.onboarding.login.LoginNewActivity
+import social.entourage.android.onboarding.login.LoginActivity
 import social.entourage.android.tools.LibrariesSupport
 import timber.log.Timber
 import java.util.*
@@ -86,10 +86,10 @@ class EntourageApplication : MultiDexApplication() {
         saveFeedItemsStorage()
     }
 
-    private val loginActivity: LoginNewActivity?
+    private val loginActivity: LoginActivity?
         get() {
             for (activity in activities) {
-                if (activity is LoginNewActivity) {
+                if (activity is LoginActivity) {
                     return activity
                 }
             }

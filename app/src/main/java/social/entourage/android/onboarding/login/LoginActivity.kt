@@ -17,7 +17,7 @@ import social.entourage.android.tools.view.CustomProgressDialog
 import java.util.*
 
 
-class LoginNewActivity : EntourageActivity() {
+class LoginActivity : EntourageActivity() {
 
     private val minimumPhoneCharacters = 9
     private val TIME_BEFORE_CALL = 60

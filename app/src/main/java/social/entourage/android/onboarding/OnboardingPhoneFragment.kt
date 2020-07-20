@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.fragment_onboarding_phone.*
 import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.tools.hideKeyboard
-import timber.log.Timber
 
 
 private const val ARG_FIRSTNAME = "firstname"
@@ -82,13 +81,12 @@ class OnboardingPhoneFragment : Fragment() {
         ui_onboard_phone_et_phone?.setText(phone)
 
         ui_onboard_phone_et_phone?.setOnFocusChangeListener { _view, b ->
-            checkAndUpdate()
+            checkAndUpdate(false)
         }
 
         ui_onboard_phone_et_phone?.setOnEditorActionListener { _, event, _ ->
-            Timber.d("ON key listener $event -- ${EditorInfo.IME_ACTION_DONE}")
             if (event == EditorInfo.IME_ACTION_DONE) {
-                checkAndUpdate()
+                checkAndUpdate(true)
             }
             false
         }
@@ -100,12 +98,15 @@ class OnboardingPhoneFragment : Fragment() {
         }
     }
 
-    fun checkAndUpdate() {
+    fun checkAndUpdate(isFromPhone:Boolean) {
         if (ui_onboard_phone_et_phone?.text?.length ?: 0  >= minimumPhoneCharacters) {
             phone = ui_onboard_phone_et_phone?.text.toString()
             callback?.updateButtonNext(true)
             val countryCode = ui_onboard_phone_ccp_code?.selectedCountryCodeWithPlus
             callback?.validatePhoneNumber(countryCode,ui_onboard_phone_et_phone?.text.toString())
+            if (isFromPhone) {
+                callback?.goNextManually()
+            }
         }
         else {
             callback?.updateButtonNext(false)

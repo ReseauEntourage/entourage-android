@@ -6,7 +6,7 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:background="@color/white"
     android:id="@+id/onboard_login_mainlayout"
-tools:context="social.entourage.android.onboarding.login.LoginNewActivity">
+tools:context="social.entourage.android.onboarding.login.LoginActivity">
 
     <FrameLayout
         android:id="@+id/frameLayout4"

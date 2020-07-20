@@ -6,7 +6,7 @@ import kotlinx.android.synthetic.main.activity_pre_onboarding_choice.*
 import social.entourage.android.base.EntourageActivity
 import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
-import social.entourage.android.onboarding.login.LoginNewActivity
+import social.entourage.android.onboarding.login.LoginActivity
 import social.entourage.android.onboarding.OnboardingMainActivity
 
 class PreOnboardingChoiceActivity : EntourageActivity() {
@@ -40,7 +40,7 @@ class PreOnboardingChoiceActivity : EntourageActivity() {
 
     fun goLogin() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_START_LOGINSTART)
-        val intent = Intent(this, LoginNewActivity::class.java)
+        val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
     }

@@ -937,6 +937,10 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         goPrevious()
     }
 
+    override fun goNextManually() {
+        goNext()
+    }
+
     //**********
     // Callbacks Asso
 
@@ -1025,4 +1029,6 @@ interface OnboardingCallback {
     fun updateAssoInfos(asso:Partner?)
     fun updateAssoActivities(assoActivities:AssoActivities)
     fun updateSdfNeighbourActivities(sdfNeighbourActivities:SdfNeighbourActivities,isSdf: Boolean)
+
+    fun goNextManually()
 }
