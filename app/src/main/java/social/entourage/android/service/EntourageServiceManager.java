@@ -597,7 +597,8 @@ public class EntourageServiceManager {
                         mapFilter.getTimeFrame(),
                         false,
                         Constants.ANNOUNCEMENTS_VERSION,
-                        mapFilter.showPastEvents()
+                        mapFilter.showPastEvents(),
+                        mapFilter.isShowPartnersOnly()
                 );
             }
             case TOUR_TAB:
@@ -613,7 +614,8 @@ public class EntourageServiceManager {
                         TourFilter.getTimeFrame(),
                         false,
                         null,
-                        true
+                        true,
+                        false
                 );
             case EVENTS_TAB:
                 return newsfeedRequest.retrieveOutings(

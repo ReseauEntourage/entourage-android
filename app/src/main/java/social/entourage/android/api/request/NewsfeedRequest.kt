@@ -25,7 +25,8 @@ interface NewsfeedRequest {
             @Query("time_range") timeFrame: Int,
             @Query("show_my_partner_only") onlyMyPartnerEntourages: Boolean,
             @Query("announcements") announcementsVersion: String?,
-            @Query("show_past_events") showPastEvents: Boolean
+            @Query("show_past_events") showPastEvents: Boolean,
+            @Query("partners_only") isPartnersOnly: Boolean
     ): Call<NewsfeedItemResponse>
 
     @GET("feeds")
