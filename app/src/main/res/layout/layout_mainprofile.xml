@@ -69,9 +69,167 @@
                     android:focusable="true"
                     android:gravity="center_horizontal"
                     android:text="@string/action_edit_profile"
-                    android:textColor="@color/greyish_brown"
+                    android:textColor="@color/accent"
                     android:textSize="@dimen/entourage_font_medium"
                     android:textStyle="italic" />
+
+
+                <TextView
+                    android:id="@+id/textView25"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/action_edit_profile"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/title_my_activity"
+                    android:textAlignment="center"
+                    android:textColor="@color/onboard_black_36"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textView25"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/ui_layout_show_events"
+                        android:layout_weight="1">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout10"
+                            android:layout_width="115dp"
+                            android:layout_height="80dp"
+                            android:layout_marginTop="15dp"
+                            android:background="@drawable/bg_white_orange_rounded_top_only"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/ui_tv_nb_events"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="0"
+                                android:textColor="@color/accent"
+                                android:textSize="24sp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/textView21"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_marginTop="4dp"
+                                android:text="@string/events_conviv"
+                                android:textAlignment="center"
+                                android:textColor="@color/accent"
+                                android:textSize="13sp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/ui_tv_nb_events" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="@drawable/bg_orange_rounded_bottom_only"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/constraintLayout10"
+                            app:layout_constraintStart_toStartOf="@+id/constraintLayout10"
+                            app:layout_constraintTop_toBottomOf="@+id/constraintLayout10">
+
+                            <TextView
+                                android:id="@+id/textView20"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/events_button"
+                                android:textColor="@color/white"
+                                android:textSize="15sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/ui_layout_show_actions"
+                        android:layout_weight="1">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout9"
+                            android:layout_width="115dp"
+                            android:layout_height="80dp"
+                            android:layout_marginTop="15dp"
+                            android:background="@drawable/bg_white_orange_rounded_top_only"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/ui_tv_nb_actions"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="0"
+                                android:textColor="@color/accent"
+                                android:textSize="24sp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/textView18"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_marginTop="4dp"
+                                android:text="@string/actions_solidr"
+                                android:textAlignment="center"
+                                android:textColor="@color/accent"
+                                android:textSize="13sp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/ui_tv_nb_actions" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="@drawable/bg_orange_rounded_bottom_only"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/constraintLayout9"
+                            app:layout_constraintStart_toStartOf="@+id/constraintLayout9"
+                            app:layout_constraintTop_toBottomOf="@+id/constraintLayout9">
+
+                            <TextView
+                                android:id="@+id/textView19"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/actions_button"
+                                android:textColor="@color/white"
+                                android:textSize="15sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
 
             </RelativeLayout>
 
@@ -81,6 +239,14 @@
                 android:layout_height="50dp"
                 android:visibility="gone" />
 
+            <social.entourage.android.mainprofile.MainProfileItemView
+                android:id="@+id/action_good_waves"
+                style="@style/mainprofile_item_style"
+                android:icon="@drawable/icn_good_waves"
+                android:title="@string/action_good_waves"
+                app:iconTint="@color/greyish"
+                android:textColor="@color/accent"
+                app:showDivider="true" />
             <social.entourage.android.mainprofile.MainProfileItemView
                 android:id="@+id/action_blog"
                 style="@style/mainprofile_item_style"

@@ -70,6 +70,13 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
                 (mainprofile_items_layout.getChildAt(j) as? MainProfileItemView)?.setOnClickListener { v: View -> selectMenuAction(v.id) }
             }
         }
+
+        ui_layout_show_events?.setOnClickListener {
+            showEvents()
+        }
+        ui_layout_show_actions?.setOnClickListener {
+            showActions()
+        }
     }
 
     private fun updateUserView() {
@@ -102,10 +109,29 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
 
         // Changed the ethics charter text depending on signed/unsigned
         action_charte?.setTitle(if (user.hasSignedEthicsCharter()) R.string.action_charter_signed else R.string.action_charter_unsigned)
+
+        //Show hide join Good waves
+        if (user.stats?.isGoodWavesValidated == true) {
+            action_good_waves?.visibility = View.GONE
+        }
+        else {
+            action_good_waves?.visibility = View.VISIBLE
+        }
+
+        ui_tv_nb_actions?.text = if(user.stats?.actionsCount != null) "${user.stats!!.actionsCount}" else "0"
+        ui_tv_nb_events?.text = if(user.stats?.eventsCount != null) "${user.stats!!.eventsCount}" else "0"
+
     }
 
     private fun selectMenuAction(action: Int) {
         (activity as? MainActivity)?.selectItem(action)
+    }
+
+    private fun showEvents() {
+       (activity as? MainActivity)?.showEvents()
+    }
+    private fun showActions() {
+        (activity as? MainActivity)?.showAllActions()
     }
 
     private fun handleLongPress(): Boolean {

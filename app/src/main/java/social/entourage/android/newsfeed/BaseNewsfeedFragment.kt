@@ -572,6 +572,10 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         fragment_map_top_tab?.getTabAt(NewsfeedTabItem.EVENTS_TAB.id)?.select()
     }
 
+    fun onShowAll() {
+        fragment_map_top_tab?.getTabAt(NewsfeedTabItem.ALL_TAB.id)?.select()
+    }
+
     private fun onNewEntouragesReceivedButton() {
         fragment_map_feeditems_view?.scrollToPosition(0)
         fragment_map_new_entourages_button?.visibility = View.GONE

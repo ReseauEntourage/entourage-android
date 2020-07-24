@@ -246,6 +246,7 @@ object EntourageEvents {
     const val EVENT_MENU_ATD = "ATDPartnershipView"
     const val EVENT_MENU_DONATION = "DonationView"
     const val EVENT_MENU_AMBASSADOR = "AmbassadorProgramClick"
+    const val EVENT_MENU_GOOD_WAVES = "GoodWavesClick"
 
     //FEED Events
     const val EVENT_FEED_MESSAGES = "GoToMessages" // No longer used

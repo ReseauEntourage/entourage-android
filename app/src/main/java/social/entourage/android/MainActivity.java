@@ -514,6 +514,13 @@ public class MainActivity extends EntourageSecuredActivity
             mapFragment.onShowEvents();
         }
     }
+    public void showAllActions() {
+        selectNavigationTab(navigationDataSource.getFeedTabIndex());
+        BaseNewsfeedFragment mapFragment  = getNewsfeedFragment();
+        if(mapFragment !=null) {
+            mapFragment.onShowAll();
+        }
+    }
 
     public void showMyEntourages() {
         selectNavigationTab(navigationDataSource.getMyMessagesTabIndex());

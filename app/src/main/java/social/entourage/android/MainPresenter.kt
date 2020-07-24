@@ -52,6 +52,10 @@ import javax.inject.Inject
     // ----------------------------------
     fun handleMenu(@IdRes menuId: Int) {
         when (menuId) {
+            R.id.action_good_waves -> {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_GOOD_WAVES)
+                activity.showWebViewForLinkId(Constants.GOOD_WAVES_ID)
+            }
             R.id.action_user -> {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_TAP_MY_PROFILE)
                 val userFragment = activity.supportFragmentManager.findFragmentByTag(UserFragment.TAG) as UserFragment?
