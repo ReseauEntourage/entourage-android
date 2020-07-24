@@ -33,7 +33,7 @@ tools:context="social.entourage.android.onboarding.OnboardingPlaceFragment">
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/ui_onboard_phone_tv_title"
+        app:layout_constraintStart_toStartOf="@+id/ui_onboard_place_tv_title"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <TextView

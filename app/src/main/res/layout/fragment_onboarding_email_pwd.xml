@@ -42,7 +42,7 @@ tools:context="social.entourage.android.onboarding.OnboardingEmailPwdFragment">
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
         android:background="@color/onboard_textfield_bg"
         android:ems="10"
@@ -53,8 +53,9 @@ tools:context="social.entourage.android.onboarding.OnboardingEmailPwdFragment">
         android:textColor="@color/pre_onboard_black"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_email_tv_description" />
+        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_email_tv_info2" />
 
     <TextView
         android:id="@+id/ui_onboard_email_tv_info"
@@ -63,12 +64,26 @@ tools:context="social.entourage.android.onboarding.OnboardingEmailPwdFragment">
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="sans-serif-light"
+        android:text="@string/onboard_email_pwd_info2"
+        android:textColor="@color/onboard_black_36"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/ui_onboard_email_tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_email_pwd_et_mail" />
+
+    <TextView
+        android:id="@+id/ui_onboard_email_tv_info2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="sans-serif-light"
         android:text="@string/onboard_email_pwd_info"
         android:textColor="@color/onboard_black_36"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/ui_onboard_email_tv_title"
-        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_email_pwd_et_mail" />
+        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_email_tv_description" />
 
     <FrameLayout
     android:id="@+id/frameLayout2"
