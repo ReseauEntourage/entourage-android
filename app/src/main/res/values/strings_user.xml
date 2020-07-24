@@ -21,6 +21,7 @@
     <string name="user_message_button">lui écrire</string>
     <string name="user_photo_edit"><u>changer ma photo</u></string>
     <string name="user_about_edit"><u>modifier</u></string>
+    <string name="good_waves_member">Membre des bonnes ondes</string>
 
     <string name="user_retrieval_error">Erreur de récupération du profil</string>
 
