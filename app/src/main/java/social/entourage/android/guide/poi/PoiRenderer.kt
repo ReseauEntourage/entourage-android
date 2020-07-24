@@ -48,7 +48,8 @@ class PoiRenderer(context: Context?, map: GoogleMap?, clusterManager: ClusterMan
         WATER("Se rafraîchir", 4, R.drawable.poi_category_4, R.drawable.poi_transparent_category_4, Color.parseColor("#3ad7ff")),
         ORIENTATION("S'orienter", 5, R.drawable.poi_category_5, R.drawable.poi_transparent_category_5, Color.parseColor("#bfbfb9")),
         SELF_CARE("S'occuper de soi", 6, R.drawable.poi_category_6, R.drawable.poi_transparent_category_6, Color.parseColor("#88c0ff")),
-        INSERTION("Se réinsérer", 7, R.drawable.poi_category_7, R.drawable.poi_transparent_category_7, Color.parseColor("#97d791"));
+        INSERTION("Se réinsérer", 7, R.drawable.poi_category_7, R.drawable.poi_transparent_category_7, Color.parseColor("#97d791")),
+        PARTNERS("Partenaires", 8, R.drawable.poi_category_8, R.drawable.poi_transparent_category_8, Color.parseColor("#F99F7C"));
 
         companion object {
             fun findCategoryTypeByName(name: String?): CategoryType {
