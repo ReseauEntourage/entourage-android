@@ -19,12 +19,16 @@ class EncounterCardViewHolder(view: View) : BaseCardViewHolder(view) {
 
     override fun bindFields() {
         itemView.tic_encounter_author?.setOnClickListener {
-            if (encounter?.isMyEncounter==true)
-                BusProvider.instance.post(OnTourEncounterViewRequestedEvent(encounter))
+            encounter?.let {
+            if (it.isMyEncounter==true)
+                BusProvider.instance.post(OnTourEncounterViewRequestedEvent(it))
+            }
         }
         itemView.tic_encounter_street_name?.setOnClickListener {
-            if (encounter?.isMyEncounter==true)
-                BusProvider.instance.post(OnTourEncounterViewRequestedEvent(encounter))
+            encounter?.let {
+                if (it.isMyEncounter==true)
+                    BusProvider.instance.post(OnTourEncounterViewRequestedEvent(it))
+            }
         }
     }
 
@@ -40,7 +44,8 @@ class EncounterCardViewHolder(view: View) : BaseCardViewHolder(view) {
         val s = Utils.fromHtml(encounterLocation)
         itemView.tic_encounter_street_name?.text = s
         //itemView.tic_encounter_message.setText(encounter.getMessage());
-        this.encounter = encounter}
+        this.encounter = encounter
+    }
 
     companion object {
         @JvmStatic

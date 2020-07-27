@@ -31,8 +31,8 @@ class UserEditPartnerAdapter : BaseAdapter() {
                 }
             }
             v.partner_logo?.setOnClickListener {
-                if (partner != null) {
-                    instance.post(OnPartnerViewRequestedEvent(partner))
+                partner?.let {
+                    instance.post(OnPartnerViewRequestedEvent(it))
                 }
             }
         }

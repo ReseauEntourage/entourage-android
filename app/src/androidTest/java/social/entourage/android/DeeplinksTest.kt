@@ -36,7 +36,7 @@ class DeepLinkingTest {
 
     @Before
     fun setUp() {
-        /*if(EntourageApplication.get(activityTestRule.activity).entourageComponent.authenticationController?.isAuthenticated == false) {
+        /*if(EntourageApplication.get(activityTestRule.activity).entourageComponent.authenticationController.isAuthenticated == false) {
             Espresso.onView(ViewMatchers.withId(R.id.login_button_login)).perform(ViewActions.click())
             Espresso.onView(ViewMatchers.withId(R.id.login_edit_phone)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_LOGIN), ViewActions.closeSoftKeyboard())
             Espresso.onView(ViewMatchers.withId(R.id.login_edit_code)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_PWD), ViewActions.closeSoftKeyboard())

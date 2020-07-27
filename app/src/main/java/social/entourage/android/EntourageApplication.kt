@@ -74,7 +74,7 @@ class EntourageApplication : MultiDexApplication() {
         get() = librariesSupport.firebaseAnalytics
 
     fun me(): User? {
-        return entourageComponent.authenticationController?.me ?: return null
+        return entourageComponent.authenticationController.me ?: return null
     }
 
     fun onActivityCreated(activity: EntourageActivity) {
@@ -179,7 +179,7 @@ class EntourageApplication : MultiDexApplication() {
     }
 
     fun storeNewPushNotification(message: Message, isAdded: Boolean): Int {
-        val me = entourageComponent.authenticationController?.me ?: return -1
+        val me = entourageComponent.authenticationController.me ?: return -1
         return userFeedItemListCache.saveFeedItemFromNotification(me.id, message, isAdded)
     }
 
@@ -188,12 +188,12 @@ class EntourageApplication : MultiDexApplication() {
     }
 
     private fun updateStorageFeedItem(feedItem: FeedItem) {
-        val me = entourageComponent.authenticationController?.me ?: return
+        val me = entourageComponent.authenticationController.me ?: return
         userFeedItemListCache.updateFeedItem(me.id, feedItem)
     }
 
     fun clearFeedStorage(): Boolean {
-        val me = entourageComponent.authenticationController?.me ?: return false
+        val me = entourageComponent.authenticationController.me ?: return false
         return userFeedItemListCache.clear(me.id)
     }
 

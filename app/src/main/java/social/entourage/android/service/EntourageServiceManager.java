@@ -27,8 +27,10 @@ import retrofit2.Response;
 import social.entourage.android.Constants;
 import social.entourage.android.api.request.EncounterWrapper;
 import social.entourage.android.api.request.EntourageResponse;
+import social.entourage.android.api.request.EntourageUserResponse;
 import social.entourage.android.api.request.EntourageWrapper;
 import social.entourage.android.api.request.NewsfeedItemResponse;
+import social.entourage.android.api.request.TourPointWrapper;
 import social.entourage.android.api.request.TourResponse;
 import social.entourage.android.api.request.TourWrapper;
 import social.entourage.android.api.request.TourListResponse;
@@ -47,7 +49,6 @@ import social.entourage.android.api.model.feed.FeedItem;
 import social.entourage.android.api.model.tour.Tour;
 import social.entourage.android.api.model.feed.FeedItemAuthor;
 import social.entourage.android.api.model.LocationPoint;
-import social.entourage.android.api.model.EntourageUser.EntourageUserResponse;
 import social.entourage.android.api.tape.EncounterTaskResult;
 import social.entourage.android.api.tape.Events.OnBetterLocationEvent;
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted;
@@ -258,9 +259,7 @@ public class EntourageServiceManager {
             }
             return;
         }
-        final LocationPoint.TourPointWrapper tourPointWrapper = new LocationPoint.TourPointWrapper();
-        tourPointWrapper.setTourPoints(new ArrayList<>(pointsToSend));
-        tourPointWrapper.setDistance(currentTour.distance);
+        final TourPointWrapper tourPointWrapper = new TourPointWrapper(new ArrayList<>(pointsToSend), currentTour.distance);
         final Call<ResponseBody> call = tourRequest.addTourPoints(tourUUID, tourPointWrapper);
         call.enqueue(new Callback<ResponseBody>() {
             @Override

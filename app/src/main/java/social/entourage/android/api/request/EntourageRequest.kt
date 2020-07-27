@@ -6,12 +6,9 @@ import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.BaseEntourage.EntourageJoinInfo
-import social.entourage.android.api.model.ChatMessage.ChatMessageListResponse
-import social.entourage.android.api.model.ChatMessage.ChatMessageWrapper
-import social.entourage.android.api.model.ChatMessage.ChatMessageResponse
+import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.model.EntourageReport.EntourageReportWrapper
-import social.entourage.android.api.model.EntourageUser.EntourageUserListResponse
-import social.entourage.android.api.model.EntourageUser.EntourageUserResponse
+import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.MultipleInvitations
 import java.util.*
 
@@ -19,6 +16,27 @@ class EntourageWrapper (var entourage: BaseEntourage)
 class EntourageResponse (var entourage: BaseEntourage)
 
 class MultipleInvitationsWrapper(@field:SerializedName("invite") var invitations: MultipleInvitations)
+
+class EntourageUserResponse {
+    var user: EntourageUser? = null
+}
+
+class EntourageUserListResponse {
+    var users: List<EntourageUser>? = null
+}
+
+class ChatMessageWrapper (@SerializedName("chat_message") var chatMessage: ChatMessage)
+class ChatMessageResponse {
+    @SerializedName("chat_message")
+    var chatMessage: ChatMessage? = null
+
+}
+
+class ChatMessageListResponse {
+    @SerializedName("chat_messages")
+    var chatMessages: List<ChatMessage>? = null
+
+}
 
 interface EntourageRequest {
     @POST("entourages.json")

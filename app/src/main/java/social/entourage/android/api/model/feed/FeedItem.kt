@@ -111,7 +111,7 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
         return id
     }
 
-    fun setLastMessage(text: String?, author: String?) {
+    fun setLastMessage(text: String, author: String) {
         if (lastMessage == null) {
             lastMessage = LastMessage()
         }

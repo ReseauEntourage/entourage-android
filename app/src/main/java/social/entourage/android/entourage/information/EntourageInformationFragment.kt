@@ -215,8 +215,8 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         if (!metadataVisible) return
 
         // populate the data
-        feedItem.author?.let {
-            entourage_info_metadata_organiser?.text = getString(R.string.tour_info_metadata_organiser_format, it.userName)
+        feedItem.author?.userName?.let {
+            entourage_info_metadata_organiser?.text = getString(R.string.tour_info_metadata_organiser_format, it)
         }
         if (metadata == null) return
         if (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.getGroupType(), ignoreCase = true)) {

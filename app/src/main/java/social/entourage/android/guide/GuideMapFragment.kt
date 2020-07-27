@@ -326,7 +326,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
                 previousEmptyListPopupLocation = EntourageLocation.cameraPositionToLocation(null, googleMap.cameraPosition)
             }
         }
-        val isShowNoPOIsPopup = EntourageApplication.get(context).entourageComponent.authenticationController?.isShowNoPOIsPopup ?:false
+        val isShowNoPOIsPopup = EntourageApplication.get(context).entourageComponent.authenticationController.isShowNoPOIsPopup ?:false
         if (!isShowNoPOIsPopup) {
             return
         }

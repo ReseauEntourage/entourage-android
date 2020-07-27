@@ -46,8 +46,8 @@ class TakePhotoActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, intent)
         if (requestCode == REQUEST_TAKE_PHOTO) {
             if (resultCode == Activity.RESULT_OK) {
-                if (intent != null && intent.data != null) {
-                    BusProvider.instance.post(OnPhotoChosen(intent.data))
+                intent?.data?.let { data->
+                    BusProvider.instance.post(OnPhotoChosen(data))
                     return
                 }
                 mCurrentPhotoPath?.let { BusProvider.instance.post(OnPhotoChosen(Uri.fromFile(File(it)))) }

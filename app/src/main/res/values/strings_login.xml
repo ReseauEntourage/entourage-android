@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="title_activity_login">Se connecter</string>
     <string name="login_title_welcome">Connexion</string>
     <string name="login_title_lost_code">REDEMANDER UN CODE</string>
     <string name="login_title_lost_code_long">Nouveau code de vérification</string>
@@ -28,7 +27,6 @@
     <string name="login_hint_code">Code</string>
     <string name="login_hint_phone_long">Numéro de téléphone</string>
     <string name="login_hint_email">Saisir votre adresse email</string>
-    <string name="login_button_signin">Se connecter</string>
     <string name="login_button_ask_code">Recevoir mon code</string>
     <string name="login_button_go">Valider</string>
     <string name="login_button_home">Retour à l\'accueil</string>
@@ -65,7 +63,6 @@
     <string name="login_place_description">Vous pourrez répondre aux demandes de personnes en difficulté et d’associations de votre quartier, et vous pourrez vous-même proposer des dons de votre temps ou matériels.</string>
 
     <!-- Registration -->
-    <string name="registration_welcome_signin">Se connecter</string>
     <string name="registration_welcome_title">Bienvenue\nsur Entourage.</string>
     <string name="registration_welcome_description">Vous allez rejoindre une communauté de voisins avec et sans abris qui se rassemblent et luttent contre l’exclusion !</string>
     <string name="registration_welcome_privacy">En vous inscrivant, vous acceptez nos &lt;a href=\'%1$s\'>conditions d’utilisation&lt;/a>, vous confirmez avoir plus de 16 ans et avoir lu notre &lt;a href=\'%2$s\'>politique de confidentialité&lt;/a>.</string>

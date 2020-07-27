@@ -33,7 +33,7 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
 
         alertDialog = CustomProgressDialog(this)
 
-        currentUser = EntourageApplication.get().entourageComponent.authenticationController?.me
+        currentUser = EntourageApplication.get().entourageComponent.authenticationController.me
 
         currentUser?.let { user ->
             if (user.address != null || user.address?.displayAddress?.length ?: 0 > 0) {

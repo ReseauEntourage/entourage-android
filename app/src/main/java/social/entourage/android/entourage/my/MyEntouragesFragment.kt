@@ -205,7 +205,7 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
         val card = entouragesAdapter.findCard(cardType, content.joinableId)
         if (card is FeedItem) {
             card.increaseBadgeCount(PushNotificationContent.TYPE_NEW_CHAT_MESSAGE == content.type)
-            card.setLastMessage(content.message, message.author)
+            card.setLastMessage(content.message ?: "", message.author)
             //approximate message time with Now //TODO get proper time
             card.updatedTime = Date()
             entouragesAdapter.updateCard(card)

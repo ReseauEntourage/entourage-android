@@ -160,7 +160,7 @@ class CreateEncounterActivity : EntourageSecuredActivity(), LocationFragment.OnF
     fun onCreateEncounterFinished(errorMessage: String?, encounterResponse: Encounter?) {
         dismissProgressDialog()
         val message: String
-        if (errorMessage == null) {
+        if (errorMessage == null && encounterResponse!= null) {
             authenticationController.incrementUserEncountersCount()
             message = getString(R.string.create_encounter_success)
             instance.post(OnEncounterCreated(encounterResponse))
@@ -180,7 +180,7 @@ class CreateEncounterActivity : EntourageSecuredActivity(), LocationFragment.OnF
         if (errorMessage == null) {
             authenticationController.incrementUserEncountersCount()
             message = getString(R.string.update_encounter_success)
-            instance.post(OnEncounterUpdated(editedEncounter))
+            editedEncounter?.let {instance.post(OnEncounterUpdated(it))}
             finish()
             //EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_OK);
         } else {

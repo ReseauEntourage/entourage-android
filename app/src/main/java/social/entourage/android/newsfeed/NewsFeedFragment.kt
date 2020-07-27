@@ -160,7 +160,7 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
         activity?.let {activity ->
             if (activity.isFinishing) return
             try {
-                feedItem.joinStatus = user.status
+                feedItem.joinStatus = user.status ?: ""
                 if (user.status == FeedItem.JOIN_STATUS_PENDING) {
                     if (feedItem is Tour) {
                         TourJoinRequestFragment.newInstance(feedItem).show(activity.supportFragmentManager, TourJoinRequestFragment.TAG)

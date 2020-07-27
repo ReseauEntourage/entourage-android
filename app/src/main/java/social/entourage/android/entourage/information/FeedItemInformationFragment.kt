@@ -1125,7 +1125,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             //check who sent the message
             EntourageApplication.get(activity).entourageComponent.authenticationController.me?.id?.let { me ->
                 for (chatMessage in chatMessageList) {
-                    chatMessage.setIsMe(chatMessage.userId == me)
+                    chatMessage.isMe = chatMessage.userId == me
                 }
             }
             //val timestampedObjectList: List<TimestampedObject> = ArrayList<TimestampedObject>(chatMessageList)
@@ -1167,7 +1167,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         }
 
         //add the message to the list
-        chatMessage.setIsMe(true)
+        chatMessage.isMe = true
         feedItem.addCardInfo(chatMessage)
         updateDiscussionList()
     }
@@ -1292,7 +1292,9 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     }
 
     override fun onLocationUpdated(location: LatLng) {}
+
     override fun onLocationStatusUpdated(active: Boolean) {}
+
     override fun onUserStatusChanged(user: EntourageUser, feedItem: FeedItem) {
         //ignore requests that are not related to our feed item
         if (feedItem.type != this.feedItem.type || feedItem.id != this.feedItem.id) return
@@ -1301,21 +1303,22 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         onCloseOptionsButton()
 
         //update the local tour info
-        val oldPrivateStatus = entourage_info_private_section?.visibility == View.VISIBLE
-        feedItem.joinStatus = user.status
-        val currentPrivateStatus = feedItem.isPrivate()
-        //update UI
-        if (oldPrivateStatus != currentPrivateStatus) {
-            if (feedItem.isPrivate()) {
-                switchToPrivateSection()
-                loadPrivateCards()
+        user.status?.let { status ->
+            feedItem.joinStatus = status
+            val oldPrivateStatus = entourage_info_private_section?.visibility == View.VISIBLE
+            //update UI
+            if (oldPrivateStatus != feedItem.isPrivate()) {
+                if (feedItem.isPrivate()) {
+                    switchToPrivateSection()
+                    loadPrivateCards()
+                } else {
+                    switchToPublicSection()
+                }
             } else {
-                switchToPublicSection()
+                updateHeaderButtons()
+                initializeOptionsView()
+                updateJoinStatus()
             }
-        } else {
-            updateHeaderButtons()
-            initializeOptionsView()
-            updateJoinStatus()
         }
     }
 

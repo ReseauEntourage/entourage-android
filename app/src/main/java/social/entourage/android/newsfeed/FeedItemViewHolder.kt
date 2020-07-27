@@ -86,13 +86,13 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
             }
             // Partner logo
             itemView.tour_card_partner_logo?.let {logoView->
-                if (author.partner?.smallLogoUrl != null) {
+                author.partner?.smallLogoUrl?.let {smallLogoUrl->
                     Picasso.get()
-                            .load(Uri.parse(author.partner.smallLogoUrl))
+                            .load(Uri.parse(smallLogoUrl))
                             .placeholder(R.drawable.partner_placeholder)
                             .transform(CropCircleTransformation())
                             .into(logoView)
-                } else {
+                } ?: run {
                     logoView.setImageDrawable(null)
                 }
             }
@@ -176,7 +176,7 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
         }
 
         //last message
-        itemView.tour_card_last_message?.text = feedItem.lastMessage?.text ?: ""
+        itemView.tour_card_last_message?.text = feedItem.lastMessage?.getText() ?: ""
         itemView.tour_card_last_message?.visibility = if (itemView.tour_card_last_message?.text.isNullOrBlank()) View.GONE else View.VISIBLE
         itemView.tour_card_last_message?.setTypeface(null, if (feedItem.getUnreadMsgNb() == 0) Typeface.NORMAL else Typeface.BOLD)
         itemView.tour_card_last_message?.setTextColor(if (feedItem.getUnreadMsgNb() == 0) ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_normal) else ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_bold))

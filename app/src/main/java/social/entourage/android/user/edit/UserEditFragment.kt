@@ -456,7 +456,7 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
     }
 
     private fun storeActionZone(ignoreActionZone: Boolean) {
-        EntourageApplication.get().entourageComponent.authenticationController?.isIgnoringActionZone = ignoreActionZone
+        EntourageApplication.get().entourageComponent.authenticationController.isIgnoringActionZone = ignoreActionZone
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             (parentFragmentManager.findFragmentByTag(UserEditActionZoneFragmentCompat.TAG) as UserEditActionZoneFragmentCompat?)?.let { userEditActionZoneFragmentCompat ->

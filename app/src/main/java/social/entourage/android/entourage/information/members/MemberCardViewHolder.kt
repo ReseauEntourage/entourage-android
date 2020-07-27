@@ -56,10 +56,10 @@ class MemberCardViewHolder(view: View) : BaseCardViewHolder(view) {
         }
         itemView.tic_member_name?.text = entourageUser.displayName
         val roles = ArrayList<String>()
-        if (entourageUser.groupRole != null) {
-            roles.add(entourageUser.groupRole)
+        entourageUser.groupRole?.let {
+            roles.add(it)
         }
-        for (role in entourageUser.communityRoles) {
+        entourageUser.communityRoles?.forEach { role->
             if (role != entourageUser.groupRole) {
                 roles.add(role)
             }

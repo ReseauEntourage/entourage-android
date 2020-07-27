@@ -195,7 +195,7 @@ class NewsfeedPresenter @Inject constructor(
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
-    private fun openEncounter(encounter: Encounter?) {
+    private fun openEncounter(encounter: Encounter) {
         fragment?.saveCameraPosition()
         BusProvider.instance.post(OnTourEncounterViewRequestedEvent(encounter))
     }
@@ -231,7 +231,7 @@ class NewsfeedPresenter @Inject constructor(
         override fun onClusterItemClick(mapClusterItem: ClusterItem): Boolean {
             when {
                 encounterMarkerHashMap[mapClusterItem] != null -> {
-                    openEncounter(encounterMarkerHashMap[mapClusterItem])
+                    openEncounter(encounterMarkerHashMap[mapClusterItem]!!)
                 }
                 mapClusterItem is MapClusterEntourageItem -> {
                     fragment?.handleHeatzoneClick(mapClusterItem.position)

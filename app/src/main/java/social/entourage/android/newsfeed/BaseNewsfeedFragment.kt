@@ -400,7 +400,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             if (feedItemType != 0) {
                 val feedItemUUID = event.feedItemUUID
                 if (feedItemUUID.isNullOrEmpty()) {
-                    displayChosenFeedItemFromShareURL(event.feedItemShareURL, feedItemType)
+                    event.feedItemShareURL?.let { displayChosenFeedItemFromShareURL(it, feedItemType) }
                 } else {
                     displayChosenFeedItem(feedItemUUID, feedItemType, event.invitationId)
                 }

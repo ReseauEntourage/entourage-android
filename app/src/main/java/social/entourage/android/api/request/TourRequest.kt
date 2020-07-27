@@ -1,16 +1,12 @@
 package social.entourage.android.api.request
 
+import com.google.gson.annotations.SerializedName
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
-import social.entourage.android.api.model.ChatMessage.ChatMessageWrapper
-import social.entourage.android.api.model.ChatMessage.ChatMessageResponse
-import social.entourage.android.api.model.ChatMessage.ChatMessageListResponse
-import social.entourage.android.api.model.EntourageUser.EntourageUserResponse
-import social.entourage.android.api.model.EntourageUser.EntourageUserListResponse
-import social.entourage.android.api.model.LocationPoint.TourPointWrapper
+import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.model.tour.Tour
-import social.entourage.android.api.model.tour.TourJoinMessage.TourJoinMessageWrapper
+import social.entourage.android.api.model.tour.TourJoinMessage
 import java.util.*
 
 class TourResponse(var tour: Tour)
@@ -18,6 +14,10 @@ class TourResponse(var tour: Tour)
 class TourWrapper(var tour: Tour)
 
 class TourListResponse(var tours: List<Tour>)
+
+class TourPointWrapper(@SerializedName("tour_points") var tourPoints: List<LocationPoint>,  var distance: Float = 0f)
+
+class TourJoinMessageWrapper(@SerializedName("request") var joinMessage: TourJoinMessage)
 
 interface TourRequest {
     @POST("tours.json")
