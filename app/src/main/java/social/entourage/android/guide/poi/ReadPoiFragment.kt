@@ -70,7 +70,15 @@ class ReadPoiFragment : EntourageDialogFragment() {
         }
         val categoryType = CategoryType.findCategoryTypeById(poi.categoryId)
         poi_type_layout?.setBackgroundColor(categoryType.color)
-        poi_type_label?.text = categoryType.displayName
+
+        var displayName = categoryType.displayName
+        if (displayName == "Partenaires") {
+            context?.let {
+                displayName = it.getString(R.string.partners_entourage)
+            }
+        }
+
+        poi_type_label?.text = displayName//categoryType.displayName
         poi_type_image?.setImageResource(categoryType.resourceTransparentId)
     }
 

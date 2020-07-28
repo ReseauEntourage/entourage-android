@@ -36,4 +36,7 @@
         Notre Annuaire Solidaire est mis à jour autant que possible, certaines informations risquent toutefois d’être érronées.<br/><br/>
         Rendez-vous sur <a href=https://soliguide.fr/>Soliguide.fr</a> pour consulter un annuaire de lieux solidaires mis à jour en temps réel.]]></string>
 
+
+    <string name="partners_entourage">Organisme actif sur Entourage</string>
+    <string name="guide_display_partners">Associations et services actifs sur Entourage</string>
 </resources>

@@ -140,7 +140,7 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="0dp"
                             android:layout_height="30dp"
-                            android:layout_marginBottom="5dp"
+                            android:layout_marginBottom="15dp"
                             android:background="@drawable/bg_orange_rounded_bottom_only"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="@+id/constraintLayout10"
@@ -207,7 +207,7 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="0dp"
                             android:layout_height="30dp"
-                            android:layout_marginBottom="5dp"
+                            android:layout_marginBottom="15dp"
                             android:background="@drawable/bg_orange_rounded_bottom_only"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="@+id/constraintLayout9"
@@ -245,7 +245,6 @@
                 android:icon="@drawable/icn_good_waves"
                 android:title="@string/action_good_waves"
                 app:iconTint="@color/greyish"
-                android:textColor="@color/accent"
                 app:showDivider="true" />
             <social.entourage.android.mainprofile.MainProfileItemView
                 android:id="@+id/action_blog"
