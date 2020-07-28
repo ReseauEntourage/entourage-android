@@ -96,6 +96,7 @@
     <string name="tour_cell_numberOfPeople">%1$d</string>
     <string name="tour_cell_button_join">Je rejoins</string>
     <string name="tour_cell_button_accepted">Actif</string>
+    <string name="tour_cell_button_accepted_other">✔︎ Je participe</string>
     <string name="tour_cell_button_ongoing">En cours</string>
     <string name="tour_cell_button_pending">En attente</string>
     <string name="tour_cell_button_rejected">Refusé</string>
