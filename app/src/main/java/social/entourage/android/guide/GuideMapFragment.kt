@@ -123,6 +123,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     }
 
     private fun onShowFilter() {
+        EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_SHOWFILTERS)
         try {
             GuideFilterFragment().show(parentFragmentManager, GuideFilterFragment.TAG)
         } catch (e: IllegalStateException) {
@@ -132,9 +133,9 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
 
     private fun onDisplayToggle() {
         if (!isFullMapShown) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_MAP_VIEW)
+            EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_SHOWMAP)
         } else {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_LIST_VIEW)
+            EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_SHOWLIST)
         }
         togglePOIList()
     }

@@ -17,6 +17,7 @@ import social.entourage.android.R
 import social.entourage.android.api.tape.Events
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.CropCircleTransformation
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.tools.view.EntourageSnackbar
 
 /**
@@ -38,6 +39,11 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
         super.onViewCreated(view, savedInstanceState)
         initialiseView()
         updateUserView()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        EntourageEvents.logEvent (EntourageEvents.VIEW_PROFILE_MENU)
     }
 
     // ----------------------------------
@@ -72,9 +78,11 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
         }
 
         ui_layout_show_events?.setOnClickListener {
+            EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_SHOWEVENTS)
             showEvents()
         }
         ui_layout_show_actions?.setOnClickListener {
+            EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_SHOWACTIONS)
             showActions()
         }
     }

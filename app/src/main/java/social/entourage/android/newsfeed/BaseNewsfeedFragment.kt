@@ -100,7 +100,6 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         super.onCreate(savedInstanceState)
         BusProvider.instance.register(this)
         markersMap.clear()
-        EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_TOURS_FROM_MENU)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -142,7 +141,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             (activity as? MainActivity)?.showEditActionZoneFragment(this,false)
         }
         fragment_map_feeditems_view?.addOnScrollListener(scrollListener)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_FEED_FROM_TAB)
+//        EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_FEED_FROM_TAB)
         isStopped = false
     }
 
@@ -355,15 +354,15 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         selectedTab = newSelectedTab
         when(selectedTab) {
             NewsfeedTabItem.ALL_TAB -> {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_TAB_ALL)
+                EntourageEvents.logEvent(EntourageEvents.ACTION_FEED_SHOWALL)
                 fragment_map_filter_button?.visibility = View.VISIBLE
             }
             NewsfeedTabItem.TOUR_TAB -> {
-                EntourageEvents.logEvent(EntourageEvents.TOUR_FEED_TAB_EVENTS)
+                EntourageEvents.logEvent(EntourageEvents.ACTION_FEED_SHOWTOURS)
                 fragment_map_filter_button?.visibility = View.VISIBLE
             }
             NewsfeedTabItem.EVENTS_TAB -> {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_TAB_EVENTS)
+                EntourageEvents.logEvent(EntourageEvents.ACTION_FEED_SHOWEVENTS)
                 fragment_map_filter_button?.visibility = View.GONE
             }
         }
@@ -538,9 +537,9 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     private fun onDisplayToggle() {
         if (!isFullMapShown) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_MAPVIEW_CLICK)
+            EntourageEvents.logEvent(EntourageEvents.ACTION_FEED_SHOWMAP)
         } else {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_LISTVIEW_CLICK)
+            EntourageEvents.logEvent(EntourageEvents.ACTION_FEED_SHOWLIST)
         }
         toggleToursList()
     }
@@ -563,12 +562,12 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     open fun onShowFilter() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_FILTERSCLICK)
+        EntourageEvents.logEvent(EntourageEvents.ACTION_FEED_SHOWFILTERS)
         MapFilterFragment().show(parentFragmentManager, MapFilterFragment.TAG)
     }
 
     fun onShowEvents() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_TAB_EVENTS)
+        EntourageEvents.logEvent(EntourageEvents.ACTION_FEED_SHOWEVENTS)
         fragment_map_top_tab?.getTabAt(NewsfeedTabItem.EVENTS_TAB.id)?.select()
     }
 

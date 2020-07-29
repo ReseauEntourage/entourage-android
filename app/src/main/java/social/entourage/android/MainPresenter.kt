@@ -53,29 +53,30 @@ import javax.inject.Inject
     fun handleMenu(@IdRes menuId: Int) {
         when (menuId) {
             R.id.action_good_waves -> {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_GOOD_WAVES)
+                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_GOODWAVES)
                 activity.showWebViewForLinkId(Constants.GOOD_WAVES_ID)
             }
             R.id.action_user -> {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_TAP_MY_PROFILE)
+                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_SHOWPROFIL)
                 val userFragment = activity.supportFragmentManager.findFragmentByTag(UserFragment.TAG) as UserFragment?
                         ?: UserFragment.newInstance(activity.getAuthenticationController().me!!.id)
                 userFragment.show(activity.supportFragmentManager, UserFragment.TAG)
             }
             R.id.action_edit_profile -> {
+                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_MODPROFIL)
                 val fragment = UserEditFragment()
                 fragment.show(activity.supportFragmentManager, UserEditFragment.TAG)
             }
             R.id.action_logout -> {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_LOGOUT)
+                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_LOGOUT)
                 activity.logout()
             }
             R.id.action_blog -> {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_BLOG)
+                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_BLOG)
                 activity.showWebViewForLinkId(Constants.SCB_LINK_ID)
             }
             R.id.action_charte -> {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_CHART)
+                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_CHART)
                 val charteIntent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.CHARTE_LINK_ID)))
                 try {
                     activity.startActivity(charteIntent)
@@ -84,11 +85,11 @@ import javax.inject.Inject
                 }
             }
             R.id.action_goal -> {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_GOAL)
+                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_GOAL)
                 activity.showWebViewForLinkId(Constants.GOAL_LINK_ID)
             }
             R.id.action_donation -> {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_DONATION)
+                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_DONATION)
                 val donationIntent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.DONATE_LINK_ID)))
                 try {
                     activity.startActivity(donationIntent)
@@ -97,10 +98,11 @@ import javax.inject.Inject
                 }
             }
             R.id.action_involvement -> {
+                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_FOLLOW)
                 GetInvolvedFragment.newInstance().show(activity.supportFragmentManager, GetInvolvedFragment.TAG)
             }
             R.id.action_ambassador -> {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_AMBASSADOR)
+                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_AMBASSADOR)
                 val ambassadorIntent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.AMBASSADOR_ID)))
                 try {
                     activity.startActivity(ambassadorIntent)
@@ -114,7 +116,7 @@ import javax.inject.Inject
                 clipboardManager.setPrimaryClip(clipData)
             }
             R.id.action_about -> {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_MENU_ABOUT)
+                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_ABOUT)
                 EntourageAboutFragment().show(activity.supportFragmentManager, EntourageAboutFragment.TAG)
             }
             else -> Toast.makeText(activity, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show()

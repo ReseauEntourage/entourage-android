@@ -234,23 +234,11 @@ object EntourageEvents {
     //MENU Events
     const val EVENT_PROFILE_FROM_MENU = "Open_Profile_From_Menu"
     const val EVENT_OPEN_GUIDE_FROM_TAB = "Open_Guide_From_Tab"
-    const val EVENT_OPEN_TOURS_FROM_MENU = "Open_Tours_From_Menu"
-    const val EVENT_OPEN_FEED_FROM_TAB = "Open_NewsFeed_From_Tab"
-    const val EVENT_MENU_TAP_MY_PROFILE = "TapMyProfilePhoto"
-    const val EVENT_MENU_LOGOUT = "LogOut"
-    const val EVENT_MENU_ABOUT = "AboutClick"
-    const val EVENT_MENU_GOAL = "WhatActionsClick"
     const val EVENT_ABOUT_FAQ = "AppFAQClick"
-    const val EVENT_MENU_BLOG = "SimpleCommeBonjourClick"
-    const val EVENT_MENU_CHART = "ViewEthicsChartClick"
-    const val EVENT_MENU_ATD = "ATDPartnershipView"
-    const val EVENT_MENU_DONATION = "DonationView"
-    const val EVENT_MENU_AMBASSADOR = "AmbassadorProgramClick"
-    const val EVENT_MENU_GOOD_WAVES = "GoodWavesClick"
+
 
     //FEED Events
     const val EVENT_FEED_MESSAGES = "GoToMessages" // No longer used
-    const val EVENT_FEED_MENU = "OpenMenu"
     const val EVENT_FEED_USERPROFILE = "UserProfileClick"
     const val EVENT_FEED_ACTIVE_CLOSE_OVERLAY = "OpenActiveCloseOverlay"
     const val EVENT_FEED_MAPCLICK = "MapClick"
@@ -274,14 +262,8 @@ object EntourageEvents {
     const val EVENT_GUIDE_ACTIVATE_GEOLOC_RECENTER = "ActivateGeolocFromGuideRecenterPopup"
     const val EVENT_FEED_ACTIVATE_GEOLOC_FROM_BANNER = "ActivateGeolocFromBanner"
     const val EVENT_GUIDE_ACTIVATE_GEOLOC_FROM_BANNER = "ActivateGeolocFromGuideBanner"
-    const val EVENT_FEED_TAB_ALL = "ShowAllFeed"
-    const val EVENT_FEED_TAB_EVENTS = "ShowEventFeed"
-    const val TOUR_FEED_TAB_EVENTS = "ShowTourFeed"
 
     //MAP Events
-    const val EVENT_MAP_MAPVIEW_CLICK = "MapViewClick"
-    const val EVENT_MAP_LISTVIEW_CLICK = "ListViewClick"
-    const val EVENT_MAP_PLUS_CLICK = "PlusFromMapClick"
     const val EVENT_MAP_LONGPRESS = "HiddenButtonsOverlayPress"
     const val EVENT_MAP_ZOOM_IN = "ZoomIn"
     const val EVENT_MAP_ZOOM_OUT = "ZoomOut"
@@ -292,8 +274,6 @@ object EntourageEvents {
     const val EVENT_GUIDE_PLUS_CLICK = "PlusFromGuideClick"
     const val EVENT_GUIDE_LONGPRESS = "LongPressFromGuideClick"
     const val EVENT_GUIDE_PROPOSE_POI = "ProposePOIView"
-    const val EVENT_GUIDE_LIST_VIEW = "GDSListViewClick"
-    const val EVENT_GUIDE_MAP_VIEW = "GDSMapViewClick"
 
     //SEND JOIN REQUEST Events
     const val EVENT_JOIN_REQUEST_START = "StartJoinMessage"
@@ -430,6 +410,44 @@ object EntourageEvents {
     //Action plus button agir / structure
     const val ACTION_PLUS_AGIR = "Action__Plus__Agir"
     const val ACTION_PLUS_STRUCTURE = "Action__Plus__Structure"
+
+    //Tabbar actions clic
+    const val ACTION_TAB_FEEDS = "Action__Tab__Feeds"
+    const val ACTION_TAB_GDS = "Action__Tab__GDS"
+    const val ACTION_TAB_PLUS = "Action__Tab__Plus"
+    const val ACTION_TAB_MESSAGES = "Action__Tab__Messages"
+    const val ACTION_TAB_PROFIL = "Action__Tab__Profil"
+    //Feeds
+    const val ACTION_FEED_SHOWALL = "Action__Feed__ShowAll"
+    const val ACTION_FEED_SHOWEVENTS = "Action__Feed__ShowEvents"
+    const val ACTION_FEED_SHOWTOURS = "Action__Feed__ShowTours"
+    const val ACTION_FEED_SHOWMAP = "Action__Feed__ShowMap"
+    const val ACTION_FEED_SHOWLIST = "Action__Feed__ShowList"
+    const val ACTION_FEED_SHOWFILTERS = "Action__Feed__ShowFilters"
+
+    //Guide
+    const val ACTION_GUIDE_SHOWMAP = "Action__Guide__ShowMap"
+    const val ACTION_GUIDE_SHOWLIST = "Action__Guide__ShowList"
+    const val ACTION_GUIDE_SHOWFILTERS = "Action__Guide__ShowFilters"
+
+    //Start info
+    const val SHOW_START_FEEDS = "View__Start__Feeds"
+
+    //Profile
+    const val ACTION_PROFILE_LOGOUT = "Action__Profile__LogOut"
+    const val ACTION_PROFILE_ABOUT = "Action__Profile__About"
+    const val ACTION_PROFILE_GOAL = "Action__Profile__Actions"
+    const val ACTION_PROFILE_FOLLOW = "Action__Profile__Follow"
+    const val ACTION_PROFILE_BLOG = "Action__Profile__SCBonjour"
+    const val ACTION_PROFILE_CHART = "Action__Profile__Ethic"
+    const val ACTION_PROFILE_DONATION = "Action__Profile__Donate"
+    const val ACTION_PROFILE_AMBASSADOR = "Action__Profile__Ambassador"
+    const val ACTION_PROFILE_GOODWAVES = "Action__Profile__GoodWaves"
+    const val ACTION_PROFILE_SHOWEVENTS = "Action__Profile__ShowEvents"
+    const val ACTION_PROFILE_SHOWACTIONS = "Action__Profile__ShowActions"
+    const val ACTION_PROFILE_MODPROFIL = "Action__Profile__ModProfil"
+    const val ACTION_PROFILE_SHOWPROFIL = "Action__Profile__ShowProfil"
+    const val VIEW_PROFILE_MENU = "View__Profile__Menu"
 
     var TAG = EntourageEvents::class.java.simpleName
 

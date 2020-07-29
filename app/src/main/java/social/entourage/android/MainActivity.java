@@ -40,6 +40,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import social.entourage.android.api.model.EntourageEvent;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
@@ -149,6 +150,8 @@ public class MainActivity extends EntourageSecuredActivity
 
     private BottomNavigationDataSource navigationDataSource;
 
+    private boolean isAnalyticsSendFromStart = false;
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -229,6 +232,11 @@ public class MainActivity extends EntourageSecuredActivity
                     sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
                     break;
             }
+        }
+
+        if (!isAnalyticsSendFromStart) {
+            isAnalyticsSendFromStart = true;
+            EntourageEvents.logEvent(EntourageEvents.SHOW_START_FEEDS);
         }
 
         sendNewsfeedFragmentExtras();
@@ -423,6 +431,7 @@ public class MainActivity extends EntourageSecuredActivity
                     return false;
                 }
                 if(bottomBar.getSelectedItemId()!=item.getItemId()) {
+                    sendAnalyticsTapTabbar(item.getItemId());
                     loadFragment(item.getItemId());
                 }
                 return true;
@@ -437,6 +446,27 @@ public class MainActivity extends EntourageSecuredActivity
             messageBadge.setBadgeTextColor(ResourcesCompat.getColor(getResources(), R.color.primary, null));
             messageBadge.setMaxCharacterCount(2);
 
+        }
+    }
+
+    private void sendAnalyticsTapTabbar(@IdRes int itemId) {
+
+        switch (itemId) {
+            case R.id.bottom_bar_newsfeed:
+                EntourageEvents.logEvent(EntourageEvents.ACTION_TAB_FEEDS);
+                break;
+            case R.id.bottom_bar_guide:
+                EntourageEvents.logEvent(EntourageEvents.ACTION_TAB_GDS);
+                break;
+            case R.id.bottom_bar_plus:
+                EntourageEvents.logEvent(EntourageEvents.ACTION_TAB_PLUS);
+                break;
+            case R.id.bottom_bar_mymessages:
+                EntourageEvents.logEvent(EntourageEvents.ACTION_TAB_MESSAGES);
+                break;
+            case R.id.bottom_bar_profile:
+                EntourageEvents.logEvent(EntourageEvents.ACTION_TAB_PROFIL);
+                break;
         }
     }
 
@@ -546,6 +576,7 @@ public class MainActivity extends EntourageSecuredActivity
         User user = getAuthenticationController().getMe();
         if (user == null) return;
         EntourageEvents.updateUserInfo(user, getApplicationContext(), NotificationManagerCompat.from(this).areNotificationsEnabled());
+
     }
 
     @Override
