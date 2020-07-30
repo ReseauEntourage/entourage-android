@@ -439,7 +439,13 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
 
     private fun onReportEntourageButton() {
         if (activity == null) return
-        EntourageReportFragment.newInstance(feedItem.id.toInt()).show(parentFragmentManager,EntourageReportFragment.TAG)
+
+        var isEvent = false
+        if (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.getGroupType(), ignoreCase = true)) {
+            isEvent = true
+        }
+
+        EntourageReportFragment.newInstance(feedItem.id.toInt(),isEvent).show(parentFragmentManager,EntourageReportFragment.TAG)
     }
 
     private fun onPromoteEntourageButton() {

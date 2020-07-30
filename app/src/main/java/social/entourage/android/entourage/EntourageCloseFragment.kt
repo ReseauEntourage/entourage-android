@@ -18,6 +18,7 @@ import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events.OnFeedItemCloseRequestEvent
 import social.entourage.android.tools.BusProvider
 import kotlinx.android.synthetic.main.fragment_entourage_close.*
+import social.entourage.android.api.model.BaseEntourage
 
 /**
  * Offers options when closing an entourage
@@ -45,7 +46,15 @@ class EntourageCloseFragment : DialogFragment() {
             it.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_entourage_close, container, false)
+        var layoutId = R.layout.fragment_entourage_close
+
+        feedItem?.let {
+           if(BaseEntourage.GROUPTYPE_OUTING.equals(it.getGroupType(), ignoreCase = true)) {
+               layoutId = R.layout.fragment_event_close
+           }
+        }
+
+        return inflater.inflate(layoutId, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
