@@ -178,6 +178,8 @@
     <string name="entourage_share_text_member">J\'ai rejoint ce projet solidaire sur Entourage. Rejoins-le en téléchargeant l\'app ici %1$s</string>
     <string name="entourage_share_text_non_member">Ce projet solidaire sur Entourage a besoin de toi. Rejoins-le en téléchargeant l\'app ici %1$s</string>
 
+    <string name="info_share_poi_sms">Bonjour ! Voici l’adresse de %s qui pourrait vous intéresser.\n%s\n%s\nPour plus d’infos sur ce lieu, et pour créer des liens entre voisins solidaires, je vous donne RDV sur le réseau Entourage %s</string>
+    
     <string name="entourage_share_text_verb_for_entourage_author">créé</string>
     <string name="entourage_share_text_verb_for_entourage_member">rejoint</string>
     <string name="entourage_share_text_verb_for_entourage_nonmember">vu</string>

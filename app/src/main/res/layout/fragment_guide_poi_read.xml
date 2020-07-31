@@ -11,7 +11,9 @@
         android:id="@+id/poi_read_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:entourageTitle="@string/activity_read_poi_title"/>
+        app:entourageTitle="@string/activity_read_poi_title">
+
+    </social.entourage.android.tools.view.EntourageTitleView>
 
     <LinearLayout
         android:id="@+id/poi_type_layout"
