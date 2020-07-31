@@ -156,8 +156,8 @@
     <!-- Close Entourage Popup -->
     <string name="entourage_close_title">Comment cela s’est passé?</string>
     <string name="entourage_close_description">En clôturant l’action solidaire, vous fermez la discussion et retirez l’action du fil d’actualités.\n\nDites-nous en plus avant de clôturer !</string>
-    <string name="entourage_close_success_button">Mon projet a réussi</string>
-    <string name="entourage_close_failed_button">Mon projet n\'a pas abouti</string>
+    <string name="entourage_close_success_button">Mon action a réussi</string>
+    <string name="entourage_close_failed_button">Mon action n\'a pas abouti</string>
     <string name="entourage_close_help_button">Je demande de l\'aide</string>
     <string name="entourage_close_help_text">Mon action solidaire est bloquée</string>
 
