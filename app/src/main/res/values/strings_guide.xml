@@ -31,10 +31,8 @@
     <string name="poi_card_bullet">•</string>
     <string name="guide_alert_arrow_desc">Détails Alerte</string>
     <string name="guide_alert_info_desc">Info Guide</string>
-    <string name="guide_alert_info_title">INFO COVID-19</string>
-    <string name="guide_alert_info_text"><![CDATA[En raison de la situation sanitaire actuelle, de nombreuses structures ont temporairement fermé ou ont adapté leurs horaires d’ouverture.
-        Notre Annuaire Solidaire est mis à jour autant que possible, certaines informations risquent toutefois d’être érronées.<br/><br/>
-        Rendez-vous sur <a href=https://soliguide.fr/>Soliguide.fr</a> pour consulter un annuaire de lieux solidaires mis à jour en temps réel.]]></string>
+    <string name="guide_alert_info_title">HORAIRES D’ÉTÉ</string>
+    <string name="guide_alert_info_text"><![CDATA[Notre partenaire <a href=https://soliguide.fr/>Soliguide.fr</a> tient un annuaire à jour pour de nombreuses villes.]]></string>
 
 
     <string name="partners_entourage">Organisme actif sur Entourage</string>
