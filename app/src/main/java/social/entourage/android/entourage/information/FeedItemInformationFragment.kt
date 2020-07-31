@@ -715,6 +715,9 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         if (membersAdapter == null) {
             // Initialize the recycler view
             entourage_info_members?.layoutManager = LinearLayoutManager(context)
+            //Fix recyclerview inside scrollview + fix inside xml
+            entourage_info_public_scrollview?.isNestedScrollingEnabled = true
+            entourage_info_members?.isNestedScrollingEnabled = false
             membersAdapter = MembersAdapter()
             entourage_info_members?.adapter = membersAdapter
         }
@@ -929,7 +932,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
                 }
                 else -> {
                     // Different layout for requesting to join
-                    entourage_info_act_layout?.visibility = View.INVISIBLE
+                    entourage_info_act_layout?.visibility = View.GONE
                     entourage_info_request_join_layout?.visibility = View.VISIBLE
 //                    entourage_info_request_join_title?.setText(feedItem.getJoinRequestTitle())
                     entourage_info_request_join_button?.setText(feedItem.getJoinRequestButton())
