@@ -12,7 +12,8 @@ import com.squareup.picasso.Picasso.LoadedFrom
 import com.squareup.picasso.Target
 import kotlinx.android.synthetic.main.layout_feed_action_card.view.*
 import social.entourage.android.Constants
-import social.entourage.android.EntourageEvents
+import social.entourage.android.EntourageApplication
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.TimestampedObject
@@ -146,8 +147,18 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
                     FeedItem.JOIN_STATUS_ACCEPTED -> {
                         if (feedItem.type == TimestampedObject.TOUR_CARD && feedItem.isOngoing()) {
                             itemView.tour_card_button_act?.setText(R.string.tour_cell_button_ongoing)
-                        } else {
-                            itemView.tour_card_button_act?.setText(R.string.tour_cell_button_accepted)
+                        }
+                        else {
+                            EntourageApplication.get().me()?.let { currentUser ->
+                                if (author?.userID == currentUser.id) {
+                                    itemView.tour_card_button_act?.setText(R.string.tour_cell_button_accepted)
+                                }
+                                else {
+                                    itemView.tour_card_button_act?.setText(R.string.tour_cell_button_accepted_other)
+                                }
+                            } ?: run {
+                                itemView.tour_card_button_act?.setText(R.string.tour_cell_button_accepted)
+                            }
                         }
                     }
                     FeedItem.JOIN_STATUS_REJECTED -> {

@@ -10,7 +10,7 @@ import androidx.fragment.app.DialogFragment
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_encounter_disclaimer.*
 import social.entourage.android.R
-import social.entourage.android.view.EntourageSnackbar
+import social.entourage.android.tools.view.EntourageSnackbar
 
 class EncounterDisclaimerFragment : DialogFragment() {
     // ----------------------------------

@@ -4,13 +4,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.api.EntourageRequest
-import social.entourage.android.api.InvitationRequest
-import social.entourage.android.api.NewsfeedRequest
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.Invitation
-import social.entourage.android.api.model.Invitation.InvitationsWrapper
-import social.entourage.android.api.model.feed.NewsfeedItem.NewsfeedItemWrapper
+import social.entourage.android.api.request.*
 import social.entourage.android.entourage.my.filter.MyEntouragesFilter
 import timber.log.Timber
 import javax.inject.Inject
@@ -39,8 +35,8 @@ class MyEntouragesPresenter @Inject constructor(
                 filter.showPartnerEntourages,
                 filter.showJoinedEntourages
         )
-        call.enqueue(object : Callback<NewsfeedItemWrapper> {
-            override fun onResponse(call: Call<NewsfeedItemWrapper>, response: Response<NewsfeedItemWrapper>) {
+        call.enqueue(object : Callback<NewsfeedItemResponse> {
+            override fun onResponse(call: Call<NewsfeedItemResponse>, response: Response<NewsfeedItemResponse>) {
                 response.body()?.let {
                     if (response.isSuccessful) {
                         fragment.onNewsfeedReceived(it.newsfeedItems)
@@ -50,7 +46,7 @@ class MyEntouragesPresenter @Inject constructor(
                 fragment.onNewsfeedReceived(null)
             }
 
-            override fun onFailure(call: Call<NewsfeedItemWrapper>, t: Throwable) {
+            override fun onFailure(call: Call<NewsfeedItemResponse>, t: Throwable) {
                 fragment.onNewsfeedReceived(null)
             }
         })
@@ -58,8 +54,8 @@ class MyEntouragesPresenter @Inject constructor(
 
     fun getMyPendingInvitations() {
         val call = invitationRequest.retrieveUserInvitationsWithStatus(Invitation.STATUS_PENDING)
-        call.enqueue(object : Callback<InvitationsWrapper> {
-            override fun onResponse(call: Call<InvitationsWrapper>, response: Response<InvitationsWrapper>) {
+        call.enqueue(object : Callback<InvitationListResponse> {
+            override fun onResponse(call: Call<InvitationListResponse>, response: Response<InvitationListResponse>) {
                 response.body()?.invitations?.let {
                     if (response.isSuccessful) {
                         onInvitationsReceived(it)
@@ -69,7 +65,7 @@ class MyEntouragesPresenter @Inject constructor(
                 fragment.onNoInvitationReceived()
             }
 
-            override fun onFailure(call: Call<InvitationsWrapper>, t: Throwable) {
+            override fun onFailure(call: Call<InvitationListResponse>, t: Throwable) {
                 fragment.onNoInvitationReceived()
             }
         })
@@ -83,14 +79,14 @@ class MyEntouragesPresenter @Inject constructor(
         fragment.removeOldInvitations(invitationList)
         invitationList.forEach {
             val call = entourageRequest.retrieveEntourageById(it.entourageUUID, 0, 0)
-            call.enqueue(object : Callback<BaseEntourage.EntourageWrapper> {
-                override fun onResponse(call: Call<BaseEntourage.EntourageWrapper>, response: Response<BaseEntourage.EntourageWrapper>) {
+            call.enqueue(object : Callback<EntourageResponse> {
+                override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
                     if (response.isSuccessful && response.body()?.entourage is BaseEntourage) {
                         it.entourage = response.body()?.entourage
                         fragment.addInvitation(it)
                     }
                 }
-                override fun onFailure(call: Call<BaseEntourage.EntourageWrapper>, t: Throwable) {
+                override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
                     Timber.w("Entourage for Invitation not found")
                 }
             })

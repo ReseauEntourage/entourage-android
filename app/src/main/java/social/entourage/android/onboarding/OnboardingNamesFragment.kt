@@ -8,10 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import kotlinx.android.synthetic.main.fragment_onboarding_names.*
-import social.entourage.android.EntourageEvents
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.tools.hideKeyboard
-import timber.log.Timber
 
 private const val ARG_FIRSTNAME = "firstname"
 private const val ARG_LASTNAME = "lastname"
@@ -78,15 +77,12 @@ class OnboardingNamesFragment : Fragment() {
         }
 
         ui_onboard_names_et_lastname?.setOnFocusChangeListener { view, b ->
-            Timber.d("Call from Focus change")
             if (!b && !isAllreadyCall) updateButtonNext(false)
             if (b) isAllreadyCall = false
         }
 
         ui_onboard_names_et_lastname?.setOnEditorActionListener { _, event, _ ->
-            Timber.d("ON key listener $event -- ${EditorInfo.IME_ACTION_DONE}")
             if (event == EditorInfo.IME_ACTION_DONE) {
-                Timber.d("Call from Editor Action")
                 isAllreadyCall = true
                 updateButtonNext(true)
             }

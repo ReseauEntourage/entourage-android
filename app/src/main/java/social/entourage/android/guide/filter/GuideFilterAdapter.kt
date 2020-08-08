@@ -44,7 +44,13 @@ class GuideFilterAdapter : BaseAdapter() {
         // Populate the view
         val item = getItem(position)
         val categoryType = item.categoryType
-        view.filter_item_text?.text = categoryType.displayName
+        var displayName = categoryType.displayName
+        if (displayName == "Partenaires") {
+            view.context?.let {
+                displayName = it.getString(R.string.guide_display_partners)
+            }
+        }
+        view.filter_item_text?.text = displayName//categoryType.displayName
         view.filter_item_image?.setImageResource(categoryType.resourceId)
         // set the switch
         view.filter_item_switch?.isChecked = item.isChecked

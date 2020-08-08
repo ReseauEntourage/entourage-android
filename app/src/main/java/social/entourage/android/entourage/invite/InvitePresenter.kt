@@ -1,13 +1,13 @@
 package social.entourage.android.entourage.invite
 
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import social.entourage.android.api.EntourageRequest
+import social.entourage.android.api.request.EntourageRequest
 import social.entourage.android.api.model.MultipleInvitations
-import social.entourage.android.api.model.MultipleInvitations.MultipleInvitationsResponse
-import social.entourage.android.api.model.MultipleInvitations.MultipleInvitationsWrapper
 import social.entourage.android.api.model.TimestampedObject
+import social.entourage.android.api.request.MultipleInvitationsWrapper
 import javax.inject.Inject
 
 /**
@@ -31,8 +31,8 @@ class InvitePresenter @Inject constructor(
 
     private fun inviteBySMSEntourage(entourageUUID: String, invitations: MultipleInvitations) {
         entourageRequest.inviteBySMS(entourageUUID, MultipleInvitationsWrapper(invitations))
-                .enqueue(object : Callback<MultipleInvitationsResponse?> {
-            override fun onResponse(call: Call<MultipleInvitationsResponse?>, response: Response<MultipleInvitationsResponse?>) {
+                .enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     fragment?.onInviteSent(true)
                 } else {
@@ -40,7 +40,7 @@ class InvitePresenter @Inject constructor(
                 }
             }
 
-            override fun onFailure(call: Call<MultipleInvitationsResponse?>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 fragment?.onInviteSent(false)
             }
         })

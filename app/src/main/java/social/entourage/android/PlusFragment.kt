@@ -7,8 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_plus.*
-import kotlinx.android.synthetic.main.layout_map_longclick.*
 import kotlinx.android.synthetic.main.layout_plus_overlay.*
+import social.entourage.android.base.BackPressable
+import social.entourage.android.tools.log.EntourageEvents
 
 class PlusFragment : Fragment(), BackPressable {
     override fun onResume() {

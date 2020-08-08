@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.text.format.DateFormat
 import kotlinx.android.synthetic.main.activity_encounter_read.*
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.EntourageActivity
-import social.entourage.android.EntourageEvents
+import social.entourage.android.base.EntourageActivity
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.tour.Encounter
 import java.io.IOException
@@ -42,31 +42,33 @@ class ReadEncounterActivity : EntourageActivity() {
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
-    fun onCloseButton() {
+    private fun onCloseButton() {
         finish()
     }
 
     private fun displayEncounter() {
         if (isFinishing) return
-        encounter?.let {
-            val location = if (it.address != null && it.address.maxAddressLineIndex >= 0) {
-                it.address.getAddressLine(0)
-            } else ""
-            val encounterDate: String? = if (it.creationDate != null) DateFormat.getDateFormat(applicationContext).format(it.creationDate) else ""
+        encounter?.let {encounter ->
+            val location = encounter.address?.let { address ->
+                if (address.maxAddressLineIndex >= 0) {
+                    address.getAddressLine(0)
+                } else ""
+            } ?: ""
+            val encounterDate: String? = encounter.creationDate?.let { date-> DateFormat.getDateFormat(applicationContext).format(date) } ?: ""
             val encounterLocation: String = if (location.isEmpty()) {
                 resources.getString(R.string.encounter_read_location_no_address,
-                        it.userName,
-                        it.streetPersonName,
+                        encounter.userName,
+                        encounter.streetPersonName,
                         encounterDate)
             } else {
                 resources.getString(R.string.encounter_read_location,
-                        it.userName,
-                        it.streetPersonName,
+                        encounter.userName,
+                        encounter.streetPersonName,
                         location,
                         encounterDate)
             }
             edittext_street_person_name?.setText(encounterLocation)
-            edittext_message?.setText(it.message)
+            edittext_message?.setText(encounter.message)
         }
     }
 

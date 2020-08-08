@@ -66,17 +66,6 @@ class Invitation (
         return !(other == null || other.javaClass != this.javaClass) && invitationId == (other as Invitation).invitationId
     }
 
-    // ----------------------------------
-    // WRAPPERS
-    // ----------------------------------
-    class InvitationWrapper(@field:SerializedName("invite") var invitation: Invitation)
-
-    class InvitationsWrapper {
-        @SerializedName("invitations")
-        lateinit var invitations: List<Invitation>
-
-    }
-
     companion object {
         // ----------------------------------
         // CONSTANTS

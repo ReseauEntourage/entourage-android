@@ -13,7 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_tour_join_request_ok.*
-import social.entourage.android.EntourageEvents
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.feed.FeedItem
@@ -83,10 +83,12 @@ class EntourageJoinRequestFragment  : DialogFragment() {
     }
 
     private fun onMessageSend() {
-        tour_join_request_ok_message?.text?.let {
-            if (!it.isBlank()) {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_SUBMIT)
-                viewModel.sendMessage(it.toString(), entourage)
+        entourage.uuid?.let { uuid ->
+            tour_join_request_ok_message?.text?.let {
+                if (!it.isBlank()) {
+                    EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_SUBMIT)
+                    viewModel.sendMessage(it.toString(), uuid)
+                }
             }
         }
     }

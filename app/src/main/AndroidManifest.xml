@@ -181,7 +181,11 @@
         <activity android:name=".onboarding.OnboardingMainActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".onboarding.LoginNewActivity"
+        <activity android:name=".onboarding.login.LoginActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity android:name=".onboarding.login.LoginNextActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"/>
 

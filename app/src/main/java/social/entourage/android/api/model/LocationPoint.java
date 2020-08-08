@@ -11,7 +11,6 @@ import java.util.List;
 
 import social.entourage.android.location.EntourageLocation;
 
-@SuppressWarnings("unused")
 public class LocationPoint implements Serializable {
     
     private static final long serialVersionUID = -5620241951845660404L;

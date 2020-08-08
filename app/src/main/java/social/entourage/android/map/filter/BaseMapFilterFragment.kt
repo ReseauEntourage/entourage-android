@@ -3,7 +3,7 @@ package social.entourage.android.map.filter
 import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.EntourageEvents
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.api.tape.Events.OnMapFilterChanged
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.tools.BusProvider

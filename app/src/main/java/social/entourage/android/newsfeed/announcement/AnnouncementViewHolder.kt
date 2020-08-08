@@ -17,7 +17,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.Announcement
 import social.entourage.android.base.BaseCardViewHolder
-import social.entourage.android.view.EntourageSnackbar
+import social.entourage.android.tools.view.EntourageSnackbar
 import timber.log.Timber
 
 /**

@@ -9,9 +9,11 @@ import androidx.appcompat.app.AlertDialog
 import social.entourage.android.*
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.base.EntourageSecuredActivity
 import social.entourage.android.message.push.PushNotificationManager
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.user.UserFragment
-import social.entourage.android.view.HtmlTextView
+import social.entourage.android.tools.view.HtmlTextView
 import javax.inject.Inject
 
 class EntourageJoinRequestReceivedActivity : EntourageSecuredActivity() {

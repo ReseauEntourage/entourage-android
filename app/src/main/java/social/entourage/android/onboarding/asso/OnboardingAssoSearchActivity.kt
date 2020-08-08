@@ -13,7 +13,7 @@ import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.Partner
 import social.entourage.android.tools.hideKeyboard
-import social.entourage.android.view.CustomProgressDialog
+import social.entourage.android.tools.view.CustomProgressDialog
 import timber.log.Timber
 
 
@@ -98,7 +98,7 @@ class OnboardingAssoSearchActivity : AppCompatActivity() {
                 arrayAssosSearch.clear()
                 selectedAsso = null
 
-                arrayAssosSearch = arrayAssos.filter { asso -> asso.name.contains(s,true) } as ArrayList<Partner>
+                arrayAssosSearch = arrayAssos.filter { asso -> asso.name?.contains(s,true)==true } as ArrayList<Partner>
                 if (s.length == 0) {
                     arrayAssosSearch.clear()
                     isFiltered = false

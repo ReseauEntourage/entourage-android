@@ -30,9 +30,9 @@ import com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListe
 import com.google.maps.android.clustering.view.DefaultClusterRenderer
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.layout_map_longclick.*
-import social.entourage.android.BackPressable
+import social.entourage.android.base.BackPressable
 import social.entourage.android.EntourageApplication
-import social.entourage.android.EntourageEvents
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted
 import social.entourage.android.base.HeaderBaseAdapter
@@ -44,7 +44,7 @@ import social.entourage.android.tools.BusProvider
 import timber.log.Timber
 
 abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPressable, LocationUpdateListener {
-    protected var eventLongClick: String? = null
+    protected lateinit var eventLongClick: String
     var isFollowing = true
     protected var isFullMapShown = true
     protected var previousCameraLocation: Location? = null
@@ -87,7 +87,7 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
     protected open fun saveCameraPosition() {}
 
     private fun initializeMapZoom() {
-        EntourageApplication.get().entourageComponent.authenticationController.user?.address?.let {
+        EntourageApplication.get().entourageComponent.authenticationController.me?.address?.let {
             centerMap(LatLng(it.latitude, it.longitude))
             isFollowing = false
         } ?: run {

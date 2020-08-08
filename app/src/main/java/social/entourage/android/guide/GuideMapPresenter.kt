@@ -6,8 +6,8 @@ import com.google.android.gms.maps.model.CameraPosition
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import social.entourage.android.api.PoiRequest
-import social.entourage.android.api.PoiResponse
+import social.entourage.android.api.request.PoiRequest
+import social.entourage.android.api.request.PoiResponse
 import social.entourage.android.guide.filter.GuideFilter
 import timber.log.Timber
 import javax.inject.Inject
@@ -47,8 +47,8 @@ class GuideMapPresenter @Inject constructor(
         val location = currentPosition.target
         val distance: Double = mapDistance.coerceAtMost(1f).toDouble()
         val call = poiRequest.retrievePoisNearby(location.latitude, location.longitude, distance, GuideFilter.instance.requestedCategories)
-        call?.enqueue(object : Callback<PoiResponse?> {
-            override fun onResponse(call: Call<PoiResponse?>, response: Response<PoiResponse?>) {
+        call.enqueue(object : Callback<PoiResponse> {
+            override fun onResponse(call: Call<PoiResponse>, response: Response<PoiResponse>) {
                 response.body()?.let {
                     if (response.isSuccessful) {
                         fragment.putPoiOnMap(it.categories, it.pois)
@@ -56,7 +56,7 @@ class GuideMapPresenter @Inject constructor(
                 }
             }
 
-            override fun onFailure(call: Call<PoiResponse?>, t: Throwable) {
+            override fun onFailure(call: Call<PoiResponse>, t: Throwable) {
                 Timber.e(t, "Impossible to retrieve POIs")
             }
         })

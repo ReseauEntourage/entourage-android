@@ -6,7 +6,7 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:background="@color/white"
     android:id="@+id/onboard_login_mainlayout"
-tools:context="social.entourage.android.onboarding.LoginNewActivity">
+tools:context="social.entourage.android.onboarding.login.LoginActivity">
 
     <FrameLayout
         android:id="@+id/frameLayout4"
@@ -82,7 +82,7 @@ tools:context="social.entourage.android.onboarding.LoginNewActivity">
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2">
 
-        <social.entourage.android.view.countrycodepicker.CountryCodePicker
+        <social.entourage.android.tools.view.countrycodepicker.CountryCodePicker
             android:id="@+id/ui_login_phone_ccp_code"
             android:layout_width="70dp"
             android:layout_height="48dp"

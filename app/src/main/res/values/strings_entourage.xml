@@ -155,11 +155,17 @@
 
     <!-- Close Entourage Popup -->
     <string name="entourage_close_title">Comment cela s’est passé?</string>
-    <string name="entourage_close_description">En clôturant l’entourage, vous mettez fin au projet.\n\nDites-nous en plus avant de clôturer !</string>
-    <string name="entourage_close_success_button">Mon projet a réussi</string>
-    <string name="entourage_close_failed_button">Mon projet n\'a pas abouti</string>
+    <string name="entourage_close_description">En clôturant l’action solidaire, vous fermez la discussion et retirez l’action du fil d’actualités.\n\nDites-nous en plus avant de clôturer !</string>
+    <string name="entourage_close_success_button">Mon action a réussi</string>
+    <string name="entourage_close_failed_button">Mon action n\'a pas abouti</string>
     <string name="entourage_close_help_button">Je demande de l\'aide</string>
-    <string name="entourage_close_help_text">Mon projet est bloqué</string>
+    <string name="entourage_close_help_text">Mon action solidaire est bloquée</string>
+
+    <!-- Close event popup -->
+    <string name="event_validate_button">Confirmer</string>
+    <string name="event_cancel_button">Annuler</string>
+    <string name="event_close_title">Comment cela s’est passé ?</string>
+    <string name="event_close_description">En clôturant l’évènement, vous fermez la discussion et retirez l’évènement du fil d’actualités. \n\nDites-nous en plus avant de clôturer !</string>
 
     <string name="entourage_close_email_title_success">Mes retours sur l\'entourage \'%1$s\' qui a été un succès</string>
     <string name="entourage_close_email_title_failed">Mes retours sur l\'entourage \'%1$s\' qui n\'a pas abouti</string>
@@ -172,6 +178,8 @@
     <string name="entourage_share_text_member">J\'ai rejoint ce projet solidaire sur Entourage. Rejoins-le en téléchargeant l\'app ici %1$s</string>
     <string name="entourage_share_text_non_member">Ce projet solidaire sur Entourage a besoin de toi. Rejoins-le en téléchargeant l\'app ici %1$s</string>
 
+    <string name="info_share_poi_sms">Bonjour ! Voici l’adresse de %s qui pourrait vous intéresser.\n%s\n%s\nPour plus d’infos sur ce lieu, et pour créer des liens entre voisins solidaires, je vous donne RDV sur le réseau Entourage %s</string>
+    
     <string name="entourage_share_text_verb_for_entourage_author">créé</string>
     <string name="entourage_share_text_verb_for_entourage_member">rejoint</string>
     <string name="entourage_share_text_verb_for_entourage_nonmember">vu</string>
@@ -211,8 +219,11 @@
     <string name="entourage_join_type_fragment_disclaimer">En cas de problème avec un utilisateur, vous pouvez toujours le signaler à notre équipe</string>
 
     <!-- User Report -->
-    <string name="entourage_report_explanation">Vous allez signaler cet Entourage à nos administrateurs.</string>
-    <string name="entourage_report_reason">Merci de préciser pourquoi\nvous signalez cet Entourage :</string>
+    <string name="action_report_explanation">Vous allez signaler cette action solidaire à nos administrateurs.</string>
+    <string name="action_report_reason">Merci de préciser pourquoi\nvous signalez cette action solidaire :</string>
+    <string name="event_report_explanation">Vous allez signaler cet évènement à nos administrateurs.</string>
+    <string name="event_report_reason">Merci de préciser pourquoi\nvous signalez cet évènement :</string>
+
     <string name="entourage_report_reason_hint">Ecrivez quelque chose…</string>
     <string name="entourage_report_success">✔︎ Entourage signalé</string>
     <string name="entourage_report_error_reason_empty">Ajoutez un message</string>

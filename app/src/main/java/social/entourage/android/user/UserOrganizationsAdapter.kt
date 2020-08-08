@@ -46,9 +46,7 @@ class UserOrganizationsAdapter(private var organizationList: List<BaseOrganizati
             } ?: run {
                 organizationViewHolder.itemView.organization_logo?.setImageDrawable(null)
             }
-            organizationViewHolder.partner = if (organization.type == BaseOrganization.TYPE_PARTNER) {
-                organization as Partner
-            } else { null }
+            organizationViewHolder.partner = (organization as? Partner)
             organizationViewHolder.itemView.organization_separator.visibility = if (position == organizationList!!.size - 1) View.GONE else View.VISIBLE
         }
     }

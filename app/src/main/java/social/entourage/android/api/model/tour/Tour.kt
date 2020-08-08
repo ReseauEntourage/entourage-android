@@ -233,17 +233,6 @@ class Tour : FeedItem, Serializable {
         }
     }
 
-    // ----------------------------------
-    // WRAPPERS
-    // ----------------------------------
-    class TourWrapper {
-        lateinit var tour: Tour
-    }
-
-    class ToursWrapper {
-        lateinit var tours: List<Tour>
-    }
-
     companion object {
         // ----------------------------------
         // CONSTANTS

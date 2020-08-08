@@ -3,10 +3,10 @@ package social.entourage.android.user
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import social.entourage.android.api.EntourageRequest
-import social.entourage.android.api.UserRequest
-import social.entourage.android.api.UserResponse
-import social.entourage.android.api.model.BaseEntourage.EntourageWrapper
+import social.entourage.android.api.request.EntourageRequest
+import social.entourage.android.api.request.EntourageResponse
+import social.entourage.android.api.request.UserRequest
+import social.entourage.android.api.request.UserResponse
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.User.UserConversation
 import social.entourage.android.authentication.AuthenticationController
@@ -25,8 +25,8 @@ class UserPresenter @Inject constructor(
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
-    val authenticatedUser: User
-        get() = authenticationController.user
+    val authenticatedUser: User?
+        get() = authenticationController.me
 
     fun getUser(userId: Int) {
         userRequest.getUser(userId).enqueue(object : Callback<UserResponse> {
@@ -74,9 +74,10 @@ class UserPresenter @Inject constructor(
     }
 
     fun getConversation(conversation: UserConversation) {
-        entourageRequest.retrieveEntourageById(conversation.uuid, 0, 0)
-                .enqueue(object : Callback<EntourageWrapper?> {
-            override fun onResponse(call: Call<EntourageWrapper?>, response: Response<EntourageWrapper?>) {
+        conversation.uuid?.let { uuid->
+            entourageRequest.retrieveEntourageById(uuid, 0, 0)
+                .enqueue(object : Callback<EntourageResponse> {
+            override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
                 if (response.isSuccessful) {
                     //show the entourage information
                     response.body()?.entourage?.let { fragment?.onConversationFound(it) }
@@ -85,9 +86,12 @@ class UserPresenter @Inject constructor(
                 }
             }
 
-            override fun onFailure(call: Call<EntourageWrapper?>, t: Throwable) {
+            override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
                 fragment?.onConversationNotFound()
             }
         })
+    } ?: run {
+            fragment?.onConversationNotFound()
+        }
     }
 }

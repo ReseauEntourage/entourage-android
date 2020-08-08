@@ -1,6 +1,7 @@
 package social.entourage.android.map.filter
 
 import android.graphics.PorterDuff
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +9,11 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.fragment_map_filter.*
-import social.entourage.android.EntourageEvents
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.entourage.category.EntourageCategoryManager
+import timber.log.Timber
 import java.util.*
 
 class MapFilterFragment  : BaseMapFilterFragment() {
@@ -36,6 +38,14 @@ class MapFilterFragment  : BaseMapFilterFragment() {
         map_filter_time_days_1?.setOnClickListener { onDays1Click() }
         map_filter_time_days_2?.setOnClickListener { onDays2Click() }
         map_filter_time_days_3?.setOnClickListener { onDays3Click() }
+
+
+        ui_map_filter_entourage_alls_switch?.setOnCheckedChangeListener { buttonView, isChecked ->
+            onAllSwitch()
+        }
+        ui_map_filter_entourage_partnersOnly_switch?.setOnCheckedChangeListener { buttonView, isChecked ->
+            onPartnersOnlySwitch()
+        }
     }
 
     // ----------------------------------
@@ -83,6 +93,23 @@ class MapFilterFragment  : BaseMapFilterFragment() {
         //map_filter_time_days_3.isChecked = false
     }
 
+    //Switch for Alls / partnersOnly
+    private fun onAllSwitch() {
+        val isChecked = ui_map_filter_entourage_alls_switch.isChecked
+        ui_map_filter_entourage_partnersOnly_switch.isChecked = !isChecked
+
+        ui_tv_map_filter_entourage_alls?.typeface = if (isChecked) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
+        ui_tv_map_filter_entourage_partners_only?.typeface = if (!isChecked) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
+    }
+
+    private fun onPartnersOnlySwitch() {
+        val isChecked = ui_map_filter_entourage_partnersOnly_switch.isChecked
+        ui_map_filter_entourage_alls_switch.isChecked = !isChecked
+
+        ui_tv_map_filter_entourage_alls?.typeface = if (!isChecked) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
+        ui_tv_map_filter_entourage_partners_only?.typeface = if (isChecked) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
+    }
+
     // ----------------------------------
     // Private methods
     // ----------------------------------
@@ -102,6 +129,12 @@ class MapFilterFragment  : BaseMapFilterFragment() {
             MapFilter.DAYS_2 -> map_filter_time_days_2?.isChecked = true
             else -> map_filter_time_days_2?.isChecked = true
         }
+
+        // check filters All / partners
+        ui_map_filter_entourage_alls_switch?.isChecked = mapFilter.isShowAlls
+        ui_tv_map_filter_entourage_alls?.typeface = if (mapFilter.isShowAlls) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
+        ui_map_filter_entourage_partnersOnly_switch?.isChecked = mapFilter.isShowPartnersOnly
+        ui_tv_map_filter_entourage_partners_only?.typeface = if (mapFilter.isShowPartnersOnly) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
     }
 
     override fun saveFilter() {
@@ -110,6 +143,8 @@ class MapFilterFragment  : BaseMapFilterFragment() {
         mapFilter.showPastEvents = map_filter_past_events_switch?.isChecked ?: false
         mapFilter.entourageTypeDemand = map_filter_entourage_demand_switch?.isChecked ?: true
         mapFilter.entourageTypeContribution = map_filter_entourage_contribution_switch?.isChecked ?: true
+        mapFilter.isShowAlls = ui_map_filter_entourage_alls_switch?.isChecked ?: true
+        mapFilter.isShowPartnersOnly = ui_map_filter_entourage_partnersOnly_switch?.isChecked ?: false
         for (switchList in actionSwitches.values) {
             for (categorySwitch in switchList) {
                 if (categorySwitch.tag != null) {

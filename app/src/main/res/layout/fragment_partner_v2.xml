@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F8F8F8"
-    tools:context="social.entourage.android.partner.PartnerFragmentV2">
+    tools:context=".user.partner.PartnerFragmentV2">
 
 
-    <social.entourage.android.view.EntourageTitleView
+    <social.entourage.android.tools.view.EntourageTitleView
         android:id="@+id/user_title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

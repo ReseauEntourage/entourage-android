@@ -6,10 +6,10 @@ import android.net.Uri
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_about.*
 import social.entourage.android.Constants
-import social.entourage.android.EntourageEvents
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.MainActivity
 import social.entourage.android.R
-import social.entourage.android.view.EntourageSnackbar
+import social.entourage.android.tools.view.EntourageSnackbar
 
 class EntourageAboutFragment : AboutFragment() {
     override fun populate() {

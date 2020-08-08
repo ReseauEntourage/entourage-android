@@ -40,6 +40,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import social.entourage.android.api.model.EntourageEvent;
 import social.entourage.android.api.model.Message;
 import social.entourage.android.api.model.PushNotificationContent;
 import social.entourage.android.api.model.TimestampedObject;
@@ -55,13 +56,15 @@ import social.entourage.android.api.tape.Events.OnTourEncounterViewRequestedEven
 import social.entourage.android.api.tape.Events.OnUnauthorizedEvent;
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent;
 import social.entourage.android.authentication.AuthenticationController;
-import social.entourage.android.authentication.UserPreferences;
+import social.entourage.android.base.BackPressable;
+import social.entourage.android.base.EntourageSecuredActivity;
 import social.entourage.android.configuration.Configuration;
 import social.entourage.android.deeplinks.DeepLinksManager;
 import social.entourage.android.entourage.EntourageDisclaimerFragment;
 import social.entourage.android.entourage.information.EntourageInformationFragment;
 import social.entourage.android.map.filter.MapFilter;
 import social.entourage.android.map.filter.MapFilterFactory;
+import social.entourage.android.tools.log.EntourageEvents;
 import social.entourage.android.user.edit.UserEditActionZoneFragment;
 import social.entourage.android.onboarding.OnboardingPhotoFragment;
 import social.entourage.android.user.edit.UserEditActionZoneFragmentCompat;
@@ -147,6 +150,8 @@ public class MainActivity extends EntourageSecuredActivity
 
     private BottomNavigationDataSource navigationDataSource;
 
+    private boolean isAnalyticsSendFromStart = false;
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -165,11 +170,10 @@ public class MainActivity extends EntourageSecuredActivity
             DeepLinksManager.INSTANCE.storeIntent(getIntent());
         }
 
-        User user = getAuthenticationController().getUser();
-        if (user != null) {
+        if(getAuthenticationController().isAuthenticated()) {
             //refresh the user info from the server
             Location location = EntourageLocation.getCurrentLocation();
-            presenter.updateUser(null, null, null, location);
+            presenter.updateUserLocation(location);
             //initialize the push notifications
             initializePushNotifications();
 
@@ -228,6 +232,11 @@ public class MainActivity extends EntourageSecuredActivity
                     sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
                     break;
             }
+        }
+
+        if (!isAnalyticsSendFromStart) {
+            isAnalyticsSendFromStart = true;
+            EntourageEvents.logEvent(EntourageEvents.SHOW_START_FEEDS);
         }
 
         sendNewsfeedFragmentExtras();
@@ -368,10 +377,10 @@ public class MainActivity extends EntourageSecuredActivity
 
     private void sendNewsfeedFragmentExtras() {
         AuthenticationController authenticationController = getAuthenticationController();
-        if (authenticationController == null || authenticationController.getUser() == null) return;
+        if (authenticationController == null || authenticationController.getMe() == null) return;
         BaseNewsfeedFragment newsfeedFRagment  = getNewsfeedFragment();
         if(newsfeedFRagment !=null) {
-            newsfeedFRagment.onNotificationExtras(authenticationController.getUser().getId(), authenticationController.isUserToursOnly());
+            newsfeedFRagment.onNotificationExtras(authenticationController.getMe().id, authenticationController.isUserToursOnly());
         }
     }
 
@@ -422,6 +431,7 @@ public class MainActivity extends EntourageSecuredActivity
                     return false;
                 }
                 if(bottomBar.getSelectedItemId()!=item.getItemId()) {
+                    sendAnalyticsTapTabbar(item.getItemId());
                     loadFragment(item.getItemId());
                 }
                 return true;
@@ -439,6 +449,27 @@ public class MainActivity extends EntourageSecuredActivity
         }
     }
 
+    private void sendAnalyticsTapTabbar(@IdRes int itemId) {
+
+        switch (itemId) {
+            case R.id.bottom_bar_newsfeed:
+                EntourageEvents.logEvent(EntourageEvents.ACTION_TAB_FEEDS);
+                break;
+            case R.id.bottom_bar_guide:
+                EntourageEvents.logEvent(EntourageEvents.ACTION_TAB_GDS);
+                break;
+            case R.id.bottom_bar_plus:
+                EntourageEvents.logEvent(EntourageEvents.ACTION_TAB_PLUS);
+                break;
+            case R.id.bottom_bar_mymessages:
+                EntourageEvents.logEvent(EntourageEvents.ACTION_TAB_MESSAGES);
+                break;
+            case R.id.bottom_bar_profile:
+                EntourageEvents.logEvent(EntourageEvents.ACTION_TAB_PROFIL);
+                break;
+        }
+    }
+
     private boolean shouldBypassNavigation(@IdRes int itemId) {
         if(itemId==navigationDataSource.getActionMenuId()) {
             //Handling special cases
@@ -447,7 +478,7 @@ public class MainActivity extends EntourageSecuredActivity
                 createEntourage();
                 return true;
             }
-            else if (authenticationController != null && authenticationController.getSavedTour()!=null) {
+            else if (getAuthenticationController() != null && getAuthenticationController().getSavedTour()!=null) {
                 // Show directly the create encounter
                 //TODO should be bound to service
                 addEncounter();
@@ -513,6 +544,13 @@ public class MainActivity extends EntourageSecuredActivity
             mapFragment.onShowEvents();
         }
     }
+    public void showAllActions() {
+        selectNavigationTab(navigationDataSource.getFeedTabIndex());
+        BaseNewsfeedFragment mapFragment  = getNewsfeedFragment();
+        if(mapFragment !=null) {
+            mapFragment.onShowAll();
+        }
+    }
 
     public void showMyEntourages() {
         selectNavigationTab(navigationDataSource.getMyMessagesTabIndex());
@@ -535,9 +573,10 @@ public class MainActivity extends EntourageSecuredActivity
     }
 
     private void updateAnalyticsInfo() {
-        User user = getAuthenticationController().getUser();
+        User user = getAuthenticationController().getMe();
         if (user == null) return;
         EntourageEvents.updateUserInfo(user, getApplicationContext(), NotificationManagerCompat.from(this).areNotificationsEnabled());
+
     }
 
     @Override
@@ -549,10 +588,10 @@ public class MainActivity extends EntourageSecuredActivity
         //remove user phone
         final SharedPreferences sharedPreferences = EntourageApplication.get().getSharedPreferences();
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        User me = EntourageApplication.me(getApplicationContext());
+        User me = getAuthenticationController().getMe();
         if(me != null) {
             HashSet<String> loggedNumbers = (HashSet<String>) sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, new HashSet<>());
-            loggedNumbers.remove(me.getPhone());
+            loggedNumbers.remove(me.phone);
             editor.putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers);
         }
 
@@ -682,10 +721,7 @@ public class MainActivity extends EntourageSecuredActivity
     public void onEntourageDisclaimerAccepted(final EntourageDisclaimerFragment fragment) {
         // Save the entourage disclaimer shown flag
         try{
-            User me = EntourageApplication.me(this);
-            if(me==null) return;
-            me.setEntourageDisclaimerShown(true);
-            getAuthenticationController().saveUser(me);
+            getAuthenticationController().setEntourageDisclaimerShown(true);
 
             // Dismiss the disclaimer fragment
             if (fragment != null) fragment.dismiss();
@@ -704,11 +740,7 @@ public class MainActivity extends EntourageSecuredActivity
     @Override
     public void onEncounterDisclaimerAccepted(EncounterDisclaimerFragment fragment) {
         // Save the entourage disclaimer shown flag
-        User me = EntourageApplication.me(this);
-        if(me==null) return;
-
-        me.setEncounterDisclaimerShown(true);
-        getAuthenticationController().saveUser(me);
+        getAuthenticationController().setEncounterDisclaimerShown(true);
 
         // Dismiss the disclaimer fragment
         fragment.dismiss();
@@ -859,28 +891,18 @@ public class MainActivity extends EntourageSecuredActivity
     }
 
     public void showEditActionZoneFragment(UserEditActionZoneFragment.FragmentListener extraFragmentListener,Boolean isSecondaryAddress) {
-        if (!authenticationController.isAuthenticated()) {
+        if (!getAuthenticationController().isAuthenticated()) {
             return;
         }
-        User me = authenticationController.getUser();
-        if(me==null) {
-            return;
-        }
-
-        UserPreferences userPreferences = authenticationController.getUserPreferences();
-        if(userPreferences== null) {
+        User me = getAuthenticationController().getMe();
+        if(me==null || ( me.address !=null && me.address.displayAddress.length() > 0)) {
             return;
         }
 
-        boolean noNeedToShowEditScreen = me.isEditActionZoneShown()
-                || userPreferences.isIgnoringActionZone()
-                || (me.getAddress()!=null
-                    && me.getAddress().getDisplayAddress() != null
-                    && me.getAddress().getDisplayAddress().length() > 0
-        );
-        if (noNeedToShowEditScreen) {
-            return;
+        if(getAuthenticationController().getEditActionZoneShown() || getAuthenticationController().isIgnoringActionZone()) {
+            return; //noNeedToShowEditScreen
         }
+
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             UserEditActionZoneFragmentCompat userEditActionZoneFragmentCompat = UserEditActionZoneFragmentCompat.newInstance(null,false);
             userEditActionZoneFragmentCompat.addFragmentListener(this);
@@ -894,8 +916,8 @@ public class MainActivity extends EntourageSecuredActivity
             userEditActionZoneFragment.setupListener(extraFragmentListener);
             userEditActionZoneFragment.show(getSupportFragmentManager(), UserEditActionZoneFragment.TAG);
         }
-        
-        me.setEditActionZoneShown(true);
+
+        getAuthenticationController().setEditActionZoneShown(true);
     }
 
     @Override
@@ -914,12 +936,8 @@ public class MainActivity extends EntourageSecuredActivity
     }
 
     private void storeActionZone(final boolean ignoreZone) {
-        if (authenticationController.isAuthenticated()) {
-            UserPreferences userPreferences = authenticationController.getUserPreferences();
-            if (userPreferences != null) {
-                userPreferences.setIgnoringActionZone(ignoreZone);
-                authenticationController.saveUserPreferences();
-            }
+        if (getAuthenticationController().isAuthenticated()) {
+            getAuthenticationController().setIgnoringActionZone(ignoreZone);
         }
         UserEditActionZoneFragmentCompat fragment = (UserEditActionZoneFragmentCompat)getSupportFragmentManager().findFragmentByTag(UserEditActionZoneFragmentCompat.TAG);
         if (fragment != null && !fragment.isStateSaved()) {

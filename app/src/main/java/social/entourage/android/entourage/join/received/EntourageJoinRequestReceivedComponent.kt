@@ -1,7 +1,7 @@
 package social.entourage.android.entourage.join.received
 
 import dagger.Component
-import social.entourage.android.ActivityScope
+import social.entourage.android.base.ActivityScope
 import social.entourage.android.EntourageComponent
 
 /**

@@ -12,9 +12,11 @@ import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.authentication.AuthenticationModule
+import social.entourage.android.base.EntourageActivity
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.newsfeed.UserFeedItemListCache
-import social.entourage.android.onboarding.LoginNewActivity
+import social.entourage.android.onboarding.login.LoginActivity
+import social.entourage.android.tools.LibrariesSupport
 import timber.log.Timber
 import java.util.*
 
@@ -53,7 +55,7 @@ class EntourageApplication : MultiDexApplication() {
 
     private fun setupDagger() {
         entourageComponent = DaggerEntourageComponent.builder()
-                .entourageModule(EntourageModule(this))
+                .entourageApplicationModule(EntourageApplicationModule(this))
                 .apiModule(ApiModule())
                 .authenticationModule(AuthenticationModule())
                 .build()
@@ -72,7 +74,7 @@ class EntourageApplication : MultiDexApplication() {
         get() = librariesSupport.firebaseAnalytics
 
     fun me(): User? {
-        return entourageComponent.authenticationController?.user ?: return null
+        return entourageComponent.authenticationController?.me ?: return null
     }
 
     fun onActivityCreated(activity: EntourageActivity) {
@@ -84,10 +86,10 @@ class EntourageApplication : MultiDexApplication() {
         saveFeedItemsStorage()
     }
 
-    private val loginActivity: LoginNewActivity?
+    private val loginActivity: LoginActivity?
         get() {
             for (activity in activities) {
-                if (activity is LoginNewActivity) {
+                if (activity is LoginActivity) {
                     return activity
                 }
             }
@@ -177,7 +179,7 @@ class EntourageApplication : MultiDexApplication() {
     }
 
     fun storeNewPushNotification(message: Message, isAdded: Boolean): Int {
-        val me = entourageComponent.authenticationController?.user ?: return -1
+        val me = entourageComponent.authenticationController?.me ?: return -1
         return userFeedItemListCache.saveFeedItemFromNotification(me.id, message, isAdded)
     }
 
@@ -186,12 +188,12 @@ class EntourageApplication : MultiDexApplication() {
     }
 
     private fun updateStorageFeedItem(feedItem: FeedItem) {
-        val me = entourageComponent.authenticationController?.user ?: return
+        val me = entourageComponent.authenticationController?.me ?: return
         userFeedItemListCache.updateFeedItem(me.id, feedItem)
     }
 
     fun clearFeedStorage(): Boolean {
-        val me = entourageComponent.authenticationController?.user ?: return false
+        val me = entourageComponent.authenticationController?.me ?: return false
         return userFeedItemListCache.clear(me.id)
     }
 

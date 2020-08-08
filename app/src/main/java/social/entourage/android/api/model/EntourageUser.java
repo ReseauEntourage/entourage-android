@@ -208,7 +208,17 @@ public class EntourageUser extends TimestampedObject implements Serializable {
 
     }
 
-    public static class EntourageUsersWrapper {
+    public static class EntourageUserResponse {
+        private EntourageUser user;
+        public EntourageUser getUser() {
+            return user;
+        }
+        public void setUser(EntourageUser user) {
+            this.user = user;
+        }
+    }
+
+    public static class EntourageUserListResponse {
 
         private List<EntourageUser> users;
 

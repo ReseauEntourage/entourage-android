@@ -1,6 +1,7 @@
 package social.entourage.android;
 
 import dagger.Component;
+import social.entourage.android.base.ActivityScope;
 
 /**
  * Component linked to MainActivity lifecycle

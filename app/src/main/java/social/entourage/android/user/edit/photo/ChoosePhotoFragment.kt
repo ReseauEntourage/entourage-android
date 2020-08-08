@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.fragment_onboarding_photo.*
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.EntourageEvents
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.onboarding.OnboardingPhotoFragment
 

@@ -16,6 +16,9 @@ class MapFilter : MapFilterInterface, Serializable {
     var entourageTypeContribution = true
     var timeframe = DAYS_3
 
+    var isShowAlls = true
+    var isShowPartnersOnly = false
+
     private var entourageCategories: MutableList<String> = ArrayList()
 
     // ----------------------------------
@@ -60,6 +63,7 @@ class MapFilter : MapFilterInterface, Serializable {
             !entourageTypeOuting -> false
             //TODO check tis one: //showPastEvents -> false
             timeframe != DAYS_3 -> false
+            isShowPartnersOnly -> false
             else -> true
         }
     }
@@ -70,6 +74,8 @@ class MapFilter : MapFilterInterface, Serializable {
         entourageTypeOuting=true
         showPastEvents=false
         timeframe = DAYS_3
+        isShowPartnersOnly = false
+        isShowAlls = true
     }
 
     // ----------------------------------

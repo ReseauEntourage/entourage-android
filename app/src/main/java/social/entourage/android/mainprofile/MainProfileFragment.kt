@@ -17,7 +17,8 @@ import social.entourage.android.R
 import social.entourage.android.api.tape.Events
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.CropCircleTransformation
-import social.entourage.android.view.EntourageSnackbar
+import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.view.EntourageSnackbar
 
 /**
  * Side menu fragment
@@ -38,6 +39,11 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
         super.onViewCreated(view, savedInstanceState)
         initialiseView()
         updateUserView()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        EntourageEvents.logEvent (EntourageEvents.VIEW_PROFILE_MENU)
     }
 
     // ----------------------------------
@@ -70,6 +76,15 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
                 (mainprofile_items_layout.getChildAt(j) as? MainProfileItemView)?.setOnClickListener { v: View -> selectMenuAction(v.id) }
             }
         }
+
+        ui_layout_show_events?.setOnClickListener {
+            EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_SHOWEVENTS)
+            showEvents()
+        }
+        ui_layout_show_actions?.setOnClickListener {
+            EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_SHOWACTIONS)
+            showActions()
+        }
     }
 
     private fun updateUserView() {
@@ -100,14 +115,31 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
             }
         }
 
-        // Show Update Private Circle item only if the user is member of any
-        //TODO ADD THIS TO PFP : action_update_info?.visibility = if (user.getMemberships(Entourage.TYPE_NEIGHBORHOOD).size > 0) View.VISIBLE else View.GONE
         // Changed the ethics charter text depending on signed/unsigned
         action_charte?.setTitle(if (user.hasSignedEthicsCharter()) R.string.action_charter_signed else R.string.action_charter_unsigned)
+
+        //Show hide join Good waves
+        if (user.stats?.isGoodWavesValidated == true) {
+            action_good_waves?.visibility = View.GONE
+        }
+        else {
+            action_good_waves?.visibility = View.VISIBLE
+        }
+
+        ui_tv_nb_actions?.text = if(user.stats?.actionsCount != null) "${user.stats!!.actionsCount}" else "0"
+        ui_tv_nb_events?.text = if(user.stats?.eventsCount != null) "${user.stats!!.eventsCount}" else "0"
+
     }
 
     private fun selectMenuAction(action: Int) {
         (activity as? MainActivity)?.selectItem(action)
+    }
+
+    private fun showEvents() {
+       (activity as? MainActivity)?.showEvents()
+    }
+    private fun showActions() {
+        (activity as? MainActivity)?.showAllActions()
     }
 
     private fun handleLongPress(): Boolean {

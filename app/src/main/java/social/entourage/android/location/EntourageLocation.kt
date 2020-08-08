@@ -42,7 +42,7 @@ object EntourageLocation {
     }
 
     init {
-        val address = get().entourageComponent.authenticationController.user?.address
+        val address = get().entourageComponent.authenticationController.me?.address
         val lat = LatLng(address?.latitude ?: INITIAL_LATITUDE, address?.longitude ?: INITIAL_LONGITUDE)
         lastCameraPosition = CameraPosition(lat, INITIAL_CAMERA_FACTOR, 0.0F, 0.0F)
         currentCameraPosition = CameraPosition(lat, INITIAL_CAMERA_FACTOR, 0.0F, 0.0F)

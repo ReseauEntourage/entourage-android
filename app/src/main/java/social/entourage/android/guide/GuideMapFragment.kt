@@ -42,7 +42,8 @@ import social.entourage.android.map.BaseMapFragment
 import social.entourage.android.service.EntourageService
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.Utils
-import social.entourage.android.view.EntourageSnackbar
+import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.view.EntourageSnackbar
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -122,6 +123,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     }
 
     private fun onShowFilter() {
+        EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_SHOWFILTERS)
         try {
             GuideFilterFragment().show(parentFragmentManager, GuideFilterFragment.TAG)
         } catch (e: IllegalStateException) {
@@ -131,9 +133,9 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
 
     private fun onDisplayToggle() {
         if (!isFullMapShown) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_MAP_VIEW)
+            EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_SHOWMAP)
         } else {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_LIST_VIEW)
+            EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_SHOWLIST)
         }
         togglePOIList()
     }

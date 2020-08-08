@@ -17,6 +17,7 @@ import com.squareup.otto.Subscribe
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_user_edit.*
 import kotlinx.android.synthetic.main.layout_view_title.*
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,10 +27,12 @@ import social.entourage.android.api.model.BaseOrganization
 import social.entourage.android.api.model.User
 import social.entourage.android.api.tape.Events.OnPartnerViewRequestedEvent
 import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
+import social.entourage.android.base.EntourageActivity
 import social.entourage.android.base.EntourageDialogFragment
-import social.entourage.android.partner.PartnerFragmentV2
+import social.entourage.android.user.partner.PartnerFragmentV2
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.CropCircleTransformation
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.user.UserFragment
 import social.entourage.android.user.UserOrganizationsAdapter
 import social.entourage.android.user.edit.UserEditActionZoneFragment.FragmentListener
@@ -155,46 +158,30 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
                 user_associations_layout?.visibility = View.VISIBLE
             }
             user.address?.let { address->
-
-                ui_tv_action_zone1_title?.text = user.address.displayAddress
-
+                ui_tv_action_zone1_title?.text = address.displayAddress
             } ?: run {
                 ui_tv_action_zone1_title?.text = getString(R.string.user_edit_action_zone_button_no_address)
             }
 
-            user.addressSecondary?.let {
-                ui_tv_action_zone2_title?.text = user.addressSecondary.displayAddress
+            user.addressSecondary?.let {addressSecondary ->
+                ui_tv_action_zone2_title?.text = addressSecondary.displayAddress
                 ui_layout_2nd_zone?.visibility = View.VISIBLE
                 ui_layout_add_zone?.visibility = View.GONE
-
             } ?: run {
                 ui_layout_2nd_zone?.visibility = View.GONE
                 ui_layout_add_zone?.visibility = View.VISIBLE
             }
 
             //Type
-            user.goal?.let {
-                var message = ""
-                when(user.goal) {
-                    User.USER_GOAL_NEIGHBOUR -> message = getString(R.string.onboard_type_choice1)
-                    User.USER_GOAL_ALONE -> message = getString(R.string.onboard_type_choice2)
-                    User.USER_GOAL_ASSO -> message = getString(R.string.onboard_type_choice3)
-                    else -> {
-                        message = getString(R.string.profile_action_not_selected)
-                    }
-                }
-                ui_tv_action_type_desc?.text = message
-
-                user.interests?.let {
-                    val interests = user.getFormatedInterests(requireContext())
-                    ui_tv_action_type_title?.text = String.format(getString(R.string.profile_activities),interests)
-                } ?: run {
-                    ui_tv_action_type_title?.text = getString(R.string.profile_activity_not_selected)
-                }
-            } ?: run {
-                ui_tv_action_type_title?.text = getString(R.string.profile_activity_not_selected)
-                ui_tv_action_type_desc?.text = getString(R.string.profile_action_not_selected)
+            ui_tv_action_type_desc?.text = when(user.goal) {
+                User.USER_GOAL_NEIGHBOUR -> getString(R.string.onboard_type_choice1)
+                User.USER_GOAL_ALONE -> getString(R.string.onboard_type_choice2)
+                User.USER_GOAL_ASSO -> getString(R.string.onboard_type_choice3)
+                else -> {getString(R.string.profile_action_not_selected) }
             }
+
+            val interests = user.getFormattedInterests(requireContext())
+            ui_tv_action_type_title?.text = String.format(getString(R.string.profile_activities),interests)
         }
     }
 
@@ -300,18 +287,18 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
         val userRequest = EntourageApplication.get().entourageComponent.userRequest
         val call = userRequest.deleteSecondaryAddressLocation()
 
-        call.enqueue(object : Callback<social.entourage.android.api.Response?> {
-            override fun onResponse(call: Call<social.entourage.android.api.Response?>, response: Response<social.entourage.android.api.Response?>) {
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     val authenticationController = EntourageApplication.get().entourageComponent.authenticationController
-                    authenticationController.user?.let { me->
+                    authenticationController.me?.let { me->
                         me.addressSecondary = null
                         authenticationController.saveUser(me)
                         initUserData()
                     }
                 }
             }
-            override fun onFailure(call: Call<social.entourage.android.api.Response?>, t: Throwable) {}
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {}
         })
     }
 
@@ -360,7 +347,8 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
                     user.partner = me.partner
                     user.address = me.address
                     user.addressSecondary = me.addressSecondary
-                    user.interests = me.interests
+                    user.interests.clear()
+                    user.interests.addAll(me.interests)
                     user.goal = me.goal
                     initUserData()
                 }
@@ -468,12 +456,8 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
     }
 
     private fun storeActionZone(ignoreActionZone: Boolean) {
-        EntourageApplication.get().entourageComponent.authenticationController?.let { authenticationController ->
-            authenticationController.userPreferences?.let { userPreferences ->
-                userPreferences.isIgnoringActionZone = ignoreActionZone
-                authenticationController.saveUserPreferences()
-            }
-        }
+        EntourageApplication.get().entourageComponent.authenticationController?.isIgnoringActionZone = ignoreActionZone
+
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             (parentFragmentManager.findFragmentByTag(UserEditActionZoneFragmentCompat.TAG) as UserEditActionZoneFragmentCompat?)?.let { userEditActionZoneFragmentCompat ->
                 if (!userEditActionZoneFragmentCompat.isStateSaved) {

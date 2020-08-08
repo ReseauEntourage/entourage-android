@@ -25,6 +25,7 @@ class EntourageReportFragment  : EntourageDialogFragment() {
     // ----------------------------------
     private var entourageId = 0
     private var sending = false
+    private var isEvent = false
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -32,6 +33,7 @@ class EntourageReportFragment  : EntourageDialogFragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             entourageId = it.getInt(KEY_ID)
+            isEvent = it.getBoolean(ISEVENT)
         }
     }
 
@@ -45,8 +47,8 @@ class EntourageReportFragment  : EntourageDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         showKeyboard()
-        ui_report_tv_title?.text = getString(R.string.entourage_report_explanation)
-        ui_report_tv_description?.text = getString(R.string.entourage_report_reason)
+        ui_report_tv_title?.text = if (isEvent) getString(R.string.event_report_explanation) else getString(R.string.action_report_explanation)
+        ui_report_tv_description?.text = if (isEvent) getString(R.string.event_report_reason) else getString(R.string.action_report_reason)
         user_report_close_button.setOnClickListener  {onCloseClicked()}
         user_report_send_button.setOnClickListener {onSendClicked() }
     }
@@ -89,13 +91,13 @@ class EntourageReportFragment  : EntourageDialogFragment() {
         val reason = user_report_reason_edittext?.text.toString()
         val call = userRequest.reportEntourage(entourageId, EntourageReport.EntourageReportWrapper(EntourageReport(reason)))
 
-        call.enqueue(object : Callback<ResponseBody?> {
-            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Toast.makeText(activity, R.string.entourage_report_error_send_failed, Toast.LENGTH_SHORT).show()
                 sending = false
             }
 
-            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     Toast.makeText(activity, R.string.entourage_report_success, Toast.LENGTH_SHORT).show()
                     if (!isStopped) {
@@ -115,6 +117,7 @@ class EntourageReportFragment  : EntourageDialogFragment() {
         // ----------------------------------
         val TAG = EntourageReportFragment::class.java.simpleName
         val KEY_ID = "entourageId"
+        val ISEVENT = "isEvent"
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
@@ -122,10 +125,11 @@ class EntourageReportFragment  : EntourageDialogFragment() {
          * @param entourageId The id of the entourage.
          * @return A new instance of fragment EntourageReportFragment.
          */
-        fun newInstance(entourageId: Int): EntourageReportFragment {
+        fun newInstance(entourageId: Int,isEvent:Boolean): EntourageReportFragment {
             val fragment = EntourageReportFragment()
             val args = Bundle()
             args.putInt(KEY_ID, entourageId)
+            args.putBoolean(ISEVENT,isEvent)
             fragment.arguments = args
             return fragment
         }

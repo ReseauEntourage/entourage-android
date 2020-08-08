@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.fragment_guide_poi_read.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageComponent
-import social.entourage.android.EntourageEvents
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.base.EntourageDialogFragment
@@ -45,6 +45,8 @@ class ReadPoiFragment : EntourageDialogFragment() {
 
         title_close_button?.setOnClickListener {dismiss()}
         poi_report_button?.setOnClickListener {onReportButtonClicked()}
+        ui_button_share?.setOnClickListener { onShareClicked() }
+        ui_button_share?.visibility = View.VISIBLE
     }
 
     private fun setupComponent(entourageComponent: EntourageComponent?) {
@@ -70,7 +72,15 @@ class ReadPoiFragment : EntourageDialogFragment() {
         }
         val categoryType = CategoryType.findCategoryTypeById(poi.categoryId)
         poi_type_layout?.setBackgroundColor(categoryType.color)
-        poi_type_label?.text = categoryType.displayName
+
+        var displayName = categoryType.displayName
+        if (displayName == "Partenaires") {
+            context?.let {
+                displayName = it.getString(R.string.partners_entourage)
+            }
+        }
+
+        poi_type_label?.text = displayName//categoryType.displayName
         poi_type_image?.setImageResource(categoryType.resourceTransparentId)
     }
 
@@ -98,6 +108,20 @@ class ReadPoiFragment : EntourageDialogFragment() {
         } else { // No Email clients
             Toast.makeText(context, R.string.error_no_email, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun onShareClicked() {
+        val poiName = if(poi.name == null) "" else poi.name
+        val address = if(poi.address?.length ?: 0 == 0) "" else "Adresse: ${poi.address}"
+        val phone = if(poi.phone?.length ?: 0 == 0) "" else "Tel: ${poi.phone}"
+        val urlShare = getString(R.string.url_share_entourage_bitly)
+
+        val shareText = getString(R.string.info_share_poi_sms).format(poiName,address,phone,urlShare)
+        // start the share intent
+        val sharingIntent = Intent(Intent.ACTION_SEND)
+        sharingIntent.type = "text/plain"
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, shareText)
+        startActivity(Intent.createChooser(sharingIntent, getString(R.string.entourage_share_intent_title)))
     }
 
     companion object {

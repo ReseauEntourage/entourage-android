@@ -18,7 +18,7 @@ import androidx.core.content.PermissionChecker
 import com.squareup.otto.Subscribe
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_photo_choose_source.*
-import social.entourage.android.EntourageEvents
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events.OnPhotoChosen
 import social.entourage.android.base.EntourageDialogFragment

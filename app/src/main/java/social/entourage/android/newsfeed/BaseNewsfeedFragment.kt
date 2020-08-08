@@ -51,8 +51,9 @@ import social.entourage.android.map.filter.MapFilterFragment
 import social.entourage.android.map.permissions.NoLocationPermissionFragment
 import social.entourage.android.service.EntourageService
 import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.user.edit.UserEditActionZoneFragment.FragmentListener
-import social.entourage.android.view.EntourageSnackbar
+import social.entourage.android.tools.view.EntourageSnackbar
 import java.util.*
 import javax.inject.Inject
 
@@ -99,7 +100,6 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         super.onCreate(savedInstanceState)
         BusProvider.instance.register(this)
         markersMap.clear()
-        EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_TOURS_FROM_MENU)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -141,7 +141,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             (activity as? MainActivity)?.showEditActionZoneFragment(this,false)
         }
         fragment_map_feeditems_view?.addOnScrollListener(scrollListener)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_FEED_FROM_TAB)
+//        EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_FEED_FROM_TAB)
         isStopped = false
     }
 
@@ -354,15 +354,15 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         selectedTab = newSelectedTab
         when(selectedTab) {
             NewsfeedTabItem.ALL_TAB -> {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_TAB_ALL)
+                EntourageEvents.logEvent(EntourageEvents.ACTION_FEED_SHOWALL)
                 fragment_map_filter_button?.visibility = View.VISIBLE
             }
             NewsfeedTabItem.TOUR_TAB -> {
-                EntourageEvents.logEvent(EntourageEvents.TOUR_FEED_TAB_EVENTS)
+                EntourageEvents.logEvent(EntourageEvents.ACTION_FEED_SHOWTOURS)
                 fragment_map_filter_button?.visibility = View.VISIBLE
             }
             NewsfeedTabItem.EVENTS_TAB -> {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_TAB_EVENTS)
+                EntourageEvents.logEvent(EntourageEvents.ACTION_FEED_SHOWEVENTS)
                 fragment_map_filter_button?.visibility = View.GONE
             }
         }
@@ -537,9 +537,9 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     private fun onDisplayToggle() {
         if (!isFullMapShown) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_MAPVIEW_CLICK)
+            EntourageEvents.logEvent(EntourageEvents.ACTION_FEED_SHOWMAP)
         } else {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_LISTVIEW_CLICK)
+            EntourageEvents.logEvent(EntourageEvents.ACTION_FEED_SHOWLIST)
         }
         toggleToursList()
     }
@@ -562,13 +562,17 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     open fun onShowFilter() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_FILTERSCLICK)
+        EntourageEvents.logEvent(EntourageEvents.ACTION_FEED_SHOWFILTERS)
         MapFilterFragment().show(parentFragmentManager, MapFilterFragment.TAG)
     }
 
     fun onShowEvents() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_TAB_EVENTS)
+        EntourageEvents.logEvent(EntourageEvents.ACTION_FEED_SHOWEVENTS)
         fragment_map_top_tab?.getTabAt(NewsfeedTabItem.EVENTS_TAB.id)?.select()
+    }
+
+    fun onShowAll() {
+        fragment_map_top_tab?.getTabAt(NewsfeedTabItem.ALL_TAB.id)?.select()
     }
 
     private fun onNewEntouragesReceivedButton() {
@@ -1041,7 +1045,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     // ----------------------------------
     private fun initializeInvitations() {
         // Check if it's a valid user and onboarding
-        if (EntourageApplication.me(activity)?.isOnboardingUser == true) {
+        if (presenter.isOnboardingUser == true) {
             // Retrieve the list of invitations and then accept them automatically
             presenter.getMyPendingInvitations()
             presenter.resetUserOnboardingFlag()
@@ -1053,8 +1057,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     fun onInvitationsReceived(invitationList: List<Invitation>) {
         //during onboarding we check if the new user was invited to specific entourages and then automatically accept them
-        if ((EntourageApplication.me(activity)?.isOnboardingUser == true)
-                &&(!invitationList.isNullOrEmpty())) {
+        if (presenter.isOnboardingUser == true &&(!invitationList.isNullOrEmpty())) {
             invitationList.forEach {
                 presenter.acceptInvitation(it.id)
             }
@@ -1166,7 +1169,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     private fun storeActionZoneInfo(ignoreAddress: Boolean) {
         val authenticationController = EntourageApplication.get().entourageComponent.authenticationController
-        authenticationController.userPreferences.isIgnoringActionZone = ignoreAddress
+        authenticationController.isIgnoringActionZone = ignoreAddress
         authenticationController.saveUserPreferences()
         if (!ignoreAddress) {
             EntourageApplication.me(activity)?.address?.let {

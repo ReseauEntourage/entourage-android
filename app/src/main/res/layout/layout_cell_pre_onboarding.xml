@@ -27,7 +27,7 @@
 
         <view
             android:id="@+id/ui_view_rounded"
-            class="social.entourage.android.view.RoundedCornersView"
+            class="social.entourage.android.tools.view.RoundedCornersView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:cornersColor="@color/white"

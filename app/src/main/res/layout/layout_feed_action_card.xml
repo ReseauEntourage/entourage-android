@@ -92,7 +92,7 @@
         android:scaleType="centerInside"
         android:src="@drawable/ic_user_photo_small" />
 
-    <social.entourage.android.view.PartnerLogoImageView
+    <social.entourage.android.tools.view.PartnerLogoImageView
         android:id="@+id/tour_card_partner_logo"
         android:layout_width="20dp"
         android:layout_height="20dp"

@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.fragment_user_edit.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageComponent
-import social.entourage.android.EntourageEvents
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.User
@@ -25,7 +25,7 @@ import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.entourage.information.FeedItemInformationFragment
-import social.entourage.android.partner.PartnerFragmentV2
+import social.entourage.android.user.partner.PartnerFragmentV2
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.user.edit.UserEditAboutFragment
@@ -141,10 +141,20 @@ class UserFragment : EntourageDialogFragment() {
         user?.let { u ->
             user_name?.setText(u.displayName)
             user_name?.setRoles(u.roles)
-            user_tours_count?.text = getString(R.string.user_entourage_count_format, u.stats?.entourageCount ?: 0)
+            user_tours_count?.text = getString(R.string.user_entourage_count_format, u.stats?.getActionCount() ?: 0)
             val userAbout = u.about
             user_profile_about_layout?.visibility = if (userAbout?.isNotBlank() == true) View.VISIBLE else View.GONE
-            user_profile_about?.text = userAbout
+            ui_tv_user_description?.text = userAbout
+
+            ui_tv_nb_actions?.text = if(u.stats?.actionsCount != null) "${u.stats!!.actionsCount}" else "0"
+            ui_tv_nb_events?.text = if(u.stats?.eventsCount != null) "${u.stats!!.eventsCount}" else "0"
+
+            if (u.stats?.isGoodWavesValidated == true) {
+                ui_tv_good_waves.visibility = View.VISIBLE
+            }
+            else {
+                ui_tv_good_waves.visibility = View.INVISIBLE
+            }
             user_identification_phone_check?.setImageResource(R.drawable.verified)
             user_identification_email_check?.setImageResource(if (u.email != null) R.drawable.verified else R.drawable.not_verified)
             user_profile_associations?.initUserAssociations(u, this)

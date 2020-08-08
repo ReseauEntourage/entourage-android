@@ -8,11 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import kotlinx.android.synthetic.main.fragment_onboarding_email_pwd.*
-import social.entourage.android.EntourageEvents
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.isValidEmail
-import timber.log.Timber
 
 private const val ARG_EMAIL = "email"
 
@@ -76,18 +75,15 @@ class OnboardingEmailPwdFragment : Fragment() {
         }
 
         ui_onboard_email_pwd_et_mail?.setOnEditorActionListener { _, event, _ ->
-            Timber.d("ON key listener $event -- ${EditorInfo.IME_ACTION_DONE}")
             if (event == EditorInfo.IME_ACTION_DONE) {
-                Timber.d("Call from Editor Action")
                 isAllreadyCall = true
-                updateButtonNext()
+                updateButtonNext(true)
             }
             false
         }
 
         ui_onboard_email_pwd_et_mail?.setOnFocusChangeListener { _, b ->
-            Timber.d("Call from Focus change")
-            if (!b && !isAllreadyCall) updateButtonNext()
+            if (!b && !isAllreadyCall) updateButtonNext(false)
             if (b) isAllreadyCall = false
         }
     }
@@ -96,10 +92,14 @@ class OnboardingEmailPwdFragment : Fragment() {
     // Methods
     //**********//**********//**********
 
-    private fun updateButtonNext() {
+    private fun updateButtonNext(isFromEmail:Boolean) {
         if (ui_onboard_email_pwd_et_mail?.text!= null && ui_onboard_email_pwd_et_mail.text.toString().isValidEmail()) {
             callback?.updateButtonNext(true)
             callback?.updateEmailPwd(ui_onboard_email_pwd_et_mail.text.toString(),null,null)
+
+            if (isFromEmail) {
+                callback?.goNextManually()
+            }
         }
         else {
             callback?.updateButtonNext(false)

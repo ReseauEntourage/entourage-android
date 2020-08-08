@@ -64,8 +64,10 @@ import social.entourage.android.service.EntourageService
 import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.CropCircleTransformation
+import social.entourage.android.tools.EntourageError
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.tour.TourInformationFragment
-import social.entourage.android.view.EntourageSnackbar
+import social.entourage.android.tools.view.EntourageSnackbar
 import timber.log.Timber
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -437,7 +439,13 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
 
     private fun onReportEntourageButton() {
         if (activity == null) return
-        EntourageReportFragment.newInstance(feedItem.id.toInt()).show(parentFragmentManager,EntourageReportFragment.TAG)
+
+        var isEvent = false
+        if (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.getGroupType(), ignoreCase = true)) {
+            isEvent = true
+        }
+
+        EntourageReportFragment.newInstance(feedItem.id.toInt(),isEvent).show(parentFragmentManager,EntourageReportFragment.TAG)
     }
 
     private fun onPromoteEntourageButton() {
@@ -707,6 +715,9 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         if (membersAdapter == null) {
             // Initialize the recycler view
             entourage_info_members?.layoutManager = LinearLayoutManager(context)
+            //Fix recyclerview inside scrollview + fix inside xml
+            entourage_info_public_scrollview?.isNestedScrollingEnabled = true
+            entourage_info_members?.isNestedScrollingEnabled = false
             membersAdapter = MembersAdapter()
             entourage_info_members?.adapter = membersAdapter
         }
@@ -921,7 +932,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
                 }
                 else -> {
                     // Different layout for requesting to join
-                    entourage_info_act_layout?.visibility = View.INVISIBLE
+                    entourage_info_act_layout?.visibility = View.GONE
                     entourage_info_request_join_layout?.visibility = View.VISIBLE
 //                    entourage_info_request_join_title?.setText(feedItem.getJoinRequestTitle())
                     entourage_info_request_join_button?.setText(feedItem.getJoinRequestButton())
@@ -1112,9 +1123,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         if (activity == null || !isAdded) return
         if (chatMessageList.isNotEmpty()) {
             //check who sent the message
-            val authenticationController = EntourageApplication.get(activity).entourageComponent.authenticationController
-            if (authenticationController.isAuthenticated) {
-                val me = authenticationController.user.id
+            EntourageApplication.get(activity).entourageComponent.authenticationController.me?.id?.let { me ->
                 for (chatMessage in chatMessageList) {
                     chatMessage.setIsMe(chatMessage.userId == me)
                 }

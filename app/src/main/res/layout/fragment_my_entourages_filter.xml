@@ -6,7 +6,7 @@
               android:layout_height="match_parent"
               android:background="@color/background_light">
 
-    <social.entourage.android.view.EntourageTitleView
+    <social.entourage.android.tools.view.EntourageTitleView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:entourageTitle="@string/map_filter_title"

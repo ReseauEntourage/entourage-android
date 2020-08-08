@@ -56,6 +56,8 @@
     <string name="onboard_place_placeholder">Ex : 35000</string>
     <string name="onboard_email_pwd_title">Ok super !</string>
     <string name="onboard_email_pwd_description">Maintenant, finalisons la création de votre compte !</string>
+    <string name="onboard_email_pwd_info">Laissez-nous votre mail pour recevoir des informations et des conseils de la part d\'Entourage !</string>
+    <string name="onboard_email_pwd_info2">Entourage ne communique pas votre adresse e-mail.</string>
     <string name="onboard_email_pwd_info_length">Inclure au moins 8 caractères.</string>
     <string name="onboard_email_pwd_placeholder_email">E-mail</string>
     <string name="onboard_email_pwd_placeholder_pwd">Mot de passe</string>

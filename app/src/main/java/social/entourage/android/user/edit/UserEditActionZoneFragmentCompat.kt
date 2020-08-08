@@ -23,7 +23,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.R
-import social.entourage.android.api.UserResponse
+import social.entourage.android.api.request.UserResponse
 import social.entourage.android.api.model.User
 import social.entourage.android.base.EntourageDialogFragment
 import timber.log.Timber
@@ -178,12 +178,12 @@ class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
             call = userRequest.updateSecondaryAddressLocation(request)
         }
 
-        call.enqueue(object : Callback<UserResponse?> {
-            override fun onResponse(call: Call<UserResponse?>, response: Response<UserResponse?>) {
+        call.enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.user?.let {
                         val authenticationController = get().entourageComponent.authenticationController
-                        authenticationController.user?.let { me->
+                        authenticationController.me?.let { me->
 
                             it.phone = me.phone
                             authenticationController.saveUser(it)
@@ -202,7 +202,7 @@ class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
                 saving = false
             }
 
-            override fun onFailure(call: Call<UserResponse?>, t: Throwable) {
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 if (activity != null) {
                     Toast.makeText(activity, R.string.user_action_zone_send_failed, Toast.LENGTH_SHORT).show()
                 }

@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_onboarding_main.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageApplication.Companion.get
-import social.entourage.android.EntourageEvents
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
@@ -29,7 +29,7 @@ import social.entourage.android.onboarding.sdf_neighbour.SdfNeighbourActivities
 import social.entourage.android.tools.Utils.checkPhoneNumberFormat
 import social.entourage.android.tools.disable
 import social.entourage.android.tools.enable
-import social.entourage.android.view.CustomProgressDialog
+import social.entourage.android.tools.view.CustomProgressDialog
 import timber.log.Timber
 import java.io.File
 import java.util.*
@@ -136,7 +136,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             else {
                 if (error != null) {
                     if (error.contains("PHONE_ALREADY_EXIST")) {
-                        showSmsAndGo(R.string.registration_number_error_already_registered)
+                        showPopAlreadySigned()
                         EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_EXIST)
                     }
                     else if (error.contains("INVALID_PHONE_FORMAT")) {
@@ -155,6 +155,22 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         }
     }
 
+    private fun showPopAlreadySigned() {
+        AlertDialog.Builder(this)
+                .setTitle("")
+                .setMessage(R.string.alreadyRegistereMessageGoBack)
+                .setPositiveButton(R.string.button_OK) { dialog, which ->
+                    dialog.dismiss()
+
+                    val intent = Intent(this, PreOnboardingChoiceActivity::class.java)
+                    intent.putExtra("isFromOnboarding",true)
+                    startActivity(intent)
+                    finish()
+                }
+                .create()
+                .show()
+    }
+
     private fun showSmsAndGo(textId:Int) {
         displayToast(textId)
         temporaryUser.phone = temporaryPhone
@@ -164,15 +180,17 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     fun sendPasscode() {
         alertDialog.show(R.string.onboard_waiting_dialog)
         EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SIGNUP_SUBMIT)
-        val phoneNumber = checkPhoneNumberFormat(null, temporaryUser.phone)
-        OnboardingAPI.getInstance(get()).login(phoneNumber,temporaryPasscode!!) { isOK, loginResponse, error ->
+        val phoneNumber = checkPhoneNumberFormat(null, temporaryUser.phone ?:"") ?: run {
+            showLoginFail(LOGIN_ERROR_INVALID_PHONE_FORMAT)
+            return
+        }
+        OnboardingAPI.getInstance(get()).login(phoneNumber,temporaryPasscode ?: "") { isOK, loginResponse, error ->
             if (isOK) {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SIGNUP_SUCCESS)
                 val authController = get().entourageComponent.authenticationController
                 Timber.d("Inside login, auth controller : $authController")
-                Timber.d("Inside login, auth controller : ${authController.isAuthenticated}")
-                loginResponse?.let { authController.saveUser(loginResponse.user)
-                    Timber.d("Inside login, auth controller after : ${authController.isAuthenticated}")
+                loginResponse?.let {
+                    authController.saveUser(loginResponse.user)
                 }
                 authController.saveUserPhoneAndCode(phoneNumber, temporaryPasscode)
                 authController.saveUserToursOnly(false)
@@ -254,7 +272,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         OnboardingAPI.getInstance(get()).updateAddress(temporaryPlaceAddress!!,false) { isOK, userResponse ->
             if (isOK) {
                 val authenticationController = get().entourageComponent.authenticationController
-                val me = authenticationController.user
+                val me = authenticationController.me
                 if (me != null && userResponse != null) {
                     userResponse.user.phone = me.phone
                     authenticationController.saveUser(userResponse.user)
@@ -364,7 +382,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     // Network Asso
 
     fun updateAssoInfos() {
-        if (temporaryAssoInfo?.name?.length ?:0 > 0 && temporaryAssoInfo?.postal_code?.length ?:0 > 0 && temporaryAssoInfo?.userRoleTitle?.length ?:0 > 0) {
+        if (temporaryAssoInfo?.name?.length ?:0 > 0 && temporaryAssoInfo?.postalCode?.length ?:0 > 0 && temporaryAssoInfo?.userRoleTitle?.length ?:0 > 0) {
             alertDialog.show(R.string.onboard_waiting_dialog)
             EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_PRO_SIGNUP_SUBMIT)
             OnboardingAPI.getInstance(get()).updateAssoInfos(temporaryAssoInfo) { isOK, response ->
@@ -413,7 +431,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         OnboardingAPI.getInstance(get()).updateAddress(temporary2ndPlaceAddress!!,true) { isOK, userResponse ->
             if (isOK) {
                 val authenticationController = get().entourageComponent.authenticationController
-                val me = authenticationController.user
+                val me = authenticationController.me
                 if (me != null && userResponse != null) {
                     userResponse.user.phone = me.phone
                     authenticationController.saveUser(userResponse.user)
@@ -475,7 +493,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 fragment = OnboardingPlaceFragment.newInstance(temporaryPlaceAddress, false, isSdf)
             }
             6 -> fragment = OnboardingEmailPwdFragment.newInstance(temporaryEmail)
-            7 -> fragment = OnboardingPhotoFragment.newInstance(temporaryUser.firstName)
+            7 -> fragment = OnboardingPhotoFragment.newInstance(temporaryUser.firstName ?: "")
         }
 
         if (currentFragmentPosition == PositionType.Passcode.pos || currentFragmentPosition >= PositionType.Type.pos) {
@@ -779,19 +797,20 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     fun goMain() {
         val authenticationController = get().entourageComponent.authenticationController
-        val me = authenticationController.user
-        OnboardingAPI.getInstance(get()).getUser(me.id) { isOK, userResponse ->
-            if (isOK) {
-                if (me != null && userResponse != null) {
-                    userResponse.user.phone = me.phone
-                    authenticationController.saveUser(userResponse.user)
+        authenticationController.me?.let { me ->
+            OnboardingAPI.getInstance(get()).getUser(me.id) { isOK, userResponse ->
+                if (isOK) {
+                    if (userResponse != null) {
+                        userResponse.user.phone = me.phone
+                        authenticationController.saveUser(userResponse.user)
+                    }
                 }
+                val sharedPreferences = get().sharedPreferences
+                sharedPreferences.edit().putInt(EntourageApplication.KEY_ONBOARDING_USER_TYPE, userTypeSelected.pos).apply()
+                sharedPreferences.edit().putBoolean(EntourageApplication.KEY_IS_FROM_ONBOARDING, true).apply()
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
             }
-            val sharedPreferences = get().sharedPreferences
-            sharedPreferences.edit().putInt(EntourageApplication.KEY_ONBOARDING_USER_TYPE,userTypeSelected.pos).apply()
-            sharedPreferences.edit().putBoolean(EntourageApplication.KEY_IS_FROM_ONBOARDING,true).apply()
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
         }
     }
 
@@ -918,6 +937,10 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         goPrevious()
     }
 
+    override fun goNextManually() {
+        goNext()
+    }
+
     //**********
     // Callbacks Asso
 
@@ -1006,4 +1029,6 @@ interface OnboardingCallback {
     fun updateAssoInfos(asso:Partner?)
     fun updateAssoActivities(assoActivities:AssoActivities)
     fun updateSdfNeighbourActivities(sdfNeighbourActivities:SdfNeighbourActivities,isSdf: Boolean)
+
+    fun goNextManually()
 }

@@ -50,10 +50,19 @@
     <string name="login_error_network">Vérifiez votre connexion et réessayez</string>
     <string name="login_retry_label">Réessayer</string>
 
+    <string name="alreadyRegistereMessageGoBack">Le numéro est déjà enregistré, nous allons vous rediriger vers la page de connexion.</string>
+    <string name="button_OK">OK</string>
+    <string name="login_pop_information">Information</string>
+    <string name="login_info_pop_action">Vous pouvez choisir votre mode d\'action dans votre profil.</string>
     <string name="login_name_title">Quel est votre nom ?</string>
     <string name="login_name_description">Seuls le prénom et la première lettre du nom apparaitront aux autres utilisateurs.</string>
     <string name="login_name_firstname_hint">Prénom</string>
     <string name="login_name_lastname_hint">Nom</string>
+
+    <string name="login_email_title">Ok super !</string>
+    <string name="login_email_description">Maintenant, finalisons la création de votre compte !</string>
+    <string name="login_place_title">Quel est votre quartier ?</string>
+    <string name="login_place_description">Vous pourrez répondre aux demandes de personnes en difficulté et d’associations de votre quartier, et vous pourrez vous-même proposer des dons de votre temps ou matériels.</string>
 
     <!-- Registration -->
     <string name="registration_welcome_signin">Se connecter</string>

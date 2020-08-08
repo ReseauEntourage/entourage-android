@@ -5,21 +5,16 @@ import com.google.android.gms.maps.model.GroundOverlay
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import social.entourage.android.EntourageEvents
-import social.entourage.android.api.EntourageRequest
-import social.entourage.android.api.InvitationRequest
-import social.entourage.android.api.TourRequest
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.api.model.Invitation
-import social.entourage.android.api.model.Invitation.InvitationWrapper
-import social.entourage.android.api.model.Invitation.InvitationsWrapper
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.BaseEntourage
-import social.entourage.android.api.model.tour.Encounter
 import social.entourage.android.api.model.feed.FeedItem
-import social.entourage.android.api.model.tour.Tour
+import social.entourage.android.api.model.tour.Encounter
+import social.entourage.android.api.request.*
 import social.entourage.android.api.tape.Events.OnTourEncounterViewRequestedEvent
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.entourage.EntourageDisclaimerFragment
@@ -31,7 +26,6 @@ import social.entourage.android.map.MapClusterTourItem
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tour.encounter.EncounterDisclaimerFragment
 import timber.log.Timber
-import java.lang.IllegalStateException
 import java.util.*
 import javax.inject.Inject
 
@@ -46,6 +40,9 @@ class NewsfeedPresenter @Inject constructor(
         private val entourageRequest: EntourageRequest,
         private val tourRequest: TourRequest,
         private val invitationRequest: InvitationRequest) {
+
+    val isOnboardingUser: Boolean
+      get() = authenticationController?.isOnboardingUser == true
 
     // ----------------------------------
     // PUBLIC METHODS
@@ -84,29 +81,29 @@ class NewsfeedPresenter @Inject constructor(
         when (feedItemType) {
             TimestampedObject.ENTOURAGE_CARD -> {
                 val call = entourageRequest.retrieveEntourageById(feedItemUUID, 0, 0)
-                call.enqueue(object : Callback<BaseEntourage.EntourageWrapper> {
-                    override fun onResponse(call: Call<BaseEntourage.EntourageWrapper>, response: Response<BaseEntourage.EntourageWrapper>) {
+                call.enqueue(object : Callback<EntourageResponse> {
+                    override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
                         response.body()?.entourage?.let {
                             if (response.isSuccessful) {
                                 openFeedItem(it, invitationId, 0)
                             }
                         }
                     }
-                    override fun onFailure(call: Call<BaseEntourage.EntourageWrapper>, t: Throwable) {
+                    override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
                     }
                 })
             }
             TimestampedObject.TOUR_CARD -> {
                 val call = tourRequest.retrieveTourById(feedItemUUID)
-                call.enqueue(object : Callback<Tour.TourWrapper> {
-                    override fun onResponse(call: Call<Tour.TourWrapper>, response: Response<Tour.TourWrapper>) {
+                call.enqueue(object : Callback<TourResponse> {
+                    override fun onResponse(call: Call<TourResponse>, response: Response<TourResponse>) {
                         response.body()?.tour?.let {
                             if (response.isSuccessful) {
                                 openFeedItem(it, invitationId, 0)
                             }
                         }
                     }
-                    override fun onFailure(call: Call<Tour.TourWrapper>, t: Throwable) {
+                    override fun onFailure(call: Call<TourResponse>, t: Throwable) {
                     }
                 })
             }
@@ -117,8 +114,8 @@ class NewsfeedPresenter @Inject constructor(
         when (feedItemType) {
             TimestampedObject.ENTOURAGE_CARD -> {
                 val call = entourageRequest.retrieveEntourageByShareURL(feedItemShareURL)
-                call.enqueue(object : Callback<BaseEntourage.EntourageWrapper> {
-                    override fun onResponse(call: Call<BaseEntourage.EntourageWrapper>, response: Response<BaseEntourage.EntourageWrapper>) {
+                call.enqueue(object : Callback<EntourageResponse> {
+                    override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
                         response.body()?.entourage?.let {
                             if (response.isSuccessful) {
                                 openFeedItem(it,0,0)
@@ -126,7 +123,7 @@ class NewsfeedPresenter @Inject constructor(
                         }
                     }
 
-                    override fun onFailure(call: Call<BaseEntourage.EntourageWrapper>, t: Throwable) {
+                    override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
                     }
                 })
             }
@@ -162,8 +159,8 @@ class NewsfeedPresenter @Inject constructor(
 
     fun getMyPendingInvitations() {
         val call = invitationRequest.retrieveUserInvitationsWithStatus(Invitation.STATUS_PENDING)
-        call.enqueue(object : Callback<InvitationsWrapper> {
-            override fun onResponse(call: Call<InvitationsWrapper>, response: Response<InvitationsWrapper>) {
+        call.enqueue(object : Callback<InvitationListResponse> {
+            override fun onResponse(call: Call<InvitationListResponse>, response: Response<InvitationListResponse>) {
                 response.body()?.invitations?.let {
                     if (response.isSuccessful) {
                         fragment?.onInvitationsReceived(it)
@@ -173,7 +170,7 @@ class NewsfeedPresenter @Inject constructor(
                 fragment?.onNoInvitationReceived()
             }
 
-            override fun onFailure(call: Call<InvitationsWrapper>, t: Throwable) {
+            override fun onFailure(call: Call<InvitationListResponse>, t: Throwable) {
                 fragment?.onNoInvitationReceived()
             }
         })
@@ -181,16 +178,14 @@ class NewsfeedPresenter @Inject constructor(
 
     fun acceptInvitation(invitationId: Long) {
         val call = invitationRequest.acceptInvitation(invitationId)
-        call.enqueue(object : Callback<InvitationWrapper?> {
-            override fun onResponse(call: Call<InvitationWrapper?>, response: Response<InvitationWrapper?>) {}
-            override fun onFailure(call: Call<InvitationWrapper?>, t: Throwable) {}
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {}
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {}
         })
     }
 
     fun resetUserOnboardingFlag() {
-        val me = authenticationController?.user ?: return
-        me.isOnboardingUser = false
-        authenticationController.saveUser(me)
+        authenticationController?.isOnboardingUser = false
     }
 
     fun saveMapFilter() {

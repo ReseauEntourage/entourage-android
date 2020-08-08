@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              tools:context="social.entourage.android.carousel.pages.CarouselPage2Fragment">
+              tools:context=".about.carousel.pages.CarouselPage2Fragment">
 
     <ImageView
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             android:textSize="@dimen/carousel_title"
             android:textStyle="bold"/>
 
-        <social.entourage.android.view.HtmlTextView
+        <social.entourage.android.tools.view.HtmlTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

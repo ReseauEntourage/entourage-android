@@ -2,12 +2,12 @@ package social.entourage.android.tour.join
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.api.TourRequest
-import social.entourage.android.api.model.EntourageUser.EntourageUserWrapper
+import social.entourage.android.api.request.TourRequest
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.model.tour.TourJoinMessage
 import social.entourage.android.api.model.tour.TourJoinMessage.TourJoinMessageWrapper
@@ -32,20 +32,21 @@ class TourJoinRequestViewModel : ViewModel() {
         val me = EntourageApplication.get().me() ?: return
         val joinMessageWrapper = TourJoinMessageWrapper()
         joinMessageWrapper.joinMessage = TourJoinMessage(message.trim { it <= ' ' })
-        val call = tourRequest.updateJoinTourMessage(tour.uuid, me.id, joinMessageWrapper)
-        call.enqueue(object : Callback<EntourageUserWrapper?> {
-            override fun onResponse(call: Call<EntourageUserWrapper?>, response: Response<EntourageUserWrapper?>) {
-                if (response.isSuccessful) {
-                    requestResult.value = REQUEST_OK
-                } else {
+        tour.uuid?.let {
+            tourRequest.updateJoinTourMessage(it, me.id, joinMessageWrapper).enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    if (response.isSuccessful) {
+                        requestResult.value = REQUEST_OK
+                    } else {
+                        requestResult.value = REQUEST_ERROR
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     requestResult.value = REQUEST_ERROR
                 }
-            }
-
-            override fun onFailure(call: Call<EntourageUserWrapper?>, t: Throwable) {
-                requestResult.value = REQUEST_ERROR
-            }
-        })
+            })
+        }
     }
 
     companion object {

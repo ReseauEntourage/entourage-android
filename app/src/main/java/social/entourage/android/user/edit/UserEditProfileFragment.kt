@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.fragment_user_edit_profile.*
-import social.entourage.android.EntourageEvents
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.User
 

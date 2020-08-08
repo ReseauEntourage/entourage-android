@@ -7,8 +7,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.api.EntourageRequest
-import social.entourage.android.api.model.BaseEntourage
+import social.entourage.android.api.request.EntourageRequest
 import timber.log.Timber
 import java.util.*
 
@@ -23,7 +22,7 @@ class EntourageJoinRequestViewModel : ViewModel() {
     // ----------------------------------
     // API CALLS
     // ----------------------------------
-    fun sendMessage(message: String, entourage: BaseEntourage) {
+    fun sendMessage(message: String, uuid: String) {
         if (message.isBlank()) {
             requestResult.value = REQUEST_OK
             return
@@ -33,9 +32,9 @@ class EntourageJoinRequestViewModel : ViewModel() {
         val messageHashMap = HashMap<String, String>()
         messageHashMap["message"] = message
         info["request"] = messageHashMap
-        val call = entourageRequest.updateUserEntourageStatus(entourage.uuid, me.id, info)
-        call.enqueue(object : Callback<ResponseBody?> {
-            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+        val call = entourageRequest.updateUserEntourageStatus(uuid, me.id, info)
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 try {
                     if (response.isSuccessful) {
                         requestResult.value = REQUEST_OK
@@ -47,7 +46,7 @@ class EntourageJoinRequestViewModel : ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 requestResult.value = REQUEST_ERROR
             }
         })

@@ -3,10 +3,10 @@ package social.entourage.android.user
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Callback
-import social.entourage.android.api.UserRequest
+import social.entourage.android.api.request.UserRequest
 import javax.inject.Inject
 
-class PrepareAvatarUploadRepository @Inject constructor(private val userRequest: UserRequest) : Callback<PrepareAvatarUploadRepository.Response?> {
+class PrepareAvatarUploadRepository @Inject constructor(private val userRequest: UserRequest) : Callback<PrepareAvatarUploadRepository.Response> {
     private var callback: Callback? = null
     fun setCallback(callback: Callback?) {
         this.callback = callback
@@ -17,7 +17,7 @@ class PrepareAvatarUploadRepository @Inject constructor(private val userRequest:
         userRequest.prepareAvatarUpload(request).enqueue(this)
     }
 
-    override fun onResponse(call: Call<Response?>, response: retrofit2.Response<Response?>) {
+    override fun onResponse(call: Call<Response>, response: retrofit2.Response<Response>) {
         if (response.isSuccessful) {
             response.body()?.let {
                 callback?.onPrepareUploadSuccess(it.avatarKey, it.presignedUrl)
@@ -27,7 +27,7 @@ class PrepareAvatarUploadRepository @Inject constructor(private val userRequest:
         callback?.onRepositoryError()
     }
 
-    override fun onFailure(call: Call<Response?>, t: Throwable) {
+    override fun onFailure(call: Call<Response>, t: Throwable) {
         callback?.onRepositoryError()
     }
 

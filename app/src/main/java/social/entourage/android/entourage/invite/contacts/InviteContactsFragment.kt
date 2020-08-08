@@ -16,7 +16,7 @@ import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
 import kotlinx.android.synthetic.main.fragment_invite_contacts.*
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.EntourageActivity
+import social.entourage.android.base.EntourageActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.MultipleInvitations
