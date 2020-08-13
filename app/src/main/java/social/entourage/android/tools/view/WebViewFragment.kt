@@ -97,6 +97,7 @@ class WebViewFragment : EntourageDialogFragment() {
 
     private fun initialiseView() {
         webview?.settings?.javaScriptEnabled = true
+        webview?.settings?.domStorageEnabled = true
         webview?.webViewClient = MyBrowser()
         webview?.loadUrl(requestedUrl)
 
