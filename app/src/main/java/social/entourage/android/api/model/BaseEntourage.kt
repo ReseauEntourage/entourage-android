@@ -237,9 +237,8 @@ open class BaseEntourage : FeedItem, Serializable {
     // ----------------------------------
     // TimestampedObject overrides
     // ----------------------------------
-    override fun getTimestamp(): Date {
-        return createdTime
-    }
+    override val timestamp: Date
+        get() = createdTime
 
     override fun hashString(): String {
         return HASH_STRING_HEAD + id
@@ -249,9 +248,8 @@ open class BaseEntourage : FeedItem, Serializable {
         return !(other == null || other.javaClass != this.javaClass) && id == (other as BaseEntourage).id
     }
 
-    override fun getType(): Int {
-        return ENTOURAGE_CARD
-    }
+    override val type: Int
+        get() = ENTOURAGE_CARD
 
     // ----------------------------------
     // INNER CLASSES
@@ -371,7 +369,7 @@ open class BaseEntourage : FeedItem, Serializable {
     class EntourageCloseOutcome(val success: Boolean) : Serializable {
 
         companion object {
-            private const val serialVersionUID = 4175678577343446888L
+            private const val serialVersionUID = 4175623577343446888L
         }
 
     }
@@ -429,7 +427,7 @@ open class BaseEntourage : FeedItem, Serializable {
             }
         }
 
-        private const val serialVersionUID = -1228932044085412292L
+        private const val serialVersionUID = -1228955044085412292L
         const val NEWSFEED_TYPE = "Entourage"
     }
 }

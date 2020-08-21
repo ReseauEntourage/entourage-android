@@ -13,7 +13,7 @@ class TourInformation : TimestampedObject {
     // ATTRIBUTES
     // ----------------------------------
     var startDate: Date
-    private var timestamp: Date? = null
+    override var timestamp: Date? = null
     var feedType = 0
         private set
     var status: String
@@ -45,10 +45,6 @@ class TourInformation : TimestampedObject {
     // ----------------------------------
     // TimestampedObject overrides
     // ----------------------------------
-    override fun getTimestamp(): Date? {
-        return timestamp
-    }
-
     override fun hashString(): String {
         return HASH_STRING_HEAD + duration
     }
@@ -58,13 +54,11 @@ class TourInformation : TimestampedObject {
         //return this.date.equals( ((TourTimestamp)o).date );
     }
 
-    override fun getType(): Int {
-        return TOUR_STATUS
-    }
+    override val type: Int
+        get() = TOUR_STATUS
 
-    override fun getId(): Long {
-        return 0
-    }
+    override val id: Long
+        get() = 0
 
     companion object {
         private const val HASH_STRING_HEAD = "TourTimestamp-"

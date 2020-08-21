@@ -9,17 +9,14 @@ import java.util.*
 class InvitationList : TimestampedObject() {
     val invitationList: MutableList<Invitation> = ArrayList()
 
-    override fun getType(): Int {
-        return INVITATION_LIST
-    }
+    override val type: Int
+        get() = INVITATION_LIST
 
-    override fun getTimestamp(): Date {
-        return Date()
-    }
+    override val timestamp: Date
+        get() = Date()
 
-    override fun getId(): Long {
-        return 0
-    }
+    override val id: Long
+        get() = 0
 
     override fun hashString(): String {
         return "InvitationList"

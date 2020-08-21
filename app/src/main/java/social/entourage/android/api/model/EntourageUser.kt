@@ -46,24 +46,21 @@ class EntourageUser : TimestampedObject(), Serializable {
     @Expose(serialize = false, deserialize = false)
     var feedItem: FeedItem? = null
 
-    override fun getTimestamp(): Date? {
-        return requestDate
-    }
+    override val timestamp: Date?
+    get() = requestDate
 
     override fun hashString(): String {
         return HASH_STRING_HEAD + userId
     }
 
-    override fun getType(): Int {
-        return if (isDisplayedAsMember) FEED_MEMBER_CARD else TOUR_USER_JOIN
-    }
+    override val type: Int
+        get() = if (isDisplayedAsMember) FEED_MEMBER_CARD else TOUR_USER_JOIN
 
-    override fun getId(): Long {
-        return userId.toLong()
-    }
+    override val id: Long
+        get() = userId.toLong()
 
-    override fun equals(o: Any?): Boolean {
-        return if (o == null || o.javaClass != this.javaClass) false else userId == (o as EntourageUser).userId
+    override fun equals(other: Any?): Boolean {
+        return if (other == null || other.javaClass != this.javaClass) false else userId == (other as EntourageUser).userId
         //return (this.userId == ((TourUser)o).userId) && (this.status.equals(((TourUser)o).status));
     }
 
@@ -85,7 +82,7 @@ class EntourageUser : TimestampedObject(), Serializable {
     }
 
     companion object {
-        private const val serialVersionUID = 6896801812363434601L
+        private const val serialVersionUID = 6896833312363434601L
         private const val HASH_STRING_HEAD = "TourUser-"
     }
 }

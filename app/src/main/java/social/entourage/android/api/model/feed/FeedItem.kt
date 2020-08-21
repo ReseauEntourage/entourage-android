@@ -26,7 +26,7 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
     // Attributes
     // ----------------------------------
     @Expose(serialize = false)
-    private var id: Long = 0
+    override var id: Long = 0
 
     @Expose(serialize = false)
     var uuid: String? = null
@@ -105,10 +105,6 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
         if (badgeCount > 0) {
             badgeCount--
         }
-    }
-
-    override fun getId(): Long {
-        return id
     }
 
     fun setLastMessage(text: String, author: String) {
@@ -280,7 +276,7 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        private const val serialVersionUID = 6130079334883067122L
+        private const val serialVersionUID = 6130064134883067122L
         const val KEY_FEEDITEM = "social.entourage.android.KEY_FEEDITEM"
         const val KEY_FEEDITEM_ID = "social.entourage.android.KEY_FEEDITEM_ID"
         const val KEY_FEEDITEM_UUID = "social.entourage.android.KEY_FEEDITEM_UUID"

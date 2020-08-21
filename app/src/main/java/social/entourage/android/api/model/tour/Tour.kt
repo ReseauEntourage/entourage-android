@@ -159,9 +159,8 @@ class Tour : FeedItem, Serializable {
     // ----------------------------------
     // TimestampedObject overrides
     // ----------------------------------
-    override fun getTimestamp(): Date {
-        return startTime
-    }
+    override val timestamp: Date
+        get() = startTime
 
     override fun hashString(): String {
         return HASH_STRING_HEAD + id
@@ -171,9 +170,8 @@ class Tour : FeedItem, Serializable {
         return !(other == null || other.javaClass != this.javaClass) && id == (other as Tour).id
     }
 
-    override fun getType(): Int {
-        return TOUR_CARD
-    }
+    override val type: Int
+        get() = TOUR_CARD
 
     // ----------------------------------
     // FeedItem overrides
@@ -237,7 +235,7 @@ class Tour : FeedItem, Serializable {
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        private const val serialVersionUID = -5072027793523981962L
+        private const val serialVersionUID = -5072043693523981962L
         private const val HASH_STRING_HEAD = "Tour-"
         const val GROUPTYPE_TOUR = "tour"
         const val KEY_TOUR = "social.entourage.android.KEY_TOUR"

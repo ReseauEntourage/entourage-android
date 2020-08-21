@@ -12,7 +12,7 @@ class Announcement : TimestampedObject() {
     // ----------------------------------
     // Attributes
     // ----------------------------------
-    private val id: Long = 0
+    override val id: Long = 0
     val title: String? = null
     val body: String? = null
     val action: String? = null
@@ -28,21 +28,15 @@ class Announcement : TimestampedObject() {
     // ----------------------------------
     // TimestampedObject overrides
     // ----------------------------------
-    override fun getTimestamp(): Date? {
-        return null
-    }
+    override val timestamp: Date?
+        get() = null
 
     override fun hashString(): String {
         return HASH_STRING_HEAD + id
     }
 
-    override fun getType(): Int {
-        return ANNOUNCEMENT_CARD
-    }
-
-    override fun getId(): Long {
-        return id
-    }
+    override val type: Int
+        get() = ANNOUNCEMENT_CARD
 
     override fun equals(other: Any?): Boolean {
         return if (other !is Announcement) false else id == other.id

@@ -40,27 +40,27 @@ class ChatMessage (var content: String) : TimestampedObject(), Serializable {
     val partnerLogoSmall: String?
         get() = user?.partner?.smallLogoUrl
 
-    override fun getTimestamp(): Date {
-        return creationDate
-    }
+    override val timestamp: Date
+        get() = creationDate
 
     override fun hashString(): String {
         return HASH_STRING_HEAD + chatId
     }
 
-    override fun equals(o: Any?): Boolean {
-        return !(o == null || o.javaClass != this.javaClass) && chatId == (o as ChatMessage).chatId
+    override fun equals(other: Any?): Boolean {
+        return !(other == null || other.javaClass != this.javaClass) && chatId == (other as ChatMessage).chatId
     }
 
-    override fun getType(): Int {
-        if (TYPE_OUTING.equals(messageType, ignoreCase = true)) return CHAT_MESSAGE_OUTING
-        if (TYPE_STATUS_UPDATE.equals(messageType, ignoreCase = true)) return STATUS_UPDATE_CARD
-        return if (isMe) CHAT_MESSAGE_ME else CHAT_MESSAGE_OTHER
-    }
+    override val type: Int
+        get()  {
+            return if (TYPE_OUTING.equals(messageType, ignoreCase = true)) CHAT_MESSAGE_OUTING
+            else if (TYPE_STATUS_UPDATE.equals(messageType, ignoreCase = true)) STATUS_UPDATE_CARD
+            else if (isMe) CHAT_MESSAGE_ME
+            else CHAT_MESSAGE_OTHER
+        }
 
-    override fun getId(): Long {
-        return chatId
-    }
+    override val id: Long
+        get() = chatId
 
     // ----------------------------------
     // INNER CLASSES
@@ -81,7 +81,7 @@ class ChatMessage (var content: String) : TimestampedObject(), Serializable {
         val isOutcomeSuccess = false
 
         companion object {
-            private const val serialVersionUID = 5065260451819947605L
+            private const val serialVersionUID = 5065262321819947605L
             const val OPERATION_CREATED = "created"
             const val OPERATION_UPDATED = "updated"
         }
@@ -89,7 +89,7 @@ class ChatMessage (var content: String) : TimestampedObject(), Serializable {
 
     companion object {
         private const val HASH_STRING_HEAD = "ChatMessage-"
-        private const val serialVersionUID = 2171011108739523540L
+        private const val serialVersionUID = 2171223108739523540L
         const val TYPE_TEXT = "text"
         const val TYPE_VISIT = "visit"
         const val TYPE_OUTING = "outing"
