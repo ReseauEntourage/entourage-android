@@ -18,13 +18,13 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import social.entourage.android.onboarding.login.LoginNewActivity
+import social.entourage.android.onboarding.login.LoginActivity
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class LoginTest {
     @get:Rule
-    var activityRule = ActivityTestRule(LoginNewActivity::class.java)
+    var activityRule = ActivityTestRule(LoginActivity::class.java)
     private var resource: IdlingResource? = null
     private var afM: AutofillManager? = null
 
