@@ -64,20 +64,18 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
         val meAsAuthor = EntourageApplication.me(context)?.asTourAuthor() ?: return
         val dirtyList: MutableList<TimestampedObject> = ArrayList()
         // See which cards needs updating
-        newsfeedAdapter?.items?.forEach { timestampedObject ->
-            if (timestampedObject is FeedItem) {
-                // Skip null author
-                val author = timestampedObject.author ?: return@forEach
-                // Skip not same author id
-                if (author.userID != meAsAuthor.userID) return@forEach
-                // Skip if nothing changed
-                if (!author.isSame(meAsAuthor)) {
-                    // Update the tour author
-                    meAsAuthor.userName = author.userName
-                    timestampedObject.author = meAsAuthor
-                    // Mark as dirty
-                    dirtyList.add(timestampedObject)
-                }
+        newsfeedAdapter?.items?.filterIsInstance<FeedItem>()?.forEach { feedItem ->
+            // Skip null author
+            val author = feedItem.author ?: return@forEach
+            // Skip not same author id
+            if (author.userID != meAsAuthor.userID) return@forEach
+            // Skip if nothing changed
+            if (!author.isSame(meAsAuthor)) {
+                // Update the tour author
+                meAsAuthor.userName = author.userName
+                feedItem.author = meAsAuthor
+                // Mark as dirty
+                dirtyList.add(feedItem)
             }
         }
         // Update the dirty cards

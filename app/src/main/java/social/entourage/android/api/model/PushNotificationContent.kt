@@ -20,7 +20,7 @@ class PushNotificationContent : Serializable {
         get() = extra?.joinableId ?: 0
 
     val joinableUUID: String
-        get() = extra?.joinableId.toString() ?: ""
+        get() = extra?.joinableId?.toString() ?: ""
 
     val isTourRelated: Boolean
         get() = Extra.Companion.JOINABLE_TYPE_TOUR == extra?.joinableType

@@ -29,12 +29,6 @@ class LocationListener(private val manager: EntourageServiceManager,
         }
 
         manager.updateLocation(location)
-        manager.entourageService.notifyListenersPosition(LatLng(location.latitude, location.longitude))
-
-        if (manager.tour != null && !manager.entourageService.isPaused) {
-            val point = LocationPoint(location.latitude, location.longitude, location.accuracy)
-            manager.onLocationChanged(location, point)
-        }
     }
 
     override fun onStatusChanged(s: String, i: Int, bundle: Bundle) {}

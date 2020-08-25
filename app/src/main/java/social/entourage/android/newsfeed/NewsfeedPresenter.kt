@@ -204,7 +204,7 @@ class NewsfeedPresenter @Inject constructor(
     // INNER CLASS
     // ----------------------------------
     inner class OnEntourageMarkerClickListener : OnClusterItemClickListener<ClusterItem> {
-        val encounterMarkerHashMap: MutableMap<ClusterItem, Encounter?> = HashMap()
+        private val encounterMarkerHashMap: MutableMap<ClusterItem, Encounter?> = HashMap()
         fun addEncounterMapClusterItem(mapClusterItem: ClusterItem, encounter: Encounter?) {
             encounterMarkerHashMap[mapClusterItem] = encounter
         }

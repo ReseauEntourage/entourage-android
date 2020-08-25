@@ -84,7 +84,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     val discussionAdapter = DiscussionAdapter()
 
     private var membersAdapter: MembersAdapter? = null
-    protected var membersList: MutableList<TimestampedObject>? = ArrayList()
+    protected var membersList: MutableList<EntourageUser>? = ArrayList()
 
     private var apiRequestsCount = 0
     lateinit var feedItem: FeedItem
@@ -157,9 +157,9 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         entourage_option_cancel?.setOnClickListener {onCloseOptionsButton()}
         entourage_option_stop?.setOnClickListener {onStopTourButton()}
         entourage_option_quit?.setOnClickListener {quitEntourage()}
-        entourage_info_request_join_button?.setOnClickListener {onJoinTourButton()}
-        entourage_option_contact?.setOnClickListener {onJoinTourButton()}
-        entourage_option_join?.setOnClickListener {onJoinTourButton()}
+        entourage_info_request_join_button?.setOnClickListener {onJoinButton()}
+        entourage_option_contact?.setOnClickListener {onJoinButton()}
+        entourage_option_join?.setOnClickListener {onJoinButton()}
         entourage_info_act_button?.setOnClickListener {onActButton()}
         entourage_option_edit?.setOnClickListener {onEditEntourageButton()}
         entourage_option_report?.setOnClickListener {onReportEntourageButton()}
@@ -395,7 +395,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         entourage_info_options?.visibility = View.GONE
     }
 
-    protected abstract fun onJoinTourButton()
+    protected abstract fun onJoinButton()
 
     private fun onActButton() {
         if (feedItem.joinStatus == FeedItem.JOIN_STATUS_PENDING) {
@@ -997,7 +997,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     }
 
     open fun onEntourageUpdated(event: OnEntourageUpdated) {
-        val updatedEntourage = event.entourage ?: return
+        val updatedEntourage = event.entourage
         // Check if it is our displayed entourage
         if (feedItem.type != updatedEntourage.type || feedItem.id != updatedEntourage.id) return
         // Update the UI
@@ -1062,48 +1062,48 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     private fun onFeedItemMembersReceived(entourageUsers: List<EntourageUser>) {
         membersList?.clear()
         // iterate over the received users
-        for (tourUser in entourageUsers) {
+        for (entourageUser in entourageUsers) {
             //show only the accepted users
-            if (tourUser.status != FeedItem.JOIN_STATUS_ACCEPTED) {
+            if (entourageUser.status != FeedItem.JOIN_STATUS_ACCEPTED) {
                 // Remove the user from the members list, in case the user left the entourage
-                membersAdapter?.removeCard(tourUser)
+                membersAdapter?.removeCard(entourageUser)
                 //show the pending and cancelled requests too (by skipping the others)
-                if (!(tourUser.status == FeedItem.JOIN_STATUS_PENDING || tourUser.status == FeedItem.JOIN_STATUS_CANCELLED)) {
+                if (!(entourageUser.status == FeedItem.JOIN_STATUS_PENDING || entourageUser.status == FeedItem.JOIN_STATUS_CANCELLED)) {
                     continue
                 }
             }
-            tourUser.feedItem = feedItem
-            tourUser.isDisplayedAsMember = true
-            membersList?.add(tourUser)
+            entourageUser.feedItem = feedItem
+            entourageUser.isDisplayedAsMember = true
+            membersList?.add(entourageUser)
         }
         initializeMembersView()
     }
 
     private fun onFeedItemJoinRequestsReceived(entourageUsers: List<EntourageUser>) {
-        val timestampedObjectList = ArrayList<TimestampedObject>()
+        val timestampedObjectList = ArrayList<EntourageUser>()
         // iterate over the received users
-        for (tourUser in entourageUsers) {
+        for (entourageUser in entourageUsers) {
             // skip the author
-            if (tourUser.userId == feedItem.author?.userID) {
+            if (entourageUser.userId == feedItem.author?.userID) {
                 continue
             }
             //show only the accepted users
-            if (tourUser.status != FeedItem.JOIN_STATUS_ACCEPTED) {
+            if (entourageUser.status != FeedItem.JOIN_STATUS_ACCEPTED) {
                 // Remove the user from the members list, in case the user left the entourage
-                membersAdapter?.removeCard(tourUser)
+                membersAdapter?.removeCard(entourageUser)
                 //show the pending and cancelled requests too (by skipping the others)
-                if (!(tourUser.status == FeedItem.JOIN_STATUS_PENDING || tourUser.status == FeedItem.JOIN_STATUS_CANCELLED)) {
+                if (!(entourageUser.status == FeedItem.JOIN_STATUS_PENDING || entourageUser.status == FeedItem.JOIN_STATUS_CANCELLED)) {
                     continue
                 }
             }
-            tourUser.feedItem = feedItem
+            entourageUser.feedItem = feedItem
 
             // check if we already have this user
-            val oldUser = discussionAdapter.findCard(tourUser) as? EntourageUser
-            if (oldUser != null && oldUser.status != tourUser.status) {
-                discussionAdapter.updateCard(tourUser)
+            val oldUser = discussionAdapter.findCard(entourageUser) as? EntourageUser
+            if (oldUser != null && oldUser.status != entourageUser.status) {
+                discussionAdapter.updateCard(entourageUser)
             } else {
-                timestampedObjectList.add(tourUser)
+                timestampedObjectList.add(entourageUser)
             }
         }
         feedItem.addCardInfoList(timestampedObjectList)

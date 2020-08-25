@@ -450,7 +450,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
         }
     }
 
-    private fun addEncounter(encounter: Encounter?) {
+    private fun addEncounter(encounter: Encounter) {
         entourageService?.addEncounter(encounter)
     }
 

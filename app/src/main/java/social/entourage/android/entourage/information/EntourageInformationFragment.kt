@@ -89,11 +89,11 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         }
     }
 
-    override fun onJoinTourButton() {
+    override fun onJoinButton() {
         entourageServiceConnection.boundService?.let {
             showProgressBar()
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN)
-            it.requestToJoinEntourage(feedItem as BaseEntourage?)
+            it.requestToJoinEntourage(feedItem as BaseEntourage)
             entourage_info_options?.visibility = View.GONE
         } ?: run {entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.tour_join_request_message_error, Snackbar.LENGTH_SHORT).show()}}
     }
@@ -161,8 +161,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             entourage_option_share?.visibility = View.VISIBLE
         }
         membersList?.forEach { member ->
-            if (member is EntourageUser
-                    && member.userId == myId
+            if (member.userId == myId
                     && member.groupRole?.equals("organizer", ignoreCase = true) == true) {
                 entourage_option_promote?.visibility = View.VISIBLE
             }

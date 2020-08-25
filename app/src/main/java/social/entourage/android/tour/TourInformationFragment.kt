@@ -106,11 +106,11 @@ class TourInformationFragment : FeedItemInformationFragment(){
         }
     }
 
-    override fun onJoinTourButton() {
+    override fun onJoinButton() {
         if (entourageServiceConnection.boundService != null) {
             showProgressBar()
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN)
-            entourageServiceConnection.boundService?.requestToJoinTour(feedItem as Tour?)
+            entourageServiceConnection.boundService?.requestToJoinTour(feedItem as Tour)
             entourage_info_options?.visibility = View.GONE
         } else {
             entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.tour_join_request_message_error, Snackbar.LENGTH_SHORT).show()}
@@ -385,7 +385,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
 
     @Subscribe
     fun onEncounterUpdated(event: Events.OnEncounterUpdated) {
-        val updatedEncounter = event.encounter ?: return
+        val updatedEncounter = event.encounter
         val oldEncounter = discussionAdapter.findCard(TimestampedObject.ENCOUNTER, updatedEncounter.id) as Encounter?
                 ?: return
         feedItem.removeCardInfo(oldEncounter)

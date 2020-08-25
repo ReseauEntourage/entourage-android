@@ -174,7 +174,6 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
 
     @Subscribe
     fun onEntourageUpdated(event: OnEntourageUpdated) {
-        if (event.entourage == null) return
         entouragesAdapter.updateCard(event.entourage)
     }
 
@@ -182,7 +181,7 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
     fun onInvitationStatusChanged(event: OnInvitationStatusChanged) {
         // Refresh the invitations list
         if(event.feedItem !is BaseEntourage) return
-        entouragesAdapter.updateInvitation(event.feedItem as BaseEntourage, event.status)
+        entouragesAdapter.updateInvitation(event.feedItem , event.status)
         // Refresh the entourages list if invitation was accepted
         if (Invitation.STATUS_ACCEPTED == event.status) {
             refreshMyFeeds()
@@ -191,9 +190,7 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
 
     @Subscribe
     fun feedItemViewRequested(event: OnFeedItemInfoViewRequestedEvent) {
-        if (event.feedItem != null) {
-            onPushNotificationConsumedForFeedItem(event.feedItem)
-        }
+        event.feedItem?.let { onPushNotificationConsumedForFeedItem(it) }
     }
 
     // ----------------------------------
@@ -215,7 +212,7 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
         }
     }
 
-    private fun onPushNotificationConsumedForFeedItem(feedItem: FeedItem?) {
+    private fun onPushNotificationConsumedForFeedItem(feedItem: FeedItem) {
         val feedItemCard = entouragesAdapter.findCard(feedItem) as FeedItem? ?: return
         feedItemCard.decreaseBadgeCount()
         entouragesAdapter.updateCard(feedItemCard)

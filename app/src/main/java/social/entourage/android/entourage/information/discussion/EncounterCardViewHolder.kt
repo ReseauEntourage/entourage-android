@@ -26,25 +26,25 @@ class EncounterCardViewHolder(view: View) : BaseCardViewHolder(view) {
         }
         itemView.tic_encounter_street_name?.setOnClickListener {
             encounter?.let {
-                if (it.isMyEncounter==true)
+                if (it.isMyEncounter)
                     BusProvider.instance.post(OnTourEncounterViewRequestedEvent(it))
             }
         }
     }
 
-    override fun populate(encounter: TimestampedObject) {
-        if(encounter !is Encounter) return
-        itemView.tic_encounter_author?.let {
-            it.text = itemView.context.getString(R.string.encounter_author_format, encounter.userName)
-            it.paintFlags = it.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+    override fun populate(data: TimestampedObject) {
+        (data as? Encounter)?.let {encounter ->
+            itemView.tic_encounter_author?.let {
+                it.text = itemView.context.getString(R.string.encounter_author_format, encounter.userName)
+                it.paintFlags = it.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+            }
+            val encounterLocation = itemView.resources.getString(
+                    if (encounter.isMyEncounter) R.string.tour_info_encounter_location_mine else R.string.tour_info_encounter_location,
+                    encounter.streetPersonName)
+            itemView.tic_encounter_street_name?.text = Utils.fromHtml(encounterLocation)
+            //itemView.tic_encounter_message.setText(encounter.getMessage());
+            this.encounter = encounter
         }
-        val encounterLocation = itemView.resources.getString(
-                if (encounter.isMyEncounter) R.string.tour_info_encounter_location_mine else R.string.tour_info_encounter_location,
-                encounter.streetPersonName)
-        val s = Utils.fromHtml(encounterLocation)
-        itemView.tic_encounter_street_name?.text = s
-        //itemView.tic_encounter_message.setText(encounter.getMessage());
-        this.encounter = encounter
     }
 
     companion object {

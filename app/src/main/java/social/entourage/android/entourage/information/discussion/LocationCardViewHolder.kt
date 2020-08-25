@@ -23,7 +23,7 @@ class LocationCardViewHolder(view: View) : BaseCardViewHolder(view) {
         populate(data as TourInformation)
     }
 
-    fun populate(tour: Tour, isStartCard: Boolean) {
+    private fun populate(tour: Tour, isStartCard: Boolean) {
         val tourPointsList = tour.tourPoints
         val locationDateFormat = SimpleDateFormat(itemView.resources.getString(R.string.tour_info_location_card_date_format), Locale.FRANCE)
         if (!isStartCard) {

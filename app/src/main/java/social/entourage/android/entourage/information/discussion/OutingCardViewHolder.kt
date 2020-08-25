@@ -31,9 +31,9 @@ class OutingCardViewHolder(view: View) : BaseCardViewHolder(view) {
         BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(TimestampedObject.ENTOURAGE_CARD, outingUUID, null))
     }
 
-    override fun populate(chatMessage: TimestampedObject) {
-        if (chatMessage !is ChatMessage) return
-        val metadata = chatMessage.metadata ?: return
+    override fun populate(data: TimestampedObject) {
+        val chatMessage = data as? ChatMessage
+        val metadata = chatMessage?.metadata ?: return
         val context = itemView.context
         val colorHex = String.format("#%06X", 0xFFFFFF and ContextCompat.getColor(context, R.color.action_type_outing))
         val htmlText = context.getString(
