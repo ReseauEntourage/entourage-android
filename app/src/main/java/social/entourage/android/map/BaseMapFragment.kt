@@ -255,9 +255,11 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
     protected open fun updateGeolocBanner(active: Boolean) {
         adapter?.setGeolocStatusIcon(isLocationEnabled() && isLocationPermissionGranted())
         try {
-            map?.isMyLocationEnabled = isLocationEnabled()
+            map?.isMyLocationEnabled = isLocationPermissionGranted()
         } catch (ex: SecurityException) {
             Timber.w(ex)
+        } catch (ex: Exception) {
+            Timber.e(ex)
         }
     }
 

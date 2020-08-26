@@ -91,7 +91,6 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         super.onStart()
         connection.doBindService()
         presenter.start()
-        presenter.updatePoisNearby(map)
         showInfoPopup()
         EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_GUIDE_FROM_TAB)
         BusProvider.instance.register(this)
