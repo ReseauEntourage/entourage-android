@@ -819,14 +819,18 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         if (markersMap[feedItem.hashString()] == null) {
             if (feedItem.showHeatmapAsOverlay()) {
                 val position = feedItem.getStartPoint()?.location ?:return
-                val heatmapIcon = BitmapDescriptorFactory.fromResource(feedItem.getHeatmapResourceId())
-                val groundOverlayOptions = GroundOverlayOptions()
-                        .image(heatmapIcon)
-                        .position(position, BaseEntourage.HEATMAP_SIZE, BaseEntourage.HEATMAP_SIZE)
-                        .clickable(true)
-                        .anchor(0.5f, 0.5f)
-                markersMap[feedItem.hashString()] = map?.addGroundOverlay(groundOverlayOptions) ?: return
-                presenter.onGroundOverlayClickListener?.addEntourageGroundOverlay(position, feedItem)
+                map?.let {map->
+                    val heatmapIcon = BitmapDescriptorFactory.fromResource(feedItem.getHeatmapResourceId())
+                    val groundOverlayOptions = GroundOverlayOptions()
+                            .image(heatmapIcon)
+                            .position(position, BaseEntourage.HEATMAP_SIZE, BaseEntourage.HEATMAP_SIZE)
+                            .clickable(true)
+                            .anchor(0.5f, 0.5f)
+                    map.addGroundOverlay(groundOverlayOptions)?.let {
+                        markersMap[feedItem.hashString()] = it
+                        presenter.onGroundOverlayClickListener?.addEntourageGroundOverlay(position, feedItem)
+                    }
+                }
             } else {
                 val mapClusterItem = MapClusterEntourageItem(feedItem)
                 markersMap[feedItem.hashString()] = mapClusterItem
@@ -1036,7 +1040,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     // ----------------------------------
     private fun initializeInvitations() {
         // Check if it's a valid user and onboarding
-        if (presenter.isOnboardingUser == true) {
+        if (presenter.isOnboardingUser) {
             // Retrieve the list of invitations and then accept them automatically
             presenter.getMyPendingInvitations()
             presenter.resetUserOnboardingFlag()
