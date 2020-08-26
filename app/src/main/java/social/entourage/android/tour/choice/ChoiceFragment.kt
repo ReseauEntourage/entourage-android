@@ -70,10 +70,10 @@ class ChoiceFragment : DialogFragment(), RecyclerViewClickListener {
     }
 
     // ----------------------------------
-    // INNER CLASSE
+    // INNER CLASS
     // ----------------------------------
     interface OnChoiceFragmentFinish {
-        fun closeChoiceFragment(fragment: ChoiceFragment?, tour: Tour?)
+        fun closeChoiceFragment(fragment: ChoiceFragment, tour: Tour?)
     }
 
     companion object {

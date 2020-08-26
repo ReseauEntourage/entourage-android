@@ -74,7 +74,7 @@ class EncounterDisclaimerFragment : DialogFragment() {
     // Listener
     // ----------------------------------
     interface OnFragmentInteractionListener {
-        fun onEncounterDisclaimerAccepted(fragment: EncounterDisclaimerFragment?)
+        fun onEncounterDisclaimerAccepted(fragment: EncounterDisclaimerFragment)
     }
 
     companion object {

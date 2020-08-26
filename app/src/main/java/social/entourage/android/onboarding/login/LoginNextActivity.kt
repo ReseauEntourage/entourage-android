@@ -158,14 +158,7 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
 
     private fun changeFragment() {
         ui_bt_next?.disable()
-        var fragment = Fragment()
-
-        if (currentPosition == 0) {
-            fragment = LoginPlaceFragment.newInstance()
-        }
-        else {
-            fragment = LoginEmailFragment.newInstance()
-        }
+        val fragment = if (currentPosition == 0) LoginPlaceFragment.newInstance() else LoginEmailFragment.newInstance()
 
         supportFragmentManager
                 .beginTransaction()

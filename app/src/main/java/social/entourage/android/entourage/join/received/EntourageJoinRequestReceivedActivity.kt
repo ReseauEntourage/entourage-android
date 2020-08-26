@@ -32,7 +32,7 @@ class EntourageJoinRequestReceivedActivity : EntourageSecuredActivity() {
         }
     }
 
-    override fun setupComponent(entourageComponent: EntourageComponent) {
+    override fun setupComponent(entourageComponent: EntourageComponent?) {
         DaggerEntourageJoinRequestReceivedComponent.builder()
                 .entourageComponent(entourageComponent)
                 .entourageJoinRequestReceivedModule(EntourageJoinRequestReceivedModule(this))

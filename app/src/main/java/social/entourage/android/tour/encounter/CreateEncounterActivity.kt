@@ -68,7 +68,7 @@ class CreateEncounterActivity : EntourageSecuredActivity(), LocationFragment.OnF
         EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_START)
     }
 
-    override fun setupComponent(entourageComponent: EntourageComponent) {
+    override fun setupComponent(entourageComponent: EntourageComponent?) {
         DaggerCreateEncounterComponent.builder()
                 .entourageComponent(entourageComponent)
                 .createEncounterModule(CreateEncounterModule(this))

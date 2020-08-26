@@ -197,9 +197,10 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
                 //set the tutorial as done
                 val sharedPreferences = get().sharedPreferences
-                val loggedNumbers = sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, HashSet()) as HashSet<String>?
-                loggedNumbers!!.add(phoneNumber!!)
-                sharedPreferences.edit().putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers).apply()
+                (sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, HashSet()) as HashSet<String>?)?.let {loggedNumbers ->
+                    loggedNumbers.add(phoneNumber)
+                    sharedPreferences.edit().putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers).apply()
+                }
                 alertDialog.dismiss()
                 goNextStep()
             }
