@@ -278,7 +278,7 @@ open class EntourageServiceManager(
                     provider)
             provider.setLocationListener(LocationListener(mgr, entourageService))
             provider.start()
-            instance.register(this)
+            instance.register(mgr)
             return mgr
         }
     }
