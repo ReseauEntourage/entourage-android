@@ -33,7 +33,7 @@ class EntourageApplication : MultiDexApplication() {
     private lateinit var librariesSupport: LibrariesSupport
 
     enum class WhiteLabelApp {
-        ENTOURAGE_APP, PFP_APP
+        ENTOURAGE_APP,
     }
 
     // ----------------------------------
@@ -218,7 +218,6 @@ class EntourageApplication : MultiDexApplication() {
         }
 
         const val ENTOURAGE_APP = "entourage"
-        const val PFP_APP = "pfp"
         @JvmStatic
         operator fun get(context: Context?): EntourageApplication {
             return (if (context != null) context.applicationContext as EntourageApplication else get())

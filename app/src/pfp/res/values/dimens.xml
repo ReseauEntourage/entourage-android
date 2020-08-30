@@ -1,8 +1,0 @@
-<resources>
-
-    <!-- Login slideshow -->
-    <dimen name="login_slideshow_pages_top_padding">90dp</dimen>
-
-    <dimen name="newsfeed_map_height">155dp</dimen>
-
-</resources>
