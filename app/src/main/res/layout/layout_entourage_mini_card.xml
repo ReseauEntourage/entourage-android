@@ -104,7 +104,7 @@
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:contentDescription="@string/empty_description"
-            android:src="@drawable/ic_users"/>
+            app:srcCompat="@drawable/ic_users"/>
 
         <TextView
             android:id="@+id/tour_card_people_count"

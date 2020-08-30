@@ -1,6 +1,6 @@
 package social.entourage.android.onboarding.asso
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -65,7 +65,7 @@ class OnboardingAssoSearchActivity : AppCompatActivity() {
         }
 
         ui_bt_asso_search_cancel?.setOnClickListener {
-            setResult(Activity.RESULT_CANCELED)
+            setResult(AppCompatActivity.RESULT_CANCELED)
             finish()
         }
 
@@ -73,7 +73,7 @@ class OnboardingAssoSearchActivity : AppCompatActivity() {
             if (selectedAsso == null) return@setOnClickListener
             val intent = Intent()
             intent.putExtra("partner",selectedAsso)
-            setResult(Activity.RESULT_OK,intent)
+            setResult(AppCompatActivity.RESULT_OK,intent)
             finish()
         }
 

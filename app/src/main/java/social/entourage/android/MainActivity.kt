@@ -96,7 +96,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
         if (intent != null) {
             storeIntent(intent)
         }
-        if (authenticationController?.isAuthenticated == true) {
+        if (authenticationController.isAuthenticated == true) {
             //refresh the user info from the server
             presenter.updateUserLocation(currentLocation)
             //initialize the push notifications

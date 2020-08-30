@@ -63,7 +63,7 @@
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:contentDescription="@string/empty_description"
-            android:src="@drawable/ic_users"/>
+            app:srcCompat="@drawable/ic_users"/>
 
         <TextView
             android:id="@+id/tour_card_people_count"
@@ -90,7 +90,7 @@
         android:layout_marginEnd="3dp"
         android:contentDescription="@string/empty_description"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_user_photo_small" />
+        app:srcCompat="@drawable/ic_user_photo_small" />
 
     <social.entourage.android.tools.view.PartnerLogoImageView
         android:id="@+id/tour_card_partner_logo"

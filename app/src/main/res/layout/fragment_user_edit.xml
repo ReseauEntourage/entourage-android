@@ -45,7 +45,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="20dp"
                     android:contentDescription="@string/user_image_add_photo"
-                    android:src="@drawable/bg_user_image_button"/>
+                    app:srcCompat="@drawable/bg_user_image_button"/>
 
                 <ImageButton
                     android:id="@+id/user_photo_button"
@@ -54,7 +54,7 @@
                     android:layout_alignBottom="@+id/user_photo"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="10dp"
-                    android:background="?android:attr/selectableItemBackground"
+                    android:background="?attr/selectableItemBackground"
                     android:contentDescription="@string/empty_description"
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/camera_square"/>
@@ -649,7 +649,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:contentDescription="@string/empty_description"
-                        android:src="@drawable/arrow_grey"/>
+                        app:srcCompat="@drawable/arrow_grey"/>
 
                     <TextView
                         style="@style/UserProfileTextViewStyle"
@@ -724,7 +724,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/empty_description"
-                        android:src="@drawable/arrow_grey"/>
+                        app:srcCompat="@drawable/arrow_grey"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -740,7 +740,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:background="?android:attr/selectableItemBackground"
+                android:background="?attr/selectableItemBackground"
                 android:text="@string/user_edit_delete_account_button"
                 android:textAllCaps="false"
                 android:textColor="@color/accent"

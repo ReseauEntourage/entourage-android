@@ -1,7 +1,7 @@
 package social.entourage.android.entourage.information
 
 import android.Manifest
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Context
@@ -182,7 +182,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == VOICE_RECOGNITION_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
+            if (resultCode == AppCompatActivity.RESULT_OK) {
                 val textMatchList: List<String> = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS) ?: return
                 if (textMatchList.isNotEmpty()) {
                     entourage_info_comment?.let {

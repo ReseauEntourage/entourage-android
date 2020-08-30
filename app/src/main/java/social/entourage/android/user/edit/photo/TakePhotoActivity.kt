@@ -1,6 +1,6 @@
 package social.entourage.android.user.edit.photo
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.content.ClipData
 import android.content.Intent
 import android.net.Uri
@@ -45,7 +45,7 @@ class TakePhotoActivity : AppCompatActivity() {
     public override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
         if (requestCode == REQUEST_TAKE_PHOTO) {
-            if (resultCode == Activity.RESULT_OK) {
+            if (resultCode == AppCompatActivity.RESULT_OK) {
                 intent?.data?.let { data->
                     BusProvider.instance.post(OnPhotoChosen(data))
                     return

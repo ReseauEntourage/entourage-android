@@ -76,7 +76,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:contentDescription="@string/empty_description"
-                    android:src="@drawable/arrow_grey"/>
+                    app:srcCompat="@drawable/arrow_grey"/>
             </RelativeLayout>
 
             <View
@@ -114,7 +114,7 @@
                     android:layout_gravity="center_vertical"
                     android:contentDescription="@string/empty_description"
                     android:scaleType="fitEnd"
-                    android:src="@drawable/arrow_grey"/>
+                    app:srcCompat="@drawable/arrow_grey"/>
             </LinearLayout>
 
             <View
@@ -152,7 +152,7 @@
                     android:layout_gravity="center_vertical"
                     android:contentDescription="@string/empty_description"
                     android:scaleType="fitEnd"
-                    android:src="@drawable/arrow_grey"/>
+                    app:srcCompat="@drawable/arrow_grey"/>
             </LinearLayout>
 
             <View
@@ -190,7 +190,7 @@
                     android:layout_gravity="center_vertical"
                     android:contentDescription="@string/empty_description"
                     android:scaleType="fitEnd"
-                    android:src="@drawable/arrow_grey"/>
+                    app:srcCompat="@drawable/arrow_grey"/>
             </LinearLayout><View
                 style="@style/SeparatorAlpha"
                 android:layout_width="match_parent"

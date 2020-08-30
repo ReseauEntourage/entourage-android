@@ -1,6 +1,6 @@
 package social.entourage.android.tour
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.layout_entourage_options.*
 import social.entourage.android.MainActivity
 import social.entourage.android.R
@@ -47,7 +47,7 @@ class TourOptionsFragment : FeedItemOptionsFragment() {
             tour.duration = getDateStringFromSeconds(now.time - tour.getStartTime().time)
 
             //show stop tour activity
-            val activity: Activity? = activity
+            val activity: AppCompatActivity? = activity
             if (activity is MainActivity) {
                 activity.showStopTourActivity(tour)
             }

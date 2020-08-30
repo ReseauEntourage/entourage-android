@@ -205,7 +205,7 @@
                 android:id="@+id/fragment_guide_info_popup_close"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
+                android:background="?attr/selectableItemBackground"
                 android:contentDescription="@string/empty_description"
                 app:srcCompat="@drawable/ic_close_black_24dp" />
 

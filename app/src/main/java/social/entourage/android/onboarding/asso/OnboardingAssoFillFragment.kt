@@ -1,6 +1,6 @@
 package social.entourage.android.onboarding.asso
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -139,7 +139,7 @@ class OnboardingAssoFillFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == Activity.RESULT_OK) {
+        if (resultCode == AppCompatActivity.RESULT_OK) {
             data?.let {
                 val _assoInfo = data.getSerializableExtra("partner") as? Partner
                 processionUpdate(_assoInfo)

@@ -34,7 +34,7 @@
                     android:layout_marginTop="15dp"
                     android:contentDescription="@string/empty_description"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_user_photo" />
+                    app:srcCompat="@drawable/ic_user_photo" />
 
                 <social.entourage.android.tools.view.PartnerLogoImageView
                     android:id="@+id/drawer_header_user_partner_logo"
