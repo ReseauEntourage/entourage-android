@@ -1,6 +1,6 @@
 package social.entourage.android.entourage.create
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Typeface
 import android.location.Geocoder
@@ -98,7 +98,7 @@ open class BaseCreateEntourageFragment
     protected open fun setupComponent(entourageComponent: EntourageComponent) {}
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == AppCompatActivity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
             if (requestCode == VOICE_RECOGNITION_TITLE_CODE) {
                 val textMatchList: List<String> = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS) ?: return
                 if (textMatchList.isNotEmpty()) {

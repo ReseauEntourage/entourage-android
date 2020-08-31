@@ -307,7 +307,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     private fun onEmptyListPopupClose() {
         val authenticationController = EntourageApplication.get(context).entourageComponent.authenticationController
         //TODO add an "never display" button
-        authenticationController?.isShowNoPOIsPopup = false
+        authenticationController.isShowNoPOIsPopup = false
         hideEmptyListPopup()
     }
 

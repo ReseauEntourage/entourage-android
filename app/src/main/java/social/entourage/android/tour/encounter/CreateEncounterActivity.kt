@@ -1,6 +1,6 @@
 package social.entourage.android.tour.encounter
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.location.Geocoder
@@ -78,7 +78,7 @@ class CreateEncounterActivity : EntourageSecuredActivity(), LocationFragment.OnF
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == VOICE_RECOGNITION_REQUEST_CODE) {
-            if (resultCode == AppCompatActivity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK) {
                 val textMatchList: List<String>? = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                 if (!textMatchList.isNullOrEmpty()) {
                     edittext_message?.let {
@@ -125,7 +125,9 @@ class CreateEncounterActivity : EntourageSecuredActivity(), LocationFragment.OnF
                     it.message = message
                     presenter.updateEncounter(it)
                 }
-                    ?: presenter.createEncounter(message, personName)
+                    ?: run {
+                        presenter.createEncounter(message, personName)
+                    }
         } else {
             if (personName == "") {
                 Toast.makeText(applicationContext, R.string.encounter_empty_name, Toast.LENGTH_SHORT).show()

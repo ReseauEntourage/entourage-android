@@ -1,7 +1,7 @@
 package social.entourage.android.onboarding
 
 import android.Manifest
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
 import android.content.ClipData
 import android.content.Context
 import android.content.Intent
@@ -228,7 +228,7 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
         Timber.d("Return Act return $requestCode - result $resultCode - intent ? ${intent?.data}")
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == AppCompatActivity.RESULT_OK && intent != null && intent.data != null) {
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && intent != null && intent.data != null) {
             photoSource = requestCode
             val uri = intent.data
             Timber.d("Return Image REQUEST uri ? $uri")
@@ -243,7 +243,7 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
             return
         }
 
-        if (requestCode == TAKE_PHOTO_REQUEST && resultCode == AppCompatActivity.RESULT_OK) {
+        if (requestCode == TAKE_PHOTO_REQUEST && resultCode == Activity.RESULT_OK) {
             photoSource = requestCode
             if (intent != null && intent.data != null) {
                 showNextStep(intent.data)

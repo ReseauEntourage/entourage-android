@@ -36,13 +36,13 @@ import javax.inject.Inject
  */
 class NewsfeedPresenter @Inject constructor(
         private val fragment: BaseNewsfeedFragment?,
-        private val authenticationController: AuthenticationController?,
+        private val authenticationController: AuthenticationController,
         private val entourageRequest: EntourageRequest,
         private val tourRequest: TourRequest,
         private val invitationRequest: InvitationRequest) {
 
     val isOnboardingUser: Boolean
-      get() = authenticationController?.isOnboardingUser == true
+      get() = authenticationController.isOnboardingUser
 
     // ----------------------------------
     // PUBLIC METHODS
@@ -62,9 +62,9 @@ class NewsfeedPresenter @Inject constructor(
     }
 
     var isShowNoEntouragesPopup: Boolean
-        get() = authenticationController!=null && authenticationController.isShowNoEntouragesPopup
+        get() = authenticationController.isShowNoEntouragesPopup
         set(show) {
-            authenticationController?.isShowNoEntouragesPopup = show
+            authenticationController.isShowNoEntouragesPopup = show
         }
 
     fun openFeedItem(feedItem: FeedItem, invitationId: Long, feedRank: Int) {
@@ -145,11 +145,11 @@ class NewsfeedPresenter @Inject constructor(
     }
 
     fun shouldDisplayEncounterDisclaimer(): Boolean {
-        return authenticationController != null && authenticationController.isShowEncounterDisclaimer
+        return authenticationController.isShowEncounterDisclaimer
     }
 
     fun setDisplayEncounterDisclaimer(displayEncounterDisclaimer: Boolean) {
-        authenticationController?.isShowEncounterDisclaimer = displayEncounterDisclaimer
+        authenticationController.isShowEncounterDisclaimer = displayEncounterDisclaimer
     }
 
     fun displayEncounterDisclaimer() {
@@ -185,11 +185,11 @@ class NewsfeedPresenter @Inject constructor(
     }
 
     fun resetUserOnboardingFlag() {
-        authenticationController?.isOnboardingUser = false
+        authenticationController.isOnboardingUser = false
     }
 
     fun saveMapFilter() {
-        authenticationController?.saveMapFilter()
+        authenticationController.saveMapFilter()
     }
 
     // ----------------------------------

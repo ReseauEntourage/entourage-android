@@ -1,6 +1,6 @@
 package social.entourage.android.tools.view
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
 import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import social.entourage.android.R
@@ -8,7 +8,7 @@ import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 
 class EntourageTapPrompt(@field:IdRes @param:IdRes private val id: Int, private val primaryText: String, private val secondaryText: String?, private val next: EntourageTapPrompt?) {
 
-    fun show(activity: AppCompatActivity?) {
+    fun show(activity: Activity?) {
         MaterialTapTargetPrompt.Builder(activity!!)
                 .setTarget(id)
                 .setPrimaryText(primaryText)

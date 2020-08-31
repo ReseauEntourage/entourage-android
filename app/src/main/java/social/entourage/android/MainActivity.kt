@@ -96,7 +96,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
         if (intent != null) {
             storeIntent(intent)
         }
-        if (authenticationController.isAuthenticated == true) {
+        if (authenticationController?.isAuthenticated == true) {
             //refresh the user info from the server
             presenter.updateUserLocation(currentLocation)
             //initialize the push notifications
@@ -258,7 +258,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
         get() = supportFragmentManager.findFragmentByTag(BaseNewsfeedFragment.TAG) as BaseNewsfeedFragment?
 
     private fun sendNewsfeedFragmentExtras() {
-        authenticationController?.me?.let { me -> newsfeedFragment?.onNotificationExtras(me.id, authenticationController!!.isUserToursOnly)}
+        authenticationController.me?.let { me -> newsfeedFragment?.onNotificationExtras(me.id, authenticationController.isUserToursOnly)}
     }
 
     private fun setIntentAction(intent: Intent) {
@@ -316,7 +316,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
                 // Show directly the create entourage disclaimer
                 createEntourage()
                 return true
-            } else if (authenticationController?.savedTour != null) {
+            } else if (authenticationController.savedTour != null) {
                 // Show directly the create encounter
                 //TODO should be bound to service
                 addEncounter()
@@ -398,7 +398,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     }
 
     private fun updateAnalyticsInfo() {
-        authenticationController?.me?.let { user ->
+        authenticationController.me?.let { user ->
             updateUserInfo(user, applicationContext, NotificationManagerCompat.from(this).areNotificationsEnabled())
         }
     }
@@ -408,7 +408,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
         //remove user phone
         val sharedPreferences = get().sharedPreferences
         val editor = sharedPreferences.edit()
-        authenticationController?.me?.let { me ->
+        authenticationController.me?.let { me ->
             (sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, HashSet()) as HashSet<String?>?)?.let { loggedNumbers ->
                 loggedNumbers.remove(me.phone)
                 editor.putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers)
@@ -515,7 +515,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     override fun onEntourageDisclaimerAccepted(fragment: EntourageDisclaimerFragment?) {
         // Save the entourage disclaimer shown flag
         try {
-            authenticationController?.entourageDisclaimerShown = true
+            authenticationController.entourageDisclaimerShown = true
             // Dismiss the disclaimer fragment
             fragment?.dismiss()
             // Show the create entourage fragment
@@ -527,7 +527,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
 
     override fun onEncounterDisclaimerAccepted(fragment: EncounterDisclaimerFragment) {
         // Save the entourage disclaimer shown flag
-        authenticationController?.encounterDisclaimerShown = true
+        authenticationController.encounterDisclaimerShown = true
 
         // Dismiss the disclaimer fragment
         fragment.dismiss()
@@ -633,7 +633,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     // ----------------------------------
     @JvmOverloads
     fun showEditActionZoneFragment(extraFragmentListener: FragmentListener? = null, isSecondaryAddress: Boolean = false) {
-        val me = authenticationController?.me ?: return
+        val me = authenticationController.me ?: return
         if (me.address?.displayAddress?.isNotEmpty() == true) {
             return
         }

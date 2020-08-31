@@ -1,7 +1,7 @@
 package social.entourage.android.user.edit.photo
 
 import android.Manifest
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -103,7 +103,7 @@ class PhotoChooseSourceFragmentCompat : EntourageDialogFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
-        if(resultCode == AppCompatActivity.RESULT_OK) {
+        if(resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 PICK_IMAGE_REQUEST-> {
                     intent?.data?.let { uri ->
