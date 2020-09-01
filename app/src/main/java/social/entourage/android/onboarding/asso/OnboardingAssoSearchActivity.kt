@@ -1,6 +1,8 @@
 package social.entourage.android.onboarding.asso
 
+
 import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable

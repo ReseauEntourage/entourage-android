@@ -1,6 +1,7 @@
 package social.entourage.android.user.edit.photo
 
 import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.os.Bundle
 import social.entourage.android.api.tape.Events.OnPhotoChosen
