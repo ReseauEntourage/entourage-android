@@ -143,7 +143,7 @@ class UserFragment : EntourageDialogFragment() {
             user_name?.setRoles(u.roles)
             user_tours_count?.text = getString(R.string.user_entourage_count_format, u.stats?.getActionCount() ?: 0)
             val userAbout = u.about
-            user_profile_about_layout?.visibility = if (userAbout.isNotBlank()) View.VISIBLE else View.GONE
+            user_profile_about_layout?.visibility = if (!userAbout.isNullOrBlank()) View.VISIBLE else View.GONE
             ui_tv_user_description?.text = userAbout
 
             ui_tv_nb_actions?.text = if(u.stats?.actionsCount != null) "${u.stats!!.actionsCount}" else "0"
