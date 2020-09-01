@@ -99,6 +99,11 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     private fun setupViews() {
         ui_bt_next?.setOnClickListener {
+            if (currentPositionNeighbour == NeighbourPositionType.PLACE.pos || currentPositionAlone == AlonePositionType.PLACE.pos) {
+                action_pass()
+                return@setOnClickListener
+            }
+
             goNext()
         }
 
@@ -896,17 +901,19 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     override fun updateAddress(placeAddress: User.Address?,is2ndAddress:Boolean) {
         if (is2ndAddress) {
             temporary2ndPlaceAddress= placeAddress
-        }
-        else {
-            temporaryPlaceAddress = placeAddress
-        }
-
-        if (placeAddress != null) {
             updateButtonNext(true)
         }
         else {
-            updateButtonNext(false)
+            temporaryPlaceAddress = placeAddress
+            if (placeAddress != null) {
+                updateButtonNext(true)
+            }
+            else {
+                updateButtonNext(false)
+            }
         }
+
+
     }
 
     override fun updateEmailPwd(email: String?, pwd: String?, pwdConfirm: String?) {
