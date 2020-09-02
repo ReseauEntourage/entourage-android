@@ -325,7 +325,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
                 previousEmptyListPopupLocation = EntourageLocation.cameraPositionToLocation(null, googleMap.cameraPosition)
             }
         }
-        val isShowNoPOIsPopup = EntourageApplication.get(context).entourageComponent.authenticationController.isShowNoPOIsPopup ?:false
+        val isShowNoPOIsPopup = EntourageApplication.get(context).entourageComponent.authenticationController.isShowNoPOIsPopup
         if (!isShowNoPOIsPopup) {
             return
         }
@@ -341,15 +341,13 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     // ----------------------------------
     private fun onInfoPopupClose() {
         val authenticationController = EntourageApplication.get(context).entourageComponent.authenticationController
-        if (authenticationController != null) {
-            authenticationController.isShowInfoPOIsPopup = false
-        }
+        authenticationController.isShowInfoPOIsPopup = false
         hideInfoPopup()
     }
 
     private fun showInfoPopup() {
         val authenticationController = EntourageApplication.get(context).entourageComponent.authenticationController
-        if (authenticationController == null || !authenticationController.isShowInfoPOIsPopup) {
+        if (!authenticationController.isShowInfoPOIsPopup) {
             fragment_guide_info_popup?.visibility = View.VISIBLE
         }
     }

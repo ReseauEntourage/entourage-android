@@ -310,9 +310,7 @@ class UserFragment : EntourageDialogFragment() {
             if (parentFragmentManager.findFragmentByTag(UserEditFragment.TAG) != null) {
                 return
             }
-            if (event.partner != null) {
-                PartnerFragmentV2.newInstance(event.partner).show(parentFragmentManager,PartnerFragmentV2.TAG)
-            }
+            PartnerFragmentV2.newInstance(event.partner).show(parentFragmentManager,PartnerFragmentV2.TAG)
         } catch (e: IllegalStateException) {
             Timber.w(e)
         }

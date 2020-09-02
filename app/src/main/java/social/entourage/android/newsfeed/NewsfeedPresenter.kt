@@ -58,7 +58,7 @@ class NewsfeedPresenter @Inject constructor(
     }
 
     fun incrementUserToursCount() {
-        authenticationController?.incrementUserToursCount()
+        authenticationController.incrementUserToursCount()
     }
 
     var isShowNoEntouragesPopup: Boolean

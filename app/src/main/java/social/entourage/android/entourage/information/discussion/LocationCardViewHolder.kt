@@ -27,7 +27,7 @@ class LocationCardViewHolder(view: View) : BaseCardViewHolder(view) {
         val tourPointsList = tour.tourPoints
         val locationDateFormat = SimpleDateFormat(itemView.resources.getString(R.string.tour_info_location_card_date_format), Locale.FRANCE)
         if (!isStartCard) {
-            itemView.tic_location_date?.text = locationDateFormat.format(tour.getEndTime()).toUpperCase(Locale.ROOT)
+            itemView.tic_location_date?.text = locationDateFormat.format(tour.getEndTime() ?: Date()).toUpperCase(Locale.ROOT)
             itemView.tic_location_title?.setText(R.string.tour_info_text_closed)
             if (tour.isClosed()) {
                 tour.getEndTime()?.let {endTime->
