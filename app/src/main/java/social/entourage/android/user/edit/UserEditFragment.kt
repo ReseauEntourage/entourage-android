@@ -364,7 +364,7 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
         if (event == null) {
             return
         }
-        PartnerFragmentV2.newInstance(event.partner).show(parentFragmentManager, PartnerFragmentV2.TAG)
+        PartnerFragmentV2.newInstance(event.partner,null).show(parentFragmentManager, PartnerFragmentV2.TAG)
     }
 
     // ----------------------------------

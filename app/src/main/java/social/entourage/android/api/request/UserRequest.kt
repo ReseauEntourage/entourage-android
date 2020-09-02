@@ -60,4 +60,8 @@ interface UserRequest {
     //Onboarding Asso
     @POST("partners/join_request")
     fun updateAssoInfos(@Body asso: ArrayMap<String, Any>): Call<ResponseBody>
+
+    //Get Asso detail
+    @GET("partners/{partner_id}")
+    fun getPartnerDetail(@Path("partner_id") partnerId: Int): Call<PartnerResponse>
 }

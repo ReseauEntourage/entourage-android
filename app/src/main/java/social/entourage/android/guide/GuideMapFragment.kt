@@ -44,6 +44,7 @@ import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.Utils
 import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.tools.view.EntourageSnackbar
+import social.entourage.android.user.partner.PartnerFragmentV2
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -264,11 +265,16 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     }
 
     private fun showPoiDetails(poi: Poi) {
-        val readPoiFragment = newInstance(poi)
-        try {
-            readPoiFragment.show(parentFragmentManager, ReadPoiFragment.TAG)
-        } catch (e: IllegalStateException) {
-            Timber.w(e)
+        if (poi.partner_id != null) {
+            PartnerFragmentV2.newInstance(null,poi.partner_id).show(parentFragmentManager, PartnerFragmentV2.TAG)
+        }
+        else {
+            val readPoiFragment = newInstance(poi)
+            try {
+                readPoiFragment.show(parentFragmentManager, ReadPoiFragment.TAG)
+            } catch (e: IllegalStateException) {
+                Timber.w(e)
+            }
         }
     }
 

@@ -27,6 +27,7 @@ class Poi : TimestampedObject(), Serializable, ClusterItem {
     var longitude = 0.0
     var latitude = 0.0
 
+    var partner_id:Int? = null
     // ----------------------------------
     // GETTERS & SETTERS
     // ----------------------------------
