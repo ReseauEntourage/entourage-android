@@ -165,6 +165,15 @@ class EntourageApplication : MultiDexApplication() {
         updateBadgeCount()
     }
 
+    fun updateBadgeCountForCount(count: Int) {
+        badgeCount = count
+        if (badgeCount == 0) {
+            ShortcutBadger.removeCount(applicationContext)
+        } else {
+            ShortcutBadger.applyCount(applicationContext, badgeCount)
+        }
+    }
+
     // ----------------------------------
     // FeedItemsStorage
     // ----------------------------------

@@ -208,4 +208,6 @@ open class Events {
      * Event signaling that showing an url is requested
      */
     class OnShowURLEvent(val url: String)
+
+    class OnUnreadCountUpdate(val unreadCount: Int?)
 }

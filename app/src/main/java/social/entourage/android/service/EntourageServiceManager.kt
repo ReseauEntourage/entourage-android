@@ -15,6 +15,7 @@ import social.entourage.android.api.model.BaseEntourage.EntourageJoinInfo
 import social.entourage.android.api.model.EntourageRequestDate
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.request.*
+import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.OnBetterLocationEvent
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted
 import social.entourage.android.authentication.AuthenticationController
@@ -28,6 +29,7 @@ import social.entourage.android.location.LocationProvider.UserType
 import social.entourage.android.map.filter.MapFilterFactory.mapFilter
 import social.entourage.android.newsfeed.NewsfeedPagination
 import social.entourage.android.newsfeed.NewsfeedTabItem
+import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.BusProvider.instance
 import timber.log.Timber
 import java.util.*
@@ -221,6 +223,9 @@ open class EntourageServiceManager(
                 return
             }
             if (response.isSuccessful) {
+                response.body()?.unreadCount?.let {
+                    instance.post(Events.OnUnreadCountUpdate(it))
+                }
                 response.body()?.newsfeedItems?.let {
                     service.notifyListenersNewsFeedReceived(it)
                     return

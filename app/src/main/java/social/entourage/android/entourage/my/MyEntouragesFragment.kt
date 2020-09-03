@@ -138,7 +138,7 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
     private fun retrieveMyFeeds() {
         if (!entouragesPagination.isLoading) {
             entouragesPagination.isLoading = true
-            presenter.getMyFeeds(entouragesPagination.page, entouragesPagination.itemsPerPage)
+            presenter.getMyFeeds(entouragesPagination.page, entouragesPagination.itemsPerPage,MyEntouragesFilter.get(this.context).isShowUnreadOnly)
         }
     }
 
@@ -243,13 +243,10 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
             for (newsfeed in newsfeedItemList) {
                 val feedItem = newsfeed.data as? FeedItem ?: continue
 
-                // show only the unread ones if filter is set
-                if (!showUnreadOnly || feedItem.getUnreadMsgNb() > 0) {
-                    if (entouragesAdapter.findCard(feedItem) == null) {
-                        entouragesAdapter.addCardInfo(feedItem)
-                    }
+                if (entouragesAdapter.findCard(feedItem) == null) {
+                    entouragesAdapter.addCardInfo(feedItem)
                 }
-                instance.post(OnMyEntouragesForceRefresh(feedItem))
+                //instance.post(OnMyEntouragesForceRefresh(feedItem))
             }
 
             //increase page and items count
@@ -270,6 +267,10 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
     fun onNoInvitationReceived() {
         // ignore errors
         isRefreshingInvitations = false
+    }
+
+    fun updateUnreadCount(unreadCount:Int?) {
+        instance.post(OnUnreadCountUpdate(unreadCount))
     }
 
     // ----------------------------------

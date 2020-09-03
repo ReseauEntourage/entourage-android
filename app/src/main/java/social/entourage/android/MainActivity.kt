@@ -295,7 +295,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
             val messageBadge = bottomBar.getOrCreateBadge(navigationDataSource.myMessagesTabIndex)
             messageBadge.backgroundColor = ResourcesCompat.getColor(resources, R.color.map_announcement_background, null)
             messageBadge.badgeTextColor = ResourcesCompat.getColor(resources, R.color.primary, null)
-            messageBadge.maxCharacterCount = 2
+            messageBadge.maxCharacterCount = 3
         }
     }
 
@@ -684,6 +684,12 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
             get().updateBadgeCountForFeedItem(item)
             refreshBadgeCount()
         }
+    }
+
+    @Subscribe
+    fun onUnreadCountUpdate(unreadCount:OnUnreadCountUpdate?) {
+        unreadCount?.unreadCount?.let { get().updateBadgeCountForCount(it) }
+        refreshBadgeCount()
     }
 
     // ----------------------------------
