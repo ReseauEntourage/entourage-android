@@ -171,7 +171,6 @@ class OnboardingEditPhotoFragment : DialogFragment(), OnSetImageUriCompleteListe
     companion object {
         const val TAG = "social.entourage.android.onboarding.OnboardingEditPhotoFragment"
 
-        @JvmStatic
         fun newInstance(photoUri: Uri?, photoSource: Int) =
                 OnboardingEditPhotoFragment().apply {
                     arguments = Bundle().apply {

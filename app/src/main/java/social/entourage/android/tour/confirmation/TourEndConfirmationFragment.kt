@@ -72,11 +72,10 @@ class TourEndConfirmationFragment  : EntourageDialogFragment() {
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        @JvmField
         val TAG = TourEndConfirmationFragment::class.java.simpleName
         const val KEY_END_TOUR = "social.entourage.android.KEY_END_TOUR"
         const val KEY_RESUME_TOUR = "social.entourage.android.KEY_RESUME_TOUR"
-        @JvmStatic
+
         fun newInstance(tour: Tour): TourEndConfirmationFragment {
             val fragment = TourEndConfirmationFragment()
             val args = Bundle()

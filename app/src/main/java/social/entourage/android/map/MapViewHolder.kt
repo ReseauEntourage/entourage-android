@@ -54,7 +54,6 @@ class MapViewHolder(view: View) : BaseCardViewHolder(view) {
     }
 
     companion object {
-        @JvmStatic
         val layoutResource: Int
             get() = R.layout.layout_feed_map_card
     }

@@ -6,7 +6,6 @@ import social.entourage.android.base.EntouragePagination
  * Created by mihaiionescu on 17/05/2017.
  */
 class NewsfeedPagination : EntouragePagination() {
-    @JvmField
     var distance: Int  // kilometers
     private var distanceIndex: Int
     var lastFeedItemUUID: String? = null

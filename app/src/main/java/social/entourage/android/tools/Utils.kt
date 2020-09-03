@@ -27,12 +27,10 @@ import kotlin.math.max
  * Created by mihaiionescu on 27/07/16.
  */
 object Utils {
-    @JvmStatic
     fun checkPhoneNumberFormat(phoneNumber: String): String? {
         return checkPhoneNumberFormat(null, phoneNumber)
     }
 
-    @JvmStatic
     fun checkPhoneNumberFormat(countryCode: String?, phoneNumber: String): String? {
         var correctPhoneNumber = phoneNumber
         if (correctPhoneNumber.startsWith("0")) {
@@ -53,7 +51,6 @@ object Utils {
         return if (Patterns.PHONE.matcher(correctPhoneNumber).matches()) correctPhoneNumber else null
     }
 
-    @JvmStatic
     fun formatLastUpdateDate(lastUpdateDate: Date, context: Context): String {
         val lastUpdate = Calendar.getInstance()
         lastUpdate.time = lastUpdateDate
@@ -111,7 +108,6 @@ object Utils {
         }
     }
 
-    @JvmStatic
     fun fromHtml(html: String): Spanned {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY)
@@ -150,12 +146,10 @@ object Utils {
         return bitmapDescriptor
     }
 
-    @JvmStatic
     fun getDateStringFromSeconds(milliseconds: Long): String {
         return DateUtils.formatElapsedTime(milliseconds / 1000)
     }
 
-    @JvmStatic
     fun getScreenWidth(context: Context): Int {
         val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = wm.defaultDisplay
@@ -164,17 +158,14 @@ object Utils {
         return size.x
     }
 
-    @JvmStatic
     fun convertDpToPixel(dp: Float, context: Context): Float {
         return dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
     }
 
-    @JvmStatic
     fun convertPixelsToDp(px: Float, context: Context): Float {
         return px / (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
     }
 
-    @JvmStatic
     fun formatTextWithBoldSpanAndColor(color:Int, isBold:Boolean, text: String, vararg textToBold: String): SpannableStringBuilder {
 
         val builder = SpannableStringBuilder(text)

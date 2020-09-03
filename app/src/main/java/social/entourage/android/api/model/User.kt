@@ -15,7 +15,6 @@ class User : Serializable {
     // ----------------------------------
     // ATTRIBUTES (Serialized)
     // ----------------------------------
-    @JvmField
     val id: Int
     var email: String? = null
     @SerializedName("first_name")
@@ -24,9 +23,8 @@ class User : Serializable {
     var lastName: String? = null
     @SerializedName("display_name")
     val displayName: String?
-    @JvmField
     var partner: Partner?
-    @JvmField @SerializedName("avatar_url")
+    @SerializedName("avatar_url")
     var avatarURL: String?
     @SerializedName("user_type")
     private val type = TYPE_PRO
@@ -36,7 +34,6 @@ class User : Serializable {
     val roles: ArrayList<String>? = null
     private val memberships: ArrayList<UserMembershipList>? = null
     val conversation: UserConversation? = null
-    @JvmField
     var address: Address? = null
     @SerializedName("address_2")
     var addressSecondary: Address? = null
@@ -48,11 +45,11 @@ class User : Serializable {
     // ----------------------------------
     // ATTRIBUTES (Not Serialized)
     // ----------------------------------
-    @JvmField @Expose(serialize = false)
+    @Expose(serialize = false)
     var phone: String? = null
     @Expose(serialize = false)
     var smsCode: String? = null
-    @JvmField @Expose(serialize = false)
+    @Expose(serialize = false)
     val token: String?
 
     // ----------------------------------
@@ -193,7 +190,7 @@ class User : Serializable {
         var latitude = 0.0
         var longitude = 0.0
 
-        @JvmField @SerializedName("display_address")
+        @SerializedName("display_address")
         var displayAddress: String = ""
 
         @SerializedName("google_place_id")

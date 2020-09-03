@@ -1224,12 +1224,11 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
         // Zoom in level when taping a heatzone
         private const val ZOOM_HEATZONE = 15.7f
-        @JvmStatic
+
         fun getTransparentColor(color: Int): Int {
             return Color.argb(200, Color.red(color), Color.green(color), Color.blue(color))
         }
 
-        @JvmStatic
         fun isToday(date: Date): Boolean {
             val calToday = Calendar.getInstance()
             calToday.time =  Date()

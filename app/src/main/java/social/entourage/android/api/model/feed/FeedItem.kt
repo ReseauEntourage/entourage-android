@@ -67,7 +67,6 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
 
     //number of notifs received that should be added to number of unread messages
     @Expose(serialize = false, deserialize = false)
-    @JvmField
     protected var badgeCount = 0
 
 

@@ -238,12 +238,11 @@ class OnboardingPasscodeFragment : Fragment() {
     //**********//**********//**********
 
     companion object {
-        @JvmStatic
-        fun newInstance(temporaryCountrycode :String?,temporaryPhone: String?) =
+        fun newInstance(temporaryCountryCode :String?, temporaryPhone: String?) =
                 OnboardingPasscodeFragment().apply {
                     arguments = Bundle().apply {
                         putString(ARG_PHONE, temporaryPhone)
-                        putString(ARG_COUNTRY, temporaryCountrycode)
+                        putString(ARG_COUNTRY, temporaryCountryCode)
                     }
                 }
     }

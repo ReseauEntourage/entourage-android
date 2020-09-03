@@ -162,7 +162,6 @@ class PartnerFragmentV2 : EntourageDialogFragment() {
 
     companion object {
         const val TAG = "social.entourage.android.partner_fragment_new"
-        @JvmStatic
         fun newInstance(partner: Partner?,partnerId:Int?) : PartnerFragmentV2 {
             val fragment = PartnerFragmentV2()
             val args = Bundle()

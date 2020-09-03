@@ -256,7 +256,6 @@ open class LoginPlaceFragment : EntourageDialogFragment() {
     //******************************
 
     companion object {
-        @JvmStatic
         fun newInstance() = LoginPlaceFragment()
     }
 }

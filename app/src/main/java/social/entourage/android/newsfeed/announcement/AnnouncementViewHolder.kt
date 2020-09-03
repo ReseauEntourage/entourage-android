@@ -112,7 +112,6 @@ class AnnouncementViewHolder(view: View) : BaseCardViewHolder(view), Target {
     }
 
     companion object {
-        @JvmStatic
         val layoutResource: Int
             get() = R.layout.layout_card_announcement
     }

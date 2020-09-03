@@ -89,7 +89,6 @@ open class ChatMessageCardViewHolder(view: View) : BaseCardViewHolder(view) {
     }
 
     companion object {
-        @JvmStatic
         val layoutResource: Int
             get() = R.layout.layout_entourage_information_chat_message_others_card_view
     }

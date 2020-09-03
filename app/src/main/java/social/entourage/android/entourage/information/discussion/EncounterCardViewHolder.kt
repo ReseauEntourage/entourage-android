@@ -48,7 +48,6 @@ class EncounterCardViewHolder(view: View) : BaseCardViewHolder(view) {
     }
 
     companion object {
-        @JvmStatic
         val layoutResource: Int
             get() = R.layout.layout_tour_information_encounter_card_view
     }

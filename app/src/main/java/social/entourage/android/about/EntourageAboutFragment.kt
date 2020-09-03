@@ -69,7 +69,6 @@ class EntourageAboutFragment : AboutFragment() {
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        @JvmField
         val TAG = EntourageAboutFragment::class.java.simpleName
     }
 }

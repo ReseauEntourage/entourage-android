@@ -180,7 +180,6 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
     }
 
     companion object {
-        @JvmStatic
         val layoutResource: Int
             get() = R.layout.layout_entourage_information_user_join_card_view
     }

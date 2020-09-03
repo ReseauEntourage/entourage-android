@@ -631,7 +631,6 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     // ----------------------------------
     // ACTION ZONE HANDLING
     // ----------------------------------
-    @JvmOverloads
     fun showEditActionZoneFragment(extraFragmentListener: FragmentListener? = null, isSecondaryAddress: Boolean = false) {
         val me = authenticationController.me ?: return
         if (me.address?.displayAddress?.isNotEmpty() == true) {

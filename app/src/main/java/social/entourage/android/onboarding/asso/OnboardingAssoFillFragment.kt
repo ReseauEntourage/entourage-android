@@ -184,7 +184,6 @@ class OnboardingAssoFillFragment : Fragment() {
      * Companion
      ********************************/
     companion object {
-        @JvmStatic
         fun newInstance(assoInfos: Partner?) =
                 OnboardingAssoFillFragment().apply {
                     arguments = Bundle().apply {

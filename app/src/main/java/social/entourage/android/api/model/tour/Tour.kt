@@ -23,7 +23,6 @@ class Tour : FeedItem, Serializable {
     var userId = 0
 
     @SerializedName("tour_type")
-    @JvmField
     var tourType = TourType.BARE_HANDS.typeName
 
     @SerializedName("start_time")
@@ -35,11 +34,9 @@ class Tour : FeedItem, Serializable {
     private var endTime: Date? = null
 
     @Expose(serialize = false, deserialize = false)
-    @JvmField
     var duration: String? = null
 
     @Expose(serialize = true, deserialize = true)
-    @JvmField
     var distance = 0f
 
     @Expose(serialize = false, deserialize = true)
@@ -48,7 +45,6 @@ class Tour : FeedItem, Serializable {
 
     @Expose(serialize = false, deserialize = true)
     @SerializedName("organization_name")
-    @JvmField
     val organizationName: String? = null
 
     @Expose(serialize = false, deserialize = true)

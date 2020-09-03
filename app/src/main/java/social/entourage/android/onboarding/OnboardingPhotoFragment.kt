@@ -334,11 +334,10 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
         const val PICK_AND_CROP_IMAGE_PERMISSION_CODE = 3
         const val WRITE_STORAGE_PERMISSION_CODE = 4
 
-        @JvmStatic
-        fun newInstance(firstname: String) =
+        fun newInstance(firstName: String) =
                 OnboardingPhotoFragment().apply {
                     arguments = Bundle().apply {
-                        putString(ARG_FIRSTNAME, firstname)
+                        putString(ARG_FIRSTNAME, firstName)
                     }
                 }
     }

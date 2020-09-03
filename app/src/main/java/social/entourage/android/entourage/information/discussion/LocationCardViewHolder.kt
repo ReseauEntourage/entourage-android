@@ -89,7 +89,6 @@ class LocationCardViewHolder(view: View) : BaseCardViewHolder(view) {
     }
 
     companion object {
-        @JvmStatic
         val layoutResource: Int
             get() = R.layout.layout_tour_information_location_card_view
     }

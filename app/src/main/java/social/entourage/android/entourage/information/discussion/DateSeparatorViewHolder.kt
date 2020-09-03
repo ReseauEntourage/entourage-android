@@ -19,7 +19,6 @@ class DateSeparatorViewHolder(view: View) : BaseCardViewHolder(view) {
     }
 
     companion object {
-        @JvmStatic
         val layoutResource: Int
             get() = R.layout.layout_entourage_information_date_separator_card
     }

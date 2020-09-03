@@ -11,15 +11,12 @@ open class EntouragePagination {
     // ATTRIBUTES
     // ----------------------------------
     var page = 1
-    @JvmField
     var itemsPerPage: Int
     var beforeDate:Date
         get() = if (isRefreshing) Date() else field
         //set(newBeforeDate) { this.beforeDate = newBeforeDate}
     protected var newestDate: Date? = null
-    @JvmField
     var isLoading = false
-    @JvmField
     var isRefreshing = false
     var newItemsAvailable = false
     var nextPageAvailable = false

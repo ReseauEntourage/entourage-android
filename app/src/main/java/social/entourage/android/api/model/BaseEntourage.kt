@@ -32,19 +32,14 @@ open class BaseEntourage : FeedItem, Serializable {
     private var groupType: String
 
     @SerializedName("entourage_type")
-    @JvmField
     var actionGroupType: String
 
     @SerializedName("display_category")
-    @JvmField
     var category: String? = null
     private var title: String? = null
     private var description: String? = null
-    @JvmField
     var location: LocationPoint? = null
-    @JvmField
     var outcome: EntourageCloseOutcome? = null
-    @JvmField
     var metadata: Metadata? = null
 
     @SerializedName("recipient_consent_obtained")
@@ -267,15 +262,12 @@ open class BaseEntourage : FeedItem, Serializable {
             private set
 
         @SerializedName("display_address")
-        @JvmField
         var displayAddress: String? = null
 
         @SerializedName("place_name")
-        @JvmField
         var placeName: String? = null
 
         @SerializedName("street_address")
-        @JvmField
         var streetAddress: String? = null
 
         @SerializedName("google_place_id")

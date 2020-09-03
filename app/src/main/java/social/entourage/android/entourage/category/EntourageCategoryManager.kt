@@ -30,7 +30,6 @@ object EntourageCategoryManager {
         return findCategory(entourage.actionGroupType, entourage.category)
     }
 
-    @JvmStatic
     fun findCategory(entourageType: String, entourageCategory: String?): EntourageCategory? {
         val categoryToSearch = entourageCategory ?: "other"
         val list: List<EntourageCategory> = entourageCategories[entourageType] ?: return null
@@ -42,11 +41,9 @@ object EntourageCategoryManager {
         return null
     }
 
-    @JvmStatic
     val defaultCategory: EntourageCategory
         get() = getDefaultCategory(BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)
 
-    @JvmStatic
     fun getDefaultCategory(groupType: String): EntourageCategory {
         var list: List<EntourageCategory>? = entourageCategories[groupType]
         if (list == null) {

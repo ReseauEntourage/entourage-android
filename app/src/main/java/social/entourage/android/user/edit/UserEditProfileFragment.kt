@@ -94,7 +94,7 @@ class UserEditProfileFragment  : DialogFragment() {
         const val EDIT_NAME = 1
         const val EDIT_EMAIL = 2
         private const val KEY_EDIT_TYPE = "user_edit_type"
-        @JvmStatic
+
         fun newInstance(editType: Int): UserEditProfileFragment {
             val fragment = UserEditProfileFragment()
             val args = Bundle()

@@ -221,18 +221,16 @@ class EntourageApplication : MultiDexApplication() {
         // MEMBERS
         // ----------------------------------
         private lateinit var instance: EntourageApplication
-        @JvmStatic
         fun get(): EntourageApplication {
             return instance
         }
 
         const val ENTOURAGE_APP = "entourage"
-        @JvmStatic
+
         operator fun get(context: Context?): EntourageApplication {
             return (if (context != null) context.applicationContext as EntourageApplication else get())
         }
 
-        @JvmStatic
         fun me(context: Context?): User? {
             return get(context).me()
         }

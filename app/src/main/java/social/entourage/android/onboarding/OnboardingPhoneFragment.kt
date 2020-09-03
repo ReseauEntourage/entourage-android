@@ -119,7 +119,6 @@ class OnboardingPhoneFragment : Fragment() {
     //**********//**********//**********
 
     companion object {
-        @JvmStatic
         fun newInstance(firstname: String?, countryCode: String?, phone:String?) =
                 OnboardingPhoneFragment().apply {
                     arguments = Bundle().apply {

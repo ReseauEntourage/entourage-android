@@ -150,7 +150,7 @@ class UserFragment : EntourageDialogFragment() {
             ui_tv_nb_events?.text = if(u.stats?.eventsCount != null) "${u.stats!!.eventsCount}" else "0"
 
             ui_tv_good_waves?.visibility = if (u.stats?.isGoodWavesValidated == true) View.VISIBLE else View.INVISIBLE
-            
+
             user_identification_phone_check?.setImageResource(R.drawable.verified)
             user_identification_email_check?.setImageResource(if (u.email != null) R.drawable.verified else R.drawable.not_verified)
             user_profile_associations?.initUserAssociations(u, this)
