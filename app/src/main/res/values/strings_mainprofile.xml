@@ -10,8 +10,8 @@
     <string name="action_donation">Faire un don à Entourage</string>
     <string name="action_involvement">Suivre Entourage</string>
     <string name="action_ambassador">Devenir Ambassadeur d\'Entourage</string>
-    <string name="action_map">à proximité</string>
-    <string name="action_guide">annuaire</string>
+    <string name="action_map">actus</string>
+    <string name="action_guide">guide</string>
     <string name="action_plus">agir</string>
     <string name="action_my_messages">messages</string>
     <string name="action_profile">profil</string>
