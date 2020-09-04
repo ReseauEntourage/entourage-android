@@ -304,6 +304,12 @@ class EntourageService : Service() {
         }
     }
 
+    fun reopenFeedItem(feedItem: FeedItem) {
+        if (feedItem.type == TimestampedObject.ENTOURAGE_CARD) {
+            entourageServiceManager.reopenEntourage(feedItem as BaseEntourage)
+        }
+    }
+
     fun freezeTour(tour: Tour) {
         tourServiceManager?.freezeTour(tour)
     }

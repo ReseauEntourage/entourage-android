@@ -128,6 +128,29 @@ open class EntourageServiceManager(
         })
     }
 
+    fun reopenEntourage(entourage: BaseEntourage) {
+        val oldStatus = entourage.status
+        entourage.status = FeedItem.STATUS_OPEN
+        entourageRequest.editEntourage(entourage.uuid!!, EntourageWrapper(entourage)).enqueue(object : Callback<EntourageResponse> {
+            override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
+                if (response.isSuccessful) {
+                    response.body()?.entourage?.let {
+                       entourageService.notifyListenersFeedItemClosed(true, it)
+                        return
+                    }
+                }
+                entourage.status = oldStatus
+                entourageService.notifyListenersFeedItemClosed(false, entourage)
+            }
+
+            override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
+                Timber.e(t)
+                entourage.status = oldStatus
+                entourageService.notifyListenersFeedItemClosed(false, entourage)
+            }
+        })
+    }
+
     fun requestToJoinEntourage(entourage: BaseEntourage) {
         if (isNetworkConnected) {
             entourageRequest.requestToJoinEntourage(entourage.uuid!!, EntourageJoinInfo(entourage.distanceToCurrentLocation()))

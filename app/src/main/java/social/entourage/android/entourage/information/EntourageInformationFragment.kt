@@ -24,7 +24,6 @@ import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.feed.FeedItem
-import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.OnUserJoinRequestUpdateEvent
 import social.entourage.android.entourage.EntourageCloseFragment
@@ -138,6 +137,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         entourage_option_join?.visibility = View.GONE
         entourage_option_contact?.visibility = View.GONE
         entourage_option_promote?.visibility = View.GONE
+
         val hideJoinButton = feedItem.isPrivate() || FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus || feedItem.isFreezed()
         entourage_option_join?.visibility =  if (hideJoinButton) View.GONE else View.VISIBLE
         entourage_option_contact?.visibility = View.GONE
@@ -154,6 +154,10 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             entourage_option_stop?.setText( R.string.tour_info_options_freeze_tour)
             if (FeedItem.STATUS_OPEN == feedItem.status) {
                 entourage_option_edit?.visibility = View.VISIBLE
+                entourage_option_reopen?.visibility = View.GONE
+            }
+            else {
+                entourage_option_reopen?.visibility = View.VISIBLE
             }
         }
         if (!feedItem.isSuspended()) {

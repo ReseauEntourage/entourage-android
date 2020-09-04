@@ -172,6 +172,8 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         entourage_info_invited_reject_button?.setOnClickListener { v -> onRejectInvitationClicked(v)}
         invite_source_number_button?.setOnClickListener { onInvitePhoneNumberClicked() }
 
+        entourage_option_reopen?.setOnClickListener {onReopenEntourage()}
+
         ui_iv_button_faq?.setOnClickListener { onShowFaq() }
     }
 
@@ -488,6 +490,10 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             // For non-members, show the share screen
             onShareButton()
         }
+    }
+
+    private fun onReopenEntourage() {
+        entourageServiceConnection.boundService?.reopenFeedItem(feedItem)
     }
 
     protected abstract fun showInviteSource()

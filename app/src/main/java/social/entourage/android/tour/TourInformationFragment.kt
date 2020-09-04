@@ -147,6 +147,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
         entourage_option_join?.visibility = View.GONE
         entourage_option_contact?.visibility = View.GONE
         entourage_option_promote?.visibility = View.GONE
+        entourage_option_reopen?.visibility = View.GONE
         val hideJoinButton = feedItem.isPrivate() || FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus || feedItem.isFreezed()
         entourage_option_join?.visibility =  View.GONE
         entourage_option_contact?.visibility = if (hideJoinButton) View.GONE else View.VISIBLE
