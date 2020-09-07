@@ -50,8 +50,9 @@
 
     <string name="alreadyRegistereMessageGoBack">Le numéro est déjà enregistré, nous allons vous rediriger vers la page de connexion.</string>
     <string name="button_OK">OK</string>
-    <string name="login_pop_information">Information</string>
-    <string name="login_info_pop_action">Vous pouvez choisir votre mode d\'action dans votre profil.</string>
+    <string name="login_pop_information">Nouveau ! Adaptez Entourage à vos envies et besoins !</string>
+    <string name="login_info_pop_action">Depuis votre Profil, vous pouvez personnaliser votre fil d’actus et les recommandations reçues. Choisissez en toute confidentialité si vous êtes actuellement : voisin solidaire, personne dans le besoin, association.</string>
+    <string name="login_info_pop_validate">Compris !</string>
     <string name="login_name_title">Quel est votre nom ?</string>
     <string name="login_name_description">Seuls le prénom et la première lettre du nom apparaitront aux autres utilisateurs.</string>
     <string name="login_name_firstname_hint">Prénom</string>

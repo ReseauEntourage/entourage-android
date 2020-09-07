@@ -44,7 +44,7 @@
     <string name="tour_info_options_contact">Contacter</string>
     <string name="tour_info_options_cancel_request">Retirer ma demande</string>
     <string name="tour_info_options_promote">Promouvoir la sortie</string>
-    <string name="tour_info_options_reopen_entourage">Rouvrir un entourage</string>
+    <string name="tour_info_options_reopen_entourage">Rouvrir</string>
 
     <string name="tour_info_encounter_location">&#160;et %1$s se sont rencontrés ici.</string>
     <string name="tour_info_encounter_location_mine">&lt;u>&#160;et %1$s se sont rencontrés ici.&lt;/u></string>

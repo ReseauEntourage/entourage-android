@@ -106,7 +106,7 @@ class LoginActivity : EntourageActivity() {
                 AlertDialog.Builder(this)
                         .setTitle(R.string.login_pop_information)
                         .setMessage(R.string.login_info_pop_action)
-                        .setPositiveButton(R.string.button_OK) { dialog, which ->
+                        .setPositiveButton(R.string.login_info_pop_validate) { dialog, which ->
                             dialog.dismiss()
 
                             goRealMain()
