@@ -117,7 +117,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
         }
     }
 
-    override fun showInviteSource() {
+    override fun showInviteSource(isShareOnly:Boolean) {
         entourage_info_invite_source_layout?.visibility = View.VISIBLE
         invite_source_description?.setText(R.string.invite_source_to_tour_description)
     }

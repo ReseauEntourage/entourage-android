@@ -15,6 +15,7 @@ import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.layout_entourage_options.*
 import kotlinx.android.synthetic.main.fragment_entourage_information.*
 import kotlinx.android.synthetic.main.layout_invite_source.*
+import kotlinx.android.synthetic.main.layout_invite_source.view.*
 import kotlinx.android.synthetic.main.layout_public_entourage_information.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageComponent
@@ -97,10 +98,12 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         } ?: run {entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.tour_join_request_message_error, Snackbar.LENGTH_SHORT).show()}}
     }
 
-    override fun showInviteSource() {
+    override fun showInviteSource(isShareOnly:Boolean) {
         entourage_info_invite_source_layout?.visibility = View.VISIBLE
+        entourage_info_invite_source_layout?.invite_source_number_button?.visibility = if (isShareOnly) View.GONE else View.VISIBLE
         invite_source_description?.setText(if (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.getGroupType(), ignoreCase = true)) R.string.invite_source_description_outing else R.string.invite_source_description)
     }
+
 
     // ----------------------------------
     // Chat push notification

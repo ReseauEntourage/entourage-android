@@ -4,12 +4,10 @@ import com.google.gson.annotations.SerializedName
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
-import social.entourage.android.api.model.BaseEntourage
+import social.entourage.android.api.EntourageMessageSharing
+import social.entourage.android.api.model.*
 import social.entourage.android.api.model.BaseEntourage.EntourageJoinInfo
-import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.model.EntourageReport.EntourageReportWrapper
-import social.entourage.android.api.model.EntourageUser
-import social.entourage.android.api.model.MultipleInvitations
 import java.util.*
 
 class EntourageWrapper (var entourage: BaseEntourage)
@@ -26,6 +24,7 @@ class EntourageUserListResponse {
 }
 
 class ChatMessageWrapper (@SerializedName("chat_message") var chatMessage: ChatMessage)
+class EntourageMessageSharingWrapper (@SerializedName("chat_message") var chatMessage: EntourageMessageSharing)
 class ChatMessageResponse {
     @SerializedName("chat_message")
     var chatMessage: ChatMessage? = null
@@ -97,6 +96,12 @@ interface EntourageRequest {
     fun addChatMessage(
             @Path("entourage_id") entourageUUID: String,
             @Body message: ChatMessageWrapper
+    ): Call<ChatMessageResponse>
+
+    @POST("entourages/{entourage_id}/chat_messages.json")
+    fun addEntourageMessageSharing(
+            @Path("entourage_id") entourageUUID: String,
+            @Body message: EntourageMessageSharingWrapper
     ): Call<ChatMessageResponse>
 
     @GET("entourages/{entourage_id}/chat_messages.json")

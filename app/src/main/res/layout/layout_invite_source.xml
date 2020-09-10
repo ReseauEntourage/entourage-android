@@ -50,9 +50,9 @@
             style="@style/WhiteButton.RoundedCorners"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_share_android"
-            android:drawableStart="@drawable/ic_share_android"
-            android:text="@string/invite_source_share"/>
+            android:drawableStart="@drawable/ic_entourage_logo_orange"
+            android:drawableLeft="@drawable/ic_entourage_logo_orange"
+            android:text="@string/invite_source_share_entourage" />
 
         <Button
             android:id="@+id/invite_source_contacts_button"
@@ -60,9 +60,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:drawableLeft="@drawable/ic_adress_book_square"
-            android:drawableStart="@drawable/ic_adress_book_square"
-            android:text="@string/invite_source_contacts"/>
+            android:drawableStart="@drawable/ic_share_android"
+            android:drawableLeft="@drawable/ic_share_android"
+            android:text="@string/invite_source_share" />
 
         <Button
             android:id="@+id/invite_source_number_button"
@@ -70,9 +70,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:drawableLeft="@drawable/ic_phone_square"
-            android:drawableStart="@drawable/ic_phone_square"
-            android:text="@string/invite_source_number"/>
+            android:drawableStart="@drawable/ic_adress_book_square"
+            android:drawableLeft="@drawable/ic_adress_book_square"
+            android:text="@string/invite_source_contacts" />
 
         <Button
             android:id="@+id/invite_source_close_bottom_button"

@@ -152,4 +152,10 @@ class ApiModule {
         }
         return EncounterTapeTaskQueue(delegate, application.applicationContext)
     }
+
+    @Provides
+    @Singleton
+    fun providesSharingEntourageRequest(restAdapter: Retrofit): SharingRequest {
+        return restAdapter.create(SharingRequest::class.java)
+    }
 }

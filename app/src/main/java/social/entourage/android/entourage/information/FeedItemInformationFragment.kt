@@ -52,6 +52,7 @@ import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.deeplinks.DeepLinksManager.linkify
+import social.entourage.android.entourage.ShareEntourageFragment
 import social.entourage.android.entourage.create.BaseCreateEntourageFragment
 import social.entourage.android.entourage.information.discussion.DiscussionAdapter
 import social.entourage.android.entourage.information.members.MembersAdapter
@@ -150,8 +151,12 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         tour_card_photo?.setOnClickListener {onAuthorClicked()}
         tour_card_author?.setOnClickListener {onAuthorClicked()}
         entourage_info_comment_record_button?.setOnClickListener {onRecord()}
-        entourage_option_share?.setOnClickListener {onShareButton()}
-        invite_source_share_button?.setOnClickListener {onShareButton()}
+        entourage_option_share?.setOnClickListener {
+            showInviteSource(true)
+            entourage_info_options?.visibility = View.GONE
+        }
+        invite_source_share_button?.setOnClickListener {
+            onShareEntourageButton()}
         entourage_info_more_button?.setOnClickListener {onMoreButton()}
         entourage_info_options?.setOnClickListener {onCloseOptionsButton()}
         entourage_option_cancel?.setOnClickListener {onCloseOptionsButton()}
@@ -167,10 +172,10 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         entourage_info_member_add?.setOnClickListener {onMembersAddClicked()}
         invite_source_close_button?.setOnClickListener {onCloseInviteSourceClicked()}
         invite_source_close_bottom_button?.setOnClickListener {onCloseInviteSourceClicked()}
-        invite_source_contacts_button?.setOnClickListener {inviteSourceContactsButton()}
+        invite_source_contacts_button?.setOnClickListener {onShareButton()}
         entourage_info_invited_accept_button?.setOnClickListener { v -> onAcceptInvitationClicked(v)}
         entourage_info_invited_reject_button?.setOnClickListener { v -> onRejectInvitationClicked(v)}
-        invite_source_number_button?.setOnClickListener { onInvitePhoneNumberClicked() }
+        invite_source_number_button?.setOnClickListener { inviteSourceContactsButton() }
 
         entourage_option_reopen?.setOnClickListener {onReopenEntourage()}
 
@@ -331,6 +336,14 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         }
     }
 
+    private fun onShareEntourageButton() {
+        // close the invite source view
+        entourage_info_invite_source_layout?.visibility = View.GONE
+
+        val fragment = ShareEntourageFragment.newInstance(feedItem.uuid)
+        fragment.show(parentFragmentManager, ShareEntourageFragment.TAG)
+    }
+
     private fun onShareButton() {
         // close the invite source view
         entourage_info_invite_source_layout?.visibility = View.GONE
@@ -479,7 +492,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             return
         }
         EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_INVITE_FRIENDS)
-        showInviteSource()
+        showInviteSource(false)
     }
 
     private fun onMembersAddClicked() {
@@ -488,7 +501,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             onUserAddClicked()
         } else {
             // For non-members, show the share screen
-            onShareButton()
+            showInviteSource(true)
         }
     }
 
@@ -496,7 +509,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         entourageServiceConnection.boundService?.reopenFeedItem(feedItem)
     }
 
-    protected abstract fun showInviteSource()
+    protected abstract fun showInviteSource(isShareOnly:Boolean)
 
     private fun onCloseInviteSourceClicked() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_INVITE_CLOSE)
@@ -590,7 +603,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
 
         // for newly created entourages, open the invite friends screen automatically if the feed item is not suspended
         if (feedItem.isNewlyCreated && feedItem.showInviteViewAfterCreation() && !feedItem.isSuspended()) {
-            showInviteSource()
+            showInviteSource(false)
         }
     }
 
