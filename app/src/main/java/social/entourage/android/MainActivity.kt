@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.iid.FirebaseInstanceId
@@ -65,6 +66,7 @@ import social.entourage.android.user.UserFragment.Companion.newInstance
 import social.entourage.android.user.edit.UserEditActionZoneFragment
 import social.entourage.android.user.edit.UserEditActionZoneFragment.FragmentListener
 import social.entourage.android.user.edit.UserEditActionZoneFragmentCompat
+import social.entourage.android.user.edit.UserEditFragment
 import social.entourage.android.user.edit.photo.PhotoChooseInterface
 import social.entourage.android.user.edit.photo.PhotoEditFragment
 import timber.log.Timber
@@ -103,6 +105,34 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
             initializePushNotifications()
             updateAnalyticsInfo()
         }
+        checkShowInfo()
+    }
+
+    fun checkShowInfo() {
+        //Check to show Action info
+        val isShowFirstLogin = get().sharedPreferences.getBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,false)
+        if (isShowFirstLogin) {
+            val sharedPreferences = get().sharedPreferences
+            sharedPreferences.edit().putBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,false).apply()
+            if (authenticationController.me?.goal == null || authenticationController.me?.goal?.length == 0) {
+                AlertDialog.Builder(this)
+                        .setTitle(R.string.login_pop_information)
+                        .setMessage(R.string.login_info_pop_action)
+                        .setNegativeButton(R.string.login_info_pop_action_no) { _,_ ->}
+                        .setPositiveButton(R.string.login_info_pop_action_yes) { dialog, _ ->
+                            dialog.dismiss()
+                            showEditProfileAction()
+                        }
+                        .create()
+                        .show()
+                return
+            }
+        }
+    }
+
+    fun showEditProfileAction() {
+        val fragment = UserEditFragment.newInstance(true)
+        fragment.show(supportFragmentManager, UserEditFragment.TAG)
     }
 
     override fun setupComponent(entourageComponent: EntourageComponent?) {

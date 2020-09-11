@@ -57,27 +57,6 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
     }
 
     fun goMain() {
-        val authController = EntourageApplication.get().entourageComponent.authenticationController
-
-        if (authController.me?.goal == null || authController.me?.goal?.length == 0) {
-
-            AlertDialog.Builder(this)
-                    .setTitle(R.string.login_pop_information)
-                    .setMessage(R.string.login_info_pop_action)
-                    .setPositiveButton(R.string.login_info_pop_validate) { dialog, which ->
-                        dialog.dismiss()
-
-                        goRealMain()
-                    }
-                    .create()
-                    .show()
-        }
-        else {
-            goRealMain()
-        }
-    }
-
-    fun goRealMain() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }

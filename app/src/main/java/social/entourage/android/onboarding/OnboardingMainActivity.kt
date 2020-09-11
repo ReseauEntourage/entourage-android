@@ -814,6 +814,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 val sharedPreferences = get().sharedPreferences
                 sharedPreferences.edit().putInt(EntourageApplication.KEY_ONBOARDING_USER_TYPE, userTypeSelected.pos).apply()
                 sharedPreferences.edit().putBoolean(EntourageApplication.KEY_IS_FROM_ONBOARDING, true).apply()
+                sharedPreferences.edit().putBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,false).apply()
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }

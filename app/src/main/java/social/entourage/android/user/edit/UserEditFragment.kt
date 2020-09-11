@@ -43,6 +43,7 @@ import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
+private const val ARG_IS_SHOW_ACTION = "isShowAction"
 open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
     // ----------------------------------
     // ATTRIBUTES
@@ -57,9 +58,17 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
     var editedUser: User? = null
         private set
 
+    var isShowAction = false
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+           isShowAction = it.getBoolean(ARG_IS_SHOW_ACTION,false)
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -102,6 +111,10 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
         }
 
         initUserData()
+
+        if (isShowAction) {
+            onActionSelectType()
+        }
     }
 
     protected fun setupComponent(entourageComponent: EntourageComponent?) {
@@ -476,5 +489,11 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
         // CONSTANTS
         // ----------------------------------
         const val TAG = "user_edit_fragment"
+        fun newInstance(isShowAction:Boolean) =
+                UserEditFragment().apply {
+                    arguments = Bundle().apply {
+                        putBoolean(ARG_IS_SHOW_ACTION,isShowAction)
+                    }
+                }
     }
 }

@@ -217,6 +217,7 @@ class EntourageApplication : MultiDexApplication() {
 
         const val KEY_IS_FROM_ONBOARDING = "isFromOnboarding"
         const val KEY_ONBOARDING_USER_TYPE = "userType"
+        const val KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN = "isFirstLogin"
         // ----------------------------------
         // MEMBERS
         // ----------------------------------

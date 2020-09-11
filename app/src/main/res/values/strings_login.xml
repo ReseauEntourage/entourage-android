@@ -53,6 +53,8 @@
     <string name="login_pop_information">Nouveau ! Adaptez Entourage à vos envies et besoins !</string>
     <string name="login_info_pop_action">Depuis votre Profil, vous pouvez personnaliser votre fil d’actus et les recommandations reçues. Choisissez en toute confidentialité si vous êtes actuellement : voisin solidaire, personne dans le besoin, association.</string>
     <string name="login_info_pop_validate">Compris !</string>
+    <string name="login_info_pop_action_yes">Personnaliser</string>
+    <string name="login_info_pop_action_no">Plus tard</string>
     <string name="login_name_title">Quel est votre nom ?</string>
     <string name="login_name_description">Seuls le prénom et la première lettre du nom apparaitront aux autres utilisateurs.</string>
     <string name="login_name_firstname_hint">Prénom</string>
