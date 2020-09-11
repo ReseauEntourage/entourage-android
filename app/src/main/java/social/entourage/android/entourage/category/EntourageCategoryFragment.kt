@@ -82,7 +82,10 @@ class EntourageCategoryFragment : EntourageDialogFragment() {
     private fun initializeListView() {
         adapter = EntourageCategoriesAdapter(requireContext(),
                 EntourageCategoryManager.entourageCategories,
-                category)
+                category) {
+            //Return click
+            onValidateClicked()
+        }
         entourage_category_listview?.let {
             it.setAdapter(adapter)
             val count = adapter.groupCount
