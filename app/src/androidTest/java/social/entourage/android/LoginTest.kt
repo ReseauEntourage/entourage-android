@@ -5,6 +5,7 @@ import android.view.autofill.AutofillManager
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.IdlingResource
+import androidx.test.espresso.action.TypeTextAction
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
@@ -17,7 +18,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import social.entourage.android.authentication.login.LoginActivity
+import social.entourage.android.onboarding.login.LoginActivity
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
@@ -39,7 +40,7 @@ class LoginTest {
     }
 
     private fun checkNoUserIsLoggedIn() {
-        EntourageApplication.get(activityRule.activity).entourageComponent.authenticationController?.logOutUser()
+        EntourageApplication.get(activityRule.activity).entourageComponent.authenticationController.logOutUser()
     }
 
     @After
@@ -51,24 +52,24 @@ class LoginTest {
     @Test
     fun loginOK() {
         checkNoUserIsLoggedIn()
-        Espresso.onView(ViewMatchers.withId(R.id.login_button_login)).perform(ViewActions.click())
-        Espresso.onView(ViewMatchers.withId(R.id.login_edit_phone)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_LOGIN), ViewActions.closeSoftKeyboard())
+        //Espresso.onView(ViewMatchers.withId(R.id.ui_button_login)).perform(ViewActions.click())
+        Espresso.onView(ViewMatchers.withId(R.id.ui_login_phone_et_phone)).perform(TypeTextAction(BuildConfig.TEST_ACCOUNT_LOGIN), ViewActions.closeSoftKeyboard())
         closeAutofill()
-        Espresso.onView(ViewMatchers.withId(R.id.login_edit_code)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_PWD), ViewActions.closeSoftKeyboard())
+        Espresso.onView(ViewMatchers.withId(R.id.ui_login_et_code)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_PWD), ViewActions.closeSoftKeyboard())
         closeAutofill()
-        Espresso.onView(ViewMatchers.withId(R.id.login_button_signin)).perform(ViewActions.click())
+        Espresso.onView(ViewMatchers.withId(R.id.ui_login_button_signup)).perform(ViewActions.click())
         Espresso.onView(ViewMatchers.withText(R.string.login_error_title)).check(ViewAssertions.doesNotExist())
         //checkNoUserIsLoggedIn();
     }
 
     @Test
     fun loginOKwithoutCountryCode() {
-        Espresso.onView(ViewMatchers.withId(R.id.login_button_login)).perform(ViewActions.click())
-        Espresso.onView(ViewMatchers.withId(R.id.login_edit_phone)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_LOGIN.replaceFirst("\\+33".toRegex(), "0")), ViewActions.closeSoftKeyboard())
+        Espresso.onView(ViewMatchers.withId(R.id.ui_button_login)).perform(ViewActions.click())
+        Espresso.onView(ViewMatchers.withId(R.id.ui_login_phone_et_phone)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_LOGIN.replaceFirst("\\+33".toRegex(), "0")), ViewActions.closeSoftKeyboard())
         closeAutofill()
-        Espresso.onView(ViewMatchers.withId(R.id.login_edit_code)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_PWD), ViewActions.closeSoftKeyboard())
+        Espresso.onView(ViewMatchers.withId(R.id.ui_login_et_code)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_PWD), ViewActions.closeSoftKeyboard())
         closeAutofill()
-        Espresso.onView(ViewMatchers.withId(R.id.login_button_signin)).perform(ViewActions.click())
+        Espresso.onView(ViewMatchers.withId(R.id.ui_login_button_signup)).perform(ViewActions.click())
         Espresso.onView(ViewMatchers.withText(R.string.login_error_title)).check(ViewAssertions.doesNotExist())
         //checkNoUserIsLoggedIn();
     }
@@ -84,27 +85,27 @@ class LoginTest {
     @Test
     fun loginFailureWrongPassword() {
         checkNoUserIsLoggedIn()
-        Espresso.onView(ViewMatchers.withId(R.id.login_button_login)).perform(ViewActions.click())
-        Espresso.onView(ViewMatchers.withId(R.id.login_edit_phone)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_LOGIN), ViewActions.closeSoftKeyboard())
+        Espresso.onView(ViewMatchers.withId(R.id.ui_button_login)).perform(ViewActions.click())
+        Espresso.onView(ViewMatchers.withId(R.id.ui_login_phone_et_phone)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_LOGIN), ViewActions.closeSoftKeyboard())
         closeAutofill()
-        Espresso.onView(ViewMatchers.withId(R.id.login_edit_code)).perform(ViewActions.typeText("999999"), ViewActions.closeSoftKeyboard())
+        Espresso.onView(ViewMatchers.withId(R.id.ui_login_et_code)).perform(ViewActions.typeText("999999"), ViewActions.closeSoftKeyboard())
         closeAutofill()
-        Espresso.onView(ViewMatchers.withId(R.id.login_button_signin)).perform(ViewActions.click())
+        Espresso.onView(ViewMatchers.withId(R.id.ui_login_button_signup)).perform(ViewActions.click())
         Espresso.onView(ViewMatchers.withText(R.string.login_error_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withText(R.string.login_retry_label)).perform(ViewActions.click())
-        Espresso.onView(ViewMatchers.withId(R.id.login_back_button)).perform(ViewActions.click())
+        //Espresso.onView(ViewMatchers.withId(R.id.login_back_button)).perform(ViewActions.click())
     }
 
     @Test
     fun loginFailureWrongPhoneNumberFormat() {
-        Espresso.onView(ViewMatchers.withId(R.id.login_button_login)).perform(ViewActions.click())
-        Espresso.onView(ViewMatchers.withId(R.id.login_edit_phone)).perform(ViewActions.typeText("012345678"), ViewActions.closeSoftKeyboard())
+        Espresso.onView(ViewMatchers.withId(R.id.ui_button_login)).perform(ViewActions.click())
+        Espresso.onView(ViewMatchers.withId(R.id.ui_login_phone_et_phone)).perform(ViewActions.typeText("012345678"), ViewActions.closeSoftKeyboard())
         closeAutofill()
-        Espresso.onView(ViewMatchers.withId(R.id.login_edit_code)).perform(ViewActions.typeText("000000"), ViewActions.closeSoftKeyboard())
+        Espresso.onView(ViewMatchers.withId(R.id.ui_login_et_code)).perform(ViewActions.typeText("000000"), ViewActions.closeSoftKeyboard())
         closeAutofill()
-        Espresso.onView(ViewMatchers.withId(R.id.login_button_signin)).perform(ViewActions.click())
+        Espresso.onView(ViewMatchers.withId(R.id.ui_login_button_signup)).perform(ViewActions.click())
         Espresso.onView(ViewMatchers.withText(R.string.login_error_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withText(R.string.login_retry_label)).perform(ViewActions.click())
-        Espresso.onView(ViewMatchers.withId(R.id.login_back_button)).perform(ViewActions.click())
+        //Espresso.onView(ViewMatchers.withId(R.id.login_back_button)).perform(ViewActions.click())
     }
 }

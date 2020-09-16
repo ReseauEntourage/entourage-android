@@ -104,10 +104,7 @@ open class EntourageBaseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
         return if (position < 0 || position >= items.size) null else items[position]
     }
 
-    fun findCard(card: TimestampedObject?): TimestampedObject? {
-        if (card == null) {
-            return null
-        }
+    fun findCard(card: TimestampedObject): TimestampedObject? {
         for (timestampedObject in items) {
             if (timestampedObject == card) {
                 return timestampedObject
@@ -126,12 +123,9 @@ open class EntourageBaseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
     }
 
     fun findCard(type: Int, uuid: String?): TimestampedObject? {
-        for (i in items.indices) {
-            val timestampedObject = items[i]
-            if (timestampedObject.type == type && timestampedObject is FeedItem) {
-                if (timestampedObject.uuid.equals(uuid, ignoreCase = true)) {
-                    return timestampedObject
-                }
+        items.filterIsInstance<FeedItem>().forEach {timestampedObject ->
+            if (timestampedObject.type == type && timestampedObject.uuid.equals(uuid, ignoreCase = true)) {
+                return timestampedObject
             }
         }
         return null

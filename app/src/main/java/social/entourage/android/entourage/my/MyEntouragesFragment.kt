@@ -138,7 +138,7 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
     private fun retrieveMyFeeds() {
         if (!entouragesPagination.isLoading) {
             entouragesPagination.isLoading = true
-            presenter.getMyFeeds(entouragesPagination.page, entouragesPagination.itemsPerPage)
+            presenter.getMyFeeds(entouragesPagination.page, entouragesPagination.itemsPerPage,MyEntouragesFilter.get(this.context).isShowUnreadOnly)
         }
     }
 
@@ -174,7 +174,6 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
 
     @Subscribe
     fun onEntourageUpdated(event: OnEntourageUpdated) {
-        if (event.entourage == null) return
         entouragesAdapter.updateCard(event.entourage)
     }
 
@@ -182,7 +181,7 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
     fun onInvitationStatusChanged(event: OnInvitationStatusChanged) {
         // Refresh the invitations list
         if(event.feedItem !is BaseEntourage) return
-        entouragesAdapter.updateInvitation(event.feedItem as BaseEntourage, event.status)
+        entouragesAdapter.updateInvitation(event.feedItem , event.status)
         // Refresh the entourages list if invitation was accepted
         if (Invitation.STATUS_ACCEPTED == event.status) {
             refreshMyFeeds()
@@ -191,9 +190,7 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
 
     @Subscribe
     fun feedItemViewRequested(event: OnFeedItemInfoViewRequestedEvent) {
-        if (event.feedItem != null) {
-            onPushNotificationConsumedForFeedItem(event.feedItem)
-        }
+        event.feedItem?.let { onPushNotificationConsumedForFeedItem(it) }
     }
 
     // ----------------------------------
@@ -205,7 +202,7 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
         val card = entouragesAdapter.findCard(cardType, content.joinableId)
         if (card is FeedItem) {
             card.increaseBadgeCount(PushNotificationContent.TYPE_NEW_CHAT_MESSAGE == content.type)
-            card.setLastMessage(content.message, message.author)
+            card.setLastMessage(content.message ?: "", message.author)
             //approximate message time with Now //TODO get proper time
             card.updatedTime = Date()
             entouragesAdapter.updateCard(card)
@@ -215,7 +212,7 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
         }
     }
 
-    private fun onPushNotificationConsumedForFeedItem(feedItem: FeedItem?) {
+    private fun onPushNotificationConsumedForFeedItem(feedItem: FeedItem) {
         val feedItemCard = entouragesAdapter.findCard(feedItem) as FeedItem? ?: return
         feedItemCard.decreaseBadgeCount()
         entouragesAdapter.updateCard(feedItemCard)
@@ -246,13 +243,10 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
             for (newsfeed in newsfeedItemList) {
                 val feedItem = newsfeed.data as? FeedItem ?: continue
 
-                // show only the unread ones if filter is set
-                if (!showUnreadOnly || feedItem.getUnreadMsgNb() > 0) {
-                    if (entouragesAdapter.findCard(feedItem) == null) {
-                        entouragesAdapter.addCardInfo(feedItem)
-                    }
+                if (entouragesAdapter.findCard(feedItem) == null) {
+                    entouragesAdapter.addCardInfo(feedItem)
                 }
-                instance.post(OnMyEntouragesForceRefresh(feedItem))
+                //instance.post(OnMyEntouragesForceRefresh(feedItem))
             }
 
             //increase page and items count
@@ -273,6 +267,10 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
     fun onNoInvitationReceived() {
         // ignore errors
         isRefreshingInvitations = false
+    }
+
+    fun updateUnreadCount(unreadCount:Int?) {
+        instance.post(OnUnreadCountUpdate(unreadCount))
     }
 
     // ----------------------------------

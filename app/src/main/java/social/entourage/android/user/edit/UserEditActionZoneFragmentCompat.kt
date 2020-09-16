@@ -249,7 +249,6 @@ class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        @JvmField
         val TAG = UserEditActionZoneFragmentCompat::class.java.simpleName
         private const val KEY_USER_ADDRESS = "social.entourage.android.KEY_USER_ADDRESS"
         private const val KEY_SECONDARY = "social.entourage.android.KEY_SECONDARY"
@@ -261,7 +260,6 @@ class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
          * @param userAddress User Address.
          * @return A new instance of fragment UserEditActionZoneFragmentCompat.
          */
-        @JvmStatic
         fun newInstance(userAddress: User.Address?,isSecondaryAddress:Boolean): UserEditActionZoneFragmentCompat {
             val fragment = UserEditActionZoneFragmentCompat()
             val args = Bundle()

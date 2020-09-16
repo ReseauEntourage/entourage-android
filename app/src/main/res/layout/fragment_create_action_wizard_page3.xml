@@ -29,13 +29,13 @@
             android:layout_weight="1"
             android:contentDescription="@string/empty_description"
             android:scaleType="center"
-            android:src="@drawable/guillaume_mod_rateu"/>
+            app:srcCompat="@drawable/guillaume_mod_rateu"/>
 
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:contentDescription="@string/empty_description"
-            android:src="@drawable/personnage_entourage_1"/>
+            app:srcCompat="@drawable/personnage_entourage_1"/>
     </LinearLayout>
 
     <LinearLayout

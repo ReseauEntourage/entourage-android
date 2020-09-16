@@ -20,7 +20,7 @@
             android:layout_marginStart="6dp"
             android:layout_marginBottom="-2dp"
             android:contentDescription="@string/empty_description"
-            android:src="@drawable/carousel_p3_group" />
+            app:srcCompat="@drawable/carousel_p3_group" />
     </LinearLayout>
 
     <LinearLayout

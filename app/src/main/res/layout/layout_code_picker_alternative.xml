@@ -9,7 +9,7 @@
       android:id="@+id/click_consumer_rly"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:background="?android:attr/selectableItemBackground"
+      android:background="?attr/selectableItemBackground"
       android:gravity="center">
     <LinearLayout
         android:id="@+id/flag_holder_lly"

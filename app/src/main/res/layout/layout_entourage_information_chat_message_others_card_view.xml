@@ -23,7 +23,7 @@
             android:layout_gravity="bottom"
             android:contentDescription="@string/empty_description"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_user_photo_small"/>
+            app:srcCompat="@drawable/ic_user_photo_small"/>
 
         <social.entourage.android.tools.view.PartnerLogoImageView
             android:layout_width="20dp"

@@ -68,7 +68,7 @@ class CreateEncounterActivity : EntourageSecuredActivity(), LocationFragment.OnF
         EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_START)
     }
 
-    override fun setupComponent(entourageComponent: EntourageComponent) {
+    override fun setupComponent(entourageComponent: EntourageComponent?) {
         DaggerCreateEncounterComponent.builder()
                 .entourageComponent(entourageComponent)
                 .createEncounterModule(CreateEncounterModule(this))
@@ -125,7 +125,9 @@ class CreateEncounterActivity : EntourageSecuredActivity(), LocationFragment.OnF
                     it.message = message
                     presenter.updateEncounter(it)
                 }
-                    ?: presenter.createEncounter(message, personName)
+                    ?: run {
+                        presenter.createEncounter(message, personName)
+                    }
         } else {
             if (personName == "") {
                 Toast.makeText(applicationContext, R.string.encounter_empty_name, Toast.LENGTH_SHORT).show()
@@ -160,7 +162,7 @@ class CreateEncounterActivity : EntourageSecuredActivity(), LocationFragment.OnF
     fun onCreateEncounterFinished(errorMessage: String?, encounterResponse: Encounter?) {
         dismissProgressDialog()
         val message: String
-        if (errorMessage == null) {
+        if (errorMessage == null && encounterResponse!= null) {
             authenticationController.incrementUserEncountersCount()
             message = getString(R.string.create_encounter_success)
             instance.post(OnEncounterCreated(encounterResponse))
@@ -180,7 +182,7 @@ class CreateEncounterActivity : EntourageSecuredActivity(), LocationFragment.OnF
         if (errorMessage == null) {
             authenticationController.incrementUserEncountersCount()
             message = getString(R.string.update_encounter_success)
-            instance.post(OnEncounterUpdated(editedEncounter))
+            editedEncounter?.let {instance.post(OnEncounterUpdated(it))}
             finish()
             //EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_OK);
         } else {

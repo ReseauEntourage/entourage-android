@@ -11,7 +11,7 @@ class Encounter : TimestampedObject(), Serializable {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-    private var id: Long = 0
+    override var id: Long = 0
     var tourId: String? = null
 
     @SerializedName("date")
@@ -42,17 +42,8 @@ class Encounter : TimestampedObject(), Serializable {
     // ----------------------------------
     // GETTERS & SETTERS
     // ----------------------------------
-    override fun getId(): Long {
-        return id
-    }
-
-    fun setId(id: Long) {
-        this.id = id
-    }
-
-    override fun getTimestamp(): Date? {
-        return creationDate
-    }
+    override val timestamp: Date?
+        get() = creationDate
 
     override fun hashString(): String {
         return HASH_STRING_HEAD + id
@@ -62,12 +53,11 @@ class Encounter : TimestampedObject(), Serializable {
         return !(other == null || other.javaClass != this.javaClass) && id == (other as Encounter).id
     }
 
-    override fun getType(): Int {
-        return ENCOUNTER
-    }
+    override val type: Int
+        get() = ENCOUNTER
 
     companion object {
-        private const val serialVersionUID = -274834974155989518L
+        private const val serialVersionUID = -274671974155989518L
         private const val HASH_STRING_HEAD = "Encounter-"
     }
 }

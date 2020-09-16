@@ -320,7 +320,6 @@ open class OnboardingPlaceFragment : EntourageDialogFragment() {
     //**********//**********//**********
 
     companion object {
-        @JvmStatic
         fun newInstance(googlePlaceAddress: User.Address?,is2ndAddress:Boolean,isSdf:Boolean) =
                 OnboardingPlaceFragment().apply {
                     arguments = Bundle().apply {

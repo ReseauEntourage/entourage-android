@@ -57,7 +57,6 @@ class GuideFilter private constructor() : Serializable {
 
     companion object {
         private const val serialVersionUID = -5047709875896955208L
-        @JvmStatic
         val instance = GuideFilter()
     }
 

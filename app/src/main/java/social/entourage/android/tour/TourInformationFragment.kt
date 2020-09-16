@@ -106,18 +106,18 @@ class TourInformationFragment : FeedItemInformationFragment(){
         }
     }
 
-    override fun onJoinTourButton() {
+    override fun onJoinButton() {
         if (entourageServiceConnection.boundService != null) {
             showProgressBar()
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN)
-            entourageServiceConnection.boundService?.requestToJoinTour(feedItem as Tour?)
+            entourageServiceConnection.boundService?.requestToJoinTour(feedItem as Tour)
             entourage_info_options?.visibility = View.GONE
         } else {
             entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.tour_join_request_message_error, Snackbar.LENGTH_SHORT).show()}
         }
     }
 
-    override fun showInviteSource() {
+    override fun showInviteSource(isShareOnly:Boolean) {
         entourage_info_invite_source_layout?.visibility = View.VISIBLE
         invite_source_description?.setText(R.string.invite_source_to_tour_description)
     }
@@ -147,6 +147,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
         entourage_option_join?.visibility = View.GONE
         entourage_option_contact?.visibility = View.GONE
         entourage_option_promote?.visibility = View.GONE
+        entourage_option_reopen?.visibility = View.GONE
         val hideJoinButton = feedItem.isPrivate() || FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus || feedItem.isFreezed()
         entourage_option_join?.visibility =  View.GONE
         entourage_option_contact?.visibility = if (hideJoinButton) View.GONE else View.VISIBLE
@@ -232,17 +233,14 @@ class TourInformationFragment : FeedItemInformationFragment(){
                     googleMap.uiSettings.isMapToolbarEnabled = false
                     googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
                             activity, R.raw.map_styles_json))
-                    if (tourInformationList.size > 0) {
-                        val tourTimestamp = tourInformationList[0]
-                        if (tourTimestamp.locationPoint != null) {
-                            //put the pin
-                            val pin = MarkerOptions().position(tourTimestamp.locationPoint.location)
-                            googleMap.addMarker(pin)
-                            //move the camera
-                            val camera = CameraUpdateFactory.newLatLngZoom(tourTimestamp.locationPoint.location, MAP_SNAPSHOT_ZOOM.toFloat())
-                            googleMap.moveCamera(camera)
-                        }
-                    } else {
+                    tourInformationList.firstOrNull()?.locationPoint?.let { locationPoint->
+                        //put the pin
+                        val pin = MarkerOptions().position(locationPoint.location)
+                        googleMap.addMarker(pin)
+                        //move the camera
+                        val camera = CameraUpdateFactory.newLatLngZoom(locationPoint.location, MAP_SNAPSHOT_ZOOM.toFloat())
+                        googleMap.moveCamera(camera)
+                    } ?: run {
                         googleMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_SNAPSHOT_ZOOM.toFloat()))
                     }
                     googleMap.setOnMapLoadedCallback { getMapSnapshot() }
@@ -277,9 +275,8 @@ class TourInformationFragment : FeedItemInformationFragment(){
                 isTakingSnapshot = false
                 //check if we need more snapshots
                 if (tourInformationList.size > 1) {
-                    val nextTourTimestamp = tourInformationList[1]
-                    if (nextTourTimestamp.locationPoint != null) {
-                        val distance = nextTourTimestamp.locationPoint.distanceTo(tourTimestamp.locationPoint)
+                    tourInformationList[1].locationPoint?.let{locationPoint ->
+                        val distance = locationPoint.distanceTo(tourTimestamp.locationPoint)
                         val visibleRegion = hiddenMap.projection.visibleRegion
                         val nearLeft = visibleRegion.nearLeft
                         val nearRight = visibleRegion.nearRight
@@ -289,10 +286,10 @@ class TourInformationFragment : FeedItemInformationFragment(){
 
                         //put the pin
                         hiddenMap.clear()
-                        val pin = MarkerOptions().position(nextTourTimestamp.locationPoint.location)
+                        val pin = MarkerOptions().position(locationPoint.location)
                         hiddenMap.addMarker(pin)
                         //move the camera
-                        val camera = CameraUpdateFactory.newLatLngZoom(nextTourTimestamp.locationPoint.location, MAP_SNAPSHOT_ZOOM.toFloat())
+                        val camera = CameraUpdateFactory.newLatLngZoom(locationPoint.location, MAP_SNAPSHOT_ZOOM.toFloat())
                         hiddenMap.moveCamera(camera)
                     }
                 } else {
@@ -313,7 +310,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
         val distance = 0f
         val duration: Long = if (!feedItem.isClosed()) (now.time - feedItem.getStartTime().time) else 0L
         val startPoint = feedItem.getStartPoint()
-        val tourTimestamp = TourInformation(
+        val tourInformation = TourInformation(
                 feedItem.getStartTime(),
                 now,
                 feedItem.type,
@@ -322,7 +319,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
                 duration,
                 distance
         )
-        discussionAdapter.addCardInfo(tourTimestamp)
+        discussionAdapter.addCardInfo(tourInformation)
     }
 
     override fun addDiscussionTourEndCard(now: Date) {
@@ -339,8 +336,8 @@ class TourInformationFragment : FeedItemInformationFragment(){
             }
         }
         //TODO Should we use distance and duration from tour object ?
-        val tourTimestamp = TourInformation(
-                tour.getEndTime(),
+        val tourInformation = TourInformation(
+                tour.getStartTime(),
                 tour.getEndTime() ?: now,
                 tour.type,
                 FeedItem.STATUS_CLOSED,
@@ -348,7 +345,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
                 duration,
                 distance
         )
-        discussionAdapter.addCardInfoAfterTimestamp(tourTimestamp)
+        discussionAdapter.addCardInfoAfterTimestamp(tourInformation)
     }
 
     override fun updateMetadataView() {
@@ -389,7 +386,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
 
     @Subscribe
     fun onEncounterUpdated(event: Events.OnEncounterUpdated) {
-        val updatedEncounter = event.encounter ?: return
+        val updatedEncounter = event.encounter
         val oldEncounter = discussionAdapter.findCard(TimestampedObject.ENCOUNTER, updatedEncounter.id) as Encounter?
                 ?: return
         feedItem.removeCardInfo(oldEncounter)

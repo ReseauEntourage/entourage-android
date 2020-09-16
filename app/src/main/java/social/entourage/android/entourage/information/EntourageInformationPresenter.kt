@@ -6,18 +6,11 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.tools.EntourageError
 import social.entourage.android.tools.log.EntourageEvents
-import social.entourage.android.api.request.EntourageRequest
-import social.entourage.android.api.request.EntourageResponse
-import social.entourage.android.api.request.InvitationRequest
 import social.entourage.android.api.model.ChatMessage
-import social.entourage.android.api.model.ChatMessage.ChatMessageWrapper
-import social.entourage.android.api.model.ChatMessage.ChatMessageResponse
-import social.entourage.android.api.model.ChatMessage.ChatMessageListResponse
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
-import social.entourage.android.api.model.EntourageUser.EntourageUserResponse
-import social.entourage.android.api.model.EntourageUser.EntourageUserListResponse
+import social.entourage.android.api.request.*
 import java.util.*
 import javax.inject.Inject
 
@@ -77,9 +70,9 @@ class EntourageInformationPresenter @Inject constructor(
                     val call = entourageRequest.retrieveEntourageUsers(uuid, context)
                     call.enqueue(object : Callback<EntourageUserListResponse> {
                         override fun onResponse(call: Call<EntourageUserListResponse>, response: Response<EntourageUserListResponse>) {
-                            response.body()?.let {
+                            response.body()?.users?.let {
                                 if (response.isSuccessful) {
-                                    fragment.onFeedItemUsersReceived(it.users, context)
+                                    fragment.onFeedItemUsersReceived(it, context)
                                     return
                                 }
                             }
@@ -141,8 +134,7 @@ class EntourageInformationPresenter @Inject constructor(
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ADD_MESSAGE)
             when (feedItem.type) {
                 TimestampedObject.ENTOURAGE_CARD -> {
-                    val chatMessageWrapper = ChatMessageWrapper()
-                    chatMessageWrapper.chatMessage = ChatMessage(message)
+                    val chatMessageWrapper = ChatMessageWrapper(ChatMessage(message))
                     val call = entourageRequest.addChatMessage(uuid, chatMessageWrapper)
                     call.enqueue(object : Callback<ChatMessageResponse> {
                         override fun onResponse(call: Call<ChatMessageResponse>, response: Response<ChatMessageResponse>) {

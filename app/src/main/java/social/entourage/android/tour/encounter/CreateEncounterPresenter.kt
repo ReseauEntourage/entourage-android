@@ -100,7 +100,7 @@ class CreateEncounterPresenter
             instance.unregister(this)
             val resultEncounter = result.encounter
             val operationType = result.operationType
-            if (resultEncounter != null && encounter.creationDate == resultEncounter.creationDate) {
+            if (encounter.creationDate == resultEncounter.creationDate) {
                 if (result.isSuccess) {
                     callback?.onSuccess(resultEncounter, operationType)
                 } else {

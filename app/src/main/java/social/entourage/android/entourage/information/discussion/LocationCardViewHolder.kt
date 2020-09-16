@@ -23,11 +23,11 @@ class LocationCardViewHolder(view: View) : BaseCardViewHolder(view) {
         populate(data as TourInformation)
     }
 
-    fun populate(tour: Tour, isStartCard: Boolean) {
+    private fun populate(tour: Tour, isStartCard: Boolean) {
         val tourPointsList = tour.tourPoints
         val locationDateFormat = SimpleDateFormat(itemView.resources.getString(R.string.tour_info_location_card_date_format), Locale.FRANCE)
         if (!isStartCard) {
-            itemView.tic_location_date?.text = locationDateFormat.format(tour.getEndTime()).toUpperCase()
+            itemView.tic_location_date?.text = locationDateFormat.format(tour.getEndTime() ?: Date()).toUpperCase(Locale.ROOT)
             itemView.tic_location_title?.setText(R.string.tour_info_text_closed)
             if (tour.isClosed()) {
                 tour.getEndTime()?.let {endTime->
@@ -43,7 +43,7 @@ class LocationCardViewHolder(view: View) : BaseCardViewHolder(view) {
                 itemView.tic_location_distance?.text = String.format("%.2f km", distance / 1000.0f)
             }
         } else {
-            itemView.tic_location_date?.text = locationDateFormat.format(tour.getStartTime()).toUpperCase()
+            itemView.tic_location_date?.text = locationDateFormat.format(tour.getStartTime()).toUpperCase(Locale.ROOT)
             itemView.tic_location_title?.setText(R.string.tour_info_text_ongoing)
             if (!tour.isClosed()) {
                 itemView.tic_location_duration?.text = Utils.getDateStringFromSeconds(Date().time - tour.getStartTime().time)
@@ -53,10 +53,8 @@ class LocationCardViewHolder(view: View) : BaseCardViewHolder(view) {
     }
 
     fun populate(tourInformation: TourInformation) {
-        if (tourInformation.date != null) {
-            val locationDateFormat = SimpleDateFormat(itemView.resources.getString(R.string.tour_info_location_card_date_format), Locale.FRANCE)
-            itemView.tic_location_date?.text = locationDateFormat.format(tourInformation.date).toUpperCase()
-        }
+        val locationDateFormat = SimpleDateFormat(itemView.resources.getString(R.string.tour_info_location_card_date_format), Locale.FRANCE)
+        itemView.tic_location_date?.text = locationDateFormat.format(tourInformation.startDate).toUpperCase(Locale.ROOT)
         if (FeedItem.STATUS_ON_GOING == tourInformation.status || FeedItem.STATUS_OPEN == tourInformation.status) {
             if (tourInformation.feedType == TimestampedObject.TOUR_CARD) {
                 itemView.tic_location_title?.setText(R.string.tour_info_text_ongoing)
@@ -91,7 +89,6 @@ class LocationCardViewHolder(view: View) : BaseCardViewHolder(view) {
     }
 
     companion object {
-        @JvmStatic
         val layoutResource: Int
             get() = R.layout.layout_tour_information_location_card_view
     }

@@ -59,7 +59,7 @@ import javax.inject.Inject
             R.id.action_user -> {
                 EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_SHOWPROFIL)
                 val userFragment = activity.supportFragmentManager.findFragmentByTag(UserFragment.TAG) as UserFragment?
-                        ?: UserFragment.newInstance(activity.getAuthenticationController().me!!.id)
+                        ?: UserFragment.newInstance(activity.authenticationController.me!!.id)
                 userFragment.show(activity.supportFragmentManager, UserFragment.TAG)
             }
             R.id.action_edit_profile -> {

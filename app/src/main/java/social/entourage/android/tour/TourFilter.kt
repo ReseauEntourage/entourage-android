@@ -12,7 +12,6 @@ object TourFilter : Serializable {
     // ----------------------------------
     // MapFilter implementation
     // ----------------------------------
-    @JvmStatic
     fun getTypes(): String {
         val entourageTypes = StringBuilder()
         if (tourTypeMedical) {
@@ -29,7 +28,6 @@ object TourFilter : Serializable {
         return entourageTypes.toString()
     }
 
-    @JvmStatic
     fun getTimeFrame(): Int {
         return timeframe
     }

@@ -15,30 +15,27 @@ class EntourageCategory : Serializable {
     // Attributes from JSON
     // ----------------------------------
     @SerializedName("entourage_type")
-    @JvmField
     var groupType: String? = null
 
     @SerializedName("display_category")
-    @JvmField
     var category: String? = null
     var key: String? = null
 
     @SerializedName("display_category_title")
-    @JvmField
     var title: String? = null
 
     @SerializedName("title_example")
-    @JvmField
     var titleExample: String? = null
 
     @SerializedName("description_example")
-    @JvmField
     var descriptionExample: String? = null
+
     @SerializedName("hidden")
     val isHidden = false
 
     @SerializedName("default")
     var isDefault = false
+
     // ----------------------------------
     // Attributes not in JSON
     // ----------------------------------

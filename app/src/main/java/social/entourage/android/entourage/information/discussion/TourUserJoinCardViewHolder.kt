@@ -32,24 +32,28 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
         itemView.tic_public_info_photo?.setOnClickListener  {onClick()}
         itemView.tic_view_profile_button?.setOnClickListener {onClick()}
         itemView.tic_accept_button?.setOnClickListener(View.OnClickListener {
-            if (userId == 0 || feedItem == null) return@OnClickListener
-            EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_ACCEPT)
-            BusProvider.instance.post(
-                    OnUserJoinRequestUpdateEvent(
-                            userId,
-                            FeedItem.JOIN_STATUS_ACCEPTED,
-                            feedItem)
-            )
+            if (userId == 0) return@OnClickListener
+            feedItem?.let {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_ACCEPT)
+                BusProvider.instance.post(
+                        OnUserJoinRequestUpdateEvent(
+                                userId,
+                                FeedItem.JOIN_STATUS_ACCEPTED,
+                                it)
+                )
+            }
         })
         itemView.tic_refuse_button?.setOnClickListener(View.OnClickListener {
-            if (userId == 0 || feedItem == null) return@OnClickListener
-            EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_REJECT)
-            BusProvider.instance.post(
-                    OnUserJoinRequestUpdateEvent(
-                            userId,
-                            FeedItem.JOIN_STATUS_REJECTED,
-                            feedItem)
-            )
+            if (userId == 0) return@OnClickListener
+            feedItem?.let {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_REJECT)
+                BusProvider.instance.post(
+                        OnUserJoinRequestUpdateEvent(
+                                userId,
+                                FeedItem.JOIN_STATUS_REJECTED,
+                                it)
+                )
+            }
         })
     }
 
@@ -100,7 +104,7 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
                 partnerLogoView.setImageDrawable(null)
             }
         }
-        itemView.tic_join_description?.text = getJoinStatus(user.status, user.feedItem.type == TimestampedObject.TOUR_CARD)
+        itemView.tic_join_description?.text = getJoinStatus(user.status ?: "", user.feedItem?.type == TimestampedObject.TOUR_CARD)
         itemView.tic_join_message?.text = user.message
 
         // If we are not the creators of the entourage, hide the Accept and Refuse buttons
@@ -140,7 +144,7 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
             }
         }
 
-        val joinStatus = getJoinStatus(user.status, user.feedItem.type == TimestampedObject.TOUR_CARD)
+        val joinStatus = getJoinStatus(user.status ?: "", user.feedItem?.type == TimestampedObject.TOUR_CARD)
         itemView.tic_join_status?.setText(Utils.fromHtml(itemView.context.getString(R.string.tour_info_text_join_html, user.displayName, joinStatus)), TextView.BufferType.SPANNABLE)
         when(user.status) {
             FeedItem.JOIN_STATUS_ACCEPTED, FeedItem.JOIN_STATUS_CANCELLED -> {
@@ -176,7 +180,6 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
     }
 
     companion object {
-        @JvmStatic
         val layoutResource: Int
             get() = R.layout.layout_entourage_information_user_join_card_view
     }

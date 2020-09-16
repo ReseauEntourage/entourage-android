@@ -15,6 +15,7 @@ import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.layout_entourage_options.*
 import kotlinx.android.synthetic.main.fragment_entourage_information.*
 import kotlinx.android.synthetic.main.layout_invite_source.*
+import kotlinx.android.synthetic.main.layout_invite_source.view.*
 import kotlinx.android.synthetic.main.layout_public_entourage_information.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageComponent
@@ -24,7 +25,6 @@ import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.feed.FeedItem
-import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.OnUserJoinRequestUpdateEvent
 import social.entourage.android.entourage.EntourageCloseFragment
@@ -88,19 +88,21 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         }
     }
 
-    override fun onJoinTourButton() {
+    override fun onJoinButton() {
         entourageServiceConnection.boundService?.let {
             showProgressBar()
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN)
-            it.requestToJoinEntourage(feedItem as BaseEntourage?)
+            it.requestToJoinEntourage(feedItem as BaseEntourage)
             entourage_info_options?.visibility = View.GONE
         } ?: run {entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.tour_join_request_message_error, Snackbar.LENGTH_SHORT).show()}}
     }
 
-    override fun showInviteSource() {
+    override fun showInviteSource(isShareOnly:Boolean) {
         entourage_info_invite_source_layout?.visibility = View.VISIBLE
+        entourage_info_invite_source_layout?.invite_source_number_button?.visibility = if (isShareOnly) View.GONE else View.VISIBLE
         invite_source_description?.setText(if (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.getGroupType(), ignoreCase = true)) R.string.invite_source_description_outing else R.string.invite_source_description)
     }
+
 
     // ----------------------------------
     // Chat push notification
@@ -137,6 +139,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         entourage_option_join?.visibility = View.GONE
         entourage_option_contact?.visibility = View.GONE
         entourage_option_promote?.visibility = View.GONE
+
         val hideJoinButton = feedItem.isPrivate() || FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus || feedItem.isFreezed()
         entourage_option_join?.visibility =  if (hideJoinButton) View.GONE else View.VISIBLE
         entourage_option_contact?.visibility = View.GONE
@@ -153,6 +156,10 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             entourage_option_stop?.setText( R.string.tour_info_options_freeze_tour)
             if (FeedItem.STATUS_OPEN == feedItem.status) {
                 entourage_option_edit?.visibility = View.VISIBLE
+                entourage_option_reopen?.visibility = View.GONE
+            }
+            else {
+                entourage_option_reopen?.visibility = View.VISIBLE
             }
         }
         if (!feedItem.isSuspended()) {
@@ -160,8 +167,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             entourage_option_share?.visibility = View.VISIBLE
         }
         membersList?.forEach { member ->
-            if (member is EntourageUser
-                    && member.userId == myId
+            if (member.userId == myId
                     && member.groupRole?.equals("organizer", ignoreCase = true) == true) {
                 entourage_option_promote?.visibility = View.VISIBLE
             }
@@ -214,8 +220,8 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         if (!metadataVisible) return
 
         // populate the data
-        feedItem.author?.let {
-            entourage_info_metadata_organiser?.text = getString(R.string.tour_info_metadata_organiser_format, it.userName)
+        feedItem.author?.userName?.let {
+            entourage_info_metadata_organiser?.text = getString(R.string.tour_info_metadata_organiser_format, it)
         }
         if (metadata == null) return
         if (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.getGroupType(), ignoreCase = true)) {

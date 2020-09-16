@@ -41,7 +41,7 @@ class ComplexPreferences private constructor(context: Context, namePreferences: 
     companion object {
         private var complexPreferences: ComplexPreferences? = null
         private val GSON = Gson()
-        @JvmStatic
+
         fun getComplexPreferences(context: Context, namePreferences: String, mode: Int): ComplexPreferences {
             return complexPreferences ?: ComplexPreferences(context, namePreferences, mode).also {
                 complexPreferences = it

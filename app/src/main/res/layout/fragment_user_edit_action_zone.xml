@@ -16,7 +16,7 @@
             android:id="@+id/title_close_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
+            android:background="?attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
             android:padding="5dp"
             app:srcCompat="@drawable/ic_baseline_arrow_back_36"/>
@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/empty_description"
-                android:src="@drawable/map_pin_square"/>
+                app:srcCompat="@drawable/map_pin_square"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -138,7 +138,7 @@
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:contentDescription="@string/empty_description"
-            android:src="@drawable/password"
+            app:srcCompat="@drawable/password"
             app:tint="@color/white" />
 
         <TextView

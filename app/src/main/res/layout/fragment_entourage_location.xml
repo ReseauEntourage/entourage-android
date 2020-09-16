@@ -28,7 +28,7 @@
             android:id="@+id/entourage_location_current_position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
+            android:background="?attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
             android:padding="10dp"
             app:srcCompat="@drawable/ic_geoloc"/>

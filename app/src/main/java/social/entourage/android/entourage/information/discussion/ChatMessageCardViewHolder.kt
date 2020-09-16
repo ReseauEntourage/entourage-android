@@ -32,7 +32,7 @@ open class ChatMessageCardViewHolder(view: View) : BaseCardViewHolder(view) {
         populate(data as ChatMessage)
     }
 
-    fun populate(chatMessage: ChatMessage) {
+    private fun populate(chatMessage: ChatMessage) {
         // user avatar
         itemView.tic_chat_user_photo?.let { userPhotoView->
             chatMessage.userAvatarURL?.let { avatarURL ->
@@ -57,7 +57,7 @@ open class ChatMessageCardViewHolder(view: View) : BaseCardViewHolder(view) {
         }
 
         // user name
-        itemView.tic_chat_user_name?.text = chatMessage.userName ?: ""
+        itemView.tic_chat_user_name?.text = chatMessage.userName
 
         // the actual chat
         val deeplink = DeepLinksManager.findFirstDeeplinkInText(chatMessage.content)
@@ -89,7 +89,6 @@ open class ChatMessageCardViewHolder(view: View) : BaseCardViewHolder(view) {
     }
 
     companion object {
-        @JvmStatic
         val layoutResource: Int
             get() = R.layout.layout_entourage_information_chat_message_others_card_view
     }

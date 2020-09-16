@@ -16,6 +16,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
+        android:background="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/layout_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -211,6 +212,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -222,6 +225,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
+            android:background="@color/white"
             android:orientation="horizontal"
             android:visibility="visible"
             android:weightSum="5"
@@ -272,6 +276,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
+            android:background="@color/white"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:paddingTop="10dp"
@@ -388,5 +393,6 @@
                     android:layout_weight="0.5" />
             </LinearLayout>
         </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -59,7 +59,6 @@ class PoiViewHolder(itemView: View) : BaseCardViewHolder(itemView) {
     }
 
     companion object {
-        @JvmStatic
         val layoutResource: Int
             get() = R.layout.layout_poi_card
     }

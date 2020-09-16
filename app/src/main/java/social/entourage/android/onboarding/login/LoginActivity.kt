@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.activity_login_new.*
 import social.entourage.android.*
+import social.entourage.android.EntourageApplication.Companion.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.base.EntourageActivity
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
@@ -97,24 +98,13 @@ class LoginActivity : EntourageActivity() {
     fun goMain() {
         val authController = EntourageApplication.get().entourageComponent.authenticationController
 
+        val sharedPreferences = EntourageApplication.get().sharedPreferences
+        sharedPreferences.edit().putBoolean(KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,true).apply()
+
         if (authController.me?.address == null || (authController.me?.email == null || authController.me?.email?.length ?: -1 == 0) ) {
             goLoginNext()
         }
         else {
-            if (authController.me?.goal == null || authController.me?.goal?.length == 0) {
-
-                AlertDialog.Builder(this)
-                        .setTitle(R.string.login_pop_information)
-                        .setMessage(R.string.login_info_pop_action)
-                        .setPositiveButton(R.string.button_OK) { dialog, which ->
-                            dialog.dismiss()
-
-                            goRealMain()
-                        }
-                        .create()
-                        .show()
-                return
-            }
             goRealMain()
         }
     }

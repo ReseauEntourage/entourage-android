@@ -112,7 +112,6 @@ class OnboardingEmailPwdFragment : Fragment() {
     //**********//**********//**********
 
     companion object {
-        @JvmStatic
         fun newInstance(email: String?) =
                 OnboardingEmailPwdFragment().apply {
                     arguments = Bundle().apply {

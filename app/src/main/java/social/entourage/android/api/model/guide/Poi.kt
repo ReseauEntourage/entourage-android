@@ -11,7 +11,7 @@ class Poi : TimestampedObject(), Serializable, ClusterItem {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-    private var id: Long = 0
+    override var id: Long = 0
     var name: String? = null
     var description: String? = null
 
@@ -27,17 +27,10 @@ class Poi : TimestampedObject(), Serializable, ClusterItem {
     var longitude = 0.0
     var latitude = 0.0
 
+    var partner_id:Int? = null
     // ----------------------------------
     // GETTERS & SETTERS
     // ----------------------------------
-    override fun getId(): Long {
-        return id
-    }
-
-    fun setId(id: Long) {
-        this.id = id
-    }
-
     override fun getPosition(): LatLng {
         return LatLng(latitude, longitude)
     }
@@ -53,20 +46,18 @@ class Poi : TimestampedObject(), Serializable, ClusterItem {
     // ----------------------------------
     // Timestamp methods
     // ----------------------------------
-    override fun getTimestamp(): Date? {
-        return null
-    }
+    override val timestamp: Date?
+        get() = null
 
-    override fun getType(): Int {
-        return GUIDE_POI
-    }
+    override val type: Int
+        get() = GUIDE_POI
 
     override fun hashString(): String {
         return HASH_STRING_HEAD + id
     }
 
     companion object {
-        private const val serialVersionUID = 7508582427596761716L
+        private const val serialVersionUID = 7523482427596761716L
         private const val HASH_STRING_HEAD = "Poi-"
     }
 }

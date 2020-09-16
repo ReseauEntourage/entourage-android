@@ -44,6 +44,7 @@
     <string name="tour_info_options_contact">Contacter</string>
     <string name="tour_info_options_cancel_request">Retirer ma demande</string>
     <string name="tour_info_options_promote">Promouvoir la sortie</string>
+    <string name="tour_info_options_reopen_entourage">Rouvrir</string>
 
     <string name="tour_info_encounter_location">&#160;et %1$s se sont rencontrés ici.</string>
     <string name="tour_info_encounter_location_mine">&lt;u>&#160;et %1$s se sont rencontrés ici.&lt;/u></string>
@@ -114,7 +115,7 @@
     <string name="tour_join_request_received_message_html"><![CDATA[<font color=\"#F55F24\">%1$s </font>souhaite rejoindre votre maraude]]></string>
     <string name="tour_join_request_ok_title">Votre demande est transmise</string>
     <string name="tour_join_request_ok_description_tour">Que souhaitez-vous coordonner avec cette maraude ? Ajoutez un petit mot !</string>
-    <string name="tour_join_request_ok_description_entourage">Merci pour votre chaleur humaine !\nPourquoi rejoignez-vous cet entourage ? Ajoutez un petit mot !</string>
+    <string name="tour_join_request_ok_description_entourage">Merci pour votre chaleur humaine !\nVous pouvez envoyer un message aux participants, qui apparaîtra dans la conversation de groupe.</string>
     <string name="tour_join_request_ok_description_outing">@string/tour_join_request_ok_description_entourage</string>
     <string name="tour_join_request_ok_message_hint">Votre message…</string>
     <string name="tour_join_request_rejected">Requête envoyée</string>

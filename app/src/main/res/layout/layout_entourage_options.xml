@@ -88,6 +88,17 @@
         tools:visibility="visible" />
 
     <Button
+        android:id="@+id/entourage_option_reopen"
+        style="@style/WhiteButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="@string/tour_info_options_reopen_entourage"
+        android:textAllCaps="true"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <Button
         android:id="@+id/entourage_option_quit"
         style="@style/WhiteButton"
         android:layout_width="match_parent"

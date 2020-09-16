@@ -116,12 +116,11 @@ class OnboardingNamesFragment : Fragment() {
     //**********//**********//**********
 
     companion object {
-        @JvmStatic
-        fun newInstance(firstname: String?, lastname: String?) =
+        fun newInstance(firstName: String?, lastName: String?) =
                 OnboardingNamesFragment().apply {
                     arguments = Bundle().apply {
-                        putString(ARG_FIRSTNAME, firstname)
-                        putString(ARG_LASTNAME, lastname)
+                        putString(ARG_FIRSTNAME, firstName)
+                        putString(ARG_LASTNAME, lastName)
                     }
                 }
     }

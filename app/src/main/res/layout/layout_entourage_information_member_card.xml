@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:paddingEnd="0dp"
                 android:paddingLeft="16dp"
@@ -16,7 +17,7 @@
         android:layout_alignParentStart="true"
         android:contentDescription="@string/empty_description"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_user_photo_small"/>
+        app:srcCompat="@drawable/ic_user_photo_small"/>
 
     <social.entourage.android.tools.view.PartnerLogoImageView
         android:id="@+id/tic_member_partner_logo"

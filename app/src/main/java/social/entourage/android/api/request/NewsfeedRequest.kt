@@ -10,7 +10,7 @@ import social.entourage.android.api.model.feed.NewsfeedItem
 /**
  * Created by mihaiionescu on 05/05/16.
  */
-class NewsfeedItemResponse(@field:SerializedName("feeds") var newsfeedItems: List<NewsfeedItem>)
+class NewsfeedItemResponse(@field:SerializedName("feeds") var newsfeedItems: List<NewsfeedItem>, @field:SerializedName("unread_count") val unreadCount:Int?)
 
 interface NewsfeedRequest {
     @GET("feeds")
@@ -51,7 +51,8 @@ interface NewsfeedRequest {
             @Query("status") status: String?,
             @Query("created_by_me") createdByMe: Boolean,
             @Query("show_my_partner_only") showMyPartnerOnly: Boolean,
-            @Query("accepted_invitation") acceptedInvitation: Boolean
+            @Query("accepted_invitation") acceptedInvitation: Boolean,
+            @Query("unread_only") unreadOnly: Boolean
     ): Call<NewsfeedItemResponse>
 
     @GET("feeds/outings")

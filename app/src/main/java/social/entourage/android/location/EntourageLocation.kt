@@ -6,13 +6,12 @@ import com.google.android.gms.maps.model.LatLng
 import social.entourage.android.EntourageApplication.Companion.get
 
 object EntourageLocation {
-    @JvmStatic
     var location: Location? = null
-    @JvmStatic
+
     var currentLocation: Location? = null
     var initialLocation: Location? = null
     var lastCameraPosition: CameraPosition
-    @JvmStatic
+
     var currentCameraPosition: CameraPosition
 
     /*fun setInitialLocation(initialLocation: Location) {
@@ -22,7 +21,6 @@ object EntourageLocation {
         //lastCameraPosition = currentCameraPosition
     }*/
 
-    @JvmStatic
     val latLng: LatLng?
         get() = location?.let {LatLng(it.latitude, it.longitude)}
 

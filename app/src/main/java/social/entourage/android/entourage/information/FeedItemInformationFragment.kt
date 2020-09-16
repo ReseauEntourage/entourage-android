@@ -52,6 +52,7 @@ import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.deeplinks.DeepLinksManager.linkify
+import social.entourage.android.entourage.ShareEntourageFragment
 import social.entourage.android.entourage.create.BaseCreateEntourageFragment
 import social.entourage.android.entourage.information.discussion.DiscussionAdapter
 import social.entourage.android.entourage.information.members.MembersAdapter
@@ -84,7 +85,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     val discussionAdapter = DiscussionAdapter()
 
     private var membersAdapter: MembersAdapter? = null
-    protected var membersList: MutableList<TimestampedObject>? = ArrayList()
+    protected var membersList: MutableList<EntourageUser>? = ArrayList()
 
     private var apiRequestsCount = 0
     lateinit var feedItem: FeedItem
@@ -150,16 +151,20 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         tour_card_photo?.setOnClickListener {onAuthorClicked()}
         tour_card_author?.setOnClickListener {onAuthorClicked()}
         entourage_info_comment_record_button?.setOnClickListener {onRecord()}
-        entourage_option_share?.setOnClickListener {onShareButton()}
-        invite_source_share_button?.setOnClickListener {onShareButton()}
+        entourage_option_share?.setOnClickListener {
+            showInviteSource(true)
+            entourage_info_options?.visibility = View.GONE
+        }
+        invite_source_share_button?.setOnClickListener {
+            onShareEntourageButton()}
         entourage_info_more_button?.setOnClickListener {onMoreButton()}
         entourage_info_options?.setOnClickListener {onCloseOptionsButton()}
         entourage_option_cancel?.setOnClickListener {onCloseOptionsButton()}
         entourage_option_stop?.setOnClickListener {onStopTourButton()}
         entourage_option_quit?.setOnClickListener {quitEntourage()}
-        entourage_info_request_join_button?.setOnClickListener {onJoinTourButton()}
-        entourage_option_contact?.setOnClickListener {onJoinTourButton()}
-        entourage_option_join?.setOnClickListener {onJoinTourButton()}
+        entourage_info_request_join_button?.setOnClickListener {onJoinButton()}
+        entourage_option_contact?.setOnClickListener {onJoinButton()}
+        entourage_option_join?.setOnClickListener {onJoinButton()}
         entourage_info_act_button?.setOnClickListener {onActButton()}
         entourage_option_edit?.setOnClickListener {onEditEntourageButton()}
         entourage_option_report?.setOnClickListener {onReportEntourageButton()}
@@ -167,10 +172,12 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         entourage_info_member_add?.setOnClickListener {onMembersAddClicked()}
         invite_source_close_button?.setOnClickListener {onCloseInviteSourceClicked()}
         invite_source_close_bottom_button?.setOnClickListener {onCloseInviteSourceClicked()}
-        invite_source_contacts_button?.setOnClickListener {inviteSourceContactsButton()}
+        invite_source_contacts_button?.setOnClickListener {onShareButton()}
         entourage_info_invited_accept_button?.setOnClickListener { v -> onAcceptInvitationClicked(v)}
         entourage_info_invited_reject_button?.setOnClickListener { v -> onRejectInvitationClicked(v)}
-        invite_source_number_button?.setOnClickListener { onInvitePhoneNumberClicked() }
+        invite_source_number_button?.setOnClickListener { inviteSourceContactsButton() }
+
+        entourage_option_reopen?.setOnClickListener {onReopenEntourage()}
 
         ui_iv_button_faq?.setOnClickListener { onShowFaq() }
     }
@@ -329,6 +336,14 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         }
     }
 
+    private fun onShareEntourageButton() {
+        // close the invite source view
+        entourage_info_invite_source_layout?.visibility = View.GONE
+
+        val fragment = ShareEntourageFragment.newInstance(feedItem.uuid)
+        fragment.show(parentFragmentManager, ShareEntourageFragment.TAG)
+    }
+
     private fun onShareButton() {
         // close the invite source view
         entourage_info_invite_source_layout?.visibility = View.GONE
@@ -395,7 +410,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         entourage_info_options?.visibility = View.GONE
     }
 
-    protected abstract fun onJoinTourButton()
+    protected abstract fun onJoinButton()
 
     private fun onActButton() {
         if (feedItem.joinStatus == FeedItem.JOIN_STATUS_PENDING) {
@@ -477,7 +492,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             return
         }
         EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_INVITE_FRIENDS)
-        showInviteSource()
+        showInviteSource(false)
     }
 
     private fun onMembersAddClicked() {
@@ -486,11 +501,15 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             onUserAddClicked()
         } else {
             // For non-members, show the share screen
-            onShareButton()
+            showInviteSource(true)
         }
     }
 
-    protected abstract fun showInviteSource()
+    private fun onReopenEntourage() {
+        entourageServiceConnection.boundService?.reopenFeedItem(feedItem)
+    }
+
+    protected abstract fun showInviteSource(isShareOnly:Boolean)
 
     private fun onCloseInviteSourceClicked() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_INVITE_CLOSE)
@@ -584,7 +603,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
 
         // for newly created entourages, open the invite friends screen automatically if the feed item is not suspended
         if (feedItem.isNewlyCreated && feedItem.showInviteViewAfterCreation() && !feedItem.isSuspended()) {
-            showInviteSource()
+            showInviteSource(false)
         }
     }
 
@@ -997,7 +1016,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     }
 
     open fun onEntourageUpdated(event: OnEntourageUpdated) {
-        val updatedEntourage = event.entourage ?: return
+        val updatedEntourage = event.entourage
         // Check if it is our displayed entourage
         if (feedItem.type != updatedEntourage.type || feedItem.id != updatedEntourage.id) return
         // Update the UI
@@ -1062,48 +1081,48 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     private fun onFeedItemMembersReceived(entourageUsers: List<EntourageUser>) {
         membersList?.clear()
         // iterate over the received users
-        for (tourUser in entourageUsers) {
+        for (entourageUser in entourageUsers) {
             //show only the accepted users
-            if (tourUser.status != FeedItem.JOIN_STATUS_ACCEPTED) {
+            if (entourageUser.status != FeedItem.JOIN_STATUS_ACCEPTED) {
                 // Remove the user from the members list, in case the user left the entourage
-                membersAdapter?.removeCard(tourUser)
+                membersAdapter?.removeCard(entourageUser)
                 //show the pending and cancelled requests too (by skipping the others)
-                if (!(tourUser.status == FeedItem.JOIN_STATUS_PENDING || tourUser.status == FeedItem.JOIN_STATUS_CANCELLED)) {
+                if (!(entourageUser.status == FeedItem.JOIN_STATUS_PENDING || entourageUser.status == FeedItem.JOIN_STATUS_CANCELLED)) {
                     continue
                 }
             }
-            tourUser.feedItem = feedItem
-            tourUser.isDisplayedAsMember = true
-            membersList?.add(tourUser)
+            entourageUser.feedItem = feedItem
+            entourageUser.isDisplayedAsMember = true
+            membersList?.add(entourageUser)
         }
         initializeMembersView()
     }
 
     private fun onFeedItemJoinRequestsReceived(entourageUsers: List<EntourageUser>) {
-        val timestampedObjectList = ArrayList<TimestampedObject>()
+        val timestampedObjectList = ArrayList<EntourageUser>()
         // iterate over the received users
-        for (tourUser in entourageUsers) {
+        for (entourageUser in entourageUsers) {
             // skip the author
-            if (tourUser.userId == feedItem.author?.userID) {
+            if (entourageUser.userId == feedItem.author?.userID) {
                 continue
             }
             //show only the accepted users
-            if (tourUser.status != FeedItem.JOIN_STATUS_ACCEPTED) {
+            if (entourageUser.status != FeedItem.JOIN_STATUS_ACCEPTED) {
                 // Remove the user from the members list, in case the user left the entourage
-                membersAdapter?.removeCard(tourUser)
+                membersAdapter?.removeCard(entourageUser)
                 //show the pending and cancelled requests too (by skipping the others)
-                if (!(tourUser.status == FeedItem.JOIN_STATUS_PENDING || tourUser.status == FeedItem.JOIN_STATUS_CANCELLED)) {
+                if (!(entourageUser.status == FeedItem.JOIN_STATUS_PENDING || entourageUser.status == FeedItem.JOIN_STATUS_CANCELLED)) {
                     continue
                 }
             }
-            tourUser.feedItem = feedItem
+            entourageUser.feedItem = feedItem
 
             // check if we already have this user
-            val oldUser = discussionAdapter.findCard(tourUser) as? EntourageUser
-            if (oldUser != null && oldUser.status != tourUser.status) {
-                discussionAdapter.updateCard(tourUser)
+            val oldUser = discussionAdapter.findCard(entourageUser) as? EntourageUser
+            if (oldUser != null && oldUser.status != entourageUser.status) {
+                discussionAdapter.updateCard(entourageUser)
             } else {
-                timestampedObjectList.add(tourUser)
+                timestampedObjectList.add(entourageUser)
             }
         }
         feedItem.addCardInfoList(timestampedObjectList)
@@ -1125,7 +1144,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             //check who sent the message
             EntourageApplication.get(activity).entourageComponent.authenticationController.me?.id?.let { me ->
                 for (chatMessage in chatMessageList) {
-                    chatMessage.setIsMe(chatMessage.userId == me)
+                    chatMessage.isMe = chatMessage.userId == me
                 }
             }
             //val timestampedObjectList: List<TimestampedObject> = ArrayList<TimestampedObject>(chatMessageList)
@@ -1167,7 +1186,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         }
 
         //add the message to the list
-        chatMessage.setIsMe(true)
+        chatMessage.isMe = true
         feedItem.addCardInfo(chatMessage)
         updateDiscussionList()
     }
@@ -1292,7 +1311,9 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     }
 
     override fun onLocationUpdated(location: LatLng) {}
+
     override fun onLocationStatusUpdated(active: Boolean) {}
+
     override fun onUserStatusChanged(user: EntourageUser, feedItem: FeedItem) {
         //ignore requests that are not related to our feed item
         if (feedItem.type != this.feedItem.type || feedItem.id != this.feedItem.id) return
@@ -1301,21 +1322,22 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         onCloseOptionsButton()
 
         //update the local tour info
-        val oldPrivateStatus = entourage_info_private_section?.visibility == View.VISIBLE
-        feedItem.joinStatus = user.status
-        val currentPrivateStatus = feedItem.isPrivate()
-        //update UI
-        if (oldPrivateStatus != currentPrivateStatus) {
-            if (feedItem.isPrivate()) {
-                switchToPrivateSection()
-                loadPrivateCards()
+        user.status?.let { status ->
+            feedItem.joinStatus = status
+            val oldPrivateStatus = entourage_info_private_section?.visibility == View.VISIBLE
+            //update UI
+            if (oldPrivateStatus != feedItem.isPrivate()) {
+                if (feedItem.isPrivate()) {
+                    switchToPrivateSection()
+                    loadPrivateCards()
+                } else {
+                    switchToPublicSection()
+                }
             } else {
-                switchToPublicSection()
+                updateHeaderButtons()
+                initializeOptionsView()
+                updateJoinStatus()
             }
-        } else {
-            updateHeaderButtons()
-            initializeOptionsView()
-            updateJoinStatus()
         }
     }
 

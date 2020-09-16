@@ -58,7 +58,7 @@ class MyEntouragesFilterFragment  : EntourageDialogFragment() {
         myentourages_filter_closed_switch?.let {filter.isClosedEntourages = it.isChecked}
         MyEntouragesFilter.save(filter, context)
 
-        // inform the app to refrehs the my entourages feed
+        // inform the app to refresh the my entourages feed
         instance.post(OnMyEntouragesForceRefresh(null))
         EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_SAVE)
 

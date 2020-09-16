@@ -10,10 +10,6 @@ class LoggerNewsFeedLogger : NewsFeedListener {
         Timber.e("Network exception")
     }
 
-    override fun onCurrentPositionNotRetrieved() {
-        Timber.e("Current position not retrieved")
-    }
-
     override fun onServerException(throwable: Throwable) {
         Timber.e(throwable, "Server exception")
     }

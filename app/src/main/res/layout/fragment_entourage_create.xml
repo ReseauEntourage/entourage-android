@@ -336,7 +336,7 @@
                         android:id="@+id/imageViewActionPublic"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/bg_button_rounded_black"
+                        app:srcCompat="@drawable/bg_button_rounded_black"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -344,7 +344,7 @@
                         android:id="@+id/ui_iv_button_public"
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        android:src="@drawable/button_rounded_black_fill"
+                        app:srcCompat="@drawable/button_rounded_black_fill"
                         app:layout_constraintBottom_toBottomOf="@+id/imageViewActionPublic"
                         app:layout_constraintEnd_toEndOf="@+id/imageViewActionPublic"
                         app:layout_constraintStart_toStartOf="@+id/imageViewActionPublic"
@@ -392,7 +392,7 @@
                         android:id="@+id/imageView"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/bg_button_rounded_black"
+                        app:srcCompat="@drawable/bg_button_rounded_black"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -400,7 +400,7 @@
                         android:id="@+id/ui_iv_button_private"
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        android:src="@drawable/button_rounded_black_fill"
+                        app:srcCompat="@drawable/button_rounded_black_fill"
                         app:layout_constraintBottom_toBottomOf="@+id/imageView"
                         app:layout_constraintEnd_toEndOf="@+id/imageView"
                         app:layout_constraintStart_toStartOf="@+id/imageView"

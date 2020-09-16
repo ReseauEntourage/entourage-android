@@ -14,7 +14,7 @@ import social.entourage.android.tools.log.EntourageEvents
 class PlusFragment : Fragment(), BackPressable {
     override fun onResume() {
         super.onResume()
-        EntourageApplication.get().entourageComponent.authenticationController?.savedTour?.let {
+        EntourageApplication.get().entourageComponent.authenticationController.savedTour?.let {
             layout_line_add_tour_encounter?.visibility = View.VISIBLE
             layout_line_start_tour_launcher?.visibility = View.GONE
             val tag = layout_line_start_tour_launcher?.tag as String

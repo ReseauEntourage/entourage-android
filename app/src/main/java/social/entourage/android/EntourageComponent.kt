@@ -35,6 +35,7 @@ interface EntourageComponent {
     val newsfeedRequest: NewsfeedRequest
     val invitationRequest: InvitationRequest
     val partnerRequest: PartnerRequest
+    val sharingRequest: SharingRequest
     val okHttpClient: OkHttpClient
     val complexPreferences: ComplexPreferences?
 }

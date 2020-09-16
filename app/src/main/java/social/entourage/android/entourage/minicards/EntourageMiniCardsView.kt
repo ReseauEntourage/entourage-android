@@ -7,6 +7,7 @@ import android.widget.RelativeLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.layout_entourage_mini_cards_view.view.*
 import social.entourage.android.R
+import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.TimestampedObject
 
 /**
@@ -49,7 +50,7 @@ class EntourageMiniCardsView : RelativeLayout {
         mini_cards_view_recycler_view?.adapter = miniCardsAdapter
     }
 
-    fun setEntourages(entourageList: List<TimestampedObject>) {
+    fun setEntourages(entourageList: List<BaseEntourage>) {
         mini_cards_view_recycler_view?.scrollToPosition(0)
         miniCardsAdapter.addItems(entourageList)
         this.visibility = View.VISIBLE

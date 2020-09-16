@@ -6,8 +6,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.api.request.EntourageRequest
 import social.entourage.android.api.request.TourRequest
-import social.entourage.android.api.model.EntourageUser.EntourageUserResponse
 import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.api.request.EntourageUserResponse
 import java.util.*
 import javax.inject.Inject
 

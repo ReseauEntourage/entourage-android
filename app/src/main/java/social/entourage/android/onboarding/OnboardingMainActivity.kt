@@ -99,6 +99,11 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     private fun setupViews() {
         ui_bt_next?.setOnClickListener {
+            if (currentPositionNeighbour == NeighbourPositionType.PLACE.pos || currentPositionAlone == AlonePositionType.PLACE.pos) {
+                action_pass()
+                return@setOnClickListener
+            }
+
             goNext()
         }
 
@@ -197,9 +202,10 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
                 //set the tutorial as done
                 val sharedPreferences = get().sharedPreferences
-                val loggedNumbers = sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, HashSet()) as HashSet<String>?
-                loggedNumbers!!.add(phoneNumber!!)
-                sharedPreferences.edit().putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers).apply()
+                (sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, HashSet()) as HashSet<String>?)?.let {loggedNumbers ->
+                    loggedNumbers.add(phoneNumber)
+                    sharedPreferences.edit().putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers).apply()
+                }
                 alertDialog.dismiss()
                 goNextStep()
             }
@@ -808,6 +814,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 val sharedPreferences = get().sharedPreferences
                 sharedPreferences.edit().putInt(EntourageApplication.KEY_ONBOARDING_USER_TYPE, userTypeSelected.pos).apply()
                 sharedPreferences.edit().putBoolean(EntourageApplication.KEY_IS_FROM_ONBOARDING, true).apply()
+                sharedPreferences.edit().putBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,false).apply()
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
@@ -895,17 +902,19 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     override fun updateAddress(placeAddress: User.Address?,is2ndAddress:Boolean) {
         if (is2ndAddress) {
             temporary2ndPlaceAddress= placeAddress
-        }
-        else {
-            temporaryPlaceAddress = placeAddress
-        }
-
-        if (placeAddress != null) {
             updateButtonNext(true)
         }
         else {
-            updateButtonNext(false)
+            temporaryPlaceAddress = placeAddress
+            if (placeAddress != null) {
+                updateButtonNext(true)
+            }
+            else {
+                updateButtonNext(false)
+            }
         }
+
+
     }
 
     override fun updateEmailPwd(email: String?, pwd: String?, pwdConfirm: String?) {

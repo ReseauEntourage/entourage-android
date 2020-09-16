@@ -23,7 +23,7 @@ class MyEntouragesPresenter @Inject constructor(
     // ----------------------------------
     // Methods
     // ----------------------------------
-    fun getMyFeeds(page: Int, per: Int) {
+    fun getMyFeeds(page: Int, per: Int,isUnreadOnly:Boolean) {
         val filter = MyEntouragesFilter.get(fragment.context)
         val call = newsfeedRequest.retrieveMyFeeds(
                 page,
@@ -33,12 +33,16 @@ class MyEntouragesPresenter @Inject constructor(
                 filter.status,
                 filter.showOwnEntouragesOnly,
                 filter.showPartnerEntourages,
-                filter.showJoinedEntourages
+                filter.showJoinedEntourages,
+                isUnreadOnly
         )
         call.enqueue(object : Callback<NewsfeedItemResponse> {
             override fun onResponse(call: Call<NewsfeedItemResponse>, response: Response<NewsfeedItemResponse>) {
                 response.body()?.let {
                     if (response.isSuccessful) {
+                        if (page == 1) {
+                            fragment.updateUnreadCount(it.unreadCount)
+                        }
                         fragment.onNewsfeedReceived(it.newsfeedItems)
                         return
                     }

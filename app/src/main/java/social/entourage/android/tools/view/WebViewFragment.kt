@@ -256,7 +256,6 @@ class WebViewFragment : EntourageDialogFragment() {
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        @JvmField
         val TAG = WebViewFragment::class.java.simpleName
         private const val REQUESTED_URL = "REQUESTED_URL"
 
@@ -267,7 +266,6 @@ class WebViewFragment : EntourageDialogFragment() {
          * @param requestedUrl Requested url as string.
          * @return A new instance of fragment WebViewFragment.
          */
-        @JvmStatic
         fun newInstance(requestedUrl: String?): WebViewFragment {
             val fragment = WebViewFragment()
             val args = Bundle()

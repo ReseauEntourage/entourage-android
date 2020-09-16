@@ -12,8 +12,6 @@ android {
 
     def TEST_ACCOUNT_LOGIN = System.env.TEST_ACCOUNT_LOGIN ? '"' + System.env.TEST_ACCOUNT_LOGIN + '"' : entourageTestLogin
     def TEST_ACCOUNT_PWD = System.env.TEST_ACCOUNT_PWD ? '"' + System.env.TEST_ACCOUNT_PWD + '"' : entourageTestPwd
-    def TEST_PFP_ACCOUNT_LOGIN = System.env.TEST_ACCOUNT_LOGIN ? '"' + System.env.TEST_PFP_ACCOUNT_LOGIN + '"' : pfpTestLogin
-    def TEST_PFP_ACCOUNT_PWD = System.env.TEST_ACCOUNT_PWD ? '"' + System.env.TEST_PFP_ACCOUNT_PWD + '"' : pfpTestPwd
 
     defaultConfig {
         applicationId 'social.entourage.android'
@@ -49,13 +47,6 @@ android {
             storePassword "${System.env.KEYSTORE_PASS}"
         }
 
-        googleplay_pfp {
-            keyAlias 'googleplay-pfp'
-            keyPassword "${System.env.KEYSTORE_PASS}"
-            storeFile file('../keystore/googleplay-pfp-keystore.jks')
-            storePassword "${System.env.KEYSTORE_PASS}"
-        }
-
         debug {
             storeFile file('../keystore/debug.keystore')
         }
@@ -88,33 +79,11 @@ android {
                 ]
             }
         }
-        pfp {
-            dimension 'app'
-            applicationId 'social.entourage.android.pfp'
-            buildConfigField 'String', 'API_KEY', '"14fe3580873758c2a63f14aa"'
-
-            buildConfigField 'String', 'TEST_ACCOUNT_LOGIN', TEST_PFP_ACCOUNT_LOGIN
-            buildConfigField 'String', 'TEST_ACCOUNT_PWD', TEST_PFP_ACCOUNT_PWD
-
-            ext {
-                prod = [
-                        serverURL        : "https://apipxtgs.entourage.social/api/v1/",
-                        deepLinksHostName: "www.entourage.social/pfp",
-                        deepLinksScheme  : "pfp-prod"
-                ]
-                staging = [
-                        serverURL        : "https://pfp-back-preprod.herokuapp.com/api/v1/",
-                        deepLinksHostName: "entourage-landingpages-preprod.herokuapp.com",
-                        deepLinksScheme  : "pfp-staging"
-                ]
-            }
-        }
     }
 
     buildTypes {
         release {
             productFlavors.entourage.signingConfig signingConfigs.googleplay
-            productFlavors.pfp.signingConfig signingConfigs.googleplay_pfp
             debuggable false
         }
 

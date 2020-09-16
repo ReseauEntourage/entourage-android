@@ -53,7 +53,7 @@ class PushNotificationTest {
         val content = "{\"extra\":{\"joinable_id\":"+entourageID+",\"joinable_type\":\"Entourage\",\"group_type\":\"action\",\"type\":\"NEW_CHAT_MESSAGE\"},\"message\":\"test\"}"
         val message = Message("test Entourage", myobject, content,  0, null)
         args.putSerializable(PushNotificationManager.PUSH_MESSAGE, message)
-        intent.putExtras(args);
+        intent.putExtras(args)
         startIntent(intent)
         Espresso.onView(ViewMatchers.withId(R.id.entourage_info_comment)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }

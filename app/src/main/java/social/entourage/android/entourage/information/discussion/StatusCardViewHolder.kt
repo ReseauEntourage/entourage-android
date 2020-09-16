@@ -29,7 +29,6 @@ class StatusCardViewHolder(view: View) : BaseCardViewHolder(view) {
     }
 
     companion object {
-        @JvmStatic
         val layoutResource: Int
             get() = R.layout.layout_entourage_information_status_card_view
     }

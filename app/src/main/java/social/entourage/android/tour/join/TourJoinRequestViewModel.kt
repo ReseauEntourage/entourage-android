@@ -10,7 +10,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.TourRequest
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.model.tour.TourJoinMessage
-import social.entourage.android.api.model.tour.TourJoinMessage.TourJoinMessageWrapper
+import social.entourage.android.api.request.TourJoinMessageWrapper
 import social.entourage.android.entourage.join.EntourageJoinRequestViewModel
 
 /**
@@ -30,8 +30,7 @@ class TourJoinRequestViewModel : ViewModel() {
             return
         }
         val me = EntourageApplication.get().me() ?: return
-        val joinMessageWrapper = TourJoinMessageWrapper()
-        joinMessageWrapper.joinMessage = TourJoinMessage(message.trim { it <= ' ' })
+        val joinMessageWrapper = TourJoinMessageWrapper(TourJoinMessage(message.trim { it <= ' ' }))
         tour.uuid?.let {
             tourRequest.updateJoinTourMessage(it, me.id, joinMessageWrapper).enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {

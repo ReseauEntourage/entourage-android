@@ -64,7 +64,6 @@ class ChoosePhotoFragment : OnboardingPhotoFragment() {
     companion object {
         const val TAG = "social.entourage.android.user.edit.photo.UserChoosePhotoFragment"
 
-        @JvmStatic
         fun newInstance() = ChoosePhotoFragment()
     }
 }

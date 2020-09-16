@@ -39,17 +39,17 @@
 
         <ImageButton
             android:id="@+id/user_profile_report_button"
-            android:layout_width="22dp"
+            android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
-            android:background="?android:attr/selectableItemBackground"
+            android:background="?attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
             android:scaleType="centerInside"
-            app:srcCompat="@drawable/flag"/>
+            app:srcCompat="@drawable/ic_report"/>
 
     </RelativeLayout>
 
@@ -89,7 +89,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="20dp"
                     android:contentDescription="@string/user_image_add_photo"
-                    android:src="@drawable/bg_user_image_button" />
+                    app:srcCompat="@drawable/bg_user_image_button" />
 
                 <social.entourage.android.tools.view.PartnerLogoImageView
                     android:id="@+id/user_partner_logo"
@@ -352,7 +352,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
-                android:background="@color/white">
+                android:background="@color/white"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/user_number_entourages_title"

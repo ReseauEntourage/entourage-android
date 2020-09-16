@@ -25,8 +25,8 @@
     <string name="entourage_create_privacy_description_public">Vous acceptez que toute personne participe à votre évènement, sans vérifier son profil au préalable.</string>
     <string name="entourage_create_privacy_description_private">Vous validez chaque personne individuellement avant de  lui confirmer qu’elle peut participer.</string>
 
-    <string name="entourage_create_privacy_description_public_action">Toute personne participe à votre action solidaire, sans vérifier son profil au préalable.</string>
-    <string name="entourage_create_privacy_description_private_action">Vous vérifiez le profil de chaque personne qui souhaite participer à votre action solidaire.</string>
+    <string name="entourage_create_privacy_description_public_action">Votre action solidaire est ouverte à tout membre du réseau souhaitant participer.</string>
+    <string name="entourage_create_privacy_description_private_action">Les membres d’Entourage vous demandent votre accord avant de participer.</string>
 
     <string name="entourage_create_error">L\'entourage n\'a pas été créé!</string>
     <string name="entourage_create_ok">Entourage créé.</string>
@@ -107,11 +107,11 @@
     <string name="entourage_disclaimer_text_chart1">Je respecte la</string>
     <string name="entourage_disclaimer_text_chart2">Charte d\'Entourage</string>
     <string name="entourage_disclaimer_accord_title">Recueillir l’accord</string>
-    <string name="entourage_disclaimer_accord_details">Je dois recueillir le consentement des personnes concernées avant de créer un entourage</string>
+    <string name="entourage_disclaimer_accord_details">Si je souhaite créer une demande d’aide pour quelqu’un d’autre, je dois d’abord recueillir son consentement.</string>
     <string name="entourage_disclaimer_security_title">Sécurité</string>
     <string name="entourage_disclaimer_security_details">Je n’inclus aucune donnée permettant d\'identifier ou de localiser les personnes concernées</string>
     <string name="entourage_disclaimer_geolocation_title">Géolocalisation ?</string>
-    <string name="entourage_disclaimer_geolocation_details">La position précise des entourages ne sera pas diffusée : elle est remplacée par les zones oranges sur la carte</string>
+    <string name="entourage_disclaimer_geolocation_details">La position précise de votre action solidaire est masquée : elle est remplacée par une zone orangée sur la carte</string>
     <string name="entourage_disclaimer_checkbox">J\'ai lu et j\'accepte</string>
     <string name="entourage_disclaimer_error_notaccepted">Veuillez accepter les conditions.</string>
 

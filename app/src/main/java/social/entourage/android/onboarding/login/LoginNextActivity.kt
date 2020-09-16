@@ -33,7 +33,7 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
 
         alertDialog = CustomProgressDialog(this)
 
-        currentUser = EntourageApplication.get().entourageComponent.authenticationController?.me
+        currentUser = EntourageApplication.get().entourageComponent.authenticationController.me
 
         currentUser?.let { user ->
             if (user.address != null || user.address?.displayAddress?.length ?: 0 > 0) {
@@ -57,27 +57,6 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
     }
 
     fun goMain() {
-        val authController = EntourageApplication.get().entourageComponent.authenticationController
-
-        if (authController.me?.goal == null || authController.me?.goal?.length == 0) {
-
-            AlertDialog.Builder(this)
-                    .setTitle(R.string.login_pop_information)
-                    .setMessage(R.string.login_info_pop_action)
-                    .setPositiveButton(R.string.button_OK) { dialog, which ->
-                        dialog.dismiss()
-
-                        goRealMain()
-                    }
-                    .create()
-                    .show()
-        }
-        else {
-            goRealMain()
-        }
-    }
-
-    fun goRealMain() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
@@ -158,14 +137,7 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
 
     private fun changeFragment() {
         ui_bt_next?.disable()
-        var fragment = Fragment()
-
-        if (currentPosition == 0) {
-            fragment = LoginPlaceFragment.newInstance()
-        }
-        else {
-            fragment = LoginEmailFragment.newInstance()
-        }
+        val fragment = if (currentPosition == 0) LoginPlaceFragment.newInstance() else LoginEmailFragment.newInstance()
 
         supportFragmentManager
                 .beginTransaction()

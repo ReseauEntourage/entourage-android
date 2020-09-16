@@ -39,9 +39,8 @@ class Invitation (
     val entourageUUID: String
         get() = entourageId.toString()
 
-    override fun getId(): Long {
-        return invitationId
-    }
+    override val id: Long
+        get() = invitationId
 
     /*fun setId(invitationId: Long) {
         this.invitationId = invitationId
@@ -50,17 +49,15 @@ class Invitation (
     val inviterName: String
         get() = inviter?.displayName ?: ""
 
-    override fun getTimestamp(): Date {
-        return Date()
-    }
+    override val timestamp: Date
+        get()  = Date()
 
     override fun hashString(): String {
         return HASH_STRING_HEAD + invitationId
     }
 
-    override fun getType(): Int {
-        return INVITATION_CARD
-    }
+    override val type: Int
+        get() = INVITATION_CARD
 
     override fun equals(other: Any?): Boolean {
         return !(other == null || other.javaClass != this.javaClass) && invitationId == (other as Invitation).invitationId

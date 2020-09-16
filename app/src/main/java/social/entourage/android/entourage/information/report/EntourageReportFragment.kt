@@ -86,7 +86,7 @@ class EntourageReportFragment  : EntourageDialogFragment() {
         }
 
     private fun sendReport() {
-        val userRequest = get().entourageComponent.entourageRequest ?: return
+        val userRequest = get().entourageComponent.entourageRequest
         sending = true
         val reason = user_report_reason_edittext?.text.toString()
         val call = userRequest.reportEntourage(entourageId, EntourageReport.EntourageReportWrapper(EntourageReport(reason)))

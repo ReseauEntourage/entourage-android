@@ -145,7 +145,6 @@ class OnboardingAssoActivitiesFragment : Fragment() {
      ********************************/
 
     companion object {
-        @JvmStatic
         fun newInstance(activities:AssoActivities?,username:String?) =
                 OnboardingAssoActivitiesFragment().apply {
                     arguments = Bundle().apply {

@@ -1,12 +1,12 @@
 package social.entourage.android.user.edit.photo
 
 import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.content.ClipData
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import androidx.appcompat.app.AppCompatActivity
 import social.entourage.android.api.tape.Events.OnPhotoChosen
 import social.entourage.android.tools.BusProvider
 import timber.log.Timber
@@ -46,8 +46,8 @@ class TakePhotoActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, intent)
         if (requestCode == REQUEST_TAKE_PHOTO) {
             if (resultCode == Activity.RESULT_OK) {
-                if (intent != null && intent.data != null) {
-                    BusProvider.instance.post(OnPhotoChosen(intent.data))
+                intent?.data?.let { data->
+                    BusProvider.instance.post(OnPhotoChosen(data))
                     return
                 }
                 mCurrentPhotoPath?.let { BusProvider.instance.post(OnPhotoChosen(Uri.fromFile(File(it)))) }

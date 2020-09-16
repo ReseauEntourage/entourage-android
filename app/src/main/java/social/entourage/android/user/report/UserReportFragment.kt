@@ -83,10 +83,9 @@ class UserReportFragment  : EntourageDialogFragment() {
         }
 
     private fun sendReport() {
-        val userRequest = get().entourageComponent.userRequest ?: return
         sending = true
         val reason = user_report_reason_edittext?.text.toString()
-        val call = userRequest.reportUser(userId, UserReportWrapper(UserReport(reason)))
+        val call = get().entourageComponent.userRequest.reportUser(userId, UserReportWrapper(UserReport(reason)))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {

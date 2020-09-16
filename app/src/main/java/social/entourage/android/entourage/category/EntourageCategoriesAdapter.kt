@@ -18,7 +18,7 @@ import java.util.*
 class EntourageCategoriesAdapter(
         private val context: Context,
         private val categories: HashMap<String,  List<EntourageCategory>>,
-        var selectedCategory: EntourageCategory) : BaseExpandableListAdapter() {
+        var selectedCategory: EntourageCategory, val listener:() -> Unit) : BaseExpandableListAdapter() {
 
     class EntourageCategoryViewHolder(v: View, checkboxListener: OnCheckedChangeListener?) {
         var mIcon: ImageView = v.findViewById(R.id.entourage_category_item_icon)
@@ -53,6 +53,7 @@ class EntourageCategoriesAdapter(
                     selectedCategory.isNewlyCreated = !category.isSelected
                 }
 
+                listener()
                 // refresh the list view
                 notifyDataSetChanged()
             }

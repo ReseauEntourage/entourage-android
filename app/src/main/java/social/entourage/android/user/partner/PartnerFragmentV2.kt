@@ -9,21 +9,30 @@ import android.view.ViewGroup
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_partner_v2.*
 import kotlinx.android.synthetic.main.layout_view_title.view.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
+import social.entourage.android.api.request.PartnerResponse
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.tools.CropCircleTransformation
+import timber.log.Timber
 
 private const val KEY_PARTNER = "param1"
+private const val KEY_PARTNERID = "partnerID"
 
 class PartnerFragmentV2 : EntourageDialogFragment() {
 
     private var partner: Partner? = null
+    private var partnerId:Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             partner = arguments?.getSerializable(KEY_PARTNER) as Partner?
+            partnerId = arguments?.getInt(KEY_PARTNERID)
         }
     }
 
@@ -35,12 +44,41 @@ class PartnerFragmentV2 : EntourageDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (partner == null)  {
-            dismiss()
-            return
+        if (partner == null) {
+            if (partnerId == null) {
+                dismiss()
+                return
+            }
+            else {
+                getPartnerInfos()
+            }
         }
+        else {
+            configureViews()
+        }
+    }
 
-        configureViews()
+    fun getPartnerInfos() {
+        val application = EntourageApplication.get()
+       val call = application.entourageComponent.userRequest.getPartnerDetail(partnerId!!)
+
+        call.enqueue(object : Callback<PartnerResponse> {
+            override fun onResponse(call: Call<PartnerResponse>, response: Response<PartnerResponse>) {
+                if (response.isSuccessful) {
+                   val body = response.body()
+                   partner = body?.partner
+                    configureViews()
+                }
+                else {
+                    dismiss()
+                    return
+                }
+            }
+            override fun onFailure(call: Call<PartnerResponse>, t: Throwable) {
+                dismiss()
+                return
+            }
+        })
     }
 
     fun configureViews() {
@@ -124,11 +162,11 @@ class PartnerFragmentV2 : EntourageDialogFragment() {
 
     companion object {
         const val TAG = "social.entourage.android.partner_fragment_new"
-        @JvmStatic
-        fun newInstance(partner: Partner?) : PartnerFragmentV2 {
+        fun newInstance(partner: Partner?,partnerId:Int?) : PartnerFragmentV2 {
             val fragment = PartnerFragmentV2()
             val args = Bundle()
             args.putSerializable(KEY_PARTNER, partner)
+            partnerId?.let { args.putInt(KEY_PARTNERID, it) }
             fragment.arguments = args
             return fragment
         }

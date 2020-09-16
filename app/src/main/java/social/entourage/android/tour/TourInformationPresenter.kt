@@ -7,19 +7,11 @@ import retrofit2.Response
 import social.entourage.android.tools.EntourageError
 import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.api.model.ChatMessage
-import social.entourage.android.api.model.ChatMessage.ChatMessageWrapper
-import social.entourage.android.api.model.ChatMessage.ChatMessageResponse
-import social.entourage.android.api.model.ChatMessage.ChatMessageListResponse
-import social.entourage.android.api.model.EntourageUser.EntourageUserResponse
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.tour.Tour
-import social.entourage.android.api.model.EntourageUser.EntourageUserListResponse
-import social.entourage.android.api.request.EncounterListResponse
-import social.entourage.android.api.request.InvitationRequest
-import social.entourage.android.api.request.TourRequest
-import social.entourage.android.api.request.TourResponse
+import social.entourage.android.api.request.*
 import social.entourage.android.entourage.information.FeedItemInformationPresenter
 import java.util.*
 import javax.inject.Inject
@@ -143,8 +135,7 @@ class TourInformationPresenter @Inject constructor(
     override fun sendFeedItemMessage(feedItem: FeedItem, message: String) {
         fragment.showProgressBar()
         EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ADD_MESSAGE)
-        val chatMessageWrapper = ChatMessageWrapper()
-        chatMessageWrapper.chatMessage = ChatMessage(message)
+        val chatMessageWrapper = ChatMessageWrapper(ChatMessage(message))
         when (feedItem.type) {
             TimestampedObject.TOUR_CARD -> {
                 feedItem.uuid?.let {

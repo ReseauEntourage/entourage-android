@@ -177,11 +177,7 @@ class LocationFragment  : EntourageDialogFragment() {
         mapFragment?.let { frag ->
             childFragmentManager.beginTransaction().replace(R.id.entourage_location_map_layout, frag).commit()
             frag.getMapAsync { googleMap ->
-                if (activity != null) {
-                    if (LocationUtils.isLocationPermissionGranted()) {
-                        googleMap.isMyLocationEnabled = true
-                    }
-                }
+                googleMap.isMyLocationEnabled = activity != null && LocationUtils.isLocationPermissionGranted()
                 googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
                         activity, R.raw.map_styles_json))
                 googleMap.uiSettings.isMyLocationButtonEnabled = false

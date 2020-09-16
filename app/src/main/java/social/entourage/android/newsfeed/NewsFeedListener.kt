@@ -4,7 +4,5 @@ import social.entourage.android.api.ApiConnectionListener
 import social.entourage.android.api.model.feed.NewsfeedItem
 
 interface NewsFeedListener: ApiConnectionListener {
-    fun onCurrentPositionNotRetrieved()
-
     fun onNewsFeedReceived(newsFeeds: List<NewsfeedItem>)
 }

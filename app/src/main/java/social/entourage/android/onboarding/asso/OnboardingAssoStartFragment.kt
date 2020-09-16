@@ -59,7 +59,6 @@ class OnboardingAssoStartFragment : Fragment() {
     }
 
     companion object {
-        @JvmStatic
         fun newInstance(isStart:Boolean) =
                 OnboardingAssoStartFragment().apply {
                     arguments = Bundle().apply {

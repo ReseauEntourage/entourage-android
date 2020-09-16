@@ -451,17 +451,14 @@ object EntourageEvents {
 
     var TAG = EntourageEvents::class.java.simpleName
 
-    @JvmStatic
     fun logEvent(event: String) {
         get().firebase.logEvent(event, null)
     }
 
-    @JvmStatic
     fun onLocationPermissionGranted(isPermissionGranted: Boolean) {
         get().firebase.setUserProperty("EntourageGeolocEnable", if (isPermissionGranted) "YES" else "NO")
     }
 
-    @JvmStatic
     fun updateUserInfo(user: User, context: Context, areNotificationsEnabled: Boolean) {
         /* TODO: catch this event elsewhere
         if (areNotificationsEnabled) {

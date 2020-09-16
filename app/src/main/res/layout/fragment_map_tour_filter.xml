@@ -99,7 +99,7 @@
                             android:layout_width="45dp"
                             android:layout_height="45dp"
                             android:contentDescription="@string/empty_description"
-                            android:src="@drawable/ic_medical_active"/>
+                            app:srcCompat="@drawable/ic_medical_active"/>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -142,7 +142,7 @@
                             android:layout_width="45dp"
                             android:layout_height="45dp"
                             android:contentDescription="@string/empty_description"
-                            android:src="@drawable/ic_social_active"/>
+                            app:srcCompat="@drawable/ic_social_active"/>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -185,7 +185,7 @@
                             android:layout_width="45dp"
                             android:layout_height="45dp"
                             android:contentDescription="@string/empty_description"
-                            android:src="@drawable/ic_distributive_active"/>
+                            app:srcCompat="@drawable/ic_distributive_active"/>
 
                         <TextView
                             android:layout_width="match_parent"

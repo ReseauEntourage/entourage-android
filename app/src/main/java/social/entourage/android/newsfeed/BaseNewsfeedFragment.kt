@@ -4,6 +4,7 @@ import android.Manifest.permission
 import android.animation.ValueAnimator
 import android.app.ProgressDialog
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
@@ -102,9 +103,13 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         markersMap.clear()
     }
 
+    override fun onAttach(context: Context) {
+        setupComponent(EntourageApplication.get(activity).entourageComponent)
+        super.onAttach(context)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupComponent(EntourageApplication.get(activity).entourageComponent)
         groupType = BaseEntourage.GROUPTYPE_ACTION
         presenter.start()
         if (fragmentLifecycleCallbacks == null) {
@@ -293,15 +298,11 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     open fun onBetterLocation(event: OnBetterLocationEvent) {
-        if (event.location != null) {
-            centerMap(event.location)
-        }
+        centerMap(event.location)
     }
 
     open fun onEntourageCreated(event: OnEntourageCreated) {
-        //only if entourage if found
-        event.entourage ?: return
-        // Force the map filtering for entourages as ON
+       // Force the map filtering for entourages as ON
         MapFilterFactory.mapFilter.entourageCreated()
         presenter.saveMapFilter()
 
@@ -311,8 +312,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     open fun onEntourageUpdated(event: OnEntourageUpdated) {
-        val entourage = event.entourage ?: return
-        newsfeedAdapter?.updateCard(entourage)
+        newsfeedAdapter?.updateCard(event.entourage)
     }
 
     open fun onMapFilterChanged(event: OnMapFilterChanged) {
@@ -378,7 +378,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             if (EntourageApplication.me(context) == null) {
                 fragment_map_main_layout?.let {EntourageSnackbar.make(it, R.string.tour_info_quit_tour_error, Snackbar.LENGTH_SHORT).show() }
             } else {
-                val item = event.feedItem ?:return
+                val item = event.feedItem
                 if (FeedItem.JOIN_STATUS_PENDING == item.joinStatus) {
                     EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_CANCEL_JOIN_REQUEST)
                 }
@@ -400,7 +400,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             if (feedItemType != 0) {
                 val feedItemUUID = event.feedItemUUID
                 if (feedItemUUID.isNullOrEmpty()) {
-                    displayChosenFeedItemFromShareURL(event.feedItemShareURL, feedItemType)
+                    event.feedItemShareURL?.let { displayChosenFeedItemFromShareURL(it, feedItemType) }
                 } else {
                     displayChosenFeedItem(feedItemUUID, feedItemType, event.invitationId)
                 }
@@ -419,13 +419,6 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     override fun onNetworkException() {
         fragment_map_main_layout?.let {EntourageSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()}
-        if (pagination.isLoading) {
-            pagination.isLoading = false
-            pagination.isRefreshing = false
-        }
-    }
-
-    override fun onCurrentPositionNotRetrieved() {
         if (pagination.isLoading) {
             pagination.isLoading = false
             pagination.isRefreshing = false
@@ -458,10 +451,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         val newNewsFeeds = removeRedundantNewsfeed(newsFeeds)
         //add or update the received newsfeed
         for (newsfeed in newNewsFeeds) {
-            val newsfeedData = newsfeed.data
-            if (newsfeedData is TimestampedObject) {
-                addNewsfeedCard(newsfeedData)
-            }
+            (newsfeed.data as? TimestampedObject)?.let { addNewsfeedCard(it) }
         }
         updatePagination(newNewsFeeds)
         redrawWholeNewsfeed(newNewsFeeds)
@@ -590,8 +580,9 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     protected open fun updateFloatingMenuOptions() {}
     protected open fun displayFeedItemOptions(feedItem: FeedItem) {}
+
     open fun feedItemCloseRequested(event: OnFeedItemCloseRequestEvent) {
-        val feedItem = event.feedItem ?: return
+        val feedItem = event.feedItem
         if (event.isShowUI) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_ACTIVE_CLOSE_OVERLAY)
             displayFeedItemOptions(feedItem)
@@ -705,7 +696,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             fragment_map_feeditems_view?.layoutManager = LinearLayoutManager(context)
             newsfeedAdapter = NewsfeedAdapter().apply {
                 onMapReadyCallback?.let { this.setOnMapReadyCallback(it) }
-                this.setOnFollowButtonClickListener(View.OnClickListener { onFollowGeolocation() })
+                this.setOnFollowButtonClickListener { onFollowGeolocation() }
                 fragment_map_feeditems_view?.adapter = this
             }
         }
@@ -828,14 +819,18 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         if (markersMap[feedItem.hashString()] == null) {
             if (feedItem.showHeatmapAsOverlay()) {
                 val position = feedItem.getStartPoint()?.location ?:return
-                val heatmapIcon = BitmapDescriptorFactory.fromResource(feedItem.getHeatmapResourceId())
-                val groundOverlayOptions = GroundOverlayOptions()
-                        .image(heatmapIcon)
-                        .position(position, BaseEntourage.HEATMAP_SIZE, BaseEntourage.HEATMAP_SIZE)
-                        .clickable(true)
-                        .anchor(0.5f, 0.5f)
-                markersMap[feedItem.hashString()] = map?.addGroundOverlay(groundOverlayOptions) ?: return
-                presenter.onGroundOverlayClickListener?.addEntourageGroundOverlay(position, feedItem)
+                map?.let {map->
+                    val heatmapIcon = BitmapDescriptorFactory.fromResource(feedItem.getHeatmapResourceId())
+                    val groundOverlayOptions = GroundOverlayOptions()
+                            .image(heatmapIcon)
+                            .position(position, BaseEntourage.HEATMAP_SIZE, BaseEntourage.HEATMAP_SIZE)
+                            .clickable(true)
+                            .anchor(0.5f, 0.5f)
+                    map.addGroundOverlay(groundOverlayOptions)?.let {
+                        markersMap[feedItem.hashString()] = it
+                        presenter.onGroundOverlayClickListener?.addEntourageGroundOverlay(position, feedItem)
+                    }
+                }
             } else {
                 val mapClusterItem = MapClusterEntourageItem(feedItem)
                 markersMap[feedItem.hashString()] = mapClusterItem
@@ -1045,7 +1040,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     // ----------------------------------
     private fun initializeInvitations() {
         // Check if it's a valid user and onboarding
-        if (presenter.isOnboardingUser == true) {
+        if (presenter.isOnboardingUser) {
             // Retrieve the list of invitations and then accept them automatically
             presenter.getMyPendingInvitations()
             presenter.resetUserOnboardingFlag()
@@ -1057,7 +1052,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     fun onInvitationsReceived(invitationList: List<Invitation>) {
         //during onboarding we check if the new user was invited to specific entourages and then automatically accept them
-        if (presenter.isOnboardingUser == true &&(!invitationList.isNullOrEmpty())) {
+        if (presenter.isOnboardingUser && !invitationList.isNullOrEmpty()) {
             invitationList.forEach {
                 presenter.acceptInvitation(it.id)
             }
@@ -1137,7 +1132,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             return
         }
         // get the list of entourages near this location
-        val entourageArrayList = ArrayList<TimestampedObject>()
+        val entourageArrayList = ArrayList<BaseEntourage>()
         newsfeedAdapter?.items?.forEach { feedItem ->
             if (feedItem.type == TimestampedObject.ENTOURAGE_CARD) {
                 val entourage = feedItem as BaseEntourage
@@ -1229,12 +1224,11 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
         // Zoom in level when taping a heatzone
         private const val ZOOM_HEATZONE = 15.7f
-        @JvmStatic
+
         fun getTransparentColor(color: Int): Int {
             return Color.argb(200, Color.red(color), Color.green(color), Color.blue(color))
         }
 
-        @JvmStatic
         fun isToday(date: Date): Boolean {
             val calToday = Calendar.getInstance()
             calToday.time =  Date()

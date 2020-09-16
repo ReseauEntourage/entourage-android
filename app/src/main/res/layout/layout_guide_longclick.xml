@@ -33,6 +33,6 @@
             android:layout_alignParentTop="true"
             android:contentDescription="@string/empty_description"
             android:elevation="8dp"
-            android:src="@drawable/ic_solidarity" />
+            app:srcCompat="@drawable/ic_solidarity" />
     </RelativeLayout>
 </RelativeLayout>

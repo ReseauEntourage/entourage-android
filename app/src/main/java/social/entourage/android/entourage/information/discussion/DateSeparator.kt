@@ -7,19 +7,16 @@ import java.util.*
  * Created by mihaiionescu on 14/03/2017.
  */
 class DateSeparator(private var date: Date) : TimestampedObject() {
-    override fun getType(): Int {
-        return DATE_SEPARATOR
-    }
+    override val type: Int
+        get() = DATE_SEPARATOR
 
-    override fun getTimestamp(): Date {
-        return date
-    }
+    override val timestamp: Date
+        get() = date
 
     override fun hashString(): String {
         return ""
     }
 
-    override fun getId(): Long {
-        return 0
-    }
+    override val id: Long
+        get() = 0
 }

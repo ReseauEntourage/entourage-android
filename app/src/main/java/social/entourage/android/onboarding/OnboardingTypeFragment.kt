@@ -125,11 +125,10 @@ class OnboardingTypeFragment : Fragment() {
     //**********//**********//**********
 
     companion object {
-        @JvmStatic
-        fun newInstance(firstname: String?, userTypeSelected: UserTypeSelection) =
+        fun newInstance(firstName: String?, userTypeSelected: UserTypeSelection) =
                 OnboardingTypeFragment().apply {
                     arguments = Bundle().apply {
-                        putString(ARG_FIRSTNAME, firstname)
+                        putString(ARG_FIRSTNAME, firstName)
                         putSerializable(ARG_USERTYPE, userTypeSelected)
                     }
                 }

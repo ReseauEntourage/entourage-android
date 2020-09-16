@@ -212,7 +212,6 @@ class OnboardingSdfNeighbourActivitiesFragment : Fragment() {
      ********************************/
 
     companion object {
-        @JvmStatic
         fun newInstance(activities: SdfNeighbourActivities?, username:String?,isSdf:Boolean) =
                 OnboardingSdfNeighbourActivitiesFragment().apply {
                     arguments = Bundle().apply {

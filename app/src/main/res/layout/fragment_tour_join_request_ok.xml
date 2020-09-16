@@ -25,7 +25,7 @@
             android:id="@+id/tour_join_request_ok_x_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
+            android:background="?attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
             android:paddingEnd="5dp"
             android:paddingStart="0dp"

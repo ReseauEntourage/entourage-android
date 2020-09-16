@@ -67,7 +67,7 @@ class NewsfeedBottomViewHolder(view: View) : BaseCardViewHolder(view) {
         const val CONTENT_TYPE_LOAD_MORE = 0
         const val CONTENT_TYPE_NO_ITEMS = 1
         const val CONTENT_TYPE_NO_MORE_ITEMS = 2
-        @JvmStatic
+
         val layoutResource: Int
             get() = R.layout.layout_newsfeed_bottom_card
     }

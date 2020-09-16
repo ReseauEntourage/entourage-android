@@ -33,7 +33,6 @@ class InvitationCardViewHolder(view: View) : BaseCardViewHolder(view) {
     }
 
     companion object {
-        @JvmStatic
         val layoutResource: Int
             get() = R.layout.layout_invitation_card
     }

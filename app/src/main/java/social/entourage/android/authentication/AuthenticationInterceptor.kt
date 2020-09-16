@@ -19,8 +19,8 @@ object AuthenticationInterceptor : Interceptor {
         if (!request.url().toString().startsWith(BuildConfig.ENTOURAGE_URL)) {
             return chain.proceed(request)
         }
-        val authenticationController: AuthenticationController? = EntourageApplication.get().entourageComponent.authenticationController
-        val url: HttpUrl = if (authenticationController?.isAuthenticated == true) {
+        val authenticationController: AuthenticationController = EntourageApplication.get().entourageComponent.authenticationController
+        val url: HttpUrl = if (authenticationController.isAuthenticated) {
             request.url().newBuilder().addQueryParameter("token", authenticationController.me?.token).build()
         } else {
             request.url().newBuilder().build()

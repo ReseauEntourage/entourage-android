@@ -33,7 +33,7 @@ class EntourageApplication : MultiDexApplication() {
     private lateinit var librariesSupport: LibrariesSupport
 
     enum class WhiteLabelApp {
-        ENTOURAGE_APP, PFP_APP
+        ENTOURAGE_APP,
     }
 
     // ----------------------------------
@@ -74,7 +74,7 @@ class EntourageApplication : MultiDexApplication() {
         get() = librariesSupport.firebaseAnalytics
 
     fun me(): User? {
-        return entourageComponent.authenticationController?.me ?: return null
+        return entourageComponent.authenticationController.me ?: return null
     }
 
     fun onActivityCreated(activity: EntourageActivity) {
@@ -165,6 +165,15 @@ class EntourageApplication : MultiDexApplication() {
         updateBadgeCount()
     }
 
+    fun updateBadgeCountForCount(count: Int) {
+        badgeCount = count
+        if (badgeCount == 0) {
+            ShortcutBadger.removeCount(applicationContext)
+        } else {
+            ShortcutBadger.applyCount(applicationContext, badgeCount)
+        }
+    }
+
     // ----------------------------------
     // FeedItemsStorage
     // ----------------------------------
@@ -179,7 +188,7 @@ class EntourageApplication : MultiDexApplication() {
     }
 
     fun storeNewPushNotification(message: Message, isAdded: Boolean): Int {
-        val me = entourageComponent.authenticationController?.me ?: return -1
+        val me = entourageComponent.authenticationController.me ?: return -1
         return userFeedItemListCache.saveFeedItemFromNotification(me.id, message, isAdded)
     }
 
@@ -188,12 +197,12 @@ class EntourageApplication : MultiDexApplication() {
     }
 
     private fun updateStorageFeedItem(feedItem: FeedItem) {
-        val me = entourageComponent.authenticationController?.me ?: return
+        val me = entourageComponent.authenticationController.me ?: return
         userFeedItemListCache.updateFeedItem(me.id, feedItem)
     }
 
     fun clearFeedStorage(): Boolean {
-        val me = entourageComponent.authenticationController?.me ?: return false
+        val me = entourageComponent.authenticationController.me ?: return false
         return userFeedItemListCache.clear(me.id)
     }
 
@@ -208,23 +217,21 @@ class EntourageApplication : MultiDexApplication() {
 
         const val KEY_IS_FROM_ONBOARDING = "isFromOnboarding"
         const val KEY_ONBOARDING_USER_TYPE = "userType"
+        const val KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN = "isFirstLogin"
         // ----------------------------------
         // MEMBERS
         // ----------------------------------
         private lateinit var instance: EntourageApplication
-        @JvmStatic
         fun get(): EntourageApplication {
             return instance
         }
 
         const val ENTOURAGE_APP = "entourage"
-        const val PFP_APP = "pfp"
-        @JvmStatic
+
         operator fun get(context: Context?): EntourageApplication {
             return (if (context != null) context.applicationContext as EntourageApplication else get())
         }
 
-        @JvmStatic
         fun me(context: Context?): User? {
             return get(context).me()
         }
