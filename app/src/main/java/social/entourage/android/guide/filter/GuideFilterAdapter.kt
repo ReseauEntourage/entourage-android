@@ -86,7 +86,9 @@ class GuideFilterAdapter : BaseAdapter() {
         val guideFilter = instance
         for (i in 1 until CategoryType.values().size) {
             val categoryType = CategoryType.values()[i]
-            items.add(GuideFilterItem(categoryType, guideFilter.valueForCategoryId(categoryType.categoryId)))
+            if (categoryType != CategoryType.PARTNERS) {
+                items.add(GuideFilterItem(categoryType, guideFilter.valueForCategoryId(categoryType.categoryId)))
+            }
         }
     }
 }

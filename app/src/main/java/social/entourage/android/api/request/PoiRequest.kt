@@ -13,5 +13,6 @@ interface PoiRequest {
     fun retrievePoisNearby(@Query("latitude") latitude: Double,
                            @Query("longitude") longitude: Double,
                            @Query("distance") distance: Double,
-                           @Query("category_ids") categoryIDs: String?): Call<PoiResponse>
+                           @Query("category_ids") categoryIDs: String?,
+                           @Query("partners_filters") partnersFilters: String?): Call<PoiResponse>
 }

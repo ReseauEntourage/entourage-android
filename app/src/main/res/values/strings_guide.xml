@@ -37,4 +37,6 @@
 
     <string name="partners_entourage">Organisme actif sur Entourage</string>
     <string name="guide_display_partners">Associations et services actifs sur Entourage</string>
+    <string name="guide_filter_donate">Recherchant des dons</string>
+    <string name="guide_filter_volunteer">Recherchant des bénévoles</string>
 </resources>

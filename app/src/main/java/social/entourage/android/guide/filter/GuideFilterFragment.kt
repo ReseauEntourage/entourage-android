@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events.OnSolidarityGuideFilterChanged
 import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.guide.poi.PoiRenderer
 import social.entourage.android.tools.BusProvider
 
 /**
@@ -42,6 +43,14 @@ class GuideFilterFragment : EntourageDialogFragment() {
         filterAdapter?.items?.forEach { filterItem ->
             GuideFilter.instance.setValueForCategoryId(filterItem.categoryType.categoryId, filterItem.isChecked)
         }
+
+        //Update others filters
+        GuideFilter.instance.isPartnersSelected = GuideFilter.instance.isPartnersTmpSelected
+        GuideFilter.instance.isDonationsSelected = GuideFilter.instance.isDonationsTmpSelected
+        GuideFilter.instance.isVolunteersSelected = GuideFilter.instance.isVolunteersTmpSelected
+
+        GuideFilter.instance.setValueForCategoryId(PoiRenderer.CategoryType.PARTNERS.categoryId,GuideFilter.instance.isPartnersSelected)
+
         // Apply the filter
         BusProvider.instance.post(OnSolidarityGuideFilterChanged())
         // Dismiss the fragment
@@ -56,6 +65,45 @@ class GuideFilterFragment : EntourageDialogFragment() {
         guide_filter_list?.adapter = filterAdapter
         title_close_button?.setOnClickListener {  dismiss() }
         title_action_button?.setOnClickListener { onValidateClicked() }
+
+        //Setup Others filters
+        filter_item_switch_partner?.isChecked = GuideFilter.instance.isPartnersSelected
+        filter_item_switch_donate?.isChecked = GuideFilter.instance.isDonationsSelected
+        filter_item_switch_volunteer?.isChecked = GuideFilter.instance.isVolunteersSelected
+
+        GuideFilter.instance.isPartnersTmpSelected = GuideFilter.instance.isPartnersSelected
+        GuideFilter.instance.isDonationsTmpSelected = GuideFilter.instance.isDonationsSelected
+        GuideFilter.instance.isVolunteersTmpSelected = GuideFilter.instance.isVolunteersSelected
+
+        filter_item_switch_partner?.setOnCheckedChangeListener { buttonView, isChecked ->
+            GuideFilter.instance.isPartnersTmpSelected = isChecked
+            changeTopViews(isChecked)
+        }
+        filter_item_switch_donate.setOnCheckedChangeListener { buttonView, isChecked ->
+            GuideFilter.instance.isDonationsTmpSelected = isChecked
+        }
+
+        filter_item_switch_volunteer?.setOnCheckedChangeListener { buttonView, isChecked ->
+            GuideFilter.instance.isVolunteersTmpSelected = isChecked
+        }
+
+        changeTopViews(GuideFilter.instance.isPartnersSelected)
+    }
+
+    private fun changeTopViews(isVisible:Boolean) {
+        if (isVisible) {
+            filter_layout_donate?.visibility = View.VISIBLE
+            filter_layout_volunteer?.visibility = View.VISIBLE
+        }
+        else {
+            GuideFilter.instance.isDonationsTmpSelected = false
+            GuideFilter.instance.isVolunteersTmpSelected = false
+            filter_item_switch_donate?.isChecked = GuideFilter.instance.isDonationsTmpSelected
+            filter_item_switch_volunteer?.isChecked = GuideFilter.instance.isVolunteersTmpSelected
+
+            filter_layout_donate?.visibility = View.GONE
+            filter_layout_volunteer?.visibility = View.GONE
+        }
     }
 
     companion object {
