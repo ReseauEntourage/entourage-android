@@ -72,6 +72,7 @@ class OnboardingPasscodeFragment : Fragment() {
             }
 
             override fun onTick(p0: Long) {
+                if(isDetached) return
                 timeOut = timeOut - 1
 
                 if (timeOut == 0) {
