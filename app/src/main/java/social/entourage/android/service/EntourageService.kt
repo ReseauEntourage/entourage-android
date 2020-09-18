@@ -1,7 +1,8 @@
 package social.entourage.android.service
 
+
 import android.app.Notification
-import android.app.NotificationManager
+import androidx.core.app.NotificationManagerCompat
 import android.app.PendingIntent
 import android.app.Service
 import android.content.BroadcastReceiver
@@ -66,7 +67,7 @@ class EntourageService : Service() {
     private val locationUpdateListeners: MutableList<LocationUpdateListener> = ArrayList()
     private val crashlyticsListener = CrashlyticsNewsFeedLogger()
     private val loggerListener = LoggerNewsFeedLogger()
-    private lateinit var notificationManager: NotificationManager
+    //private lateinit var notificationManager: NotificationManagerCompat
     private var notification: Notification? = null
     private var notificationRemoteView: RemoteViews? = null
     private var timeBase: Long = 0
@@ -117,7 +118,7 @@ class EntourageService : Service() {
     override fun onCreate() {
         super.onCreate()
         EntourageApplication[this].entourageComponent.inject(this)
-        notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        //notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         chronometer = Chronometer(this)
         entourageServiceManager = EntourageServiceManager.newInstance(
                 this,
@@ -176,7 +177,7 @@ class EntourageService : Service() {
             createNotification()
         }
         configureRemoteView(action)
-        notificationManager.notify(NOTIFICATION_ID, notification)
+        notification?.let {NotificationManagerCompat.from(this).notify(NOTIFICATION_ID, it)}
     }
 
     private fun createNotification() {
@@ -234,7 +235,7 @@ class EntourageService : Service() {
 
     private fun removeNotification() {
         chronometer.stop()
-        notificationManager.cancel(NOTIFICATION_ID)
+        NotificationManagerCompat.from(this).cancel(NOTIFICATION_ID)
     }
 
     private fun stopService() {
