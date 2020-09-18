@@ -384,7 +384,7 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
     // Presenter callbacks
     // ----------------------------------
     fun onUserUpdated(user: User) {
-        if (activity?.isFinishing == true) {
+        if (activity?.isFinishing == true || this.isDetached) {
             return
         }
         displayToast(getString(R.string.user_text_update_ok))
