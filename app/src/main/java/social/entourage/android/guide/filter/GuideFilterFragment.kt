@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ListAdapter
+import android.widget.ListView
 import kotlinx.android.synthetic.main.fragment_guide_filter.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.R
@@ -49,7 +51,7 @@ class GuideFilterFragment : EntourageDialogFragment() {
         GuideFilter.instance.isDonationsSelected = GuideFilter.instance.isDonationsTmpSelected
         GuideFilter.instance.isVolunteersSelected = GuideFilter.instance.isVolunteersTmpSelected
 
-        GuideFilter.instance.setValueForCategoryId(PoiRenderer.CategoryType.PARTNERS.categoryId,GuideFilter.instance.isPartnersSelected)
+        GuideFilter.instance.setValueForCategoryId(PoiRenderer.CategoryType.PARTNERS.categoryId, GuideFilter.instance.isPartnersSelected)
 
         // Apply the filter
         BusProvider.instance.post(OnSolidarityGuideFilterChanged())
@@ -64,7 +66,9 @@ class GuideFilterFragment : EntourageDialogFragment() {
         filterAdapter = GuideFilterAdapter()
         guide_filter_list?.adapter = filterAdapter
         title_close_button?.setOnClickListener {  dismiss() }
-        title_action_button?.setOnClickListener { onValidateClicked() }
+        bottom_action_button?.setOnClickListener { onValidateClicked() }
+
+        forceResizeListview(guide_filter_list)
 
         //Setup Others filters
         filter_item_switch_partner?.isChecked = GuideFilter.instance.isPartnersSelected
@@ -90,7 +94,7 @@ class GuideFilterFragment : EntourageDialogFragment() {
         changeTopViews(GuideFilter.instance.isPartnersSelected)
     }
 
-    private fun changeTopViews(isVisible:Boolean) {
+    private fun changeTopViews(isVisible: Boolean) {
         if (isVisible) {
             filter_layout_donate?.visibility = View.VISIBLE
             filter_layout_volunteer?.visibility = View.VISIBLE
@@ -104,6 +108,21 @@ class GuideFilterFragment : EntourageDialogFragment() {
             filter_layout_donate?.visibility = View.GONE
             filter_layout_volunteer?.visibility = View.GONE
         }
+    }
+
+    fun forceResizeListview(myListView: ListView) {
+        val listAdapter: ListAdapter = myListView.getAdapter() ?: return
+
+        var totalHeight = 0
+        for (size in 0 until listAdapter.getCount()) {
+            val listItem: View = listAdapter.getView(size, null, myListView)
+            listItem.measure(0, 0)
+            totalHeight += listItem.measuredHeight
+        }
+        
+        val params: ViewGroup.LayoutParams = myListView.getLayoutParams()
+        params.height = totalHeight + myListView.getDividerHeight() * (listAdapter.getCount() - 1)
+        myListView.setLayoutParams(params)
     }
 
     companion object {

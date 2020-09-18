@@ -39,6 +39,7 @@ class MapFilterFragment  : BaseMapFilterFragment() {
         map_filter_time_days_2?.setOnClickListener { onDays2Click() }
         map_filter_time_days_3?.setOnClickListener { onDays3Click() }
 
+        bottom_action_button?.setOnClickListener { onValidateClicked() }
 
         ui_map_filter_entourage_alls_switch?.setOnCheckedChangeListener { buttonView, isChecked ->
             onAllSwitch()

@@ -82,6 +82,7 @@ open class BaseCreateEntourageFragment
         initializeView()
         title_close_button.setOnClickListener { onCloseClicked() }
         title_action_button.setOnClickListener { onValidateClicked() }
+        bottom_action_button?.setOnClickListener { onValidateClicked() }
         create_entourage_category_layout.setOnClickListener { onEditTypeClicked() }
         create_entourage_position_layout.setOnClickListener { onPositionClicked() }
         create_entourage_title_layout.setOnClickListener { onEditTitleClicked() }

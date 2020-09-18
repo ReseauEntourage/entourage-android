@@ -1,203 +1,262 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@color/pale_grey"
-              android:orientation="vertical"
               tools:context="social.entourage.android.guide.filter.GuideFilterFragment">
 
 
     <social.entourage.android.tools.view.EntourageTitleView
+        android:id="@+id/entourageTitleView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:entourageTitle="@string/guide_filter_title"
-        app:entourageTitleAction="@string/register"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:orientation="vertical">
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="00dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout11"
+        app:layout_constraintEnd_toEndOf="@+id/entourageTitleView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/entourageTitleView">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="20dp"
-                android:paddingLeft="20dp"
-                android:paddingTop="2dp"
-                android:paddingEnd="20dp"
-                android:paddingRight="20dp"
-                android:paddingBottom="2dp">
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/filter_item_image_partner"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:contentDescription="@string/empty_description"
-                    android:src="@drawable/poi_category_8" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/filter_item_text_partner"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:text="@string/guide_display_partners"
-                    android:textColor="@color/greyish_brown"
-                    android:textSize="@dimen/entourage_font_medium" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="20dp"
+                        android:paddingLeft="20dp"
+                        android:paddingTop="2dp"
+                        android:paddingEnd="20dp"
+                        android:paddingRight="20dp"
+                        android:paddingBottom="2dp">
 
-                <Switch
-                    android:id="@+id/filter_item_switch_partner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                        <ImageView
+                            android:id="@+id/filter_item_image_partner"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:contentDescription="@string/empty_description"
+                            android:src="@drawable/poi_category_8" />
 
+                        <TextView
+                            android:id="@+id/filter_item_text_partner"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_weight="1"
+                            android:text="@string/guide_display_partners"
+                            android:textColor="@color/greyish_brown"
+                            android:textSize="@dimen/entourage_font_medium" />
+
+                        <Switch
+                            android:id="@+id/filter_item_switch_partner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:alpha="0.5"
+                        android:background="@color/greyish" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/filter_layout_donate"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="20dp"
+                        android:paddingLeft="20dp"
+                        android:paddingTop="2dp"
+                        android:paddingEnd="20dp"
+                        android:paddingRight="20dp"
+                        android:paddingBottom="2dp">
+
+                        <ImageView
+                            android:id="@+id/filter_item_image_donate"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:contentDescription="@string/empty_description" />
+
+                        <TextView
+                            android:id="@+id/filter_item_text_donate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_weight="1"
+                            android:text="@string/guide_filter_donate"
+                            android:textColor="@color/greyish_brown"
+                            android:textSize="@dimen/entourage_font_medium" />
+
+                        <Switch
+                            android:id="@+id/filter_item_switch_donate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:alpha="0.5"
+                        android:background="@color/greyish" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/filter_layout_volunteer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="20dp"
+                        android:paddingLeft="20dp"
+                        android:paddingTop="2dp"
+                        android:paddingEnd="20dp"
+                        android:paddingRight="20dp"
+                        android:paddingBottom="2dp">
+
+                        <ImageView
+                            android:id="@+id/filter_item_image_volunteer"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:contentDescription="@string/empty_description" />
+
+                        <TextView
+                            android:id="@+id/filter_item_text_volunteer"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_weight="1"
+                            android:text="@string/guide_filter_volunteer"
+                            android:textColor="@color/greyish_brown"
+                            android:textSize="@dimen/entourage_font_medium" />
+
+                        <Switch
+                            android:id="@+id/filter_item_switch_volunteer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:alpha="0.5"
+                        android:background="@color/greyish" />
+
+                </LinearLayout>
             </LinearLayout>
 
-            <View
+            <TextView
+                android:id="@+id/textView27"
+                style="@style/EntourageTitle"
                 android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:alpha="0.5"
-                android:background="@color/greyish" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/guide_filter_categories_title"
+                android:textColor="@color/greyish_brown" />
 
+            <ListView
+                android:id="@+id/guide_filter_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp" />
         </LinearLayout>
+    </ScrollView>
 
-        <LinearLayout
-            android:id="@+id/filter_layout_donate"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout11"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <View
+            android:id="@+id/title_separator2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:orientation="vertical">
+            android:layout_height="0.5dp"
+            android:background="@color/greyish"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="20dp"
-                android:paddingLeft="20dp"
-                android:paddingTop="2dp"
-                android:paddingEnd="20dp"
-                android:paddingRight="20dp"
-                android:paddingBottom="2dp">
+        <Button
+            android:id="@+id/bottom_action_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_button_accent_rounded"
+            android:fontFamily="sans-serif"
+            android:text="@string/register"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <ImageView
-                    android:id="@+id/filter_item_image_donate"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:contentDescription="@string/empty_description" />
-
-                <TextView
-                    android:id="@+id/filter_item_text_donate"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:text="@string/guide_filter_donate"
-                    android:textColor="@color/greyish_brown"
-                    android:textSize="@dimen/entourage_font_medium" />
-
-                <Switch
-                    android:id="@+id/filter_item_switch_donate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:alpha="0.5"
-                android:background="@color/greyish" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/filter_layout_volunteer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="20dp"
-                android:paddingLeft="20dp"
-                android:paddingTop="2dp"
-                android:paddingEnd="20dp"
-                android:paddingRight="20dp"
-                android:paddingBottom="2dp">
-
-                <ImageView
-                    android:id="@+id/filter_item_image_volunteer"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:contentDescription="@string/empty_description" />
-
-                <TextView
-                    android:id="@+id/filter_item_text_volunteer"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"
-                    android:text="@string/guide_filter_volunteer"
-                    android:textColor="@color/greyish_brown"
-                    android:textSize="@dimen/entourage_font_medium" />
-
-                <Switch
-                    android:id="@+id/filter_item_switch_volunteer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:alpha="0.5"
-                android:background="@color/greyish" />
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <TextView
-        style="@style/EntourageTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/guide_filter_categories_title"
-        android:textColor="@color/greyish_brown" />
-
-    <ListView
-        android:id="@+id/guide_filter_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
