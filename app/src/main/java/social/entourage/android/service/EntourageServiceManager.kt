@@ -29,7 +29,6 @@ import social.entourage.android.location.LocationProvider.UserType
 import social.entourage.android.map.filter.MapFilterFactory.mapFilter
 import social.entourage.android.newsfeed.NewsfeedPagination
 import social.entourage.android.newsfeed.NewsfeedTabItem
-import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.BusProvider.instance
 import timber.log.Timber
 import java.util.*

@@ -140,17 +140,19 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             }
             else {
                 if (error != null) {
-                    if (error.contains("PHONE_ALREADY_EXIST")) {
-                        showPopAlreadySigned()
-                        EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_EXIST)
-                    }
-                    else if (error.contains("INVALID_PHONE_FORMAT")) {
-                        displayToast(R.string.login_text_invalid_format)
-                        EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_ERROR)
-                    }
-                    else {
-                        EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_ERROR)
-                        displayToast(R.string.login_error_network)
+                    when {
+                        error.contains("PHONE_ALREADY_EXIST") -> {
+                            showPopAlreadySigned()
+                            EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_EXIST)
+                        }
+                        error.contains("INVALID_PHONE_FORMAT") -> {
+                            displayToast(R.string.login_text_invalid_format)
+                            EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_ERROR)
+                        }
+                        else -> {
+                            EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_ERROR)
+                            displayToast(R.string.login_error_network)
+                        }
                     }
                     return@createUser
                 }
@@ -323,8 +325,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         OnboardingAPI.getInstance(get()).prepareUploadPhoto { avatarKey, presignedUrl, error ->
             Timber.d("Send upload Photo Return")
             if (!avatarKey.isNullOrEmpty() && !presignedUrl.isNullOrEmpty()) {
-                val path: String? = temporaryImageUri?.getPath()
-                if (path == null) return@prepareUploadPhoto
+                val path: String = temporaryImageUri?.path ?: return@prepareUploadPhoto
                 val file = File(path)
                 Timber.d("Send upload Photo file")
                 OnboardingAPI.getInstance(get()).uploadPhotoFile(presignedUrl,file) { isOk ->

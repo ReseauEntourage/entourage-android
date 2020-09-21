@@ -164,7 +164,7 @@ class OnboardingPasscodeFragment : Fragment() {
             }
         }
 
-        _editText?.setFilters(arrayOf<InputFilter>(InputFilter.LengthFilter(1)))
+        _editText?.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(1))
 
         val textWatcher = object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
@@ -176,7 +176,7 @@ class OnboardingPasscodeFragment : Fragment() {
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int,
                                        count: Int) {
-                val text = activity?.getCurrentFocus() as? EditText?
+                val text = activity?.currentFocus as? EditText?
 
                 if (text != null && text.length() > 0) {
                     changeEditTextFocus(text)

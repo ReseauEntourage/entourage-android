@@ -111,18 +111,18 @@ class GuideFilterFragment : EntourageDialogFragment() {
     }
 
     fun forceResizeListview(myListView: ListView) {
-        val listAdapter: ListAdapter = myListView.getAdapter() ?: return
+        val listAdapter: ListAdapter = myListView.adapter ?: return
 
         var totalHeight = 0
-        for (size in 0 until listAdapter.getCount()) {
+        for (size in 0 until listAdapter.count) {
             val listItem: View = listAdapter.getView(size, null, myListView)
             listItem.measure(0, 0)
             totalHeight += listItem.measuredHeight
         }
         
-        val params: ViewGroup.LayoutParams = myListView.getLayoutParams()
-        params.height = totalHeight + myListView.getDividerHeight() * (listAdapter.getCount() - 1)
-        myListView.setLayoutParams(params)
+        val params: ViewGroup.LayoutParams = myListView.layoutParams
+        params.height = totalHeight + myListView.dividerHeight * (listAdapter.count - 1)
+        myListView.layoutParams = params
     }
 
     companion object {

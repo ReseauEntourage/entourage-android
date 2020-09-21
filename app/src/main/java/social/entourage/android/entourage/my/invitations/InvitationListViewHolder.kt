@@ -4,7 +4,6 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.layout_invitation_list_card.view.*
 import social.entourage.android.R
-import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.InvitationList
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.base.BaseCardViewHolder

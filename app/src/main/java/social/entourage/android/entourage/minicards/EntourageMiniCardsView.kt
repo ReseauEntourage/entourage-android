@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.layout_entourage_mini_cards_view.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
-import social.entourage.android.api.model.TimestampedObject
 
 /**
  * Displays a list of entourage mini cards

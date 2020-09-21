@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_enabled="false">
-        <shape xmlns:android="http://schemas.android.com/apk/res/android"
-               android:shape="rectangle">
+        <shape android:shape="rectangle">
             <corners
                 android:radius="5dp" />
             <solid
@@ -15,8 +14,7 @@
         </shape>
     </item>
     <item android:state_pressed="true" android:state_enabled="true">
-        <shape xmlns:android="http://schemas.android.com/apk/res/android"
-               android:shape="rectangle">
+        <shape android:shape="rectangle">
             <corners
                 android:radius="5dp" />
             <solid
@@ -29,8 +27,7 @@
         </shape>
     </item>
     <item android:state_focused="true" android:state_enabled="true">
-        <shape xmlns:android="http://schemas.android.com/apk/res/android"
-               android:shape="rectangle">
+        <shape android:shape="rectangle">
             <corners
                 android:radius="5dp" />
             <solid
@@ -43,8 +40,7 @@
         </shape>
     </item>
     <item android:state_enabled="true">
-        <shape xmlns:android="http://schemas.android.com/apk/res/android"
-               android:shape="rectangle">
+        <shape android:shape="rectangle">
             <corners
                 android:radius="5dp" />
             <solid

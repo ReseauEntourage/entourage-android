@@ -23,10 +23,10 @@ class PushNotificationContent : Serializable {
         get() = extra?.joinableId?.toString() ?: ""
 
     val isTourRelated: Boolean
-        get() = Extra.Companion.JOINABLE_TYPE_TOUR == extra?.joinableType
+        get() = Extra.JOINABLE_TYPE_TOUR == extra?.joinableType
 
     val isEntourageRelated: Boolean
-        get() = Extra.Companion.JOINABLE_TYPE_ENTOURAGE == extra?.joinableType
+        get() = Extra.JOINABLE_TYPE_ENTOURAGE == extra?.joinableType
 
     /*val feedItemName: String
         get() {

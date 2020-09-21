@@ -235,8 +235,8 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     override fun onStop() {
         entourage_info_discussion_view?.removeOnScrollListener(discussionScrollListener)
         try {
-        super.onStop()
-    }
+            super.onStop()
+        }
         catch(e: Exception) {
             Timber.w(e)
         }

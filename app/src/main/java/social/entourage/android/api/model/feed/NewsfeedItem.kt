@@ -1,7 +1,6 @@
 package social.entourage.android.api.model.feed
 
 import com.google.gson.*
-import com.google.gson.annotations.SerializedName
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.tour.Tour
 import timber.log.Timber

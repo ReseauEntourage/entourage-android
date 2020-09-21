@@ -47,13 +47,11 @@
             android:textColor="@color/greyish_brown"
             android:textSize="@dimen/entourage_font_medium"/>
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/filter_item_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingEnd="16dp"
-            android:paddingLeft="0dp"
-            android:paddingRight="16dp"
             android:paddingStart="0dp"/>
 
     </LinearLayout>

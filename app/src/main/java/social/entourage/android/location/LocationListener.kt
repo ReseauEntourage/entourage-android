@@ -8,8 +8,6 @@ import android.os.Bundle
 import com.google.android.gms.location.LocationAvailability
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
-import com.google.android.gms.maps.model.LatLng
-import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.service.EntourageService
 import social.entourage.android.service.EntourageServiceManager
 import timber.log.Timber

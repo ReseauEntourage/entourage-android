@@ -14,7 +14,6 @@ import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.iid.FirebaseInstanceId
@@ -98,7 +97,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
         if (intent != null) {
             storeIntent(intent)
         }
-        if (authenticationController.isAuthenticated == true) {
+        if (authenticationController.isAuthenticated) {
             //refresh the user info from the server
             presenter.updateUserLocation(currentLocation)
             //initialize the push notifications
@@ -192,7 +191,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
 
     override fun onStop() {
         try {
-        instance.unregister(this)
+            instance.unregister(this)
         } catch(e: IllegalStateException) {
             Timber.w(e)
         }
@@ -460,7 +459,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     // BUS LISTENERS
     // ----------------------------------
     @Subscribe
-    fun GCMTokenObtained(event: OnGCMTokenObtainedEvent) {
+    fun onGCMTokenObtained(event: OnGCMTokenObtainedEvent) {
         presenter.updateApplicationInfo(event.registrationId)
     }
 

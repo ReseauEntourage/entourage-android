@@ -379,7 +379,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     private fun initializePOIList() {
         fragment_guide_pois_view?.layoutManager = LinearLayoutManager(context)
         onMapReadyCallback?.let { poisAdapter.setOnMapReadyCallback(it) }
-        poisAdapter.setOnFollowButtonClickListener(View.OnClickListener { onFollowGeolocation() })
+        poisAdapter.setOnFollowButtonClickListener({ onFollowGeolocation() })
         fragment_guide_pois_view?.adapter = poisAdapter
     }
 

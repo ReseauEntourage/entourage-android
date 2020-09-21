@@ -18,7 +18,6 @@ import social.entourage.android.api.model.Partner
 import social.entourage.android.api.request.PartnerResponse
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.tools.CropCircleTransformation
-import timber.log.Timber
 
 private const val KEY_PARTNER = "param1"
 private const val KEY_PARTNERID = "partnerID"

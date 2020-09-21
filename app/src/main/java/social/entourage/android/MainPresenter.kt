@@ -39,7 +39,7 @@ import javax.inject.Inject
  * Created by Mihai Ionescu on 27/04/2018.
  */
  class MainPresenter @Inject internal constructor(
-        protected val activity: MainActivity,
+        private val activity: MainActivity,
         private val applicationInfoRequest: ApplicationInfoRequest,
         private val userRequest: UserRequest) : AvatarUpdatePresenter {
     // ----------------------------------

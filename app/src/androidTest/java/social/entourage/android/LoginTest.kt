@@ -5,6 +5,7 @@ import android.view.autofill.AutofillManager
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.IdlingResource
+import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.action.TypeTextAction
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
@@ -13,12 +14,14 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
 import com.jakewharton.espresso.OkHttp3IdlingResource
+import junit.framework.AssertionFailedError
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import social.entourage.android.onboarding.login.LoginActivity
+import timber.log.Timber
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
@@ -52,7 +55,7 @@ class LoginTest {
     @Test
     fun loginOK() {
         checkNoUserIsLoggedIn()
-        //Espresso.onView(ViewMatchers.withId(R.id.ui_button_login)).perform(ViewActions.click())
+        checkFistConnexionScreen()
         Espresso.onView(ViewMatchers.withId(R.id.ui_login_phone_et_phone)).perform(TypeTextAction(BuildConfig.TEST_ACCOUNT_LOGIN), ViewActions.closeSoftKeyboard())
         closeAutofill()
         Espresso.onView(ViewMatchers.withId(R.id.ui_login_et_code)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_PWD), ViewActions.closeSoftKeyboard())
@@ -64,7 +67,7 @@ class LoginTest {
 
     @Test
     fun loginOKwithoutCountryCode() {
-        Espresso.onView(ViewMatchers.withId(R.id.ui_button_login)).perform(ViewActions.click())
+        checkFistConnexionScreen()
         Espresso.onView(ViewMatchers.withId(R.id.ui_login_phone_et_phone)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_LOGIN.replaceFirst("\\+33".toRegex(), "0")), ViewActions.closeSoftKeyboard())
         closeAutofill()
         Espresso.onView(ViewMatchers.withId(R.id.ui_login_et_code)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_PWD), ViewActions.closeSoftKeyboard())
@@ -82,10 +85,19 @@ class LoginTest {
         afM?.commit()
     }
 
+    private fun checkFistConnexionScreen() {
+        try {
+            Espresso.onView(ViewMatchers.withId(R.id.ui_button_login)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            Espresso.onView(ViewMatchers.withId(R.id.ui_button_login)).perform(ViewActions.click())
+        } catch (e: NoMatchingViewException) {
+            Timber.w(e)
+        }
+    }
+
     @Test
     fun loginFailureWrongPassword() {
         checkNoUserIsLoggedIn()
-        Espresso.onView(ViewMatchers.withId(R.id.ui_button_login)).perform(ViewActions.click())
+        checkFistConnexionScreen()
         Espresso.onView(ViewMatchers.withId(R.id.ui_login_phone_et_phone)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_LOGIN), ViewActions.closeSoftKeyboard())
         closeAutofill()
         Espresso.onView(ViewMatchers.withId(R.id.ui_login_et_code)).perform(ViewActions.typeText("999999"), ViewActions.closeSoftKeyboard())
@@ -98,7 +110,7 @@ class LoginTest {
 
     @Test
     fun loginFailureWrongPhoneNumberFormat() {
-        Espresso.onView(ViewMatchers.withId(R.id.ui_button_login)).perform(ViewActions.click())
+        checkFistConnexionScreen()
         Espresso.onView(ViewMatchers.withId(R.id.ui_login_phone_et_phone)).perform(ViewActions.typeText("012345678"), ViewActions.closeSoftKeyboard())
         closeAutofill()
         Espresso.onView(ViewMatchers.withId(R.id.ui_login_et_code)).perform(ViewActions.typeText("000000"), ViewActions.closeSoftKeyboard())

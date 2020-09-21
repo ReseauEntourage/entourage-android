@@ -1,21 +1,18 @@
 package social.entourage.android.onboarding.login
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.activity_login_next.ui_bt_next
-import kotlinx.android.synthetic.main.activity_login_next.ui_view_progress
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_login_next.*
 import social.entourage.android.EntourageApplication
-import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
 import social.entourage.android.tools.disable
 import social.entourage.android.tools.enable
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.tools.view.CustomProgressDialog
 
 class LoginNextActivity : AppCompatActivity(),LoginNextCallback {

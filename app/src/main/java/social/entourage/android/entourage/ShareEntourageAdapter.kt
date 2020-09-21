@@ -46,10 +46,10 @@ class ShareEntourageAdapter(val context: Context, private val myDataset: ArrayLi
 
             bitDraw = getIcn(sharingEntourage.entourage_type,sharingEntourage.category)
 
-            if (sharingEntourage.category == null && sharingEntourage.group_type.equals("outing")) {
+            if (sharingEntourage.category == null && sharingEntourage.group_type == "outing") {
                 bitDraw = AppCompatResources.getDrawable(context,R.drawable.ic_event_accent_24dp)
             }
-            if (sharingEntourage.group_type.equals("conversation")) {
+            if (sharingEntourage.group_type == "conversation") {
                 imageUrl = sharingEntourage.author?.avatarUrl
             }
 

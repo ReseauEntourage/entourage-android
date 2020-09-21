@@ -74,7 +74,7 @@ class EntourageApplication : MultiDexApplication() {
         get() = librariesSupport.firebaseAnalytics
 
     fun me(): User? {
-        return entourageComponent.authenticationController.me ?: return null
+        return entourageComponent.authenticationController.me
     }
 
     fun onActivityCreated(activity: EntourageActivity) {

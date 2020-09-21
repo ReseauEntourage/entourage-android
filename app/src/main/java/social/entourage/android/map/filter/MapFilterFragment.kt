@@ -6,21 +6,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.CompoundButton
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.fragment_map_filter.*
-import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.entourage.category.EntourageCategoryManager
-import timber.log.Timber
+import social.entourage.android.tools.log.EntourageEvents
 import java.util.*
 
 class MapFilterFragment  : BaseMapFilterFragment() {
     // ----------------------------------
     // Attributes
     // ----------------------------------
-    private var actionSwitches = HashMap<String, List<Switch>>()
+    private var actionSwitches = HashMap<String, List<SwitchCompat>>()
     private val onCheckedChangeListener = OnCheckedChangeListener()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -62,7 +65,7 @@ class MapFilterFragment  : BaseMapFilterFragment() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_ASK)
         val checked = map_filter_entourage_demand_switch?.isChecked ?: false
         map_filter_entourage_demand_details_layout?.visibility = if (checked) View.VISIBLE else View.GONE
-        actionSwitches[BaseEntourage.GROUPTYPE_ACTION_DEMAND]?.forEach { categorySwitch-> categorySwitch.isChecked = checked}
+        actionSwitches[BaseEntourage.GROUPTYPE_ACTION_DEMAND]?.forEach { categorySwitch -> categorySwitch.isChecked = checked}
     }
 
     private fun onContributionSwitch() {
@@ -164,7 +167,7 @@ class MapFilterFragment  : BaseMapFilterFragment() {
     private fun addEntourageCategories(groupType: String, layout: LinearLayout?, mapFilter: MapFilter) {
         if(layout==null) return
         // create the hashmap entrance
-        val switchList: MutableList<Switch> = ArrayList()
+        val switchList: MutableList<SwitchCompat> = ArrayList()
         actionSwitches[groupType] = switchList
         // get the list of categories
         val entourageCategoryList = EntourageCategoryManager.getEntourageCategoriesForGroup(groupType)
@@ -179,7 +182,7 @@ class MapFilterFragment  : BaseMapFilterFragment() {
             // populate the view
             val mFilterName = view.findViewById<TextView>(R.id.filter_item_text)
             val mFilterImage = view.findViewById<ImageView>(R.id.filter_item_image)
-            val mFilterSwitch = view.findViewById<Switch>(R.id.filter_item_switch)
+            val mFilterSwitch = view.findViewById<SwitchCompat>(R.id.filter_item_switch)
             mFilterName.text = entourageCategory.title
             mFilterImage.setImageResource(entourageCategory.iconRes)
             mFilterImage.clearColorFilter()

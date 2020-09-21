@@ -12,7 +12,6 @@ import social.entourage.android.R
 import social.entourage.android.api.EntourageMessageSharingAPI
 import social.entourage.android.api.model.SharingEntourage
 import social.entourage.android.base.EntourageDialogFragment
-import timber.log.Timber
 
 private const val ARG_PARAM1 = "uuid"
 
@@ -68,7 +67,7 @@ class ShareEntourageFragment : EntourageDialogFragment() {
                 arraySharing.clear()
 
                 for (share in it.sharing) {
-                    if (!share.uuid.equals(uuid)) {
+                    if (share.uuid != uuid) {
                         arraySharing.add(share)
                     }
                 }

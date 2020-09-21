@@ -18,7 +18,7 @@ class PlusFragment : Fragment(), BackPressable {
             layout_line_add_tour_encounter?.visibility = View.VISIBLE
             layout_line_start_tour_launcher?.visibility = View.GONE
             val tag = layout_line_start_tour_launcher?.tag as String
-            if (tag.equals("normal")) {
+            if (tag == "normal") {
                 ui_image_plus?.visibility = View.GONE
             }
         } ?: run {
@@ -27,7 +27,7 @@ class PlusFragment : Fragment(), BackPressable {
             if (EntourageApplication.me(activity)?.isPro == true) {
                 layout_line_start_tour_launcher?.visibility = View.VISIBLE
                 val tag = layout_line_start_tour_launcher?.tag as String
-                if (tag.equals("normal")) {
+                if (tag == "normal") {
                     ui_image_plus?.visibility = View.GONE
                 }
             }

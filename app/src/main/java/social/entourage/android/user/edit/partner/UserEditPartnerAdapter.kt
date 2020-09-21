@@ -122,10 +122,10 @@ class UserEditPartnerAdapter : BaseAdapter() {
             // save the state
             getItem(position)?.let { partner->
                 partner.isDefault = isChecked
-                if (selectedPartnerPosition != position) {
-                    selectedPartnerPosition = position
-                } else {
-                    selectedPartnerPosition = if (partner.isDefault) position else AdapterView.INVALID_POSITION
+                selectedPartnerPosition = when {
+                    selectedPartnerPosition != position -> position
+                    partner.isDefault -> position
+                    else -> AdapterView.INVALID_POSITION
                 }
             }
 
