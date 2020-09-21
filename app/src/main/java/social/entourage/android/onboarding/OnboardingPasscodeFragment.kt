@@ -60,7 +60,7 @@ class OnboardingPasscodeFragment : Fragment() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING__PASSCODE)
     }
 
-    fun activateTimer() {
+    private fun activateTimer() {
         cancelTimer()
         timeOut = TIME_BEFORE_CALL
         countDownTimer = object  : CountDownTimer(600000 ,1000L) {

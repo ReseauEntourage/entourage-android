@@ -191,7 +191,11 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     }
 
     override fun onStop() {
+        try {
         instance.unregister(this)
+        } catch(e: IllegalStateException) {
+            Timber.w(e)
+        }
         super.onStop()
     }
 
