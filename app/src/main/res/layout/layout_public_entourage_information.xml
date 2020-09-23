@@ -285,7 +285,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            >
 
             <TextView
                 android:id="@+id/entourage_info_request_join_title"
@@ -310,6 +311,7 @@
                     android:layout_marginBottom="4dp"
                     android:text="@string/tour_info_request_join_button_entourage"
                     android:textSize="@dimen/entourage_font_medium"
+                    android:textAllCaps="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
