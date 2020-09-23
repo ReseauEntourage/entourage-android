@@ -39,4 +39,19 @@
     <string name="guide_display_partners">Associations et services actifs sur Entourage</string>
     <string name="guide_filter_donate">Recherchant des dons</string>
     <string name="guide_filter_volunteer">Recherchant des bénévoles</string>
+    <string name="hub_title_1">Guide solidaire</string>
+    <string name="hub_subtitle_1">Adresses utiles autour de vous</string>
+    <string name="hub_description_1">Restaurants solidaires, associations recherchant des bénévoles ou des dons...</string>
+    <string name="hub_button_1">Rechercher autour de moi →</string>
+
+    <string name="hub_title_2">Ressources au cas par cas</string>
+    <string name="hub_description_2">Chaque situation est différente, mais voici des clés pour s’y retrouver : numéros d’urgence, démarches conseillées, ...</string>
+    <string name="hub_button_2">JE M’ORIENTE</string>
+
+    <string name="hub_title_3">Se préparer à la rencontre</string>
+    <string name="hub_description_3">Voisins solidaires, le Guide Simple Comme Bonjour et nos ateliers de sensibilisation vous aident à comprendre les situations et à dépasser les blocages pour créer des liens.</string>
+    <string name="hub_button_3">Découvrir le guide →</string>
+
+    <string name="hub_button_4">TROUVER UN ATELIER</string>
+    <string name="gds_title">Lieux solidaires</string>
 </resources>

@@ -78,6 +78,8 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         initializePOIList()
         initializeFloatingButtons()
         initializeFilterButton()
+
+
     }
 
     fun setupComponent(entourageComponent: EntourageComponent?) {
@@ -219,7 +221,8 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         onBackPressed()
         // Open the link to propose a POI
         EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_PROPOSE_POI)
-        (activity as? MainActivity)?.showWebViewForLinkId(Constants.PROPOSE_POI_ID)
+//        (activity as? MainActivity)?.showWebViewForLinkId(Constants.PROPOSE_POI_ID)
+        (activity as? GDSMainActivity)?.showWebViewForLinkId(Constants.PROPOSE_POI_ID)
     }
 
     override val adapter: HeaderBaseAdapter?
@@ -304,7 +307,8 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         fragment_guide_empty_list_popup?.setOnClickListener {onEmptyListPopupClose()}
         fragment_guide_info_popup_close?.setOnClickListener {onInfoPopupClose()}
         fragment_guide_info_popup?.setOnClickListener {onInfoPopupClose()}
-        val proposePOIUrl = (activity as? MainActivity)?.getLink(Constants.PROPOSE_POI_ID) ?: ""
+//        val proposePOIUrl = (activity as? MainActivity)?.getLink(Constants.PROPOSE_POI_ID) ?: ""
+        val proposePOIUrl = (activity as? GDSMainActivity)?.getLink(Constants.PROPOSE_POI_ID) ?: ""
         hideInfoPopup()
         fragment_guide_empty_list_popup_text?.movementMethod = EntourageLinkMovementMethod
         fragment_guide_empty_list_popup_text?.text = Utils.fromHtml(getString(R.string.map_poi_empty_popup, proposePOIUrl))
@@ -476,6 +480,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     inner class OnEntourageMarkerClickListener : OnClusterItemClickListener<Poi> {
         override fun onClusterItemClick(poi: Poi): Boolean {
             EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_POI_VIEW)
+            Timber.d("***** On cluster item click ? ${poi}")
             showPoiDetails(poi)
             return true
         }
