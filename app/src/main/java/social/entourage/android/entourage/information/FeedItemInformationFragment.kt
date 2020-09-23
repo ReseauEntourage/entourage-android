@@ -960,7 +960,15 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
                     entourage_info_act_layout?.visibility = View.GONE
                     entourage_info_request_join_layout?.visibility = View.VISIBLE
 //                    entourage_info_request_join_title?.setText(feedItem.getJoinRequestTitle())
-                    entourage_info_request_join_button?.setText(feedItem.getJoinRequestButton())
+                    if (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.getGroupType(), ignoreCase = true)) {
+                        entourage_info_request_join_button?.setText(getString(R.string.tour_info_request_join_button_entourage).toUpperCase())
+                    }
+                    else {
+                        entourage_info_request_join_button?.setText(getString(R.string.tour_info_request_join_button2_entourage).toUpperCase())
+
+                    }
+                   // entourage_info_request_join_button?.setText(feedItem.getJoinRequestButton())
+
                     updatePublicScrollViewLayout()
                     return
                 }
