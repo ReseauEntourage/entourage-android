@@ -169,17 +169,9 @@ class User : Serializable {
     // ----------------------------------
     // User Firebase Properties
     // ----------------------------------
-    class UserFirebaseProperties : Serializable {
-        @SerializedName("ActionZoneDep")
-        val actionZoneDep = ""
-
-        @SerializedName("ActionZoneCP")
-        val actionZoneCP = ""
-
+    class UserFirebaseProperties : HashMap<String, String>(), Serializable {
         companion object {
             private const val serialVersionUID: Long = -90000095L
-            const val actionZoneDepName = "ActionZoneDep"
-            const val actionZoneCPName = "ActionZoneCP"
         }
     }
 

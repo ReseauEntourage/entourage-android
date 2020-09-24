@@ -477,8 +477,9 @@ object EntourageEvents {
             mFirebaseAnalytics.setUserProperty("EntouragePartner", it.name)
         }
         user.firebaseProperties?.let {
-            mFirebaseAnalytics.setUserProperty(User.UserFirebaseProperties.actionZoneCPName, it.actionZoneCP)
-            mFirebaseAnalytics.setUserProperty(User.UserFirebaseProperties.actionZoneDepName, it.actionZoneDep)
+            for (_val in it) {
+                mFirebaseAnalytics.setUserProperty(_val.key,_val.value)
+            }
         }
         val geolocStatus = if (isLocationPermissionGranted()) "YES" else "NO"
         mFirebaseAnalytics.setUserProperty("EntourageGeolocEnable", geolocStatus)
