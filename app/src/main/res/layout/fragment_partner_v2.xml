@@ -85,16 +85,31 @@
                     app:layout_constraintStart_toStartOf="@+id/ui_asso_tv_title"
                     app:layout_constraintTop_toBottomOf="@+id/ui_asso_tv_title" />
 
+                <Button
+                    android:id="@+id/ui_button_follow"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="160dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_button_rounded_pre_onboard_orange_plain"
+                    android:text="@string/buttonFollowOffPartner"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:textStyle="normal"
+                    android:textAllCaps="false"
+                    app:layout_constraintStart_toStartOf="@+id/ui_asso_tv_subtitle"
+                    app:layout_constraintTop_toBottomOf="@+id/ui_asso_tv_subtitle" />
+
                 <LinearLayout
                     android:id="@+id/ui_asso_layout_top_needs"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/ui_asso_iv_logo"
-                    app:layout_constraintTop_toBottomOf="@+id/ui_asso_tv_subtitle">
+                    app:layout_constraintTop_toBottomOf="@+id/ui_button_follow">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/ui_asso_layout_top_donates"

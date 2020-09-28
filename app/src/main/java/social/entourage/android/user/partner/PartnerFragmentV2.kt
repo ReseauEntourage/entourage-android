@@ -1,14 +1,18 @@
 package social.entourage.android.user.partner
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.collection.ArrayMap
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_partner_v2.*
 import kotlinx.android.synthetic.main.layout_view_title.view.*
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -80,6 +84,32 @@ class PartnerFragmentV2 : EntourageDialogFragment() {
         })
     }
 
+    fun updatePartnerFollow(isFollow:Boolean) {
+        val application = EntourageApplication.get()
+
+        val params = ArrayMap<String, Any>()
+        val isFollowParam = ArrayMap<String,Any>()
+        isFollowParam["partner_id"] = partner?.id.toString()
+        isFollowParam["active"] = if (isFollow) "true" else "false"
+        params["following"] = isFollowParam
+
+        val call = application.entourageComponent.userRequest.updateUserPartner(params)
+
+        call.enqueue(object : Callback<ResponseBody>{
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    partner?.let {
+                        partner?.isFollowing = isFollow
+                        updateButtonFollow()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            }
+        })
+
+    }
+
     fun configureViews() {
         user_title_layout?.title_text?.text = requireActivity().resources.getString(R.string.title_association)
         user_title_layout?.title_close_button?.setOnClickListener {dismiss()}
@@ -129,6 +159,8 @@ class PartnerFragmentV2 : EntourageDialogFragment() {
             ui_asso_tv_website?.text = it.websiteUrl
             ui_asso_tv_phone?.text = it.phone
             ui_asso_tv_address?.text = it.address
+
+            updateButtonFollow()
         }
 
         ui_asso_button_address?.setOnClickListener {
@@ -150,6 +182,37 @@ class PartnerFragmentV2 : EntourageDialogFragment() {
             partner?.websiteUrl?.let { url ->
                 openLink(url,Intent.ACTION_VIEW)
             }
+        }
+
+        ui_button_follow?.setOnClickListener {
+            partner?.let {
+                if (it.isFollowing) {
+                    showPopInfoUnfollow()
+                }
+                else {
+                    updatePartnerFollow(true)
+                }
+            }
+        }
+    }
+
+    fun showPopInfoUnfollow() {
+        val alertDialog = AlertDialog.Builder(requireContext())
+        alertDialog.setTitle(R.string.partnerFollowTitle)
+        alertDialog.setMessage(R.string.partnerFollowMessage)
+        alertDialog.setPositiveButton(R.string.partnerFollowButtonValid) { _, _ ->
+            updatePartnerFollow(false)
+        }
+        alertDialog.setNegativeButton(R.string.partnerFollowButtonCancel) { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        alertDialog.show()
+    }
+
+    fun updateButtonFollow() {
+        partner?.let {
+            ui_button_follow?.text = if (it.isFollowing) getString(R.string.buttonFollowOnPartner) else getString(R.string.buttonFollowOffPartner)
         }
     }
 

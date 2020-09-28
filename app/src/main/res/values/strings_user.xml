@@ -153,4 +153,13 @@
     <string name="title_asso_phone_light">Téléphone</string>
     <string name="title_asso_website">Site Web</string>
     <string name="title_asso_address">Adresse</string>
+
+    //Pop follow/unfollow partner
+    <string name="buttonFollowOnPartner">Abonné.e</string>
+    <string name="buttonFollowOffPartner">S\'abonner</string>
+    <string name="partnerFollowTitle">Titre</string>
+    <string name="partnerFollowMessage">Message</string>
+    <string name="partnerFollowButtonValid">Se désabonner</string>
+    <string name="partnerFollowButtonCancel">Annuler</string>
+
 </resources>
