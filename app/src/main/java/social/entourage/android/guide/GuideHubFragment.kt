@@ -38,6 +38,9 @@ class GuideHubFragment : Fragment() {
         ui_layout_cell_4?.setOnClickListener {
             (activity as MainActivity).showWebViewForLinkId(Constants.SLUG_HUB_LINK_3)
         }
+        ui_layout_cell_5?.setOnClickListener {
+            (activity as MainActivity).showWebViewForLinkId(Constants.SLUG_HUB_LINK_FAQ)
+        }
     }
 
     companion object {
