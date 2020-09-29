@@ -1,7 +1,6 @@
 package social.entourage.android.user.partner
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -198,8 +197,10 @@ class PartnerFragmentV2 : EntourageDialogFragment() {
 
     fun showPopInfoUnfollow() {
         val alertDialog = AlertDialog.Builder(requireContext())
-        alertDialog.setTitle(R.string.partnerFollowTitle)
-        alertDialog.setMessage(R.string.partnerFollowMessage)
+        val _title = getString(R.string.partnerFollowTitle).format(partner?.name)
+        val _message = getString(R.string.partnerFollowMessage).format(partner?.name)
+        alertDialog.setTitle(_title)
+        alertDialog.setMessage(_message)
         alertDialog.setPositiveButton(R.string.partnerFollowButtonValid) { _, _ ->
             updatePartnerFollow(false)
         }
@@ -212,7 +213,16 @@ class PartnerFragmentV2 : EntourageDialogFragment() {
 
     fun updateButtonFollow() {
         partner?.let {
-            ui_button_follow?.text = if (it.isFollowing) getString(R.string.buttonFollowOnPartner) else getString(R.string.buttonFollowOffPartner)
+            if (it.isFollowing) {
+                ui_button_follow?.text = getString(R.string.buttonFollowOnPartner)
+                ui_button_follow?.setTextColor(resources.getColor(R.color.white))
+                ui_button_follow?.background = resources.getDrawable(R.drawable.bg_button_rounded_pre_onboard_orange_plain)
+            }
+            else {
+                ui_button_follow?.text = getString(R.string.buttonFollowOffPartner)
+                ui_button_follow?.setTextColor(resources.getColor(R.color.accent))
+                ui_button_follow?.background = resources.getDrawable(R.drawable.bg_button_rounded_pre_onboard_orange_stroke)
+            }
         }
     }
 

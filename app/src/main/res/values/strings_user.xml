@@ -157,8 +157,8 @@
     //Pop follow/unfollow partner
     <string name="buttonFollowOnPartner">Abonné.e</string>
     <string name="buttonFollowOffPartner">S\'abonner</string>
-    <string name="partnerFollowTitle">Titre</string>
-    <string name="partnerFollowMessage">Message</string>
+    <string name="partnerFollowTitle">Se désabonner de %s ?</string>
+    <string name="partnerFollowMessage">Vous ne recevrez plus de notification lorsque %s lance de nouvelles initiatives solidaires.</string>
     <string name="partnerFollowButtonValid">Se désabonner</string>
     <string name="partnerFollowButtonCancel">Annuler</string>
 
