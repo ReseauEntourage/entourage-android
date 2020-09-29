@@ -235,6 +235,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         poisMap.clear()
         mapClusterManager?.clearItems()
         poisAdapter.removeAll()
+        map?.clear()
     }
 
     private fun onMapReady(googleMap: GoogleMap) {
