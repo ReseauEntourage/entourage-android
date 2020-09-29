@@ -400,6 +400,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         if (isFullMapShown) {
             return
         }
+        ui_view_empty_list?.visibility = View.GONE
         isFullMapShown = true
         fragment_guide_display_toggle?.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_list_white_24dp))
         ensureMapVisible()
@@ -432,6 +433,14 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         } else {
             poisAdapter.setMapHeight(originalMapLayoutHeight)
             fragment_guide_pois_view?.layoutManager?.requestLayout()
+        }
+
+        if (poisAdapter.dataItemCount == 0) {
+            Timber.d("***** ici Pois show list empty ;)")
+            ui_view_empty_list?.visibility = View.VISIBLE
+        }
+        else {
+            ui_view_empty_list?.visibility = View.GONE
         }
     }
 

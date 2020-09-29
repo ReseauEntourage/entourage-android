@@ -24,7 +24,12 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
         if (user?.token == null) {
             user = null
         }
+
         loadUserPreferences()
+
+        //To reset show pop up empty POI on GDS
+        userPreferences.isShowNoPOIsPopup = true
+
         return this
     }
 
