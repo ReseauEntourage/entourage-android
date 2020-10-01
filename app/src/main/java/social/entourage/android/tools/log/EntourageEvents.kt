@@ -430,6 +430,13 @@ object EntourageEvents {
     const val ACTION_GUIDE_SHOWLIST = "Action__Guide__ShowList"
     const val ACTION_GUIDE_SHOWFILTERS = "Action__Guide__ShowFilters"
 
+    const val ACTION_GUIDE_SHOWGDS = "Action__HubGuide__ShowGDS"
+    const val ACTION_GUIDE_WEBORIENTATION = "Action__HubGuide__WebOrientation"
+    const val ACTION_GUIDE_WEBGUIDE = "Action__HubGuide__WebGuide"
+    const val ACTION_GUIDE_WEBATELIER = "Action__HubGuide__WebAtelier"
+    const val ACTION_GUIDE_WEBFAQ = "Action__HubGuide__WebFaq"
+
+
     //Start info
     const val SHOW_START_FEEDS = "View__Start__Feeds"
 
