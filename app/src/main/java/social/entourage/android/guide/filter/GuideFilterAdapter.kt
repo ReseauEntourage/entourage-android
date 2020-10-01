@@ -51,7 +51,7 @@ class GuideFilterAdapter : BaseAdapter() {
             }
         }
         view.filter_item_text?.text = displayName//categoryType.displayName
-        view.filter_item_image?.setImageResource(categoryType.resourceId)
+        view.filter_item_image?.setImageResource(categoryType.filterId)
         // set the switch
         view.filter_item_switch?.isChecked = item.isChecked
         view.filter_item_switch?.tag = position

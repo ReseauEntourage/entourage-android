@@ -14,5 +14,6 @@ interface PoiRequest {
                            @Query("longitude") longitude: Double,
                            @Query("distance") distance: Double,
                            @Query("category_ids") categoryIDs: String?,
-                           @Query("partners_filters") partnersFilters: String?): Call<PoiResponse>
+                           @Query("partners_filters") partnersFilters: String?,
+                           @Query("v")version:String): Call<PoiResponse>
 }

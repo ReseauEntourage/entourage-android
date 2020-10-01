@@ -125,7 +125,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/ic_user_asso" />
+                            app:srcCompat="@drawable/ic_gift_asso" />
 
                         <TextView
                             android:id="@+id/tv_1"
@@ -157,7 +157,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/ic_gift_asso" />
+                            app:srcCompat="@drawable/ic_user_asso" />
 
                         <TextView
                             android:id="@+id/tv_2"

@@ -165,11 +165,8 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
-    fun putPoiOnMap(categories: List<Category>?, pois: List<Poi>?) {
+    fun putPoiOnMap(pois: List<Poi>?) {
         if (activity != null) {
-            if (categories != null) {
-                mapClusterItemRenderer?.setCategories(categories)
-            }
             clearOldPois()
             if (pois != null && pois.isNotEmpty()) {
                 val poiCollection = removeRedundantPois(pois)

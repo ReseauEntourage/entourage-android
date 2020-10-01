@@ -60,7 +60,7 @@
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:contentDescription="@string/empty_description"
-                            android:src="@drawable/poi_category_8" />
+                            app:srcCompat="@drawable/picto_cat_filter_8" />
 
                         <TextView
                             android:id="@+id/filter_item_text_partner"

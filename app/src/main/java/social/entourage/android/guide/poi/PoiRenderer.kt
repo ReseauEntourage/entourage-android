@@ -40,16 +40,16 @@ class PoiRenderer(context: Context?, map: GoogleMap?, clusterManager: ClusterMan
         this.categories = categories
     }
 
-    enum class CategoryType(val displayName: String, val categoryId: Int, val resourceId: Int, val resourceTransparentId: Int, val color: Int) {
-        OTHER("Other", 0, 0, 0, Color.parseColor("#000000")),
-        FOOD("Se nourrir", 1, R.drawable.poi_category_1, R.drawable.poi_transparent_category_1, Color.parseColor("#ffc57f")),
-        HOUSING("Se loger", 2, R.drawable.poi_category_2, R.drawable.poi_transparent_category_2, Color.parseColor("#caa7ea")),
-        MEDICAL("Se soigner", 3, R.drawable.poi_category_3, R.drawable.poi_transparent_category_3, Color.parseColor("#ff9999")),
-        WATER("Se rafraîchir", 4, R.drawable.poi_category_4, R.drawable.poi_transparent_category_4, Color.parseColor("#3ad7ff")),
-        ORIENTATION("S'orienter", 5, R.drawable.poi_category_5, R.drawable.poi_transparent_category_5, Color.parseColor("#bfbfb9")),
-        SELF_CARE("S'occuper de soi", 6, R.drawable.poi_category_6, R.drawable.poi_transparent_category_6, Color.parseColor("#88c0ff")),
-        INSERTION("Se réinsérer", 7, R.drawable.poi_category_7, R.drawable.poi_transparent_category_7, Color.parseColor("#97d791")),
-        PARTNERS("Partenaires", 8, R.drawable.poi_category_8, R.drawable.poi_transparent_category_8, Color.parseColor("#F99F7C"));
+    enum class CategoryType(val displayName: String, val categoryId: Int, val resourceId: Int, val resourceTransparentId: Int, val color: Int, val filterId:Int) {
+        OTHER("Other", 0, 0, 0, Color.parseColor("#000000"),0),
+        FOOD("Se nourrir", 1, R.drawable.poi_category_new_1, R.drawable.poi_transparent_category_1, Color.parseColor("#ffc57f"),R.drawable.picto_cat_filter_1),
+        HOUSING("Se loger", 2, R.drawable.poi_category_new_2, R.drawable.poi_transparent_category_2, Color.parseColor("#caa7ea"),R.drawable.picto_cat_filter_2),
+        MEDICAL("Se soigner", 3, R.drawable.poi_category_new_3, R.drawable.poi_transparent_category_3, Color.parseColor("#ff9999"),R.drawable.picto_cat_filter_3),
+        WATER("Se rafraîchir", 4, R.drawable.poi_category_new_41, R.drawable.poi_transparent_category_4, Color.parseColor("#3ad7ff"),R.drawable.picto_cat_filter_41),
+        ORIENTATION("S'orienter", 5, R.drawable.poi_category_new_5, R.drawable.poi_transparent_category_5, Color.parseColor("#bfbfb9"),R.drawable.picto_cat_filter_5),
+        SELF_CARE("S'occuper de soi", 6, R.drawable.poi_category_new_6, R.drawable.poi_transparent_category_6, Color.parseColor("#88c0ff"),R.drawable.picto_cat_filter_6),
+        INSERTION("Se réinsérer", 7, R.drawable.poi_category_new_7, R.drawable.poi_transparent_category_7, Color.parseColor("#97d791"),R.drawable.picto_cat_filter_7),
+        PARTNERS("Partenaires", 8, R.drawable.poi_category_new_8, R.drawable.poi_transparent_category_8, Color.parseColor("#F99F7C"),R.drawable.picto_cat_filter_8);
 
         companion object {
             fun findCategoryTypeByName(name: String?): CategoryType {
