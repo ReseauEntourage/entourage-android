@@ -3,14 +3,40 @@ package social.entourage.android.guide.poi
 import android.content.Intent
 import android.net.Uri
 import android.view.View
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import social.entourage.android.api.model.guide.Poi
+import social.entourage.android.api.request.PoiDetailResponse
+import social.entourage.android.api.request.PoiRequest
 import social.entourage.android.map.OnAddressClickListener
+import javax.inject.Inject
 
 /**
  * Presenter controlling the ReadPoiFragment
  * @see ReadPoiFragment
  */
-class ReadPoiPresenter(private val fragment: ReadPoiFragment) {
+class ReadPoiPresenter @Inject constructor(private val fragment: ReadPoiFragment, private val poiRequest: PoiRequest) {
+
+    fun getPoiDetail(poiId:Int) {
+        val call = poiRequest.getPoiDetail(poiId)
+        call.enqueue(object : Callback<PoiDetailResponse> {
+            override fun onResponse(call: Call<PoiDetailResponse>, response: Response<PoiDetailResponse>) {
+                response.body()?.let {
+                    if (response.isSuccessful) {
+                        displayPoi(it.poi)
+                        return
+                    }
+                }
+                fragment.noData()
+            }
+
+            override fun onFailure(call: Call<PoiDetailResponse>, t: Throwable) {
+                fragment.noData()
+            }
+        })
+    }
+
     fun displayPoi(poi: Poi) {
         //var listenerAddress: OnAddressClickListener? = null
         val listenerAddress = poi.address?.let { OnAddressClickListener(fragment.requireActivity(), it) }

@@ -6,6 +6,7 @@ import com.google.maps.android.clustering.ClusterItem
 import social.entourage.android.api.model.TimestampedObject
 import java.io.Serializable
 import java.util.*
+import kotlin.collections.ArrayList
 
 class Poi : TimestampedObject(), Serializable, ClusterItem {
     // ----------------------------------
@@ -28,6 +29,9 @@ class Poi : TimestampedObject(), Serializable, ClusterItem {
     var latitude = 0.0
 
     var partner_id:Int? = null
+
+    @SerializedName("category_ids")
+    var categories = ArrayList<Int>()
     // ----------------------------------
     // GETTERS & SETTERS
     // ----------------------------------

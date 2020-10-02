@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.fragment_guide_poi_read.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.EntourageApplication
@@ -41,7 +42,8 @@ class ReadPoiFragment : EntourageDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         poi = arguments?.getSerializable(BUNDLE_KEY_POI) as Poi
         setupComponent(EntourageApplication.get(activity).entourageComponent)
-        presenter.displayPoi(poi)
+
+        presenter.getPoiDetail(poi.id.toInt())
 
         title_close_button?.setOnClickListener {dismiss()}
         poi_report_button?.setOnClickListener {onReportButtonClicked()}
@@ -50,45 +52,88 @@ class ReadPoiFragment : EntourageDialogFragment() {
     }
 
     private fun setupComponent(entourageComponent: EntourageComponent?) {
-        DaggerReadPoiComponent.builder()
-                .entourageComponent(entourageComponent)
-                .readPoiModule(ReadPoiModule(this))
-                .build()
-                .inject(this)
+        entourageComponent?.let {
+            DaggerReadPoiComponent.builder()
+                    .entourageComponent(entourageComponent)
+                    .readPoiModule(ReadPoiModule(this,entourageComponent.poiRequest))
+                    .build()
+                    .inject(this)
+        } ?: kotlin.run { dismiss() }
+    }
+
+    fun noData() {
+        dismiss()
     }
 
     fun onDisplayedPoi(poi: Poi, onAddressClickListener: OnAddressClickListener?, onPhoneClickListener: OnPhoneClickListener?) {
         textview_poi_name?.text = poi.name
         textview_poi_description?.text = poi.description
-        setActionButton(button_poi_phone, poi.phone)
-        setActionButton(button_poi_mail, poi.email)
-        setActionButton(button_poi_web, poi.website)
-        setActionButton(button_poi_address, poi.address)
+        setActionButton(button_poi_phone, poi.phone,ui_layout_phone)
+        setActionButton(button_poi_mail, poi.email,ui_layout_mail)
+        setActionButton(button_poi_web, poi.website,ui_layout_web)
+        setActionButton(button_poi_address, poi.address,ui_layout_location)
+
         if (onAddressClickListener != null) {
             button_poi_address?.setOnClickListener(onAddressClickListener)
         }
         if (onPhoneClickListener != null) {
             button_poi_phone?.setOnClickListener(onPhoneClickListener)
         }
-        val categoryType = CategoryType.findCategoryTypeById(poi.categoryId)
-        poi_type_layout?.setBackgroundColor(categoryType.color)
-
-        var displayName = categoryType.displayName
-        if (displayName == "Partenaires") {
-            context?.let {
-                displayName = it.getString(R.string.partners_entourage)
-            }
+        //Setup icons categories
+        for (i in 0 until 6) {
+            getImageId(i)?.visibility = View.INVISIBLE
         }
 
-        poi_type_label?.text = displayName//categoryType.displayName
-        poi_type_image?.setImageResource(categoryType.resourceTransparentId)
+        for (i in 0 until poi.categories.size) {
+            val catType = CategoryType.findCategoryTypeById(poi.categories[i])
+            val pictoPoi = getImageId(i)
+            pictoPoi?.visibility = View.VISIBLE
+            pictoPoi?.setImageResource(catType.filterId)
+        }
+
+        if (!poi.audience.isNullOrEmpty()) {
+            ui_layout_public?.visibility = View.VISIBLE
+            ui_tv_poi_public?.text = poi.audience
+        }
+        else {
+            ui_layout_public?.visibility = View.GONE
+        }
     }
 
-    private fun setActionButton(btn: Button?, value: String?) {
+    private fun getImageId(position:Int) : ImageView? {
+
+        when(position) {
+            0 -> {
+              return  ui_iv_picto_1
+            }
+            1 -> {
+               return ui_iv_picto_2
+            }
+            2 -> {
+               return ui_iv_picto_3
+            }
+            3 -> {
+                return ui_iv_picto_4
+            }
+            4 -> {
+                return ui_iv_picto_5
+            }
+            5 -> {
+                return ui_iv_picto_6
+            }
+            else -> return null
+        }
+    }
+
+    private fun setActionButton(btn: Button?, value: String?,layout:ConstraintLayout?) {
         if (btn !=null && value != null && value.isNotEmpty()) {
             btn.visibility = View.VISIBLE
             btn.text = value
             btn.paintFlags = btn.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+            layout?.visibility = View.VISIBLE
+        }
+        else {
+            layout?.visibility = View.GONE
         }
     }
 

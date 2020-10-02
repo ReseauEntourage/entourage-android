@@ -5,8 +5,10 @@
     <string name="map_poi_propose_button">Proposer une structure</string>
 
     <!-- POI -->
-    <string name="activity_read_poi_title">GUIDE DE SOLIDARITE</string>
-    <string name="poi_report_description">J\'ai des informations sur cette structure</string>
+    <string name="poi_detail_contact">Contact</string>
+    <string name="poi_detail_public">Public</string>
+    <string name="activity_read_poi_title">INFORMATIONS</string>
+    <string name="poi_report_description">Ajoutez des informations sur ce lieu</string>
     <string name="poi_report_button">Mettre à jour</string>
     <string name="poi_report_email_subject_format">Information sur la structure \'%1$s\' (#%2$d)</string>
 
