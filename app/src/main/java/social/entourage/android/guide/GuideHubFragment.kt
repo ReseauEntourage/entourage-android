@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_guide_hub.*
 import social.entourage.android.Constants
+import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.tools.log.EntourageEvents
@@ -23,6 +24,15 @@ class GuideHubFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val user = EntourageApplication.me(activity)
+
+        user?.let { it ->
+            if (it.isUserTypeAlone) {
+                ui_layout_cell_3?.visibility = View.GONE
+                ui_layout_cell_4?.visibility = View.GONE
+            }
+        }
 
         ui_layout_cell_1?.setOnClickListener {
             EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_SHOWGDS)
