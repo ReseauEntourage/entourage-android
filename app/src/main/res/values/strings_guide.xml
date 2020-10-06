@@ -43,6 +43,8 @@
     <string name="guide_display_partners">Associations et services actifs sur Entourage</string>
     <string name="guide_filter_donate">Recherchant des dons</string>
     <string name="guide_filter_volunteer">Recherchant des bénévoles</string>
+    <string name="guide_filter_multiInfo">Lieux proposant des services de plusieurs catégories</string>
+
     <string name="hub_title">Guide solidaire</string>
     <string name="hub_title_1">Adresses utiles autour de vous</string>
     <string name="hub_description_1">Restaurants solidaires, associations recherchant des bénévoles ou des dons...</string>
