@@ -110,7 +110,20 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     fun checkShowInfo() {
         //Check to show Action info
         val isShowFirstLogin = get().sharedPreferences.getBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,false)
-        if (isShowFirstLogin) {
+        val noMoreDemand = get().sharedPreferences.getBoolean(EntourageApplication.KEY_NO_MORE_DEMAND,false)
+        var nbOfLaunch = get().sharedPreferences.getInt(EntourageApplication.KEY_NB_OF_LAUNCH,0)
+        
+        nbOfLaunch = nbOfLaunch + 1
+        get().sharedPreferences.edit()
+                .putInt(EntourageApplication.KEY_NB_OF_LAUNCH,nbOfLaunch)
+                .apply()
+
+        var hasToShow = false
+        if (!noMoreDemand) {
+            hasToShow = if (nbOfLaunch % 4 == 0) true else false
+        }
+
+        if (isShowFirstLogin || hasToShow) {
             val sharedPreferences = get().sharedPreferences
             sharedPreferences.edit().putBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,false).apply()
             if (authenticationController.me?.goal == null || authenticationController.me?.goal?.length == 0) {
@@ -121,6 +134,11 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
                         .setPositiveButton(R.string.login_info_pop_action_yes) { dialog, _ ->
                             dialog.dismiss()
                             showEditProfileAction()
+                        }
+                        .setNeutralButton(R.string.login_info_pop_action_noMore) { _,_ ->
+                            get().sharedPreferences.edit()
+                                    .putBoolean(EntourageApplication.KEY_NO_MORE_DEMAND,true)
+                                    .apply()
                         }
                         .create()
                         .show()
@@ -451,6 +469,8 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
         editor.remove(EntourageApplication.KEY_REGISTRATION_ID)
         editor.remove(EntourageApplication.KEY_NOTIFICATIONS_ENABLED)
         editor.remove(EntourageApplication.KEY_GEOLOCATION_ENABLED)
+        editor.remove(EntourageApplication.KEY_NO_MORE_DEMAND)
+        editor.putInt(EntourageApplication.KEY_NB_OF_LAUNCH,0)
         editor.apply()
         super.logout()
     }
