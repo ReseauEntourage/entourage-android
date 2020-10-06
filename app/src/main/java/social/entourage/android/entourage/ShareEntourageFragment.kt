@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_share_entourage.*
 import kotlinx.android.synthetic.main.layout_view_title.*
@@ -57,6 +58,9 @@ class ShareEntourageFragment : EntourageDialogFragment() {
     fun sendSharing() {
         val sharing = arraySharing[selectedPosition]
         EntourageMessageSharingAPI.getInstance(EntourageApplication.get()).postSharingEntourage(sharing.uuid,uuid) { isOK ->
+
+            Toast.makeText(activity, R.string.linkSahred, Toast.LENGTH_SHORT).show()
+
             dismiss()
         }
     }
