@@ -394,7 +394,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/white">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout7"
@@ -422,201 +423,142 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/white"
                     android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ui_layout_phone"
                         android:layout_width="match_parent"
                         android:layout_height="50dp">
 
-                        <TextView
-                            android:id="@+id/ui_tv_website"
-                            android:layout_width="wrap_content"
+                        <ImageView
+                            android:id="@+id/imageView49"
+                            android:layout_width="20dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="16dp"
-                            android:fontFamily="sans-serif-light"
-                            android:text="@string/title_asso_website"
-                            android:textColor="@color/onboard_black_36"
-                            android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/ui_asso_tv_website"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/ui_asso_tv_website"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_marginBottom="8dp"
-                            android:fontFamily="sans-serif"
-                            android:lines="1"
-                            android:text="TextView vdjvdklgjdsklgjkdsgdzg"
-                            android:textAlignment="textEnd"
-                            android:textColor="@color/accent"
-                            android:textSize="14sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/ui_tv_website"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_phone_gds_detail" />
 
                         <Button
-                            android:id="@+id/ui_asso_button_website"
-                            style="@style/Widget.AppCompat.Button.Borderless"
-                            android:background="@color/partner_logo_transparent"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="@+id/ui_asso_tv_website"
-                            app:layout_constraintStart_toStartOf="@+id/ui_asso_tv_website"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp">
-
-                        <FrameLayout
-                            android:id="@+id/frameLayout5"
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="16dp"
-                            android:background="@color/separator"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                        </FrameLayout>
-
-                        <TextView
-                            android:id="@+id/ui_tv_phone"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="8dp"
-                            android:fontFamily="sans-serif-light"
-                            android:text="@string/title_asso_phone"
-                            android:textColor="@color/onboard_black_36"
-                            android:textSize="14sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/ui_asso_tv_phone"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/frameLayout5" />
-
-                        <TextView
-                            android:id="@+id/ui_asso_tv_phone"
+                            android:id="@+id/ui_button_asso_phone"
+                            style="@style/ActButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginBottom="8dp"
-                            android:fontFamily="sans-serif"
+                            android:autoLink="phone"
                             android:lines="1"
-                            android:text="+33123456789"
-                            android:textAlignment="textEnd"
-                            android:textColor="@color/accent"
-                            android:textSize="14sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/ui_asso_button_phone"
-                            app:layout_constraintStart_toEndOf="@+id/ui_tv_phone"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <ImageButton
-                            android:id="@+id/ui_asso_button_phone"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginBottom="4dp"
-                            android:background="@drawable/bg_button_accent_rounded"
-                            app:srcCompat="@drawable/ic_asso_phone"
-                            app:layout_constraintBottom_toTopOf="@+id/frameLayout6"
-                            app:layout_constraintEnd_toStartOf="@+id/ui_asso_button_message"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <ImageButton
-                            android:id="@+id/ui_asso_button_message"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_marginBottom="4dp"
-                            android:background="@drawable/bg_button_accent_rounded"
-                            app:srcCompat="@drawable/ic_asso_msg"
-                            app:layout_constraintBottom_toTopOf="@+id/frameLayout6"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <FrameLayout
-                            android:id="@+id/frameLayout6"
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="16dp"
-                            android:background="@color/separator"
+                            android:textAlignment="textStart"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent">
+                            app:layout_constraintStart_toEndOf="@+id/imageView49"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="Address" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        </FrameLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ui_layout_mail"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="5dp">
+
+                        <ImageView
+                            android:id="@+id/imageView491"
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_email_gds_detail" />
+
+                        <Button
+                            android:id="@+id/ui_button_asso_mail"
+                            style="@style/ActButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:autoLink="email"
+                            android:lines="1"
+                            android:textAlignment="textStart"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/imageView491"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="Mail" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ui_layout_web"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp">
-
-                        <TextView
-                            android:id="@+id/textView24"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="16dp"
-                            android:fontFamily="sans-serif-light"
-                            android:text="@string/title_asso_address"
-                            android:textColor="@color/onboard_black_36"
-                            android:textSize="14sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/ui_asso_tv_address"
-                            app:layout_constraintHorizontal_bias="0.6"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/ui_asso_tv_address"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_marginBottom="8dp"
-                            android:fontFamily="sans-serif"
-                            android:lines="1"
-                            android:text="TextView vdjvdklgjdsklgjkdsgdzg"
-                            android:textAlignment="textEnd"
-                            android:textColor="@color/accent"
-                            android:textSize="14sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/textView24"
-                            app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_height="50dp"
+                        android:layout_marginTop="5dp">
 
                         <Button
-                            android:background="@color/partner_logo_transparent"
-                            android:id="@+id/ui_asso_button_address"
-                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:id="@+id/ui_button_asso_web"
+                            style="@style/ActButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:autoLink="web"
+                            android:lines="1"
+                            android:textAlignment="textStart"
+                            android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="@+id/ui_asso_tv_address"
-                            app:layout_constraintStart_toStartOf="@+id/ui_asso_tv_address"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/imageView492"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="Website"
+                            tools:visibility="visible" />
+
+                        <ImageView
+                            android:id="@+id/imageView492"
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_web_gds_detail" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ui_layout_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="5dp">
+
+                        <Button
+                            android:id="@+id/ui_button_asso_address"
+                            style="@style/ActButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:lines="1"
+                            android:textAlignment="textStart"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/imageView493"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="Address" />
+
+                        <ImageView
+                            android:id="@+id/imageView493"
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_location_gds_detail" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>

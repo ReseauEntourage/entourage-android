@@ -155,29 +155,35 @@ class PartnerFragmentV2 : EntourageDialogFragment() {
                     ui_asso_tv_volunteers_description?.text = it.volunteersNeeds
                 }
             }
-            ui_asso_tv_website?.text = it.websiteUrl
-            ui_asso_tv_phone?.text = it.phone
-            ui_asso_tv_address?.text = it.address
+            ui_button_asso_web?.text = it.websiteUrl
+            ui_button_asso_phone?.text = it.phone
+            ui_button_asso_address?.text = it.address
+            ui_button_asso_mail.text = it.email
+
+            ui_layout_phone?.visibility = if (it.phone.isNullOrEmpty()) View.GONE else View.VISIBLE
+            ui_layout_address?.visibility = if (it.address.isNullOrEmpty()) View.GONE else View.VISIBLE
+            ui_layout_mail?.visibility = if (it.email.isNullOrEmpty()) View.GONE else View.VISIBLE
+            ui_layout_web?.visibility = if (it.websiteUrl.isNullOrEmpty()) View.GONE else View.VISIBLE
 
             updateButtonFollow()
         }
 
-        ui_asso_button_address?.setOnClickListener {
+        ui_button_asso_address?.setOnClickListener {
             partner?.address?.let {  address ->
                 openLink("geo:0,0?q=$address",Intent.ACTION_VIEW)
             }
         }
-        ui_asso_button_message?.setOnClickListener {
-            partner?.phone?.let { phone ->
-                openLink("sms:$phone",Intent.ACTION_SENDTO)
+        ui_button_asso_mail?.setOnClickListener {
+            partner?.email?.let { email ->
+                openLink("mailto:$email",Intent.ACTION_SENDTO)
             }
         }
-        ui_asso_button_phone?.setOnClickListener {
+        ui_button_asso_phone?.setOnClickListener {
             partner?.phone?.let { phone ->
                 openLink("tel:$phone",Intent.ACTION_DIAL)
             }
         }
-        ui_asso_button_website?.setOnClickListener {
+        ui_button_asso_web?.setOnClickListener {
             partner?.websiteUrl?.let { url ->
                 openLink(url,Intent.ACTION_VIEW)
             }
