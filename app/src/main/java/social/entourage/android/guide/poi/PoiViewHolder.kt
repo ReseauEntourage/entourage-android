@@ -13,6 +13,7 @@ import social.entourage.android.api.tape.EntouragePoiRequest.OnPoiViewRequestedE
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.guide.poi.PoiRenderer.CategoryType
 import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.log.EntourageEvents
 
 /**
  * Point of interest card view holder
@@ -28,6 +29,7 @@ class PoiViewHolder(itemView: View) : BaseCardViewHolder(itemView) {
         }
         itemView.poi_card_call_button?.setOnClickListener {
             poi?.phone?.let {phone ->
+                EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_CALLPOI)
                 val intent = Intent(Intent.ACTION_DIAL)
                 intent.data = Uri.parse("tel:${phone}")
                 itemView.context?.let { context ->

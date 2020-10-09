@@ -13,6 +13,8 @@ import social.entourage.android.api.tape.Events.OnSolidarityGuideFilterChanged
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.guide.poi.PoiRenderer
 import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.EntourageEvents.ACTION_GUIDE_SUBMITFILTERS
 
 /**
  * Guide Filter Fragment
@@ -46,6 +48,7 @@ class GuideFilterFragment : EntourageDialogFragment() {
             GuideFilter.instance.setValueForCategoryId(filterItem.categoryType.categoryId, filterItem.isChecked)
         }
 
+        EntourageEvents.logEvent(ACTION_GUIDE_SUBMITFILTERS)
         //Update others filters
         GuideFilter.instance.isPartnersSelected = GuideFilter.instance.isPartnersTmpSelected
         GuideFilter.instance.isDonationsSelected = GuideFilter.instance.isDonationsTmpSelected

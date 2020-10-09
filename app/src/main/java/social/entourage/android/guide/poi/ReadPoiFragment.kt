@@ -204,6 +204,7 @@ class ReadPoiFragment : EntourageDialogFragment() {
     }
 
     fun onShareClicked() {
+        EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_SHAREPOI)
         val poiName = if(poi.name == null) "" else poi.name
         val address = if(poi.address?.length ?: 0 == 0) "" else "Adresse: ${poi.address}"
         val phone = if(poi.phone?.length ?: 0 == 0) "" else "Tel: ${poi.phone}"

@@ -95,7 +95,6 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         connection.doBindService()
         presenter.start()
         showInfoPopup()
-        EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_GUIDE_FROM_TAB)
         BusProvider.instance.register(this)
     }
 
@@ -157,7 +156,6 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     @Subscribe
     fun onPoiViewRequested(event: OnPoiViewRequestedEvent?) {
         event?.poi?.let {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_POI_VIEW)
             showPoiDetails(event.poi)
         }
     }
@@ -217,7 +215,6 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         // Close the overlays
         onBackPressed()
         // Open the link to propose a POI
-        EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_PROPOSE_POI)
 //        (activity as? MainActivity)?.showWebViewForLinkId(Constants.PROPOSE_POI_ID)
         (activity as? GDSMainActivity)?.showWebViewForLinkId(Constants.PROPOSE_POI_ID)
     }
@@ -266,6 +263,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     }
 
     private fun showPoiDetails(poi: Poi) {
+        EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_POI)
         if (poi.partner_id != null) {
             PartnerFragmentV2.newInstance(null,poi.partner_id).show(parentFragmentManager, PartnerFragmentV2.TAG)
         }
@@ -486,7 +484,6 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     // ----------------------------------
     inner class OnEntourageMarkerClickListener : OnClusterItemClickListener<Poi> {
         override fun onClusterItemClick(poi: Poi): Boolean {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_POI_VIEW)
             Timber.d("***** On cluster item click ? ${poi}")
             showPoiDetails(poi)
             return true
