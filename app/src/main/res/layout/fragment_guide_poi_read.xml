@@ -44,65 +44,150 @@
                 android:textStyle="bold"
                 tools:text="POI NAME" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:orientation="horizontal">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="32dp">
 
-                <ImageView
-                    android:id="@+id/ui_iv_picto_1"
-                    android:layout_width="32dp"
+                <LinearLayout
+                    android:id="@+id/linearLayout3"
+                    android:layout_width="wrap_content"
                     android:layout_height="32dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/picto_cat_filter_1" />
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/ui_iv_picto_2"
-                    android:layout_width="32dp"
+                    <ImageView
+                        android:id="@+id/ui_iv_picto_1"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_1" />
+
+                    <ImageView
+                        android:id="@+id/ui_iv_picto_2"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_1"
+                        android:visibility="invisible" />
+
+                    <ImageView
+                        android:id="@+id/ui_iv_picto_3"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_1"
+                        android:visibility="invisible" />
+
+                    <ImageView
+                        android:id="@+id/ui_iv_picto_4"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_1"
+                        android:visibility="invisible" />
+
+                    <ImageView
+                        android:id="@+id/ui_iv_picto_5"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_1"
+                        android:visibility="invisible" />
+
+                    <ImageView
+                        android:id="@+id/ui_iv_picto_6"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_1"
+                        android:visibility="invisible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ui_layout_help"
+                    android:layout_width="wrap_content"
                     android:layout_height="32dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/picto_cat_filter_1"
-                    android:visibility="invisible" />
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/linearLayout3">
 
-                <ImageView
-                    android:id="@+id/ui_iv_picto_3"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/picto_cat_filter_1"
-                    android:visibility="invisible" />
+                    <ImageView
+                        android:id="@+id/ui_iv_trans_picto_1"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_3"
+                        android:visibility="invisible" />
 
-                <ImageView
-                    android:id="@+id/ui_iv_picto_4"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/picto_cat_filter_1"
-                    android:visibility="invisible" />
+                    <ImageView
+                        android:id="@+id/ui_iv_trans_picto_2"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_1"
+                        android:visibility="invisible" />
 
-                <ImageView
-                    android:id="@+id/ui_iv_picto_5"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/picto_cat_filter_1"
-                    android:visibility="invisible" />
+                    <ImageView
+                        android:id="@+id/ui_iv_trans_picto_3"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_1"
+                        android:visibility="invisible" />
 
-                <ImageView
-                    android:id="@+id/ui_iv_picto_6"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/picto_cat_filter_1"
-                    android:visibility="invisible" />
+                    <ImageView
+                        android:id="@+id/ui_iv_trans_picto_4"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_1"
+                        android:visibility="invisible" />
 
-            </LinearLayout>
+                    <ImageView
+                        android:id="@+id/ui_iv_trans_picto_5"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_1"
+                        android:visibility="invisible" />
+
+                    <ImageView
+                        android:id="@+id/ui_iv_trans_picto_6"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_1"
+                        android:visibility="invisible" />
+
+                    <ImageView
+                        android:id="@+id/ui_iv_picto_info"
+                        android:layout_width="20dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:visibility="visible"
+                        app:srcCompat="@drawable/ic_info_poi" />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -328,5 +413,36 @@
             android:text="@string/poi_report_button"
             android:textSize="@dimen/entourage_font_medium"/>
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ui_layout_full_help_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_transparent"
+        android:visibility="gone">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ListView
+                android:id="@+id/guide_filter_list"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

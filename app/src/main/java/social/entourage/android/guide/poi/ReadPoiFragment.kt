@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.fragment_guide_poi_read.*
+import kotlinx.android.synthetic.main.fragment_guide_poi_read.guide_filter_list
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageComponent
@@ -17,6 +18,7 @@ import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.guide.filter.GuideFilterAdapter
 import social.entourage.android.guide.poi.PoiRenderer.CategoryType
 import social.entourage.android.guide.poi.ReadPoiPresenter.OnPhoneClickListener
 import social.entourage.android.map.OnAddressClickListener
@@ -49,6 +51,25 @@ class ReadPoiFragment : EntourageDialogFragment() {
         poi_report_button?.setOnClickListener {onReportButtonClicked()}
         ui_button_share?.setOnClickListener { onShareClicked() }
         ui_button_share?.visibility = View.VISIBLE
+        ui_layout_help?.setOnClickListener {
+            ui_layout_full_help_info?.visibility = View.VISIBLE
+        }
+        ui_layout_full_help_info?.visibility = View.GONE
+        setupRVHelp()
+    }
+
+    fun setupRVHelp() {
+        val filterAdapter = GuideFilterAdapter()
+        filterAdapter.setHelpOnly()
+        guide_filter_list?.adapter = filterAdapter
+
+        ui_layout_full_help_info?.setOnClickListener {
+            ui_layout_full_help_info?.visibility = View.GONE
+        }
+
+        guide_filter_list?.setOnItemClickListener { parent, view, position, id ->
+            ui_layout_full_help_info?.visibility = View.GONE
+        }
     }
 
     private fun setupComponent(entourageComponent: EntourageComponent?) {
@@ -82,6 +103,7 @@ class ReadPoiFragment : EntourageDialogFragment() {
         //Setup icons categories
         for (i in 0 until 6) {
             getImageId(i)?.visibility = View.INVISIBLE
+            getImageTransId(i)?.visibility = View.GONE
         }
 
         for (i in 0 until poi.categories.size) {
@@ -89,6 +111,7 @@ class ReadPoiFragment : EntourageDialogFragment() {
             val pictoPoi = getImageId(i)
             pictoPoi?.visibility = View.VISIBLE
             pictoPoi?.setImageResource(catType.filterId)
+            getImageTransId(i)?.visibility = View.INVISIBLE
         }
 
         if (!poi.audience.isNullOrEmpty()) {
@@ -120,6 +143,31 @@ class ReadPoiFragment : EntourageDialogFragment() {
             }
             5 -> {
                 return ui_iv_picto_6
+            }
+            else -> return null
+        }
+    }
+
+    private fun getImageTransId(position:Int) : ImageView? {
+
+        when(position) {
+            0 -> {
+                return  ui_iv_trans_picto_1
+            }
+            1 -> {
+                return ui_iv_trans_picto_2
+            }
+            2 -> {
+                return ui_iv_trans_picto_3
+            }
+            3 -> {
+                return ui_iv_trans_picto_4
+            }
+            4 -> {
+                return ui_iv_trans_picto_5
+            }
+            5 -> {
+                return ui_iv_trans_picto_6
             }
             else -> return null
         }

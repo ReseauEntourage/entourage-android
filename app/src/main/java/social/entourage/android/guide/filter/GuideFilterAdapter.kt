@@ -19,6 +19,13 @@ class GuideFilterAdapter : BaseAdapter() {
     // ----------------------------------
     val items: MutableList<GuideFilterItem> = ArrayList()
 
+    var isHelpOnly = false
+
+    fun setHelpOnly() {
+        isHelpOnly = true
+        notifyDataSetChanged()
+    }
+
     override fun getCount(): Int {
         // We need to ignore the category at index zero
         return items.size
@@ -65,11 +72,16 @@ class GuideFilterAdapter : BaseAdapter() {
     // ----------------------------------
     inner class GuideFilterViewHolder(v: View) {
         init {
-            v.filter_item_switch?.setOnCheckedChangeListener { buttonView, isChecked ->
-                // if no tag, exit
-                if (buttonView.tag != null) {
-                    getItem(buttonView.tag as Int).isChecked = isChecked
+            if (!isHelpOnly) {
+                v.filter_item_switch?.setOnCheckedChangeListener { buttonView, isChecked ->
+                    // if no tag, exit
+                    if (buttonView.tag != null) {
+                        getItem(buttonView.tag as Int).isChecked = isChecked
+                    }
                 }
+            }
+            else {
+                v.filter_item_switch?.visibility = View.INVISIBLE
             }
         }
     }
