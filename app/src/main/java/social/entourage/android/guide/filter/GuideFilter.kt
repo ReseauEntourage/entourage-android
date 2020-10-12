@@ -13,10 +13,6 @@ class GuideFilter private constructor() : Serializable {
     // ----------------------------------
     private val filterValues = SparseBooleanArray()
 
-    var isPartnersTmpSelected = false
-    var isVolunteersTmpSelected = false
-    var isDonationsTmpSelected = false
-
     var isPartnersSelected = true
     var isVolunteersSelected = false
     var isDonationsSelected = false
@@ -87,7 +83,6 @@ class GuideFilter private constructor() : Serializable {
         }
         return false
     }
-
     companion object {
         private const val serialVersionUID = -5047709875896955208L
         val instance = GuideFilter()

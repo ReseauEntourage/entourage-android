@@ -4,8 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListAdapter
-import android.widget.ListView
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_guide_filter.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.R
@@ -15,6 +14,7 @@ import social.entourage.android.guide.poi.PoiRenderer
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.tools.log.EntourageEvents.ACTION_GUIDE_SUBMITFILTERS
+import timber.log.Timber
 
 /**
  * Guide Filter Fragment
@@ -23,7 +23,12 @@ class GuideFilterFragment : EntourageDialogFragment() {
     // ----------------------------------
     // Attributes
     // ----------------------------------
-    private var filterAdapter: GuideFilterAdapter? = null
+    private var items = ArrayList<GuideFilterAdapter.GuideFilterItem>()
+    private var isPartnersTmpSelected = false
+    private var isDonationsTmpSelected = false
+    private var isVolunteersTmpSelected = false
+
+    private var adapterRV:FilterGuideRVAdapter? = null
     // ----------------------------------
     // Lifecycle
     // ----------------------------------
@@ -37,6 +42,8 @@ class GuideFilterFragment : EntourageDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeFiltersList()
+        title_close_button?.setOnClickListener {  dismiss() }
+        bottom_action_button?.setOnClickListener { onValidateClicked() }
     }
 
     // ----------------------------------
@@ -44,15 +51,15 @@ class GuideFilterFragment : EntourageDialogFragment() {
     // ----------------------------------
     fun onValidateClicked() {
         // Save the filter
-        filterAdapter?.items?.forEach { filterItem ->
+        items.forEach { filterItem ->
             GuideFilter.instance.setValueForCategoryId(filterItem.categoryType.categoryId, filterItem.isChecked)
         }
 
         EntourageEvents.logEvent(ACTION_GUIDE_SUBMITFILTERS)
         //Update others filters
-        GuideFilter.instance.isPartnersSelected = GuideFilter.instance.isPartnersTmpSelected
-        GuideFilter.instance.isDonationsSelected = GuideFilter.instance.isDonationsTmpSelected
-        GuideFilter.instance.isVolunteersSelected = GuideFilter.instance.isVolunteersTmpSelected
+        GuideFilter.instance.isPartnersSelected = isPartnersTmpSelected
+        GuideFilter.instance.isDonationsSelected = isDonationsTmpSelected
+        GuideFilter.instance.isVolunteersSelected = isVolunteersTmpSelected
 
         GuideFilter.instance.setValueForCategoryId(PoiRenderer.CategoryType.PARTNERS.categoryId, GuideFilter.instance.isPartnersSelected)
 
@@ -63,69 +70,148 @@ class GuideFilterFragment : EntourageDialogFragment() {
     }
 
     // ----------------------------------
-    // ListView
+    // RecyclerView
     // ----------------------------------
     private fun initializeFiltersList() {
-        filterAdapter = GuideFilterAdapter()
-        guide_filter_list?.adapter = filterAdapter
-        title_close_button?.setOnClickListener {  dismiss() }
-        bottom_action_button?.setOnClickListener { onValidateClicked() }
 
-        forceResizeListview(guide_filter_list)
+        val guideFilter = GuideFilter.instance
 
-        //Setup Others filters
-        filter_item_switch_partner?.isChecked = GuideFilter.instance.isPartnersSelected
-        filter_item_switch_donate?.isChecked = GuideFilter.instance.isDonationsSelected
-        filter_item_switch_volunteer?.isChecked = GuideFilter.instance.isVolunteersSelected
+        setupFilters()
 
-        GuideFilter.instance.isPartnersTmpSelected = GuideFilter.instance.isPartnersSelected
-        GuideFilter.instance.isDonationsTmpSelected = GuideFilter.instance.isDonationsSelected
-        GuideFilter.instance.isVolunteersTmpSelected = GuideFilter.instance.isVolunteersSelected
+        isPartnersTmpSelected = guideFilter.isPartnersSelected
+        isDonationsTmpSelected = guideFilter.isDonationsSelected
+        isVolunteersTmpSelected = guideFilter.isVolunteersSelected
 
-        filter_item_switch_partner?.setOnCheckedChangeListener { buttonView, isChecked ->
-            GuideFilter.instance.isPartnersTmpSelected = isChecked
-            changeTopViews(isChecked)
-        }
-        filter_item_switch_donate.setOnCheckedChangeListener { buttonView, isChecked ->
-            GuideFilter.instance.isDonationsTmpSelected = isChecked
-        }
+        updateButtonText()
 
-        filter_item_switch_volunteer?.setOnCheckedChangeListener { buttonView, isChecked ->
-            GuideFilter.instance.isVolunteersTmpSelected = isChecked
-        }
+        val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        ui_recyclerView?.setHasFixedSize(true)
+        ui_recyclerView?.layoutManager = linearLayoutManager
 
-        changeTopViews(GuideFilter.instance.isPartnersSelected)
+        adapterRV = FilterGuideRVAdapter(requireContext(),items,
+                isPartnersTmpSelected,isDonationsTmpSelected,
+                isVolunteersTmpSelected, isDefaultFilters(), { position ->
+
+            val item = items[position]
+
+            if (item.isChecked && !isDefaultFilters()) {
+                setAllFiltersOn()
+            }
+            else {
+                setAllFiltersOff(position)
+            }
+
+            adapterRV?.updateDatas(items,isPartnersTmpSelected,isDonationsTmpSelected,isVolunteersTmpSelected,isDefaultFilters())
+            updateButtonText()
+        } ,{ positionTop ->
+            when(positionTop) {
+                0 -> {
+                    if (isPartnersTmpSelected && !isDefaultFilters()) {
+                        setAllFiltersOn()
+                    }
+                    else {
+                        setAllFiltersOff(-1)
+                    }
+                }
+                1 -> {
+                    if (isDonationsTmpSelected && !isDefaultFilters()) {
+                        setAllFiltersOn()
+                    }
+                    else {
+                        setAllFiltersOff(-2)
+                    }
+                }
+                2 -> {
+                    if (isVolunteersTmpSelected && !isDefaultFilters()) {
+                        setAllFiltersOn()
+                    }
+                    else {
+                        setAllFiltersOff(-3)
+                    }
+                }
+            }
+            adapterRV?.updateDatas(items,isPartnersTmpSelected,isDonationsTmpSelected,isVolunteersTmpSelected,isDefaultFilters())
+            updateButtonText()
+        })
+        ui_recyclerView?.adapter = adapterRV
     }
 
-    private fun changeTopViews(isVisible: Boolean) {
-        if (isVisible) {
-            filter_layout_donate?.visibility = View.VISIBLE
-            filter_layout_volunteer?.visibility = View.VISIBLE
+    fun updateButtonText() {
+        if (isDefaultFilters()) {
+            bottom_action_button?.text = "Voir tout"
         }
         else {
-            GuideFilter.instance.isDonationsTmpSelected = false
-            GuideFilter.instance.isVolunteersTmpSelected = false
-            filter_item_switch_donate?.isChecked = GuideFilter.instance.isDonationsTmpSelected
-            filter_item_switch_volunteer?.isChecked = GuideFilter.instance.isVolunteersTmpSelected
-
-            filter_layout_donate?.visibility = View.GONE
-            filter_layout_volunteer?.visibility = View.GONE
+            bottom_action_button?.text = "Valider"
         }
     }
 
-    fun forceResizeListview(myListView: ListView) {
-        val listAdapter: ListAdapter = myListView.adapter ?: return
+    /*****
+     * Methods for filters
+     */
+    fun isDefaultFilters(): Boolean {
 
-        var totalHeight = 0
-        for (size in 0 until listAdapter.count) {
-            val listItem: View = listAdapter.getView(size, null, myListView)
-            listItem.measure(0, 0)
-            totalHeight += listItem.measuredHeight
+        var isDefault = true
+
+        for (item in items) {
+            if (!item.isChecked) {
+                isDefault = false
+                break
+            }
         }
-        
-        val params: ViewGroup.LayoutParams = myListView.layoutParams
-        params.height = totalHeight + myListView.dividerHeight * (listAdapter.count - 1)
-        myListView.layoutParams = params
+
+        if (!isPartnersTmpSelected || isVolunteersTmpSelected || isDonationsTmpSelected) {
+            isDefault = false
+        }
+        return isDefault
+    }
+
+    fun setAllFiltersOn() {
+        for (item in items) {
+            item.isChecked = true
+        }
+        isPartnersTmpSelected = true
+        isDonationsTmpSelected = false
+        isVolunteersTmpSelected = false
+    }
+
+    fun setAllFiltersOff(position:Int) {
+        for (item in items) {
+            item.isChecked = false
+        }
+
+        if (position >= 0) {
+            items[position].isChecked = true
+            isPartnersTmpSelected = false
+            isDonationsTmpSelected = false
+            isVolunteersTmpSelected = false
+        }
+        else {
+            when(position) {
+                -1 -> {
+                    isPartnersTmpSelected = true
+                }
+                -2 -> {
+                    isPartnersTmpSelected = true
+                    isDonationsTmpSelected = true
+                    isVolunteersTmpSelected = false
+                }
+                -3 -> {
+                    isPartnersTmpSelected = true
+                    isDonationsTmpSelected = false
+                    isVolunteersTmpSelected = true
+                }
+            }
+        }
+    }
+
+    fun setupFilters() {
+        items = ArrayList()
+        for (i in 1 until PoiRenderer.CategoryType.values().size) {
+            val categoryType = PoiRenderer.CategoryType.values()[i]
+            if (categoryType != PoiRenderer.CategoryType.PARTNERS) {
+                items.add(GuideFilterAdapter.GuideFilterItem(categoryType, GuideFilter.instance.valueForCategoryId(categoryType.categoryId)))
+            }
+        }
     }
 
     companion object {
