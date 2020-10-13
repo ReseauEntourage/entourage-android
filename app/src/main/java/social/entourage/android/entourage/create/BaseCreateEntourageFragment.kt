@@ -17,10 +17,14 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.compat.Place
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
+import com.wdullaer.materialdatetimepicker.time.Timepoint
 import kotlinx.android.synthetic.main.fragment_entourage_create.*
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.*
+import social.entourage.android.Constants
 import social.entourage.android.EntourageApplication.Companion.get
+import social.entourage.android.EntourageComponent
+import social.entourage.android.MainActivity
+import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.model.feed.FeedItem
@@ -82,6 +86,7 @@ open class BaseCreateEntourageFragment
         initializeView()
         title_close_button.setOnClickListener { onCloseClicked() }
         title_action_button.setOnClickListener { onValidateClicked() }
+        bottom_action_button?.setOnClickListener { onValidateClicked() }
         create_entourage_category_layout.setOnClickListener { onEditTypeClicked() }
         create_entourage_position_layout.setOnClickListener { onPositionClicked() }
         create_entourage_title_layout.setOnClickListener { onEditTitleClicked() }
@@ -648,9 +653,27 @@ open class BaseCreateEntourageFragment
                             startDate[Calendar.SECOND]) //Only after time from start date
                 }
             }
+            tpd.setSelectableTimes(generateTimepoints(15))
             tpd.setCancelText(R.string.cancel)
             tpd.show(fragmentManager, "TimePickerDialog")
         }
+    }
+
+    //Use to create selectable minutes custom
+    private fun generateTimepoints(minutesInterval: Int): Array<Timepoint?>? {
+        val timepoints: ArrayList<Timepoint> = ArrayList()
+        var minute = 0
+        while (minute <= 1440) {
+            val currentHour = minute / 60
+            val currentMinute = minute - if (currentHour > 0) currentHour * 60 else 0
+            if (currentHour == 24) {
+                minute += minutesInterval
+                continue
+            }
+            timepoints.add(Timepoint(currentHour, currentMinute))
+            minute += minutesInterval
+        }
+        return timepoints.toArray(arrayOfNulls<Timepoint>(timepoints.size))
     }
 
     override fun onDateSet(view: DatePickerDialog, year: Int, monthOfYear: Int, dayOfMonth: Int) {

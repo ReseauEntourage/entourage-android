@@ -188,12 +188,16 @@ class PhotoChooseSourceFragmentCompat : EntourageDialogFragment() {
 
     private fun onTakePhotoClicked() {
         activity?.let {
-            if (CropImage.isExplicitCameraPermissionRequired(it)) {
-                requestPermissions(arrayOf(Manifest.permission.CAMERA), CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE)
-            } else if (PermissionChecker.checkSelfPermission(it, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
-                requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), WRITE_STORAGE_PERMISSION_CODE)
-            } else {
-                showTakePhotoActivity()
+            when {
+                CropImage.isExplicitCameraPermissionRequired(it) -> {
+                    requestPermissions(arrayOf(Manifest.permission.CAMERA), CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE)
+                }
+                PermissionChecker.checkSelfPermission(it, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED -> {
+                    requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), WRITE_STORAGE_PERMISSION_CODE)
+                }
+                else -> {
+                    showTakePhotoActivity()
+                }
             }
         }
     }

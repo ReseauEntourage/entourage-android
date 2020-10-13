@@ -233,7 +233,6 @@ object EntourageEvents {
 
     //MENU Events
     const val EVENT_PROFILE_FROM_MENU = "Open_Profile_From_Menu"
-    const val EVENT_OPEN_GUIDE_FROM_TAB = "Open_Guide_From_Tab"
     const val EVENT_ABOUT_FAQ = "AppFAQClick"
 
 
@@ -270,10 +269,8 @@ object EntourageEvents {
     const val EVENT_MAP_SHIFT_CENTER = "MapShiftCenter" //Not able to detect if it's an automatic or manual shift
 
     //GUIDE Events
-    const val EVENT_GUIDE_POI_VIEW = "POIView"
     const val EVENT_GUIDE_PLUS_CLICK = "PlusFromGuideClick"
     const val EVENT_GUIDE_LONGPRESS = "LongPressFromGuideClick"
-    const val EVENT_GUIDE_PROPOSE_POI = "ProposePOIView"
 
     //SEND JOIN REQUEST Events
     const val EVENT_JOIN_REQUEST_START = "StartJoinMessage"
@@ -426,9 +423,20 @@ object EntourageEvents {
     const val ACTION_FEED_SHOWFILTERS = "Action__Feed__ShowFilters"
 
     //Guide
-    const val ACTION_GUIDE_SHOWMAP = "Action__Guide__ShowMap"
-    const val ACTION_GUIDE_SHOWLIST = "Action__Guide__ShowList"
-    const val ACTION_GUIDE_SHOWFILTERS = "Action__Guide__ShowFilters"
+    const val ACTION_GUIDE_SHOWMAP = "Action__GuideMap__ShowMap"
+    const val ACTION_GUIDE_SHOWLIST = "Action__GuideMap__ShowList"
+    const val ACTION_GUIDE_SHOWFILTERS = "Action__GuideMap__ShowFilters"
+
+    const val ACTION_GUIDE_SHOWGDS = "Action__HubGuide__ShowGDS"
+    const val ACTION_GUIDE_WEBORIENTATION = "Action__HubGuide__WebOrientation"
+    const val ACTION_GUIDE_WEBGUIDE = "Action__HubGuide__WebGuide"
+    const val ACTION_GUIDE_WEBATELIER = "Action__HubGuide__WebAtelier"
+    const val ACTION_GUIDE_WEBFAQ = "Action__HubGuide__WebFaq"
+
+    const val ACTION_GUIDE_POI = "Action__GuideMap__POI"
+    const val ACTION_GUIDE_SUBMITFILTERS = "Action__GuideMap__SubmitFilters"
+    const val ACTION_GUIDE_SHAREPOI = "Action__GuideMap__SharePOI"
+    const val ACTION_GUIDE_CALLPOI = "Action__GuideMap__CallPOI"
 
     //Start info
     const val SHOW_START_FEEDS = "View__Start__Feeds"
@@ -477,8 +485,9 @@ object EntourageEvents {
             mFirebaseAnalytics.setUserProperty("EntouragePartner", it.name)
         }
         user.firebaseProperties?.let {
-            mFirebaseAnalytics.setUserProperty(User.UserFirebaseProperties.actionZoneCPName, it.actionZoneCP)
-            mFirebaseAnalytics.setUserProperty(User.UserFirebaseProperties.actionZoneDepName, it.actionZoneDep)
+            for (_val in it) {
+                mFirebaseAnalytics.setUserProperty(_val.key,_val.value)
+            }
         }
         val geolocStatus = if (isLocationPermissionGranted()) "YES" else "NO"
         mFirebaseAnalytics.setUserProperty("EntourageGeolocEnable", geolocStatus)

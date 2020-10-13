@@ -13,6 +13,10 @@ class GuideFilter private constructor() : Serializable {
     // ----------------------------------
     private val filterValues = SparseBooleanArray()
 
+    var isPartnersSelected = true
+    var isVolunteersSelected = false
+    var isDonationsSelected = false
+
     fun valueForCategoryId(categoryId: Int): Boolean {
         return filterValues[categoryId]
     }
@@ -41,12 +45,37 @@ class GuideFilter private constructor() : Serializable {
             return if (existingFilteredCategories) builder.toString() else null
         }
 
+    val requestedPartnerFilters: String?
+        get() {
+            var existingFilteredCategories = false
+
+            var filters:String? = null
+            if (isPartnersSelected) {
+                if (isDonationsSelected) {
+                    filters = "donations"
+                    if (isVolunteersSelected) {
+                        filters = filters + ",volunteers"
+                    }
+                }
+                else if (isVolunteersSelected) {
+                    filters = "volunteers"
+                }
+            }
+
+            return filters
+        }
+
     /**
      * Tells if there is any category filtered out
      *
      * @return true if any category is filtered out, false otherwise
      */
     fun hasFilteredCategories(): Boolean {
+
+        if (isVolunteersSelected || isDonationsSelected) {
+            return true
+        }
+
         for (catType in CategoryType.values()) {
             if (!valueForCategoryId(catType.categoryId)) {
                 return true
@@ -54,7 +83,6 @@ class GuideFilter private constructor() : Serializable {
         }
         return false
     }
-
     companion object {
         private const val serialVersionUID = -5047709875896955208L
         val instance = GuideFilter()

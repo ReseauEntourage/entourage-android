@@ -48,34 +48,31 @@ class UserEditActionZoneFragment : OnboardingPlaceFragment() {
     //**********//**********//**********
 
     private fun sendNetwork() {
-        if (userAddress != null) {
-            if (isSecondaryAddress) {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_ACTION_ZONE2_SUBMIT)
-            }
-            else {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_ACTION_ZONE_SUBMIT)
-            }
-            OnboardingAPI.getInstance(EntourageApplication.get()).updateAddress(userAddress!!,isSecondaryAddress) { isOK, userResponse ->
+        userAddress?.let {userAddress ->
+            EntourageEvents.logEvent(
+                    if (isSecondaryAddress) EntourageEvents.EVENT_ACTION_PROFILE_ACTION_ZONE2_SUBMIT
+                    else EntourageEvents.EVENT_ACTION_PROFILE_ACTION_ZONE_SUBMIT
+            )
+            OnboardingAPI.getInstance(EntourageApplication.get()).updateAddress(userAddress,isSecondaryAddress) { isOK, userResponse ->
                 if (isOK) {
-                    val authenticationController = EntourageApplication.get().entourageComponent.authenticationController
-                    val me = authenticationController.me
-                    if (me != null && userResponse != null) {
-                        val newUser = userResponse.user
-                        newUser.phone = me.phone
-
-                        authenticationController.saveUser(newUser)
-                        mListener?.onUserEditActionZoneFragmentAddressSaved()
-                        dismiss()
+                    userResponse?.user?.let {newUser ->
+                        val authenticationController = EntourageApplication.get().entourageComponent.authenticationController
+                        authenticationController.me?.phone?.let { phone ->
+                            newUser.phone = phone
+                            authenticationController.saveUser(newUser)
+                            mListener?.onUserEditActionZoneFragmentAddressSaved()
+                            dismiss()
+                        }
                     }
-                    Toast.makeText(activity, R.string.user_action_zone_send_ok, Toast.LENGTH_LONG).show()
+                    activity?.let {Toast.makeText(it, R.string.user_action_zone_send_ok, Toast.LENGTH_LONG).show()}
                 } else {
-                    Toast.makeText(activity, R.string.user_action_zone_send_failed, Toast.LENGTH_LONG).show()
+                    activity?.let {Toast.makeText(it, R.string.user_action_zone_send_failed, Toast.LENGTH_LONG).show()}
                     mListener?.onUserEditActionZoneFragmentIgnore()
                 }
             }
-            return
+        } ?: run {
+            mListener?.onUserEditActionZoneFragmentIgnore()
         }
-        mListener?.onUserEditActionZoneFragmentIgnore()
     }
 
 

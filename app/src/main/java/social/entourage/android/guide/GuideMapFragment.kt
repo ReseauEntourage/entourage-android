@@ -78,6 +78,8 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         initializePOIList()
         initializeFloatingButtons()
         initializeFilterButton()
+
+
     }
 
     fun setupComponent(entourageComponent: EntourageComponent?) {
@@ -93,7 +95,6 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         connection.doBindService()
         presenter.start()
         showInfoPopup()
-        EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_GUIDE_FROM_TAB)
         BusProvider.instance.register(this)
     }
 
@@ -155,7 +156,6 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     @Subscribe
     fun onPoiViewRequested(event: OnPoiViewRequestedEvent?) {
         event?.poi?.let {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_POI_VIEW)
             showPoiDetails(event.poi)
         }
     }
@@ -163,11 +163,8 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
-    fun putPoiOnMap(categories: List<Category>?, pois: List<Poi>?) {
+    fun putPoiOnMap(pois: List<Poi>?) {
         if (activity != null) {
-            if (categories != null) {
-                mapClusterItemRenderer?.setCategories(categories)
-            }
             clearOldPois()
             if (pois != null && pois.isNotEmpty()) {
                 val poiCollection = removeRedundantPois(pois)
@@ -218,8 +215,8 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         // Close the overlays
         onBackPressed()
         // Open the link to propose a POI
-        EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_PROPOSE_POI)
-        (activity as? MainActivity)?.showWebViewForLinkId(Constants.PROPOSE_POI_ID)
+//        (activity as? MainActivity)?.showWebViewForLinkId(Constants.PROPOSE_POI_ID)
+        (activity as? GDSMainActivity)?.showWebViewForLinkId(Constants.PROPOSE_POI_ID)
     }
 
     override val adapter: HeaderBaseAdapter?
@@ -232,6 +229,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         poisMap.clear()
         mapClusterManager?.clearItems()
         poisAdapter.removeAll()
+        map?.clear()
     }
 
     private fun onMapReady(googleMap: GoogleMap) {
@@ -265,6 +263,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     }
 
     private fun showPoiDetails(poi: Poi) {
+        EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_POI)
         if (poi.partner_id != null) {
             PartnerFragmentV2.newInstance(null,poi.partner_id).show(parentFragmentManager, PartnerFragmentV2.TAG)
         }
@@ -304,7 +303,8 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         fragment_guide_empty_list_popup?.setOnClickListener {onEmptyListPopupClose()}
         fragment_guide_info_popup_close?.setOnClickListener {onInfoPopupClose()}
         fragment_guide_info_popup?.setOnClickListener {onInfoPopupClose()}
-        val proposePOIUrl = (activity as? MainActivity)?.getLink(Constants.PROPOSE_POI_ID) ?: ""
+//        val proposePOIUrl = (activity as? MainActivity)?.getLink(Constants.PROPOSE_POI_ID) ?: ""
+        val proposePOIUrl = (activity as? GDSMainActivity)?.getLink(Constants.PROPOSE_POI_ID) ?: ""
         hideInfoPopup()
         fragment_guide_empty_list_popup_text?.movementMethod = EntourageLinkMovementMethod
         fragment_guide_empty_list_popup_text?.text = Utils.fromHtml(getString(R.string.map_poi_empty_popup, proposePOIUrl))
@@ -379,7 +379,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     private fun initializePOIList() {
         fragment_guide_pois_view?.layoutManager = LinearLayoutManager(context)
         onMapReadyCallback?.let { poisAdapter.setOnMapReadyCallback(it) }
-        poisAdapter.setOnFollowButtonClickListener(View.OnClickListener { onFollowGeolocation() })
+        poisAdapter.setOnFollowButtonClickListener({ onFollowGeolocation() })
         fragment_guide_pois_view?.adapter = poisAdapter
     }
 
@@ -395,6 +395,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         if (isFullMapShown) {
             return
         }
+        ui_view_empty_list?.visibility = View.GONE
         isFullMapShown = true
         fragment_guide_display_toggle?.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_list_white_24dp))
         ensureMapVisible()
@@ -427,6 +428,14 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         } else {
             poisAdapter.setMapHeight(originalMapLayoutHeight)
             fragment_guide_pois_view?.layoutManager?.requestLayout()
+        }
+
+        if (poisAdapter.dataItemCount == 0) {
+            Timber.d("***** ici Pois show list empty ;)")
+            ui_view_empty_list?.visibility = View.VISIBLE
+        }
+        else {
+            ui_view_empty_list?.visibility = View.GONE
         }
     }
 
@@ -475,7 +484,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     // ----------------------------------
     inner class OnEntourageMarkerClickListener : OnClusterItemClickListener<Poi> {
         override fun onClusterItemClick(poi: Poi): Boolean {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_GUIDE_POI_VIEW)
+            Timber.d("***** On cluster item click ? ${poi}")
             showPoiDetails(poi)
             return true
         }

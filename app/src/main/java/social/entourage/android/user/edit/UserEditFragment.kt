@@ -103,7 +103,11 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
         }
 
         ui_profile_add_zone?.setOnClickListener {
-            onActionAddSecondaryZone()
+            if(editedUser?.address!=null) {
+                onActionAddSecondaryZone()
+            } else { // if no first Zone is set, we set it first
+                onActionZoneEditClicked(false)
+            }
         }
 
         ui_iv_action_type_mod?.setOnClickListener {
@@ -384,7 +388,7 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
     // Presenter callbacks
     // ----------------------------------
     fun onUserUpdated(user: User) {
-        if (activity?.isFinishing == true) {
+        if (activity?.isFinishing == true || this.isDetached) {
             return
         }
         displayToast(getString(R.string.user_text_update_ok))
@@ -440,21 +444,15 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
     // Edit Action Zone
     // ----------------------------------
     private fun onActionZoneEditClicked(isSecondary: Boolean) {
-        if (isSecondary) {
-            editedUser?.addressSecondary?.let { address ->
-                val frag = UserEditActionZoneFragment.newInstance(address, isSecondary)
-                frag.setupListener(this)
-                frag.show(parentFragmentManager, UserEditActionZoneFragment.TAG)
-            }
+        editedUser?.let { user ->
+            //ATTENTION both addresses can be null when they are not set yet !
+            val frag = UserEditActionZoneFragment.newInstance(
+                    if (isSecondary) user.addressSecondary else user.address,
+                    isSecondary
+            )
+            frag.setupListener(this)
+            frag.show(parentFragmentManager, UserEditActionZoneFragment.TAG)
         }
-        else {
-            editedUser?.address?.let { address ->
-                val frag = UserEditActionZoneFragment.newInstance(address, isSecondary)
-                frag.setupListener(this)
-                frag.show(parentFragmentManager, UserEditActionZoneFragment.TAG)
-            }
-        }
-
     }
 
     override fun onUserEditActionZoneFragmentDismiss() {}

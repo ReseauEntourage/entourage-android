@@ -42,6 +42,8 @@ class Partner : BaseOrganization(), Serializable {
     @SerializedName("volunteers_needs")
     var volunteersNeeds: String? = null
 
+    @SerializedName("following")
+    var isFollowing = false
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------

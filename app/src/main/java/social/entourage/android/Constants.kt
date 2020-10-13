@@ -50,4 +50,9 @@ object Constants {
     // Carousel delay time
     const val CAROUSEL_DELAY_MILLIS: Long = 15000 // 15 seconds
     const val DISTANCE_MAX_DISPLAY = 100000.0f //100km
+
+    const val SLUG_HUB_LINK_1 = "hub_1"
+    const val SLUG_HUB_LINK_2 = "hub_2"
+    const val SLUG_HUB_LINK_3 = "hub_3"
+    const val SLUG_HUB_LINK_FAQ = "hub_faq"
 }

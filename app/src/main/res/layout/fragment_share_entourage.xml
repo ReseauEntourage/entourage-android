@@ -10,7 +10,7 @@
         android:id="@+id/invite_contacts_navigation_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:entourageTitle=""
+        app:entourageTitle="ENVOYER À"
         app:entourageTitleAction=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

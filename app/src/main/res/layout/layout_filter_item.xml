@@ -21,10 +21,11 @@
 
         <ImageView
             android:id="@+id/filter_item_image"
-            android:layout_width="50dp"
+            android:layout_width="32dp"
             android:layout_height="50dp"
-            android:contentDescription="@string/empty_description"
-            />
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:contentDescription="@string/empty_description" />
 
         <TextView
             android:id="@+id/filter_item_text"
@@ -38,7 +39,7 @@
             android:textColor="@color/greyish_brown"
             android:textSize="@dimen/entourage_font_medium"/>
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/filter_item_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

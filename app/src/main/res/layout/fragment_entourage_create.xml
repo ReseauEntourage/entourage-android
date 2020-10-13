@@ -1,24 +1,31 @@
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_light"
-    android:orientation="vertical"
     android:windowSoftInputMode="adjustPan"
     tools:context=".entourage.create.CreateEntourageFragment">
 
     <social.entourage.android.tools.view.EntourageTitleView
         android:id="@+id/create_entourage_fragment_title"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:entourageTitle="@string/entourage_create_action_title"
-        app:entourageTitleAction="@string/validate"/>
+        app:entourageTitleAction=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout11"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_entourage_fragment_title">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,8 +49,7 @@
                     android:text="@string/entourage_create_type_label"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/greyish_brown"
-                    android:textSize="@dimen/entourage_font_medium"
-                    />
+                    android:textSize="@dimen/entourage_font_medium" />
 
                 <TextView
                     android:id="@+id/create_entourage_category"
@@ -53,19 +59,19 @@
                     android:ellipsize="end"
                     android:gravity="end"
                     android:maxLines="1"
-                    android:paddingEnd="5dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
                     android:paddingStart="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingEnd="5dp"
+                    android:paddingRight="5dp"
                     android:textColor="@color/accent"
-                    android:textSize="@dimen/entourage_font_medium"/>
+                    android:textSize="@dimen/entourage_font_medium" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/empty_description"
                     android:src="@drawable/arrow_grey"
-                    android:tint="@color/accent"/>
+                    android:tint="@color/accent" />
 
             </LinearLayout>
 
@@ -86,8 +92,7 @@
                     android:text="@string/entourage_create_title_label"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/greyish_brown"
-                    android:textSize="@dimen/entourage_font_medium"
-                    />
+                    android:textSize="@dimen/entourage_font_medium" />
 
                 <TextView
                     android:id="@+id/create_entourage_title"
@@ -97,19 +102,19 @@
                     android:ellipsize="end"
                     android:gravity="end"
                     android:maxLines="1"
-                    android:paddingEnd="5dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
                     android:paddingStart="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingEnd="5dp"
+                    android:paddingRight="5dp"
                     android:textColor="@color/accent"
-                    android:textSize="@dimen/entourage_font_medium"/>
+                    android:textSize="@dimen/entourage_font_medium" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/empty_description"
                     android:src="@drawable/arrow_grey"
-                    android:tint="@color/accent"/>
+                    android:tint="@color/accent" />
 
             </LinearLayout>
 
@@ -130,8 +135,7 @@
                     android:text="@string/entourage_create_description_label"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/greyish_brown"
-                    android:textSize="@dimen/entourage_font_medium"
-                    />
+                    android:textSize="@dimen/entourage_font_medium" />
 
                 <TextView
                     android:id="@+id/create_entourage_description"
@@ -141,19 +145,19 @@
                     android:ellipsize="end"
                     android:gravity="end"
                     android:maxLines="1"
-                    android:paddingEnd="5dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
                     android:paddingStart="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingEnd="5dp"
+                    android:paddingRight="5dp"
                     android:textColor="@color/accent"
-                    android:textSize="@dimen/entourage_font_medium"/>
+                    android:textSize="@dimen/entourage_font_medium" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/empty_description"
                     android:src="@drawable/arrow_grey"
-                    android:tint="@color/accent"/>
+                    android:tint="@color/accent" />
 
             </LinearLayout>
 
@@ -176,7 +180,7 @@
                     android:text="@string/entourage_create_position_description_new"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/greyish_brown"
-                    android:textSize="@dimen/entourage_font_medium"/>
+                    android:textSize="@dimen/entourage_font_medium" />
 
                 <TextView
                     android:id="@+id/create_entourage_position"
@@ -184,18 +188,18 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:paddingEnd="0dp"
                     android:paddingStart="5dp"
+                    android:paddingEnd="0dp"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/accent"
-                    android:textSize="@dimen/entourage_font_medium"/>
+                    android:textSize="@dimen/entourage_font_medium" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/empty_description"
                     android:src="@drawable/arrow_grey"
-                    android:tint="@color/accent"/>
+                    android:tint="@color/accent" />
 
             </LinearLayout>
 
@@ -217,7 +221,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/entourage_create_date_start_label"
                     android:textColor="@color/greyish_brown"
-                    android:textSize="@dimen/entourage_font_medium"/>
+                    android:textSize="@dimen/entourage_font_medium" />
 
                 <TextView
                     android:id="@+id/create_entourage_date_start"
@@ -225,16 +229,16 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:paddingEnd="0dp"
                     android:paddingStart="5dp"
+                    android:paddingEnd="0dp"
                     android:textColor="@color/accent"
-                    android:textSize="@dimen/entourage_font_medium"/>
+                    android:textSize="@dimen/entourage_font_medium" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/arrow_grey"
-                    android:tint="@color/accent"/>
+                    android:tint="@color/accent" />
             </LinearLayout>
 
             <LinearLayout
@@ -255,7 +259,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/entourage_create_date_end_label"
                     android:textColor="@color/greyish_brown"
-                    android:textSize="@dimen/entourage_font_medium"/>
+                    android:textSize="@dimen/entourage_font_medium" />
 
                 <TextView
                     android:id="@+id/create_entourage_date_end"
@@ -263,16 +267,16 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:paddingEnd="0dp"
                     android:paddingStart="5dp"
+                    android:paddingEnd="0dp"
                     android:textColor="@color/accent"
-                    android:textSize="@dimen/entourage_font_medium"/>
+                    android:textSize="@dimen/entourage_font_medium" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/arrow_grey"
-                    android:tint="@color/accent"/>
+                    android:tint="@color/accent" />
             </LinearLayout>
 
             <LinearLayout
@@ -297,13 +301,13 @@
                         android:text="@string/entourage_create_privacy_public"
                         android:textColor="@color/create_entourage_privacy_public"
                         android:textSize="@dimen/entourage_font_medium"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/create_entourage_privacy_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"/>
+                        android:checked="true" />
 
                 </LinearLayout>
 
@@ -315,7 +319,7 @@
                     android:layout_weight="1"
                     android:text="@string/entourage_create_privacy_description_public"
                     android:textColor="@color/greyish_brown"
-                    android:textSize="@dimen/entourage_font_small"/>
+                    android:textSize="@dimen/entourage_font_small" />
             </LinearLayout>
 
             <LinearLayout
@@ -336,19 +340,19 @@
                         android:id="@+id/imageViewActionPublic"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        app:srcCompat="@drawable/bg_button_rounded_black"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/bg_button_rounded_black" />
 
                     <ImageView
                         android:id="@+id/ui_iv_button_public"
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        app:srcCompat="@drawable/button_rounded_black_fill"
                         app:layout_constraintBottom_toBottomOf="@+id/imageViewActionPublic"
                         app:layout_constraintEnd_toEndOf="@+id/imageViewActionPublic"
                         app:layout_constraintStart_toStartOf="@+id/imageViewActionPublic"
-                        app:layout_constraintTop_toTopOf="@+id/imageViewActionPublic" />
+                        app:layout_constraintTop_toTopOf="@+id/imageViewActionPublic"
+                        app:srcCompat="@drawable/button_rounded_black_fill" />
 
                     <TextView
                         android:id="@+id/ui_tv_entourage_privacyAction_public_title"
@@ -392,19 +396,19 @@
                         android:id="@+id/imageView"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        app:srcCompat="@drawable/bg_button_rounded_black"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/bg_button_rounded_black" />
 
                     <ImageView
                         android:id="@+id/ui_iv_button_private"
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        app:srcCompat="@drawable/button_rounded_black_fill"
                         app:layout_constraintBottom_toBottomOf="@+id/imageView"
                         app:layout_constraintEnd_toEndOf="@+id/imageView"
                         app:layout_constraintStart_toStartOf="@+id/imageView"
-                        app:layout_constraintTop_toTopOf="@+id/imageView" />
+                        app:layout_constraintTop_toTopOf="@+id/imageView"
+                        app:srcCompat="@drawable/button_rounded_black_fill" />
 
                     <TextView
                         android:id="@+id/ui_tv_entourage_privacyAction_private_title"
@@ -437,18 +441,18 @@
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_marginTop="16dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
 
                 <ImageView
                     android:id="@+id/imageView13"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
-                    app:srcCompat="@drawable/ic_tip"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_tip" />
 
                 <view
                     android:id="@+id/create_entourage_help_link"
@@ -469,4 +473,43 @@
         </LinearLayout>
 
     </ScrollView>
-</LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout11"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <View
+            android:id="@+id/title_separator2"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/greyish"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/bottom_action_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_button_accent_rounded"
+            android:fontFamily="sans-serif"
+            android:text="@string/validate"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

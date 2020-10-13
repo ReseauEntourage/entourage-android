@@ -179,7 +179,7 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
                 //Hack Kitkat version return activity
                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
                     val takePictureIntentCompat = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                    val clip = ClipData.newUri(activity?.getContentResolver(), "A photo", photoFileUri)
+                    val clip = ClipData.newUri(activity?.contentResolver, "A photo", photoFileUri)
 
                     takePictureIntentCompat.clipData = clip
                     takePictureIntentCompat.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)

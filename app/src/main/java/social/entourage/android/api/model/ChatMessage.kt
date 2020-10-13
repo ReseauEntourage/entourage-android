@@ -53,10 +53,12 @@ class ChatMessage (var content: String) : TimestampedObject(), Serializable {
 
     override val type: Int
         get()  {
-            return if (TYPE_OUTING.equals(messageType, ignoreCase = true)) CHAT_MESSAGE_OUTING
-            else if (TYPE_STATUS_UPDATE.equals(messageType, ignoreCase = true)) STATUS_UPDATE_CARD
-            else if (isMe) CHAT_MESSAGE_ME
-            else CHAT_MESSAGE_OTHER
+            return when {
+                TYPE_OUTING.equals(messageType, ignoreCase = true) -> CHAT_MESSAGE_OUTING
+                TYPE_STATUS_UPDATE.equals(messageType, ignoreCase = true) -> STATUS_UPDATE_CARD
+                isMe -> CHAT_MESSAGE_ME
+                else -> CHAT_MESSAGE_OTHER
+            }
         }
 
     override val id: Long

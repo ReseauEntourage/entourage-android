@@ -55,7 +55,7 @@ class TourOptionsFragment : FeedItemOptionsFragment() {
             //hide the options
             dismiss()
         } else if (feedItem.status == FeedItem.STATUS_CLOSED) {
-            instance.post(OnFeedItemCloseRequestEvent(feedItem, false, true))
+            instance.post(OnFeedItemCloseRequestEvent(feedItem, showUI = false, success = true))
             dismiss()
         }
     }

@@ -15,123 +15,372 @@
 
     </social.entourage.android.tools.view.EntourageTitleView>
 
-    <LinearLayout
-        android:id="@+id/poi_type_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/poi_read_toolbar"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        tools:background="@color/dodger_blue">
-
-        <ImageView
-            android:id="@+id/poi_type_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/empty_description"/>
-
-        <TextView
-            android:id="@+id/poi_type_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/white"
-            android:textSize="@dimen/entourage_font_large"
-            tools:text="Label"/>
-
-    </LinearLayout>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/poi_report_layout"
-        android:layout_below="@+id/poi_type_layout"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
-        >
+        android:layout_below="@+id/poi_read_toolbar"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingEnd="20dp"
+            android:paddingStart="20dp"
             android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingStart="20dp">
+            android:paddingEnd="20dp"
+            android:paddingRight="20dp">
 
             <TextView
                 android:id="@+id/textview_poi_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="10dp"
                 android:textColor="@color/greyish_brown"
                 android:textIsSelectable="true"
                 android:textSize="@dimen/entourage_font_large"
                 android:textStyle="bold"
                 tools:text="POI NAME" />
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="32dp">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/ui_iv_picto_1"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_1" />
+
+                    <ImageView
+                        android:id="@+id/ui_iv_picto_2"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_1"
+                        android:visibility="invisible" />
+
+                    <ImageView
+                        android:id="@+id/ui_iv_picto_3"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_1"
+                        android:visibility="invisible" />
+
+                    <ImageView
+                        android:id="@+id/ui_iv_picto_4"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_1"
+                        android:visibility="invisible" />
+
+                    <ImageView
+                        android:id="@+id/ui_iv_picto_5"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_1"
+                        android:visibility="invisible" />
+
+                    <ImageView
+                        android:id="@+id/ui_iv_picto_6"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_1"
+                        android:visibility="invisible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ui_layout_help"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/linearLayout3">
+
+                    <ImageView
+                        android:id="@+id/ui_iv_trans_picto_1"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_3"
+                        android:visibility="invisible" />
+
+                    <ImageView
+                        android:id="@+id/ui_iv_trans_picto_2"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_1"
+                        android:visibility="invisible" />
+
+                    <ImageView
+                        android:id="@+id/ui_iv_trans_picto_3"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_1"
+                        android:visibility="invisible" />
+
+                    <ImageView
+                        android:id="@+id/ui_iv_trans_picto_4"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_1"
+                        android:visibility="invisible" />
+
+                    <ImageView
+                        android:id="@+id/ui_iv_trans_picto_5"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_1"
+                        android:visibility="invisible" />
+
+                    <ImageView
+                        android:id="@+id/ui_iv_trans_picto_6"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/picto_cat_filter_1"
+                        android:visibility="invisible" />
+
+                    <ImageView
+                        android:id="@+id/ui_iv_picto_info"
+                        android:layout_width="20dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:visibility="visible"
+                        app:srcCompat="@drawable/ic_info_poi" />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:alpha="0.5"
-                android:background="@color/greyish"/>
+                android:background="@color/greyish"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/textview_poi_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="24dp"
+                android:autoLink="all"
                 android:textColor="@color/greyish_brown"
                 android:textIsSelectable="true"
-                android:autoLink="all"
                 android:textSize="@dimen/entourage_font_medium"
                 tools:text="Description" />
 
-            <Button
-                android:id="@+id/button_poi_address"
-                style="@style/ActButton"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ui_layout_public"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:visibility="gone"
-                tools:visibility="visible"
-                tools:text="Address"/>
+                android:layout_marginTop="24dp"
+                android:visibility="gone">
 
-            <Button
-                android:id="@+id/button_poi_phone"
-                style="@style/ActButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:autoLink="phone"
-                android:visibility="gone"
-                tools:visibility="visible"
-                tools:text="Phone"/>
+                <TextView
+                    android:id="@+id/textView30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/poi_detail_public"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/button_poi_mail"
-                style="@style/ActButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:autoLink="email"
-                android:visibility="gone"
-                tools:visibility="visible"
-                tools:text="Mail"/>
+                <TextView
+                    android:id="@+id/ui_tv_poi_public"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/greyish_brown"
+                    android:textIsSelectable="true"
+                    android:textSize="@dimen/entourage_font_medium"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView30"
+                    tools:text="Description" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <Button
-                android:id="@+id/button_poi_web"
-                style="@style/ActButton"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/textView31"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:autoLink="web"
-                android:visibility="gone"
-                tools:visibility="visible"
-                tools:text="Website"/>
+                android:layout_marginTop="24dp"
+                android:text="@string/poi_detail_contact"
+                android:textColor="@color/greyish_brown"
+                android:textIsSelectable="true"
+                android:textSize="@dimen/entourage_font_medium"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ui_layout_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp">
+
+                <ImageView
+                    android:id="@+id/imageView49"
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_phone_gds_detail" />
+
+                <Button
+                    android:id="@+id/button_poi_phone"
+                    style="@style/ActButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:autoLink="phone"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView49"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Phone"
+                    tools:visibility="visible" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ui_layout_mail"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp">
+
+                <ImageView
+                    android:id="@+id/imageView491"
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_email_gds_detail" />
+
+                <Button
+                    android:id="@+id/button_poi_mail"
+                    style="@style/ActButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:autoLink="email"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView491"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Mail"
+                    tools:visibility="visible" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ui_layout_web"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp">
+
+                <Button
+                    android:id="@+id/button_poi_web"
+                    style="@style/ActButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:autoLink="web"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView492"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Website"
+                    tools:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/imageView492"
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_web_gds_detail" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ui_layout_location"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp">
+
+                <Button
+                    android:id="@+id/button_poi_address"
+                    style="@style/ActButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView493"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Address"
+                    tools:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/imageView493"
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_location_gds_detail" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 
@@ -164,5 +413,84 @@
             android:text="@string/poi_report_button"
             android:textSize="@dimen/entourage_font_medium"/>
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ui_layout_full_help_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_transparent"
+        android:visibility="gone">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ListView
+                android:id="@+id/guide_filter_list"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_transparent"
+        android:orientation="vertical"
+        android:id="@+id/ui_layout_share"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/rounded_dialog"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <ImageButton
+                android:id="@+id/ui_bt_share_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/empty_description"
+                app:srcCompat="@drawable/ic_close_black_24dp" />
+
+            <Button
+                android:id="@+id/ui_bt_share_inside"
+                style="@style/WhiteButton.RoundedCorners"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:drawableStartCompat="@drawable/ic_entourage_logo_orange"
+                android:text="@string/invite_source_share_entourage" />
+
+            <Button
+                android:id="@+id/ui_bt_share_outside"
+                style="@style/WhiteButton.RoundedCorners"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableStart="@drawable/ic_share_android"
+                android:text="@string/invite_source_share" />
+
+        </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

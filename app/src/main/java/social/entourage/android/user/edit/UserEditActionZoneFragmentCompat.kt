@@ -171,11 +171,11 @@ class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
         val request = ArrayMap<String, Any>()
         request["address"] = address
 
-        if (!isSecondaryAddress) {
-            call = userRequest.updatePrimaryAddressLocation(request)
+        call = if (!isSecondaryAddress) {
+            userRequest.updatePrimaryAddressLocation(request)
         }
         else {
-            call = userRequest.updateSecondaryAddressLocation(request)
+            userRequest.updateSecondaryAddressLocation(request)
         }
 
         call.enqueue(object : Callback<UserResponse> {

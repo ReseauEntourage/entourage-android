@@ -82,7 +82,7 @@ class EntourageCloseFragment : DialogFragment() {
 
     private fun onSuccessClicked() {
         feedItem?.let {
-            BusProvider.instance.post(OnFeedItemCloseRequestEvent(it, false, true))
+            BusProvider.instance.post(OnFeedItemCloseRequestEvent(it, showUI = false, success = true))
             showEmail(R.string.entourage_close_email_title_success)
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_CLOSE_POPUP_SUCCESS)
             dismiss()
@@ -91,7 +91,7 @@ class EntourageCloseFragment : DialogFragment() {
 
     private fun onFailedClicked() {
         feedItem?.let {
-            BusProvider.instance.post(OnFeedItemCloseRequestEvent(it, false, false))
+            BusProvider.instance.post(OnFeedItemCloseRequestEvent(it, showUI = false, success = false))
             showEmail(R.string.entourage_close_email_title_failed)
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_CLOSE_POPUP_FAILURE)
             dismiss()

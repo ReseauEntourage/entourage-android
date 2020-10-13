@@ -37,10 +37,14 @@ class EntourageMessageSharingAPI(val application: EntourageApplication) {
         })
     }
 
-    fun postSharingEntourage(sharedUuid:String,uuid:String,listener:(isOK:Boolean) -> Unit) {
+    fun postSharingEntourage(sharedUuid:String,uuid:String,isPoi:Boolean,listener:(isOK:Boolean) -> Unit) {
         val chatMessage = EntourageMessageSharing()
         chatMessage.metadata = EntourageMessageSharing.Metadata()
         chatMessage.metadata?.uuid = uuid
+
+        if (isPoi) {
+            chatMessage.metadata?.type = "poi"
+        }
 
         val chatMessageWrapper = EntourageMessageSharingWrapper(chatMessage)
         val call = entourageRequest.addEntourageMessageSharing(sharedUuid, chatMessageWrapper)

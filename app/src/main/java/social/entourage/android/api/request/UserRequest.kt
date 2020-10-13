@@ -64,4 +64,8 @@ interface UserRequest {
     //Get Asso detail
     @GET("partners/{partner_id}")
     fun getPartnerDetail(@Path("partner_id") partnerId: Int): Call<PartnerResponse>
+
+    //Update partner follow
+    @POST("users/me/following")
+    fun updateUserPartner(@Body isFollowing: ArrayMap<String, Any>): Call<ResponseBody>
 }

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_enabled="false">
-        <shape xmlns:android="http://schemas.android.com/apk/res/android"
-            android:shape="rectangle">
+        <shape android:shape="rectangle">
             <solid
                 android:color="@color/custom_button_accent_disabled" />
             <padding
@@ -13,8 +12,7 @@
         </shape>
     </item>
     <item android:state_pressed="true" android:state_enabled="true">
-        <shape xmlns:android="http://schemas.android.com/apk/res/android"
-            android:shape="rectangle">
+        <shape android:shape="rectangle">
             <solid
                 android:color="@color/custom_button_accent_pressed" />
             <padding
@@ -25,8 +23,7 @@
         </shape>
     </item>
     <item android:state_focused="true" android:state_enabled="true">
-        <shape xmlns:android="http://schemas.android.com/apk/res/android"
-            android:shape="rectangle">
+        <shape android:shape="rectangle">
             <solid
                 android:color="@color/custom_button_accent_focused" />
             <padding
@@ -37,8 +34,7 @@
         </shape>
     </item>
     <item android:state_enabled="true">
-        <shape xmlns:android="http://schemas.android.com/apk/res/android"
-            android:shape="rectangle">
+        <shape android:shape="rectangle">
             <solid
                 android:color="@color/custom_button_accent_enabled" />
             <padding

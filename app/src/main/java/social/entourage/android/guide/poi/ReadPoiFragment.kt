@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.fragment_guide_poi_read.*
+import kotlinx.android.synthetic.main.fragment_guide_poi_read.guide_filter_list
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageComponent
@@ -16,6 +18,8 @@ import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.entourage.ShareEntourageFragment
+import social.entourage.android.guide.filter.GuideFilterAdapter
 import social.entourage.android.guide.poi.PoiRenderer.CategoryType
 import social.entourage.android.guide.poi.ReadPoiPresenter.OnPhoneClickListener
 import social.entourage.android.map.OnAddressClickListener
@@ -41,54 +45,160 @@ class ReadPoiFragment : EntourageDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         poi = arguments?.getSerializable(BUNDLE_KEY_POI) as Poi
         setupComponent(EntourageApplication.get(activity).entourageComponent)
-        presenter.displayPoi(poi)
+
+        presenter.getPoiDetail(poi.id.toInt())
 
         title_close_button?.setOnClickListener {dismiss()}
         poi_report_button?.setOnClickListener {onReportButtonClicked()}
         ui_button_share?.setOnClickListener { onShareClicked() }
         ui_button_share?.visibility = View.VISIBLE
+        ui_layout_help?.setOnClickListener {
+            ui_layout_full_help_info?.visibility = View.VISIBLE
+        }
+        ui_layout_full_help_info?.visibility = View.GONE
+        setupRVHelp()
+
+        ui_bt_share_close?.setOnClickListener {
+            ui_layout_share?.visibility = View.GONE
+        }
+
+        ui_bt_share_inside?.setOnClickListener {
+            ui_layout_share?.visibility = View.GONE
+
+            val fragment = ShareEntourageFragment.newInstance("fuck",poi.id.toInt(),true)
+            fragment.show(parentFragmentManager, ShareEntourageFragment.TAG)
+        }
+
+        ui_bt_share_outside?.setOnClickListener {
+            ui_layout_share?.visibility = View.GONE
+            shareOnly()
+        }
+    }
+
+    fun setupRVHelp() {
+        val filterAdapter = GuideFilterAdapter()
+        filterAdapter.setHelpOnly()
+        guide_filter_list?.adapter = filterAdapter
+
+        ui_layout_full_help_info?.setOnClickListener {
+            ui_layout_full_help_info?.visibility = View.GONE
+        }
+
+        guide_filter_list?.setOnItemClickListener { parent, view, position, id ->
+            ui_layout_full_help_info?.visibility = View.GONE
+        }
     }
 
     private fun setupComponent(entourageComponent: EntourageComponent?) {
-        DaggerReadPoiComponent.builder()
-                .entourageComponent(entourageComponent)
-                .readPoiModule(ReadPoiModule(this))
-                .build()
-                .inject(this)
+        entourageComponent?.let {
+            DaggerReadPoiComponent.builder()
+                    .entourageComponent(entourageComponent)
+                    .readPoiModule(ReadPoiModule(this,entourageComponent.poiRequest))
+                    .build()
+                    .inject(this)
+        } ?: kotlin.run { dismiss() }
+    }
+
+    fun noData() {
+        dismiss()
     }
 
     fun onDisplayedPoi(poi: Poi, onAddressClickListener: OnAddressClickListener?, onPhoneClickListener: OnPhoneClickListener?) {
         textview_poi_name?.text = poi.name
         textview_poi_description?.text = poi.description
-        setActionButton(button_poi_phone, poi.phone)
-        setActionButton(button_poi_mail, poi.email)
-        setActionButton(button_poi_web, poi.website)
-        setActionButton(button_poi_address, poi.address)
+        setActionButton(button_poi_phone, poi.phone,ui_layout_phone)
+        setActionButton(button_poi_mail, poi.email,ui_layout_mail)
+        setActionButton(button_poi_web, poi.website,ui_layout_web)
+        setActionButton(button_poi_address, poi.address,ui_layout_location)
+
         if (onAddressClickListener != null) {
             button_poi_address?.setOnClickListener(onAddressClickListener)
         }
         if (onPhoneClickListener != null) {
             button_poi_phone?.setOnClickListener(onPhoneClickListener)
         }
-        val categoryType = CategoryType.findCategoryTypeById(poi.categoryId)
-        poi_type_layout?.setBackgroundColor(categoryType.color)
-
-        var displayName = categoryType.displayName
-        if (displayName == "Partenaires") {
-            context?.let {
-                displayName = it.getString(R.string.partners_entourage)
-            }
+        //Setup icons categories
+        for (i in 0 until 6) {
+            getImageId(i)?.visibility = View.INVISIBLE
+            getImageTransId(i)?.visibility = View.GONE
         }
 
-        poi_type_label?.text = displayName//categoryType.displayName
-        poi_type_image?.setImageResource(categoryType.resourceTransparentId)
+        for (i in 0 until poi.categories.size) {
+            val catType = CategoryType.findCategoryTypeById(poi.categories[i])
+            val pictoPoi = getImageId(i)
+            pictoPoi?.visibility = View.VISIBLE
+            pictoPoi?.setImageResource(catType.filterId)
+            getImageTransId(i)?.visibility = View.INVISIBLE
+        }
+
+        if (!poi.audience.isNullOrEmpty()) {
+            ui_layout_public?.visibility = View.VISIBLE
+            ui_tv_poi_public?.text = poi.audience
+        }
+        else {
+            ui_layout_public?.visibility = View.GONE
+        }
     }
 
-    private fun setActionButton(btn: Button?, value: String?) {
+    private fun getImageId(position:Int) : ImageView? {
+
+        when(position) {
+            0 -> {
+              return  ui_iv_picto_1
+            }
+            1 -> {
+               return ui_iv_picto_2
+            }
+            2 -> {
+               return ui_iv_picto_3
+            }
+            3 -> {
+                return ui_iv_picto_4
+            }
+            4 -> {
+                return ui_iv_picto_5
+            }
+            5 -> {
+                return ui_iv_picto_6
+            }
+            else -> return null
+        }
+    }
+
+    private fun getImageTransId(position:Int) : ImageView? {
+
+        when(position) {
+            0 -> {
+                return  ui_iv_trans_picto_1
+            }
+            1 -> {
+                return ui_iv_trans_picto_2
+            }
+            2 -> {
+                return ui_iv_trans_picto_3
+            }
+            3 -> {
+                return ui_iv_trans_picto_4
+            }
+            4 -> {
+                return ui_iv_trans_picto_5
+            }
+            5 -> {
+                return ui_iv_trans_picto_6
+            }
+            else -> return null
+        }
+    }
+
+    private fun setActionButton(btn: Button?, value: String?,layout:ConstraintLayout?) {
         if (btn !=null && value != null && value.isNotEmpty()) {
             btn.visibility = View.VISIBLE
             btn.text = value
             btn.paintFlags = btn.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+            layout?.visibility = View.VISIBLE
+        }
+        else {
+            layout?.visibility = View.GONE
         }
     }
 
@@ -111,6 +221,11 @@ class ReadPoiFragment : EntourageDialogFragment() {
     }
 
     fun onShareClicked() {
+        ui_layout_share?.visibility = View.VISIBLE
+    }
+
+    fun shareOnly() {
+        EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_SHAREPOI)
         val poiName = if(poi.name == null) "" else poi.name
         val address = if(poi.address?.length ?: 0 == 0) "" else "Adresse: ${poi.address}"
         val phone = if(poi.phone?.length ?: 0 == 0) "" else "Tel: ${poi.phone}"

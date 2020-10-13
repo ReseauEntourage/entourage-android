@@ -19,6 +19,13 @@ class GuideFilterAdapter : BaseAdapter() {
     // ----------------------------------
     val items: MutableList<GuideFilterItem> = ArrayList()
 
+    var isHelpOnly = false
+
+    fun setHelpOnly() {
+        isHelpOnly = true
+        notifyDataSetChanged()
+    }
+
     override fun getCount(): Int {
         // We need to ignore the category at index zero
         return items.size
@@ -51,7 +58,7 @@ class GuideFilterAdapter : BaseAdapter() {
             }
         }
         view.filter_item_text?.text = displayName//categoryType.displayName
-        view.filter_item_image?.setImageResource(categoryType.resourceId)
+        view.filter_item_image?.setImageResource(categoryType.filterId)
         // set the switch
         view.filter_item_switch?.isChecked = item.isChecked
         view.filter_item_switch?.tag = position
@@ -65,11 +72,16 @@ class GuideFilterAdapter : BaseAdapter() {
     // ----------------------------------
     inner class GuideFilterViewHolder(v: View) {
         init {
-            v.filter_item_switch?.setOnCheckedChangeListener { buttonView, isChecked ->
-                // if no tag, exit
-                if (buttonView.tag != null) {
-                    getItem(buttonView.tag as Int).isChecked = isChecked
+            if (!isHelpOnly) {
+                v.filter_item_switch?.setOnCheckedChangeListener { buttonView, isChecked ->
+                    // if no tag, exit
+                    if (buttonView.tag != null) {
+                        getItem(buttonView.tag as Int).isChecked = isChecked
+                    }
                 }
+            }
+            else {
+                v.filter_item_switch?.visibility = View.INVISIBLE
             }
         }
     }
@@ -86,7 +98,9 @@ class GuideFilterAdapter : BaseAdapter() {
         val guideFilter = instance
         for (i in 1 until CategoryType.values().size) {
             val categoryType = CategoryType.values()[i]
-            items.add(GuideFilterItem(categoryType, guideFilter.valueForCategoryId(categoryType.categoryId)))
+            if (categoryType != CategoryType.PARTNERS) {
+                items.add(GuideFilterItem(categoryType, guideFilter.valueForCategoryId(categoryType.categoryId)))
+            }
         }
     }
 }

@@ -32,40 +32,16 @@
         android:textColor="@color/accent"/>
 
     <TextView
-        android:id="@+id/poi_card_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/poi_card_title"
-        android:textColor="@color/brownish_grey"
-        android:textSize="@dimen/entourage_font_medium"/>
-
-    <TextView
-        android:id="@+id/poi_card_bullet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/poi_card_title"
-        android:layout_toEndOf="@+id/poi_card_type"
-        android:paddingEnd="3dp"
-        android:paddingLeft="3dp"
-        android:paddingRight="3dp"
-        android:paddingStart="3dp"
-        android:text="@string/poi_card_bullet"
-        android:textColor="@color/brownish_grey"
-        android:textSize="@dimen/entourage_font_medium"
-        tools:text="S'occuper de soi"/>
-
-    <TextView
         android:id="@+id/poi_card_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/poi_card_title"
-        android:layout_toEndOf="@+id/poi_card_bullet"
+        android:layout_alignParentStart="true"
         android:layout_toStartOf="@+id/poi_card_call_button"
         android:maxLines="2"
         android:textColor="@color/brownish_grey"
         android:textSize="@dimen/entourage_font_medium"
-        tools:text="Chez Entourage 75010 Paris, France"/>
+        tools:text="Chez Entourage 75010 Paris, France" />
 
     <TextView
         android:id="@+id/poi_card_distance"

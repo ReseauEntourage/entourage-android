@@ -50,8 +50,7 @@
             style="@style/WhiteButton.RoundedCorners"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_entourage_logo_orange"
-            android:drawableLeft="@drawable/ic_entourage_logo_orange"
+            app:drawableStartCompat="@drawable/ic_entourage_logo_orange"
             android:text="@string/invite_source_share_entourage" />
 
         <Button
@@ -61,7 +60,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:drawableStart="@drawable/ic_share_android"
-            android:drawableLeft="@drawable/ic_share_android"
             android:text="@string/invite_source_share" />
 
         <Button

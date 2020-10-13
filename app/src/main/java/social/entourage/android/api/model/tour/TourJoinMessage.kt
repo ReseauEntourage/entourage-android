@@ -1,6 +1,5 @@
 package social.entourage.android.api.model.tour
 
-import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 /**

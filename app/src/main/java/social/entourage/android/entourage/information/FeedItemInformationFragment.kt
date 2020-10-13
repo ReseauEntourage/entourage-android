@@ -70,6 +70,7 @@ import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.tour.TourInformationFragment
 import social.entourage.android.tools.view.EntourageSnackbar
 import timber.log.Timber
+import java.lang.Exception
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -233,7 +234,12 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
 
     override fun onStop() {
         entourage_info_discussion_view?.removeOnScrollListener(discussionScrollListener)
-        super.onStop()
+        try {
+            super.onStop()
+        }
+        catch(e: Exception) {
+            Timber.w(e)
+        }
     }
 
     override fun onPause() {
@@ -954,7 +960,15 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
                     entourage_info_act_layout?.visibility = View.GONE
                     entourage_info_request_join_layout?.visibility = View.VISIBLE
 //                    entourage_info_request_join_title?.setText(feedItem.getJoinRequestTitle())
-                    entourage_info_request_join_button?.setText(feedItem.getJoinRequestButton())
+                    if (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.getGroupType(), ignoreCase = true)) {
+                        entourage_info_request_join_button?.setText(getString(R.string.tour_info_request_join_button_entourage).toUpperCase())
+                    }
+                    else {
+                        entourage_info_request_join_button?.setText(getString(R.string.tour_info_request_join_button2_entourage).toUpperCase())
+
+                    }
+                   // entourage_info_request_join_button?.setText(feedItem.getJoinRequestButton())
+
                     updatePublicScrollViewLayout()
                     return
                 }

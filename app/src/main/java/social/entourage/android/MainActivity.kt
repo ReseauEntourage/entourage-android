@@ -14,7 +14,6 @@ import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.iid.FirebaseInstanceId
@@ -98,7 +97,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
         if (intent != null) {
             storeIntent(intent)
         }
-        if (authenticationController.isAuthenticated == true) {
+        if (authenticationController.isAuthenticated) {
             //refresh the user info from the server
             presenter.updateUserLocation(currentLocation)
             //initialize the push notifications
@@ -111,7 +110,20 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     fun checkShowInfo() {
         //Check to show Action info
         val isShowFirstLogin = get().sharedPreferences.getBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,false)
-        if (isShowFirstLogin) {
+        val noMoreDemand = get().sharedPreferences.getBoolean(EntourageApplication.KEY_NO_MORE_DEMAND,false)
+        var nbOfLaunch = get().sharedPreferences.getInt(EntourageApplication.KEY_NB_OF_LAUNCH,0)
+        
+        nbOfLaunch = nbOfLaunch + 1
+        get().sharedPreferences.edit()
+                .putInt(EntourageApplication.KEY_NB_OF_LAUNCH,nbOfLaunch)
+                .apply()
+
+        var hasToShow = false
+        if (!noMoreDemand) {
+            hasToShow = if (nbOfLaunch % 4 == 0) true else false
+        }
+
+        if (isShowFirstLogin || hasToShow) {
             val sharedPreferences = get().sharedPreferences
             sharedPreferences.edit().putBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,false).apply()
             if (authenticationController.me?.goal == null || authenticationController.me?.goal?.length == 0) {
@@ -122,6 +134,11 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
                         .setPositiveButton(R.string.login_info_pop_action_yes) { dialog, _ ->
                             dialog.dismiss()
                             showEditProfileAction()
+                        }
+                        .setNeutralButton(R.string.login_info_pop_action_noMore) { _,_ ->
+                            get().sharedPreferences.edit()
+                                    .putBoolean(EntourageApplication.KEY_NO_MORE_DEMAND,true)
+                                    .apply()
                         }
                         .create()
                         .show()
@@ -191,7 +208,11 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     }
 
     override fun onStop() {
-        instance.unregister(this)
+        try {
+            instance.unregister(this)
+        } catch(e: IllegalStateException) {
+            Timber.w(e)
+        }
         super.onStop()
     }
 
@@ -448,6 +469,8 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
         editor.remove(EntourageApplication.KEY_REGISTRATION_ID)
         editor.remove(EntourageApplication.KEY_NOTIFICATIONS_ENABLED)
         editor.remove(EntourageApplication.KEY_GEOLOCATION_ENABLED)
+        editor.remove(EntourageApplication.KEY_NO_MORE_DEMAND)
+        editor.putInt(EntourageApplication.KEY_NB_OF_LAUNCH,0)
         editor.apply()
         super.logout()
     }
@@ -456,7 +479,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     // BUS LISTENERS
     // ----------------------------------
     @Subscribe
-    fun GCMTokenObtained(event: OnGCMTokenObtainedEvent) {
+    fun onGCMTokenObtained(event: OnGCMTokenObtainedEvent) {
         presenter.updateApplicationInfo(event.registrationId)
     }
 

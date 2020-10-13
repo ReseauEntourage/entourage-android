@@ -74,7 +74,7 @@ class EntourageApplication : MultiDexApplication() {
         get() = librariesSupport.firebaseAnalytics
 
     fun me(): User? {
-        return entourageComponent.authenticationController.me ?: return null
+        return entourageComponent.authenticationController.me
     }
 
     fun onActivityCreated(activity: EntourageActivity) {
@@ -218,6 +218,9 @@ class EntourageApplication : MultiDexApplication() {
         const val KEY_IS_FROM_ONBOARDING = "isFromOnboarding"
         const val KEY_ONBOARDING_USER_TYPE = "userType"
         const val KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN = "isFirstLogin"
+        const val KEY_NB_OF_LAUNCH = "nbOfLaunch"
+        const val KEY_NO_MORE_DEMAND = "noMoreDemand"
+
         // ----------------------------------
         // MEMBERS
         // ----------------------------------
