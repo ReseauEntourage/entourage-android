@@ -445,4 +445,52 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_transparent"
+        android:orientation="vertical"
+        android:id="@+id/ui_layout_share"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/rounded_dialog"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <ImageButton
+                android:id="@+id/ui_bt_share_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/empty_description"
+                app:srcCompat="@drawable/ic_close_black_24dp" />
+
+            <Button
+                android:id="@+id/ui_bt_share_inside"
+                style="@style/WhiteButton.RoundedCorners"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:drawableStartCompat="@drawable/ic_entourage_logo_orange"
+                android:text="@string/invite_source_share_entourage" />
+
+            <Button
+                android:id="@+id/ui_bt_share_outside"
+                style="@style/WhiteButton.RoundedCorners"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableStart="@drawable/ic_share_android"
+                android:text="@string/invite_source_share" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
 </RelativeLayout>

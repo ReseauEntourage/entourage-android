@@ -15,9 +15,13 @@ import social.entourage.android.api.model.SharingEntourage
 import social.entourage.android.base.EntourageDialogFragment
 
 private const val ARG_PARAM1 = "uuid"
+private const val ARG_POIID = "poiId"
+private const val ARG_ISPOI = "isPoi"
 
 class ShareEntourageFragment : EntourageDialogFragment() {
     private var uuid = ""
+    private var isPoi = false
+    private var poiId = 0
 
     private var arraySharing:ArrayList<SharingEntourage> = ArrayList()
     private var adapter:ShareEntourageAdapter? = null
@@ -28,6 +32,8 @@ class ShareEntourageFragment : EntourageDialogFragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             uuid = it.getString(ARG_PARAM1) ?: ""
+            isPoi = it.getBoolean(ARG_ISPOI)
+            poiId = it.getInt(ARG_POIID)
         }
     }
 
@@ -57,7 +63,8 @@ class ShareEntourageFragment : EntourageDialogFragment() {
 
     fun sendSharing() {
         val sharing = arraySharing[selectedPosition]
-        EntourageMessageSharingAPI.getInstance(EntourageApplication.get()).postSharingEntourage(sharing.uuid,uuid) { isOK ->
+        val _id = if (isPoi) poiId.toString() else uuid
+        EntourageMessageSharingAPI.getInstance(EntourageApplication.get()).postSharingEntourage(sharing.uuid,_id,isPoi) { isOK ->
 
             Toast.makeText(activity, R.string.linkSahred, Toast.LENGTH_SHORT).show()
 
@@ -71,8 +78,13 @@ class ShareEntourageFragment : EntourageDialogFragment() {
                 arraySharing.clear()
 
                 for (share in it.sharing) {
-                    if (share.uuid != uuid) {
+                    if (isPoi) {
                         arraySharing.add(share)
+                    }
+                    else {
+                        if (share.uuid != uuid) {
+                            arraySharing.add(share)
+                        }
                     }
                 }
                 adapter?.notifyDataSetChanged()
@@ -111,10 +123,12 @@ class ShareEntourageFragment : EntourageDialogFragment() {
         const val TAG = "social.entourage.android.entourage.shareEntourageFragment"
 
         @JvmStatic
-        fun newInstance(uuid: String?) =
+        fun newInstance(uuid: String?,poiId:Int = 0,isPoi:Boolean = false) =
                 ShareEntourageFragment().apply {
                     arguments = Bundle().apply {
                         putString(ARG_PARAM1, uuid)
+                        putInt(ARG_POIID,poiId)
+                        putBoolean(ARG_ISPOI,isPoi)
                     }
                 }
     }

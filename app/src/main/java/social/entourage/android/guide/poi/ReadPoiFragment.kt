@@ -18,6 +18,7 @@ import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.entourage.ShareEntourageFragment
 import social.entourage.android.guide.filter.GuideFilterAdapter
 import social.entourage.android.guide.poi.PoiRenderer.CategoryType
 import social.entourage.android.guide.poi.ReadPoiPresenter.OnPhoneClickListener
@@ -56,6 +57,22 @@ class ReadPoiFragment : EntourageDialogFragment() {
         }
         ui_layout_full_help_info?.visibility = View.GONE
         setupRVHelp()
+
+        ui_bt_share_close?.setOnClickListener {
+            ui_layout_share?.visibility = View.GONE
+        }
+
+        ui_bt_share_inside?.setOnClickListener {
+            ui_layout_share?.visibility = View.GONE
+
+            val fragment = ShareEntourageFragment.newInstance("fuck",poi.id.toInt(),true)
+            fragment.show(parentFragmentManager, ShareEntourageFragment.TAG)
+        }
+
+        ui_bt_share_outside?.setOnClickListener {
+            ui_layout_share?.visibility = View.GONE
+            shareOnly()
+        }
     }
 
     fun setupRVHelp() {
@@ -204,6 +221,10 @@ class ReadPoiFragment : EntourageDialogFragment() {
     }
 
     fun onShareClicked() {
+        ui_layout_share?.visibility = View.VISIBLE
+    }
+
+    fun shareOnly() {
         EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_SHAREPOI)
         val poiName = if(poi.name == null) "" else poi.name
         val address = if(poi.address?.length ?: 0 == 0) "" else "Adresse: ${poi.address}"
