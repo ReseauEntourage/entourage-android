@@ -203,16 +203,16 @@ class EntourageService : Service() {
 
     private fun configureRemoteView(action: Int) {
         when (action) {
-            0 -> {
+            ACTION_START -> {
                 timeBase = 0
                 notificationRemoteView?.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime(), null, true)
                 chronometer.start()
             }
-            1 -> {
+            ACTION_PAUSE -> {
                 timeBase = chronometer.base - SystemClock.elapsedRealtime()
                 notificationRemoteView?.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime() + timeBase, null, false)
             }
-            2 -> {
+            ACTION_RESUME -> {
                 notificationRemoteView?.setChronometer(R.id.notification_tour_chronometer, SystemClock.elapsedRealtime() + timeBase, null, true)
                 chronometer.base = SystemClock.elapsedRealtime() + timeBase
             }
@@ -222,15 +222,15 @@ class EntourageService : Service() {
     }
 
     private fun startNotification() {
-        showNotification(0)
+        showNotification(ACTION_START)
     }
 
     private fun pauseNotification() {
-        showNotification(1)
+        showNotification(ACTION_PAUSE)
     }
 
     private fun resumeNotification() {
-        showNotification(2)
+        showNotification(ACTION_RESUME)
     }
 
     private fun removeNotification() {
@@ -463,6 +463,9 @@ class EntourageService : Service() {
         // CONSTANTS
         // ----------------------------------
         private const val NOTIFICATION_ID = 1
+        const val ACTION_START = 0
+        const val ACTION_PAUSE = 1
+        const val ACTION_RESUME = 2
         const val KEY_NOTIFICATION_PAUSE_TOUR = "social.entourage.android.KEY_NOTIFICATION_PAUSE_TOUR"
         const val KEY_NOTIFICATION_STOP_TOUR = "social.entourage.android.KEY_NOTIFICATION_STOP_TOUR"
         const val KEY_LOCATION_PROVIDER_DISABLED = "social.entourage.android.KEY_LOCATION_PROVIDER_DISABLED"
