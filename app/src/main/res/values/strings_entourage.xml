@@ -40,7 +40,7 @@
     <string name="entourage_create_menu">Créer une action</string>
     <string name="entourage_create_menu_ask_help">Demander de l\'aide</string>
     <string name="entourage_create_submenu_ask_help">Faire appel au réseau</string>
-    <string name="entourage_create_menu_contribute">Proposer un don</string>
+    <string name="entourage_create_menu_contribute">Proposer de l\'aide</string>
     <string name="entourage_create_submenu_contribute">Donner un bien, du temps, …</string>
     <string name="outing_create_menu">Annoncer un évènement</string>
     <string name="outing_create_submenu">à une date précise</string>
