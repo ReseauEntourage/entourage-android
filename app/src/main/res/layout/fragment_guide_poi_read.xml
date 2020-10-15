@@ -447,11 +447,11 @@
 
 
     <RelativeLayout
+        android:id="@+id/ui_layout_share"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background_transparent"
         android:orientation="vertical"
-        android:id="@+id/ui_layout_share"
         android:visibility="gone">
 
         <LinearLayout
@@ -473,13 +473,24 @@
                 android:contentDescription="@string/empty_description"
                 app:srcCompat="@drawable/ic_close_black_24dp" />
 
+            <TextView
+                android:id="@+id/textView27"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="@string/tour_info_options_share"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/white"
+                android:textSize="@dimen/entourage_font_xtra_large"
+                android:textStyle="bold" />
+
             <Button
                 android:id="@+id/ui_bt_share_inside"
                 style="@style/WhiteButton.RoundedCorners"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:drawableStartCompat="@drawable/ic_entourage_logo_orange"
-                android:text="@string/invite_source_share_entourage" />
+                android:text="@string/invite_source_share_entourage"
+                app:drawableStartCompat="@drawable/ic_entourage_logo_orange" />
 
             <Button
                 android:id="@+id/ui_bt_share_outside"
