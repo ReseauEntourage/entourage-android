@@ -4,22 +4,25 @@ import android.content.Intent
 import android.net.Uri
 import android.text.format.DateFormat
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.layout_entourage_information_chat_message_others_card_view.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.model.TimestampedObject
+import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.CropCircleTransformation
+import timber.log.Timber
 
 /**
  * Chat Message Card for Tour Information Screen
  */
-open class ChatMessageCardViewHolder(view: View) : BaseCardViewHolder(view) {
+open class ChatMessageCardViewHolder(val view: View) : BaseCardViewHolder(view) {
     private var userId = 0
     private var deeplinkURL:String? = null
     override fun bindFields() {
@@ -33,6 +36,7 @@ open class ChatMessageCardViewHolder(view: View) : BaseCardViewHolder(view) {
     }
 
     private fun populate(chatMessage: ChatMessage) {
+        val isPoi = chatMessage.metadata?.type?.equals("poi") ?: false
         // user avatar
         itemView.tic_chat_user_photo?.let { userPhotoView->
             chatMessage.userAvatarURL?.let { avatarURL ->
@@ -43,7 +47,17 @@ open class ChatMessageCardViewHolder(view: View) : BaseCardViewHolder(view) {
             } ?: run {
                 userPhotoView.setImageResource(R.drawable.ic_user_photo_small)
             }
+        } ?: kotlin.run {
+            //Change bubble color + text color if isMe and poi
+            if (isPoi) {
+                itemView.layout_bubble?.background?.setColorFilter(ContextCompat.getColor(view.context, R.color.light_grey), android.graphics.PorterDuff.Mode.SRC_ATOP);
+
+                itemView.tic_chat_message?.setTextColor(ContextCompat.getColor(view.context,R.color.pre_onboard_orange))
+                itemView.tic_chat_timestamp?.setTextColor(ContextCompat.getColor(view.context,R.color.pre_onboard_orange))
+                itemView.tic_chat_deeplink?.setBackgroundColor(ContextCompat.getColor(view.context,R.color.partner_logo_transparent))
+            }
         }
+
         // Partner logo
         itemView.tic_chat_user_partner_logo?.let { partnerLogoView ->
             chatMessage.partnerLogoSmall?.let { partnerLogoURL ->
@@ -72,6 +86,21 @@ open class ChatMessageCardViewHolder(view: View) : BaseCardViewHolder(view) {
             itemView.tic_chat_deeplink?.visibility = View.GONE
         }
 
+        if (isPoi) {
+            itemView.tic_chat_deeplink?.visibility = View.VISIBLE
+            itemView.tic_chat_deeplink?.setImageDrawable(ContextCompat.getDrawable(view.context,R.drawable.ic_link))
+
+            itemView.layout_bubble?.setOnClickListener {
+                showPoiDetail(chatMessage.metadata?.uuid)
+            }
+            itemView.tic_chat_deeplink?.setOnClickListener {
+                showPoiDetail(chatMessage.metadata?.uuid)
+            }
+            itemView.tic_chat_message?.setOnClickListener {
+                showPoiDetail(chatMessage.metadata?.uuid)
+            }
+        }
+
         //linkify(it)
         itemView.tic_chat_message?.text = chatMessage.content
         //}
@@ -86,6 +115,12 @@ open class ChatMessageCardViewHolder(view: View) : BaseCardViewHolder(view) {
         }
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(deeplinkURL))
         startActivity(v.context, intent, null)
+    }
+
+    fun showPoiDetail(poiId:String?) {
+        poiId?.let {
+            BusProvider.instance.post(Events.OnPoiViewDetail(it.toLong()))
+        }
     }
 
     companion object {

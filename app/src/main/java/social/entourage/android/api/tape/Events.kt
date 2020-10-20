@@ -210,4 +210,9 @@ open class Events {
     class OnShowURLEvent(val url: String)
 
     class OnUnreadCountUpdate(val unreadCount: Int?)
+
+    /**
+     * Event to show poi detail fragment from feediteminformation (chat message)
+     */
+    class OnPoiViewDetail(val poiId: Long)
 }

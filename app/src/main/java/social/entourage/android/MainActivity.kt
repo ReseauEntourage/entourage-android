@@ -25,6 +25,7 @@ import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BackPressable
@@ -36,6 +37,7 @@ import social.entourage.android.entourage.EntourageDisclaimerFragment
 import social.entourage.android.entourage.information.EntourageInformationFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.entourage.my.MyEntouragesFragment
+import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.location.EntourageLocation.currentLocation
 import social.entourage.android.location.LocationUtils.isLocationEnabled
 import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
@@ -550,6 +552,19 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     @Subscribe
     fun onUserUpdateEvent(event: OnUserInfoUpdatedEvent?) {
         updateAnalyticsInfo()
+    }
+
+    @Subscribe
+    fun onPoiViewDetail(event: OnPoiViewDetail) {
+        logEvent(EntourageEvents.EVENT_FEED_USERPROFILE)
+        try {
+            val poi = Poi()
+            poi.id = event.poiId
+            val fragment = ReadPoiFragment.newInstance(poi)
+            fragment.show(supportFragmentManager, ReadPoiFragment.TAG)
+        } catch (e: IllegalStateException) {
+            Timber.w(e)
+        }
     }
 
     override fun showStopTourActivity(tour: Tour) {

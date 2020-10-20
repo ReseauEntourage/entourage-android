@@ -11,6 +11,7 @@
     android:paddingBottom="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_bubble"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bubble_discussion">

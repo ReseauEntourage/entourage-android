@@ -71,6 +71,7 @@ class ChatMessage (var content: String) : TimestampedObject(), Serializable {
         val uuid: String? = null
         val title: String? = null
         val operation: String? = null
+        val type: String? = null
 
         @SerializedName("starts_at")
         val startsAt: Date? = null
