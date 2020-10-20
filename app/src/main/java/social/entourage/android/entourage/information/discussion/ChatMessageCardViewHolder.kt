@@ -37,8 +37,11 @@ open class ChatMessageCardViewHolder(val view: View) : BaseCardViewHolder(view) 
 
     private fun populate(chatMessage: ChatMessage) {
         val isPoi = chatMessage.metadata?.type?.equals("poi") ?: false
+        val isEntourage = chatMessage.metadata?.type?.equals("entourage") ?: false
+        var isMine = true
         // user avatar
         itemView.tic_chat_user_photo?.let { userPhotoView->
+            isMine = false
             chatMessage.userAvatarURL?.let { avatarURL ->
                 Picasso.get().load(Uri.parse(avatarURL))
                         .placeholder(R.drawable.ic_user_photo_small)
@@ -46,15 +49,6 @@ open class ChatMessageCardViewHolder(val view: View) : BaseCardViewHolder(view) 
                         .into(userPhotoView)
             } ?: run {
                 userPhotoView.setImageResource(R.drawable.ic_user_photo_small)
-            }
-        } ?: kotlin.run {
-            //Change bubble color + text color if isMe and poi
-            if (isPoi) {
-                itemView.layout_bubble?.background?.setColorFilter(ContextCompat.getColor(view.context, R.color.light_grey), android.graphics.PorterDuff.Mode.SRC_ATOP);
-
-                itemView.tic_chat_message?.setTextColor(ContextCompat.getColor(view.context,R.color.pre_onboard_orange))
-                itemView.tic_chat_timestamp?.setTextColor(ContextCompat.getColor(view.context,R.color.pre_onboard_orange))
-                itemView.tic_chat_deeplink?.setBackgroundColor(ContextCompat.getColor(view.context,R.color.partner_logo_transparent))
             }
         }
 
@@ -75,7 +69,7 @@ open class ChatMessageCardViewHolder(val view: View) : BaseCardViewHolder(view) 
 
         // the actual chat
         val deeplink = DeepLinksManager.findFirstDeeplinkInText(chatMessage.content)
-        if(deeplink?.isNotBlank() ==true) {
+        if(deeplink?.isNotBlank() == true) {
             deeplinkURL = deeplink
             itemView.tic_chat_deeplink?.visibility = View.VISIBLE
             itemView.tic_chat_deeplink?.setOnClickListener {
@@ -86,9 +80,15 @@ open class ChatMessageCardViewHolder(val view: View) : BaseCardViewHolder(view) 
             itemView.tic_chat_deeplink?.visibility = View.GONE
         }
 
+        //linkify(it)
+        itemView.tic_chat_message?.text = chatMessage.content
+        //}
+        // chat timestamp
+        itemView.tic_chat_timestamp?.text = DateFormat.format("H'h'mm", chatMessage.timestamp)
+        userId = chatMessage.userId
+
         if (isPoi) {
-            itemView.tic_chat_deeplink?.visibility = View.VISIBLE
-            itemView.tic_chat_deeplink?.setImageDrawable(ContextCompat.getDrawable(view.context,R.drawable.ic_link))
+            setBubbleLink(isMine)
 
             itemView.layout_bubble?.setOnClickListener {
                 showPoiDetail(chatMessage.metadata?.uuid)
@@ -100,13 +100,28 @@ open class ChatMessageCardViewHolder(val view: View) : BaseCardViewHolder(view) 
                 showPoiDetail(chatMessage.metadata?.uuid)
             }
         }
+        if (isEntourage) {
+            setBubbleLink(isMine)
+        }
+    }
 
-        //linkify(it)
-        itemView.tic_chat_message?.text = chatMessage.content
-        //}
-        // chat timestamp
-        itemView.tic_chat_timestamp?.text = DateFormat.format("H'h'mm", chatMessage.timestamp)
-        userId = chatMessage.userId
+    fun setBubbleLink(isMine:Boolean) {
+        val colorLink = if (isMine) R.color.white else R.color.accent
+
+        //itemView.layout_bubble?.background?.setColorFilter(ContextCompat.getColor(view.context, R.color.light_grey), android.graphics.PorterDuff.Mode.SRC_ATOP)
+        itemView.tic_chat_message?.setTextColor(ContextCompat.getColor(view.context,colorLink))
+        itemView.tic_chat_message?.setLinkTextColor(ContextCompat.getColor(view.context,colorLink))
+        itemView.tic_chat_timestamp?.setTextColor(ContextCompat.getColor(view.context,colorLink))
+
+        itemView.tic_chat_deeplink?.setBackgroundColor(ContextCompat.getColor(view.context,R.color.partner_logo_transparent))
+        itemView.tic_chat_deeplink?.visibility = View.VISIBLE
+
+        if (isMine) {
+            itemView.tic_chat_deeplink?.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_open_in_new_white_24dp))
+        }
+        else {
+            itemView.tic_chat_deeplink?.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_link))
+        }
     }
 
     fun onDeeplinkClick(v:View) {
