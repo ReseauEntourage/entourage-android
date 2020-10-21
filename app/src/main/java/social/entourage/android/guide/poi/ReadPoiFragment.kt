@@ -73,6 +73,15 @@ class ReadPoiFragment : EntourageDialogFragment() {
             ui_layout_share?.visibility = View.GONE
             shareOnly()
         }
+
+        ui_button_show_soliguide?.setOnClickListener {
+            //TODO: link inside or outside app ?
+            poi.soliguideUrl?.let {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(it)
+                startActivity(intent)
+            }
+        }
     }
 
     fun setupRVHelp() {
@@ -137,6 +146,24 @@ class ReadPoiFragment : EntourageDialogFragment() {
         }
         else {
             ui_layout_public?.visibility = View.GONE
+        }
+
+        //Soliguide
+        layout_top_soliguide?.visibility = View.GONE
+        ui_layout_soliguide_language?.visibility = View.GONE
+        ui_layout_soliguide_openTime?.visibility = View.GONE
+
+        poi.isSoliguide = true
+        if (poi.isSoliguide) {
+            layout_top_soliguide?.visibility = View.VISIBLE
+            poi.openTimeTxt?.let {
+                ui_layout_soliguide_openTime?.visibility = View.VISIBLE
+                ui_tv_poi_open_time?.text = it
+            }
+            poi.languagesTxt?.let {
+                ui_layout_soliguide_language?.visibility = View.VISIBLE
+                ui_tv_poi_language?.text = it
+            }
         }
     }
 

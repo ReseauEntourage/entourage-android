@@ -32,6 +32,12 @@ class Poi : TimestampedObject(), Serializable, ClusterItem {
 
     @SerializedName("category_ids")
     var categories = ArrayList<Int>()
+
+    var isSoliguide = false
+    var openTimeTxt:String? = null
+    var languagesTxt:String? = null
+    var soliguideUrl:String? = null
+    var uuid = ""
     // ----------------------------------
     // GETTERS & SETTERS
     // ----------------------------------
