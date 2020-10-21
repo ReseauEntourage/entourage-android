@@ -153,7 +153,6 @@ class ReadPoiFragment : EntourageDialogFragment() {
         ui_layout_soliguide_language?.visibility = View.GONE
         ui_layout_soliguide_openTime?.visibility = View.GONE
 
-        poi.isSoliguide = true
         if (poi.isSoliguide) {
             layout_top_soliguide?.visibility = View.VISIBLE
             poi.openTimeTxt?.let {
