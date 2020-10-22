@@ -52,9 +52,9 @@ class PoiRenderer(context: Context?, map: GoogleMap?, clusterManager: ClusterMan
         //New Cats
         TOILETTES("Toilettes", 40, R.drawable.poi_category_new_40, R.drawable.poi_transparent_category_4, Color.parseColor("#3ad7ff"),R.drawable.picto_cat_filter_40),
         FONTAINES("Fontaines", 41, R.drawable.poi_category_new_41, R.drawable.poi_transparent_category_4, Color.parseColor("#3ad7ff"),R.drawable.picto_cat_filter_41),
-        DOUCHES("Se laver", 42, R.drawable.poi_category_new_42, R.drawable.poi_transparent_category_4, Color.parseColor("#3ad7ff"),R.drawable.picto_cat_filter_42),
+        DOUCHES("Douches", 42, R.drawable.poi_category_new_42, R.drawable.poi_transparent_category_4, Color.parseColor("#3ad7ff"),R.drawable.picto_cat_filter_42),
         LAVERLINGE("Laveries", 43, R.drawable.poi_category_new_43, R.drawable.poi_transparent_category_4, Color.parseColor("#3ad7ff"),R.drawable.picto_cat_filter_43),
-        SELF_CARE("S'occuper de soi", 6, R.drawable.poi_category_new_6, R.drawable.poi_transparent_category_6, Color.parseColor("#88c0ff"),R.drawable.picto_cat_filter_6),
+        SELF_CARE("Bien-être, activités", 6, R.drawable.poi_category_new_6, R.drawable.poi_transparent_category_6, Color.parseColor("#88c0ff"),R.drawable.picto_cat_filter_6),
         VETEMENTS("Vêtements & matériels", 61, R.drawable.poi_category_new_61, R.drawable.poi_transparent_category_6, Color.parseColor("#88c0ff"),R.drawable.picto_cat_filter_61),
         BOITESDONS("Boite à dons/lire", 62, R.drawable.poi_category_new_62, R.drawable.poi_transparent_category_6, Color.parseColor("#88c0ff"),R.drawable.picto_cat_filter_62);
         companion object {
