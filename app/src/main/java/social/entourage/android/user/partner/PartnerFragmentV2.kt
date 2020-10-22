@@ -20,6 +20,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.Partner
 import social.entourage.android.api.request.PartnerResponse
 import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.tools.CropCircleTransformation
 
 private const val KEY_PARTNER = "param1"
@@ -127,6 +128,7 @@ class PartnerFragmentV2 : EntourageDialogFragment() {
             }
 
             ui_asso_tv_description?.text = it.description
+            DeepLinksManager.linkify(ui_asso_tv_description)
 
             if (it.donationsNeeds.isNullOrEmpty() && it.volunteersNeeds.isNullOrEmpty()) {
                 ui_asso_layout_top_needs?.visibility = View.GONE
@@ -144,6 +146,7 @@ class PartnerFragmentV2 : EntourageDialogFragment() {
                     ui_asso_layout_top_donates?.visibility = View.VISIBLE
                     ui_layout_description_donates?.visibility = View.VISIBLE
                     ui_asso_tv_donates_description?.text = it.donationsNeeds
+                    DeepLinksManager.linkify(ui_asso_tv_donates_description)
                 }
                 if (it.volunteersNeeds.isNullOrEmpty()) {
                     ui_asso_layout_top_volunteers?.visibility = View.GONE
@@ -153,6 +156,7 @@ class PartnerFragmentV2 : EntourageDialogFragment() {
                     ui_asso_layout_top_volunteers?.visibility = View.VISIBLE
                     ui_layout_description_volunteers?.visibility = View.VISIBLE
                     ui_asso_tv_volunteers_description?.text = it.volunteersNeeds
+                    DeepLinksManager.linkify(ui_asso_tv_volunteers_description)
                 }
             }
             ui_button_asso_web?.text = it.websiteUrl
