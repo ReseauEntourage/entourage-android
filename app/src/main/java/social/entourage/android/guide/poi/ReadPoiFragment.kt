@@ -46,7 +46,9 @@ class ReadPoiFragment : EntourageDialogFragment() {
         poi = arguments?.getSerializable(BUNDLE_KEY_POI) as Poi
         setupComponent(EntourageApplication.get(activity).entourageComponent)
 
-        presenter.getPoiDetail(poi.id.toInt())
+        //Actually WS return id and not uuid for entourage poi
+        val uuid = if (poi.uuid.length == 0) poi.id.toString() else poi.uuid
+        presenter.getPoiDetail(uuid)
 
         title_close_button?.setOnClickListener {dismiss()}
         poi_report_button?.setOnClickListener {onReportButtonClicked()}
@@ -164,6 +166,7 @@ class ReadPoiFragment : EntourageDialogFragment() {
                 ui_tv_poi_language?.text = it
             }
         }
+        this.poi = poi
     }
 
     private fun getImageId(position:Int) : ImageView? {
