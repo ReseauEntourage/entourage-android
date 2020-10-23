@@ -763,6 +763,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         entourage_info_title?.text = feedItem.getTitle()
         entourage_info_icon?.let { iconView ->
             feedItem.getIconURL()?.let { iconURL ->
+                iconView.setPadding(0,0,0,0)
                 Picasso.get().cancelRequest(iconView)
                 Picasso.get()
                         .load(iconURL)
