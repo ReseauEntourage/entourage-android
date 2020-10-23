@@ -83,6 +83,8 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
     @Expose(serialize = false, deserialize = false)
     var isNewlyCreated = false
 
+    var postal_code:String? = null
+
     // ----------------------------------
     // CONSTRUCTORS
     // ----------------------------------
