@@ -61,7 +61,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:text="@string/hub_title_1"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="@dimen/entourage_font_large"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -74,7 +74,7 @@
                     android:fontFamily="sans-serif"
                     android:text="@string/hub_description_1"
                     android:textColor="@color/black"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/entourage_font_medium"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/ui_title_1"
                     app:layout_constraintTop_toBottomOf="@+id/ui_title_1" />
@@ -88,7 +88,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:text="@string/hub_button_1"
                     android:textColor="@color/accent"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/entourage_font_medium"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -126,7 +126,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:text="@string/hub_title_2"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="@dimen/entourage_font_large"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -139,7 +139,7 @@
                     android:fontFamily="sans-serif"
                     android:text="@string/hub_description_2"
                     android:textColor="@color/black"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/entourage_font_medium"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/ui_title_2"
                     app:layout_constraintTop_toBottomOf="@+id/ui_title_2" />
@@ -192,7 +192,7 @@
                         android:text="@string/hub_button_2"
                         android:textAllCaps="true"
                         android:textColor="@color/accent"
-                        android:textSize="13sp"
+                        android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -213,7 +213,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:text="@string/hub_title_3"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="@dimen/entourage_font_large"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -226,7 +226,7 @@
                     android:fontFamily="sans-serif"
                     android:text="@string/hub_description_3"
                     android:textColor="@color/black"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/entourage_font_medium"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/ui_title_3"
                     app:layout_constraintTop_toBottomOf="@+id/ui_title_3" />
@@ -240,7 +240,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:text="@string/hub_button_3"
                     android:textColor="@color/accent"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/entourage_font_medium"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -279,7 +279,7 @@
                     android:fontFamily="sans-serif"
                     android:text="@string/hub_description_4"
                     android:textColor="@color/black"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/entourage_font_medium"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -334,7 +334,7 @@
                         android:text="@string/hub_button_4"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
-                        android:textSize="13sp"
+                        android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -356,7 +356,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:text="@string/hub_title_5"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="@dimen/entourage_font_large"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -369,7 +369,7 @@
                     android:fontFamily="sans-serif"
                     android:text="@string/hub_description_5"
                     android:textColor="@color/black"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/entourage_font_medium"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/ui_title_5"
                     app:layout_constraintTop_toBottomOf="@+id/ui_title_5" />
@@ -425,7 +425,7 @@
                         android:text="@string/hub_button_5"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
-                        android:textSize="13sp"
+                        android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
