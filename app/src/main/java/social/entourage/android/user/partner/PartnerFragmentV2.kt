@@ -128,6 +128,14 @@ class PartnerFragmentV2 : EntourageDialogFragment() {
             }
 
             ui_asso_tv_description?.text = it.description
+
+            if (it.description?.length ?: 0 > 0) {
+                ui_layout_description?.visibility = View.VISIBLE
+            }
+            else {
+                ui_layout_description?.visibility = View.GONE
+            }
+
             DeepLinksManager.linkify(ui_asso_tv_description)
 
             if (it.donationsNeeds.isNullOrEmpty() && it.volunteersNeeds.isNullOrEmpty()) {
