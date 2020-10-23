@@ -694,22 +694,36 @@ open class BaseCreateEntourageFragment
 
     override fun onTimeSet(view: TimePickerDialog, hourOfDay: Int, minute: Int, second: Int) {
         val startDate = entourageDateStart ?: return
-        val endDate = entourageDateEnd ?: return
+        var endDate = entourageDateEnd
         if (isStartDateEdited) {
             startDate[Calendar.HOUR_OF_DAY] = hourOfDay
             startDate[Calendar.MINUTE] = minute
             startDate[Calendar.SECOND] = second
-            if (startDate.after(endDate)) {
+
+            val tmpDateAfter = Calendar.getInstance()
+            tmpDateAfter.time = startDate.time
+            tmpDateAfter[Calendar.HOUR] = tmpDateAfter[Calendar.HOUR] + ADD_HOURS_TO_END_DATE
+
+            if (endDate == null || tmpDateAfter.after(endDate)) {
+                endDate = Calendar.getInstance()
                 endDate.time = startDate.time
                 endDate[Calendar.HOUR] = endDate[Calendar.HOUR] + ADD_HOURS_TO_END_DATE
+                endDate[Calendar.MINUTE] = minute
             }
         } else {
-            endDate[Calendar.HOUR_OF_DAY] = hourOfDay
-            endDate[Calendar.MINUTE] = minute
-            endDate[Calendar.SECOND] = second
+            if (endDate == null) {
+                endDate = Calendar.getInstance()
+            }
+            endDate?.set(Calendar.HOUR_OF_DAY, hourOfDay)
+            endDate?.set(Calendar.MINUTE, minute)
+            endDate?.set(Calendar.SECOND, second)
         }
         if (entourageMetadata == null) entourageMetadata = BaseEntourage.Metadata()
-        entourageMetadata?.setEndDate(endDate.time)
+
+        endDate?.let {
+            entourageMetadata?.setEndDate(it.time)
+            entourageDateEnd = it
+        }
         entourageMetadata?.setStartDate(startDate.time)
         updateDateStartTextView()
         updateDateEndTextView()
