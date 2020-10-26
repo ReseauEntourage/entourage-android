@@ -281,6 +281,11 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         super.onEntourageUpdated(event)
     }
 
+    @Subscribe
+    fun onShowEventDeeplink(event: Events.OnShowEventDeeplink) {
+        dismiss()
+    }
+
     // ----------------------------------
     // API callbacks
     // ----------------------------------

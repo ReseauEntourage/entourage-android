@@ -215,4 +215,6 @@ open class Events {
      * Event to show poi detail fragment from feediteminformation (chat message)
      */
     class OnPoiViewDetail(val poiId: Long)
+
+    class OnShowEventDeeplink
 }

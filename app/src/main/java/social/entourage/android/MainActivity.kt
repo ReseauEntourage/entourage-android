@@ -424,6 +424,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     }
 
     fun showEvents() {
+        instance.post(OnShowEventDeeplink())
         selectNavigationTab(navigationDataSource.feedTabIndex)
         newsfeedFragment?.onShowEvents()
     }
@@ -435,6 +436,11 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
 
     fun showMyEntourages() {
         selectNavigationTab(navigationDataSource.myMessagesTabIndex)
+    }
+
+    fun showActionsTab() {
+        instance.post(OnShowEventDeeplink())
+        selectNavigationTab(navigationDataSource.agirTabIndex)
     }
 
     fun showTutorial(forced: Boolean) {
