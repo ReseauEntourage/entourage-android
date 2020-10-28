@@ -217,4 +217,6 @@ open class Events {
     class OnPoiViewDetail(val poiId: Long)
 
     class OnShowEventDeeplink
+
+    class OnShowDetailAssociation(val id:Int)
 }
