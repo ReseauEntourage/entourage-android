@@ -61,7 +61,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     @Inject lateinit var presenter: GuideMapPresenter
 
     private var onMapReadyCallback: OnMapReadyCallback? = null
-    private var poisMap: MutableMap<Long, Poi> = TreeMap()
+    private var poisMap: MutableMap<String, Poi> = TreeMap()
     private var previousEmptyListPopupLocation: Location? = null
     private val poisAdapter: PoisAdapter = PoisAdapter()
     private var mapClusterItemRenderer: PoiRenderer? = null
@@ -168,6 +168,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
             clearOldPois()
             if (pois != null && pois.isNotEmpty()) {
                 val poiCollection = removeRedundantPois(pois)
+                Timber.d("***** put poi on map new coll pois : ${poiCollection.size}")
                 if (map != null) {
                     mapClusterManager?.let {
                         it.addItems(poiCollection)
@@ -254,8 +255,8 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     private fun removeRedundantPois(pois: List<Poi>): List<Poi> {
         val newPois: MutableList<Poi> = ArrayList()
         for(poi in pois) {
-            if (!poisMap.containsKey(poi.id)) {
-                poisMap[poi.id] = poi
+            if (!poisMap.containsKey(poi.uuid)) {
+                poisMap[poi.uuid] = poi
                 newPois.add(poi)
             }
         }

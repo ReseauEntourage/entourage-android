@@ -35,11 +35,13 @@ class GuideFilter private constructor() : Serializable {
             val builder = StringBuilder()
             var existingFilteredCategories = false
             for (categoryType in CategoryType.values()) {
-                if (valueForCategoryId(categoryType.categoryId)) {
-                    if (builder.isNotEmpty()) builder.append(',')
-                    builder.append(categoryType.categoryId)
-                } else {
-                    existingFilteredCategories = true
+                if (categoryType.categoryId != 0)  {
+                    if (valueForCategoryId(categoryType.categoryId)) {
+                        if (builder.isNotEmpty()) builder.append(',')
+                        builder.append(categoryType.categoryId)
+                    } else {
+                        existingFilteredCategories = true
+                    }
                 }
             }
             return if (existingFilteredCategories) builder.toString() else null
