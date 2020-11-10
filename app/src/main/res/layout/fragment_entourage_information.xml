@@ -78,14 +78,14 @@
 
     </RelativeLayout>
 
-    <include
-        android:id="@+id/entourage_info_private_section"
-        layout="@layout/layout_private_entourage_information"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/entourage_info_title_layout"
-        android:visibility="gone"
-        tools:visibility="visible" />
+        <include
+            android:id="@+id/entourage_info_private_section"
+            layout="@layout/layout_private_entourage_information"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/entourage_info_title_layout"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
     <include
         android:id="@+id/entourage_info_public_section"

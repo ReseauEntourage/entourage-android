@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:baselineAligned="false"
     android:orientation="horizontal"
-    android:padding="16dp"
-    android:baselineAligned="false">
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -23,12 +23,12 @@
             android:textColor="@color/greyish_brown"
             android:textSize="@dimen/entourage_font_title_3"
             android:textStyle="normal"
-            tools:text="Urgent Cherche paire de lunettes"/>
+            tools:text="Urgent Cherche paire de lunettes" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layoutDirection="rtl" >
+            android:layoutDirection="rtl">
 
             <TextView
                 android:id="@+id/tour_summary_author_name"
@@ -61,7 +61,7 @@
             android:fontFamily="sans-serif-light"
             android:textColor="@color/greyish_brown"
             android:textSize="@dimen/entourage_font_small"
-            tools:text="Paris (75011)"/>
+            tools:text="Paris (75011)" />
     </LinearLayout>
 
     <LinearLayout
@@ -82,7 +82,7 @@
                 android:layout_height="35dp"
                 android:contentDescription="@string/empty_description"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_user_photo_small"/>
+                app:srcCompat="@drawable/ic_user_photo_small" />
 
             <social.entourage.android.tools.view.PartnerLogoImageView
                 android:id="@+id/entourage_info_partner_logo"
@@ -92,7 +92,7 @@
                 android:layout_alignBottom="@+id/entourage_info_author_photo"
                 android:layout_marginEnd="-4dp"
                 android:layout_marginBottom="-4dp"
-                tools:src="@drawable/ic_entourage_logo_two_colors"/>
+                tools:src="@drawable/ic_entourage_logo_two_colors" />
         </RelativeLayout>
 
         <LinearLayout
@@ -104,7 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
                 android:contentDescription="@string/empty_description"
-                app:srcCompat="@drawable/ic_users"/>
+                app:srcCompat="@drawable/ic_users" />
 
             <TextView
                 android:id="@+id/entourage_info_people_count"

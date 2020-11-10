@@ -7,7 +7,7 @@ import android.view.View
 
 import java.util.Locale
 
-class OnAddressClickListener(private val context: Context, private val address: String) : View.OnClickListener {
+class OnAddressClickListener(private val context: Context, private val address: String, val isFromDetail:Boolean = false) : View.OnClickListener {
 
     override fun onClick(v: View) {
         val uri:Uri? = Uri.parse(String.format(Locale.FRENCH, "geo:0,0?q=%s", address))
@@ -19,6 +19,11 @@ class OnAddressClickListener(private val context: Context, private val address: 
     private fun openExternalMap(geoLocation: Uri) {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = geoLocation
+        if (isFromDetail) {
+            context.startActivity(intent)
+            return
+        }
+
         if (intent.resolveActivity(context.packageManager) != null) {
             context.startActivity(intent)
         }

@@ -75,6 +75,9 @@
     <string name="tour_info_metadata_dateStart_hours_format">Rendez-vous le %1$s %2$s</string>
     <string name="tour_info_metadata_dateStart_End_hours_format">Rendez-vous du %1$s %2$s au %3$s %4$s</string>
 
+    <string name="tour_info_metadata_dateStart_hours_format_new">Lle %1$s %2$s</string>
+    <string name="tour_info_metadata_dateStart_End_hours_format_new">Du %1$s %2$s au %3$s %4$s</string>
+
     <!-- EntourageService -->
     <string name="local_service_stopped">Maraude terminée</string>
     <string name="tour_freezed">Maraude clôturée</string>
@@ -105,6 +108,7 @@
     <string name="tour_cell_button_freezed">Clôturé</string>
     <string name="tour_cell_button_freezed_success">Succès</string>
     <string name="tour_cell_button_view">Voir plus</string>
+    <string name="tour_cell_button_pending_new">Demandé</string>
 
     <!-- Join Request -->
     <string name="tour_join_request_success">Demande acceptée</string>
@@ -150,5 +154,14 @@
     <string name="map_tab_all">Tous</string>
     <string name="map_tab_events">Evènements</string>
     <string name="map_tab_tours">Maraudes</string>
+
+
+    <!-- New detail action/event -->
+    <string name="detail_button_action_join">Participer</string>
+    <string name="detail_button_action_share">Partager</string>
+    <string name="detail_action_event_online">En ligne</string>
+    <string name="detail_action_event_info_rdv">Vous donne rendez-vous</string>
+    <string name="detail_action_event_info_gift">Propose</string>
+    <string name="detail_action_event_info_demand">Fait appel à la solidarité du réseau</string>
 
 </resources>

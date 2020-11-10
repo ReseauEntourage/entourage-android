@@ -7,6 +7,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -22,6 +23,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.core.content.PermissionChecker
 import androidx.core.content.res.ResourcesCompat
@@ -36,6 +38,12 @@ import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.layout_entourage_options.*
 import kotlinx.android.synthetic.main.fragment_entourage_information.*
+import kotlinx.android.synthetic.main.layout_detail_action_description.*
+import kotlinx.android.synthetic.main.layout_detail_event_action_creator.*
+import kotlinx.android.synthetic.main.layout_detail_event_action_date.*
+import kotlinx.android.synthetic.main.layout_detail_event_action_location.*
+import kotlinx.android.synthetic.main.layout_detail_event_action_top_view.*
+import kotlinx.android.synthetic.main.layout_detail_event_description.*
 import kotlinx.android.synthetic.main.layout_entourage_information_top_buttons.*
 import kotlinx.android.synthetic.main.layout_feed_action_card.*
 import kotlinx.android.synthetic.main.layout_invite_source.*
@@ -46,8 +54,10 @@ import org.joda.time.Days
 import org.joda.time.LocalDate
 import social.entourage.android.*
 import social.entourage.android.api.model.*
+import social.entourage.android.api.model.BaseEntourage.Companion.GROUPTYPE_ACTION_DEMAND
 import social.entourage.android.api.model.feed.*
 import social.entourage.android.api.model.tour.Tour
+import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.configuration.Configuration
@@ -61,6 +71,7 @@ import social.entourage.android.entourage.invite.InviteFriendsListener
 import social.entourage.android.entourage.invite.contacts.InviteContactsFragment
 import social.entourage.android.entourage.invite.phonenumber.InviteByPhoneNumberFragment
 import social.entourage.android.location.EntourageLocation
+import social.entourage.android.map.OnAddressClickListener
 import social.entourage.android.service.EntourageService
 import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.tools.BusProvider
@@ -69,6 +80,7 @@ import social.entourage.android.tools.EntourageError
 import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.tour.TourInformationFragment
 import social.entourage.android.tools.view.EntourageSnackbar
+import social.entourage.android.user.UserFragment
 import timber.log.Timber
 import java.lang.Exception
 import java.text.DateFormat
@@ -755,94 +767,332 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         entourage_info_member_count?.text = getString(R.string.tour_info_members_count, membersCount)
 
         // hide the 'invite a friend' for a tour
-        entourage_info_member_add?.visibility = if (feedItem.type != TimestampedObject.TOUR_CARD) View.VISIBLE else View.GONE
+      //  entourage_info_member_add?.visibility = if (feedItem.type != TimestampedObject.TOUR_CARD) View.VISIBLE else View.GONE
     }
 
     private fun updateFeedItemInfo() {
         // Update the header
-        entourage_info_title?.text = feedItem.getTitle()
-        entourage_info_icon?.let { iconView ->
-            feedItem.getIconURL()?.let { iconURL ->
-                iconView.setPadding(0,0,0,0)
-                Picasso.get().cancelRequest(iconView)
-                Picasso.get()
-                        .load(iconURL)
-                        .placeholder(R.drawable.ic_user_photo_small)
-                        .transform(CropCircleTransformation())
-                        .into(iconView)
-                iconView.visibility = View.VISIBLE
-            } ?: run {
-                feedItem.getIconDrawable(requireContext())?.let { iconDrawable ->
+        if (feedItem is Tour) {
+            changeViewsVisibility(true)
+            entourage_info_members_layout?.setBackgroundColor(ResourcesCompat.getColor(resources,R.color.white,null))
+
+            entourage_info_title?.text = feedItem.getTitle()
+            entourage_info_icon?.let { iconView ->
+                feedItem.getIconURL()?.let { iconURL ->
+                    iconView.setPadding(0,0,0,0)
+                    Picasso.get().cancelRequest(iconView)
+                    Picasso.get()
+                            .load(iconURL)
+                            .placeholder(R.drawable.ic_user_photo_small)
+                            .transform(CropCircleTransformation())
+                            .into(iconView)
                     iconView.visibility = View.VISIBLE
-                    iconView.setImageDrawable(iconDrawable)
                 } ?: run {
-                    iconView.visibility = View.GONE
+                    feedItem.getIconDrawable(requireContext())?.let { iconDrawable ->
+                        iconView.visibility = View.VISIBLE
+                        iconView.setImageDrawable(iconDrawable)
+                    } ?: run {
+                        iconView.visibility = View.GONE
+                    }
+                }
+            }
+            entourage_info_title_full?.text = feedItem.getTitle()
+
+            if (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.getGroupType(), ignoreCase = true)) {
+                tour_summary_group_type?.text = resources.getString(R.string.entourage_type_outing)
+                tour_summary_author_name?.text = ""
+                entourage_info_location?.visibility = View.GONE
+                entourage_info_icon?.visibility = View.VISIBLE
+                entourage_info_icon?.setImageDrawable(ResourcesCompat.getDrawable(resources,R.drawable.ic_event_accent_24dp,null))
+                entourage_info_request_join_title?.text = getString(R.string.tour_info_request_join_title_entourage_new)
+            } else {
+                tour_summary_group_type?.text = feedItem.getFeedTypeLong(requireContext())
+                tour_summary_author_name?.text = feedItem.author?.userName ?: ""
+                entourage_info_location?.visibility = View.VISIBLE
+                entourage_info_location?.text = feedItem.getDisplayAddress()
+            }
+
+           updatePhotosAvatar(entourage_info_author_photo,entourage_info_partner_logo)
+
+            entourage_info_people_count?.text = getString(R.string.tour_cell_numberOfPeople, feedItem.numberOfPeople)
+
+            //   update description
+            if(entourage_info_description!=null) {
+                if (feedItem.getDescription()?.isNotEmpty() == true) {
+                    entourage_info_description?.text = feedItem.getDescription()
+                    entourage_info_description?.visibility = View.VISIBLE
+                } else {
+                    entourage_info_description?.visibility = View.GONE
+                }
+                linkify(entourage_info_description)
+            }
+
+            //   metadata
+            updateMetadataView()
+            when(feedItem.getGroupType()) {
+                BaseEntourage.GROUPTYPE_ACTION,
+                Tour.GROUPTYPE_TOUR -> {
+                    showActionTimestamps(feedItem.getCreationTime(), feedItem.updatedTime)
+                }
+                else -> {
+                    entourage_info_timestamps?.visibility = View.GONE
+                }
+            }
+            return
+        }
+
+        updateFeedItemActionEvent()
+    }
+
+    private fun updateFeedItemActionEvent() {
+        changeViewsVisibility(false)
+
+        entourage_info_title?.visibility = View.INVISIBLE
+        entourage_info_icon?.visibility = View.INVISIBLE
+
+        //Top view
+        ui_image_event_top?.visibility = View.GONE
+        if (feedItem.isEvent() && !feedItem.eventImageUrl.isNullOrEmpty()) {
+            Picasso.get().load(feedItem.eventImageUrl).into(ui_image_event_top)
+        }
+
+        ui_title_event_action_top?.text = feedItem.getTitle()
+
+        //Button action
+        var title: Int
+        var showIcon = View.VISIBLE
+        ui_layout_event_action_top_action?.setBackgroundResource(R.drawable.bg_button_rounded_pre_onboard_orange_stroke)
+        ui_tv_button_action_top?.setTextColor(ResourcesCompat.getColor(resources,R.color.accent,null))
+        when(feedItem.joinStatus) {
+            FeedItem.JOIN_STATUS_ACCEPTED -> {
+                title = R.string.tour_cell_button_accepted_other
+                showIcon = View.GONE
+                ui_layout_event_action_top_action?.setBackgroundResource(R.drawable.bg_button_rounded_pre_onboard_orange_plain)
+                ui_tv_button_action_top?.setTextColor(ResourcesCompat.getColor(resources,R.color.white,null))
+            }
+            FeedItem.JOIN_STATUS_PENDING -> {
+                showIcon = View.GONE
+                title = R.string.tour_cell_button_pending_new
+            }
+            else -> {
+                title = R.string.tour_info_request_join_button2_entourage
+                if (feedItem.isOnlineEvent) {
+                   title = R.string.tour_info_request_join_button_entourage
                 }
             }
         }
-        entourage_info_title_full?.text = feedItem.getTitle()
+        ui_iv_button_action_top.visibility = showIcon
+        ui_tv_button_action_top.setText(title)
 
-        if (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.getGroupType(), ignoreCase = true)) {
-            tour_summary_group_type?.text = resources.getString(R.string.entourage_type_outing)
-            tour_summary_author_name?.text = ""
-            entourage_info_location?.visibility = View.GONE
-            entourage_info_icon?.visibility = View.VISIBLE
-            entourage_info_icon?.setImageDrawable(ResourcesCompat.getDrawable(resources,R.drawable.ic_event_accent_24dp,null))
-            entourage_info_request_join_title?.text = getString(R.string.tour_info_request_join_title_entourage_new)
-        } else {
-            tour_summary_group_type?.text = feedItem.getFeedTypeLong(requireContext())
-            tour_summary_author_name?.text = feedItem.author?.userName ?: ""
-            entourage_info_location?.visibility = View.VISIBLE
-            entourage_info_location?.text = feedItem.getDisplayAddress()
+        if (feedItem.status == FeedItem.STATUS_CLOSED) {
+            ui_layout_event_action_top_action?.visibility = View.GONE
+        }
+        else {
+            ui_layout_event_action_top_action?.visibility = View.VISIBLE
         }
 
-        entourage_info_author_photo?.let { authorPhotoView ->
+        ui_layout_event_action_top_action?.setOnClickListener {
+            if (feedItem.joinStatus == FeedItem.JOIN_STATUS_PENDING) {
+                quitEntourage()
+            }
+            else if (feedItem.joinStatus != FeedItem.JOIN_STATUS_ACCEPTED) {
+                onJoinButton()
+            }
+        }
+
+        ui_layout_event_action_top_share?.setOnClickListener {
+            showInviteSource(true)
+        }
+
+        //Layout Date
+        if (feedItem.isEvent()) {
+            layout_detail_event_action_date?.visibility = View.VISIBLE
+            val metadata: BaseEntourage.Metadata? = if (feedItem is BaseEntourage) (feedItem as BaseEntourage).metadata else null
+            ui_tv_event_action_date?.text = getDateStringFromMetadata(metadata)
+        }
+        else {
+            layout_detail_event_action_date?.visibility = View.GONE
+        }
+
+        entourage_info_map_layout.visibility = View.VISIBLE
+
+        //Layout location
+        if (feedItem.isEvent()) {
+            if (feedItem.isOnlineEvent) {
+                ui_iv_event_action_location.setImageDrawable(ResourcesCompat.getDrawable(resources,R.drawable.ic_detail_event_link,null))
+                ui_tv_event_action_location?.text = "${getString(R.string.detail_action_event_online)}\n${feedItem.eventUrl}"
+                linkify( ui_tv_event_action_location)
+                entourage_info_map_layout.visibility = View.GONE
+            }
+            else {
+                ui_tv_event_action_location?.let {
+                    val metadata: BaseEntourage.Metadata? = if (feedItem is BaseEntourage) (feedItem as BaseEntourage).metadata else null
+                    val displayAddress = metadata?.displayAddress
+                    it.text = displayAddress
+                    it.paintFlags = it.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+                    if (displayAddress != null) {
+                        it.setOnClickListener {
+                            OnAddressClickListener(requireActivity(),displayAddress,true).onClick(it)
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            if (feedItem.postal_code.isNullOrEmpty()) {
+                ui_tv_event_action_location?.text = "-"
+            }
+            else {
+                ui_tv_event_action_location?.text = feedItem.postal_code
+            }
+        }
+
+        //Layout creator
+        updatePhotosAvatar(ui_action_event_creator_photo,ui_action_event_creator_logo)
+        ui_action_event_creator_name?.text = feedItem.author?.userName ?: ""
+        val partner = feedItem.author?.partner
+        val role = partner?.userRoleTitle
+
+        feedItem.author?.userID?.let { userId ->
+            layout_detail_event_action_creator?.setOnClickListener {
+                val fragment = UserFragment.newInstance(userId)
+                fragment.show(requireActivity(). supportFragmentManager, UserFragment.TAG)
+            }
+        }
+
+        if (partner != null || !role.isNullOrEmpty()) {
+            ui_action_event_creator_layout_bottom?.visibility = View.VISIBLE
+            var _roleStr = ""
+            if (role != null && role.isNotEmpty()) {
+                _roleStr = "$role -"
+                ui_action_event_creator_role?.text = _roleStr
+                ui_action_event_creator_role?.visibility = View.VISIBLE
+            }
+            else {
+                ui_action_event_creator_role?.visibility = View.GONE
+            }
+
+            ui_action_event_creator_bt_asso?.text = partner.name
+            ui_action_event_creator_bt_asso?.setOnClickListener {
+                partner.id.toInt().let { partnerId ->
+                    BusProvider.instance.post(Events.OnShowDetailAssociation(partnerId))
+                }
+            }
+        }
+        else {
+            ui_action_event_creator_layout_bottom?.visibility = View.INVISIBLE
+        }
+
+        if (feedItem.isEvent()) {
+            ui_action_event_creator_information?.text = getString(R.string.detail_action_event_info_rdv)
+        }
+        else if ((feedItem as BaseEntourage).actionGroupType.equals(GROUPTYPE_ACTION_DEMAND)) {
+            ui_action_event_creator_information?.text = getText(R.string.detail_action_event_info_demand)
+        }
+        else {
+            ui_action_event_creator_information?.text = getText(R.string.detail_action_event_info_gift)
+        }
+
+        //Layout description
+        if (feedItem.isEvent()) {
+            layout_detail_event_description?.visibility = View.VISIBLE
+            layout_detail_action_description?.visibility = View.GONE
+
+            if (feedItem.getDescription().isNullOrEmpty()) {
+                ui_layout_event_description?.visibility = View.GONE
+            }
+            else {
+                ui_layout_event_description?.visibility = View.VISIBLE
+                ui_tv_detail_event_description?.text = feedItem.getDescription()
+            }
+            linkify(ui_tv_detail_event_description)
+        }
+        else {
+            layout_detail_action_description?.visibility = View.VISIBLE
+            layout_detail_event_description?.visibility = View.GONE
+
+            if (feedItem.getDescription().isNullOrEmpty()) {
+                ui_layout_action_description?.visibility = View.GONE
+            }
+            else {
+                ui_layout_action_description?.visibility = View.VISIBLE
+                ui_tv_detail_action_description?.text = feedItem.getDescription()
+            }
+
+            val timestamps = ArrayList<String?>()
+            timestamps.add(getString(R.string.entourage_info_creation_time, formattedDaysIntervalFromToday(feedItem.getCreationTime())))
+            if (!LocalDate(feedItem.getCreationTime()).isEqual(LocalDate())) {
+                timestamps.add(getString(R.string.entourage_info_update_time, formattedDaysIntervalFromToday(feedItem.updatedTime)))
+            }
+            ui_tv_detail_action_last_update?.text = TextUtils.join(" - ", timestamps)
+
+            linkify(ui_tv_detail_action_description)
+        }
+    }
+
+    private fun changeViewsVisibility(isTour:Boolean) {
+        val visibilityOldLayouts = if (isTour) View.VISIBLE else View.GONE
+        val visibilityNewLayouts = if (isTour) View.GONE else View.VISIBLE
+        layout_detail_event_action_top_view?.visibility = visibilityNewLayouts
+        layout_detail_event_action_date?.visibility = visibilityNewLayouts
+        layout_detail_event_action_location?.visibility = visibilityNewLayouts
+        layout_detail_event_action_creator?.visibility = visibilityNewLayouts
+        layout_detail_action_description?.visibility = visibilityNewLayouts
+        layout_detail_event_description?.visibility = visibilityNewLayouts
+        layout_detail_event_action_selector?.visibility = visibilityNewLayouts
+
+        layout_public_entourage_header?.visibility = visibilityOldLayouts
+        layout_view_separator?.visibility = visibilityOldLayouts
+        layout_infos1?.visibility = visibilityOldLayouts
+        entourage_info_member_count?.visibility = visibilityOldLayouts
+        entourage_info_member_add?.visibility = visibilityOldLayouts
+    }
+
+    private fun updatePhotosAvatar(author:ImageView?,logo:ImageView?) {
+        author?.let { authorPhotoView ->
             feedItem.author?.avatarURLAsString?.let { avatarURLAsString ->
                 Picasso.get()
-                    .load(Uri.parse(avatarURLAsString))
-                    .placeholder(R.drawable.ic_user_photo_small)
-                    .transform(CropCircleTransformation())
-                    .into(authorPhotoView)
+                        .load(Uri.parse(avatarURLAsString))
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .transform(CropCircleTransformation())
+                        .into(authorPhotoView)
             } ?: run {
                 authorPhotoView.setImageResource(R.drawable.ic_user_photo_small)
             }
         }
-        entourage_info_partner_logo?.let { partnerLogoView ->
+        logo?.let { partnerLogoView ->
             feedItem.author?.partner?.smallLogoUrl?.let { partnerLogoURL ->
                 Picasso.get()
-                    .load(Uri.parse(partnerLogoURL))
-                    .placeholder(R.drawable.partner_placeholder)
-                    .transform(CropCircleTransformation())
-                    .into(partnerLogoView)
+                        .load(Uri.parse(partnerLogoURL))
+                        .placeholder(R.drawable.partner_placeholder)
+                        .transform(CropCircleTransformation())
+                        .into(partnerLogoView)
             } ?: run {
                 partnerLogoView.setImageDrawable(null)
             }
         }
+    }
+    private fun getDateStringFromMetadata(metadata: BaseEntourage.Metadata?) : String {
 
-        entourage_info_people_count?.text = getString(R.string.tour_cell_numberOfPeople, feedItem.numberOfPeople)
-
-        // update description
-        if(entourage_info_description!=null) {
-            if (feedItem.getDescription()?.isNotEmpty() == true) {
-                entourage_info_description?.text = feedItem.getDescription()
-                entourage_info_description?.visibility = View.VISIBLE
+        metadata?.let {
+            val startCalendar = Calendar.getInstance()
+            startCalendar.time = metadata.startDate ?: Date()
+            val endCalendar = Calendar.getInstance()
+            endCalendar.time = metadata.endDate ?: Date()
+            if (startCalendar[Calendar.DAY_OF_YEAR] == endCalendar[Calendar.DAY_OF_YEAR]) {
+                return getString(R.string.tour_info_metadata_dateStart_hours_format_new,
+                        metadata.getStartDateFullAsString(requireContext()),
+                        metadata.getStartEndTimesAsString(requireContext()))
             } else {
-                entourage_info_description?.visibility = View.GONE
-            }
-            linkify(entourage_info_description)
-        }
-
-        // metadata
-        updateMetadataView()
-        when(feedItem.getGroupType()) {
-            BaseEntourage.GROUPTYPE_ACTION,
-            Tour.GROUPTYPE_TOUR -> {
-                showActionTimestamps(feedItem.getCreationTime(), feedItem.updatedTime)
-            }
-            else -> {
-                entourage_info_timestamps?.visibility = View.GONE
+                //du xx à hh au yy à hh
+                return getString(R.string.tour_info_metadata_dateStart_End_hours_format_new,
+                        metadata.getStartDateFullAsString(requireContext()),
+                        metadata.getStartTimeAsString(requireContext()),
+                        metadata.getEndDateFullAsString(requireContext()),
+                        metadata.getEndTimeAsString(requireContext()))
             }
         }
+        return ""
     }
 
     private fun showActionTimestamps(createdTime: Date, updatedTime: Date) {
@@ -1353,6 +1603,8 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
                 initializeOptionsView()
                 updateJoinStatus()
             }
+
+            updateFeedItemInfo()
         }
     }
 

@@ -28,22 +28,66 @@
             android:orientation="vertical">
 
             <include
-                layout="@layout/layout_public_entourage_header"
+                android:id="@+id/layout_detail_event_action_top_view"
+                layout="@layout/layout_detail_event_action_top_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:visibility="visible" />
+            <include
+                android:id="@+id/layout_detail_event_action_date"
+                layout="@layout/layout_detail_event_action_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:visibility="visible" />
+            <include
+                android:id="@+id/layout_detail_event_action_location"
+                layout="@layout/layout_detail_event_action_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:visibility="visible" />
+
+            <include
+                android:id="@+id/layout_detail_event_action_creator"
+                layout="@layout/layout_detail_event_action_creator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:visibility="visible" />
+
+            <include
+                android:id="@+id/layout_detail_action_description"
+                layout="@layout/layout_detail_action_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:visibility="visible" />
+
+            <include
+                android:id="@+id/layout_detail_event_description"
+                layout="@layout/layout_detail_event_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:visibility="visible" />
 
 
+            <include
+                layout="@layout/layout_public_entourage_header"
+                android:id="@+id/layout_public_entourage_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:visibility="gone" />
             <View
+                android:id="@+id/layout_view_separator"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="@color/greyish" />
+                android:background="@color/greyish"
+                android:visibility="gone"/>
 
             <LinearLayout
+                android:id="@+id/layout_infos1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="16dp"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:id="@+id/entourage_info_metadata_layout"
@@ -154,9 +198,16 @@
                 android:id="@+id/entourage_info_members_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white_f5_f5_f6"
                 android:orientation="vertical">
-
+                <include
+                    android:id="@+id/layout_detail_event_action_selector"
+                    layout="@layout/layout_detail_event_action_selector"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:visibility="visible" />
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/entourage_info_member_count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -168,6 +219,7 @@
                     android:textStyle="bold" />
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/entourage_info_member_add"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -309,9 +361,10 @@
                     android:layout_height="32dp"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="4dp"
+                    android:background="@drawable/bg_button_accent_rounded"
                     android:text="@string/tour_info_request_join_button_entourage"
-                    android:textSize="@dimen/entourage_font_medium"
                     android:textAllCaps="true"
+                    android:textSize="@dimen/entourage_font_medium"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
