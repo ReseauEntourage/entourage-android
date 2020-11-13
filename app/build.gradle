@@ -73,7 +73,7 @@ android {
                         deepLinksScheme  : "entourage"
                 ]
                 staging = [
-                        serverURL        : "https://entourage-back-preprod.herokuapp.com/api/v1/",
+                        serverURL        : "https://api-preprod.entourage.social/api/v1/",
                         deepLinksHostName: "entourage-landingpages-preprod.herokuapp.com",
                         deepLinksScheme  : "entourage-staging"
                 ]
