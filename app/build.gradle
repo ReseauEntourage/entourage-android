@@ -158,6 +158,7 @@ android {
 dependencies {
     implementation androidSupportDependencies.values()
     implementation devDependencies.values()
+    implementation platform('com.google.firebase:firebase-bom:26.1.0')
     implementation firebaseDependencies.values()
     implementation gmsDependencies.values()
     implementation networkDependencies.values()

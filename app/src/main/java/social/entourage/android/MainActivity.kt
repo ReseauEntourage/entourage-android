@@ -16,8 +16,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.iid.InstanceIdResult
+import com.google.firebase.messaging.FirebaseMessaging
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.activity_main.*
 import social.entourage.android.EntourageApplication.Companion.get
@@ -114,15 +113,15 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
         val isShowFirstLogin = get().sharedPreferences.getBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,false)
         val noMoreDemand = get().sharedPreferences.getBoolean(EntourageApplication.KEY_NO_MORE_DEMAND,false)
         var nbOfLaunch = get().sharedPreferences.getInt(EntourageApplication.KEY_NB_OF_LAUNCH,0)
-        
-        nbOfLaunch = nbOfLaunch + 1
+
+        nbOfLaunch += 1
         get().sharedPreferences.edit()
                 .putInt(EntourageApplication.KEY_NB_OF_LAUNCH,nbOfLaunch)
                 .apply()
 
         var hasToShow = false
         if (!noMoreDemand) {
-            hasToShow = if (nbOfLaunch % 4 == 0) true else false
+            hasToShow = nbOfLaunch % 4 == 0
         }
 
         if (isShowFirstLogin || hasToShow) {
@@ -232,7 +231,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
             ui_tooltip_iv_bottom_bt1?.visibility = View.INVISIBLE
             ui_tooltip_iv_bottom_bt2?.visibility = View.INVISIBLE
             ui_layout_tooltips?.visibility = View.VISIBLE
-            ui_layout_tooltips_ignore?.setOnClickListener { v: View? ->
+            ui_layout_tooltips_ignore?.setOnClickListener {
                 ui_layout_tooltips?.visibility = View.GONE
                 when (postionTooltip) {
                     0 -> logEvent(EntourageEvents.EVENT_ACTION_TOOLTIP_FILTER_CLOSE)
@@ -298,8 +297,8 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
             AlertDialog.Builder(this)
                     .setMessage(getString(R.string.error_dialog_disabled))
                     .setCancelable(false)
-                    .setPositiveButton("Oui") { dialogInterface: DialogInterface?, i: Int -> startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
-                    .setNegativeButton("Non") { dialogInterface: DialogInterface, i: Int -> dialogInterface.cancel() }
+                    .setPositiveButton("Oui") { _: DialogInterface?, _: Int -> startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
+                    .setNegativeButton("Non") { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
                     .create()
                     .show()
         } catch (e: Exception) {
@@ -450,7 +449,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     private fun initializePushNotifications() {
         val notificationsEnabled = get().sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, true)
         if (notificationsEnabled) {
-            FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener(this) { instanceIdResult: InstanceIdResult -> presenter.updateApplicationInfo(instanceIdResult.token) }
+            FirebaseMessaging.getInstance().token.addOnSuccessListener { token -> presenter.updateApplicationInfo(token) }
         } else {
             presenter.deleteApplicationInfo()
         }
