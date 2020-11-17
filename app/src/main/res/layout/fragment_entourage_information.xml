@@ -64,6 +64,7 @@
             android:textColor="@color/feeditem_details_title"
             android:textSize="@dimen/entourage_font_medium"
             android:textStyle="bold"
+            android:visibility="gone"
             tools:text="Test description"
             tools:visibility="visible" />
 

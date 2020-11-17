@@ -75,7 +75,7 @@
     <string name="tour_info_metadata_dateStart_hours_format">Rendez-vous le %1$s %2$s</string>
     <string name="tour_info_metadata_dateStart_End_hours_format">Rendez-vous du %1$s %2$s au %3$s %4$s</string>
 
-    <string name="tour_info_metadata_dateStart_hours_format_new">Lle %1$s %2$s</string>
+    <string name="tour_info_metadata_dateStart_hours_format_new">%1$s %2$s</string>
     <string name="tour_info_metadata_dateStart_End_hours_format_new">Du %1$s %2$s au %3$s %4$s</string>
 
     <!-- EntourageService -->
@@ -160,8 +160,10 @@
     <string name="detail_button_action_join">Participer</string>
     <string name="detail_button_action_share">Partager</string>
     <string name="detail_action_event_online">En ligne</string>
-    <string name="detail_action_event_info_rdv">Vous donne rendez-vous</string>
-    <string name="detail_action_event_info_gift">Propose</string>
-    <string name="detail_action_event_info_demand">Fait appel à la solidarité du réseau</string>
+    <string name="detail_action_event_info_rdv">vous donne rendez-vous</string>
+    <string name="detail_action_event_info_gift">propose</string>
+    <string name="detail_action_event_info_demand">fait appel à la solidarité du réseau</string>
 
+    <string name="confirm_cancel_demand">Confirmez-vous vouloir retirer votre demande ?</string>
+    <string name="validate_cancel_demand">Confirmer</string>
 </resources>

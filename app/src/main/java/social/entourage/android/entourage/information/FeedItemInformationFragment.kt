@@ -25,6 +25,7 @@ import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.PermissionChecker
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -321,8 +322,12 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         if (!isPublicSectionVisible) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_SWITCH_PUBLIC)
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_PUBLIC_VIEW_MEMBER)
+            entourage_info_title?.visibility = View.INVISIBLE
+            entourage_info_icon?.visibility = View.INVISIBLE
         } else {
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_DISCUSSION_VIEW)
+            entourage_info_title?.visibility = View.VISIBLE
+            entourage_info_icon?.visibility = View.VISIBLE
         }
     }
 
@@ -772,30 +777,31 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
 
     private fun updateFeedItemInfo() {
         // Update the header
-        if (feedItem is Tour) {
-            changeViewsVisibility(true)
-            entourage_info_members_layout?.setBackgroundColor(ResourcesCompat.getColor(resources,R.color.white,null))
-
-            entourage_info_title?.text = feedItem.getTitle()
-            entourage_info_icon?.let { iconView ->
-                feedItem.getIconURL()?.let { iconURL ->
-                    iconView.setPadding(0,0,0,0)
-                    Picasso.get().cancelRequest(iconView)
-                    Picasso.get()
-                            .load(iconURL)
-                            .placeholder(R.drawable.ic_user_photo_small)
-                            .transform(CropCircleTransformation())
-                            .into(iconView)
+        entourage_info_title?.text = feedItem.getTitle()
+        entourage_info_icon?.let { iconView ->
+            feedItem.getIconURL()?.let { iconURL ->
+                iconView.setPadding(0,0,0,0)
+                Picasso.get().cancelRequest(iconView)
+                Picasso.get()
+                        .load(iconURL)
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .transform(CropCircleTransformation())
+                        .into(iconView)
+                iconView.visibility = View.VISIBLE
+            } ?: run {
+                feedItem.getIconDrawable(requireContext())?.let { iconDrawable ->
                     iconView.visibility = View.VISIBLE
+                    iconView.setImageDrawable(iconDrawable)
                 } ?: run {
-                    feedItem.getIconDrawable(requireContext())?.let { iconDrawable ->
-                        iconView.visibility = View.VISIBLE
-                        iconView.setImageDrawable(iconDrawable)
-                    } ?: run {
-                        iconView.visibility = View.GONE
-                    }
+                    iconView.visibility = View.GONE
                 }
             }
+        }
+
+        if (feedItem is Tour) {
+            changeViewsVisibility(true)
+
+            entourage_info_members_layout?.setBackgroundColor(ResourcesCompat.getColor(resources,R.color.white,null))
             entourage_info_title_full?.text = feedItem.getTitle()
 
             if (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.getGroupType(), ignoreCase = true)) {
@@ -847,9 +853,6 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     private fun updateFeedItemActionEvent() {
         changeViewsVisibility(false)
 
-        entourage_info_title?.visibility = View.INVISIBLE
-        entourage_info_icon?.visibility = View.INVISIBLE
-
         //Top view
         ui_image_event_top?.visibility = View.GONE
         if (feedItem.isEvent() && !feedItem.eventImageUrl.isNullOrEmpty()) {
@@ -893,7 +896,18 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
 
         ui_layout_event_action_top_action?.setOnClickListener {
             if (feedItem.joinStatus == FeedItem.JOIN_STATUS_PENDING) {
-                quitEntourage()
+                val alertDialog = AlertDialog.Builder(requireContext())
+                alertDialog.setTitle("Attention")
+                alertDialog.setMessage(R.string.confirm_cancel_demand)
+                alertDialog.setNegativeButton(R.string.tour_info_options_close) { dialog,_ ->
+                    dialog.dismiss()
+                }
+                alertDialog.setPositiveButton(R.string.validate_cancel_demand) { dialog,_ ->
+                    dialog.dismiss()
+                    quitEntourage()
+                }
+
+                alertDialog.show()
             }
             else if (feedItem.joinStatus != FeedItem.JOIN_STATUS_ACCEPTED) {
                 onJoinButton()
@@ -1128,6 +1142,10 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         entourage_info_act_layout?.visibility = View.VISIBLE
         entourage_info_public_section?.visibility = View.VISIBLE
         entourage_info_private_section?.visibility = View.GONE
+
+        entourage_info_title?.visibility = View.INVISIBLE
+        entourage_info_icon?.visibility = View.INVISIBLE
+
         updateHeaderButtons()
         initializeOptionsView()
         updateJoinStatus()
@@ -1145,6 +1163,10 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         entourage_info_request_join_layout?.visibility = View.GONE
         entourage_info_public_section?.visibility = View.GONE
         entourage_info_private_section?.visibility = View.VISIBLE
+
+        entourage_info_title?.visibility = View.VISIBLE
+        entourage_info_icon?.visibility = View.VISIBLE
+
         if (mapFragment == null) {
             initializeMap()
         }
@@ -1352,9 +1374,10 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
                 // Remove the user from the members list, in case the user left the entourage
                 membersAdapter?.removeCard(entourageUser)
                 //show the pending and cancelled requests too (by skipping the others)
-                if (!(entourageUser.status == FeedItem.JOIN_STATUS_PENDING || entourageUser.status == FeedItem.JOIN_STATUS_CANCELLED)) {
-                    continue
-                }
+//                if (!(entourageUser.status == FeedItem.JOIN_STATUS_PENDING || entourageUser.status == FeedItem.JOIN_STATUS_CANCELLED)) {
+//                    continue
+//                }
+                continue
             }
             entourageUser.feedItem = feedItem
             entourageUser.isDisplayedAsMember = true
