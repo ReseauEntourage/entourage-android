@@ -857,6 +857,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         ui_image_event_top?.visibility = View.GONE
         if (feedItem.isEvent() && !feedItem.eventImageUrl.isNullOrEmpty()) {
             Picasso.get().load(feedItem.eventImageUrl).into(ui_image_event_top)
+            ui_image_event_top?.visibility = View.VISIBLE
         }
 
         ui_title_event_action_top?.text = feedItem.getTitle()
@@ -934,7 +935,9 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         if (feedItem.isEvent()) {
             if (feedItem.isOnlineEvent) {
                 ui_iv_event_action_location.setImageDrawable(ResourcesCompat.getDrawable(resources,R.drawable.ic_detail_event_link,null))
-                ui_tv_event_action_location?.text = "${getString(R.string.detail_action_event_online)}\n${feedItem.eventUrl}"
+
+                val eventUrl = if (feedItem.eventUrl == null || feedItem.eventUrl.equals("null")) "" else feedItem.eventUrl
+                ui_tv_event_action_location?.text = "${getString(R.string.detail_action_event_online)}\n${eventUrl}"
                 linkify( ui_tv_event_action_location)
                 entourage_info_map_layout.visibility = View.GONE
             }

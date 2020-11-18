@@ -390,7 +390,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:background="@color/accent"
+            android:background="@color/white"
             android:orientation="vertical"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -407,45 +407,46 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginRight="10dp"
                 android:gravity="center"
-                android:text="@string/invited_description"
-                android:textColor="@color/white"
+                android:text="@string/invited_description_new"
+                android:textColor="@color/accent"
                 android:textSize="@dimen/entourage_font_medium" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:orientation="horizontal"
                 android:weightSum="1">
 
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5" />
-
                 <Button
                     android:id="@+id/entourage_info_invited_reject_button"
-                    style="@style/WhiteButtonTransparent"
-                    android:layout_width="140dp"
-                    android:layout_height="35dp"
-                    android:layout_marginEnd="5dp"
+                    style="@style/TransparentButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/bg_rounded_onboard_orange_stroke"
                     android:text="@string/ignore"
+                    android:textAllCaps="true"
+                    android:textColor="@color/accent"
                     android:textSize="@dimen/entourage_font_medium" />
 
                 <Button
                     android:id="@+id/entourage_info_invited_accept_button"
-                    style="@style/WhiteButton.RoundedCorners"
-                    android:layout_width="140dp"
-                    android:layout_height="35dp"
-                    android:layout_marginStart="5dp"
-                    android:text="@string/accept"
+                    style="@style/TransparentButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/bg_button_accent_rounded"
+                    android:text="@string/tour_info_request_join_button2_entourage"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/entourage_font_medium" />
 
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5" />
             </LinearLayout>
         </LinearLayout>
 
