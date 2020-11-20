@@ -84,8 +84,15 @@ open class Events {
             private set
         private var feedRank = 0
 
+        var isFromCreate = false
+
         constructor(feedItem: FeedItem?) {
             this.feedItem = feedItem
+        }
+
+        constructor(feedItem: FeedItem?,isFromCreate:Boolean) {
+            this.feedItem = feedItem
+            this.isFromCreate = isFromCreate
         }
 
         constructor(feedItem: FeedItem?, feedRank: Int) {

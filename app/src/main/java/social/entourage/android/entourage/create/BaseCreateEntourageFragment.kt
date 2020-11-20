@@ -297,7 +297,7 @@ open class BaseCreateEntourageFragment
         } catch (e: IllegalStateException) {
             Timber.w(e)
         }
-        BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(entourage))
+        BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(entourage,true))
     }
 
     protected fun saveEditedEntourage() {

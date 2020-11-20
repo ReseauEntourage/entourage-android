@@ -393,7 +393,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         if (feedItem != null) {
             //Check user photo
             presenter.authenticationController.me?.let { me ->
-               if ( me.avatarURL.isNullOrEmpty() || me.avatarURL?.equals("null") != false) {
+               if (event.isFromCreate && (me.avatarURL.isNullOrEmpty() || me.avatarURL?.equals("null") != false)) {
                    AlertDialog.Builder(requireContext())
                            .setTitle(R.string.info_photo_profile_title)
                            .setMessage(R.string.info_photo_profile_description)
