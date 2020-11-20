@@ -385,7 +385,9 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         val shareText = when {
             feedItem.type == TimestampedObject.ENTOURAGE_CARD && BaseEntourage.GROUPTYPE_OUTING == feedItem.getGroupType() ->{
                 val df: DateFormat = SimpleDateFormat(getString(R.string.entourage_create_date_format), Locale.getDefault())
-                getString(R.string.entourage_share_text_for_event, feedItem.getTitle(),df.format(feedItem.getStartTime()), feedItem.getDisplayAddress(), shareLink)
+                val baseEntourageMetadata = (feedItem as? BaseEntourage)?.metadata
+                val _startdate:Date = if (baseEntourageMetadata?.startDate != null) baseEntourageMetadata.startDate!! else feedItem.getStartTime()
+                getString(R.string.entourage_share_text_for_event, feedItem.getTitle(),df.format(_startdate), feedItem.getDisplayAddress(), shareLink)
             }
             feedItem.type == TimestampedObject.ENTOURAGE_CARD && BaseEntourage.GROUPTYPE_OUTING != feedItem.getGroupType() ->{
                 val entourageShareVerb = getString(if (isMyEntourage) R.string.entourage_share_text_verb_for_entourage_author else if (feedItem.isPrivate()) R.string.entourage_share_text_verb_for_entourage_member else R.string.entourage_share_text_verb_for_entourage_nonmember)
