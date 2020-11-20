@@ -231,4 +231,9 @@
 
     <string name="linkSahred">Lien envoyé</string>
 
+    <!-- Pop info photo profile -->
+    <string name="info_photo_profile_title">Ajoutez votre photo de profil et inspirez encore plus confiance</string>
+    <string name="info_photo_profile_description">Vous n’avez pas encore de photo de profil. Les personnes découvrant votre action solidaire seront plus susceptibles de la rejoindre si vous en ajoutez une.</string>
+    <string name="info_photo_profile_ignore">IGNORER</string>
+    <string name="info_photo_profile_add">AJOUTER</string>
 </resources>
