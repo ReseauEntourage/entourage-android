@@ -159,12 +159,23 @@ class LocationFragment  : EntourageDialogFragment() {
         title_action_button.setOnClickListener { onValidateClicked() }
         entourage_location_current_position.setOnClickListener { onCurrentLocationClicked() }
         // Initialize map
-        initializeMap()
+        if (!useGooglePlacesOnly) {
+            initializeMap()
+            entourage_location_bar_layout?.visibility = View.VISIBLE
+        }
+        else {
+            entourage_location_bar_layout?.visibility = View.GONE
+        }
         initializePlaces()
         initializeTimer()
 
         // Initialize address
         originalAddress?.let { setAddress(it, false) }
+
+        if (useGooglePlacesOnly) {
+            cancelTimer()
+            timerTask?.let { handler?.postDelayed(it, SEARCH_DELAY)}
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -268,7 +279,7 @@ class LocationFragment  : EntourageDialogFragment() {
             override fun run() {
                 val autocompleteView = autocompleteFragment?.view ?: return
                 val autocompleteEditText = autocompleteView.findViewById<TextView>(com.google.android.libraries.places.R.id.places_autocomplete_search_input) ?: return
-                if (autocompleteEditText.text.isBlank()) return
+                if (autocompleteEditText.text.isBlank() && !useGooglePlacesOnly) return
                 val autocompleteSearchView = autocompleteView.findViewById<View>(com.google.android.libraries.places.R.id.places_autocomplete_search_button)
                 autocompleteSearchView?.performClick()
             }

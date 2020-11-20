@@ -55,6 +55,7 @@ import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.user.edit.UserEditActionZoneFragment.FragmentListener
 import social.entourage.android.tools.view.EntourageSnackbar
+import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import java.util.*
 import javax.inject.Inject
 
@@ -390,10 +391,33 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     open fun feedItemViewRequested(event: OnFeedItemInfoViewRequestedEvent) {
         val feedItem = event.feedItem
         if (feedItem != null) {
-            displayChosenFeedItem(feedItem, event.getfeedRank())
-            // update the newsfeed card
-            onPushNotificationConsumedForFeedItem(feedItem)
-            // update the my entourages card, if necessary
+            //Check user photo
+            presenter.authenticationController.me?.let { me ->
+               if (event.isFromCreate && (me.avatarURL.isNullOrEmpty() || me.avatarURL?.equals("null") != false)) {
+                   AlertDialog.Builder(requireContext())
+                           .setTitle(R.string.info_photo_profile_title)
+                           .setMessage(R.string.info_photo_profile_description)
+                           .setNegativeButton(R.string.info_photo_profile_ignore) { dialog,_ ->
+                               dialog.dismiss()
+                               displayChosenFeedItem(feedItem, event.getfeedRank())
+                               // update the newsfeed card
+                               onPushNotificationConsumedForFeedItem(feedItem)
+                           }
+                           .setPositiveButton(R.string.info_photo_profile_add) { dialog, _ ->
+                               dialog.dismiss()
+                               val fragment = ChoosePhotoFragment.newInstance()
+                               fragment.show(parentFragmentManager, ChoosePhotoFragment.TAG)
+                           }
+                           .create()
+                           .show()
+               }
+                else {
+                   displayChosenFeedItem(feedItem, event.getfeedRank())
+                   // update the newsfeed card
+                   onPushNotificationConsumedForFeedItem(feedItem)
+                   // update the my entourages card, if necessary
+               }
+            }
         } else {
             //check if we are receiving feed type and id
             val feedItemType = event.feedItemType

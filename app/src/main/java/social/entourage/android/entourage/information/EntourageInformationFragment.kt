@@ -33,6 +33,7 @@ import social.entourage.android.map.OnAddressClickListener
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.Utils
 import social.entourage.android.tools.view.EntourageSnackbar
+import social.entourage.android.user.partner.PartnerFragmentV2
 import java.util.*
 import javax.inject.Inject
 
@@ -278,6 +279,17 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
     @Subscribe
     override fun onEntourageUpdated(event: Events.OnEntourageUpdated) {
         super.onEntourageUpdated(event)
+    }
+
+    @Subscribe
+    fun onShowEventDeeplink(event: Events.OnShowEventDeeplink) {
+        dismiss()
+    }
+
+    //Use inside detail Event / action when click on asso name inside member section.
+    @Subscribe
+    fun onShowDetailAssociation(event: Events.OnShowDetailAssociation) {
+        PartnerFragmentV2.newInstance(null, event.id).show(parentFragmentManager, PartnerFragmentV2.TAG)
     }
 
     // ----------------------------------

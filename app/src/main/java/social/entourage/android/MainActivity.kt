@@ -16,8 +16,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.iid.InstanceIdResult
+import com.google.firebase.messaging.FirebaseMessaging
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.activity_main.*
 import social.entourage.android.EntourageApplication.Companion.get
@@ -25,6 +24,7 @@ import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BackPressable
@@ -36,6 +36,7 @@ import social.entourage.android.entourage.EntourageDisclaimerFragment
 import social.entourage.android.entourage.information.EntourageInformationFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.entourage.my.MyEntouragesFragment
+import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.location.EntourageLocation.currentLocation
 import social.entourage.android.location.LocationUtils.isLocationEnabled
 import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
@@ -112,15 +113,15 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
         val isShowFirstLogin = get().sharedPreferences.getBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,false)
         val noMoreDemand = get().sharedPreferences.getBoolean(EntourageApplication.KEY_NO_MORE_DEMAND,false)
         var nbOfLaunch = get().sharedPreferences.getInt(EntourageApplication.KEY_NB_OF_LAUNCH,0)
-        
-        nbOfLaunch = nbOfLaunch + 1
+
+        nbOfLaunch += 1
         get().sharedPreferences.edit()
                 .putInt(EntourageApplication.KEY_NB_OF_LAUNCH,nbOfLaunch)
                 .apply()
 
         var hasToShow = false
         if (!noMoreDemand) {
-            hasToShow = if (nbOfLaunch % 4 == 0) true else false
+            hasToShow = nbOfLaunch % 4 == 0
         }
 
         if (isShowFirstLogin || hasToShow) {
@@ -230,7 +231,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
             ui_tooltip_iv_bottom_bt1?.visibility = View.INVISIBLE
             ui_tooltip_iv_bottom_bt2?.visibility = View.INVISIBLE
             ui_layout_tooltips?.visibility = View.VISIBLE
-            ui_layout_tooltips_ignore?.setOnClickListener { v: View? ->
+            ui_layout_tooltips_ignore?.setOnClickListener {
                 ui_layout_tooltips?.visibility = View.GONE
                 when (postionTooltip) {
                     0 -> logEvent(EntourageEvents.EVENT_ACTION_TOOLTIP_FILTER_CLOSE)
@@ -296,8 +297,8 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
             AlertDialog.Builder(this)
                     .setMessage(getString(R.string.error_dialog_disabled))
                     .setCancelable(false)
-                    .setPositiveButton("Oui") { dialogInterface: DialogInterface?, i: Int -> startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
-                    .setNegativeButton("Non") { dialogInterface: DialogInterface, i: Int -> dialogInterface.cancel() }
+                    .setPositiveButton("Oui") { _: DialogInterface?, _: Int -> startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
+                    .setNegativeButton("Non") { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
                     .create()
                     .show()
         } catch (e: Exception) {
@@ -422,6 +423,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     }
 
     fun showEvents() {
+        instance.post(OnShowEventDeeplink())
         selectNavigationTab(navigationDataSource.feedTabIndex)
         newsfeedFragment?.onShowEvents()
     }
@@ -435,6 +437,11 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
         selectNavigationTab(navigationDataSource.myMessagesTabIndex)
     }
 
+    fun showActionsTab() {
+        instance.post(OnShowEventDeeplink())
+        selectNavigationTab(navigationDataSource.agirTabIndex)
+    }
+
     fun showTutorial(forced: Boolean) {
         presenter.displayTutorial(forced)
     }
@@ -442,7 +449,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     private fun initializePushNotifications() {
         val notificationsEnabled = get().sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, true)
         if (notificationsEnabled) {
-            FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener(this) { instanceIdResult: InstanceIdResult -> presenter.updateApplicationInfo(instanceIdResult.token) }
+            FirebaseMessaging.getInstance().token.addOnSuccessListener { token -> presenter.updateApplicationInfo(token) }
         } else {
             presenter.deleteApplicationInfo()
         }
@@ -550,6 +557,19 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     @Subscribe
     fun onUserUpdateEvent(event: OnUserInfoUpdatedEvent?) {
         updateAnalyticsInfo()
+    }
+
+    @Subscribe
+    fun onPoiViewDetail(event: OnPoiViewDetail) {
+        logEvent(EntourageEvents.EVENT_FEED_USERPROFILE)
+        try {
+            val poi = Poi()
+            poi.id = event.poiId
+            val fragment = ReadPoiFragment.newInstance(poi)
+            fragment.show(supportFragmentManager, ReadPoiFragment.TAG)
+        } catch (e: IllegalStateException) {
+            Timber.w(e)
+        }
     }
 
     override fun showStopTourActivity(tour: Tour) {

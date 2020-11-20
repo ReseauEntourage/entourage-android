@@ -46,6 +46,8 @@ class EntourageUser : TimestampedObject(), Serializable {
     @Expose(serialize = false, deserialize = false)
     var feedItem: FeedItem? = null
 
+    var partner_role_title:String? = null
+
     override val timestamp: Date?
     get() = requestDate
 

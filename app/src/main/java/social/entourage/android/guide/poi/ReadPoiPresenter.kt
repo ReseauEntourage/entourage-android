@@ -18,12 +18,13 @@ import javax.inject.Inject
  */
 class ReadPoiPresenter @Inject constructor(private val fragment: ReadPoiFragment, private val poiRequest: PoiRequest) {
 
-    fun getPoiDetail(poiId:Int) {
-        val call = poiRequest.getPoiDetail(poiId)
+    fun getPoiDetail(poiUuid: String) {
+        val call = poiRequest.getPoiDetail(poiUuid)
         call.enqueue(object : Callback<PoiDetailResponse> {
             override fun onResponse(call: Call<PoiDetailResponse>, response: Response<PoiDetailResponse>) {
                 response.body()?.let {
                     if (response.isSuccessful) {
+                        it.poi.isSoliguide = it.poi.source.equals("soliguide")
                         displayPoi(it.poi)
                         return
                     }

@@ -10,6 +10,7 @@
                 android:paddingBottom="5dp">
 
     <LinearLayout
+        android:id="@+id/ui_main_layout"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,5 +54,17 @@
         android:layout_height="1dp"
         android:layout_below="@+id/organization_logo"
         android:layout_marginTop="10dp"/>
+
+    <FrameLayout
+        android:id="@+id/ui_layout_click"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/ui_main_layout"
+        android:layout_alignBottom="@id/ui_main_layout"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:background="@android:color/transparent">
+
+    </FrameLayout>
 
 </RelativeLayout>

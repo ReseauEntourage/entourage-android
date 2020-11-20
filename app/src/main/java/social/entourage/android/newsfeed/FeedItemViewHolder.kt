@@ -117,7 +117,16 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
             itemView.tour_card_type?.setTextColor(ContextCompat.getColor(itemView.context, feedItem.getFeedTypeColor()))
         }
         val distanceAsString = feedItem.getStartPoint()?.distanceToCurrentLocation(Constants.DISTANCE_MAX_DISPLAY) ?: ""
-        itemView.tour_card_location?.text = if (distanceAsString.equals("", ignoreCase = true)) "" else String.format(res.getString(R.string.tour_cell_location), distanceAsString)
+        var distStr = if (distanceAsString.equals("", ignoreCase = true)) "" else String.format(res.getString(R.string.tour_cell_location), distanceAsString)
+
+        if (distStr.length > 0 && !feedItem.postal_code.isNullOrEmpty()) {
+            distStr = "%s - %s".format(distStr, feedItem.postal_code)
+        }
+        else if (!feedItem.postal_code.isNullOrEmpty()) {
+            distStr = feedItem.postal_code!!
+        }
+
+        itemView.tour_card_location?.text = distStr
 
         //tour members
         itemView.tour_card_people_count?.text = res.getString(R.string.tour_cell_numberOfPeople, feedItem.numberOfPeople)

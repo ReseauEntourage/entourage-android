@@ -46,7 +46,9 @@ class ReadPoiFragment : EntourageDialogFragment() {
         poi = arguments?.getSerializable(BUNDLE_KEY_POI) as Poi
         setupComponent(EntourageApplication.get(activity).entourageComponent)
 
-        presenter.getPoiDetail(poi.id.toInt())
+        //Actually WS return id and not uuid for entourage poi
+        val uuid = if (poi.uuid.length == 0) poi.id.toString() else poi.uuid
+        presenter.getPoiDetail(uuid)
 
         title_close_button?.setOnClickListener {dismiss()}
         poi_report_button?.setOnClickListener {onReportButtonClicked()}
@@ -72,6 +74,15 @@ class ReadPoiFragment : EntourageDialogFragment() {
         ui_bt_share_outside?.setOnClickListener {
             ui_layout_share?.visibility = View.GONE
             shareOnly()
+        }
+
+        ui_button_show_soliguide?.setOnClickListener {
+            //TODO: link inside or outside app ?
+            poi.soliguideUrl?.let {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(it)
+                startActivity(intent)
+            }
         }
     }
 
@@ -138,6 +149,24 @@ class ReadPoiFragment : EntourageDialogFragment() {
         else {
             ui_layout_public?.visibility = View.GONE
         }
+
+        //Soliguide
+        layout_top_soliguide?.visibility = View.GONE
+        ui_layout_soliguide_language?.visibility = View.GONE
+        ui_layout_soliguide_openTime?.visibility = View.GONE
+
+        if (poi.isSoliguide) {
+            layout_top_soliguide?.visibility = View.VISIBLE
+            poi.openTimeTxt?.let {
+                ui_layout_soliguide_openTime?.visibility = View.VISIBLE
+                ui_tv_poi_open_time?.text = it
+            }
+            poi.languagesTxt?.let {
+                ui_layout_soliguide_language?.visibility = View.VISIBLE
+                ui_tv_poi_language?.text = it
+            }
+        }
+        this.poi = poi
     }
 
     private fun getImageId(position:Int) : ImageView? {

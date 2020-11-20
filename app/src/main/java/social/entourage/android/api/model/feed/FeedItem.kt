@@ -9,6 +9,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.EntourageApplication.Companion.me
 import social.entourage.android.R
+import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.LastMessage
 import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.model.TimestampedObject
@@ -83,6 +84,15 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
     @Expose(serialize = false, deserialize = false)
     var isNewlyCreated = false
 
+    var postal_code:String? = null
+
+    @SerializedName("image_url")
+    var eventImageUrl:String? = null
+    @SerializedName("online")
+    var isOnlineEvent:Boolean = false
+    @SerializedName("event_url")
+    var eventUrl:String? = null
+
     // ----------------------------------
     // CONSTRUCTORS
     // ----------------------------------
@@ -118,6 +128,8 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
     fun isOngoing(): Boolean { return STATUS_ON_GOING == status}
 
     fun isPrivate(): Boolean {return JOIN_STATUS_ACCEPTED == joinStatus}
+
+    fun isEvent() : Boolean {return getGroupType().equals(BaseEntourage.GROUPTYPE_OUTING,true)}
 
     open fun isFreezed(): Boolean {return STATUS_FREEZED == status}
 

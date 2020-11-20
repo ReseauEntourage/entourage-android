@@ -3,12 +3,14 @@ package social.entourage.android.entourage.information.members
 import android.net.Uri
 import android.view.View
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.layout_entourage_information_member_card.view.*
+import kotlinx.android.synthetic.main.layout_entourage_information_member_card_new.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.EntourageUser
+import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
+import social.entourage.android.tools.BusProvider
 import social.entourage.android.tools.BusProvider.instance
 import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.user.role.UserRoleView
@@ -74,10 +76,36 @@ class MemberCardViewHolder(view: View) : BaseCardViewHolder(view) {
             userRoleView.setRole(userRole)
             itemView.tic_member_tags?.addView(userRoleView)
         }
+
+        val partner = entourageUser.partner
+        val role = entourageUser.partner_role_title
+
+        if (partner != null || !role.isNullOrEmpty()) {
+            itemView.ui_layout_bottom?.visibility = View.VISIBLE
+            var _roleStr = ""
+            if (role != null && role.isNotEmpty()) {
+                _roleStr = "$role -"
+                itemView.ui_tv_role?.text = _roleStr
+                itemView.ui_tv_role?.visibility = View.VISIBLE
+            }
+            else {
+                itemView.ui_tv_role?.visibility = View.GONE
+            }
+
+            itemView.ui_tv_bt_asso?.text = partner?.name
+            itemView.ui_tv_bt_asso?.setOnClickListener {
+                entourageUser.partner?.id?.toInt()?.let { partnerId ->
+                    BusProvider.instance.post(Events.OnShowDetailAssociation(partnerId))
+                }
+            }
+        }
+        else {
+            itemView.ui_layout_bottom?.visibility = View.GONE
+        }
     }
 
     companion object {
         val layoutResource: Int
-            get() = R.layout.layout_entourage_information_member_card
+            get() = R.layout.layout_entourage_information_member_card_new
     }
 }

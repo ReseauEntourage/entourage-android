@@ -73,7 +73,7 @@ android {
                         deepLinksScheme  : "entourage"
                 ]
                 staging = [
-                        serverURL        : "https://entourage-back-preprod.herokuapp.com/api/v1/",
+                        serverURL        : "https://api-preprod.entourage.social/api/v1/",
                         deepLinksHostName: "entourage-landingpages-preprod.herokuapp.com",
                         deepLinksScheme  : "entourage-staging"
                 ]
@@ -158,6 +158,7 @@ android {
 dependencies {
     implementation androidSupportDependencies.values()
     implementation devDependencies.values()
+    implementation platform('com.google.firebase:firebase-bom:26.1.0')
     implementation firebaseDependencies.values()
     implementation gmsDependencies.values()
     implementation networkDependencies.values()

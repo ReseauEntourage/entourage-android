@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AlertDialog
 import androidx.collection.ArrayMap
-import com.google.firebase.iid.FirebaseInstanceId
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -112,7 +111,8 @@ import javax.inject.Inject
             }
             R.id.mainprofile_app_version -> {
                 val clipboardManager = get().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                val clipData = ClipData.newPlainText("FirebaseID", FirebaseInstanceId.getInstance().id)
+                val clipData = ClipData.newPlainText("FirebaseID",
+                        get().sharedPreferences.getString(EntourageApplication.KEY_REGISTRATION_ID, null))
                 clipboardManager.setPrimaryClip(clipData)
             }
             R.id.action_about -> {

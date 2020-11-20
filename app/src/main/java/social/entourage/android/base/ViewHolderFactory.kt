@@ -11,7 +11,7 @@ import java.util.*
  */
 class ViewHolderFactory {
     private val viewHolderTypeHashMap: HashMap<Int, ViewHolderType> = HashMap()
-    private var viewHolderTypeDefault: ViewHolderType? = null
+    private lateinit var viewHolderTypeDefault: ViewHolderType
 
     fun registerViewHolder(viewType: Int, viewHolderType: ViewHolderType) {
         if (viewHolderTypeHashMap.isEmpty()) {
@@ -23,16 +23,9 @@ class ViewHolderFactory {
     fun getViewHolder(parent: ViewGroup, viewType: Int): BaseCardViewHolder {
         val viewHolderType = viewHolderTypeHashMap[viewType] ?:  viewHolderTypeDefault
 
-        val view = LayoutInflater.from(parent.context).inflate(viewHolderType!!.layoutResource, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(viewHolderType.layoutResource, parent, false)
 
-        var cardViewHolder: BaseCardViewHolder? = null
-        try {
-            val ctor = viewHolderType.cardViewHolderClass.getConstructor(View::class.java)
-            cardViewHolder = ctor.newInstance(view) as BaseCardViewHolder
-        } catch (e: Exception) {
-            Timber.e(e)
-        }
-        return cardViewHolder!!
+        return viewHolderType.cardViewHolderClass.getConstructor(View::class.java).newInstance(view) as BaseCardViewHolder
     }
 
     class ViewHolderType(val cardViewHolderClass: Class<*>, val layoutResource: Int)

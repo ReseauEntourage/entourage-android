@@ -33,6 +33,7 @@
 
     <!-- Invited -->
     <string name="invited_description">Vous êtes invités à rejoindre cet entourage</string>
+    <string name="invited_description_new">Répondez présent !</string>
     <string name="invited_updated_ok">Invitation mise à jour</string>
     <string name="invited_updated_error">Erreur lors de la mise à jour de l’entourage</string>
 

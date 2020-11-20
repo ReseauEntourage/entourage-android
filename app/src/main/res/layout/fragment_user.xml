@@ -93,8 +93,8 @@
 
                 <social.entourage.android.tools.view.PartnerLogoImageView
                     android:id="@+id/user_partner_logo"
-                    android:layout_width="63dp"
-                    android:layout_height="63dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_alignEnd="@+id/user_photo"
                     android:layout_alignRight="@+id/user_photo"
                     android:layout_alignBottom="@+id/user_photo"
@@ -148,13 +148,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="32dp"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintStart_toStartOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/constraintLayout4"
@@ -221,6 +218,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
                 android:layout_marginBottom="30dp"
                 android:background="@color/pale_grey">
 

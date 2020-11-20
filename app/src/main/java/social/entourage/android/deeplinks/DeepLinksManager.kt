@@ -137,7 +137,7 @@ object DeepLinksManager {
             activity.dismissNewsfeedFragmentDialogs()
             activity.showMyEntourages()
         } else if (key == DeepLinksView.CREATE_ACTION.view) {
-            activity.createEntourage()
+            activity.showActionsTab()
         } else if (key == DeepLinksView.ENTOURAGE.view || key == DeepLinksView.ENTOURAGES.view) {
             if (pathSegments != null && pathSegments.isNotEmpty()) {
                 BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(TimestampedObject.ENTOURAGE_CARD, "", pathSegments[0]))

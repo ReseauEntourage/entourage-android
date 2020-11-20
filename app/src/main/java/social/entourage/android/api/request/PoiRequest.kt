@@ -19,6 +19,6 @@ interface PoiRequest {
                            @Query("partners_filters") partnersFilters: String?,
                            @Query("v")version:String): Call<PoiResponse>
 
-    @GET("pois/{poi_id}")
-    fun getPoiDetail(@Path("poi_id") poiId: Int): Call<PoiDetailResponse>
+    @GET("pois/{poi_uuid}")
+    fun getPoiDetail(@Path("poi_uuid") poiUuid: String): Call<PoiDetailResponse>
 }

@@ -152,6 +152,10 @@ open class BaseEntourage : FeedItem, Serializable {
         return floor(distance).toInt()
     }
 
+    fun isOuting() : Boolean {
+        return groupType == GROUPTYPE_OUTING
+    }
+
     // ----------------------------------
     // FeedItem overrides
     // ----------------------------------

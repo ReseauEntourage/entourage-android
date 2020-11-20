@@ -67,6 +67,17 @@ class PlusFragment : Fragment(), BackPressable {
                plus_help_button?.text = getString(R.string.plus_help_text)
                ui_tv_agir_good_waves_subtitle?.text = getString(R.string.agir_bonnes_ondes_others)
            }
+
+           val isUserHelp = currentUser.goal?.contains("ask_for_help", true)
+           val isUserHelp2 = currentUser.goal?.contains("offer_help", true)
+           val hasPartnerId = currentUser.partner?.id != null
+           val isAmbassador = currentUser.roles?.contains("ambassador")
+
+           var showAddEvent = true
+           if ((isUserHelp == true || isUserHelp2 == true) && (!hasPartnerId && isAmbassador != true)) {
+               showAddEvent = false
+           }
+           layout_line_create_outing?.visibility = if (showAddEvent) View.VISIBLE else View.GONE
        }
     }
 

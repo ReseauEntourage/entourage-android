@@ -36,7 +36,7 @@ import javax.inject.Inject
  */
 class NewsfeedPresenter @Inject constructor(
         private val fragment: BaseNewsfeedFragment?,
-        private val authenticationController: AuthenticationController,
+        internal val authenticationController: AuthenticationController,
         private val entourageRequest: EntourageRequest,
         private val tourRequest: TourRequest,
         private val invitationRequest: InvitationRequest) {

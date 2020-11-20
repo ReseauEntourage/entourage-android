@@ -16,7 +16,6 @@ class Poi : TimestampedObject(), Serializable, ClusterItem {
     var name: String? = null
     var description: String? = null
 
-    @SerializedName("adress")
     var address: String? = null
     var phone: String? = null
     var website: String? = null
@@ -32,6 +31,17 @@ class Poi : TimestampedObject(), Serializable, ClusterItem {
 
     @SerializedName("category_ids")
     var categories = ArrayList<Int>()
+
+    var isSoliguide = false
+    @SerializedName("hours")
+    var openTimeTxt:String? = null
+    @SerializedName("languages")
+    var languagesTxt:String? = null
+    @SerializedName("source_url")
+    var soliguideUrl:String? = null
+
+    var source = ""
+    var uuid = ""
     // ----------------------------------
     // GETTERS & SETTERS
     // ----------------------------------

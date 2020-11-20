@@ -23,6 +23,9 @@ abstract class BaseBottomNavigationDataSource internal constructor() {
     @IdRes
     var myMessagesTabIndex = R.id.bottom_bar_mymessages
 
+    @IdRes
+    var agirTabIndex = R.id.bottom_bar_plus
+
     //optional menu
     @IdRes
     var actionMenuId = -1

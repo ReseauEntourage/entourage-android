@@ -21,7 +21,7 @@ class UserOrganizationsAdapter(private var organizationList: List<BaseOrganizati
         var partner: Partner? = null
 
         init {
-            itemView.organization_logo?.setOnClickListener {
+            itemView.ui_layout_click?.setOnClickListener {
                 partner?.let {
                     BusProvider.instance.post(OnPartnerViewRequestedEvent(it))
                 }

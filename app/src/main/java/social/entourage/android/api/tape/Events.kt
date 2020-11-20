@@ -84,8 +84,15 @@ open class Events {
             private set
         private var feedRank = 0
 
+        var isFromCreate = false
+
         constructor(feedItem: FeedItem?) {
             this.feedItem = feedItem
+        }
+
+        constructor(feedItem: FeedItem?,isFromCreate:Boolean) {
+            this.feedItem = feedItem
+            this.isFromCreate = isFromCreate
         }
 
         constructor(feedItem: FeedItem?, feedRank: Int) {
@@ -210,4 +217,13 @@ open class Events {
     class OnShowURLEvent(val url: String)
 
     class OnUnreadCountUpdate(val unreadCount: Int?)
+
+    /**
+     * Event to show poi detail fragment from feediteminformation (chat message)
+     */
+    class OnPoiViewDetail(val poiId: Long)
+
+    class OnShowEventDeeplink
+
+    class OnShowDetailAssociation(val id:Int)
 }
