@@ -26,7 +26,7 @@ open class BaseEntourage : FeedItem, Serializable {
     // Attributes
     // ----------------------------------
     @SerializedName("created_at")
-    private lateinit var createdTime: Date
+    private var createdTime: Date = Date()
 
     @SerializedName("group_type")
     private var groupType: String
