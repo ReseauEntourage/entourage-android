@@ -19,7 +19,7 @@ ext {
 
     // App versions
     versionMajor = 6
-    versionMinor = 7
+    versionMinor = 8
     versionPatch = "git rev-list HEAD --count".execute().text.trim().toInteger()
     versionBranchName = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
     versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
