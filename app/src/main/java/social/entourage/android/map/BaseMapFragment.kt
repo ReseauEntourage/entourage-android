@@ -49,7 +49,7 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
     protected var isFullMapShown = true
     protected var previousCameraLocation: Location? = null
     protected var previousCameraZoom = 1.0f
-    protected var map: GoogleMap? = null
+    var map: GoogleMap? = null
     protected var mapClusterManager: ClusterManager<ClusterItem>? = null
     protected abstract val adapter: HeaderBaseAdapter?
 

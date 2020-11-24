@@ -73,4 +73,6 @@
     <string name="hub_button_5">Aller sur la FAQ</string>
 
     <string name="gds_title">Lieux solidaires</string>
+    <string name="no_result">Aucun résultat</string>
+    <string name="no_result_info">Pourquoi ne pas essayer\nun autre mot-clé ?</string>
 </resources>

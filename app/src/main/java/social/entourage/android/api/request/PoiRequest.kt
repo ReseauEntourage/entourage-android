@@ -21,4 +21,11 @@ interface PoiRequest {
 
     @GET("pois/{poi_uuid}")
     fun getPoiDetail(@Path("poi_uuid") poiUuid: String): Call<PoiDetailResponse>
+
+    @GET("pois.json")
+    fun retrievePoisSearch(@Query("latitude") latitude: Double,
+                           @Query("longitude") longitude: Double,
+                           @Query("distance") distance: Double,
+                           @Query("query") categoryIDs: String,
+                           @Query("v")version:String): Call<PoiResponse>
 }
