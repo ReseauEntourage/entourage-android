@@ -161,7 +161,7 @@
     <string name="detail_button_action_share">Partager</string>
     <string name="detail_action_event_online">En ligne</string>
     <string name="detail_action_event_info_rdv">vous donne rendez-vous</string>
-    <string name="detail_action_event_info_gift">propose</string>
+    <string name="detail_action_event_info_gift">propose cette aide</string>
     <string name="detail_action_event_info_demand">fait appel à la solidarité du réseau</string>
 
     <string name="confirm_cancel_demand">Confirmez-vous vouloir retirer votre demande ?</string>
