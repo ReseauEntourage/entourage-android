@@ -849,6 +849,13 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             return
         }
 
+        if (feedItem.isEvent()) {
+            entourage_info_request_join_title?.text = getString(R.string.tour_info_request_join_title_entourage_new)
+        }
+        else {
+            entourage_info_request_join_title?.text = getString(R.string.tour_info_request_join_title_entourage)
+        }
+
         updateFeedItemActionEvent()
     }
 
@@ -882,7 +889,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             }
             else -> {
                 title = R.string.tour_info_request_join_button2_entourage
-                if (feedItem.isOnlineEvent) {
+                if (feedItem.isEvent()) {
                    title = R.string.tour_info_request_join_button_entourage
                 }
             }

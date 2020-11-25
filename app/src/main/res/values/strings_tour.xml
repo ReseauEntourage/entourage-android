@@ -166,4 +166,6 @@
 
     <string name="confirm_cancel_demand">Confirmez-vous vouloir retirer votre demande ?</string>
     <string name="validate_cancel_demand">Confirmer</string>
+
+    <string name="info_event_online_feed">En ligne</string>
 </resources>
