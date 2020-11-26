@@ -457,6 +457,8 @@ object EntourageEvents {
     const val ACTION_PROFILE_SHOWPROFIL = "Action__Profile__ShowProfil"
     const val VIEW_PROFILE_MENU = "View__Profile__Menu"
 
+    const val VIEW_ADD_USERNAME_SUBMIT = "Action__Add__UsernameSubmit"
+
     var TAG = EntourageEvents::class.java.simpleName
 
     fun logEvent(event: String) {

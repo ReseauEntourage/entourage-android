@@ -131,6 +131,8 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         fragment_map_filter_button?.setOnClickListener {onShowFilter()}
         fragment_map_new_entourages_button?.setOnClickListener {onNewEntouragesReceivedButton()}
         fragment_map_gps?.setOnClickListener {displayGeolocationPreferences()}
+
+        presenter.checkUserNamesInfos()
     }
 
     protected fun setupComponent(entourageComponent: EntourageComponent?) {

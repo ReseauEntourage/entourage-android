@@ -243,6 +243,30 @@ class OnboardingAPI(val application: EntourageApplication) {
         })
     }
 
+    fun updateUserNames(firstname:String,lastname:String, listener:(isOK:Boolean, userResponse: UserResponse?) -> Unit) {
+        val user = ArrayMap<String, Any>()
+        user["first_name"] = firstname
+        user["last_name"] = lastname
+
+        val request = ArrayMap<String, Any>()
+        request["user"] = user
+        val call = onboardingService.updateUser(request)
+        call.enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                if (response.isSuccessful) {
+                    listener(true,response.body())
+                }
+                else {
+                    listener(false,null)
+                }
+            }
+
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                listener(false,null)
+            }
+        })
+    }
+
     fun getUser(userId:Int, listener:(isOK:Boolean,userResponse: UserResponse?) -> Unit) {
 
         val call = onboardingService.getUser(userId)

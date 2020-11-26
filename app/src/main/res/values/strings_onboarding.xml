@@ -145,4 +145,7 @@
     <string name="onboard_place_description2">Vous venez de rejoindre des membres de votre quartier. Voulez-vous rajouter un autre quartier dans lequel agir ?</string>
     <string name="mod_phone_code">- Modifier</string>
 
+    <string name="input_names_title">Heureux de vous revoir !</string>
+    <string name="input_names_sub">Cette fois, pourriez-vous me dire comment vous vous appelez ?</string>
+    <string name="input_names_error">Veuillez remplir les 2 champs avec un minimum de %s caractères.</string>
 </resources>
