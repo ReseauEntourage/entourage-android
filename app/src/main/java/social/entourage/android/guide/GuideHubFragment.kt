@@ -57,6 +57,8 @@ class GuideHubFragment : Fragment() {
             EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_WEBFAQ)
             (activity as MainActivity).showWebViewForLinkId(Constants.SLUG_HUB_LINK_FAQ)
         }
+
+        ui_image_3.setShapeAppearanceModel(ui_image_3.getShapeAppearanceModel().withCornerSize(32f).toBuilder().build())
     }
 
     companion object {
