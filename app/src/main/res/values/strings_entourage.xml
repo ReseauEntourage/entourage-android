@@ -183,8 +183,7 @@
     <string name="entourage_share_text_verb_for_entourage_author">créé</string>
     <string name="entourage_share_text_verb_for_entourage_member">rejoint</string>
     <string name="entourage_share_text_verb_for_entourage_nonmember">vu</string>
-    <string name="entourage_share_text_for_entourage">Hello ! J\'ai %1$s une initiative solidaire sur Entourage, le réseau qui tisse des liens entre voisins avec et sans domicile : \"%2$s\".
-        J\'ai pensé que ça t\'intéresserait. Clique ici : %3$s.\n\nMerci beaucoup pour ta solidarité !</string>
+    <string name="entourage_share_text_for_entourage">%1$s.\n\nMerci beaucoup pour ta solidarité !</string>
 
     <string name="entourage_share_text_for_event">Hello ! Je t\'invite à : \"%1$s\", %2$s, %3$s !\n\nSi ça te dit y participer, rejoins-moi ici sur Entourage,
         le réseau qui crée des liens entre voisins avec et sans domicile : %4$s</string>
