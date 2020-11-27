@@ -13,6 +13,12 @@ class LastMessageAuthor : Serializable {
     @SerializedName("last_name")
     var lastName: String? = null
 
+    @SerializedName("display_name")
+    var displayName: String? = null
+
+    @SerializedName("id")
+    var authorId: Int = 0
+
     companion object {
         private const val serialVersionUID = 8632217120061284659L
     }

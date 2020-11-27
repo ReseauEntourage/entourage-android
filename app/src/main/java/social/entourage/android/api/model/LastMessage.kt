@@ -1,6 +1,7 @@
 package social.entourage.android.api.model
 
 import com.google.gson.annotations.SerializedName
+import timber.log.Timber
 import java.io.Serializable
 
 /**
@@ -13,24 +14,17 @@ class LastMessage : Serializable {
     @SerializedName("author")
     private var author: LastMessageAuthor? = null
 
-    fun getText(): String? {
+    fun getText(userId:Int): String? {
         author?.let { author ->
             val fulltext = StringBuilder()
-            // Add the first name
-            author.firstName?.let { firstName ->
-                if (firstName.isNotBlank()) {
-                    fulltext.append(firstName)
-                }
+            // Add display name
+            if (author.authorId == userId ) {
+                fulltext.append("Vous")
             }
-            // Add the last name
-            author.lastName?.let { lastName ->
-                if (lastName.isNotBlank()) {
-                    if (fulltext.isNotBlank()) {
-                        fulltext.append(" ")
-                        // only the first letter
-                        fulltext.append(Character.toChars(lastName.codePointAt(0)))
-                    } else {
-                        fulltext.append(lastName)
+            else {
+                author.displayName?.let { displayName ->
+                    if (displayName.isNotBlank()) {
+                        fulltext.append(displayName)
                     }
                 }
             }
