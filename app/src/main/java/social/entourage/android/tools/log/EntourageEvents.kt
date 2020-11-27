@@ -438,6 +438,9 @@ object EntourageEvents {
     const val ACTION_GUIDE_SHAREPOI = "Action__GuideMap__SharePOI"
     const val ACTION_GUIDE_CALLPOI = "Action__GuideMap__CallPOI"
 
+    const val ACTION_GUIDE_STARTSEARCH = "Action__GuideMap__SearchStart"
+    const val ACTION_GUIDE_SEARCHRESULTS = "Action__GuideMap__SearchResults"
+
     //Start info
     const val SHOW_START_FEEDS = "View__Start__Feeds"
 

@@ -47,6 +47,8 @@ class GDSSearchFragment : EntourageDialogFragment() {
             distance = it.getDouble(ARG_DIST
             )
         }
+
+        EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_STARTSEARCH)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -124,7 +126,7 @@ class GDSSearchFragment : EntourageDialogFragment() {
             override fun onResponse(call: Call<PoiResponse>, response: Response<PoiResponse>) {
                 response.body()?.let {
                     if (response.isSuccessful) {
-                        //TODO update
+                        EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_SEARCHRESULTS)
                         arrayPois.clear()
                         arrayPois.addAll(it.pois)
                         rvAdapter?.updateAdapter(arrayPois)
