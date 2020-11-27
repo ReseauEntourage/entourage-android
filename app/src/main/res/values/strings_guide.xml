@@ -10,7 +10,7 @@
     <string name="activity_read_poi_title">INFORMATIONS</string>
     <string name="poi_report_description">Ajoutez des informations sur ce lieu</string>
     <string name="poi_report_button">Mettre à jour</string>
-    <string name="poi_report_email_subject_format">Information sur la structure \'%1$s\' (#%2$d)</string>
+    <string name="poi_report_email_subject_format">J\'ai des infos à jour concernant \'%1$s\' (#%2$d)</string>
     <string name="poi_detail_open_time">Horaires</string>
     <string name="poi_detail_language">Langues parlées</string>
 

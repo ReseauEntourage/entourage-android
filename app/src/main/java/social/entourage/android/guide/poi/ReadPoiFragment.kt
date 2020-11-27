@@ -165,6 +165,10 @@ class ReadPoiFragment : EntourageDialogFragment() {
                 ui_layout_soliguide_language?.visibility = View.VISIBLE
                 ui_tv_poi_language?.text = it
             }
+            poi_report_layout?.visibility = View.GONE
+        }
+        else {
+            poi_report_layout?.visibility = View.VISIBLE
         }
         this.poi = poi
     }
