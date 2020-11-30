@@ -106,6 +106,7 @@ class GuideFilterFragment : EntourageDialogFragment() {
         } ,{ positionTop ->
             when(positionTop) {
                 0 -> {
+                    EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_SEARCHFILTER_ORGANIZ)
                     if (isPartnersTmpSelected && !isDefaultFilters()) {
                         setAllFiltersOn()
                     }
@@ -114,6 +115,7 @@ class GuideFilterFragment : EntourageDialogFragment() {
                     }
                 }
                 1 -> {
+                    EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_SEARCHFILTER_DONAT)
                     if (isDonationsTmpSelected && !isDefaultFilters()) {
                         setAllFiltersOn()
                     }
@@ -122,6 +124,7 @@ class GuideFilterFragment : EntourageDialogFragment() {
                     }
                 }
                 2 -> {
+                    EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_SEARCHFILTER_VOLUNT)
                     if (isVolunteersTmpSelected && !isDefaultFilters()) {
                         setAllFiltersOn()
                     }

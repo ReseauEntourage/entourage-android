@@ -441,6 +441,10 @@ object EntourageEvents {
     const val ACTION_GUIDE_STARTSEARCH = "Action__GuideMap__SearchStart"
     const val ACTION_GUIDE_SEARCHRESULTS = "Action__GuideMap__SearchResults"
 
+    const val ACTION_GUIDE_SEARCHFILTER_ORGANIZ = "Action__GuideMap__OrganizationsFilter"
+    const val ACTION_GUIDE_SEARCHFILTER_VOLUNT = "Action__GuideMap__Volunteers"
+    const val ACTION_GUIDE_SEARCHFILTER_DONAT = "Action__GuideMap__Donations"
+
     //Start info
     const val SHOW_START_FEEDS = "View__Start__Feeds"
 
