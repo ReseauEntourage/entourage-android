@@ -244,13 +244,15 @@ class ReadPoiFragment : EntourageDialogFragment() {
         intent.putExtra(Intent.EXTRA_EMAIL, addresses)
         // Set the subject
         val title = poi.name ?:""
-        val emailSubject = getString(R.string.poi_report_email_subject_format, title, poi.id)
+        val uuid = if (poi.uuid.length == 0) poi.id.toString() else poi.uuid
+        val emailSubject = getString(R.string.poi_report_email_subject_format, title, uuid)
         intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject)
-        if (activity!=null && intent.resolveActivity(requireActivity().packageManager) != null) { // Start the intent
-            startActivity(intent)
-        } else { // No Email clients
-            Toast.makeText(context, R.string.error_no_email, Toast.LENGTH_SHORT).show()
-        }
+        startActivity(intent)
+//        if (activity!=null && intent.resolveActivity(requireActivity().packageManager) != null) { // Start the intent
+//            startActivity(intent)
+//        } else { // No Email clients
+//            Toast.makeText(context, R.string.error_no_email, Toast.LENGTH_SHORT).show()
+//        }
     }
 
     fun onShareClicked() {
