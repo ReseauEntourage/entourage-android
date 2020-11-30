@@ -44,6 +44,11 @@ class GuideFilterFragment : EntourageDialogFragment() {
         initializeFiltersList()
         title_close_button?.setOnClickListener {  dismiss() }
         bottom_action_button?.setOnClickListener { onValidateClicked() }
+
+        ui_bt_cancel?.setOnClickListener {
+            setAllFiltersOn()
+            initializeFiltersList()
+        }
     }
 
     // ----------------------------------
