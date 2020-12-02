@@ -19,4 +19,6 @@
     <string name="redirect_link_no_token_format">%1$slinks/%2$s/redirect</string>
 
     <string name="url_share_entourage_bitly">https://bit.ly/applientourage</string>
+
+    <string name="url_linkedout">https://www.linkedout.fr</string>
 </resources>

@@ -440,7 +440,7 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
             if (success) {
                 //logout and go back to login screen
                 if (it is MainActivity) {
-                    it.selectItem(R.id.action_logout)
+                    it.selectMenuProfileItem("logout")
                 }
             } else if (hasActivity) {
                     Toast.makeText(it, R.string.user_delete_account_failure, Toast.LENGTH_SHORT).show()

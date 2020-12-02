@@ -386,11 +386,11 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
         }
     }
 
-    fun selectItem(@IdRes menuId: Int) {
-        if (menuId == 0) {
+    fun selectMenuProfileItem(position: String) {
+        if (position == "") {
             return
         }
-        presenter.handleMenu(menuId)
+        presenter.handleMenuProfile(position)
     }
 
     private fun loadFragment(menuId: Int) {
