@@ -163,7 +163,7 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
             user_phone?.text = user.phone
             user_about?.text = user.about
 
-            if (user.about.isNotEmpty()) {
+            if (!user.about.isNullOrEmpty()) {
                 user_about_edit_button?.text = getString(R.string.user_about_mod_button)
             }
             else {
