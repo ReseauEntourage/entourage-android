@@ -30,6 +30,8 @@ object Constants {
     const val GOOD_WAVES_ID = "good_waves"
     const val BLOG_LINK_ID = "how-to-present"
 
+    const val ASSO_AGIR_LINK_ID = "partner_action_faq"
+
     // Geolocation
     const val UPDATE_TIMER_MILLIS_OFF_TOUR: Long = 20000
     const val UPDATE_TIMER_MILLIS_ON_TOUR: Long = 5000
