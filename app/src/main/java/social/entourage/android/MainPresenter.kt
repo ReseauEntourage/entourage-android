@@ -118,11 +118,13 @@ import javax.inject.Inject
             }
 
             "share" -> {
-                val intent = Intent(Intent.ACTION_SENDTO)
-                intent.data = Uri.parse("mailto:")
+                val intent = Intent(Intent.ACTION_SEND)
                 val emailBody = activity.getString(R.string.menu_info_profile_share, activity.getString(R.string.url_share_entourage_bitly))
                 intent.putExtra(Intent.EXTRA_TEXT, emailBody)
-                activity.startActivity(intent)
+                intent.type = "text/plain"
+
+                val shareIntent = Intent.createChooser(intent, null)
+                activity.startActivity(shareIntent)
             }
             "blog" -> {
                 activity.showWebViewForLinkId(Constants.BLOG_LINK_ID)
