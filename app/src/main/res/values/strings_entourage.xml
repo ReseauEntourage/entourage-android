@@ -223,8 +223,12 @@
     <string name="event_report_explanation">Vous allez signaler cet évènement à nos administrateurs.</string>
     <string name="event_report_reason">Merci de préciser pourquoi\nvous signalez cet évènement :</string>
 
+    <string name="action_report_explanation_user">Vous allez signaler cet utilisateur à nos administrateurs.</string>
+    <string name="action_report_reason_user">Merci de préciser pourquoi\nvous signalez cet utilisateur :</string>
+
     <string name="entourage_report_reason_hint">Ecrivez quelque chose…</string>
     <string name="entourage_report_success">✔︎ Entourage signalé</string>
+    <string name="entourage_user_report_success">✔︎ Utilisateur signalé</string>
     <string name="entourage_report_error_reason_empty">Ajoutez un message</string>
     <string name="entourage_report_error_send_failed">L\'envoi du message a échoué, veuillez réessayer</string>
 

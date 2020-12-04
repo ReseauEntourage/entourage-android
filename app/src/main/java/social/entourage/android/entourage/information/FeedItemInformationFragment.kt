@@ -51,8 +51,12 @@ import kotlinx.android.synthetic.main.layout_invite_source.*
 import kotlinx.android.synthetic.main.layout_private_entourage_information.*
 import kotlinx.android.synthetic.main.layout_public_entourage_header.*
 import kotlinx.android.synthetic.main.layout_public_entourage_information.*
+import okhttp3.ResponseBody
 import org.joda.time.Days
 import org.joda.time.LocalDate
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import social.entourage.android.*
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.BaseEntourage.Companion.GROUPTYPE_ACTION_DEMAND
@@ -84,8 +88,6 @@ import social.entourage.android.tools.view.EntourageSnackbar
 import social.entourage.android.user.UserFragment
 import timber.log.Timber
 import java.lang.Exception
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.ceil
@@ -625,6 +627,23 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         // for newly created entourages, open the invite friends screen automatically if the feed item is not suspended
         if (feedItem.isNewlyCreated && feedItem.showInviteViewAfterCreation() && !feedItem.isSuspended()) {
             showInviteSource(false)
+        }
+
+        //Init buttons new pop report user
+        ui_bt_report?.setOnClickListener {
+            val fg = EntourageReportFragment.newInstance(feedItem.id.toInt(),false,true)
+            fg.parentFG = this
+            fg.show(parentFragmentManager,EntourageReportFragment.TAG)
+        }
+
+        ui_bt_report_cancel?.setOnClickListener {
+            feedItem.uuid?.let { uuid ->
+                sendDeleteReport(uuid)
+            }
+        }
+
+        ui_bt_report_close?.setOnClickListener {
+            validateReport()
         }
     }
 
@@ -1193,6 +1212,31 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         initializeDiscussionList()
         initializeMembersView()
         EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_DISCUSSION_VIEW)
+
+        if (feedItem.isConversation() && feedItem.isDisplay_report_prompt) {
+            ui_layout_report.visibility = View.VISIBLE
+        }
+        else {
+            ui_layout_report.visibility = View.GONE
+        }
+    }
+
+    fun validateReport() {
+        feedItem.isDisplay_report_prompt = false
+        ui_layout_report.visibility = View.GONE
+    }
+
+    private fun sendDeleteReport(entourageUUID: String) {
+       val entourageRequest = EntourageApplication.get(requireContext()).entourageComponent.entourageRequest
+        val call = entourageRequest.removeUserReportPrompt(entourageUUID)
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                validateReport()
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            }
+        })
     }
 
     protected open fun loadPrivateCards() {

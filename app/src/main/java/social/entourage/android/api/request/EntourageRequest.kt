@@ -121,4 +121,9 @@ interface EntourageRequest {
             @Path("entourage_id") userId: Int,
             @Body entourageReportWrapper: EntourageReportWrapper
     ): Call<ResponseBody>
+
+    @DELETE("entourages/{entourage_id}/report_prompt")
+    fun removeUserReportPrompt(
+            @Path("entourage_id") entourageUUID: String
+    ): Call<ResponseBody>
 }

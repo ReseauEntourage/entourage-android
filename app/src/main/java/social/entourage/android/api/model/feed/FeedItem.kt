@@ -93,6 +93,9 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
     @SerializedName("event_url")
     var eventUrl:String? = null
 
+    @SerializedName("display_report_prompt")
+    var isDisplay_report_prompt:Boolean = false
+
     // ----------------------------------
     // CONSTRUCTORS
     // ----------------------------------
@@ -130,6 +133,8 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
     fun isPrivate(): Boolean {return JOIN_STATUS_ACCEPTED == joinStatus}
 
     fun isEvent() : Boolean {return getGroupType().equals(BaseEntourage.GROUPTYPE_OUTING,true)}
+
+    fun isConversation() :Boolean {return  getGroupType().equals(BaseEntourage.GROUPTYPE_CONVERSATION,true)}
 
     open fun isFreezed(): Boolean {return STATUS_FREEZED == status}
 
