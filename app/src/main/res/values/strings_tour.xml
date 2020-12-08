@@ -61,7 +61,7 @@
     <string name="tour_info_request_join_title_entourage">Participez à la discussion</string>
     <string name="tour_info_request_join_title_entourage_new">Répondez présent !</string>
     <string name="tour_info_request_join_title_tour">Maraude voisine ? Coordonnez-vous</string>
-    <string name="tour_info_request_join_title_outing">Participez à cet évènement</string>
+    <string name="tour_info_request_join_title_outing">Participez à cet événement</string>
     <string name="tour_info_request_join_button_entourage">Participer</string>
     <string name="tour_info_request_join_button2_entourage">Rejoindre</string>
     <string name="tour_info_request_join_button_tour">@string/tour_info_options_contact</string>
@@ -84,7 +84,7 @@
     <string name="local_service_running">Maraude en cours</string>
     <string name="local_service_notification_title">Maraudes</string>
     <string name="loader_title_tour_finish">Arrêt de la maraude</string>
-    <string name="loader_title_outing_finish">Suppression de l\'évènement</string>
+    <string name="loader_title_outing_finish">Suppression de l\'événement</string>
     <string name="loader_title_action_finish">Suppression de l\'action</string>
 
     <!-- Confirmation -->
@@ -146,14 +146,14 @@
     <string name="newsfeed_no_more_items">Aucun autre entourage près de cette position</string>
 
     <!-- Map Filter -->
-    <string name="map_filter_outing_title">Évènements</string>
-    <string name="map_filter_entourage_outing_text">Évènements</string>
+    <string name="map_filter_outing_title">événements</string>
+    <string name="map_filter_entourage_outing_text">événements</string>
     <string name="map_filter_past_events_text">Inclure passés</string>
 
     <!-- Map Tab -->
-    <string name="map_tab_all">Tous</string>
-    <string name="map_tab_events">Evènements</string>
-    <string name="map_tab_tours">Maraudes</string>
+    <string name="map_tab_all">tous</string>
+    <string name="map_tab_events">événements</string>
+    <string name="map_tab_tours">maraudes</string>
 
 
     <!-- New detail action/event -->

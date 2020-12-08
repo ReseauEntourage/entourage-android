@@ -59,14 +59,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.*
 import social.entourage.android.api.model.*
-import social.entourage.android.api.model.BaseEntourage.Companion.GROUPTYPE_ACTION_DEMAND
 import social.entourage.android.api.model.feed.*
-import social.entourage.android.api.model.tour.Tour
-import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.configuration.Configuration
-import social.entourage.android.deeplinks.DeepLinksManager.linkify
 import social.entourage.android.entourage.ShareEntourageFragment
 import social.entourage.android.entourage.create.BaseCreateEntourageFragment
 import social.entourage.android.entourage.information.discussion.DiscussionAdapter
@@ -76,7 +72,6 @@ import social.entourage.android.entourage.invite.InviteFriendsListener
 import social.entourage.android.entourage.invite.contacts.InviteContactsFragment
 import social.entourage.android.entourage.invite.phonenumber.InviteByPhoneNumberFragment
 import social.entourage.android.location.EntourageLocation
-import social.entourage.android.map.OnAddressClickListener
 import social.entourage.android.service.EntourageService
 import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.tools.BusProvider
@@ -85,7 +80,6 @@ import social.entourage.android.tools.EntourageError
 import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.tour.TourInformationFragment
 import social.entourage.android.tools.view.EntourageSnackbar
-import social.entourage.android.user.UserFragment
 import timber.log.Timber
 import java.lang.Exception
 import java.util.*
@@ -308,7 +302,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         }
 
         // For conversation, open the author profile
-        if (TimestampedObject.ENTOURAGE_CARD == feedItem.type && BaseEntourage.GROUPTYPE_CONVERSATION.equals(feedItem.getGroupType(), ignoreCase = true)) {
+        if (feedItem is EntourageConversation) {
             if (showInfoButton) {
                 // only if this screen wasn't shown from the profile page
                 feedItem.author?.let {BusProvider.instance.post(OnUserViewRequestedEvent(it.userID))}
@@ -384,11 +378,8 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
 
         // build the share text
         val shareLink = feedItem.shareURL ?:getString(R.string.entourage_share_link)
-        val shareText = when {
-            feedItem.type == TimestampedObject.ENTOURAGE_CARD && BaseEntourage.GROUPTYPE_OUTING == feedItem.getGroupType() ->{
-                getString(R.string.entourage_share_text_for_entourage, shareLink)
-            }
-            feedItem.type == TimestampedObject.ENTOURAGE_CARD && BaseEntourage.GROUPTYPE_OUTING != feedItem.getGroupType() ->{
+        val shareText = when (feedItem.type) {
+            TimestampedObject.ENTOURAGE_CARD -> {
                 getString(R.string.entourage_share_text_for_entourage, shareLink)
             }
             else -> {
@@ -421,7 +412,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
 
     protected abstract fun onStopTourButton()
 
-    private fun quitEntourage() {
+    protected fun quitEntourage() {
         val me = EntourageApplication.me(activity)
         if(me ==null || entourageServiceConnection.boundService == null){
             entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.tour_info_quit_tour_error, Snackbar.LENGTH_SHORT).show()}
@@ -478,12 +469,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
     private fun onReportEntourageButton() {
         if (activity == null) return
 
-        var isEvent = false
-        if (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.getGroupType(), ignoreCase = true)) {
-            isEvent = true
-        }
-
-        EntourageReportFragment.newInstance(feedItem.id.toInt(),isEvent).show(parentFragmentManager,EntourageReportFragment.TAG)
+        EntourageReportFragment.newInstance(feedItem.id.toInt(),(feedItem is EntourageEvent)).show(parentFragmentManager,EntourageReportFragment.TAG)
     }
 
     private fun onPromoteEntourageButton() {
@@ -814,264 +800,12 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
                 }
             }
         }
-
-        if (feedItem is Tour) {
-            changeViewsVisibility(true)
-
-            entourage_info_members_layout?.setBackgroundColor(ResourcesCompat.getColor(resources,R.color.white,null))
-            entourage_info_title_full?.text = feedItem.getTitle()
-
-            if (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.getGroupType(), ignoreCase = true)) {
-                tour_summary_group_type?.text = resources.getString(R.string.entourage_type_outing)
-                tour_summary_author_name?.text = ""
-                entourage_info_location?.visibility = View.GONE
-                entourage_info_icon?.visibility = View.VISIBLE
-                entourage_info_icon?.setImageDrawable(ResourcesCompat.getDrawable(resources,R.drawable.ic_event_accent_24dp,null))
-                entourage_info_request_join_title?.text = getString(R.string.tour_info_request_join_title_entourage_new)
-            } else {
-                tour_summary_group_type?.text = feedItem.getFeedTypeLong(requireContext())
-                tour_summary_author_name?.text = feedItem.author?.userName ?: ""
-                entourage_info_location?.visibility = View.VISIBLE
-                entourage_info_location?.text = feedItem.getDisplayAddress()
-            }
-
-           updatePhotosAvatar(entourage_info_author_photo,entourage_info_partner_logo)
-
-            entourage_info_people_count?.text = getString(R.string.tour_cell_numberOfPeople, feedItem.numberOfPeople)
-
-            //   update description
-            if(entourage_info_description!=null) {
-                if (feedItem.getDescription()?.isNotEmpty() == true) {
-                    entourage_info_description?.text = feedItem.getDescription()
-                    entourage_info_description?.visibility = View.VISIBLE
-                } else {
-                    entourage_info_description?.visibility = View.GONE
-                }
-                linkify(entourage_info_description)
-            }
-
-            //   metadata
-            updateMetadataView()
-            when(feedItem.getGroupType()) {
-                BaseEntourage.GROUPTYPE_ACTION,
-                Tour.GROUPTYPE_TOUR -> {
-                    showActionTimestamps(feedItem.getCreationTime(), feedItem.updatedTime)
-                }
-                else -> {
-                    entourage_info_timestamps?.visibility = View.GONE
-                }
-            }
-            return
-        }
-
-        if (feedItem.isEvent()) {
-            entourage_info_request_join_title?.text = getString(R.string.tour_info_request_join_title_entourage_new)
-        }
-        else {
-            entourage_info_request_join_title?.text = getString(R.string.tour_info_request_join_title_entourage)
-        }
-
         updateFeedItemActionEvent()
     }
 
-    private fun updateFeedItemActionEvent() {
-        changeViewsVisibility(false)
+    open fun updateFeedItemActionEvent() {}
 
-        //Top view
-        ui_image_event_top?.visibility = View.GONE
-        if (feedItem.isEvent() && !feedItem.eventImageUrl.isNullOrEmpty()) {
-            Picasso.get().load(feedItem.eventImageUrl).into(ui_image_event_top)
-            ui_image_event_top?.visibility = View.VISIBLE
-        }
-
-        ui_title_event_action_top?.text = feedItem.getTitle()
-
-        //Button action
-        var title: Int
-        var showIcon = View.VISIBLE
-        ui_layout_event_action_top_action?.setBackgroundResource(R.drawable.bg_button_rounded_pre_onboard_orange_stroke)
-        ui_tv_button_action_top?.setTextColor(ResourcesCompat.getColor(resources,R.color.accent,null))
-        when(feedItem.joinStatus) {
-            FeedItem.JOIN_STATUS_ACCEPTED -> {
-                title = R.string.tour_cell_button_accepted_other
-                showIcon = View.GONE
-                ui_layout_event_action_top_action?.setBackgroundResource(R.drawable.bg_button_rounded_pre_onboard_orange_plain)
-                ui_tv_button_action_top?.setTextColor(ResourcesCompat.getColor(resources,R.color.white,null))
-            }
-            FeedItem.JOIN_STATUS_PENDING -> {
-                showIcon = View.GONE
-                title = R.string.tour_cell_button_pending_new
-            }
-            else -> {
-                title = R.string.tour_info_request_join_button2_entourage
-                if (feedItem.isEvent()) {
-                   title = R.string.tour_info_request_join_button_entourage
-                }
-            }
-        }
-        ui_iv_button_action_top.visibility = showIcon
-        ui_tv_button_action_top.setText(title)
-
-        if (feedItem.status == FeedItem.STATUS_CLOSED) {
-            ui_layout_event_action_top_action?.visibility = View.GONE
-        }
-        else {
-            ui_layout_event_action_top_action?.visibility = View.VISIBLE
-        }
-
-        ui_layout_event_action_top_action?.setOnClickListener {
-            if (feedItem.joinStatus == FeedItem.JOIN_STATUS_PENDING) {
-                val alertDialog = AlertDialog.Builder(requireContext())
-                alertDialog.setTitle("Attention")
-                alertDialog.setMessage(R.string.confirm_cancel_demand)
-                alertDialog.setNegativeButton(R.string.tour_info_options_close) { dialog,_ ->
-                    dialog.dismiss()
-                }
-                alertDialog.setPositiveButton(R.string.validate_cancel_demand) { dialog,_ ->
-                    dialog.dismiss()
-                    quitEntourage()
-                }
-
-                alertDialog.show()
-            }
-            else if (feedItem.joinStatus != FeedItem.JOIN_STATUS_ACCEPTED) {
-                onJoinButton()
-            }
-        }
-
-        ui_layout_event_action_top_share?.setOnClickListener {
-            showInviteSource(true)
-        }
-
-        //Layout Date
-        if (feedItem.isEvent()) {
-            layout_detail_event_action_date?.visibility = View.VISIBLE
-            val metadata: BaseEntourage.Metadata? = if (feedItem is BaseEntourage) (feedItem as BaseEntourage).metadata else null
-            ui_tv_event_action_date?.text = getDateStringFromMetadata(metadata)
-        }
-        else {
-            layout_detail_event_action_date?.visibility = View.GONE
-        }
-
-        entourage_info_map_layout.visibility = View.VISIBLE
-
-        //Layout location
-        if (feedItem.isEvent()) {
-            if (feedItem.isOnlineEvent) {
-                ui_iv_event_action_location.setImageDrawable(ResourcesCompat.getDrawable(resources,R.drawable.ic_detail_event_link,null))
-
-                val eventUrl = if (feedItem.eventUrl == null || feedItem.eventUrl.equals("null")) "" else feedItem.eventUrl
-                ui_tv_event_action_location?.text = "${getString(R.string.detail_action_event_online)}\n${eventUrl}"
-                linkify( ui_tv_event_action_location)
-                entourage_info_map_layout.visibility = View.GONE
-            }
-            else {
-                ui_tv_event_action_location?.let {
-                    val metadata: BaseEntourage.Metadata? = if (feedItem is BaseEntourage) (feedItem as BaseEntourage).metadata else null
-                    val displayAddress = metadata?.displayAddress
-                    it.text = displayAddress
-                    it.paintFlags = it.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-                    if (displayAddress != null) {
-                        it.setOnClickListener {
-                            OnAddressClickListener(requireActivity(),displayAddress,true).onClick(it)
-                        }
-                    }
-                }
-            }
-        }
-        else {
-            if (feedItem.postal_code.isNullOrEmpty()) {
-                ui_tv_event_action_location?.text = "-"
-            }
-            else {
-                ui_tv_event_action_location?.text = feedItem.postal_code
-            }
-        }
-
-        //Layout creator
-        updatePhotosAvatar(ui_action_event_creator_photo,ui_action_event_creator_logo)
-        ui_action_event_creator_name?.text = feedItem.author?.userName ?: ""
-        val partner = feedItem.author?.partner
-        val role = partner?.userRoleTitle
-
-        feedItem.author?.userID?.let { userId ->
-            layout_detail_event_action_creator?.setOnClickListener {
-                val fragment = UserFragment.newInstance(userId)
-                fragment.show(requireActivity(). supportFragmentManager, UserFragment.TAG)
-            }
-        }
-
-        if (partner != null || !role.isNullOrEmpty()) {
-            ui_action_event_creator_layout_bottom?.visibility = View.VISIBLE
-            var _roleStr = ""
-            if (role != null && role.isNotEmpty()) {
-                _roleStr = "$role -"
-                ui_action_event_creator_role?.text = _roleStr
-                ui_action_event_creator_role?.visibility = View.VISIBLE
-            }
-            else {
-                ui_action_event_creator_role?.visibility = View.GONE
-            }
-
-            ui_action_event_creator_bt_asso?.text = partner.name
-            ui_action_event_creator_bt_asso?.setOnClickListener {
-                partner.id.toInt().let { partnerId ->
-                    BusProvider.instance.post(Events.OnShowDetailAssociation(partnerId))
-                }
-            }
-        }
-        else {
-            ui_action_event_creator_layout_bottom?.visibility = View.INVISIBLE
-        }
-
-        if (feedItem.isEvent()) {
-            ui_action_event_creator_information?.text = getString(R.string.detail_action_event_info_rdv)
-        }
-        else if ((feedItem as BaseEntourage).actionGroupType.equals(GROUPTYPE_ACTION_DEMAND)) {
-            ui_action_event_creator_information?.text = getText(R.string.detail_action_event_info_demand)
-        }
-        else {
-            ui_action_event_creator_information?.text = getText(R.string.detail_action_event_info_gift)
-        }
-
-        //Layout description
-        if (feedItem.isEvent()) {
-            layout_detail_event_description?.visibility = View.VISIBLE
-            layout_detail_action_description?.visibility = View.GONE
-
-            if (feedItem.getDescription().isNullOrEmpty()) {
-                ui_layout_event_description?.visibility = View.GONE
-            }
-            else {
-                ui_layout_event_description?.visibility = View.VISIBLE
-                ui_tv_detail_event_description?.text = feedItem.getDescription()
-            }
-            linkify(ui_tv_detail_event_description)
-        }
-        else {
-            layout_detail_action_description?.visibility = View.VISIBLE
-            layout_detail_event_description?.visibility = View.GONE
-
-            if (feedItem.getDescription().isNullOrEmpty()) {
-                ui_layout_action_description?.visibility = View.GONE
-            }
-            else {
-                ui_layout_action_description?.visibility = View.VISIBLE
-                ui_tv_detail_action_description?.text = feedItem.getDescription()
-            }
-
-            val timestamps = ArrayList<String?>()
-            timestamps.add(getString(R.string.entourage_info_creation_time, formattedDaysIntervalFromToday(feedItem.getCreationTime())))
-            if (!LocalDate(feedItem.getCreationTime()).isEqual(LocalDate())) {
-                timestamps.add(getString(R.string.entourage_info_update_time, formattedDaysIntervalFromToday(feedItem.updatedTime)))
-            }
-            ui_tv_detail_action_last_update?.text = TextUtils.join(" - ", timestamps)
-
-            linkify(ui_tv_detail_action_description)
-        }
-    }
-
-    private fun changeViewsVisibility(isTour:Boolean) {
+    fun changeViewsVisibility(isTour:Boolean) {
         val visibilityOldLayouts = if (isTour) View.VISIBLE else View.GONE
         val visibilityNewLayouts = if (isTour) View.GONE else View.VISIBLE
         layout_detail_event_action_top_view?.visibility = visibilityNewLayouts
@@ -1089,7 +823,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         entourage_info_member_add?.visibility = visibilityOldLayouts
     }
 
-    private fun updatePhotosAvatar(author:ImageView?,logo:ImageView?) {
+    fun updatePhotosAvatar(author:ImageView?,logo:ImageView?) {
         author?.let { authorPhotoView ->
             feedItem.author?.avatarURLAsString?.let { avatarURLAsString ->
                 Picasso.get()
@@ -1113,7 +847,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             }
         }
     }
-    private fun getDateStringFromMetadata(metadata: BaseEntourage.Metadata?) : String {
+    fun getDateStringFromMetadata(metadata: BaseEntourage.Metadata?) : String {
 
         metadata?.let {
             val startCalendar = Calendar.getInstance()
@@ -1136,7 +870,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         return ""
     }
 
-    private fun showActionTimestamps(createdTime: Date, updatedTime: Date) {
+    fun showActionTimestamps(createdTime: Date, updatedTime: Date) {
         val timestamps = ArrayList<String?>()
         timestamps.add(getString(R.string.entourage_info_creation_time, formattedDaysIntervalFromToday(createdTime)))
         if (!LocalDate(createdTime).isEqual(LocalDate())) {
@@ -1146,7 +880,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         entourage_info_timestamps?.visibility = View.VISIBLE
     }
 
-    private fun formattedDaysIntervalFromToday(rawDate: Date): String {
+    fun formattedDaysIntervalFromToday(rawDate: Date): String {
         val today = LocalDate()
         val date = LocalDate(rawDate)
         if (date.isEqual(today)) return this.getString(R.string.date_today).toLowerCase()
@@ -1285,12 +1019,11 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
                     entourage_info_act_layout?.visibility = View.GONE
                     entourage_info_request_join_layout?.visibility = View.VISIBLE
 //                    entourage_info_request_join_title?.setText(feedItem.getJoinRequestTitle())
-                    if (BaseEntourage.GROUPTYPE_OUTING.equals(feedItem.getGroupType(), ignoreCase = true)) {
+                    if (feedItem is EntourageEvent) {
                         entourage_info_request_join_button?.setText(getString(R.string.tour_info_request_join_button_entourage).toUpperCase())
                     }
                     else {
                         entourage_info_request_join_button?.setText(getString(R.string.tour_info_request_join_button2_entourage).toUpperCase())
-
                     }
                    // entourage_info_request_join_button?.setText(feedItem.getJoinRequestButton())
 

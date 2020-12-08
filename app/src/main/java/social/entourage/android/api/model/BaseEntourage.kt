@@ -8,12 +8,16 @@ import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.LatLng
+import com.google.gson.*
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.R
 import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.location.EntourageLocation
+import timber.log.Timber
 import java.io.Serializable
+import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.floor
@@ -47,6 +51,13 @@ open class BaseEntourage : FeedItem, Serializable {
 
     @SerializedName("public")
     var isJoinRequestPublic = false
+
+    @SerializedName("image_url")
+    var eventImageUrl:String? = null
+    @SerializedName("online")
+    var isOnlineEvent:Boolean = false
+    @SerializedName("event_url")
+    var eventUrl:String? = null
 
     // ----------------------------------
     // CONSTRUCTORS
@@ -110,10 +121,6 @@ open class BaseEntourage : FeedItem, Serializable {
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
-    override fun isFreezed(): Boolean {
-        return STATUS_CLOSED == status
-    }
-
     fun isSame(entourage: BaseEntourage): Boolean {
         if (id != entourage.id) return false
         if (status != entourage.status) return false
@@ -127,6 +134,9 @@ open class BaseEntourage : FeedItem, Serializable {
         return (author?.isSame(entourage.author)==true)
     }
 
+    open fun isEvent() : Boolean {
+        return false
+    }
     /**
      * Returns the distance from the entourage starting point to the current location
      * If the current location or the starting point is null, it returns zero
@@ -150,10 +160,6 @@ open class BaseEntourage : FeedItem, Serializable {
         val distance: Float = this.location?.distanceTo(LocationPoint(newLocation.latitude, newLocation.longitude))
                 ?: return Int.MAX_VALUE
         return floor(distance).toInt()
-    }
-
-    fun isOuting() : Boolean {
-        return groupType == GROUPTYPE_OUTING
     }
 
     // ----------------------------------
@@ -369,6 +375,26 @@ open class BaseEntourage : FeedItem, Serializable {
         }
 
     }
+    class BaseEntourageJsonAdapter : JsonDeserializer<BaseEntourage> {
+        @Throws(JsonParseException::class)
+        override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): BaseEntourage? {
+            val jsonData = json.asJsonObject
+            if (jsonData !=null) {
+                try {
+                    val entourageClass = BaseEntourage.getClassFromString(
+                            jsonData["group_type"]?.asString,
+                            jsonData["entourage_type"]?.asString)
+                        val gson = GsonBuilder()
+                                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+                                .create()
+                        return gson.fromJson<BaseEntourage>(jsonData, entourageClass)
+                } catch (e: Exception) {
+                    Timber.e(e)
+                }
+            }
+            return null
+        }
+    }
 
     companion object {
         private const val HASH_STRING_HEAD = "Entourage-"
@@ -381,13 +407,15 @@ open class BaseEntourage : FeedItem, Serializable {
         const val GROUPTYPE_ACTION = "action"
         const val HEATMAP_SIZE = 500f //meters
         private var MARKER_SIZE = 0
+
         fun getMarkerSize(context: Context): Int {
             if (MARKER_SIZE == 0) {
                 MARKER_SIZE = context.resources.getDimensionPixelOffset(R.dimen.entourage_map_marker)
             }
             return MARKER_SIZE
         }
-        fun getClassFromString(groupType: String?, actionGroupType: String?): Class<*>? {
+
+        fun getClassFromString(groupType: String?, actionGroupType: String?): Class<*> {
             return when(groupType) {
                 GROUPTYPE_ACTION -> {
                     when(actionGroupType) {

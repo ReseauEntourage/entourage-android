@@ -80,6 +80,15 @@ class EntourageEvent : BaseEntourage, Serializable {
     override fun getClosedToastMessage(): Int {
         return R.string.outing_info_text_close
     }
+
+    override fun isEvent() : Boolean {
+        return true
+    }
+
+    @StringRes
+    override fun getInviteSourceDescription():Int {
+        return R.string.invite_source_description_outing
+    }
 }
 
 class EntourageNeighborhood : BaseEntourage, Serializable {
@@ -140,6 +149,11 @@ class EntourageConversation : BaseEntourage, Serializable {
     override fun getIconURL(): String? {
         return author?.avatarURLAsString ?: super.getIconURL()
     }
+
+    override fun isConversation() :Boolean {
+        return true
+    }
+
 }
 
 class EntouragePrivateCircle : BaseEntourage, Serializable {

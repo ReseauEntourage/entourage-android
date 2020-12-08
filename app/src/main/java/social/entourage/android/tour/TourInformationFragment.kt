@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.location.Location
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMapOptions
@@ -16,6 +17,7 @@ import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.layout_entourage_options.*
 import kotlinx.android.synthetic.main.fragment_entourage_information.*
 import kotlinx.android.synthetic.main.layout_invite_source.*
+import kotlinx.android.synthetic.main.layout_public_entourage_header.*
 import kotlinx.android.synthetic.main.layout_public_entourage_information.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageComponent
@@ -28,6 +30,7 @@ import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.model.tour.TourInformation
 import social.entourage.android.api.tape.Events
+import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.entourage.information.*
 import social.entourage.android.location.EntourageLocation
 import social.entourage.android.newsfeed.BaseNewsfeedFragment
@@ -40,6 +43,9 @@ import javax.inject.Inject
 class TourInformationFragment : FeedItemInformationFragment(){
     @Inject lateinit var presenter: TourInformationPresenter
     override fun presenter(): FeedItemInformationPresenter { return presenter}
+
+    val tour: Tour
+        get() = feedItem as Tour
 
     private var mListener: OnTourInformationFragmentFinish? = null
     private var hiddenMapFragment: SupportMapFragment? = null
@@ -75,8 +81,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
     }
 
     override fun onStopTourButton() {
-        if (feedItem.status == FeedItem.STATUS_ON_GOING || feedItem.status == FeedItem.STATUS_OPEN) {
-            val tour = feedItem as Tour
+        if (tour.status == FeedItem.STATUS_ON_GOING || tour.status == FeedItem.STATUS_OPEN) {
             //compute distance
             var distance = 0.0f
             val tourPointsList = tour.tourPoints
@@ -100,9 +105,9 @@ class TourInformationFragment : FeedItemInformationFragment(){
             //show stop tour activity
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE)
             mListener?.showStopTourActivity(tour)
-        } else if (feedItem.status == FeedItem.STATUS_CLOSED) {
+        } else if (tour.status == FeedItem.STATUS_CLOSED) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE)
-            entourageServiceConnection.boundService?.freezeTour(feedItem as Tour)
+            entourageServiceConnection.boundService?.freezeTour(tour)
         }
     }
 
@@ -110,7 +115,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
         if (entourageServiceConnection.boundService != null) {
             showProgressBar()
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN)
-            entourageServiceConnection.boundService?.requestToJoinTour(feedItem as Tour)
+            entourageServiceConnection.boundService?.requestToJoinTour(tour)
             entourage_info_options?.visibility = View.GONE
         } else {
             entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.tour_join_request_message_error, Snackbar.LENGTH_SHORT).show()}
@@ -129,12 +134,12 @@ class TourInformationFragment : FeedItemInformationFragment(){
         if (content.isEntourageRelated) {
             return false
         }
-        else if (content.joinableId != feedItem.id) {
+        else if (content.joinableId != tour.id) {
             return false
         }
         //retrieve the last messages from server
         scrollToLastCard = true
-        presenter.getFeedItemMessages(feedItem)
+        presenter.getFeedItemMessages(tour)
         return true
     }
 
@@ -148,32 +153,32 @@ class TourInformationFragment : FeedItemInformationFragment(){
         entourage_option_contact?.visibility = View.GONE
         entourage_option_promote?.visibility = View.GONE
         entourage_option_reopen?.visibility = View.GONE
-        val hideJoinButton = feedItem.isPrivate() || FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus || feedItem.isFreezed()
+        val hideJoinButton = tour.isPrivate() || FeedItem.JOIN_STATUS_PENDING == tour.joinStatus || tour.isFreezed()
         entourage_option_join?.visibility =  View.GONE
         entourage_option_contact?.visibility = if (hideJoinButton) View.GONE else View.VISIBLE
-        val authorId = feedItem.author?.userID ?: return
+        val authorId = tour.author?.userID ?: return
         val myId = EntourageApplication.me(activity)?.id ?: return
         if (authorId != myId) {
-            if ((FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus || FeedItem.JOIN_STATUS_ACCEPTED == feedItem.joinStatus) && !feedItem.isFreezed()) {
+            if ((FeedItem.JOIN_STATUS_PENDING == tour.joinStatus || FeedItem.JOIN_STATUS_ACCEPTED == tour.joinStatus) && !tour.isFreezed()) {
                 entourage_option_quit?.visibility = View.VISIBLE
-                entourage_option_quit?.setText(if (FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus) R.string.tour_info_options_cancel_request else R.string.tour_info_options_quit_tour)
+                entourage_option_quit?.setText(if (FeedItem.JOIN_STATUS_PENDING == tour.joinStatus) R.string.tour_info_options_cancel_request else R.string.tour_info_options_quit_tour)
             }
         } else {
-            entourage_option_stop?.visibility = if (feedItem.isFreezed() || !feedItem.canBeClosed()) View.GONE else View.VISIBLE
-            entourage_option_stop?.setText(if (feedItem.isClosed()) R.string.tour_info_options_freeze_tour else R.string.tour_info_options_stop_tour)
+            entourage_option_stop?.visibility = if (tour.isFreezed() || !tour.canBeClosed()) View.GONE else View.VISIBLE
+            entourage_option_stop?.setText(if (tour.isClosed()) R.string.tour_info_options_freeze_tour else R.string.tour_info_options_stop_tour)
         }
     }
 
     override fun addSpecificCards() {
-        if (feedItem.type == TimestampedObject.TOUR_CARD) {
+        if (tour.type == TimestampedObject.TOUR_CARD) {
             val now = Date()
             //add the start time
-            if (FeedItem.STATUS_ON_GOING == feedItem.status) {
+            if (FeedItem.STATUS_ON_GOING == tour.status) {
                 addDiscussionTourStartCard(now)
             }
 
             //check if we need to add the Tour closed card
-            if (feedItem.isClosed()) {
+            if (tour.isClosed()) {
                 addDiscussionTourEndCard(now)
             }
         }
@@ -196,7 +201,6 @@ class TourInformationFragment : FeedItemInformationFragment(){
     }
 
     override fun drawMap(googleMap: GoogleMap) {
-        val tour = feedItem as Tour? ?: return
         val tourPoints = tour.tourPoints
         if (tourPoints.size > 0) {
             //setup the camera position to starting point
@@ -308,12 +312,12 @@ class TourInformationFragment : FeedItemInformationFragment(){
 
     private fun addDiscussionTourStartCard(now: Date) {
         val distance = 0f
-        val duration: Long = if (!feedItem.isClosed()) (now.time - feedItem.getStartTime().time) else 0L
-        val startPoint = feedItem.getStartPoint()
+        val duration: Long = if (!tour.isClosed()) (now.time - tour.getStartTime().time) else 0L
+        val startPoint = tour.getStartPoint()
         val tourInformation = TourInformation(
-                feedItem.getStartTime(),
+                tour.getStartTime(),
                 now,
-                feedItem.type,
+                tour.type,
                 FeedItem.STATUS_ON_GOING,
                 startPoint,
                 duration,
@@ -324,8 +328,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
 
     override fun addDiscussionTourEndCard(now: Date) {
         var distance = 0f
-        val duration = feedItem.getEndTime()?.let {it.time - feedItem.getStartTime().time } ?: 0L
-        val tour = feedItem as Tour
+        val duration = tour.getEndTime()?.let {it.time - tour.getStartTime().time } ?: 0L
         val tourPointsList = tour.tourPoints
         if (tourPointsList.size > 1) {
             var startPoint = tourPointsList[0]
@@ -355,8 +358,8 @@ class TourInformationFragment : FeedItemInformationFragment(){
 
     override fun loadPrivateCards() {
         super.loadPrivateCards()
-        if (feedItem.isMine(context)) {
-            presenter.getFeedItemEncounters(feedItem as Tour)
+        if (tour.isMine(context)) {
+            presenter.getFeedItemEncounters(tour)
         }
     }
 
@@ -364,7 +367,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
     // Bus handling
     // ----------------------------------
     override fun setReadOnly() {
-        val encounters = feedItem.getTypedCardInfoList(TimestampedObject.ENCOUNTER)
+        val encounters = tour.getTypedCardInfoList(TimestampedObject.ENCOUNTER)
         if (encounters.isNullOrEmpty()) return
         for (timestampedObject in encounters) {
             val encounter = timestampedObject as Encounter
@@ -389,7 +392,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
         val updatedEncounter = event.encounter
         val oldEncounter = discussionAdapter.findCard(TimestampedObject.ENCOUNTER, updatedEncounter.id) as Encounter?
                 ?: return
-        feedItem.removeCardInfo(oldEncounter)
+        tour.removeCardInfo(oldEncounter)
         discussionAdapter.updateCard(updatedEncounter)
     }
 
@@ -398,10 +401,10 @@ class TourInformationFragment : FeedItemInformationFragment(){
             EntourageApplication.me(context)?.let {user ->
                 list.forEach {encounter ->
                     encounter.isMyEncounter = encounter.userId == user.id
-                    encounter.isReadOnly = feedItem.isClosed()
+                    encounter.isReadOnly = tour.isClosed()
                 }
             }
-            feedItem.addCardInfoList(list)
+            tour.addCardInfoList(list)
         }
 
         //hide the progress bar
@@ -409,6 +412,45 @@ class TourInformationFragment : FeedItemInformationFragment(){
 
         //update the discussion list
         updateDiscussionList()
+    }
+
+    override fun updateFeedItemActionEvent() {
+        changeViewsVisibility(true)
+
+        entourage_info_members_layout?.setBackgroundColor(ResourcesCompat.getColor(resources,R.color.white,null))
+        entourage_info_title_full?.text = tour.getTitle()
+
+        tour_summary_group_type?.text = tour.getFeedTypeLong(requireContext())
+        tour_summary_author_name?.text = tour.author?.userName ?: ""
+        entourage_info_location?.visibility = View.VISIBLE
+        entourage_info_location?.text = tour.getDisplayAddress()
+
+        updatePhotosAvatar(entourage_info_author_photo,entourage_info_partner_logo)
+
+        entourage_info_people_count?.text = getString(R.string.tour_cell_numberOfPeople, tour.numberOfPeople)
+
+        //   update description
+        if(entourage_info_description!=null) {
+            if (tour.getDescription()?.isNotEmpty() == true) {
+                entourage_info_description?.text = tour.getDescription()
+                entourage_info_description?.visibility = View.VISIBLE
+            } else {
+                entourage_info_description?.visibility = View.GONE
+            }
+            DeepLinksManager.linkify(entourage_info_description)
+        }
+
+        //   metadata
+        updateMetadataView()
+        when(tour.getGroupType()) {
+            Tour.GROUPTYPE_TOUR -> {
+                showActionTimestamps(tour.getCreationTime(), tour.updatedTime)
+            }
+            else -> {
+                entourage_info_timestamps?.visibility = View.GONE
+            }
+        }
+
     }
 
     // ----------------------------------

@@ -123,14 +123,14 @@
 
     //Info mosaic choice from ws
   <string name="rencontrer_sdf">Me faire un cercle d’amis</string>
-  <string name="event_sdf">Participer à des évènements</string>
+  <string name="event_sdf">Participer à des événements</string>
   <string name="questions_sdf">Poser des questions</string>
   <string name="aide_sdf">Demander de l’aide</string>
   <string name="m_orienter_sdf">M’orienter</string>
   <string name="trouver_asso_sdf">Trouver des associations</string>
 
   <string name="m_informer_riverain">M’informer</string>
-  <string name="event_riverain">Participer à des évènements</string>
+  <string name="event_riverain">Participer à des événements</string>
   <string name="entourer_riverain">Entourer une personne isolée</string>
   <string name="dons_riverain">Faire des dons matériels</string>
   <string name="benevolat_riverain">M’investir dans l’associatif</string>

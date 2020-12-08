@@ -108,7 +108,7 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
 
         //Metadata
         //hide author for events
-        if ((feedItem is BaseEntourage) && ((feedItem as BaseEntourage).metadata?.startDate != null))
+        if ((feedItem as? BaseEntourage)?.metadata?.startDate != null)
             itemView.tour_card_author?.text = ""
 
         //Feed Item type
@@ -117,7 +117,7 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
             itemView.tour_card_type?.setTextColor(ContextCompat.getColor(itemView.context, feedItem.getFeedTypeColor()))
         }
 
-        if (feedItem.isOnlineEvent) {
+        if ((feedItem as? BaseEntourage)?.isOnlineEvent == true) {
             itemView.tour_card_location?.text = res.getString(R.string.info_event_online_feed)
         }
         else {

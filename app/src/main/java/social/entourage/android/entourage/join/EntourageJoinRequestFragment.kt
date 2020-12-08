@@ -48,7 +48,7 @@ class EntourageJoinRequestFragment  : DialogFragment() {
             return
         }
         entourage = newFeedItem
-        val descriptionTextId = if (BaseEntourage.GROUPTYPE_OUTING.equals(entourage.getGroupType(), ignoreCase = true)) R.string.tour_join_request_ok_description_outing
+        val descriptionTextId = if (entourage.isEvent()) R.string.tour_join_request_ok_description_outing
                 else R.string.tour_join_request_ok_description_entourage
         tour_join_request_ok_description?.setText(descriptionTextId)
         view.setOnClickListener {

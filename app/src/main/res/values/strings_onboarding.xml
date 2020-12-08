@@ -51,7 +51,7 @@
     <string name="onboard_place_title">Quel est votre quartier ?</string>
     <string name="onboard_place_description">Vous pourrez répondre aux demandes de personnes en difficulté et d’associations de votre quartier, et vous pourrez vous-même proposer des dons de votre temps ou matériels.</string>
     <string name="onboard_place_title_sdf">Dans quel quartier avez vous vos habitudes ?</string>
-    <string name="onboard_place_description_sdf">Vous pourrez demander de l’aide à vos voisins et rencontrer de nouvelles personnes lors d’évènements conviviaux du réseaux.</string>
+    <string name="onboard_place_description_sdf">Vous pourrez demander de l’aide à vos voisins et rencontrer de nouvelles personnes lors d’événements conviviaux du réseaux.</string>
     <string name="onboard_place_info">Entourage ne communique pas cette adresse.</string>
     <string name="onboard_place_placeholder">Ex : 35000</string>
     <string name="onboard_email_pwd_title">Ok super !</string>
@@ -121,7 +121,7 @@
     <string name="onboard_sdf_activity_description">Plusieurs choix possibles.\nIl y a mille manières d\'être entouré et aidé.</string>
     <string name="onboard_sdf_activity_error">Veuillez renseigner au minimum 1 centre d\'intéret.\nMerci</string>
     <string name="onboard_sdf_activity_choice_1">Me faire un\ncercle d’amis</string>
-    <string name="onboard_sdf_activity_choice_2">Participer à des\névènements</string>
+    <string name="onboard_sdf_activity_choice_2">Participer à des\névénements</string>
     <string name="onboard_sdf_activity_choice_3">Poser des\nquestions</string>
     <string name="onboard_sdf_activity_choice_4">Demander\nde l’aide</string>
     <string name="onboard_sdf_activity_choice_5">M’orienter</string>
@@ -132,7 +132,7 @@
     <string name="onboard_neighbour_activity_description">Plusieurs choix possibles.\nNous vous ferons des propositions adaptées.</string>
     <string name="onboard_sneighbour_activity_error">Veuillez renseigner au minimum 1 centre d\'intéret.\nMerci</string>
     <string name="onboard_neighbour_activity_choice_1">M’informer</string>
-    <string name="onboard_neighbour_activity_choice_2">Participer à des\névènements</string>
+    <string name="onboard_neighbour_activity_choice_2">Participer à des\névénements</string>
     <string name="onboard_neighbour_activity_choice_3">Entourer une\npersonne isolée</string>
     <string name="onboard_neighbour_activity_choice_4">Faire des dons\nmatériels</string>
     <string name="onboard_neighbour_activity_choice_5">M’investir dans\nl’associatif</string>

@@ -152,7 +152,7 @@ class TourServiceManager(
 
     fun freezeTour(tour: Tour) {
         tour.uuid?.let { uuid ->
-            tour.status = FeedItem.STATUS_FREEZED
+            tour.status = Tour.STATUS_FREEZED
             tourRequest.closeTour(uuid, TourWrapper(tour)).enqueue(object : Callback<TourResponse> {
                 override fun onResponse(call: Call<TourResponse>, response: Response<TourResponse>) {
                     if (response.isSuccessful) {

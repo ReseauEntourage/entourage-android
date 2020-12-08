@@ -19,8 +19,8 @@
     <string name="map_empty_newsfeed_popup">On dirait que c\'est calme ici !\n\nDéplacez la carte pour trouver des activités du réseau.\n\nVous aussi, vous pouvez créer une activité solidaire : appuyez sur + en bas à droite</string>
     <string name="newsfeed_load_more_button"><u>Rechercher plus loin.</u></string>
     <string name="newsfeed_no_tours">Aucune activité près de cette position</string>
-    <string name="newsfeed_tab_events_no_items">Aucun évènement à proximité.</string>
-    <string name="newsfeed_tab_events_no_items_button"><u>Retrouvez plus d\'évènements d\'Entourage ici</u></string>
+    <string name="newsfeed_tab_events_no_items">Aucun événement à proximité.</string>
+    <string name="newsfeed_tab_events_no_items_button"><u>Retrouvez plus d\'événements d\'Entourage ici</u></string>
 
     <!-- Map Filter -->
     <string name="map_filter_title">FILTRES</string>

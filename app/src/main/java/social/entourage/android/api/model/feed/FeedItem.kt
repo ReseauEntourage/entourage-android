@@ -9,7 +9,6 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.EntourageApplication.Companion.me
 import social.entourage.android.R
-import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.LastMessage
 import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.model.TimestampedObject
@@ -86,13 +85,6 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
 
     var postal_code:String? = null
 
-    @SerializedName("image_url")
-    var eventImageUrl:String? = null
-    @SerializedName("online")
-    var isOnlineEvent:Boolean = false
-    @SerializedName("event_url")
-    var eventUrl:String? = null
-
     @SerializedName("display_report_prompt")
     var isDisplay_report_prompt:Boolean = false
 
@@ -126,17 +118,20 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
         lastMessage?.setMessage(text, author)
     }
 
-    fun isClosed(): Boolean { return STATUS_CLOSED == status || STATUS_FREEZED == status}
+    open fun isClosed(): Boolean { return STATUS_CLOSED == status }
 
+    //TODO only for tours ???
     fun isOngoing(): Boolean { return STATUS_ON_GOING == status}
+    fun isSuspended(): Boolean { return STATUS_SUSPENDED == status}
+    //end TODO
 
     fun isPrivate(): Boolean {return JOIN_STATUS_ACCEPTED == joinStatus}
 
-    fun isEvent() : Boolean {return getGroupType().equals(BaseEntourage.GROUPTYPE_OUTING,true)}
+    open fun isConversation() :Boolean {
+        return false
+    }
 
-    fun isConversation() :Boolean {return  getGroupType().equals(BaseEntourage.GROUPTYPE_CONVERSATION,true)}
-
-    open fun isFreezed(): Boolean {return STATUS_FREEZED == status}
+    open fun isFreezed(): Boolean {return STATUS_CLOSED == status}
 
     fun isMine(context: Context?): Boolean {
         author?.let {
@@ -147,8 +142,6 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
         return false
     }
 
-    fun isSuspended(): Boolean { return STATUS_SUSPENDED == status}
-
     // ----------------------------------
     // UI METHODS
     // ----------------------------------
@@ -158,7 +151,9 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
 
     open fun getIconURL(): String? {return null}
 
-    open fun showHeatmapAsOverlay(): Boolean {return true }
+    open fun showHeatmapAsOverlay(): Boolean {
+        return true
+    }
 
     open fun getHeatmapResourceId(): Int { return R.drawable.heat_zone}
 
@@ -203,6 +198,11 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
 
     @StringRes
     open fun getClosedToastMessage(): Int {return if (isFreezed()) R.string.tour_freezed else R.string.local_service_stopped}
+
+    @StringRes
+    open fun getInviteSourceDescription():Int {
+        return R.string.invite_source_description
+    }
 
     // ----------------------------------
     // COPY OBJECT METHODS
@@ -294,13 +294,11 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
         // ----------------------------------
         private const val serialVersionUID = 6130064134883067122L
         const val KEY_FEEDITEM = "social.entourage.android.KEY_FEEDITEM"
-        const val KEY_FEEDITEM_ID = "social.entourage.android.KEY_FEEDITEM_ID"
         const val KEY_FEEDITEM_UUID = "social.entourage.android.KEY_FEEDITEM_UUID"
         const val KEY_FEEDITEM_TYPE = "social.entourage.android.KEY_FEEDITEM_TYPE"
         const val STATUS_OPEN = "open"
         const val STATUS_CLOSED = "closed"
         const val STATUS_ON_GOING = "ongoing"
-        const val STATUS_FREEZED = "freezed"
         const val STATUS_SUSPENDED = "suspended"
         const val JOIN_STATUS_NOT_REQUESTED = "not_requested"
         const val JOIN_STATUS_PENDING = "pending"
