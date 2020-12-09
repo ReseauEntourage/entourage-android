@@ -227,7 +227,7 @@ class UserFragment : EntourageDialogFragment() {
     fun onConversationFound(entourage: BaseEntourage) {
         try {
             val entourageInformationFragment = FeedItemInformationFragment.newInstance(entourage, 0, 0)
-            entourageInformationFragment.showInfoButton = false
+            entourageInformationFragment.hideInfoButton()
             entourageInformationFragment.show(parentFragmentManager, FeedItemInformationFragment.TAG)
         } catch (e: IllegalStateException) {
             Timber.e(e)

@@ -47,7 +47,7 @@ abstract class FeedItemOptionsFragment : EntourageDialogFragment() {
             entourage_option_quit?.visibility = View.VISIBLE
             entourage_option_quit?.setText(if (FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus) R.string.tour_info_options_cancel_request else R.string.tour_info_options_quit_tour)
         } else {
-            entourage_option_stop?.visibility = if (feedItem.isFreezed() || !feedItem.canBeClosed()) View.GONE else View.VISIBLE
+            entourage_option_stop?.visibility = if (feedItem.isClosed() || !feedItem.canBeClosed()) View.GONE else View.VISIBLE
             initializeView()
         }
     }

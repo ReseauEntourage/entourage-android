@@ -11,7 +11,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.collection.ArrayMap
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_about.*
-import kotlinx.android.synthetic.main.fragment_entourage_information.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback

@@ -49,6 +49,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/background"
                     android:paddingEnd="0dp"
+                    android:visibility="gone"
                     android:paddingStart="10dp">
 
                     <TextView
@@ -64,14 +65,15 @@
                         android:textSize="@dimen/entourage_font_medium"
                         android:textStyle="bold"/>
 
-                    <Switch
+                    <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/map_filter_tour_all_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_centerInParent="true"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginStart="0dp"/>
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="0dp"
+                        android:enabled="false"
+                        android:layout_marginEnd="16dp" />
 
                 </RelativeLayout>
 
@@ -113,7 +115,7 @@
                             android:textColor="@color/greyish_brown"
                             android:textSize="@dimen/entourage_font_medium"/>
 
-                        <Switch
+                        <androidx.appcompat.widget.SwitchCompat
                             android:id="@+id/map_filter_tour_medical_switch"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -156,7 +158,7 @@
                             android:textColor="@color/greyish_brown"
                             android:textSize="@dimen/entourage_font_medium"/>
 
-                        <Switch
+                        <androidx.appcompat.widget.SwitchCompat
                             android:id="@+id/map_filter_tour_social_switch"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -199,7 +201,7 @@
                             android:textColor="@color/greyish_brown"
                             android:textSize="@dimen/entourage_font_medium"/>
 
-                        <Switch
+                        <androidx.appcompat.widget.SwitchCompat
                             android:id="@+id/map_filter_tour_distributive_switch"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

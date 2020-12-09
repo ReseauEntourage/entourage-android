@@ -146,8 +146,8 @@
     <string name="newsfeed_no_more_items">Aucun autre entourage près de cette position</string>
 
     <!-- Map Filter -->
-    <string name="map_filter_outing_title">événements</string>
-    <string name="map_filter_entourage_outing_text">événements</string>
+    <string name="map_filter_outing_title">Événements</string>
+    <string name="map_filter_entourage_outing_text">Événements</string>
     <string name="map_filter_past_events_text">Inclure passés</string>
 
     <!-- Map Tab -->

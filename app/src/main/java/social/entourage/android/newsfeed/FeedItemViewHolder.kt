@@ -150,10 +150,10 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
             //var dividerColor = R.color.accent
             var textColor = R.color.accent
             itemView.tour_card_button_act?.visibility = View.VISIBLE
-            if (feedItem.isFreezed()) {
-                itemView.tour_card_button_act?.setText(feedItem.getFreezedCTAText())
+            if (feedItem.isClosed()) {
+                itemView.tour_card_button_act?.setText(feedItem.getClosedCTAText())
                 //dividerColor = R.color.greyish
-                textColor = feedItem.getFreezedCTAColor()
+                textColor = feedItem.getClosedCTAColor()
             } else {
                 when(feedItem.joinStatus) {
                     FeedItem.JOIN_STATUS_PENDING -> {

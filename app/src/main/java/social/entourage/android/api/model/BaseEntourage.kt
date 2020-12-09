@@ -12,7 +12,6 @@ import com.google.gson.*
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.R
 import social.entourage.android.api.model.feed.FeedItem
-import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.location.EntourageLocation
 import timber.log.Timber
@@ -222,13 +221,13 @@ open class BaseEntourage : FeedItem, Serializable {
     }
 
     @StringRes
-    override fun getFreezedCTAText(): Int {
-        return if (outcome?.success==true) R.string.tour_cell_button_freezed_success else super.getFreezedCTAText()
+    override fun getClosedCTAText(): Int {
+        return if (outcome?.success==true) R.string.tour_cell_button_freezed_success else super.getClosedCTAText()
     }
 
     @ColorRes
-    override fun getFreezedCTAColor(): Int {
-        return if (outcome?.success==true) R.color.accent else super.getFreezedCTAColor()
+    override fun getClosedCTAColor(): Int {
+        return if (outcome?.success==true) R.color.accent else super.getClosedCTAColor()
     }
 
     override fun getClosingLoaderMessage(): Int {

@@ -690,7 +690,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     }
 
     private fun displayMessageOnCurrentTourInfoFragment(message: Message): Boolean {
-        val fragment = supportFragmentManager.findFragmentByTag(FeedItemInformationFragment.TAG) as EntourageInformationFragment?
+        val fragment = supportFragmentManager.findFragmentByTag(FeedItemInformationFragment.TAG) as FeedItemInformationFragment?
         return fragment != null && fragment.onPushNotificationChatMessageReceived(message)
     }
 

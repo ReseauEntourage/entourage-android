@@ -60,11 +60,6 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
     val entourage:BaseEntourage
         get() = feedItem as BaseEntourage
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        super.onCreateView(inflater, container, savedInstanceState)
-        return inflater.inflate(R.layout.fragment_entourage_information, container, false)
-    }
-
     override fun getItemType(): Int {
         return TimestampedObject.ENTOURAGE_CARD
 
@@ -80,13 +75,13 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        entourageServiceConnection.doBindService()
+        serviceConnection.doBindService()
         BusProvider.instance.register(this)
     }
 
     override fun onDetach() {
         super.onDetach()
-        entourageServiceConnection.doUnbindService()
+        serviceConnection.doUnbindService()
         BusProvider.instance.unregister(this)
     }
 
@@ -106,7 +101,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
     }
 
     override fun onJoinButton() {
-        entourageServiceConnection.boundService?.let {
+        serviceConnection.boundService?.let {
             showProgressBar()
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN)
             it.requestToJoinEntourage(entourage)
@@ -157,19 +152,19 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         entourage_option_contact?.visibility = View.GONE
         entourage_option_promote?.visibility = View.GONE
 
-        val hideJoinButton = entourage.isPrivate() || FeedItem.JOIN_STATUS_PENDING == entourage.joinStatus || entourage.isFreezed()
+        val hideJoinButton = entourage.isPrivate() || FeedItem.JOIN_STATUS_PENDING == entourage.joinStatus || entourage.isClosed()
         entourage_option_join?.visibility =  if (hideJoinButton) View.GONE else View.VISIBLE
         entourage_option_contact?.visibility = View.GONE
         val myId = EntourageApplication.me(activity)?.id ?: return
         val author = entourage.author ?: return
         if (author.userID != myId) {
-            if ((FeedItem.JOIN_STATUS_PENDING == entourage.joinStatus || FeedItem.JOIN_STATUS_ACCEPTED == entourage.joinStatus) && !entourage.isFreezed()) {
+            if ((FeedItem.JOIN_STATUS_PENDING == entourage.joinStatus || FeedItem.JOIN_STATUS_ACCEPTED == entourage.joinStatus) && !entourage.isClosed()) {
                 entourage_option_quit?.visibility = View.VISIBLE
                 entourage_option_quit?.setText(if (FeedItem.JOIN_STATUS_PENDING == entourage.joinStatus) R.string.tour_info_options_cancel_request else R.string.tour_info_options_quit_tour)
             }
             entourage_option_report?.visibility = View.VISIBLE
         } else {
-            entourage_option_stop?.visibility = if (entourage.isFreezed() || !entourage.canBeClosed()) View.GONE else View.VISIBLE
+            entourage_option_stop?.visibility = if (entourage.isClosed() || !entourage.canBeClosed()) View.GONE else View.VISIBLE
             entourage_option_stop?.setText( R.string.tour_info_options_freeze_tour)
             if (FeedItem.STATUS_OPEN == entourage.status) {
                 entourage_option_edit?.visibility = View.VISIBLE

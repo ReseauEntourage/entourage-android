@@ -143,33 +143,33 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
         super.userActRequested(event)
     }
 
-    override fun onFeedItemClosed(closed: Boolean, feedItem: FeedItem) {
+    override fun onFeedItemClosed(closed: Boolean, updatedFeedItem: FeedItem) {
         if (closed) {
             refreshFeed()
             if (fragment_map_main_layout != null) {
-                make(fragment_map_main_layout, feedItem.getClosedToastMessage(), Snackbar.LENGTH_SHORT).show()
+                make(fragment_map_main_layout, updatedFeedItem.getClosedToastMessage(), Snackbar.LENGTH_SHORT).show()
             }
         }
         loaderStop?.dismiss()
         loaderStop = null
     }
 
-    override fun onUserStatusChanged(user: EntourageUser, feedItem: FeedItem) {
+    override fun onUserStatusChanged(user: EntourageUser, updatedFeedItem: FeedItem) {
         activity?.let {activity ->
             if (activity.isFinishing) return
             try {
-                feedItem.joinStatus = user.status ?: ""
+                updatedFeedItem.joinStatus = user.status ?: ""
                 if (user.status == FeedItem.JOIN_STATUS_PENDING) {
-                    if (feedItem is Tour) {
-                        TourJoinRequestFragment.newInstance(feedItem).show(activity.supportFragmentManager, TourJoinRequestFragment.TAG)
-                    } else if (feedItem is BaseEntourage) {
-                        EntourageJoinRequestFragment.newInstance(feedItem).show(activity.supportFragmentManager, EntourageJoinRequestFragment.TAG)
+                    if (updatedFeedItem is Tour) {
+                        TourJoinRequestFragment.newInstance(updatedFeedItem).show(activity.supportFragmentManager, TourJoinRequestFragment.TAG)
+                    } else if (updatedFeedItem is BaseEntourage) {
+                        EntourageJoinRequestFragment.newInstance(updatedFeedItem).show(activity.supportFragmentManager, EntourageJoinRequestFragment.TAG)
                     }
                 }
             } catch (e: IllegalStateException) {
                 Timber.w(e)
             }
-            updateNewsfeedJoinStatus(feedItem)
+            updateNewsfeedJoinStatus(updatedFeedItem)
             isRequestingToJoin--
         }
     }

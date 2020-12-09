@@ -64,13 +64,13 @@ class EntourageEvent : BaseEntourage, Serializable {
     }
 
     @StringRes
-    override fun getFreezedCTAText(): Int {
-        return super.getFreezedCTAText()
+    override fun getClosedCTAText(): Int {
+        return super.getClosedCTAText()
     }
 
     @ColorRes
-    override fun getFreezedCTAColor(): Int {
-        return super.getFreezedCTAColor()
+    override fun getClosedCTAColor(): Int {
+        return super.getClosedCTAColor()
     }
 
     override fun getClosingLoaderMessage(): Int {

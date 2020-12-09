@@ -367,7 +367,6 @@ class TourServiceManager(
     override fun createNewsfeedWrapperCall(location: LatLng, pagination: NewsfeedPagination, selectedTab: NewsfeedTabItem): Call<NewsfeedItemResponse>? {
         return when (selectedTab) {
             NewsfeedTabItem.TOUR_TAB -> {
-                pagination.beforeDate
                 newsfeedRequest.retrieveFeed(
                         EntourageRequestDate(pagination.beforeDate),
                         location.longitude,
@@ -379,7 +378,7 @@ class TourServiceManager(
                         TourFilter.getTimeFrame(),
                         false,
                         null,
-                        showPastEvents = true,
+                        showPastEvents = false,
                         isPartnersOnly = false
                 )
             }

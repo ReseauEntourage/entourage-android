@@ -184,12 +184,12 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
     }
 
     @StringRes
-    open fun getFreezedCTAText():  Int {
+    open fun getClosedCTAText():  Int {
         return R.string.tour_cell_button_freezed
     }
 
     @ColorRes
-    open fun getFreezedCTAColor(): Int {
+    open fun getClosedCTAColor(): Int {
         return R . color . greyish
     }
 
@@ -197,7 +197,7 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
     open fun getClosingLoaderMessage(): Int {return R.string.loader_title_tour_finish}
 
     @StringRes
-    open fun getClosedToastMessage(): Int {return if (isFreezed()) R.string.tour_freezed else R.string.local_service_stopped}
+    open fun getClosedToastMessage(): Int {return if (isClosed()) R.string.tour_freezed else R.string.local_service_stopped}
 
     @StringRes
     open fun getInviteSourceDescription():Int {
