@@ -7,7 +7,7 @@
     android:layout_gravity="bottom"
     android:background="@color/toolbar"
     android:elevation="16dp"
-    app:itemBackground="@drawable/navigation_tab_background"
+    app:itemBackground="@color/white"
     app:itemIconTint="@color/navigation_icons_state_list"
     app:itemTextColor="@color/navigation_icons_state_list"
     app:menu="@menu/bottom_navigation_menu" />
