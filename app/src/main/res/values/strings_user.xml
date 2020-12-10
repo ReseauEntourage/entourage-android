@@ -18,6 +18,7 @@
     <string name="user_about_title">À propos de moi</string>
     <string name="user_about_hint">Présentez-vous à la communauté en quelques mots !</string>
     <string name="user_about_edit_button">Écrire ma présentation</string>
+    <string name="user_about_mod_button">Modifier ma présentation</string>
     <string name="user_message_button">lui écrire</string>
     <string name="user_photo_edit"><u>changer ma photo</u></string>
     <string name="user_about_edit"><u>modifier</u></string>
@@ -122,14 +123,14 @@
 
     //Info mosaic choice from ws
   <string name="rencontrer_sdf">Me faire un cercle d’amis</string>
-  <string name="event_sdf">Participer à des évènements</string>
+  <string name="event_sdf">Participer à des événements</string>
   <string name="questions_sdf">Poser des questions</string>
   <string name="aide_sdf">Demander de l’aide</string>
   <string name="m_orienter_sdf">M’orienter</string>
   <string name="trouver_asso_sdf">Trouver des associations</string>
 
   <string name="m_informer_riverain">M’informer</string>
-  <string name="event_riverain">Participer à des évènements</string>
+  <string name="event_riverain">Participer à des événements</string>
   <string name="entourer_riverain">Entourer une personne isolée</string>
   <string name="dons_riverain">Faire des dons matériels</string>
   <string name="benevolat_riverain">M’investir dans l’associatif</string>

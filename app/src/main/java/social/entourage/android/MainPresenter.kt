@@ -1,16 +1,16 @@
 package social.entourage.android
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.location.Location
 import android.net.Uri
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AlertDialog
 import androidx.collection.ArrayMap
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_about.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -26,6 +26,7 @@ import social.entourage.android.about.carousel.CarouselFragment
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.involvement.GetInvolvedFragment
 import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.view.EntourageSnackbar
 import social.entourage.android.user.AvatarUpdatePresenter
 import social.entourage.android.user.UserFragment
 import social.entourage.android.user.edit.UserEditFragment
@@ -49,32 +50,28 @@ import javax.inject.Inject
     // ----------------------------------
     // MENU HANDLING
     // ----------------------------------
-    fun handleMenu(@IdRes menuId: Int) {
-        when (menuId) {
-            R.id.action_good_waves -> {
-                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_GOODWAVES)
-                activity.showWebViewForLinkId(Constants.GOOD_WAVES_ID)
+    //Handle menu profile new version
+    fun handleMenuProfile(menuPosition: String) {
+        when (menuPosition) {
+            "editProfile" -> {
+                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_MODPROFIL)
+                val fragment = UserEditFragment()
+                fragment.show(activity.supportFragmentManager, UserEditFragment.TAG)
             }
-            R.id.action_user -> {
+            "user" -> {
                 EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_SHOWPROFIL)
                 val userFragment = activity.supportFragmentManager.findFragmentByTag(UserFragment.TAG) as UserFragment?
                         ?: UserFragment.newInstance(activity.authenticationController.me!!.id)
                 userFragment.show(activity.supportFragmentManager, UserFragment.TAG)
             }
-            R.id.action_edit_profile -> {
-                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_MODPROFIL)
-                val fragment = UserEditFragment()
-                fragment.show(activity.supportFragmentManager, UserEditFragment.TAG)
+            "appVersion" -> {
+                val clipboardManager = get().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clipData = ClipData.newPlainText("FirebaseID",
+                        get().sharedPreferences.getString(EntourageApplication.KEY_REGISTRATION_ID, null))
+                clipboardManager.setPrimaryClip(clipData)
             }
-            R.id.action_logout -> {
-                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_LOGOUT)
-                activity.logout()
-            }
-            R.id.action_blog -> {
-                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_BLOG)
-                activity.showWebViewForLinkId(Constants.SCB_LINK_ID)
-            }
-            R.id.action_charte -> {
+
+            "charte" -> {
                 EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_CHART)
                 val charteIntent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.CHARTE_LINK_ID)))
                 try {
@@ -83,24 +80,16 @@ import javax.inject.Inject
                     Toast.makeText(activity, R.string.no_browser_error, Toast.LENGTH_SHORT).show()
                 }
             }
-            R.id.action_goal -> {
-                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_GOAL)
-                activity.showWebViewForLinkId(Constants.GOAL_LINK_ID)
+            "scb" -> {
+                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_BLOG)
+                activity.showWebViewForLinkId(Constants.SCB_LINK_ID)
             }
-            R.id.action_donation -> {
-                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_DONATION)
-                val donationIntent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.DONATE_LINK_ID)))
-                try {
-                    activity.startActivity(donationIntent)
-                } catch (ex: Exception) {
-                    Toast.makeText(activity, R.string.no_browser_error, Toast.LENGTH_SHORT).show()
-                }
+
+            "goodWaves" -> {
+                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_GOODWAVES)
+                activity.showWebViewForLinkId(Constants.GOOD_WAVES_ID)
             }
-            R.id.action_involvement -> {
-                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_FOLLOW)
-                GetInvolvedFragment.newInstance().show(activity.supportFragmentManager, GetInvolvedFragment.TAG)
-            }
-            R.id.action_ambassador -> {
+            "ambassador" -> {
                 EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_AMBASSADOR)
                 val ambassadorIntent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.AMBASSADOR_ID)))
                 try {
@@ -109,16 +98,73 @@ import javax.inject.Inject
                     Toast.makeText(activity, R.string.no_browser_error, Toast.LENGTH_SHORT).show()
                 }
             }
-            R.id.mainprofile_app_version -> {
-                val clipboardManager = get().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                val clipData = ClipData.newPlainText("FirebaseID",
-                        get().sharedPreferences.getString(EntourageApplication.KEY_REGISTRATION_ID, null))
-                clipboardManager.setPrimaryClip(clipData)
+            "linkedout" -> {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.url_linkedout)))
+                try {
+                    activity.startActivity(intent)
+                } catch (ex: Exception) {
+                    Toast.makeText(activity, R.string.no_browser_error, Toast.LENGTH_SHORT).show()
+                }
             }
-            R.id.action_about -> {
+            "donation" -> {
+                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_DONATION)
+                val donationIntent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.DONATE_LINK_ID)))
+                try {
+                    activity.startActivity(donationIntent)
+                } catch (ex: Exception) {
+                    Toast.makeText(activity, R.string.no_browser_error, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            "share" -> {
+                val intent = Intent(Intent.ACTION_SEND)
+                val emailBody = activity.getString(R.string.menu_info_profile_share, activity.getString(R.string.url_share_entourage_bitly))
+                intent.putExtra(Intent.EXTRA_TEXT, emailBody)
+                intent.type = "text/plain"
+
+                val shareIntent = Intent.createChooser(intent, null)
+                activity.startActivity(shareIntent)
+            }
+            "blog" -> {
+                activity.showWebViewForLinkId(Constants.BLOG_LINK_ID)
+            }
+
+            "help" -> {
                 EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_ABOUT)
                 EntourageAboutFragment().show(activity.supportFragmentManager, EntourageAboutFragment.TAG)
             }
+
+            "logout" -> {
+                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_LOGOUT)
+                activity.logout()
+            }
+
+            "fb" -> {
+                EntourageEvents.logEvent(EntourageEvents.EVENT_ABOUT_FACEBOOK)
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.facebook_url)))
+                try {
+                    activity.startActivity(browserIntent)
+                } catch (ex: ActivityNotFoundException) {
+                    Toast.makeText(activity, R.string.no_browser_error, Toast.LENGTH_SHORT).show()
+                }
+            }
+            "insta" -> {
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.instagram_url)))
+                try {
+                    activity.startActivity(browserIntent)
+                } catch (ex: ActivityNotFoundException) {
+                    Toast.makeText(activity, R.string.no_browser_error, Toast.LENGTH_SHORT).show()
+                }
+            }
+            "twit" -> {
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.twitter_url)))
+                try {
+                    activity.startActivity(browserIntent)
+                } catch (ex: ActivityNotFoundException) {
+                    Toast.makeText(activity, R.string.no_browser_error, Toast.LENGTH_SHORT).show()
+                }
+            }
+
             else -> Toast.makeText(activity, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show()
         }
     }

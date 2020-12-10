@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.layout_cell_share_entourage.view.*
 import social.entourage.android.R
+import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.SharingEntourage
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.tools.CropCircleTransformation
@@ -46,7 +47,7 @@ class ShareEntourageAdapter(val context: Context, private val myDataset: ArrayLi
 
             bitDraw = getIcn(sharingEntourage.entourage_type,sharingEntourage.category)
 
-            if (sharingEntourage.category == null && sharingEntourage.group_type == "outing") {
+            if (sharingEntourage.category == null && sharingEntourage.group_type == BaseEntourage.GROUPTYPE_OUTING) {
                 bitDraw = AppCompatResources.getDrawable(context,R.drawable.ic_event_accent_24dp)
             }
             if (sharingEntourage.group_type == "conversation") {

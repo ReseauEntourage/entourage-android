@@ -61,17 +61,19 @@
 
                 <TextView
                     android:id="@+id/action_edit_profile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
                     android:layout_below="@+id/drawer_header_user_name"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginBottom="10dp"
+                    android:background="@drawable/bg_button_rounded_trans_orange_stroke"
                     android:clickable="true"
                     android:focusable="true"
-                    android:gravity="center_horizontal"
-                    android:text="@string/action_edit_profile"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="@string/action_edit_profile_regular"
+                    android:textAlignment="center"
                     android:textColor="@color/accent"
-                    android:textSize="@dimen/entourage_font_medium"
-                    android:textStyle="italic" />
+                    android:textSize="@dimen/entourage_font_medium" />
 
 
                 <TextView
@@ -79,26 +81,30 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/action_edit_profile"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginBottom="10dp"
-                    android:text="@string/title_my_activity"
-                    android:textAlignment="center"
-                    android:textColor="@color/onboard_black_36"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/title_my_activity2"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/action_type_outing"
+                    android:textSize="15sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="140dp"
                     android:layout_below="@id/textView25"
-                    android:layout_marginBottom="20dp"
-                    android:background="@color/white"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="0dp"
+                    android:background="@drawable/bg_button_rounded_white"
                     android:orientation="horizontal">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ui_layout_show_events"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/ui_layout_show_events"
                         android:layout_weight="1">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -163,9 +169,9 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ui_layout_show_actions"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/ui_layout_show_actions"
                         android:layout_weight="1">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -233,86 +239,487 @@
 
             </RelativeLayout>
 
-            <social.entourage.android.mainprofile.MainProfileItemView
-                android:id="@+id/action_user"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:visibility="gone" />
-
-            <social.entourage.android.mainprofile.MainProfileItemView
-                android:id="@+id/action_good_waves"
-                style="@style/mainprofile_item_style"
-                android:icon="@drawable/icn_good_waves"
-                android:title="@string/action_good_waves"
-                app:iconTint="@color/greyish"
-                app:showDivider="true" />
-            <social.entourage.android.mainprofile.MainProfileItemView
-                android:id="@+id/action_blog"
-                style="@style/mainprofile_item_style"
-                android:icon="@drawable/ic_blog"
-                android:title="@string/action_blog"
-                app:iconTint="@color/greyish"
-                app:showDivider="true" />
-
-            <social.entourage.android.mainprofile.MainProfileItemView
-                android:id="@+id/action_goal"
-                style="@style/mainprofile_item_style"
-                android:icon="@drawable/ic_goal"
-                android:title="@string/action_goal"
-                app:showDivider="true" />
-
-            <social.entourage.android.mainprofile.MainProfileItemView
-                android:id="@+id/action_ambassador"
-                style="@style/mainprofile_item_style"
-                android:icon="@drawable/ic_ambassador"
-                android:title="@string/action_ambassador"
-                app:iconTint="@color/greyish"
-                app:showDivider="true" />
-
-            <social.entourage.android.mainprofile.MainProfileItemView
-                android:id="@+id/action_donation"
-                style="@style/mainprofile_item_style"
-                android:icon="@drawable/ic_heart"
-                android:title="@string/action_donation"
-                app:iconTint="@color/accent"
-                app:showDivider="true" />
-
-            <social.entourage.android.mainprofile.MainProfileItemView
-                android:id="@+id/action_involvement"
-                style="@style/mainprofile_item_style"
-                android:icon="@drawable/ic_broadcast"
-                android:title="@string/action_involvement"
-                app:iconTint="@color/greyish"
-                app:showDivider="true" />
-
-            <social.entourage.android.mainprofile.MainProfileItemView
-                android:id="@+id/action_charte"
-                style="@style/mainprofile_item_style"
-                android:icon="@drawable/ic_charte"
-                android:title="@string/action_charter_unsigned"
-                app:iconTint="@color/greyish"
-                app:showDivider="true" />
-
-            <social.entourage.android.mainprofile.MainProfileItemView
-                android:id="@+id/action_about"
-                style="@style/mainprofile_item_style"
-                android:icon="@drawable/ic_about"
-                android:title="@string/action_about"
-                app:iconTint="@color/greyish"
-                app:showDivider="false" />
-
-            <social.entourage.android.mainprofile.MainProfileItemView
-                android:id="@+id/action_logout"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="30dp"
-                android:background="@color/mainprofile_item_background"
-                android:textColor="@color/accent"
-                android:title="@string/action_logout"
-                app:centerText="true"
-                app:showDivider="false" />
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView99"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/menu_info_first_title"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/action_type_outing"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/bg_button_rounded_white"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView99">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ui_layout_guide"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+
+                        <TextView
+                            android:id="@+id/textView100"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/menu_info_first_guide"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/action_type_outing"
+                            android:textSize="15sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/mainprofile_item_divider2"
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:background="@color/background_light"
+                            android:contentDescription="@string/empty_description"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ui_layout_charte"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+
+                        <TextView
+                            android:id="@+id/ui_tv_charte"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/action_charter_unsigned"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/action_type_outing"
+                            android:textSize="15sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView991"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/menu_info_second_title"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/action_type_outing"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/bg_button_rounded_white"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView991">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ui_layout_goodwaves"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+
+                        <TextView
+                            android:id="@+id/textView1001"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/menu_info_second_good"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/action_type_outing"
+                            android:textSize="15sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/mainprofile_item_divider21"
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:background="@color/background_light"
+                            android:contentDescription="@string/empty_description"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ui_layout_ambassador"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+
+                        <TextView
+                            android:id="@+id/textView1002"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/menu_info_second_ambassador"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/action_type_outing"
+                            android:textSize="15sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/mainprofile_item_divider22"
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:background="@color/background_light"
+                            android:contentDescription="@string/empty_description"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ui_layout_linkedout"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+
+                        <TextView
+                            android:id="@+id/textView1003"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/menu_info_second_help"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/action_type_outing"
+                            android:textSize="15sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/mainprofile_item_divider23"
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:background="@color/background_light"
+                            android:contentDescription="@string/empty_description"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ui_layout_donate"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+
+                        <TextView
+                            android:id="@+id/textView104"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/menu_info_second_gift"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/action_type_outing"
+                            android:textSize="15sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/menu_info_third_title"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/action_type_outing"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/bg_button_rounded_white"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView9">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ui_layout_share"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+
+                        <TextView
+                            android:id="@+id/textView105"
+                            android:layout_width="0dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/menu_info_third_share"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/action_type_outing"
+                            android:textSize="15sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/imageView21"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/mainprofile_item_divider25"
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:background="@color/background_light"
+                            android:contentDescription="@string/empty_description"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/imageView21"
+                            android:layout_width="wrap_content"
+                            android:layout_height="28dp"
+                            android:layout_marginStart="8dp"
+                            app:layout_constraintBottom_toTopOf="@+id/mainprofile_item_divider25"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_detail_action_share" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ui_layout_blog"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+
+                        <TextView
+                            android:id="@+id/textView106"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/menu_info_third_info"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/action_type_outing"
+                            android:textSize="15sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/ui_layout_help"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/bg_button_rounded_white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/ui_tv_help"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:text="@string/action_about"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/action_type_outing"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/ui_layout_logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/bg_button_rounded_white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/textView108"
+                        android:layout_width="0dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="8dp"
+                        android:text="@string/action_logout"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/action_type_outing"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView27"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <ImageView
+                        android:id="@+id/imageView27"
+                        android:layout_width="wrap_content"
+                        android:layout_height="28dp"
+                        android:layout_marginStart="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_exit" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <TextView
+                    android:id="@+id/textView109"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginEnd="50dp"
+                    android:text="@string/menu_info_social"
+                    android:textAlignment="center"
+                    android:textColor="@color/action_type_outing"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView109">
+
+                    <ImageView
+                        android:id="@+id/ui_iv_fb"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_fb" />
+
+                    <ImageView
+                        android:id="@+id/ui_iv_insta"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginEnd="32dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/ui_iv_twit"
+                        app:layout_constraintStart_toEndOf="@+id/ui_iv_fb"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_insta" />
+
+                    <ImageView
+                        android:id="@+id/ui_iv_twit"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_twit" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <include layout="@layout/layout_mainprofile_appversion" />
+
         </LinearLayout>
     </ScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

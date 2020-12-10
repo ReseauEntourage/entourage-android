@@ -41,6 +41,7 @@
     <string name="agir_bonnes_ondes_others">soutenir en groupe une personne isolée</string>
     <string name="agir_bonnes_ondes_alone">se créer un cercle d\'amis Entourage</string>
     <string name="agir_title_bonnes_ondes">Rejoindre les Bonnes Ondes</string>
+    <string name="agir_new_button_help_asso">Comment mobiliser les voisins ?</string>
 
     //Tooltips
     <string name="tooltip_desc1">Votre fil d’actualité a été filtré en fonction de vos préférences. Modifiez vos paramètres en cliquant sur ce bouton.</string>

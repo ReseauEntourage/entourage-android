@@ -480,25 +480,21 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     }
 
     override fun onFeedItemClosed(closed: Boolean, feedItem: FeedItem) {
-        if (feedItem.type == TimestampedObject.TOUR_CARD) {
+        (feedItem as? Tour)?.let { tour ->
             if (closed) {
-                if (feedItem.uuid.equals(currentTourUUID, ignoreCase = true)) {
+                if (tour.uuid.equals(currentTourUUID, ignoreCase = true)) {
                     updateFloatingMenuOptions()
                     currentTourUUID = ""
                 } else {
                     entourageService?.notifyListenersTourResumed()
                 }
-                if (fragment_map_main_layout != null) {
-                    EntourageSnackbar.make(fragment_map_main_layout, feedItem.getClosedToastMessage(), Snackbar.LENGTH_SHORT).show()
-                }
                 if (userHistory) {
                     entourageService?.updateUserHistory(userId, 1, 1)
                 }
+                fragment_map_main_layout?.let { EntourageSnackbar.make(it, tour.getClosedToastMessage(), Snackbar.LENGTH_SHORT).show() }
             } else {
-                val message = if (feedItem.type == TimestampedObject.TOUR_CARD && feedItem.status == FeedItem.STATUS_FREEZED) R.string.tour_freezed else R.string.tour_close_fail
-                if (fragment_map_main_layout != null) {
-                    EntourageSnackbar.make(fragment_map_main_layout, message, Snackbar.LENGTH_SHORT).show()
-                }
+                val message = if(tour.status == Tour.STATUS_FREEZED) R.string.tour_freezed else R.string.tour_close_fail
+                fragment_map_main_layout?.let { EntourageSnackbar.make(it, message, Snackbar.LENGTH_SHORT).show()}
             }
         }
         super.onFeedItemClosed(closed, feedItem)

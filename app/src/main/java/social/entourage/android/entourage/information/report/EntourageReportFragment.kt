@@ -14,6 +14,7 @@ import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageReport
 import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.entourage.information.FeedItemInformationFragment
 
 /**
  * Entourage Report Fragment
@@ -26,6 +27,8 @@ class EntourageReportFragment  : EntourageDialogFragment() {
     private var entourageId = 0
     private var sending = false
     private var isEvent = false
+    private var isReportUser = false
+    var parentFG:FeedItemInformationFragment? = null
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -34,6 +37,7 @@ class EntourageReportFragment  : EntourageDialogFragment() {
         arguments?.let {
             entourageId = it.getInt(KEY_ID)
             isEvent = it.getBoolean(ISEVENT)
+            isReportUser = it.getBoolean(ISREPORTUSER)
         }
     }
 
@@ -47,8 +51,18 @@ class EntourageReportFragment  : EntourageDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         showKeyboard()
-        ui_report_tv_title?.text = if (isEvent) getString(R.string.event_report_explanation) else getString(R.string.action_report_explanation)
-        ui_report_tv_description?.text = if (isEvent) getString(R.string.event_report_reason) else getString(R.string.action_report_reason)
+        var title = ""
+        var description = ""
+        if (isReportUser) {
+            title = getString(R.string.action_report_explanation_user)
+            description = getString(R.string.action_report_reason_user)
+        }
+        else {
+           title = if (isEvent) getString(R.string.event_report_explanation) else getString(R.string.action_report_explanation)
+           description = if (isEvent) getString(R.string.event_report_reason) else getString(R.string.action_report_reason)
+        }
+        ui_report_tv_title?.text = title
+        ui_report_tv_description?.text = description
         user_report_close_button.setOnClickListener  {onCloseClicked()}
         user_report_send_button.setOnClickListener {onSendClicked() }
     }
@@ -99,7 +113,15 @@ class EntourageReportFragment  : EntourageDialogFragment() {
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    Toast.makeText(activity, R.string.entourage_report_success, Toast.LENGTH_SHORT).show()
+                    if (isReportUser) {
+                        Toast.makeText(activity, R.string.entourage_user_report_success, Toast.LENGTH_SHORT).show()
+                        parentFG?.validateReport()
+                        parentFG = null
+                    }
+                    else {
+                        Toast.makeText(activity, R.string.entourage_report_success, Toast.LENGTH_SHORT).show()
+                    }
+
                     if (!isStopped) {
                         dismiss()
                     }
@@ -118,6 +140,7 @@ class EntourageReportFragment  : EntourageDialogFragment() {
         val TAG = EntourageReportFragment::class.java.simpleName
         val KEY_ID = "entourageId"
         val ISEVENT = "isEvent"
+        val ISREPORTUSER = "isReportUser"
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
@@ -125,11 +148,12 @@ class EntourageReportFragment  : EntourageDialogFragment() {
          * @param entourageId The id of the entourage.
          * @return A new instance of fragment EntourageReportFragment.
          */
-        fun newInstance(entourageId: Int,isEvent:Boolean): EntourageReportFragment {
+        fun newInstance(entourageId: Int,isEvent:Boolean,isReportUser:Boolean = false): EntourageReportFragment {
             val fragment = EntourageReportFragment()
             val args = Bundle()
             args.putInt(KEY_ID, entourageId)
             args.putBoolean(ISEVENT,isEvent)
+            args.putBoolean(ISREPORTUSER,isReportUser)
             fragment.arguments = args
             return fragment
         }

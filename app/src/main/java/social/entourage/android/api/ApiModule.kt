@@ -14,6 +14,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import social.entourage.android.BuildConfig
 import social.entourage.android.Constants
+import social.entourage.android.api.model.BaseEntourage
+import social.entourage.android.api.model.BaseEntourage.BaseEntourageJsonAdapter
 import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.api.model.feed.NewsfeedItem.NewsfeedItemJsonAdapter
 import social.entourage.android.api.request.*
@@ -70,6 +72,7 @@ class ApiModule {
                 })
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
                 .registerTypeAdapter(NewsfeedItem::class.java, NewsfeedItemJsonAdapter())
+                .registerTypeAdapter(BaseEntourage::class.java, BaseEntourageJsonAdapter())
                 .create()
         return Retrofit.Builder()
                 .baseUrl(BuildConfig.ENTOURAGE_URL)

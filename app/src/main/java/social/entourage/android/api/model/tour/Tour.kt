@@ -2,6 +2,7 @@ package social.entourage.android.api.model.tour
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.view.View
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
@@ -200,6 +201,10 @@ class Tour : FeedItem, Serializable {
 
     fun getEndPoint(): LocationPoint? {return if (tourPoints.size < 1) null else tourPoints[tourPoints.size - 1]}
 
+    override fun isFreezed(): Boolean {return STATUS_FREEZED == status}
+
+    override fun isClosed(): Boolean { return STATUS_CLOSED == status || STATUS_FREEZED == status}
+
     // ----------------------------------
     // INNER CLASSES
     // ----------------------------------
@@ -238,6 +243,8 @@ class Tour : FeedItem, Serializable {
         const val KEY_TOUR_ID = "social.entourage.android.KEY_TOUR_ID"
         const val KEY_TOURS = "social.entourage.android.KEY_TOURS"
         const val NEWSFEED_TYPE = "Tour"
+
+        const val STATUS_FREEZED = "freezed"
 
         fun getHoursDiffToNow(fromDate: Date?): Long {
             val currentHours = System.currentTimeMillis() / Constants.MILLIS_HOUR

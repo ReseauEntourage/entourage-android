@@ -13,19 +13,19 @@ object TourFilter : Serializable {
     // MapFilter implementation
     // ----------------------------------
     fun getTypes(): String {
-        val entourageTypes = StringBuilder()
+        val tourTypes = StringBuilder()
         if (tourTypeMedical) {
-            entourageTypes.append(TourType.MEDICAL.key)
+            tourTypes.append(TourType.MEDICAL.key)
         }
         if (tourTypeSocial) {
-            if (entourageTypes.isNotEmpty()) entourageTypes.append(",")
-            entourageTypes.append(TourType.BARE_HANDS.key)
+            if (tourTypes.isNotEmpty()) tourTypes.append(",")
+            tourTypes.append(TourType.BARE_HANDS.key)
         }
         if (tourTypeDistributive) {
-            if (entourageTypes.isNotEmpty()) entourageTypes.append(",")
-            entourageTypes.append(TourType.ALIMENTARY.key)
+            if (tourTypes.isNotEmpty()) tourTypes.append(",")
+            tourTypes.append(TourType.ALIMENTARY.key)
         }
-        return entourageTypes.toString()
+        return tourTypes.toString()
     }
 
     fun getTimeFrame(): Int {

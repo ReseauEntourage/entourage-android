@@ -152,7 +152,7 @@ class TourServiceManager(
 
     fun freezeTour(tour: Tour) {
         tour.uuid?.let { uuid ->
-            tour.status = FeedItem.STATUS_FREEZED
+            tour.status = Tour.STATUS_FREEZED
             tourRequest.closeTour(uuid, TourWrapper(tour)).enqueue(object : Callback<TourResponse> {
                 override fun onResponse(call: Call<TourResponse>, response: Response<TourResponse>) {
                     if (response.isSuccessful) {
@@ -367,7 +367,6 @@ class TourServiceManager(
     override fun createNewsfeedWrapperCall(location: LatLng, pagination: NewsfeedPagination, selectedTab: NewsfeedTabItem): Call<NewsfeedItemResponse>? {
         return when (selectedTab) {
             NewsfeedTabItem.TOUR_TAB -> {
-                pagination.beforeDate
                 newsfeedRequest.retrieveFeed(
                         EntourageRequestDate(pagination.beforeDate),
                         location.longitude,
@@ -379,7 +378,7 @@ class TourServiceManager(
                         TourFilter.getTimeFrame(),
                         false,
                         null,
-                        showPastEvents = true,
+                        showPastEvents = false,
                         isPartnersOnly = false
                 )
             }

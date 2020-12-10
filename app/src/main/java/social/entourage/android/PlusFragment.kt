@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_plus.*
 import kotlinx.android.synthetic.main.layout_plus_overlay.*
+import social.entourage.android.api.model.User
 import social.entourage.android.base.BackPressable
 import social.entourage.android.tools.log.EntourageEvents
 
@@ -63,6 +64,10 @@ class PlusFragment : Fragment(), BackPressable {
                plus_help_button?.text = getString(R.string.agir_new_button_title_alone)
                ui_tv_agir_good_waves_subtitle?.text = getString(R.string.agir_bonnes_ondes_alone)
            }
+           else if (currentUser.goal.equals(User.USER_GOAL_ASSO)) {
+               plus_help_button?.text = getString(R.string.agir_new_button_help_asso)
+               ui_tv_agir_good_waves_subtitle?.text = getString(R.string.agir_bonnes_ondes_others)
+           }
            else {
                plus_help_button?.text = getString(R.string.plus_help_text)
                ui_tv_agir_good_waves_subtitle?.text = getString(R.string.agir_bonnes_ondes_others)
@@ -86,6 +91,9 @@ class PlusFragment : Fragment(), BackPressable {
             (activity as? MainActivity)?.showWebViewForLinkId(
                     if (currentUser.isUserTypeAlone)
                         Constants.AGIR_FAQ_ID
+                    else if (currentUser.goal.equals(User.USER_GOAL_ASSO)) {
+                        Constants.ASSO_AGIR_LINK_ID
+                    }
                     else
                         Constants.SCB_LINK_ID
             )

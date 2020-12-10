@@ -41,7 +41,6 @@ import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryManager
-import social.entourage.android.entourage.information.EntourageInformationFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.location.EntourageLocation
 import social.entourage.android.location.LocationUtils.isLocationEnabled
@@ -131,6 +130,8 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         fragment_map_filter_button?.setOnClickListener {onShowFilter()}
         fragment_map_new_entourages_button?.setOnClickListener {onNewEntouragesReceivedButton()}
         fragment_map_gps?.setOnClickListener {displayGeolocationPreferences()}
+
+        presenter.checkUserNamesInfos()
     }
 
     protected fun setupComponent(entourageComponent: EntourageComponent?) {
@@ -217,7 +218,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         // decrease the badge count
         EntourageApplication.get(context).removePushNotificationsForFeedItem(feedItem)
         //check if we are not already displaying the tour
-        (activity?.supportFragmentManager?.findFragmentByTag(FeedItemInformationFragment.TAG) as? EntourageInformationFragment)?.let {
+        (activity?.supportFragmentManager?.findFragmentByTag(FeedItemInformationFragment.TAG) as? FeedItemInformationFragment)?.let {
             if (it.getItemType() == feedItem.type && it.feedItemId != null && it.feedItemId.equals(feedItem.uuid, ignoreCase = true)) {
                 //TODO refresh the tour info screen
                 return
@@ -733,12 +734,12 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         }
         fragment_map_top_tab?.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                val newtab = when (tab.position) {
+                val newTab = when (tab.position) {
                     NewsfeedTabItem.EVENTS_TAB.id -> NewsfeedTabItem.EVENTS_TAB
                     NewsfeedTabItem.TOUR_TAB.id -> NewsfeedTabItem.TOUR_TAB
                     else -> NewsfeedTabItem.ALL_TAB
                 }
-                onMapTabChanged(newtab)
+                onMapTabChanged(newTab)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}

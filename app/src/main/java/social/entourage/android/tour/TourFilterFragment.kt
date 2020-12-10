@@ -46,19 +46,16 @@ class TourFilterFragment  : BaseMapFilterFragment() {
     private fun onMedicalSwitch() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_MEDICAL_TOURS)
         map_filter_tour_all_switch?.isChecked = !allToursDisabled()
-        map_filter_tour_type_details_layout?.visibility = if (allToursDisabled()) View.GONE else View.VISIBLE
     }
 
     private fun onSocialSwitch() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_SOCIAL_TOURS)
         map_filter_tour_all_switch?.isChecked = !allToursDisabled()
-        map_filter_tour_type_details_layout?.visibility = if (allToursDisabled()) View.GONE else View.VISIBLE
     }
 
     private fun onDistributiveSwitch() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_DISTRIBUTION_TOURS)
         map_filter_tour_all_switch?.isChecked = !allToursDisabled()
-        map_filter_tour_type_details_layout?.visibility = if (allToursDisabled()) View.GONE else View.VISIBLE
     }
 
     //TODO find another way to have both constraintlayout and radiogroup
@@ -92,7 +89,7 @@ class TourFilterFragment  : BaseMapFilterFragment() {
         map_filter_tour_social_switch?.isChecked = TourFilter.tourTypeSocial
         map_filter_tour_distributive_switch?.isChecked = TourFilter.tourTypeDistributive
         map_filter_tour_all_switch?.isChecked = !allToursDisabled()
-        map_filter_tour_type_details_layout?.visibility = if (allToursDisabled()) View.GONE else View.VISIBLE
+        map_filter_tour_type_details_layout?.visibility = View.VISIBLE
         when (TourFilter.getTimeFrame()) {
             TourFilter.DAYS_1 -> map_filter_time_days_1?.isChecked = true
             TourFilter.DAYS_3 -> map_filter_time_days_3?.isChecked = true

@@ -1,9 +1,9 @@
 package social.entourage.android.guide
 
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_g_d_s_main.*
-import kotlinx.android.synthetic.main.fragment_guide_map.*
 import social.entourage.android.BuildConfig
 import social.entourage.android.R
 import social.entourage.android.tools.view.WebViewFragment
@@ -23,6 +23,21 @@ class GDSMainActivity : AppCompatActivity() {
        // fragmentTransaction.addToBackStack(GuideMapFragment.TAG)
         fragmentTransaction.commit()
 
+        ui_bt_search?.setOnClickListener {
+            val distance: Float
+            if (guideFg.map != null) {
+                val region = guideFg.map!!.projection.visibleRegion
+                val result = floatArrayOf(0f)
+                Location.distanceBetween(region.farLeft.latitude, region.farLeft.longitude, region.nearLeft.latitude, region.nearLeft.longitude, result)
+                distance = result[0] / 1000.0f
+
+              val cameraPosition =  guideFg.map!!.cameraPosition
+
+                GDSSearchFragment.newInstance(cameraPosition.target.latitude,cameraPosition.target.longitude,distance.toDouble()).show(supportFragmentManager, GDSSearchFragment.TAG)
+            } else {
+                Timber.w("no map available for updating Guide")
+            }
+        }
     }
 
     override fun onBackPressed() {

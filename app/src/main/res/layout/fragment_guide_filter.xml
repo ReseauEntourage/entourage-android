@@ -14,7 +14,21 @@
         app:entourageTitle="@string/guide_filter_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+    </social.entourage.android.tools.view.EntourageTitleView>
+
+    <Button
+        android:id="@+id/ui_bt_cancel"
+        style="@style/TransparentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/button_reset_filters"
+        android:textColor="@color/accent"
+        app:layout_constraintBottom_toBottomOf="@+id/entourageTitleView"
+        app:layout_constraintEnd_toEndOf="@+id/entourageTitleView"
+        app:layout_constraintTop_toTopOf="@+id/entourageTitleView" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ui_recyclerView"

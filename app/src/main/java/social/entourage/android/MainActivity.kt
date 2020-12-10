@@ -386,11 +386,11 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
         }
     }
 
-    fun selectItem(@IdRes menuId: Int) {
-        if (menuId == 0) {
+    fun selectMenuProfileItem(position: String) {
+        if (position == "") {
             return
         }
-        presenter.handleMenu(menuId)
+        presenter.handleMenuProfile(position)
     }
 
     private fun loadFragment(menuId: Int) {
@@ -690,7 +690,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     }
 
     private fun displayMessageOnCurrentTourInfoFragment(message: Message): Boolean {
-        val fragment = supportFragmentManager.findFragmentByTag(FeedItemInformationFragment.TAG) as EntourageInformationFragment?
+        val fragment = supportFragmentManager.findFragmentByTag(FeedItemInformationFragment.TAG) as FeedItemInformationFragment?
         return fragment != null && fragment.onPushNotificationChatMessageReceived(message)
     }
 

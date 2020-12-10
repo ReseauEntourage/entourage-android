@@ -167,7 +167,7 @@ class DeepLinkingTest {
     private fun connectedEventsDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
-        Espresso.onView(ViewMatchers.withText("Evènements")).check(ViewAssertions.matches(ViewMatchers.isSelected()))
+        Espresso.onView(ViewMatchers.withText(R.string.map_tab_events)).check(ViewAssertions.matches(ViewMatchers.isSelected()))
     }
 
     @Test

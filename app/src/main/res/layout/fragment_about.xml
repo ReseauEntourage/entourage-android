@@ -61,13 +61,69 @@
                     app:srcCompat="@drawable/arrow_grey"/>
             </LinearLayout>
 
+
             <View
                 style="@style/SeparatorAlpha"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginStart="@dimen/about_items_padding"
                 />
+            <RelativeLayout
+                android:id="@+id/get_involved_rate_us_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/about_items_padding"
+                android:paddingEnd="0dp"
+                android:paddingLeft="@dimen/about_items_padding"
+                android:paddingRight="0dp"
+                android:paddingStart="@dimen/about_items_padding"
+                android:paddingTop="@dimen/about_items_padding">
 
+                <TextView
+                    android:id="@+id/about_version_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/get_involved_rate_us"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/greyish_brown"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <TextView
+                    android:id="@+id/get_involved_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_toLeftOf="@+id/about_version_description"
+                    android:layout_toStartOf="@+id/get_involved_arrow_rate_us"
+                    android:gravity="end"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/accent"
+                    android:textSize="@dimen/entourage_font_medium"/>
+
+                <ImageView
+                    android:id="@+id/get_involved_arrow_rate_us"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/empty_description"
+                    app:srcCompat="@drawable/arrow_grey"/>
+            </RelativeLayout>
+
+            <View
+                style="@style/SeparatorAlpha"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/about_items_padding"
+                android:layout_marginStart="@dimen/about_items_padding"
+                />
             <LinearLayout
                 android:id="@+id/about_feedback_layout"
                 android:layout_width="match_parent"

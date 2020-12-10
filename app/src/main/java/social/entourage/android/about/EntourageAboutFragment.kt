@@ -20,6 +20,26 @@ class EntourageAboutFragment : AboutFragment() {
         about_tutorial_layout?.setOnClickListener { onTutorialClicked() }
         about_email_layout?.setOnClickListener { onEmailClicked() }
         about_website_layout?.setOnClickListener { onWebsiteClicked() }
+        get_involved_rate_us_layout?.setOnClickListener { onRateUsClicked() }
+    }
+
+    fun onRateUsClicked() {
+        activity?.let {
+            EntourageEvents.logEvent(EntourageEvents.EVENT_ABOUT_RATING)
+            val goToMarket = Intent(Intent.ACTION_VIEW,
+                    Uri.parse(getString(R.string.market_url, it.packageName)))
+            // To count with Play market backstack, After pressing back button,
+            // to taken back to our application, we need to add following flags to intent.
+            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or
+                    Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET or
+                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+            try {
+                startActivity(goToMarket)
+            } catch (e: ActivityNotFoundException) {
+                startActivity(Intent(Intent.ACTION_VIEW,
+                        Uri.parse(getString(R.string.playstore_url, it.packageName))))
+            }
+        }
     }
 
     private fun onWebsiteClicked() {

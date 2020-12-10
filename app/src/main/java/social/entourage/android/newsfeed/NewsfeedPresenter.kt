@@ -23,6 +23,7 @@ import social.entourage.android.entourage.create.BaseCreateEntourageFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.map.MapClusterEntourageItem
 import social.entourage.android.map.MapClusterTourItem
+import social.entourage.android.onboarding.InputNamesFragment
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.tour.encounter.EncounterDisclaimerFragment
 import timber.log.Timber
@@ -190,6 +191,14 @@ class NewsfeedPresenter @Inject constructor(
 
     fun saveMapFilter() {
         authenticationController.saveMapFilter()
+    }
+
+    fun checkUserNamesInfos() {
+        authenticationController.me?.let { user ->
+            if (user.firstName.isNullOrEmpty() && user.lastName.isNullOrEmpty()) {
+                fragment?.let { InputNamesFragment().show(it.parentFragmentManager,"InputFGTag") }
+            }
+        }
     }
 
     // ----------------------------------

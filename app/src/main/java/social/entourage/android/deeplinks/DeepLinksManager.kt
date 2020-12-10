@@ -112,7 +112,7 @@ object DeepLinksManager {
             if (userEditFragment != null) {
                 userEditFragment.onAddAssociationClicked()
             } else {
-                activity.selectItem(R.id.action_edit_profile)
+                activity.selectMenuProfileItem("editProfile")
             }
         } else if (key == DeepLinksView.WEBVIEW.view) {
             try {
@@ -128,7 +128,7 @@ object DeepLinksManager {
             } catch (ignored: Exception) {
             }
         } else if (key == DeepLinksView.PROFILE.view) {
-            activity.selectItem(R.id.action_edit_profile)
+            activity.selectMenuProfileItem("editProfile")
         } else if (key == DeepLinksView.GUIDE.view) {
             activity.showGuide()
         } else if (key == DeepLinksView.EVENTS.view) {

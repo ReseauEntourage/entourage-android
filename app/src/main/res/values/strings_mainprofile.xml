@@ -2,6 +2,7 @@
     <string name="action_logout">Déconnexion</string>
     <string name="action_about">Aide &amp; à propos</string>
     <string name="action_edit_profile"><u>Modifier mon profil</u></string>
+    <string name="action_edit_profile_regular">Modifier mon profil</string>
     <string name="action_blog">Conseils pour oser la rencontre</string>
     <string name="action_charter_unsigned">Signer la Charte éthique</string>
     <string name="action_charter_signed">Consulter la Charte éthique</string>
@@ -19,9 +20,30 @@
     <string name="action_good_waves">Rejoindre les Bonnes Ondes</string>
     <string name="debug_info_clipboard">Information copiée dans le presse-papier</string>
 
-    <string name="events_conviv">évènements\nconviviaux</string>
+    <string name="events_conviv">événements\nconviviaux</string>
     <string name="events_button">J’en trouve →</string>
     <string name="actions_solidr">actions\nsolidaires</string>
     <string name="actions_button">J’y vais →</string>
     <string name="title_my_activity">Mon activité</string>
+    <string name="title_my_activity2">👌  MON ACTIVITÉ</string>
+
+
+    <string name="menu_info_social">Pour vivre <b>encore plus de solidarité</b> suivez Entourage sur vos réseaux !</string>
+
+    <string name="menu_info_first_title">👋 FAIRE LE PREMIER PAS</string>
+    <string name="menu_info_first_guide">Notre guide pour oser la rencontre</string>
+    <string name="menu_info_first_prog">Quel programme d’Entourage est pour vous ?</string>
+    //Second
+    <string name="menu_info_second_gift">Faire un don à Entourage</string>
+    <string name="menu_info_second_help">Aider à la réinsertion</string>
+    <string name="menu_info_second_ambassador">Devenir Ambassadeur bénévole</string>
+    <string name="menu_info_second_good">Créer des liens avec les Bonnes Ondes</string>
+    <string name="menu_info_second_title">❤️  S’ENGAGER</string>
+    //Third
+    <string name="menu_info_third_info">Comment en parler aux personnes isolées ?</string>
+    <string name="menu_info_third_share">Répandez la solidarité autour de vous !</string>
+    <string name="menu_info_third_title">📣 PARTAGER ENTOURAGE</string>
+
+
+    <string name="menu_info_profile_share">Bonjour ! Grâce au réseau Entourage, je participe à des actions solidaires entre voisins avec et sans domicile. Rejoins-moi : %s</string>
 </resources>

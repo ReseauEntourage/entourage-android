@@ -438,6 +438,13 @@ object EntourageEvents {
     const val ACTION_GUIDE_SHAREPOI = "Action__GuideMap__SharePOI"
     const val ACTION_GUIDE_CALLPOI = "Action__GuideMap__CallPOI"
 
+    const val ACTION_GUIDE_STARTSEARCH = "Action__GuideMap__SearchStart"
+    const val ACTION_GUIDE_SEARCHRESULTS = "Action__GuideMap__SearchResults"
+
+    const val ACTION_GUIDE_SEARCHFILTER_ORGANIZ = "Action__GuideMap__OrganizationsFilter"
+    const val ACTION_GUIDE_SEARCHFILTER_VOLUNT = "Action__GuideMap__Volunteers"
+    const val ACTION_GUIDE_SEARCHFILTER_DONAT = "Action__GuideMap__Donations"
+
     //Start info
     const val SHOW_START_FEEDS = "View__Start__Feeds"
 
@@ -456,6 +463,8 @@ object EntourageEvents {
     const val ACTION_PROFILE_MODPROFIL = "Action__Profile__ModProfil"
     const val ACTION_PROFILE_SHOWPROFIL = "Action__Profile__ShowProfil"
     const val VIEW_PROFILE_MENU = "View__Profile__Menu"
+
+    const val VIEW_ADD_USERNAME_SUBMIT = "Action__Add__UsernameSubmit"
 
     var TAG = EntourageEvents::class.java.simpleName
 

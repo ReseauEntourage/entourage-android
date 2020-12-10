@@ -64,18 +64,12 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
         mainprofile_app_debug_info?.setOnLongClickListener { handleLongPress() }
 
         //add listener to user photo and name, that opens the user profile screen
-        drawer_header_user_photo?.setOnClickListener { selectMenuAction(R.id.action_user) }
-        drawer_header_user_name?.setOnClickListener { selectMenuAction(R.id.action_user) }
+        drawer_header_user_photo?.setOnClickListener { selectMenuProfile("user") }
+        drawer_header_user_name?.setOnClickListener { selectMenuProfile("user") }
         //add listener to modify profile text view
-        action_edit_profile?.setOnClickListener { selectMenuAction(R.id.action_edit_profile) }
+        action_edit_profile?.setOnClickListener { selectMenuProfile("editProfile") }
 
         //add listeners to side menu items
-        if (mainprofile_items_layout != null) {
-            val itemsCount = mainprofile_items_layout.childCount
-            for (j in 0 until itemsCount) {
-                (mainprofile_items_layout.getChildAt(j) as? MainProfileItemView)?.setOnClickListener { v: View -> selectMenuAction(v.id) }
-            }
-        }
 
         ui_layout_show_events?.setOnClickListener {
             EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_SHOWEVENTS)
@@ -84,6 +78,51 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
         ui_layout_show_actions?.setOnClickListener {
             EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_SHOWACTIONS)
             showActions()
+        }
+
+        ui_layout_charte?.setOnClickListener {
+            selectMenuProfile("charte")
+        }
+        ui_layout_guide?.setOnClickListener {
+            selectMenuProfile("scb")
+        }
+
+        ui_layout_goodwaves?.setOnClickListener {
+            selectMenuProfile("goodWaves")
+        }
+        ui_layout_ambassador?.setOnClickListener {
+            selectMenuProfile("ambassador")
+        }
+        ui_layout_linkedout?.setOnClickListener {
+            selectMenuProfile("linkedout")
+        }
+        ui_layout_donate?.setOnClickListener {
+            selectMenuProfile("donation")
+        }
+
+        ui_layout_share?.setOnClickListener {
+            selectMenuProfile("share")
+        }
+        ui_layout_blog?.setOnClickListener {
+            selectMenuProfile("blog")
+        }
+
+        ui_layout_logout?.setOnClickListener {
+            selectMenuProfile("logout")
+        }
+
+        ui_layout_help?.setOnClickListener {
+            selectMenuProfile("help")
+        }
+
+        ui_iv_fb?.setOnClickListener {
+            selectMenuProfile("fb")
+        }
+        ui_iv_insta?.setOnClickListener {
+            selectMenuProfile("insta")
+        }
+        ui_iv_twit?.setOnClickListener {
+            selectMenuProfile("twit")
         }
     }
 
@@ -116,14 +155,14 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
         }
 
         // Changed the ethics charter text depending on signed/unsigned
-        action_charte?.setTitle(if (user.hasSignedEthicsCharter()) R.string.action_charter_signed else R.string.action_charter_unsigned)
+        ui_tv_charte?.setText(if (user.hasSignedEthicsCharter()) R.string.action_charter_signed else R.string.action_charter_unsigned)
 
         //Show hide join Good waves
         if (user.stats?.isGoodWavesValidated == true) {
-            action_good_waves?.visibility = View.GONE
+            ui_layout_goodwaves?.visibility = View.GONE
         }
         else {
-            action_good_waves?.visibility = View.VISIBLE
+            ui_layout_goodwaves?.visibility = View.VISIBLE
         }
 
         ui_tv_nb_actions?.text = if(user.stats?.actionsCount != null) "${user.stats!!.actionsCount}" else "0"
@@ -131,8 +170,8 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
 
     }
 
-    private fun selectMenuAction(action: Int) {
-        (activity as? MainActivity)?.selectItem(action)
+    private fun selectMenuProfile(position: String) {
+        (activity as? MainActivity)?.selectMenuProfileItem(position)
     }
 
     private fun showEvents() {
@@ -143,7 +182,7 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
     }
 
     private fun handleLongPress(): Boolean {
-        selectMenuAction(R.id.mainprofile_app_version)
+        selectMenuProfile("appVersion")
         if(mainProfileCoordinatorLayout != null) {
             EntourageSnackbar.make(
                     mainProfileCoordinatorLayout,

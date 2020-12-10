@@ -64,13 +64,13 @@ class EntourageEvent : BaseEntourage, Serializable {
     }
 
     @StringRes
-    override fun getFreezedCTAText(): Int {
-        return super.getFreezedCTAText()
+    override fun getClosedCTAText(): Int {
+        return super.getClosedCTAText()
     }
 
     @ColorRes
-    override fun getFreezedCTAColor(): Int {
-        return super.getFreezedCTAColor()
+    override fun getClosedCTAColor(): Int {
+        return super.getClosedCTAColor()
     }
 
     override fun getClosingLoaderMessage(): Int {
@@ -79,6 +79,15 @@ class EntourageEvent : BaseEntourage, Serializable {
 
     override fun getClosedToastMessage(): Int {
         return R.string.outing_info_text_close
+    }
+
+    override fun isEvent() : Boolean {
+        return true
+    }
+
+    @StringRes
+    override fun getInviteSourceDescription():Int {
+        return R.string.invite_source_description_outing
     }
 }
 
@@ -140,6 +149,11 @@ class EntourageConversation : BaseEntourage, Serializable {
     override fun getIconURL(): String? {
         return author?.avatarURLAsString ?: super.getIconURL()
     }
+
+    override fun isConversation() :Boolean {
+        return true
+    }
+
 }
 
 class EntouragePrivateCircle : BaseEntourage, Serializable {

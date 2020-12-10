@@ -10,7 +10,7 @@
     <string name="activity_read_poi_title">INFORMATIONS</string>
     <string name="poi_report_description">Ajoutez des informations sur ce lieu</string>
     <string name="poi_report_button">Mettre à jour</string>
-    <string name="poi_report_email_subject_format">Information sur la structure \'%1$s\' (#%2$d)</string>
+    <string name="poi_report_email_subject_format">J\'ai des infos à jour concernant \'%1$s\' (#%2$s)</string>
     <string name="poi_detail_open_time">Horaires</string>
     <string name="poi_detail_language">Langues parlées</string>
 
@@ -68,9 +68,13 @@
     <string name="hub_description_4">Nos ateliers de sensibilisation vous aident à déconstruire les préjugés sur la rue et trouver des réponses à vos questions. </string>
     <string name="hub_button_4">Trouver un atelier</string>
 
-    <string name="hub_description_5">L’application Entourage vous permet de vous mobiliser, entre voisins et associations locales, pour organiser des actions et évènements solidaires. Pour tout comprendre, c’est par ici.</string>
+    <string name="hub_description_5">L’application Entourage vous permet de vous mobiliser, entre voisins et associations locales, pour organiser des actions et événements solidaires. Pour tout comprendre, c’est par ici.</string>
     <string name="hub_title_5">Comment mobiliser le réseau ?</string>
     <string name="hub_button_5">Aller sur la FAQ</string>
 
     <string name="gds_title">Lieux solidaires</string>
+    <string name="no_result">Aucun résultat</string>
+    <string name="no_result_info">Pourquoi ne pas essayer\nun autre mot-clé ?</string>
+
+    <string name="button_reset_filters">Annuler Filtres</string>
 </resources>
