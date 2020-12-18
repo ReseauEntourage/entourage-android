@@ -39,10 +39,11 @@ class ReadPoiPresenter @Inject constructor(private val fragment: ReadPoiFragment
     }
 
     fun displayPoi(poi: Poi) {
-        //var listenerAddress: OnAddressClickListener? = null
-        val listenerAddress = poi.address?.let { OnAddressClickListener(fragment.requireActivity(), it) }
-        val listenerPhone = poi.phone?.let { OnPhoneClickListener(it)}
-        fragment.onDisplayedPoi(poi, listenerAddress, listenerPhone)
+        fragment.activity?.let { activity->
+            val listenerAddress = poi.address?.let { OnAddressClickListener(activity, it) }
+            val listenerPhone = poi.phone?.let { OnPhoneClickListener(it) }
+            fragment.onDisplayedPoi(poi, listenerAddress, listenerPhone)
+        }
     }
 
     private fun dial(phone: Uri) {
