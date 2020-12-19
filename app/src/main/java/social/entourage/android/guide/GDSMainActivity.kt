@@ -1,13 +1,10 @@
 package social.entourage.android.guide
 
 import android.location.Location
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_g_d_s_main.*
-import social.entourage.android.BuildConfig
-import social.entourage.android.R
+import social.entourage.android.*
 import social.entourage.android.base.EntourageSecuredActivity
-import social.entourage.android.tools.view.WebViewFragment
 import timber.log.Timber
 
 class GDSMainActivity : EntourageSecuredActivity() {
@@ -36,5 +33,12 @@ class GDSMainActivity : EntourageSecuredActivity() {
                 Timber.w("no map available for updating Guide")
             }
         }
+    }
+
+    override fun setupComponent(entourageComponent: EntourageComponent?) {
+        DaggerGDSMainComponent.builder()
+                .entourageComponent(entourageComponent)
+                .build()
+                .inject(this)
     }
 }
