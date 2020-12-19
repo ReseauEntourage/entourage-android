@@ -169,8 +169,7 @@ open class BaseEntourage : FeedItem, Serializable {
     }
 
     override fun getFeedTypeColor(): Int {
-        val entourageCategory = EntourageCategoryManager.findCategory(this)
-        return entourageCategory?.typeColorRes ?: super.getFeedTypeColor()
+        return EntourageCategoryManager.findCategory(this).typeColorRes
     }
 
     override fun getStartTime(): Date {
@@ -191,13 +190,12 @@ open class BaseEntourage : FeedItem, Serializable {
     }
 
     override fun getIconDrawable(context: Context): Drawable? {
-        EntourageCategoryManager.findCategory(this)?.let { entourageCategory ->
-            AppCompatResources.getDrawable(context, entourageCategory.iconRes)?.let { categoryIcon ->
-                categoryIcon.mutate()
-                categoryIcon.clearColorFilter()
-                categoryIcon.setColorFilter(ContextCompat.getColor(context, entourageCategory.typeColorRes), PorterDuff.Mode.SRC_IN)
-                return categoryIcon
-            }
+        val entourageCategory = EntourageCategoryManager.findCategory(this)
+        AppCompatResources.getDrawable(context, entourageCategory.iconRes)?.let { categoryIcon ->
+            categoryIcon.mutate()
+            categoryIcon.clearColorFilter()
+            categoryIcon.setColorFilter(ContextCompat.getColor(context, entourageCategory.typeColorRes), PorterDuff.Mode.SRC_IN)
+            return categoryIcon
         }
         return super.getIconDrawable(context)
     }
@@ -260,7 +258,7 @@ open class BaseEntourage : FeedItem, Serializable {
     // ----------------------------------
     class EntourageJoinInfo(var distance: Int)
 
-    class Metadata() : Serializable {
+    class Metadata : Serializable {
 
         @SerializedName("starts_at")
         var startDate: Date? = null
@@ -380,7 +378,7 @@ open class BaseEntourage : FeedItem, Serializable {
             val jsonData = json.asJsonObject
             if (jsonData !=null) {
                 try {
-                    val entourageClass = BaseEntourage.getClassFromString(
+                    val entourageClass = getClassFromString(
                             jsonData["group_type"]?.asString,
                             jsonData["entourage_type"]?.asString)
                         val gson = GsonBuilder()

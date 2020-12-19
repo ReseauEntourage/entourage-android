@@ -139,7 +139,7 @@ open class BaseCreateEntourageFragment
         dismiss()
     }
 
-    fun onValidateClicked() {
+    private fun onValidateClicked() {
         if (isSaving) return
         if (isValid) {
             if (presenter != null) {
@@ -359,11 +359,7 @@ open class BaseCreateEntourageFragment
             entourageCategory?.isSelected = true
         }
         if (entourageCategory == null) {
-            entourageCategory = if (groupType != null) {
-                EntourageCategoryManager.getDefaultCategory(groupType!!)
-            } else {
-                EntourageCategoryManager.defaultCategory
-            }
+            entourageCategory = groupType?.let { EntourageCategoryManager.getDefaultCategory(it) } ?: EntourageCategoryManager.defaultCategory
             entourageCategory?.isSelected = false
             entourageCategory?.isNewlyCreated = true
         }

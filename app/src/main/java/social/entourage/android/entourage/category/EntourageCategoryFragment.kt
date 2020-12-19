@@ -112,7 +112,7 @@ class EntourageCategoryFragment : EntourageDialogFragment() {
         dismiss()
     }
 
-    fun onValidateClicked() {
+    private fun onValidateClicked() {
         mListener?.onCategoryChosen(adapter.selectedCategory)
         mListener = null
         dismiss()

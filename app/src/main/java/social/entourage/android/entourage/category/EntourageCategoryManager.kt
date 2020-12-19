@@ -16,6 +16,7 @@ object EntourageCategoryManager {
     // Attributes
     // ----------------------------------
     private lateinit var defaultType: EntourageCategory
+    private lateinit var unknownType: EntourageCategory
     val entourageCategories = HashMap<String, List<EntourageCategory>>()
     private val defaultGroup: List<EntourageCategory>
 
@@ -26,29 +27,26 @@ object EntourageCategoryManager {
         return entourageCategories[categoryGroup] ?: defaultGroup
     }
 
-    fun findCategory(entourage: BaseEntourage): EntourageCategory? {
+    fun findCategory(entourage: BaseEntourage): EntourageCategory {
         return findCategory(entourage.actionGroupType, entourage.category)
     }
 
-    fun findCategory(entourageType: String, entourageCategory: String?): EntourageCategory? {
-        val categoryToSearch = entourageCategory ?: "other"
-        val list: List<EntourageCategory> = entourageCategories[entourageType] ?: return null
-        for (category in list) {
-            if (category.category != null && category.category.equals(categoryToSearch, ignoreCase = true)) {
+    fun findCategory(entourageType: String, entourageCategory: String?): EntourageCategory {
+        val categoryToSearch = entourageCategory ?: EntourageCategory.CATEGORY_UNKNOWN
+        val list: List<EntourageCategory> = getEntourageCategoriesForGroup(entourageType)
+        list.forEach { category ->
+            if (categoryToSearch.equals(category.category, ignoreCase = true)) {
                 return category
             }
         }
-        return null
+        return unknownType
     }
 
     val defaultCategory: EntourageCategory
         get() = getDefaultCategory(BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)
 
     fun getDefaultCategory(groupType: String): EntourageCategory {
-        var list: List<EntourageCategory>? = entourageCategories[groupType]
-        if (list == null) {
-            list = entourageCategories[BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION] ?: defaultGroup
-        }
+        val list: List<EntourageCategory> = getEntourageCategoriesForGroup(groupType)
         for (category in list) {
             if (category.isDefault) {
                 return category
@@ -59,7 +57,7 @@ object EntourageCategoryManager {
 
     @StringRes
     fun getGroupTypeDescription(groupType: String): Int {
-        return when (groupType.toLowerCase()) {
+        return when (groupType.toLowerCase(Locale.ROOT)) {
             BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION -> R.string.entourage_category_type_contribution_label
             BaseEntourage.GROUPTYPE_ACTION_DEMAND -> R.string.entourage_category_type_demand_label
             else -> R.string.entourage_category_type_demand_label //By default : GROUPTYPE_DEMAND
@@ -79,6 +77,7 @@ object EntourageCategoryManager {
             }
             tempGroup[group]?.add(category)
             if (!this::defaultType.isInitialized && category.isDefault) defaultType = category
+            if (!this::unknownType.isInitialized && EntourageCategory.CATEGORY_UNKNOWN.equals(category.category, false)) unknownType = category
         }
         tempGroup[BaseEntourage.GROUPTYPE_ACTION_DEMAND]?.let{
             entourageCategories[BaseEntourage.GROUPTYPE_ACTION_DEMAND] = it

@@ -48,29 +48,34 @@ class EntourageCategory : Serializable {
     @get:DrawableRes
     val iconRes: Int
         get() {
-            if ("social".equals(category, ignoreCase = true)) {
-                return R.drawable.ic_entourage_category_friendly_time
+            when {
+                CATEGORY_SOCIAL.equals(category, ignoreCase = true) -> {
+                    return R.drawable.ic_entourage_category_friendly_time
+                }
+                CATEGORY_EVENT.equals(category, ignoreCase = true) -> {
+                    return R.drawable.ic_event_accent_24dp
+                }
+                CATEGORY_MATHELP.equals(category, ignoreCase = true) -> {
+                    return R.drawable.ic_entourage_category_sweater
+                }
+                CATEGORY_RESOURCE.equals(category, ignoreCase = true) -> {
+                    return R.drawable.ic_entourage_category_washing_machine
+                }
+                CATEGORY_INFO.equals(category, ignoreCase = true) -> {
+                    return if (BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION.equals(groupType, ignoreCase = true)) {
+                        R.drawable.ic_entourage_category_info_chat
+                    } else R.drawable.ic_entourage_category_question_chat
+                }
+                CATEGORY_SKILL.equals(category, ignoreCase = true) -> {
+                    return R.drawable.ic_entourage_category_skill
+                }
+                CATEGORY_UNKNOWN.equals(category, ignoreCase = true) -> {
+                    return R.drawable.ic_entourage_category_more
+                }
+                else -> {
+                    return R.drawable.ic_entourage_category_more
+                }
             }
-            if ("event".equals(category, ignoreCase = true)) {
-                return R.drawable.ic_event_accent_24dp
-            }
-            if ("mat_help".equals(category, ignoreCase = true)) {
-                return R.drawable.ic_entourage_category_sweater
-            }
-            if ("resource".equals(category, ignoreCase = true)) {
-                return R.drawable.ic_entourage_category_washing_machine
-            }
-            if ("info".equals(category, ignoreCase = true)) {
-                return if (BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION.equals(groupType, ignoreCase = true)) {
-                    R.drawable.ic_entourage_category_info_chat
-                } else R.drawable.ic_entourage_category_question_chat
-            }
-            if ("skill".equals(category, ignoreCase = true)) {
-                return R.drawable.ic_entourage_category_skill
-            }
-            return if ("other".equals(category, ignoreCase = true)) {
-                R.drawable.ic_entourage_category_more
-            } else R.drawable.ic_entourage_category_more
         }
 
     @get:ColorRes
@@ -83,4 +88,14 @@ class EntourageCategory : Serializable {
                 R.color.accent
             } else R.color.accent
         }
+
+    companion object {
+        const val CATEGORY_UNKNOWN = "other"
+        const val CATEGORY_SKILL = "skill"
+        const val CATEGORY_INFO = "info"
+        const val CATEGORY_RESOURCE = "resource"
+        const val CATEGORY_MATHELP = "mat_help"
+        const val CATEGORY_EVENT = "event"
+        const val CATEGORY_SOCIAL = "social"
+    }
 }

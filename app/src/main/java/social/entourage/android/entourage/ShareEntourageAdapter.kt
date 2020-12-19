@@ -17,7 +17,6 @@ import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.SharingEntourage
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.tools.CropCircleTransformation
-import timber.log.Timber
 
 /**
  * Created by Jr (MJ-DEVS) on 09/09/2020.
@@ -75,16 +74,12 @@ class ShareEntourageAdapter(val context: Context, private val myDataset: ArrayLi
     }
 
     fun getIcn(type:String,category:String?) : Drawable?  {
-        EntourageCategoryManager.findCategory(type,category)?.let { entourageCategory ->
-            Timber.d("***** return find cat ${entourageCategory.iconRes}")
-            Timber.d("***** return find cat Draw ? ${AppCompatResources.getDrawable(context, entourageCategory.iconRes)}")
-            AppCompatResources.getDrawable(context, entourageCategory.iconRes)?.let { categoryIcon ->
-
-                categoryIcon.mutate()
-                categoryIcon.clearColorFilter()
-                categoryIcon.setColorFilter(ContextCompat.getColor(context, entourageCategory.typeColorRes), PorterDuff.Mode.SRC_IN)
-                return categoryIcon
-            }
+        val entourageCategory = EntourageCategoryManager.findCategory(type,category)
+        AppCompatResources.getDrawable(context, entourageCategory.iconRes)?.let { categoryIcon ->
+            categoryIcon.mutate()
+            categoryIcon.clearColorFilter()
+            categoryIcon.setColorFilter(ContextCompat.getColor(context, entourageCategory.typeColorRes), PorterDuff.Mode.SRC_IN)
+            return categoryIcon
         }
 
         return null
