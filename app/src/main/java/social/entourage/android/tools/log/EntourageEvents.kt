@@ -8,6 +8,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.api.model.User
 import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
+import timber.log.Timber
 import java.util.*
 
 /**
@@ -493,9 +494,10 @@ object EntourageEvents {
         user.partner?.let {
             mFirebaseAnalytics.setUserProperty("EntouragePartner", it.name)
         }
-        user.firebaseProperties?.let {
-            for (_val in it) {
-                mFirebaseAnalytics.setUserProperty(_val.key,_val.value)
+        user.firebaseProperties?.forEach { value ->
+            mFirebaseAnalytics.setUserProperty(value.key,value.value)
+            if(value.value.length>36) {
+                Timber.e("Firebase Property too long: key=${value.key}; value=${value.value}")
             }
         }
         val geolocStatus = if (isLocationPermissionGranted()) "YES" else "NO"
