@@ -154,6 +154,12 @@ class EntourageConversation : BaseEntourage, Serializable {
         return true
     }
 
+    override fun getCreationTime(): Date {
+        //HACK we force Date when API gives us NULL created_at
+        if(createdTime == null) createdTime = Date()
+        return super.getCreationTime() ?: Date()
+    }
+
 }
 
 class EntouragePrivateCircle : BaseEntourage, Serializable {

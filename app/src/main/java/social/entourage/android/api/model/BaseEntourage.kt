@@ -29,7 +29,7 @@ open class BaseEntourage : FeedItem, Serializable {
     // Attributes
     // ----------------------------------
     @SerializedName("created_at")
-    private var createdTime: Date = Date()
+    protected var createdTime: Date = Date()
 
     @SerializedName("group_type")
     private var groupType: String
