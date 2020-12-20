@@ -27,8 +27,8 @@ class TourOptionsFragment : FeedItemOptionsFragment() {
     // BUTTON HANDLING
     // ----------------------------------
     override fun onStopClicked() {
-        if (feedItem.status == FeedItem.STATUS_ON_GOING || feedItem.status == FeedItem.STATUS_OPEN) {
-            val tour = feedItem as Tour
+        val tour = feedItem as? Tour ?: return
+        if (tour.isOpen()) {
             //compute distance
             var distance = 0.0f
             val tourPointsList = tour.tourPoints
@@ -54,8 +54,8 @@ class TourOptionsFragment : FeedItemOptionsFragment() {
 
             //hide the options
             dismiss()
-        } else if (feedItem.status == FeedItem.STATUS_CLOSED) {
-            instance.post(OnFeedItemCloseRequestEvent(feedItem, showUI = false, success = true))
+        } else if (tour.isClosed()) {
+            instance.post(OnFeedItemCloseRequestEvent(tour, showUI = false, success = true))
             dismiss()
         }
     }

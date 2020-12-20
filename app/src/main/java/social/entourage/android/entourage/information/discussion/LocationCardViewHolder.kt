@@ -55,7 +55,7 @@ class LocationCardViewHolder(view: View) : BaseCardViewHolder(view) {
     fun populate(tourInformation: TourInformation) {
         val locationDateFormat = SimpleDateFormat(itemView.resources.getString(R.string.tour_info_location_card_date_format), Locale.FRANCE)
         itemView.tic_location_date?.text = locationDateFormat.format(tourInformation.startDate).toUpperCase(Locale.ROOT)
-        if (FeedItem.STATUS_ON_GOING == tourInformation.status || FeedItem.STATUS_OPEN == tourInformation.status) {
+        if (Tour.STATUS_ON_GOING == tourInformation.status || FeedItem.STATUS_OPEN == tourInformation.status) {
             if (tourInformation.feedType == TimestampedObject.TOUR_CARD) {
                 itemView.tic_location_title?.setText(R.string.tour_info_text_ongoing)
             } else if (tourInformation.feedType == TimestampedObject.ENTOURAGE_CARD) {

@@ -203,6 +203,9 @@ class Tour : FeedItem, Serializable {
 
     override fun isFreezed(): Boolean {return STATUS_FREEZED == status}
 
+    override fun isOpen(): Boolean { return status == STATUS_OPEN || status == STATUS_ON_GOING}
+    override fun isOngoing(): Boolean { return STATUS_ON_GOING == status}
+
     override fun isClosed(): Boolean { return STATUS_CLOSED == status || STATUS_FREEZED == status}
 
     // ----------------------------------
@@ -245,6 +248,7 @@ class Tour : FeedItem, Serializable {
         const val NEWSFEED_TYPE = "Tour"
 
         const val STATUS_FREEZED = "freezed"
+        const val STATUS_ON_GOING = "ongoing"
 
         fun getHoursDiffToNow(fromDate: Date?): Long {
             val currentHours = System.currentTimeMillis() / Constants.MILLIS_HOUR

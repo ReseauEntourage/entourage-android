@@ -120,8 +120,10 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
 
     open fun isClosed(): Boolean { return STATUS_CLOSED == status }
 
+    open fun isOpen(): Boolean { return STATUS_OPEN == status}
+
     //TODO only for tours ???
-    fun isOngoing(): Boolean { return STATUS_ON_GOING == status}
+    open fun isOngoing(): Boolean { return false}
     fun isSuspended(): Boolean { return STATUS_SUSPENDED == status}
     //end TODO
 
@@ -298,7 +300,6 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
         const val KEY_FEEDITEM_TYPE = "social.entourage.android.KEY_FEEDITEM_TYPE"
         const val STATUS_OPEN = "open"
         const val STATUS_CLOSED = "closed"
-        const val STATUS_ON_GOING = "ongoing"
         const val STATUS_SUSPENDED = "suspended"
         const val JOIN_STATUS_NOT_REQUESTED = "not_requested"
         const val JOIN_STATUS_PENDING = "pending"

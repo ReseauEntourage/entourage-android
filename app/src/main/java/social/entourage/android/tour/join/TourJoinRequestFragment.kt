@@ -22,7 +22,7 @@ class TourJoinRequestFragment  : DialogFragment() {
     // ----------------------------------
     // PRIVATE MEMBERS
     // ----------------------------------
-    private lateinit var feedItem: Tour
+    private lateinit var tour: Tour
     private var viewModel: TourJoinRequestViewModel = TourJoinRequestViewModel()
     private var startedTyping = false
 
@@ -41,12 +41,12 @@ class TourJoinRequestFragment  : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val newFeedItem = arguments?.getSerializable(FeedItem.KEY_FEEDITEM) as Tour?
-        if(newFeedItem == null) {
+        val newTour = arguments?.getSerializable(FeedItem.KEY_FEEDITEM) as Tour?
+        if(newTour == null) {
             dismiss()
             return
         }
-        feedItem = newFeedItem
+        tour = newTour
         tour_join_request_ok_description?.setText(R.string.tour_join_request_ok_description_tour)
         view.setOnClickListener {
             val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager? ?:return@setOnClickListener
@@ -83,7 +83,7 @@ class TourJoinRequestFragment  : DialogFragment() {
         tour_join_request_ok_message?.text?.let {
             if (!it.isBlank()) {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_SUBMIT)
-                viewModel.sendMessage(it.toString(), feedItem)
+                viewModel.sendMessage(it.toString(), tour)
             }
         }
     }

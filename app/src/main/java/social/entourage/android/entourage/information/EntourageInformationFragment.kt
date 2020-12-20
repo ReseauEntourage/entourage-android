@@ -89,7 +89,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
     // Button Handling
     // ----------------------------------
     override fun onStopTourButton() {
-        if (entourage.status == FeedItem.STATUS_ON_GOING || entourage.status == FeedItem.STATUS_OPEN) {
+        if (entourage.isOpen()) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE)
             //hide the options
             entourage_info_options?.visibility = View.GONE
@@ -166,7 +166,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         } else {
             entourage_option_stop?.visibility = if (entourage.isClosed() || !entourage.canBeClosed()) View.GONE else View.VISIBLE
             entourage_option_stop?.setText( R.string.tour_info_options_freeze_tour)
-            if (FeedItem.STATUS_OPEN == entourage.status) {
+            if ((entourage.isOpen())  || (entourage.isSuspended())){
                 entourage_option_edit?.visibility = View.VISIBLE
                 entourage_option_reopen?.visibility = View.GONE
             }
@@ -323,7 +323,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         ui_iv_button_action_top.visibility = showIcon
         ui_tv_button_action_top.setText(title)
 
-        if (entourage.status == FeedItem.STATUS_CLOSED) {
+        if (entourage.isClosed()) {
             ui_layout_event_action_top_action?.visibility = View.GONE
         }
         else {
