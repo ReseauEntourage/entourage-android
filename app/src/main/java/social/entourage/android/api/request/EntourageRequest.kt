@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
-import social.entourage.android.api.EntourageMessageSharing
+import social.entourage.android.api.ShareMessage
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.BaseEntourage.EntourageJoinInfo
 import social.entourage.android.api.model.EntourageReport.EntourageReportWrapper
@@ -24,7 +24,7 @@ class EntourageUserListResponse {
 }
 
 class ChatMessageWrapper (@SerializedName("chat_message") var chatMessage: ChatMessage)
-class EntourageMessageSharingWrapper (@SerializedName("chat_message") var chatMessage: EntourageMessageSharing)
+class EntourageMessageSharingWrapper (@SerializedName("chat_message") var chatMessage: ShareMessage)
 class ChatMessageResponse {
     @SerializedName("chat_message")
     var chatMessage: ChatMessage? = null

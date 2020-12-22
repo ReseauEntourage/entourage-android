@@ -564,7 +564,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
         logEvent(EntourageEvents.EVENT_FEED_USERPROFILE)
         try {
             val poi = Poi()
-            poi.id = event.poiId
+            poi.uuid = event.poiId
             val fragment = ReadPoiFragment.newInstance(poi)
             fragment.show(supportFragmentManager, ReadPoiFragment.TAG)
         } catch (e: IllegalStateException) {

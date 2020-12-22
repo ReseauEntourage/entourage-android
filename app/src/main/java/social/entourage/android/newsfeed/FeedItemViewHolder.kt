@@ -53,15 +53,14 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
             // add the icon for entourages
             itemView.tour_card_icon?.let {iconView ->
                 Picasso.get().cancelRequest(iconView)
-                val iconURL = feedItem.getIconURL()
-                if (iconURL != null) {
+                feedItem.getIconURL()?.let { iconURL ->
                     iconView.setImageDrawable(null)
                     Picasso.get()
                             .load(iconURL)
                             .placeholder(R.drawable.ic_user_photo_small)
                             .transform(CropCircleTransformation())
                             .into(iconView)
-                } else {
+                } ?: run {
                     iconView.setImageDrawable(feedItem.getIconDrawable(itemView.context))
                 }
             }

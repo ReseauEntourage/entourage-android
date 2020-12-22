@@ -72,9 +72,8 @@ open class ChatMessageCardViewHolder(val view: View) : BaseCardViewHolder(view) 
         if(deeplink?.isNotBlank() == true) {
             deeplinkURL = deeplink
             itemView.tic_chat_deeplink?.visibility = View.VISIBLE
-            itemView.tic_chat_deeplink?.setOnClickListener {
-                onDeeplinkClick(it)}
-            itemView.setOnClickListener {onDeeplinkClick(it)}
+            itemView.tic_chat_deeplink?.setOnClickListener { onDeeplinkClick(it) }
+            itemView.setOnClickListener { onDeeplinkClick(it) }
         } else {
             deeplinkURL = null
             itemView.tic_chat_deeplink?.visibility = View.GONE
@@ -91,13 +90,13 @@ open class ChatMessageCardViewHolder(val view: View) : BaseCardViewHolder(view) 
             setBubbleLink(isMine)
 
             itemView.layout_bubble?.setOnClickListener {
-                showPoiDetail(chatMessage.metadata?.uuid)
+                chatMessage.metadata?.uuid?.let {showPoiDetail(it)}
             }
             itemView.tic_chat_deeplink?.setOnClickListener {
-                showPoiDetail(chatMessage.metadata?.uuid)
+                chatMessage.metadata?.uuid?.let {showPoiDetail(it)}
             }
             itemView.tic_chat_message?.setOnClickListener {
-                showPoiDetail(chatMessage.metadata?.uuid)
+                chatMessage.metadata?.uuid?.let {showPoiDetail(it)}
             }
         }
         if (isEntourage) {
@@ -132,10 +131,8 @@ open class ChatMessageCardViewHolder(val view: View) : BaseCardViewHolder(view) 
         startActivity(v.context, intent, null)
     }
 
-    fun showPoiDetail(poiId:String?) {
-        poiId?.let {
-            BusProvider.instance.post(Events.OnPoiViewDetail(it.toLong()))
-        }
+    fun showPoiDetail(poiId:String) {
+        BusProvider.instance.post(Events.OnPoiViewDetail(poiId))
     }
 
     companion object {

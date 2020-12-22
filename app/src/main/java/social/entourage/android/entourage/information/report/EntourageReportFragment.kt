@@ -14,6 +14,7 @@ import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageReport
 import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.entourage.information.EntourageInformationFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 
 /**
@@ -28,7 +29,7 @@ class EntourageReportFragment  : EntourageDialogFragment() {
     private var sending = false
     private var isEvent = false
     private var isReportUser = false
-    var parentFG:FeedItemInformationFragment? = null
+    var parentFragment: EntourageInformationFragment? = null
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -115,8 +116,8 @@ class EntourageReportFragment  : EntourageDialogFragment() {
                 if (response.isSuccessful) {
                     if (isReportUser) {
                         Toast.makeText(activity, R.string.entourage_user_report_success, Toast.LENGTH_SHORT).show()
-                        parentFG?.validateReport()
-                        parentFG = null
+                        parentFragment?.validateReport()
+                        parentFragment = null
                     }
                     else {
                         Toast.makeText(activity, R.string.entourage_report_success, Toast.LENGTH_SHORT).show()

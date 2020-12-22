@@ -14,7 +14,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
 import com.jakewharton.espresso.OkHttp3IdlingResource
-import junit.framework.AssertionFailedError
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule

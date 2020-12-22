@@ -40,10 +40,8 @@ class Announcement : TimestampedObject() {
 
     override fun equals(other: Any?): Boolean {
         return if (other !is Announcement) false else id == other.id
-    } // ----------------------------------
+    }
 
-    // WRAPPERS
-    // ----------------------------------
     companion object {
         // ----------------------------------
         // Constants

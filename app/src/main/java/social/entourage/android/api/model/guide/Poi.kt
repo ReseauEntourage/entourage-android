@@ -67,7 +67,11 @@ class Poi : TimestampedObject(), Serializable, ClusterItem {
         get() = GUIDE_POI
 
     override fun hashString(): String {
-        return HASH_STRING_HEAD + id
+        return HASH_STRING_HEAD + uuid
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return if (other !is Poi) false else uuid == other.uuid
     }
 
     companion object {

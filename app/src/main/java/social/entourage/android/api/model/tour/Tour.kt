@@ -9,8 +9,10 @@ import androidx.appcompat.content.res.AppCompatResources
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.Constants
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.LocationPoint
+import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
 import java.io.Serializable
 import java.util.*
@@ -72,11 +74,11 @@ class Tour : FeedItem, Serializable {
         this.tourType = tourType
     }
 
-    override fun getCreationTime(): Date {
+    fun getCreationTime(): Date {
         return startTime
     }
 
-    override fun getStartTime(): Date {
+    fun getStartTime(): Date {
         return startTime
     }
 
@@ -84,7 +86,7 @@ class Tour : FeedItem, Serializable {
         return endTime
     }
 
-    override fun getDisplayAddress(): String? {
+    fun getDisplayAddress(): String? {
         return null
     }
 
@@ -170,10 +172,20 @@ class Tour : FeedItem, Serializable {
     override val type: Int
         get() = TOUR_CARD
 
+    fun getTypedCardInfoList(cardType: Int): List<TimestampedObject> {
+        val typedCardInfoList: MutableList<TimestampedObject> = ArrayList()
+        for (timestampedObject in cachedCardInfoList) {
+            if (timestampedObject.type == cardType) {
+                typedCardInfoList.add(timestampedObject)
+            }
+        }
+        return typedCardInfoList
+    }
+
     // ----------------------------------
     // FeedItem overrides
     // ----------------------------------
-    override fun getGroupType(): String {
+    fun getGroupType(): String {
         return GROUPTYPE_TOUR
     }
 
@@ -201,7 +213,16 @@ class Tour : FeedItem, Serializable {
 
     fun getEndPoint(): LocationPoint? {return if (tourPoints.size < 1) null else tourPoints[tourPoints.size - 1]}
 
-    override fun isFreezed(): Boolean {return STATUS_FREEZED == status}
+    fun isFreezed(): Boolean {return STATUS_FREEZED == status}
+
+    fun isMine(context: Context?): Boolean {
+        author?.let {
+            EntourageApplication.me(context)?.let { me ->
+                return it.userID == me.id
+            }
+        }
+        return false
+    }
 
     override fun isOpen(): Boolean { return status == STATUS_OPEN || status == STATUS_ON_GOING}
     override fun isOngoing(): Boolean { return STATUS_ON_GOING == status}

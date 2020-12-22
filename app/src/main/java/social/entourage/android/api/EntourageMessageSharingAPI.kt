@@ -6,7 +6,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.*
-import java.io.Serializable
 
 /**
  * Created by Jr (MJ-DEVS) on 10/09/2020.
@@ -37,16 +36,10 @@ class EntourageMessageSharingAPI(val application: EntourageApplication) {
         })
     }
 
-    fun postSharingEntourage(sharedUuid:String,uuid:String,isPoi:Boolean,listener:(isOK:Boolean) -> Unit) {
-        val chatMessage = EntourageMessageSharing()
-        chatMessage.metadata = EntourageMessageSharing.Metadata()
-        chatMessage.metadata?.uuid = uuid
+    fun postSharingEntourage(sharedUuid:String, uuid:String, isPoi:Boolean, listener:(isOK:Boolean) -> Unit) {
+        val shareMessage: ShareMessage = if(isPoi) SharePOIgeMessage(uuid) else ShareEntourageMessage(uuid)
 
-        if (isPoi) {
-            chatMessage.metadata?.type = "poi"
-        }
-
-        val chatMessageWrapper = EntourageMessageSharingWrapper(chatMessage)
+        val chatMessageWrapper = EntourageMessageSharingWrapper(shareMessage)
         val call = entourageRequest.addEntourageMessageSharing(sharedUuid, chatMessageWrapper)
         call.enqueue(object : Callback<ChatMessageResponse> {
             override fun onResponse(call: Call<ChatMessageResponse>, response: Response<ChatMessageResponse>) {
@@ -76,17 +69,3 @@ class EntourageMessageSharingAPI(val application: EntourageApplication) {
     }
 }
 
-class EntourageMessageSharing : Serializable {
-
-    val message_type = "share" //Used for POST
-    var metadata: Metadata? = null
-
-
-    // ----------------------------------
-    // INNER CLASSES
-    // ----------------------------------
-    class Metadata : Serializable {
-        var uuid: String? = null
-        var type = "entourage"
-    }
-}

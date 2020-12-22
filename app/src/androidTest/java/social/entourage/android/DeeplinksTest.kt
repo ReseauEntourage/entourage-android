@@ -516,11 +516,3 @@ class DeepLinkingTest {
     }
 
 }
-
-/* DeepLinks a tester
-https://entourage.social/deeplink/entourage/e0nEjytD9mU8
-https:///entourage.social/entourages/e0nEjytD9mU8
-https://www.entourage.social/deeplink/webview?url=http%3A%2F%2Fhttpbin.org%2Fget%3Fx%3D1
-http://www.google.com => KO
-
- */

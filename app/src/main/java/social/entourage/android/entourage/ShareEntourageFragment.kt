@@ -21,7 +21,7 @@ private const val ARG_ISPOI = "isPoi"
 class ShareEntourageFragment : EntourageDialogFragment() {
     private var uuid = ""
     private var isPoi = false
-    private var poiId = 0
+    private var poiId = ""
 
     private var arraySharing:ArrayList<SharingEntourage> = ArrayList()
     private var adapter:ShareEntourageAdapter? = null
@@ -33,7 +33,7 @@ class ShareEntourageFragment : EntourageDialogFragment() {
         arguments?.let {
             uuid = it.getString(ARG_PARAM1) ?: ""
             isPoi = it.getBoolean(ARG_ISPOI)
-            poiId = it.getInt(ARG_POIID)
+            poiId = it.getString(ARG_POIID) ?:""
         }
     }
 
@@ -63,11 +63,9 @@ class ShareEntourageFragment : EntourageDialogFragment() {
 
     fun sendSharing() {
         val sharing = arraySharing[selectedPosition]
-        val _id = if (isPoi) poiId.toString() else uuid
+        val _id = if (isPoi) poiId else uuid
         EntourageMessageSharingAPI.getInstance(EntourageApplication.get()).postSharingEntourage(sharing.uuid,_id,isPoi) { isOK ->
-
-            Toast.makeText(activity, R.string.linkSahred, Toast.LENGTH_SHORT).show()
-
+            Toast.makeText(activity, if(isOK) R.string.linkShared else R.string.linkNotShared, Toast.LENGTH_SHORT).show()
             dismiss()
         }
     }
@@ -122,13 +120,19 @@ class ShareEntourageFragment : EntourageDialogFragment() {
     companion object {
         const val TAG = "social.entourage.android.entourage.shareEntourageFragment"
 
-        @JvmStatic
-        fun newInstance(uuid: String?,poiId:Int = 0,isPoi:Boolean = false) =
+        fun newInstance(uuid: String) =
                 ShareEntourageFragment().apply {
                     arguments = Bundle().apply {
                         putString(ARG_PARAM1, uuid)
-                        putInt(ARG_POIID,poiId)
-                        putBoolean(ARG_ISPOI,isPoi)
+                        putBoolean(ARG_ISPOI,false)
+                    }
+                }
+
+        fun newInstanceForPoi(poiId: String) =
+                ShareEntourageFragment().apply {
+                    arguments = Bundle().apply {
+                        putString(ARG_POIID,poiId)
+                        putBoolean(ARG_ISPOI,true)
                     }
                 }
     }

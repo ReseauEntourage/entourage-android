@@ -19,6 +19,7 @@ import social.entourage.android.EntourageComponent
 import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
+import social.entourage.android.api.model.EntourageConversation
 import social.entourage.android.api.model.User
 import social.entourage.android.api.tape.Events.OnPartnerViewRequestedEvent
 import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
@@ -224,7 +225,7 @@ class UserFragment : EntourageDialogFragment() {
         displayToast(R.string.user_text_update_ok)
     }
 
-    fun onConversationFound(entourage: BaseEntourage) {
+    fun onConversationFound(entourage: EntourageConversation) {
         try {
             val entourageInformationFragment = FeedItemInformationFragment.newInstance(entourage, 0, 0)
             entourageInformationFragment.hideInfoButton()

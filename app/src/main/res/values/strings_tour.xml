@@ -79,7 +79,7 @@
     <string name="tour_info_metadata_dateStart_End_hours_format_new">Du %1$s %2$s au %3$s %4$s</string>
 
     <!-- EntourageService -->
-    <string name="local_service_stopped">Maraude terminée</string>
+    <string name="tour_stopped">Maraude terminée</string>
     <string name="tour_freezed">Maraude clôturée</string>
     <string name="local_service_running">Maraude en cours</string>
     <string name="local_service_notification_title">Maraudes</string>
@@ -130,10 +130,6 @@
     <!-- Report Entourage -->
     <!-- Parameters: 1 - Entourage title -->
     <string name="report_entourage_email_title">Signalement d\'un problème dans l\'entourage %1$s</string>
-
-    <!-- Edit Entourage Email -->
-    <string name="edit_entourage_email_title">Veuillez modifier la description du action "%1$s"</string>
-    <string name="edit_entourage_email_body">Bonjour,\n\nVeuillez mettre à jour la description ainsi :\n%1$s\n\nMerci !</string>
 
     <!-- Promote Entourage Email -->
     <string name="promote_entourage_email_title">Veuillez envoyer une notification pour la sortie %1$s</string>

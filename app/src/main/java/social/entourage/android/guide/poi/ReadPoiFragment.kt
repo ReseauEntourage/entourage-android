@@ -47,8 +47,7 @@ class ReadPoiFragment : EntourageDialogFragment() {
         setupComponent(EntourageApplication.get(activity).entourageComponent)
 
         //Actually WS return id and not uuid for entourage poi
-        val uuid = if (poi.uuid.length == 0) poi.id.toString() else poi.uuid
-        presenter.getPoiDetail(uuid)
+        presenter.getPoiDetail(poi.uuid)
 
         title_close_button?.setOnClickListener {dismiss()}
         poi_report_button?.setOnClickListener {onReportButtonClicked()}
@@ -67,8 +66,8 @@ class ReadPoiFragment : EntourageDialogFragment() {
         ui_bt_share_inside?.setOnClickListener {
             ui_layout_share?.visibility = View.GONE
 
-            val fragment = ShareEntourageFragment.newInstance("fuck",poi.id.toInt(),true)
-            fragment.show(parentFragmentManager, ShareEntourageFragment.TAG)
+            ShareEntourageFragment.newInstanceForPoi(poi.uuid)
+                    .show(parentFragmentManager, ShareEntourageFragment.TAG)
         }
 
         ui_bt_share_outside?.setOnClickListener {
@@ -86,7 +85,7 @@ class ReadPoiFragment : EntourageDialogFragment() {
         }
     }
 
-    fun setupRVHelp() {
+    private fun setupRVHelp() {
         val filterAdapter = GuideFilterAdapter()
         filterAdapter.setHelpOnly()
         guide_filter_list?.adapter = filterAdapter
@@ -244,7 +243,7 @@ class ReadPoiFragment : EntourageDialogFragment() {
         intent.putExtra(Intent.EXTRA_EMAIL, addresses)
         // Set the subject
         val title = poi.name ?:""
-        val uuid = if (poi.uuid.length == 0) poi.id.toString() else poi.uuid
+        val uuid = poi.uuid
         val emailSubject = getString(R.string.poi_report_email_subject_format, title, uuid)
         intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject)
         startActivity(intent)
@@ -255,11 +254,11 @@ class ReadPoiFragment : EntourageDialogFragment() {
 //        }
     }
 
-    fun onShareClicked() {
+    private fun onShareClicked() {
         ui_layout_share?.visibility = View.VISIBLE
     }
 
-    fun shareOnly() {
+    private fun shareOnly() {
         EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_SHAREPOI)
         val poiName = if(poi.name == null) "" else poi.name
         val address = if(poi.address?.length ?: 0 == 0) "" else "Adresse: ${poi.address}"
@@ -278,7 +277,7 @@ class ReadPoiFragment : EntourageDialogFragment() {
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        val TAG = ReadPoiFragment::class.java.simpleName
+        val TAG: String = ReadPoiFragment::class.java.simpleName
         const val BUNDLE_KEY_POI = "BUNDLE_KEY_POI"
         // ----------------------------------
         // LIFECYCLE

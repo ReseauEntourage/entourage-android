@@ -2,11 +2,8 @@ package social.entourage.android.entourage.information
 
 import android.content.Context
 import android.graphics.Paint
-import android.os.Bundle
 import android.text.TextUtils
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.res.ResourcesCompat
@@ -26,20 +23,24 @@ import kotlinx.android.synthetic.main.layout_detail_event_action_top_view.*
 import kotlinx.android.synthetic.main.layout_detail_event_description.*
 import kotlinx.android.synthetic.main.layout_invite_source.*
 import kotlinx.android.synthetic.main.layout_invite_source.view.*
+import kotlinx.android.synthetic.main.layout_private_entourage_information.*
 import kotlinx.android.synthetic.main.layout_public_entourage_information.*
+import okhttp3.ResponseBody
 import org.joda.time.LocalDate
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageComponent
 import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
-import social.entourage.android.api.model.Message
-import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.BaseEntourage
+import social.entourage.android.api.model.*
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.OnUserJoinRequestUpdateEvent
 import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.entourage.EntourageCloseFragment
+import social.entourage.android.entourage.information.report.EntourageReportFragment
 import social.entourage.android.location.EntourageLocation
 import social.entourage.android.map.OnAddressClickListener
 import social.entourage.android.tools.BusProvider
@@ -115,6 +116,11 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         invite_source_description?.setText(entourage.getInviteSourceDescription())
     }
 
+    private fun onReportEntourageButton() {
+        if (activity == null) return
+
+        EntourageReportFragment.newInstance(feedItem.id.toInt(),(feedItem is EntourageEvent)).show(parentFragmentManager,EntourageReportFragment.TAG)
+    }
 
     // ----------------------------------
     // Chat push notification
@@ -184,6 +190,40 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
                 entourage_option_promote?.visibility = View.VISIBLE
             }
         }
+    }
+
+    override fun initializeView() {
+        super.initializeView()
+        ui_bt_report_close?.setOnClickListener {
+            validateReport()
+        }
+
+        ui_bt_report_cancel?.setOnClickListener {
+            feedItem.uuid?.let { uuid ->
+                sendDeleteReport(uuid)
+            }
+        }
+
+        //Init buttons new pop report user
+        ui_bt_report?.setOnClickListener {
+            val reportFragment = EntourageReportFragment.newInstance(feedItem.id.toInt(), isEvent = false, isReportUser = true)
+            reportFragment.parentFragment = this
+            reportFragment.show(parentFragmentManager,EntourageReportFragment.TAG)
+        }
+
+        entourage_option_report?.setOnClickListener {onReportEntourageButton()}
+    }
+
+    override fun switchToPrivateSection() {
+        super.switchToPrivateSection()
+        if ((feedItem as? EntourageConversation)?.isDisplay_report_prompt == true) {
+            ui_layout_report.visibility = View.VISIBLE
+        }
+    }
+
+    fun validateReport() {
+        (entourage as? EntourageConversation)?.isDisplay_report_prompt = false
+        ui_layout_report.visibility = View.GONE
     }
 
     override fun addSpecificCards() {
@@ -464,8 +504,8 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             }
 
             val timestamps = ArrayList<String?>()
-            timestamps.add(getString(R.string.entourage_info_creation_time, formattedDaysIntervalFromToday(entourage.getCreationTime())))
-            if (!LocalDate(entourage.getCreationTime()).isEqual(LocalDate())) {
+            timestamps.add(getString(R.string.entourage_info_creation_time, formattedDaysIntervalFromToday(entourage.createdTime)))
+            if (!LocalDate(entourage.createdTime).isEqual(LocalDate())) {
                 timestamps.add(getString(R.string.entourage_info_update_time, formattedDaysIntervalFromToday(entourage.updatedTime)))
             }
             ui_tv_detail_action_last_update?.text = TextUtils.join(" - ", timestamps)
@@ -502,5 +542,18 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
     // API callbacks
     // ----------------------------------
     override fun setReadOnly() {
+    }
+
+    private fun sendDeleteReport(entourageUUID: String) {
+        val entourageRequest = EntourageApplication.get(requireContext()).entourageComponent.entourageRequest
+        val call = entourageRequest.removeUserReportPrompt(entourageUUID)
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                validateReport()
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            }
+        })
     }
 }

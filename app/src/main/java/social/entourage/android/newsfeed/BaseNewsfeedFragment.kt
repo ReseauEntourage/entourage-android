@@ -623,9 +623,12 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         if (!feedItem.isClosed()) {
             // close
             stopFeedItem(feedItem, event.isSuccess)
-        } else if (feedItem.type == TimestampedObject.TOUR_CARD && !feedItem.isFreezed()) {
-            // freeze
-            freezeTour(feedItem as Tour)
+        } else {
+            (feedItem as? Tour)?.let { tour ->
+                if (!tour.isFreezed()) {
+                    freezeTour(tour)
+                }
+            }
         }
     }
 

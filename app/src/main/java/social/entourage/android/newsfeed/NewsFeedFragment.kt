@@ -146,9 +146,7 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
     override fun onFeedItemClosed(closed: Boolean, updatedFeedItem: FeedItem) {
         if (closed) {
             refreshFeed()
-            if (fragment_map_main_layout != null) {
-                make(fragment_map_main_layout, updatedFeedItem.getClosedToastMessage(), Snackbar.LENGTH_SHORT).show()
-            }
+            fragment_map_main_layout?.let { layout -> make(layout, updatedFeedItem.getClosedToastMessage(), Snackbar.LENGTH_SHORT).show() }
         }
         loaderStop?.dismiss()
         loaderStop = null
