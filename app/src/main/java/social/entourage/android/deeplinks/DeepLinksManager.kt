@@ -7,10 +7,9 @@ import android.text.util.Linkify
 import android.widget.TextView
 import social.entourage.android.BuildConfig
 import social.entourage.android.MainActivity
-import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent
-import social.entourage.android.message.push.PushNotificationManager
+import social.entourage.android.message.push.EntourageFirebaseMessagingService
 import social.entourage.android.tools.BusProvider
 import social.entourage.android.user.edit.UserEditFragment
 import java.util.*
@@ -67,7 +66,7 @@ object DeepLinksManager {
             intent = null
             return
         }
-        handleDeepLink(activity, host.toLowerCase(), currentUri?.pathSegments)
+        handleDeepLink(activity, host.toLowerCase(Locale.ROOT), currentUri?.pathSegments)
     }
 
     /**
@@ -118,7 +117,7 @@ object DeepLinksManager {
             try {
                 var urlToOpen = currentUri?.getQueryParameter("url")
                 if (urlToOpen != null) {
-                    if (!urlToOpen.toLowerCase().startsWith("http")) {
+                    if (!urlToOpen.toLowerCase(Locale.ROOT).startsWith("http")) {
                         urlToOpen = "https://$urlToOpen"
                     }
                     activity.showFeed()
@@ -151,7 +150,7 @@ object DeepLinksManager {
     /**
      * Enum that contains the keywords our [DeepLinksManager] can manage
      */
-    private enum class DeepLinksView(val view: String) {
+    enum class DeepLinksView(val view: String) {
         DEEPLINK("deeplink"),
         ENTOURAGE("entourage"),
         ENTOURAGES("entourages"),
@@ -184,8 +183,8 @@ object DeepLinksManager {
         if (Intent.ACTION_VIEW == newIntent.action) {
             // Save the deep link intent
             intent = newIntent
-        } else if (extras != null && extras.containsKey(PushNotificationManager.KEY_CTA)) {
-            intent = Intent(Intent.ACTION_VIEW, Uri.parse(extras.getString(PushNotificationManager.KEY_CTA)))
+        } else if (extras != null && extras.containsKey(EntourageFirebaseMessagingService.KEY_CTA)) {
+            intent = Intent(Intent.ACTION_VIEW, Uri.parse(extras.getString(EntourageFirebaseMessagingService.KEY_CTA)))
         }
     }
 

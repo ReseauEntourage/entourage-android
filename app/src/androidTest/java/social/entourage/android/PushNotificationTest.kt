@@ -25,11 +25,6 @@ class PushNotificationTest {
     @Rule
     @JvmField
     val activityTestRule = ActivityTestRule(MainActivity::class.java, isAppStarted, isAppStarted)
-    //Staging
-    //private val entourageHash =
-    //private val entourageID = "2300"
-    //Prod
-    private val entourageHash = if(BuildConfig.FLAVOR_env=="prod") "eu_LTSFD6OEc" else "eP8v6B2UYM44"
     private val entourageID = if(BuildConfig.FLAVOR_env=="prod") "46569" else "2300"
 
     @Before
@@ -50,8 +45,10 @@ class PushNotificationTest {
         intent.action = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE
         val args = Bundle()
         val myobject = "title"
-        val content = "{\"extra\":{\"joinable_id\":"+entourageID+",\"joinable_type\":\"Entourage\",\"group_type\":\"action\",\"type\":\"NEW_CHAT_MESSAGE\"},\"message\":\"test\"}"
-        val message = Message("test Entourage", myobject, content,  0, null)
+        val content = "{\"extra\":{\"joinable_id\":$entourageID,\"joinable_type\":\"Entourage\",\"group_type\":\"action\",\"type\":\"NEW_CHAT_MESSAGE\"},\"message\":\"Notif vers entourage de test\"}"
+        val message = Message("testeur Entourage", myobject, content,  0, null)
+        //
+        PushNotificationManager.displayFCMPushNotification(BuildConfig.DEEP_LINKS_SCHEME + "://profile","InApp vers Profil", "Doit ouvrir le profil", getApplicationContext<Application>())
         //
         PushNotificationManager.handlePushNotification(message, getApplicationContext<Application>())
         //

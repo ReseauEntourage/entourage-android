@@ -11,22 +11,19 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import social.entourage.android.deeplinks.DeepLinksManager
 
 @RunWith(AndroidJUnit4::class)
-class DeepLinkingTest {
+open class DeepLinkingTest {
 
     private val isAppStarted = false
 
     @Rule
     @JvmField
     val activityTestRule = ActivityTestRule(MainActivity::class.java, isAppStarted, isAppStarted)
-    private val entourageHash = if(BuildConfig.FLAVOR_env=="prod") "eWvL7X0WfPug" else "eP8v6B2UYM44"
-    private val entourageID = if(BuildConfig.FLAVOR_env=="prod") "204" else "2300"
-    private val dmHash= if(BuildConfig.FLAVOR_env=="prod") "1_list_me-94" else "1_list_me-2790"
-    private val dmID=if(BuildConfig.FLAVOR_env=="prod") "51946" else "2013"
-    
-    private fun startIntent(intent: Intent) {
-        if(!isAppStarted) {
+
+    protected fun startIntent(intent: Intent) {
+        if (!isAppStarted) {
             activityTestRule.launchActivity(intent)
         } else {
             activityTestRule.activity.startActivity(intent)
@@ -44,26 +41,35 @@ class DeepLinkingTest {
         }*/
     }
 
+}
+
+class DeepLinkingTestCreateAction : DeepLinkingTest() {
+
+    private val link = DeepLinksManager.DeepLinksView.CREATE_ACTION.view
+
     @Test
     fun connectedCreateActionDeeplink() {
-        connectedCreateActionDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://create-action")
+        connectedCreateActionDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://" + link)
     }
 
     @Test
     fun connectedCreateActionDeeplinkHTTP() {
-        connectedCreateActionDeeplink("http://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/create-action")
+        connectedCreateActionDeeplink("http://${BuildConfig.DEEP_LINKS_URL}/deeplink/${link}")
     }
 
     @Test
     fun connectedCreateActionDeeplinkHTTPS() {
-        connectedCreateActionDeeplink("https://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/create-action")
+        connectedCreateActionDeeplink("https://${BuildConfig.DEEP_LINKS_URL}/deeplink/${link}")
     }
 
     private fun connectedCreateActionDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
-        Espresso.onView(ViewMatchers.withText(R.string.entourage_disclaimer_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withId(R.id.fragment_plus_overlay)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
+}
+
+class DeepLinkingTestBadge : DeepLinkingTest() {
 
     @Test
     fun connectedBadgeDeeplink() {
@@ -72,12 +78,12 @@ class DeepLinkingTest {
 
     @Test
     fun connectedBadgeDeeplinkHTTP() {
-        connectedBadgeDeeplink("http://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/badge")
+        connectedBadgeDeeplink("http://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/badge")
     }
 
     @Test
     fun connectedBadgeDeeplinkHTTPS() {
-        connectedBadgeDeeplink("https://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/badge")
+        connectedBadgeDeeplink("https://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/badge")
     }
 
     private fun connectedBadgeDeeplink(uri: String) {
@@ -85,6 +91,9 @@ class DeepLinkingTest {
         startIntent(intent)
         Espresso.onView(ViewMatchers.withText(R.string.user_profile_display_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
+}
+
+class DeepLinkingTestWebview : DeepLinkingTest() {
 
     @Test
     fun connectedWebviewDeeplink() {
@@ -93,12 +102,12 @@ class DeepLinkingTest {
 
     @Test
     fun connectedWebviewDeeplinkHTTP() {
-        connectedWebviewDeeplink("http://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/webview?url=http://www.google.com")
+        connectedWebviewDeeplink("http://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/webview?url=http://www.google.com")
     }
 
     @Test
     fun connectedWebviewDeeplinkHTTPS() {
-        connectedWebviewDeeplink("https://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/webview?url=http://www.google.com")
+        connectedWebviewDeeplink("https://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/webview?url=http://www.google.com")
     }
 
     private fun connectedWebviewDeeplink(uri: String) {
@@ -107,6 +116,9 @@ class DeepLinkingTest {
         Espresso.onView(ViewMatchers.withId(R.id.webview_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
+}
+
+class DeepLinkingTestPoneSettings : DeepLinkingTest() {
     @Test
     fun connectedPhoneSettingsDeeplink() {
         connectedPhoneSettingsDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://phone-settings")
@@ -114,12 +126,12 @@ class DeepLinkingTest {
 
     @Test
     fun connectedPhoneSettingsDeeplinkHTTP() {
-        connectedPhoneSettingsDeeplink("http://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/phone-settings")
+        connectedPhoneSettingsDeeplink("http://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/phone-settings")
     }
 
     @Test
     fun connectedPhoneSettingsDeeplinkHTTPS() {
-        connectedPhoneSettingsDeeplink("https://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/phone-settings")
+        connectedPhoneSettingsDeeplink("https://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/phone-settings")
     }
 
     private fun connectedPhoneSettingsDeeplink(uri: String) {
@@ -127,6 +139,9 @@ class DeepLinkingTest {
         startIntent(intent)
         Espresso.onView(ViewMatchers.withId(R.id.fragment_map_top_tab)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
+}
+
+class DeepLinkingTestFilters : DeepLinkingTest() {
 
     @Test
     fun connectedFeedFilterDeeplink() {
@@ -135,12 +150,12 @@ class DeepLinkingTest {
 
     @Test
     fun connectedFeedFilterDeeplinkHTTP() {
-        connectedFeedFilterDeeplink("http://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/feed/filters")
+        connectedFeedFilterDeeplink("http://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/feed/filters")
     }
 
     @Test
     fun connectedFeedFilterDeeplinkHTTPS() {
-        connectedFeedFilterDeeplink("https://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/feed/filters")
+        connectedFeedFilterDeeplink("https://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/feed/filters")
     }
 
     private fun connectedFeedFilterDeeplink(uri: String) {
@@ -148,6 +163,9 @@ class DeepLinkingTest {
         startIntent(intent)
         Espresso.onView(ViewMatchers.withText(R.string.map_filter_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
+}
+
+class DeepLinkingTestEvents : DeepLinkingTest() {
 
     @Test
     fun connectedEventsDeeplink() {
@@ -156,12 +174,12 @@ class DeepLinkingTest {
 
     @Test
     fun connectedEventsDeeplinkHTTP() {
-        connectedEventsDeeplink("http://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/events")
+        connectedEventsDeeplink("http://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/events")
     }
 
     @Test
     fun connectedEventsDeeplinkHTTPS() {
-        connectedEventsDeeplink("https://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/events")
+        connectedEventsDeeplink("https://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/events")
     }
 
     private fun connectedEventsDeeplink(uri: String) {
@@ -169,7 +187,9 @@ class DeepLinkingTest {
         startIntent(intent)
         Espresso.onView(ViewMatchers.withText(R.string.map_tab_events)).check(ViewAssertions.matches(ViewMatchers.isSelected()))
     }
+}
 
+class DeepLinkingTestFeed : DeepLinkingTest() {
     @Test
     fun connectedFeedDeeplink() {
         connectedFeedDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://feed")
@@ -177,12 +197,12 @@ class DeepLinkingTest {
 
     @Test
     fun connectedFeedDeeplinkHTTP() {
-        connectedFeedDeeplink("http://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/feed")
+        connectedFeedDeeplink("http://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/feed")
     }
 
     @Test
     fun connectedFeedDeeplinkHTTPS() {
-        connectedFeedDeeplink("https://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/feed")
+        connectedFeedDeeplink("https://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/feed")
     }
 
     private fun connectedFeedDeeplink(uri: String) {
@@ -190,225 +210,233 @@ class DeepLinkingTest {
         startIntent(intent)
         Espresso.onView(ViewMatchers.withId(R.id.fragment_map_top_tab)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
+}
+
+class DeepLinkingTestEntourage : DeepLinkingTest() {
+
+    private val entourageID = if (BuildConfig.FLAVOR_env == "prod") "204" else "2300"
+    private val entourageHash = if (BuildConfig.FLAVOR_env == "prod") "eWvL7X0WfPug" else "eP8v6B2UYM44"
+    private val dmHash = if (BuildConfig.FLAVOR_env == "prod") "1_list_me-94" else "1_list_me-2790"
+    private val dmID = if (BuildConfig.FLAVOR_env == "prod") "51946" else "2013"
 
     @Test
     fun connectedEntouragesIdDeeplinkHTTP() {
-        connectedEntourageDeeplinkHTTP("entourages",entourageID)
+        connectedEntourageDeeplinkHTTP("entourages", entourageID)
     }
 
     @Test
     fun connectedEntouragesHashDeeplinkHTTP() {
-        connectedEntourageDeeplinkHTTP("entourages",entourageHash)
+        connectedEntourageDeeplinkHTTP("entourages", entourageHash)
     }
 
     @Test
     fun connectedEntourageIdDeeplinkHTTP() {
-        connectedEntourageDeeplinkHTTP("entourage",entourageID)
+        connectedEntourageDeeplinkHTTP("entourage", entourageID)
     }
 
     @Test
     fun connectedEntourageHashDeeplinkHTTP() {
-        connectedEntourageDeeplinkHTTP("entourage",entourageHash)
+        connectedEntourageDeeplinkHTTP("entourage", entourageHash)
     }
 
     @Test
     fun connectedEntouragesIdHTTP() {
-        connectedEntourageHTTP("entourages",entourageID)
+        connectedEntourageHTTP("entourages", entourageID)
     }
 
     @Test
     fun connectedEntouragesHashHTTP() {
-        connectedEntourageHTTP("entourages",entourageHash)
+        connectedEntourageHTTP("entourages", entourageHash)
     }
 
     @Test
     fun connectedEntourageIdHTTP() {
-        connectedEntourageHTTP("entourage",entourageID)
+        connectedEntourageHTTP("entourage", entourageID)
     }
 
     @Test
     fun connectedEntourageHashHTTP() {
-        connectedEntourageHTTP("entourage",entourageHash)
+        connectedEntourageHTTP("entourage", entourageHash)
     }
 
     @Test
     fun connectedEntouragesIdHTTPS() {
-        connectedEntourageHTTPS("entourages",entourageID)
+        connectedEntourageHTTPS("entourages", entourageID)
     }
 
     @Test
     fun connectedEntouragesHashHTTPS() {
-        connectedEntourageHTTPS("entourages",entourageHash)
+        connectedEntourageHTTPS("entourages", entourageHash)
     }
 
     @Test
     fun connectedEntourageIdHTTPS() {
-        connectedEntourageHTTPS("entourage",entourageID)
+        connectedEntourageHTTPS("entourage", entourageID)
     }
 
     @Test
     fun connectedEntourageHashHTTPS() {
-        connectedEntourageHTTPS("entourage",entourageHash)
+        connectedEntourageHTTPS("entourage", entourageHash)
     }
 
     @Test
     fun connectedEntouragesIdDeeplinkHTTPS() {
-        connectedEntourageDeeplinkHTTPS("entourages",entourageID)
+        connectedEntourageDeeplinkHTTPS("entourages", entourageID)
     }
 
     @Test
     fun connectedEntouragesHashDeeplinkHTTPS() {
-        connectedEntourageDeeplinkHTTPS("entourages",entourageHash)
+        connectedEntourageDeeplinkHTTPS("entourages", entourageHash)
     }
 
     @Test
     fun connectedEntourageIdDeeplinkHTTPS() {
-        connectedEntourageDeeplinkHTTPS("entourage",entourageID)
+        connectedEntourageDeeplinkHTTPS("entourage", entourageID)
     }
 
     @Test
     fun connectedEntourageHashDeeplinkHTTPS() {
-        connectedEntourageDeeplinkHTTPS("entourage",entourageHash)
+        connectedEntourageDeeplinkHTTPS("entourage", entourageHash)
     }
 
     @Test
     fun connectedEntouragesIdDeeplink() {
-        connectedEntourageDeeplink("entourages",entourageID)
+        connectedEntourageDeeplink("entourages", entourageID)
     }
 
     @Test
     fun connectedEntouragesHashDeeplink() {
-        connectedEntourageDeeplink("entourages",entourageHash)
+        connectedEntourageDeeplink("entourages", entourageHash)
     }
 
     @Test
     fun connectedEntourageIdDeeplink() {
-        connectedEntourageDeeplink("entourage",entourageID)
+        connectedEntourageDeeplink("entourage", entourageID)
     }
 
     @Test
     fun connectedEntourageHashDeeplink() {
-        connectedEntourageDeeplink("entourage",entourageHash)
+        connectedEntourageDeeplink("entourage", entourageHash)
     }
 
     @Test
     fun connectedDMsIdDeeplinkHTTP() {
-        connectedEntourageDeeplinkHTTP("entourages",dmID)
+        connectedEntourageDeeplinkHTTP("entourages", dmID)
     }
 
     @Test
     fun connectedDMsHashDeeplinkHTTP() {
-        connectedEntourageDeeplinkHTTP("entourages",dmHash)
+        connectedEntourageDeeplinkHTTP("entourages", dmHash)
     }
 
     @Test
     fun connectedDMIdDeeplinkHTTP() {
-        connectedEntourageDeeplinkHTTP("entourage",dmID)
+        connectedEntourageDeeplinkHTTP("entourage", dmID)
     }
 
     @Test
     fun connectedDMHashDeeplinkHTTP() {
-        connectedEntourageDeeplinkHTTP("entourage",dmHash)
+        connectedEntourageDeeplinkHTTP("entourage", dmHash)
     }
 
     @Test
     fun connectedDMsIdHTTP() {
-        connectedEntourageHTTP("entourages",dmID)
+        connectedEntourageHTTP("entourages", dmID)
     }
 
     @Test
     fun connectedDMsHashHTTP() {
-        connectedEntourageHTTP("entourages",dmHash)
+        connectedEntourageHTTP("entourages", dmHash)
     }
 
     @Test
     fun connectedDMIdHTTP() {
-        connectedEntourageHTTP("entourage",dmID)
+        connectedEntourageHTTP("entourage", dmID)
     }
 
     @Test
     fun connectedDMHashHTTP() {
-        connectedEntourageHTTP("entourage",dmHash)
+        connectedEntourageHTTP("entourage", dmHash)
     }
 
     @Test
     fun connectedDMsIdHTTPS() {
-        connectedEntourageHTTPS("entourages",dmID)
+        connectedEntourageHTTPS("entourages", dmID)
     }
 
     @Test
     fun connectedDMsHashHTTPS() {
-        connectedEntourageHTTPS("entourages",dmHash)
+        connectedEntourageHTTPS("entourages", dmHash)
     }
 
     @Test
     fun connectedDMIdHTTPS() {
-        connectedEntourageHTTPS("entourage",dmID)
+        connectedEntourageHTTPS("entourage", dmID)
     }
 
     @Test
     fun connectedDMHashHTTPS() {
-        connectedEntourageHTTPS("entourage",dmHash)
+        connectedEntourageHTTPS("entourage", dmHash)
     }
 
     @Test
     fun connectedDMsIdDeeplinkHTTPS() {
-        connectedEntourageDeeplinkHTTPS("entourages",dmID)
+        connectedEntourageDeeplinkHTTPS("entourages", dmID)
     }
 
     @Test
     fun connectedDMsHashDeeplinkHTTPS() {
-        connectedEntourageDeeplinkHTTPS("entourages",dmHash)
+        connectedEntourageDeeplinkHTTPS("entourages", dmHash)
     }
 
     @Test
     fun connectedDMIdDeeplinkHTTPS() {
-        connectedEntourageDeeplinkHTTPS("entourage",dmID)
+        connectedEntourageDeeplinkHTTPS("entourage", dmID)
     }
 
     @Test
     fun connectedDMHashDeeplinkHTTPS() {
-        connectedEntourageDeeplinkHTTPS("entourage",dmHash)
+        connectedEntourageDeeplinkHTTPS("entourage", dmHash)
     }
 
     @Test
     fun connectedDMsIdDeeplink() {
-        connectedEntourageDeeplink("entourages",dmID)
+        connectedEntourageDeeplink("entourages", dmID)
     }
 
     @Test
     fun connectedDMsHashDeeplink() {
-        connectedEntourageDeeplink("entourages",dmHash)
+        connectedEntourageDeeplink("entourages", dmHash)
     }
 
     @Test
     fun connectedDMIdDeeplink() {
-        connectedEntourageDeeplink("entourage",dmID)
+        connectedEntourageDeeplink("entourage", dmID)
     }
 
     @Test
     fun connectedDMHashDeeplink() {
-        connectedEntourageDeeplink("entourage",dmHash)
+        connectedEntourageDeeplink("entourage", dmHash)
     }
 
-    private fun connectedEntourageDeeplink(key:String, id: String) {
-        connectedEntourageDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://"+key+"/"+id)
+    private fun connectedEntourageDeeplink(key: String, id: String) {
+        connectedEntourageDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://" + key + "/" + id)
     }
 
-    private fun connectedEntourageDeeplinkHTTP(key:String, id: String) {
-        connectedEntourageDeeplink("http://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/"+key+"/"+id)
+    private fun connectedEntourageDeeplinkHTTP(key: String, id: String) {
+        connectedEntourageDeeplink("http://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/" + key + "/" + id)
     }
 
-    private fun connectedEntourageHTTP(key:String, id: String) {
-        connectedEntourageDeeplink("http://"+ BuildConfig.DEEP_LINKS_URL + "/"+key+"/"+id)
+    private fun connectedEntourageHTTP(key: String, id: String) {
+        connectedEntourageDeeplink("http://" + BuildConfig.DEEP_LINKS_URL + "/" + key + "/" + id)
     }
 
-    private fun connectedEntourageDeeplinkHTTPS(key:String, id: String) {
-        connectedEntourageDeeplink("https://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/"+key+"/"+id)
+    private fun connectedEntourageDeeplinkHTTPS(key: String, id: String) {
+        connectedEntourageDeeplink("https://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/" + key + "/" + id)
     }
 
-    private fun connectedEntourageHTTPS(key:String, id: String) {
-        connectedEntourageDeeplink("https://"+ BuildConfig.DEEP_LINKS_URL + "/"+key+"/"+id)
+    private fun connectedEntourageHTTPS(key: String, id: String) {
+        connectedEntourageDeeplink("https://" + BuildConfig.DEEP_LINKS_URL + "/" + key + "/" + id)
     }
 
     private fun connectedEntourageDeeplink(uri: String) {
@@ -416,6 +444,9 @@ class DeepLinkingTest {
         startIntent(intent)
         Espresso.onView(ViewMatchers.withId(R.id.entourage_info_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
+}
+
+class DeepLinkingTestMessages : DeepLinkingTest() {
 
     @Test
     fun connectedMessagesDeeplink() {
@@ -424,12 +455,12 @@ class DeepLinkingTest {
 
     @Test
     fun connectedMessagesDeeplinkHTTP() {
-        connectedMessagesDeeplink("http://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/messages")
+        connectedMessagesDeeplink("http://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/messages")
     }
 
     @Test
     fun connectedMessagesDeeplinkHTTPS() {
-        connectedMessagesDeeplink("https://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/messages")
+        connectedMessagesDeeplink("https://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/messages")
     }
 
     private fun connectedMessagesDeeplink(uri: String) {
@@ -437,20 +468,24 @@ class DeepLinkingTest {
         startIntent(intent)
         Espresso.onView(ViewMatchers.withId(R.id.myentourages_tab)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
+}
+
+class DeepLinkingTestTutorial : DeepLinkingTest() {
+    private val link = DeepLinksManager.DeepLinksView.TUTORIAL.view
 
     @Test
     fun connectedTutorialDeeplink() {
-        connectedTutorialDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://tutorial")
+        connectedTutorialDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://" + link)
     }
 
     @Test
     fun connectedTutorialDeeplinkHTTP() {
-        connectedTutorialDeeplink("http://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/tutorial")
+        connectedTutorialDeeplink("http://${BuildConfig.DEEP_LINKS_URL}/deeplink/${link}")
     }
 
     @Test
     fun connectedTutorialDeeplinkHTTPS() {
-        connectedTutorialDeeplink("https://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/tutorial")
+        connectedTutorialDeeplink("https://${BuildConfig.DEEP_LINKS_URL}/deeplink/${link}")
     }
 
     private fun connectedTutorialDeeplink(uri: String) {
@@ -459,6 +494,9 @@ class DeepLinkingTest {
         Espresso.onView(ViewMatchers.withId(R.id.carousel_indicator_layout)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
+}
+
+class DeepLinkingTestGuide : DeepLinkingTest() {
     @Test
     fun connectedGuideDeeplink() {
         connectedGuideDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://guide")
@@ -466,20 +504,23 @@ class DeepLinkingTest {
 
     @Test
     fun connectedGuideDeeplinkHTTP() {
-        connectedGuideDeeplink("http://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/guide")
+        connectedGuideDeeplink("http://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/guide")
     }
 
     @Test
     fun connectedGuideDeeplinkHTTPS() {
-        connectedGuideDeeplink("https://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/guide")
+        connectedGuideDeeplink("https://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/guide")
     }
 
     private fun connectedGuideDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
-        Espresso.onView(ViewMatchers.withId(R.id.button_poi_propose)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withId(R.id.ui_title_top)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
+}
+
+class DeepLinkingTestProfile : DeepLinkingTest() {
     @Test
     fun connectedProfileDeeplink() {
         connectedProfileDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://profile")
@@ -487,12 +528,12 @@ class DeepLinkingTest {
 
     @Test
     fun connectedProfileDeeplinkHTTP() {
-        connectedProfileDeeplink("http://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/profile")
+        connectedProfileDeeplink("http://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/profile")
     }
 
     @Test
     fun connectedProfileDeeplinkHTTPS() {
-        connectedProfileDeeplink("https://"+ BuildConfig.DEEP_LINKS_URL + "/deeplink/profile")
+        connectedProfileDeeplink("https://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/profile")
     }
 
     private fun connectedProfileDeeplink(uri: String) {
@@ -500,6 +541,9 @@ class DeepLinkingTest {
         startIntent(intent)
         Espresso.onView(ViewMatchers.withText(R.string.user_profile_display_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
+}
+
+class DeepLinkingTestGeneric : DeepLinkingTest() {
 
     @Test
     fun connectedWrongProfileDeeplink() {

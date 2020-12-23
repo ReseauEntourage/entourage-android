@@ -33,7 +33,6 @@ object PushNotificationManager {
     // CONSTANTS
     // ----------------------------------
     const val PUSH_MESSAGE = "social.entourage.android.PUSH_MESSAGE"
-    const val KEY_CTA = "entourage_cta"
 
     private const val MIN_NOTIFICATION_ID = 40
     private const val PREFERENCE_LAST_NOTIFICATION_ID = "PREFERENCE_LAST_NOTIFICATION_ID"
@@ -264,8 +263,7 @@ object PushNotificationManager {
         NotificationManagerCompat.from(context).notify(message.pushNotificationTag, message.pushNotificationId, notification)
     }
 
-    fun displayPushNotification(fcmMessage: RemoteMessage, context: Context) {
-        val notif = fcmMessage.notification ?: return
+    fun displayFCMPushNotification(fcmCTA:String, fcmTitle: String?, fcmBody: String?, context: Context) {
         val channelId = context.getString(R.string.app_name)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(channelId, channelId, NotificationManager.IMPORTANCE_DEFAULT)
@@ -276,13 +274,13 @@ object PushNotificationManager {
             notificationChannel.lightColor = Color.RED
             NotificationManagerCompat.from(context).createNotificationChannel(notificationChannel)
         }
-        val ctaIntent = Intent(Intent.ACTION_VIEW, Uri.parse(fcmMessage.data[KEY_CTA]))
+        val ctaIntent = Intent(Intent.ACTION_VIEW, Uri.parse(fcmCTA))
         val builder = NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) R.drawable.ic_entourage_logo_one_color else R.mipmap.ic_launcher)
                 .setContentIntent(PendingIntent.getActivity(context, 0, ctaIntent, PendingIntent.FLAG_UPDATE_CURRENT))
                 .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.ic_entourage_logo_two_colors))
-                .setContentTitle(notif.title)
-                .setContentText(notif.body)
+                .setContentTitle(fcmTitle)
+                .setContentText(fcmBody)
         val notification = builder.build()
         notification.defaults = NotificationCompat.DEFAULT_LIGHTS
         notification.flags = NotificationCompat.FLAG_AUTO_CANCEL or NotificationCompat.FLAG_SHOW_LIGHTS
