@@ -23,6 +23,8 @@ import social.entourage.android.api.model.User
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.location.LocationUtils.isLocationEnabled
 import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
+import timber.log.Timber
+import java.io.IOException
 import java.util.*
 
 open class LoginPlaceFragment : EntourageDialogFragment() {
@@ -162,20 +164,24 @@ open class LoginPlaceFragment : EntourageDialogFragment() {
 
     fun updateLocationText() {
         val geocoder = Geocoder(activity, Locale.getDefault())
-        val address = geocoder.getFromLocation(temporaryLocation!!.latitude,temporaryLocation!!.longitude,1)
+        ui_onboard_place_tv_location?.text = ""
+        ui_onboard_place_tv_location?.hint = getString(R.string.onboard_place_placeholder)
+        temporaryLocation?.let {
+            try {
+                val address = geocoder.getFromLocation(it.latitude,it.longitude,1)
+                if (address != null && address.size > 0) {
+                    val street = address[0].thoroughfare
+                    val city = address[0].locality
+                    val cp = address[0].postalCode
 
-        if (address.size > 0) {
-            val street = address[0].thoroughfare
-            val city = address[0].locality
-            val cp = address[0].postalCode
+                    temporaryAddressName = "$street - $city - $cp"
+                    ui_onboard_place_tv_location?.text = temporaryAddressName
+                }
+            } catch (e: IOException) {
+                Timber.e(e)
+            }
+        }
 
-            temporaryAddressName = "$street - $city - $cp"
-            ui_onboard_place_tv_location?.text = temporaryAddressName
-        }
-        else {
-            ui_onboard_place_tv_location?.text = ""
-            ui_onboard_place_tv_location?.hint = getString(R.string.onboard_place_placeholder)
-        }
         updateCallback()
     }
 

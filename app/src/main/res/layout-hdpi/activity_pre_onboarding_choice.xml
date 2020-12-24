@@ -8,19 +8,20 @@
     tools:context="social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity">
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/imageMosaic"
         android:layout_width="0dp"
         android:layout_height="200dp"
         android:adjustViewBounds="true"
+        android:contentDescription="@string/empty_description"
         android:cropToPadding="true"
         android:scaleType="centerCrop"
-        android:contentDescription="@string/empty_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/pre_onboard_mosaic" />
 
     <FrameLayout
+        android:id="@+id/boxRoundedTop"
         android:layout_width="0dp"
         android:layout_height="18dp"
         android:layout_marginTop="190dp"
@@ -45,6 +46,7 @@
         android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/ui_button_login"
+        app:layout_constraintTop_toBottomOf="@id/textPunchline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -60,6 +62,7 @@
         android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/ui_button_about"
+        app:layout_constraintTop_toBottomOf="@id/ui_button_signup"
         app:layout_constraintEnd_toEndOf="@+id/ui_button_signup"
         app:layout_constraintStart_toStartOf="@+id/ui_button_signup" />
 
@@ -75,22 +78,24 @@
         android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ui_button_login"
         app:layout_constraintEnd_toEndOf="@+id/ui_button_login"
         app:layout_constraintStart_toStartOf="@+id/ui_button_login" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/logoEntourage"
         android:layout_width="172dp"
         android:layout_height="120dp"
         android:layout_marginTop="20dp"
         android:contentDescription="@string/empty_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        app:layout_constraintTop_toBottomOf="@+id/imageMosaic"
+        app:layout_constraintBottom_toTopOf="@id/textPunchline"
         app:srcCompat="@drawable/logo_entourage_txt" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textPunchline"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="62dp"
@@ -102,6 +107,7 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+        app:layout_constraintBottom_toTopOf="@id/ui_button_signup"
+        app:layout_constraintTop_toBottomOf="@+id/logoEntourage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
