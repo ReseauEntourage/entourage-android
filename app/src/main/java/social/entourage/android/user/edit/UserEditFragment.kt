@@ -399,8 +399,12 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
         if (activity?.isFinishing == true || this.isDetached) {
             return
         }
-        displayToast(getString(R.string.user_text_update_ok))
-        dismiss()
+        try {
+            displayToast(getString(R.string.user_text_update_ok))
+            dismiss()
+        } catch (e: IllegalStateException) {
+            Timber.w(e)
+        }
     }
 
     fun onUserUpdateError() {
