@@ -39,6 +39,7 @@ class ReadPoiPresenter @Inject constructor(private val fragment: ReadPoiFragment
     }
 
     fun displayPoi(poi: Poi) {
+        if(!fragment.isAdded) return
         fragment.activity?.let { activity->
             val listenerAddress = poi.address?.let { OnAddressClickListener(activity, it) }
             val listenerPhone = poi.phone?.let { OnPhoneClickListener(it) }
