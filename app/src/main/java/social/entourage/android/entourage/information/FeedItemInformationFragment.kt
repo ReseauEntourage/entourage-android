@@ -49,12 +49,8 @@ import kotlinx.android.synthetic.main.layout_invite_source.*
 import kotlinx.android.synthetic.main.layout_private_entourage_information.*
 import kotlinx.android.synthetic.main.layout_public_entourage_header.*
 import kotlinx.android.synthetic.main.layout_public_entourage_information.*
-import okhttp3.ResponseBody
 import org.joda.time.Days
 import org.joda.time.LocalDate
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import social.entourage.android.*
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.feed.*
@@ -65,13 +61,12 @@ import social.entourage.android.entourage.ShareEntourageFragment
 import social.entourage.android.entourage.create.BaseCreateEntourageFragment
 import social.entourage.android.entourage.information.discussion.DiscussionAdapter
 import social.entourage.android.entourage.information.members.MembersAdapter
-import social.entourage.android.entourage.information.report.EntourageReportFragment
 import social.entourage.android.entourage.invite.InviteFriendsListener
 import social.entourage.android.entourage.invite.contacts.InviteContactsFragment
 import social.entourage.android.location.EntourageLocation
 import social.entourage.android.service.EntourageService
 import social.entourage.android.service.EntourageServiceListener
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.tools.EntourageError
 import social.entourage.android.tools.log.EntourageEvents
@@ -265,7 +260,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             onSwitchSections()
         } else {
             // inform the app to refresh the my entourages feed
-            BusProvider.instance.post(OnMyEntouragesForceRefresh(feedItem))
+            EntBus.post(OnMyEntouragesForceRefresh(feedItem))
             try {
                 dismiss()
             } catch (e: IllegalStateException) {
@@ -291,7 +286,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         if (feedItem is EntourageConversation) {
             if (showInfoButton) {
                 // only if this screen wasn't shown from the profile page
-                feedItem.author?.let {BusProvider.instance.post(OnUserViewRequestedEvent(it.userID))}
+                feedItem.author?.let {EntBus.post(OnUserViewRequestedEvent(it.userID))}
             }
         } else {
             // Switch sections
@@ -323,7 +318,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
 
     private fun onAuthorClicked() {
         feedItem.author?.let {
-            BusProvider.instance.post(OnUserViewRequestedEvent(it.userID))
+            EntBus.post(OnUserViewRequestedEvent(it.userID))
         }
     }
 
@@ -903,10 +898,10 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
                     entourage_info_request_join_layout?.visibility = View.VISIBLE
 //                    entourage_info_request_join_title?.setText(feedItem.getJoinRequestTitle())
                     if (feedItem is EntourageEvent) {
-                        entourage_info_request_join_button?.setText(getString(R.string.tour_info_request_join_button_entourage).toUpperCase())
+                        entourage_info_request_join_button?.text = getString(R.string.tour_info_request_join_button_entourage).toUpperCase()
                     }
                     else {
-                        entourage_info_request_join_button?.setText(getString(R.string.tour_info_request_join_button2_entourage).toUpperCase())
+                        entourage_info_request_join_button?.text = getString(R.string.tour_info_request_join_button2_entourage).toUpperCase()
                     }
                    // entourage_info_request_join_button?.setText(feedItem.getJoinRequestButton())
 
@@ -1220,7 +1215,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
             }
 
             // Post an event
-            BusProvider.instance.post(OnInvitationStatusChanged(feedItem, status))
+            EntBus.post(OnInvitationStatusChanged(feedItem, status))
         } else if (!acceptInvitationSilently) {
             entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.invited_updated_error, Snackbar.LENGTH_SHORT).show()}
         }

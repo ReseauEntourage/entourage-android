@@ -19,12 +19,10 @@ import com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListe
 import com.google.maps.android.clustering.view.DefaultClusterRenderer
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_guide_map.*
-import kotlinx.android.synthetic.main.fragment_guide_map.fragment_map_longclick
 import kotlinx.android.synthetic.main.layout_guide_longclick.*
 import social.entourage.android.*
 import social.entourage.android.api.ApiConnectionListener
 import social.entourage.android.api.model.guide.Poi
-import social.entourage.android.api.model.guide.Category
 import social.entourage.android.api.tape.EntouragePoiRequest.OnPoiViewRequestedEvent
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted
 import social.entourage.android.api.tape.Events.OnSolidarityGuideFilterChanged
@@ -40,7 +38,7 @@ import social.entourage.android.location.EntourageLocation
 import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
 import social.entourage.android.map.BaseMapFragment
 import social.entourage.android.service.EntourageService
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.Utils
 import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.tools.view.EntourageSnackbar
@@ -95,18 +93,18 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         connection.doBindService()
         presenter.start()
         showInfoPopup()
-        BusProvider.instance.register(this)
+        EntBus.register(this)
     }
 
     override fun onResume() {
         super.onResume()
         val isLocationGranted = isLocationPermissionGranted()
-        BusProvider.instance.post(OnLocationPermissionGranted(isLocationGranted))
+        EntBus.post(OnLocationPermissionGranted(isLocationGranted))
     }
 
     override fun onStop() {
         super.onStop()
-        BusProvider.instance.unregister(this)
+        EntBus.unregister(this)
     }
 
     override fun onDestroy() {
@@ -379,7 +377,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     private fun initializePOIList() {
         fragment_guide_pois_view?.layoutManager = LinearLayoutManager(context)
         onMapReadyCallback?.let { poisAdapter.setOnMapReadyCallback(it) }
-        poisAdapter.setOnFollowButtonClickListener({ onFollowGeolocation() })
+        poisAdapter.setOnFollowButtonClickListener { onFollowGeolocation() }
         fragment_guide_pois_view?.adapter = poisAdapter
     }
 
@@ -484,7 +482,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     // ----------------------------------
     inner class OnEntourageMarkerClickListener : OnClusterItemClickListener<Poi> {
         override fun onClusterItemClick(poi: Poi): Boolean {
-            Timber.d("***** On cluster item click ? ${poi}")
+            Timber.d("***** On cluster item click ? $poi")
             showPoiDetails(poi)
             return true
         }

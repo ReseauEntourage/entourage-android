@@ -1,7 +1,6 @@
 package social.entourage.android.api.model
 
 import com.google.gson.annotations.SerializedName
-import timber.log.Timber
 import java.io.Serializable
 
 /**

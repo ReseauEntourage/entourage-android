@@ -40,7 +40,7 @@ import social.entourage.android.location.EntourageLocation
 import social.entourage.android.location.LocationUpdateListener
 import social.entourage.android.location.LocationUtils.isLocationEnabled
 import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import timber.log.Timber
 
 abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPressable, LocationUpdateListener {
@@ -99,7 +99,7 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
         if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
             for (index in permissions.indices) {
                 if (permissions[index].equals(permission.ACCESS_FINE_LOCATION, ignoreCase = true)) {
-                    BusProvider.instance.post(OnLocationPermissionGranted(grantResults[index] == PackageManager.PERMISSION_GRANTED))
+                    EntBus.post(OnLocationPermissionGranted(grantResults[index] == PackageManager.PERMISSION_GRANTED))
                 }
             }
         }

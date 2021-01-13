@@ -24,8 +24,7 @@ class UserMembership : Serializable {
 
     //TODO Return an UUID from the server
     val membershipUUID: String
-        get() =//TODO Return an UUID from the server
-            membershipId.toString()
+        get() = membershipId.toString()
 
     fun getIconDrawable(context: Context?): Drawable? {
         return when {

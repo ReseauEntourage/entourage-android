@@ -49,14 +49,12 @@ class GuideFilter private constructor() : Serializable {
 
     val requestedPartnerFilters: String?
         get() {
-            var existingFilteredCategories = false
-
             var filters:String? = null
             if (isPartnersSelected) {
                 if (isDonationsSelected) {
                     filters = "donations"
                     if (isVolunteersSelected) {
-                        filters = filters + ",volunteers"
+                        filters += ",volunteers"
                     }
                 }
                 else if (isVolunteersSelected) {

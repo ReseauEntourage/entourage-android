@@ -7,7 +7,7 @@ import social.entourage.android.api.tape.EncounterTapeTaskQueue
 import social.entourage.android.api.tape.EncounterTaskResult
 import social.entourage.android.api.tape.EncounterTaskResult.OperationType
 import social.entourage.android.authentication.AuthenticationController
-import social.entourage.android.tools.BusProvider.instance
+import social.entourage.android.tools.EntBus
 import java.io.Serializable
 import java.util.*
 import javax.inject.Inject
@@ -91,13 +91,13 @@ class CreateEncounterPresenter
         override fun execute(callback: EncounterUploadCallback?) {
             if(callback==null) return
             this.callback = callback
-            instance.register(this)
-            instance.post(this)
+            EntBus.register(this)
+            EntBus.post(this)
         }
 
         @Subscribe
         fun taskResult(result: EncounterTaskResult) {
-            instance.unregister(this)
+            EntBus.unregister(this)
             val resultEncounter = result.encounter
             val operationType = result.operationType
             if (encounter.creationDate == resultEncounter.creationDate) {

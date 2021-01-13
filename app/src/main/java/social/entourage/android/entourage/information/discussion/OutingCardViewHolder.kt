@@ -8,7 +8,7 @@ import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,7 +28,7 @@ class OutingCardViewHolder(view: View) : BaseCardViewHolder(view) {
 
     private fun onClick() {
         if (outingUUID.isNullOrEmpty()) return
-        BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(TimestampedObject.ENTOURAGE_CARD, outingUUID, null))
+        EntBus.post(OnFeedItemInfoViewRequestedEvent(TimestampedObject.ENTOURAGE_CARD, outingUUID, null))
     }
 
     override fun populate(data: TimestampedObject) {

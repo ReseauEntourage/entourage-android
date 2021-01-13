@@ -4,11 +4,10 @@ import android.app.Activity
 import kotlinx.android.synthetic.main.layout_entourage_options.*
 import social.entourage.android.MainActivity
 import social.entourage.android.R
-import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.OnFeedItemCloseRequestEvent
 import social.entourage.android.entourage.FeedItemOptionsFragment
-import social.entourage.android.tools.BusProvider.instance
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.Utils.getDateStringFromSeconds
 import java.util.*
 
@@ -55,7 +54,7 @@ class TourOptionsFragment : FeedItemOptionsFragment() {
             //hide the options
             dismiss()
         } else if (tour.isClosed()) {
-            instance.post(OnFeedItemCloseRequestEvent(tour, showUI = false, success = true))
+            EntBus.post(OnFeedItemCloseRequestEvent(tour, showUI = false, success = true))
             dismiss()
         }
     }

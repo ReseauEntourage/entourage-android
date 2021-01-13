@@ -30,7 +30,7 @@ import social.entourage.android.base.EntourageSecuredActivity
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted
 import social.entourage.android.base.EntourageDialogFragment
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import timber.log.Timber
 import java.io.IOException
 import java.lang.ref.WeakReference
@@ -114,7 +114,7 @@ class LocationFragment  : EntourageDialogFragment() {
             for (index in permissions.indices) {
                 if (permissions[index].equals(permission.ACCESS_FINE_LOCATION, ignoreCase = true)) {
                     val isGranted = grantResults[index] == PackageManager.PERMISSION_GRANTED
-                    BusProvider.instance.post(OnLocationPermissionGranted(isGranted))
+                    EntBus.post(OnLocationPermissionGranted(isGranted))
                     try {
                         map?.isMyLocationEnabled = isGranted
                     } catch (ex: SecurityException) {

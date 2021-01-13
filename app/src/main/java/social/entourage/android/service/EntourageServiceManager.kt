@@ -29,7 +29,7 @@ import social.entourage.android.location.LocationProvider.UserType
 import social.entourage.android.map.filter.MapFilterFactory.mapFilter
 import social.entourage.android.newsfeed.NewsfeedPagination
 import social.entourage.android.newsfeed.NewsfeedTabItem
-import social.entourage.android.tools.BusProvider.instance
+import social.entourage.android.tools.EntBus
 import timber.log.Timber
 import java.util.*
 
@@ -69,7 +69,7 @@ open class EntourageServiceManager(
 
     fun unregisterFromBus() {
         try {
-            instance.unregister(this)
+            EntBus.unregister(this)
         } catch (e: IllegalArgumentException) {
             Timber.d("No need to unregister")
         }
@@ -228,7 +228,7 @@ open class EntourageServiceManager(
         if (isBetterLocationUpdated) {
             isBetterLocationUpdated = false
             if (shouldCenterMap) {
-                latLng?.let {instance.post(OnBetterLocationEvent(it))                 }
+                latLng?.let {EntBus.post(OnBetterLocationEvent(it))                 }
             }
         }
 
@@ -246,7 +246,7 @@ open class EntourageServiceManager(
             }
             if (response.isSuccessful) {
                 response.body()?.unreadCount?.let {
-                    instance.post(Events.OnUnreadCountUpdate(it))
+                    EntBus.post(Events.OnUnreadCountUpdate(it))
                 }
                 response.body()?.newsfeedItems?.let {
                     service.notifyListenersNewsFeedReceived(it)
@@ -305,7 +305,7 @@ open class EntourageServiceManager(
                     provider)
             provider.setLocationListener(LocationListener(mgr, entourageService))
             provider.start()
-            instance.register(mgr)
+            EntBus.register(mgr)
             return mgr
         }
     }

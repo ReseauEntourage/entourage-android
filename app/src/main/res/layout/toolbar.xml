@@ -3,11 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottom_navigation"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="56dp"
     android:layout_gravity="bottom"
     android:background="@color/toolbar"
     android:elevation="16dp"
     app:itemBackground="@color/white"
     app:itemIconTint="@color/navigation_icons_state_list"
     app:itemTextColor="@color/navigation_icons_state_list"
+    app:itemIconSize="28dp"
     app:menu="@menu/bottom_navigation_menu" />

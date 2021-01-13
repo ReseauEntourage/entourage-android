@@ -1,4 +1,4 @@
-package social.entourage.android.api
+package social.entourage.android.api.model
 
 import java.io.Serializable
 

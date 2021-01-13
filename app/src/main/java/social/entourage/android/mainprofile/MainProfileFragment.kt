@@ -14,7 +14,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.tools.view.EntourageSnackbar
@@ -26,11 +26,11 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        BusProvider.instance.register(this)
+        EntBus.register(this)
     }
 
     override fun onDestroy() {
-        BusProvider.instance.unregister(this)
+        EntBus.unregister(this)
         super.onDestroy()
     }
 

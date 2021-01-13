@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
@@ -18,12 +17,12 @@ import com.google.android.gms.location.*
 import com.google.android.libraries.places.compat.ui.PlaceAutocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import kotlinx.android.synthetic.main.fragment_onboarding_place.*
-import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.User
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.location.LocationUtils.isLocationEnabled
 import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
+import social.entourage.android.tools.log.EntourageEvents
 import timber.log.Timber
 import java.io.IOException
 import java.util.*

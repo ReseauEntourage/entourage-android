@@ -24,7 +24,7 @@ import social.entourage.android.entourage.information.FeedItemInformationFragmen
 import social.entourage.android.map.MapClusterEntourageItem
 import social.entourage.android.map.MapClusterTourItem
 import social.entourage.android.onboarding.InputNamesFragment
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tour.encounter.EncounterDisclaimerFragment
 import timber.log.Timber
 import java.util.*
@@ -206,7 +206,7 @@ class NewsfeedPresenter @Inject constructor(
     // ----------------------------------
     private fun openEncounter(encounter: Encounter) {
         fragment?.saveCameraPosition()
-        BusProvider.instance.post(OnTourEncounterViewRequestedEvent(encounter))
+        EntBus.post(OnTourEncounterViewRequestedEvent(encounter))
     }
 
     // ----------------------------------

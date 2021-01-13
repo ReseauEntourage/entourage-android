@@ -15,9 +15,8 @@ import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.deeplinks.DeepLinksManager
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.CropCircleTransformation
-import timber.log.Timber
 
 /**
  * Chat Message Card for Tour Information Screen
@@ -27,7 +26,7 @@ open class ChatMessageCardViewHolder(val view: View) : BaseCardViewHolder(view) 
     private var deeplinkURL:String? = null
     override fun bindFields() {
         itemView.tic_chat_user_photo?.setOnClickListener {
-            if (userId != 0) BusProvider.instance.post(OnUserViewRequestedEvent(userId))
+            if (userId != 0) EntBus.post(OnUserViewRequestedEvent(userId))
         }
     }
 
@@ -132,7 +131,7 @@ open class ChatMessageCardViewHolder(val view: View) : BaseCardViewHolder(view) 
     }
 
     fun showPoiDetail(poiId:String) {
-        BusProvider.instance.post(Events.OnPoiViewDetail(poiId))
+        EntBus.post(Events.OnPoiViewDetail(poiId))
     }
 
     companion object {

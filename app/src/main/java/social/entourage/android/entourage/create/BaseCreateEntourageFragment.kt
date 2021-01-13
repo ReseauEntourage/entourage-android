@@ -35,7 +35,7 @@ import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryFragment
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.location.LocationFragment
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.EntourageEvents
 import timber.log.Timber
 import java.io.IOException
@@ -297,7 +297,7 @@ open class BaseCreateEntourageFragment
         } catch (e: IllegalStateException) {
             Timber.w(e)
         }
-        BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(entourage,true))
+        EntBus.post(OnFeedItemInfoViewRequestedEvent(entourage,true))
     }
 
     protected fun saveEditedEntourage() {
@@ -311,7 +311,6 @@ open class BaseCreateEntourageFragment
             entourage.setTitle(create_entourage_title?.text.toString())
             entourage.setDescription(create_entourage_description?.text.toString())
             entourage.location = entourageLocation
-            //TODO check if entourageType==groupType
             entourageCategory?.let { cat ->
                 cat.groupType?.let { entourage.actionGroupType = it }
                 entourage.category = cat.category

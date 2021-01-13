@@ -8,7 +8,6 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.StyleRes
 import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.layout_entourage_options.*
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.deeplinks.DeepLinksManager.handleCurrentDeepLink

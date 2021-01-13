@@ -487,12 +487,11 @@ class CountryCodePicker : RelativeLayout {
     private inner class PhoneNumberWatcher : PhoneNumberFormattingTextWatcher {
         private val lastValidity = false
 
-        constructor() : super() {}
+        constructor() : super()
 
         //TODO solve it! support for android kitkat
         @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-        constructor(countryCode: String?) : super(countryCode) {
-        }
+        constructor(countryCode: String?) : super(countryCode)
     }
 
     /**

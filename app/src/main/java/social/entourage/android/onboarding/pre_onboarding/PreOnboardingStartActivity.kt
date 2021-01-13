@@ -46,7 +46,7 @@ class PreOnboardingStartActivity : AppCompatActivity() {
 
         ui_button_next?.setOnClickListener {
             if (currentDotPosition < 3) {
-                currentDotPosition = currentDotPosition + 1
+                currentDotPosition += 1
                 ui_recyclerView?.smoothScrollToPosition(currentDotPosition)
                 updateViewAndDots()
                 return@setOnClickListener
@@ -98,7 +98,7 @@ class PreOnboardingStartActivity : AppCompatActivity() {
         for (i in 0 until arrayViewDots.size) {
             val drawableId = if (i == currentDotPosition) R.drawable.pre_onboard_dot_selected else R.drawable.pre_onboard_dot_unselected
             val drawable = AppCompatResources.getDrawable(this, drawableId)
-            arrayViewDots.get(i).setImageDrawable(drawable)
+            arrayViewDots[i].setImageDrawable(drawable)
         }
 
         val title: String

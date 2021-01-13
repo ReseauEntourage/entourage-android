@@ -259,18 +259,20 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     fun resendCode() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SMS)
-        OnboardingAPI.getInstance(get()).resendCode(temporaryPhone!!) { isOK, loginResponse, error ->
-            if (isOK) {
-                displayToast(R.string.registration_smscode_sent)
-            }
-            else {
-                if (error != null){
-                    displayToast(R.string.login_text_lost_code_ko)
+        temporaryPhone?.let { tempPhone ->
+            OnboardingAPI.getInstance(get()).resendCode(tempPhone) { isOK, loginResponse, error ->
+                if (isOK) {
+                    displayToast(R.string.registration_smscode_sent)
+                } else {
+                    if (error != null) {
+                        displayToast(R.string.login_text_lost_code_ko)
+                    } else {
+                        displayToast(R.string.login_text_lost_code_ko)
+                    }
                 }
-                else {
-                    displayToast(R.string.login_text_lost_code_ko)
-                }
             }
+        } ?: run {
+            displayToast(R.string.login_text_lost_code_ko)
         }
     }
 
@@ -376,7 +378,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             }
             alertDialog.dismiss()
             if (isAsso) {
-                currentPositionAsso = currentPositionAsso + 1
+                currentPositionAsso += 1
                 moveToTunnelAsso()
             }
             else {
@@ -400,7 +402,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 else {
                     EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_PRO_SIGNUP_SUCCESS)
                 }
-                currentPositionAsso = currentPositionAsso + 1
+                currentPositionAsso += 1
                 moveToTunnelAsso()
             }
         }
@@ -418,7 +420,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         if (temporaryAssoActivities?.hasOneSelectionMin() == true) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_PRO_MOSAIC)
             OnboardingAPI.getInstance(get()).updateUserInterests(temporaryAssoActivities!!.getArrayForWs()) { isOK, userResponse ->
-                currentFragmentPosition = currentFragmentPosition + 2
+                currentFragmentPosition += 2
                 changeFragment()
             }
         }
@@ -468,7 +470,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             else { EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_NEIGHBOR_MOSAIC) }
 
             OnboardingAPI.getInstance(get()).updateUserInterests(activities.getArrayForWs()) { isOK, userResponse ->
-                currentFragmentPosition = currentFragmentPosition + 1
+                currentFragmentPosition += 1
                 changeFragment()
             }
         }
@@ -488,19 +490,18 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     private fun changeFragment() {
         ui_bt_next?.disable()
-        var fragment = Fragment()
-
-        when(currentFragmentPosition) {
-            1 -> fragment = OnboardingNamesFragment.newInstance(temporaryUser.firstName,temporaryUser.lastName)
-            2 -> fragment = OnboardingPhoneFragment.newInstance(temporaryUser.firstName, temporaryCountrycode, temporaryPhone)
-            3 -> fragment = OnboardingPasscodeFragment.newInstance(temporaryCountrycode,temporaryPhone)
-            4 -> fragment = OnboardingTypeFragment.newInstance(temporaryUser.firstName, userTypeSelected)
+        val fragment = when(currentFragmentPosition) {
+            1 -> OnboardingNamesFragment.newInstance(temporaryUser.firstName,temporaryUser.lastName)
+            2 -> OnboardingPhoneFragment.newInstance(temporaryUser.firstName, temporaryCountrycode, temporaryPhone)
+            3 -> OnboardingPasscodeFragment.newInstance(temporaryCountrycode,temporaryPhone)
+            4 -> OnboardingTypeFragment.newInstance(temporaryUser.firstName, userTypeSelected)
             5 -> {
                 val isSdf = userTypeSelected == UserTypeSelection.ALONE
-                fragment = OnboardingPlaceFragment.newInstance(temporaryPlaceAddress, false, isSdf)
+                OnboardingPlaceFragment.newInstance(temporaryPlaceAddress, false, isSdf)
             }
-            6 -> fragment = OnboardingEmailPwdFragment.newInstance(temporaryEmail)
-            7 -> fragment = OnboardingPhotoFragment.newInstance(temporaryUser.firstName ?: "")
+            6 -> OnboardingEmailPwdFragment.newInstance(temporaryEmail)
+            7 -> OnboardingPhotoFragment.newInstance(temporaryUser.firstName ?: "")
+            else -> Fragment()
         }
 
         if (currentFragmentPosition == PositionType.Passcode.pos || currentFragmentPosition >= PositionType.Type.pos) {
@@ -509,10 +510,14 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         else {
             ui_onboard_main_iv_back?.visibility = View.VISIBLE
         }
-        supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.ui_container, fragment)
-                .commit()
+        try {
+            supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.ui_container, fragment)
+                    .commit()
+        } catch (e:IllegalStateException) {
+            Timber.e(e)
+        }
 
         updateButtons()
 
@@ -559,7 +564,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
         when(currentPositionAlone) {
             1 ->  {
-                fragment = OnboardingPlaceFragment.newInstance(temporary2ndPlaceAddress,true,true)
+                fragment = OnboardingPlaceFragment.newInstance(temporary2ndPlaceAddress, is2ndAddress = true, isSdf = true)
             }
             2 -> fragment = OnboardingSdfNeighbourActivitiesFragment.newInstance(temporarySdfActivities,temporaryUser.firstName,true)
             else -> {
@@ -585,7 +590,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
         when(currentPositionNeighbour) {
             1 ->  {
-                fragment = OnboardingPlaceFragment.newInstance(temporary2ndPlaceAddress,true,false)
+                fragment = OnboardingPlaceFragment.newInstance(temporary2ndPlaceAddress, is2ndAddress = true, isSdf = false)
             }
             2 -> fragment = OnboardingSdfNeighbourActivitiesFragment.newInstance(temporaryNeighbourActivities,temporaryUser.firstName,false)
             else -> {
@@ -628,7 +633,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                         return
                     }
 
-                    currentPositionAsso = currentPositionAsso+ 1
+                    currentPositionAsso += 1
                     moveToTunnelAsso()
                     return
                 }
@@ -651,7 +656,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                         sendAddress()
                         return
                     }
-                    currentPositionAlone = currentPositionAlone + 1
+                    currentPositionAlone += 1
                     moveToTunnelAlone()
                     return
                 }
@@ -669,7 +674,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                         sendAddress()
                         return
                     }
-                    currentPositionNeighbour = currentPositionNeighbour + 1
+                    currentPositionNeighbour += 1
                     moveToTunnelNeighbour()
                     return
                 }
@@ -689,7 +694,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             }
             else -> {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_NAMES)
-                currentFragmentPosition = currentFragmentPosition + 1
+                currentFragmentPosition += 1
                 if (currentFragmentPosition > numberOfSteps) currentFragmentPosition = numberOfSteps
                 changeFragment()
             }
@@ -701,7 +706,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         if (currentFragmentPosition == PositionType.Type.pos) {
             if (userTypeSelected == UserTypeSelection.ASSOS) {
                 if (currentPositionAsso != AssoPositionType.NONE.pos) {
-                    currentPositionAsso = currentPositionAsso - 1
+                    currentPositionAsso -= 1
                 }
                 moveToTunnelAsso()
                 return
@@ -711,20 +716,20 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         if (currentFragmentPosition == PositionType.Place.pos) {
             if (userTypeSelected == UserTypeSelection.ALONE) {
                 if (currentPositionAlone != AlonePositionType.NONE.pos) {
-                    currentPositionAlone = currentPositionAlone - 1
+                    currentPositionAlone -= 1
                 }
                 else {
-                    currentFragmentPosition = currentFragmentPosition - 1
+                    currentFragmentPosition -= 1
                 }
                 moveToTunnelAlone()
                 return
             }
             if (userTypeSelected == UserTypeSelection.NEIGHBOUR) {
                 if (currentPositionNeighbour != NeighbourPositionType.NONE.pos) {
-                    currentPositionNeighbour = currentPositionNeighbour - 1
+                    currentPositionNeighbour -= 1
                 }
                 else {
-                    currentFragmentPosition = currentFragmentPosition - 1
+                    currentFragmentPosition -= 1
                 }
                 moveToTunnelNeighbour()
                 return
@@ -734,45 +739,45 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         if (currentFragmentPosition == PositionType.EmailPwd.pos) {
             if (userTypeSelected == UserTypeSelection.ASSOS) {
                 if (currentPositionAsso != AssoPositionType.NONE.pos) {
-                    currentFragmentPosition = currentFragmentPosition - 2
+                    currentFragmentPosition -= 2
                 }
                 moveToTunnelAsso()
                 return
             }
             if (userTypeSelected == UserTypeSelection.ALONE) {
                 if (currentPositionAlone != AlonePositionType.NONE.pos) {
-                    currentFragmentPosition = currentFragmentPosition - 1
+                    currentFragmentPosition -= 1
                 }
                 moveToTunnelAlone()
                 return
             }
             if (userTypeSelected == UserTypeSelection.NEIGHBOUR) {
                 if (currentPositionNeighbour != NeighbourPositionType.NONE.pos) {
-                    currentFragmentPosition = currentFragmentPosition - 1
+                    currentFragmentPosition -= 1
                 }
                 moveToTunnelNeighbour()
                 return
             }
         }
 
-        currentFragmentPosition = currentFragmentPosition - 1
+        currentFragmentPosition -= 1
         if (currentFragmentPosition < 1) currentFragmentPosition = 1
 
         changeFragment()
     }
 
     fun goNextStep() {
-        currentFragmentPosition = currentFragmentPosition + 1
+        currentFragmentPosition += 1
         changeFragment()
     }
 
     fun goNextStepSdfNeighbour() {
         if (userTypeSelected == UserTypeSelection.ALONE) {
-            currentPositionAlone = currentPositionAlone + 1
+            currentPositionAlone += 1
             moveToTunnelAlone()
         }
         else {
-            currentPositionNeighbour = currentPositionNeighbour + 1
+            currentPositionNeighbour += 1
             moveToTunnelNeighbour()
         }
     }

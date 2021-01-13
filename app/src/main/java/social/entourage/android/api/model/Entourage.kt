@@ -70,7 +70,7 @@ abstract class EntourageAction : BaseEntourage, Serializable {
     //needed for deserialize
     constructor() : super(GROUPTYPE_ACTION, GROUPTYPE_ACTION_CONTRIBUTION)
 
-    constructor(actionGroupType: String) : super(GROUPTYPE_ACTION, actionGroupType) {}
+    constructor(actionGroupType: String) : super(GROUPTYPE_ACTION, actionGroupType)
 
     constructor(actionGroupType: String, category: String?,
                 title: String, description: String, location: LocationPoint) : super(GROUPTYPE_ACTION, actionGroupType, category, title, description, location)

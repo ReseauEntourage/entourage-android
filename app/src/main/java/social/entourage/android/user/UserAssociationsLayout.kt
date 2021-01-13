@@ -15,7 +15,7 @@ import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.User
 import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent
 import social.entourage.android.base.ItemClickSupport
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import social.entourage.android.user.membership.UserMembershipsAdapter
 import java.util.*
 
@@ -78,7 +78,7 @@ class UserAssociationsLayout : RelativeLayout {
                         .setOnItemClickListener(object : ItemClickSupport.OnItemClickListener {
                             override fun onItemClicked(recyclerView: RecyclerView?, position: Int, v: View?) {
                                 userNeighborhoodsAdapter?.getItemAt(position)?.let { userMembership ->
-                                    BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(TimestampedObject.ENTOURAGE_CARD, userMembership.membershipUUID, null))
+                                    EntBus.post(OnFeedItemInfoViewRequestedEvent(TimestampedObject.ENTOURAGE_CARD, userMembership.membershipUUID, null))
                                 }
                             }
                         })

@@ -21,7 +21,7 @@ import social.entourage.android.api.model.tour.Encounter
 import social.entourage.android.api.tape.Events.OnEncounterCreated
 import social.entourage.android.api.tape.Events.OnEncounterUpdated
 import social.entourage.android.location.LocationFragment
-import social.entourage.android.tools.BusProvider.instance
+import social.entourage.android.tools.EntBus
 import timber.log.Timber
 import java.io.IOException
 import java.lang.ref.WeakReference
@@ -111,7 +111,7 @@ class CreateEncounterActivity : EntourageSecuredActivity(), LocationFragment.OnF
     // PUBLIC METHODS
     // ----------------------------------
     private fun onCloseButton() {
-        instance.post(OnEncounterCreated(null))
+        EntBus.post(OnEncounterCreated(null))
         finish()
     }
 
@@ -165,7 +165,7 @@ class CreateEncounterActivity : EntourageSecuredActivity(), LocationFragment.OnF
         if (errorMessage == null && encounterResponse!= null) {
             authenticationController.incrementUserEncountersCount()
             message = getString(R.string.create_encounter_success)
-            instance.post(OnEncounterCreated(encounterResponse))
+            EntBus.post(OnEncounterCreated(encounterResponse))
             finish()
             EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_OK)
         } else {
@@ -182,7 +182,7 @@ class CreateEncounterActivity : EntourageSecuredActivity(), LocationFragment.OnF
         if (errorMessage == null) {
             authenticationController.incrementUserEncountersCount()
             message = getString(R.string.update_encounter_success)
-            editedEncounter?.let {instance.post(OnEncounterUpdated(it))}
+            editedEncounter?.let {EntBus.post(OnEncounterUpdated(it))}
             finish()
             //EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_OK);
         } else {

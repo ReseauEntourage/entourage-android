@@ -73,7 +73,7 @@ class OnboardingPasscodeFragment : Fragment() {
 
             override fun onTick(p0: Long) {
                 if(isDetached) return
-                timeOut = timeOut - 1
+                timeOut -= 1
 
                 if (timeOut == 0) {
                     ui_onboard_bt_code_retry?.text = getString(R.string.onboard_sms_wait_retry_end)

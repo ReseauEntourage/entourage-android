@@ -30,7 +30,7 @@ import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
 import social.entourage.android.base.EntourageActivity
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.user.partner.PartnerFragmentV2
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.user.UserFragment
@@ -132,12 +132,12 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
     override fun onStart() {
         super.onStart()
         configureNotifications()
-        BusProvider.instance.register(this)
+        EntBus.register(this)
     }
 
     override fun onStop() {
         super.onStop()
-        BusProvider.instance.unregister(this)
+        EntBus.unregister(this)
     }
 
     fun initUserData() {

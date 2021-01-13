@@ -15,6 +15,7 @@ import androidx.annotation.IdRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.children
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
 import com.squareup.otto.Subscribe
@@ -33,7 +34,6 @@ import social.entourage.android.configuration.Configuration
 import social.entourage.android.deeplinks.DeepLinksManager.handleCurrentDeepLink
 import social.entourage.android.deeplinks.DeepLinksManager.storeIntent
 import social.entourage.android.entourage.EntourageDisclaimerFragment
-import social.entourage.android.entourage.information.EntourageInformationFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.entourage.my.MyEntouragesFragment
 import social.entourage.android.guide.poi.ReadPoiFragment
@@ -46,7 +46,7 @@ import social.entourage.android.navigation.BottomNavigationDataSource
 import social.entourage.android.newsfeed.BaseNewsfeedFragment
 import social.entourage.android.onboarding.OnboardingPhotoFragment
 import social.entourage.android.service.EntourageService
-import social.entourage.android.tools.BusProvider.instance
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.tools.log.EntourageEvents.logEvent
 import social.entourage.android.tools.log.EntourageEvents.onLocationPermissionGranted
@@ -178,7 +178,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     }
 
     override fun onStart() {
-        instance.register(this)
+        EntBus.register(this)
         presenter.checkForUpdate()
         super.onStart()
     }
@@ -204,13 +204,13 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
             updateAnalyticsInfo()
         }
         refreshBadgeCount()
-        intent?.action?.let { action -> instance.post(OnCheckIntentActionEvent(action, intent.extras)) }
+        intent?.action?.let { action -> EntBus.post(OnCheckIntentActionEvent(action, intent.extras)) }
         checkOnboarding()
     }
 
     override fun onStop() {
         try {
-            instance.unregister(this)
+            EntBus.unregister(this)
         } catch(e: IllegalStateException) {
             Timber.w(e)
         }
@@ -239,7 +239,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
                     else -> logEvent(EntourageEvents.EVENT_ACTION_TOOLTIP_PLUS_CLOSE)
                 }
             }
-            ui_tooltip_button_next_top?.setOnClickListener { v: View? ->
+            ui_tooltip_button_next_top?.setOnClickListener {
                 ui_tooltip_layout_top?.visibility = View.GONE
                 ui_tooltip_button_filter?.visibility = View.GONE
                 val _txt = String.format(getString(R.string.tooltip_step_format), "2")
@@ -253,7 +253,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
                 ui_tooltip_layout_bottom?.visibility = View.VISIBLE
                 logEvent(EntourageEvents.EVENT_ACTION_TOOLTIP_FILTER_NEXT)
             }
-            ui_tooltip_button_next_bottom?.setOnClickListener { v: View? ->
+            ui_tooltip_button_next_bottom?.setOnClickListener {
                 postionTooltip++
                 if (postionTooltip == 1) {
                     val _txt = String.format(getString(R.string.tooltip_step_format), "3")
@@ -285,7 +285,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
             else -> mapFilter.setDefaultValues()
         }
         get().entourageComponent.authenticationController.saveMapFilter()
-        instance.post(OnMapFilterChanged())
+        EntBus.post(OnMapFilterChanged())
     }
 
     private fun displayLocationProviderDisabledAlert() {
@@ -329,7 +329,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     }
 
     private fun configureBottombar() {
-        (bottom_navigation as? BottomNavigationView)?.let {bottomBar ->
+        (bottom_navigation as? BottomNavigationView)?.let { bottomBar ->
             // we need to set the listener fist, to respond to the default selected tab request
             bottomBar.setOnNavigationItemSelectedListener { item: MenuItem ->
                 if (shouldBypassNavigation(item.itemId)) {
@@ -423,7 +423,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     }
 
     fun showEvents() {
-        instance.post(OnShowEventDeeplink())
+        EntBus.post(OnShowEventDeeplink())
         selectNavigationTab(navigationDataSource.feedTabIndex)
         newsfeedFragment?.onShowEvents()
     }
@@ -438,7 +438,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     }
 
     fun showActionsTab() {
-        instance.post(OnShowEventDeeplink())
+        EntBus.post(OnShowEventDeeplink())
         selectNavigationTab(navigationDataSource.agirTabIndex)
     }
 

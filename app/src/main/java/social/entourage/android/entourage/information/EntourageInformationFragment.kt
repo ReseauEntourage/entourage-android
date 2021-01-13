@@ -43,7 +43,7 @@ import social.entourage.android.entourage.EntourageCloseFragment
 import social.entourage.android.entourage.information.report.EntourageReportFragment
 import social.entourage.android.location.EntourageLocation
 import social.entourage.android.map.OnAddressClickListener
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.Utils
 import social.entourage.android.tools.view.EntourageSnackbar
 import social.entourage.android.user.UserFragment
@@ -77,13 +77,13 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         serviceConnection.doBindService()
-        BusProvider.instance.register(this)
+        EntBus.register(this)
     }
 
     override fun onDetach() {
         super.onDetach()
         serviceConnection.doUnbindService()
-        BusProvider.instance.unregister(this)
+        EntBus.unregister(this)
     }
 
     // ----------------------------------
@@ -459,7 +459,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             ui_action_event_creator_bt_asso?.text = partner.name
             ui_action_event_creator_bt_asso?.setOnClickListener {
                 partner.id.toInt().let { partnerId ->
-                    BusProvider.instance.post(Events.OnShowDetailAssociation(partnerId))
+                    EntBus.post(Events.OnShowDetailAssociation(partnerId))
                 }
             }
         }
@@ -467,14 +467,10 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             ui_action_event_creator_layout_bottom?.visibility = View.INVISIBLE
         }
 
-        if (entourage.isEvent()) {
-            ui_action_event_creator_information?.text = getString(R.string.detail_action_event_info_rdv)
-        }
-        else if (entourage.actionGroupType == BaseEntourage.GROUPTYPE_ACTION_DEMAND) {
-            ui_action_event_creator_information?.text = getText(R.string.detail_action_event_info_demand)
-        }
-        else {
-            ui_action_event_creator_information?.text = getText(R.string.detail_action_event_info_gift)
+        ui_action_event_creator_information?.text = when {
+            entourage.isEvent() -> getString(R.string.detail_action_event_info_rdv)
+            entourage.actionGroupType == BaseEntourage.GROUPTYPE_ACTION_DEMAND -> getText(R.string.detail_action_event_info_demand)
+            else -> getText(R.string.detail_action_event_info_gift)
         }
 
         //Layout description

@@ -31,8 +31,6 @@ class ProgressCellarView: View {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        var _canvas = canvas
-
         if (bitmap == null) {
             bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         }
@@ -40,12 +38,14 @@ class ProgressCellarView: View {
             paint = Paint(Paint.ANTI_ALIAS_FLAG)
         }
 
-        _canvas = Canvas(bitmap!!)
-        _canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
+        bitmap?.let { bitmap ->
+            val _canvas = Canvas(bitmap)
+            _canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
 
-        val frame = RectF(0f,0f,width.toFloat(),height.toFloat())
-        ProgressBar.drawProgressBar(canvas, frame, percent)
-        canvas?.drawBitmap(bitmap!!,0.toFloat(),0.toFloat(),paint)
+            val frame = RectF(0f,0f,width.toFloat(),height.toFloat())
+            ProgressBar.drawProgressBar(canvas, frame, percent)
+            canvas?.drawBitmap(bitmap,0f,0f,paint)
+        }
     }
 
     private fun init(attrs: AttributeSet?, defStyleAttr: Int) {

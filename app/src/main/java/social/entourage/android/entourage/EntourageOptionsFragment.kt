@@ -1,13 +1,9 @@
 package social.entourage.android.entourage
 
-import android.content.Intent
-import android.net.Uri
 import android.view.View
-import android.widget.Toast
 import kotlinx.android.synthetic.main.layout_entourage_options.*
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
-import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.entourage.create.BaseCreateEntourageFragment
 
 class EntourageOptionsFragment : FeedItemOptionsFragment() {

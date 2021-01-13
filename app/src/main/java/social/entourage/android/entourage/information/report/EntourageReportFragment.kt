@@ -15,7 +15,6 @@ import social.entourage.android.R
 import social.entourage.android.api.model.EntourageReport
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.entourage.information.EntourageInformationFragment
-import social.entourage.android.entourage.information.FeedItemInformationFragment
 
 /**
  * Entourage Report Fragment
@@ -52,15 +51,15 @@ class EntourageReportFragment  : EntourageDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         showKeyboard()
-        var title = ""
-        var description = ""
-        if (isReportUser) {
-            title = getString(R.string.action_report_explanation_user)
-            description = getString(R.string.action_report_reason_user)
+        val title = when {
+            isReportUser -> getString(R.string.action_report_explanation_user)
+            isEvent -> getString(R.string.event_report_explanation)
+            else -> getString(R.string.action_report_explanation)
         }
-        else {
-           title = if (isEvent) getString(R.string.event_report_explanation) else getString(R.string.action_report_explanation)
-           description = if (isEvent) getString(R.string.event_report_reason) else getString(R.string.action_report_reason)
+        val description = when {
+            isReportUser -> getString(R.string.action_report_reason_user)
+            isEvent -> getString(R.string.event_report_reason)
+            else -> getString(R.string.action_report_reason)
         }
         ui_report_tv_title?.text = title
         ui_report_tv_description?.text = description
@@ -139,9 +138,9 @@ class EntourageReportFragment  : EntourageDialogFragment() {
         // CONSTANTS
         // ----------------------------------
         val TAG = EntourageReportFragment::class.java.simpleName
-        val KEY_ID = "entourageId"
-        val ISEVENT = "isEvent"
-        val ISREPORTUSER = "isReportUser"
+        const val KEY_ID = "entourageId"
+        const val ISEVENT = "isEvent"
+        const val ISREPORTUSER = "isReportUser"
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.

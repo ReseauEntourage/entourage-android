@@ -12,7 +12,7 @@ import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.tape.EntouragePoiRequest.OnPoiViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.guide.poi.PoiRenderer.CategoryType
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.EntourageEvents
 
 /**
@@ -25,7 +25,7 @@ class PoiViewHolder(itemView: View) : BaseCardViewHolder(itemView) {
 
     override fun bindFields() {
         itemView.setOnClickListener {
-            poi?.let { BusProvider.instance.post(OnPoiViewRequestedEvent(it))}
+            poi?.let { EntBus.post(OnPoiViewRequestedEvent(it))}
         }
         itemView.poi_card_call_button?.setOnClickListener {
             poi?.phone?.let {phone ->

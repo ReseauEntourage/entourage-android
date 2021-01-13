@@ -2,16 +2,15 @@ package social.entourage.android.navigation
 
 import androidx.fragment.app.Fragment
 import social.entourage.android.EntourageApplication
-import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.PlusFragment
 import social.entourage.android.R
 import social.entourage.android.entourage.my.MyEntouragesFragment
 import social.entourage.android.guide.GuideHubFragment
-import social.entourage.android.guide.GuideMapFragment
+import social.entourage.android.mainprofile.MainProfileFragment
 import social.entourage.android.newsfeed.BaseNewsfeedFragment
 import social.entourage.android.newsfeed.NewsFeedFragment
 import social.entourage.android.newsfeed.NewsFeedWithTourFragment
-import social.entourage.android.mainprofile.MainProfileFragment
+import social.entourage.android.tools.log.EntourageEvents
 
 /**
  * Created by Mihai Ionescu on 23/04/2018.

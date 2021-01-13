@@ -2,7 +2,6 @@ package social.entourage.android.api.model.tour
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.view.View
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources

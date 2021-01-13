@@ -40,7 +40,7 @@ class GuideFilterAdapter : BaseAdapter() {
         return 0
     }
 
-    override fun getView(position: Int, view2: View?, viewGroup: ViewGroup): View? {
+    override fun getView(position: Int, view2: View?, viewGroup: ViewGroup): View {
         var view = view2
         val viewHolder: GuideFilterViewHolder
         if (view == null) {

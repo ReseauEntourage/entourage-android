@@ -17,7 +17,7 @@ import social.entourage.android.tools.Utils
  *
  * Created by Mihai Ionescu on 18/09/2018.
  */
-abstract class MapClusterItem() : ClusterItem {
+abstract class MapClusterItem : ClusterItem {
     abstract fun applyMarkerOptions(context: Context, markerOptions: MarkerOptions)
 
     override fun getTitle(): String? { return null }

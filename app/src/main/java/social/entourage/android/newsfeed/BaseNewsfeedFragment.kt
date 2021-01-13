@@ -50,7 +50,7 @@ import social.entourage.android.map.filter.MapFilterFactory
 import social.entourage.android.map.filter.MapFilterFragment
 import social.entourage.android.map.permissions.NoLocationPermissionFragment
 import social.entourage.android.service.EntourageService
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.user.edit.UserEditActionZoneFragment.FragmentListener
 import social.entourage.android.tools.view.EntourageSnackbar
@@ -99,7 +99,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     // ----------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        BusProvider.instance.register(this)
+        EntBus.register(this)
         markersMap.clear()
     }
 
@@ -165,7 +165,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     override fun onResume() {
         super.onResume()
         timerStart()
-        BusProvider.instance.post(OnLocationPermissionGranted(isLocationPermissionGranted()))
+        EntBus.post(OnLocationPermissionGranted(isLocationPermissionGranted()))
     }
 
     override fun onPause() {
@@ -174,7 +174,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     override fun onDestroy() {
-        BusProvider.instance.unregister(this)
+        EntBus.unregister(this)
         super.onDestroy()
     }
 
@@ -520,14 +520,14 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             return
         }
         if (isLocationPermissionGranted()) {
-            BusProvider.instance.post(OnLocationPermissionGranted(true))
+            EntBus.post(OnLocationPermissionGranted(true))
             return
         }
 
         // Check if the user allowed geolocation from screen 04.2 (login funnel)
         val geolocationAllowedByUser = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_GEOLOCATION_ENABLED, true)
         if (!geolocationAllowedByUser) {
-            BusProvider.instance.post(OnLocationPermissionGranted(false))
+            EntBus.post(OnLocationPermissionGranted(false))
             return
         }
         if (shouldShowRequestPermissionRationale(permission.ACCESS_FINE_LOCATION)) {
@@ -538,7 +538,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                     .setNegativeButton(R.string.map_permission_refuse) { _: DialogInterface?, _: Int ->
                         val noLocationPermissionFragment = NoLocationPermissionFragment()
                         noLocationPermissionFragment.show(requireActivity().supportFragmentManager, NoLocationPermissionFragment.TAG)
-                        BusProvider.instance.post(OnLocationPermissionGranted(false))
+                        EntBus.post(OnLocationPermissionGranted(false))
                     }
                     .show()
         } else {

@@ -6,7 +6,7 @@ import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.api.tape.Events.OnMapFilterChanged
 import social.entourage.android.base.EntourageDialogFragment
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 
 abstract class BaseMapFilterFragment : EntourageDialogFragment() {
 
@@ -31,7 +31,7 @@ abstract class BaseMapFilterFragment : EntourageDialogFragment() {
         saveFilter()
 
         // inform the map screen to refresh the newsfeed
-        BusProvider.instance.post(OnMapFilterChanged())
+        EntBus.post(OnMapFilterChanged())
         EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_SUBMIT)
 
         // dismiss the dialog

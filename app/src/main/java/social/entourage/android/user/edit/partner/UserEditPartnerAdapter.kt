@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.layout_edit_partner.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
 import social.entourage.android.api.tape.Events.OnPartnerViewRequestedEvent
-import social.entourage.android.tools.BusProvider.instance
+import social.entourage.android.tools.EntBus
 
 /**
  * Created by mihaiionescu on 16/01/2017.
@@ -32,7 +32,7 @@ class UserEditPartnerAdapter : BaseAdapter() {
             }
             v.partner_logo?.setOnClickListener {
                 partner?.let {
-                    instance.post(OnPartnerViewRequestedEvent(it))
+                    EntBus.post(OnPartnerViewRequestedEvent(it))
                 }
             }
         }

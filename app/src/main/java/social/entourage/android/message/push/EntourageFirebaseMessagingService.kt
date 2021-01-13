@@ -5,13 +5,13 @@ import com.google.firebase.messaging.RemoteMessage
 import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.api.tape.Events.OnGCMTokenObtainedEvent
 import social.entourage.android.api.tape.Events.OnPushNotificationReceived
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 
 class EntourageFirebaseMessagingService : FirebaseMessagingService() {
     override fun onNewToken(registrationId: String) {
         super.onNewToken(registrationId)
-        BusProvider.instance.register(this)
-        BusProvider.instance.post(OnGCMTokenObtainedEvent(registrationId))
+        EntBus.register(this)
+        EntBus.post(OnGCMTokenObtainedEvent(registrationId))
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -37,7 +37,7 @@ class EntourageFirebaseMessagingService : FirebaseMessagingService() {
     private fun handleNow(remoteMessage: RemoteMessage) {
         val message = PushNotificationManager.getMessageFromRemoteMessage(remoteMessage, this) ?: return
         PushNotificationManager.handlePushNotification(message, this)
-        BusProvider.instance.post(OnPushNotificationReceived(message))
+        EntBus.post(OnPushNotificationReceived(message))
     }
 
     companion object {

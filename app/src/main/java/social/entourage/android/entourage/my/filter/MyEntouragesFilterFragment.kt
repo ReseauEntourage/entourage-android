@@ -11,7 +11,7 @@ import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events.OnMyEntouragesForceRefresh
 import social.entourage.android.base.EntourageDialogFragment
-import social.entourage.android.tools.BusProvider.instance
+import social.entourage.android.tools.EntBus
 
 /**
  * MyEntourages Filter Fragment
@@ -59,7 +59,7 @@ class MyEntouragesFilterFragment  : EntourageDialogFragment() {
         MyEntouragesFilter.save(filter, context)
 
         // inform the app to refresh the my entourages feed
-        instance.post(OnMyEntouragesForceRefresh(null))
+        EntBus.post(OnMyEntouragesForceRefresh(null))
         EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_SAVE)
 
         // dismiss the dialog

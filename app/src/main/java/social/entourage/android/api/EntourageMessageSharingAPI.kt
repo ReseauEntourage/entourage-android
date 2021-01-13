@@ -5,6 +5,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
+import social.entourage.android.api.model.ShareEntourageMessage
+import social.entourage.android.api.model.ShareMessage
+import social.entourage.android.api.model.SharePOIgeMessage
 import social.entourage.android.api.request.*
 
 /**

@@ -16,7 +16,7 @@ import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events.OnFeedItemCloseRequestEvent
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import kotlinx.android.synthetic.main.fragment_entourage_close.*
 import social.entourage.android.api.model.EntourageEvent
 
@@ -76,7 +76,7 @@ class EntourageCloseFragment : DialogFragment() {
 
     private fun onSuccessClicked() {
         feedItem?.let {
-            BusProvider.instance.post(OnFeedItemCloseRequestEvent(it, showUI = false, success = true))
+            EntBus.post(OnFeedItemCloseRequestEvent(it, showUI = false, success = true))
             showEmail(R.string.entourage_close_email_title_success)
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_CLOSE_POPUP_SUCCESS)
             dismiss()
@@ -85,7 +85,7 @@ class EntourageCloseFragment : DialogFragment() {
 
     private fun onFailedClicked() {
         feedItem?.let {
-            BusProvider.instance.post(OnFeedItemCloseRequestEvent(it, showUI = false, success = false))
+            EntBus.post(OnFeedItemCloseRequestEvent(it, showUI = false, success = false))
             showEmail(R.string.entourage_close_email_title_failed)
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_CLOSE_POPUP_FAILURE)
             dismiss()

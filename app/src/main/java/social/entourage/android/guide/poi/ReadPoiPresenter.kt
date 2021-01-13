@@ -24,7 +24,7 @@ class ReadPoiPresenter @Inject constructor(private val fragment: ReadPoiFragment
             override fun onResponse(call: Call<PoiDetailResponse>, response: Response<PoiDetailResponse>) {
                 response.body()?.let {
                     if (response.isSuccessful) {
-                        it.poi.isSoliguide = it.poi.source.equals("soliguide")
+                        it.poi.isSoliguide = it.poi.source == "soliguide"
                         displayPoi(it.poi)
                         return
                     }

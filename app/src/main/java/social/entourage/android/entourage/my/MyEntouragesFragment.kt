@@ -28,7 +28,7 @@ import social.entourage.android.entourage.my.MyEntouragesAdapter.LoaderCallback
 import social.entourage.android.entourage.my.filter.MyEntouragesFilter
 import social.entourage.android.service.EntourageService
 import social.entourage.android.service.EntourageService.LocalBinder
-import social.entourage.android.tools.BusProvider.instance
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.tools.view.EntourageSnackbar.make
 import timber.log.Timber
@@ -59,11 +59,11 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         connection.doBindService()
-        instance.register(this)
+        EntBus.register(this)
     }
 
     override fun onDestroy() {
-        instance.unregister(this)
+        EntBus.unregister(this)
         connection.doUnbindService()
         super.onDestroy()
     }
@@ -270,7 +270,7 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
     }
 
     fun updateUnreadCount(unreadCount:Int?) {
-        instance.post(OnUnreadCountUpdate(unreadCount))
+        EntBus.post(OnUnreadCountUpdate(unreadCount))
     }
 
     // ----------------------------------
