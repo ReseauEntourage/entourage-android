@@ -107,7 +107,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_agir_ondes" />
+                app:srcCompat="@drawable/ic_agir_ondes"
+                android:contentDescription="@string/agir_title_bonnes_ondes" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -136,7 +137,8 @@
                 style="@style/MapActionButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_demanding_heart" />
+                app:srcCompat="@drawable/ic_demanding_heart"
+                android:contentDescription="@string/entourage_create_menu_ask_help" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -164,7 +166,8 @@
                 style="@style/MapActionButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_giving_heart" />
+                app:srcCompat="@drawable/ic_giving_heart"
+                android:contentDescription="@string/entourage_create_menu_contribute" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -193,7 +196,8 @@
                 style="@style/MapActionButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_event_white_24dp" />
+                app:srcCompat="@drawable/ic_event_white_24dp"
+                android:contentDescription="@string/outing_create_menu" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -224,7 +228,8 @@
                 style="@style/MapActionButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_start_maraude" />
+                app:srcCompat="@drawable/ic_start_maraude"
+                android:contentDescription="@string/tour_create" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -251,7 +256,8 @@
                 style="@style/MapActionButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_encounter" />
+                app:srcCompat="@drawable/ic_encounter"
+                android:contentDescription="@string/tour_create_encounter_button" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </RelativeLayout>
