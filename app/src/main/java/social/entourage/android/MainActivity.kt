@@ -660,23 +660,21 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
         }
         val handler = Handler(Looper.getMainLooper())
         handler.post {
-            content.type?.let { contentType ->
-                when (contentType) {
-                    PushNotificationContent.TYPE_NEW_CHAT_MESSAGE -> if (displayMessageOnCurrentTourInfoFragment(message)) {
-                        //already displayed
-                        removePushNotification(content, contentType)
-                    } else {
-                        addPushNotification(message)
-                    }
-                    PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED ->                     //@TODO should we update current tour info fragment ?
-                        removePushNotification(content, PushNotificationContent.TYPE_NEW_JOIN_REQUEST)
-                    PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED -> {
-                        addPushNotification(message)
-                        val mapFragment = newsfeedFragment
-                        mapFragment?.userStatusChanged(content, FeedItem.JOIN_STATUS_ACCEPTED)
-                    }
-                    else -> addPushNotification(message)                    /*TYPE_NEW_JOIN_REQUEST,TYPE_ENTOURAGE_INVITATION,TYPE_INVITATION_STATUS*/
+            when (content.type) {
+                PushNotificationContent.TYPE_NEW_CHAT_MESSAGE -> if (displayMessageOnCurrentTourInfoFragment(message)) {
+                    //already displayed
+                    removePushNotification(content, content.type)
+                } else {
+                    addPushNotification(message)
                 }
+                PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED ->                     //@TODO should we update current tour info fragment ?
+                    removePushNotification(content, PushNotificationContent.TYPE_NEW_JOIN_REQUEST)
+                PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED -> {
+                    addPushNotification(message)
+                    val mapFragment = newsfeedFragment
+                    mapFragment?.userStatusChanged(content, FeedItem.JOIN_STATUS_ACCEPTED)
+                }
+                else -> addPushNotification(message)                    /*TYPE_NEW_JOIN_REQUEST,TYPE_ENTOURAGE_INVITATION,TYPE_INVITATION_STATUS*/
             }
         }
     }

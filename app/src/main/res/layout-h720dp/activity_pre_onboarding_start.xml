@@ -8,7 +8,7 @@
     tools:context="social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity">
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/ui_logo_two_colors"
         android:layout_width="38dp"
         android:layout_height="54dp"
         android:layout_marginStart="48dp"
@@ -28,9 +28,9 @@
         android:textColor="@color/pre_onboard_orange"
         android:textSize="12sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+        app:layout_constraintBottom_toBottomOf="@+id/ui_logo_two_colors"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView2" />
+        app:layout_constraintTop_toTopOf="@+id/ui_logo_two_colors" />
 
 
     <LinearLayout
@@ -105,7 +105,7 @@
         android:clipToPadding="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/ui_logo_two_colors" />
 
     <FrameLayout
         android:id="@+id/ui_fl_trans_left"

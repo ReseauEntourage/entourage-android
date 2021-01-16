@@ -112,7 +112,7 @@ class PhotoEditFragment  : EntourageDialogFragment(), CropImageView.OnSetImageUr
     // ----------------------------------
     fun onOkClicked() {
         photo_edit_fab_button?.isEnabled = false
-        photo_edit_cropImageView?.setOnCropImageCompleteListener { view, result ->
+        photo_edit_cropImageView?.setOnCropImageCompleteListener { _, result ->
             if (result.isSuccessful) {
                 mListener?.onPhotoChosen(result.uri, photoSource)
             } else {

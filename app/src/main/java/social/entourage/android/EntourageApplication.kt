@@ -46,7 +46,6 @@ class EntourageApplication : MultiDexApplication() {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         librariesSupport = LibrariesSupport()
         librariesSupport.setupLibraries(this)
-        JodaTimeAndroid.init(this)
         setupDagger()
         setupFeedItemsStorage()
         setupSharedPreferences()
