@@ -368,18 +368,18 @@ class EntourageService : Service() {
         if (created) {
             startNotification()
         }
-        for (listener in locationUpdateListeners) {
-            if (listener is TourServiceListener) {
-                listener.onTourCreated(created, uuid)
-            }
+        locationUpdateListeners.filterIsInstance<TourServiceListener>().forEach { listener ->
+            listener.onTourCreated(created, uuid)
         }
     }
 
     fun notifyListenersTourResumed() {
-        if (tourServiceManager?.isRunning == true) {
-            currentTour?.let {
-                locationUpdateListeners.filterIsInstance<TourServiceListener>().forEach { listener ->
-                    listener.onTourResumed(tourServiceManager!!.pointsToDraw, it.tourType, it.getStartTime())
+        tourServiceManager?.let { tourMgr->
+            if (tourMgr.isRunning) {
+                currentTour?.let {
+                    locationUpdateListeners.filterIsInstance<TourServiceListener>().forEach { listener ->
+                        listener.onTourResumed(tourMgr.pointsToDraw, it.tourType, it.getStartTime())
+                    }
                 }
             }
         }
@@ -397,10 +397,8 @@ class EntourageService : Service() {
                 isPaused = false
             }
         }
-        for (listener in locationUpdateListeners) {
-            if (listener is EntourageServiceListener) {
-                listener.onFeedItemClosed(closed, feedItem)
-            }
+        locationUpdateListeners.filterIsInstance<EntourageServiceListener>().forEach { listener ->
+            listener.onFeedItemClosed(closed, feedItem)
         }
     }
 
@@ -411,9 +409,7 @@ class EntourageService : Service() {
     }
 
     fun notifyListenersPosition(location: LatLng) {
-        for (listener in locationUpdateListeners) {
-            listener.onLocationUpdated(location)
-        }
+        locationUpdateListeners.forEach { listener -> listener.onLocationUpdated(location) }
     }
 
     fun notifyListenersUserToursFound(tours: List<Tour>) {
@@ -423,9 +419,7 @@ class EntourageService : Service() {
     }
 
     private fun notifyListenersGpsStatusChanged(active: Boolean) {
-        for (listener in locationUpdateListeners) {
-            listener.onLocationStatusUpdated(active)
-        }
+        locationUpdateListeners.forEach { listener -> listener.onLocationStatusUpdated(active) }
     }
 
     fun notifyListenersUserStatusChanged(user: EntourageUser, feedItem: FeedItem) {
@@ -435,21 +429,15 @@ class EntourageService : Service() {
     }
 
     fun notifyListenersNetworkException() {
-        for (listener in apiListeners) {
-            listener.onNetworkException()
-        }
+        apiListeners.forEach { listener -> listener.onNetworkException() }
     }
 
     fun notifyListenersServerException(throwable: Throwable) {
-        for (listener in apiListeners) {
-            listener.onServerException(throwable)
-        }
+        apiListeners.forEach { listener -> listener.onServerException(throwable) }
     }
 
     fun notifyListenersTechnicalException(throwable: Throwable) {
-        for (listener in apiListeners) {
-            listener.onTechnicalException(throwable)
-        }
+        apiListeners.forEach { listener -> listener.onTechnicalException(throwable) }
     }
 
     fun notifyListenersNewsFeedReceived(newsFeeds: List<NewsfeedItem>) {

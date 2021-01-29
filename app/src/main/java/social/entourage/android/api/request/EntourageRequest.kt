@@ -24,7 +24,7 @@ class EntourageUserListResponse {
 }
 
 class ChatMessageWrapper (@SerializedName("chat_message") var chatMessage: ChatMessage)
-class EntourageMessageSharingWrapper (@SerializedName("chat_message") var chatMessage: ShareMessage)
+class ShareMessageWrapper (@SerializedName("chat_message") var chatMessage: ShareMessage)
 class ChatMessageResponse {
     @SerializedName("chat_message")
     var chatMessage: ChatMessage? = null
@@ -99,13 +99,13 @@ interface EntourageRequest {
     ): Call<ChatMessageResponse>
 
     @POST("entourages/{entourage_id}/chat_messages.json")
-    fun addEntourageMessageSharing(
+    fun addSharingMessage(
             @Path("entourage_id") entourageUUID: String,
-            @Body message: EntourageMessageSharingWrapper
+            @Body message: ShareMessageWrapper
     ): Call<ChatMessageResponse>
 
     @GET("entourages/{entourage_id}/chat_messages.json")
-    fun retrieveEntourageMessages(
+    fun retrieveMessages(
             @Path("entourage_id") entourageUUID: String,
             @Query("before") pagination: Date?
     ): Call<ChatMessageListResponse>

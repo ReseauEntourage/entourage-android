@@ -48,12 +48,6 @@ class PoiViewHolder(itemView: View) : BaseCardViewHolder(itemView) {
     private fun populatePoi(newPoi: Poi) {
         this.poi = newPoi
         itemView.poi_card_title?.text = newPoi.name ?: ""
-        var displayName = CategoryType.findCategoryTypeById(newPoi.categoryId).displayName
-        if (displayName == "Partenaires") {
-            itemView.context?.let {
-                displayName = it.getString(R.string.partners_entourage)
-            }
-        }
         itemView.poi_card_address?.text = newPoi.address ?: ""
         itemView.poi_card_distance?.text = LocationPoint(newPoi.latitude, newPoi.longitude).distanceToCurrentLocation(Constants.DISTANCE_MAX_DISPLAY)
         itemView.poi_card_call_button?.visibility = if (newPoi.phone.isNullOrEmpty()) View.GONE else View.VISIBLE

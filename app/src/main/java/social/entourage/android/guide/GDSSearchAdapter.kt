@@ -55,12 +55,6 @@ class GDSSearchAdapter(var items: ArrayList<Poi>,val listenerClick: (position:In
         fun bind(position: Int) {
             val poi = items[position]
             itemView.poi_card_title?.text = poi.name ?: ""
-            var displayName = PoiRenderer.CategoryType.findCategoryTypeById(poi.categoryId).displayName
-            if (displayName == "Partenaires") {
-                itemView.context?.let {
-                    displayName = it.getString(R.string.partners_entourage)
-                }
-            }
             itemView.poi_card_address?.text = poi.address ?: ""
             itemView.poi_card_distance?.text = LocationPoint(poi.latitude, poi.longitude).distanceToCurrentLocation(Constants.DISTANCE_MAX_DISPLAY)
             itemView.poi_card_call_button?.visibility =  View.GONE

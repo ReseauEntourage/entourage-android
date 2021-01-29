@@ -57,7 +57,7 @@ import social.entourage.android.api.model.feed.*
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.configuration.Configuration
-import social.entourage.android.entourage.ShareEntourageFragment
+import social.entourage.android.tools.ShareMessageFragment
 import social.entourage.android.entourage.create.BaseCreateEntourageFragment
 import social.entourage.android.entourage.information.discussion.DiscussionAdapter
 import social.entourage.android.entourage.information.members.MembersAdapter
@@ -342,7 +342,7 @@ abstract class FeedItemInformationFragment : EntourageDialogFragment(), Entourag
         entourage_info_invite_source_layout?.visibility = View.GONE
 
         feedItem.uuid?.let {
-            ShareEntourageFragment.newInstance(it).show(parentFragmentManager, ShareEntourageFragment.TAG)
+            ShareMessageFragment.newInstance(it).show(parentFragmentManager, ShareMessageFragment.TAG)
         }
     }
 

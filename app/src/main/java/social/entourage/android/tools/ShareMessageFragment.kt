@@ -1,4 +1,4 @@
-package social.entourage.android.entourage
+package social.entourage.android.tools
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,41 +6,36 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_share_entourage.*
+import kotlinx.android.synthetic.main.fragment_share_message.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.api.EntourageMessageSharingAPI
+import social.entourage.android.api.MessageSharingAPI
 import social.entourage.android.api.model.SharingEntourage
 import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.entourage.ShareEntourageAdapter
 
-private const val ARG_PARAM1 = "uuid"
-private const val ARG_POIID = "poiId"
-private const val ARG_ISPOI = "isPoi"
-
-class ShareEntourageFragment : EntourageDialogFragment() {
+class ShareMessageFragment : EntourageDialogFragment() {
     private var uuid = ""
     private var isPoi = false
-    private var poiId = ""
 
     private var arraySharing:ArrayList<SharingEntourage> = ArrayList()
-    private var adapter:ShareEntourageAdapter? = null
+    private var adapter: ShareEntourageAdapter? = null
 
     private var selectedPosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            uuid = it.getString(ARG_PARAM1) ?: ""
+            uuid = it.getString(ARG_UUID) ?: ""
             isPoi = it.getBoolean(ARG_ISPOI)
-            poiId = it.getString(ARG_POIID) ?:""
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        return inflater.inflate(R.layout.fragment_share_entourage, container, false)
+        return inflater.inflate(R.layout.fragment_share_message, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,15 +58,14 @@ class ShareEntourageFragment : EntourageDialogFragment() {
 
     fun sendSharing() {
         val sharing = arraySharing[selectedPosition]
-        val _id = if (isPoi) poiId else uuid
-        EntourageMessageSharingAPI.getInstance(EntourageApplication.get()).postSharingEntourage(sharing.uuid,_id,isPoi) { isOK ->
+        MessageSharingAPI.getInstance(EntourageApplication.get()).postSharingMessage(sharing.uuid,uuid,isPoi) { isOK ->
             Toast.makeText(activity, if(isOK) R.string.linkShared else R.string.linkNotShared, Toast.LENGTH_SHORT).show()
             dismiss()
         }
     }
 
     fun getSharing() {
-        EntourageMessageSharingAPI.getInstance(EntourageApplication.get()).getSharing { isOk, sharing, error ->
+        MessageSharingAPI.getInstance(EntourageApplication.get()).getSharing { isOk, sharing, error ->
             sharing?.let {
                 arraySharing.clear()
 
@@ -113,25 +107,27 @@ class ShareEntourageFragment : EntourageDialogFragment() {
         val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         ui_recyclerView_share_entourage?.setHasFixedSize(true)
         ui_recyclerView_share_entourage?.layoutManager = linearLayoutManager
-
         ui_recyclerView_share_entourage?.adapter = adapter
     }
 
     companion object {
         const val TAG = "social.entourage.android.entourage.shareEntourageFragment"
+        const val ARG_UUID = "uuid"
+        const val ARG_ISPOI = "isPoi"
+
 
         fun newInstance(uuid: String) =
-                ShareEntourageFragment().apply {
+                ShareMessageFragment().apply {
                     arguments = Bundle().apply {
-                        putString(ARG_PARAM1, uuid)
+                        putString(ARG_UUID, uuid)
                         putBoolean(ARG_ISPOI,false)
                     }
                 }
 
         fun newInstanceForPoi(poiId: String) =
-                ShareEntourageFragment().apply {
+                ShareMessageFragment().apply {
                     arguments = Bundle().apply {
-                        putString(ARG_POIID,poiId)
+                        putString(ARG_UUID,poiId)
                         putBoolean(ARG_ISPOI,true)
                     }
                 }

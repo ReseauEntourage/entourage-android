@@ -18,7 +18,7 @@ import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.base.EntourageDialogFragment
-import social.entourage.android.entourage.ShareEntourageFragment
+import social.entourage.android.tools.ShareMessageFragment
 import social.entourage.android.guide.filter.GuideFilterAdapter
 import social.entourage.android.guide.poi.PoiRenderer.CategoryType
 import social.entourage.android.guide.poi.ReadPoiPresenter.OnPhoneClickListener
@@ -66,8 +66,8 @@ class ReadPoiFragment : EntourageDialogFragment() {
         ui_bt_share_inside?.setOnClickListener {
             ui_layout_share?.visibility = View.GONE
 
-            ShareEntourageFragment.newInstanceForPoi(poi.uuid)
-                    .show(parentFragmentManager, ShareEntourageFragment.TAG)
+            ShareMessageFragment.newInstanceForPoi(poi.uuid)
+                    .show(parentFragmentManager, ShareMessageFragment.TAG)
         }
 
         ui_bt_share_outside?.setOnClickListener {

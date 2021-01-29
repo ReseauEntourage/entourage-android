@@ -29,7 +29,7 @@ class ShareEntourageMessage(uuid: String) : ShareMessage(uuid, CONTENT) {
     }
 }
 
-class SharePOIgeMessage(uuid: String) : ShareMessage(uuid, SHARE_CONTENT) {
+class SharePOIMessage(uuid: String) : ShareMessage(uuid, SHARE_CONTENT) {
     init {
         metadata.type = "poi"
     }

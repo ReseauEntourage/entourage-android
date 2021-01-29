@@ -131,11 +131,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     }
 
     private fun onDisplayToggle() {
-        if (!isFullMapShown) {
-            EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_SHOWMAP)
-        } else {
-            EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_SHOWLIST)
-        }
+        EntourageEvents.logEvent(if (!isFullMapShown) EntourageEvents.ACTION_GUIDE_SHOWMAP else EntourageEvents.ACTION_GUIDE_SHOWLIST)
         togglePOIList()
     }
 
@@ -153,9 +149,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
 
     @Subscribe
     fun onPoiViewRequested(event: OnPoiViewRequestedEvent?) {
-        event?.poi?.let {
-            showPoiDetails(event.poi)
-        }
+        event?.poi?.let { showPoiDetails(it) }
     }
 
     // ----------------------------------
@@ -214,7 +208,6 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         // Close the overlays
         onBackPressed()
         // Open the link to propose a POI
-//        (activity as? MainActivity)?.showWebViewForLinkId(Constants.PROPOSE_POI_ID)
         (activity as? GDSMainActivity)?.showWebViewForLinkId(Constants.PROPOSE_POI_ID)
     }
 
@@ -267,9 +260,8 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
             PartnerFragmentV2.newInstance(null,poi.partner_id).show(parentFragmentManager, PartnerFragmentV2.TAG)
         }
         else {
-            val readPoiFragment = newInstance(poi)
             try {
-                readPoiFragment.show(parentFragmentManager, ReadPoiFragment.TAG)
+                newInstance(poi).show(parentFragmentManager, ReadPoiFragment.TAG)
             } catch (e: IllegalStateException) {
                 Timber.w(e)
             }
@@ -329,11 +321,9 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
                 previousEmptyListPopupLocation = EntourageLocation.cameraPositionToLocation(null, googleMap.cameraPosition)
             }
         }
-        val isShowNoPOIsPopup = EntourageApplication.get(context).entourageComponent.authenticationController.isShowNoPOIsPopup
-        if (!isShowNoPOIsPopup) {
-            return
+        if (EntourageApplication.get(context).entourageComponent.authenticationController.isShowNoPOIsPopup) {
+            fragment_guide_empty_list_popup?.visibility = View.VISIBLE
         }
-        fragment_guide_empty_list_popup?.visibility = View.VISIBLE
     }
 
     private fun hideEmptyListPopup() {
