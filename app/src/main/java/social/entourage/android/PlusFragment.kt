@@ -20,19 +20,19 @@ class PlusFragment : Fragment(), BackPressable {
         } ?: run {
             layout_line_add_tour_encounter?.visibility = View.GONE
         }
-            if (EntourageApplication.me(activity)?.isPro == true) {
-                layout_line_start_tour_launcher?.visibility = View.VISIBLE
+        if (EntourageApplication.me(activity)?.isPro == true) {
+            layout_line_start_tour_launcher?.visibility = View.VISIBLE
             (ui_image_plus?.tag as String?)?.let { tag ->
                 if (tag == "normal") {
                     ui_image_plus?.visibility = View.GONE
                     plus_image_subtitle?.visibility = View.GONE
                 }
-                }
-            }
-            else {
-                layout_line_start_tour_launcher?.visibility = View.GONE
             }
         }
+        else {
+            layout_line_start_tour_launcher?.visibility = View.GONE
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

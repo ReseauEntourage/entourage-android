@@ -1,5 +1,6 @@
 package social.entourage.android.guide.poi
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.view.View
@@ -14,6 +15,7 @@ import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.guide.poi.PoiRenderer.CategoryType
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.EntourageEvents
+import timber.log.Timber
 
 /**
  * Point of interest card view holder
@@ -30,12 +32,15 @@ class PoiViewHolder(itemView: View) : BaseCardViewHolder(itemView) {
         }
         itemView.poi_card_call_button?.setOnClickListener {
             poi?.phone?.let {phone ->
-                EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_CALLPOI)
-                val intent = Intent(Intent.ACTION_DIAL)
-                intent.data = Uri.parse("tel:${phone}")
                 itemView.context?.let { context ->
-                    if (intent.resolveActivity(context.packageManager) != null) {
+                    EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_CALLPOI)
+                    val intent = Intent(Intent.ACTION_DIAL).apply {
+                        data = Uri.parse("tel:$phone")
+                    }
+                    try {
                         context.startActivity(intent)
+                    } catch (e: ActivityNotFoundException) {
+                        Timber.e(e)
                     }
                 }
             }

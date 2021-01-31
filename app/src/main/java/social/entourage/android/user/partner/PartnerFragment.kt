@@ -1,6 +1,7 @@
 package social.entourage.android.user.partner
 
 import android.app.AlertDialog
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -22,6 +23,7 @@ import social.entourage.android.api.request.PartnerResponse
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.tools.CropCircleTransformation
+import timber.log.Timber
 
 class PartnerFragment : EntourageDialogFragment() {
 
@@ -244,7 +246,11 @@ class PartnerFragment : EntourageDialogFragment() {
     fun openLink(url: String, action: String) {
         val uri = Uri.parse(url)
         val intent = Intent(action, uri)
-        startActivity(intent)
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Timber.e(e)
+        }
     }
 
     companion object {
