@@ -45,7 +45,7 @@ class GuideMapPresenter @Inject constructor(
     // ----------------------------------
     private fun retrievePoisNearby(currentPosition: CameraPosition, mapDistance: Float) {
         val location = currentPosition.target
-        val distance: Double = mapDistance.coerceAtMost(1f).toDouble()
+        val distance: Double = mapDistance./*coerceAtMost(1f).*/toDouble()
         val call = poiRequest.retrievePoisNearby(location.latitude, location.longitude, distance, GuideFilter.instance.requestedCategories,GuideFilter.instance.requestedPartnerFilters,"2")
         call.enqueue(object : Callback<PoiResponse> {
             override fun onResponse(call: Call<PoiResponse>, response: Response<PoiResponse>) {
