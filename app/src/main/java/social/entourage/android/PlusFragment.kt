@@ -17,26 +17,22 @@ class PlusFragment : Fragment(), BackPressable {
         super.onResume()
         EntourageApplication.get().entourageComponent.authenticationController.savedTour?.let {
             layout_line_add_tour_encounter?.visibility = View.VISIBLE
-            layout_line_start_tour_launcher?.visibility = View.GONE
-            val tag = layout_line_start_tour_launcher?.tag as String
-            if (tag == "normal") {
-                ui_image_plus?.visibility = View.GONE
-            }
         } ?: run {
             layout_line_add_tour_encounter?.visibility = View.GONE
-
+        }
             if (EntourageApplication.me(activity)?.isPro == true) {
                 layout_line_start_tour_launcher?.visibility = View.VISIBLE
-                val tag = layout_line_start_tour_launcher?.tag as String
+            (ui_image_plus?.tag as String?)?.let { tag ->
                 if (tag == "normal") {
                     ui_image_plus?.visibility = View.GONE
+                    plus_image_subtitle?.visibility = View.GONE
+                }
                 }
             }
             else {
                 layout_line_start_tour_launcher?.visibility = View.GONE
             }
         }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

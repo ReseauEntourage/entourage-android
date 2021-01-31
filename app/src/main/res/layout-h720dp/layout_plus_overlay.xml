@@ -50,7 +50,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/plus_help_button"
             app:layout_constraintVertical_bias="1.0"
-            android:tag="normal"
+            android:tag="xlarge"
             app:srcCompat="@drawable/group_10" />
 
         <TextView
@@ -100,7 +100,7 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button_create_entourage_good_waves"
-                style="@style/MapActionButtonStyle.Small"
+                style="@style/MapActionButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -130,7 +130,7 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button_create_entourage_ask_help"
-                style="@style/MapActionButtonStyle.Small"
+                style="@style/MapActionButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -160,7 +160,7 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button_create_entourage_contribute"
-                style="@style/MapActionButtonStyle.Small"
+                style="@style/MapActionButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -191,7 +191,7 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button_create_outing"
-                style="@style/MapActionButtonStyle.Small"
+                style="@style/MapActionButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -216,7 +216,7 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button_start_tour_launcher"
-                style="@style/MapActionButtonStyle.Small"
+                style="@style/MapActionButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -240,7 +240,7 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button_add_tour_encounter"
-                style="@style/MapActionButtonStyle.Small"
+                style="@style/MapActionButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

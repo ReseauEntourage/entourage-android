@@ -167,6 +167,12 @@
         <item name="android:layout_marginBottom">16dp</item>
     </style>
 
+    <style name="MapActionButtonStyle.Small">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+
     <!-- Style for ongoing tour marker -->
     <style name="OngoingTourMarker">
         <item name="android:textColor">@color/greyish_brown</item>
@@ -232,6 +238,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">4dp</item>
         <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
         <item name="android:textColor">@color/greyish_brown</item>
         <item name="android:textSize">@dimen/entourage_font_small</item>
     </style>
