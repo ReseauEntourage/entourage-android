@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
-    tools:context="social.entourage.android.entourage.ShareEntourageFragment">
+    tools:context="social.entourage.android.tools.ShareMessageFragment">
 
     <social.entourage.android.tools.view.EntourageTitleView
         android:id="@+id/invite_contacts_navigation_layout"
@@ -34,6 +34,7 @@
         android:clickable="true"
         android:src="@drawable/contact_selected"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:focusable="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

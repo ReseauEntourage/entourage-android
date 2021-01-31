@@ -15,9 +15,8 @@ import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.deeplinks.DeepLinksManager
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.CropCircleTransformation
-import timber.log.Timber
 
 /**
  * Chat Message Card for Tour Information Screen
@@ -27,7 +26,7 @@ open class ChatMessageCardViewHolder(val view: View) : BaseCardViewHolder(view) 
     private var deeplinkURL:String? = null
     override fun bindFields() {
         itemView.tic_chat_user_photo?.setOnClickListener {
-            if (userId != 0) BusProvider.instance.post(OnUserViewRequestedEvent(userId))
+            if (userId != 0) EntBus.post(OnUserViewRequestedEvent(userId))
         }
     }
 
@@ -72,9 +71,8 @@ open class ChatMessageCardViewHolder(val view: View) : BaseCardViewHolder(view) 
         if(deeplink?.isNotBlank() == true) {
             deeplinkURL = deeplink
             itemView.tic_chat_deeplink?.visibility = View.VISIBLE
-            itemView.tic_chat_deeplink?.setOnClickListener {
-                onDeeplinkClick(it)}
-            itemView.setOnClickListener {onDeeplinkClick(it)}
+            itemView.tic_chat_deeplink?.setOnClickListener { onDeeplinkClick(it) }
+            itemView.setOnClickListener { onDeeplinkClick(it) }
         } else {
             deeplinkURL = null
             itemView.tic_chat_deeplink?.visibility = View.GONE
@@ -91,13 +89,13 @@ open class ChatMessageCardViewHolder(val view: View) : BaseCardViewHolder(view) 
             setBubbleLink(isMine)
 
             itemView.layout_bubble?.setOnClickListener {
-                showPoiDetail(chatMessage.metadata?.uuid)
+                chatMessage.metadata?.uuid?.let {showPoiDetail(it)}
             }
             itemView.tic_chat_deeplink?.setOnClickListener {
-                showPoiDetail(chatMessage.metadata?.uuid)
+                chatMessage.metadata?.uuid?.let {showPoiDetail(it)}
             }
             itemView.tic_chat_message?.setOnClickListener {
-                showPoiDetail(chatMessage.metadata?.uuid)
+                chatMessage.metadata?.uuid?.let {showPoiDetail(it)}
             }
         }
         if (isEntourage) {
@@ -132,10 +130,8 @@ open class ChatMessageCardViewHolder(val view: View) : BaseCardViewHolder(view) 
         startActivity(v.context, intent, null)
     }
 
-    fun showPoiDetail(poiId:String?) {
-        poiId?.let {
-            BusProvider.instance.post(Events.OnPoiViewDetail(it.toLong()))
-        }
+    fun showPoiDetail(poiId:String) {
+        EntBus.post(Events.OnPoiViewDetail(poiId))
     }
 
     companion object {

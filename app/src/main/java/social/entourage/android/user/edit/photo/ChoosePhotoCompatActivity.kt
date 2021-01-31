@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.os.Bundle
 import social.entourage.android.api.tape.Events.OnPhotoChosen
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 
 @Deprecated(message="Only for Android 4.4")
 class ChoosePhotoCompatActivity : AppCompatActivity() {
@@ -22,7 +22,7 @@ class ChoosePhotoCompatActivity : AppCompatActivity() {
     public override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
-            intent?.data?.let { uri -> BusProvider.instance.post(OnPhotoChosen(uri)) }
+            intent?.data?.let { uri -> EntBus.post(OnPhotoChosen(uri)) }
         }
         finish()
     }

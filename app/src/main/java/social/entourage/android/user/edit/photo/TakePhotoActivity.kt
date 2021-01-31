@@ -8,7 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import social.entourage.android.api.tape.Events.OnPhotoChosen
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import timber.log.Timber
 import java.io.File
 
@@ -47,10 +47,10 @@ class TakePhotoActivity : AppCompatActivity() {
         if (requestCode == REQUEST_TAKE_PHOTO) {
             if (resultCode == Activity.RESULT_OK) {
                 intent?.data?.let { data->
-                    BusProvider.instance.post(OnPhotoChosen(data))
+                    EntBus.post(OnPhotoChosen(data))
                     return
                 }
-                mCurrentPhotoPath?.let { BusProvider.instance.post(OnPhotoChosen(Uri.fromFile(File(it)))) }
+                mCurrentPhotoPath?.let { EntBus.post(OnPhotoChosen(Uri.fromFile(File(it)))) }
             }
             finish()
         }

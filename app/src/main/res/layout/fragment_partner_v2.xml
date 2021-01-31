@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F8F8F8"
-    tools:context=".user.partner.PartnerFragmentV2">
+    tools:context=".user.partner.PartnerFragment">
 
 
     <social.entourage.android.tools.view.EntourageTitleView

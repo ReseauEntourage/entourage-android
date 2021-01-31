@@ -25,7 +25,7 @@ import social.entourage.android.location.LocationProvider
 import social.entourage.android.location.LocationProvider.UserType
 import social.entourage.android.newsfeed.NewsfeedPagination
 import social.entourage.android.newsfeed.NewsfeedTabItem
-import social.entourage.android.tools.BusProvider.instance
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tour.TourFilter
 import social.entourage.android.tour.encounter.CreateEncounterPresenter.EncounterUploadTask
 import timber.log.Timber
@@ -189,16 +189,16 @@ class TourServiceManager(
             encounterRequest.create(encounter.tourId, EncounterWrapper(encounter)).enqueue(object : Callback<EncounterResponse?> {
                 override fun onResponse(call: Call<EncounterResponse?>, response: Response<EncounterResponse?>) {
                     if (response.isSuccessful) {
-                        response.body()?.encounter?.let { instance.post(EncounterTaskResult(true, it, EncounterTaskResult.OperationType.ENCOUNTER_ADD)) }
+                        response.body()?.encounter?.let { EntBus.post(EncounterTaskResult(true, it, EncounterTaskResult.OperationType.ENCOUNTER_ADD)) }
                     }
                 }
 
                 override fun onFailure(call: Call<EncounterResponse?>, t: Throwable) {
-                    instance.post(EncounterTaskResult(false, encounter, EncounterTaskResult.OperationType.ENCOUNTER_ADD))
+                    EntBus.post(EncounterTaskResult(false, encounter, EncounterTaskResult.OperationType.ENCOUNTER_ADD))
                 }
             })
         } else {
-            instance.post(EncounterTaskResult(false, encounter, EncounterTaskResult.OperationType.ENCOUNTER_ADD))
+            EntBus.post(EncounterTaskResult(false, encounter, EncounterTaskResult.OperationType.ENCOUNTER_ADD))
         }
     }
 
@@ -207,16 +207,16 @@ class TourServiceManager(
             encounterRequest.update(encounter.id, EncounterWrapper(encounter))
                     .enqueue(object : Callback<EncounterResponse?> {
                         override fun onResponse(call: Call<EncounterResponse?>, response: Response<EncounterResponse?>) {
-                            instance.post(EncounterTaskResult(response.isSuccessful, encounter, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE))
+                            EntBus.post(EncounterTaskResult(response.isSuccessful, encounter, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE))
                         }
 
                         override fun onFailure(call: Call<EncounterResponse?>, t: Throwable) {
-                            instance.post(EncounterTaskResult(false, encounter, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE))
+                            EntBus.post(EncounterTaskResult(false, encounter, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE))
                         }
                     })
         } else {
             Timber.tag("tape:").d("no network")
-            instance.post(EncounterTaskResult(false, encounter, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE))
+            EntBus.post(EncounterTaskResult(false, encounter, EncounterTaskResult.OperationType.ENCOUNTER_UPDATE))
         }
     }
 
@@ -262,7 +262,7 @@ class TourServiceManager(
                         val currentLocation = currentLocation
                         if (currentLocation != null) {
                             val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
-                            instance.post(OnBetterLocationEvent(latLng))
+                            EntBus.post(OnBetterLocationEvent(latLng))
                         }
                         initializeTimerFinishTask()
                         response.body()?.tour?.let { createdTour ->

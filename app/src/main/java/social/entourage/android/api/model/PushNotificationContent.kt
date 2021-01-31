@@ -10,7 +10,7 @@ class PushNotificationContent : Serializable {
     var extra: Extra? = null
     var message: String? = null
 
-    val type: String?
+    val type: String
         get() = extra?.type ?: ""
 
     val userId: Int

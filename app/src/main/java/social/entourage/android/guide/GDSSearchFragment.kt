@@ -10,7 +10,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_g_d_s_search.*
+import kotlinx.android.synthetic.main.fragment_guide_search.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,7 +22,7 @@ import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.tools.showKeyboard
-import social.entourage.android.user.partner.PartnerFragmentV2
+import social.entourage.android.user.partner.PartnerFragment
 import timber.log.Timber
 
 
@@ -53,7 +53,7 @@ class GDSSearchFragment : EntourageDialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_g_d_s_search, container, false)
+        return inflater.inflate(R.layout.fragment_guide_search, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -145,15 +145,14 @@ class GDSSearchFragment : EntourageDialogFragment() {
 
     private fun showPoiDetails(poi: Poi) {
         EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_POI)
-        if (poi.partner_id != null) {
-            PartnerFragmentV2.newInstance(null, poi.partner_id).show(parentFragmentManager, PartnerFragmentV2.TAG)
-        } else {
-            val readPoiFragment = ReadPoiFragment.newInstance(poi)
-            try {
-                readPoiFragment.show(parentFragmentManager, ReadPoiFragment.TAG)
-            } catch (e: IllegalStateException) {
-                Timber.w(e)
+        try {
+            poi.partner_id?.let { partner_id ->
+                PartnerFragment.newInstance(partner_id).show(parentFragmentManager, PartnerFragment.TAG)
+            } ?: run {
+                ReadPoiFragment.newInstance(poi).show(parentFragmentManager, ReadPoiFragment.TAG)
             }
+        } catch (e: IllegalStateException) {
+            Timber.w(e)
         }
     }
 

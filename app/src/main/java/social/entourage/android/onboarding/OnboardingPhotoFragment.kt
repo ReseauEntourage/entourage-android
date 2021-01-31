@@ -257,7 +257,7 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
         if (requestCode == CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE) {
-            if (grantResults.size > 0 && grantResults[0] == PermissionChecker.PERMISSION_GRANTED) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PermissionChecker.PERMISSION_GRANTED) {
                 if (PermissionChecker.checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
                     requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), WRITE_STORAGE_PERMISSION_CODE)
                 } else {
@@ -269,7 +269,7 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
             return
         }
         if (requestCode == PICK_AND_CROP_IMAGE_PERMISSION_CODE) {
-            if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (pickedImageUri != null) {
                     loadPickedImage(pickedImageUri)
                 } else {
@@ -280,7 +280,7 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
             }
         }
         if (requestCode == WRITE_STORAGE_PERMISSION_CODE) {
-            if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 showTakePhotoActivity()
             } else {
                 Toast.makeText(activity, R.string.user_photo_error_read_permission, Toast.LENGTH_LONG).show()

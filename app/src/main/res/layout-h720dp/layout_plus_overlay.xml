@@ -23,7 +23,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/accent"
-            app:srcCompat="@drawable/ic_close_black_24dp" />
+            app:srcCompat="@drawable/ic_close_round" />
 
         <Button
             android:id="@+id/plus_help_button"
@@ -32,11 +32,12 @@
             android:layout_height="wrap_content"
             android:drawablePadding="4dp"
             android:padding="10dp"
-            android:text="@string/plus_help_text"
+            android:text="@string/agir_help_button_help_others"
             android:textSize="13sp"
             app:drawableEndCompat="@drawable/ic_open_in_new_white_24dp"
             app:drawableTint="@color/accent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/ui_image_plus"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
@@ -49,6 +50,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/plus_help_button"
             app:layout_constraintVertical_bias="1.0"
+            android:tag="xlarge"
             app:srcCompat="@drawable/group_10" />
 
         <TextView
@@ -57,6 +59,7 @@
             android:text="@string/plus_image_subtitle"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ui_image_plus"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent" />
@@ -82,7 +85,6 @@
             <TextView
                 android:id="@+id/textView231"
                 style="@style/MapActionMenu"
-                android:layout_marginEnd="8dp"
                 android:text="@string/agir_title_bonnes_ondes"
                 app:layout_constraintBottom_toTopOf="@+id/ui_tv_agir_good_waves_subtitle"
                 app:layout_constraintEnd_toStartOf="@+id/button_create_entourage_good_waves"
@@ -91,10 +93,7 @@
             <TextView
                 android:id="@+id/ui_tv_agir_good_waves_subtitle"
                 style="@style/MapActionSubMenu"
-                android:layout_marginBottom="4dp"
                 android:text="@string/entourage_create_submenu_ask_help"
-                android:textColor="@color/greyish_brown"
-                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/button_create_entourage_good_waves"
                 app:layout_constraintEnd_toStartOf="@+id/button_create_entourage_good_waves"
                 app:layout_constraintTop_toBottomOf="@id/textView231" />
@@ -102,12 +101,11 @@
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button_create_entourage_good_waves"
                 style="@style/MapActionButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_agir_ondes" />
+                app:srcCompat="@drawable/ic_agir_ondes"
+                android:contentDescription="@string/agir_title_bonnes_ondes" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -126,7 +124,6 @@
             <TextView
                 style="@style/MapActionSubMenu"
                 android:text="@string/entourage_create_submenu_ask_help"
-                android:textColor="@color/greyish_brown"
                 android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@+id/button_create_entourage_ask_help"
                 app:layout_constraintTop_toBottomOf="@id/textView23" />
@@ -135,8 +132,10 @@
                 android:id="@+id/button_create_entourage_ask_help"
                 style="@style/MapActionButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_demanding_heart" />
+                app:srcCompat="@drawable/ic_demanding_heart"
+                android:contentDescription="@string/entourage_create_menu_ask_help" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -163,8 +162,10 @@
                 android:id="@+id/button_create_entourage_contribute"
                 style="@style/MapActionButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_giving_heart" />
+                app:srcCompat="@drawable/ic_giving_heart"
+                android:contentDescription="@string/entourage_create_menu_contribute" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -192,14 +193,15 @@
                 android:id="@+id/button_create_outing"
                 style="@style/MapActionButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_event_white_24dp" />
+                app:srcCompat="@drawable/ic_event_white_24dp"
+                android:contentDescription="@string/outing_create_menu" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_line_start_tour_launcher"
             style="@style/MapActionLine"
-            android:tag="xlarge"
             android:layout_below="@id/layout_line_create_outing"
             android:visibility="gone"
             tools:visibility="visible">
@@ -212,26 +214,22 @@
                 app:layout_constraintEnd_toStartOf="@+id/button_start_tour_launcher"
                 app:layout_constraintTop_toTopOf="@+id/button_start_tour_launcher" />
 
-            <TextView
-                style="@style/MapActionSubMenu"
-                android:text="@string/entourage_create_submenu_start_tour_launcher"
-                android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@+id/button_start_tour_launcher"
-                app:layout_constraintTop_toBottomOf="@id/textView6"/>
-
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button_start_tour_launcher"
                 style="@style/MapActionButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_start_maraude" />
+                app:srcCompat="@drawable/ic_start_maraude"
+                android:contentDescription="@string/tour_create" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_line_add_tour_encounter"
             style="@style/MapActionLine"
             android:layout_below="@id/layout_line_start_tour_launcher"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="gone">
 
             <TextView
                 android:id="@+id/textView8"
@@ -240,18 +238,14 @@
                 app:layout_constraintEnd_toStartOf="@+id/button_add_tour_encounter"
                 app:layout_constraintTop_toTopOf="@+id/button_add_tour_encounter" />
 
-            <TextView
-                style="@style/MapActionSubMenu"
-                android:text="@string/entourage_create_submenu_add_tour_encounter"
-                app:layout_constraintEnd_toStartOf="@+id/button_add_tour_encounter"
-                app:layout_constraintTop_toBottomOf="@id/textView8" />
-
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button_add_tour_encounter"
                 style="@style/MapActionButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_encounter" />
+                app:srcCompat="@drawable/ic_encounter"
+                android:contentDescription="@string/tour_create_encounter_button" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </RelativeLayout>

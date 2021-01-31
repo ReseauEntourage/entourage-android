@@ -4,11 +4,10 @@ import android.app.Activity
 import kotlinx.android.synthetic.main.layout_entourage_options.*
 import social.entourage.android.MainActivity
 import social.entourage.android.R
-import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.OnFeedItemCloseRequestEvent
 import social.entourage.android.entourage.FeedItemOptionsFragment
-import social.entourage.android.tools.BusProvider.instance
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.Utils.getDateStringFromSeconds
 import java.util.*
 
@@ -27,8 +26,8 @@ class TourOptionsFragment : FeedItemOptionsFragment() {
     // BUTTON HANDLING
     // ----------------------------------
     override fun onStopClicked() {
-        if (feedItem.status == FeedItem.STATUS_ON_GOING || feedItem.status == FeedItem.STATUS_OPEN) {
-            val tour = feedItem as Tour
+        val tour = feedItem as? Tour ?: return
+        if (tour.isOpen()) {
             //compute distance
             var distance = 0.0f
             val tourPointsList = tour.tourPoints
@@ -54,8 +53,8 @@ class TourOptionsFragment : FeedItemOptionsFragment() {
 
             //hide the options
             dismiss()
-        } else if (feedItem.status == FeedItem.STATUS_CLOSED) {
-            instance.post(OnFeedItemCloseRequestEvent(feedItem, showUI = false, success = true))
+        } else if (tour.isClosed()) {
+            EntBus.post(OnFeedItemCloseRequestEvent(tour, showUI = false, success = true))
             dismiss()
         }
     }

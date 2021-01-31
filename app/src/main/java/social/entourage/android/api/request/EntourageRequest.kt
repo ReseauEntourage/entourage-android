@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
-import social.entourage.android.api.EntourageMessageSharing
+import social.entourage.android.api.model.ShareMessage
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.BaseEntourage.EntourageJoinInfo
 import social.entourage.android.api.model.EntourageReport.EntourageReportWrapper
@@ -24,7 +24,7 @@ class EntourageUserListResponse {
 }
 
 class ChatMessageWrapper (@SerializedName("chat_message") var chatMessage: ChatMessage)
-class EntourageMessageSharingWrapper (@SerializedName("chat_message") var chatMessage: EntourageMessageSharing)
+class ShareMessageWrapper (@SerializedName("chat_message") var chatMessage: ShareMessage)
 class ChatMessageResponse {
     @SerializedName("chat_message")
     var chatMessage: ChatMessage? = null
@@ -99,13 +99,13 @@ interface EntourageRequest {
     ): Call<ChatMessageResponse>
 
     @POST("entourages/{entourage_id}/chat_messages.json")
-    fun addEntourageMessageSharing(
+    fun addSharingMessage(
             @Path("entourage_id") entourageUUID: String,
-            @Body message: EntourageMessageSharingWrapper
+            @Body message: ShareMessageWrapper
     ): Call<ChatMessageResponse>
 
     @GET("entourages/{entourage_id}/chat_messages.json")
-    fun retrieveEntourageMessages(
+    fun retrieveMessages(
             @Path("entourage_id") entourageUUID: String,
             @Query("before") pagination: Date?
     ): Call<ChatMessageListResponse>

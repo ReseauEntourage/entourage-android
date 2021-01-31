@@ -155,6 +155,16 @@ class User : Serializable {
     val isUserTypeAlone: Boolean
         get() = USER_GOAL_ALONE.equals(goal, ignoreCase = true)
 
+    val isEngaged:Boolean
+        get() {
+            if(isPro) return true
+            if(organization !=null) return true
+            if(roles?.isNotEmpty()== true) return true
+            if(partner != null) return true
+            if(stats?.isEngaged==true) return true
+            return false
+        }
+
     // ----------------------------------
     // User Conversation
     // ----------------------------------

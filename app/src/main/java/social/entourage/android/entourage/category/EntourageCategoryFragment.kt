@@ -93,7 +93,7 @@ class EntourageCategoryFragment : EntourageDialogFragment() {
                 it.expandGroup(position)
             }
             //Disable click on group header
-            it.setOnGroupClickListener { expandableListView: ExpandableListView?, view: View?, i: Int, l: Long -> true }
+            it.setOnGroupClickListener { _: ExpandableListView?, _: View?, _: Int, _: Long -> true }
         }
     }
 
@@ -112,7 +112,7 @@ class EntourageCategoryFragment : EntourageDialogFragment() {
         dismiss()
     }
 
-    fun onValidateClicked() {
+    private fun onValidateClicked() {
         mListener?.onCategoryChosen(adapter.selectedCategory)
         mListener = null
         dismiss()

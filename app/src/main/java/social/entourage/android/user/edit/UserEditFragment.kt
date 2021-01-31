@@ -29,8 +29,8 @@ import social.entourage.android.api.tape.Events.OnPartnerViewRequestedEvent
 import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
 import social.entourage.android.base.EntourageActivity
 import social.entourage.android.base.EntourageDialogFragment
-import social.entourage.android.user.partner.PartnerFragmentV2
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.user.partner.PartnerFragment
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.user.UserFragment
@@ -132,12 +132,12 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
     override fun onStart() {
         super.onStart()
         configureNotifications()
-        BusProvider.instance.register(this)
+        EntBus.register(this)
     }
 
     override fun onStop() {
         super.onStop()
-        BusProvider.instance.unregister(this)
+        EntBus.unregister(this)
     }
 
     fun initUserData() {
@@ -163,7 +163,7 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
             user_phone?.text = user.phone
             user_about?.text = user.about
 
-            if (!user.about.isNullOrEmpty()) {
+            if (user.about.isNotEmpty()) {
                 user_about_edit_button?.text = getString(R.string.user_about_mod_button)
             }
             else {
@@ -389,7 +389,7 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
         if (event == null) {
             return
         }
-        PartnerFragmentV2.newInstance(event.partner,null).show(parentFragmentManager, PartnerFragmentV2.TAG)
+        PartnerFragment.newInstance(event.partner).show(parentFragmentManager, PartnerFragment.TAG)
     }
 
     // ----------------------------------
@@ -399,8 +399,12 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
         if (activity?.isFinishing == true || this.isDetached) {
             return
         }
-        displayToast(getString(R.string.user_text_update_ok))
-        dismiss()
+        try {
+            displayToast(getString(R.string.user_text_update_ok))
+            dismiss()
+        } catch (e: IllegalStateException) {
+            Timber.w(e)
+        }
     }
 
     fun onUserUpdateError() {

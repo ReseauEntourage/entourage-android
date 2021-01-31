@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package social.entourage.android.tools
 
 import android.content.Context
@@ -43,12 +41,12 @@ fun Button.enable() {
 
 fun View.hideKeyboard() {
     clearFocus()
-    val inputMethodManager = context?.getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+    val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
     inputMethodManager?.hideSoftInputFromWindow(this.windowToken, 0)
 }
 
 fun View.hideKeyboardFromLayout() {
-    val inputMethodManager = context?.getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+    val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
     inputMethodManager?.hideSoftInputFromWindow(this.windowToken, 0)
 }
 

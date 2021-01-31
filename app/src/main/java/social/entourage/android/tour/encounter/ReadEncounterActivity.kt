@@ -54,7 +54,7 @@ class ReadEncounterActivity : EntourageActivity() {
                     address.getAddressLine(0)
                 } else ""
             } ?: ""
-            val encounterDate: String? = encounter.creationDate?.let { date-> DateFormat.getDateFormat(applicationContext).format(date) } ?: ""
+            val encounterDate: String = encounter.creationDate?.let { date-> DateFormat.getDateFormat(applicationContext).format(date) } ?: ""
             val encounterLocation: String = if (location.isEmpty()) {
                 resources.getString(R.string.encounter_read_location_no_address,
                         encounter.userName,

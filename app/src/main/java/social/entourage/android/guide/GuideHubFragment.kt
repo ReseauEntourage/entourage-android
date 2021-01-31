@@ -58,7 +58,7 @@ class GuideHubFragment : Fragment() {
             (activity as MainActivity).showWebViewForLinkId(Constants.SLUG_HUB_LINK_FAQ)
         }
 
-        ui_image_3.setShapeAppearanceModel(ui_image_3.getShapeAppearanceModel().withCornerSize(32f).toBuilder().build())
+        ui_image_3.shapeAppearanceModel = ui_image_3.shapeAppearanceModel.withCornerSize(32f).toBuilder().build()
     }
 
     companion object {

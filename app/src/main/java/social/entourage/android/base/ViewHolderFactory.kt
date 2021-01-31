@@ -3,7 +3,6 @@ package social.entourage.android.base
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import timber.log.Timber
 import java.util.*
 
 /**

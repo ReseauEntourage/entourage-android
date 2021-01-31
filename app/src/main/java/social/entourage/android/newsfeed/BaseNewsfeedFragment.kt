@@ -29,7 +29,6 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.clustering.ClusterManager
-import com.google.maps.android.clustering.view.DefaultClusterRenderer
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.layout_map_longclick.*
 import social.entourage.android.*
@@ -50,7 +49,7 @@ import social.entourage.android.map.filter.MapFilterFactory
 import social.entourage.android.map.filter.MapFilterFragment
 import social.entourage.android.map.permissions.NoLocationPermissionFragment
 import social.entourage.android.service.EntourageService
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.user.edit.UserEditActionZoneFragment.FragmentListener
 import social.entourage.android.tools.view.EntourageSnackbar
@@ -94,12 +93,14 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     // current selected tab
     protected var selectedTab = NewsfeedTabItem.ALL_TAB
 
+    protected var mapClusterManager: ClusterManager<ClusterItem>? = null
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        BusProvider.instance.register(this)
+        EntBus.register(this)
         markersMap.clear()
     }
 
@@ -165,7 +166,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     override fun onResume() {
         super.onResume()
         timerStart()
-        BusProvider.instance.post(OnLocationPermissionGranted(isLocationPermissionGranted()))
+        EntBus.post(OnLocationPermissionGranted(isLocationPermissionGranted()))
     }
 
     override fun onPause() {
@@ -174,7 +175,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     override fun onDestroy() {
-        BusProvider.instance.unregister(this)
+        EntBus.unregister(this)
         super.onDestroy()
     }
 
@@ -520,14 +521,14 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             return
         }
         if (isLocationPermissionGranted()) {
-            BusProvider.instance.post(OnLocationPermissionGranted(true))
+            EntBus.post(OnLocationPermissionGranted(true))
             return
         }
 
         // Check if the user allowed geolocation from screen 04.2 (login funnel)
         val geolocationAllowedByUser = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_GEOLOCATION_ENABLED, true)
         if (!geolocationAllowedByUser) {
-            BusProvider.instance.post(OnLocationPermissionGranted(false))
+            EntBus.post(OnLocationPermissionGranted(false))
             return
         }
         if (shouldShowRequestPermissionRationale(permission.ACCESS_FINE_LOCATION)) {
@@ -538,7 +539,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                     .setNegativeButton(R.string.map_permission_refuse) { _: DialogInterface?, _: Int ->
                         val noLocationPermissionFragment = NoLocationPermissionFragment()
                         noLocationPermissionFragment.show(requireActivity().supportFragmentManager, NoLocationPermissionFragment.TAG)
-                        BusProvider.instance.post(OnLocationPermissionGranted(false))
+                        EntBus.post(OnLocationPermissionGranted(false))
                     }
                     .show()
         } else {
@@ -623,9 +624,12 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         if (!feedItem.isClosed()) {
             // close
             stopFeedItem(feedItem, event.isSuccess)
-        } else if (feedItem.type == TimestampedObject.TOUR_CARD && !feedItem.isFreezed()) {
-            // freeze
-            freezeTour(feedItem as Tour)
+        } else {
+            (feedItem as? Tour)?.let { tour ->
+                if (!tour.isFreezed()) {
+                    freezeTour(tour)
+                }
+            }
         }
     }
 
@@ -655,16 +659,19 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         map?.cameraPosition?.let { EntourageLocation.lastCameraPosition = it}
     }
 
-    override fun getClusterRenderer(): DefaultClusterRenderer<ClusterItem> {
-        return MapClusterItemRenderer(requireActivity(), map, mapClusterManager)
-    }
-
 
     private fun onMapReady(googleMap: GoogleMap) {
         super.onMapReady(googleMap,
-                presenter.onClickListener as ClusterManager.OnClusterItemClickListener<ClusterItem>?,
                 presenter.onGroundOverlayClickListener
         )
+
+        mapClusterManager = ClusterManager<ClusterItem>(activity, googleMap)
+                .apply {
+            this.renderer = MapClusterItemRenderer(requireActivity(), googleMap, this)
+            this.setOnClusterItemClickListener(presenter.onClickListener)
+            googleMap.setOnMarkerClickListener(this)
+        }
+        initializeMapZoom()
         map?.setOnCameraIdleListener {
             val cameraPosition = map?.cameraPosition ?: return@setOnCameraIdleListener
             EntourageLocation.currentCameraPosition = cameraPosition

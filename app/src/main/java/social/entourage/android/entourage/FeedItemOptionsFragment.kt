@@ -13,7 +13,7 @@ import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events.OnUserActEvent
 import social.entourage.android.base.EntourageDialogFragment
-import social.entourage.android.tools.BusProvider.instance
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tour.TourOptionsFragment
 
 abstract class FeedItemOptionsFragment : EntourageDialogFragment() {
@@ -68,7 +68,7 @@ abstract class FeedItemOptionsFragment : EntourageDialogFragment() {
 
     private fun onQuitClicked() {
         EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_QUIT_ENTOURAGE)
-        instance.post(OnUserActEvent(OnUserActEvent.ACT_QUIT, feedItem))
+        EntBus.post(OnUserActEvent(OnUserActEvent.ACT_QUIT, feedItem))
         dismiss()
     }
 

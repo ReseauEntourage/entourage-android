@@ -6,7 +6,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/background"
                 android:padding="16dp"
-                android:layout_marginBottom="10dp">
+                android:layout_marginBottom="@dimen/mymessages_padding">
 
     <ImageView
         android:id="@+id/tour_card_icon"

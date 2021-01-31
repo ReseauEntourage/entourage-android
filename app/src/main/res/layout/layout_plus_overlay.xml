@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,15 +7,14 @@
     android:background="@color/background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/plus_action_list"
         android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="32dp">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -23,8 +22,8 @@
             android:contentDescription="@string/action_overlay_close"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_close_black_24dp"
-            app:tint="@color/accent" />
+            app:tint="@color/accent"
+            app:srcCompat="@drawable/ic_close_round" />
 
         <Button
             android:id="@+id/plus_help_button"
@@ -33,69 +32,59 @@
             android:layout_height="wrap_content"
             android:drawablePadding="4dp"
             android:padding="10dp"
-            android:text="@string/plus_help_text"
+            android:text="@string/agir_help_button_help_others"
             android:textSize="13sp"
             app:drawableEndCompat="@drawable/ic_open_in_new_white_24dp"
             app:drawableTint="@color/accent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/ui_image_plus"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/ui_image_plus"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_height="0dp"
             android:contentDescription="@string/plus_image_subtitle"
-            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@id/plus_image_subtitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/plus_help_button"
             app:layout_constraintVertical_bias="1.0"
+            android:tag="normal"
             app:srcCompat="@drawable/group_10" />
 
         <TextView
             android:id="@+id/plus_image_subtitle"
             style="@style/plus_image_subtitle"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
             android:text="@string/plus_image_subtitle"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ui_image_plus"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ui_image_plus" />
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/plus_action_list"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_gravity="end"
-        android:layout_marginBottom="8dp"
-        android:orientation="vertical"
         android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout8">
+        android:paddingEnd="16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_line_create_good_waves"
-            android:layout_width="match_parent"
+            style="@style/MapActionLine"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:visibility="visible">
 
             <TextView
                 android:id="@+id/textView231"
                 style="@style/MapActionMenu"
-                android:layout_marginEnd="8dp"
                 android:text="@string/agir_title_bonnes_ondes"
                 app:layout_constraintBottom_toTopOf="@+id/ui_tv_agir_good_waves_subtitle"
                 app:layout_constraintEnd_toStartOf="@+id/button_create_entourage_good_waves"
@@ -104,30 +93,25 @@
             <TextView
                 android:id="@+id/ui_tv_agir_good_waves_subtitle"
                 style="@style/MapActionSubMenu"
-                android:layout_marginBottom="4dp"
                 android:text="@string/entourage_create_submenu_ask_help"
-                android:textColor="@color/greyish_brown"
-                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/button_create_entourage_good_waves"
                 app:layout_constraintEnd_toStartOf="@+id/button_create_entourage_good_waves"
                 app:layout_constraintTop_toBottomOf="@id/textView231" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button_create_entourage_good_waves"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/MapActionButtonStyle.Small"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_agir_ondes" />
+                app:srcCompat="@drawable/ic_agir_ondes"
+                android:contentDescription="@string/agir_title_bonnes_ondes" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_line_create_entourage_ask_help"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
+            style="@style/MapActionLine"
+            android:layout_below="@id/layout_line_create_good_waves">
 
             <TextView
                 android:id="@+id/textView23"
@@ -140,25 +124,24 @@
             <TextView
                 style="@style/MapActionSubMenu"
                 android:text="@string/entourage_create_submenu_ask_help"
-                android:textColor="@color/greyish_brown"
                 android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@+id/button_create_entourage_ask_help"
                 app:layout_constraintTop_toBottomOf="@id/textView23" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button_create_entourage_ask_help"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/MapActionButtonStyle.Small"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_demanding_heart" />
+                app:srcCompat="@drawable/ic_demanding_heart"
+                android:contentDescription="@string/entourage_create_menu_ask_help" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_line_create_entourage_contribute"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
+            style="@style/MapActionLine"
+            android:layout_below="@id/layout_line_create_entourage_ask_help">
 
             <TextView
                 android:id="@+id/textView22"
@@ -173,22 +156,22 @@
                 android:text="@string/entourage_create_submenu_contribute"
                 android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@+id/button_create_entourage_contribute"
-                app:layout_constraintTop_toBottomOf="@id/textView22" />
+                app:layout_constraintTop_toBottomOf="@id/textView22"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button_create_entourage_contribute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/MapActionButtonStyle.Small"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_giving_heart" />
+                app:srcCompat="@drawable/ic_giving_heart"
+                android:contentDescription="@string/entourage_create_menu_contribute" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_line_create_outing"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
+            style="@style/MapActionLine"
+            android:layout_below="@id/layout_line_create_entourage_contribute">
 
             <TextView
                 android:id="@+id/textView5"
@@ -208,19 +191,18 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button_create_outing"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/MapActionButtonStyle.Small"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_event_white_24dp" />
+                app:srcCompat="@drawable/ic_event_white_24dp"
+                android:contentDescription="@string/outing_create_menu" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_line_start_tour_launcher"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:tag="normal"
+            style="@style/MapActionLine"
+            android:layout_below="@id/layout_line_create_outing"
             android:visibility="gone"
             tools:visibility="visible">
 
@@ -232,28 +214,22 @@
                 app:layout_constraintEnd_toStartOf="@+id/button_start_tour_launcher"
                 app:layout_constraintTop_toTopOf="@+id/button_start_tour_launcher" />
 
-            <TextView
-                style="@style/MapActionSubMenu"
-                android:text="@string/entourage_create_submenu_start_tour_launcher"
-                android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@+id/button_start_tour_launcher"
-                app:layout_constraintTop_toBottomOf="@id/textView6" />
-
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button_start_tour_launcher"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/MapActionButtonStyle.Small"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_start_maraude" />
+                app:srcCompat="@drawable/ic_start_maraude"
+                android:contentDescription="@string/tour_create" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_line_add_tour_encounter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:visibility="gone">
+            style="@style/MapActionLine"
+            android:layout_below="@id/layout_line_start_tour_launcher"
+            android:visibility="gone"
+            tools:visibility="gone">
 
             <TextView
                 android:id="@+id/textView8"
@@ -262,20 +238,15 @@
                 app:layout_constraintEnd_toStartOf="@+id/button_add_tour_encounter"
                 app:layout_constraintTop_toTopOf="@+id/button_add_tour_encounter" />
 
-            <TextView
-                style="@style/MapActionSubMenu"
-                android:text="@string/entourage_create_submenu_add_tour_encounter"
-                app:layout_constraintEnd_toStartOf="@+id/button_add_tour_encounter"
-                app:layout_constraintTop_toBottomOf="@id/textView8" />
-
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button_add_tour_encounter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/MapActionButtonStyle.Small"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_encounter" />
+                app:srcCompat="@drawable/ic_encounter"
+                android:contentDescription="@string/tour_create_encounter_button" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+</RelativeLayout>

@@ -159,7 +159,7 @@ class OnboardingAssoFillFragment : Fragment() {
                 currentAssoInfo?.isCreation = newAsso.isCreation
             }
 
-            if (ui_onboard_asso_fill_function?.text.toString().length > 0) {
+            if (ui_onboard_asso_fill_function?.text.toString().isNotEmpty()) {
                 currentAssoInfo?.userRoleTitle = ui_onboard_asso_fill_function.text.toString()
             }
             updateAssoInfo()

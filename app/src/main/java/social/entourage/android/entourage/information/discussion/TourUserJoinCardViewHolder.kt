@@ -15,7 +15,7 @@ import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events.OnUserJoinRequestUpdateEvent
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.tools.Utils
 
@@ -35,7 +35,7 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
             if (userId == 0) return@OnClickListener
             feedItem?.let {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_ACCEPT)
-                BusProvider.instance.post(
+                EntBus.post(
                         OnUserJoinRequestUpdateEvent(
                                 userId,
                                 FeedItem.JOIN_STATUS_ACCEPTED,
@@ -47,7 +47,7 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
             if (userId == 0) return@OnClickListener
             feedItem?.let {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_REJECT)
-                BusProvider.instance.post(
+                EntBus.post(
                         OnUserJoinRequestUpdateEvent(
                                 userId,
                                 FeedItem.JOIN_STATUS_REJECTED,
@@ -59,7 +59,7 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
 
     private fun onClick() {
         if (userId == 0) return
-        BusProvider.instance.post(OnUserViewRequestedEvent(userId))
+        EntBus.post(OnUserViewRequestedEvent(userId))
     }
 
     override fun populate(user: TimestampedObject) {

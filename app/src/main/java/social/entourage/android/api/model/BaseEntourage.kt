@@ -29,7 +29,8 @@ open class BaseEntourage : FeedItem, Serializable {
     // Attributes
     // ----------------------------------
     @SerializedName("created_at")
-    protected var createdTime: Date = Date()
+    var createdTime: Date = Date()
+        private set
 
     @SerializedName("group_type")
     private var groupType: String
@@ -85,14 +86,6 @@ open class BaseEntourage : FeedItem, Serializable {
     // ----------------------------------
     // GETTERS & SETTERS
     // ----------------------------------
-    override fun getCreationTime(): Date {
-        return createdTime
-    }
-
-    fun setCreationTime(creationTime: Date) {
-        createdTime = creationTime
-    }
-
     override fun getDescription(): String? {
         return description
     }
@@ -109,7 +102,7 @@ open class BaseEntourage : FeedItem, Serializable {
         this.title = title
     }
 
-    override fun getGroupType(): String {
+    fun getGroupType(): String {
         return groupType
     }
 
@@ -169,12 +162,7 @@ open class BaseEntourage : FeedItem, Serializable {
     }
 
     override fun getFeedTypeColor(): Int {
-        val entourageCategory = EntourageCategoryManager.findCategory(this)
-        return entourageCategory?.typeColorRes ?: super.getFeedTypeColor()
-    }
-
-    override fun getStartTime(): Date {
-        return createdTime
+        return EntourageCategoryManager.findCategory(this).typeColorRes
     }
 
     override fun getEndTime(): Date? {
@@ -186,38 +174,15 @@ open class BaseEntourage : FeedItem, Serializable {
         return location
     }
 
-    override fun getDisplayAddress(): String? {
-        return metadata?.displayAddress
-    }
-
     override fun getIconDrawable(context: Context): Drawable? {
-        EntourageCategoryManager.findCategory(this)?.let { entourageCategory ->
-            AppCompatResources.getDrawable(context, entourageCategory.iconRes)?.let { categoryIcon ->
-                categoryIcon.mutate()
-                categoryIcon.clearColorFilter()
-                categoryIcon.setColorFilter(ContextCompat.getColor(context, entourageCategory.typeColorRes), PorterDuff.Mode.SRC_IN)
-                return categoryIcon
-            }
+        val entourageCategory = EntourageCategoryManager.findCategory(this)
+        AppCompatResources.getDrawable(context, entourageCategory.iconRes)?.let { categoryIcon ->
+            categoryIcon.mutate()
+            categoryIcon.clearColorFilter()
+            categoryIcon.setColorFilter(ContextCompat.getColor(context, entourageCategory.typeColorRes), PorterDuff.Mode.SRC_IN)
+            return categoryIcon
         }
         return super.getIconDrawable(context)
-    }
-
-    @StringRes
-    override fun getJoinRequestTitle(): Int {
-        return R.string.tour_info_request_join_title_entourage
-    }
-
-    @StringRes
-    override fun getJoinRequestButton(): Int {
-        return R.string.tour_info_request_join_button_entourage
-    }
-
-    override fun getQuitDialogTitle(): Int {
-        return R.string.entourage_info_quit_entourage_title
-    }
-
-    override fun getQuitDialogMessage(): Int {
-        return R.string.entourage_info_quit_entourage_description
     }
 
     @StringRes
@@ -260,7 +225,7 @@ open class BaseEntourage : FeedItem, Serializable {
     // ----------------------------------
     class EntourageJoinInfo(var distance: Int)
 
-    class Metadata() : Serializable {
+    class Metadata : Serializable {
 
         @SerializedName("starts_at")
         var startDate: Date? = null
@@ -380,13 +345,18 @@ open class BaseEntourage : FeedItem, Serializable {
             val jsonData = json.asJsonObject
             if (jsonData !=null) {
                 try {
-                    val entourageClass = BaseEntourage.getClassFromString(
+                    val entourageClass = getClassFromString(
                             jsonData["group_type"]?.asString,
                             jsonData["entourage_type"]?.asString)
                         val gson = GsonBuilder()
                                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
                                 .create()
-                        return gson.fromJson<BaseEntourage>(jsonData, entourageClass)
+                        val entourage = gson.fromJson<BaseEntourage>(jsonData, entourageClass)
+                        //HACK we force Date when API gives us NULL created_at
+                        if(entourage.createdTime == null) {
+                            entourage.createdTime = Date()
+                        }
+                        return entourage
                 } catch (e: Exception) {
                     Timber.e(e)
                 }

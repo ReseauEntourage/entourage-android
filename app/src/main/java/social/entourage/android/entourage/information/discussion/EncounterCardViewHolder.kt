@@ -8,7 +8,7 @@ import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.tour.Encounter
 import social.entourage.android.api.tape.Events.OnTourEncounterViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.Utils
 
 /**
@@ -21,13 +21,13 @@ class EncounterCardViewHolder(view: View) : BaseCardViewHolder(view) {
         itemView.tic_encounter_author?.setOnClickListener {
             encounter?.let {
             if (it.isMyEncounter)
-                BusProvider.instance.post(OnTourEncounterViewRequestedEvent(it))
+                EntBus.post(OnTourEncounterViewRequestedEvent(it))
             }
         }
         itemView.tic_encounter_street_name?.setOnClickListener {
             encounter?.let {
                 if (it.isMyEncounter)
-                    BusProvider.instance.post(OnTourEncounterViewRequestedEvent(it))
+                    EntBus.post(OnTourEncounterViewRequestedEvent(it))
             }
         }
     }

@@ -81,7 +81,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
     }
 
     override fun onStopTourButton() {
-        if (tour.status == FeedItem.STATUS_ON_GOING || tour.status == FeedItem.STATUS_OPEN) {
+        if (tour.isOpen()) {
             //compute distance
             var distance = 0.0f
             val tourPointsList = tour.tourPoints
@@ -105,7 +105,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
             //show stop tour activity
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE)
             mListener?.showStopTourActivity(tour)
-        } else if (tour.status == FeedItem.STATUS_CLOSED) {
+        } else if (tour.isClosed()) {
             EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE)
             serviceConnection.boundService?.freezeTour(tour)
         }
@@ -173,7 +173,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
         if (tour.type == TimestampedObject.TOUR_CARD) {
             val now = Date()
             //add the start time
-            if (FeedItem.STATUS_ON_GOING == tour.status) {
+            if (Tour.STATUS_ON_GOING == tour.status) {
                 addDiscussionTourStartCard(now)
             }
 
@@ -318,7 +318,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
                 tour.getStartTime(),
                 now,
                 tour.type,
-                FeedItem.STATUS_ON_GOING,
+                Tour.STATUS_ON_GOING,
                 startPoint,
                 duration,
                 distance

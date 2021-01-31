@@ -151,10 +151,8 @@ object Utils {
     }
 
     fun getScreenWidth(context: Context): Int {
-        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val display = wm.defaultDisplay
         val size = Point()
-        display.getSize(size)
+        (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.getSize(size)
         return size.x
     }
 

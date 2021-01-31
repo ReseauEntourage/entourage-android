@@ -2,13 +2,12 @@ package social.entourage.android.api.model.guide
 
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.annotations.SerializedName
-import com.google.maps.android.clustering.ClusterItem
 import social.entourage.android.api.model.TimestampedObject
 import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
 
-class Poi : TimestampedObject(), Serializable, ClusterItem {
+class Poi : TimestampedObject(), Serializable {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -45,17 +44,11 @@ class Poi : TimestampedObject(), Serializable, ClusterItem {
     // ----------------------------------
     // GETTERS & SETTERS
     // ----------------------------------
-    override fun getPosition(): LatLng {
-        return LatLng(latitude, longitude)
-    }
+    val position: LatLng
+        get() = LatLng(latitude, longitude)
 
-    override fun getTitle(): String? {
-        return name
-    }
-
-    override fun getSnippet(): String? {
-        return null
-    }
+    val title : String?
+        get() = name
 
     // ----------------------------------
     // Timestamp methods
@@ -67,7 +60,11 @@ class Poi : TimestampedObject(), Serializable, ClusterItem {
         get() = GUIDE_POI
 
     override fun hashString(): String {
-        return HASH_STRING_HEAD + id
+        return HASH_STRING_HEAD + uuid
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return if (other !is Poi) false else uuid == other.uuid
     }
 
     companion object {

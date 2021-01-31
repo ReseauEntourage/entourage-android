@@ -102,7 +102,7 @@ class EntourageInformationPresenter @Inject constructor(
             fragment.showProgressBar()
             when (feedItem.type) {
                 TimestampedObject.ENTOURAGE_CARD -> {
-                    val call = entourageRequest.retrieveEntourageMessages(uuid, lastMessageDate)
+                    val call = entourageRequest.retrieveMessages(uuid, lastMessageDate)
                     call.enqueue(object : Callback<ChatMessageListResponse> {
                         override fun onResponse(call: Call<ChatMessageListResponse>, response: Response<ChatMessageListResponse>) {
                             response.body()?.chatMessages?.let {

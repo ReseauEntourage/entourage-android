@@ -16,23 +16,23 @@ import kotlinx.android.synthetic.main.fragment_user_edit.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageComponent
-import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
-import social.entourage.android.api.model.BaseEntourage
+import social.entourage.android.api.model.EntourageConversation
 import social.entourage.android.api.model.User
 import social.entourage.android.api.tape.Events.OnPartnerViewRequestedEvent
 import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.entourage.information.FeedItemInformationFragment
-import social.entourage.android.user.partner.PartnerFragmentV2
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.CropCircleTransformation
+import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.user.edit.UserEditAboutFragment
 import social.entourage.android.user.edit.UserEditFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment.Companion.newInstance
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragmentCompat
+import social.entourage.android.user.partner.PartnerFragment
 import social.entourage.android.user.report.UserReportFragment
 import timber.log.Timber
 import javax.inject.Inject
@@ -95,12 +95,12 @@ class UserFragment : EntourageDialogFragment() {
 
     override fun onStart() {
         super.onStart()
-        BusProvider.instance.register(this)
+        EntBus.register(this)
     }
 
     override fun onStop() {
         super.onStop()
-        BusProvider.instance.unregister(this)
+        EntBus.unregister(this)
     }
 
     // ----------------------------------
@@ -143,7 +143,7 @@ class UserFragment : EntourageDialogFragment() {
             user_name?.setRoles(u.roles)
             user_tours_count?.text = getString(R.string.user_entourage_count_format, u.stats?.getActionCount() ?: 0)
             val userAbout = u.about
-            user_profile_about_layout?.visibility = if (!userAbout.isNullOrBlank()) View.VISIBLE else View.GONE
+            user_profile_about_layout?.visibility = if (userAbout.isNotBlank()) View.VISIBLE else View.GONE
             ui_tv_user_description?.text = userAbout
 
             ui_tv_nb_actions?.text = if(u.stats?.actionsCount != null) "${u.stats!!.actionsCount}" else "0"
@@ -224,7 +224,7 @@ class UserFragment : EntourageDialogFragment() {
         displayToast(R.string.user_text_update_ok)
     }
 
-    fun onConversationFound(entourage: BaseEntourage) {
+    fun onConversationFound(entourage: EntourageConversation) {
         try {
             val entourageInformationFragment = FeedItemInformationFragment.newInstance(entourage, 0, 0)
             entourageInformationFragment.hideInfoButton()
@@ -306,7 +306,7 @@ class UserFragment : EntourageDialogFragment() {
             if (parentFragmentManager.findFragmentByTag(UserEditFragment.TAG) != null) {
                 return
             }
-            PartnerFragmentV2.newInstance(event.partner,null).show(parentFragmentManager,PartnerFragmentV2.TAG)
+            PartnerFragment.newInstance(event.partner).show(parentFragmentManager,PartnerFragment.TAG)
         } catch (e: IllegalStateException) {
             Timber.w(e)
         }

@@ -10,8 +10,7 @@ import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
-import social.entourage.android.tools.BusProvider
-import social.entourage.android.tools.BusProvider.instance
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.user.role.UserRoleView
 import social.entourage.android.user.role.UserRolesFactory
@@ -24,7 +23,7 @@ class MemberCardViewHolder(view: View) : BaseCardViewHolder(view) {
     private var userId = 0
     override fun bindFields() {
         itemView.setOnClickListener {
-            if (userId != 0) instance.post(OnUserViewRequestedEvent(userId))
+            if (userId != 0) EntBus.post(OnUserViewRequestedEvent(userId))
         }
     }
 
@@ -82,10 +81,8 @@ class MemberCardViewHolder(view: View) : BaseCardViewHolder(view) {
 
         if (partner != null || !role.isNullOrEmpty()) {
             itemView.ui_layout_bottom?.visibility = View.VISIBLE
-            var _roleStr = ""
             if (role != null && role.isNotEmpty()) {
-                _roleStr = "$role -"
-                itemView.ui_tv_role?.text = _roleStr
+                itemView.ui_tv_role?.text = "$role -"
                 itemView.ui_tv_role?.visibility = View.VISIBLE
             }
             else {
@@ -95,7 +92,7 @@ class MemberCardViewHolder(view: View) : BaseCardViewHolder(view) {
             itemView.ui_tv_bt_asso?.text = partner?.name
             itemView.ui_tv_bt_asso?.setOnClickListener {
                 entourageUser.partner?.id?.toInt()?.let { partnerId ->
-                    BusProvider.instance.post(Events.OnShowDetailAssociation(partnerId))
+                    EntBus.post(Events.OnShowDetailAssociation(partnerId))
                 }
             }
         }

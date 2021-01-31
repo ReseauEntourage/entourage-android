@@ -11,7 +11,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.BaseOrganization
 import social.entourage.android.api.model.Partner
 import social.entourage.android.api.tape.Events.OnPartnerViewRequestedEvent
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 
 /**
  * Created by mihaiionescu on 24/03/16.
@@ -23,7 +23,7 @@ class UserOrganizationsAdapter(private var organizationList: List<BaseOrganizati
         init {
             itemView.ui_layout_click?.setOnClickListener {
                 partner?.let {
-                    BusProvider.instance.post(OnPartnerViewRequestedEvent(it))
+                    EntBus.post(OnPartnerViewRequestedEvent(it))
                 }
             }
         }

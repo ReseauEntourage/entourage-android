@@ -35,7 +35,7 @@ import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryFragment
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.location.LocationFragment
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.EntourageEvents
 import timber.log.Timber
 import java.io.IOException
@@ -139,7 +139,7 @@ open class BaseCreateEntourageFragment
         dismiss()
     }
 
-    fun onValidateClicked() {
+    private fun onValidateClicked() {
         if (isSaving) return
         if (isValid) {
             if (presenter != null) {
@@ -297,7 +297,7 @@ open class BaseCreateEntourageFragment
         } catch (e: IllegalStateException) {
             Timber.w(e)
         }
-        BusProvider.instance.post(OnFeedItemInfoViewRequestedEvent(entourage,true))
+        EntBus.post(OnFeedItemInfoViewRequestedEvent(entourage,true))
     }
 
     protected fun saveEditedEntourage() {
@@ -311,7 +311,6 @@ open class BaseCreateEntourageFragment
             entourage.setTitle(create_entourage_title?.text.toString())
             entourage.setDescription(create_entourage_description?.text.toString())
             entourage.location = entourageLocation
-            //TODO check if entourageType==groupType
             entourageCategory?.let { cat ->
                 cat.groupType?.let { entourage.actionGroupType = it }
                 entourage.category = cat.category
@@ -359,11 +358,7 @@ open class BaseCreateEntourageFragment
             entourageCategory?.isSelected = true
         }
         if (entourageCategory == null) {
-            entourageCategory = if (groupType != null) {
-                EntourageCategoryManager.getDefaultCategory(groupType!!)
-            } else {
-                EntourageCategoryManager.defaultCategory
-            }
+            entourageCategory = groupType?.let { EntourageCategoryManager.getDefaultCategory(it) } ?: EntourageCategoryManager.defaultCategory
             entourageCategory?.isSelected = false
             entourageCategory?.isNewlyCreated = true
         }
@@ -372,14 +367,9 @@ open class BaseCreateEntourageFragment
     }
 
     private fun updateCategoryTextView() {
-        if (entourageCategory == null || entourageCategory?.isNewlyCreated==true) {
-            create_entourage_category?.text = "*"
-        } else {
-            create_entourage_category?.text = getString(
-                    if (BaseEntourage.GROUPTYPE_ACTION_DEMAND.equals(entourageCategory!!.groupType, ignoreCase = true)) R.string.entourage_create_type_demand else R.string.entourage_create_type_contribution,
-                    entourageCategory?.title
-            )
-        }
+        create_entourage_category?.text = entourageCategory?.let {
+                getString(if(BaseEntourage.GROUPTYPE_ACTION_DEMAND.equals(it.groupType, ignoreCase = true)) R.string.entourage_create_type_demand else R.string.entourage_create_type_contribution, it.title)
+        } ?: "*"
         create_entourage_category_layout?.visibility = if (groupType != null && groupType.equals(BaseEntourage.GROUPTYPE_OUTING, ignoreCase = true)) View.GONE else View.VISIBLE
     }
 
@@ -401,8 +391,8 @@ open class BaseCreateEntourageFragment
             } ?: run  {
                 location = args.getParcelable(KEY_ENTOURAGE_LOCATION)
             }
-            if (location != null && !BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) {
-                GeocoderTask().execute(location)
+            if (!BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) {
+                location?.let {location -> GeocoderTask().execute(location) }
             }
         }
     }
@@ -418,18 +408,17 @@ open class BaseCreateEntourageFragment
     }
 
     private fun initializeDate() {
-        editedEntourage?.metadata?.let { metadata ->
-            metadata.startDate?.let { startDate ->
-                entourageDateStart = Calendar.getInstance().apply {
-                    this.time = startDate
-                }
-            }
-            metadata.endDate?.let { endDate ->
-                entourageDateEnd = Calendar.getInstance().apply {
-                    this.time = endDate
-                }
+        editedEntourage?.metadata?.startDate?.let { startDate ->
+            entourageDateStart = Calendar.getInstance().apply {
+                this.time = startDate
             }
         }
+        editedEntourage?.metadata?.endDate?.let { endDate ->
+            entourageDateEnd = Calendar.getInstance().apply {
+                this.time = endDate
+            }
+        }
+
         updateDateStartTextView()
         updateDateEndTextView()
         create_entourage_date_start_layout?.visibility = if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) View.VISIBLE else View.GONE
@@ -461,11 +450,7 @@ open class BaseCreateEntourageFragment
         if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) {
             ui_create_entourage_privacyAction?.visibility = View.GONE
         } else {
-            editedEntourage?.let {
-                changeActionView(it.isJoinRequestPublic)
-            } ?: run {
-                changeActionView(true)
-            }
+            changeActionView(editedEntourage?.isJoinRequestPublic ?: true)
             ui_create_entourage_privacyAction?.visibility = View.VISIBLE
             ui_layout_privacyAction_public?.setOnClickListener { changeActionView(true) }
             ui_layout_privacyAction_private?.setOnClickListener { changeActionView(false) }
@@ -488,13 +473,13 @@ open class BaseCreateEntourageFragment
                 Toast.makeText(activity, R.string.entourage_create_error_title_empty, Toast.LENGTH_SHORT).show()
                 return false
             }
-            if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) {
+            else if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) {
                 if (create_entourage_date_start?.text.isNullOrBlank()) {
                     Toast.makeText(activity, R.string.entourage_create_error_date_empty, Toast.LENGTH_SHORT).show()
                     return false
                 }
             } else {
-                if (entourageCategory == null || entourageCategory!!.isNewlyCreated) {
+                if (entourageCategory?.isNewlyCreated != true) {
                     Toast.makeText(activity, R.string.entourage_create_error_category_empty, Toast.LENGTH_SHORT).show()
                     return false
                 }
@@ -584,6 +569,7 @@ open class BaseCreateEntourageFragment
     }
 
     override fun onCategoryChosen(category: EntourageCategory) {
+        category.isNewlyCreated = false
         entourageCategory = category
         updateCategoryTextView()
     }

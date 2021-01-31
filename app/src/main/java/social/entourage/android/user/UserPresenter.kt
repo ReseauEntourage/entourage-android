@@ -3,6 +3,7 @@ package social.entourage.android.user
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import social.entourage.android.api.model.EntourageConversation
 import social.entourage.android.api.request.EntourageRequest
 import social.entourage.android.api.request.EntourageResponse
 import social.entourage.android.api.request.UserRequest
@@ -80,7 +81,9 @@ class UserPresenter @Inject constructor(
             override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
                 if (response.isSuccessful) {
                     //show the entourage information
-                    response.body()?.entourage?.let { fragment?.onConversationFound(it) }
+                    (response.body()?.entourage as? EntourageConversation)?.let {
+                        fragment?.onConversationFound(it)
+                    }
                 } else {
                     fragment?.onConversationNotFound()
                 }

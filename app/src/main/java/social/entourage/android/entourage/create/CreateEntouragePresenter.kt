@@ -11,7 +11,7 @@ import social.entourage.android.api.model.BaseEntourage.Companion.create
 import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.tape.Events.OnEntourageCreated
 import social.entourage.android.api.tape.Events.OnEntourageUpdated
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import javax.inject.Inject
 
 /**
@@ -39,7 +39,7 @@ class CreateEntouragePresenter @Inject constructor(
                     response.body()?.entourage?.let { receivedEntourage ->
                         receivedEntourage.isNewlyCreated = true
                         fragment?.onEntourageCreated(receivedEntourage)
-                        BusProvider.instance.post(OnEntourageCreated(receivedEntourage))
+                        EntBus.post(OnEntourageCreated(receivedEntourage))
                     } ?: run {
                         fragment?.onEntourageCreationFailed()
                     }
@@ -65,7 +65,7 @@ class CreateEntouragePresenter @Inject constructor(
                 if (response.isSuccessful) {
                     response.body()?.entourage?.let { receivedEntourage ->
                         fragment?.onEntourageEdited(receivedEntourage)
-                        BusProvider.instance.post(OnEntourageUpdated(receivedEntourage))
+                        EntBus.post(OnEntourageUpdated(receivedEntourage))
                     } ?: run {
                         fragment?.onEntourageEditionFailed()
                     }

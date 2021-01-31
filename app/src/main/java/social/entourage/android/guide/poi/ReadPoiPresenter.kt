@@ -1,5 +1,6 @@
 package social.entourage.android.guide.poi
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.view.View
@@ -10,6 +11,7 @@ import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.api.request.PoiDetailResponse
 import social.entourage.android.api.request.PoiRequest
 import social.entourage.android.map.OnAddressClickListener
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -24,7 +26,7 @@ class ReadPoiPresenter @Inject constructor(private val fragment: ReadPoiFragment
             override fun onResponse(call: Call<PoiDetailResponse>, response: Response<PoiDetailResponse>) {
                 response.body()?.let {
                     if (response.isSuccessful) {
-                        it.poi.isSoliguide = it.poi.source.equals("soliguide")
+                        it.poi.isSoliguide = it.poi.source == "soliguide"
                         displayPoi(it.poi)
                         return
                     }
@@ -39,18 +41,21 @@ class ReadPoiPresenter @Inject constructor(private val fragment: ReadPoiFragment
     }
 
     fun displayPoi(poi: Poi) {
-        //var listenerAddress: OnAddressClickListener? = null
-        val listenerAddress = poi.address?.let { OnAddressClickListener(fragment.requireActivity(), it) }
-        val listenerPhone = poi.phone?.let { OnPhoneClickListener(it)}
-        fragment.onDisplayedPoi(poi, listenerAddress, listenerPhone)
+        if(!fragment.isAdded) return
+        fragment.activity?.let { activity->
+            val listenerAddress = poi.address?.let { OnAddressClickListener(activity, it) }
+            val listenerPhone = poi.phone?.let { OnPhoneClickListener(it) }
+            fragment.onDisplayedPoi(poi, listenerAddress, listenerPhone)
+        }
     }
 
     private fun dial(phone: Uri) {
-        val intent = Intent(Intent.ACTION_DIAL)
-        intent.data = phone
         if (fragment.context != null) {
-            if (intent.resolveActivity(fragment.requireContext().packageManager) != null) {
+            val intent = Intent(Intent.ACTION_DIAL).apply { data = phone }
+            try {
                 fragment.startActivity(intent)
+            } catch (e: ActivityNotFoundException) {
+                Timber.e(e)
             }
         }
     }

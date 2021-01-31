@@ -8,7 +8,7 @@ import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
-import social.entourage.android.tools.BusProvider.instance
+import social.entourage.android.tools.EntBus
 
 /**
  * Created by mihaiionescu on 08/08/16.
@@ -26,7 +26,7 @@ class InvitationCardViewHolder(view: View) : BaseCardViewHolder(view) {
         itemView.setOnClickListener {
             EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_BANNER_CLICK)
             if (entourageUUID.isBlank() || invitationId == 0L) return@setOnClickListener
-            instance.post(OnFeedItemInfoViewRequestedEvent(entourageUUID, invitationId))
+            EntBus.post(OnFeedItemInfoViewRequestedEvent(entourageUUID, invitationId))
         }
         itemView.invitation_card_inviter?.text = itemView.resources.getString(R.string.invitation_card_inviter, invitation.inviterName)
         itemView.invitation_card_description?.text = invitation.entourage?.getTitle() ?: itemView.resources.getString(R.string.invitation_card_description)

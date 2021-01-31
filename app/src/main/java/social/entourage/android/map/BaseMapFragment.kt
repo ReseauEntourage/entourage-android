@@ -24,10 +24,6 @@ import com.google.android.gms.maps.GoogleMap.OnGroundOverlayClickListener
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.maps.android.clustering.ClusterItem
-import com.google.maps.android.clustering.ClusterManager
-import com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener
-import com.google.maps.android.clustering.view.DefaultClusterRenderer
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.layout_map_longclick.*
 import social.entourage.android.base.BackPressable
@@ -40,7 +36,7 @@ import social.entourage.android.location.EntourageLocation
 import social.entourage.android.location.LocationUpdateListener
 import social.entourage.android.location.LocationUtils.isLocationEnabled
 import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import timber.log.Timber
 
 abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPressable, LocationUpdateListener {
@@ -50,7 +46,6 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
     protected var previousCameraLocation: Location? = null
     protected var previousCameraZoom = 1.0f
     var map: GoogleMap? = null
-    protected var mapClusterManager: ClusterManager<ClusterItem>? = null
     protected abstract val adapter: HeaderBaseAdapter?
 
     protected var originalMapLayoutHeight = 0
@@ -86,7 +81,7 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
 
     protected open fun saveCameraPosition() {}
 
-    private fun initializeMapZoom() {
+    fun initializeMapZoom() {
         EntourageApplication.get().entourageComponent.authenticationController.me?.address?.let {
             centerMap(LatLng(it.latitude, it.longitude))
             isFollowing = false
@@ -99,7 +94,7 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
         if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
             for (index in permissions.indices) {
                 if (permissions[index].equals(permission.ACCESS_FINE_LOCATION, ignoreCase = true)) {
-                    BusProvider.instance.post(OnLocationPermissionGranted(grantResults[index] == PackageManager.PERMISSION_GRANTED))
+                    EntBus.post(OnLocationPermissionGranted(grantResults[index] == PackageManager.PERMISSION_GRANTED))
                 }
             }
         }
@@ -107,7 +102,7 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
     }
 
     @SuppressLint("MissingPermission")
-    protected fun onMapReady(googleMap: GoogleMap, onClickListener: OnClusterItemClickListener<ClusterItem>?, onGroundOverlayClickListener: OnGroundOverlayClickListener?) {
+    protected fun onMapReady(googleMap: GoogleMap, onGroundOverlayClickListener: OnGroundOverlayClickListener?) {
         map = googleMap
         //we forced the setting of the map anyway
         if (activity == null) {
@@ -120,14 +115,6 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
         googleMap.uiSettings.isMyLocationButtonEnabled = false
         googleMap.uiSettings.isMapToolbarEnabled = false
         googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_styles_json))
-        mapClusterManager = ClusterManager<ClusterItem>(activity, googleMap)
-        //we need to assign this parameter as it is used during the following step
-        mapClusterManager?.apply {
-            this.renderer = getClusterRenderer()
-            this.setOnClusterItemClickListener(onClickListener)
-            initializeMapZoom()
-            googleMap.setOnMarkerClickListener(this)
-        }
         if (onGroundOverlayClickListener != null) {
             googleMap.setOnGroundOverlayClickListener(onGroundOverlayClickListener)
         }
@@ -142,8 +129,6 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
             }
         }
     }
-
-    protected abstract fun getClusterRenderer(): DefaultClusterRenderer<ClusterItem>
 
     // ----------------------------------
     // LIFECYCLE

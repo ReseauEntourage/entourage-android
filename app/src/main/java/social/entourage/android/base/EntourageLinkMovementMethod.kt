@@ -7,7 +7,7 @@ import android.text.style.URLSpan
 import android.view.MotionEvent
 import android.widget.TextView
 import social.entourage.android.api.tape.Events.OnShowURLEvent
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 
 /**
  * Created by Mihai Ionescu on 11/04/2018.
@@ -26,7 +26,7 @@ object EntourageLinkMovementMethod : LinkMovementMethod() {
                 // to avoid double handling, we handle the link only on down
                 if (action == MotionEvent.ACTION_DOWN) {
                     if (links[0] is URLSpan) {
-                        (links[0] as URLSpan).url?.let { url -> BusProvider.instance.post(OnShowURLEvent(url))}
+                        (links[0] as URLSpan).url?.let { url -> EntBus.post(OnShowURLEvent(url))}
                     }
                 }
                 return true

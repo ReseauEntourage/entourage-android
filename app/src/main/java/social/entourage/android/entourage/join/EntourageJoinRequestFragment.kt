@@ -69,7 +69,7 @@ class EntourageJoinRequestFragment  : DialogFragment() {
         })
         tour_join_request_ok_message_button?.setOnClickListener {onMessageSend()}
         tour_join_request_ok_x_button?.setOnClickListener { dismiss() }
-        viewModel.requestResult.observe(viewLifecycleOwner, Observer {
+        viewModel.requestResult.observe(viewLifecycleOwner, {
             when(it) {
                 EntourageJoinRequestViewModel.REQUEST_ERROR ->{
                     Toast.makeText(context, R.string.tour_join_request_message_error, Toast.LENGTH_SHORT).show()
@@ -85,7 +85,7 @@ class EntourageJoinRequestFragment  : DialogFragment() {
     private fun onMessageSend() {
         entourage.uuid?.let { uuid ->
             tour_join_request_ok_message?.text?.let {
-                if (!it.isBlank()) {
+                if (it.isNotBlank()) {
                     EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_SUBMIT)
                     viewModel.sendMessage(it.toString(), uuid)
                 }

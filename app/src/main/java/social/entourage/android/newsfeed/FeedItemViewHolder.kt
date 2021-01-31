@@ -20,7 +20,7 @@ import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BaseCardViewHolder
-import social.entourage.android.tools.BusProvider.instance
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.tools.Utils.formatLastUpdateDate
 
@@ -53,15 +53,14 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
             // add the icon for entourages
             itemView.tour_card_icon?.let {iconView ->
                 Picasso.get().cancelRequest(iconView)
-                val iconURL = feedItem.getIconURL()
-                if (iconURL != null) {
+                feedItem.getIconURL()?.let { iconURL ->
                     iconView.setImageDrawable(null)
                     Picasso.get()
                             .load(iconURL)
                             .placeholder(R.drawable.ic_user_photo_small)
                             .transform(CropCircleTransformation())
                             .into(iconView)
-                } else {
+                } ?: run {
                     iconView.setImageDrawable(feedItem.getIconDrawable(itemView.context))
                 }
             }
@@ -125,7 +124,7 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
                     ?: ""
             var distStr = if (distanceAsString.equals("", ignoreCase = true)) "" else String.format(res.getString(R.string.tour_cell_location), distanceAsString)
 
-            if (distStr.length > 0 && !feedItem.postal_code.isNullOrEmpty()) {
+            if (distStr.isNotEmpty() && !feedItem.postal_code.isNullOrEmpty()) {
                 distStr = "%s - %s".format(distStr, feedItem.postal_code)
             } else if (!feedItem.postal_code.isNullOrEmpty()) {
                 distStr = feedItem.postal_code!!
@@ -231,12 +230,12 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
     private fun onClickMainView(){
         viewHolderListener?.onViewHolderDetailsClicked(0)
         // The server wants the position starting with 1
-        instance.post(OnFeedItemInfoViewRequestedEvent(feedItem, adapterPosition + 1))
+        EntBus.post(OnFeedItemInfoViewRequestedEvent(feedItem, adapterPosition + 1))
     }
 
     private fun onClickCardPhoto(){
         feedItem.author?.let {
-            instance.post(OnUserViewRequestedEvent(it.userID))
+            EntBus.post(OnUserViewRequestedEvent(it.userID))
         }
 
     }
@@ -244,18 +243,18 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
         when (feedItem.joinStatus) {
             FeedItem.JOIN_STATUS_PENDING -> {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_PENDING_OVERLAY)
-                instance.post(OnFeedItemCloseRequestEvent(feedItem))
+                EntBus.post(OnFeedItemCloseRequestEvent(feedItem))
             }
             FeedItem.JOIN_STATUS_ACCEPTED -> {
                 EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_OPEN_ACTIVE_OVERLAY)
-                instance.post(OnFeedItemCloseRequestEvent(feedItem))
+                EntBus.post(OnFeedItemCloseRequestEvent(feedItem))
             }
             FeedItem.JOIN_STATUS_REJECTED -> {
                 //TODO: What to do on rejected status ?
             }
             else -> {
                 // The server wants the position starting with 1
-                instance.post(OnFeedItemInfoViewRequestedEvent(feedItem, adapterPosition + 1))
+                EntBus.post(OnFeedItemInfoViewRequestedEvent(feedItem, adapterPosition + 1))
             }
         }
     }

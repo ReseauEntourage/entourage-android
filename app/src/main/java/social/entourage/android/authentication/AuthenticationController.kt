@@ -7,7 +7,7 @@ import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
 import social.entourage.android.entourage.my.filter.MyEntouragesFilter
 import social.entourage.android.map.filter.MapFilter
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -49,7 +49,7 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
         user = updatedUser
         saveCurrentUser()
         if (shouldLoadUserPreferences) loadUserPreferences()
-        BusProvider.instance.post(OnUserInfoUpdatedEvent())
+        EntBus.post(OnUserInfoUpdatedEvent())
     }
 
     fun saveUserPhoneAndCode(phone: String?, smsCode: String?) {

@@ -2,12 +2,10 @@ package social.entourage.android.api.model.feed
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.location.Address
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import social.entourage.android.EntourageApplication.Companion.me
 import social.entourage.android.R
 import social.entourage.android.api.model.LastMessage
 import social.entourage.android.api.model.LocationPoint
@@ -39,10 +37,6 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
 
     @SerializedName("updated_at")
     var updatedTime: Date = Date()
-
-    @Expose(serialize = false, deserialize = false)
-    @Transient
-    var startAddress: Address? = null
 
     @Expose(serialize = false)
     @SerializedName("number_of_people")
@@ -85,9 +79,6 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
 
     var postal_code:String? = null
 
-    @SerializedName("display_report_prompt")
-    var isDisplay_report_prompt:Boolean = false
-
     // ----------------------------------
     // CONSTRUCTORS
     // ----------------------------------
@@ -120,27 +111,14 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
 
     open fun isClosed(): Boolean { return STATUS_CLOSED == status }
 
+    open fun isOpen(): Boolean { return STATUS_OPEN == status}
+
     //TODO only for tours ???
-    fun isOngoing(): Boolean { return STATUS_ON_GOING == status}
+    open fun isOngoing(): Boolean { return false}
     fun isSuspended(): Boolean { return STATUS_SUSPENDED == status}
     //end TODO
 
     fun isPrivate(): Boolean {return JOIN_STATUS_ACCEPTED == joinStatus}
-
-    open fun isConversation() :Boolean {
-        return false
-    }
-
-    open fun isFreezed(): Boolean {return STATUS_CLOSED == status}
-
-    fun isMine(context: Context?): Boolean {
-        author?.let {
-            me(context)?.let { me ->
-                return it.userID == me.id
-            }
-        }
-        return false
-    }
 
     // ----------------------------------
     // UI METHODS
@@ -163,23 +141,7 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
 
     open fun showAuthor(): Boolean { return true }
 
-    @StringRes
-    open fun getJoinRequestTitle(): Int { return R.string.tour_info_request_join_title_tour}
-
-    @StringRes
-    open fun getJoinRequestButton(): Int {return R.string.tour_info_request_join_button_tour}
-
-    @StringRes
-    open fun getQuitDialogTitle(): Int {return R.string.tour_info_quit_tour_title}
-
-    @StringRes
-    open fun getQuitDialogMessage(): Int{ return R.string.tour_info_quit_tour_description}
-
     fun showInviteViewAfterCreation(): Boolean {
-        return true
-    }
-
-    fun showEditEntourageView(): Boolean {
         return true
     }
 
@@ -197,7 +159,7 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
     open fun getClosingLoaderMessage(): Int {return R.string.loader_title_tour_finish}
 
     @StringRes
-    open fun getClosedToastMessage(): Int {return if (isClosed()) R.string.tour_freezed else R.string.local_service_stopped}
+    open fun getClosedToastMessage(): Int {return if (isClosed()) R.string.tour_freezed else R.string.tour_stopped}
 
     @StringRes
     open fun getInviteSourceDescription():Int {
@@ -209,8 +171,9 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
     // ----------------------------------
     override fun copyLocalFields(other: TimestampedObject) {
         super.copyLocalFields(other)
-        val otherFeedItem = other as FeedItem
-        badgeCount = otherFeedItem.badgeCount
+        (other as? FeedItem)?.let { otherFeedItem ->
+            badgeCount = otherFeedItem.badgeCount
+        }
     }
 
     // ----------------------------------
@@ -251,16 +214,6 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
         return addedCardInfoList.size
     }
 
-    fun getTypedCardInfoList(cardType: Int): List<TimestampedObject> {
-        val typedCardInfoList: MutableList<TimestampedObject> = ArrayList()
-        for (timestampedObject in cachedCardInfoList) {
-            if (timestampedObject.type == cardType) {
-                typedCardInfoList.add(timestampedObject)
-            }
-        }
-        return typedCardInfoList
-    }
-
     fun clearAddedCardInfoList() {
         addedCardInfoList.clear()
     }
@@ -277,15 +230,11 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
     // ----------------------------------
     // ABSTRACT METHODS
     // ----------------------------------
-    abstract fun getGroupType(): String
     abstract fun getFeedTypeLong(context: Context): String
     abstract fun getTitle(): String?
     abstract fun getDescription(): String?
-    abstract fun getCreationTime(): Date
-    abstract fun getStartTime(): Date
     abstract fun getEndTime(): Date?
     abstract fun setEndTime(endTime: Date)
-    abstract fun getDisplayAddress(): String?
     abstract fun getStartPoint(): LocationPoint?
 
     companion object {
@@ -298,7 +247,6 @@ abstract class FeedItem() : TimestampedObject(), Serializable {
         const val KEY_FEEDITEM_TYPE = "social.entourage.android.KEY_FEEDITEM_TYPE"
         const val STATUS_OPEN = "open"
         const val STATUS_CLOSED = "closed"
-        const val STATUS_ON_GOING = "ongoing"
         const val STATUS_SUSPENDED = "suspended"
         const val JOIN_STATUS_NOT_REQUESTED = "not_requested"
         const val JOIN_STATUS_PENDING = "pending"

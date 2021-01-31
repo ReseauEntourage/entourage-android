@@ -32,7 +32,9 @@
                 android:id="@+id/layout_top_soliguide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#E65A46">
+                android:background="#E65A46"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:id="@+id/textview_poi_name2"

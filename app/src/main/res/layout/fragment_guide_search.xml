@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@color/background_light"
     tools:context=".guide.GDSSearchFragment">
 
 
@@ -12,6 +12,7 @@
         android:id="@+id/constraintLayout14"
         android:layout_width="match_parent"
         android:layout_height="44dp"
+        android:background="@color/background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -27,7 +28,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_back_new" />
+            app:tint="@color/greyish_brown"
+            app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
 
         <ImageButton
             android:id="@+id/ui_bt_search_close"
@@ -40,7 +42,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_close_new" />
+            app:tint="@color/greyish_brown"
+            app:srcCompat="@drawable/ic_close_round" />
 
         <EditText
             android:id="@+id/ui_et_search"
@@ -48,7 +51,7 @@
             android:layout_height="40dp"
             android:background="@color/background"
             android:ems="10"
-            android:hint="Rechercher"
+            android:hint="@string/searchbox_placeholder_text"
             android:imeOptions="actionSearch"
             android:inputType="textPersonName"
             android:singleLine="true"

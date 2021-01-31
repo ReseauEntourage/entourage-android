@@ -11,7 +11,7 @@ import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.api.model.tour.Encounter
 import social.entourage.android.api.tape.EncounterTaskResult.OperationType
 import social.entourage.android.api.tape.Events.OnConnectionChangedEvent
-import social.entourage.android.tools.BusProvider.instance
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tour.encounter.EncounterUploadCallback
 import javax.inject.Inject
 
@@ -31,7 +31,7 @@ class EncounterTapeService : Service(), EncounterUploadCallback {
         super.onCreate()
         get(this).entourageComponent.inject(this)
         connected = isConnected()
-        instance.register(this)
+        EntBus.register(this)
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -56,7 +56,7 @@ class EncounterTapeService : Service(), EncounterUploadCallback {
     }
 
     private fun stopService() {
-        instance.unregister(this)
+        EntBus.unregister(this)
         stopSelf()
     }
 
@@ -99,10 +99,10 @@ class EncounterTapeService : Service(), EncounterUploadCallback {
     // ----------------------------------
     class ConnectionChangeReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            instance.register(this)
+            EntBus.register(this)
             val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            instance.post(OnConnectionChangedEvent(connectivityManager.activeNetworkInfo?.isConnected == true))
-            instance.unregister(this)
+            EntBus.post(OnConnectionChangedEvent(connectivityManager.activeNetworkInfo?.isConnected == true))
+            EntBus.unregister(this)
         }
     }
 

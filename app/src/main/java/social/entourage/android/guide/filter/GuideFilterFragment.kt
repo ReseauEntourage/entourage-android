@@ -11,10 +11,9 @@ import social.entourage.android.R
 import social.entourage.android.api.tape.Events.OnSolidarityGuideFilterChanged
 import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.guide.poi.PoiRenderer
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.tools.log.EntourageEvents.ACTION_GUIDE_SUBMITFILTERS
-import timber.log.Timber
 
 /**
  * Guide Filter Fragment
@@ -69,7 +68,7 @@ class GuideFilterFragment : EntourageDialogFragment() {
         GuideFilter.instance.setValueForCategoryId(PoiRenderer.CategoryType.PARTNERS.categoryId, GuideFilter.instance.isPartnersSelected)
 
         // Apply the filter
-        BusProvider.instance.post(OnSolidarityGuideFilterChanged())
+        EntBus.post(OnSolidarityGuideFilterChanged())
         // Dismiss the fragment
         dismiss()
     }

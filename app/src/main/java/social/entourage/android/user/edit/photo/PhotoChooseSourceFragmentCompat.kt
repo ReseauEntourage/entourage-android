@@ -22,7 +22,7 @@ import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events.OnPhotoChosen
 import social.entourage.android.base.EntourageDialogFragment
-import social.entourage.android.tools.BusProvider
+import social.entourage.android.tools.EntBus
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -70,13 +70,13 @@ class PhotoChooseSourceFragmentCompat : EntourageDialogFragment() {
         if (context is PhotoChooseInterface) {
             mListener = context
         }
-        BusProvider.instance.register(this)
+        EntBus.register(this)
     }
 
     override fun onDetach() {
         super.onDetach()
         mListener = null
-        BusProvider.instance.unregister(this)
+        EntBus.unregister(this)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

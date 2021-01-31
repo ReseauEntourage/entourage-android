@@ -1,17 +1,18 @@
 package social.entourage.android.api
 
-import android.annotation.SuppressLint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
+import social.entourage.android.api.model.ShareEntourageMessage
+import social.entourage.android.api.model.ShareMessage
+import social.entourage.android.api.model.SharePOIMessage
 import social.entourage.android.api.request.*
-import java.io.Serializable
 
 /**
  * Created by Jr (MJ-DEVS) on 10/09/2020.
  */
-class EntourageMessageSharingAPI(val application: EntourageApplication) {
+class MessageSharingAPI(val application: EntourageApplication) {
 
     private val sharingRequest : SharingRequest
         get() = application.entourageComponent.sharingRequest
@@ -37,26 +38,14 @@ class EntourageMessageSharingAPI(val application: EntourageApplication) {
         })
     }
 
-    fun postSharingEntourage(sharedUuid:String,uuid:String,isPoi:Boolean,listener:(isOK:Boolean) -> Unit) {
-        val chatMessage = EntourageMessageSharing()
-        chatMessage.metadata = EntourageMessageSharing.Metadata()
-        chatMessage.metadata?.uuid = uuid
+    fun postSharingMessage(destUuid:String, sharedUuid:String, isPoi:Boolean, listener:(isOK:Boolean) -> Unit) {
+        val shareMessage: ShareMessage = if(isPoi) SharePOIMessage(sharedUuid) else ShareEntourageMessage(sharedUuid)
 
-        if (isPoi) {
-            chatMessage.metadata?.type = "poi"
-        }
-
-        val chatMessageWrapper = EntourageMessageSharingWrapper(chatMessage)
-        val call = entourageRequest.addEntourageMessageSharing(sharedUuid, chatMessageWrapper)
-        call.enqueue(object : Callback<ChatMessageResponse> {
+        entourageRequest.addSharingMessage(destUuid, ShareMessageWrapper(shareMessage))
+                .enqueue(object : Callback<ChatMessageResponse> {
             override fun onResponse(call: Call<ChatMessageResponse>, response: Response<ChatMessageResponse>) {
-                response.body()?.chatMessage?.let {
-                    if (response.isSuccessful) {
-                        listener(true)
-                        return
-                    }
-                }
-                listener(false)
+                listener(response.isSuccessful)
+                //TODO check if we want to display the chat message right now -> response.body().chatMessage
             }
 
             override fun onFailure(call: Call<ChatMessageResponse>, t: Throwable) {
@@ -66,27 +55,12 @@ class EntourageMessageSharingAPI(val application: EntourageApplication) {
     }
 
     companion object {
-        @SuppressLint("StaticFieldLeak")
-        private var instance: EntourageMessageSharingAPI? = null
+        private var instance: MessageSharingAPI? = null
 
         @Synchronized
-        fun getInstance(application: EntourageApplication): EntourageMessageSharingAPI {
-            return instance ?: EntourageMessageSharingAPI(application).also { instance = it}
+        fun getInstance(application: EntourageApplication): MessageSharingAPI {
+            return instance ?: MessageSharingAPI(application).also { instance = it}
         }
     }
 }
 
-class EntourageMessageSharing : Serializable {
-
-    val message_type = "share" //Used for POST
-    var metadata: Metadata? = null
-
-
-    // ----------------------------------
-    // INNER CLASSES
-    // ----------------------------------
-    class Metadata : Serializable {
-        var uuid: String? = null
-        var type = "entourage"
-    }
-}
