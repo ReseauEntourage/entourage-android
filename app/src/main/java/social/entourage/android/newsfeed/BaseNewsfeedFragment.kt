@@ -29,7 +29,6 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.clustering.ClusterManager
-import com.google.maps.android.clustering.view.DefaultClusterRenderer
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.layout_map_longclick.*
 import social.entourage.android.*
@@ -93,6 +92,8 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     // current selected tab
     protected var selectedTab = NewsfeedTabItem.ALL_TAB
+
+    protected var mapClusterManager: ClusterManager<ClusterItem>? = null
 
     // ----------------------------------
     // LIFECYCLE
@@ -658,16 +659,19 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         map?.cameraPosition?.let { EntourageLocation.lastCameraPosition = it}
     }
 
-    override fun getClusterRenderer(): DefaultClusterRenderer<ClusterItem> {
-        return MapClusterItemRenderer(requireActivity(), map, mapClusterManager)
-    }
-
 
     private fun onMapReady(googleMap: GoogleMap) {
         super.onMapReady(googleMap,
-                presenter.onClickListener as ClusterManager.OnClusterItemClickListener<ClusterItem>?,
                 presenter.onGroundOverlayClickListener
         )
+
+        mapClusterManager = ClusterManager<ClusterItem>(activity, googleMap)
+                .apply {
+            this.renderer = MapClusterItemRenderer(requireActivity(), googleMap, this)
+            this.setOnClusterItemClickListener(presenter.onClickListener)
+            googleMap.setOnMarkerClickListener(this)
+        }
+        initializeMapZoom()
         map?.setOnCameraIdleListener {
             val cameraPosition = map?.cameraPosition ?: return@setOnCameraIdleListener
             EntourageLocation.currentCameraPosition = cameraPosition

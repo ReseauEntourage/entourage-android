@@ -12,11 +12,8 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.Marker
 import com.google.android.material.snackbar.Snackbar
-import com.google.maps.android.clustering.ClusterItem
-import com.google.maps.android.clustering.ClusterManager
-import com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener
-import com.google.maps.android.clustering.view.DefaultClusterRenderer
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_guide_map.*
 import kotlinx.android.synthetic.main.layout_guide_longclick.*
@@ -42,18 +39,19 @@ import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.Utils
 import social.entourage.android.tools.log.EntourageEvents
 import social.entourage.android.tools.view.EntourageSnackbar
-import social.entourage.android.user.partner.PartnerFragmentV2
+import social.entourage.android.user.partner.PartnerFragment
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
-open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiConnectionListener {
-    private var isAlertTextVisible: Boolean = false
+open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiConnectionListener,
+        GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
 
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
+    private var isAlertTextVisible: Boolean = false
     private val connection = ServiceConnection()
 
     @Inject lateinit var presenter: GuideMapPresenter
@@ -62,7 +60,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     private var poisMap: MutableMap<String, Poi> = TreeMap()
     private var previousEmptyListPopupLocation: Location? = null
     private val poisAdapter: PoisAdapter = PoisAdapter()
-    private var mapClusterItemRenderer: PoiRenderer? = null
+    private var mapRenderer: PoiRenderer = PoiRenderer()
 
     // ----------------------------------
     // LIFECYCLE
@@ -141,7 +139,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     @Subscribe
     fun onSolidarityGuideFilterChanged(event: OnSolidarityGuideFilterChanged?) {
         initializeFilterButton()
-        mapClusterManager?.clearItems()
+        map?.clear()
         poisMap.clear()
         poisAdapter.removeAll()
         presenter.updatePoisNearby(map)
@@ -162,9 +160,9 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
                 val poiCollection = removeRedundantPois(pois)
                 Timber.d("***** put poi on map new coll pois : ${poiCollection.size}")
                 if (map != null) {
-                    mapClusterManager?.let {
-                        it.addItems(poiCollection)
-                        it.cluster()
+                    poiCollection.forEach {
+                        val marker = map!!.addMarker(mapRenderer.getMarkerOptions(it))
+                        marker.tag = it
                     }
                     hideEmptyListPopup()
                 }
@@ -198,11 +196,6 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         super.onLocationPermissionGranted(event)
     }
 
-    override fun getClusterRenderer(): DefaultClusterRenderer<ClusterItem> {
-        if(mapClusterItemRenderer==null) mapClusterItemRenderer = PoiRenderer(activity, map, mapClusterManager as ClusterManager<Poi>?)
-        return mapClusterItemRenderer as DefaultClusterRenderer<ClusterItem>
-    }
-
 
     private fun proposePOI() {
         // Close the overlays
@@ -219,16 +212,18 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     // ----------------------------------
     private fun clearOldPois() {
         poisMap.clear()
-        mapClusterManager?.clearItems()
         poisAdapter.removeAll()
         map?.clear()
     }
 
-    private fun onMapReady(googleMap: GoogleMap) {
+    override fun onMapReady(googleMap: GoogleMap) {
         super.onMapReady(googleMap,
-                OnEntourageMarkerClickListener() as OnClusterItemClickListener<ClusterItem>?,
                 null
         )
+        initializeMapZoom()
+        map?.setOnMarkerClickListener(this)
+        //map?.setMinZoomPreference(MAX_ZOOM_VALUE)
+
         map?.setOnCameraIdleListener {
             map?.cameraPosition?.let {position ->
                 val newLocation = EntourageLocation.cameraPositionToLocation(null, position)
@@ -256,15 +251,14 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
 
     private fun showPoiDetails(poi: Poi) {
         EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_POI)
-        if (poi.partner_id != null) {
-            PartnerFragmentV2.newInstance(null,poi.partner_id).show(parentFragmentManager, PartnerFragmentV2.TAG)
-        }
-        else {
-            try {
+        try {
+            poi.partner_id?.let { partner_id ->
+                PartnerFragment.newInstance(partner_id).show(parentFragmentManager, PartnerFragment.TAG)
+            } ?: run {
                 newInstance(poi).show(parentFragmentManager, ReadPoiFragment.TAG)
-            } catch (e: IllegalStateException) {
-                Timber.w(e)
             }
+        } catch (e: IllegalStateException) {
+            Timber.w(e)
         }
     }
 
@@ -467,22 +461,12 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         fragment_guide_pois_view?.layoutManager?.requestLayout()
     }
 
-    // ----------------------------------
-    // INNER CLASSES
-    // ----------------------------------
-    inner class OnEntourageMarkerClickListener : OnClusterItemClickListener<Poi> {
-        override fun onClusterItemClick(poi: Poi): Boolean {
-            Timber.d("***** On cluster item click ? $poi")
-            showPoiDetails(poi)
-            return true
-        }
-    }
-
     companion object {
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
         const val TAG = "social.entourage.android.fragment_guide"
+        const val MAX_ZOOM_VALUE = 14.0F
     }
 
     init {
@@ -550,5 +534,12 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
             activity?.unbindService(this)
             isBound = false
         }
+    }
+
+    override fun onMarkerClick(poiMarker: Marker?): Boolean {
+        (poiMarker?.tag as? Poi)?.let { poi ->
+            showPoiDetails(poi)
+        }
+        return true
     }
 }

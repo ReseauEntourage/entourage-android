@@ -29,7 +29,7 @@ import social.entourage.android.api.tape.Events.OnPartnerViewRequestedEvent
 import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
 import social.entourage.android.base.EntourageActivity
 import social.entourage.android.base.EntourageDialogFragment
-import social.entourage.android.user.partner.PartnerFragmentV2
+import social.entourage.android.user.partner.PartnerFragment
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.tools.log.EntourageEvents
@@ -389,7 +389,7 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
         if (event == null) {
             return
         }
-        PartnerFragmentV2.newInstance(event.partner,null).show(parentFragmentManager, PartnerFragmentV2.TAG)
+        PartnerFragment.newInstance(event.partner).show(parentFragmentManager, PartnerFragment.TAG)
     }
 
     // ----------------------------------

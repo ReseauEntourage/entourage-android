@@ -52,6 +52,7 @@ class GuideMapPresenter @Inject constructor(
                 response.body()?.let {
                     if (response.isSuccessful) {
                         fragment.putPoiOnMap(it.pois)
+
                     }
                 }
             }

@@ -23,10 +23,7 @@ import social.entourage.android.base.EntourageDialogFragment
 import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.tools.CropCircleTransformation
 
-private const val KEY_PARTNER = "param1"
-private const val KEY_PARTNERID = "partnerID"
-
-class PartnerFragmentV2 : EntourageDialogFragment() {
+class PartnerFragment : EntourageDialogFragment() {
 
     private var partner: Partner? = null
     private var partnerId:Int? = null
@@ -252,11 +249,20 @@ class PartnerFragmentV2 : EntourageDialogFragment() {
 
     companion object {
         const val TAG = "social.entourage.android.partner_fragment_new"
-        fun newInstance(partner: Partner?,partnerId:Int?) : PartnerFragmentV2 {
-            val fragment = PartnerFragmentV2()
+        const val KEY_PARTNER = "param1"
+        const val KEY_PARTNERID = "partnerID"
+
+        fun newInstance(partner: Partner) : PartnerFragment {
+            val fragment = PartnerFragment()
             val args = Bundle()
             args.putSerializable(KEY_PARTNER, partner)
-            partnerId?.let { args.putInt(KEY_PARTNERID, it) }
+            fragment.arguments = args
+            return fragment
+        }
+        fun newInstance(partnerId:Int) : PartnerFragment {
+            val fragment = PartnerFragment()
+            val args = Bundle()
+            args.putInt(KEY_PARTNERID, partnerId)
             fragment.arguments = args
             return fragment
         }

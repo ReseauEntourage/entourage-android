@@ -490,6 +490,7 @@ object EntourageEvents {
         val mFirebaseAnalytics = get().firebase
         mFirebaseAnalytics.setUserId(user.id.toString())
         mFirebaseAnalytics.setUserProperty("EntourageUserType", if (user.isPro) "Pro" else "Public")
+        mFirebaseAnalytics.setUserProperty("EntourageEngagedUser", if (user.isEngaged) "YES" else "NO")
         mFirebaseAnalytics.setUserProperty("Language", Locale.getDefault().language)
         user.partner?.let {
             mFirebaseAnalytics.setUserProperty("EntouragePartner", it.name)

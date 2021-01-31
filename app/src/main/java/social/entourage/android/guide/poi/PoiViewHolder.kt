@@ -22,6 +22,7 @@ import social.entourage.android.tools.log.EntourageEvents
  */
 class PoiViewHolder(itemView: View) : BaseCardViewHolder(itemView) {
     private var poi: Poi? = null
+    var showCallButton: Boolean = true
 
     override fun bindFields() {
         itemView.setOnClickListener {
@@ -50,7 +51,7 @@ class PoiViewHolder(itemView: View) : BaseCardViewHolder(itemView) {
         itemView.poi_card_title?.text = newPoi.name ?: ""
         itemView.poi_card_address?.text = newPoi.address ?: ""
         itemView.poi_card_distance?.text = LocationPoint(newPoi.latitude, newPoi.longitude).distanceToCurrentLocation(Constants.DISTANCE_MAX_DISPLAY)
-        itemView.poi_card_call_button?.visibility = if (newPoi.phone.isNullOrEmpty()) View.GONE else View.VISIBLE
+        itemView.poi_card_call_button?.visibility = if (!showCallButton || newPoi.phone.isNullOrEmpty()) View.GONE else View.VISIBLE
     }
 
     companion object {

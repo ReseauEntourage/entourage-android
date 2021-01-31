@@ -32,7 +32,7 @@ import social.entourage.android.user.edit.UserEditFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment.Companion.newInstance
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragmentCompat
-import social.entourage.android.user.partner.PartnerFragmentV2
+import social.entourage.android.user.partner.PartnerFragment
 import social.entourage.android.user.report.UserReportFragment
 import timber.log.Timber
 import javax.inject.Inject
@@ -306,7 +306,7 @@ class UserFragment : EntourageDialogFragment() {
             if (parentFragmentManager.findFragmentByTag(UserEditFragment.TAG) != null) {
                 return
             }
-            PartnerFragmentV2.newInstance(event.partner,null).show(parentFragmentManager,PartnerFragmentV2.TAG)
+            PartnerFragment.newInstance(event.partner).show(parentFragmentManager,PartnerFragment.TAG)
         } catch (e: IllegalStateException) {
             Timber.w(e)
         }

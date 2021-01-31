@@ -23,7 +23,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/accent"
-            app:srcCompat="@drawable/ic_close_black_24dp" />
+            app:srcCompat="@drawable/ic_close_round" />
 
         <Button
             android:id="@+id/plus_help_button"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:drawablePadding="4dp"
             android:padding="10dp"
-            android:text="@string/plus_help_text"
+            android:text="@string/agir_help_button_help_others"
             android:textSize="13sp"
             app:drawableEndCompat="@drawable/ic_open_in_new_white_24dp"
             app:drawableTint="@color/accent"

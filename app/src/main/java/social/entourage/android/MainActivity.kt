@@ -330,7 +330,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
 
     private fun configureBottombar() {
         (bottom_navigation as? BottomNavigationView)?.let { bottomBar ->
-            // we need to set the listener fist, to respond to the default selected tab request
+            // we need to set the listener first, to respond to the default selected tab request
             bottomBar.setOnNavigationItemSelectedListener { item: MenuItem ->
                 if (shouldBypassNavigation(item.itemId)) {
                     return@setOnNavigationItemSelectedListener false
@@ -341,8 +341,9 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
                 }
                 true
             }
+            navigationDataSource.isEngaged = authenticationController.me?.isEngaged ?: false
             val defaultId = navigationDataSource.defaultSelectedTab
-            //bottomBar.setSelectedItemId(defaultId);
+            bottomBar.selectedItemId = defaultId
             loadFragment(defaultId)
             val messageBadge = bottomBar.getOrCreateBadge(navigationDataSource.myMessagesTabIndex)
             messageBadge.backgroundColor = ResourcesCompat.getColor(resources, R.color.map_announcement_background, null)

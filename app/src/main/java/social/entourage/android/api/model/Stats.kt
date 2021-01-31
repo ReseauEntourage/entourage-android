@@ -15,6 +15,14 @@ class Stats (
         return entourageCount + tourCount
     }
 
+    val isEngaged: Boolean
+        get() = (tourCount>0
+                    ||encounterCount>0
+                    ||entourageCount>0
+                    ||actionsCount>0
+                    ||eventsCount>0
+                    ||isGoodWavesValidated)
+
     companion object {
         private const val serialVersionUID = -90028118L
     }

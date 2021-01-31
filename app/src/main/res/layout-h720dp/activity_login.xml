@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/onboard_login_mainlayout"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-android:background="@color/white"
-    android:id="@+id/onboard_login_mainlayout"
+    android:background="@color/white"
 tools:context="social.entourage.android.onboarding.login.LoginActivity">
 
     <FrameLayout
@@ -41,7 +41,7 @@ tools:context="social.entourage.android.onboarding.login.LoginActivity">
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/frameLayout4"
         app:srcCompat="@drawable/ic_baseline_arrow_back_24"
-        app:tint="@color/accent" />
+        app:tint="@color/accent"/>
 
     <TextView
         android:id="@+id/textView2"
@@ -61,8 +61,8 @@ tools:context="social.entourage.android.onboarding.login.LoginActivity">
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="172dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="16dp"
         android:contentDescription="@string/empty_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -109,6 +109,7 @@ tools:context="social.entourage.android.onboarding.login.LoginActivity">
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:autofillHints="phoneNumber"
             android:background="@drawable/bg_rounded_login_grey_light_stroke"
             android:ems="10"
             android:hint="@string/login_phone_placeholder"
@@ -128,14 +129,14 @@ tools:context="social.entourage.android.onboarding.login.LoginActivity">
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginTop="5dp"
+            android:autofillHints="password"
             android:background="@drawable/bg_rounded_login_grey_light_stroke"
             android:ems="10"
-            android:maxLength="6"
             android:hint="@string/login_placeholder_code"
             android:inputType="numberPassword"
+            android:maxLength="6"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
-            android:importantForAutofill="no"
             android:textColor="@color/pre_onboard_black"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@+id/ui_login_phone_et_phone"

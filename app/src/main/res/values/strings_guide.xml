@@ -30,7 +30,7 @@
     <string name="map_poi_info_popup">Le Guide de solidarité vous permet de vous informer sur les structures d’assistance : restaurants solidaires, douches publiques, centres médicaux ouverts aux personnes de la rue…\n\n
         En tant que riverain, vous pouvez suggérer un lieu à une personne de la rue, mais gardez à l’esprit que c’est le rôle des travailleurs sociaux d’accompagner chaque situation.</string>
 
-    <string name="map_empty_poi_recyclerV">C’est tout pour les actions dans ce rayon autour de vous</string>
+    <string name="map_empty_poi_recyclerV">C’est tout pour les lieux solidaires dans ce rayon autour de vous</string>
     <!-- Guide Filter -->
     <string name="guide_filter_title">FILTRES</string>
     <string name="guide_filters_activated">Filtres activés</string>
@@ -77,4 +77,5 @@
     <string name="no_result_info">Pourquoi ne pas essayer\nun autre mot-clé ?</string>
 
     <string name="button_reset_filters">Annuler Filtres</string>
+    <string name="searchbox_placeholder_text">Rechercher</string>
 </resources>

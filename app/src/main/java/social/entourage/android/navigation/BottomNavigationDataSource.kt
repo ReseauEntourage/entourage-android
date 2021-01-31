@@ -1,5 +1,7 @@
 package social.entourage.android.navigation
 
+import android.util.SparseArray
+import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import social.entourage.android.EntourageApplication
 import social.entourage.android.PlusFragment
@@ -15,8 +17,33 @@ import social.entourage.android.tools.log.EntourageEvents
 /**
  * Created by Mihai Ionescu on 23/04/2018.
  */
-class BottomNavigationDataSource : BaseBottomNavigationDataSource() {
-    override fun getFragmentAtIndex(menuId: Int): Fragment? {
+class BottomNavigationDataSource {
+    private val navigationFragmentTags = SparseArray<String>()
+    var isEngaged = false
+
+    val defaultSelectedTab: Int
+        @IdRes get() = if(isEngaged) R.id.bottom_bar_newsfeed else R.id.bottom_bar_guide
+
+    val feedTabIndex
+        @IdRes get() = R.id.bottom_bar_newsfeed
+    val myMessagesTabIndex
+        @IdRes get() = R.id.bottom_bar_mymessages
+    val agirTabIndex
+        @IdRes get()= R.id.bottom_bar_plus
+    val actionMenuId
+        @IdRes get() = R.id.bottom_bar_plus
+    val guideTabIndex
+        @IdRes get() = R.id.bottom_bar_guide
+
+    private fun add(@IdRes menuId: Int, tag: String) {
+        navigationFragmentTags.put(menuId, tag)
+    }
+
+    fun getFragmentTagAtIndex(menuId: Int): String {
+        return navigationFragmentTags[menuId]
+    }
+
+    fun getFragmentAtIndex(menuId: Int): Fragment? {
         return when (menuId) {
             R.id.bottom_bar_newsfeed -> if(EntourageApplication.get().me()?.isPro == true) NewsFeedWithTourFragment() else NewsFeedFragment()
             R.id.bottom_bar_guide -> GuideHubFragment()//GuideMapFragment()
@@ -36,7 +63,5 @@ class BottomNavigationDataSource : BaseBottomNavigationDataSource() {
         add(R.id.bottom_bar_plus, PlusFragment.TAG)
         add(R.id.bottom_bar_mymessages, MyEntouragesFragment.TAG)
         add(R.id.bottom_bar_profile, MainProfileFragment.TAG)
-        guideTabIndex = R.id.bottom_bar_guide
-        actionMenuId = R.id.bottom_bar_plus
     }
 }

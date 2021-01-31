@@ -47,7 +47,7 @@ import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.Utils
 import social.entourage.android.tools.view.EntourageSnackbar
 import social.entourage.android.user.UserFragment
-import social.entourage.android.user.partner.PartnerFragmentV2
+import social.entourage.android.user.partner.PartnerFragment
 import java.util.*
 import javax.inject.Inject
 
@@ -531,7 +531,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
     //Use inside detail Event / action when click on asso name inside member section.
     @Subscribe
     fun onShowDetailAssociation(event: Events.OnShowDetailAssociation) {
-        PartnerFragmentV2.newInstance(null, event.id).show(parentFragmentManager, PartnerFragmentV2.TAG)
+        PartnerFragment.newInstance(event.id).show(parentFragmentManager, PartnerFragment.TAG)
     }
 
     // ----------------------------------

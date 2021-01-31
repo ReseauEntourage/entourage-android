@@ -61,27 +61,24 @@ class PlusFragment : Fragment(), BackPressable {
     private fun setupTexts() {
        EntourageApplication.get().me()?.let { currentUser ->
            if (currentUser.isUserTypeAlone) {
-               plus_help_button?.text = getString(R.string.agir_new_button_title_alone)
+               plus_help_button?.text = getString(R.string.agir_help_button_title_alone)
                ui_tv_agir_good_waves_subtitle?.text = getString(R.string.agir_bonnes_ondes_alone)
            }
            else if (currentUser.goal.equals(User.USER_GOAL_ASSO)) {
-               plus_help_button?.text = getString(R.string.agir_new_button_help_asso)
+               plus_help_button?.text = getString(R.string.agir_help_button_help_asso)
                ui_tv_agir_good_waves_subtitle?.text = getString(R.string.agir_bonnes_ondes_others)
            }
            else {
-               plus_help_button?.text = getString(R.string.plus_help_text)
+               plus_help_button?.text = getString(R.string.agir_help_button_help_others)
                ui_tv_agir_good_waves_subtitle?.text = getString(R.string.agir_bonnes_ondes_others)
            }
 
-           val isUserHelp = currentUser.goal?.contains("ask_for_help", true)
-           val isUserHelp2 = currentUser.goal?.contains("offer_help", true)
+           val isUserHelp = currentUser.goal?.contains("ask_for_help", true) ==true
+                   || currentUser.goal?.contains("offer_help", true)==true
            val hasPartnerId = currentUser.partner?.id != null
-           val isAmbassador = currentUser.roles?.contains("ambassador")
+           val isAmbassador = currentUser.roles?.contains("ambassador")==true
 
-           var showAddEvent = true
-           if ((isUserHelp == true || isUserHelp2 == true) && (!hasPartnerId && isAmbassador != true)) {
-               showAddEvent = false
-           }
+           val showAddEvent = !isUserHelp || hasPartnerId || isAmbassador
            layout_line_create_outing?.visibility = if (showAddEvent) View.VISIBLE else View.GONE
        }
     }

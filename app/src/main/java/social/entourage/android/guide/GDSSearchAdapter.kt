@@ -10,15 +10,13 @@ import social.entourage.android.R
 import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.guide.poi.PoiRenderer
+import social.entourage.android.guide.poi.PoiViewHolder
 import java.util.ArrayList
 
 /**
  * Created by Jr (MJ-DEVS) on 24/11/2020.
  */
 class GDSSearchAdapter(var items: ArrayList<Poi>,val listenerClick: (position:Int) -> Unit): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    val TYPE_EMPTY = 0
-    val TYPE_POI = 1
 
     var isAlreadySend = false
     fun updateAdapter(items: ArrayList<Poi>) {
@@ -28,22 +26,20 @@ class GDSSearchAdapter(var items: ArrayList<Poi>,val listenerClick: (position:In
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (items.size == 0) return TYPE_EMPTY
-        return TYPE_POI
+        if (items.size == 0) return Companion.TYPE_EMPTY
+        return Companion.TYPE_POI
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         when(viewType) {
-            TYPE_EMPTY -> return VHEmpty(layoutInflater.inflate(R.layout.layout_search_poi_empty, parent, false))
-            else -> return VHPoi(layoutInflater.inflate(R.layout.layout_poi_card, parent, false))
+            Companion.TYPE_EMPTY -> return VHEmpty(layoutInflater.inflate(R.layout.layout_search_poi_empty, parent, false))
+            else -> return PoiViewHolder(layoutInflater.inflate(R.layout.layout_poi_card, parent, false)).apply { showCallButton = false }
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is VHPoi) {
-            holder.bind(position)
-        }
+        (holder as? PoiViewHolder)?.populate(items[position])
     }
 
     override fun getItemCount(): Int {
@@ -51,7 +47,7 @@ class GDSSearchAdapter(var items: ArrayList<Poi>,val listenerClick: (position:In
         return items.size
     }
 
-    inner class VHPoi(view: View) : RecyclerView.ViewHolder(view) {
+    /*inner class VHPoi(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(position: Int) {
             val poi = items[position]
             itemView.poi_card_title?.text = poi.name ?: ""
@@ -63,7 +59,11 @@ class GDSSearchAdapter(var items: ArrayList<Poi>,val listenerClick: (position:In
                 listenerClick(position)
             }
         }
-    }
+    }*/
 
     inner class VHEmpty(view: View) : RecyclerView.ViewHolder(view)
+    companion object {
+        const val TYPE_POI = 1
+        const val TYPE_EMPTY = 0
+    }
 }

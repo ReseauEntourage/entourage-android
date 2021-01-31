@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import kotlinx.android.synthetic.main.activity_login_new.*
+import kotlinx.android.synthetic.main.activity_login.*
 import social.entourage.android.*
 import social.entourage.android.EntourageApplication.Companion.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN
 import social.entourage.android.api.OnboardingAPI
@@ -31,7 +31,7 @@ class LoginActivity : EntourageActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login_new)
+        setContentView(R.layout.activity_login)
 
         alertDialog = CustomProgressDialog(this)
         setupViews()
