@@ -113,11 +113,11 @@ class PartnerFragment : EntourageDialogFragment() {
         user_title_layout?.title_text?.text = requireActivity().resources.getString(R.string.title_association)
         user_title_layout?.title_close_button?.setOnClickListener {dismiss()}
 
-        partner?.let {
-            ui_asso_tv_title?.text = it.name
+        partner?.let { partner ->
+            ui_asso_tv_title?.text = partner.name
             ui_asso_tv_subtitle?.text = ""
             ui_asso_iv_logo?.let { logoView ->
-                partner?.largeLogoUrl?.let { url ->
+                partner.largeLogoUrl?.let { url ->
                     Picasso.get()
                             .load(Uri.parse(url))
                             .placeholder(R.drawable.partner_placeholder)
@@ -126,18 +126,13 @@ class PartnerFragment : EntourageDialogFragment() {
                 }
             }
 
-            ui_asso_tv_description?.text = it.description
-
-            if (it.description?.length ?: 0 > 0) {
-                ui_layout_description?.visibility = View.VISIBLE
-            }
-            else {
-                ui_layout_description?.visibility = View.GONE
+            ui_asso_tv_description?.let { description ->
+                description.text = partner.description
+                description.visibility = if (partner.description?.length ?: 0 > 0) View.VISIBLE else View.GONE
+                DeepLinksManager.linkify(description)
             }
 
-            DeepLinksManager.linkify(ui_asso_tv_description)
-
-            if (it.donationsNeeds.isNullOrEmpty() && it.volunteersNeeds.isNullOrEmpty()) {
+            if (partner.donationsNeeds.isNullOrEmpty() && partner.volunteersNeeds.isNullOrEmpty()) {
                 ui_asso_layout_top_needs?.visibility = View.GONE
                 ui_asso_layout_needs?.visibility = View.GONE
             }
@@ -145,36 +140,40 @@ class PartnerFragment : EntourageDialogFragment() {
                 ui_asso_layout_top_needs?.visibility = View.VISIBLE
                 ui_asso_layout_needs?.visibility = View.VISIBLE
 
-                if (it.donationsNeeds.isNullOrEmpty()) {
+                if (partner.donationsNeeds.isNullOrEmpty()) {
                     ui_asso_layout_top_donates?.visibility = View.GONE
                     ui_layout_description_donates?.visibility = View.GONE
                 }
                 else {
                     ui_asso_layout_top_donates?.visibility = View.VISIBLE
                     ui_layout_description_donates?.visibility = View.VISIBLE
-                    ui_asso_tv_donates_description?.text = it.donationsNeeds
-                    DeepLinksManager.linkify(ui_asso_tv_donates_description)
+                    ui_asso_tv_donates_description?.let { description->
+                        description.text = partner.donationsNeeds
+                        DeepLinksManager.linkify(description)
+                    }
                 }
-                if (it.volunteersNeeds.isNullOrEmpty()) {
+                if (partner.volunteersNeeds.isNullOrEmpty()) {
                     ui_asso_layout_top_volunteers?.visibility = View.GONE
                     ui_layout_description_volunteers?.visibility = View.GONE
                 }
                 else {
                     ui_asso_layout_top_volunteers?.visibility = View.VISIBLE
                     ui_layout_description_volunteers?.visibility = View.VISIBLE
-                    ui_asso_tv_volunteers_description?.text = it.volunteersNeeds
-                    DeepLinksManager.linkify(ui_asso_tv_volunteers_description)
+                    ui_asso_tv_volunteers_description?.let { description ->
+                        description.text = partner.volunteersNeeds
+                        DeepLinksManager.linkify(description)
+                    }
                 }
             }
-            ui_button_asso_web?.text = it.websiteUrl
-            ui_button_asso_phone?.text = it.phone
-            ui_button_asso_address?.text = it.address
-            ui_button_asso_mail.text = it.email
+            ui_button_asso_web?.text = partner.websiteUrl
+            ui_button_asso_phone?.text = partner.phone
+            ui_button_asso_address?.text = partner.address
+            ui_button_asso_mail.text = partner.email
 
-            ui_layout_phone?.visibility = if (it.phone.isNullOrEmpty()) View.GONE else View.VISIBLE
-            ui_layout_address?.visibility = if (it.address.isNullOrEmpty()) View.GONE else View.VISIBLE
-            ui_layout_mail?.visibility = if (it.email.isNullOrEmpty()) View.GONE else View.VISIBLE
-            ui_layout_web?.visibility = if (it.websiteUrl.isNullOrEmpty()) View.GONE else View.VISIBLE
+            ui_layout_phone?.visibility = if (partner.phone.isNullOrEmpty()) View.GONE else View.VISIBLE
+            ui_layout_address?.visibility = if (partner.address.isNullOrEmpty()) View.GONE else View.VISIBLE
+            ui_layout_mail?.visibility = if (partner.email.isNullOrEmpty()) View.GONE else View.VISIBLE
+            ui_layout_web?.visibility = if (partner.websiteUrl.isNullOrEmpty()) View.GONE else View.VISIBLE
 
             updateButtonFollow()
         }

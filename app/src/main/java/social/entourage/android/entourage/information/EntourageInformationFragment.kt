@@ -411,8 +411,10 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
                 ui_iv_event_action_location.setImageDrawable(ResourcesCompat.getDrawable(resources,R.drawable.ic_detail_event_link,null))
 
                 val eventUrl = if (entourage.eventUrl == null || entourage.eventUrl.equals("null")) "" else entourage.eventUrl
-                ui_tv_event_action_location?.text = "${getString(R.string.detail_action_event_online)}\n${eventUrl}"
-                DeepLinksManager.linkify(ui_tv_event_action_location)
+                ui_tv_event_action_location?.let {
+                    it.text = "${getString(R.string.detail_action_event_online)}\n${eventUrl}"
+                    DeepLinksManager.linkify(it)
+                }
                 entourage_info_map_layout.visibility = View.GONE
             }
             else {
@@ -483,9 +485,11 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             }
             else {
                 ui_layout_event_description?.visibility = View.VISIBLE
-                ui_tv_detail_event_description?.text = entourage.getDescription()
+                ui_tv_detail_event_description?.let {
+                    it.text = entourage.getDescription()
+                    DeepLinksManager.linkify(it)
+                }
             }
-            DeepLinksManager.linkify(ui_tv_detail_event_description)
         }
         else {
             layout_detail_action_description?.visibility = View.VISIBLE
@@ -496,7 +500,10 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             }
             else {
                 ui_layout_action_description?.visibility = View.VISIBLE
-                ui_tv_detail_action_description?.text = entourage.getDescription()
+                ui_tv_detail_action_description?.let {
+                    it.text = entourage.getDescription()
+                    DeepLinksManager.linkify(it)
+                }
             }
 
             val timestamps = ArrayList<String?>()
@@ -505,8 +512,6 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
                 timestamps.add(getString(R.string.entourage_info_update_time, formattedDaysIntervalFromToday(entourage.updatedTime)))
             }
             ui_tv_detail_action_last_update?.text = TextUtils.join(" - ", timestamps)
-
-            DeepLinksManager.linkify(ui_tv_detail_action_description)
         }
     }
 

@@ -31,7 +31,8 @@ class PoiRenderer {
                 }
             }
             return CategoryType.OTHER
-        } ?: return CategoryType.findCategoryTypeById(categoryId)
+        }
+        return CategoryType.findCategoryTypeById(categoryId)
     }
 
     fun setCategories(categories: List<Category>) {

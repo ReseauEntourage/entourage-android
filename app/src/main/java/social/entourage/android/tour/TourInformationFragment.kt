@@ -430,14 +430,14 @@ class TourInformationFragment : FeedItemInformationFragment(){
         entourage_info_people_count?.text = getString(R.string.tour_cell_numberOfPeople, tour.numberOfPeople)
 
         //   update description
-        if(entourage_info_description!=null) {
+        entourage_info_description?.let { description ->
             if (tour.getDescription()?.isNotEmpty() == true) {
-                entourage_info_description?.text = tour.getDescription()
-                entourage_info_description?.visibility = View.VISIBLE
+                description.text = tour.getDescription()
+                description.visibility = View.VISIBLE
             } else {
-                entourage_info_description?.visibility = View.GONE
+                description.visibility = View.GONE
             }
-            DeepLinksManager.linkify(entourage_info_description)
+            DeepLinksManager.linkify(description)
         }
 
         //   metadata
