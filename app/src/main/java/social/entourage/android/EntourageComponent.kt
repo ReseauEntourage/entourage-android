@@ -10,7 +10,7 @@ import social.entourage.android.api.tape.EncounterTapeTaskQueue
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.authentication.AuthenticationModule
 import social.entourage.android.authentication.ComplexPreferences
-import social.entourage.android.service.EntourageService
+import social.entourage.android.service.EntService
 import javax.inject.Singleton
 
 /**
@@ -21,7 +21,7 @@ import javax.inject.Singleton
 @Component(modules = [EntourageApplicationModule::class, ApiModule::class, AuthenticationModule::class])
 interface EntourageComponent {
     fun inject(application: Application?)
-    fun inject(service: EntourageService?)
+    fun inject(service: EntService?)
     fun inject(service: EncounterTapeService?)
     val authenticationController: AuthenticationController
     val encounterTapeTaskQueue: EncounterTapeTaskQueue

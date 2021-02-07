@@ -158,7 +158,6 @@ ext {
             material                : "com.google.android.material:material:$materialVersion",
             picasso                 : "com.squareup.picasso:picasso:$picassoVersion",
             picassoTransformations  : "jp.wasabeef:picasso-transformations:$picassoTransformationsVersion",
-            shortcutBadger          : "me.leolin:ShortcutBadger:$shortcutBadgerVersion@aar",
-            tapTargetPrompt         : "uk.co.samuelwall:material-tap-target-prompt:3.1.0"
+            shortcutBadger          : "me.leolin:ShortcutBadger:$shortcutBadgerVersion@aar"
     ]
 }

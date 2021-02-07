@@ -4,14 +4,14 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import social.entourage.android.base.EntourageActivity
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.base.BaseActivity
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 
-class RateActivity : EntourageActivity() {
+class RateActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_SHORTCUT_RATEAPP)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SHORTCUT_RATEAPP)
         val uri = Uri.parse(getString(R.string.market_url, packageName))
         val goToMarket = Intent(Intent.ACTION_VIEW, uri)
         goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or

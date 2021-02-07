@@ -16,7 +16,7 @@ import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
 import kotlinx.android.synthetic.main.fragment_invite_contacts.*
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.base.EntourageActivity
+import social.entourage.android.base.BaseActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.MultipleInvitations
@@ -141,7 +141,7 @@ class InviteContactsFragment  : InviteBaseFragment(), LoaderManager.LoaderCallba
             }
         }
         // Update the progress dialog
-        (activity as? EntourageActivity)?.showProgressDialog(R.string.invite_contacts_inviting)
+        (activity as? BaseActivity)?.showProgressDialog(R.string.invite_contacts_inviting)
         // Send the phone number to server
         serverRequestsCount++
         feedItemUUID?.let { presenter?.inviteBySMS(it, feedItemType, invitations) }
@@ -219,7 +219,7 @@ class InviteContactsFragment  : InviteBaseFragment(), LoaderManager.LoaderCallba
                 mContactsAdapter?.swapCursor(cursor)
             PHONE_LOADER_ID -> {
                 // Update the progress dialog
-                (activity as? EntourageActivity)?.showProgressDialog(R.string.invite_contacts_inviting)
+                (activity as? BaseActivity)?.showProgressDialog(R.string.invite_contacts_inviting)
                 // Get the phone numbers
                 val invitations = MultipleInvitations(Invitation.INVITE_BY_SMS)
                 while (cursor.moveToNext()) {
@@ -250,7 +250,7 @@ class InviteContactsFragment  : InviteBaseFragment(), LoaderManager.LoaderCallba
         if (serverRequestsCount <= 0) {
             serverRequestsCount = 0
             // Hide the progress dialog
-            (activity as? EntourageActivity)?.dismissProgressDialog()
+            (activity as? BaseActivity)?.dismissProgressDialog()
             // Re-enable the send button
             title_action_button?.isEnabled = true
             // If success, close the fragment

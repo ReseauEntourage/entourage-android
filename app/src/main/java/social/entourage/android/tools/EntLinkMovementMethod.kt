@@ -1,4 +1,4 @@
-package social.entourage.android.base
+package social.entourage.android.tools
 
 import android.text.Spannable
 import android.text.method.LinkMovementMethod
@@ -7,12 +7,11 @@ import android.text.style.URLSpan
 import android.view.MotionEvent
 import android.widget.TextView
 import social.entourage.android.api.tape.Events.OnShowURLEvent
-import social.entourage.android.tools.EntBus
 
 /**
  * Created by Mihai Ionescu on 11/04/2018.
  */
-object EntourageLinkMovementMethod : LinkMovementMethod() {
+object EntLinkMovementMethod : LinkMovementMethod() {
     override fun onTouchEvent(widget: TextView, buffer: Spannable, event: MotionEvent): Boolean {
         val action = event.action
         if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_UP) {

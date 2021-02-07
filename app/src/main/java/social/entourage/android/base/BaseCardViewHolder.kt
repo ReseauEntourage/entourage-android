@@ -8,7 +8,7 @@ import social.entourage.android.api.model.TimestampedObject
  * Created by mihaiionescu on 02/03/16.
  */
 abstract class BaseCardViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    var viewHolderListener: EntourageViewHolderListener? = null
+    var viewHolderListener: BaseViewHolderListener? = null
 
     protected abstract fun bindFields()
     abstract fun populate(data: TimestampedObject)

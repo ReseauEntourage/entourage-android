@@ -9,7 +9,7 @@ import com.google.android.gms.maps.MapView
 /**
  * Created by mihaiionescu on 28/06/2017.
  */
-class EntourageMapView : MapView {
+class FeedMapView : MapView {
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attributeSet: AttributeSet?) : super(context, attributeSet)
     constructor(context: Context?, attributeSet: AttributeSet?, i: Int) : super(context, attributeSet, i)

@@ -6,13 +6,12 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDexApplication
 import com.google.firebase.analytics.FirebaseAnalytics
 import me.leolin.shortcutbadger.ShortcutBadger
-import net.danlew.android.joda.JodaTimeAndroid
 import social.entourage.android.api.ApiModule
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.authentication.AuthenticationModule
-import social.entourage.android.base.EntourageActivity
+import social.entourage.android.base.BaseActivity
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.newsfeed.UserFeedItemListCache
 import social.entourage.android.onboarding.login.LoginActivity
@@ -25,7 +24,7 @@ import java.util.*
  */
 class EntourageApplication : MultiDexApplication() {
     lateinit var entourageComponent: EntourageComponent
-    private val activities: ArrayList<EntourageActivity>  = ArrayList()
+    private val activities: ArrayList<BaseActivity>  = ArrayList()
     var badgeCount = 0
         private set
     private lateinit var userFeedItemListCache: UserFeedItemListCache
@@ -76,11 +75,11 @@ class EntourageApplication : MultiDexApplication() {
         return entourageComponent.authenticationController.me
     }
 
-    fun onActivityCreated(activity: EntourageActivity) {
+    fun onActivityCreated(activity: BaseActivity) {
         activities.add(activity)
     }
 
-    fun onActivityDestroyed(activity: EntourageActivity) {
+    fun onActivityDestroyed(activity: BaseActivity) {
         activities.remove(activity)
         saveFeedItemsStorage()
     }

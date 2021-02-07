@@ -15,7 +15,7 @@ import social.entourage.android.tools.view.WebViewFragment.Companion.newInstance
 /**
  * Base activity which set up a scoped graph and inject it
  */
-abstract class EntourageActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity() {
     private var progressDialog: ProgressDialog? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as? EntourageApplication)?.onActivityCreated(this)

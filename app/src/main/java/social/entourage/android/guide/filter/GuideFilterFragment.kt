@@ -9,16 +9,16 @@ import kotlinx.android.synthetic.main.fragment_guide_filter.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events.OnSolidarityGuideFilterChanged
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.guide.poi.PoiRenderer
 import social.entourage.android.tools.EntBus
-import social.entourage.android.tools.log.EntourageEvents
-import social.entourage.android.tools.log.EntourageEvents.ACTION_GUIDE_SUBMITFILTERS
+import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.log.AnalyticsEvents.ACTION_GUIDE_SUBMITFILTERS
 
 /**
  * Guide Filter Fragment
  */
-class GuideFilterFragment : EntourageDialogFragment() {
+class GuideFilterFragment : BaseDialogFragment() {
     // ----------------------------------
     // Attributes
     // ----------------------------------
@@ -59,7 +59,7 @@ class GuideFilterFragment : EntourageDialogFragment() {
             GuideFilter.instance.setValueForCategoryId(filterItem.categoryType.categoryId, filterItem.isChecked)
         }
 
-        EntourageEvents.logEvent(ACTION_GUIDE_SUBMITFILTERS)
+        AnalyticsEvents.logEvent(ACTION_GUIDE_SUBMITFILTERS)
         //Update others filters
         GuideFilter.instance.isPartnersSelected = isPartnersTmpSelected
         GuideFilter.instance.isDonationsSelected = isDonationsTmpSelected
@@ -110,7 +110,7 @@ class GuideFilterFragment : EntourageDialogFragment() {
         } ,{ positionTop ->
             when(positionTop) {
                 0 -> {
-                    EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_SEARCHFILTER_ORGANIZ)
+                    AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_SEARCHFILTER_ORGANIZ)
                     if (isPartnersTmpSelected && !isDefaultFilters()) {
                         setAllFiltersOn()
                     }
@@ -119,7 +119,7 @@ class GuideFilterFragment : EntourageDialogFragment() {
                     }
                 }
                 1 -> {
-                    EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_SEARCHFILTER_DONAT)
+                    AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_SEARCHFILTER_DONAT)
                     if (isDonationsTmpSelected && !isDefaultFilters()) {
                         setAllFiltersOn()
                     }
@@ -128,7 +128,7 @@ class GuideFilterFragment : EntourageDialogFragment() {
                     }
                 }
                 2 -> {
-                    EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_SEARCHFILTER_VOLUNT)
+                    AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_SEARCHFILTER_VOLUNT)
                     if (isVolunteersTmpSelected && !isDefaultFilters()) {
                         setAllFiltersOn()
                     }

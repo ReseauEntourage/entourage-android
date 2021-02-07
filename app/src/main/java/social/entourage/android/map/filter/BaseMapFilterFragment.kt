@@ -3,12 +3,12 @@ package social.entourage.android.map.filter
 import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.api.tape.Events.OnMapFilterChanged
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.tools.EntBus
 
-abstract class BaseMapFilterFragment : EntourageDialogFragment() {
+abstract class BaseMapFilterFragment : BaseDialogFragment() {
 
     // ----------------------------------
     // Lifecycle
@@ -22,7 +22,7 @@ abstract class BaseMapFilterFragment : EntourageDialogFragment() {
     // Buttons handling
     // ----------------------------------
     fun onCloseClicked() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_CLOSE)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_MAP_FILTER_CLOSE)
         dismiss()
     }
 
@@ -32,7 +32,7 @@ abstract class BaseMapFilterFragment : EntourageDialogFragment() {
 
         // inform the map screen to refresh the newsfeed
         EntBus.post(OnMapFilterChanged())
-        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_SUBMIT)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_MAP_FILTER_SUBMIT)
 
         // dismiss the dialog
         dismiss()

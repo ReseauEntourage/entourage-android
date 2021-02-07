@@ -1,4 +1,4 @@
-package social.entourage.android.base
+package social.entourage.android.tools
 
 import android.view.View
 import android.view.View.OnLongClickListener

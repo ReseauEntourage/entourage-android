@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_map_tour_filter.*
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.map.filter.BaseMapFilterFragment
 
@@ -44,37 +44,37 @@ class TourFilterFragment  : BaseMapFilterFragment() {
     }
 
     private fun onMedicalSwitch() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_MEDICAL_TOURS)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_MAP_FILTER_ONLY_MEDICAL_TOURS)
         map_filter_tour_all_switch?.isChecked = !allToursDisabled()
     }
 
     private fun onSocialSwitch() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_SOCIAL_TOURS)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_MAP_FILTER_ONLY_SOCIAL_TOURS)
         map_filter_tour_all_switch?.isChecked = !allToursDisabled()
     }
 
     private fun onDistributiveSwitch() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_ONLY_DISTRIBUTION_TOURS)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_MAP_FILTER_ONLY_DISTRIBUTION_TOURS)
         map_filter_tour_all_switch?.isChecked = !allToursDisabled()
     }
 
     //TODO find another way to have both constraintlayout and radiogroup
     private fun onDays1Click() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_FILTER1)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_MAP_FILTER_FILTER1)
         //map_filter_time_days_1.isSelected = false
         map_filter_time_days_2?.isChecked = false
         map_filter_time_days_3?.isChecked = false
     }
 
     private fun onDays2Click() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_FILTER2)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_MAP_FILTER_FILTER2)
         map_filter_time_days_1?.isChecked = false
         //map_filter_time_days_2.isChecked = false
         map_filter_time_days_3?.isChecked = false
     }
 
     private fun onDays3Click() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_MAP_FILTER_FILTER3)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_MAP_FILTER_FILTER3)
         map_filter_time_days_1?.isChecked = false
         map_filter_time_days_2?.isChecked = false
         //map_filter_time_days_3.isChecked = false

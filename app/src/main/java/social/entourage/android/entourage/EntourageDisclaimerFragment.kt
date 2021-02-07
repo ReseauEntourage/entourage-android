@@ -13,12 +13,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_entourage_disclaimer.*
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 
-class EntourageDisclaimerFragment : EntourageDialogFragment() {
+class EntourageDisclaimerFragment : BaseDialogFragment() {
     // ----------------------------------
     // Attributes
     // ----------------------------------
@@ -41,7 +41,7 @@ class EntourageDisclaimerFragment : EntourageDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         entourage_disclaimer_text_chart?.setOnClickListener {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_DISCLAIMER_LINK)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_DISCLAIMER_LINK)
             val disclaimerURL = getString(R.string.disclaimer_link_public)
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(disclaimerURL))
             try {
@@ -52,7 +52,7 @@ class EntourageDisclaimerFragment : EntourageDialogFragment() {
         }
         entourage_disclaimer_switch?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_DISCLAIMER_ACCEPT)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_DISCLAIMER_ACCEPT)
                 // trigger the accept after a delay
                 val handler = Handler(Looper.getMainLooper())
                 handler.postDelayed({ onOkClicked() }, 1000)
@@ -84,7 +84,7 @@ class EntourageDisclaimerFragment : EntourageDialogFragment() {
     // Button handling
     // ----------------------------------
     fun onCloseClicked() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_DISCLAIMER_CLOSE)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_DISCLAIMER_CLOSE)
         dismiss()
     }
 

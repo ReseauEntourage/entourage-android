@@ -12,7 +12,7 @@ import social.entourage.android.mainprofile.MainProfileFragment
 import social.entourage.android.newsfeed.BaseNewsfeedFragment
 import social.entourage.android.newsfeed.NewsFeedFragment
 import social.entourage.android.newsfeed.NewsFeedWithTourFragment
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 
 /**
  * Created by Mihai Ionescu on 23/04/2018.
@@ -48,7 +48,7 @@ class BottomNavigationDataSource {
             R.id.bottom_bar_newsfeed -> if(EntourageApplication.get().me()?.isPro == true) NewsFeedWithTourFragment() else NewsFeedFragment()
             R.id.bottom_bar_guide -> GuideHubFragment()//GuideMapFragment()
             R.id.bottom_bar_plus ->  {
-                EntourageEvents.logEvent(EntourageEvents.ACTION_PLUS_AGIR)
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PLUS_AGIR)
                 PlusFragment()
             }
             R.id.bottom_bar_mymessages -> MyEntouragesFragment()

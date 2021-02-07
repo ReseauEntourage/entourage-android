@@ -13,7 +13,7 @@ import social.entourage.android.R
 /**
  * Custom title view with a close button and a title
  */
-class EntourageTitleView : RelativeLayout {
+class CustomTitleView : RelativeLayout {
 
     constructor(context: Context?) : super(context) {
         init(null, 0)

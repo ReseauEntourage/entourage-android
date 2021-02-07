@@ -5,7 +5,7 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import social.entourage.android.EntourageApplication.Companion.get
 
-object EntourageLocation {
+object EntLocation {
     var location: Location? = null
 
     var currentLocation: Location? = null

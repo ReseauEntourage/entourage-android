@@ -5,7 +5,7 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <social.entourage.android.map.EntourageMapView
+    <social.entourage.android.map.FeedMapView
         android:id="@+id/layout_feed_map_card_mapview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

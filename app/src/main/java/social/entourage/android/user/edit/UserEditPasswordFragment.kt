@@ -11,12 +11,12 @@ import androidx.annotation.StringRes
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_user_edit_password.*
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
-import social.entourage.android.base.EntourageDialogFragment
-import social.entourage.android.tools.view.EntourageSnackbar
+import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.tools.view.EntSnackbar
 
-class UserEditPasswordFragment  : EntourageDialogFragment() {
+class UserEditPasswordFragment  : BaseDialogFragment() {
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -33,7 +33,7 @@ class UserEditPasswordFragment  : EntourageDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_09_4)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SCREEN_09_4)
         configureView()
     }
 
@@ -44,7 +44,7 @@ class UserEditPasswordFragment  : EntourageDialogFragment() {
 
     fun onSaveButton() {
         if (validatePassword()) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_09_4_SUBMIT)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SCREEN_09_4_SUBMIT)
             val userEditFragment = parentFragmentManager.findFragmentByTag(UserEditFragment.TAG) as UserEditFragment?
             userEditFragment?.saveNewPassword(user_new_password?.text.toString().trim { it <= ' ' })
             dismiss()
@@ -90,7 +90,7 @@ class UserEditPasswordFragment  : EntourageDialogFragment() {
     }
 
     private fun displaySnackbar(@StringRes stringId: Int) {
-        view?.let { EntourageSnackbar.make(it, stringId, Snackbar.LENGTH_SHORT).show() }
+        view?.let { EntSnackbar.make(it, stringId, Snackbar.LENGTH_SHORT).show() }
     }
 
     companion object {

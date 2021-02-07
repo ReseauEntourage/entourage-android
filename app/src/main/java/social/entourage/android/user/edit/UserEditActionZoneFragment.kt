@@ -6,7 +6,7 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_onboarding_place.*
 import kotlinx.android.synthetic.main.layout_view_title.view.*
 import social.entourage.android.EntourageApplication
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
@@ -49,9 +49,9 @@ class UserEditActionZoneFragment : OnboardingPlaceFragment() {
 
     private fun sendNetwork() {
         userAddress?.let {userAddress ->
-            EntourageEvents.logEvent(
-                    if (isSecondaryAddress) EntourageEvents.EVENT_ACTION_PROFILE_ACTION_ZONE2_SUBMIT
-                    else EntourageEvents.EVENT_ACTION_PROFILE_ACTION_ZONE_SUBMIT
+            AnalyticsEvents.logEvent(
+                    if (isSecondaryAddress) AnalyticsEvents.EVENT_ACTION_PROFILE_ACTION_ZONE2_SUBMIT
+                    else AnalyticsEvents.EVENT_ACTION_PROFILE_ACTION_ZONE_SUBMIT
             )
             OnboardingAPI.getInstance(EntourageApplication.get()).updateAddress(userAddress,isSecondaryAddress) { isOK, userResponse ->
                 if (isOK) {

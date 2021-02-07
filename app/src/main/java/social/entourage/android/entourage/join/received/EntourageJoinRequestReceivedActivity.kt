@@ -9,14 +9,14 @@ import androidx.appcompat.app.AlertDialog
 import social.entourage.android.*
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.feed.FeedItem
-import social.entourage.android.base.EntourageSecuredActivity
+import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.message.push.PushNotificationManager
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.UserFragment
 import social.entourage.android.tools.view.HtmlTextView
 import javax.inject.Inject
 
-class EntourageJoinRequestReceivedActivity : EntourageSecuredActivity() {
+class EntourageJoinRequestReceivedActivity : BaseSecuredActivity() {
     private var message: Message? = null
     private var requestsCount = 0
 
@@ -61,11 +61,11 @@ class EntourageJoinRequestReceivedActivity : EntourageSecuredActivity() {
                         requestsCount++
                         when {
                             it.isTourRelated -> {
-                                EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_ACCEPT)
+                                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_JOIN_REQUEST_ACCEPT)
                                 presenter.acceptTourJoinRequest(it.joinableUUID, it.userId)
                             }
                             it.isEntourageRelated -> {
-                                EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_ACCEPT)
+                                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_JOIN_REQUEST_ACCEPT)
                                 presenter.acceptEntourageJoinRequest(it.joinableUUID, it.userId)
                             }
                             else -> {
@@ -79,11 +79,11 @@ class EntourageJoinRequestReceivedActivity : EntourageSecuredActivity() {
                         requestsCount++
                         when {
                             it.isTourRelated -> {
-                                EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_REJECT)
+                                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_JOIN_REQUEST_REJECT)
                                 presenter.rejectTourJoinRequest(it.joinableUUID, it.userId)
                             }
                             it.isEntourageRelated -> {
-                                EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_REJECT)
+                                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_JOIN_REQUEST_REJECT)
                                 presenter.rejectEntourageJoinRequest(it.joinableUUID, it.userId)
                             }
                             else -> {

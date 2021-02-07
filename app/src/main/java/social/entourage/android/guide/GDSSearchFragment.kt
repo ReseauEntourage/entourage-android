@@ -18,9 +18,9 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.api.request.PoiResponse
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.guide.poi.ReadPoiFragment
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.showKeyboard
 import social.entourage.android.user.partner.PartnerFragment
 import timber.log.Timber
@@ -30,7 +30,7 @@ private const val ARG_LAT = "latitude"
 private const val ARG_LONG = "longitude"
 private const val ARG_DIST = "distance"
 
-class GDSSearchFragment : EntourageDialogFragment() {
+class GDSSearchFragment : BaseDialogFragment() {
     private val MIN_CHARS_SEARCH = 3
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
@@ -48,7 +48,7 @@ class GDSSearchFragment : EntourageDialogFragment() {
             )
         }
 
-        EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_STARTSEARCH)
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_STARTSEARCH)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -126,7 +126,7 @@ class GDSSearchFragment : EntourageDialogFragment() {
             override fun onResponse(call: Call<PoiResponse>, response: Response<PoiResponse>) {
                 response.body()?.let {
                     if (response.isSuccessful) {
-                        EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_SEARCHRESULTS)
+                        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_SEARCHRESULTS)
                         arrayPois.clear()
                         arrayPois.addAll(it.pois)
                         rvAdapter?.updateAdapter(arrayPois)
@@ -144,7 +144,7 @@ class GDSSearchFragment : EntourageDialogFragment() {
     }
 
     private fun showPoiDetails(poi: Poi) {
-        EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_POI)
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_POI)
         try {
             poi.partner_id?.let { partner_id ->
                 PartnerFragment.newInstance(partner_id).show(parentFragmentManager, PartnerFragment.TAG)

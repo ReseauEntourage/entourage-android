@@ -15,7 +15,6 @@ import androidx.annotation.IdRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.children
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
 import com.squareup.otto.Subscribe
@@ -29,7 +28,7 @@ import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BackPressable
-import social.entourage.android.base.EntourageSecuredActivity
+import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.deeplinks.DeepLinksManager.handleCurrentDeepLink
 import social.entourage.android.deeplinks.DeepLinksManager.storeIntent
@@ -37,7 +36,7 @@ import social.entourage.android.entourage.EntourageDisclaimerFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.entourage.my.MyEntouragesFragment
 import social.entourage.android.guide.poi.ReadPoiFragment
-import social.entourage.android.location.EntourageLocation.currentLocation
+import social.entourage.android.location.EntLocation.currentLocation
 import social.entourage.android.location.LocationUtils.isLocationEnabled
 import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
 import social.entourage.android.map.filter.MapFilterFactory.mapFilter
@@ -45,12 +44,12 @@ import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.navigation.BottomNavigationDataSource
 import social.entourage.android.newsfeed.BaseNewsfeedFragment
 import social.entourage.android.onboarding.OnboardingPhotoFragment
-import social.entourage.android.service.EntourageService
+import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
-import social.entourage.android.tools.log.EntourageEvents
-import social.entourage.android.tools.log.EntourageEvents.logEvent
-import social.entourage.android.tools.log.EntourageEvents.onLocationPermissionGranted
-import social.entourage.android.tools.log.EntourageEvents.updateUserInfo
+import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.log.AnalyticsEvents.logEvent
+import social.entourage.android.tools.log.AnalyticsEvents.onLocationPermissionGranted
+import social.entourage.android.tools.log.AnalyticsEvents.updateUserInfo
 import social.entourage.android.tour.TourInformationFragment.OnTourInformationFragmentFinish
 import social.entourage.android.tour.choice.ChoiceFragment
 import social.entourage.android.tour.choice.ChoiceFragment.OnChoiceFragmentFinish
@@ -74,7 +73,7 @@ import java.io.File
 import java.util.*
 import javax.inject.Inject
 
-class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish, OnChoiceFragmentFinish, EntourageDisclaimerFragment.OnFragmentInteractionListener, EncounterDisclaimerFragment.OnFragmentInteractionListener, PhotoChooseInterface, FragmentListener, AvatarUploadView {
+class MainActivity : BaseSecuredActivity(), OnTourInformationFragmentFinish, OnChoiceFragmentFinish, EntourageDisclaimerFragment.OnFragmentInteractionListener, EncounterDisclaimerFragment.OnFragmentInteractionListener, PhotoChooseInterface, FragmentListener, AvatarUploadView {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -187,16 +186,16 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
         super.onResume()
         if (intent?.action != null) {
             when (intent.action) {
-                EntourageService.KEY_LOCATION_PROVIDER_DISABLED -> {
+                EntService.KEY_LOCATION_PROVIDER_DISABLED -> {
                     displayLocationProviderDisabledAlert()
                     sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
                 }
-                EntourageService.KEY_NOTIFICATION_PAUSE_TOUR, EntourageService.KEY_NOTIFICATION_STOP_TOUR -> sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
+                EntService.KEY_NOTIFICATION_PAUSE_TOUR, EntService.KEY_NOTIFICATION_STOP_TOUR -> sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
             }
         }
         if (!isAnalyticsSendFromStart) {
             isAnalyticsSendFromStart = true
-            logEvent(EntourageEvents.SHOW_START_FEEDS)
+            logEvent(AnalyticsEvents.SHOW_START_FEEDS)
         }
         sendNewsfeedFragmentExtras()
         if (intent == null || intent.action == null) {
@@ -234,9 +233,9 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
             ui_layout_tooltips_ignore?.setOnClickListener {
                 ui_layout_tooltips?.visibility = View.GONE
                 when (postionTooltip) {
-                    0 -> logEvent(EntourageEvents.EVENT_ACTION_TOOLTIP_FILTER_CLOSE)
-                    1 -> logEvent(EntourageEvents.EVENT_ACTION_TOOLTIP_GUIDE_CLOSE)
-                    else -> logEvent(EntourageEvents.EVENT_ACTION_TOOLTIP_PLUS_CLOSE)
+                    0 -> logEvent(AnalyticsEvents.EVENT_ACTION_TOOLTIP_FILTER_CLOSE)
+                    1 -> logEvent(AnalyticsEvents.EVENT_ACTION_TOOLTIP_GUIDE_CLOSE)
+                    else -> logEvent(AnalyticsEvents.EVENT_ACTION_TOOLTIP_PLUS_CLOSE)
                 }
             }
             ui_tooltip_button_next_top?.setOnClickListener {
@@ -251,7 +250,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
                 ui_tooltip_iv_bottom_bt1?.visibility = View.VISIBLE
                 ui_tooltip_iv_bottom_bt2?.visibility = View.INVISIBLE
                 ui_tooltip_layout_bottom?.visibility = View.VISIBLE
-                logEvent(EntourageEvents.EVENT_ACTION_TOOLTIP_FILTER_NEXT)
+                logEvent(AnalyticsEvents.EVENT_ACTION_TOOLTIP_FILTER_NEXT)
             }
             ui_tooltip_button_next_bottom?.setOnClickListener {
                 postionTooltip++
@@ -264,10 +263,10 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
                     ui_tooltip_iv_bottom1?.visibility = View.INVISIBLE
                     ui_tooltip_iv_bottom_bt1?.visibility = View.INVISIBLE
                     ui_tooltip_iv_bottom_bt2?.visibility = View.VISIBLE
-                    logEvent(EntourageEvents.EVENT_ACTION_TOOLTIP_GUIDE_NEXT)
+                    logEvent(AnalyticsEvents.EVENT_ACTION_TOOLTIP_GUIDE_NEXT)
                 } else {
                     ui_layout_tooltips?.visibility = View.GONE
-                    logEvent(EntourageEvents.EVENT_ACTION_TOOLTIP_PLUS_NEXT)
+                    logEvent(AnalyticsEvents.EVENT_ACTION_TOOLTIP_PLUS_NEXT)
                 }
             }
             val usertype = sharedPreferences.getInt(EntourageApplication.KEY_ONBOARDING_USER_TYPE, 0)
@@ -316,7 +315,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     private fun setIntentAction(intent: Intent) {
         if (intent.action != null) {
             when (intent.action) {
-                PushNotificationContent.TYPE_NEW_CHAT_MESSAGE, PushNotificationContent.TYPE_NEW_JOIN_REQUEST, PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED, PushNotificationContent.TYPE_ENTOURAGE_INVITATION, PushNotificationContent.TYPE_INVITATION_STATUS, EntourageService.KEY_LOCATION_PROVIDER_DISABLED, EntourageService.KEY_NOTIFICATION_PAUSE_TOUR, EntourageService.KEY_NOTIFICATION_STOP_TOUR, TourEndConfirmationFragment.KEY_RESUME_TOUR, TourEndConfirmationFragment.KEY_END_TOUR, PlusFragment.KEY_START_TOUR, PlusFragment.KEY_ADD_ENCOUNTER, PlusFragment.KEY_CREATE_CONTRIBUTION, PlusFragment.KEY_CREATE_DEMAND, PlusFragment.KEY_CREATE_OUTING -> {
+                PushNotificationContent.TYPE_NEW_CHAT_MESSAGE, PushNotificationContent.TYPE_NEW_JOIN_REQUEST, PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED, PushNotificationContent.TYPE_ENTOURAGE_INVITATION, PushNotificationContent.TYPE_INVITATION_STATUS, EntService.KEY_LOCATION_PROVIDER_DISABLED, EntService.KEY_NOTIFICATION_PAUSE_TOUR, EntService.KEY_NOTIFICATION_STOP_TOUR, TourEndConfirmationFragment.KEY_RESUME_TOUR, TourEndConfirmationFragment.KEY_END_TOUR, PlusFragment.KEY_START_TOUR, PlusFragment.KEY_ADD_ENCOUNTER, PlusFragment.KEY_CREATE_CONTRIBUTION, PlusFragment.KEY_CREATE_DEMAND, PlusFragment.KEY_CREATE_OUTING -> {
                 }
                 else -> {
                 }
@@ -354,11 +353,11 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
 
     private fun sendAnalyticsTapTabbar(@IdRes itemId: Int) {
         when (itemId) {
-            R.id.bottom_bar_newsfeed -> logEvent(EntourageEvents.ACTION_TAB_FEEDS)
-            R.id.bottom_bar_guide -> logEvent(EntourageEvents.ACTION_TAB_GDS)
-            R.id.bottom_bar_plus -> logEvent(EntourageEvents.ACTION_TAB_PLUS)
-            R.id.bottom_bar_mymessages -> logEvent(EntourageEvents.ACTION_TAB_MESSAGES)
-            R.id.bottom_bar_profile -> logEvent(EntourageEvents.ACTION_TAB_PROFIL)
+            R.id.bottom_bar_newsfeed -> logEvent(AnalyticsEvents.ACTION_TAB_FEEDS)
+            R.id.bottom_bar_guide -> logEvent(AnalyticsEvents.ACTION_TAB_GDS)
+            R.id.bottom_bar_plus -> logEvent(AnalyticsEvents.ACTION_TAB_PLUS)
+            R.id.bottom_bar_mymessages -> logEvent(AnalyticsEvents.ACTION_TAB_MESSAGES)
+            R.id.bottom_bar_profile -> logEvent(AnalyticsEvents.ACTION_TAB_PROFIL)
         }
     }
 
@@ -512,7 +511,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
 
     @Subscribe
     fun userViewRequested(event: OnUserViewRequestedEvent) {
-        logEvent(EntourageEvents.EVENT_FEED_USERPROFILE)
+        logEvent(AnalyticsEvents.EVENT_FEED_USERPROFILE)
         try {
             val fragment = newInstance(event.userId)
             fragment.show(supportFragmentManager, UserFragment.TAG)
@@ -562,7 +561,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
 
     @Subscribe
     fun onPoiViewDetail(event: OnPoiViewDetail) {
-        logEvent(EntourageEvents.EVENT_FEED_USERPROFILE)
+        logEvent(AnalyticsEvents.EVENT_FEED_USERPROFILE)
         try {
             val poi = Poi()
             poi.uuid = event.poiId
@@ -619,7 +618,7 @@ class MainActivity : EntourageSecuredActivity(), OnTourInformationFragmentFinish
     override fun onPhotoChosen(photoURI: Uri?, photoSource: Int) {
         photoURI?.path?.let { path ->
             if (photoSource == OnboardingPhotoFragment.TAKE_PHOTO_REQUEST) {
-                logEvent(EntourageEvents.EVENT_PHOTO_SUBMIT)
+                logEvent(AnalyticsEvents.EVENT_PHOTO_SUBMIT)
             }
             //Upload the photo to Amazon S3
             showProgressDialog(R.string.user_photo_uploading)

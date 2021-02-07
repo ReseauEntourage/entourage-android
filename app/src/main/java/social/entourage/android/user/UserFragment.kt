@@ -21,12 +21,12 @@ import social.entourage.android.api.model.EntourageConversation
 import social.entourage.android.api.model.User
 import social.entourage.android.api.tape.Events.OnPartnerViewRequestedEvent
 import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.CropCircleTransformation
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.edit.UserEditAboutFragment
 import social.entourage.android.user.edit.UserEditFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
@@ -37,7 +37,7 @@ import social.entourage.android.user.report.UserReportFragment
 import timber.log.Timber
 import javax.inject.Inject
 
-class UserFragment : EntourageDialogFragment() {
+class UserFragment : BaseDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -55,7 +55,7 @@ class UserFragment : EntourageDialogFragment() {
         if (toReturn == null) {
             toReturn = inflater.inflate(R.layout.fragment_user, container, false)
         }
-        EntourageEvents.logEvent(EntourageEvents.EVENT_PROFILE_FROM_MENU)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_PROFILE_FROM_MENU)
         return toReturn
     }
 
@@ -108,7 +108,7 @@ class UserFragment : EntourageDialogFragment() {
     // ----------------------------------
     private fun configureView() {
         if (activity?.isFinishing==true) return
-        EntourageEvents.logEvent(if (isMyProfile) EntourageEvents.EVENT_SCREEN_09_1_ME else EntourageEvents.EVENT_SCREEN_09_1_OTHER)
+        AnalyticsEvents.logEvent(if (isMyProfile) AnalyticsEvents.EVENT_SCREEN_09_1_ME else AnalyticsEvents.EVENT_SCREEN_09_1_OTHER)
 
         user_profile_edit_button?.visibility = if (isMyProfile) View.VISIBLE else View.GONE
         user_profile_report_button?.visibility = if (isMyProfile) View.GONE else View.VISIBLE
@@ -244,12 +244,12 @@ class UserFragment : EntourageDialogFragment() {
     }
 
     private fun onEditButtonClicked() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_USER_EDIT_PROFILE)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_USER_EDIT_PROFILE)
         showUserEditFragment()
     }
 
     private fun onUserPhotoClicked() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_USER_EDIT_PHOTO)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_USER_EDIT_PHOTO)
         showUserEditFragment()
     }
 

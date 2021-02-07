@@ -6,7 +6,7 @@ import java.util.*
 /**
  * Created by mihaiionescu on 10/05/16.
  */
-open class EntouragePagination {
+open class BasePagination {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------

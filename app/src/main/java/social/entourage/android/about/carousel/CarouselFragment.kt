@@ -8,7 +8,7 @@ import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import social.entourage.android.R
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import java.util.*
 import kotlinx.android.synthetic.main.fragment_carousel.*
 import kotlinx.android.synthetic.main.fragment_carousel.view.*
@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.fragment_carousel.view.*
 /**
  * Help carousel
  */
-class CarouselFragment  : EntourageDialogFragment() {
+class CarouselFragment  : BaseDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------

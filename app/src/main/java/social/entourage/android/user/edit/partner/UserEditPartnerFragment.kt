@@ -24,7 +24,7 @@ import social.entourage.android.api.request.PartnerWrapper
 import social.entourage.android.api.request.PartnersResponse
 import social.entourage.android.api.model.Partner
 import social.entourage.android.api.model.User
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.user.edit.UserEditFragment
 
 /**
@@ -32,7 +32,7 @@ import social.entourage.android.user.edit.UserEditFragment
  * Edit the association that an user supports
  *
  */
-class UserEditPartnerFragment  : EntourageDialogFragment() {
+class UserEditPartnerFragment  : BaseDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------

@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.fragment_plus.*
 import kotlinx.android.synthetic.main.layout_plus_overlay.*
 import social.entourage.android.api.model.User
 import social.entourage.android.base.BackPressable
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class PlusFragment : Fragment(), BackPressable {
     override fun onResume() {
@@ -101,7 +101,7 @@ class PlusFragment : Fragment(), BackPressable {
     }
 
     private fun onShowGoodWaves() {
-        EntourageEvents.logEvent(EntourageEvents.ACTION_PLUS_GOOD_WAVES)
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PLUS_GOOD_WAVES)
         val url = (activity as MainActivity?)?.getLink(Constants.GOOD_WAVES_ID)
 
         (activity as MainActivity?)?.showWebView(url)

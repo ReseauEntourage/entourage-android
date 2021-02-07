@@ -7,16 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import kotlinx.android.synthetic.main.layout_entourage_options.*
 import social.entourage.android.EntourageApplication
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events.OnUserActEvent
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tour.TourOptionsFragment
 
-abstract class FeedItemOptionsFragment : EntourageDialogFragment() {
+abstract class FeedItemOptionsFragment : BaseDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -67,7 +67,7 @@ abstract class FeedItemOptionsFragment : EntourageDialogFragment() {
     abstract fun onStopClicked()
 
     private fun onQuitClicked() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_QUIT_ENTOURAGE)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_QUIT_ENTOURAGE)
         EntBus.post(OnUserActEvent(OnUserActEvent.ACT_QUIT, feedItem))
         dismiss()
     }

@@ -15,7 +15,7 @@ import java.util.*
  * Wrapper for sending events to different aggregators
  * Created by Mihai Ionescu on 03/10/2017.
  */
-object EntourageEvents {
+object AnalyticsEvents {
     // Analytics events
     const val EVENT_OPEN_ENCOUNTER_FROM_MAP = "Open_Encounter_From_Map"
     const val EVENT_OPEN_POI_FROM_MAP = "Open_POI_From_Map"
@@ -467,7 +467,7 @@ object EntourageEvents {
 
     const val VIEW_ADD_USERNAME_SUBMIT = "Action__Add__UsernameSubmit"
 
-    var TAG = EntourageEvents::class.java.simpleName
+    var TAG = AnalyticsEvents::class.java.simpleName
 
     fun logEvent(event: String) {
         get().firebase.logEvent(event, null)

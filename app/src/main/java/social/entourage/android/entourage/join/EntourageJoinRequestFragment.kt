@@ -11,9 +11,8 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_tour_join_request_ok.*
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.feed.FeedItem
@@ -62,7 +61,7 @@ class EntourageJoinRequestFragment  : DialogFragment() {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable) {
                 if (s.isNotEmpty() && !startedTyping) {
-                    EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_START)
+                    AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_JOIN_REQUEST_START)
                     startedTyping = true
                 }
             }
@@ -86,7 +85,7 @@ class EntourageJoinRequestFragment  : DialogFragment() {
         entourage.uuid?.let { uuid ->
             tour_join_request_ok_message?.text?.let {
                 if (it.isNotBlank()) {
-                    EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_SUBMIT)
+                    AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_JOIN_REQUEST_SUBMIT)
                     viewModel.sendMessage(it.toString(), uuid)
                 }
             }

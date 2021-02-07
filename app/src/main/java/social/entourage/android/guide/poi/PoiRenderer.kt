@@ -4,15 +4,9 @@ import android.graphics.Color
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.MarkerOptions
 import social.entourage.android.R
-import social.entourage.android.api.model.guide.Category
 import social.entourage.android.api.model.guide.Poi
 
 class PoiRenderer {
-    // ----------------------------------
-    // ATTRIBUTES
-    // ----------------------------------
-    private var categories: List<Category>? = null
-
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
@@ -24,19 +18,7 @@ class PoiRenderer {
     }
 
     private fun categoryForCategoryId(categoryId: Int): CategoryType {
-        categories?.let {
-            for (category in it) {
-                if (category.id == categoryId.toLong()) {
-                    return CategoryType.findCategoryTypeByName(category.name)
-                }
-            }
-            return CategoryType.OTHER
-        }
         return CategoryType.findCategoryTypeById(categoryId)
-    }
-
-    fun setCategories(categories: List<Category>) {
-        this.categories = categories
     }
 
     enum class CategoryType(val displayName: String, val categoryId: Int, val resourceId: Int, val color: Int, val filterId: Int) {
@@ -72,15 +54,6 @@ class PoiRenderer {
                 62, R.drawable.poi_category_new_62, Color.parseColor("#88c0ff"), R.drawable.picto_cat_filter_62);
 
         companion object {
-            fun findCategoryTypeByName(name: String?): CategoryType {
-                for (categoryType in values()) {
-                    if (categoryType.displayName.equals(name, ignoreCase = true)) {
-                        return categoryType
-                    }
-                }
-                return OTHER
-            }
-
             fun findCategoryTypeById(categoryId: Int): CategoryType {
                 for (categoryType in values()) {
                     if (categoryType.categoryId == categoryId) {

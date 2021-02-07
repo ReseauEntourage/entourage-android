@@ -29,14 +29,14 @@ import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent
-import social.entourage.android.base.EntourageDialogFragment
-import social.entourage.android.base.EntourageLinkMovementMethod
+import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.tools.EntLinkMovementMethod
 import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryFragment
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.location.LocationFragment
 import social.entourage.android.tools.EntBus
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 import java.io.IOException
 import java.text.DateFormat
@@ -48,7 +48,7 @@ import javax.inject.Inject
  * Base fragment for creating and editing an action/entourage
  */
 open class BaseCreateEntourageFragment
-    : EntourageDialogFragment(), LocationFragment.OnFragmentInteractionListener, CreateEntourageListener,
+    : BaseDialogFragment(), LocationFragment.OnFragmentInteractionListener, CreateEntourageListener,
         DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     // ----------------------------------
     // Attributes
@@ -108,7 +108,7 @@ open class BaseCreateEntourageFragment
                 val textMatchList: List<String> = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS) ?: return
                 if (textMatchList.isNotEmpty()) {
                     create_entourage_title?.let { titleEditText ->
-                        if (titleEditText.text.toString() == "") {
+                        if (titleEditText.text.isEmpty()) {
                             titleEditText.text = textMatchList[0]
                         } else {
                             titleEditText.text = titleEditText.text.toString() + " " + textMatchList[0]
@@ -166,7 +166,7 @@ open class BaseCreateEntourageFragment
     }
 
     private fun onPositionClicked() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_CREATE_CHANGE_LOCATION)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_CREATE_CHANGE_LOCATION)
         val fragment = LocationFragment.newInstance(
                 location,
                 create_entourage_position?.text.toString(),
@@ -441,7 +441,7 @@ open class BaseCreateEntourageFragment
                 } else {
                     getString(R.string.entourage_create_help_text, mainActivity.getLink(Constants.GOAL_LINK_ID))
                 }
-                it.setHtmlString(htmlString, EntourageLinkMovementMethod)
+                it.setHtmlString(htmlString, EntLinkMovementMethod)
             }
         }
     }
@@ -479,7 +479,7 @@ open class BaseCreateEntourageFragment
                     return false
                 }
             } else {
-                if (entourageCategory?.isNewlyCreated != true) {
+                if (entourageCategory?.isNewlyCreated == true) {
                     Toast.makeText(activity, R.string.entourage_create_error_category_empty, Toast.LENGTH_SHORT).show()
                     return false
                 }

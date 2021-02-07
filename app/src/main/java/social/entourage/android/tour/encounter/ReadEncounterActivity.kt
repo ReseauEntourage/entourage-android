@@ -6,15 +6,15 @@ import android.os.Bundle
 import android.text.format.DateFormat
 import kotlinx.android.synthetic.main.activity_encounter_read.*
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.base.EntourageActivity
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.base.BaseActivity
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.tour.Encounter
 import java.io.IOException
 import java.lang.ref.WeakReference
 import java.util.*
 
-class ReadEncounterActivity : EntourageActivity() {
+class ReadEncounterActivity : BaseActivity() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -26,7 +26,7 @@ class ReadEncounterActivity : EntourageActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_encounter_read)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_ENCOUNTER_FROM_MAP)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_OPEN_ENCOUNTER_FROM_MAP)
         encounter = intent?.extras?.get(BUNDLE_KEY_ENCOUNTER) as Encounter?
         title_close_button?.setOnClickListener {onCloseButton()}
     }

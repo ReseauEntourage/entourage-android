@@ -13,7 +13,7 @@ import com.google.gson.annotations.SerializedName
 import social.entourage.android.R
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.entourage.category.EntourageCategoryManager
-import social.entourage.android.location.EntourageLocation
+import social.entourage.android.location.EntLocation
 import timber.log.Timber
 import java.io.Serializable
 import java.lang.reflect.Type
@@ -135,7 +135,7 @@ open class BaseEntourage : FeedItem, Serializable {
      * @return distance in kilometers
      */
     fun distanceToCurrentLocation(): Int {
-        val newLocation = EntourageLocation.currentLocation ?: return 0
+        val newLocation = EntLocation.currentLocation ?: return 0
         val distance = this.location?.distanceTo(LocationPoint(newLocation.latitude, newLocation.longitude)) ?:0.0f
         return floor(distance /1000.0f).toInt()
     }

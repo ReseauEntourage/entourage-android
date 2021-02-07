@@ -2,7 +2,7 @@ package social.entourage.android.entourage.my.invitations
 
 import android.view.View
 import kotlinx.android.synthetic.main.layout_invitation_card.view.*
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.TimestampedObject
@@ -24,7 +24,7 @@ class InvitationCardViewHolder(view: View) : BaseCardViewHolder(view) {
         invitationId = invitation.id
         entourageUUID = invitation.entourageUUID
         itemView.setOnClickListener {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_BANNER_CLICK)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_MYENTOURAGES_BANNER_CLICK)
             if (entourageUUID.isBlank() || invitationId == 0L) return@setOnClickListener
             EntBus.post(OnFeedItemInfoViewRequestedEvent(entourageUUID, invitationId))
         }

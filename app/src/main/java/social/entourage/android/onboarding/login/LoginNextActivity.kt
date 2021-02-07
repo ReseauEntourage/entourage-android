@@ -12,7 +12,7 @@ import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
 import social.entourage.android.tools.disable
 import social.entourage.android.tools.enable
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CustomProgressDialog
 
 class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
@@ -64,7 +64,7 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
 
     fun sendAddress() {
         alertDialog.show(R.string.onboard_waiting_dialog)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_LOGIN_ACTION_ZONE_SUBMIT)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_ACTION_ZONE_SUBMIT)
         OnboardingAPI.getInstance(EntourageApplication.get()).updateAddress(temporaryPlaceAddress!!,false) { isOK, userResponse ->
             if (isOK) {
                 val authenticationController = EntourageApplication.get().entourageComponent.authenticationController
@@ -86,14 +86,14 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
 
     fun updateUserEmail() {
         alertDialog.show(R.string.onboard_waiting_dialog)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_LOGIN_EMAIL_SUBMIT)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_EMAIL_SUBMIT)
         OnboardingAPI.getInstance(EntourageApplication.get()).updateUser(temporaryEmail) { isOK, userResponse ->
             if (isOK && userResponse != null) {
                 val authenticationController = EntourageApplication.get().entourageComponent.authenticationController
                 authenticationController.saveUser(userResponse.user)
             }
             else {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_LOGIN_EMAIL_SUBMIT_ERROR)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ERROR_LOGIN_EMAIL_SUBMIT_ERROR)
             }
             alertDialog.dismiss()
             goMain()

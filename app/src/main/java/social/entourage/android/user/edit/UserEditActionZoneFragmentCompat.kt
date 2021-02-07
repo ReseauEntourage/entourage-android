@@ -25,7 +25,7 @@ import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.R
 import social.entourage.android.api.request.UserResponse
 import social.entourage.android.api.model.User
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import timber.log.Timber
 import java.util.*
 
@@ -33,7 +33,7 @@ import java.util.*
  * Deprecated
  */
 @Deprecated(message="Migrate to class UserEditActionZoneFragment", replaceWith = ReplaceWith("UserEditActionZoneFragment", "social.entourage.android.user.edit.UserEditActionZoneFragment"))
-class UserEditActionZoneFragmentCompat  : EntourageDialogFragment() {
+class UserEditActionZoneFragmentCompat  : BaseDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------

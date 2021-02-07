@@ -4,7 +4,7 @@ package social.entourage.android.tools
  * Entourage Errors
  * Created by mihaiionescu on 24/03/2017.
  */
-object EntourageError {
+object EntError {
     const val ERROR_NETWORK = -1
     const val ERROR_NONE = 0
     const val ERROR_BAD_REQUEST = 400

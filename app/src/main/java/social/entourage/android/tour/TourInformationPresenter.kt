@@ -4,8 +4,8 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import social.entourage.android.tools.EntourageError
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.EntError
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.TimestampedObject
@@ -134,7 +134,7 @@ class TourInformationPresenter @Inject constructor(
 
     override fun sendFeedItemMessage(feedItem: FeedItem, message: String) {
         fragment.showProgressBar()
-        EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ADD_MESSAGE)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_VIEW_ADD_MESSAGE)
         val chatMessageWrapper = ChatMessageWrapper(ChatMessage(message))
         when (feedItem.type) {
             TimestampedObject.TOUR_CARD -> {
@@ -207,7 +207,7 @@ class TourInformationPresenter @Inject constructor(
             }
         }
         // Unknown type
-        fragment.onUserJoinRequestUpdated(userId, status, EntourageError.ERROR_UNKNOWN)
+        fragment.onUserJoinRequestUpdated(userId, status, EntError.ERROR_UNKNOWN)
     }
 
     private fun acceptJoinRequest(tourUUID: String, userId: Int) {
@@ -219,14 +219,14 @@ class TourInformationPresenter @Inject constructor(
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, EntourageError.ERROR_NONE)
+                    fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, EntError.ERROR_NONE)
                 } else {
                     fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, response.code())
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, EntourageError.ERROR_NETWORK)
+                fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_ACCEPTED, EntError.ERROR_NETWORK)
             }
         })
     }
@@ -236,14 +236,14 @@ class TourInformationPresenter @Inject constructor(
         call.enqueue(object : Callback<EntourageUserResponse> {
             override fun onResponse(call: Call<EntourageUserResponse>, response: Response<EntourageUserResponse>) {
                 if (response.isSuccessful) {
-                    fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, EntourageError.ERROR_NONE)
+                    fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, EntError.ERROR_NONE)
                 } else {
                     fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, response.code())
                 }
             }
 
             override fun onFailure(call: Call<EntourageUserResponse>, t: Throwable) {
-                fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, EntourageError.ERROR_NETWORK)
+                fragment.onUserJoinRequestUpdated(userId, FeedItem.JOIN_STATUS_REJECTED, EntError.ERROR_NETWORK)
             }
         })
     }

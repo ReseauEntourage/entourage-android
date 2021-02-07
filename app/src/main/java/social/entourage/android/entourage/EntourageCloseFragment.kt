@@ -12,7 +12,7 @@ import android.view.Window
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.DialogFragment
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events.OnFeedItemCloseRequestEvent
@@ -70,7 +70,7 @@ class EntourageCloseFragment : DialogFragment() {
     // BUTTON HANDLING
     // ----------------------------------
     fun onCloseClicked() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_CLOSE_POPUP_CANCEL)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_CLOSE_POPUP_CANCEL)
         dismiss()
     }
 
@@ -78,7 +78,7 @@ class EntourageCloseFragment : DialogFragment() {
         feedItem?.let {
             EntBus.post(OnFeedItemCloseRequestEvent(it, showUI = false, success = true))
             showEmail(R.string.entourage_close_email_title_success)
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_CLOSE_POPUP_SUCCESS)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_CLOSE_POPUP_SUCCESS)
             dismiss()
         }
     }
@@ -87,14 +87,14 @@ class EntourageCloseFragment : DialogFragment() {
         feedItem?.let {
             EntBus.post(OnFeedItemCloseRequestEvent(it, showUI = false, success = false))
             showEmail(R.string.entourage_close_email_title_failed)
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_CLOSE_POPUP_FAILURE)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_CLOSE_POPUP_FAILURE)
             dismiss()
         }
     }
 
     private fun onHelpClicked() {
         showEmail(R.string.entourage_close_email_title_help)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_CLOSE_POPUP_HELP)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_CLOSE_POPUP_HELP)
         dismiss()
     }
 

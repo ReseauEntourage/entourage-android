@@ -18,12 +18,12 @@ import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.entourage.FeedItemOptionsFragment
 import social.entourage.android.message.push.PushNotificationManager
-import social.entourage.android.service.EntourageService
-import social.entourage.android.service.EntourageService.LocalBinder
+import social.entourage.android.service.EntService
+import social.entourage.android.service.EntService.LocalBinder
 import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.entourage.join.EntourageJoinRequestFragment
 import social.entourage.android.tour.join.TourJoinRequestFragment
-import social.entourage.android.tools.view.EntourageSnackbar.make
+import social.entourage.android.tools.view.EntSnackbar.make
 import timber.log.Timber
 import java.util.*
 
@@ -206,14 +206,14 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
 
     override fun userStatusChanged(content: PushNotificationContent, status: String) {
         super.userStatusChanged(content, status)
-        if (entourageService == null) return
+        if (entService == null) return
         if (content.isTourRelated) {
             val timestampedObject = newsfeedAdapter?.findCard(TimestampedObject.TOUR_CARD, content.joinableId)
             if (timestampedObject is Tour) {
                 val user = EntourageUser()
                 user.userId = userId
                 user.status = status
-                entourageService?.notifyListenersUserStatusChanged(user, timestampedObject)
+                entService?.notifyListenersUserStatusChanged(user, timestampedObject)
             }
         }
     }
@@ -271,8 +271,8 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
                 Timber.e("No activity for service")
                 return
             }
-            entourageService = (service as LocalBinder).service
-            entourageService?.let {
+            entService = (service as LocalBinder).service
+            entService?.let {
                 it.registerServiceListener(this@NewsFeedFragment)
                 it.registerApiListener(this@NewsFeedFragment)
                 updateFragmentFromService()
@@ -285,9 +285,9 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
-            entourageService?.unregisterServiceListener(this@NewsFeedFragment)
-            entourageService?.unregisterApiListener(this@NewsFeedFragment)
-            entourageService = null
+            entService?.unregisterServiceListener(this@NewsFeedFragment)
+            entService?.unregisterApiListener(this@NewsFeedFragment)
+            entService = null
             isBound = false
         }
         // ----------------------------------
@@ -301,7 +301,7 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
                     return
                 }
                 try {
-                    val intent = Intent(it, EntourageService::class.java)
+                    val intent = Intent(it, EntService::class.java)
                     it.startService(intent)
                     it.bindService(intent, this, Context.BIND_AUTO_CREATE)
                 } catch (e: IllegalStateException) {
@@ -312,7 +312,7 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
 
         fun doUnbindService() {
             if (!isBound) return
-            entourageService?.unregisterServiceListener(this@NewsFeedFragment)
+            entService?.unregisterServiceListener(this@NewsFeedFragment)
             activity?.unbindService(this)
             isBound = false
         }

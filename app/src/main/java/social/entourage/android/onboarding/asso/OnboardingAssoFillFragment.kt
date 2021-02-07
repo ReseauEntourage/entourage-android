@@ -12,7 +12,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.core.content.res.ResourcesCompat
 import kotlinx.android.synthetic.main.fragment_onboarding_asso_fill.*
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
 import social.entourage.android.onboarding.OnboardingCallback
@@ -43,7 +43,7 @@ class OnboardingAssoFillFragment : Fragment() {
 
         setupViews()
 
-        EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING_PRO_SIGNUP)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_ONBOARDING_PRO_SIGNUP)
     }
 
     /********************************

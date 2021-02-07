@@ -16,7 +16,7 @@ import social.entourage.android.deeplinks.DeepLinksManager.handleCurrentDeepLink
  * Base DialogFragment with no title and full screen
  * Created by mihaiionescu on 17/06/16.
  */
-open class EntourageDialogFragment : DialogFragment() {
+open class BaseDialogFragment : DialogFragment() {
     var isStopped = true
         private set
 

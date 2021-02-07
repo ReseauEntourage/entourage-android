@@ -16,8 +16,8 @@ import social.entourage.android.R
 import social.entourage.android.api.tape.Events
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.CropCircleTransformation
-import social.entourage.android.tools.log.EntourageEvents
-import social.entourage.android.tools.view.EntourageSnackbar
+import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.view.EntSnackbar
 
 /**
  * Side menu fragment
@@ -42,7 +42,7 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
 
     override fun onResume() {
         super.onResume()
-        EntourageEvents.logEvent (EntourageEvents.VIEW_PROFILE_MENU)
+        AnalyticsEvents.logEvent (AnalyticsEvents.VIEW_PROFILE_MENU)
     }
 
     // ----------------------------------
@@ -72,11 +72,11 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
         //add listeners to side menu items
 
         ui_layout_show_events?.setOnClickListener {
-            EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_SHOWEVENTS)
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_SHOWEVENTS)
             showEvents()
         }
         ui_layout_show_actions?.setOnClickListener {
-            EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_SHOWACTIONS)
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_SHOWACTIONS)
             showActions()
         }
 
@@ -184,7 +184,7 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
     private fun handleLongPress(): Boolean {
         selectMenuProfile("appVersion")
         if(mainProfileCoordinatorLayout != null) {
-            EntourageSnackbar.make(
+            EntSnackbar.make(
                     mainProfileCoordinatorLayout,
                     R.string.debug_info_clipboard,
                     Snackbar.LENGTH_SHORT

@@ -7,7 +7,7 @@ import android.widget.TextView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.layout_entourage_information_user_join_card_view.view.*
 import social.entourage.android.EntourageApplication
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.TimestampedObject
@@ -34,7 +34,7 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
         itemView.tic_accept_button?.setOnClickListener(View.OnClickListener {
             if (userId == 0) return@OnClickListener
             feedItem?.let {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_ACCEPT)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_JOIN_REQUEST_ACCEPT)
                 EntBus.post(
                         OnUserJoinRequestUpdateEvent(
                                 userId,
@@ -46,7 +46,7 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
         itemView.tic_refuse_button?.setOnClickListener(View.OnClickListener {
             if (userId == 0) return@OnClickListener
             feedItem?.let {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_JOIN_REQUEST_REJECT)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_JOIN_REQUEST_REJECT)
                 EntBus.post(
                         OnUserJoinRequestUpdateEvent(
                                 userId,

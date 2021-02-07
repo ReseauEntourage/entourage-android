@@ -8,8 +8,8 @@ import social.entourage.android.api.model.InvitationList
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.LoaderCardItem
-import social.entourage.android.base.EntourageBaseAdapter
-import social.entourage.android.base.LoaderCardViewHolder
+import social.entourage.android.base.BaseAdapter
+import social.entourage.android.tools.LoaderCardViewHolder
 import social.entourage.android.base.ViewHolderFactory.ViewHolderType
 import social.entourage.android.entourage.EntourageViewHolder
 import social.entourage.android.entourage.my.invitations.InvitationListViewHolder
@@ -18,7 +18,7 @@ import social.entourage.android.tour.TourViewHolder
 /**
  * Created by mihaiionescu on 09/08/16.
  */
-class MyEntouragesAdapter : EntourageBaseAdapter() {
+class MyEntouragesAdapter : BaseAdapter() {
     private val invitationListObject: InvitationList
     private var loaderCallback: LoaderCallback? = null
 

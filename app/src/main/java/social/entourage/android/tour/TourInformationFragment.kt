@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.layout_public_entourage_header.*
 import kotlinx.android.synthetic.main.layout_public_entourage_information.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageComponent
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.TimestampedObject
@@ -32,10 +32,10 @@ import social.entourage.android.api.model.tour.TourInformation
 import social.entourage.android.api.tape.Events
 import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.entourage.information.*
-import social.entourage.android.location.EntourageLocation
+import social.entourage.android.location.EntLocation
 import social.entourage.android.newsfeed.BaseNewsfeedFragment
 import social.entourage.android.tools.Utils
-import social.entourage.android.tools.view.EntourageSnackbar
+import social.entourage.android.tools.view.EntSnackbar
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -103,10 +103,10 @@ class TourInformationFragment : FeedItemInformationFragment(){
             entourage_info_options?.visibility = View.GONE
 
             //show stop tour activity
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE)
             mListener?.showStopTourActivity(tour)
         } else if (tour.isClosed()) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE)
             serviceConnection.boundService?.freezeTour(tour)
         }
     }
@@ -114,11 +114,11 @@ class TourInformationFragment : FeedItemInformationFragment(){
     override fun onJoinButton() {
         if (serviceConnection.boundService != null) {
             showProgressBar()
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN)
             serviceConnection.boundService?.requestToJoinTour(tour)
             entourage_info_options?.visibility = View.GONE
         } else {
-            entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.tour_join_request_message_error, Snackbar.LENGTH_SHORT).show()}
+            entourage_information_coordinator_layout?.let {EntSnackbar.make(it,  R.string.tour_join_request_message_error, Snackbar.LENGTH_SHORT).show()}
         }
     }
 
@@ -205,7 +205,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
         if (tourPoints.size > 0) {
             //setup the camera position to starting point
             val startPoint = tourPoints[0]
-            val cameraPosition = CameraPosition(LatLng(startPoint.latitude, startPoint.longitude), EntourageLocation.INITIAL_CAMERA_FACTOR_ENTOURAGE_VIEW, 0F, 0F)
+            val cameraPosition = CameraPosition(LatLng(startPoint.latitude, startPoint.longitude), EntLocation.INITIAL_CAMERA_FACTOR_ENTOURAGE_VIEW, 0F, 0F)
             googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
             val markerOptions = MarkerOptions().position(LatLng(startPoint.latitude, startPoint.longitude))
             googleMap.addMarker(markerOptions)

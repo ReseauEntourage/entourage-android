@@ -21,16 +21,16 @@ import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.api.tape.Events.*
-import social.entourage.android.base.EntourageDialogFragment
-import social.entourage.android.base.EntouragePagination
-import social.entourage.android.base.EntourageViewHolderListener
+import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.base.BasePagination
+import social.entourage.android.base.BaseViewHolderListener
 import social.entourage.android.entourage.my.MyEntouragesAdapter.LoaderCallback
 import social.entourage.android.entourage.my.filter.MyEntouragesFilter
-import social.entourage.android.service.EntourageService
-import social.entourage.android.service.EntourageService.LocalBinder
+import social.entourage.android.service.EntService
+import social.entourage.android.service.EntService.LocalBinder
 import social.entourage.android.tools.EntBus
-import social.entourage.android.tools.log.EntourageEvents
-import social.entourage.android.tools.view.EntourageSnackbar.make
+import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.view.EntSnackbar.make
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -38,7 +38,7 @@ import javax.inject.Inject
 /**
  * My Entourages Fragment
  */
-class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderListener, LoaderCallback, ApiConnectionListener {
+class MyEntouragesFragment  : BaseDialogFragment(), BaseViewHolderListener, LoaderCallback, ApiConnectionListener {
     // ----------------------------------
     // Attributes
     // ----------------------------------
@@ -48,7 +48,7 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
 
     private val entouragesAdapter: MyEntouragesAdapter = MyEntouragesAdapter()
 
-    private val entouragesPagination = EntouragePagination(Constants.ITEMS_PER_PAGE)
+    private val entouragesPagination = BasePagination(Constants.ITEMS_PER_PAGE)
 
     // Refresh invitations attributes
     internal var isRefreshingInvitations = false
@@ -107,7 +107,7 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
                     FILTER_TAB_INDEX_ALL -> filter.isShowUnreadOnly = false
                     FILTER_TAB_INDEX_UNREAD -> {
                         filter.isShowUnreadOnly = true
-                        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_UNREAD)
+                        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_MYENTOURAGES_FILTER_UNREAD)
                     }
                 }
                 refreshMyFeeds()
@@ -277,7 +277,7 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
     // EntourageViewHolderListener
     // ----------------------------------
     override fun onViewHolderDetailsClicked(detailType: Int) {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_MESSAGE_OPEN)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_MYENTOURAGES_MESSAGE_OPEN)
     }
 
     override fun loadMoreItems() {
@@ -305,12 +305,12 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
     }
 
     private inner class ServiceConnection : android.content.ServiceConnection {
-        private var entourageService: EntourageService? = null
+        private var entService: EntService? = null
         private var isBound = false
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             if (activity != null) {
-                entourageService = (service as LocalBinder).service
-                entourageService?.let {
+                entService = (service as LocalBinder).service
+                entService?.let {
                     it.registerApiListener(this@MyEntouragesFragment)
                     isBound = true
                 }
@@ -318,8 +318,8 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
-            entourageService?.unregisterApiListener(this@MyEntouragesFragment)
-            entourageService = null
+            entService?.unregisterApiListener(this@MyEntouragesFragment)
+            entService = null
             isBound = false
         }
 
@@ -329,7 +329,7 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
         fun doBindService() {
             if (activity != null) {
                 try {
-                    val intent = Intent(activity, EntourageService::class.java)
+                    val intent = Intent(activity, EntService::class.java)
                     requireActivity().startService(intent)
                     requireActivity().bindService(intent, this, Context.BIND_AUTO_CREATE)
                 } catch (e: IllegalStateException) {
@@ -340,7 +340,7 @@ class MyEntouragesFragment  : EntourageDialogFragment(), EntourageViewHolderList
 
         fun doUnbindService() {
             if (isBound) {
-                entourageService?.unregisterApiListener(this@MyEntouragesFragment)
+                entService?.unregisterApiListener(this@MyEntouragesFragment)
                 activity?.unbindService(this)
                 isBound = false
             }

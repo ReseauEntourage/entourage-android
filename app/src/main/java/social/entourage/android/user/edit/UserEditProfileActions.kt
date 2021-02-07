@@ -10,10 +10,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import kotlinx.android.synthetic.main.fragment_user_edit_profile_actions.*
 import social.entourage.android.EntourageApplication
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.onboarding.UserTypeSelection
 import social.entourage.android.onboarding.asso.AssoActivities
 import social.entourage.android.onboarding.sdf_neighbour.SdfNeighbourActivities
@@ -24,7 +24,7 @@ import timber.log.Timber
 
 private const val ARG_PARAM1 = "param1"
 
-class UserEditProfileActions : EntourageDialogFragment() {
+class UserEditProfileActions : BaseDialogFragment() {
 
     private var activitiesSelection: SdfNeighbourActivities? = null
     private var activitiesAssoSelection: AssoActivities? = null
@@ -59,17 +59,17 @@ class UserEditProfileActions : EntourageDialogFragment() {
             UserTypeSelection.NEIGHBOUR -> {
                 isAsso = false
                 isSdf = false
-                EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_PROFILE_NEIGHBOR_MOSAIC)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_PROFILE_NEIGHBOR_MOSAIC)
             }
             UserTypeSelection.ALONE -> {
                 isAsso = false
                 isSdf = true
-                EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_PROFILE_INNEED_MOSAIC)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_PROFILE_INNEED_MOSAIC)
             }
             UserTypeSelection.ASSOS -> {
                 isAsso = true
                 isSdf = false
-                EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_PROFILE_PRO_MOSAIC)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_PROFILE_PRO_MOSAIC)
             }
             else -> {}
         }
@@ -298,7 +298,7 @@ class UserEditProfileActions : EntourageDialogFragment() {
         alertDialog.show(R.string.onboard_waiting_dialog)
         val _currentGoal = userTypeSelected.getGoalString()
 
-        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_CHOOSE_PROFILE_SIGNUP)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_CHOOSE_PROFILE_SIGNUP)
 
         OnboardingAPI.getInstance(EntourageApplication.get()).updateUserGoal(_currentGoal) { isOK, userResponse ->
             if (isOK && userResponse != null) {
@@ -311,7 +311,7 @@ class UserEditProfileActions : EntourageDialogFragment() {
 
     fun updateActivities() {
         if (isAsso) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_PRO_MOSAIC)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_PRO_MOSAIC)
             OnboardingAPI.getInstance(EntourageApplication.get()).updateUserInterests(activitiesAssoSelection!!.getArrayForWs()) { isOK, userResponse ->
                 if (isOK && userResponse != null) {
                     val authenticationController = EntourageApplication.get().entourageComponent.authenticationController
@@ -324,8 +324,8 @@ class UserEditProfileActions : EntourageDialogFragment() {
             }
         }
         else {
-            if (isSdf) { EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_INNEED_MOSAIC) }
-            else { EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_NEIGHBOR_MOSAIC) }
+            if (isSdf) { AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_INNEED_MOSAIC) }
+            else { AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_NEIGHBOR_MOSAIC) }
 
             OnboardingAPI.getInstance(EntourageApplication.get()).updateUserInterests(activitiesSelection!!.getArrayForWs()) { isOK, userResponse ->
                 if (isOK && userResponse != null) {

@@ -19,9 +19,9 @@ import androidx.core.content.PermissionChecker
 import com.squareup.picasso.Picasso
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_onboarding_photo.*
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.tools.CropCircleTransformation
 import timber.log.Timber
 import java.io.File
@@ -31,7 +31,7 @@ import java.util.*
 
 private const val ARG_FIRSTNAME = "firstname"
 
-open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate {
+open class OnboardingPhotoFragment : BaseDialogFragment(),PhotoEditDelegate {
 
     private val KEY_PHOTO_PATH = "social.entourage.android.photo_path"
 
@@ -69,10 +69,10 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
         setupViews()
 
         if (isFromProfile) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_PROFILE_CHOOSE_PHOTO)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_PROFILE_CHOOSE_PHOTO)
         }
         else {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING_CHOOSE_PHOTO)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_ONBOARDING_CHOOSE_PHOTO)
         }
     }
 
@@ -142,10 +142,10 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
 
     open fun showChoosePhotoActivity() {
         if (isFromProfile) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_UPLOAD_PHOTO)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_UPLOAD_PHOTO)
         }
         else {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_UPLOAD_PHOTO)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_UPLOAD_PHOTO)
         }
         val intent = Intent()
         intent.type = "image/*"
@@ -155,10 +155,10 @@ open class OnboardingPhotoFragment : EntourageDialogFragment(),PhotoEditDelegate
 
     open fun showTakePhotoActivity() {
         if (isFromProfile) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_TAKE_PHOTO)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_TAKE_PHOTO)
         }
         else {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_TAKE_PHOTO)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_TAKE_PHOTO)
         }
 
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)

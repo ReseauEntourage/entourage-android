@@ -23,10 +23,10 @@ import androidx.annotation.RequiresApi
 import androidx.core.view.GestureDetectorCompat
 import kotlinx.android.synthetic.main.fragment_webview.*
 import social.entourage.android.R
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import java.util.*
 
-class WebViewFragment : EntourageDialogFragment() {
+class WebViewFragment : BaseDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------

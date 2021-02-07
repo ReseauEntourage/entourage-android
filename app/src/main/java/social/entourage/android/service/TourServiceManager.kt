@@ -20,7 +20,7 @@ import social.entourage.android.api.tape.EncounterTaskResult
 import social.entourage.android.api.tape.Events.OnBetterLocationEvent
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted
 import social.entourage.android.authentication.AuthenticationController
-import social.entourage.android.location.EntourageLocation.currentLocation
+import social.entourage.android.location.EntLocation.currentLocation
 import social.entourage.android.location.LocationProvider
 import social.entourage.android.location.LocationProvider.UserType
 import social.entourage.android.newsfeed.NewsfeedPagination
@@ -37,18 +37,18 @@ import kotlin.math.sqrt
  * Manager is like a presenter but for a service
  * controlling the EntourageService
  *
- * @see EntourageService
+ * @see EntService
  */
 class TourServiceManager(
-        entourageService: EntourageService,
+        entService: EntService,
         authenticationController: AuthenticationController,
         private val tourRequest: TourRequest,
         private val encounterRequest: EncounterRequest,
         newsfeedRequest: NewsfeedRequest,
         entourageRequest: EntourageRequest,
         locationProvider: LocationProvider)
-    : EntourageServiceManager(
-        entourageService,
+    : EntServiceManager(
+        entService,
         authenticationController,
         newsfeedRequest,
         entourageRequest,
@@ -116,7 +116,7 @@ class TourServiceManager(
                                 }
                             } else {
                                 if (isTourClosing) {
-                                    entourageService.notifyListenersFeedItemClosed(false, it)
+                                    entService.notifyListenersFeedItemClosed(false, it)
                                 }
                             }
                             isTourClosing = false
@@ -124,7 +124,7 @@ class TourServiceManager(
 
                         override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
                             if (isTourClosing) {
-                                entourageService.notifyListenersFeedItemClosed(false, it)
+                                entService.notifyListenersFeedItemClosed(false, it)
                                 isTourClosing = false
                             }
                             Timber.e(t)
@@ -156,15 +156,15 @@ class TourServiceManager(
             tourRequest.closeTour(uuid, TourWrapper(tour)).enqueue(object : Callback<TourResponse> {
                 override fun onResponse(call: Call<TourResponse>, response: Response<TourResponse>) {
                     if (response.isSuccessful) {
-                        response.body()?.tour?.let { entourageService.notifyListenersFeedItemClosed(true, it) }
+                        response.body()?.tour?.let { entService.notifyListenersFeedItemClosed(true, it) }
                     } else {
-                        entourageService.notifyListenersFeedItemClosed(false, tour)
+                        entService.notifyListenersFeedItemClosed(false, tour)
                     }
                 }
 
                 override fun onFailure(call: Call<TourResponse>, t: Throwable) {
                     Timber.e(t)
-                    entourageService.notifyListenersFeedItemClosed(false, tour)
+                    entService.notifyListenersFeedItemClosed(false, tour)
                 }
             })
         }
@@ -174,7 +174,7 @@ class TourServiceManager(
         tourRequest.retrieveToursByUserId(userId, page, per).enqueue(object : Callback<TourListResponse> {
             override fun onResponse(call: Call<TourListResponse>, response: Response<TourListResponse>) {
                 if (response.isSuccessful) {
-                    response.body()?.tours?.let { tours -> entourageService.notifyListenersUserToursFound(tours) }
+                    response.body()?.tours?.let { tours -> entService.notifyListenersUserToursFound(tours) }
                 }
             }
 
@@ -226,7 +226,7 @@ class TourServiceManager(
                 tourRequest.requestToJoinTour(uuid).enqueue(object : Callback<EntourageUserResponse?> {
                     override fun onResponse(call: Call<EntourageUserResponse?>, response: Response<EntourageUserResponse?>) {
                         if (response.isSuccessful) {
-                            response.body()?.user?.let { user -> entourageService.notifyListenersUserStatusChanged(user, tour) }
+                            response.body()?.user?.let { user -> entService.notifyListenersUserStatusChanged(user, tour) }
                         }
                     }
 
@@ -243,7 +243,7 @@ class TourServiceManager(
             tourRequest.removeUserFromTour(tour.uuid!!, userId).enqueue(object : Callback<EntourageUserResponse> {
                 override fun onResponse(call: Call<EntourageUserResponse>, response: Response<EntourageUserResponse>) {
                     if (response.isSuccessful) {
-                        response.body()?.user?.let { entourageService.notifyListenersUserStatusChanged(it, tour)}
+                        response.body()?.user?.let { entService.notifyListenersUserStatusChanged(it, tour)}
                     }
                 }
 
@@ -268,19 +268,19 @@ class TourServiceManager(
                         response.body()?.tour?.let { createdTour ->
                             tourUUID = createdTour.uuid
                             tour = createdTour
-                            entourageService.notifyListenersTourCreated(true, createdTour.uuid ?: "")
+                            entService.notifyListenersTourCreated(true, createdTour.uuid ?: "")
                         }
                         locationProvider.requestLastKnownLocation()
                     } else {
                         tour = null
-                        entourageService.notifyListenersTourCreated(false, "")
+                        entService.notifyListenersTourCreated(false, "")
                     }
                 }
 
                 override fun onFailure(call: Call<TourResponse>, t: Throwable) {
                     Timber.e(t)
                     tour = null
-                    entourageService.notifyListenersTourCreated(false, "")
+                    entService.notifyListenersTourCreated(false, "")
                 }
             })
         }
@@ -298,17 +298,17 @@ class TourServiceManager(
                                 pointsToSend.clear()
                                 pointsToDraw.clear()
                                 cancelFinishTimer()
-                                entourageService.notifyListenersFeedItemClosed(true, response.body()!!.tour)
+                                entService.notifyListenersFeedItemClosed(true, response.body()!!.tour)
                                 locationProvider.setUserType(UserType.PUBLIC)
                                 authenticationController.saveTour(null)
                             } else {
-                                entourageService.notifyListenersFeedItemClosed(false, it)
+                                entService.notifyListenersFeedItemClosed(false, it)
                             }
                         }
 
                         override fun onFailure(call: Call<TourResponse>, t: Throwable) {
                             Timber.e(t)
-                            entourageService.notifyListenersFeedItemClosed(false, it)
+                            entService.notifyListenersFeedItemClosed(false, it)
                         }
                     })
         }
@@ -322,19 +322,19 @@ class TourServiceManager(
             override fun onResponse(call: Call<TourResponse?>, response: Response<TourResponse?>) {
                 if (response.isSuccessful) {
                     response.body()?.tour?.let {
-                        entourageService.notifyListenersFeedItemClosed(true, it)
+                        entService.notifyListenersFeedItemClosed(true, it)
                         if (tour.uuid.equals(tourUUID, ignoreCase = true)) {
                             authenticationController.saveTour(null)
                         }
                         return
                     }
                 }
-                entourageService.notifyListenersFeedItemClosed(false, tour)
+                entService.notifyListenersFeedItemClosed(false, tour)
             }
 
             override fun onFailure(call: Call<TourResponse?>, t: Throwable) {
                 Timber.e(t)
-                entourageService.notifyListenersFeedItemClosed(false, tour)
+                entService.notifyListenersFeedItemClosed(false, tour)
             }
         })
     }
@@ -360,7 +360,7 @@ class TourServiceManager(
             pointsNeededForNextRequest = POINT_PER_REQUEST
             updateTourCoordinates()
         }
-        entourageService.notifyListenersTourUpdated(LatLng(location.latitude, location.longitude))
+        entService.notifyListenersTourUpdated(LatLng(location.latitude, location.longitude))
         authenticationController.saveTour(tour)
     }
 
@@ -389,7 +389,7 @@ class TourServiceManager(
     override fun updateLocation(location: Location) {
         super.updateLocation(location)
 
-        if (tour != null && !entourageService.isPaused) {
+        if (tour != null && !entService.isPaused) {
             val point = LocationPoint(location.latitude, location.longitude, location.accuracy)
             onLocationChanged(location, point)
         }
@@ -417,9 +417,9 @@ class TourServiceManager(
     }
 
     private fun timeOut() {
-        val vibrator = entourageService.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        val vibrator = entService.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         vibrator.vibrate(VIBRATION_DURATION)
-        entourageService.sendBroadcast(Intent(EntourageService.KEY_NOTIFICATION_PAUSE_TOUR))
+        entService.sendBroadcast(Intent(EntService.KEY_NOTIFICATION_PAUSE_TOUR))
     }
 
     private fun cancelFinishTimer() {
@@ -447,7 +447,7 @@ class TourServiceManager(
                 if (savedTour.author?.userID == me.id) {
                     tour = savedTour
                     tourUUID = savedTour.uuid
-                    entourageService.notifyListenersTourCreated(true, getTourUUID())
+                    entService.notifyListenersTourCreated(true, getTourUUID())
                     locationProvider.setUserType(UserType.PRO)
                 } else {
                     // it's not the user's tour, so remove it from preferences

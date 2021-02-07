@@ -9,11 +9,11 @@ import kotlinx.android.synthetic.main.layout_tour_end_confirmation.*
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.tour.Tour
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.tools.Utils
 import java.util.*
 
-class TourEndConfirmationFragment  : EntourageDialogFragment() {
+class TourEndConfirmationFragment  : BaseDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------

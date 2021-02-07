@@ -11,14 +11,14 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_get_involved.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.BuildConfig
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 
 /**
  * Get Involved Menu Fragment
  */
-class GetInvolvedFragment  : EntourageDialogFragment() {
+class GetInvolvedFragment  : BaseDialogFragment() {
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -52,7 +52,7 @@ class GetInvolvedFragment  : EntourageDialogFragment() {
 
     fun onRateUsClicked() {
         activity?.let {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ABOUT_RATING)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ABOUT_RATING)
             val goToMarket = Intent(Intent.ACTION_VIEW,
                     Uri.parse(getString(R.string.market_url, it.packageName)))
             // To count with Play market backstack, After pressing back button,
@@ -70,7 +70,7 @@ class GetInvolvedFragment  : EntourageDialogFragment() {
     }
 
     fun onFacebookClicked() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_ABOUT_FACEBOOK)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ABOUT_FACEBOOK)
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.facebook_url)))
         try {
             startActivity(browserIntent)

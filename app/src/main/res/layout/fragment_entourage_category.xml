@@ -6,7 +6,7 @@
     android:background="@color/pale_grey"
     tools:context=".entourage.category.EntourageCategoryFragment">
 
-    <social.entourage.android.tools.view.EntourageTitleView
+    <social.entourage.android.tools.view.CustomTitleView
         android:id="@+id/entourage_category_header_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

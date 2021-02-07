@@ -10,13 +10,13 @@ import kotlinx.android.synthetic.main.fragment_inputs_names.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.tools.hideKeyboard
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CustomProgressDialog
 
 
-class InputNamesFragment : EntourageDialogFragment() {
+class InputNamesFragment : BaseDialogFragment() {
     private val minChars = 2
 
     private var firstname = ""
@@ -76,7 +76,7 @@ class InputNamesFragment : EntourageDialogFragment() {
 
         dialog.show(R.string.onboard_waiting_dialog)
         isAllreadySend = true
-        EntourageEvents.logEvent(EntourageEvents.VIEW_ADD_USERNAME_SUBMIT)
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_ADD_USERNAME_SUBMIT)
 
         OnboardingAPI.getInstance(EntourageApplication.get()).updateUserNames(firstname,lastname) { isOK, userResponse ->
             isAllreadySend = false

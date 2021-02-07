@@ -47,7 +47,7 @@ import javax.inject.Inject
  * Background service handling location updates
  * and tours request
  */
-class EntourageService : Service() {
+class EntService : Service() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -59,9 +59,9 @@ class EntourageService : Service() {
     @Inject lateinit var newsfeedRequest: NewsfeedRequest
     @Inject lateinit var entourageRequest: EntourageRequest
 
-    private lateinit var entourageServiceManager: EntourageServiceManager
+    private lateinit var entServiceManager: EntServiceManager
     val tourServiceManager:  TourServiceManager?
-        get() = (entourageServiceManager as? TourServiceManager)
+        get() = (entServiceManager as? TourServiceManager)
 
     private val apiListeners: MutableList<ApiConnectionListener> = ArrayList()
     private val locationUpdateListeners: MutableList<LocationUpdateListener> = ArrayList()
@@ -111,8 +111,8 @@ class EntourageService : Service() {
     // LIFECYCLE
     // ----------------------------------
     inner class LocalBinder : Binder() {
-        val service: EntourageService
-            get() = this@EntourageService
+        val service: EntService
+            get() = this@EntService
     }
 
     override fun onCreate() {
@@ -120,7 +120,7 @@ class EntourageService : Service() {
         EntourageApplication[this].entourageComponent.inject(this)
         //notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         chronometer = Chronometer(this)
-        entourageServiceManager = EntourageServiceManager.newInstance(
+        entServiceManager = EntServiceManager.newInstance(
                 this,
                 tourRequest,
                 authenticationController,
@@ -239,8 +239,8 @@ class EntourageService : Service() {
     }
 
     private fun stopService() {
-        entourageServiceManager.stopLocationService()
-        entourageServiceManager.unregisterFromBus()
+        entServiceManager.stopLocationService()
+        entServiceManager.unregisterFromBus()
         stopSelf()
     }
 
@@ -249,12 +249,12 @@ class EntourageService : Service() {
             return false
         }
         pagination.isLoading = true
-        entourageServiceManager.retrieveNewsFeed(pagination, selectedTab)
+        entServiceManager.retrieveNewsFeed(pagination, selectedTab)
         return true
     }
 
     fun cancelNewsFeedUpdate() {
-        entourageServiceManager.cancelNewsFeedRetrieval()
+        entServiceManager.cancelNewsFeedRetrieval()
     }
 
     fun updateUserHistory(userId: Int, page: Int, per: Int) {
@@ -301,13 +301,13 @@ class EntourageService : Service() {
         if (feedItem.type == TimestampedObject.TOUR_CARD) {
             tourServiceManager?.finishTour(feedItem as Tour)
         } else if (feedItem.type == TimestampedObject.ENTOURAGE_CARD) {
-            entourageServiceManager.closeEntourage(feedItem as BaseEntourage, success)
+            entServiceManager.closeEntourage(feedItem as BaseEntourage, success)
         }
     }
 
     fun reopenFeedItem(feedItem: FeedItem) {
         if (feedItem.type == TimestampedObject.ENTOURAGE_CARD) {
-            entourageServiceManager.reopenEntourage(feedItem as BaseEntourage)
+            entServiceManager.reopenEntourage(feedItem as BaseEntourage)
         }
     }
 
@@ -323,12 +323,12 @@ class EntourageService : Service() {
         if (feedItem.type == TimestampedObject.TOUR_CARD) {
             tourServiceManager?.removeUserFromTour(feedItem as Tour, userId)
         } else if (feedItem.type == TimestampedObject.ENTOURAGE_CARD) {
-            entourageServiceManager.removeUserFromEntourage(feedItem as BaseEntourage, userId)
+            entServiceManager.removeUserFromEntourage(feedItem as BaseEntourage, userId)
         }
     }
 
     fun requestToJoinEntourage(entourage: BaseEntourage) {
-        entourageServiceManager.requestToJoinEntourage(entourage)
+        entServiceManager.requestToJoinEntourage(entourage)
     }
 
     fun registerApiListener(listener: ApiConnectionListener) {

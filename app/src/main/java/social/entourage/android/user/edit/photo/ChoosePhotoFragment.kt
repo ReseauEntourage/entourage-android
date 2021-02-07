@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.fragment_onboarding_photo.*
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.onboarding.OnboardingPhotoFragment
 
@@ -52,7 +52,7 @@ class ChoosePhotoFragment : OnboardingPhotoFragment() {
 
     override fun onPhotoEdited(photoURI: Uri?, photoSource: Int) {
         super.onPhotoEdited(photoURI, photoSource)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_PHOTO_SUBMIT)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_PHOTO_SUBMIT)
         mListener?.onPhotoChosen(photoURI,photoSource)
         dismiss()
     }

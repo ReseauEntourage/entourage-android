@@ -28,11 +28,11 @@ import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.layout_map_longclick.*
 import social.entourage.android.base.BackPressable
 import social.entourage.android.EntourageApplication
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted
 import social.entourage.android.base.HeaderBaseAdapter
-import social.entourage.android.location.EntourageLocation
+import social.entourage.android.location.EntLocation
 import social.entourage.android.location.LocationUpdateListener
 import social.entourage.android.location.LocationUtils.isLocationEnabled
 import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
@@ -56,7 +56,7 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
     protected open fun initializeMap() {}
 
     fun centerMap(latLng: LatLng?) {
-        val cameraPosition = CameraPosition(latLng, EntourageLocation.lastCameraPosition.zoom, 0F, 0F)
+        val cameraPosition = CameraPosition(latLng, EntLocation.lastCameraPosition.zoom, 0F, 0F)
         centerMap(cameraPosition)
     }
 
@@ -86,7 +86,7 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
             centerMap(LatLng(it.latitude, it.longitude))
             isFollowing = false
         } ?: run {
-            centerMap(EntourageLocation.lastCameraPosition)
+            centerMap(EntLocation.lastCameraPosition)
         }
     }
 
@@ -124,7 +124,7 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
                 return@setOnMapLongClickListener
             }
             if (activity != null) {
-                EntourageEvents.logEvent(eventLongClick)
+                AnalyticsEvents.logEvent(eventLongClick)
                 showLongClickOnMapOptions(latLng)
             }
         }
@@ -142,7 +142,7 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        previousCameraLocation = EntourageLocation.cameraPositionToLocation(null, EntourageLocation.lastCameraPosition)
+        previousCameraLocation = EntLocation.cameraPositionToLocation(null, EntLocation.lastCameraPosition)
         fragment_map_longclick?.setOnClickListener { hideLongClickView() }
     }
 
@@ -190,25 +190,25 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
             val eventName = when (source) {
                 GEOLOCATION_POPUP_RECENTER -> {
                     messagedId = R.string.map_error_geolocation_disabled_recenter
-                    EntourageEvents.EVENT_FEED_ACTIVATE_GEOLOC_RECENTER
+                    AnalyticsEvents.EVENT_FEED_ACTIVATE_GEOLOC_RECENTER
                 }
                 GEOLOCATION_POPUP_GUIDE_RECENTER -> {
                     messagedId = R.string.map_error_geolocation_disabled_recenter
-                    EntourageEvents.EVENT_GUIDE_ACTIVATE_GEOLOC_RECENTER
+                    AnalyticsEvents.EVENT_GUIDE_ACTIVATE_GEOLOC_RECENTER
                 }
                 GEOLOCATION_POPUP_TOUR -> {
                     messagedId = R.string.map_error_geolocation_disabled_create_tour
-                    EntourageEvents.EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR
+                    AnalyticsEvents.EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR
                 }
-                GEOLOCATION_POPUP_GUIDE_BANNER -> EntourageEvents.EVENT_GUIDE_ACTIVATE_GEOLOC_FROM_BANNER
-                GEOLOCATION_POPUP_BANNER -> EntourageEvents.EVENT_FEED_ACTIVATE_GEOLOC_FROM_BANNER
-                else -> EntourageEvents.EVENT_FEED_ACTIVATE_GEOLOC_FROM_BANNER
+                GEOLOCATION_POPUP_GUIDE_BANNER -> AnalyticsEvents.EVENT_GUIDE_ACTIVATE_GEOLOC_FROM_BANNER
+                GEOLOCATION_POPUP_BANNER -> AnalyticsEvents.EVENT_FEED_ACTIVATE_GEOLOC_FROM_BANNER
+                else -> AnalyticsEvents.EVENT_FEED_ACTIVATE_GEOLOC_FROM_BANNER
             }
 
             AlertDialog.Builder(it)
                .setMessage(messagedId)
                .setPositiveButton(R.string.activate) { _: DialogInterface?, _: Int ->
-                   EntourageEvents.logEvent(eventName)
+                   AnalyticsEvents.logEvent(eventName)
                    try {
                        if (isLocationEnabled() || shouldShowRequestPermissionRationale(permission.ACCESS_FINE_LOCATION)) {
                            requestPermissions(arrayOf(permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_LOCATION)
@@ -249,14 +249,14 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
     }
 
     protected fun onFollowGeolocation() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_RECENTERCLICK)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_RECENTERCLICK)
         // Check if geolocation is enabled
         if (!isLocationEnabled() || !isLocationPermissionGranted()) {
             showAllowGeolocationDialog(GEOLOCATION_POPUP_RECENTER)
             return
         }
         isFollowing = true
-        EntourageLocation.currentLocation?.let {
+        EntLocation.currentLocation?.let {
             centerMap(LatLng(it.latitude, it.longitude))
         }
     }

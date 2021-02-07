@@ -27,12 +27,12 @@ import social.entourage.android.api.model.BaseOrganization
 import social.entourage.android.api.model.User
 import social.entourage.android.api.tape.Events.OnPartnerViewRequestedEvent
 import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
-import social.entourage.android.base.EntourageActivity
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseActivity
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.user.partner.PartnerFragment
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.CropCircleTransformation
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.UserFragment
 import social.entourage.android.user.UserOrganizationsAdapter
 import social.entourage.android.user.edit.UserEditActionZoneFragment.FragmentListener
@@ -44,7 +44,7 @@ import java.util.*
 import javax.inject.Inject
 
 private const val ARG_IS_SHOW_ACTION = "isShowAction"
-open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
+open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -72,7 +72,7 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_09_2)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SCREEN_09_2)
         return inflater.inflate(R.layout.fragment_user_edit, container, false)
     }
 
@@ -247,7 +247,7 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
             val builder = AlertDialog.Builder(it)
             builder.setMessage(R.string.user_delete_account_dialog)
                     .setPositiveButton(R.string.yes) { _, _ ->
-                        (it as EntourageActivity?)?.showProgressDialog(0)
+                        (it as BaseActivity?)?.showProgressDialog(0)
                         presenter?.deleteAccount()
                     }
                     .setNegativeButton(R.string.no, null)
@@ -256,7 +256,7 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
     }
 
     private fun onSaveButtonClicked() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_USER_SAVE)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_USER_SAVE)
         editedUser?.let { user->
             // If we have an user fragment in the stack, let it handle the update
             (parentFragmentManager.findFragmentByTag(UserFragment.TAG) as UserFragment?)?.saveAccount(user)
@@ -275,14 +275,14 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
     }
 
     fun onAddAssociationClicked() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_USER_TOBADGE)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_USER_TOBADGE)
         UserEditPartnerFragment().show(parentFragmentManager, UserEditPartnerFragment.TAG)
     }
 
     private fun onShowNotificationsSettingsClicked() {
         activity?.let {
             try {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_USER_TONOTIFICATIONS)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_USER_TONOTIFICATIONS)
                 val intent = Intent()
                 when {
                     Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
@@ -437,9 +437,9 @@ open class UserEditFragment  : EntourageDialogFragment(), FragmentListener {
 
     fun onDeletedAccount(success: Boolean) {
         activity?.let {
-            val hasActivity = !it.isFinishing && it is EntourageActivity
+            val hasActivity = !it.isFinishing && it is BaseActivity
             if (hasActivity) {
-                (it as EntourageActivity?)?.dismissProgressDialog()
+                (it as BaseActivity?)?.dismissProgressDialog()
             }
             if (success) {
                 //logout and go back to login screen

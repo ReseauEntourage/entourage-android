@@ -9,7 +9,7 @@ import social.entourage.android.location.LocationUtils.isLocationEnabled
 import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
 import social.entourage.android.map.MapViewHolder
 
-open class HeaderBaseAdapter : EntourageBaseAdapter() {
+open class HeaderBaseAdapter : BaseAdapter() {
     protected var mapViewHolder: MapViewHolder? = null
     private var onMapReadyCallback: OnMapReadyCallback? = null
     private var onFollowButtonClickListener: View.OnClickListener? = null

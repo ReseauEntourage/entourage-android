@@ -10,11 +10,10 @@ import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.api.model.LocationPoint
-import social.entourage.android.api.tape.EntouragePoiRequest.OnPoiViewRequestedEvent
+import social.entourage.android.api.tape.PoiRequestEvents.OnPoiViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
-import social.entourage.android.guide.poi.PoiRenderer.CategoryType
 import social.entourage.android.tools.EntBus
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
 /**
@@ -33,7 +32,7 @@ class PoiViewHolder(itemView: View) : BaseCardViewHolder(itemView) {
         itemView.poi_card_call_button?.setOnClickListener {
             poi?.phone?.let {phone ->
                 itemView.context?.let { context ->
-                    EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_CALLPOI)
+                    AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_CALLPOI)
                     val intent = Intent(Intent.ACTION_DIAL).apply {
                         data = Uri.parse("tel:$phone")
                     }

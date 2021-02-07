@@ -19,10 +19,10 @@ import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.OnBetterLocationEvent
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted
 import social.entourage.android.authentication.AuthenticationController
-import social.entourage.android.location.EntourageLocation
-import social.entourage.android.location.EntourageLocation.currentCameraPosition
-import social.entourage.android.location.EntourageLocation.currentLocation
-import social.entourage.android.location.EntourageLocation.latLng
+import social.entourage.android.location.EntLocation
+import social.entourage.android.location.EntLocation.currentCameraPosition
+import social.entourage.android.location.EntLocation.currentLocation
+import social.entourage.android.location.EntLocation.latLng
 import social.entourage.android.location.LocationListener
 import social.entourage.android.location.LocationProvider
 import social.entourage.android.location.LocationProvider.UserType
@@ -37,10 +37,10 @@ import java.util.*
  * Manager is like a presenter but for a service
  * controlling the EntourageService
  *
- * @see EntourageService
+ * @see EntService
  */
-open class EntourageServiceManager(
-        val entourageService: EntourageService,
+open class EntServiceManager(
+        val entService: EntService,
         val authenticationController: AuthenticationController,
         val newsfeedRequest: NewsfeedRequest,
         private val entourageRequest: EntourageRequest,
@@ -52,7 +52,7 @@ open class EntourageServiceManager(
     // ----------------------------------
     private var currentNewsFeedCall: Call<NewsfeedItemResponse>? = null
     private var isBetterLocationUpdated = false
-    private val connectivityManager: ConnectivityManager = entourageService.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    private val connectivityManager: ConnectivityManager = entService.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     // ----------------------------------
     // GETTERS AND SETTERS
@@ -91,11 +91,11 @@ open class EntourageServiceManager(
 
     fun retrieveNewsFeed(pagination: NewsfeedPagination, selectedTab: NewsfeedTabItem) {
         if (!isNetworkConnected) {
-            entourageService.notifyListenersNetworkException()
+            entService.notifyListenersNetworkException()
             return
         }
         currentNewsFeedCall = createNewsfeedWrapperCall(currentCameraPosition.target, pagination, selectedTab)
-        currentNewsFeedCall?.enqueue(NewsFeedCallback(this, entourageService))
+        currentNewsFeedCall?.enqueue(NewsFeedCallback(this, entService))
     }
 
     fun cancelNewsFeedRetrieval() {
@@ -111,18 +111,18 @@ open class EntourageServiceManager(
             override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.entourage?.let {
-                        entourageService.notifyListenersFeedItemClosed(true, it)
+                        entService.notifyListenersFeedItemClosed(true, it)
                         return
                     }
                 }
                 entourage.status = oldStatus
-                entourageService.notifyListenersFeedItemClosed(false, entourage)
+                entService.notifyListenersFeedItemClosed(false, entourage)
             }
 
             override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
                 Timber.e(t)
                 entourage.status = oldStatus
-                entourageService.notifyListenersFeedItemClosed(false, entourage)
+                entService.notifyListenersFeedItemClosed(false, entourage)
             }
         })
     }
@@ -134,18 +134,18 @@ open class EntourageServiceManager(
             override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.entourage?.let {
-                       entourageService.notifyListenersFeedItemClosed(true, it)
+                       entService.notifyListenersFeedItemClosed(true, it)
                         return
                     }
                 }
                 entourage.status = oldStatus
-                entourageService.notifyListenersFeedItemClosed(false, entourage)
+                entService.notifyListenersFeedItemClosed(false, entourage)
             }
 
             override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
                 Timber.e(t)
                 entourage.status = oldStatus
-                entourageService.notifyListenersFeedItemClosed(false, entourage)
+                entService.notifyListenersFeedItemClosed(false, entourage)
             }
         })
     }
@@ -156,7 +156,7 @@ open class EntourageServiceManager(
                     .enqueue(object : Callback<EntourageUserResponse> {
                 override fun onResponse(call: Call<EntourageUserResponse>, response: Response<EntourageUserResponse>) {
                     if (response.isSuccessful) {
-                        response.body()?.user?.let { user -> entourageService.notifyListenersUserStatusChanged(user, entourage) }
+                        response.body()?.user?.let { user -> entService.notifyListenersUserStatusChanged(user, entourage) }
                     }
                 }
 
@@ -173,7 +173,7 @@ open class EntourageServiceManager(
                 entourageRequest.removeUserFromEntourage(it, userId).enqueue(object : Callback<EntourageUserResponse> {
                     override fun onResponse(call: Call<EntourageUserResponse>, response: Response<EntourageUserResponse>) {
                         if (response.isSuccessful) {
-                            response.body()?.user?.let { user-> entourageService.notifyListenersUserStatusChanged(user, entourage)}
+                            response.body()?.user?.let { user-> entService.notifyListenersUserStatusChanged(user, entourage)}
                         }
                     }
 
@@ -218,10 +218,10 @@ open class EntourageServiceManager(
     // ----------------------------------
     open fun updateLocation(location: Location) {
         currentLocation = location
-        val bestLocation = EntourageLocation.location
+        val bestLocation = EntLocation.location
         var shouldCenterMap = false
         if (bestLocation == null || (location.accuracy > 0.0 && bestLocation.accuracy.toDouble() == 0.0)) {
-            EntourageLocation.location = location
+            EntLocation.location = location
             isBetterLocationUpdated = true
             shouldCenterMap = true
         }
@@ -232,13 +232,13 @@ open class EntourageServiceManager(
             }
         }
 
-        entourageService.notifyListenersPosition(LatLng(location.latitude, location.longitude))
+        entService.notifyListenersPosition(LatLng(location.latitude, location.longitude))
     }
 
     // ----------------------------------
     // INNER CLASSES
     // ----------------------------------
-    internal class NewsFeedCallback(private val manager: EntourageServiceManager, private val service: EntourageService) : Callback<NewsfeedItemResponse?> {
+    internal class NewsFeedCallback(private val manager: EntServiceManager, private val service: EntService) : Callback<NewsfeedItemResponse?> {
         override fun onResponse(call: Call<NewsfeedItemResponse?>, response: Response<NewsfeedItemResponse?>) {
             manager.resetCurrentNewsfeedCall()
             if (call.isCanceled) {
@@ -282,28 +282,28 @@ open class EntourageServiceManager(
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        fun newInstance(entourageService: EntourageService,
+        fun newInstance(entService: EntService,
                         tourRequest: TourRequest,
                         authenticationController: AuthenticationController,
                         encounterRequest: EncounterRequest,
                         newsfeedRequest: NewsfeedRequest,
-                        entourageRequest: EntourageRequest): EntourageServiceManager {
-            val provider = LocationProvider(entourageService, if (authenticationController.me?.isPro == true) UserType.PRO else UserType.PUBLIC)
+                        entourageRequest: EntourageRequest): EntServiceManager {
+            val provider = LocationProvider(entService, if (authenticationController.me?.isPro == true) UserType.PRO else UserType.PUBLIC)
             val mgr = if (authenticationController.me?.isPro == true) TourServiceManager(
-                        entourageService,
+                        entService,
                         authenticationController,
                         tourRequest,
                         encounterRequest,
                         newsfeedRequest,
                         entourageRequest,
                         provider)
-                else EntourageServiceManager(
-                    entourageService,
+                else EntServiceManager(
+                    entService,
                     authenticationController,
                     newsfeedRequest,
                     entourageRequest,
                     provider)
-            provider.setLocationListener(LocationListener(mgr, entourageService))
+            provider.setLocationListener(LocationListener(mgr, entService))
             provider.start()
             EntBus.register(mgr)
             return mgr

@@ -20,12 +20,12 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
 import social.entourage.android.api.request.PartnerResponse
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.tools.CropCircleTransformation
 import timber.log.Timber
 
-class PartnerFragment : EntourageDialogFragment() {
+class PartnerFragment : BaseDialogFragment() {
 
     private var partner: Partner? = null
     private var partnerId:Int? = null

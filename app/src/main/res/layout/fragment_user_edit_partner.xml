@@ -6,7 +6,7 @@
                 tools:context="social.entourage.android.user.edit.partner.UserEditPartnerFragment"
                 android:background="@color/pale_grey">
 
-    <social.entourage.android.tools.view.EntourageTitleView
+    <social.entourage.android.tools.view.CustomTitleView
         android:id="@+id/user_edit_partner_title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

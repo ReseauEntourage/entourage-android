@@ -15,12 +15,12 @@ import social.entourage.android.R
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserReport
 import social.entourage.android.api.model.UserReportWrapper
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 
 /**
  * User Report Fragment
  */
-class UserReportFragment  : EntourageDialogFragment() {
+class UserReportFragment  : BaseDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------

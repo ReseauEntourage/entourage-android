@@ -12,7 +12,7 @@ import javax.inject.Inject
 /**
  * Base Activity that only runs if the user is currently logged in
  */
-abstract class EntourageSecuredActivity : EntourageActivity() {
+abstract class BaseSecuredActivity : BaseActivity() {
     @Inject lateinit var authenticationController: AuthenticationController
 
     override fun onCreate(savedInstanceState: Bundle?) {

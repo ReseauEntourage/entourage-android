@@ -9,16 +9,16 @@ import kotlinx.android.synthetic.main.activity_login.*
 import social.entourage.android.*
 import social.entourage.android.EntourageApplication.Companion.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN
 import social.entourage.android.api.OnboardingAPI
-import social.entourage.android.base.EntourageActivity
+import social.entourage.android.base.BaseActivity
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
 import social.entourage.android.tools.Utils
 import social.entourage.android.tools.hideKeyboard
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CustomProgressDialog
 import java.util.*
 
 
-class LoginActivity : EntourageActivity() {
+class LoginActivity : BaseActivity() {
 
     private val minimumPhoneCharacters = 9
     private val TIME_BEFORE_CALL = 60
@@ -36,7 +36,7 @@ class LoginActivity : EntourageActivity() {
         alertDialog = CustomProgressDialog(this)
         setupViews()
 
-        EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_LOGIN_LOGIN)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_LOGIN_LOGIN)
     }
 
     override fun onDestroy() {
@@ -194,11 +194,11 @@ class LoginActivity : EntourageActivity() {
 
     fun login(phone:String,codePwd:String) {
         alertDialog.show(R.string.onboard_waiting_dialog)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_LOGIN_SUBMIT)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_SUBMIT)
         OnboardingAPI.getInstance(EntourageApplication.get()).login(phone,codePwd) { isOK, loginResponse, error ->
             isLoading = false
             if (isOK) {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_LOGIN_SUCCESS)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_SUCCESS)
                 val authController = EntourageApplication.get().entourageComponent.authenticationController
 
                 loginResponse?.let {
@@ -222,15 +222,15 @@ class LoginActivity : EntourageActivity() {
                 if (error != null) {
                     when {
                         error.contains("INVALID_PHONE_FORMAT") -> {
-                            EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_LOGIN_PHONE)
+                            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ERROR_LOGIN_PHONE)
                             errorId = R.string.login_error_invalid_phone_format
                         }
                         error.contains("UNAUTHORIZED") -> {
-                            EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_LOGIN_FAIL)
+                            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ERROR_LOGIN_FAIL)
                             errorId = R.string.login_error_invalid_credentials
                         }
                         else -> {
-                            EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_LOGIN_ERROR)
+                            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ERROR_LOGIN_ERROR)
                             errorId = R.string.login_error
                         }
                     }
@@ -243,7 +243,7 @@ class LoginActivity : EntourageActivity() {
     }
 
     fun resendCode(phone:String) {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_LOGIN_SMS)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_SMS)
         OnboardingAPI.getInstance(EntourageApplication.get()).resendCode(phone) { isOK, loginResponse, error ->
             if (isOK) {
                 Toast.makeText(this, R.string.registration_smscode_sent, Toast.LENGTH_LONG).show()

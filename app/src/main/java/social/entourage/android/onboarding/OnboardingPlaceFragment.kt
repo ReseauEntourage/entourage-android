@@ -19,10 +19,10 @@ import com.google.android.libraries.places.widget.AutocompleteActivity
 import kotlinx.android.synthetic.main.fragment_onboarding_place.*
 import social.entourage.android.R
 import social.entourage.android.api.model.User
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.location.LocationUtils.isLocationEnabled
 import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 import java.io.IOException
 import java.util.*
@@ -31,7 +31,7 @@ private const val ARG_PLACE = "place"
 private const val ARG_SDF = "isSdf"
 private const val ARG_2ND = "is2ndAddress"
 
-open class OnboardingPlaceFragment : EntourageDialogFragment() {
+open class OnboardingPlaceFragment : BaseDialogFragment() {
     protected val PERMISSIONS_REQUEST_LOCATION = 1
     protected val REQUEST_LOCATION_RETURN = 1010
 
@@ -84,15 +84,15 @@ open class OnboardingPlaceFragment : EntourageDialogFragment() {
 
         if (isFromProfile) {
             if (isSecondaryAddress) {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_PROFILE_ACTION_ZONE2)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_PROFILE_ACTION_ZONE2)
             }
             else {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_PROFILE_ACTION_ZONE)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_PROFILE_ACTION_ZONE)
             }
         }
         else {
             if (!isSecondaryAddress) {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING_ACTION_ZONE)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_ONBOARDING_ACTION_ZONE)
                 val _title = if (isSdf) R.string.onboard_place_title_sdf else R.string.onboard_place_title
                 val _desc = if (isSdf) R.string.onboard_place_description_sdf else R.string.onboard_place_description
 
@@ -100,7 +100,7 @@ open class OnboardingPlaceFragment : EntourageDialogFragment() {
                 ui_onboard_place_tv_info.text = getString(_desc)
             }
             else {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING_ACTION_ZONE2)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_ONBOARDING_ACTION_ZONE2)
                 val _title = if (isSdf) R.string.onboard_place_title2_sdf else R.string.onboard_place_title2
                 val _desc = if (isSdf) R.string.onboard_place_description2_sdf else R.string.onboard_place_description2
 
@@ -132,18 +132,18 @@ open class OnboardingPlaceFragment : EntourageDialogFragment() {
 
             if (isFromProfile) {
                 if (isSecondaryAddress) {
-                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE2_GEOLOC)
+                    AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE2_GEOLOC)
                 }
                 else {
-                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE_GEOLOC)
+                    AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE_GEOLOC)
                 }
             }
             else {
                 if (isSecondaryAddress) {
-                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SETACTION_ZONE2_GEOLOC)
+                    AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_SETACTION_ZONE2_GEOLOC)
                 }
                 else {
-                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SETACTION_ZONE_GEOLOC)
+                    AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_SETACTION_ZONE_GEOLOC)
                 }
             }
         }
@@ -154,18 +154,18 @@ open class OnboardingPlaceFragment : EntourageDialogFragment() {
 
             if (isFromProfile) {
                 if (isSecondaryAddress) {
-                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE2_SEARCH)
+                    AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE2_SEARCH)
                 }
                 else {
-                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE_SEARCH)
+                    AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE_SEARCH)
                 }
             }
             else {
                 if (isSecondaryAddress) {
-                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SETACTION_ZONE2_SEARCH)
+                    AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_SETACTION_ZONE2_SEARCH)
                 }
                 else {
-                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SETACTION_ZONE_SEARCH)
+                    AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_SETACTION_ZONE_SEARCH)
                 }
             }
         }

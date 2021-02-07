@@ -11,14 +11,14 @@ import kotlinx.android.synthetic.main.fragment_create_entourage_title.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryFragment
 
 /**
  * Dialog Fragment for editing the entourage title
  */
-class CreateEntourageTitleFragment  : EntourageDialogFragment() {
+class CreateEntourageTitleFragment  : BaseDialogFragment() {
     // ----------------------------------
     // Attributes
     // ----------------------------------

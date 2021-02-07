@@ -195,7 +195,7 @@
         <activity android:name=".onboarding.asso.OnboardingAssoSearchActivity"
             android:screenOrientation="portrait"/>
         <service
-            android:name=".service.EntourageService"
+            android:name=".service.EntService"
             android:exported="false" />
         <service
             android:name=".api.tape.EncounterTapeService"

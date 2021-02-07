@@ -17,17 +17,17 @@ import com.google.android.gms.location.*
 import com.google.android.libraries.places.compat.ui.PlaceAutocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import kotlinx.android.synthetic.main.fragment_onboarding_place.*
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.User
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.location.LocationUtils.isLocationEnabled
 import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
 import timber.log.Timber
 import java.io.IOException
 import java.util.*
 
-open class LoginPlaceFragment : EntourageDialogFragment() {
+open class LoginPlaceFragment : BaseDialogFragment() {
     protected val PERMISSIONS_REQUEST_LOCATION = 1
     protected val REQUEST_LOCATION_RETURN = 1010
 
@@ -70,7 +70,7 @@ open class LoginPlaceFragment : EntourageDialogFragment() {
 
         setupViews()
 
-        EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_LOGIN_ACTION_ZONE)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_LOGIN_ACTION_ZONE)
         val _title = R.string.login_place_title
         val _desc = R.string.login_place_description
 
@@ -97,14 +97,14 @@ open class LoginPlaceFragment : EntourageDialogFragment() {
         ui_onboard_bt_location?.setOnClickListener {
             onCurrentLocationClicked()
 
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_LOGIN_SETACTION_ZONE_GEOLOC)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_SETACTION_ZONE_GEOLOC)
         }
 
         ui_onboard_place_tv_location?.setOnClickListener {
             onSearchCalled()
             mFusedLocationClient?.removeLocationUpdates(mLocationCallback)
 
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_LOGIN_SETACTION_ZONE_SEARCH)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_SETACTION_ZONE_SEARCH)
         }
 
         if (userAddress != null) {

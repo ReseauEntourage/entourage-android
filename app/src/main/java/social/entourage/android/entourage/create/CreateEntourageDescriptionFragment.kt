@@ -8,14 +8,14 @@ import kotlinx.android.synthetic.main.fragment_create_entourage_description.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryFragment
 
 /**
  * Dialog Fragment for editing an entourage entourageDescription
  */
-class CreateEntourageDescriptionFragment  : EntourageDialogFragment() {
+class CreateEntourageDescriptionFragment  : BaseDialogFragment() {
     // ----------------------------------
     // Attributes
     // ----------------------------------

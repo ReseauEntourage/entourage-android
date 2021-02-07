@@ -10,10 +10,10 @@ import java.util.*
 /**
  * Created by mihaiionescu on 05/05/16.
  */
-open class EntourageBaseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+open class BaseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val items: ArrayList<TimestampedObject> = ArrayList()
     protected val viewHolderFactory = ViewHolderFactory()
-    var viewHolderListener: EntourageViewHolderListener? = null
+    var viewHolderListener: BaseViewHolderListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val cardViewHolder = viewHolderFactory.getViewHolder(parent, viewType)

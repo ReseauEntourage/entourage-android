@@ -18,10 +18,10 @@ import androidx.core.content.PermissionChecker
 import com.squareup.otto.Subscribe
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_photo_choose_source.*
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events.OnPhotoChosen
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.tools.EntBus
 import java.io.File
 import java.io.IOException
@@ -29,7 +29,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Deprecated(message="Migrate to class ChoosePhotoFragment", replaceWith = ReplaceWith("ChoosePhotoFragment", "social.entourage.android.user.edit.photo.ChoosePhotoFragment"))
-class PhotoChooseSourceFragmentCompat : EntourageDialogFragment() {
+class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -51,7 +51,7 @@ class PhotoChooseSourceFragmentCompat : EntourageDialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_09_6)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SCREEN_09_6)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_photo_choose_source, container, false)
     }
@@ -211,7 +211,7 @@ class PhotoChooseSourceFragmentCompat : EntourageDialogFragment() {
     }
 
     private fun showChoosePhotoActivity() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_PHOTO_UPLOAD_SUBMIT)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_PHOTO_UPLOAD_SUBMIT)
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             // Start a separate activity, to handle the issue with onActivityResult
             val intent = Intent(context, ChoosePhotoCompatActivity::class.java)
@@ -229,7 +229,7 @@ class PhotoChooseSourceFragmentCompat : EntourageDialogFragment() {
 
     private fun showTakePhotoActivity() {
         activity?.let {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_PHOTO_TAKE_SUBMIT)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_PHOTO_TAKE_SUBMIT)
             val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             // Ensure that there's a camera activity to handle the intent
             if (takePictureIntent.resolveActivity(it.packageManager) == null) {
