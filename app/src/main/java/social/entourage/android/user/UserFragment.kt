@@ -142,7 +142,7 @@ class UserFragment : BaseDialogFragment() {
             user_name?.setText(u.displayName)
             user_name?.setRoles(u.roles)
             user_tours_count?.text = getString(R.string.user_entourage_count_format, u.stats?.getActionCount() ?: 0)
-            val userAbout = u.about
+            val userAbout = u.about ?: ""
             user_profile_about_layout?.visibility = if (userAbout.isNotBlank()) View.VISIBLE else View.GONE
             ui_tv_user_description?.text = userAbout
 

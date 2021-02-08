@@ -27,10 +27,11 @@ class User : Serializable {
     @SerializedName("avatar_url")
     var avatarURL: String?
     @SerializedName("user_type")
-    private val type = TYPE_PRO
+    private val type: String = TYPE_PUBLIC
     @SerializedName("firebase_properties")
     val firebaseProperties: UserFirebaseProperties? = null
-    var about: String = ""
+    var about: String? = ""
+        get() = field ?: ""
     val roles: ArrayList<String>? = null
     private val memberships: ArrayList<UserMembershipList>? = null
     val conversation: UserConversation? = null
@@ -59,6 +60,7 @@ class User : Serializable {
         id = 0
         email = ""
         displayName = ""
+        about=""
         stats = null
         organization = null
         partner = null
@@ -72,6 +74,7 @@ class User : Serializable {
         this.displayName = displayName
         this.stats = stats
         this.organization = organization
+        about=""
         partner = null
         this.token = token
         this.avatarURL = avatarURL
@@ -220,7 +223,7 @@ class User : Serializable {
         // ----------------------------------
         const val KEY_USER_ID = "social.entourage.android.KEY_USER_ID"
         //const val KEY_USER = "social.entourage.android.KEY_USER"
-        //const val TYPE_PUBLIC = "public"
+        const val TYPE_PUBLIC = "public"
         const val TYPE_PRO = "pro"
         private const val USER_ROLE_ETHICS_CHARTER_SIGNED = "ethics_charter_signed"
         const val USER_GOAL_NEIGHBOUR = "offer_help"

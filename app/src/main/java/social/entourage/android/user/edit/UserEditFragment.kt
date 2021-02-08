@@ -163,12 +163,7 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
             user_phone?.text = user.phone
             user_about?.text = user.about
 
-            if (user.about.isNotEmpty()) {
-                user_about_edit_button?.text = getString(R.string.user_about_mod_button)
-            }
-            else {
-                user_about_edit_button?.text = getString(R.string.user_about_edit_button)
-            }
+            user_about_edit_button?.text = if (!user.about.isNullOrBlank()) getString(R.string.user_about_mod_button) else  getString(R.string.user_about_edit_button)
 
             val organizationList: MutableList<BaseOrganization> = ArrayList()
             user.partner?.let { organizationList.add(it) }
