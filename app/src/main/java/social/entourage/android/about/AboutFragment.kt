@@ -114,9 +114,9 @@ class AboutFragment : BaseDialogFragment() {
         intent.data = Uri.parse("mailto:")
         val addresses = arrayOf(getString(R.string.contact_email))
         intent.putExtra(Intent.EXTRA_EMAIL, addresses)
-        if (activity != null && intent.resolveActivity(requireActivity().packageManager) != null) {
+        try {
             startActivity(intent)
-        } else {
+        } catch (e: ActivityNotFoundException) {
             about_coordinator_layout?.let {EntSnackbar.make(it, R.string.error_no_email, Snackbar.LENGTH_SHORT).show()}
         }
     }

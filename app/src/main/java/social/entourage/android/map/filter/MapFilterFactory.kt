@@ -8,6 +8,6 @@ import social.entourage.android.EntourageApplication
 object MapFilterFactory {
     val mapFilter: MapFilter
         get() {
-            return EntourageApplication.get().entourageComponent.authenticationController.mapFilter
+            return EntourageApplication.get().components.authenticationController.mapFilter
         }
 }

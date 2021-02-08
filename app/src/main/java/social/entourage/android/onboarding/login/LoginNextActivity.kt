@@ -30,7 +30,7 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
 
         alertDialog = CustomProgressDialog(this)
 
-        currentUser = EntourageApplication.get().entourageComponent.authenticationController.me
+        currentUser = EntourageApplication.get().components.authenticationController.me
 
         currentUser?.let { user ->
             if (user.address != null || user.address?.displayAddress?.length ?: 0 > 0) {
@@ -65,9 +65,9 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
     fun sendAddress() {
         alertDialog.show(R.string.onboard_waiting_dialog)
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_ACTION_ZONE_SUBMIT)
-        OnboardingAPI.getInstance(EntourageApplication.get()).updateAddress(temporaryPlaceAddress!!,false) { isOK, userResponse ->
+        OnboardingAPI.getInstance().updateAddress(temporaryPlaceAddress!!,false) { isOK, userResponse ->
             if (isOK) {
-                val authenticationController = EntourageApplication.get().entourageComponent.authenticationController
+                val authenticationController = EntourageApplication.get().components.authenticationController
                 val me = authenticationController.me
                 if (me != null && userResponse != null) {
                     userResponse.user.phone = me.phone
@@ -87,9 +87,9 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
     fun updateUserEmail() {
         alertDialog.show(R.string.onboard_waiting_dialog)
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_EMAIL_SUBMIT)
-        OnboardingAPI.getInstance(EntourageApplication.get()).updateUser(temporaryEmail) { isOK, userResponse ->
+        OnboardingAPI.getInstance().updateUser(temporaryEmail) { isOK, userResponse ->
             if (isOK && userResponse != null) {
-                val authenticationController = EntourageApplication.get().entourageComponent.authenticationController
+                val authenticationController = EntourageApplication.get().components.authenticationController
                 authenticationController.saveUser(userResponse.user)
             }
             else {
@@ -163,7 +163,7 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
     }
 
     fun goNextStep() {
-        val authController = EntourageApplication.get().entourageComponent.authenticationController
+        val authController = EntourageApplication.get().components.authenticationController
 
         if (authController.me?.email == null || authController.me?.email?.length ?: -1 == 0)  {
             currentPosition = 1

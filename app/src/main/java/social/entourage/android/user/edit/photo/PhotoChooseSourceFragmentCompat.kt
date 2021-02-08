@@ -2,6 +2,7 @@ package social.entourage.android.user.edit.photo
 
 import android.Manifest
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -218,10 +219,9 @@ class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         } else {
-            val intent = Intent()
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
             // Show only images, no videos or anything else
             intent.type = "image/*"
-            intent.action = Intent.ACTION_GET_CONTENT
             // Always show the chooser (if there are multiple options available)
             startActivityForResult(Intent.createChooser(intent, null), PICK_IMAGE_REQUEST)
         }
@@ -232,9 +232,7 @@ class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_PHOTO_TAKE_SUBMIT)
             val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             // Ensure that there's a camera activity to handle the intent
-            if (takePictureIntent.resolveActivity(it.packageManager) == null) {
-                Toast.makeText(activity, R.string.user_photo_error_no_camera, Toast.LENGTH_SHORT).show()
-            } else {
+            try {
                 // Create the File where the photo should go
                 try {
                     val photoFileUri = createImageFile()
@@ -257,6 +255,8 @@ class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
                     // Error occurred while creating the File
                     Toast.makeText(activity, R.string.user_photo_error_photo_path, Toast.LENGTH_SHORT).show()
                 }
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(activity, R.string.user_photo_error_no_camera, Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -2,6 +2,7 @@ package social.entourage.android.onboarding
 
 import android.Manifest
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.ClipData
 import android.content.Context
 import android.content.Intent
@@ -147,9 +148,8 @@ open class OnboardingPhotoFragment : BaseDialogFragment(),PhotoEditDelegate {
         else {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_UPLOAD_PHOTO)
         }
-        val intent = Intent()
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(Intent.createChooser(intent, null), PICK_IMAGE_REQUEST)
     }
 
@@ -161,11 +161,8 @@ open class OnboardingPhotoFragment : BaseDialogFragment(),PhotoEditDelegate {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_TAKE_PHOTO)
         }
 
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(requireActivity().packageManager) == null) {
-            Toast.makeText(activity, R.string.user_photo_error_no_camera, Toast.LENGTH_SHORT).show()
-        } else {
+        try {
             // Create the File where the photo should go
             var photoFileUri: Uri? = null
             try {
@@ -186,11 +183,14 @@ open class OnboardingPhotoFragment : BaseDialogFragment(),PhotoEditDelegate {
                     takePictureIntentCompat.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri)
                     startActivityForResult(takePictureIntentCompat, TAKE_PHOTO_REQUEST)
                 } else {
+                    val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri)
                     takePictureIntent.flags = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                     startActivityForResult(takePictureIntent, TAKE_PHOTO_REQUEST)
                 }
             }
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(activity, R.string.user_photo_error_no_camera, Toast.LENGTH_SHORT).show()
         }
     }
 

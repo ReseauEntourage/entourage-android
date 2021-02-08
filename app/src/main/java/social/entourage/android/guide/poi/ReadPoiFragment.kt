@@ -1,5 +1,6 @@
 package social.entourage.android.guide.poi
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Paint
 import android.net.Uri
@@ -44,7 +45,7 @@ class ReadPoiFragment : BaseDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         poi = arguments?.getSerializable(BUNDLE_KEY_POI) as Poi
-        setupComponent(EntourageApplication.get(activity).entourageComponent)
+        setupComponent(EntourageApplication.get(activity).components)
 
         //Actually WS return id and not uuid for entourage poi
         presenter.getPoiDetail(poi.uuid)
@@ -246,12 +247,11 @@ class ReadPoiFragment : BaseDialogFragment() {
         val uuid = poi.uuid
         val emailSubject = getString(R.string.poi_report_email_subject_format, title, uuid)
         intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject)
-        startActivity(intent)
-//        if (activity!=null && intent.resolveActivity(requireActivity().packageManager) != null) { // Start the intent
-//            startActivity(intent)
-//        } else { // No Email clients
-//            Toast.makeText(context, R.string.error_no_email, Toast.LENGTH_SHORT).show()
-//        }
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException){
+            Toast.makeText(context, R.string.error_no_email, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun onShareClicked() {

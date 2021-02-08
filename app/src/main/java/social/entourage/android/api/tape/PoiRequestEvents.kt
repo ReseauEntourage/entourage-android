@@ -3,7 +3,7 @@ package social.entourage.android.api.tape
 import social.entourage.android.api.model.guide.Poi
 
 /**
- * Events specific to Entourage app
+ * Events specific to Poi Requests
  * Created by Mihai Ionescu on 16/04/2018.
  */
 class PoiRequestEvents : Events() {

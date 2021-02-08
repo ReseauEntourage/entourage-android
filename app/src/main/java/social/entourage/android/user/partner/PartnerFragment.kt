@@ -61,44 +61,39 @@ class PartnerFragment : BaseDialogFragment() {
     }
 
     fun getPartnerInfos() {
-        val application = EntourageApplication.get()
-       val call = application.entourageComponent.userRequest.getPartnerDetail(partnerId!!)
-
-        call.enqueue(object : Callback<PartnerResponse> {
-            override fun onResponse(call: Call<PartnerResponse>, response: Response<PartnerResponse>) {
-                if (response.isSuccessful) {
-                   val body = response.body()
-                   partner = body?.partner
-                    configureViews()
-                }
-                else {
-                    dismiss()
-                    return
-                }
-            }
-            override fun onFailure(call: Call<PartnerResponse>, t: Throwable) {
-                dismiss()
-                return
-            }
-        })
+        partnerId?.let { partnerId ->
+            EntourageApplication.get().components.userRequest
+                    .getPartnerDetail(partnerId)
+                    .enqueue(object : Callback<PartnerResponse> {
+                        override fun onResponse(call: Call<PartnerResponse>, response: Response<PartnerResponse>) {
+                            if (response.isSuccessful) {
+                                response.body()?.let { partner = it.partner}
+                                configureViews()
+                            }
+                            else {
+                                dismiss()
+                            }
+                        }
+                        override fun onFailure(call: Call<PartnerResponse>, t: Throwable) {
+                            dismiss()
+                            return
+                        }
+                    })
+        }
     }
 
     fun updatePartnerFollow(isFollow:Boolean) {
-        val application = EntourageApplication.get()
-
         val params = ArrayMap<String, Any>()
         val isFollowParam = ArrayMap<String,Any>()
         isFollowParam["partner_id"] = partner?.id.toString()
         isFollowParam["active"] = if (isFollow) "true" else "false"
         params["following"] = isFollowParam
 
-        val call = application.entourageComponent.userRequest.updateUserPartner(params)
-
-        call.enqueue(object : Callback<ResponseBody>{
+        EntourageApplication.get().components.userRequest.updateUserPartner(params).enqueue(object : Callback<ResponseBody>{
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     partner?.let {
-                        partner?.isFollowing = isFollow
+                        it.isFollowing = isFollow
                         updateButtonFollow()
                     }
                 }

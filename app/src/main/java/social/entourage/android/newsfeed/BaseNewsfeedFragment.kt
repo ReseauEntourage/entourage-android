@@ -105,7 +105,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     override fun onAttach(context: Context) {
-        setupComponent(EntourageApplication.get(activity).entourageComponent)
+        setupComponent(EntourageApplication.get(activity).components)
         super.onAttach(context)
     }
 
@@ -1195,7 +1195,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     private fun storeActionZoneInfo(ignoreAddress: Boolean) {
-        val authenticationController = EntourageApplication.get().entourageComponent.authenticationController
+        val authenticationController = EntourageApplication.get().components.authenticationController
         authenticationController.isIgnoringActionZone = ignoreAddress
         authenticationController.saveUserPreferences()
         if (!ignoreAddress) {

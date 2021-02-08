@@ -61,7 +61,7 @@ class UserFragment : BaseDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupComponent(EntourageApplication.get(activity).entourageComponent)
+        setupComponent(EntourageApplication.get(activity).components)
         val requestedUserId = arguments?.getInt(User.KEY_USER_ID) ?: return
         val authenticatedUser = presenter?.authenticatedUser
         if (authenticatedUser != null && requestedUserId == authenticatedUser.id) {

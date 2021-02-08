@@ -220,7 +220,7 @@ open class OnboardingPlaceFragment : BaseDialogFragment() {
             )
         }
         else {
-            Toast.makeText(requireActivity(), "Activer la localisation", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireActivity(), "Activez la localisation", Toast.LENGTH_LONG).show()
 //            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
 //            startActivity(intent)
         }

@@ -76,7 +76,7 @@ class MyEntouragesFragment  : BaseDialogFragment(), BaseViewHolderListener, Load
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupComponent(EntourageApplication.get(activity).entourageComponent)
+        setupComponent(EntourageApplication.get(activity).components)
         initializeView()
         refreshInvitations()
         refreshMyFeeds()

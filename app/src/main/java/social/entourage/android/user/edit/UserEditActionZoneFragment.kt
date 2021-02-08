@@ -53,10 +53,10 @@ class UserEditActionZoneFragment : OnboardingPlaceFragment() {
                     if (isSecondaryAddress) AnalyticsEvents.EVENT_ACTION_PROFILE_ACTION_ZONE2_SUBMIT
                     else AnalyticsEvents.EVENT_ACTION_PROFILE_ACTION_ZONE_SUBMIT
             )
-            OnboardingAPI.getInstance(EntourageApplication.get()).updateAddress(userAddress,isSecondaryAddress) { isOK, userResponse ->
+            OnboardingAPI.getInstance().updateAddress(userAddress,isSecondaryAddress) { isOK, userResponse ->
                 if (isOK) {
                     userResponse?.user?.let {newUser ->
-                        val authenticationController = EntourageApplication.get().entourageComponent.authenticationController
+                        val authenticationController = EntourageApplication.get().components.authenticationController
                         authenticationController.me?.phone?.let { phone ->
                             newUser.phone = phone
                             authenticationController.saveUser(newUser)

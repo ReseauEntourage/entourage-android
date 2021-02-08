@@ -19,6 +19,7 @@ import social.entourage.android.api.request.ApplicationInfoRequest
 import social.entourage.android.api.request.ApplicationWrapper
 import social.entourage.android.api.request.UserRequest
 import social.entourage.android.api.request.UserResponse
+import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.AvatarUpdatePresenter
@@ -35,6 +36,7 @@ import javax.inject.Inject
  class MainPresenter @Inject internal constructor(
         private val activity: MainActivity,
         private val applicationInfoRequest: ApplicationInfoRequest,
+        private val authenticationController: AuthenticationController,
         private val userRequest: UserRequest) : AvatarUpdatePresenter {
     // ----------------------------------
     // ATTRIBUTES
@@ -55,7 +57,7 @@ import javax.inject.Inject
             "user" -> {
                 AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_SHOWPROFIL)
                 val userFragment = activity.supportFragmentManager.findFragmentByTag(UserFragment.TAG) as UserFragment?
-                        ?: UserFragment.newInstance(activity.authenticationController.me!!.id)
+                        ?: UserFragment.newInstance(authenticationController.me!!.id)
                 userFragment.show(activity.supportFragmentManager, UserFragment.TAG)
             }
             "appVersion" -> {
@@ -242,9 +244,9 @@ import javax.inject.Inject
         call.enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
-                    if (activity.authenticationController.isAuthenticated) {
+                    if (authenticationController.isAuthenticated) {
                         val responseBody = response.body()
-                        if (responseBody != null) activity.authenticationController.saveUser(responseBody.user)
+                        if (responseBody != null) authenticationController.saveUser(responseBody.user)
                     }
                 }
             }
@@ -265,12 +267,10 @@ import javax.inject.Inject
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 activity.dismissProgressDialog()
                 if (response.isSuccessful) {
-                    if (activity.authenticationController.isAuthenticated) {
-                        val responseBody = response.body()
-                        if (responseBody != null) activity.authenticationController.saveUser(responseBody.user)
+                    if (authenticationController.isAuthenticated) {
+                        response.body()?.let { responseBody-> authenticationController.saveUser(responseBody.user)}
                     }
-                    val photoEditFragment = activity.supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as PhotoEditFragment?
-                    if (photoEditFragment != null) {
+                    (activity.supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as PhotoEditFragment?)?.let { photoEditFragment->
                         if (photoEditFragment.onPhotoSent(true)) {
                             val photoChooseSourceFragment = activity.supportFragmentManager.findFragmentByTag(PhotoChooseSourceFragmentCompat.TAG) as PhotoChooseSourceFragmentCompat?
                             photoChooseSourceFragment?.dismiss()

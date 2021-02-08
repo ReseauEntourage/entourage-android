@@ -546,7 +546,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
     }
 
     private fun sendDeleteReport(entourageUUID: String) {
-        val entourageRequest = EntourageApplication.get(requireContext()).entourageComponent.entourageRequest
+        val entourageRequest = EntourageApplication.get(requireContext()).components.entourageRequest
         val call = entourageRequest.removeUserReportPrompt(entourageUUID)
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {

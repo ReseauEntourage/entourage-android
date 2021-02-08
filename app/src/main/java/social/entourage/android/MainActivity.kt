@@ -283,7 +283,7 @@ class MainActivity : BaseSecuredActivity(), OnTourInformationFragmentFinish, OnC
             3 -> mapFilter.setDefaultValues()
             else -> mapFilter.setDefaultValues()
         }
-        get().entourageComponent.authenticationController.saveMapFilter()
+        authenticationController.saveMapFilter()
         EntBus.post(OnMapFilterChanged())
     }
 

@@ -82,7 +82,7 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
     protected open fun saveCameraPosition() {}
 
     fun initializeMapZoom() {
-        EntourageApplication.get().entourageComponent.authenticationController.me?.address?.let {
+        EntourageApplication.get().components.authenticationController.me?.address?.let {
             centerMap(LatLng(it.latitude, it.longitude))
             isFollowing = false
         } ?: run {

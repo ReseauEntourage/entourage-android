@@ -117,7 +117,7 @@ class EntService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        EntourageApplication[this].entourageComponent.inject(this)
+        EntourageApplication.get(this).components.inject(this)
         //notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         chronometer = Chronometer(this)
         entServiceManager = EntServiceManager.newInstance(

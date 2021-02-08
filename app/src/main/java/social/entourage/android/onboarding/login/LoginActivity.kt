@@ -6,19 +6,27 @@ import android.os.CountDownTimer
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.activity_login.*
-import social.entourage.android.*
+import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageApplication.Companion.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN
+import social.entourage.android.EntourageComponent
+import social.entourage.android.MainActivity
+import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
+import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.base.BaseActivity
+import social.entourage.android.guide.DaggerGDSMainComponent
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
 import social.entourage.android.tools.Utils
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CustomProgressDialog
 import java.util.*
+import javax.inject.Inject
 
 
 class LoginActivity : BaseActivity() {
+
+    lateinit var authenticationController: AuthenticationController
 
     private val minimumPhoneCharacters = 9
     private val TIME_BEFORE_CALL = 60
@@ -31,6 +39,7 @@ class LoginActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        authenticationController = EntourageApplication.get().components.authenticationController
         setContentView(R.layout.activity_login)
 
         alertDialog = CustomProgressDialog(this)
@@ -96,12 +105,10 @@ class LoginActivity : BaseActivity() {
     }
 
     fun goMain() {
-        val authController = EntourageApplication.get().entourageComponent.authenticationController
-
         val sharedPreferences = EntourageApplication.get().sharedPreferences
         sharedPreferences.edit().putBoolean(KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,true).apply()
 
-        if (authController.me?.address == null || (authController.me?.email == null || authController.me?.email?.length ?: -1 == 0) ) {
+        if (authenticationController.me?.address == null || (authenticationController.me?.email == null || authenticationController.me?.email?.length ?: -1 == 0) ) {
             goLoginNext()
         }
         else {
@@ -195,17 +202,15 @@ class LoginActivity : BaseActivity() {
     fun login(phone:String,codePwd:String) {
         alertDialog.show(R.string.onboard_waiting_dialog)
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_SUBMIT)
-        OnboardingAPI.getInstance(EntourageApplication.get()).login(phone,codePwd) { isOK, loginResponse, error ->
+        OnboardingAPI.getInstance().login(phone,codePwd) { isOK, loginResponse, error ->
             isLoading = false
             if (isOK) {
                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_SUCCESS)
-                val authController = EntourageApplication.get().entourageComponent.authenticationController
-
                 loginResponse?.let {
-                    authController.saveUser(loginResponse.user)
+                    authenticationController.saveUser(loginResponse.user)
                 }
-                authController.saveUserPhoneAndCode(phone, codePwd)
-                authController.saveUserToursOnly(false)
+                authenticationController.saveUserPhoneAndCode(phone, codePwd)
+                authenticationController.saveUserToursOnly(false)
 
                 //set the tutorial as done
                 val sharedPreferences = EntourageApplication.get().sharedPreferences
@@ -244,7 +249,7 @@ class LoginActivity : BaseActivity() {
 
     fun resendCode(phone:String) {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_SMS)
-        OnboardingAPI.getInstance(EntourageApplication.get()).resendCode(phone) { isOK, loginResponse, error ->
+        OnboardingAPI.getInstance().resendCode(phone) { isOK, loginResponse, error ->
             if (isOK) {
                 Toast.makeText(this, R.string.registration_smscode_sent, Toast.LENGTH_LONG).show()
                 activateTimer()

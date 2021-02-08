@@ -114,7 +114,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupComponent(EntourageApplication.get().entourageComponent)
+        setupComponent(EntourageApplication.get().components)
         invitationId = arguments?.getLong(KEY_INVITATION_ID) ?: 0
         (arguments?.getSerializable(FeedItem.KEY_FEEDITEM) as? FeedItem)?.let { newFeedItem ->
             feedItem = newFeedItem
@@ -419,12 +419,12 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.promote_entourage_email_title, title))
         // Set the body
         intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.promote_entourage_email_body, title))
-        if (intent.resolveActivity(requireActivity().packageManager) != null) {
+        try {
             //hide the options
             entourage_info_options?.visibility = View.GONE
             // Start the intent
             startActivity(intent)
-        } else {
+        } catch (e: ActivityNotFoundException) {
             // No Email clients
             entourage_information_coordinator_layout?.let {EntSnackbar.make(it,  R.string.error_no_email, Snackbar.LENGTH_SHORT).show()}
         }
@@ -1084,7 +1084,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         if (activity == null || !isAdded) return
         if (chatMessageList.isNotEmpty()) {
             //check who sent the message
-            EntourageApplication.get(activity).entourageComponent.authenticationController.me?.id?.let { me ->
+            EntourageApplication.get(activity).components.authenticationController.me?.id?.let { me ->
                 for (chatMessage in chatMessageList) {
                     chatMessage.isMe = chatMessage.userId == me
                 }

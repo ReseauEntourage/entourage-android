@@ -1,5 +1,6 @@
 package social.entourage.android.entourage
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -112,11 +113,9 @@ class EntourageCloseFragment : DialogFragment() {
         // Set the subject
         val title = feedItem?.getTitle() ?: ""
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(emailSubjectFormat, title))
-        if (activity != null && intent.resolveActivity(requireActivity().packageManager) != null) {
-            // Start the intent
+        try {
             startActivity(intent)
-        } else {
-            // No Email clients
+        } catch (e: ActivityNotFoundException) {
             Toast.makeText(context, R.string.error_no_email, Toast.LENGTH_SHORT).show()
             return false
         }

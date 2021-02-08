@@ -44,7 +44,7 @@ class OnboardingAssoSearchActivity : AppCompatActivity() {
 
     fun getAssosList() {
         alertDialog.show(R.string.onboard_waiting_dialog)
-        OnboardingAPI.getInstance(get()).getAssociationsList { arrayAssociations ->
+        OnboardingAPI.getInstance().getAssociationsList { arrayAssociations ->
             alertDialog.dismiss()
             if (arrayAssociations != null) {
                 arrayAssos.clear()

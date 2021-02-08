@@ -29,7 +29,7 @@ class EncounterTapeService : Service(), EncounterUploadCallback {
     // ----------------------------------
     override fun onCreate() {
         super.onCreate()
-        get(this).entourageComponent.inject(this)
+        get(this).components.inject(this)
         connected = isConnected()
         EntBus.register(this)
     }

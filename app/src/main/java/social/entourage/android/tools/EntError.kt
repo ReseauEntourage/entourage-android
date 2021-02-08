@@ -1,7 +1,7 @@
 package social.entourage.android.tools
 
 /**
- * Entourage Errors
+ * Error Codes
  * Created by mihaiionescu on 24/03/2017.
  */
 object EntError {

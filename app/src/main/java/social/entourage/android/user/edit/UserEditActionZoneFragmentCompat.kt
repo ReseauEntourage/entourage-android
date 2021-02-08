@@ -155,7 +155,7 @@ class UserEditActionZoneFragmentCompat  : BaseDialogFragment() {
             return
         }
         saving = true
-        val userRequest = get().entourageComponent.userRequest
+        val userRequest = get().components.userRequest
         val call:Call<UserResponse>
 
         val address: MutableMap<String, Any> = ArrayMap()
@@ -182,7 +182,7 @@ class UserEditActionZoneFragmentCompat  : BaseDialogFragment() {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.user?.let {
-                        val authenticationController = get().entourageComponent.authenticationController
+                        val authenticationController = get().components.authenticationController
                         authenticationController.me?.let { me->
 
                             it.phone = me.phone

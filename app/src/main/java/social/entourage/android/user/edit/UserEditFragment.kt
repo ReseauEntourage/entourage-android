@@ -78,7 +78,7 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupComponent(EntourageApplication.get(activity).entourageComponent)
+        setupComponent(EntourageApplication.get(activity).components)
         title_close_button?.setOnClickListener { onCloseButtonClicked() }
         user_firstname_layout?.setOnClickListener { onEditFirstname() }
         user_lastname_layout?.setOnClickListener { onEditFirstname() }
@@ -309,13 +309,13 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
     }
 
     private fun onDeleteSecondaryAddress() {
-        val userRequest = EntourageApplication.get().entourageComponent.userRequest
+        val userRequest = EntourageApplication.get().components.userRequest
         val call = userRequest.deleteSecondaryAddressLocation()
 
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    val authenticationController = EntourageApplication.get().entourageComponent.authenticationController
+                    val authenticationController = EntourageApplication.get().components.authenticationController
                     authenticationController.me?.let { me->
                         me.addressSecondary = null
                         authenticationController.saveUser(me)
@@ -477,7 +477,7 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
     }
 
     private fun storeActionZone(ignoreActionZone: Boolean) {
-        EntourageApplication.get().entourageComponent.authenticationController.isIgnoringActionZone = ignoreActionZone
+        EntourageApplication.get().components.authenticationController.isIgnoringActionZone = ignoreActionZone
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             (parentFragmentManager.findFragmentByTag(UserEditActionZoneFragmentCompat.TAG) as UserEditActionZoneFragmentCompat?)?.let { userEditActionZoneFragmentCompat ->

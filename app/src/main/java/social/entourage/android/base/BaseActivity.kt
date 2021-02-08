@@ -20,7 +20,7 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as? EntourageApplication)?.onActivityCreated(this)
         super.onCreate(savedInstanceState)
-        setupComponent(EntourageApplication[this].entourageComponent)
+        setupComponent(EntourageApplication.get(this).components)
     }
 
     override fun onDestroy() {

@@ -48,7 +48,7 @@ open class InviteBaseFragment  : BaseDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupComponent(get(activity).entourageComponent)
+        setupComponent(get(activity).components)
     }
 
     protected fun setupComponent(entourageComponent: EntourageComponent?) {

@@ -82,7 +82,7 @@ open class BaseCreateEntourageFragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupComponent(get().entourageComponent)
+        setupComponent(get().components)
         initializeView()
         title_close_button.setOnClickListener { onCloseClicked() }
         title_action_button.setOnClickListener { onValidateClicked() }

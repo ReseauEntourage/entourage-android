@@ -34,7 +34,7 @@ class LoginTest {
     fun setUp() {
         checkNoUserIsLoggedIn()
         val context: Context = activityRule.activity
-        val client = EntourageApplication.get(context).entourageComponent.okHttpClient
+        val client = EntourageApplication.get(context).components.okHttpClient
         resource = OkHttp3IdlingResource.create("OkHttp", client)
         IdlingRegistry.getInstance().register(resource)
         afM = context.getSystemService(AutofillManager::class.java)
@@ -42,7 +42,7 @@ class LoginTest {
     }
 
     private fun checkNoUserIsLoggedIn() {
-        EntourageApplication.get(activityRule.activity).entourageComponent.authenticationController.logOutUser()
+        EntourageApplication.get(activityRule.activity).components.authenticationController.logOutUser()
     }
 
     @After

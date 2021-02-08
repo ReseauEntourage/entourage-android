@@ -11,10 +11,9 @@ import social.entourage.android.tools.EntBus
 class ChoosePhotoCompatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val intent = Intent()
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
         // Show only images, no videos or anything else
         intent.type = "image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
         // Always show the chooser (if there are multiple options available)
         startActivityForResult(Intent.createChooser(intent, null), PICK_IMAGE_REQUEST)
     }

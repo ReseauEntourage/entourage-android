@@ -78,12 +78,11 @@ class InputNamesFragment : BaseDialogFragment() {
         isAllreadySend = true
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_ADD_USERNAME_SUBMIT)
 
-        OnboardingAPI.getInstance(EntourageApplication.get()).updateUserNames(firstname,lastname) { isOK, userResponse ->
+        OnboardingAPI.getInstance().updateUserNames(firstname,lastname) { isOK, userResponse ->
             isAllreadySend = false
             dialog.dismiss()
             if (isOK && userResponse != null) {
-                val authenticationController = EntourageApplication.get().entourageComponent.authenticationController
-                authenticationController.saveUser(userResponse.user)
+                EntourageApplication.get().components.authenticationController.saveUser(userResponse.user)
             }
             dismiss()
         }

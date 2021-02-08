@@ -300,9 +300,9 @@ class UserEditProfileActions : BaseDialogFragment() {
 
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_CHOOSE_PROFILE_SIGNUP)
 
-        OnboardingAPI.getInstance(EntourageApplication.get()).updateUserGoal(_currentGoal) { isOK, userResponse ->
+        OnboardingAPI.getInstance().updateUserGoal(_currentGoal) { isOK, userResponse ->
             if (isOK && userResponse != null) {
-                val authenticationController = EntourageApplication.get().entourageComponent.authenticationController
+                val authenticationController = EntourageApplication.get().components.authenticationController
                 authenticationController.saveUser(userResponse.user)
             }
            updateActivities()
@@ -312,9 +312,9 @@ class UserEditProfileActions : BaseDialogFragment() {
     fun updateActivities() {
         if (isAsso) {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_PRO_MOSAIC)
-            OnboardingAPI.getInstance(EntourageApplication.get()).updateUserInterests(activitiesAssoSelection!!.getArrayForWs()) { isOK, userResponse ->
+            OnboardingAPI.getInstance().updateUserInterests(activitiesAssoSelection!!.getArrayForWs()) { isOK, userResponse ->
                 if (isOK && userResponse != null) {
-                    val authenticationController = EntourageApplication.get().entourageComponent.authenticationController
+                    val authenticationController = EntourageApplication.get().components.authenticationController
                     authenticationController.saveUser(userResponse.user)
                 }
 
@@ -327,9 +327,9 @@ class UserEditProfileActions : BaseDialogFragment() {
             if (isSdf) { AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_INNEED_MOSAIC) }
             else { AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_NEIGHBOR_MOSAIC) }
 
-            OnboardingAPI.getInstance(EntourageApplication.get()).updateUserInterests(activitiesSelection!!.getArrayForWs()) { isOK, userResponse ->
+            OnboardingAPI.getInstance().updateUserInterests(activitiesSelection!!.getArrayForWs()) { isOK, userResponse ->
                 if (isOK && userResponse != null) {
-                    val authenticationController = EntourageApplication.get().entourageComponent.authenticationController
+                    val authenticationController = EntourageApplication.get().components.authenticationController
                     authenticationController.saveUser(userResponse.user)
                 }
 

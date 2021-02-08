@@ -67,7 +67,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     // ----------------------------------
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupComponent(EntourageApplication.get(activity).entourageComponent)
+        setupComponent(EntourageApplication.get(activity).components)
         initializeMap()
         initializeAlertBanner()
         initializePopups()
@@ -295,7 +295,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     }
 
     private fun onEmptyListPopupClose() {
-        val authenticationController = EntourageApplication.get(context).entourageComponent.authenticationController
+        val authenticationController = EntourageApplication.get(context).components.authenticationController
         //TODO add an "never display" button
         authenticationController.isShowNoPOIsPopup = false
         hideEmptyListPopup()
@@ -315,7 +315,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
                 previousEmptyListPopupLocation = EntLocation.cameraPositionToLocation(null, googleMap.cameraPosition)
             }
         }
-        if (EntourageApplication.get(context).entourageComponent.authenticationController.isShowNoPOIsPopup) {
+        if (EntourageApplication.get(context).components.authenticationController.isShowNoPOIsPopup) {
             fragment_guide_empty_list_popup?.visibility = View.VISIBLE
         }
     }
@@ -328,13 +328,13 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     // INFO POPUP
     // ----------------------------------
     private fun onInfoPopupClose() {
-        val authenticationController = EntourageApplication.get(context).entourageComponent.authenticationController
+        val authenticationController = EntourageApplication.get(context).components.authenticationController
         authenticationController.isShowInfoPOIsPopup = false
         hideInfoPopup()
     }
 
     private fun showInfoPopup() {
-        val authenticationController = EntourageApplication.get(context).entourageComponent.authenticationController
+        val authenticationController = EntourageApplication.get(context).components.authenticationController
         if (!authenticationController.isShowInfoPOIsPopup) {
             fragment_guide_info_popup?.visibility = View.VISIBLE
         }

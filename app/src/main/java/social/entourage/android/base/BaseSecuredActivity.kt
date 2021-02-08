@@ -7,6 +7,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
+import social.entourage.android.tools.log.AnalyticsEvents
 import javax.inject.Inject
 
 /**
@@ -27,8 +28,8 @@ abstract class BaseSecuredActivity : BaseActivity() {
 
     protected open fun logout() {
         authenticationController.logOutUser()
-        EntourageApplication[applicationContext].removeAllPushNotifications()
-        //EntourageEvents.logEvent(EntourageEvents.EVENT_LOGOUT);
+        EntourageApplication.get(applicationContext).removeAllPushNotifications()
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_LOGOUT);
         startActivity(Intent(this, PreOnboardingStartActivity::class.java))
         finish()
     }

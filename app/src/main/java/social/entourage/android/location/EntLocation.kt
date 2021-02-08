@@ -40,7 +40,7 @@ object EntLocation {
     }
 
     init {
-        val address = get().entourageComponent.authenticationController.me?.address
+        val address = get().components.authenticationController.me?.address
         val lat = LatLng(address?.latitude ?: INITIAL_LATITUDE, address?.longitude ?: INITIAL_LONGITUDE)
         lastCameraPosition = CameraPosition(lat, INITIAL_CAMERA_FACTOR, 0.0F, 0.0F)
         currentCameraPosition = CameraPosition(lat, INITIAL_CAMERA_FACTOR, 0.0F, 0.0F)
