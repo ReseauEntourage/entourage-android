@@ -250,7 +250,6 @@ object AnalyticsEvents {
     const val EVENT_FEED_FILTERSCLICK = "FeedFiltersPress"
     const val EVENT_FEED_REFRESH_LIST = "RefreshListPage"
     const val EVENT_FEED_SCROLL_LIST = "ScrollListPage"
-    const val EVENT_FEED_PLUS_CLICK = "PlusFromFeedClick"
     const val EVENT_FEED_TOUR_CREATE_CLICK = "TourCreateClick"
     const val EVENT_FEED_ACTION_CREATE_CLICK = "CreateActionClick"
     const val EVENT_FEED_PENDING_OVERLAY = "PendingRequestOverlay"
@@ -270,7 +269,6 @@ object AnalyticsEvents {
     const val EVENT_MAP_SHIFT_CENTER = "MapShiftCenter" //Not able to detect if it's an automatic or manual shift
 
     //GUIDE Events
-    const val EVENT_GUIDE_PLUS_CLICK = "PlusFromGuideClick"
     const val EVENT_GUIDE_LONGPRESS = "LongPressFromGuideClick"
 
     //SEND JOIN REQUEST Events
@@ -310,7 +308,14 @@ object AnalyticsEvents {
     const val EVENT_MYENTOURAGES_FILTER_CLICK = "MessagesFilterClick"
     const val EVENT_MYENTOURAGES_BANNER_MOVE = "MoveBannerClick" //A lot of code needs to be written to detect this
     const val EVENT_MYENTOURAGES_BACK_CLICK = "BackToFeedClick"
+    const val ACTION_PLUS_HELP = "Action__Plus__Help"
     const val ACTION_PLUS_GOOD_WAVES = "Action__Plus__GoodWaves"
+    const val ACTION_PLUS_CREATE_ASKFORHELP = "Action__Plus__CreateAskForHelp"
+    const val ACTION_PLUS_CREATE_CONTRIBUTE = "Action__Plus__CreateContribute"
+    const val ACTION_PLUS_CREATE_OUTING = "Action__Plus__CreateOuting"
+    const val ACTION_PLUS_START_TOUR = "Action__Plus__StartTour"
+    const val ACTION_PLUS_ADD_ENCOUNTER = "Action__Plus__AddEncounter"
+    const val ACTION_PLUS_BACK = "Action__Plus__BackPressed"
 
     //MY ENTOURAGES FILTER Events
     const val EVENT_MYENTOURAGES_FILTER_EXIT = "ExitMessagesFilter"
@@ -406,7 +411,6 @@ object AnalyticsEvents {
     const val ACTION_FEEDITEMINFO_FAQ = "Action__FeedItemInfo__FAQ"
 
     //Action plus button agir / structure
-    const val ACTION_PLUS_AGIR = "Action__Plus__Agir"
     const val ACTION_PLUS_STRUCTURE = "Action__Plus__Structure"
 
     //Tabbar actions clic
@@ -447,7 +451,7 @@ object AnalyticsEvents {
     const val ACTION_GUIDE_SEARCHFILTER_DONAT = "Action__GuideMap__Donations"
 
     //Start info
-    const val SHOW_START_FEEDS = "View__Start__Feeds"
+    const val SHOW_START_HOME = "View__Start__Home"
 
     //Profile
     const val ACTION_PROFILE_LOGOUT = "Action__Profile__LogOut"
@@ -464,6 +468,7 @@ object AnalyticsEvents {
     const val ACTION_PROFILE_MODPROFIL = "Action__Profile__ModProfil"
     const val ACTION_PROFILE_SHOWPROFIL = "Action__Profile__ShowProfil"
     const val VIEW_PROFILE_MENU = "View__Profile__Menu"
+    const val VIEW_PLUS_SCREEN = "View__Plus__Screen"
 
     const val VIEW_ADD_USERNAME_SUBMIT = "Action__Add__UsernameSubmit"
 

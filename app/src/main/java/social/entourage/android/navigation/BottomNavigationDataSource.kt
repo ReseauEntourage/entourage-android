@@ -47,10 +47,7 @@ class BottomNavigationDataSource {
         return when (menuId) {
             R.id.bottom_bar_newsfeed -> if(EntourageApplication.get().me()?.isPro == true) NewsFeedWithTourFragment() else NewsFeedFragment()
             R.id.bottom_bar_guide -> GuideHubFragment()//GuideMapFragment()
-            R.id.bottom_bar_plus ->  {
-                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PLUS_AGIR)
-                PlusFragment()
-            }
+            R.id.bottom_bar_plus ->  PlusFragment()
             R.id.bottom_bar_mymessages -> MyEntouragesFragment()
             R.id.bottom_bar_profile -> MainProfileFragment()
             else -> null

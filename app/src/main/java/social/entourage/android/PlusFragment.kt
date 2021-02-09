@@ -42,12 +42,24 @@ class PlusFragment : Fragment(), BackPressable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_PLUS_SCREEN)
+
         plus_help_button?.setOnClickListener {onHelpButton()}
-        layout_line_create_entourage_ask_help?.setOnClickListener {onAction(KEY_CREATE_DEMAND)}
-        layout_line_create_entourage_contribute?.setOnClickListener {onAction(KEY_CREATE_CONTRIBUTION)}
-        layout_line_create_outing?.setOnClickListener {onAction(KEY_CREATE_OUTING)}
-        layout_line_start_tour_launcher?.setOnClickListener {onAction(KEY_START_TOUR)}
-        layout_line_add_tour_encounter?.setOnClickListener {onAction(KEY_ADD_ENCOUNTER)}
+        layout_line_create_entourage_ask_help?.setOnClickListener {
+            onAction(KEY_CREATE_DEMAND, AnalyticsEvents.ACTION_PLUS_CREATE_ASKFORHELP)
+        }
+        layout_line_create_entourage_contribute?.setOnClickListener {
+            onAction(KEY_CREATE_CONTRIBUTION, AnalyticsEvents.ACTION_PLUS_CREATE_CONTRIBUTE)
+        }
+        layout_line_create_outing?.setOnClickListener {
+            onAction(KEY_CREATE_OUTING, AnalyticsEvents.ACTION_PLUS_CREATE_OUTING)
+        }
+        layout_line_start_tour_launcher?.setOnClickListener {
+            onAction(KEY_START_TOUR, AnalyticsEvents.ACTION_PLUS_START_TOUR)
+        }
+        layout_line_add_tour_encounter?.setOnClickListener {
+            onAction(KEY_ADD_ENCOUNTER,AnalyticsEvents.ACTION_PLUS_ADD_ENCOUNTER)
+        }
         fragment_plus_overlay?.setOnClickListener {onBackPressed()}
         layout_line_create_good_waves?.setOnClickListener { onShowGoodWaves() }
 
@@ -80,6 +92,7 @@ class PlusFragment : Fragment(), BackPressable {
     }
 
     private fun onHelpButton() {
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PLUS_HELP)
         EntourageApplication.get().me()?.let { currentUser ->
             (activity as? MainActivity)?.showWebViewForLinkId(
                     if (currentUser.isUserTypeAlone)
@@ -93,7 +106,8 @@ class PlusFragment : Fragment(), BackPressable {
         }
     }
 
-    private fun onAction(action: String) {
+    private fun onAction(action: String, eventName: String) {
+        AnalyticsEvents.logEvent(eventName)
         val newIntent = Intent(context, MainActivity::class.java)
         newIntent.action = action
         startActivity(newIntent)
@@ -108,6 +122,7 @@ class PlusFragment : Fragment(), BackPressable {
     }
 
     override fun onBackPressed(): Boolean {
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PLUS_BACK)
         (activity as? MainActivity)?.showFeed()
         return true
     }
