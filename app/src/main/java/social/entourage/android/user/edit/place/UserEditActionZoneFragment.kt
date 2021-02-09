@@ -1,4 +1,4 @@
-package social.entourage.android.user.edit
+package social.entourage.android.user.edit.place
 
 import android.os.Bundle
 import android.view.View
@@ -10,27 +10,29 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
-import social.entourage.android.onboarding.OnboardingPlaceFragment
 import timber.log.Timber
 
-private const val ARG_PLACE = "place"
-private const val ARG_2ND = "is2ndAddress"
-
-class UserEditActionZoneFragment : OnboardingPlaceFragment() {
+class UserEditActionZoneFragment : UserActionPlaceFragment() {
     private var mListener: FragmentListener? = null
+
     //**********//**********//**********
     // Lifecycle
     //**********//**********//**********
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        isFromProfile = true
-        super.onViewCreated(view, savedInstanceState)
+    override fun setupViews() {
+        super.setupViews()
+
+        if (isSecondaryAddress) {
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_PROFILE_ACTION_ZONE2)
+        }
+        else {
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_PROFILE_ACTION_ZONE)
+        }
 
         ui_onboard_place_tv_title?.text = getString(R.string.profile_edit_zone_title)
         ui_onboard_place_tv_info?.text = getString(R.string.profile_edit_zone_description)
 
         edit_place_title_layout?.visibility = View.VISIBLE
         edit_place_title_layout?.title_action_button?.setOnClickListener {
-            Timber.d("Click valider")
             sendNetwork()
         }
         edit_place_title_layout?.title_close_button?.setOnClickListener {
@@ -38,8 +40,27 @@ class UserEditActionZoneFragment : OnboardingPlaceFragment() {
         }
     }
 
-    fun setupListener(listener: FragmentListener?) {
-        if (listener == null) return
+    override fun onCurrentLocationClicked() {
+        super.onCurrentLocationClicked()
+        if (isSecondaryAddress) {
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE2_GEOLOC)
+        }
+        else {
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE_GEOLOC)
+        }
+    }
+
+    override fun onSearchCalled() {
+        super.onSearchCalled()
+        if (isSecondaryAddress) {
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE2_SEARCH)
+        }
+        else {
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE_SEARCH)
+        }
+    }
+
+    fun setupListener(listener: FragmentListener) {
         mListener = listener
     }
 
@@ -75,7 +96,6 @@ class UserEditActionZoneFragment : OnboardingPlaceFragment() {
         }
     }
 
-
     interface FragmentListener {
         fun onUserEditActionZoneFragmentDismiss()
         fun onUserEditActionZoneFragmentAddressSaved()
@@ -87,7 +107,7 @@ class UserEditActionZoneFragment : OnboardingPlaceFragment() {
     //**********//**********//**********
 
     companion object {
-        const val TAG = "social.entourage.android.user.edit.UserEditActionZoneFragment"//EditUserPlaceFragment::class.java.simpleName
+        val TAG = UserEditActionZoneFragment::class.java.simpleName
 
         fun newInstance(googlePlaceAddress: User.Address?,isSecondary:Boolean) =
                 UserEditActionZoneFragment().apply {

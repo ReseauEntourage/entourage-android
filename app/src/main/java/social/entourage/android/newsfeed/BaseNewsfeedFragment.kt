@@ -36,6 +36,7 @@ import social.entourage.android.api.model.*
 import social.entourage.android.api.model.feed.*
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
+import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.entourage.category.EntourageCategory
@@ -51,17 +52,18 @@ import social.entourage.android.map.permissions.NoLocationPermissionFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.user.edit.UserEditActionZoneFragment.FragmentListener
 import social.entourage.android.tools.view.EntSnackbar
+import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import java.util.*
 import javax.inject.Inject
 
-abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedListener, FragmentListener {
+abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedListener, UserEditActionZoneFragment.FragmentListener {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
     @Inject lateinit var presenter: NewsfeedPresenter
+    @Inject lateinit var authenticationController: AuthenticationController
     private var onMapReadyCallback: OnMapReadyCallback? = null
     protected var userId = 0
     protected var longTapCoordinates: LatLng? = null
@@ -136,7 +138,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     protected fun setupComponent(entourageComponent: EntourageComponent?) {
-        DaggerNewsfeedComponent.builder()
+        DaggerBaseNewsfeedComponent.builder()
                 .entourageComponent(entourageComponent)
                 .newsfeedModule(NewsfeedModule(this))
                 .build()
@@ -1195,7 +1197,6 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     private fun storeActionZoneInfo(ignoreAddress: Boolean) {
-        val authenticationController = EntourageApplication.get().components.authenticationController
         authenticationController.isIgnoringActionZone = ignoreAddress
         authenticationController.saveUserPreferences()
         if (!ignoreAddress) {

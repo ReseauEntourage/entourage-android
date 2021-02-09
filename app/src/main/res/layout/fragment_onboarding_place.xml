@@ -8,7 +8,7 @@ android:clickable="true"
 android:focusable="true"
 android:focusableInTouchMode="true"
 android:id="@+id/onboard_phone_mainlayout"
-tools:context="social.entourage.android.onboarding.OnboardingPlaceFragment">
+tools:context="social.entourage.android.user.edit.place.UserActionPlaceFragment">
 
     <social.entourage.android.tools.view.CustomTitleView
         android:id="@+id/edit_place_title_layout"

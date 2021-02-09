@@ -31,7 +31,6 @@ import social.entourage.android.tools.view.CustomProgressDialog
 import timber.log.Timber
 import java.io.File
 import java.util.*
-import javax.inject.Inject
 
 /**
  * Created by Jr on 04/05/2020.

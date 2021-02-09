@@ -3,6 +3,8 @@ package social.entourage.android.newsfeed
 import dagger.Component
 import social.entourage.android.base.ActivityScope
 import social.entourage.android.EntourageComponent
+import social.entourage.android.authentication.AuthenticationController
+import javax.inject.Inject
 
 /**
  * Component linked to BaseNewsfeedFragment lifecycle
@@ -13,7 +15,8 @@ import social.entourage.android.EntourageComponent
  */
 @ActivityScope
 @Component(dependencies = [EntourageComponent::class], modules = [NewsfeedModule::class])
-interface NewsfeedComponent {
+interface BaseNewsfeedComponent {
     fun inject(fragment: BaseNewsfeedFragment?)
     val newsfeedPresenter: NewsfeedPresenter?
+    val authenticationController: AuthenticationController
 }

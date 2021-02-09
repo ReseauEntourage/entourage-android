@@ -35,10 +35,12 @@ import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.UserFragment
 import social.entourage.android.user.UserOrganizationsAdapter
-import social.entourage.android.user.edit.UserEditActionZoneFragment.FragmentListener
+import social.entourage.android.user.edit.place.UserEditActionZoneFragment.FragmentListener
 import social.entourage.android.user.edit.partner.UserEditPartnerFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragmentCompat
+import social.entourage.android.user.edit.place.UserEditActionZoneFragment
+import social.entourage.android.user.edit.place.UserEditActionZoneFragmentCompat
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -321,8 +323,7 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
     }
 
     private fun onActionSelectType() {
-         val frag = UserEditProfileType()
-         frag.show(parentFragmentManager, UserEditProfileType.TAG)
+         UserEditProfileType().show(parentFragmentManager, UserEditProfileType.TAG)
     }
 
     private fun onActionAddSecondaryZone() {

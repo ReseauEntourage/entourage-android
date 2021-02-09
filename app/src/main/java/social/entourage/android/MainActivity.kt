@@ -62,9 +62,8 @@ import social.entourage.android.user.AvatarUploadPresenter
 import social.entourage.android.user.AvatarUploadView
 import social.entourage.android.user.UserFragment
 import social.entourage.android.user.UserFragment.Companion.newInstance
-import social.entourage.android.user.edit.UserEditActionZoneFragment
-import social.entourage.android.user.edit.UserEditActionZoneFragment.FragmentListener
-import social.entourage.android.user.edit.UserEditActionZoneFragmentCompat
+import social.entourage.android.user.edit.place.UserEditActionZoneFragment
+import social.entourage.android.user.edit.place.UserEditActionZoneFragmentCompat
 import social.entourage.android.user.edit.UserEditFragment
 import social.entourage.android.user.edit.photo.PhotoChooseInterface
 import social.entourage.android.user.edit.photo.PhotoEditFragment
@@ -73,7 +72,14 @@ import java.io.File
 import java.util.*
 import javax.inject.Inject
 
-class MainActivity : BaseSecuredActivity(), OnTourInformationFragmentFinish, OnChoiceFragmentFinish, EntourageDisclaimerFragment.OnFragmentInteractionListener, EncounterDisclaimerFragment.OnFragmentInteractionListener, PhotoChooseInterface, FragmentListener, AvatarUploadView {
+class MainActivity : BaseSecuredActivity(),
+        OnTourInformationFragmentFinish,
+        OnChoiceFragmentFinish,
+        EntourageDisclaimerFragment.OnFragmentInteractionListener,
+        EncounterDisclaimerFragment.OnFragmentInteractionListener,
+        PhotoChooseInterface,
+        UserEditActionZoneFragment.FragmentListener,
+        AvatarUploadView {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -702,7 +708,7 @@ class MainActivity : BaseSecuredActivity(), OnTourInformationFragmentFinish, OnC
     // ----------------------------------
     // ACTION ZONE HANDLING
     // ----------------------------------
-    fun showEditActionZoneFragment(extraFragmentListener: FragmentListener? = null, isSecondaryAddress: Boolean = false) {
+    fun showEditActionZoneFragment(extraFragmentListener: UserEditActionZoneFragment.FragmentListener? = null, isSecondaryAddress: Boolean = false) {
         val me = authenticationController.me ?: return
         if (me.address?.displayAddress?.isNotEmpty() == true) {
             return
@@ -718,8 +724,7 @@ class MainActivity : BaseSecuredActivity(), OnTourInformationFragmentFinish, OnC
             userEditActionZoneFragmentCompat.show(supportFragmentManager, UserEditActionZoneFragmentCompat.TAG)
         } else {
             val userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null, isSecondaryAddress)
-            userEditActionZoneFragment.setupListener(this)
-            userEditActionZoneFragment.setupListener(extraFragmentListener)
+            userEditActionZoneFragment.setupListener(extraFragmentListener ?: this)
             userEditActionZoneFragment.show(supportFragmentManager, UserEditActionZoneFragment.TAG)
         }
         authenticationController.editActionZoneShown = true

@@ -54,6 +54,7 @@
     <string name="onboard_place_description_sdf">Vous pourrez demander de l’aide à vos voisins et rencontrer de nouvelles personnes lors d’événements conviviaux du réseaux.</string>
     <string name="onboard_place_info">Entourage ne communique pas cette adresse.</string>
     <string name="onboard_place_placeholder">Ex : 35000</string>
+    <string name="onboard_place_getting_current_location">En attente du GPS</string>
     <string name="onboard_email_pwd_title">Ok super !</string>
     <string name="onboard_email_pwd_description">Maintenant, finalisons la création de votre compte !</string>
     <string name="onboard_email_pwd_info">Laissez-nous votre mail pour recevoir des informations et des conseils de la part d\'Entourage !</string>

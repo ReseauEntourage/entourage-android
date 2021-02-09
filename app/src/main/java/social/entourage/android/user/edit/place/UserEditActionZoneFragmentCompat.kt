@@ -1,4 +1,4 @@
-package social.entourage.android.user.edit
+package social.entourage.android.user.edit.place
 
 import android.content.DialogInterface
 import android.content.Intent
@@ -32,7 +32,7 @@ import java.util.*
 /**
  * Deprecated
  */
-@Deprecated(message="Migrate to class UserEditActionZoneFragment", replaceWith = ReplaceWith("UserEditActionZoneFragment", "social.entourage.android.user.edit.UserEditActionZoneFragment"))
+@Deprecated(message="Migrate to class UserEditActionZoneFragment", replaceWith = ReplaceWith("UserEditActionZoneFragment", "social.entourage.android.user.edit.place.UserEditActionZoneFragment"))
 class UserEditActionZoneFragmentCompat  : BaseDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES

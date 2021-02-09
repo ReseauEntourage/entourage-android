@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@color/accent"
-              tools:context="social.entourage.android.user.edit.UserEditActionZoneFragmentCompat">
+              tools:context="social.entourage.android.user.edit.place.UserEditActionZoneFragmentCompat">
 
     <LinearLayout
         android:id="@+id/action_zone_title_layout"
