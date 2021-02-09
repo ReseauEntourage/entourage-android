@@ -32,8 +32,7 @@ class CreateEncounterActivity : BaseSecuredActivity(), LocationFragment.OnFragme
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-    @Inject
-    lateinit var presenter: CreateEncounterPresenter
+    @Inject lateinit var presenter: CreateEncounterPresenter
 
     private var location: LatLng? = null
     private var editedEncounter: Encounter? = null

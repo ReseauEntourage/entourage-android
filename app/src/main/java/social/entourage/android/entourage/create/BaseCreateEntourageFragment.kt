@@ -48,22 +48,21 @@ import javax.inject.Inject
  * Base fragment for creating and editing an action/entourage
  */
 open class BaseCreateEntourageFragment
-    : BaseDialogFragment(), LocationFragment.OnFragmentInteractionListener, CreateEntourageListener,
-        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+    : BaseDialogFragment(),
+        LocationFragment.OnFragmentInteractionListener,
+        CreateEntourageListener,
+        DatePickerDialog.OnDateSetListener,
+        TimePickerDialog.OnTimeSetListener {
     // ----------------------------------
     // Attributes
     // ----------------------------------
-    @JvmField
-    @Inject
-    var presenter: CreateEntouragePresenter? = null
+    @Inject lateinit var presenter: CreateEntouragePresenter
 
     protected var entourageCategory: EntourageCategory? = null
     protected var location: LatLng? = null
     protected var groupType: String? = null
-    private var entourageDateStart //= Calendar.getInstance();
-            : Calendar? = null
-    private var entourageDateEnd //= Calendar.getInstance();
-            : Calendar? = null
+    private var entourageDateStart: Calendar? = null
+    private var entourageDateEnd: Calendar? = null
     private var entourageMetadata: BaseEntourage.Metadata? = null
     protected var recipientConsentObtained = true
     protected var joinRequestTypePublic = true
@@ -140,19 +139,14 @@ open class BaseCreateEntourageFragment
     }
 
     private fun onValidateClicked() {
-        if (isSaving) return
-        if (isValid) {
-            if (presenter != null) {
-                if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) {
-                    joinRequestTypePublic = create_entourage_privacy_switch?.isChecked ?: false
-                }
-                if (editedEntourage != null) {
-                    saveEditedEntourage()
-                } else {
-                    createEntourage()
-                }
+        if (!isSaving && isValid) {
+            if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) {
+                joinRequestTypePublic = create_entourage_privacy_switch?.isChecked ?: false
+            }
+            if (editedEntourage != null) {
+                saveEditedEntourage()
             } else {
-                Toast.makeText(activity, R.string.entourage_create_error, Toast.LENGTH_SHORT).show()
+                createEntourage()
             }
         }
     }
@@ -274,7 +268,7 @@ open class BaseCreateEntourageFragment
             entourageLocation.latitude = it.latitude
             entourageLocation.longitude = it.longitude
         }
-        presenter?.createEntourage(
+        presenter.createEntourage(
                 entourageCategory?.groupType,
                 entourageCategory?.category,
                 create_entourage_title?.text.toString(),
@@ -318,7 +312,7 @@ open class BaseCreateEntourageFragment
             groupType?.let { entourage.setGroupType(it) }
             entourage.metadata = entourageMetadata
             entourage.isJoinRequestPublic = joinRequestTypePublic
-            presenter?.editEntourage(entourage)
+            presenter.editEntourage(entourage)
         }
     }
 

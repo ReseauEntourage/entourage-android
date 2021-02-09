@@ -20,8 +20,7 @@ class EntourageJoinRequestReceivedActivity : BaseSecuredActivity() {
     private var message: Message? = null
     private var requestsCount = 0
 
-    @Inject
-    lateinit var presenter: EntourageJoinRequestReceivedPresenter
+    @Inject lateinit var presenter: EntourageJoinRequestReceivedPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

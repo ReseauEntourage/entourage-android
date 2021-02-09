@@ -124,7 +124,7 @@ class InviteContactsFragment  : InviteBaseFragment(), LoaderManager.LoaderCallba
         if (!isStateSaved) dismiss()
     }
 
-    fun onSendClicked() {
+    private fun onSendClicked() {
         // Disable the send button
         title_action_button?.isEnabled = false
         // Get the selected contacts
@@ -144,7 +144,7 @@ class InviteContactsFragment  : InviteBaseFragment(), LoaderManager.LoaderCallba
         (activity as? BaseActivity)?.showProgressDialog(R.string.invite_contacts_inviting)
         // Send the phone number to server
         serverRequestsCount++
-        feedItemUUID?.let { presenter?.inviteBySMS(it, feedItemType, invitations) }
+        feedItemUUID?.let { presenter.inviteBySMS(it, feedItemType, invitations) }
     }
 
     // ----------------------------------
@@ -229,7 +229,7 @@ class InviteContactsFragment  : InviteBaseFragment(), LoaderManager.LoaderCallba
                 }
                 // Send the phone number to server
                 serverRequestsCount++
-                feedItemUUID?.let { presenter?.inviteBySMS(it, feedItemType, invitations) }
+                feedItemUUID?.let { presenter.inviteBySMS(it, feedItemType, invitations) }
             }
         }
     }

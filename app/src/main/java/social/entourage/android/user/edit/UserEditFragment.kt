@@ -48,9 +48,7 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-    @JvmField
-    @Inject
-    var presenter: UserEditPresenter? = null
+    @Inject lateinit var presenter: UserEditPresenter
 
     private var scrollViewY = 0
 
@@ -210,7 +208,7 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
     }
 
     fun saveNewPassword(newPassword: String?) {
-        presenter?.saveNewPassword(newPassword ?: "").also { user_edit_progressBar?.visibility = View.VISIBLE }
+        presenter.saveNewPassword(newPassword ?: "").also { user_edit_progressBar?.visibility = View.VISIBLE }
     }
 
     // ----------------------------------
@@ -243,7 +241,7 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
             builder.setMessage(R.string.user_delete_account_dialog)
                     .setPositiveButton(R.string.yes) { _, _ ->
                         (it as BaseActivity?)?.showProgressDialog(0)
-                        presenter?.deleteAccount()
+                        presenter.deleteAccount()
                     }
                     .setNegativeButton(R.string.no, null)
             builder.show()
@@ -256,7 +254,7 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
             // If we have an user fragment in the stack, let it handle the update
             (parentFragmentManager.findFragmentByTag(UserFragment.TAG) as UserFragment?)?.saveAccount(user)
                 ?: run {
-                    presenter?.updateUser(user)
+                    presenter.updateUser(user)
                 }
         }
     }

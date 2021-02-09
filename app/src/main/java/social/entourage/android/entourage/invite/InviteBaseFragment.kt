@@ -18,9 +18,7 @@ open class InviteBaseFragment  : BaseDialogFragment() {
     protected var feedItemUUID: String? = null
     protected var feedItemType = 0
 
-    @JvmField
-    @Inject
-    var presenter: InvitePresenter? = null
+    @Inject lateinit var presenter: InvitePresenter
     var inviteFriendsListener: InviteFriendsListener? = null
 
     protected fun setFeedData(feedUUID: String?, feedItemType: Int) {

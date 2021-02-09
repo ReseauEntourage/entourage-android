@@ -46,7 +46,7 @@ class InviteByPhoneNumberFragment  : InviteBaseFragment() {
         dismiss()
     }
 
-    fun onSendClicked() {
+    private fun onSendClicked() {
         // Check phone number
         invite_phone_number?.text?.toString()?.let {
             checkPhoneNumberFormat(it)?.let { phoneNumber ->
@@ -55,7 +55,7 @@ class InviteByPhoneNumberFragment  : InviteBaseFragment() {
                 // Send the request to server
                 val invitations = MultipleInvitations(Invitation.INVITE_BY_SMS)
                 invitations.addPhoneNumber(phoneNumber)
-                feedItemUUID?.let { uuid -> presenter?.inviteBySMS(uuid, feedItemType, invitations) }
+                feedItemUUID?.let { uuid -> presenter.inviteBySMS(uuid, feedItemType, invitations) }
             } ?: run {
                 Toast.makeText(activity, R.string.login_text_invalid_format, Toast.LENGTH_SHORT).show()
             }

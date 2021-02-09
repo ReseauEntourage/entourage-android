@@ -43,9 +43,7 @@ class UserFragment : BaseDialogFragment() {
     // ----------------------------------
     private var toReturn: View? = null
 
-    @JvmField
-    @Inject
-    var presenter: UserPresenter? = null
+    @Inject lateinit var presenter: UserPresenter
 
     private var user: User? = null
     private var isMyProfile = false
@@ -63,14 +61,14 @@ class UserFragment : BaseDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         setupComponent(EntourageApplication.get(activity).components)
         val requestedUserId = arguments?.getInt(User.KEY_USER_ID) ?: return
-        val authenticatedUser = presenter?.authenticatedUser
+        val authenticatedUser = presenter.authenticatedUser
         if (authenticatedUser != null && requestedUserId == authenticatedUser.id) {
             isMyProfile = true
             user = authenticatedUser
             configureView()
         } else {
             user_profile_progressBar?.visibility = View.VISIBLE
-            presenter?.getUser(requestedUserId)
+            presenter.getUser(requestedUserId)
         }
         title_close_button?.setOnClickListener { onCloseButtonClicked()}
         user_profile_edit_button?.setOnClickListener { onEditButtonClicked() }
@@ -179,7 +177,7 @@ class UserFragment : BaseDialogFragment() {
     }
 
     fun saveAccount(user: User) {
-        presenter?.updateUser(user)
+        presenter.updateUser(user)
     }
 
     val editedUser: User?
@@ -263,7 +261,7 @@ class UserFragment : BaseDialogFragment() {
 
     private fun onMessageUserClicked() {
         //UserDiscussionFragment.newInstance(user, false).show(parentFragmentManager, UserDiscussionFragment.TAG);
-        user?.conversation?.let { presenter?.getConversation(it) }
+        user?.conversation?.let { presenter.getConversation(it) }
     }
 
     private fun onPhotoEditClicked() {
