@@ -201,7 +201,7 @@ class MainActivity : BaseSecuredActivity(),
         }
         if (!isAnalyticsSendFromStart) {
             isAnalyticsSendFromStart = true
-            logEvent(AnalyticsEvents.SHOW_START_FEEDS)
+            logEvent(AnalyticsEvents.SHOW_START_HOME)
         }
         sendNewsfeedFragmentExtras()
         if (intent == null || intent.action == null) {
