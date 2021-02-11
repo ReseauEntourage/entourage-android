@@ -402,7 +402,7 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
     }
 
     fun onUserUpdateError() {
-        if (activity?.isFinishing == true) {
+        if (activity?.isFinishing == true || isDetached) {
             return
         }
         displayToast(getString(R.string.user_text_update_ko))

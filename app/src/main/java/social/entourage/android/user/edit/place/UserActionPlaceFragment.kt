@@ -147,12 +147,11 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
     }
 
     fun updateLocationText() {
-        val geocoder = Geocoder(activity, Locale.getDefault())
         ui_onboard_place_tv_location?.text = ""
         ui_onboard_place_tv_location?.hint = getString(R.string.onboard_place_placeholder)
         temporaryLocation?.let {
-        try {
-                val address = geocoder.getFromLocation(it.latitude,it.longitude,1)
+            try {
+                val address = Geocoder(activity, Locale.getDefault()).getFromLocation(it.latitude,it.longitude,1)
                 if (address != null && address.size > 0) {
                     val street = address[0].thoroughfare
                     val city = address[0].locality
@@ -162,7 +161,7 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
                     ui_onboard_place_tv_location?.text = temporaryAddressName
                 }
             } catch (e: IOException) {
-            Timber.e(e)
+                Timber.e(e)
             }
         }
 
