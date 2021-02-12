@@ -24,7 +24,7 @@ import timber.log.Timber
 
 private const val ARG_PARAM1 = "param1"
 
-class UserEditProfileActions : BaseDialogFragment() {
+class UserEditProfileActionsFragment : BaseDialogFragment() {
 
     private var activitiesSelection: SdfNeighbourActivities? = null
     private var activitiesAssoSelection: AssoActivities? = null
@@ -349,7 +349,7 @@ class UserEditProfileActions : BaseDialogFragment() {
         const val TAG = "social.entourage.android.user.edit.UserEditProfileActions"
 
         fun newInstance(userTypeSelection: UserTypeSelection) =
-                UserEditProfileActions().apply {
+                UserEditProfileActionsFragment().apply {
                     arguments = Bundle().apply {
                         putSerializable(ARG_PARAM1, userTypeSelection)
                     }

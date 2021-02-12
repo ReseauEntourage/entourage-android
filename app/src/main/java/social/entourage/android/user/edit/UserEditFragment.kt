@@ -17,10 +17,6 @@ import com.squareup.otto.Subscribe
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_user_edit.*
 import kotlinx.android.synthetic.main.layout_view_title.*
-import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import social.entourage.android.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.BaseOrganization
@@ -33,19 +29,16 @@ import social.entourage.android.user.partner.PartnerFragment
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.user.UserFragment
 import social.entourage.android.user.UserOrganizationsAdapter
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment.FragmentListener
 import social.entourage.android.user.edit.partner.UserEditPartnerFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import social.entourage.android.user.edit.photo.PhotoChooseSourceFragmentCompat
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
-import social.entourage.android.user.edit.place.UserEditActionZoneFragmentCompat
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
-private const val ARG_IS_SHOW_ACTION = "isShowAction"
 open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
     // ----------------------------------
     // ATTRIBUTES
@@ -55,9 +48,6 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
     private var scrollViewY = 0
 
     private var organizationsAdapter: UserOrganizationsAdapter? = null
-    var editedUser: User? = null
-        private set
-
     var isShowAction = false
     // ----------------------------------
     // LIFECYCLE
@@ -86,7 +76,7 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
         user_password_layout?.setOnClickListener { onEditPassword() }
         user_about_edit_button?.setOnClickListener { onEditAboutClicked() }
         user_delete_account_button?.setOnClickListener { onDeleteAccountClicked() }
-        title_action_button?.setOnClickListener { onSaveButtonClicked()  }
+        title_action_button?.setOnClickListener { presenter.updateUser()  }
         user_photo_button?.setOnClickListener { onPhotoClicked() }
         user_add_association_button?.setOnClickListener { onAddAssociationClicked() }
         user_notifications_layout?.setOnClickListener { onShowNotificationsSettingsClicked() }
@@ -99,11 +89,11 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
         }
 
         ui_iv_action_zone2_delete?.setOnClickListener {
-            onDeleteSecondaryAddress()
+            presenter.deleteSecondaryAddress()
         }
 
         ui_profile_add_zone?.setOnClickListener {
-            if(editedUser?.address!=null) {
+            if(presenter.editedUser?.address!=null) {
                 onActionAddSecondaryZone()
             } else { // if no first Zone is set, we set it first
                 onActionZoneEditClicked(false)
@@ -141,10 +131,7 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
     }
 
     fun initUserData() {
-        if (editedUser == null) {
-            editedUser = EntourageApplication.me(activity)?.clone() ?: return
-        }
-        editedUser?.let {user->
+        presenter.editedUser?.let {user->
             user_photo?.let { userPhoto ->
                 user.avatarURL?.let { avatarURL->
                     Picasso.get().load(Uri.parse(avatarURL))
@@ -250,17 +237,6 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
         }
     }
 
-    private fun onSaveButtonClicked() {
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_USER_SAVE)
-        editedUser?.let { user->
-            // If we have an user fragment in the stack, let it handle the update
-            (parentFragmentManager.findFragmentByTag(UserFragment.TAG) as UserFragment?)?.saveAccount(user)
-                ?: run {
-                    presenter.updateUser(user)
-                }
-        }
-    }
-
     private fun onPhotoClicked() {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             PhotoChooseSourceFragmentCompat().show(parentFragmentManager, PhotoChooseSourceFragmentCompat.TAG)
@@ -303,25 +279,6 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
         }
     }
 
-    private fun onDeleteSecondaryAddress() {
-        val userRequest = EntourageApplication.get().components.userRequest
-        val call = userRequest.deleteSecondaryAddressLocation()
-
-        call.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.isSuccessful) {
-                    val authenticationController = EntourageApplication.get().components.authenticationController
-                    authenticationController.me?.let { me->
-                        me.addressSecondary = null
-                        authenticationController.saveUser(me)
-                        initUserData()
-                    }
-                }
-            }
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {}
-        })
-    }
-
     private fun onActionSelectType() {
          UserEditProfileType().show(parentFragmentManager, UserEditProfileType.TAG)
     }
@@ -360,18 +317,7 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
             if (it.isFinishing) {
                 return
             }
-            EntourageApplication.me(it)?.let { me ->
-                editedUser?.let { user ->
-                    user.avatarURL = me.avatarURL
-                    user.partner = me.partner
-                    user.address = me.address
-                    user.addressSecondary = me.addressSecondary
-                    user.interests.clear()
-                    user.interests.addAll(me.interests)
-                    user.goal = me.goal
-                    initUserData()
-                }
-            }
+            presenter.initEditedUser()
         }
     }
 
@@ -418,22 +364,21 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
         }
     }
 
-    fun onSaveNewPassword(newPassword: String) {
+    fun onSaveNewPassword() {
         activity?.let {
             if (it.isFinishing) {
                 return
             }
-            editedUser?.smsCode = newPassword
             displayToast(getString(R.string.user_text_update_ok))
             user_edit_progressBar?.visibility = View.GONE
         }
     }
 
     fun onDeletedAccount(success: Boolean) {
-        activity?.let {
-            val hasActivity = !it.isFinishing && it is BaseActivity
+        (activity as? BaseActivity)?.let {
+            val hasActivity = !it.isFinishing
             if (hasActivity) {
-                (it as BaseActivity?)?.dismissProgressDialog()
+                it.dismissProgressDialog()
             }
             if (success) {
                 //logout and go back to login screen
@@ -441,7 +386,7 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
                     it.selectMenuProfileItem("logout")
                 }
             } else if (hasActivity) {
-                    Toast.makeText(it, R.string.user_delete_account_failure, Toast.LENGTH_SHORT).show()
+                Toast.makeText(it, R.string.user_delete_account_failure, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -450,42 +395,22 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
     // Edit Action Zone
     // ----------------------------------
     private fun onActionZoneEditClicked(isSecondary: Boolean) {
-        editedUser?.let { user ->
-            //ATTENTION both addresses can be null when they are not set yet !
-            val frag = UserEditActionZoneFragment.newInstance(
-                    if (isSecondary) user.addressSecondary else user.address,
-                    isSecondary
-            )
-            frag.setupListener(this)
-            frag.show(parentFragmentManager, UserEditActionZoneFragment.TAG)
-        }
+        //ATTENTION both addresses can be null when they are not set yet !
+        val frag = UserEditActionZoneFragment.newInstance(
+                if (isSecondary) presenter.editedUser?.addressSecondary else presenter.editedUser?.address,
+                isSecondary
+        )
+        frag.setupListener(this)
+        frag.show(parentFragmentManager, UserEditActionZoneFragment.TAG)
     }
 
     override fun onUserEditActionZoneFragmentDismiss() {}
     override fun onUserEditActionZoneFragmentAddressSaved() {
-        storeActionZone(false)
+        presenter.storeActionZone(false)
     }
 
     override fun onUserEditActionZoneFragmentIgnore() {
-        storeActionZone(true)
-    }
-
-    private fun storeActionZone(ignoreActionZone: Boolean) {
-        EntourageApplication.get().components.authenticationController.isIgnoringActionZone = ignoreActionZone
-
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            (parentFragmentManager.findFragmentByTag(UserEditActionZoneFragmentCompat.TAG) as UserEditActionZoneFragmentCompat?)?.let { userEditActionZoneFragmentCompat ->
-                if (!userEditActionZoneFragmentCompat.isStateSaved) {
-                    userEditActionZoneFragmentCompat.dismiss()
-                }
-            }
-        } else {
-            (parentFragmentManager.findFragmentByTag(UserEditActionZoneFragment.TAG) as UserEditActionZoneFragment?)?.let { userEditActionZoneFragment ->
-                if (!userEditActionZoneFragment.isStateSaved) {
-                    userEditActionZoneFragment.dismiss()
-                }
-            }
-        }
+        presenter.storeActionZone(true)
     }
 
     companion object {
@@ -493,6 +418,7 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
         // CONSTANTS
         // ----------------------------------
         const val TAG = "user_edit_fragment"
+        const val ARG_IS_SHOW_ACTION = "isShowAction"
         fun newInstance(isShowAction:Boolean) =
                 UserEditFragment().apply {
                     arguments = Bundle().apply {

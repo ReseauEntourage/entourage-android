@@ -71,7 +71,7 @@ class UserEditPasswordFragment  : BaseDialogFragment() {
         val newPassword = user_new_password?.text.toString().trim { it <= ' ' }
         val confirmPassword = user_confirm_password?.text.toString().trim { it <= ' ' }
         val userEditFragment = parentFragmentManager.findFragmentByTag(UserEditFragment.TAG) as UserEditFragment?
-        val userPassword = userEditFragment?.editedUser?.smsCode ?: ""
+        val userPassword = userEditFragment?.presenter?.editedUser?.smsCode ?: ""
         return when {
             oldPassword != userPassword -> {
                 displaySnackbar(R.string.user_edit_password_invalid_current_password)

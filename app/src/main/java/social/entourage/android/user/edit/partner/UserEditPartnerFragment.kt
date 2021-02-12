@@ -57,7 +57,7 @@ class UserEditPartnerFragment  : BaseDialogFragment() {
 
     private fun configureView() {
         (parentFragmentManager.findFragmentByTag(UserEditFragment.TAG) as UserEditFragment?)?.let {userEditFragment ->
-            user = userEditFragment.editedUser
+            user = userEditFragment.presenter?.editedUser
         } ?: run { user = me(activity)}
 
         // Configure the partners list

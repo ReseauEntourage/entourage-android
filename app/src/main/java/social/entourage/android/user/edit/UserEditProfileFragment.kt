@@ -37,7 +37,7 @@ class UserEditProfileFragment  : DialogFragment() {
     private fun configureView() {
         val userEditFragment = parentFragmentManager.findFragmentByTag(UserEditFragment.TAG) as UserEditFragment?
                 ?: return
-        userEditFragment.editedUser?.let { u ->
+        userEditFragment.presenter?.editedUser?.let { u ->
             user = u
             user_edit_profile_firstname?.setText(u.firstName)
             user_edit_profile_lastname?.setText(u.lastName)

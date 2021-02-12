@@ -46,9 +46,9 @@ class UserEditProfileType : BaseDialogFragment(),ValidateActionsDelegate {
 
     fun setupViews() {
         ui_bt_validate?.setOnClickListener {
-            val frag = UserEditProfileActions.newInstance(userTypeSelected)
+            val frag = UserEditProfileActionsFragment.newInstance(userTypeSelected)
             frag.setupCallback(this)
-            frag.show(parentFragmentManager, UserEditProfileActions.TAG)
+            frag.show(parentFragmentManager, UserEditProfileActionsFragment.TAG)
         }
 
         ui_bt_back?.setOnClickListener {
