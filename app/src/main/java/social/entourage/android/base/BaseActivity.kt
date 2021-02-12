@@ -17,14 +17,17 @@ import social.entourage.android.tools.view.WebViewFragment.Companion.newInstance
  */
 abstract class BaseActivity : AppCompatActivity() {
     private var progressDialog: ProgressDialog? = null
+    val entApp: EntourageApplication?
+        get()= (application as? EntourageApplication)
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as? EntourageApplication)?.onActivityCreated(this)
+        entApp?.onActivityCreated(this)
         super.onCreate(savedInstanceState)
         setupComponent(EntourageApplication.get(this).components)
     }
 
     override fun onDestroy() {
-        (application as? EntourageApplication)?.onActivityDestroyed(this)
+        entApp?.onActivityDestroyed(this)
         super.onDestroy()
     }
 

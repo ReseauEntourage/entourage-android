@@ -94,7 +94,7 @@ class PlusFragment : Fragment(), BackPressable {
     private fun onHelpButton() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PLUS_HELP)
         EntourageApplication.get().me()?.let { currentUser ->
-            (activity as? MainActivity)?.showWebViewForLinkId(
+            mainActivity?.showWebViewForLinkId(
                     if (currentUser.isUserTypeAlone)
                         Constants.AGIR_FAQ_ID
                     else if (currentUser.goal.equals(User.USER_GOAL_ASSO)) {
@@ -108,24 +108,24 @@ class PlusFragment : Fragment(), BackPressable {
 
     private fun onAction(action: String, eventName: String) {
         AnalyticsEvents.logEvent(eventName)
-        val newIntent = Intent(context, MainActivity::class.java)
-        newIntent.action = action
+        val newIntent = Intent(context, MainActivity::class.java).apply { this.action = action }
         startActivity(newIntent)
-        (activity as? MainActivity)?.showFeed()
+        mainActivity?.showFeed()
     }
 
     private fun onShowGoodWaves() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PLUS_GOOD_WAVES)
-        val url = (activity as MainActivity?)?.getLink(Constants.GOOD_WAVES_ID)
-
-        (activity as MainActivity?)?.showWebView(url)
+        mainActivity?.let { it.showWebView(it.getLink(Constants.GOOD_WAVES_ID)) }
     }
 
     override fun onBackPressed(): Boolean {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PLUS_BACK)
-        (activity as? MainActivity)?.showFeed()
+        mainActivity?.showFeed()
         return true
     }
+
+    val mainActivity: MainActivity?
+        get() = activity as? MainActivity
 
     companion object {
         const val TAG = "social.entourage.android.fragment_plus"

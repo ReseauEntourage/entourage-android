@@ -36,6 +36,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.api.request.EntourageRequest
 import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.OnUserJoinRequestUpdateEvent
 import social.entourage.android.deeplinks.DeepLinksManager
@@ -56,6 +57,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
     // ATTRIBUTES
     // ----------------------------------
     @Inject lateinit var presenter: EntourageInformationPresenter
+    @Inject lateinit var entourageRequest: EntourageRequest
     override fun presenter(): FeedItemInformationPresenter { return presenter}
 
     val entourage:BaseEntourage
@@ -546,7 +548,6 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
     }
 
     private fun sendDeleteReport(entourageUUID: String) {
-        val entourageRequest = EntourageApplication.get(requireContext()).components.entourageRequest
         val call = entourageRequest.removeUserReportPrompt(entourageUUID)
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {

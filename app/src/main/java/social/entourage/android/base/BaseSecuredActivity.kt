@@ -19,7 +19,7 @@ abstract class BaseSecuredActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (authenticationController.isAuthenticated && authenticationController.isTutorialDone()) {
-            (application as? EntourageApplication)?.finishLoginActivity()
+            entApp?.finishLoginActivity()
         } else {
             startActivity(Intent(this, PreOnboardingStartActivity::class.java))
             finish()

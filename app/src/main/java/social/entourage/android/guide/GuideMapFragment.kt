@@ -4,7 +4,6 @@ import android.animation.ValueAnimator
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.location.Location
 import android.os.Bundle
 import android.os.IBinder
 import android.view.View
@@ -20,10 +19,9 @@ import kotlinx.android.synthetic.main.layout_guide_longclick.*
 import social.entourage.android.*
 import social.entourage.android.api.ApiConnectionListener
 import social.entourage.android.api.model.guide.Poi
-import social.entourage.android.api.tape.PoiRequestEvents.OnPoiViewRequestedEvent
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted
 import social.entourage.android.api.tape.Events.OnSolidarityGuideFilterChanged
-import social.entourage.android.tools.EntLinkMovementMethod
+import social.entourage.android.api.tape.PoiRequestEvents.OnPoiViewRequestedEvent
 import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.guide.filter.GuideFilter.Companion.instance
 import social.entourage.android.guide.filter.GuideFilterFragment
@@ -36,6 +34,7 @@ import social.entourage.android.location.LocationUtils.isLocationPermissionGrant
 import social.entourage.android.map.BaseMapFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
+import social.entourage.android.tools.EntLinkMovementMethod
 import social.entourage.android.tools.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
@@ -43,7 +42,6 @@ import social.entourage.android.user.partner.PartnerFragment
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiConnectionListener,
         GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
@@ -57,8 +55,6 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     @Inject lateinit var presenter: GuideMapPresenter
 
     private var onMapReadyCallback: OnMapReadyCallback? = null
-    private var poisMap: MutableMap<String, Poi> = TreeMap()
-    private var previousEmptyListPopupLocation: Location? = null
     private val poisAdapter: PoisAdapter = PoisAdapter()
     private var mapRenderer: PoiRenderer = PoiRenderer()
 
@@ -140,7 +136,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     fun onSolidarityGuideFilterChanged(event: OnSolidarityGuideFilterChanged?) {
         initializeFilterButton()
         map?.clear()
-        poisMap.clear()
+        presenter.clear()
         poisAdapter.removeAll()
         presenter.updatePoisNearby(map)
     }
@@ -157,12 +153,11 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         if (activity != null) {
             clearOldPois()
             if (pois != null && pois.isNotEmpty()) {
-                val poiCollection = removeRedundantPois(pois)
-                Timber.d("***** put poi on map new coll pois : ${poiCollection.size}")
-                if (map != null) {
-                    poiCollection.forEach {
-                        val marker = map!!.addMarker(mapRenderer.getMarkerOptions(it))
-                        marker.tag = it
+                val poiCollection = presenter.removeRedundantPois(pois)
+                map?.let { map ->
+                    poiCollection.forEach { poi ->
+                        val marker = map.addMarker(mapRenderer.getMarkerOptions(poi))
+                        marker.tag = poi
                     }
                     hideEmptyListPopup()
                 }
@@ -211,7 +206,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     // PRIVATE METHODS
     // ----------------------------------
     private fun clearOldPois() {
-        poisMap.clear()
+        presenter.clear()
         poisAdapter.removeAll()
         map?.clear()
     }
@@ -236,17 +231,6 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
             }
         }
         presenter.updatePoisNearby(map)
-    }
-
-    private fun removeRedundantPois(pois: List<Poi>): List<Poi> {
-        val newPois: MutableList<Poi> = ArrayList()
-        for(poi in pois) {
-            if (!poisMap.containsKey(poi.uuid)) {
-                poisMap[poi.uuid] = poi
-                newPois.add(poi)
-            }
-        }
-        return newPois
     }
 
     private fun showPoiDetails(poi: Poi) {
@@ -295,27 +279,16 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     }
 
     private fun onEmptyListPopupClose() {
-        val authenticationController = EntourageApplication.get(context).components.authenticationController
         //TODO add an "never display" button
-        authenticationController.isShowNoPOIsPopup = false
+        presenter.isShowNoPOIsPopup = false
         hideEmptyListPopup()
     }
 
     private fun showEmptyListPopup() {
-        map?.let { googleMap ->
-            previousEmptyListPopupLocation?.let {
-                // Show the popup only we moved from the last position we show it
-                val currentLocation = EntLocation.cameraPositionToLocation(null, googleMap.cameraPosition)
-                if (it.distanceTo(currentLocation) < Constants.EMPTY_POPUP_DISPLAY_LIMIT) {
-                    return
-                }
-                //We need to update the class object
-                previousEmptyListPopupLocation = currentLocation
-            } ?: run {
-                previousEmptyListPopupLocation = EntLocation.cameraPositionToLocation(null, googleMap.cameraPosition)
-            }
+        map?.cameraPosition?.let { cameraPosition ->
+            presenter.updatePreviousEmptyListPopupLocation(cameraPosition)
         }
-        if (EntourageApplication.get(context).components.authenticationController.isShowNoPOIsPopup) {
+        if (presenter.isShowNoPOIsPopup) {
             fragment_guide_empty_list_popup?.visibility = View.VISIBLE
         }
     }
@@ -328,14 +301,12 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     // INFO POPUP
     // ----------------------------------
     private fun onInfoPopupClose() {
-        val authenticationController = EntourageApplication.get(context).components.authenticationController
-        authenticationController.isShowInfoPOIsPopup = false
+        presenter.isShowInfoPOIsPopup = false
         hideInfoPopup()
     }
 
     private fun showInfoPopup() {
-        val authenticationController = EntourageApplication.get(context).components.authenticationController
-        if (!authenticationController.isShowInfoPOIsPopup) {
+        if (!presenter.isShowInfoPOIsPopup) {
             fragment_guide_info_popup?.visibility = View.VISIBLE
         }
     }
@@ -412,13 +383,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
             fragment_guide_pois_view?.layoutManager?.requestLayout()
         }
 
-        if (poisAdapter.dataItemCount == 0) {
-            Timber.d("***** ici Pois show list empty ;)")
-            ui_view_empty_list?.visibility = View.VISIBLE
-        }
-        else {
-            ui_view_empty_list?.visibility = View.GONE
-        }
+        ui_view_empty_list?.visibility = if (poisAdapter.dataItemCount == 0)  View.VISIBLE else View.GONE
     }
 
     private fun ensureMapVisible() {
@@ -435,18 +400,6 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         fragment_guide_display_toggle?.setOnClickListener {onDisplayToggle()}
         guide_longclick_button_poi_propose?.setOnClickListener {proposePOI()}
         button_poi_propose?.setOnClickListener {onPOIProposeClicked()}
-
-        /* TODO activate this !
-        if(getActivity()!=null) {
-
-            EntourageTapPrompt proposePrompt = new EntourageTapPrompt(R.id.button_poi_propose, "Proposer un POI","Clique ici pour envoyer les infos", null);
-            if(!GuideFilter.getInstance().hasFilteredCategories()) {
-                EntourageTapPrompt filterPrompt = new EntourageTapPrompt(R.id.fragment_guide_filter_button, "Filtrer les POI","Clique ici pour voir les filtres actifs", proposePrompt);
-                filterPrompt.show(getActivity());
-            } else {
-                proposePrompt.show(getActivity());
-            }
-        }*/
     }
 
     private fun initializeFilterButton() {
