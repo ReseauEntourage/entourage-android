@@ -898,10 +898,10 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
                     entourage_info_request_join_layout?.visibility = View.VISIBLE
 //                    entourage_info_request_join_title?.setText(feedItem.getJoinRequestTitle())
                     if (feedItem is EntourageEvent) {
-                        entourage_info_request_join_button?.text = getString(R.string.tour_info_request_join_button_entourage).toUpperCase()
+                        entourage_info_request_join_button?.text = getString(R.string.tour_info_request_join_button_event).toUpperCase()
                     }
                     else {
-                        entourage_info_request_join_button?.text = getString(R.string.tour_info_request_join_button2_entourage).toUpperCase()
+                        entourage_info_request_join_button?.text = getString(R.string.tour_info_request_join_button_entourage).toUpperCase()
                     }
                    // entourage_info_request_join_button?.setText(feedItem.getJoinRequestButton())
 

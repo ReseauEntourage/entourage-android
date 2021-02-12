@@ -356,9 +356,9 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
                 title = R.string.tour_cell_button_pending_new
             }
             else -> {
-                title = R.string.tour_info_request_join_button2_entourage
+                title = R.string.tour_info_request_join_button_entourage
                 if (entourage.isEvent()) {
-                    title = R.string.tour_info_request_join_button_entourage
+                    title = R.string.tour_info_request_join_button_event
                 }
             }
         }

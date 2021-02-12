@@ -62,8 +62,8 @@
     <string name="tour_info_request_join_title_entourage_new">Répondez présent !</string>
     <string name="tour_info_request_join_title_tour">Maraude voisine ? Coordonnez-vous</string>
     <string name="tour_info_request_join_title_outing">Participez à cet événement</string>
-    <string name="tour_info_request_join_button_entourage">Participer</string>
-    <string name="tour_info_request_join_button2_entourage">Rejoindre</string>
+    <string name="tour_info_request_join_button_event">Participer</string>
+    <string name="tour_info_request_join_button_entourage">Rejoindre</string>
     <string name="tour_info_request_join_button_tour">@string/tour_info_options_contact</string>
     
     <string name="tour_info_error_retrieve_entourage">Entourage indisponible</string>
