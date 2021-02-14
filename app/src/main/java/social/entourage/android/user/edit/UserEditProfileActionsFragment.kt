@@ -21,6 +21,7 @@ import social.entourage.android.tools.disable
 import social.entourage.android.tools.enable
 import social.entourage.android.tools.view.CustomProgressDialog
 import timber.log.Timber
+import java.lang.IllegalStateException
 
 private const val ARG_PARAM1 = "param1"
 
@@ -305,7 +306,12 @@ class UserEditProfileActionsFragment : BaseDialogFragment() {
                 val authenticationController = EntourageApplication.get().components.authenticationController
                 authenticationController.saveUser(userResponse.user)
             }
-           updateActivities()
+           try {
+               updateActivities()
+           } catch (e: IllegalStateException) {
+               Timber.e(e)
+           }
+
         }
     }
 
