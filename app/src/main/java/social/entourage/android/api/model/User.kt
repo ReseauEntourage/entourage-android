@@ -150,7 +150,27 @@ class User : Serializable {
             } else {
                 interestsString.append(", ")
             }
-            interestsString.append(context.getString(getStringId(interest)))
+            val stringId = getStringId(interest)
+            interestsString.append(context.getString(
+                    when (stringId) {
+                        string.rencontrer_sdf,
+                        string.event_sdf,
+                        string.questions_sdf,
+                        string.aide_sdf,
+                        string.m_orienter_sdf,
+                        string.trouver_asso_sdf,
+                        string.m_informer_riverain,
+                        string.event_riverain,
+                        string.entourer_riverain,
+                        string.dons_riverain,
+                        string.benevolat_riverain,
+                        string.aide_pers_asso,
+                        string.cult_sport_asso,
+                        string.serv_pub_asso,
+                        string.autre_asso -> stringId
+                        else -> if(stringId==-1) string.empty_description else stringId
+                    }
+            ))
         }
         return interestsString.toString()
     }
@@ -236,7 +256,7 @@ class User : Serializable {
                 val stringId = string::class.java.getDeclaredField(resourceName)
                 stringId.getInt(stringId)
             } catch (e: Exception) {
-                Timber.d("Resource not found : $resourceName")
+                Timber.e("Resource not found : $resourceName")
                 -1
             }
         }
