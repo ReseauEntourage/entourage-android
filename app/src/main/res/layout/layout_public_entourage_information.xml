@@ -411,7 +411,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginRight="10dp"
                 android:gravity="center"
-                android:text="@string/invited_description_new"
+                android:text="@string/invited_description"
                 android:textColor="@color/accent"
                 android:textSize="@dimen/entourage_font_medium" />
 

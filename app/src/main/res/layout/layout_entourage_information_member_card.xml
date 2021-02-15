@@ -1,76 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:paddingEnd="0dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="0dp"
-                android:paddingStart="16dp"
-                android:paddingTop="10dp">
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:paddingTop="10dp"
+    android:paddingEnd="0dp">
 
     <ImageView
         android:id="@+id/tic_member_photo"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
         android:contentDescription="@string/empty_description"
         android:scaleType="centerInside"
-        app:srcCompat="@drawable/ic_user_photo_small"/>
+        app:srcCompat="@drawable/ic_user_photo_small" />
 
     <social.entourage.android.tools.view.PartnerLogoImageView
         android:id="@+id/tic_member_partner_logo"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_alignBottom="@+id/tic_member_photo"
         android:layout_alignEnd="@+id/tic_member_photo"
-        android:layout_alignRight="@+id/tic_member_photo"
-        android:layout_marginBottom="-4dp"
+        android:layout_alignBottom="@+id/tic_member_photo"
         android:layout_marginEnd="-4dp"
-        android:layout_marginRight="-4dp"/>
+        android:layout_marginBottom="-4dp" />
 
-    <TextView
-        android:id="@+id/tic_member_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/tic_member_partner_logo"
-        android:layout_toRightOf="@+id/tic_member_partner_logo"
-        android:paddingEnd="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingStart="10dp"
-        android:textColor="@color/greyish_brown"
-        android:textSize="@dimen/entourage_font_medium"/>
-
-    <LinearLayout
-        android:id="@+id/tic_member_tags"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="-10dp"
-        android:orientation="horizontal"
-        android:layout_toEndOf="@id/tic_member_name"
-        android:layout_centerVertical="true"
-        android:divider="@drawable/role_spacer"
-        android:showDividers="middle"/>
-
-    <View
-        android:background="@drawable/bg_end_gradient"
-        android:layout_width="15dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"/>
-
-    <View
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/tic_member_partner_logo"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_toEndOf="@+id/tic_member_photo"
-        android:layout_toRightOf="@+id/tic_member_photo"
-        android:background="@color/greyish_brown"
-        android:visibility="gone"/>
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@+id/tic_member_photo">
+
+        <RelativeLayout
+            android:id="@+id/layout_main_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/ui_layout_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <TextView
+                android:id="@+id/tic_member_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:paddingStart="8dp"
+                android:paddingEnd="10dp"
+                android:textColor="@color/greyish_brown"
+                android:textSize="@dimen/entourage_font_medium" />
+
+            <LinearLayout
+                android:id="@+id/tic_member_tags"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="-10dp"
+                android:layout_toEndOf="@id/tic_member_name"
+                android:divider="@drawable/role_spacer"
+                android:orientation="horizontal"
+                android:showDividers="middle" />
+
+            <View
+                android:layout_width="15dp"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@id/tic_member_name"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/bg_end_gradient" />
+
+        </RelativeLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ui_layout_bottom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_main_info">
+
+            <TextView
+                android:id="@+id/ui_tv_role"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:text="Ab -"
+                android:textColor="@color/greyish_brown"
+                android:textSize="@dimen/entourage_font_medium"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/ui_tv_bt_asso"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/ui_tv_bt_asso"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:gravity="center_vertical"
+                android:text="Asso"
+                android:textColor="@color/accent"
+                android:textSize="@dimen/entourage_font_medium"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ui_tv_role"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

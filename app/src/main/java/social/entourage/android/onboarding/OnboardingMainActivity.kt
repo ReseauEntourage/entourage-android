@@ -137,7 +137,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             alertDialog.dismiss()
             if (isOK) {
                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_PHONE_SUBMIT_SUCCESS)
-                showSmsAndGo(R.string.registration_smscode_sent)
+                showSmsAndGo(R.string.login_smscode_sent)
             }
             else {
                 if (error != null) {
@@ -166,7 +166,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     private fun showPopAlreadySigned() {
         AlertDialog.Builder(this)
                 .setTitle("")
-                .setMessage(R.string.alreadyRegistereMessageGoBack)
+                .setMessage(R.string.login_already_registered_go_back)
                 .setPositiveButton(R.string.button_OK) { dialog, which ->
                     dialog.dismiss()
 
@@ -262,18 +262,12 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         temporaryPhone?.let { tempPhone ->
             OnboardingAPI.getInstance().resendCode(tempPhone) { isOK, loginResponse, error ->
                 if (isOK) {
-                    displayToast(R.string.registration_smscode_sent)
-                } else {
-                    if (error != null) {
-                        displayToast(R.string.login_text_lost_code_ko)
-                    } else {
-                        displayToast(R.string.login_text_lost_code_ko)
-                    }
+                    displayToast(R.string.login_smscode_sent)
+                    return@resendCode
                 }
             }
-        } ?: run {
-            displayToast(R.string.login_text_lost_code_ko)
         }
+        displayToast(R.string.login_text_lost_code_ko)
     }
 
     fun sendAddress() {

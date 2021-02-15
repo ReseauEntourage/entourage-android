@@ -470,28 +470,6 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--                <Button-->
-<!--                    android:id="@+id/user_action_zone_button"-->
-<!--                    style="@style/AccentButton.RoundedCorners"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="40dp"-->
-<!--                    android:layout_gravity="center_horizontal"-->
-<!--                    android:layout_marginLeft="20dp"-->
-<!--                    android:layout_marginRight="20dp"-->
-<!--                    android:text="@string/user_edit_action_zone_button_no_address"-->
-<!--                    android:textSize="@dimen/entourage_font_medium"-->
-<!--                    android:textStyle="normal" />-->
-<!--                <TextView-->
-<!--                    android:id="@+id/user_action_zone"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:gravity="center_horizontal"-->
-<!--                    android:hint="@string/user_edit_action_zone_hint"-->
-<!--                    android:paddingBottom="10dp"-->
-<!--                    android:textColor="@color/greyish_brown"-->
-<!--                    android:textColorHint="@color/greyish_brown"-->
-<!--                    android:textSize="@dimen/entourage_font_medium" />-->
-
                 <View
                     style="@style/SeparatorAlpha"
                     android:layout_width="match_parent"

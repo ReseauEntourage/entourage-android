@@ -14,7 +14,6 @@
     <string name="entourage_create_description_label">Description</string>
     <string name="entourage_create_help_text_event"><![CDATA[<a href=\"%1$s\">Quels événements diffuser ?</a>]]></string>
     <string name="entourage_create_help_text"><![CDATA[<a href=\"%1$s\">Besoin d\'idées d\'action ?</a>]]></string>
-    <string name="entourage_create_date_label">Date *</string>
     <string name="entourage_create_date_format">\'le\' EEEE dd MMMM \'à\' HH\'h\'mm</string>
 
     <string name="entourage_create_date_start_label">Date de début *</string>
@@ -37,7 +36,6 @@
     <string name="entourage_create_error_date_empty">Choisissez une date</string>
     <string name="entourage_create_error_location_empty">Indiquez une localisation</string>
 
-    <string name="entourage_create_menu">Créer une action</string>
     <string name="entourage_create_menu_ask_help">Demander de l\'aide</string>
     <string name="entourage_create_submenu_ask_help">Faire appel au réseau</string>
     <string name="entourage_create_menu_contribute">Proposer de l\'aide</string>
@@ -96,8 +94,6 @@
     <string name="entourage_join_request_received_message_html"><![CDATA[<font color=\"#F55F24\">%1$s </font>souhaite rejoindre votre groupe]]></string>
     <string name="entourage_join_request_received_message_short">veut rejoindre votre groupe.</string>
 
-    <string name="entourage_info_quit_entourage_title">Quitter l\'entourage</string>
-    <string name="entourage_info_quit_entourage_description">Voulez-vous vraiment quitter l\'entourage ?</string>
     <string name="entourage_info_text_open">Entourage actif</string>
     <string name="entourage_info_text_close">Action clôturée</string>
     <string name="outing_info_text_close">Événement supprimé</string>
@@ -201,13 +197,6 @@
 
     <string name="create_action_wizard_disclaimer">La &lt;a href=\'%1$s\'>Charte éthique d’Entourage&lt;/a> vous explique pourquoi le consentement est indispensable.</string>
 
-    <!-- Entourage Join Type Fragment -->
-    <string name="entourage_join_type_fragment_title">CONFIDENTIALITÉ</string>
-    <string name="entourage_join_type_fragment_description">Souhaitez-vous :\n\nvalider chaque personne avant de l’accepter comme membre\n\nou que ce groupe soit ouvert à tous sans validation ?</string>
-    <string name="entourage_join_type_fragment_option_private">Je préfère valider</string>
-    <string name="entourage_join_type_fragment_option_public">Pas besoin de vérifier</string>
-    <string name="entourage_join_type_fragment_disclaimer">En cas de problème avec un utilisateur, vous pouvez toujours le signaler à notre équipe</string>
-
     <!-- User Report -->
     <string name="action_report_explanation">Vous allez signaler cette action solidaire à nos administrateurs.</string>
     <string name="action_report_reason">Merci de préciser pourquoi\nvous signalez cette action solidaire :</string>
@@ -217,7 +206,6 @@
     <string name="action_report_explanation_user">Vous allez signaler cet utilisateur à nos administrateurs.</string>
     <string name="action_report_reason_user">Merci de préciser pourquoi\nvous signalez cet utilisateur :</string>
 
-    <string name="entourage_report_reason_hint">Ecrivez quelque chose…</string>
     <string name="entourage_report_success">✔︎ Entourage signalé</string>
     <string name="entourage_user_report_success">✔︎ Utilisateur signalé</string>
     <string name="entourage_report_error_reason_empty">Ajoutez un message</string>

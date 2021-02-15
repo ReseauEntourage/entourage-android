@@ -248,7 +248,7 @@ class LoginActivity : BaseActivity() {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_SMS)
         OnboardingAPI.getInstance().resendCode(phone) { isOK, loginResponse, error ->
             if (isOK) {
-                Toast.makeText(this, R.string.registration_smscode_sent, Toast.LENGTH_LONG).show()
+                Toast.makeText(this, R.string.login_smscode_sent, Toast.LENGTH_LONG).show()
                 activateTimer()
             }
             else {

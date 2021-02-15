@@ -39,14 +39,11 @@
 
     <!-- POI Card -->
     <string name="poi_card_call">APPELER</string>
-    <string name="poi_card_bullet">•</string>
     <string name="guide_alert_arrow_desc">Détails Alerte</string>
     <string name="guide_alert_info_desc">Info Guide</string>
     <string name="guide_alert_info_title">HORAIRES D’ÉTÉ</string>
     <string name="guide_alert_info_text"><![CDATA[Notre partenaire <a href=https://soliguide.fr/>Soliguide.fr</a> tient un annuaire à jour pour de nombreuses villes.]]></string>
 
-
-    <string name="partners_entourage">Organisme actif sur Entourage</string>
     <string name="guide_display_partners">Associations et services actifs sur Entourage</string>
     <string name="guide_filter_donate">Recherchant des dons</string>
     <string name="guide_filter_volunteer">Recherchant des bénévoles</string>

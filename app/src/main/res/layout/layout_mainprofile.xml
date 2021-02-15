@@ -86,7 +86,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="10dp"
                     android:fontFamily="sans-serif-medium"
-                    android:text="@string/title_my_activity2"
+                    android:text="@string/title_my_activity"
                     android:textAlignment="textStart"
                     android:textColor="@color/action_type_outing"
                     android:textSize="15sp" />

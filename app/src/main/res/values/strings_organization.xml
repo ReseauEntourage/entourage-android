@@ -3,20 +3,10 @@
 
     <string name="partner_add_error">Erreur d’ajout du badge</string>
     <string name="partner_remove_error">Échec de la suppression du badge</string>
-    <string name="partner_update_error">Échec de mise à jour du badge</string>
 
     <string name="partner_add_ok">Badge ajouté</string>
     <string name="partner_remove_ok">Badge enlevé</string>
 
     <string name="member_type_organization">Maraudeur</string>
-
-    <string name="partner_view_details_title">Qui nous sommes</string>
-    <string name="partner_view_information_title">Informations</string>
-    <string name="partner_view_phone_description">Numéro de téléphone</string>
-    <string name="partner_view_address_description">Adresse</string>
-    <string name="partner_view_website_description">Site web</string>
-    <string name="partner_view_email_description">@string/user_edit_email_label</string>
-
-    <!-- ATD Hardcoded values !-->
 
 </resources>

@@ -148,7 +148,7 @@ class GuideFilterFragment : BaseDialogFragment() {
             bottom_action_button?.text = "Voir tout"
         }
         else {
-            bottom_action_button?.text = "Valider"
+            bottom_action_button?.text = getString(R.string.validate)
         }
     }
 

@@ -10,6 +10,7 @@
     <string name="error_no_email">Aucune messagerie mail configurée</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
+    <string name="button_OK">OK</string>
     <string name="accept">Accepter</string>
     <string name="decline">Refuser</string>
     <string name="cancel">Annuler</string>
