@@ -30,7 +30,7 @@ abstract class BaseSecuredActivity : BaseActivity() {
     protected open fun logout() {
         authenticationController.logOutUser()
         EntourageApplication.get(applicationContext).removeAllPushNotifications()
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_LOGOUT);
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_LOGOUT)
         startActivity(Intent(this, PreOnboardingStartActivity::class.java))
         finish()
     }

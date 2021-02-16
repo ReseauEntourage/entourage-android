@@ -8,7 +8,6 @@
     <string name="invite_source_description_outing">à participer à cet événement</string>
     <string name="invite_source_share">Partager le lien</string>
     <string name="invite_source_contacts">Contacts</string>
-    <string name="invite_source_number">Numéro de portable</string>
     <string name="invite_source_share_entourage">Partager sur Entourage</string>
 
     <!-- Invite Contacts -->

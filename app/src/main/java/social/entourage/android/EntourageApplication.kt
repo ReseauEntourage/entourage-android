@@ -87,7 +87,7 @@ class EntourageApplication : MultiDexApplication() {
     private val loginActivity: LoginActivity?
         get() {
             activities.filterIsInstance<LoginActivity>().forEach {
-                return it;
+                return it
             }
             return null
         }

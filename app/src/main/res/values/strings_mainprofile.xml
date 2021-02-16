@@ -1,9 +1,7 @@
 <resources>
     <string name="action_logout">Déconnexion</string>
     <string name="action_about">Aide &amp; à propos</string>
-    <string name="action_edit_profile"><u>Modifier mon profil</u></string>
     <string name="action_edit_profile_regular">Modifier mon profil</string>
-    <string name="action_blog">Conseils pour oser la rencontre</string>
     <string name="action_charter_unsigned">Signer la Charte éthique</string>
     <string name="action_charter_signed">Consulter la Charte éthique</string>
     <string name="action_faq">Questions fréquentes</string>
@@ -12,7 +10,6 @@
     <string name="action_plus">agir</string>
     <string name="action_my_messages">messages</string>
     <string name="action_profile">profil</string>
-    <string name="action_good_waves">Rejoindre les Bonnes Ondes</string>
     <string name="debug_info_clipboard">Information copiée dans le presse-papier</string>
 
     <string name="events_conviv">événements\nconviviaux</string>
