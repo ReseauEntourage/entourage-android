@@ -94,15 +94,11 @@ class PlusFragment : Fragment(), BackPressable {
     private fun onHelpButton() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PLUS_HELP)
         EntourageApplication.get().me()?.let { currentUser ->
-            mainActivity?.showWebViewForLinkId(
-                    if (currentUser.isUserTypeAlone)
-                        Constants.AGIR_FAQ_ID
-                    else if (currentUser.goal.equals(User.USER_GOAL_ASSO)) {
-                        Constants.ASSO_AGIR_LINK_ID
-                    }
-                    else
-                        Constants.SCB_LINK_ID
-            )
+            when {
+                currentUser.isUserTypeAlone -> mainActivity?.showWebViewForLinkId(Constants.AGIR_FAQ_ID)
+                currentUser.goal.equals(User.USER_GOAL_ASSO) -> mainActivity?.showWebViewForLinkId(Constants.ASSO_AGIR_LINK_ID)
+                else -> mainActivity?.showWebViewForLinkId(Constants.SCB_LINK_ID, R.string.webview_share_text)
+            }
         }
     }
 
@@ -115,7 +111,7 @@ class PlusFragment : Fragment(), BackPressable {
 
     private fun onShowGoodWaves() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PLUS_GOOD_WAVES)
-        mainActivity?.let { it.showWebView(it.getLink(Constants.GOOD_WAVES_ID)) }
+        mainActivity?.showWebViewForLinkId(Constants.GOOD_WAVES_ID)
     }
 
     override fun onBackPressed(): Boolean {

@@ -489,10 +489,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
 
     private fun onShowFaq() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEEDITEMINFO_FAQ)
-        (activity as? MainActivity)?.let {
-            val url = it.getLink(Constants.FAQ_LINK_ID)
-            it.showWebView(url)
-        }
+        (activity as? MainActivity)?.showWebViewForLinkId(Constants.FAQ_LINK_ID)
     }
     // ----------------------------------
     // Chat push notification

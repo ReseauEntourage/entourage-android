@@ -78,7 +78,7 @@ import javax.inject.Inject
             }
             "scb" -> {
                 AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_BLOG)
-                activity.showWebViewForLinkId(Constants.SCB_LINK_ID)
+                activity.showWebViewForLinkId(Constants.SCB_LINK_ID, R.string.webview_share_text)
             }
 
             "goodWaves" -> {

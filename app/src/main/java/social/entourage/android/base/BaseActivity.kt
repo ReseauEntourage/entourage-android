@@ -10,7 +10,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageComponent
 import social.entourage.android.R
 import social.entourage.android.tools.view.WebViewFragment
-import social.entourage.android.tools.view.WebViewFragment.Companion.newInstance
+
 
 /**
  * Base activity which set up a scoped graph and inject it
@@ -66,14 +66,15 @@ abstract class BaseActivity : AppCompatActivity() {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    fun showWebView(url: String?) {
-        val webViewFragment = newInstance(url)
-        webViewFragment.show(supportFragmentManager, WebViewFragment.TAG)
+    fun showWebView(url: String, shareMessageRes: Int = 0) {
+        if(shareMessageRes!=0 && !WebViewFragment.launchURL(this, url, shareMessageRes)) {
+            WebViewFragment.newInstance(url, shareMessageRes).show(supportFragmentManager, WebViewFragment.TAG)
+        }
     }
 
-    fun showWebViewForLinkId(linkId: String) {
+    fun showWebViewForLinkId(linkId: String, shareMessageRes: Int = 0) {
         val link = getLink(linkId)
-        showWebView(link)
+        showWebView(link, shareMessageRes)
     }
 
     open fun getLink(linkId: String): String {

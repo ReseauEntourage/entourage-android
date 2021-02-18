@@ -115,14 +115,13 @@ object DeepLinksManager {
             }
         } else if (key == DeepLinksView.WEBVIEW.view) {
             try {
-                var urlToOpen = currentUri?.getQueryParameter("url")
-                if (urlToOpen != null) {
-                    if (!urlToOpen.toLowerCase(Locale.ROOT).startsWith("http")) {
-                        urlToOpen = "https://$urlToOpen"
-                    }
+                currentUri?.getQueryParameter("url")?.let { urlToOpen ->
+                    val url  = if (!urlToOpen.toLowerCase(Locale.ROOT).startsWith("http")) {
+                        "https://$urlToOpen"
+                    } else urlToOpen
                     activity.showFeed()
                     activity.dismissNewsfeedFragmentDialogs()
-                    activity.showWebView(urlToOpen)
+                    activity.showWebView(url)
                 }
             } catch (ignored: Exception) {
             }
