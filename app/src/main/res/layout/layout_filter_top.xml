@@ -26,7 +26,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:contentDescription="@string/empty_description"
-            app:srcCompat="@drawable/picto_cat_filter_0" />
+            app:srcCompat="@drawable/ic_poi_cat_0_round" />
 
         <TextView
             android:id="@+id/tv01"
@@ -67,7 +67,7 @@
                 android:layout_width="32dp"
                 android:layout_height="50dp"
                 android:contentDescription="@string/empty_description"
-                app:srcCompat="@drawable/picto_cat_filter_8" />
+                app:srcCompat="@drawable/ic_poi_cat_8_round" />
 
             <TextView
                 android:id="@+id/filter_item_text_partner"
@@ -88,7 +88,6 @@
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
             android:alpha="0.5"
             android:background="@color/greyish"
             android:visibility="invisible" />
@@ -139,7 +138,6 @@
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
             android:alpha="0.5"
             android:background="@color/greyish"
             android:visibility="invisible" />
@@ -190,7 +188,6 @@
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
             android:alpha="0.5"
             android:background="@color/greyish"
             android:visibility="invisible" />

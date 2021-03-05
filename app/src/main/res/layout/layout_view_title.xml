@@ -32,7 +32,7 @@
             android:padding="5dp"
             android:background="?attr/selectableItemBackground"
             android:contentDescription="@string/empty_description"
-            app:srcCompat="@drawable/ic_share_android" />
+            app:srcCompat="@drawable/ic_detail_action_share" />
 
         <TextView
             android:id="@+id/title_text"

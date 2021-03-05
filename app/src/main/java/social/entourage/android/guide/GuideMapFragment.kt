@@ -156,8 +156,11 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
                 val poiCollection = presenter.removeRedundantPois(pois)
                 map?.let { map ->
                     poiCollection.forEach { poi ->
-                        val marker = map.addMarker(mapRenderer.getMarkerOptions(poi))
-                        marker.tag = poi
+                        mapRenderer.getMarkerOptions(poi, requireContext())?.let { markerOptions ->
+                            map.addMarker(markerOptions).apply {
+                                this.tag = poi
+                            }
+                        }
                     }
                     hideEmptyListPopup()
                 }

@@ -2,7 +2,7 @@
     <shortcut
         android:shortcutId="shareApp"
         android:enabled="true"
-        android:icon="@drawable/ic_share_android"
+        android:icon="@drawable/ic_detail_action_share"
         android:shortcutShortLabel="@string/about_share_app"
         android:shortcutLongLabel="@string/about_share_app"
         android:shortcutDisabledMessage="@string/about_share_app">
