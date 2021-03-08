@@ -574,6 +574,9 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         groupType = newEntourageGroupType
         displayEntourageDisclaimer()
     }
+    fun setGroupType(_groupString:String) {
+        groupType = _groupString
+    }
 
     private fun onCreateEntourageHelpAction() {
         createAction(BaseEntourage.GROUPTYPE_ACTION_DEMAND, BaseEntourage.GROUPTYPE_ACTION_DEMAND)
@@ -584,7 +587,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         MapFilterFragment().show(parentFragmentManager, MapFilterFragment.TAG)
     }
 
-    fun onShowEvents() {
+    open fun onShowEvents() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEED_SHOWEVENTS)
         fragment_map_top_tab?.getTabAt(NewsfeedTabItem.EVENTS_TAB.id)?.select()
     }

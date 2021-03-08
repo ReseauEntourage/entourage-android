@@ -36,6 +36,8 @@ class MapFilterFragment  : BaseMapFilterFragment() {
     override fun initializeView() {
         super.initializeView()
         map_filter_entourage_outing_switch?.setOnClickListener { onOutingSwitch() }
+        ui_layout_events?.visibility = View.GONE
+
         map_filter_entourage_demand_switch?.setOnClickListener { onDemandSwitch() }
         map_filter_entourage_contribution_switch?.setOnClickListener { onContributionSwitch() }
         map_filter_time_days_1?.setOnClickListener { onDays1Click() }
@@ -119,7 +121,10 @@ class MapFilterFragment  : BaseMapFilterFragment() {
     // ----------------------------------
     override fun loadFilter() {
         val mapFilter = MapFilterFactory.mapFilter
-        map_filter_entourage_outing_switch?.isChecked = mapFilter.entourageTypeOuting
+
+        //map_filter_entourage_outing_switch?.isChecked = mapFilter.entourageTypeOuting //Old version
+        map_filter_entourage_outing_switch?.isChecked = false
+
         map_filter_past_events_switch?.isChecked = mapFilter.showPastEvents
         map_filter_entourage_demand_switch?.isChecked = mapFilter.entourageTypeDemand
         map_filter_entourage_demand_details_layout?.visibility = if (mapFilter.entourageTypeDemand) View.VISIBLE else View.GONE
@@ -143,7 +148,9 @@ class MapFilterFragment  : BaseMapFilterFragment() {
 
     override fun saveFilter() {
         val mapFilter = MapFilterFactory.mapFilter
-        mapFilter.entourageTypeOuting = map_filter_entourage_outing_switch?.isChecked ?: true
+       // mapFilter.entourageTypeOuting = map_filter_entourage_outing_switch?.isChecked ?: true -- Old version
+        mapFilter.entourageTypeOuting = false
+
         mapFilter.showPastEvents = map_filter_past_events_switch?.isChecked ?: false
         mapFilter.entourageTypeDemand = map_filter_entourage_demand_switch?.isChecked ?: true
         mapFilter.entourageTypeContribution = map_filter_entourage_contribution_switch?.isChecked ?: true

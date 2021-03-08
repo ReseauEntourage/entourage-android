@@ -60,7 +60,8 @@ class MapFilter : MapFilterInterface, Serializable {
             !entourageTypeDemand  -> false
             !entourageTypeContribution -> false
             //normal filter
-            !entourageTypeOuting -> false
+            entourageTypeOuting -> false
+            //!entourageTypeOuting -> false Old version
             //TODO check tis one: //showPastEvents -> false
             timeframe != DAYS_3 -> false
             isShowPartnersOnly -> false
@@ -71,7 +72,7 @@ class MapFilter : MapFilterInterface, Serializable {
     override fun setDefaultValues() {
         entourageTypeDemand = true
         entourageTypeContribution = true
-        entourageTypeOuting=true
+        entourageTypeOuting=false//entourageTypeOuting=true Old version
         showPastEvents=false
         timeframe = DAYS_3
         isShowPartnersOnly = false

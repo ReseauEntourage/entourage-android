@@ -43,6 +43,7 @@ import social.entourage.android.map.filter.MapFilterFactory.mapFilter
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.navigation.BottomNavigationDataSource
 import social.entourage.android.newsfeed.BaseNewsfeedFragment
+import social.entourage.android.newsfeed.v2.NewHomeFeedFragment
 import social.entourage.android.onboarding.OnboardingPhotoFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
@@ -209,7 +210,9 @@ class MainActivity : BaseSecuredActivity(),
             updateAnalyticsInfo()
         }
         refreshBadgeCount()
-        intent?.action?.let { action -> EntBus.post(OnCheckIntentActionEvent(action, intent.extras)) }
+        intent?.action?.let {
+            action ->
+            EntBus.post(OnCheckIntentActionEvent(action, intent.extras)) }
         checkOnboarding()
     }
 
@@ -384,7 +387,7 @@ class MainActivity : BaseSecuredActivity(),
         return false
     }
 
-    private fun selectNavigationTab(menuIndex: Int) {
+    private fun selectNavigationTab(menuIndex: Int) { //TODO: Voir pour afficher le bon frgagment de l'onglet Home si on est en nav horizontale
         (bottom_navigation as? BottomNavigationView)?.let {
             if (it.selectedItemId != menuIndex) {
                 it.selectedItemId = menuIndex
@@ -408,6 +411,13 @@ class MainActivity : BaseSecuredActivity(),
                 fragmentTransaction.replace(R.id.main_fragment, newFragment, tag)
                 fragmentTransaction.addToBackStack(tag)
                 fragmentTransaction.commit()
+            }
+            else {
+                if (tag.equals(BaseNewsfeedFragment.TAG)) {
+                    if (supportFragmentManager.fragments.first() != null && (supportFragmentManager.fragments.first() is NewHomeFeedFragment) ) {
+                        (supportFragmentManager.fragments.first() as NewHomeFeedFragment).checkNavigation()
+                    }
+                }
             }
             //TODO check if we need to execute pending actions
             //supportFragmentManager.executePendingTransactions();

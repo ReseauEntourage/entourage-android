@@ -209,6 +209,14 @@ open class EntServiceManager(
                     location.latitude,
                     pagination.lastFeedItemUUID
             )
+            NewsfeedTabItem.ANNOUNCEMENTS -> {
+                newsfeedRequest.retrieveAnnouncements(
+                        location.longitude,
+                        location.latitude,
+                        "an",
+                        "v1"
+                )
+            }
             else -> null
         }
     }

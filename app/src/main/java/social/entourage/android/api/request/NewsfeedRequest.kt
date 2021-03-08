@@ -61,4 +61,12 @@ interface NewsfeedRequest {
             @Query("latitude") latitude: Double,
             @Query("starting_after") startingAfterOutingUUID: String?
     ): Call<NewsfeedItemResponse>
+
+    @GET("feeds")
+    fun retrieveAnnouncements(
+            @Query("longitude") longitude: Double,
+            @Query("latitude") latitude: Double,
+            @Query("types") types: String?,
+            @Query("announcements") announcementsVersion: String?,
+    ): Call<NewsfeedItemResponse>
 }
