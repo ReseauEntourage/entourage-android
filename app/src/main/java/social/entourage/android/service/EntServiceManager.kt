@@ -5,6 +5,7 @@ import android.location.Location
 import android.net.ConnectivityManager
 import com.google.android.gms.maps.model.LatLng
 import com.squareup.otto.Subscribe
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,6 +30,7 @@ import social.entourage.android.location.LocationProvider.UserType
 import social.entourage.android.map.filter.MapFilterFactory.mapFilter
 import social.entourage.android.newsfeed.NewsfeedPagination
 import social.entourage.android.newsfeed.NewsfeedTabItem
+import social.entourage.android.newsfeed.v2.HomeCard
 import social.entourage.android.tools.EntBus
 import timber.log.Timber
 import java.util.*
@@ -96,6 +98,16 @@ open class EntServiceManager(
         }
         currentNewsFeedCall = createNewsfeedWrapperCall(currentCameraPosition.target, pagination, selectedTab)
         currentNewsFeedCall?.enqueue(NewsFeedCallback(this, entService))
+    }
+
+    fun retrieveHomeFeed() {
+        if (!isNetworkConnected) {
+            entService.notifyListenersNetworkException()
+            return
+        }
+        val _currNewsFeedCall = newsfeedRequest.getHomeFeed(currentCameraPosition.target.longitude,currentCameraPosition.target.latitude)
+
+        _currNewsFeedCall.enqueue(HomeFeedCallback(this,entService))
     }
 
     fun cancelNewsFeedRetrieval() {
@@ -282,6 +294,45 @@ open class EntServiceManager(
         }
 
         private fun getErrorBody(response: Response<NewsfeedItemResponse?>): String {
+            return response.errorBody()?.string() ?: ""
+        }
+    }
+
+    internal class HomeFeedCallback(private val manager: EntServiceManager, private val service: EntService) : Callback<ResponseBody?> {
+        override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+            manager.resetCurrentNewsfeedCall()
+            if (call.isCanceled) {
+                return
+            }
+            if (response.isSuccessful) {
+                val responseBody = response.body()?.string()
+
+                responseBody?.let { respBody ->
+                    EntBus.post(HomeCard.OnGetHomeFeed(respBody))
+                }
+                return
+            }
+            service.notifyListenersServerException(Throwable(getErrorMessage(call, response)))
+        }
+
+        override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+            manager.resetCurrentNewsfeedCall()
+            if (!call.isCanceled) {
+                service.notifyListenersTechnicalException(t)
+            }
+        }
+
+        private fun getErrorMessage(call: Call<ResponseBody?>, response: Response<ResponseBody?>): String {
+            val errorBody = getErrorBody(response)
+            var errorMessage = "Response code = " + response.code()
+            errorMessage += " ( " + call.request().toString() + ")"
+            if (errorBody.isNotEmpty()) {
+                errorMessage += " : $errorBody"
+            }
+            return errorMessage
+        }
+
+        private fun getErrorBody(response: Response<ResponseBody?>): String {
             return response.errorBody()?.string() ?: ""
         }
     }

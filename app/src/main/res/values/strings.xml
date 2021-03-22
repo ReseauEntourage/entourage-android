@@ -52,4 +52,20 @@
     <string name="tooltip_desc3">Vous pouvez maintenant proposer ou demander de l’aide au réseau !</string>
     <string name="tooltip_step_format">%s sur 3</string>
 
+
+    //Home Cells
+
+    <string name="cell_demand_from">Une demande de :</string>
+    <string name="cell_numberOfPeople">%1$d participant</string>
+    <string name="cell_numberOfPeoples">%1$d participants</string>
+    <string name="show_more">Voir plus</string>
+    <string name="show_more_event">Voir l\'évènement</string>
+    <string name="show_more_actions">Afficher plus\nde demandes</string>
+    <string name="show_more_events">Afficher plus\nd’évènements</string>
+
+    <string name="home_title_headlines">À la une</string>
+    <string name="home_title_actions">Demandes et initiatives</string>
+    <string name="home_title_events">Evènements</string>
+    <string name="home_title_none" />
+
 </resources>

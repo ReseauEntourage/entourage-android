@@ -253,6 +253,15 @@ class EntService : Service() {
         return true
     }
 
+    fun updateHomefeed(pagination: NewsfeedPagination): Boolean {
+        if (pagination.isLoading && !pagination.isRefreshing) {
+            return false
+        }
+        pagination.isLoading = true
+        entServiceManager.retrieveHomeFeed()
+        return true
+    }
+
     fun cancelNewsFeedUpdate() {
         entServiceManager.cancelNewsFeedRetrieval()
     }

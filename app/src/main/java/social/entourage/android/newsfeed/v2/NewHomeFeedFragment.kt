@@ -3,6 +3,7 @@ package social.entourage.android.newsfeed.v2
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
@@ -11,16 +12,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.commit
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.fragment_new_home_feed.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.PlusFragment
 import social.entourage.android.R
-import social.entourage.android.api.model.BaseEntourage
-import social.entourage.android.api.model.Message
-import social.entourage.android.api.model.PushNotificationContent
-import social.entourage.android.api.model.TimestampedObject
+import social.entourage.android.api.model.*
+import social.entourage.android.api.model.feed.Announcement
+import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events
 import social.entourage.android.location.EntLocation
 import social.entourage.android.message.push.PushNotificationManager
@@ -28,6 +30,7 @@ import social.entourage.android.newsfeed.*
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.tour.encounter.CreateEncounterActivity
 import timber.log.Timber
 
@@ -37,6 +40,8 @@ class NewHomeFeedFragment : BaseNewsfeedFragment() {
     private val connection = ServiceConnection()
     private var currentTourUUID = ""
     var isTourPostSend = false
+
+    var adapterHome:NewHomeFeedAdapter? = null
 
     // ----------------------------------
     // LIFECYCLE
@@ -59,27 +64,8 @@ class NewHomeFeedFragment : BaseNewsfeedFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ui_bt_actions?.setOnClickListener {
-            showActions(true)
-        }
-
-        ui_bt_events?.setOnClickListener {
-            showActions(false)
-        }
-
-        ui_bt_announces?.setOnClickListener {
-            showAnnounces()
-        }
-
         ui_bt_tour?.setOnClickListener {
             showTour()
-        }
-
-        ui_bt_old?.setOnClickListener {
-            requireActivity().supportFragmentManager.commit {
-                add(R.id.main_fragment,NewsFeedFragment(),"homeNew")
-                addToBackStack("homeNew")
-            }
         }
 
         if(EntourageApplication.get().me()?.isPro == false) {
@@ -88,6 +74,62 @@ class NewHomeFeedFragment : BaseNewsfeedFragment() {
         else {
             ui_bt_tour?.visibility = View.VISIBLE
         }
+
+       setupRecyclerView()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        entService?.updateHomefeed(pagination)
+    }
+
+    @Subscribe
+    fun OnGetHomeFeed(response:HomeCard.OnGetHomeFeed) {
+        parseFeed(response.responseString)
+    }
+
+    fun  setupRecyclerView() {
+        val listener = object : HomeViewHolderListener{
+            override fun onDetailClicked(item: Any) {
+                if (item is Announcement) {
+                    val actUrl = item.url
+                    if (actUrl == null) return
+                    val actIntent = Intent(Intent.ACTION_VIEW, Uri.parse(actUrl))
+                    try {
+                        requireActivity().startActivity(actIntent)
+                    } catch (ex: Exception) {
+                        view?.let { EntSnackbar.make(it, R.string.no_browser_error, Snackbar.LENGTH_SHORT).show() }
+                    }
+                }
+                else if (item is FeedItem) {
+                    feedItemViewRequested(Events.OnFeedItemInfoViewRequestedEvent(item))
+                }
+            }
+
+            override fun onShowDetail(type: HomeCardType) {
+                if (type == HomeCardType.ACTIONS) {
+                    showActions(true)
+                }
+                else if (type == HomeCardType.EVENTS) {
+                    showActions(false)
+                }
+            }
+        }
+
+        adapterHome = NewHomeFeedAdapter(listener)
+        ui_recyclerview?.layoutManager = LinearLayoutManager(context)
+        ui_recyclerview?.adapter = adapterHome
+
+        ui_home_swipeRefresh?.setOnRefreshListener { entService?.updateHomefeed(pagination) }
+    }
+
+    fun parseFeed(responseString:String) {
+        pagination.isLoading = false
+        pagination.isRefreshing = false
+        val _arrayTest = HomeCard.parsingFeed(responseString)
+
+        ui_home_swipeRefresh?.isRefreshing = false
+        adapterHome?.updateDatas(_arrayTest)
     }
 
     fun checkNavigation() {
@@ -220,6 +262,11 @@ class NewHomeFeedFragment : BaseNewsfeedFragment() {
         showActions(false)
     }
 
+    override fun onShowAll() {
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEED_SHOWALL)
+        showActions(true)
+    }
+
     /*****
      ** Methods & service for Tour add Encounter
     *****/
@@ -275,7 +322,7 @@ class NewHomeFeedFragment : BaseNewsfeedFragment() {
                 it.registerServiceListener(this@NewHomeFeedFragment)
                 it.registerApiListener(this@NewHomeFeedFragment)
                 updateFragmentFromService()
-                it.updateNewsfeed(pagination, selectedTab)
+                it.updateHomefeed(pagination)
                 isBound = true
             } ?: run {
                 Timber.e("Service not found")
