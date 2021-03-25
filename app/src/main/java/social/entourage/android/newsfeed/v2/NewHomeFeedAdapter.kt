@@ -116,9 +116,7 @@ class NewHomeFeedAdapter(val listener:HomeViewHolderListener): RecyclerView.Adap
 
         fun bind(context: Context, position: Int) {
             itemView.ui_title_action.text = context.getText(arrayItems[position].type.getName())
-            itemView.ui_title_action.setOnClickListener {
-                listener.onShowDetail(arrayItems[position].type)
-            }
+
             itemView.ui_action_show_more.setOnClickListener {
                 listener.onShowDetail(arrayItems[position].type)
             }
@@ -139,9 +137,6 @@ class NewHomeFeedAdapter(val listener:HomeViewHolderListener): RecyclerView.Adap
         fun bind(context: Context, position: Int) {
             itemView.ui_title_event.text = context.getText(arrayItems[position].type.getName())
 
-            itemView.ui_title_event.setOnClickListener {
-                listener.onShowDetail(arrayItems[position].type)
-            }
             itemView.ui_event_show_more.setOnClickListener {
                 listener.onShowDetail(arrayItems[position].type)
             }
@@ -159,9 +154,7 @@ class NewHomeFeedAdapter(val listener:HomeViewHolderListener): RecyclerView.Adap
     inner class EmptyVH(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(position: Int) {
             itemView.ui_title_empty.text = itemView.resources.getText(arrayItems[position].type.getName())
-            itemView.setOnClickListener {
-                listener.onShowDetail(arrayItems[position].type)
-            }
+
             itemView.ui_empty_show_more.setOnClickListener {
                 listener.onShowDetail(arrayItems[position].type)
             }

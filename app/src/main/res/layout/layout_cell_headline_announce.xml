@@ -30,12 +30,14 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/pre_onboard_3" />
+                app:srcCompat="@color/accent" />
 
             <FrameLayout
+                android:id="@+id/ui_bg_trans_black"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#80000000"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -58,6 +60,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ui_view_show_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -70,8 +73,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="2"
-                    android:text="Voir plus"
-                    android:textColor="@color/accent"
+                    android:text="@string/show_more"
+                    android:textColor="@color/white"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -87,7 +90,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textView34"
                     app:layout_constraintTop_toTopOf="@+id/textView34"
-                    app:srcCompat="@drawable/ic_home_arrow_show_orange" />
+                    app:srcCompat="@drawable/ic_home_arrow_show_white" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 

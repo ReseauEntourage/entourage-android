@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.layout_cell_action_more.view.*
 import kotlinx.android.synthetic.main.layout_cell_event.view.*
@@ -19,6 +20,8 @@ import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events
 import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.tools.EntBus
+import timber.log.Timber
+import java.lang.Exception
 
 
 /****
@@ -29,6 +32,9 @@ class AnnounceVH(view: View) : RecyclerView.ViewHolder(view) {
         itemView.setOnClickListener {
             data?.let {  listener.onDetailClicked(data) }
         }
+
+        itemView.ui_bg_trans_black?.visibility = View.INVISIBLE
+
 
         val announce = data as? Announcement
         announce?.let {
@@ -42,12 +48,21 @@ class AnnounceVH(view: View) : RecyclerView.ViewHolder(view) {
                         imageView.setImageDrawable(itPlaceholder)
                     }
                 } else {
-                    Picasso.get().load(Uri.parse(imageUrl)).let {
-                        AppCompatResources.getDrawable(itemView.context, R.drawable.ic_announcement_image_placeholder)?.let { itPlaceholder ->
-                            it.placeholder(itPlaceholder)
+                    val callback:Callback = object : Callback {
+                        override fun onSuccess() {
+                            itemView.ui_announce_title?.visibility = View.INVISIBLE
+                            itemView.ui_view_show_more?.visibility = View.INVISIBLE
                         }
-                        it.into(imageView)
+
+                        override fun onError(e: Exception?) {
+                            itemView.ui_announce_title?.visibility = View.VISIBLE
+                            itemView.ui_view_show_more?.visibility = View.VISIBLE
+                            AppCompatResources.getDrawable(itemView.context, R.drawable.bg_button_rounded_pre_onboard_orange_plain)?.let { itPlaceholder ->
+                                imageView.setImageDrawable(itPlaceholder)
+                            }
+                        }
                     }
+                    Picasso.get().load(Uri.parse(imageUrl)).into(imageView,callback)
                 }
             }
         }

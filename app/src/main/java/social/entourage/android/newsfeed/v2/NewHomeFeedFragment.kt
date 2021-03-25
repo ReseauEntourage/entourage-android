@@ -3,7 +3,6 @@ package social.entourage.android.newsfeed.v2
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
@@ -13,11 +12,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.fragment_new_home_feed.*
 import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
 import social.entourage.android.PlusFragment
 import social.entourage.android.R
 import social.entourage.android.api.model.*
@@ -30,7 +29,6 @@ import social.entourage.android.newsfeed.*
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.tour.encounter.CreateEncounterActivity
 import timber.log.Timber
 
@@ -88,18 +86,19 @@ class NewHomeFeedFragment : BaseNewsfeedFragment() {
         parseFeed(response.responseString)
     }
 
+    @Subscribe
+    override fun feedItemViewRequested(event: Events.OnFeedItemInfoViewRequestedEvent) {
+        super.feedItemViewRequested(event)
+    }
+
     fun  setupRecyclerView() {
         val listener = object : HomeViewHolderListener{
             override fun onDetailClicked(item: Any) {
                 if (item is Announcement) {
                     val actUrl = item.url
                     if (actUrl == null) return
-                    val actIntent = Intent(Intent.ACTION_VIEW, Uri.parse(actUrl))
-                    try {
-                        requireActivity().startActivity(actIntent)
-                    } catch (ex: Exception) {
-                        view?.let { EntSnackbar.make(it, R.string.no_browser_error, Snackbar.LENGTH_SHORT).show() }
-                    }
+
+                   (requireActivity() as MainActivity).showWebView(actUrl)
                 }
                 else if (item is FeedItem) {
                     feedItemViewRequested(Events.OnFeedItemInfoViewRequestedEvent(item))
@@ -231,7 +230,7 @@ class NewHomeFeedFragment : BaseNewsfeedFragment() {
             PlusFragment.KEY_CREATE_CONTRIBUTION -> createAction(BaseEntourage.GROUPTYPE_ACTION, BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)
             PlusFragment.KEY_CREATE_DEMAND -> createAction(BaseEntourage.GROUPTYPE_ACTION, BaseEntourage.GROUPTYPE_ACTION_DEMAND)
             PlusFragment.KEY_CREATE_OUTING -> createAction(BaseEntourage.GROUPTYPE_OUTING)
-            "android.intent.action.MAIN" -> {}
+            "android.intent.action.MAIN", "android.intent.action.VIEW" -> {}
             else -> {
                 //Use for Tour
                 if (isTourPostSend) return

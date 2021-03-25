@@ -146,7 +146,7 @@ enum class HomeCardType {
     fun getName() : Int {
         when(this) {
             HEADLINES -> return R.string.home_title_headlines
-            ACTIONS -> return R.string.home_title_headlines
+            ACTIONS -> return R.string.home_title_actions
             EVENTS -> return R.string.home_title_events
             NONE -> return R.string.home_title_none
         }

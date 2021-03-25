@@ -10,6 +10,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.Constants
+import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.BaseEntourage.EntourageCloseOutcome
 import social.entourage.android.api.model.BaseEntourage.EntourageJoinInfo
@@ -105,7 +106,12 @@ open class EntServiceManager(
             entService.notifyListenersNetworkException()
             return
         }
-        val _currNewsFeedCall = newsfeedRequest.getHomeFeed(currentCameraPosition.target.longitude,currentCameraPosition.target.latitude)
+
+        //TODO: a remettre les coords GPS lorsque le WS sera OK
+      //  val _currNewsFeedCall = newsfeedRequest.getHomeFeed(currentCameraPosition.target.longitude,currentCameraPosition.target.latitude)
+        val userAddress = EntourageApplication.me(this.entService)?.address
+
+        val _currNewsFeedCall = newsfeedRequest.getHomeFeed(userAddress?.longitude,userAddress?.latitude)
 
         _currNewsFeedCall.enqueue(HomeFeedCallback(this,entService))
     }
@@ -211,7 +217,7 @@ open class EntServiceManager(
                         false,
                         mapFilter.getTimeFrame(),
                         false,
-                        Constants.ANNOUNCEMENTS_VERSION,
+                        null,
                         mapFilter.showPastEvents(),
                         mapFilter.isShowPartnersOnly
                 )
