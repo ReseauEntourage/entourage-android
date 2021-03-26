@@ -29,11 +29,11 @@
                 android:layout_height="0dp"
                 android:adjustViewBounds="true"
                 android:cropToPadding="true"
-                android:scaleType="center"
+                android:scaleType="centerCrop"
                 app:layout_constraintBottom_toTopOf="@+id/constraintLayout15"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/pre_onboard_2" />
+                app:srcCompat="@drawable/ic_placeholder_event_feed" />
 
             <TextView
                 android:id="@+id/ui_event_title"

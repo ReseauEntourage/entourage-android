@@ -28,9 +28,9 @@ import java.lang.Exception
  * Announce VH
  */
 class AnnounceVH(view: View) : RecyclerView.ViewHolder(view) {
-    fun bind(data: Any?, listener: HomeViewHolderListener) {
+    fun bind(data: Any?, listener: HomeViewHolderListener,position:Int) {
         itemView.setOnClickListener {
-            data?.let {  listener.onDetailClicked(data) }
+            data?.let {  listener.onDetailClicked(data,position,true) }
         }
 
         itemView.ui_bg_trans_black?.visibility = View.INVISIBLE
@@ -73,9 +73,10 @@ class AnnounceVH(view: View) : RecyclerView.ViewHolder(view) {
  * Action VH
  */
 class ActionVH(view: View) : RecyclerView.ViewHolder(view) {
-    fun bind(data: Any?, listener: HomeViewHolderListener) {
+    var isAction = true //Use for tracking Firebase click
+    fun bind(data: Any?, listener: HomeViewHolderListener,position: Int,isFromHeadline:Boolean) {
         itemView.setOnClickListener {
-            data?.let { listener.onDetailClicked(data)  }
+            data?.let { listener.onDetailClicked(data,position,isFromHeadline,isAction)  }
         }
 
         val feedItem = data as? FeedItem
@@ -103,10 +104,12 @@ class ActionVH(view: View) : RecyclerView.ViewHolder(view) {
 
             val _type = (feedItem as BaseEntourage).getGroupType()
             if (_type.equals("outing")) {
+                isAction = false
                 itemView.ui_action_tv_type?.text = itemView.context.resources.getString(R.string.entourage_type_outing)
                 itemView.ui_action_tv_more?.text = itemView.context.resources.getString(R.string.show_more_event)
             }
             else {
+                isAction = true
                 itemView.ui_action_tv_more?.text =  itemView.context.resources.getString(R.string.show_more)
                 if (feedItem.actionGroupType.equals("ask_for_help")) {
                     itemView.ui_action_tv_type?.text = itemView.context.resources.getString(R.string.entourage_type_demand)
@@ -196,9 +199,9 @@ class ActionVH(view: View) : RecyclerView.ViewHolder(view) {
  * Event VH
  */
 class EventVH(view: View) : RecyclerView.ViewHolder(view) {
-    fun bind(data: Any?, listener: HomeViewHolderListener) {
+    fun bind(data: Any?, listener: HomeViewHolderListener,position: Int,isFromHeadline:Boolean) {
         itemView.setOnClickListener {
-            data?.let { listener.onDetailClicked(data)  }
+            data?.let { listener.onDetailClicked(data,position,isFromHeadline)  }
         }
 
         val feedItem = data as? FeedItem
@@ -241,10 +244,23 @@ class EventVH(view: View) : RecyclerView.ViewHolder(view) {
 class ShowMoreVH(view: View,val type:HomeCardType) : RecyclerView.ViewHolder(view) {
     fun bind(listener: HomeViewHolderListener) {
         itemView.setOnClickListener {
-            listener.onShowDetail(type)
+            listener.onShowDetail(type,false)
         }
 
         val titleId = if (type == HomeCardType.ACTIONS) R.string.show_more_actions else R.string.show_more_events
         itemView.ui_tv_title_more?.text = itemView.resources.getString(titleId)
+    }
+}
+
+class OtherVH(view: View,val type:HomeCardType) : RecyclerView.ViewHolder(view) {
+    fun bind(listener: HomeViewHolderListener) {
+        itemView.setOnClickListener {
+            if (type == HomeCardType.ACTIONS) {
+                listener.onShowEntourageHelp()
+            }
+            else {
+                listener.onShowChangeZone()
+            }
+        }
     }
 }

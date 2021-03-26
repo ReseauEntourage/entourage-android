@@ -35,10 +35,10 @@ class HeadlineAdapter(var homecard:HomeCard,val listener:HomeViewHolderListener)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == CELL_HEADLINE) {
-            (holder as AnnounceVH).bind(homecard.arrayCards[position].data, listener)
+            (holder as AnnounceVH).bind(homecard.arrayCards[position].data, listener,position)
         }
         else {
-            (holder as ActionVH).bind(homecard.arrayCards[position].data, listener)
+            (holder as ActionVH).bind(homecard.arrayCards[position].data, listener,position,true)
         }
     }
 

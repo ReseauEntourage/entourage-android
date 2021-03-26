@@ -472,6 +472,29 @@ object AnalyticsEvents {
 
     const val VIEW_ADD_USERNAME_SUBMIT = "Action__Add__UsernameSubmit"
 
+    /******
+     * New home feed Expert
+     */
+    const val VIEW_START_EXPERTFEED = "View__Start __ExpertFeed"
+    const val ACTION_EXPERTFEED_Tour = "Action__ExpertFeed__Tour"
+    //Feed Expert Headline
+    const val ACTION_EXPERTFEED_News_Announce = "Action__ExpertFeed__News_Announce"
+    const val ACTION_EXPERTFEED_News_Event = "Action__ExpertFeed__News_Event"
+    const val ACTION_EXPERTFEED_News_Action = "Action__ExpertFeed__News_Action"
+
+    //Feed Expert Events
+    const val ACTION_EXPERTFEED_Event = "Action__ExpertFeed__Event"
+    const val ACTION_EXPERTFEED_MoreEvent = "Action__ExpertFeed__MoreEvents"
+    const val ACTION_EXPERTFEED_MoreEventArrow = "Action__ExpertFeed__MoreEventsArrow"
+    const val Event_EXPERTFEED_ModifyActionZone = "Action__ExpertFeed__ModifyActionZone"
+
+    //Feed Expert Actions
+    const val ACTION_EXPERTFEED_Action = "Action__ExpertFeed__Action"
+    const val ACTION_EXPERTFEED_MoreAction = "Action__ExpertFeed__MoreActions"
+    const val ACTION_EXPERTFEED_MoreActionArrow = "Action__ExpertFeed__MoreActionsArrow"
+    const val ACTION_EXPERTFEED_HelpDifferent = "Action__ExpertFeed__HelpDifferently"
+
+
     var TAG = AnalyticsEvents::class.java.simpleName
 
     fun logEvent(event: String) {

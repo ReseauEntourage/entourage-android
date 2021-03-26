@@ -29,10 +29,8 @@ class NewHomeFeedAdapter(val listener:HomeViewHolderListener): RecyclerView.Adap
     val CELL_HEADLINES = 0
     val CELL_ACTIONS = 1
     val CELL_EVENTS = 2
-    val CELL_EMPTY = 3
 
     override fun getItemViewType(position: Int): Int {
-        if (arrayItems[position].arrayCards.size == 0) return CELL_EMPTY
 
        val type = arrayItems[position].type
 
@@ -118,7 +116,7 @@ class NewHomeFeedAdapter(val listener:HomeViewHolderListener): RecyclerView.Adap
             itemView.ui_title_action.text = context.getText(arrayItems[position].type.getName())
 
             itemView.ui_action_show_more.setOnClickListener {
-                listener.onShowDetail(arrayItems[position].type)
+                listener.onShowDetail(arrayItems[position].type,true)
             }
 
             itemView.ui_recyclerview_action?.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
@@ -138,7 +136,7 @@ class NewHomeFeedAdapter(val listener:HomeViewHolderListener): RecyclerView.Adap
             itemView.ui_title_event.text = context.getText(arrayItems[position].type.getName())
 
             itemView.ui_event_show_more.setOnClickListener {
-                listener.onShowDetail(arrayItems[position].type)
+                listener.onShowDetail(arrayItems[position].type,true)
             }
 
             itemView.ui_recyclerview_event?.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
@@ -156,7 +154,7 @@ class NewHomeFeedAdapter(val listener:HomeViewHolderListener): RecyclerView.Adap
             itemView.ui_title_empty.text = itemView.resources.getText(arrayItems[position].type.getName())
 
             itemView.ui_empty_show_more.setOnClickListener {
-                listener.onShowDetail(arrayItems[position].type)
+                listener.onShowDetail(arrayItems[position].type,true)
             }
         }
     }

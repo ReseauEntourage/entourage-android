@@ -3,10 +3,7 @@ package social.entourage.android.newsfeed.v2
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.os.Handler
-import android.os.IBinder
-import android.os.Looper
+import android.os.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +17,7 @@ import social.entourage.android.MainActivity
 import social.entourage.android.PlusFragment
 import social.entourage.android.R
 import social.entourage.android.api.model.*
+import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.feed.Announcement
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events
@@ -30,6 +28,8 @@ import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tour.encounter.CreateEncounterActivity
+import social.entourage.android.user.edit.place.UserEditActionZoneFragment
+import social.entourage.android.user.edit.place.UserEditActionZoneFragmentCompat
 import timber.log.Timber
 
 
@@ -62,7 +62,10 @@ class NewHomeFeedFragment : BaseNewsfeedFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_START_EXPERTFEED)
+
         ui_bt_tour?.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_EXPERTFEED_Tour)
             showTour()
         }
 
@@ -93,25 +96,90 @@ class NewHomeFeedFragment : BaseNewsfeedFragment() {
 
     fun  setupRecyclerView() {
         val listener = object : HomeViewHolderListener{
-            override fun onDetailClicked(item: Any) {
+            override fun onDetailClicked(item: Any, position: Int, isFromHeadline: Boolean, isAction: Boolean) {
                 if (item is Announcement) {
-                    val actUrl = item.url
-                    if (actUrl == null) return
-
+                    val actUrl = item.url ?: return
+                    val logString = "${AnalyticsEvents.ACTION_EXPERTFEED_News_Announce}${position+1}"
+                    AnalyticsEvents.logEvent(logString)
                    (requireActivity() as MainActivity).showWebView(actUrl)
                 }
                 else if (item is FeedItem) {
+
+                    var logString = if (isFromHeadline) {
+                        if (isAction) {
+                            AnalyticsEvents.ACTION_EXPERTFEED_News_Action
+                        } else {
+                            AnalyticsEvents.ACTION_EXPERTFEED_News_Event
+                        }
+                    } else {
+                        if (isAction) {
+                            AnalyticsEvents.ACTION_EXPERTFEED_Action
+                        } else {
+                            AnalyticsEvents.ACTION_EXPERTFEED_Event
+                        }
+                    }
+                    logString += "${position + 1}"
+                    AnalyticsEvents.logEvent(logString)
+
                     feedItemViewRequested(Events.OnFeedItemInfoViewRequestedEvent(item))
                 }
             }
 
-            override fun onShowDetail(type: HomeCardType) {
+            override fun onShowDetail(type: HomeCardType,isArrow:Boolean) {
+                var logString = ""
                 if (type == HomeCardType.ACTIONS) {
                     showActions(true)
+                    logString = if (isArrow) {
+                        AnalyticsEvents.ACTION_EXPERTFEED_MoreActionArrow
+                    } else {
+                        AnalyticsEvents.ACTION_EXPERTFEED_MoreAction
+                    }
                 }
                 else if (type == HomeCardType.EVENTS) {
                     showActions(false)
+                    logString = if (isArrow) {
+                        AnalyticsEvents.ACTION_EXPERTFEED_MoreEventArrow
+                    } else {
+                        AnalyticsEvents.ACTION_EXPERTFEED_MoreEvent
+                    }
                 }
+                AnalyticsEvents.logEvent(logString)
+            }
+
+            override fun onShowChangeZone() {
+                val activity = (requireActivity() as? MainActivity) ?: return
+                AnalyticsEvents.logEvent(AnalyticsEvents.Event_EXPERTFEED_ModifyActionZone)
+
+                val listener = object : UserEditActionZoneFragment.FragmentListener {
+                    override fun onUserEditActionZoneFragmentDismiss() {
+                    }
+
+                    override fun onUserEditActionZoneFragmentAddressSaved() {
+                        entService?.updateHomefeed(pagination)
+                    }
+
+                    override fun onUserEditActionZoneFragmentIgnore() {
+                    }
+                }
+
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                    val userEditActionZoneFragmentCompat = UserEditActionZoneFragmentCompat.newInstance(null, false)
+                    userEditActionZoneFragmentCompat.addFragmentListener(listener)
+                    userEditActionZoneFragmentCompat.setFromLogin(true)
+                    userEditActionZoneFragmentCompat.show(activity.supportFragmentManager, UserEditActionZoneFragmentCompat.TAG)
+                } else {
+                    val userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null, false)
+                    userEditActionZoneFragment.setupListener(listener)
+                    userEditActionZoneFragment.show(activity.supportFragmentManager, UserEditActionZoneFragment.TAG)
+                }
+            }
+
+            override fun onShowEntourageHelp() {
+                val activity = (requireActivity() as? MainActivity) ?: return
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_EXPERTFEED_HelpDifferent)
+
+               val homeHelp = HomeHelpFragment()
+                homeHelp.show(activity.supportFragmentManager,HomeHelpFragment.TAG)
             }
         }
 
