@@ -181,9 +181,9 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
 
             //Type
             ui_tv_action_type_desc?.text = when(user.goal) {
-                User.USER_GOAL_NEIGHBOUR -> getString(R.string.onboard_type_choice1)
-                User.USER_GOAL_ALONE -> getString(R.string.onboard_type_choice2)
-                User.USER_GOAL_ASSO -> getString(R.string.onboard_type_choice3)
+                User.USER_GOAL_NEIGHBOUR -> getString(R.string.onboard_type_choice_neighbour)
+                User.USER_GOAL_ALONE -> getString(R.string.onboard_type_choice_alone)
+                User.USER_GOAL_ASSO -> getString(R.string.onboard_type_choice_asso)
                 else -> {getString(R.string.profile_action_not_selected) }
             }
 
