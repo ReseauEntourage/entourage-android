@@ -107,7 +107,7 @@
                 app:layout_constraintTop_toTopOf="@+id/ui_action_picto_users" />
 
             <TextView
-                android:id="@+id/textView42"
+                android:id="@+id/ui_tv_info_by"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -131,8 +131,8 @@
                 android:layout_marginTop="8dp"
                 android:contentDescription="@string/empty_description"
                 android:scaleType="centerInside"
-                app:layout_constraintStart_toStartOf="@+id/textView42"
-                app:layout_constraintTop_toBottomOf="@+id/textView42"
+                app:layout_constraintStart_toStartOf="@+id/ui_tv_info_by"
+                app:layout_constraintTop_toBottomOf="@+id/ui_tv_info_by"
                 app:srcCompat="@drawable/ic_user_photo_small" />
 
             <social.entourage.android.tools.view.PartnerLogoImageView
@@ -201,7 +201,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:background="@color/black"
-                app:layout_constraintBottom_toTopOf="@+id/textView42"
+                app:layout_constraintBottom_toTopOf="@+id/ui_tv_info_by"
                 app:layout_constraintStart_toStartOf="@+id/ui_action_picto_users"
                 app:layout_constraintTop_toBottomOf="@+id/ui_action_picto_users">
 

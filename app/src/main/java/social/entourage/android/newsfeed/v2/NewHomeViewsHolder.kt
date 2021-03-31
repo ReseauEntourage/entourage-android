@@ -119,6 +119,15 @@ class ActionVH(view: View) : RecyclerView.ViewHolder(view) {
                 }
             }
 
+            if (isFromHeadline) {
+                if (isAction) {
+                    itemView.ui_tv_info_by?.text = res.getString(R.string.cell_demand_from)
+                }
+                else {
+                    itemView.ui_tv_info_by?.text = res.getString(R.string.cell_invit_from)
+                }
+            }
+
             if (feedItem.getFeedTypeColor() != 0) {
                 itemView.ui_action_tv_type?.setTextColor(ContextCompat.getColor(itemView.context, feedItem.getFeedTypeColor()))
             }

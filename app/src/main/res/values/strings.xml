@@ -56,16 +56,19 @@
     //Home Cells
 
     <string name="cell_demand_from">Une demande de :</string>
+    <string name="cell_invit_from">Invité par :</string>
+    <string name="cell_contrib_from">Une contribution de :</string>
+
     <string name="cell_numberOfPeople">%1$d participant</string>
     <string name="cell_numberOfPeoples">%1$d participants</string>
     <string name="show_more">Voir plus</string>
-    <string name="show_more_event">Voir l\'évènement</string>
-    <string name="show_more_actions">Afficher plus\nde demandes</string>
-    <string name="show_more_events">Afficher plus\nd’évènements</string>
+    <string name="show_more_event">Voir l\'événement</string>
+    <string name="show_more_actions">Afficher plus\nde demandes et\nd’initiatives</string>
+    <string name="show_more_events">Afficher plus\nd’événements</string>
 
     <string name="home_title_headlines">À la une</string>
     <string name="home_title_actions">Demandes et initiatives</string>
-    <string name="home_title_events">Evènements</string>
+    <string name="home_title_events">Événements</string>
     <string name="home_title_none" />
 
     <string name="home_help_title">Entourage autrement</string>
