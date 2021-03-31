@@ -475,7 +475,7 @@ object AnalyticsEvents {
     /******
      * New home feed Expert
      */
-    const val VIEW_START_EXPERTFEED = "View__Start __ExpertFeed"
+    const val VIEW_START_EXPERTFEED = "View__Start__ExpertFeed"
     const val ACTION_EXPERTFEED_Tour = "Action__ExpertFeed__Tour"
     //Feed Expert Headline
     const val ACTION_EXPERTFEED_News_Announce = "Action__ExpertFeed__News_Announce"

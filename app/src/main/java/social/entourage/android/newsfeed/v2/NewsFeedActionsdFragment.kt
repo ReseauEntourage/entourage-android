@@ -179,11 +179,6 @@ open class NewsFeedActionsFragment : BaseNewsfeedFragment(), EntourageServiceLis
     }
 
     @Subscribe
-    override fun feedItemViewRequested(event: OnFeedItemInfoViewRequestedEvent) {
-        super.feedItemViewRequested(event)
-    }
-
-    @Subscribe
     override fun userActRequested(event: OnUserActEvent) {
         super.userActRequested(event)
     }

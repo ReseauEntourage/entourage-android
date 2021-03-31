@@ -208,9 +208,9 @@ class NewHomeFeedFragment : BaseNewsfeedFragment() {
                 "event" -> {
                     showActions(false)
                 }
-                "announcement" -> {
-                    showAnnounces()
-                }
+//                "announcement" -> {
+//                    showAnnounces()
+//                }
                 "tour" -> {
                     showTour()
                 }
@@ -228,13 +228,13 @@ class NewHomeFeedFragment : BaseNewsfeedFragment() {
         }
     }
 
-    fun showAnnounces() {
-        requireActivity().supportFragmentManager.commit {
-            add(R.id.main_fragment,AnnouncementsFeedFragment(),"homeNew")
-            addToBackStack("homeNew")
-            saveInfos(true,"announcement")
-        }
-    }
+//    fun showAnnounces() {
+//        requireActivity().supportFragmentManager.commit {
+//            add(R.id.main_fragment,AnnouncementsFeedFragment(),"homeNew")
+//            addToBackStack("homeNew")
+//            saveInfos(true,"announcement")
+//        }
+//    }
 
     fun showTour() {
         requireActivity().supportFragmentManager.commit {

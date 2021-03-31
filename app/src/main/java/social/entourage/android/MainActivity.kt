@@ -286,12 +286,13 @@ class MainActivity : BaseSecuredActivity(),
     }
 
     private fun setupFiltersAfterOnboarding(userType: Int) {
-        when (userType) {
+        /*when (userType) {
             1 -> mapFilter.setNeighbourFilters()
             2 -> mapFilter.setAloneFilters()
             3 -> mapFilter.setDefaultValues()
             else -> mapFilter.setDefaultValues()
-        }
+        }*/
+        mapFilter.setDefaultValues()
         authenticationController.saveMapFilter()
         EntBus.post(OnMapFilterChanged())
     }
