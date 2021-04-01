@@ -81,7 +81,7 @@ class ActionEventAdapter(var homecard:HomeCard,val listener:HomeViewHolderListen
             return homecard.arrayCards.size + 1
         }
 
-        val _showMore = if (homecard.arrayCards.size > minimumItemsToShowMore) 1 else 0
+        val _showMore = if (homecard.arrayCards.size >= minimumItemsToShowMore) 1 else 0
         return homecard.arrayCards.size + _showMore
     }
 }

@@ -110,24 +110,18 @@ class ActionVH(view: View) : RecyclerView.ViewHolder(view) {
                 isAction = false
                 itemView.ui_action_tv_type?.text = itemView.context.resources.getString(R.string.entourage_type_outing)
                 itemView.ui_action_tv_more?.text = itemView.context.resources.getString(R.string.show_more_event)
+                itemView.ui_tv_info_by?.text = res.getString(R.string.cell_invit_from)
             }
             else {
                 isAction = true
                 itemView.ui_action_tv_more?.text =  itemView.context.resources.getString(R.string.show_more)
                 if (feedItem.actionGroupType.equals("ask_for_help")) {
                     itemView.ui_action_tv_type?.text = itemView.context.resources.getString(R.string.entourage_type_demand)
-                }
-                else {
-                    itemView.ui_action_tv_type?.text = itemView.context.resources.getString(R.string.entourage_type_contribution)
-                }
-            }
-
-            if (isFromHeadline) {
-                if (isAction) {
                     itemView.ui_tv_info_by?.text = res.getString(R.string.cell_demand_from)
                 }
                 else {
-                    itemView.ui_tv_info_by?.text = res.getString(R.string.cell_invit_from)
+                    itemView.ui_action_tv_type?.text = itemView.context.resources.getString(R.string.entourage_type_contribution)
+                    itemView.ui_tv_info_by?.text = res.getString(R.string.cell_contrib_from)
                 }
             }
 
