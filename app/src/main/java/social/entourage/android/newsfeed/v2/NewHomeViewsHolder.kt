@@ -2,6 +2,7 @@ package social.entourage.android.newsfeed.v2
 
 import android.net.Uri
 import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -44,9 +45,7 @@ class AnnounceVH(view: View) : RecyclerView.ViewHolder(view) {
                 val imageUrl = announce.imageUrl
 
                 if (imageUrl == null || imageUrl.trim { it <= ' ' }.isEmpty()) {
-                    AppCompatResources.getDrawable(itemView.context, R.drawable.ic_announcement_image_placeholder)?.let { itPlaceholder ->
-                        imageView.setImageDrawable(itPlaceholder)
-                    }
+                    setCellPlaceholder(imageView)
                 } else {
                     val callback:Callback = object : Callback {
                         override fun onSuccess() {
@@ -55,16 +54,20 @@ class AnnounceVH(view: View) : RecyclerView.ViewHolder(view) {
                         }
 
                         override fun onError(e: Exception?) {
-                            itemView.ui_announce_title?.visibility = View.VISIBLE
-                            itemView.ui_view_show_more?.visibility = View.VISIBLE
-                            AppCompatResources.getDrawable(itemView.context, R.drawable.bg_button_rounded_pre_onboard_orange_plain)?.let { itPlaceholder ->
-                                imageView.setImageDrawable(itPlaceholder)
-                            }
+                           setCellPlaceholder(imageView)
                         }
                     }
                     Picasso.get().load(Uri.parse(imageUrl)).into(imageView,callback)
                 }
             }
+        }
+    }
+
+    fun setCellPlaceholder(imageView:ImageView) {
+        itemView.ui_announce_title?.visibility = View.VISIBLE
+        itemView.ui_view_show_more?.visibility = View.VISIBLE
+        AppCompatResources.getDrawable(itemView.context, R.drawable.bg_button_rounded_pre_onboard_orange_plain)?.let { itPlaceholder ->
+            imageView.setImageDrawable(itPlaceholder)
         }
     }
 }
