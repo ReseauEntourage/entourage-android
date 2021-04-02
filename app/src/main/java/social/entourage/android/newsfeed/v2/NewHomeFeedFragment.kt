@@ -3,6 +3,7 @@ package social.entourage.android.newsfeed.v2
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.*
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.feed.Announcement
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events
+import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.location.EntLocation
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.newsfeed.*
@@ -101,7 +103,10 @@ class NewHomeFeedFragment : BaseNewsfeedFragment() {
                     val actUrl = item.url ?: return
                     val logString = "${AnalyticsEvents.ACTION_EXPERTFEED_News_Announce}${position+1}"
                     AnalyticsEvents.logEvent(logString)
-                   (requireActivity() as MainActivity).showWebView(actUrl)
+
+                    val deeplink = DeepLinksManager.findFirstDeeplinkInText(actUrl)
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(deeplink))
+                    requireActivity().startActivity(intent)
                 }
                 else if (item is FeedItem) {
 

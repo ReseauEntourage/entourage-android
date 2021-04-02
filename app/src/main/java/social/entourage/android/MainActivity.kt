@@ -35,6 +35,7 @@ import social.entourage.android.deeplinks.DeepLinksManager.storeIntent
 import social.entourage.android.entourage.EntourageDisclaimerFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.entourage.my.MyEntouragesFragment
+import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.location.EntLocation.currentLocation
 import social.entourage.android.location.LocationUtils.isLocationEnabled
@@ -437,6 +438,12 @@ class MainActivity : BaseSecuredActivity(),
 
     fun showGuide() {
         selectNavigationTab(navigationDataSource.guideTabIndex)
+    }
+
+    fun showGuideMap() {
+        val intent = Intent(this, GDSMainActivity::class.java)
+
+        startActivity(intent)
     }
 
     fun showEvents() {

@@ -143,6 +143,9 @@ object DeepLinksManager {
         } else if (key == DeepLinksView.TUTORIAL.view) {
             activity.showTutorial(true)
         }
+        else if (key == DeepLinksView.GUIDE_MAP.view) {
+            activity.showGuideMap()
+        }
         intent = null
     }
 
@@ -162,7 +165,8 @@ object DeepLinksManager {
         GUIDE("guide"),
         MY_CONVERSATIONS("messages"),
         CREATE_ACTION("create-action"),
-        TUTORIAL("tutorial");
+        TUTORIAL("tutorial"),
+        GUIDE_MAP("guidemap");
     }
 
     /**
