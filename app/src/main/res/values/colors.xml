@@ -22,6 +22,7 @@
     <!-- Backgrounds -->
     <color name="background">@color/primary</color>
     <color name="background_light">@color/primary_light</color>
+    <color name="background_home">#e5e5e5</color>
     <color name="background_transparent">#66000000</color>
     <color name="background_accent_dark_translucent">@color/pale_grey</color>
 
