@@ -39,17 +39,16 @@ class LocationListener(private val manager: EntServiceManager,
         context.sendBroadcast(Intent(EntService.KEY_LOCATION_PROVIDER_DISABLED))
     }
 
-    override fun onLocationResult(result: LocationResult?) {
+    override fun onLocationResult(result: LocationResult) {
         super.onLocationResult(result)
-        val location = result?.lastLocation ?: return
-        onUpdateLocation(location)
+        onUpdateLocation(result.lastLocation)
     }
 
-    override fun onLocationAvailability(result: LocationAvailability?) {
+    override fun onLocationAvailability(result: LocationAvailability) {
         super.onLocationAvailability(result)
-        val isLocationAvailable = result?.isLocationAvailable == true
+        val isLocationAvailable = result.isLocationAvailable
         Timber.d("LocationAvailability changed to %s", isLocationAvailable)
-        val intent = Intent(if(result?.isLocationAvailable == true) EntService.KEY_LOCATION_PROVIDER_ENABLED else EntService.KEY_LOCATION_PROVIDER_DISABLED)
+        val intent = Intent(if(result.isLocationAvailable) EntService.KEY_LOCATION_PROVIDER_ENABLED else EntService.KEY_LOCATION_PROVIDER_DISABLED)
         context.sendBroadcast(intent)
     }
 }

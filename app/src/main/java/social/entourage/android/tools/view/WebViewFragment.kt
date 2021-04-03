@@ -160,7 +160,7 @@ class WebViewFragment : BaseDialogFragment() {
 
     private fun onMenuShareClicked() {
         webview?.url?.let { url ->
-            val sharingIntent = getSharingIntent(requireContext(), url, shareMessageRes ?: 0)
+            val sharingIntent = getSharingIntent(requireContext(), url, shareMessageRes)
             context?.startActivity(Intent.createChooser(sharingIntent, getString(R.string.entourage_share_intent_title)))
             toggleMenu()
         }

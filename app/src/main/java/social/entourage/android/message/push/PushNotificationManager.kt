@@ -186,7 +186,7 @@ object PushNotificationManager {
                 var messageListChanged = false
                 for (message in oldMessageList) {
                     val content = message.content
-                    if (content != null && content.joinableId == feedId && content.type != null && content.type == pushType) {
+                    if (content != null && content.joinableId == feedId && content.type == pushType) {
                         if (TimestampedObject.TOUR_CARD == feedType && content.isTourRelated
                                 || TimestampedObject.ENTOURAGE_CARD == feedType && content.isEntourageRelated) {
                             messageListChanged = true
