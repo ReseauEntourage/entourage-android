@@ -72,6 +72,7 @@ class MapFilter : MapFilterInterface, Serializable {
         timeframe = DAYS_3
         isShowPartnersOnly = false
         isShowAlls = true
+        entourageTypeOuting = false
     }
 
     // ----------------------------------

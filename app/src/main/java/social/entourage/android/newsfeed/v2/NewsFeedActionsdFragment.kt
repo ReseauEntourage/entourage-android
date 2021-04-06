@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.fragment_map.fragment_map_filter_button
 import kotlinx.android.synthetic.main.fragment_map.fragment_map_main_layout
 import kotlinx.android.synthetic.main.fragment_map.tour_stop_button
 import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
 import social.entourage.android.PlusFragment
 import social.entourage.android.R
 import social.entourage.android.api.model.*
@@ -29,6 +30,7 @@ import social.entourage.android.service.EntService
 import social.entourage.android.service.EntService.LocalBinder
 import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.entourage.join.EntourageJoinRequestFragment
+import social.entourage.android.map.filter.MapFilterFactory
 import social.entourage.android.newsfeed.BaseNewsfeedFragment
 import social.entourage.android.newsfeed.NewsfeedTabItem
 import social.entourage.android.tour.join.TourJoinRequestFragment
@@ -87,6 +89,14 @@ open class NewsFeedActionsFragment : BaseNewsfeedFragment(), EntourageServiceLis
         else {
             fragment_map_filter_button?.visibility = View.GONE
         }
+//        if (isActionSelected) {
+//            (requireActivity() as? MainActivity)?.checkOnboarding()
+//        }
+    }
+
+    override fun updateFilterButtonText() {
+        val activefilters = MapFilterFactory.mapFilter.isDefaultFilter()
+        fragment_map_filter_button?.setText(if (activefilters) R.string.map_no_filter else R.string.map_filters_activated)
     }
 
     protected open fun checkAction(action: String) {

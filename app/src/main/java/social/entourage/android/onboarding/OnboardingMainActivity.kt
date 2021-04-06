@@ -29,7 +29,6 @@ import social.entourage.android.tools.disable
 import social.entourage.android.tools.enable
 import social.entourage.android.tools.view.CustomProgressDialog
 import timber.log.Timber
-import java.io.File
 import java.util.*
 
 /**
@@ -46,7 +45,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     val LOGIN_ERROR_NETWORK = -9999
 
     private var currentFragmentPosition = 1
-    private val numberOfSteps = 7
+    private val numberOfSteps = 6
 
     private var temporaryUser = User()
     private var temporaryCountrycode:String? = null
@@ -100,11 +99,6 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     private fun setupViews() {
         ui_bt_next?.setOnClickListener {
-            if (currentPositionNeighbour == NeighbourPositionType.PLACE.pos || currentPositionAlone == AlonePositionType.PLACE.pos) {
-                action_pass()
-                return@setOnClickListener
-            }
-
             goNext()
         }
 
@@ -116,10 +110,6 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             if (currentFragmentPosition >= PositionType.Type.pos) return@setOnClickListener
             startActivity(Intent(this, PreOnboardingChoiceActivity::class.java))
             finish()
-        }
-
-        ui_bt_pass?.setOnClickListener {
-            action_pass()
         }
 
         ui_bt_previous?.visibility = View.INVISIBLE
@@ -188,7 +178,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     fun sendPasscode() {
         alertDialog.show(R.string.onboard_waiting_dialog)
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_SIGNUP_SUBMIT)
-        val phoneNumber = checkPhoneNumberFormat(null, temporaryUser.phone ?:"") ?: run {
+        val phoneNumber = checkPhoneNumberFormat(temporaryCountrycode, temporaryUser.phone ?:"") ?: run {
             showLoginFail(LOGIN_ERROR_INVALID_PHONE_FORMAT)
             return
         }
@@ -282,12 +272,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 }
                 displayToast(R.string.user_action_zone_send_ok)
                 alertDialog.dismiss()
-                if (userTypeSelected == UserTypeSelection.NONE) {
-                    goNextStep()
-                }
-                else {
-                    goNextStepSdfNeighbour()
-                }
+                goNextStep()
             }
             else {
                 alertDialog.dismiss()
@@ -308,47 +293,8 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ERROR_ONBOARDING_EMAIL_SUBMIT_ERROR)
             }
             alertDialog.dismiss()
-            goNextStep()
+            goMain()
         }
-    }
-
-    fun updateUserPhoto() {
-        Timber.d("Send upload Photo Prépare")
-        alertDialog.show(R.string.user_photo_uploading)
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_PHOTO_SUBMIT)
-        OnboardingAPI.getInstance().prepareUploadPhoto { avatarKey, presignedUrl, error ->
-            Timber.d("Send upload Photo Return")
-            if (!avatarKey.isNullOrEmpty() && !presignedUrl.isNullOrEmpty()) {
-                val path: String = temporaryImageUri?.path ?: return@prepareUploadPhoto
-                val file = File(path)
-                Timber.d("Send upload Photo file")
-                OnboardingAPI.getInstance().uploadPhotoFile(presignedUrl,file) { isOk ->
-                    if (isOk) {
-                        updateUserPhoto(avatarKey)
-                    }
-                    alertDialog.dismiss()
-                    goMain()
-                }
-            }
-            else {
-                alertDialog.dismiss()
-                showErrorUpload()
-            }
-        }
-    }
-
-    fun updateUserPhoto(avatarKey:String) {
-        OnboardingAPI.getInstance().updateUserPhoto(avatarKey) { isOK, userResponse ->
-            if (isOK && userResponse != null) {
-                if (authenticationController.isAuthenticated) {
-                    authenticationController.saveUser(userResponse.user)
-                }
-            }
-        }
-    }
-
-    fun showErrorUpload() {
-        Toast.makeText(this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show()
     }
 
     fun updateGoal(isAsso:Boolean) {
@@ -424,55 +370,6 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         }
     }
 
-    fun update2ndAddress() {
-        alertDialog.show(R.string.onboard_waiting_dialog)
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_ACTION_ZONE2_SUBMIT)
-        OnboardingAPI.getInstance().updateAddress(temporary2ndPlaceAddress!!,true) { isOK, userResponse ->
-            if (isOK) {
-                val me = authenticationController.me
-                if (me != null && userResponse != null) {
-                    userResponse.user.phone = me.phone
-                    authenticationController.saveUser(userResponse.user)
-                }
-                displayToast(R.string.user_action_zone_send_ok)
-                alertDialog.dismiss()
-                goNextStepSdfNeighbour()
-            }
-            else {
-                alertDialog.dismiss()
-                displayToast(R.string.user_action_zone_send_failed)
-            }
-        }
-    }
-
-    fun updateAlone() {
-        updateActivities(temporarySdfActivities,true)
-    }
-
-    fun updateNeighbour() {
-        updateActivities(temporaryNeighbourActivities,false)
-    }
-
-    fun updateActivities(activities:SdfNeighbourActivities?,isSdf:Boolean) {
-        if (activities?.hasOneSelectionMin() == true) {
-            if (isSdf) { AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_INNEED_MOSAIC) }
-            else { AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_NEIGHBOR_MOSAIC) }
-
-            OnboardingAPI.getInstance().updateUserInterests(activities.getArrayForWs()) { isOK, userResponse ->
-                currentFragmentPosition += 1
-                changeFragment()
-            }
-        }
-        else {
-            AlertDialog.Builder(this)
-                    .setTitle(R.string.attention_pop_title)
-                    .setMessage(R.string.onboard_asso_activity_error)
-                    .setPositiveButton("OK") { dialog, which -> }
-                    .create()
-                    .show()
-        }
-    }
-
     //**********//**********//**********
     // Navigation
     //**********//**********//**********
@@ -489,7 +386,6 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 OnboardingPlaceFragment.newInstance(temporaryPlaceAddress, false, isSdf)
             }
             6 -> OnboardingEmailPwdFragment.newInstance(temporaryEmail)
-            7 -> OnboardingPhotoFragment.newInstance(temporaryUser.firstName ?: "")
             else -> Fragment()
         }
 
@@ -633,14 +529,6 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             }
             PositionType.Place.pos -> {
                 if (userTypeSelected == UserTypeSelection.ALONE) {
-                    if (currentPositionAlone == AlonePositionType.PLACE.pos) {
-                        update2ndAddress()
-                        return
-                    }
-                    if (currentPositionAlone == AlonePositionType.ACTIVITIES.pos) {
-                        updateAlone()
-                        return
-                    }
                     if (currentPositionAlone == AlonePositionType.NONE.pos) {
                         sendAddress()
                         return
@@ -651,14 +539,6 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 }
 
                 if (userTypeSelected == UserTypeSelection.NEIGHBOUR) {
-                    if (currentPositionNeighbour == NeighbourPositionType.PLACE.pos) {
-                        update2ndAddress()
-                        return
-                    }
-                    if (currentPositionNeighbour == NeighbourPositionType.ACTIVITIES.pos) {
-                        updateNeighbour()
-                        return
-                    }
                     if (currentPositionNeighbour == NeighbourPositionType.NONE.pos) {
                         sendAddress()
                         return
@@ -671,7 +551,6 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 sendAddress(); return
             }
             PositionType.EmailPwd.pos -> {updateUserEmailPwd(); return}
-            PositionType.Photo.pos -> {updateUserPhoto(); return}
             PositionType.Passcode.pos -> {
                 if (temporaryPasscode?.length ?: 0 == 6) {
                     sendPasscode()
@@ -702,49 +581,12 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             }
         }
 
-        if (currentFragmentPosition == PositionType.Place.pos) {
-            if (userTypeSelected == UserTypeSelection.ALONE) {
-                if (currentPositionAlone != AlonePositionType.NONE.pos) {
-                    currentPositionAlone -= 1
-                }
-                else {
-                    currentFragmentPosition -= 1
-                }
-                moveToTunnelAlone()
-                return
-            }
-            if (userTypeSelected == UserTypeSelection.NEIGHBOUR) {
-                if (currentPositionNeighbour != NeighbourPositionType.NONE.pos) {
-                    currentPositionNeighbour -= 1
-                }
-                else {
-                    currentFragmentPosition -= 1
-                }
-                moveToTunnelNeighbour()
-                return
-            }
-        }
-
         if (currentFragmentPosition == PositionType.EmailPwd.pos) {
             if (userTypeSelected == UserTypeSelection.ASSOS) {
                 if (currentPositionAsso != AssoPositionType.NONE.pos) {
                     currentFragmentPosition -= 2
                 }
                 moveToTunnelAsso()
-                return
-            }
-            if (userTypeSelected == UserTypeSelection.ALONE) {
-                if (currentPositionAlone != AlonePositionType.NONE.pos) {
-                    currentFragmentPosition -= 1
-                }
-                moveToTunnelAlone()
-                return
-            }
-            if (userTypeSelected == UserTypeSelection.NEIGHBOUR) {
-                if (currentPositionNeighbour != NeighbourPositionType.NONE.pos) {
-                    currentFragmentPosition -= 1
-                }
-                moveToTunnelNeighbour()
                 return
             }
         }
@@ -758,42 +600,6 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     fun goNextStep() {
         currentFragmentPosition += 1
         changeFragment()
-    }
-
-    fun goNextStepSdfNeighbour() {
-        if (userTypeSelected == UserTypeSelection.ALONE) {
-            currentPositionAlone += 1
-            moveToTunnelAlone()
-        }
-        else {
-            currentPositionNeighbour += 1
-            moveToTunnelNeighbour()
-        }
-    }
-
-    fun action_pass() {
-        if (currentFragmentPosition == PositionType.Place.pos) {
-            if ((userTypeSelected == UserTypeSelection.ALONE && currentPositionAlone == AlonePositionType.PLACE.pos) ||
-                    (userTypeSelected == UserTypeSelection.NEIGHBOUR && currentPositionNeighbour == NeighbourPositionType.PLACE.pos)) {
-                temporary2ndPlaceAddress = null
-                temporarySdfActivities = null
-                temporaryNeighbourActivities = null
-                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_ACTION_ZONE2_SKIP)
-                goNextStepSdfNeighbour()
-                return
-            }
-        }
-
-        if (currentFragmentPosition == PositionType.Type.pos) {
-            userTypeSelected = UserTypeSelection.NONE
-        }
-        if (currentFragmentPosition == PositionType.Photo.pos) {
-            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_IGNORE_PHOTO)
-            goMain()
-            return
-        }
-
-        goNext()
     }
 
     fun goMain() {
@@ -822,23 +628,15 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             PositionType.Type.pos -> {
                 if (currentPositionAsso == AssoPositionType.NONE.pos) {
                     ui_bt_previous?.visibility = View.INVISIBLE
-                    ui_bt_pass?.visibility = View.VISIBLE
+                  //  ui_bt_pass?.visibility = View.VISIBLE
                 } else {
                     ui_bt_previous?.visibility = View.VISIBLE
                 }
             }
             PositionType.Place.pos -> {
-                if ((userTypeSelected == UserTypeSelection.ALONE && currentPositionAlone == AlonePositionType.PLACE.pos) ||
-                        (userTypeSelected == UserTypeSelection.NEIGHBOUR && currentPositionNeighbour == NeighbourPositionType.PLACE.pos)) {
-                    ui_bt_pass?.visibility = View.VISIBLE
-                }
                 ui_bt_previous?.visibility = View.VISIBLE
             }
             else -> ui_bt_previous?.visibility = View.VISIBLE
-        }
-
-        if (currentFragmentPosition == PositionType.Photo.pos ) {
-            ui_bt_pass?.visibility = View.VISIBLE
         }
     }
 
@@ -907,8 +705,6 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 updateButtonNext(false)
             }
         }
-
-
     }
 
     override fun updateEmailPwd(email: String?, pwd: String?, pwdConfirm: String?) {
@@ -975,8 +771,7 @@ enum class PositionType(val pos:Int) {
     Passcode(3),
     Type(4),
     Place(5),
-    EmailPwd(6),
-    Photo(7)
+    EmailPwd(6)
 }
 
 enum class AssoPositionType(val pos:Int) {
@@ -987,13 +782,9 @@ enum class AssoPositionType(val pos:Int) {
     NONE(0)
 }
 enum class AlonePositionType(val pos:Int) {
-    PLACE(1),
-    ACTIVITIES(2),
     NONE(0)
 }
 enum class NeighbourPositionType(val pos:Int) {
-    PLACE(1),
-    ACTIVITIES(2),
     NONE(0)
 }
 

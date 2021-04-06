@@ -101,6 +101,7 @@ class MainActivity : BaseSecuredActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         if (isFinishing) return
+        ui_layout_tooltips?.visibility = View.GONE
         configureBottombar()
         if (intent != null) {
             storeIntent(intent)
@@ -214,7 +215,7 @@ class MainActivity : BaseSecuredActivity(),
         intent?.action?.let {
             action ->
             EntBus.post(OnCheckIntentActionEvent(action, intent.extras)) }
-        checkOnboarding()
+      //  checkOnboarding()
     }
 
     override fun onStop() {
@@ -229,7 +230,7 @@ class MainActivity : BaseSecuredActivity(),
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
-    private fun checkOnboarding() {
+    fun checkOnboarding() {
         val sharedPreferences = get().sharedPreferences
         val isFromOnboarding = sharedPreferences.getBoolean(EntourageApplication.KEY_IS_FROM_ONBOARDING, false)
         if (isFromOnboarding) {
@@ -351,6 +352,9 @@ class MainActivity : BaseSecuredActivity(),
                 }
                 true
             }
+            //TODO: a remettre l'auto ?
+            //navigationDataSource.isEngaged = authenticationController.me?.isEngaged ?: false
+            navigationDataSource.isEngaged = true
             val defaultId = navigationDataSource.defaultSelectedTab
             bottomBar.selectedItemId = defaultId
             loadFragment(defaultId)
