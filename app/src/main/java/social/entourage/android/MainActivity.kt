@@ -351,7 +351,6 @@ class MainActivity : BaseSecuredActivity(),
                 }
                 true
             }
-            navigationDataSource.isEngaged = authenticationController.me?.isEngaged ?: false
             val defaultId = navigationDataSource.defaultSelectedTab
             bottomBar.selectedItemId = defaultId
             loadFragment(defaultId)

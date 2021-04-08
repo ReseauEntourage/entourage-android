@@ -104,6 +104,6 @@ class EntourageContribution : EntourageAction, Serializable {
                 title: String, description: String, location: LocationPoint) : super(GROUPTYPE_ACTION_CONTRIBUTION, category, title, description, location)
 
     override fun getFeedTypeLong(context: Context): String {
-        return context.getString(R.string.entourage_type_format, context.getString(R.string.entourage_type_contribution))
+        return context.getString(R.string.entourage_type_format_bis, context.getString(R.string.entourage_type_contribution))
     }
 }

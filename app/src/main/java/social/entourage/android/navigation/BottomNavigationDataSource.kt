@@ -20,7 +20,7 @@ class BottomNavigationDataSource {
     var isEngaged = false
 
     val defaultSelectedTab: Int
-        @IdRes get() = if(isEngaged) R.id.bottom_bar_newsfeed else R.id.bottom_bar_guide
+        @IdRes get() = R.id.bottom_bar_newsfeed
 
     val feedTabIndex
         @IdRes get() = R.id.bottom_bar_newsfeed
