@@ -1,5 +1,6 @@
 package social.entourage.android.newsfeed.v2
 
+import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -105,8 +106,20 @@ class NewHomeFeedFragment : BaseNewsfeedFragment() {
                     AnalyticsEvents.logEvent(logString)
 
                     val deeplink = DeepLinksManager.findFirstDeeplinkInText(actUrl)
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(deeplink))
-                    requireActivity().startActivity(intent)
+                    deeplink?.let {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(deeplink))
+                        requireActivity().startActivity(intent)
+                    } ?: run {
+                        val uri = Uri.parse(actUrl)
+                        var _action = Intent.ACTION_VIEW
+                        if (actUrl.contains("mailto:",true)) {_action = Intent.ACTION_SENDTO }
+                        val intent = Intent(_action,uri)
+                        try {
+                            requireActivity().startActivity(intent)
+                        } catch (e: ActivityNotFoundException) {
+                            Timber.e(e)
+                        }
+                    }
                 }
                 else if (item is FeedItem) {
 

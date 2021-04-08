@@ -352,9 +352,6 @@ class MainActivity : BaseSecuredActivity(),
                 }
                 true
             }
-            //TODO: a remettre l'auto ?
-            //navigationDataSource.isEngaged = authenticationController.me?.isEngaged ?: false
-            navigationDataSource.isEngaged = true
             val defaultId = navigationDataSource.defaultSelectedTab
             bottomBar.selectedItemId = defaultId
             loadFragment(defaultId)
