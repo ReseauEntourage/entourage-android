@@ -7,21 +7,21 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.collection.ArrayMap
-import kotlinx.android.synthetic.main.fragment_about.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication.Companion.get
-import social.entourage.android.about.EntourageAboutFragment
+import social.entourage.android.about.AboutFragment
 import social.entourage.android.about.carousel.CarouselFragment
 import social.entourage.android.api.model.ApplicationInfo
 import social.entourage.android.api.request.ApplicationInfoRequest
 import social.entourage.android.api.request.ApplicationWrapper
 import social.entourage.android.api.request.UserRequest
 import social.entourage.android.api.request.UserResponse
+import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.configuration.Configuration
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.AvatarUpdatePresenter
 import social.entourage.android.user.UserFragment
 import social.entourage.android.user.edit.UserEditFragment
@@ -36,6 +36,7 @@ import javax.inject.Inject
  class MainPresenter @Inject internal constructor(
         private val activity: MainActivity,
         private val applicationInfoRequest: ApplicationInfoRequest,
+        private val authenticationController: AuthenticationController,
         private val userRequest: UserRequest) : AvatarUpdatePresenter {
     // ----------------------------------
     // ATTRIBUTES
@@ -49,14 +50,14 @@ import javax.inject.Inject
     fun handleMenuProfile(menuPosition: String) {
         when (menuPosition) {
             "editProfile" -> {
-                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_MODPROFIL)
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_MODPROFIL)
                 val fragment = UserEditFragment()
                 fragment.show(activity.supportFragmentManager, UserEditFragment.TAG)
             }
             "user" -> {
-                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_SHOWPROFIL)
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_SHOWPROFIL)
                 val userFragment = activity.supportFragmentManager.findFragmentByTag(UserFragment.TAG) as UserFragment?
-                        ?: UserFragment.newInstance(activity.authenticationController.me!!.id)
+                        ?: UserFragment.newInstance(authenticationController.me!!.id)
                 userFragment.show(activity.supportFragmentManager, UserFragment.TAG)
             }
             "appVersion" -> {
@@ -67,7 +68,7 @@ import javax.inject.Inject
             }
 
             "charte" -> {
-                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_CHART)
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_CHART)
                 val charteIntent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.CHARTE_LINK_ID)))
                 try {
                     activity.startActivity(charteIntent)
@@ -76,16 +77,16 @@ import javax.inject.Inject
                 }
             }
             "scb" -> {
-                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_BLOG)
-                activity.showWebViewForLinkId(Constants.SCB_LINK_ID)
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_BLOG)
+                activity.showWebViewForLinkId(Constants.SCB_LINK_ID, R.string.webview_share_text)
             }
 
             "goodWaves" -> {
-                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_GOODWAVES)
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_GOODWAVES)
                 activity.showWebViewForLinkId(Constants.GOOD_WAVES_ID)
             }
             "ambassador" -> {
-                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_AMBASSADOR)
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_AMBASSADOR)
                 val ambassadorIntent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.AMBASSADOR_ID)))
                 try {
                     activity.startActivity(ambassadorIntent)
@@ -102,7 +103,7 @@ import javax.inject.Inject
                 }
             }
             "donation" -> {
-                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_DONATION)
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_DONATION)
                 val donationIntent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.DONATE_LINK_ID)))
                 try {
                     activity.startActivity(donationIntent)
@@ -125,17 +126,17 @@ import javax.inject.Inject
             }
 
             "help" -> {
-                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_ABOUT)
-                EntourageAboutFragment().show(activity.supportFragmentManager, EntourageAboutFragment.TAG)
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_ABOUT)
+                AboutFragment().show(activity.supportFragmentManager, AboutFragment.TAG)
             }
 
             "logout" -> {
-                EntourageEvents.logEvent(EntourageEvents.ACTION_PROFILE_LOGOUT)
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_LOGOUT)
                 activity.logout()
             }
 
             "fb" -> {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_ABOUT_FACEBOOK)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ABOUT_FACEBOOK)
                 val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.facebook_url)))
                 try {
                     activity.startActivity(browserIntent)
@@ -243,9 +244,9 @@ import javax.inject.Inject
         call.enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
-                    if (activity.authenticationController.isAuthenticated) {
+                    if (authenticationController.isAuthenticated) {
                         val responseBody = response.body()
-                        if (responseBody != null) activity.authenticationController.saveUser(responseBody.user)
+                        if (responseBody != null) authenticationController.saveUser(responseBody.user)
                     }
                 }
             }
@@ -266,12 +267,10 @@ import javax.inject.Inject
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 activity.dismissProgressDialog()
                 if (response.isSuccessful) {
-                    if (activity.authenticationController.isAuthenticated) {
-                        val responseBody = response.body()
-                        if (responseBody != null) activity.authenticationController.saveUser(responseBody.user)
+                    if (authenticationController.isAuthenticated) {
+                        response.body()?.let { responseBody-> authenticationController.saveUser(responseBody.user)}
                     }
-                    val photoEditFragment = activity.supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as PhotoEditFragment?
-                    if (photoEditFragment != null) {
+                    (activity.supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as PhotoEditFragment?)?.let { photoEditFragment->
                         if (photoEditFragment.onPhotoSent(true)) {
                             val photoChooseSourceFragment = activity.supportFragmentManager.findFragmentByTag(PhotoChooseSourceFragmentCompat.TAG) as PhotoChooseSourceFragmentCompat?
                             photoChooseSourceFragment?.dismiss()

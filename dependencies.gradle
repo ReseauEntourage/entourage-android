@@ -18,8 +18,8 @@ ext {
     targetCompatibilityVersion = JavaVersion.VERSION_1_8
 
     // App versions
-    versionMajor = 6
-    versionMinor = 9
+    versionMajor = 7
+    versionMinor = 0
     versionPatch = "git rev-list HEAD --count".execute().text.trim().toInteger()
     versionBranchName = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
     versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -32,22 +32,22 @@ ext {
     butterKnifeVersion = "10.2.3"
     constraintlayoutVersion = "2.0.1"
     coordinatorlayoutVersion="1.1.0"
-    daggerVersion = "2.31.2"
+    daggerVersion = "2.33"
     dateTimePickerVersion = "4.2.3"
     espressoVersion = "3.3.0"
     exifinterfaceVersion = "1.3.2"
-    facebookVersion = "9.0.0"
+    facebookVersion = "9.1.0"
     floatingButtonVersion = "1.6.4"
-    fragmentVersion = "1.2.5"
-    guavaVersion = "30.0-android"
+    fragmentVersion = "1.3.2"
+    guavaVersion = "30.1.1-android"
     imageCropperVersion = "2.8.0"
     javaAnnotationVersion = "10.0-b28"
-    jodaVersion = "2.10.9"
+    jodaVersion = "2.10.9.1"
     mapsVersion = "17.0.0"
-    mapsUtilsVersion = "2.2.0"
+    mapsUtilsVersion = "3.0.0"
     materialVersion = "1.2.0"
     multidexVersion = "2.0.1"
-    okHttpVersion = "3.12.12" //version 3.13+ needs API 21+ //https://square.github.io/okhttp/changelog_3x/
+    okHttpVersion = "3.12.13" //version 3.13+ needs API 21+ //https://square.github.io/okhttp/changelog_3x/
     okHttpIdlingVersion = "1.0.0"
     picassoVersion = "2.71828"
     picassoTransformationsVersion = "2.3.1" //version 2.4.+ needs API 21+
@@ -69,7 +69,7 @@ ext {
             coordinatorLayout: "androidx.coordinatorlayout:coordinatorlayout:$coordinatorlayoutVersion",
             constraintLayout : "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion",
             exifinterface    : "androidx.exifinterface:exifinterface:$exifinterfaceVersion",
-            fragment         : "androidx.fragment:fragment:$fragmentVersion",
+            fragment         : "androidx.fragment:fragment-ktx:$fragmentVersion",
             legacyV4         : "androidx.legacy:legacy-support-v4:$supportVersion",
             legacyV13        : "androidx.legacy:legacy-support-v13:$supportVersion",
             multidex         : "androidx.multidex:multidex:$multidexVersion",
@@ -110,7 +110,7 @@ ext {
 
     gmsDependencies = [
             maps            : "com.google.android.gms:play-services-maps:$mapsVersion",
-            location        : "com.google.android.gms:play-services-location:17.1.0",
+            location        : "com.google.android.gms:play-services-location:18.0.0",
             places          : "com.google.android.libraries.places:places-compat:$placesCompat",
             //https://developers.google.com/android/guides/opensource
             ossLicenses     : "com.google.android.gms:play-services-oss-licenses:17.0.0"
@@ -158,7 +158,6 @@ ext {
             material                : "com.google.android.material:material:$materialVersion",
             picasso                 : "com.squareup.picasso:picasso:$picassoVersion",
             picassoTransformations  : "jp.wasabeef:picasso-transformations:$picassoTransformationsVersion",
-            shortcutBadger          : "me.leolin:ShortcutBadger:$shortcutBadgerVersion@aar",
-            tapTargetPrompt         : "uk.co.samuelwall:material-tap-target-prompt:3.1.0"
+            shortcutBadger          : "me.leolin:ShortcutBadger:$shortcutBadgerVersion@aar"
     ]
 }

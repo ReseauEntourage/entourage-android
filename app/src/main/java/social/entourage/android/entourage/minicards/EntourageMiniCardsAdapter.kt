@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.base.EntourageBaseAdapter
+import social.entourage.android.base.BaseAdapter
 import social.entourage.android.base.ViewHolderFactory.ViewHolderType
 
 /**
@@ -12,7 +12,7 @@ import social.entourage.android.base.ViewHolderFactory.ViewHolderType
  * It handles only Entourage Mini Cards
  * Created by Mihai Ionescu on 13/09/2017.
  */
-class EntourageMiniCardsAdapter : EntourageBaseAdapter() {
+class EntourageMiniCardsAdapter : BaseAdapter() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val cardViewHolder = viewHolderFactory.getViewHolder(parent, viewType)
         // Make the width of the mini card to be a percentage of the parent

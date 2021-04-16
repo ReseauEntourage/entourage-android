@@ -1,6 +1,7 @@
 package social.entourage.android.api.request
 
 import com.google.gson.annotations.SerializedName
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -61,4 +62,18 @@ interface NewsfeedRequest {
             @Query("latitude") latitude: Double,
             @Query("starting_after") startingAfterOutingUUID: String?
     ): Call<NewsfeedItemResponse>
+
+    @GET("feeds")
+    fun retrieveAnnouncements(
+            @Query("longitude") longitude: Double,
+            @Query("latitude") latitude: Double,
+            @Query("types") types: String?,
+            @Query("announcements") announcementsVersion: String?,
+    ): Call<NewsfeedItemResponse>
+
+    @GET("home")
+    fun getHomeFeed(
+            @Query("longitude") longitude: Double?,
+            @Query("latitude") latitude: Double?,
+    ): Call<ResponseBody>
 }

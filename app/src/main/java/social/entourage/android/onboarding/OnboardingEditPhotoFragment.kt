@@ -119,7 +119,7 @@ class OnboardingEditPhotoFragment : DialogFragment(), OnSetImageUriCompleteListe
             ui_photo_edit_cropImageView?.setOnCropImageCompleteListener { view, result ->
                 if (result.isSuccessful) {
                     mListener?.onPhotoEdited(result.uri, photoSource)
-                    dismiss()
+                    dismissAllowingStateLoss()
                 } else {
                     Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
                     ui_edit_photo_validate.isEnabled = true

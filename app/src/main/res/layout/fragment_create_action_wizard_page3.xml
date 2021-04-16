@@ -7,7 +7,7 @@
               tools:context="social.entourage.android.entourage.create.wizard.CreateActionWizardPage3Fragment">
 
 
-    <social.entourage.android.tools.view.EntourageTitleView
+    <social.entourage.android.tools.view.CustomTitleView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/accent"

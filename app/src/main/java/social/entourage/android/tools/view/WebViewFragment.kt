@@ -1,10 +1,12 @@
 package social.entourage.android.tools.view
 
 import android.annotation.TargetApi
+import android.app.PendingIntent
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ResolveInfo
 import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
@@ -19,18 +21,26 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.webkit.*
 import android.widget.Toast
+import androidx.annotation.IdRes
 import androidx.annotation.RequiresApi
+import androidx.browser.customtabs.CustomTabColorSchemeParams
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.browser.customtabs.CustomTabsIntent.SHARE_STATE_ON
+import androidx.browser.customtabs.CustomTabsService.ACTION_CUSTOM_TABS_CONNECTION
 import androidx.core.view.GestureDetectorCompat
 import kotlinx.android.synthetic.main.fragment_webview.*
+import social.entourage.android.MainActivity
 import social.entourage.android.R
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import java.util.*
 
-class WebViewFragment : EntourageDialogFragment() {
+
+class WebViewFragment : BaseDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
     private lateinit var requestedUrl: String
+    @IdRes private var shareMessageRes: Int = 0
     private var gestureDetectorCompat: GestureDetectorCompat? = null
     var bottomUpJumpAnimation: Animation? = null
 
@@ -48,6 +58,7 @@ class WebViewFragment : EntourageDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requestedUrl = arguments?.getString(REQUESTED_URL) ?: return dismiss()
+        shareMessageRes = arguments?.getInt(SHARE_MESSAGE, 0) ?: 0
         showAnimation()
         webview_back_button.setOnClickListener {onBackClicked()}
         webview_more_button.setOnClickListener {toggleMenu()}
@@ -148,12 +159,9 @@ class WebViewFragment : EntourageDialogFragment() {
     }
 
     private fun onMenuShareClicked() {
-        webview?.url?.let {
-            val shareString = getString(R.string.webview_share_text, it)
-            val sharingIntent = Intent(Intent.ACTION_SEND)
-            sharingIntent.type = "text/plain"
-            sharingIntent.putExtra(Intent.EXTRA_TEXT, shareString)
-            startActivity(Intent.createChooser(sharingIntent, getString(R.string.entourage_share_intent_title)))
+        webview?.url?.let { url ->
+            val sharingIntent = getSharingIntent(requireContext(), url, shareMessageRes ?: 0)
+            context?.startActivity(Intent.createChooser(sharingIntent, getString(R.string.entourage_share_intent_title)))
             toggleMenu()
         }
     }
@@ -178,7 +186,7 @@ class WebViewFragment : EntourageDialogFragment() {
             super.onPageStarted(view, url, favicon)
             if (!loadedUrl.equals(url, ignoreCase = true)) {
                 loadedUrl = url
-                Uri.parse(url).host?.let {it->
+                Uri.parse(url).host?.let { it->
                     var host = it.toLowerCase(Locale.ROOT)
                     if (host.startsWith("www.")) {
                         host = host.substring(4)
@@ -258,6 +266,8 @@ class WebViewFragment : EntourageDialogFragment() {
         // ----------------------------------
         val TAG = WebViewFragment::class.java.simpleName
         private const val REQUESTED_URL = "REQUESTED_URL"
+        private const val SHARE_MESSAGE = "SHARE_MESSAGE"
+        var customTabsPackages: ArrayList<ResolveInfo>? = null
 
         /**
          * Use this factory method to create a new instance of
@@ -266,12 +276,69 @@ class WebViewFragment : EntourageDialogFragment() {
          * @param requestedUrl Requested url as string.
          * @return A new instance of fragment WebViewFragment.
          */
-        fun newInstance(requestedUrl: String?): WebViewFragment {
+        fun newInstance(requestedUrl: String?, @IdRes shareMessageRes: Int? = null): WebViewFragment {
             val fragment = WebViewFragment()
             val args = Bundle()
             args.putString(REQUESTED_URL, requestedUrl)
+            shareMessageRes?.let {args.putInt(SHARE_MESSAGE, it) }
             fragment.arguments = args
             return fragment
+        }
+
+        /**
+         * Returns a list of packages that support Custom Tabs.
+         */
+        fun getCustomTabsPackages(context: Context): ArrayList<ResolveInfo>? {
+            val pm = context.packageManager
+            // Get default VIEW intent handler.
+            val activityIntent = Intent()
+                    .setAction(Intent.ACTION_VIEW)
+                    .addCategory(Intent.CATEGORY_BROWSABLE)
+                    .setData(Uri.fromParts("http", "", null))
+
+            // Get all apps that can handle VIEW intents.
+            val packagesSupportingCustomTabs: ArrayList<ResolveInfo> = ArrayList()
+            pm.queryIntentActivities(activityIntent, 0).forEach { info ->
+                val serviceIntent = Intent().apply {
+                    this.action = ACTION_CUSTOM_TABS_CONNECTION
+                    this.setPackage(info.activityInfo.packageName)
+                }
+                // Check if this package also resolves the Custom Tabs service.
+                if (pm.resolveService(serviceIntent, 0) != null) {
+                    packagesSupportingCustomTabs.add(info)
+                }
+            }
+            return packagesSupportingCustomTabs
+        }
+
+        private fun getSharingIntent(context: Context, url: String, shareMessageRes: Int): Intent {
+            val shareString = if(shareMessageRes!=0) context.resources.getString(shareMessageRes, url) else  url
+            val sharingIntent = Intent(Intent.ACTION_SEND)
+            sharingIntent.type = "text/plain"
+            sharingIntent.putExtra(Intent.EXTRA_TEXT, shareString)
+            return sharingIntent
+        }
+
+        fun launchURL(context: Context, url: String, @IdRes shareMessageRes: Int = 0): Boolean {
+            if(customTabsPackages == null) customTabsPackages = getCustomTabsPackages(context)
+            if(customTabsPackages.isNullOrEmpty()) return false
+            //Create a PendingIntent to your BroadCastReceiver implementation
+
+            val schemeParams = CustomTabColorSchemeParams.Builder()
+                    .setToolbarColor(context.resources.getColor(R.color.accent))
+                    .setSecondaryToolbarColor(context.resources.getColor(R.color.custom_button_accent_disabled))
+                    .build()
+
+            val customIntent = CustomTabsIntent.Builder()
+                    .setStartAnimations(context, R.anim.bottom_up, R.anim.slide_out_to_right)
+                    .setExitAnimations(context, R.anim.bottom_down, R.anim.slide_in_from_right)
+                    .setDefaultColorSchemeParams(schemeParams)
+                    .setShareState(SHARE_STATE_ON)
+                    .build()
+            customIntent.intent.putExtra(Intent.EXTRA_REFERRER, Uri.parse("android-app://" + context.packageName))
+
+            customIntent.launchUrl(context, Uri.parse(url))
+            return true
         }
     }
 }

@@ -11,7 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_onboarding_sdf_neighbour_activities.*
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.onboarding.OnboardingCallback
 import java.io.Serializable
@@ -50,10 +50,10 @@ class OnboardingSdfNeighbourActivitiesFragment : Fragment() {
         setupViews()
 
         if (isSdf) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING_INNEED_MOSAIC)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_ONBOARDING_INNEED_MOSAIC)
         }
         else {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING_NEIGHBOR_MOSAIC)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_ONBOARDING_NEIGHBOR_MOSAIC)
         }
     }
 

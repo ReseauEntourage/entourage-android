@@ -8,7 +8,6 @@
     <string name="invite_source_description_outing">à participer à cet événement</string>
     <string name="invite_source_share">Partager le lien</string>
     <string name="invite_source_contacts">Contacts</string>
-    <string name="invite_source_number">Numéro de portable</string>
     <string name="invite_source_share_entourage">Partager sur Entourage</string>
 
     <!-- Invite Contacts -->
@@ -32,8 +31,7 @@
     <string name="invitation_card_inviter">%1$s vous invite à rejoindre</string>
 
     <!-- Invited -->
-    <string name="invited_description">Vous êtes invités à rejoindre cet entourage</string>
-    <string name="invited_description_new">Répondez présent !</string>
+    <string name="invited_description">Répondez présent !</string>
     <string name="invited_updated_ok">Invitation mise à jour</string>
     <string name="invited_updated_error">Erreur lors de la mise à jour de l’entourage</string>
 

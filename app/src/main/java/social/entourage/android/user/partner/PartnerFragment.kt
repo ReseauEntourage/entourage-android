@@ -20,12 +20,12 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
 import social.entourage.android.api.request.PartnerResponse
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.tools.CropCircleTransformation
 import timber.log.Timber
 
-class PartnerFragment : EntourageDialogFragment() {
+class PartnerFragment : BaseDialogFragment() {
 
     private var partner: Partner? = null
     private var partnerId:Int? = null
@@ -61,44 +61,39 @@ class PartnerFragment : EntourageDialogFragment() {
     }
 
     fun getPartnerInfos() {
-        val application = EntourageApplication.get()
-       val call = application.entourageComponent.userRequest.getPartnerDetail(partnerId!!)
-
-        call.enqueue(object : Callback<PartnerResponse> {
-            override fun onResponse(call: Call<PartnerResponse>, response: Response<PartnerResponse>) {
-                if (response.isSuccessful) {
-                   val body = response.body()
-                   partner = body?.partner
-                    configureViews()
-                }
-                else {
-                    dismiss()
-                    return
-                }
-            }
-            override fun onFailure(call: Call<PartnerResponse>, t: Throwable) {
-                dismiss()
-                return
-            }
-        })
+        partnerId?.let { partnerId ->
+            EntourageApplication.get().components.userRequest
+                    .getPartnerDetail(partnerId)
+                    .enqueue(object : Callback<PartnerResponse> {
+                        override fun onResponse(call: Call<PartnerResponse>, response: Response<PartnerResponse>) {
+                            if (response.isSuccessful) {
+                                response.body()?.let { partner = it.partner}
+                                configureViews()
+                            }
+                            else {
+                                dismiss()
+                            }
+                        }
+                        override fun onFailure(call: Call<PartnerResponse>, t: Throwable) {
+                            dismiss()
+                            return
+                        }
+                    })
+        }
     }
 
     fun updatePartnerFollow(isFollow:Boolean) {
-        val application = EntourageApplication.get()
-
         val params = ArrayMap<String, Any>()
         val isFollowParam = ArrayMap<String,Any>()
         isFollowParam["partner_id"] = partner?.id.toString()
         isFollowParam["active"] = if (isFollow) "true" else "false"
         params["following"] = isFollowParam
 
-        val call = application.entourageComponent.userRequest.updateUserPartner(params)
-
-        call.enqueue(object : Callback<ResponseBody>{
+        EntourageApplication.get().components.userRequest.updateUserPartner(params).enqueue(object : Callback<ResponseBody>{
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     partner?.let {
-                        partner?.isFollowing = isFollow
+                        it.isFollowing = isFollow
                         updateButtonFollow()
                     }
                 }
@@ -113,11 +108,11 @@ class PartnerFragment : EntourageDialogFragment() {
         user_title_layout?.title_text?.text = requireActivity().resources.getString(R.string.title_association)
         user_title_layout?.title_close_button?.setOnClickListener {dismiss()}
 
-        partner?.let {
-            ui_asso_tv_title?.text = it.name
+        partner?.let { partner ->
+            ui_asso_tv_title?.text = partner.name
             ui_asso_tv_subtitle?.text = ""
             ui_asso_iv_logo?.let { logoView ->
-                partner?.largeLogoUrl?.let { url ->
+                partner.largeLogoUrl?.let { url ->
                     Picasso.get()
                             .load(Uri.parse(url))
                             .placeholder(R.drawable.partner_placeholder)
@@ -126,18 +121,13 @@ class PartnerFragment : EntourageDialogFragment() {
                 }
             }
 
-            ui_asso_tv_description?.text = it.description
-
-            if (it.description?.length ?: 0 > 0) {
-                ui_layout_description?.visibility = View.VISIBLE
-            }
-            else {
-                ui_layout_description?.visibility = View.GONE
+            ui_asso_tv_description?.let { description ->
+                description.text = partner.description
+                description.visibility = if (partner.description?.length ?: 0 > 0) View.VISIBLE else View.GONE
+                DeepLinksManager.linkify(description)
             }
 
-            DeepLinksManager.linkify(ui_asso_tv_description)
-
-            if (it.donationsNeeds.isNullOrEmpty() && it.volunteersNeeds.isNullOrEmpty()) {
+            if (partner.donationsNeeds.isNullOrEmpty() && partner.volunteersNeeds.isNullOrEmpty()) {
                 ui_asso_layout_top_needs?.visibility = View.GONE
                 ui_asso_layout_needs?.visibility = View.GONE
             }
@@ -145,36 +135,40 @@ class PartnerFragment : EntourageDialogFragment() {
                 ui_asso_layout_top_needs?.visibility = View.VISIBLE
                 ui_asso_layout_needs?.visibility = View.VISIBLE
 
-                if (it.donationsNeeds.isNullOrEmpty()) {
+                if (partner.donationsNeeds.isNullOrEmpty()) {
                     ui_asso_layout_top_donates?.visibility = View.GONE
                     ui_layout_description_donates?.visibility = View.GONE
                 }
                 else {
                     ui_asso_layout_top_donates?.visibility = View.VISIBLE
                     ui_layout_description_donates?.visibility = View.VISIBLE
-                    ui_asso_tv_donates_description?.text = it.donationsNeeds
-                    DeepLinksManager.linkify(ui_asso_tv_donates_description)
+                    ui_asso_tv_donates_description?.let { description->
+                        description.text = partner.donationsNeeds
+                        DeepLinksManager.linkify(description)
+                    }
                 }
-                if (it.volunteersNeeds.isNullOrEmpty()) {
+                if (partner.volunteersNeeds.isNullOrEmpty()) {
                     ui_asso_layout_top_volunteers?.visibility = View.GONE
                     ui_layout_description_volunteers?.visibility = View.GONE
                 }
                 else {
                     ui_asso_layout_top_volunteers?.visibility = View.VISIBLE
                     ui_layout_description_volunteers?.visibility = View.VISIBLE
-                    ui_asso_tv_volunteers_description?.text = it.volunteersNeeds
-                    DeepLinksManager.linkify(ui_asso_tv_volunteers_description)
+                    ui_asso_tv_volunteers_description?.let { description ->
+                        description.text = partner.volunteersNeeds
+                        DeepLinksManager.linkify(description)
+                    }
                 }
             }
-            ui_button_asso_web?.text = it.websiteUrl
-            ui_button_asso_phone?.text = it.phone
-            ui_button_asso_address?.text = it.address
-            ui_button_asso_mail.text = it.email
+            ui_button_asso_web?.text = partner.websiteUrl
+            ui_button_asso_phone?.text = partner.phone
+            ui_button_asso_address?.text = partner.address
+            ui_button_asso_mail.text = partner.email
 
-            ui_layout_phone?.visibility = if (it.phone.isNullOrEmpty()) View.GONE else View.VISIBLE
-            ui_layout_address?.visibility = if (it.address.isNullOrEmpty()) View.GONE else View.VISIBLE
-            ui_layout_mail?.visibility = if (it.email.isNullOrEmpty()) View.GONE else View.VISIBLE
-            ui_layout_web?.visibility = if (it.websiteUrl.isNullOrEmpty()) View.GONE else View.VISIBLE
+            ui_layout_phone?.visibility = if (partner.phone.isNullOrEmpty()) View.GONE else View.VISIBLE
+            ui_layout_address?.visibility = if (partner.address.isNullOrEmpty()) View.GONE else View.VISIBLE
+            ui_layout_mail?.visibility = if (partner.email.isNullOrEmpty()) View.GONE else View.VISIBLE
+            ui_layout_web?.visibility = if (partner.websiteUrl.isNullOrEmpty()) View.GONE else View.VISIBLE
 
             updateButtonFollow()
         }

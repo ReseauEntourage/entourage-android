@@ -26,10 +26,10 @@ import com.google.android.libraries.places.compat.ui.PlaceSelectionListener
 import com.google.android.libraries.places.compat.ui.SupportPlaceAutocompleteFragment
 import kotlinx.android.synthetic.main.fragment_entourage_location.*
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.base.EntourageSecuredActivity
+import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.tools.EntBus
 import timber.log.Timber
 import java.io.IOException
@@ -44,7 +44,7 @@ import java.util.*
  * Use the [LocationFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class LocationFragment  : EntourageDialogFragment() {
+class LocationFragment  : BaseDialogFragment() {
     // ----------------------------------
     // Attributes
     // ----------------------------------
@@ -140,9 +140,9 @@ class LocationFragment  : EntourageDialogFragment() {
     }
 
     private fun onCurrentLocationClicked() {
-        (activity as? EntourageSecuredActivity)?.let {
+        (activity as? BaseSecuredActivity)?.let {
             if (LocationUtils.isLocationPermissionGranted()) {
-                EntourageLocation.currentLocation?.let { currentLocation ->
+                EntLocation.currentLocation?.let { currentLocation ->
                     map?.moveCamera(CameraUpdateFactory.newLatLng(LatLng(currentLocation.latitude, currentLocation.longitude)))
                 }
             } else {

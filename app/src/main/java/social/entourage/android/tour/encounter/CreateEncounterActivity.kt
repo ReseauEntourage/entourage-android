@@ -14,8 +14,8 @@ import com.google.android.libraries.places.compat.Place
 import kotlinx.android.synthetic.main.activity_encounter_create.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.EntourageComponent
-import social.entourage.android.tools.log.EntourageEvents
-import social.entourage.android.base.EntourageSecuredActivity
+import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.tour.Encounter
 import social.entourage.android.api.tape.Events.OnEncounterCreated
@@ -28,12 +28,11 @@ import java.lang.ref.WeakReference
 import java.util.*
 import javax.inject.Inject
 
-class CreateEncounterActivity : EntourageSecuredActivity(), LocationFragment.OnFragmentInteractionListener {
+class CreateEncounterActivity : BaseSecuredActivity(), LocationFragment.OnFragmentInteractionListener {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-    @Inject
-    lateinit var presenter: CreateEncounterPresenter
+    @Inject lateinit var presenter: CreateEncounterPresenter
 
     private var location: LatLng? = null
     private var editedEncounter: Encounter? = null
@@ -65,7 +64,7 @@ class CreateEncounterActivity : EntourageSecuredActivity(), LocationFragment.OnF
         create_encounter_position_layout?.setOnClickListener {onPositionClicked()}
         button_record?.setOnClickListener {onRecord()}
         initialiseFields()
-        EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_START)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_CREATE_ENCOUNTER_START)
     }
 
     override fun setupComponent(entourageComponent: EntourageComponent?) {
@@ -88,7 +87,7 @@ class CreateEncounterActivity : EntourageSecuredActivity(), LocationFragment.OnF
                             it.setText(it.text.toString() + " " + textMatchList[0])
                         }
                         it.setSelection(it.text.length)
-                        EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_OK)
+                        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_OK)
                     }
                 }
             }
@@ -143,12 +142,12 @@ class CreateEncounterActivity : EntourageSecuredActivity(), LocationFragment.OnF
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
         intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.encounter_leave_voice_message))
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_STARTED)
         try {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_STARTED)
             startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE)
         } catch (e: ActivityNotFoundException) {
             Toast.makeText(applicationContext, getString(R.string.encounter_voice_message_not_supported), Toast.LENGTH_SHORT).show()
-            EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_NOT_SUPPORTED)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_NOT_SUPPORTED)
         }
     }
 
@@ -167,11 +166,11 @@ class CreateEncounterActivity : EntourageSecuredActivity(), LocationFragment.OnF
             message = getString(R.string.create_encounter_success)
             EntBus.post(OnEncounterCreated(encounterResponse))
             finish()
-            EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_OK)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_CREATE_ENCOUNTER_OK)
         } else {
             message = getString(R.string.create_encounter_failure)
             Timber.e(message)
-            EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_FAILED)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_CREATE_ENCOUNTER_FAILED)
         }
         Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
     }

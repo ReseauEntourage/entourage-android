@@ -4,10 +4,10 @@ import android.location.Location
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_g_d_s_main.*
 import social.entourage.android.*
-import social.entourage.android.base.EntourageSecuredActivity
+import social.entourage.android.base.BaseSecuredActivity
 import timber.log.Timber
 
-class GDSMainActivity : EntourageSecuredActivity() {
+class GDSMainActivity : BaseSecuredActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_g_d_s_main)

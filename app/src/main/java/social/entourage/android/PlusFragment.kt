@@ -10,12 +10,12 @@ import kotlinx.android.synthetic.main.fragment_plus.*
 import kotlinx.android.synthetic.main.layout_plus_overlay.*
 import social.entourage.android.api.model.User
 import social.entourage.android.base.BackPressable
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class PlusFragment : Fragment(), BackPressable {
     override fun onResume() {
         super.onResume()
-        EntourageApplication.get().entourageComponent.authenticationController.savedTour?.let {
+        EntourageApplication.get().components.authenticationController.savedTour?.let {
             layout_line_add_tour_encounter?.visibility = View.VISIBLE
         } ?: run {
             layout_line_add_tour_encounter?.visibility = View.GONE
@@ -42,12 +42,24 @@ class PlusFragment : Fragment(), BackPressable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_PLUS_SCREEN)
+
         plus_help_button?.setOnClickListener {onHelpButton()}
-        layout_line_create_entourage_ask_help?.setOnClickListener {onAction(KEY_CREATE_DEMAND)}
-        layout_line_create_entourage_contribute?.setOnClickListener {onAction(KEY_CREATE_CONTRIBUTION)}
-        layout_line_create_outing?.setOnClickListener {onAction(KEY_CREATE_OUTING)}
-        layout_line_start_tour_launcher?.setOnClickListener {onAction(KEY_START_TOUR)}
-        layout_line_add_tour_encounter?.setOnClickListener {onAction(KEY_ADD_ENCOUNTER)}
+        layout_line_create_entourage_ask_help?.setOnClickListener {
+            onAction(KEY_CREATE_DEMAND, AnalyticsEvents.ACTION_PLUS_CREATE_ASKFORHELP)
+        }
+        layout_line_create_entourage_contribute?.setOnClickListener {
+            onAction(KEY_CREATE_CONTRIBUTION, AnalyticsEvents.ACTION_PLUS_CREATE_CONTRIBUTE)
+        }
+        layout_line_create_outing?.setOnClickListener {
+            onAction(KEY_CREATE_OUTING, AnalyticsEvents.ACTION_PLUS_CREATE_OUTING)
+        }
+        layout_line_start_tour_launcher?.setOnClickListener {
+            onAction(KEY_START_TOUR, AnalyticsEvents.ACTION_PLUS_START_TOUR)
+        }
+        layout_line_add_tour_encounter?.setOnClickListener {
+            onAction(KEY_ADD_ENCOUNTER,AnalyticsEvents.ACTION_PLUS_ADD_ENCOUNTER)
+        }
         fragment_plus_overlay?.setOnClickListener {onBackPressed()}
         layout_line_create_good_waves?.setOnClickListener { onShowGoodWaves() }
 
@@ -69,8 +81,8 @@ class PlusFragment : Fragment(), BackPressable {
                ui_tv_agir_good_waves_subtitle?.text = getString(R.string.agir_bonnes_ondes_others)
            }
 
-           val isUserHelp = currentUser.goal?.contains("ask_for_help", true) ==true
-                   || currentUser.goal?.contains("offer_help", true)==true
+           val isUserHelp = currentUser.goal?.contains(User.USER_GOAL_ALONE, true) ==true
+                   || currentUser.goal?.contains(User.USER_GOAL_NEIGHBOUR, true)==true
            val hasPartnerId = currentUser.partner?.id != null
            val isAmbassador = currentUser.roles?.contains("ambassador")==true
 
@@ -80,37 +92,36 @@ class PlusFragment : Fragment(), BackPressable {
     }
 
     private fun onHelpButton() {
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PLUS_HELP)
         EntourageApplication.get().me()?.let { currentUser ->
-            (activity as? MainActivity)?.showWebViewForLinkId(
-                    if (currentUser.isUserTypeAlone)
-                        Constants.AGIR_FAQ_ID
-                    else if (currentUser.goal.equals(User.USER_GOAL_ASSO)) {
-                        Constants.ASSO_AGIR_LINK_ID
-                    }
-                    else
-                        Constants.SCB_LINK_ID
-            )
+            when {
+                currentUser.isUserTypeAlone -> mainActivity?.showWebViewForLinkId(Constants.AGIR_FAQ_ID)
+                currentUser.goal.equals(User.USER_GOAL_ASSO) -> mainActivity?.showWebViewForLinkId(Constants.ASSO_AGIR_LINK_ID)
+                else -> mainActivity?.showWebViewForLinkId(Constants.SCB_LINK_ID, R.string.webview_share_text)
+            }
         }
     }
 
-    private fun onAction(action: String) {
-        val newIntent = Intent(context, MainActivity::class.java)
-        newIntent.action = action
+    private fun onAction(action: String, eventName: String) {
+        AnalyticsEvents.logEvent(eventName)
+        val newIntent = Intent(context, MainActivity::class.java).apply { this.action = action }
         startActivity(newIntent)
-        (activity as? MainActivity)?.showFeed()
+        mainActivity?.showFeed()
     }
 
     private fun onShowGoodWaves() {
-        EntourageEvents.logEvent(EntourageEvents.ACTION_PLUS_GOOD_WAVES)
-        val url = (activity as MainActivity?)?.getLink(Constants.GOOD_WAVES_ID)
-
-        (activity as MainActivity?)?.showWebView(url)
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PLUS_GOOD_WAVES)
+        mainActivity?.showWebViewForLinkId(Constants.GOOD_WAVES_ID)
     }
 
     override fun onBackPressed(): Boolean {
-        (activity as? MainActivity)?.showFeed()
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PLUS_BACK)
+        mainActivity?.showFeed()
         return true
     }
+
+    val mainActivity: MainActivity?
+        get() = activity as? MainActivity
 
     companion object {
         const val TAG = "social.entourage.android.fragment_plus"

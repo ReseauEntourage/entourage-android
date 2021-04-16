@@ -21,12 +21,12 @@ import social.entourage.android.api.model.EntourageConversation
 import social.entourage.android.api.model.User
 import social.entourage.android.api.tape.Events.OnPartnerViewRequestedEvent
 import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.CropCircleTransformation
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.edit.UserEditAboutFragment
 import social.entourage.android.user.edit.UserEditFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
@@ -37,15 +37,13 @@ import social.entourage.android.user.report.UserReportFragment
 import timber.log.Timber
 import javax.inject.Inject
 
-class UserFragment : EntourageDialogFragment() {
+class UserFragment : BaseDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
     private var toReturn: View? = null
 
-    @JvmField
-    @Inject
-    var presenter: UserPresenter? = null
+    @Inject lateinit var presenter: UserPresenter
 
     private var user: User? = null
     private var isMyProfile = false
@@ -55,22 +53,22 @@ class UserFragment : EntourageDialogFragment() {
         if (toReturn == null) {
             toReturn = inflater.inflate(R.layout.fragment_user, container, false)
         }
-        EntourageEvents.logEvent(EntourageEvents.EVENT_PROFILE_FROM_MENU)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_PROFILE_FROM_MENU)
         return toReturn
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupComponent(EntourageApplication.get(activity).entourageComponent)
+        setupComponent(EntourageApplication.get(activity).components)
         val requestedUserId = arguments?.getInt(User.KEY_USER_ID) ?: return
-        val authenticatedUser = presenter?.authenticatedUser
+        val authenticatedUser = presenter.authenticatedUser
         if (authenticatedUser != null && requestedUserId == authenticatedUser.id) {
             isMyProfile = true
             user = authenticatedUser
             configureView()
         } else {
             user_profile_progressBar?.visibility = View.VISIBLE
-            presenter?.getUser(requestedUserId)
+            presenter.getUser(requestedUserId)
         }
         title_close_button?.setOnClickListener { onCloseButtonClicked()}
         user_profile_edit_button?.setOnClickListener { onEditButtonClicked() }
@@ -108,7 +106,7 @@ class UserFragment : EntourageDialogFragment() {
     // ----------------------------------
     private fun configureView() {
         if (activity?.isFinishing==true) return
-        EntourageEvents.logEvent(if (isMyProfile) EntourageEvents.EVENT_SCREEN_09_1_ME else EntourageEvents.EVENT_SCREEN_09_1_OTHER)
+        AnalyticsEvents.logEvent(if (isMyProfile) AnalyticsEvents.EVENT_SCREEN_09_1_ME else AnalyticsEvents.EVENT_SCREEN_09_1_OTHER)
 
         user_profile_edit_button?.visibility = if (isMyProfile) View.VISIBLE else View.GONE
         user_profile_report_button?.visibility = if (isMyProfile) View.GONE else View.VISIBLE
@@ -142,7 +140,7 @@ class UserFragment : EntourageDialogFragment() {
             user_name?.setText(u.displayName)
             user_name?.setRoles(u.roles)
             user_tours_count?.text = getString(R.string.user_entourage_count_format, u.stats?.getActionCount() ?: 0)
-            val userAbout = u.about
+            val userAbout = u.about ?: ""
             user_profile_about_layout?.visibility = if (userAbout.isNotBlank()) View.VISIBLE else View.GONE
             ui_tv_user_description?.text = userAbout
 
@@ -179,7 +177,7 @@ class UserFragment : EntourageDialogFragment() {
     }
 
     fun saveAccount(user: User) {
-        presenter?.updateUser(user)
+        presenter.updateUser(user)
     }
 
     val editedUser: User?
@@ -244,12 +242,12 @@ class UserFragment : EntourageDialogFragment() {
     }
 
     private fun onEditButtonClicked() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_USER_EDIT_PROFILE)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_USER_EDIT_PROFILE)
         showUserEditFragment()
     }
 
     private fun onUserPhotoClicked() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_USER_EDIT_PHOTO)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_USER_EDIT_PHOTO)
         showUserEditFragment()
     }
 
@@ -263,7 +261,7 @@ class UserFragment : EntourageDialogFragment() {
 
     private fun onMessageUserClicked() {
         //UserDiscussionFragment.newInstance(user, false).show(parentFragmentManager, UserDiscussionFragment.TAG);
-        user?.conversation?.let { presenter?.getConversation(it) }
+        user?.conversation?.let { presenter.getConversation(it) }
     }
 
     private fun onPhotoEditClicked() {

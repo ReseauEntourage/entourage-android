@@ -26,10 +26,6 @@ class MapFilter : MapFilterInterface, Serializable {
     // ----------------------------------
     override fun getTypes(): String {
         val entourageTypes = StringBuilder()
-        if (entourageTypeOuting) {
-            if (entourageTypes.isNotEmpty()) entourageTypes.append(",")
-            entourageTypes.append("ou")
-        }
         for (categoryKey in entourageCategories) {
             if (entourageTypes.isNotEmpty()) entourageTypes.append(",")
             entourageTypes.append(categoryKey)
@@ -60,7 +56,8 @@ class MapFilter : MapFilterInterface, Serializable {
             !entourageTypeDemand  -> false
             !entourageTypeContribution -> false
             //normal filter
-            !entourageTypeOuting -> false
+            entourageTypeOuting -> false
+            //!entourageTypeOuting -> false Old version
             //TODO check tis one: //showPastEvents -> false
             timeframe != DAYS_3 -> false
             isShowPartnersOnly -> false
@@ -71,7 +68,6 @@ class MapFilter : MapFilterInterface, Serializable {
     override fun setDefaultValues() {
         entourageTypeDemand = true
         entourageTypeContribution = true
-        entourageTypeOuting=true
         showPastEvents=false
         timeframe = DAYS_3
         isShowPartnersOnly = false
@@ -104,7 +100,7 @@ class MapFilter : MapFilterInterface, Serializable {
     }
 
     //Setup Filters for specific user type
-    fun setNeighbourFilters() {
+    /*fun setNeighbourFilters() {
         entourageTypeDemand = true
         entourageTypeContribution = false
         entourageTypeOuting = true
@@ -118,9 +114,9 @@ class MapFilter : MapFilterInterface, Serializable {
                 setCategoryChecked(entourageCategory.key!!, false)
             }
         }
-    }
+    }*/
 
-    fun setAloneFilters() {
+   /* fun setAloneFilters() {
         entourageTypeDemand = false
         entourageTypeContribution = true
         entourageTypeOuting = true
@@ -134,7 +130,7 @@ class MapFilter : MapFilterInterface, Serializable {
                 setCategoryChecked(entourageCategory.key!!, false)
             }
         }
-    }
+    }*/
 
     // ----------------------------------
     // Serialization

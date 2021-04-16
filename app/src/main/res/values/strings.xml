@@ -10,6 +10,7 @@
     <string name="error_no_email">Aucune messagerie mail configurée</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
+    <string name="button_OK">OK</string>
     <string name="accept">Accepter</string>
     <string name="decline">Refuser</string>
     <string name="cancel">Annuler</string>
@@ -50,5 +51,38 @@
     <string name="tooltip_title3">Passez à l’action</string>
     <string name="tooltip_desc3">Vous pouvez maintenant proposer ou demander de l’aide au réseau !</string>
     <string name="tooltip_step_format">%s sur 3</string>
+
+
+    //Home Cells
+
+    <string name="cell_demand_from">Une demande de :</string>
+    <string name="cell_invit_from">Invité par :</string>
+    <string name="cell_contrib_from">Une contribution de :</string>
+
+    <string name="cell_numberOfPeople">%1$d participant</string>
+    <string name="cell_numberOfPeoples">%1$d participants</string>
+    <string name="show_more">Voir plus</string>
+    <string name="show_more_event">Voir l\'événement</string>
+    <string name="show_more_actions">Afficher plus\nde demandes et\nd’initiatives</string>
+    <string name="show_more_events">Afficher plus\nd’événements</string>
+
+    <string name="home_title_headlines">À la une</string>
+    <string name="home_title_actions">Demandes et initiatives</string>
+    <string name="home_title_events">Événements</string>
+    <string name="home_title_none" />
+
+    <string name="home_help_title">Entourage autrement</string>
+    <string name="home_help_description">Voici comment prendre part au projet Entourage, s’il n’y a pas d’événements ou d’actions dans ta région :</string>
+    <string name="home_help_button_1">Faire un don financier à\nEntourage</string>
+    <string name="home_help_button_2">Devenir reporter pour\nEntourage</string>
+    <string name="home_help_button_3">Parler d’Entourage</string>
+    <string name="home_help_button_4">Devenir Ambassadeur</string>
+    <string name="home_help_button_5">Programme LinkedOut</string>
+    <string name="home_button_help_title">J’aide Entourage autrement</string>
+    <string name="home_button_change_zone">Je modifie ma zone d’action</string>
+
+    <string name="home_help_report_description">Pour aider au déploiement futur d’Entourage dans votre région, soyez nos yeux et nos oreilles ! Partagez-nous ce que vous observez dans votre environnement.\n\nCe questionnaire couvre différentes thématiques, répondez-y autant que vous le pouvez. Si la situation évolue, vous pourrez le remplir à nouveau pour nous tenir informés.\n\nVotre collaboration est précieuse, nous vous en remercions chaleureusement !</string>
+    <string name="home_button_help_title_report">Les reporters Entourage</string>
+    <string name="i_participe">Participer</string>
 
 </resources>

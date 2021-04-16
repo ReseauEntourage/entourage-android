@@ -5,22 +5,20 @@ import android.view.View
 import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.EntourageComponent
 import social.entourage.android.api.model.feed.FeedItem
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import javax.inject.Inject
 
 /**
- * A simple [EntourageDialogFragment] subclass.
+ * A simple [BaseDialogFragment] subclass.
  */
-open class InviteBaseFragment  : EntourageDialogFragment() {
+open class InviteBaseFragment  : BaseDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
     protected var feedItemUUID: String? = null
     protected var feedItemType = 0
 
-    @JvmField
-    @Inject
-    var presenter: InvitePresenter? = null
+    @Inject lateinit var presenter: InvitePresenter
     var inviteFriendsListener: InviteFriendsListener? = null
 
     protected fun setFeedData(feedUUID: String?, feedItemType: Int) {
@@ -48,7 +46,7 @@ open class InviteBaseFragment  : EntourageDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupComponent(get(activity).entourageComponent)
+        setupComponent(get(activity).components)
     }
 
     protected fun setupComponent(entourageComponent: EntourageComponent?) {

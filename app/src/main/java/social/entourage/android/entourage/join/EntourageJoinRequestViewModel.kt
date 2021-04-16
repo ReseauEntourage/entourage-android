@@ -15,7 +15,7 @@ import java.util.*
  * Created by mihaiionescu on 07/03/16.
  */
 class EntourageJoinRequestViewModel : ViewModel() {
-    private var entourageRequest: EntourageRequest = EntourageApplication.get().entourageComponent.entourageRequest
+    private var entourageRequest: EntourageRequest = EntourageApplication.get().components.entourageRequest
 
     var requestResult:MutableLiveData<Int>  = MutableLiveData<Int>(REQUEST_NORESULT)
 

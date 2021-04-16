@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_invite_by_phone_number.*
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.base.EntourageActivity
+import social.entourage.android.base.BaseActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.MultipleInvitations
@@ -46,7 +46,7 @@ class InviteByPhoneNumberFragment  : InviteBaseFragment() {
         dismiss()
     }
 
-    fun onSendClicked() {
+    private fun onSendClicked() {
         // Check phone number
         invite_phone_number?.text?.toString()?.let {
             checkPhoneNumberFormat(it)?.let { phoneNumber ->
@@ -55,7 +55,7 @@ class InviteByPhoneNumberFragment  : InviteBaseFragment() {
                 // Send the request to server
                 val invitations = MultipleInvitations(Invitation.INVITE_BY_SMS)
                 invitations.addPhoneNumber(phoneNumber)
-                feedItemUUID?.let { uuid -> presenter?.inviteBySMS(uuid, feedItemType, invitations) }
+                feedItemUUID?.let { uuid -> presenter.inviteBySMS(uuid, feedItemType, invitations) }
             } ?: run {
                 Toast.makeText(activity, R.string.login_text_invalid_format, Toast.LENGTH_SHORT).show()
             }
@@ -80,7 +80,7 @@ class InviteByPhoneNumberFragment  : InviteBaseFragment() {
     // ----------------------------------
     override fun onInviteSent(success: Boolean) {
         // Hide the progress dialog
-        (activity as? EntourageActivity)?.dismissProgressDialog() ?: return
+        (activity as? BaseActivity)?.dismissProgressDialog() ?: return
         // Enable the send button
         title_action_button?.isEnabled = true
         if (success) {

@@ -24,7 +24,7 @@ import social.entourage.android.api.request.PartnerWrapper
 import social.entourage.android.api.request.PartnersResponse
 import social.entourage.android.api.model.Partner
 import social.entourage.android.api.model.User
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.user.edit.UserEditFragment
 
 /**
@@ -32,7 +32,7 @@ import social.entourage.android.user.edit.UserEditFragment
  * Edit the association that an user supports
  *
  */
-class UserEditPartnerFragment  : EntourageDialogFragment() {
+class UserEditPartnerFragment  : BaseDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -57,7 +57,7 @@ class UserEditPartnerFragment  : EntourageDialogFragment() {
 
     private fun configureView() {
         (parentFragmentManager.findFragmentByTag(UserEditFragment.TAG) as UserEditFragment?)?.let {userEditFragment ->
-            user = userEditFragment.editedUser
+            user = userEditFragment.presenter?.editedUser
         } ?: run { user = me(activity)}
 
         // Configure the partners list
@@ -110,7 +110,7 @@ class UserEditPartnerFragment  : EntourageDialogFragment() {
     // Network
     // ----------------------------------
     private fun getAllPartners() {
-        get(context).entourageComponent.partnerRequest.allPartners.enqueue(object : Callback<PartnersResponse> {
+        get(context).components.partnerRequest.allPartners.enqueue(object : Callback<PartnersResponse> {
             override fun onResponse(call: Call<PartnersResponse>, response: Response<PartnersResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.partners?.let { partnerList ->
@@ -132,12 +132,12 @@ class UserEditPartnerFragment  : EntourageDialogFragment() {
     private fun addPartner(partner: Partner) {
         val userID = user?.id ?: return
         user_edit_partner_progressBar?.visibility = View.VISIBLE
-        get(context).entourageComponent.userRequest.addPartner(userID, PartnerWrapper(partner))
+        get(context).components.userRequest.addPartner(userID, PartnerWrapper(partner))
                 .enqueue(object : Callback<PartnerResponse> {
             override fun onResponse(call: Call<PartnerResponse>, response: Response<PartnerResponse>) {
                 user_edit_partner_progressBar?.visibility = View.GONE
                 if (response.isSuccessful) {
-                    val authenticationController = get(context).entourageComponent.authenticationController
+                    val authenticationController = get(context).components.authenticationController
                     authenticationController.me?.let { me ->
                         response.body()?.partner?.let {
                             me.partner = it
@@ -161,7 +161,7 @@ class UserEditPartnerFragment  : EntourageDialogFragment() {
     private fun removePartner(oldPartner: Partner, currentPartner: Partner?) {
         user_edit_partner_progressBar?.visibility = View.VISIBLE
         val userId = user?.id ?: return
-        get(context).entourageComponent.userRequest.removePartnerFromUser(userId, oldPartner.id)
+        get(context).components.userRequest.removePartnerFromUser(userId, oldPartner.id)
                 .enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 user_edit_partner_progressBar?.visibility = View.GONE
@@ -169,9 +169,9 @@ class UserEditPartnerFragment  : EntourageDialogFragment() {
                     currentPartner?.let {
                         addPartner(currentPartner)
                     } ?: run {
-                        get(context).entourageComponent.authenticationController.me?.let { me ->
+                        get(context).components.authenticationController.me?.let { me ->
                             me.partner = null
-                            get(context).entourageComponent.authenticationController.saveUser(me)
+                            get(context).components.authenticationController.saveUser(me)
                         }
                         Toast.makeText(activity, R.string.partner_remove_ok, Toast.LENGTH_SHORT).show()
                         dismiss()

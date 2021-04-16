@@ -17,7 +17,7 @@ import social.entourage.android.entourage.join.EntourageJoinRequestViewModel
  * Created by mihaiionescu on 07/03/16.
  */
 class TourJoinRequestViewModel : ViewModel() {
-    var tourRequest: TourRequest =  EntourageApplication.get().entourageComponent.tourRequest
+    var tourRequest: TourRequest =  EntourageApplication.get().components.tourRequest
 
     var requestResult: MutableLiveData<Int> = MutableLiveData<Int>(EntourageJoinRequestViewModel.REQUEST_NORESULT)
 

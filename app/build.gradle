@@ -7,6 +7,10 @@ apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'kotlin-kapt'
 
 android {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
@@ -24,8 +28,8 @@ android {
         // Making either of these two values dynamic in the defaultConfig will
         // require a full APK build and reinstallation because the AndroidManifest.xml
         // must be updated.
-        versionCode 602
-        versionName "6.2"
+        versionCode 700
+        versionName "7.0"
 
         buildConfigField 'String', 'VERSION_FULL_NAME', '"' + rootProject.ext.versionNameProd + '"'
         buildConfigField 'String', 'VERSION_DISPLAY_BRANCH_NAME', '"' + rootProject.ext.versionBranchName + '"'
@@ -97,6 +101,12 @@ android {
             splits.abi.enable = false
             splits.density.enable = false
             aaptOptions.cruncherEnabled = false
+            FirebasePerformance {
+                // Set this flag to 'false' to disable @AddTrace annotation processing and
+                // automatic monitoring of HTTP/S network requests
+                // for a specific build variant at compile time.
+                instrumentationEnabled false
+            }
         }
     }
 
@@ -156,10 +166,10 @@ android {
 }
 
 dependencies {
+    implementation "androidx.core:core-ktx:1.3.2"
+    implementation platform('com.google.firebase:firebase-bom:26.8.0')
     implementation androidSupportDependencies.values()
     implementation devDependencies.values()
-    implementation "androidx.core:core-ktx:1.3.2"
-    implementation platform('com.google.firebase:firebase-bom:26.3.0')
     implementation firebaseDependencies.values()
     releaseImplementation firebaseDependenciesRelease.values()
     implementation gmsDependencies.values()

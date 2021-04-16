@@ -1,5 +1,6 @@
 package social.entourage.android.guide.poi
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Paint
 import android.net.Uri
@@ -14,10 +15,10 @@ import kotlinx.android.synthetic.main.fragment_guide_poi_read.guide_filter_list
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageComponent
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.tools.ShareMessageFragment
 import social.entourage.android.guide.filter.GuideFilterAdapter
 import social.entourage.android.guide.poi.PoiRenderer.CategoryType
@@ -28,7 +29,7 @@ import javax.inject.Inject
 /**
  * Activity showing the detail of a POI
  */
-class ReadPoiFragment : EntourageDialogFragment() {
+class ReadPoiFragment : BaseDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -37,14 +38,14 @@ class ReadPoiFragment : EntourageDialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_POI_FROM_MAP)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_OPEN_POI_FROM_MAP)
         return inflater.inflate(R.layout.fragment_guide_poi_read, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         poi = arguments?.getSerializable(BUNDLE_KEY_POI) as Poi
-        setupComponent(EntourageApplication.get(activity).entourageComponent)
+        setupComponent(EntourageApplication.get(activity).components)
 
         //Actually WS return id and not uuid for entourage poi
         presenter.getPoiDetail(poi.uuid)
@@ -246,12 +247,11 @@ class ReadPoiFragment : EntourageDialogFragment() {
         val uuid = poi.uuid
         val emailSubject = getString(R.string.poi_report_email_subject_format, title, uuid)
         intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject)
-        startActivity(intent)
-//        if (activity!=null && intent.resolveActivity(requireActivity().packageManager) != null) { // Start the intent
-//            startActivity(intent)
-//        } else { // No Email clients
-//            Toast.makeText(context, R.string.error_no_email, Toast.LENGTH_SHORT).show()
-//        }
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException){
+            Toast.makeText(context, R.string.error_no_email, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun onShareClicked() {
@@ -259,7 +259,7 @@ class ReadPoiFragment : EntourageDialogFragment() {
     }
 
     private fun shareOnly() {
-        EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_SHAREPOI)
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_SHAREPOI)
         val poiName = if(poi.name == null) "" else poi.name
         val address = if(poi.address?.length ?: 0 == 0) "" else "Adresse: ${poi.address}"
         val phone = if(poi.phone?.length ?: 0 == 0) "" else "Tel: ${poi.phone}"

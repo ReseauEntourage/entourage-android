@@ -17,7 +17,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.Announcement
 import social.entourage.android.base.BaseCardViewHolder
-import social.entourage.android.tools.view.EntourageSnackbar
+import social.entourage.android.tools.view.EntSnackbar
 import timber.log.Timber
 
 /**
@@ -41,7 +41,7 @@ class AnnouncementViewHolder(view: View) : BaseCardViewHolder(view), Target {
             try {
                 itemView.context.startActivity(actIntent)
             } catch (ex: Exception) {
-                EntourageSnackbar.make(itemView, R.string.no_browser_error, Snackbar.LENGTH_SHORT).show()
+                EntSnackbar.make(itemView, R.string.no_browser_error, Snackbar.LENGTH_SHORT).show()
             }
         }
         itemView.setOnClickListener(onClickListener)

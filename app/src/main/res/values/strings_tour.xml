@@ -21,7 +21,6 @@
     <string name="tour_info_text_type_title">Maraude %1$s par\u0020</string>
     <string name="tour_info_text_ongoing">Maraude en cours</string>
     <string name="tour_info_text_closed">Maraude terminée</string>
-    <string name="tour_info_text_nothing_found">Aucune maraude récente trouvée</string>
     <string name="tour_info_location_card_date_format">c HH:mm</string>
 
     <string name="tour_info_text_join_accepted">\u0020est entré(e) en contact avec\u0020</string>
@@ -49,23 +48,18 @@
     <string name="tour_info_encounter_location">&#160;et %1$s se sont rencontrés ici.</string>
     <string name="tour_info_encounter_location_mine">&lt;u>&#160;et %1$s se sont rencontrés ici.&lt;/u></string>
     
-    <string name="tour_info_quit_tour_title">Quitter la maraude</string>
-    <string name="tour_info_quit_tour_description">Voulez-vous vraiment quitter la maraude ?</string>
     <string name="tour_info_quit_tour_error">Echec d\'envoi de la requête</string>
-    <string name="tour_info_request_error">Erreur d\'envoi de la requête</string>
-    
+
     <string name="tour_info_members_count">Membres (%1$d)</string>
     <string name="tour_info_members_add">Inviter un ami</string>
     <string name="tour_info_members_add_not_allowed">Invitation impossible</string>
     
     <string name="tour_info_request_join_title_entourage">Participez à la discussion</string>
     <string name="tour_info_request_join_title_entourage_new">Répondez présent !</string>
-    <string name="tour_info_request_join_title_tour">Maraude voisine ? Coordonnez-vous</string>
-    <string name="tour_info_request_join_title_outing">Participez à cet événement</string>
-    <string name="tour_info_request_join_button_entourage">Participer</string>
-    <string name="tour_info_request_join_button2_entourage">Rejoindre</string>
-    <string name="tour_info_request_join_button_tour">@string/tour_info_options_contact</string>
-    
+
+    <string name="tour_info_request_join_button_event">Participer</string>
+    <string name="tour_info_request_join_button_entourage">Rejoindre</string>
+
     <string name="tour_info_error_retrieve_entourage">Entourage indisponible</string>
     
     <string name="tour_info_metadata_organised_by">Organisé\u0020</string>
@@ -124,12 +118,6 @@
     <string name="tour_join_request_ok_description_outing">@string/tour_join_request_ok_description_entourage</string>
     <string name="tour_join_request_ok_message_hint">Votre message…</string>
     <string name="tour_join_request_rejected">Requête envoyée</string>
-
-    <!-- Encounter -->
-
-    <!-- Report Entourage -->
-    <!-- Parameters: 1 - Entourage title -->
-    <string name="report_entourage_email_title">Signalement d\'un problème dans l\'entourage %1$s</string>
 
     <!-- Promote Entourage Email -->
     <string name="promote_entourage_email_title">Veuillez envoyer une notification pour la sortie %1$s</string>

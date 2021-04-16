@@ -4,7 +4,6 @@ import android.animation.ValueAnimator
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.location.Location
 import android.os.Bundle
 import android.os.IBinder
 import android.view.View
@@ -20,10 +19,9 @@ import kotlinx.android.synthetic.main.layout_guide_longclick.*
 import social.entourage.android.*
 import social.entourage.android.api.ApiConnectionListener
 import social.entourage.android.api.model.guide.Poi
-import social.entourage.android.api.tape.EntouragePoiRequest.OnPoiViewRequestedEvent
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted
 import social.entourage.android.api.tape.Events.OnSolidarityGuideFilterChanged
-import social.entourage.android.base.EntourageLinkMovementMethod
+import social.entourage.android.api.tape.PoiRequestEvents.OnPoiViewRequestedEvent
 import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.guide.filter.GuideFilter.Companion.instance
 import social.entourage.android.guide.filter.GuideFilterFragment
@@ -31,19 +29,19 @@ import social.entourage.android.guide.poi.PoiRenderer
 import social.entourage.android.guide.poi.PoisAdapter
 import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.guide.poi.ReadPoiFragment.Companion.newInstance
-import social.entourage.android.location.EntourageLocation
+import social.entourage.android.location.EntLocation
 import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
 import social.entourage.android.map.BaseMapFragment
-import social.entourage.android.service.EntourageService
+import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
+import social.entourage.android.tools.EntLinkMovementMethod
 import social.entourage.android.tools.Utils
-import social.entourage.android.tools.log.EntourageEvents
-import social.entourage.android.tools.view.EntourageSnackbar
+import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.partner.PartnerFragment
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiConnectionListener,
         GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
@@ -57,8 +55,6 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     @Inject lateinit var presenter: GuideMapPresenter
 
     private var onMapReadyCallback: OnMapReadyCallback? = null
-    private var poisMap: MutableMap<String, Poi> = TreeMap()
-    private var previousEmptyListPopupLocation: Location? = null
     private val poisAdapter: PoisAdapter = PoisAdapter()
     private var mapRenderer: PoiRenderer = PoiRenderer()
 
@@ -67,7 +63,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     // ----------------------------------
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupComponent(EntourageApplication.get(activity).entourageComponent)
+        setupComponent(EntourageApplication.get(activity).components)
         initializeMap()
         initializeAlertBanner()
         initializePopups()
@@ -120,7 +116,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     }
 
     private fun onShowFilter() {
-        EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_SHOWFILTERS)
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_SHOWFILTERS)
         try {
             GuideFilterFragment().show(parentFragmentManager, GuideFilterFragment.TAG)
         } catch (e: IllegalStateException) {
@@ -129,7 +125,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     }
 
     private fun onDisplayToggle() {
-        EntourageEvents.logEvent(if (!isFullMapShown) EntourageEvents.ACTION_GUIDE_SHOWMAP else EntourageEvents.ACTION_GUIDE_SHOWLIST)
+        AnalyticsEvents.logEvent(if (!isFullMapShown) AnalyticsEvents.ACTION_GUIDE_SHOWMAP else AnalyticsEvents.ACTION_GUIDE_SHOWLIST)
         togglePOIList()
     }
 
@@ -140,7 +136,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     fun onSolidarityGuideFilterChanged(event: OnSolidarityGuideFilterChanged?) {
         initializeFilterButton()
         map?.clear()
-        poisMap.clear()
+        presenter.clear()
         poisAdapter.removeAll()
         presenter.updatePoisNearby(map)
     }
@@ -157,12 +153,14 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         if (activity != null) {
             clearOldPois()
             if (pois != null && pois.isNotEmpty()) {
-                val poiCollection = removeRedundantPois(pois)
-                Timber.d("***** put poi on map new coll pois : ${poiCollection.size}")
-                if (map != null) {
-                    poiCollection.forEach {
-                        val marker = map!!.addMarker(mapRenderer.getMarkerOptions(it))
-                        marker.tag = it
+                val poiCollection = presenter.removeRedundantPois(pois)
+                map?.let { map ->
+                    poiCollection.forEach { poi ->
+                        mapRenderer.getMarkerOptions(poi, requireContext())?.let { markerOptions ->
+                            map.addMarker(markerOptions).apply {
+                                this.tag = poi
+                            }
+                        }
                     }
                     hideEmptyListPopup()
                 }
@@ -211,7 +209,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     // PRIVATE METHODS
     // ----------------------------------
     private fun clearOldPois() {
-        poisMap.clear()
+        presenter.clear()
         poisAdapter.removeAll()
         map?.clear()
     }
@@ -226,7 +224,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
 
         map?.setOnCameraIdleListener {
             map?.cameraPosition?.let {position ->
-                val newLocation = EntourageLocation.cameraPositionToLocation(null, position)
+                val newLocation = EntLocation.cameraPositionToLocation(null, position)
                 val newZoom = position.zoom
                 if (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
                     previousCameraZoom = newZoom
@@ -238,19 +236,8 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         presenter.updatePoisNearby(map)
     }
 
-    private fun removeRedundantPois(pois: List<Poi>): List<Poi> {
-        val newPois: MutableList<Poi> = ArrayList()
-        for(poi in pois) {
-            if (!poisMap.containsKey(poi.uuid)) {
-                poisMap[poi.uuid] = poi
-                newPois.add(poi)
-            }
-        }
-        return newPois
-    }
-
     private fun showPoiDetails(poi: Poi) {
-        EntourageEvents.logEvent(EntourageEvents.ACTION_GUIDE_POI)
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_POI)
         try {
             poi.partner_id?.let { partner_id ->
                 PartnerFragment.newInstance(partner_id).show(parentFragmentManager, PartnerFragment.TAG)
@@ -264,7 +251,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
 
     private fun initializeAlertBanner() {
         isAlertTextVisible = false
-        fragment_guide_alert_description?.setHtmlString(getString(R.string.guide_alert_info_text), EntourageLinkMovementMethod)
+        fragment_guide_alert_description?.setHtmlString(getString(R.string.guide_alert_info_text), EntLinkMovementMethod)
         fragment_guide_alert_arrow?.setOnClickListener {onClickAlertArrow()}
         fragment_guide_alert?.setOnClickListener {onClickAlertArrow()}
     }
@@ -290,32 +277,21 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         fragment_guide_info_popup?.setOnClickListener {onInfoPopupClose()}
         val proposePOIUrl = (activity as? GDSMainActivity)?.getLink(Constants.PROPOSE_POI_ID) ?: ""
         hideInfoPopup()
-        fragment_guide_empty_list_popup_text?.movementMethod = EntourageLinkMovementMethod
+        fragment_guide_empty_list_popup_text?.movementMethod = EntLinkMovementMethod
         fragment_guide_empty_list_popup_text?.text = Utils.fromHtml(getString(R.string.map_poi_empty_popup, proposePOIUrl))
     }
 
     private fun onEmptyListPopupClose() {
-        val authenticationController = EntourageApplication.get(context).entourageComponent.authenticationController
         //TODO add an "never display" button
-        authenticationController.isShowNoPOIsPopup = false
+        presenter.isShowNoPOIsPopup = false
         hideEmptyListPopup()
     }
 
     private fun showEmptyListPopup() {
-        map?.let { googleMap ->
-            previousEmptyListPopupLocation?.let {
-                // Show the popup only we moved from the last position we show it
-                val currentLocation = EntourageLocation.cameraPositionToLocation(null, googleMap.cameraPosition)
-                if (it.distanceTo(currentLocation) < Constants.EMPTY_POPUP_DISPLAY_LIMIT) {
-                    return
-                }
-                //We need to update the class object
-                previousEmptyListPopupLocation = currentLocation
-            } ?: run {
-                previousEmptyListPopupLocation = EntourageLocation.cameraPositionToLocation(null, googleMap.cameraPosition)
-            }
+        map?.cameraPosition?.let { cameraPosition ->
+            presenter.updatePreviousEmptyListPopupLocation(cameraPosition)
         }
-        if (EntourageApplication.get(context).entourageComponent.authenticationController.isShowNoPOIsPopup) {
+        if (presenter.isShowNoPOIsPopup) {
             fragment_guide_empty_list_popup?.visibility = View.VISIBLE
         }
     }
@@ -328,14 +304,12 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     // INFO POPUP
     // ----------------------------------
     private fun onInfoPopupClose() {
-        val authenticationController = EntourageApplication.get(context).entourageComponent.authenticationController
-        authenticationController.isShowInfoPOIsPopup = false
+        presenter.isShowInfoPOIsPopup = false
         hideInfoPopup()
     }
 
     private fun showInfoPopup() {
-        val authenticationController = EntourageApplication.get(context).entourageComponent.authenticationController
-        if (!authenticationController.isShowInfoPOIsPopup) {
+        if (!presenter.isShowInfoPOIsPopup) {
             fragment_guide_info_popup?.visibility = View.VISIBLE
         }
     }
@@ -351,7 +325,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     // FAB HANDLING
     // ----------------------------------
     private fun onPOIProposeClicked() {
-        EntourageEvents.logEvent(EntourageEvents.ACTION_PLUS_STRUCTURE)
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PLUS_STRUCTURE)
         proposePOI()
     }
 
@@ -412,13 +386,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
             fragment_guide_pois_view?.layoutManager?.requestLayout()
         }
 
-        if (poisAdapter.dataItemCount == 0) {
-            Timber.d("***** ici Pois show list empty ;)")
-            ui_view_empty_list?.visibility = View.VISIBLE
-        }
-        else {
-            ui_view_empty_list?.visibility = View.GONE
-        }
+        ui_view_empty_list?.visibility = if (poisAdapter.dataItemCount == 0)  View.VISIBLE else View.GONE
     }
 
     private fun ensureMapVisible() {
@@ -435,18 +403,6 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         fragment_guide_display_toggle?.setOnClickListener {onDisplayToggle()}
         guide_longclick_button_poi_propose?.setOnClickListener {proposePOI()}
         button_poi_propose?.setOnClickListener {onPOIProposeClicked()}
-
-        /* TODO activate this !
-        if(getActivity()!=null) {
-
-            EntourageTapPrompt proposePrompt = new EntourageTapPrompt(R.id.button_poi_propose, "Proposer un POI","Clique ici pour envoyer les infos", null);
-            if(!GuideFilter.getInstance().hasFilteredCategories()) {
-                EntourageTapPrompt filterPrompt = new EntourageTapPrompt(R.id.fragment_guide_filter_button, "Filtrer les POI","Clique ici pour voir les filtres actifs", proposePrompt);
-                filterPrompt.show(getActivity());
-            } else {
-                proposePrompt.show(getActivity());
-            }
-        }*/
     }
 
     private fun initializeFilterButton() {
@@ -470,42 +426,42 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     }
 
     init {
-        eventLongClick = EntourageEvents.EVENT_GUIDE_LONGPRESS
+        eventLongClick = AnalyticsEvents.EVENT_GUIDE_LONGPRESS
     }
 
     override fun onNetworkException() {
         fragment_guide_coordinator?.let {
-            EntourageSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()
+            EntSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()
         }
     }
 
     override fun onServerException(throwable: Throwable) {
         fragment_guide_coordinator?.let {
-            EntourageSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()
+            EntSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()
         }
     }
 
     override fun onTechnicalException(throwable: Throwable) {
         fragment_guide_coordinator?.let {
-            EntourageSnackbar.make(it, R.string.technical_error, Snackbar.LENGTH_LONG).show()
+            EntSnackbar.make(it, R.string.technical_error, Snackbar.LENGTH_LONG).show()
         }
     }
 
     private inner class ServiceConnection : android.content.ServiceConnection {
         private var isBound = false
-        var entourageService: EntourageService? = null
+        var entService: EntService? = null
 
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             if (activity != null) {
-                entourageService = (service as EntourageService.LocalBinder).service
-                entourageService?.registerServiceListener(this@GuideMapFragment)
+                entService = (service as EntService.LocalBinder).service
+                entService?.registerServiceListener(this@GuideMapFragment)
                 isBound = true
             }
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
-            entourageService?.unregisterServiceListener(this@GuideMapFragment)
-            entourageService = null
+            entService?.unregisterServiceListener(this@GuideMapFragment)
+            entService = null
             isBound = false
         }
         // ----------------------------------
@@ -519,7 +475,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
                     return
                 }
                 try {
-                    val intent = Intent(it, EntourageService::class.java)
+                    val intent = Intent(it, EntService::class.java)
                     it.startService(intent)
                     it.bindService(intent, this, Context.BIND_AUTO_CREATE)
                 } catch (e: IllegalStateException) {
@@ -530,7 +486,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
 
         fun doUnbindService() {
             if (!isBound) return
-            entourageService?.unregisterServiceListener(this@GuideMapFragment)
+            entService?.unregisterServiceListener(this@GuideMapFragment)
             activity?.unbindService(this)
             isBound = false
         }

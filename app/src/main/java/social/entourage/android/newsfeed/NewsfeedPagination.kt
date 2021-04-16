@@ -1,11 +1,11 @@
 package social.entourage.android.newsfeed
 
-import social.entourage.android.base.EntouragePagination
+import social.entourage.android.base.BasePagination
 
 /**
  * Created by mihaiionescu on 17/05/2017.
  */
-class NewsfeedPagination : EntouragePagination() {
+class NewsfeedPagination : BasePagination() {
     var distance: Int  // kilometers
     private var distanceIndex: Int
     var lastFeedItemUUID: String? = null

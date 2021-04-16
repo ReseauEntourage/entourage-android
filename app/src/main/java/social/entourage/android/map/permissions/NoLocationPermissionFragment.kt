@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.fragment_no_location_permission.*
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 
 class NoLocationPermissionFragment : DialogFragment() {
@@ -60,7 +60,7 @@ class NoLocationPermissionFragment : DialogFragment() {
     }
 
     fun onActivateButton() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_GEOLOCATION_ACTIVATE_04_4A)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_GEOLOCATION_ACTIVATE_04_4A)
         startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
         showingGeolocationSettings = true
         enableGeolocation = true

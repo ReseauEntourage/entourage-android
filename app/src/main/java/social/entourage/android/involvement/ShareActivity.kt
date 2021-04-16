@@ -2,14 +2,14 @@ package social.entourage.android.involvement
 
 import android.content.Intent
 import android.os.Bundle
-import social.entourage.android.base.EntourageActivity
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.base.BaseActivity
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 
-class ShareActivity : EntourageActivity() {
+class ShareActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_SHORTCUT_SHAREAPP)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SHORTCUT_SHAREAPP)
         val sharingIntent = Intent(Intent.ACTION_SEND)
         sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or
                 Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET or

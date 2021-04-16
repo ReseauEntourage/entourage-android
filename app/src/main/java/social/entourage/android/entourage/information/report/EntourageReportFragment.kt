@@ -13,13 +13,13 @@ import retrofit2.Response
 import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageReport
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.entourage.information.EntourageInformationFragment
 
 /**
  * Entourage Report Fragment
  */
-class EntourageReportFragment  : EntourageDialogFragment() {
+class EntourageReportFragment  : BaseDialogFragment() {
 
     // ----------------------------------
     // ATTRIBUTES
@@ -100,7 +100,7 @@ class EntourageReportFragment  : EntourageDialogFragment() {
         }
 
     private fun sendReport() {
-        val userRequest = get().entourageComponent.entourageRequest
+        val userRequest = get().components.entourageRequest
         sending = true
         val reason = user_report_reason_edittext?.text.toString()
         val call = userRequest.reportEntourage(entourageId, EntourageReport.EntourageReportWrapper(EntourageReport(reason)))

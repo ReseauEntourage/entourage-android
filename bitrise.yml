@@ -101,7 +101,7 @@ workflows:
     envs:
     - opts:
         is_expand: false
-      GRADLE_TASK: assembleEntourageProdRelease assembleEntourageStagingRelease
+      GRADLE_TASK: assembleEntourageStagingRelease
   develop:
     steps:
     - trigger-bitrise-workflow:
@@ -183,7 +183,7 @@ app:
     GRADLE_TASK_TEST: 'testPreprodDebugUnitTest '
   - opts:
       is_expand: false
-    GRADLE_TASK_LINT: 'lintEntourageProdRelease lintPfpProdRelease '
+    GRADLE_TASK_LINT: 'lintEntourageProdRelease '
   - opts:
       is_expand: false
     JAVA_OPTS: '-Xms512m -Xmx2048m'

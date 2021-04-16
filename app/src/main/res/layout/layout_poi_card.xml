@@ -17,7 +17,7 @@
         android:textColor="@color/greyish_brown"
         android:textSize="@dimen/entourage_font_large"
         android:textStyle="bold"
-        tools:text="Nom du PIO qui peut être vraiment très long" />
+        tools:text="Nom du POI qui peut être vraiment très long, voire enocre plus long" />
 
     <Button
         android:id="@+id/poi_card_call_button"
@@ -26,7 +26,7 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:background="?attr/selectableItemBackground"
-        android:drawableTop="@drawable/tel"
+        android:drawableTop="@drawable/ic_phone_gds_detail"
         android:drawablePadding="5dp"
         android:text="@string/poi_card_call"
         android:textColor="@color/accent" />

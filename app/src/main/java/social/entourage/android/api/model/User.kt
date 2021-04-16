@@ -27,10 +27,11 @@ class User : Serializable {
     @SerializedName("avatar_url")
     var avatarURL: String?
     @SerializedName("user_type")
-    private val type = TYPE_PRO
+    private val type: String = TYPE_PUBLIC
     @SerializedName("firebase_properties")
     val firebaseProperties: UserFirebaseProperties? = null
-    var about: String = ""
+    var about: String? = ""
+        get() = field ?: ""
     val roles: ArrayList<String>? = null
     private val memberships: ArrayList<UserMembershipList>? = null
     val conversation: UserConversation? = null
@@ -59,6 +60,7 @@ class User : Serializable {
         id = 0
         email = ""
         displayName = ""
+        about=""
         stats = null
         organization = null
         partner = null
@@ -72,6 +74,7 @@ class User : Serializable {
         this.displayName = displayName
         this.stats = stats
         this.organization = organization
+        about=""
         partner = null
         this.token = token
         this.avatarURL = avatarURL
@@ -147,7 +150,27 @@ class User : Serializable {
             } else {
                 interestsString.append(", ")
             }
-            interestsString.append(context.getString(getStringId(interest)))
+            val stringId = getStringId(interest)
+            interestsString.append(context.getString(
+                    when (stringId) {
+                        string.rencontrer_sdf,
+                        string.event_sdf,
+                        string.questions_sdf,
+                        string.aide_sdf,
+                        string.m_orienter_sdf,
+                        string.trouver_asso_sdf,
+                        string.m_informer_riverain,
+                        string.event_riverain,
+                        string.entourer_riverain,
+                        string.dons_riverain,
+                        string.benevolat_riverain,
+                        string.aide_pers_asso,
+                        string.cult_sport_asso,
+                        string.serv_pub_asso,
+                        string.autre_asso -> stringId
+                        else -> if(stringId==-1) string.empty_description else stringId
+                    }
+            ))
         }
         return interestsString.toString()
     }
@@ -220,7 +243,7 @@ class User : Serializable {
         // ----------------------------------
         const val KEY_USER_ID = "social.entourage.android.KEY_USER_ID"
         //const val KEY_USER = "social.entourage.android.KEY_USER"
-        //const val TYPE_PUBLIC = "public"
+        const val TYPE_PUBLIC = "public"
         const val TYPE_PRO = "pro"
         private const val USER_ROLE_ETHICS_CHARTER_SIGNED = "ethics_charter_signed"
         const val USER_GOAL_NEIGHBOUR = "offer_help"
@@ -233,7 +256,7 @@ class User : Serializable {
                 val stringId = string::class.java.getDeclaredField(resourceName)
                 stringId.getInt(stringId)
             } catch (e: Exception) {
-                Timber.d("Resource not found : $resourceName")
+                Timber.e("Resource not found : $resourceName")
                 -1
             }
         }

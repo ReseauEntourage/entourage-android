@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_pre_onboarding_start.*
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.tools.Utils
 
@@ -111,26 +111,26 @@ class PreOnboardingStartActivity : AppCompatActivity() {
                 title = getString(R.string.pre_onboard_tutorial_title1)
                 titleColored = getString(R.string.pre_onboard_tutorial_title1_colored)
                 description = getString(R.string.pre_onboard_tutorial_description1)
-                EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_START_CARROUSEL1)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_START_CARROUSEL1)
             }
             1 -> {
                 title = getString(R.string.pre_onboard_tutorial_title2)
                 titleColored = getString(R.string.pre_onboard_tutorial_title2_colored)
                 description = getString(R.string.pre_onboard_tutorial_description2)
-                EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_START_CARROUSEL2)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_START_CARROUSEL2)
             }
             2 -> {
                 title = getString(R.string.pre_onboard_tutorial_title3)
                 titleColored = getString(R.string.pre_onboard_tutorial_title3_colored)
                 description = ""
                 ui_iv_pre3?.visibility = View.VISIBLE
-                EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_START_CARROUSEL3)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_START_CARROUSEL3)
             }
             else -> {
                 title = getString(R.string.pre_onboard_tutorial_title4)
                 titleColored = getString(R.string.pre_onboard_tutorial_title4_colored)
                 description = getString(R.string.pre_onboard_tutorial_description4)
-                EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_START_CARROUSEL4)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_START_CARROUSEL4)
             }
         }
         ui_tv_title?.text = Utils.formatTextWithBoldSpanAndColor(color,false,title,titleColored)

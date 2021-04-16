@@ -11,14 +11,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_onboarding_main.*
-import social.entourage.android.EntourageApplication
-import social.entourage.android.EntourageApplication.Companion.get
-import social.entourage.android.tools.log.EntourageEvents
-import social.entourage.android.MainActivity
-import social.entourage.android.R
+import social.entourage.android.*
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.Partner
 import social.entourage.android.api.model.User
+import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.onboarding.asso.AssoActivities
 import social.entourage.android.onboarding.asso.OnboardingAssoActivitiesFragment
 import social.entourage.android.onboarding.asso.OnboardingAssoFillFragment
@@ -39,6 +37,8 @@ import java.util.*
  */
 
 class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
+
+    lateinit var authenticationController: AuthenticationController
 
     val LOGIN_ERROR_UNAUTHORIZED = -1
     val LOGIN_ERROR_INVALID_PHONE_FORMAT = -2
@@ -79,6 +79,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
         setContentView(R.layout.activity_onboarding_main)
 
+        authenticationController = EntourageApplication.get().components.authenticationController
         alertDialog = CustomProgressDialog(this)
         temporaryUser = User()
 
@@ -131,32 +132,32 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     fun callSignup() {
         alertDialog.show(R.string.onboard_waiting_dialog)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_PHONE_SUBMIT)
-        OnboardingAPI.getInstance(get()).createUser(temporaryUser) { isOK, error ->
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_PHONE_SUBMIT)
+        OnboardingAPI.getInstance().createUser(temporaryUser) { isOK, error ->
             alertDialog.dismiss()
             if (isOK) {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_PHONE_SUBMIT_SUCCESS)
-                showSmsAndGo(R.string.registration_smscode_sent)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_PHONE_SUBMIT_SUCCESS)
+                showSmsAndGo(R.string.login_smscode_sent)
             }
             else {
                 if (error != null) {
                     when {
                         error.contains("PHONE_ALREADY_EXIST") -> {
                             showPopAlreadySigned()
-                            EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_EXIST)
+                            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_EXIST)
                         }
                         error.contains("INVALID_PHONE_FORMAT") -> {
                             displayToast(R.string.login_text_invalid_format)
-                            EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_ERROR)
+                            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_ERROR)
                         }
                         else -> {
-                            EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_ERROR)
+                            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_ERROR)
                             displayToast(R.string.login_error_network)
                         }
                     }
                     return@createUser
                 }
-                EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_ERROR)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_ERROR)
                 displayToast(R.string.login_error)
             }
         }
@@ -165,7 +166,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     private fun showPopAlreadySigned() {
         AlertDialog.Builder(this)
                 .setTitle("")
-                .setMessage(R.string.alreadyRegistereMessageGoBack)
+                .setMessage(R.string.login_already_registered_go_back)
                 .setPositiveButton(R.string.button_OK) { dialog, which ->
                     dialog.dismiss()
 
@@ -186,24 +187,23 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     fun sendPasscode() {
         alertDialog.show(R.string.onboard_waiting_dialog)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SIGNUP_SUBMIT)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_SIGNUP_SUBMIT)
         val phoneNumber = checkPhoneNumberFormat(null, temporaryUser.phone ?:"") ?: run {
             showLoginFail(LOGIN_ERROR_INVALID_PHONE_FORMAT)
             return
         }
-        OnboardingAPI.getInstance(get()).login(phoneNumber,temporaryPasscode ?: "") { isOK, loginResponse, error ->
+        OnboardingAPI.getInstance().login(phoneNumber,temporaryPasscode ?: "") { isOK, loginResponse, error ->
             if (isOK) {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SIGNUP_SUCCESS)
-                val authController = get().entourageComponent.authenticationController
-                Timber.d("Inside login, auth controller : $authController")
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_SIGNUP_SUCCESS)
+                Timber.d("Inside login, auth controller : $authenticationController")
                 loginResponse?.let {
-                    authController.saveUser(loginResponse.user)
+                    authenticationController.saveUser(loginResponse.user)
                 }
-                authController.saveUserPhoneAndCode(phoneNumber, temporaryPasscode)
-                authController.saveUserToursOnly(false)
+                authenticationController.saveUserPhoneAndCode(phoneNumber, temporaryPasscode)
+                authenticationController.saveUserToursOnly(false)
 
                 //set the tutorial as done
-                val sharedPreferences = get().sharedPreferences
+                val sharedPreferences = EntourageApplication.get().sharedPreferences
                 (sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, HashSet()) as HashSet<String>?)?.let {loggedNumbers ->
                     loggedNumbers.add(phoneNumber)
                     sharedPreferences.edit().putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers).apply()
@@ -213,7 +213,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             }
             else {
                 alertDialog.dismiss()
-                EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_ONBOARDING_SINGUP_FAIL)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ERROR_ONBOARDING_SINGUP_FAIL)
                 if (error != null) {
                     if (error.contains("INVALID_PHONE_FORMAT")) {
                         showLoginFail(LOGIN_ERROR_INVALID_PHONE_FORMAT)
@@ -258,30 +258,23 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     }
 
     fun resendCode() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_SMS)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_SMS)
         temporaryPhone?.let { tempPhone ->
-            OnboardingAPI.getInstance(get()).resendCode(tempPhone) { isOK, loginResponse, error ->
+            OnboardingAPI.getInstance().resendCode(tempPhone) { isOK, loginResponse, error ->
                 if (isOK) {
-                    displayToast(R.string.registration_smscode_sent)
-                } else {
-                    if (error != null) {
-                        displayToast(R.string.login_text_lost_code_ko)
-                    } else {
-                        displayToast(R.string.login_text_lost_code_ko)
-                    }
+                    displayToast(R.string.login_smscode_sent)
+                    return@resendCode
                 }
             }
-        } ?: run {
-            displayToast(R.string.login_text_lost_code_ko)
         }
+        displayToast(R.string.login_text_lost_code_ko)
     }
 
     fun sendAddress() {
         alertDialog.show(R.string.onboard_waiting_dialog)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_ACTION_ZONE_SUBMIT)
-        OnboardingAPI.getInstance(get()).updateAddress(temporaryPlaceAddress!!,false) { isOK, userResponse ->
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_ACTION_ZONE_SUBMIT)
+        OnboardingAPI.getInstance().updateAddress(temporaryPlaceAddress!!,false) { isOK, userResponse ->
             if (isOK) {
-                val authenticationController = get().entourageComponent.authenticationController
                 val me = authenticationController.me
                 if (me != null && userResponse != null) {
                     userResponse.user.phone = me.phone
@@ -305,15 +298,14 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     fun updateUserEmailPwd() {
         alertDialog.show(R.string.onboard_waiting_dialog)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_EMAIL_SUBMIT)
-        OnboardingAPI.getInstance(get()).updateUser(temporaryEmail) { isOK, userResponse ->
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_EMAIL_SUBMIT)
+        OnboardingAPI.getInstance().updateUser(temporaryEmail) { isOK, userResponse ->
             Timber.d("Return update useremail ?")
             if (isOK && userResponse != null) {
-                val authenticationController = get().entourageComponent.authenticationController
                 authenticationController.saveUser(userResponse.user)
             }
             else {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_ONBOARDING_EMAIL_SUBMIT_ERROR)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ERROR_ONBOARDING_EMAIL_SUBMIT_ERROR)
             }
             alertDialog.dismiss()
             goNextStep()
@@ -323,14 +315,14 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     fun updateUserPhoto() {
         Timber.d("Send upload Photo Prépare")
         alertDialog.show(R.string.user_photo_uploading)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_PHOTO_SUBMIT)
-        OnboardingAPI.getInstance(get()).prepareUploadPhoto { avatarKey, presignedUrl, error ->
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_PHOTO_SUBMIT)
+        OnboardingAPI.getInstance().prepareUploadPhoto { avatarKey, presignedUrl, error ->
             Timber.d("Send upload Photo Return")
             if (!avatarKey.isNullOrEmpty() && !presignedUrl.isNullOrEmpty()) {
                 val path: String = temporaryImageUri?.path ?: return@prepareUploadPhoto
                 val file = File(path)
                 Timber.d("Send upload Photo file")
-                OnboardingAPI.getInstance(get()).uploadPhotoFile(presignedUrl,file) { isOk ->
+                OnboardingAPI.getInstance().uploadPhotoFile(presignedUrl,file) { isOk ->
                     if (isOk) {
                         updateUserPhoto(avatarKey)
                     }
@@ -346,9 +338,8 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     }
 
     fun updateUserPhoto(avatarKey:String) {
-        OnboardingAPI.getInstance(get()).updateUserPhoto(avatarKey) { isOK, userResponse ->
+        OnboardingAPI.getInstance().updateUserPhoto(avatarKey) { isOK, userResponse ->
             if (isOK && userResponse != null) {
-                val authenticationController = get().entourageComponent.authenticationController
                 if (authenticationController.isAuthenticated) {
                     authenticationController.saveUser(userResponse.user)
                 }
@@ -365,15 +356,14 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         val _currentGoal = userTypeSelected.getGoalString()
 
         if (userTypeSelected == UserTypeSelection.NONE) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_CHOOSE_PROFILE_SKIP)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_CHOOSE_PROFILE_SKIP)
         }
         else {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_CHOOSE_PROFILE_SIGNUP)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_CHOOSE_PROFILE_SIGNUP)
         }
 
-        OnboardingAPI.getInstance(get()).updateUserGoal(_currentGoal) { isOK, userResponse ->
+        OnboardingAPI.getInstance().updateUserGoal(_currentGoal) { isOK, userResponse ->
             if (isOK && userResponse != null) {
-                val authenticationController = get().entourageComponent.authenticationController
                 authenticationController.saveUser(userResponse.user)
             }
             alertDialog.dismiss()
@@ -393,14 +383,14 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     fun updateAssoInfos() {
         if (temporaryAssoInfo?.name?.length ?:0 > 0 && temporaryAssoInfo?.postalCode?.length ?:0 > 0 && temporaryAssoInfo?.userRoleTitle?.length ?:0 > 0) {
             alertDialog.show(R.string.onboard_waiting_dialog)
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_PRO_SIGNUP_SUBMIT)
-            OnboardingAPI.getInstance(get()).updateAssoInfos(temporaryAssoInfo) { isOK, response ->
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_PRO_SIGNUP_SUBMIT)
+            OnboardingAPI.getInstance().updateAssoInfos(temporaryAssoInfo) { isOK, response ->
                 alertDialog.dismiss()
                 if (!isOK) {
-                    EntourageEvents.logEvent(EntourageEvents.EVENT_ERROR_ONBOARDING_PRO_SIGNUP_ERROR)
+                    AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ERROR_ONBOARDING_PRO_SIGNUP_ERROR)
                 }
                 else {
-                    EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_PRO_SIGNUP_SUCCESS)
+                    AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_PRO_SIGNUP_SUCCESS)
                 }
                 currentPositionAsso += 1
                 moveToTunnelAsso()
@@ -418,8 +408,8 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     fun updateAssoActivities() {
         if (temporaryAssoActivities?.hasOneSelectionMin() == true) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_PRO_MOSAIC)
-            OnboardingAPI.getInstance(get()).updateUserInterests(temporaryAssoActivities!!.getArrayForWs()) { isOK, userResponse ->
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_PRO_MOSAIC)
+            OnboardingAPI.getInstance().updateUserInterests(temporaryAssoActivities!!.getArrayForWs()) { isOK, userResponse ->
                 currentFragmentPosition += 2
                 changeFragment()
             }
@@ -436,10 +426,9 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     fun update2ndAddress() {
         alertDialog.show(R.string.onboard_waiting_dialog)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_ACTION_ZONE2_SUBMIT)
-        OnboardingAPI.getInstance(get()).updateAddress(temporary2ndPlaceAddress!!,true) { isOK, userResponse ->
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_ACTION_ZONE2_SUBMIT)
+        OnboardingAPI.getInstance().updateAddress(temporary2ndPlaceAddress!!,true) { isOK, userResponse ->
             if (isOK) {
-                val authenticationController = get().entourageComponent.authenticationController
                 val me = authenticationController.me
                 if (me != null && userResponse != null) {
                     userResponse.user.phone = me.phone
@@ -466,10 +455,10 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     fun updateActivities(activities:SdfNeighbourActivities?,isSdf:Boolean) {
         if (activities?.hasOneSelectionMin() == true) {
-            if (isSdf) { EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_INNEED_MOSAIC) }
-            else { EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_NEIGHBOR_MOSAIC) }
+            if (isSdf) { AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_INNEED_MOSAIC) }
+            else { AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_NEIGHBOR_MOSAIC) }
 
-            OnboardingAPI.getInstance(get()).updateUserInterests(activities.getArrayForWs()) { isOK, userResponse ->
+            OnboardingAPI.getInstance().updateUserInterests(activities.getArrayForWs()) { isOK, userResponse ->
                 currentFragmentPosition += 1
                 changeFragment()
             }
@@ -693,7 +682,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 return
             }
             else -> {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_NAMES)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_NAMES)
                 currentFragmentPosition += 1
                 if (currentFragmentPosition > numberOfSteps) currentFragmentPosition = numberOfSteps
                 changeFragment()
@@ -789,7 +778,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 temporary2ndPlaceAddress = null
                 temporarySdfActivities = null
                 temporaryNeighbourActivities = null
-                EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_ACTION_ZONE2_SKIP)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_ACTION_ZONE2_SKIP)
                 goNextStepSdfNeighbour()
                 return
             }
@@ -799,7 +788,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             userTypeSelected = UserTypeSelection.NONE
         }
         if (currentFragmentPosition == PositionType.Photo.pos) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ACTION_ONBOARDING_IGNORE_PHOTO)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_IGNORE_PHOTO)
             goMain()
             return
         }
@@ -808,16 +797,15 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     }
 
     fun goMain() {
-        val authenticationController = get().entourageComponent.authenticationController
         authenticationController.me?.let { me ->
-            OnboardingAPI.getInstance(get()).getUser(me.id) { isOK, userResponse ->
+            OnboardingAPI.getInstance().getUser(me.id) { isOK, userResponse ->
                 if (isOK) {
                     if (userResponse != null) {
                         userResponse.user.phone = me.phone
                         authenticationController.saveUser(userResponse.user)
                     }
                 }
-                val sharedPreferences = get().sharedPreferences
+                val sharedPreferences = EntourageApplication.get().sharedPreferences
                 sharedPreferences.edit().putInt(EntourageApplication.KEY_ONBOARDING_USER_TYPE, userTypeSelected.pos).apply()
                 sharedPreferences.edit().putBoolean(EntourageApplication.KEY_IS_FROM_ONBOARDING, true).apply()
                 sharedPreferences.edit().putBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,false).apply()

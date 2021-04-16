@@ -13,16 +13,16 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.fragment_photo_edit.*
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class PhotoEditFragment  : EntourageDialogFragment(), CropImageView.OnSetImageUriCompleteListener {
+class PhotoEditFragment  : BaseDialogFragment(), CropImageView.OnSetImageUriCompleteListener {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -54,7 +54,7 @@ class PhotoEditFragment  : EntourageDialogFragment(), CropImageView.OnSetImageUr
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_09_9)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SCREEN_09_9)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_photo_edit, container, false)
     }
@@ -104,7 +104,7 @@ class PhotoEditFragment  : EntourageDialogFragment(), CropImageView.OnSetImageUr
 
     fun onRotateClicked() {
         photo_edit_cropImageView?.rotateImage(ROTATE_DEGREES_STEP)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_USER_ROTATE_PHOTO)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_USER_ROTATE_PHOTO)
     }
 
     // ----------------------------------

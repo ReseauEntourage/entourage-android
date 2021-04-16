@@ -6,10 +6,15 @@ import com.google.android.gms.maps.model.CameraPosition
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import social.entourage.android.Constants
+import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.api.request.PoiRequest
 import social.entourage.android.api.request.PoiResponse
+import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.guide.filter.GuideFilter
+import social.entourage.android.location.EntLocation
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -18,7 +23,12 @@ import javax.inject.Inject
  */
 class GuideMapPresenter @Inject constructor(
         private val fragment: GuideMapFragment,
+        private val authenticationController: AuthenticationController,
         private val poiRequest: PoiRequest) {
+
+
+    private var previousEmptyListPopupLocation: Location? = null
+    private var poisMap: MutableMap<String, Poi> = TreeMap()
 
     // ----------------------------------
     // PUBLIC METHODS
@@ -62,4 +72,38 @@ class GuideMapPresenter @Inject constructor(
             }
         })
     }
+
+    fun updatePreviousEmptyListPopupLocation(cameraPosition: CameraPosition) {
+        val currentLocation = EntLocation.cameraPositionToLocation(null, cameraPosition)
+        previousEmptyListPopupLocation?.let {
+            // Show the popup only we moved from the last position we show it
+            if (it.distanceTo(currentLocation) < Constants.EMPTY_POPUP_DISPLAY_LIMIT) {
+                return
+            }
+        }
+        previousEmptyListPopupLocation = currentLocation
+    }
+
+    fun clear() {
+        poisMap.clear()
+    }
+
+    fun removeRedundantPois(pois: List<Poi>): List<Poi> {
+        val newPois: MutableList<Poi> = ArrayList()
+        for(poi in pois) {
+            if (!poisMap.containsKey(poi.uuid)) {
+                poisMap[poi.uuid] = poi
+                newPois.add(poi)
+            }
+        }
+        return newPois
+    }
+
+    var isShowNoPOIsPopup: Boolean
+        get() = authenticationController.isShowNoPOIsPopup
+        set(shouldShowNoPOIsPopup: Boolean) {authenticationController.isShowNoPOIsPopup = shouldShowNoPOIsPopup}
+
+    var isShowInfoPOIsPopup: Boolean
+        get() = authenticationController.isShowInfoPOIsPopup
+        set(shouldShowInfoPOIsPopup: Boolean) {authenticationController.isShowInfoPOIsPopup = shouldShowInfoPOIsPopup}
 }

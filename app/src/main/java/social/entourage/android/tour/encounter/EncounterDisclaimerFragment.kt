@@ -10,7 +10,7 @@ import androidx.fragment.app.DialogFragment
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_encounter_disclaimer.*
 import social.entourage.android.R
-import social.entourage.android.tools.view.EntourageSnackbar
+import social.entourage.android.tools.view.EntSnackbar
 
 class EncounterDisclaimerFragment : DialogFragment() {
     // ----------------------------------
@@ -66,7 +66,7 @@ class EncounterDisclaimerFragment : DialogFragment() {
             //inform the listener that the user accepted the CGU
             mListener?.onEncounterDisclaimerAccepted(this)
         } else {
-            view?.let {EntourageSnackbar.make(it, R.string.encounter_disclaimer_error_notaccepted, Snackbar.LENGTH_SHORT).show()}
+            view?.let {EntSnackbar.make(it, R.string.encounter_disclaimer_error_notaccepted, Snackbar.LENGTH_SHORT).show()}
         }
     }
 

@@ -2,6 +2,7 @@ package social.entourage.android.user.edit.photo
 
 import android.Manifest
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -18,10 +19,10 @@ import androidx.core.content.PermissionChecker
 import com.squareup.otto.Subscribe
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_photo_choose_source.*
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events.OnPhotoChosen
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.tools.EntBus
 import java.io.File
 import java.io.IOException
@@ -29,7 +30,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Deprecated(message="Migrate to class ChoosePhotoFragment", replaceWith = ReplaceWith("ChoosePhotoFragment", "social.entourage.android.user.edit.photo.ChoosePhotoFragment"))
-class PhotoChooseSourceFragmentCompat : EntourageDialogFragment() {
+class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -51,7 +52,7 @@ class PhotoChooseSourceFragmentCompat : EntourageDialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_09_6)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SCREEN_09_6)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_photo_choose_source, container, false)
     }
@@ -211,17 +212,16 @@ class PhotoChooseSourceFragmentCompat : EntourageDialogFragment() {
     }
 
     private fun showChoosePhotoActivity() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_PHOTO_UPLOAD_SUBMIT)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_PHOTO_UPLOAD_SUBMIT)
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             // Start a separate activity, to handle the issue with onActivityResult
             val intent = Intent(context, ChoosePhotoCompatActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         } else {
-            val intent = Intent()
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
             // Show only images, no videos or anything else
             intent.type = "image/*"
-            intent.action = Intent.ACTION_GET_CONTENT
             // Always show the chooser (if there are multiple options available)
             startActivityForResult(Intent.createChooser(intent, null), PICK_IMAGE_REQUEST)
         }
@@ -229,12 +229,10 @@ class PhotoChooseSourceFragmentCompat : EntourageDialogFragment() {
 
     private fun showTakePhotoActivity() {
         activity?.let {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_PHOTO_TAKE_SUBMIT)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_PHOTO_TAKE_SUBMIT)
             val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             // Ensure that there's a camera activity to handle the intent
-            if (takePictureIntent.resolveActivity(it.packageManager) == null) {
-                Toast.makeText(activity, R.string.user_photo_error_no_camera, Toast.LENGTH_SHORT).show()
-            } else {
+            try {
                 // Create the File where the photo should go
                 try {
                     val photoFileUri = createImageFile()
@@ -257,6 +255,8 @@ class PhotoChooseSourceFragmentCompat : EntourageDialogFragment() {
                     // Error occurred while creating the File
                     Toast.makeText(activity, R.string.user_photo_error_photo_path, Toast.LENGTH_SHORT).show()
                 }
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(activity, R.string.user_photo_error_no_camera, Toast.LENGTH_SHORT).show()
             }
         }
     }

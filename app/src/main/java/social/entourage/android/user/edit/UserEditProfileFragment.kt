@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.fragment_user_edit_profile.*
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.User
 
@@ -24,7 +24,7 @@ class UserEditProfileFragment  : DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-        EntourageEvents.logEvent(EntourageEvents.EVENT_SCREEN_09_5)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SCREEN_09_5)
         return inflater.inflate(R.layout.fragment_user_edit_profile, container, false)
     }
 
@@ -37,7 +37,7 @@ class UserEditProfileFragment  : DialogFragment() {
     private fun configureView() {
         val userEditFragment = parentFragmentManager.findFragmentByTag(UserEditFragment.TAG) as UserEditFragment?
                 ?: return
-        userEditFragment.editedUser?.let { u ->
+        userEditFragment.presenter?.editedUser?.let { u ->
             user = u
             user_edit_profile_firstname?.setText(u.firstName)
             user_edit_profile_lastname?.setText(u.lastName)

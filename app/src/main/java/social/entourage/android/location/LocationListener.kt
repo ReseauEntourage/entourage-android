@@ -8,11 +8,11 @@ import android.os.Bundle
 import com.google.android.gms.location.LocationAvailability
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
-import social.entourage.android.service.EntourageService
-import social.entourage.android.service.EntourageServiceManager
+import social.entourage.android.service.EntService
+import social.entourage.android.service.EntServiceManager
 import timber.log.Timber
 
-class LocationListener(private val manager: EntourageServiceManager,
+class LocationListener(private val manager: EntServiceManager,
                        private val context: Context)
     : LocationListener, LocationCallback() {
 
@@ -22,8 +22,8 @@ class LocationListener(private val manager: EntourageServiceManager,
     }
 
     private fun onUpdateLocation(location: Location) {
-        if (EntourageLocation.currentLocation == null) {
-            EntourageLocation.initialLocation = location
+        if (EntLocation.currentLocation == null) {
+            EntLocation.initialLocation = location
         }
 
         manager.updateLocation(location)
@@ -32,11 +32,11 @@ class LocationListener(private val manager: EntourageServiceManager,
     override fun onStatusChanged(s: String, i: Int, bundle: Bundle) {}
 
     override fun onProviderEnabled(s: String) {
-        context.sendBroadcast(Intent(EntourageService.KEY_LOCATION_PROVIDER_ENABLED))
+        context.sendBroadcast(Intent(EntService.KEY_LOCATION_PROVIDER_ENABLED))
     }
 
     override fun onProviderDisabled(s: String) {
-        context.sendBroadcast(Intent(EntourageService.KEY_LOCATION_PROVIDER_DISABLED))
+        context.sendBroadcast(Intent(EntService.KEY_LOCATION_PROVIDER_DISABLED))
     }
 
     override fun onLocationResult(result: LocationResult?) {
@@ -49,7 +49,7 @@ class LocationListener(private val manager: EntourageServiceManager,
         super.onLocationAvailability(result)
         val isLocationAvailable = result?.isLocationAvailable == true
         Timber.d("LocationAvailability changed to %s", isLocationAvailable)
-        val intent = Intent(if(result?.isLocationAvailable == true) EntourageService.KEY_LOCATION_PROVIDER_ENABLED else EntourageService.KEY_LOCATION_PROVIDER_DISABLED)
+        val intent = Intent(if(result?.isLocationAvailable == true) EntService.KEY_LOCATION_PROVIDER_ENABLED else EntService.KEY_LOCATION_PROVIDER_DISABLED)
         context.sendBroadcast(intent)
     }
 }

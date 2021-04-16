@@ -7,16 +7,16 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_my_entourages_filter.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.EntourageApplication
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events.OnMyEntouragesForceRefresh
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.tools.EntBus
 
 /**
  * MyEntourages Filter Fragment
  */
-class MyEntouragesFilterFragment  : EntourageDialogFragment() {
+class MyEntouragesFilterFragment  : BaseDialogFragment() {
     // ----------------------------------
     // Lifecycle
     // ----------------------------------
@@ -42,7 +42,7 @@ class MyEntouragesFilterFragment  : EntourageDialogFragment() {
     // Buttons handling
     // ----------------------------------
     fun onBackClicked() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_EXIT)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_MYENTOURAGES_FILTER_EXIT)
         dismiss()
     }
 
@@ -60,30 +60,30 @@ class MyEntouragesFilterFragment  : EntourageDialogFragment() {
 
         // inform the app to refresh the my entourages feed
         EntBus.post(OnMyEntouragesForceRefresh(null))
-        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_SAVE)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_MYENTOURAGES_FILTER_SAVE)
 
         // dismiss the dialog
         dismiss()
     }
 
     fun onOrganizerSwitch() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_UNREAD)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_MYENTOURAGES_FILTER_UNREAD)
     }
 
     fun onClosedSwitch() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_PAST)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_MYENTOURAGES_FILTER_PAST)
     }
 
     fun onDemandSwitch() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_ASK)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_MYENTOURAGES_FILTER_ASK)
     }
 
     fun onContributionSwitch() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_OFFER)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_MYENTOURAGES_FILTER_OFFER)
     }
 
     fun onToursSwitch() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_MYENTOURAGES_FILTER_TOUR)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_MYENTOURAGES_FILTER_TOUR)
     }
 
     // ----------------------------------

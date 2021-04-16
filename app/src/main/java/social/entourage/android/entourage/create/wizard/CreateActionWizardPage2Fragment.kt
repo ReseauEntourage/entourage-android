@@ -9,14 +9,14 @@ import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.Constants
 import social.entourage.android.MainActivity
 import social.entourage.android.R
-import social.entourage.android.base.EntourageDialogFragment
-import social.entourage.android.base.EntourageLinkMovementMethod
+import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.tools.EntLinkMovementMethod
 import social.entourage.android.tools.Utils
 
 /**
- * Create Action Wizard Page 2 [EntourageDialogFragment] subclass.
+ * Create Action Wizard Page 2 [BaseDialogFragment] subclass.
  */
-class CreateActionWizardPage2Fragment : EntourageDialogFragment() {
+class CreateActionWizardPage2Fragment : BaseDialogFragment() {
     private var listener: CreateActionWizardListener? = null
 
     // ----------------------------------
@@ -35,7 +35,7 @@ class CreateActionWizardPage2Fragment : EntourageDialogFragment() {
             val mainActivity = activity as MainActivity
             val text = getString(R.string.create_action_wizard_disclaimer, mainActivity.getLink(Constants.CHARTE_LINK_ID))
             create_action_wizard_disclaimer?.text = Utils.fromHtml(text)
-            create_action_wizard_disclaimer?.movementMethod = EntourageLinkMovementMethod
+            create_action_wizard_disclaimer?.movementMethod = EntLinkMovementMethod
         }
         title_close_button?.setOnClickListener { onCloseClicked()        }
         create_action_wizard_p2_option1_button?.setOnClickListener {onOption1Clicked()}

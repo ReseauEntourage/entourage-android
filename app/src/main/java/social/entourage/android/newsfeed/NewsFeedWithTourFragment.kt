@@ -25,20 +25,20 @@ import social.entourage.android.api.model.tour.Encounter
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.model.tour.TourType
 import social.entourage.android.api.tape.Events
-import social.entourage.android.location.EntourageLocation
+import social.entourage.android.location.EntLocation
 import social.entourage.android.location.LocationUtils
 import social.entourage.android.map.MapClusterEncounterItem
 import social.entourage.android.map.MapClusterTourItem
 import social.entourage.android.map.filter.MapFilterFactory
 import social.entourage.android.map.filter.MapFilterFragment
-import social.entourage.android.service.EntourageService
+import social.entourage.android.service.EntService
 import social.entourage.android.service.TourServiceListener
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tour.TourFilter
 import social.entourage.android.tour.TourFilterFragment
 import social.entourage.android.tour.confirmation.TourEndConfirmationFragment
 import social.entourage.android.tour.encounter.CreateEncounterActivity
-import social.entourage.android.tools.view.EntourageSnackbar
+import social.entourage.android.tools.view.EntSnackbar
 import java.util.*
 
 class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
@@ -79,7 +79,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
             hideTourLauncher()
             return true
         }
-        if (fragment_map_longclick?.visibility == View.VISIBLE && entourageService?.isRunning==true ) {
+        if (fragment_map_longclick?.visibility == View.VISIBLE && entService?.isRunning==true ) {
             tour_stop_button?.visibility = View.VISIBLE
         }
         return super.onBackPressed()
@@ -87,11 +87,11 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
 
     override fun onLocationStatusUpdated(active: Boolean) {
         super.onLocationStatusUpdated(active)
-        if (shouldShowGPSDialog && !active && entourageService?.isRunning == true) {
+        if (shouldShowGPSDialog && !active && entService?.isRunning == true) {
             //We always need GPS to be turned on during tour
             shouldShowGPSDialog = false
             val newIntent = Intent(this.context, MainActivity::class.java)
-            newIntent.action = EntourageService.KEY_LOCATION_PROVIDER_DISABLED
+            newIntent.action = EntService.KEY_LOCATION_PROVIDER_DISABLED
             newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(newIntent)
         } else if (!shouldShowGPSDialog && active) {
@@ -100,8 +100,8 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     }
 
     private fun onStartTourLauncher() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_TOUR_CREATE_CLICK)
-        if (entourageService==null || entourageService?.isRunning==true) return
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_TOUR_CREATE_CLICK)
+        if (entService==null || entService?.isRunning==true) return
 
         // Check if the geolocation is permitted
         if (!LocationUtils.isLocationEnabled() || !LocationUtils.isLocationPermissionGranted()) {
@@ -118,19 +118,19 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
             launcher_tour_progressBar?.visibility = View.VISIBLE
             val tourType = TourType.findByRessourceId(it.checkedRadioButtonId)
             startTour(tourType.typeName)
-            EntourageEvents.logEvent(
+            AnalyticsEvents.logEvent(
                     when (tourType) {
-                        TourType.MEDICAL -> EntourageEvents.EVENT_TOUR_MEDICAL
-                        TourType.BARE_HANDS -> EntourageEvents.EVENT_TOUR_SOCIAL
-                        TourType.ALIMENTARY -> EntourageEvents.EVENT_TOUR_DISTRIBUTION
+                        TourType.MEDICAL -> AnalyticsEvents.EVENT_TOUR_MEDICAL
+                        TourType.BARE_HANDS -> AnalyticsEvents.EVENT_TOUR_SOCIAL
+                        TourType.ALIMENTARY -> AnalyticsEvents.EVENT_TOUR_DISTRIBUTION
                     }
             )
-            EntourageEvents.logEvent(EntourageEvents.EVENT_START_TOUR)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_START_TOUR)
         }
     }
 
     private fun onStartStopConfirmation() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_TOUR_SUSPEND)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_TOUR_SUSPEND)
         pauseTour()
         if (activity != null) {
             launchConfirmationFragment()
@@ -141,7 +141,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
         if (activity == null) {
             return
         }
-        EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_CLICK)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_CREATE_ENCOUNTER_CLICK)
         // Hide the create entourage menu ui
         fragment_map_longclick?.visibility = View.GONE
 
@@ -159,7 +159,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
             saveCameraPosition()
             val args = Bundle()
             args.putString(CreateEncounterActivity.BUNDLE_KEY_TOUR_ID, currentTourUUID)
-            val encounterPosition  = longTapCoordinates ?: EntourageLocation.currentLatLng ?: EntourageLocation.lastCameraPosition.target
+            val encounterPosition  = longTapCoordinates ?: EntLocation.currentLatLng ?: EntLocation.lastCameraPosition.target
             args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, encounterPosition.latitude)
             args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, encounterPosition.longitude)
             longTapCoordinates = null
@@ -174,27 +174,27 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     }
 
     override fun displayEntourageDisclaimer() {
-        EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_ACTION_CREATE_CLICK)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_ACTION_CREATE_CLICK)
         // if we have an ongoing tour
-        if (activity != null && entourageService?.isRunning==true) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ENCOUNTER_POPUP_SHOW)
+        if (activity != null && entService?.isRunning==true) {
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENCOUNTER_POPUP_SHOW)
             // Show the dialog that asks the user if he really wants to create an entourage instead of encounter
             val builder = AlertDialog.Builder(requireActivity())
             builder
                     .setMessage(R.string.entourage_tour_ongoing_description)
                     .setTitle(R.string.entourage_tour_ongoing_title)
                     .setPositiveButton(R.string.entourage_tour_ongoing_proceed) { _, _ ->
-                        EntourageEvents.logEvent(EntourageEvents.EVENT_ENCOUNTER_POPUP_ENCOUNTER)
+                        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENCOUNTER_POPUP_ENCOUNTER)
                         onAddEncounter()
                     }
                     .setNegativeButton(R.string.entourage_tour_ongoing_action) { _, _ ->
-                        EntourageEvents.logEvent(EntourageEvents.EVENT_ENCOUNTER_POPUP_ENTOURAGE)
+                        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENCOUNTER_POPUP_ENTOURAGE)
                         super.displayEntourageDisclaimer()
                     }
             builder.show()
             return
         }
-        if (entourageService?.isRunning==true) {
+        if (entService?.isRunning==true) {
             tour_stop_button?.visibility = View.VISIBLE
         }
         super.displayEntourageDisclaimer()
@@ -218,13 +218,13 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
         when (action) {
             TourEndConfirmationFragment.KEY_RESUME_TOUR -> resumeTour()
             TourEndConfirmationFragment.KEY_END_TOUR-> {
-                if (entourageService?.isRunning==true)
+                if (entService?.isRunning==true)
                     stopFeedItem(null, true)
-                else if (entourageService?.isPaused==true)
+                else if (entService?.isPaused==true)
                     launchConfirmationFragment()
             }
-            EntourageService.KEY_NOTIFICATION_PAUSE_TOUR-> launchConfirmationFragment()
-            EntourageService.KEY_NOTIFICATION_STOP_TOUR -> entourageService?.endTreatment()
+            EntService.KEY_NOTIFICATION_PAUSE_TOUR-> launchConfirmationFragment()
+            EntService.KEY_NOTIFICATION_STOP_TOUR -> entService?.endTreatment()
             PlusFragment.KEY_START_TOUR-> onStartTourLauncher()
             PlusFragment.KEY_ADD_ENCOUNTER -> onAddEncounter()
             else -> super.checkAction(action)
@@ -232,7 +232,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     }
 
     override fun updateFloatingMenuOptions() {
-        tour_stop_button?.visibility = if (entourageService?.isRunning==true) View.VISIBLE else View.GONE
+        tour_stop_button?.visibility = if (entService?.isRunning==true) View.VISIBLE else View.GONE
     }
 
     override fun needForGeoloc():Boolean {
@@ -248,7 +248,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
         //hide the FAB menu
         tour_stop_button?.visibility = View.GONE
         //update the visible buttons
-        val isTourRunning = entourageService?.isRunning==true
+        val isTourRunning = entService?.isRunning==true
         map_longclick_buttons?.map_longclick_button_start_tour_launcher?.visibility = if (isTourRunning) View.INVISIBLE else View.VISIBLE
         map_longclick_buttons?.map_longclick_button_create_encounter?.visibility = if (isTourRunning) View.VISIBLE else View.GONE
         super.showLongClickOnMapOptions(latLng)
@@ -259,7 +259,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
         super.onUserChoiceChanged(event)
         userHistory = event.isUserHistory
         if (userHistory) {
-            entourageService?.updateUserHistory(userId, 1, 500)
+            entService?.updateUserHistory(userId, 1, 500)
             showUserHistory()
         } else {
             hideUserHistory()
@@ -302,8 +302,8 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
 
     @Subscribe
     fun onEncounterCreated(event: Events.OnEncounterCreated) {
-        if (entourageService != null) { //refresh button just in case
-            tour_stop_button?.visibility = if (entourageService?.isRunning==true) View.VISIBLE else View.GONE
+        if (entService != null) { //refresh button just in case
+            tour_stop_button?.visibility = if (entService?.isRunning==true) View.VISIBLE else View.GONE
         }
         val encounter = event.encounter ?: return
         addEncounter(encounter)
@@ -336,7 +336,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
         launcher_tour_progressBar?.visibility = View.GONE
 
         if (activity != null) {
-            val currentTour = entourageService?.currentTour
+            val currentTour = entService?.currentTour
             if (created && currentTour !=null) {
                 isFollowing = true
                 currentTourUUID = tourUUID
@@ -349,7 +349,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
                 presenter.incrementUserToursCount()
                 presenter.setDisplayEncounterDisclaimer(true)
             } else if (fragment_map_main_layout != null) {
-                EntourageSnackbar.make(fragment_map_main_layout, R.string.tour_creation_fail, Snackbar.LENGTH_SHORT).show()
+                EntSnackbar.make(fragment_map_main_layout, R.string.tour_creation_fail, Snackbar.LENGTH_SHORT).show()
             }
         }
     }
@@ -362,7 +362,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
         if (pointsToDraw.isNotEmpty()) {
             drawCurrentTour(pointsToDraw, tourType, startDate)
             previousCoordinates = pointsToDraw[pointsToDraw.size - 1].location
-            EntourageLocation.currentLocation?.let { centerMap(LatLng(it.latitude, it.longitude)) }
+            EntLocation.currentLocation?.let { centerMap(LatLng(it.latitude, it.longitude)) }
             isFollowing = true
         }
         tour_stop_button?.visibility = View.VISIBLE
@@ -411,7 +411,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
             }
             mapClusterManager?.cluster()
             //redraw the current ongoing tour, if any
-            if (entourageService != null && currentTourUUID.isNotEmpty()) {
+            if (entService != null && currentTourUUID.isNotEmpty()) {
                 val line = PolylineOptions()
                 for (polyline in currentTourLines) {
                     line.addAll(polyline.points)
@@ -426,36 +426,36 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     }
 
     private fun startTour(type: String) {
-        if (entourageService?.isRunning==true) return
+        if (entService?.isRunning==true) return
         color = getTrackColor(false, type, Date())
-        entourageService?.beginTreatment(type)
+        entService?.beginTreatment(type)
     }
 
     private fun pauseTour() {
-        if (entourageService?.isRunning==true) {
-            entourageService?.pauseTreatment()
+        if (entService?.isRunning==true) {
+            entService?.pauseTreatment()
         }
     }
 
     private fun resumeTour() {
-        if (entourageService?.isRunning==true) return
-        EntourageEvents.logEvent(EntourageEvents.EVENT_RESTART_TOUR)
-        entourageService?.resumeTreatment()
+        if (entService?.isRunning==true) return
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_RESTART_TOUR)
+        entService?.resumeTreatment()
     }
 
     private fun launchConfirmationFragment() {
         pauseTour()
-        entourageService?.currentTour?.let {
+        entService?.currentTour?.let {
             TourEndConfirmationFragment.newInstance(it).show(parentFragmentManager, TourEndConfirmationFragment.TAG)
         }
     }
 
     private fun addEncounter(encounter: Encounter) {
-        entourageService?.addEncounter(encounter)
+        entService?.addEncounter(encounter)
     }
 
     private fun updateEncounter(encounter: Encounter) {
-        entourageService?.updateEncounter(encounter)
+        entService?.updateEncounter(encounter)
     }
 
     private fun removeRedundantTours(allTours: List<Tour>, isHistory: Boolean): List<Tour> {
@@ -486,15 +486,15 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
                     updateFloatingMenuOptions()
                     currentTourUUID = ""
                 } else {
-                    entourageService?.notifyListenersTourResumed()
+                    entService?.notifyListenersTourResumed()
                 }
                 if (userHistory) {
-                    entourageService?.updateUserHistory(userId, 1, 1)
+                    entService?.updateUserHistory(userId, 1, 1)
                 }
-                fragment_map_main_layout?.let { EntourageSnackbar.make(it, tour.getClosedToastMessage(), Snackbar.LENGTH_SHORT).show() }
+                fragment_map_main_layout?.let { EntSnackbar.make(it, tour.getClosedToastMessage(), Snackbar.LENGTH_SHORT).show() }
             } else {
                 val message = if(tour.status == Tour.STATUS_FREEZED) R.string.tour_freezed else R.string.tour_close_fail
-                fragment_map_main_layout?.let { EntourageSnackbar.make(it, message, Snackbar.LENGTH_SHORT).show()}
+                fragment_map_main_layout?.let { EntSnackbar.make(it, message, Snackbar.LENGTH_SHORT).show()}
             }
         }
         super.onFeedItemClosed(closed, feedItem)
@@ -512,7 +512,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     }
 
     private fun addCurrentTourEncounters() {
-        val encounters = entourageService?.currentTour?.encounters
+        val encounters = entService?.currentTour?.encounters
         if (encounters?.isNotEmpty() == true) {
             for (encounter in encounters) {
                 putEncounterOnMap(encounter)
@@ -630,7 +630,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     }
 
     override fun updateFragmentFromService() {
-        entourageService?.let {
+        entService?.let {
             if (it.isRunning) {
                 updateFloatingMenuOptions()
                 currentTourUUID = it.currentTourId
@@ -662,13 +662,13 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
 
     override fun updateUserHistory() {
         if (userHistory) {
-            entourageService?.updateUserHistory(userId, 1, 500)
+            entService?.updateUserHistory(userId, 1, 500)
         }
     }
 
     override fun onShowFilter() {
         if(selectedTab==NewsfeedTabItem.TOUR_TAB) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_FILTERSCLICK)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_FILTERSCLICK)
             TourFilterFragment().show(parentFragmentManager, MapFilterFragment.TAG)
         } else {
             super.onShowFilter()

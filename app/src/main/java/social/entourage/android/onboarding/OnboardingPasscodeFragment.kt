@@ -13,7 +13,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_onboarding_passcode.*
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.tools.hideKeyboard
 
@@ -57,7 +57,7 @@ class OnboardingPasscodeFragment : Fragment() {
 
         activateTimer()
 
-        EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING__PASSCODE)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_ONBOARDING__PASSCODE)
     }
 
     private fun activateTimer() {

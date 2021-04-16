@@ -11,19 +11,19 @@ import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.Constants
 import social.entourage.android.MainActivity
 import social.entourage.android.R
-import social.entourage.android.base.EntourageDialogFragment
-import social.entourage.android.base.EntourageLinkMovementMethod
+import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.tools.EntLinkMovementMethod
 import social.entourage.android.entourage.create.CreateEntourageListener
 
 /**
- * A simple [EntourageDialogFragment] subclass.
+ * A simple [BaseDialogFragment] subclass.
  * Activities that contain this fragment must implement the
  * [CreateEntourageListener] interface
  * to handle interaction events.
  * Use the [EntourageCategoryFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class EntourageCategoryFragment : EntourageDialogFragment() {
+class EntourageCategoryFragment : BaseDialogFragment() {
     private lateinit var category: EntourageCategory
     private var mListener: CreateEntourageListener? = null
 
@@ -100,7 +100,7 @@ class EntourageCategoryFragment : EntourageDialogFragment() {
     private fun initializeHelpHtmlView() {
         (activity as? MainActivity)?.let { mainActivity ->
             val goalLink = mainActivity.getLink(Constants.GOAL_LINK_ID)
-            entourage_category_help_link?.setHtmlString(getString(R.string.entourage_create_help_text, goalLink), EntourageLinkMovementMethod)
+            entourage_category_help_link?.setHtmlString(getString(R.string.entourage_create_help_text, goalLink), EntLinkMovementMethod)
         }
     }
 

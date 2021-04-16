@@ -56,11 +56,13 @@
         <Button
             android:id="@+id/invite_source_contacts_button"
             style="@style/WhiteButton.RoundedCorners"
+            android:paddingStart="24dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:drawableStart="@drawable/ic_share_android"
-            android:text="@string/invite_source_share" />
+            app:drawableStartCompat="@drawable/ic_detail_action_share"
+            android:text="@string/invite_source_share"
+            android:textAlignment="center" />
 
         <Button
             android:id="@+id/invite_source_number_button"
@@ -69,7 +71,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:drawableStart="@drawable/ic_adress_book_square"
-            android:drawableLeft="@drawable/ic_adress_book_square"
             android:text="@string/invite_source_contacts" />
 
         <Button

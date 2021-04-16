@@ -10,9 +10,7 @@ import social.entourage.android.entourage.my.MyEntouragesFragment
 import social.entourage.android.guide.GuideHubFragment
 import social.entourage.android.mainprofile.MainProfileFragment
 import social.entourage.android.newsfeed.BaseNewsfeedFragment
-import social.entourage.android.newsfeed.NewsFeedFragment
-import social.entourage.android.newsfeed.NewsFeedWithTourFragment
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.newsfeed.v2.NewHomeFeedFragment
 
 /**
  * Created by Mihai Ionescu on 23/04/2018.
@@ -22,7 +20,7 @@ class BottomNavigationDataSource {
     var isEngaged = false
 
     val defaultSelectedTab: Int
-        @IdRes get() = if(isEngaged) R.id.bottom_bar_newsfeed else R.id.bottom_bar_guide
+        @IdRes get() = R.id.bottom_bar_newsfeed
 
     val feedTabIndex
         @IdRes get() = R.id.bottom_bar_newsfeed
@@ -45,12 +43,11 @@ class BottomNavigationDataSource {
 
     fun getFragmentAtIndex(menuId: Int): Fragment? {
         return when (menuId) {
-            R.id.bottom_bar_newsfeed -> if(EntourageApplication.get().me()?.isPro == true) NewsFeedWithTourFragment() else NewsFeedFragment()
-            R.id.bottom_bar_guide -> GuideHubFragment()//GuideMapFragment()
-            R.id.bottom_bar_plus ->  {
-                EntourageEvents.logEvent(EntourageEvents.ACTION_PLUS_AGIR)
-                PlusFragment()
+            R.id.bottom_bar_newsfeed -> {
+                NewHomeFeedFragment()
             }
+            R.id.bottom_bar_guide -> GuideHubFragment()//GuideMapFragment()
+            R.id.bottom_bar_plus ->  PlusFragment()
             R.id.bottom_bar_mymessages -> MyEntouragesFragment()
             R.id.bottom_bar_profile -> MainProfileFragment()
             else -> null
@@ -63,5 +60,11 @@ class BottomNavigationDataSource {
         add(R.id.bottom_bar_plus, PlusFragment.TAG)
         add(R.id.bottom_bar_mymessages, MyEntouragesFragment.TAG)
         add(R.id.bottom_bar_profile, MainProfileFragment.TAG)
+
+        //Use to reset navigation stack home tab
+        val editor = EntourageApplication.get().sharedPreferences.edit()
+        editor.putBoolean("isNavNews",false)
+        editor.putString("navType",null)
+        editor.apply()
     }
 }

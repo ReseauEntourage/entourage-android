@@ -40,9 +40,4 @@
     <string name="map_filter_all">Tous</string>
     <string name="map_filter_partnersOnly">Associations et\ninstitutions seulement</string>
 
-    <!-- Under Construction -->
-    <string name="map_underconstruction_explanation_1">Ici, vous trouverez prochainement les activités de la communauté autour de vous</string>
-    <string name="map_underconstruction_explanation_2">Vous pourrez demander à rejoindre des activités, en créer, et découvrir la communauté autour de vous</string>
-
-
 </resources>

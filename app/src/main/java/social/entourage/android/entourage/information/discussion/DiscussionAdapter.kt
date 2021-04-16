@@ -1,14 +1,14 @@
 package social.entourage.android.entourage.information.discussion
 
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.base.EntourageBaseAdapter
+import social.entourage.android.base.BaseAdapter
 import social.entourage.android.base.ViewHolderFactory.ViewHolderType
 import java.util.*
 
 /**
  * Created by mihaiionescu on 02/03/16.
  */
-class DiscussionAdapter : EntourageBaseAdapter() {
+class DiscussionAdapter : BaseAdapter() {
     private val mDaySections = HashMap<Date, Int>()
 
     private fun addDateSeparator(date: Date, notifyView: Boolean) {

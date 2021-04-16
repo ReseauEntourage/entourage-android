@@ -14,7 +14,7 @@ import social.entourage.android.api.model.BaseOrganization
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.User
 import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent
-import social.entourage.android.base.ItemClickSupport
+import social.entourage.android.tools.ItemClickSupport
 import social.entourage.android.tools.EntBus
 import social.entourage.android.user.membership.UserMembershipsAdapter
 import java.util.*

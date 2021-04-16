@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import kotlinx.android.synthetic.main.fragment_onboarding_asso_activities.*
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.onboarding.OnboardingCallback
 import java.io.Serializable
@@ -43,7 +43,7 @@ class OnboardingAssoActivitiesFragment : Fragment() {
 
         setupViews()
 
-        EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING_PRO_MOSAIC)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_ONBOARDING_PRO_MOSAIC)
     }
 
     /********************************

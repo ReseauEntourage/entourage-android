@@ -32,20 +32,21 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageComponent
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.api.request.EntourageRequest
 import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.OnUserJoinRequestUpdateEvent
 import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.entourage.EntourageCloseFragment
 import social.entourage.android.entourage.information.report.EntourageReportFragment
-import social.entourage.android.location.EntourageLocation
+import social.entourage.android.location.EntLocation
 import social.entourage.android.map.OnAddressClickListener
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.Utils
-import social.entourage.android.tools.view.EntourageSnackbar
+import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.UserFragment
 import social.entourage.android.user.partner.PartnerFragment
 import java.util.*
@@ -56,6 +57,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
     // ATTRIBUTES
     // ----------------------------------
     @Inject lateinit var presenter: EntourageInformationPresenter
+    @Inject lateinit var entourageRequest: EntourageRequest
     override fun presenter(): FeedItemInformationPresenter { return presenter}
 
     val entourage:BaseEntourage
@@ -90,7 +92,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
     // ----------------------------------
     override fun onStopTourButton() {
         if (entourage.isOpen()) {
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE)
             //hide the options
             entourage_info_options?.visibility = View.GONE
             //show close fragment
@@ -103,10 +105,10 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
     override fun onJoinButton() {
         serviceConnection.boundService?.let {
             showProgressBar()
-            EntourageEvents.logEvent(EntourageEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN)
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN)
             it.requestToJoinEntourage(entourage)
             entourage_info_options?.visibility = View.GONE
-        } ?: run {entourage_information_coordinator_layout?.let {EntourageSnackbar.make(it,  R.string.tour_join_request_message_error, Snackbar.LENGTH_SHORT).show()}}
+        } ?: run {entourage_information_coordinator_layout?.let {EntSnackbar.make(it,  R.string.tour_join_request_message_error, Snackbar.LENGTH_SHORT).show()}}
     }
 
     override fun showInviteSource(isShareOnly:Boolean) {
@@ -233,7 +235,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         val position = startPoint.location
 
         // move camera
-        val cameraPosition = CameraPosition(LatLng(startPoint.latitude, startPoint.longitude), EntourageLocation.INITIAL_CAMERA_FACTOR_ENTOURAGE_VIEW, 0F, 0F)
+        val cameraPosition = CameraPosition(LatLng(startPoint.latitude, startPoint.longitude), EntLocation.INITIAL_CAMERA_FACTOR_ENTOURAGE_VIEW, 0F, 0F)
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
         if (entourage.showHeatmapAsOverlay()) {
             // add heatmap
@@ -353,9 +355,9 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
                 title = R.string.tour_cell_button_pending_new
             }
             else -> {
-                title = R.string.tour_info_request_join_button2_entourage
+                title = R.string.tour_info_request_join_button_entourage
                 if (entourage.isEvent()) {
-                    title = R.string.tour_info_request_join_button_entourage
+                    title = R.string.tour_info_request_join_button_event
                 }
             }
         }
@@ -410,8 +412,10 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
                 ui_iv_event_action_location.setImageDrawable(ResourcesCompat.getDrawable(resources,R.drawable.ic_detail_event_link,null))
 
                 val eventUrl = if (entourage.eventUrl == null || entourage.eventUrl.equals("null")) "" else entourage.eventUrl
-                ui_tv_event_action_location?.text = "${getString(R.string.detail_action_event_online)}\n${eventUrl}"
-                DeepLinksManager.linkify(ui_tv_event_action_location)
+                ui_tv_event_action_location?.let {
+                    it.text = "${getString(R.string.detail_action_event_online)}\n${eventUrl}"
+                    DeepLinksManager.linkify(it)
+                }
                 entourage_info_map_layout.visibility = View.GONE
             }
             else {
@@ -482,9 +486,11 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             }
             else {
                 ui_layout_event_description?.visibility = View.VISIBLE
-                ui_tv_detail_event_description?.text = entourage.getDescription()
+                ui_tv_detail_event_description?.let {
+                    it.text = entourage.getDescription()
+                    DeepLinksManager.linkify(it)
+                }
             }
-            DeepLinksManager.linkify(ui_tv_detail_event_description)
         }
         else {
             layout_detail_action_description?.visibility = View.VISIBLE
@@ -495,7 +501,10 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             }
             else {
                 ui_layout_action_description?.visibility = View.VISIBLE
-                ui_tv_detail_action_description?.text = entourage.getDescription()
+                ui_tv_detail_action_description?.let {
+                    it.text = entourage.getDescription()
+                    DeepLinksManager.linkify(it)
+                }
             }
 
             val timestamps = ArrayList<String?>()
@@ -504,8 +513,6 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
                 timestamps.add(getString(R.string.entourage_info_update_time, formattedDaysIntervalFromToday(entourage.updatedTime)))
             }
             ui_tv_detail_action_last_update?.text = TextUtils.join(" - ", timestamps)
-
-            DeepLinksManager.linkify(ui_tv_detail_action_description)
         }
     }
 
@@ -540,7 +547,6 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
     }
 
     private fun sendDeleteReport(entourageUUID: String) {
-        val entourageRequest = EntourageApplication.get(requireContext()).entourageComponent.entourageRequest
         val call = entourageRequest.removeUserReportPrompt(entourageUUID)
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {

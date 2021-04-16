@@ -13,7 +13,7 @@ import com.squareup.picasso.Target
 import kotlinx.android.synthetic.main.layout_feed_action_card.view.*
 import social.entourage.android.Constants
 import social.entourage.android.EntourageApplication
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.TimestampedObject
@@ -242,11 +242,11 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
     private fun onClickCardButton(){
         when (feedItem.joinStatus) {
             FeedItem.JOIN_STATUS_PENDING -> {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_PENDING_OVERLAY)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_PENDING_OVERLAY)
                 EntBus.post(OnFeedItemCloseRequestEvent(feedItem))
             }
             FeedItem.JOIN_STATUS_ACCEPTED -> {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_OPEN_ACTIVE_OVERLAY)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_ACTIVE_OVERLAY)
                 EntBus.post(OnFeedItemCloseRequestEvent(feedItem))
             }
             FeedItem.JOIN_STATUS_REJECTED -> {

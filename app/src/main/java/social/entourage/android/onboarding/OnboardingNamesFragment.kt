@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import kotlinx.android.synthetic.main.fragment_onboarding_names.*
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.tools.hideKeyboard
 
@@ -48,7 +48,7 @@ class OnboardingNamesFragment : Fragment() {
         callback?.updateButtonNext(checkAndValidateInput())
 
         setupViews()
-        EntourageEvents.logEvent(EntourageEvents.EVENT_VIEW_ONBOARDING_NAMES)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_ONBOARDING_NAMES)
     }
 
     override fun onAttach(context: Context) {

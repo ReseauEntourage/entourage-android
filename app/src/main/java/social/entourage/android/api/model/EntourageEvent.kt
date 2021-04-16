@@ -84,4 +84,22 @@ class EntourageEvent : BaseEntourage, Serializable {
     override fun getInviteSourceDescription():Int {
         return R.string.invite_source_description_outing
     }
+
+    fun getEventDateFormated(context: Context): String {
+        metadata?.let{
+            if(it.startDate != null && it.endDate != null) {
+                //check if start and end dates are on the same day
+                val startCalendar = Calendar.getInstance()
+                startCalendar.time = it.startDate ?: return ""
+                val endCalendar = Calendar.getInstance()
+                endCalendar.time = it.endDate ?: return ""
+                return if (startCalendar[Calendar.DAY_OF_YEAR] == endCalendar[Calendar.DAY_OF_YEAR]) {
+                    String.format("%1\$s", it.getStartDateAsString(context))
+                } else {
+                    String.format("%1\$s", it.getStartEndDatesAsString(context))
+                }
+            }
+        }
+        return ""
+    }
 }

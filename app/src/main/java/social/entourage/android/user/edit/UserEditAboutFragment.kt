@@ -81,7 +81,7 @@ class UserEditAboutFragment  : DialogFragment() {
                 user = userFragment.editedUser
             }
         } else {
-            user = userEditFragment?.editedUser
+            user = userEditFragment?.presenter?.editedUser
         }
         user_edit_about_close_button?.setOnClickListener { onCloseClicked()}
         user_edit_about_save_button?.setOnClickListener {onSaveClicked()}

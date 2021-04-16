@@ -17,22 +17,22 @@ import social.entourage.android.authentication.AuthenticationController
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 import kotlin.collections.set
 
 /**
  * Created by Jr on 11/05/2020.
  */
-class OnboardingAPI(val application: EntourageApplication) {
+class OnboardingAPI {
 
-    private val authenticationController:AuthenticationController
-        get() = application.entourageComponent.authenticationController
+    private val authenticationController:AuthenticationController = EntourageApplication.get().components.authenticationController
 
     private val onboardingService : UserRequest
-        get() =  application.entourageComponent.userRequest //service ?: retrofit!!.create(UserRequest::class.java)
+        get() =  EntourageApplication.get().components.userRequest //service ?: retrofit!!.create(UserRequest::class.java)
 
     private val loginService : LoginRequest
-        get() = application.entourageComponent.loginRequest //retrofit!!.create(LoginRequest::class.java)
+        get() = EntourageApplication.get().components.loginRequest //retrofit!!.create(LoginRequest::class.java)
 
     /**********************
      * Create user
@@ -310,7 +310,6 @@ class OnboardingAPI(val application: EntourageApplication) {
     }
 
     fun uploadPhotoFile(presignedUrl: String,file:File,listener: (isOk:Boolean) -> Unit) {
-        val client = application.entourageComponent.okHttpClient
         val mediaType = MediaType.parse("image/jpeg")
         val requestBody = RequestBody.create(mediaType, file)
         val request = okhttp3.Request.Builder()
@@ -318,7 +317,7 @@ class OnboardingAPI(val application: EntourageApplication) {
                 .put(requestBody)
                 .build()
 
-        client.newCall(request).enqueue(object : okhttp3.Callback {
+        EntourageApplication.get().components.okHttpClient.newCall(request).enqueue(object : okhttp3.Callback {
             override fun onFailure(call: okhttp3.Call, e: IOException) {
                 listener(false)
             }
@@ -392,7 +391,7 @@ class OnboardingAPI(val application: EntourageApplication) {
     }
 
     fun getAssociationsList(listener:(arrayAssociations:ArrayList<Partner>?) -> Unit) {
-        val request = application.entourageComponent.partnerRequest
+        val request = EntourageApplication.get().components.partnerRequest
         request.allPartners.enqueue(object : Callback<PartnersResponse> {
             override fun onResponse(call: Call<PartnersResponse>, response: Response<PartnersResponse>) {
                 if (response.isSuccessful) {
@@ -413,8 +412,8 @@ class OnboardingAPI(val application: EntourageApplication) {
         private var instance: OnboardingAPI? = null
 
         @Synchronized
-        fun getInstance(application: EntourageApplication): OnboardingAPI {
-            return instance ?: OnboardingAPI(application).also { instance = it}
+        fun getInstance(): OnboardingAPI {
+            return instance ?: OnboardingAPI().also { instance = it}
         }
     }
 }

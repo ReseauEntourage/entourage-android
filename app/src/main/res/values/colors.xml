@@ -6,7 +6,7 @@
     <color name="primary_dark">#717171</color>
     <color name="primary_light">#efeff4</color>
     <color name="accent">#F55F24</color>
-    <color name="accent_dark">#F55F24</color>
+    <color name="accent_dark">@color/accent</color>
     <color name="toolbar">@color/primary</color>
     <color name="warm_grey">#999999</color>
     <color name="greyish_brown">#4a4a4a</color>
@@ -22,6 +22,7 @@
     <!-- Backgrounds -->
     <color name="background">@color/primary</color>
     <color name="background_light">@color/primary_light</color>
+    <color name="background_home">#e5e5e5</color>
     <color name="background_transparent">#66000000</color>
     <color name="background_accent_dark_translucent">@color/pale_grey</color>
 
@@ -58,7 +59,6 @@
 
     <!-- Main profile -->
     <color name="mainprofile_background">@color/background_light</color>
-    <color name="mainprofile_item_background">@color/white</color>
     <color name="mainprofile_divider">@color/greyish</color>
     
     <!-- Notifications -->
@@ -108,7 +108,7 @@
     <color name="white_88">#ccffffff</color>
     <color name="dark_grey">#333333</color>
 
-    <color name="design_snackbar_background_color" tools:override="true">@color/accent_dark</color>
+    <color name="design_snackbar_background_color" tools:override="true">@color/accent</color>
 
     <!-- Pre Onboard -->
     <color name="pre_onboard_orange">@color/accent</color>

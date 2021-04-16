@@ -9,7 +9,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import social.entourage.android.tools.log.EntourageEvents
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
@@ -266,7 +266,7 @@ class NewsfeedPresenter @Inject constructor(
         override fun onGroundOverlayClick(groundOverlay: GroundOverlay) {
             val markerPosition = groundOverlay.position
             if (entourageMarkerHashMap[markerPosition] != null) {
-                EntourageEvents.logEvent(EntourageEvents.EVENT_FEED_HEATZONECLICK)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_HEATZONECLICK)
                 fragment?.handleHeatzoneClick(markerPosition)
             }
         }

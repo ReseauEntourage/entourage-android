@@ -12,10 +12,10 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MessageSharingAPI
 import social.entourage.android.api.model.SharingEntourage
-import social.entourage.android.base.EntourageDialogFragment
+import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.entourage.ShareEntourageAdapter
 
-class ShareMessageFragment : EntourageDialogFragment() {
+class ShareMessageFragment : BaseDialogFragment() {
     private var uuid = ""
     private var isPoi = false
 
