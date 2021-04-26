@@ -318,7 +318,21 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 moveToTunnelAsso()
             }
             else {
+                updateActivities()
                 goNextStep()
+            }
+        }
+    }
+
+    fun updateActivities() {
+        val activitiesSelection = SdfNeighbourActivities()
+        val isSdf = if(userTypeSelected == UserTypeSelection.ALONE) true else false
+
+        activitiesSelection.setupForSdf(isSdf)
+        OnboardingAPI.getInstance().updateUserInterests(activitiesSelection.getArrayForWs()) { isOK, userResponse ->
+            if (isOK && userResponse != null) {
+                val authenticationController = EntourageApplication.get().components.authenticationController
+                authenticationController.saveUser(userResponse.user)
             }
         }
     }
@@ -754,9 +768,11 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     override fun updateSdfNeighbourActivities(sdfNeighbourActivities: SdfNeighbourActivities,isSdf:Boolean) {
         if (isSdf) {
             this.temporarySdfActivities = sdfNeighbourActivities
+            this.temporarySdfActivities?.setupForSdf(true)
         }
         else {
             this.temporaryNeighbourActivities = sdfNeighbourActivities
+            this.temporaryNeighbourActivities?.setupForSdf(false)
         }
     }
 }
