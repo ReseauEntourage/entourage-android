@@ -51,8 +51,10 @@ fun View.hideKeyboardFromLayout() {
     inputMethodManager?.hideSoftInputFromWindow(this.windowToken, 0)
 }
 
-fun String.isValidEmail(): Boolean {
-    return android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
+fun String?.isValidEmail(): Boolean {
+    return this?.let {
+        android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches()
+    } ?: false
 }
 
 fun EditText.showKeyboard() {

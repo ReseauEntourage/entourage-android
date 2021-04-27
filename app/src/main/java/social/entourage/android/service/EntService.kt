@@ -2,7 +2,6 @@ package social.entourage.android.service
 
 
 import android.app.Notification
-import androidx.core.app.NotificationManagerCompat
 import android.app.PendingIntent
 import android.app.Service
 import android.content.BroadcastReceiver
@@ -16,6 +15,7 @@ import android.os.SystemClock
 import android.widget.Chronometer
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.google.android.gms.maps.model.LatLng
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
@@ -350,8 +350,10 @@ class EntService : Service() {
 
     fun registerServiceListener(listener: LocationUpdateListener) {
         locationUpdateListeners.add(listener)
-        if (tourServiceManager?.isRunning == true && listener is TourServiceListener) {
-            currentTour?.let { listener.onTourResumed(tourServiceManager!!.pointsToDraw, it.tourType, it.getStartTime()) }
+        tourServiceManager?.let { tourServiceManager ->
+            if (tourServiceManager.isRunning && listener is TourServiceListener) {
+                currentTour?.let { listener.onTourResumed(tourServiceManager.pointsToDraw, it.tourType, it.getStartTime()) }
+            }
         }
     }
 

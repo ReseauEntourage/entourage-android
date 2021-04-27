@@ -77,8 +77,10 @@ class EntourageCategoriesAdapter(
     }
 
     override fun getChildView(groupPosition: Int, childPosition: Int, isLastChild: Boolean, convertView: View?, parent: ViewGroup): View {
-        var childConvertView = convertView
-        if (childConvertView == null) {
+        lateinit var childConvertView: View
+        convertView?.let {
+            childConvertView = it
+        } ?: run {
             // create the child view
             val layoutInflater = context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -87,7 +89,7 @@ class EntourageCategoriesAdapter(
         }
         // populate the child view
         getChild(groupPosition, childPosition)?.let { category:EntourageCategory->
-            val viewHolder = childConvertView?.tag as EntourageCategoryViewHolder? ?: return@let
+            val viewHolder = childConvertView.tag as EntourageCategoryViewHolder? ?: return@let
             viewHolder.mIcon.setImageResource(category.iconRes)
             viewHolder.mIcon.clearColorFilter()
             viewHolder.mIcon.setColorFilter(ContextCompat.getColor(context, category.typeColorRes), PorterDuff.Mode.SRC_IN)
@@ -105,7 +107,7 @@ class EntourageCategoriesAdapter(
             // set the tag to the item position
             viewHolder.mCheckbox.tag = category
         }
-        return childConvertView!!
+        return childConvertView
     }
 
     override fun getGroupCount(): Int {
@@ -121,8 +123,10 @@ class EntourageCategoriesAdapter(
     }
 
     override fun getGroupView(groupPosition: Int, isExpanded: Boolean, convertView: View?, parent: ViewGroup): View {
-        var groupView = convertView
-        if (groupView == null) {
+        lateinit var groupView: View
+        convertView?.let {
+            groupView = it
+        } ?: run {
             // create the group view
             val layoutInflater = context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -135,11 +139,11 @@ class EntourageCategoriesAdapter(
         // populate the group
         if (groupPosition != 0) {
             selectedCategory.groupType?.let {
-                groupView?.findViewById<TextView>(R.id.entourage_category_group_label)?.setText(
+                groupView.findViewById<TextView>(R.id.entourage_category_group_label)?.setText(
                         EntourageCategoryManager.getGroupTypeDescription(it))
             }
         }
-        return groupView!!
+        return groupView
     }
 
     override fun getGroupTypeCount(): Int {

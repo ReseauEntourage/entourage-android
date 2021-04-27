@@ -13,16 +13,16 @@ import com.squareup.picasso.Target
 import kotlinx.android.synthetic.main.layout_feed_action_card.view.*
 import social.entourage.android.Constants
 import social.entourage.android.EntourageApplication
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BaseCardViewHolder
-import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.CropCircleTransformation
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.Utils.formatLastUpdateDate
+import social.entourage.android.tools.log.AnalyticsEvents
 
 /**
  * Created by Mihai Ionescu on 24/03/2017.
@@ -124,10 +124,12 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
                     ?: ""
             var distStr = if (distanceAsString.equals("", ignoreCase = true)) "" else String.format(res.getString(R.string.tour_cell_location), distanceAsString)
 
-            if (distStr.isNotEmpty() && !feedItem.postal_code.isNullOrEmpty()) {
-                distStr = "%s - %s".format(distStr, feedItem.postal_code)
-            } else if (!feedItem.postal_code.isNullOrEmpty()) {
-                distStr = feedItem.postal_code!!
+            feedItem.postal_code?.let { postalCode ->
+                if (distStr.isNotEmpty() && postalCode.isNotEmpty()) {
+                    distStr = "%s - %s".format(distStr, postalCode)
+                } else if (postalCode.isNotEmpty()) {
+                    distStr = postalCode
+                }
             }
 
             itemView.tour_card_location?.text = distStr

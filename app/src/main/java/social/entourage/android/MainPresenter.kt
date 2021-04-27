@@ -55,10 +55,12 @@ import javax.inject.Inject
                 fragment.show(activity.supportFragmentManager, UserEditFragment.TAG)
             }
             "user" -> {
-                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_SHOWPROFIL)
-                val userFragment = activity.supportFragmentManager.findFragmentByTag(UserFragment.TAG) as UserFragment?
-                        ?: UserFragment.newInstance(authenticationController.me!!.id)
-                userFragment.show(activity.supportFragmentManager, UserFragment.TAG)
+                authenticationController.me?.let { user ->
+                    AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_SHOWPROFIL)
+                    val userFragment = activity.supportFragmentManager.findFragmentByTag(UserFragment.TAG) as UserFragment?
+                            ?: UserFragment.newInstance(user.id)
+                    userFragment.show(activity.supportFragmentManager, UserFragment.TAG)
+                }
             }
             "appVersion" -> {
                 val clipboardManager = get().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager

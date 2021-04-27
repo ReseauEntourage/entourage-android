@@ -14,8 +14,8 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events
-import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.CropCircleTransformation
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 
@@ -165,8 +165,8 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
             ui_layout_goodwaves?.visibility = View.VISIBLE
         }
 
-        ui_tv_nb_actions?.text = if(user.stats?.actionsCount != null) "${user.stats!!.actionsCount}" else "0"
-        ui_tv_nb_events?.text = if(user.stats?.eventsCount != null) "${user.stats!!.eventsCount}" else "0"
+        ui_tv_nb_actions?.text = user.stats?.actionsCount?.let { "$it" } ?: "0"
+        ui_tv_nb_events?.text = user.stats?.eventsCount?.let { "$it" } ?: "0"
 
         val isExpertMode = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_HOME_IS_EXPERTMODE,false)
         ui_switch_change_mode?.isChecked = !isExpertMode

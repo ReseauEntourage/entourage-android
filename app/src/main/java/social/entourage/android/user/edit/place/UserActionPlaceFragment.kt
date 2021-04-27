@@ -99,11 +99,12 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
 
     open fun updateCallback() {
         userAddress = null
-        if (temporaryLocation != null) {
-            userAddress = User.Address(temporaryLocation!!.latitude, temporaryLocation!!.longitude, temporaryAddressName)
-        }
-        else if (temporaryAddressPlace != null) {
-            userAddress = temporaryAddressPlace!!
+        temporaryLocation?.let { tempLocation ->
+            userAddress = User.Address(tempLocation.latitude, tempLocation.longitude, temporaryAddressName)
+        } ?: run {
+            temporaryAddressPlace?.let { tempAddressPlace ->
+                userAddress = tempAddressPlace
+            }
         }
     }
 

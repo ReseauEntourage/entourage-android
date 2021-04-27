@@ -65,21 +65,22 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
     fun sendAddress() {
         alertDialog.show(R.string.onboard_waiting_dialog)
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_ACTION_ZONE_SUBMIT)
-        OnboardingAPI.getInstance().updateAddress(temporaryPlaceAddress!!,false) { isOK, userResponse ->
-            if (isOK) {
-                val authenticationController = EntourageApplication.get().components.authenticationController
-                val me = authenticationController.me
-                if (me != null && userResponse != null) {
-                    userResponse.user.phone = me.phone
-                    authenticationController.saveUser(userResponse.user)
+        temporaryPlaceAddress?.let {
+            OnboardingAPI.getInstance().updateAddress(it, false) { isOK, userResponse ->
+                if (isOK) {
+                    val authenticationController = EntourageApplication.get().components.authenticationController
+                    val me = authenticationController.me
+                    if (me != null && userResponse != null) {
+                        userResponse.user.phone = me.phone
+                        authenticationController.saveUser(userResponse.user)
+                    }
+                    Toast.makeText(this, R.string.user_action_zone_send_ok, Toast.LENGTH_SHORT).show()
+                    alertDialog.dismiss()
+                    goNextStep()
+                } else {
+                    alertDialog.dismiss()
+                    Toast.makeText(this, R.string.user_action_zone_send_failed, Toast.LENGTH_SHORT).show()
                 }
-                Toast.makeText(this, R.string.user_action_zone_send_ok, Toast.LENGTH_SHORT).show()
-                alertDialog.dismiss()
-                goNextStep()
-            }
-            else {
-                alertDialog.dismiss()
-                Toast.makeText(this, R.string.user_action_zone_send_failed, Toast.LENGTH_SHORT).show()
             }
         }
     }

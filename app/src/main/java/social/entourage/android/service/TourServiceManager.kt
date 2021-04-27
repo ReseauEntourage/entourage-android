@@ -240,17 +240,19 @@ class TourServiceManager(
 
     fun removeUserFromTour(tour: Tour, userId: Int) {
         if (isNetworkConnected) {
-            tourRequest.removeUserFromTour(tour.uuid!!, userId).enqueue(object : Callback<EntourageUserResponse> {
-                override fun onResponse(call: Call<EntourageUserResponse>, response: Response<EntourageUserResponse>) {
-                    if (response.isSuccessful) {
-                        response.body()?.user?.let { entService.notifyListenersUserStatusChanged(it, tour)}
+            tour.uuid?.let { uuid ->
+                tourRequest.removeUserFromTour(uuid, userId).enqueue(object : Callback<EntourageUserResponse> {
+                    override fun onResponse(call: Call<EntourageUserResponse>, response: Response<EntourageUserResponse>) {
+                        if (response.isSuccessful) {
+                            response.body()?.user?.let { entService.notifyListenersUserStatusChanged(it, tour) }
+                        }
                     }
-                }
 
-                override fun onFailure(call: Call<EntourageUserResponse>, t: Throwable) {
-                    Timber.e(t)
-                }
-            })
+                    override fun onFailure(call: Call<EntourageUserResponse>, t: Throwable) {
+                        Timber.e(t)
+                    }
+                })
+            }
         }
     }
 
@@ -298,7 +300,9 @@ class TourServiceManager(
                                 pointsToSend.clear()
                                 pointsToDraw.clear()
                                 cancelFinishTimer()
-                                entService.notifyListenersFeedItemClosed(true, response.body()!!.tour)
+                                response.body()?.let { body ->
+                                    entService.notifyListenersFeedItemClosed(true, body.tour)
+                                }
                                 locationProvider.setUserType(UserType.PUBLIC)
                                 authenticationController.saveTour(null)
                             } else {

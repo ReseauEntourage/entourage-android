@@ -31,12 +31,12 @@ import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent
 import social.entourage.android.base.BaseDialogFragment
-import social.entourage.android.tools.EntLinkMovementMethod
 import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryFragment
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.location.LocationFragment
 import social.entourage.android.tools.EntBus
+import social.entourage.android.tools.EntLinkMovementMethod
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 import java.io.IOException
@@ -548,7 +548,7 @@ open class BaseCreateEntourageFragment
                 }
             }
             if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) {
-                if (entourageMetadata == null || entourageMetadata!!.googlePlaceId.isNullOrBlank()) {
+                if (entourageMetadata == null || entourageMetadata?.googlePlaceId.isNullOrBlank()) {
                     Toast.makeText(activity, R.string.entourage_create_error_location_empty, Toast.LENGTH_SHORT).show()
                     return false
                 }
