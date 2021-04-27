@@ -11,7 +11,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import kotlinx.android.synthetic.main.fragment_user_edit_profile_actions.*
 import social.entourage.android.EntourageApplication
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.base.BaseDialogFragment
@@ -20,9 +19,9 @@ import social.entourage.android.onboarding.asso.AssoActivities
 import social.entourage.android.onboarding.sdf_neighbour.SdfNeighbourActivities
 import social.entourage.android.tools.disable
 import social.entourage.android.tools.enable
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CustomProgressDialog
 import timber.log.Timber
-import java.lang.IllegalStateException
 
 private const val ARG_PARAM1 = "param1"
 
@@ -197,78 +196,77 @@ class UserEditProfileActionsFragment : BaseDialogFragment() {
         if (activitiesSelection == null) { activitiesSelection = SdfNeighbourActivities() }
 
         activitiesSelection?.isSdf = this.isSdf
-        val currentActivities = this.activitiesSelection!!
 
-        when(position) {
-            1 -> {
-                currentActivities.choice1Selected = !currentActivities.choice1Selected
-                changeColors(ui_onboard_sdf_neigbour_activities_layout_choice1,ui_onboard_sdf_neigbour_activities_tv_1,currentActivities.choice1Selected)
+        activitiesSelection?.let { currentActivities ->
+            when(position) {
+                1 -> {
+                    currentActivities.choice1Selected = !currentActivities.choice1Selected
+                    changeColors(ui_onboard_sdf_neigbour_activities_layout_choice1,ui_onboard_sdf_neigbour_activities_tv_1,currentActivities.choice1Selected)
+                }
+                2 -> {
+                    currentActivities.choice2Selected = !currentActivities.choice2Selected
+                    changeColors(ui_onboard_sdf_neigbour_activities_layout_choice2,ui_onboard_sdf_neigbour_activities_tv_2,currentActivities.choice2Selected)
+                }
+                3 -> {
+                    currentActivities.choice3Selected = !currentActivities.choice3Selected
+                    changeColors(ui_onboard_sdf_neigbour_activities_layout_choice3,ui_onboard_sdf_neigbour_activities_tv_3,currentActivities.choice3Selected)
+                }
+                4 -> {
+                    currentActivities.choice4Selected = !currentActivities.choice4Selected
+                    changeColors(ui_onboard_sdf_neigbour_activities_layout_choice4,ui_onboard_sdf_neigbour_activities_tv_4,currentActivities.choice4Selected)
+                }
+                5 -> {
+                    currentActivities.choice5Selected = !currentActivities.choice5Selected
+                    changeColors(ui_onboard_sdf_neigbour_activities_layout_choice5,ui_onboard_sdf_neigbour_activities_tv_5,currentActivities.choice5Selected)
+                }
+                6 -> {
+                    currentActivities.choice6Selected = !currentActivities.choice6Selected
+                    changeColors(ui_onboard_sdf_neigbour_activities_layout_choice6,ui_onboard_sdf_neigbour_activities_tv_6,currentActivities.choice6Selected)
+                }
             }
-            2 -> {
-                currentActivities.choice2Selected = !currentActivities.choice2Selected
-                changeColors(ui_onboard_sdf_neigbour_activities_layout_choice2,ui_onboard_sdf_neigbour_activities_tv_2,currentActivities.choice2Selected)
-            }
-            3 -> {
-                currentActivities.choice3Selected = !currentActivities.choice3Selected
-                changeColors(ui_onboard_sdf_neigbour_activities_layout_choice3,ui_onboard_sdf_neigbour_activities_tv_3,currentActivities.choice3Selected)
-            }
-            4 -> {
-                currentActivities.choice4Selected = !currentActivities.choice4Selected
-                changeColors(ui_onboard_sdf_neigbour_activities_layout_choice4,ui_onboard_sdf_neigbour_activities_tv_4,currentActivities.choice4Selected)
-            }
-            5 -> {
-                currentActivities.choice5Selected = !currentActivities.choice5Selected
-                changeColors(ui_onboard_sdf_neigbour_activities_layout_choice5,ui_onboard_sdf_neigbour_activities_tv_5,currentActivities.choice5Selected)
-            }
-            6 -> {
-                currentActivities.choice6Selected = !currentActivities.choice6Selected
-                changeColors(ui_onboard_sdf_neigbour_activities_layout_choice6,ui_onboard_sdf_neigbour_activities_tv_6,currentActivities.choice6Selected)
-            }
-        }
 
-        this.activitiesSelection = currentActivities
+            this.activitiesSelection = currentActivities
 
-
-        if (this.activitiesSelection != null && this.activitiesSelection!!.hasOneSelectionMin()) {
-            updateButtonNext(true)
-        }
-        else {
-            updateButtonNext(false)
+            if (currentActivities.hasOneSelectionMin()) {
+                updateButtonNext(true)
+            }
+            else {
+                updateButtonNext(false)
+            }
         }
     }
 
     private fun changeAssoSelectionViewPosition(position:Int) {
         if (activitiesAssoSelection == null) { activitiesAssoSelection = AssoActivities() }
 
-        val currentActivities = this.activitiesAssoSelection!!
-
-        when(position) {
-            1 -> {
-                currentActivities.choice1Selected = !currentActivities.choice1Selected
-                changeColors(ui_onboard_sdf_neigbour_activities_layout_choice1,ui_onboard_sdf_neigbour_activities_tv_1,currentActivities.choice1Selected)
+        activitiesAssoSelection?.let { currentActivities ->
+            when(position) {
+                1 -> {
+                    currentActivities.choice1Selected = !currentActivities.choice1Selected
+                    changeColors(ui_onboard_sdf_neigbour_activities_layout_choice1,ui_onboard_sdf_neigbour_activities_tv_1,currentActivities.choice1Selected)
+                }
+                2 -> {
+                    currentActivities.choice2Selected = !currentActivities.choice2Selected
+                    changeColors(ui_onboard_sdf_neigbour_activities_layout_choice2,ui_onboard_sdf_neigbour_activities_tv_2,currentActivities.choice2Selected)
+                }
+                3 -> {
+                    currentActivities.choice3Selected = !currentActivities.choice3Selected
+                    changeColors(ui_onboard_sdf_neigbour_activities_layout_choice3,ui_onboard_sdf_neigbour_activities_tv_3,currentActivities.choice3Selected)
+                }
+                4 -> {
+                    currentActivities.choice4Selected = !currentActivities.choice4Selected
+                    changeColors(ui_onboard_sdf_neigbour_activities_layout_choice4,ui_onboard_sdf_neigbour_activities_tv_4,currentActivities.choice4Selected)
+                }
             }
-            2 -> {
-                currentActivities.choice2Selected = !currentActivities.choice2Selected
-                changeColors(ui_onboard_sdf_neigbour_activities_layout_choice2,ui_onboard_sdf_neigbour_activities_tv_2,currentActivities.choice2Selected)
-            }
-            3 -> {
-                currentActivities.choice3Selected = !currentActivities.choice3Selected
-                changeColors(ui_onboard_sdf_neigbour_activities_layout_choice3,ui_onboard_sdf_neigbour_activities_tv_3,currentActivities.choice3Selected)
-            }
-            4 -> {
-                currentActivities.choice4Selected = !currentActivities.choice4Selected
-                changeColors(ui_onboard_sdf_neigbour_activities_layout_choice4,ui_onboard_sdf_neigbour_activities_tv_4,currentActivities.choice4Selected)
-            }
-        }
 
-        this.activitiesAssoSelection = currentActivities
+            this.activitiesAssoSelection = currentActivities
 
-
-        if (this.activitiesAssoSelection != null && this.activitiesAssoSelection!!.hasOneSelectionMin()) {
-            updateButtonNext(true)
-        }
-        else {
-            updateButtonNext(false)
+            if (currentActivities.hasOneSelectionMin()) {
+                updateButtonNext(true)
+            }
+            else {
+                updateButtonNext(false)
+            }
         }
     }
 
@@ -321,30 +319,34 @@ class UserEditProfileActionsFragment : BaseDialogFragment() {
     fun updateActivities() {
         if (isAsso) {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_PRO_MOSAIC)
-            OnboardingAPI.getInstance().updateUserInterests(activitiesAssoSelection!!.getArrayForWs()) { isOK, userResponse ->
-                if (isOK && userResponse != null) {
-                    val authenticationController = EntourageApplication.get().components.authenticationController
-                    authenticationController.saveUser(userResponse.user)
-                }
+            activitiesAssoSelection?.let {
+                OnboardingAPI.getInstance().updateUserInterests(it.getArrayForWs()) { isOK, userResponse ->
+                    if (isOK && userResponse != null) {
+                        val authenticationController = EntourageApplication.get().components.authenticationController
+                        authenticationController.saveUser(userResponse.user)
+                    }
 
-                alertDialog.dismiss()
-                dismiss()
-                callback?.validateActions()
+                    alertDialog.dismiss()
+                    dismiss()
+                    callback?.validateActions()
+                }
             }
         }
         else {
             if (isSdf) { AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_INNEED_MOSAIC) }
             else { AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_NEIGHBOR_MOSAIC) }
 
-            OnboardingAPI.getInstance().updateUserInterests(activitiesSelection!!.getArrayForWs()) { isOK, userResponse ->
-                if (isOK && userResponse != null) {
-                    val authenticationController = EntourageApplication.get().components.authenticationController
-                    authenticationController.saveUser(userResponse.user)
-                }
+            activitiesSelection?.let {
+                OnboardingAPI.getInstance().updateUserInterests(it.getArrayForWs()) { isOK, userResponse ->
+                    if (isOK && userResponse != null) {
+                        val authenticationController = EntourageApplication.get().components.authenticationController
+                        authenticationController.saveUser(userResponse.user)
+                    }
 
-                alertDialog.dismiss()
-                dismiss()
-                callback?.validateActions()
+                    alertDialog.dismiss()
+                    dismiss()
+                    callback?.validateActions()
+                }
             }
         }
     }

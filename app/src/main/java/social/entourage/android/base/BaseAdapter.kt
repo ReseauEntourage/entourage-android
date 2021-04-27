@@ -72,11 +72,13 @@ open class BaseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         //search for the insert point
         for (i in items.indices) {
             val timestampedObject = items[i]
-            if (timestampedObject.timestamp != null && cardInfo.timestamp != null) {
-                if (timestampedObject.timestamp!!.after(cardInfo.timestamp)) {
-                    //we found the insert point
-                    insertCardInfo(cardInfo, i)
-                    return
+            timestampedObject.timestamp?.let { objectTimestamp ->
+                cardInfo.timestamp?.let { cardInfoTimestamp ->
+                    if (objectTimestamp.after(cardInfoTimestamp)) {
+                        //we found the insert point
+                        insertCardInfo(cardInfo, i)
+                        return
+                    }
                 }
             }
         }
@@ -88,11 +90,13 @@ open class BaseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         //search for the insert point
         for (i in items.indices) {
             val timestampedObject = items[i]
-            if (timestampedObject.timestamp != null && cardInfo.timestamp != null) {
-                if (timestampedObject.timestamp!!.before(cardInfo.timestamp)) {
-                    //we found the insert point
-                    insertCardInfo(cardInfo, i)
-                    return
+            timestampedObject.timestamp?.let { objectTimestamp ->
+                cardInfo.timestamp?.let { cardInfoTimestamp ->
+                    if (objectTimestamp.before(cardInfoTimestamp)) {
+                        //we found the insert point
+                        insertCardInfo(cardInfo, i)
+                        return
+                    }
                 }
             }
         }

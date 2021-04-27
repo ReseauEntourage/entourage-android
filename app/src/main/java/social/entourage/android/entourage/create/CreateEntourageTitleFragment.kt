@@ -91,7 +91,7 @@ class CreateEntourageTitleFragment  : BaseDialogFragment() {
                 override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
                 override fun afterTextChanged(s: Editable) {
-                    val charCountString = context!!.getString(R.string.entourage_create_title_char_count_format, s.length, TITLE_MAX_CHAR_COUNT)
+                    val charCountString = it.context.getString(R.string.entourage_create_title_char_count_format, s.length, TITLE_MAX_CHAR_COUNT)
                     title_entourage_count?.text = charCountString
                     if (s.length >= TITLE_MAX_CHAR_COUNT) {
                         title_entourage_count?.setTextColor(ResourcesCompat.getColor(resources, R.color.entourage_error, null))

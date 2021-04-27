@@ -9,7 +9,6 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import social.entourage.android.Constants
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.BaseEntourage.EntourageCloseOutcome
@@ -125,63 +124,69 @@ open class EntServiceManager(
         entourage.status = FeedItem.STATUS_CLOSED
         entourage.setEndTime(Date())
         entourage.outcome = EntourageCloseOutcome(success)
-        entourageRequest.closeEntourage(entourage.uuid!!, EntourageWrapper(entourage)).enqueue(object : Callback<EntourageResponse> {
-            override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
-                if (response.isSuccessful) {
-                    response.body()?.entourage?.let {
-                        entService.notifyListenersFeedItemClosed(true, it)
-                        return
+        entourage.uuid?.let { uuid ->
+            entourageRequest.closeEntourage(uuid, EntourageWrapper(entourage)).enqueue(object : Callback<EntourageResponse> {
+                override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
+                    if (response.isSuccessful) {
+                        response.body()?.entourage?.let {
+                            entService.notifyListenersFeedItemClosed(true, it)
+                            return
+                        }
                     }
+                    entourage.status = oldStatus
+                    entService.notifyListenersFeedItemClosed(false, entourage)
                 }
-                entourage.status = oldStatus
-                entService.notifyListenersFeedItemClosed(false, entourage)
-            }
 
-            override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
-                Timber.e(t)
-                entourage.status = oldStatus
-                entService.notifyListenersFeedItemClosed(false, entourage)
-            }
-        })
+                override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
+                    Timber.e(t)
+                    entourage.status = oldStatus
+                    entService.notifyListenersFeedItemClosed(false, entourage)
+                }
+            })
+        }
     }
 
     fun reopenEntourage(entourage: BaseEntourage) {
         val oldStatus = entourage.status
         entourage.status = FeedItem.STATUS_OPEN
-        entourageRequest.editEntourage(entourage.uuid!!, EntourageWrapper(entourage)).enqueue(object : Callback<EntourageResponse> {
-            override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
-                if (response.isSuccessful) {
-                    response.body()?.entourage?.let {
-                       entService.notifyListenersFeedItemClosed(true, it)
-                        return
+        entourage.uuid?.let { uuid ->
+            entourageRequest.editEntourage(uuid, EntourageWrapper(entourage)).enqueue(object : Callback<EntourageResponse> {
+                override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
+                    if (response.isSuccessful) {
+                        response.body()?.entourage?.let {
+                            entService.notifyListenersFeedItemClosed(true, it)
+                            return
+                        }
                     }
+                    entourage.status = oldStatus
+                    entService.notifyListenersFeedItemClosed(false, entourage)
                 }
-                entourage.status = oldStatus
-                entService.notifyListenersFeedItemClosed(false, entourage)
-            }
 
-            override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
-                Timber.e(t)
-                entourage.status = oldStatus
-                entService.notifyListenersFeedItemClosed(false, entourage)
-            }
-        })
+                override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
+                    Timber.e(t)
+                    entourage.status = oldStatus
+                    entService.notifyListenersFeedItemClosed(false, entourage)
+                }
+            })
+        }
     }
 
     fun requestToJoinEntourage(entourage: BaseEntourage) {
         if (isNetworkConnected) {
-            entourageRequest.requestToJoinEntourage(entourage.uuid!!, EntourageJoinInfo(entourage.distanceToCurrentLocation()))
-                    .enqueue(object : Callback<EntourageUserResponse> {
-                override fun onResponse(call: Call<EntourageUserResponse>, response: Response<EntourageUserResponse>) {
-                    if (response.isSuccessful) {
-                        response.body()?.user?.let { user -> entService.notifyListenersUserStatusChanged(user, entourage) }
-                    }
-                }
+            entourage.uuid?.let { uuid ->
+                entourageRequest.requestToJoinEntourage(uuid, EntourageJoinInfo(entourage.distanceToCurrentLocation()))
+                        .enqueue(object : Callback<EntourageUserResponse> {
+                            override fun onResponse(call: Call<EntourageUserResponse>, response: Response<EntourageUserResponse>) {
+                                if (response.isSuccessful) {
+                                    response.body()?.user?.let { user -> entService.notifyListenersUserStatusChanged(user, entourage) }
+                                }
+                            }
 
-                override fun onFailure(call: Call<EntourageUserResponse>, t: Throwable) {
-                    Timber.e(t)
-                }
-            })
+                            override fun onFailure(call: Call<EntourageUserResponse>, t: Throwable) {
+                                Timber.e(t)
+                            }
+                        })
+            }
         }
     }
 

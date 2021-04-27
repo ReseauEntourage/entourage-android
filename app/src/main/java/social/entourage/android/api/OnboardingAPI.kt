@@ -17,8 +17,6 @@ import social.entourage.android.authentication.AuthenticationController
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
-import javax.inject.Inject
-import kotlin.collections.ArrayList
 import kotlin.collections.set
 
 /**
@@ -140,7 +138,7 @@ class OnboardingAPI {
             address["place_name"] = userAddress.displayAddress
         }
         else {
-            address["google_place_id"] = userAddress.googlePlaceId!!
+            userAddress.googlePlaceId?.let { address["google_place_id"] = it }
         }
         val request = ArrayMap<String, Any>()
         request["address"] = address

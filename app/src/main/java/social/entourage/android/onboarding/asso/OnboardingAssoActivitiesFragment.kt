@@ -3,17 +3,17 @@ package social.entourage.android.onboarding.asso
 import android.content.Context
 import android.graphics.Typeface
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_onboarding_asso_activities.*
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.onboarding.OnboardingCallback
+import social.entourage.android.tools.log.AnalyticsEvents
 import java.io.Serializable
 
 private const val ARG_PARAM1 = "param1"
@@ -67,12 +67,14 @@ class OnboardingAssoActivitiesFragment : Fragment() {
             changeSelectionViewPosition(4)
         }
 
-        if (currentActivities != null && currentActivities!!.hasOneSelectionMin()) {
+        if (currentActivities?.hasOneSelectionMin() == true) {
             callback?.updateButtonNext(true)
-            changeColors(ui_onboard_asso_activities_layout_choice1,ui_onboard_asso_activities_tv_1,currentActivities!!.choice1Selected)
-            changeColors(ui_onboard_asso_activities_layout_choice2,ui_onboard_asso_activities_tv_2,currentActivities!!.choice2Selected)
-            changeColors(ui_onboard_asso_activities_layout_choice3,ui_onboard_asso_activities_tv_3,currentActivities!!.choice3Selected)
-            changeColors(ui_onboard_asso_activities_layout_choice4,ui_onboard_asso_activities_tv_4,currentActivities!!.choice4Selected)
+            currentActivities?.let {
+                changeColors(ui_onboard_asso_activities_layout_choice1, ui_onboard_asso_activities_tv_1, it.choice1Selected)
+                changeColors(ui_onboard_asso_activities_layout_choice2, ui_onboard_asso_activities_tv_2, it.choice2Selected)
+                changeColors(ui_onboard_asso_activities_layout_choice3, ui_onboard_asso_activities_tv_3, it.choice3Selected)
+                changeColors(ui_onboard_asso_activities_layout_choice4, ui_onboard_asso_activities_tv_4, it.choice4Selected)
+            }
         }
         else {
             callback?.updateButtonNext(false)
@@ -82,36 +84,36 @@ class OnboardingAssoActivitiesFragment : Fragment() {
     private fun changeSelectionViewPosition(position:Int) {
         if (currentActivities == null) { currentActivities = AssoActivities() }
 
-        val currentActivities = this.currentActivities!!
-
-        when(position) {
-            1 -> {
-                currentActivities.choice1Selected = !currentActivities.choice1Selected
-                changeColors(ui_onboard_asso_activities_layout_choice1,ui_onboard_asso_activities_tv_1,currentActivities.choice1Selected)
+        currentActivities?.let { currentActivities ->
+            when(position) {
+                1 -> {
+                    currentActivities.choice1Selected = !currentActivities.choice1Selected
+                    changeColors(ui_onboard_asso_activities_layout_choice1,ui_onboard_asso_activities_tv_1,currentActivities.choice1Selected)
+                }
+                2 -> {
+                    currentActivities.choice2Selected = !currentActivities.choice2Selected
+                    changeColors(ui_onboard_asso_activities_layout_choice2,ui_onboard_asso_activities_tv_2,currentActivities.choice2Selected)
+                }
+                3 -> {
+                    currentActivities.choice3Selected = !currentActivities.choice3Selected
+                    changeColors(ui_onboard_asso_activities_layout_choice3,ui_onboard_asso_activities_tv_3,currentActivities.choice3Selected)
+                }
+                4 -> {
+                    currentActivities.choice4Selected = !currentActivities.choice4Selected
+                    changeColors(ui_onboard_asso_activities_layout_choice4,ui_onboard_asso_activities_tv_4,currentActivities.choice4Selected)
+                }
             }
-            2 -> {
-                currentActivities.choice2Selected = !currentActivities.choice2Selected
-                changeColors(ui_onboard_asso_activities_layout_choice2,ui_onboard_asso_activities_tv_2,currentActivities.choice2Selected)
-            }
-            3 -> {
-                currentActivities.choice3Selected = !currentActivities.choice3Selected
-                changeColors(ui_onboard_asso_activities_layout_choice3,ui_onboard_asso_activities_tv_3,currentActivities.choice3Selected)
-            }
-            4 -> {
-                currentActivities.choice4Selected = !currentActivities.choice4Selected
-                changeColors(ui_onboard_asso_activities_layout_choice4,ui_onboard_asso_activities_tv_4,currentActivities.choice4Selected)
-            }
-        }
 
-        this.currentActivities = currentActivities
+            this.currentActivities = currentActivities
 
-        callback?.updateAssoActivities(currentActivities)
+            callback?.updateAssoActivities(currentActivities)
 
-        if (this.currentActivities != null && this.currentActivities!!.hasOneSelectionMin()) {
-            callback?.updateButtonNext(true)
-        }
-        else {
-            callback?.updateButtonNext(false)
+            if (currentActivities.hasOneSelectionMin()) {
+                callback?.updateButtonNext(true)
+            }
+            else {
+                callback?.updateButtonNext(false)
+            }
         }
     }
 

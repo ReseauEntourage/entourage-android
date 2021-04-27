@@ -9,7 +9,6 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
@@ -25,6 +24,7 @@ import social.entourage.android.map.MapClusterEntourageItem
 import social.entourage.android.map.MapClusterTourItem
 import social.entourage.android.onboarding.InputNamesFragment
 import social.entourage.android.tools.EntBus
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tour.encounter.EncounterDisclaimerFragment
 import timber.log.Timber
 import java.util.*
@@ -247,7 +247,7 @@ class NewsfeedPresenter @Inject constructor(
         override fun onClusterItemClick(mapClusterItem: ClusterItem): Boolean {
             when {
                 encounterMarkerHashMap[mapClusterItem] != null -> {
-                    openEncounter(encounterMarkerHashMap[mapClusterItem]!!)
+                    encounterMarkerHashMap[mapClusterItem]?.let { openEncounter(it) }
                 }
                 mapClusterItem is MapClusterEntourageItem -> {
                     fragment?.handleHeatzoneClick(mapClusterItem.position)

@@ -7,7 +7,6 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.util.*
-import kotlin.Comparator
 import kotlin.collections.ArrayList
 
 /**
@@ -659,38 +658,40 @@ internal object CountryList {
      * @return List of timezone and country.
      */
     private fun getTimeZoneAndCountryISOs(context: Context): Map<String, List<String>> {
-        if(timeZoneAndCountryISOs.isNullOrEmpty()) {
-            val newTimeZoneAndCountryISOs = HashMap<String, List<String>>()
-   
-            // Read from raw
-            val inputStream = context.resources.openRawResource(R.raw.zone1970)
-            val buf = BufferedReader(InputStreamReader(inputStream))
-            var lineJustFetched: String?
-            var wordsArray: Array<String>
-            try {
-                while (true) {
-                    lineJustFetched = buf.readLine()
-                    if (lineJustFetched == null) {
-                        break
-                    } else {
-                        wordsArray = lineJustFetched.split("\t".toRegex()).toTypedArray()
-                        // Ignore line which have # as the first character.
-                        if (!lineJustFetched.substring(0, 1).contains("#")) {
-                            if (wordsArray.size >= 3) {
-                                // First word is country code or list of country code separate by comma
-                                val isos: MutableList<String> = ArrayList()
-                                Collections.addAll(isos, *wordsArray[0].split(",".toRegex()).toTypedArray())
-                                // Third word in wordsArray is timezone.
-                                newTimeZoneAndCountryISOs[wordsArray[2]] = isos
-                            }
+        timeZoneAndCountryISOs?.let {
+            if (it.isNotEmpty()) return it
+        }
+
+        val newTimeZoneAndCountryISOs = HashMap<String, List<String>>()
+
+        // Read from raw
+        val inputStream = context.resources.openRawResource(R.raw.zone1970)
+        val buf = BufferedReader(InputStreamReader(inputStream))
+        var lineJustFetched: String?
+        var wordsArray: Array<String>
+        try {
+            while (true) {
+                lineJustFetched = buf.readLine()
+                if (lineJustFetched == null) {
+                    break
+                } else {
+                    wordsArray = lineJustFetched.split("\t".toRegex()).toTypedArray()
+                    // Ignore line which have # as the first character.
+                    if (!lineJustFetched.substring(0, 1).contains("#")) {
+                        if (wordsArray.size >= 3) {
+                            // First word is country code or list of country code separate by comma
+                            val isos: MutableList<String> = ArrayList()
+                            Collections.addAll(isos, *wordsArray[0].split(",".toRegex()).toTypedArray())
+                            // Third word in wordsArray is timezone.
+                            newTimeZoneAndCountryISOs[wordsArray[2]] = isos
                         }
                     }
                 }
-            } catch (e: IOException) {
-                Timber.e(e)
             }
-            timeZoneAndCountryISOs = newTimeZoneAndCountryISOs
+        } catch (e: IOException) {
+            Timber.e(e)
         }
-        return timeZoneAndCountryISOs!!
+        timeZoneAndCountryISOs = newTimeZoneAndCountryISOs
+        return newTimeZoneAndCountryISOs
     }
 }

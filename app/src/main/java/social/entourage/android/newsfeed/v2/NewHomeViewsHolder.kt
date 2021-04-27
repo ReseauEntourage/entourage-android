@@ -21,8 +21,6 @@ import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events
 import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.tools.EntBus
-import timber.log.Timber
-import java.lang.Exception
 
 
 /****
@@ -182,10 +180,12 @@ class ActionVH(view: View) : RecyclerView.ViewHolder(view) {
                     ?: ""
             var distStr = if (distanceAsString.equals("", ignoreCase = true)) "" else String.format(res.getString(R.string.tour_cell_location), distanceAsString)
 
-            if (distStr.isNotEmpty() && !feedItem.postal_code.isNullOrEmpty()) {
-                distStr = "%s - %s".format(distStr, feedItem.postal_code)
-            } else if (!feedItem.postal_code.isNullOrEmpty()) {
-                distStr = feedItem.postal_code!!
+            feedItem.postal_code?.let { postalCode ->
+                if (distStr.isNotEmpty() && postalCode.isNotEmpty()) {
+                    distStr = "%s - %s".format(distStr, postalCode)
+                } else if (postalCode.isNotEmpty()) {
+                    distStr = postalCode
+                }
             }
 
             itemView.ui_action_tv_location?.text = distStr
@@ -229,10 +229,12 @@ class EventVH(view: View) : RecyclerView.ViewHolder(view) {
                     ?: ""
             var distStr = if (distanceAsString.equals("", ignoreCase = true)) "" else String.format(res.getString(R.string.tour_cell_location), distanceAsString)
 
-            if (distStr.isNotEmpty() && !feedItem.postal_code.isNullOrEmpty()) {
-                distStr = "%s - %s".format(distStr, feedItem.postal_code)
-            } else if (!feedItem.postal_code.isNullOrEmpty()) {
-                distStr = feedItem.postal_code!!
+            feedItem.postal_code?.let { postalCode ->
+                if (distStr.isNotEmpty() && postalCode.isNotEmpty()) {
+                    distStr = "%s - %s".format(distStr, postalCode)
+                } else if (postalCode.isNotEmpty()) {
+                    distStr = postalCode
+                }
             }
             itemView.ui_event_tv_location?.text = distStr
 

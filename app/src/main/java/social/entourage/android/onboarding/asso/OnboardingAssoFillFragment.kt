@@ -4,19 +4,19 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_onboarding_asso_fill.*
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
 import social.entourage.android.onboarding.OnboardingCallback
 import social.entourage.android.tools.hideKeyboardFromLayout
+import social.entourage.android.tools.log.AnalyticsEvents
 
 private const val ARG_PARAM1 = "param1"
 
@@ -99,11 +99,10 @@ class OnboardingAssoFillFragment : Fragment() {
     }
 
     fun updateAssoNameLabel() {
-        if (currentAssoInfo?.name != null) {
-            ui_onboard_asso_fill_asso_name?.text = currentAssoInfo!!.name
+        currentAssoInfo?.name?.let { name ->
+            ui_onboard_asso_fill_asso_name?.text = name
             ui_onboard_asso_fill_asso_name?.setTextColor(ResourcesCompat.getColor(resources,R.color.onboard_black_36,null))
-        }
-        else {
+        } ?: run {
             ui_onboard_asso_fill_asso_name?.text = getString(R.string.onboard_asso_fill_name_placeholder)
             ui_onboard_asso_fill_asso_name?.setTextColor(ResourcesCompat.getColor(resources,R.color.quantum_grey,null))
         }
@@ -124,12 +123,7 @@ class OnboardingAssoFillFragment : Fragment() {
 
         updateDelegateButtonNext()
 
-        if (currentAssoInfo != null) {
-            callback?.updateAssoInfos(currentAssoInfo!!)
-        }
-        else {
-            callback?.updateAssoInfos(Partner())
-        }
+        currentAssoInfo?.let { callback?.updateAssoInfos(it) } ?: callback?.updateAssoInfos(Partner())
     }
 
     /********************************

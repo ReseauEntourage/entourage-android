@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Toast
 import androidx.annotation.StringRes
 import com.squareup.otto.Subscribe
 import com.squareup.picasso.Picasso
@@ -24,8 +24,8 @@ import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.entourage.information.FeedItemInformationFragment
-import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.CropCircleTransformation
+import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.edit.UserEditAboutFragment
 import social.entourage.android.user.edit.UserEditFragment
@@ -144,8 +144,8 @@ class UserFragment : BaseDialogFragment() {
             user_profile_about_layout?.visibility = if (userAbout.isNotBlank()) View.VISIBLE else View.GONE
             ui_tv_user_description?.text = userAbout
 
-            ui_tv_nb_actions?.text = if(u.stats?.actionsCount != null) "${u.stats!!.actionsCount}" else "0"
-            ui_tv_nb_events?.text = if(u.stats?.eventsCount != null) "${u.stats!!.eventsCount}" else "0"
+            ui_tv_nb_actions?.text = u.stats?.actionsCount?.let { "$it" } ?: "0"
+            ui_tv_nb_events?.text = u.stats?.eventsCount?.let { "$it" } ?: "0"
 
             ui_tv_good_waves?.visibility = if (u.stats?.isGoodWavesValidated == true) View.VISIBLE else View.GONE
 

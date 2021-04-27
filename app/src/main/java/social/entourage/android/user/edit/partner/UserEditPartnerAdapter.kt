@@ -5,7 +5,9 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.BaseAdapter
+import android.widget.CompoundButton
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.layout_edit_partner.view.*
 import social.entourage.android.R
@@ -101,7 +103,10 @@ class UserEditPartnerAdapter : BaseAdapter() {
     }
 
     override fun getItem(position: Int): Partner? {
-        return if (partnerList != null && position >= 0 && position < partnerList!!.size) partnerList!![position] else null
+        partnerList?.let { list ->
+            if (position >= 0 && position < list.size) return list[position]
+        }
+        return null
     }
 
     inner class OnCheckedChangeListener : CompoundButton.OnCheckedChangeListener {

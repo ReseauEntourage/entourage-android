@@ -125,14 +125,16 @@ class OnboardingSdfNeighbourActivitiesFragment : Fragment() {
             ui_onboard_sdf_neigbour_activities_layout_choice6?.visibility = View.INVISIBLE
         }
 
-        if (currentActivities != null && currentActivities!!.hasOneSelectionMin()) {
+        if (currentActivities?.hasOneSelectionMin() == true) {
             callback?.updateButtonNext(true)
-            changeColors(ui_onboard_sdf_neigbour_activities_layout_choice1,ui_onboard_sdf_neigbour_activities_tv_1,currentActivities!!.choice1Selected)
-            changeColors(ui_onboard_sdf_neigbour_activities_layout_choice2,ui_onboard_sdf_neigbour_activities_tv_2,currentActivities!!.choice2Selected)
-            changeColors(ui_onboard_sdf_neigbour_activities_layout_choice3,ui_onboard_sdf_neigbour_activities_tv_3,currentActivities!!.choice3Selected)
-            changeColors(ui_onboard_sdf_neigbour_activities_layout_choice4,ui_onboard_sdf_neigbour_activities_tv_4,currentActivities!!.choice4Selected)
-            changeColors(ui_onboard_sdf_neigbour_activities_layout_choice5,ui_onboard_sdf_neigbour_activities_tv_5,currentActivities!!.choice5Selected)
-            changeColors(ui_onboard_sdf_neigbour_activities_layout_choice6,ui_onboard_sdf_neigbour_activities_tv_6,currentActivities!!.choice6Selected)
+            currentActivities?.let {
+                changeColors(ui_onboard_sdf_neigbour_activities_layout_choice1, ui_onboard_sdf_neigbour_activities_tv_1, it.choice1Selected)
+                changeColors(ui_onboard_sdf_neigbour_activities_layout_choice2, ui_onboard_sdf_neigbour_activities_tv_2, it.choice2Selected)
+                changeColors(ui_onboard_sdf_neigbour_activities_layout_choice3, ui_onboard_sdf_neigbour_activities_tv_3, it.choice3Selected)
+                changeColors(ui_onboard_sdf_neigbour_activities_layout_choice4, ui_onboard_sdf_neigbour_activities_tv_4, it.choice4Selected)
+                changeColors(ui_onboard_sdf_neigbour_activities_layout_choice5, ui_onboard_sdf_neigbour_activities_tv_5, it.choice5Selected)
+                changeColors(ui_onboard_sdf_neigbour_activities_layout_choice6, ui_onboard_sdf_neigbour_activities_tv_6, it.choice6Selected)
+            }
         }
         else {
             callback?.updateButtonNext(false)
@@ -143,44 +145,45 @@ class OnboardingSdfNeighbourActivitiesFragment : Fragment() {
         if (currentActivities == null) { currentActivities = SdfNeighbourActivities() }
 
         currentActivities?.isSdf = this.isSdf
-        val currentActivities = this.currentActivities!!
 
-        when(position) {
-            1 -> {
-                currentActivities.choice1Selected = !currentActivities.choice1Selected
-                changeColors(ui_onboard_sdf_neigbour_activities_layout_choice1,ui_onboard_sdf_neigbour_activities_tv_1,currentActivities.choice1Selected)
+        currentActivities?.let { currentActivities ->
+            when(position) {
+                1 -> {
+                    currentActivities.choice1Selected = !currentActivities.choice1Selected
+                    changeColors(ui_onboard_sdf_neigbour_activities_layout_choice1,ui_onboard_sdf_neigbour_activities_tv_1,currentActivities.choice1Selected)
+                }
+                2 -> {
+                    currentActivities.choice2Selected = !currentActivities.choice2Selected
+                    changeColors(ui_onboard_sdf_neigbour_activities_layout_choice2,ui_onboard_sdf_neigbour_activities_tv_2,currentActivities.choice2Selected)
+                }
+                3 -> {
+                    currentActivities.choice3Selected = !currentActivities.choice3Selected
+                    changeColors(ui_onboard_sdf_neigbour_activities_layout_choice3,ui_onboard_sdf_neigbour_activities_tv_3,currentActivities.choice3Selected)
+                }
+                4 -> {
+                    currentActivities.choice4Selected = !currentActivities.choice4Selected
+                    changeColors(ui_onboard_sdf_neigbour_activities_layout_choice4,ui_onboard_sdf_neigbour_activities_tv_4,currentActivities.choice4Selected)
+                }
+                5 -> {
+                    currentActivities.choice5Selected = !currentActivities.choice5Selected
+                    changeColors(ui_onboard_sdf_neigbour_activities_layout_choice5,ui_onboard_sdf_neigbour_activities_tv_5,currentActivities.choice5Selected)
+                }
+                6 -> {
+                    currentActivities.choice6Selected = !currentActivities.choice6Selected
+                    changeColors(ui_onboard_sdf_neigbour_activities_layout_choice6,ui_onboard_sdf_neigbour_activities_tv_6,currentActivities.choice6Selected)
+                }
             }
-            2 -> {
-                currentActivities.choice2Selected = !currentActivities.choice2Selected
-                changeColors(ui_onboard_sdf_neigbour_activities_layout_choice2,ui_onboard_sdf_neigbour_activities_tv_2,currentActivities.choice2Selected)
-            }
-            3 -> {
-                currentActivities.choice3Selected = !currentActivities.choice3Selected
-                changeColors(ui_onboard_sdf_neigbour_activities_layout_choice3,ui_onboard_sdf_neigbour_activities_tv_3,currentActivities.choice3Selected)
-            }
-            4 -> {
-                currentActivities.choice4Selected = !currentActivities.choice4Selected
-                changeColors(ui_onboard_sdf_neigbour_activities_layout_choice4,ui_onboard_sdf_neigbour_activities_tv_4,currentActivities.choice4Selected)
-            }
-            5 -> {
-                currentActivities.choice5Selected = !currentActivities.choice5Selected
-                changeColors(ui_onboard_sdf_neigbour_activities_layout_choice5,ui_onboard_sdf_neigbour_activities_tv_5,currentActivities.choice5Selected)
-            }
-            6 -> {
-                currentActivities.choice6Selected = !currentActivities.choice6Selected
-                changeColors(ui_onboard_sdf_neigbour_activities_layout_choice6,ui_onboard_sdf_neigbour_activities_tv_6,currentActivities.choice6Selected)
-            }
-        }
 
-        this.currentActivities = currentActivities
+            this.currentActivities = currentActivities
 
-        callback?.updateSdfNeighbourActivities(currentActivities, isSdf)
+            callback?.updateSdfNeighbourActivities(currentActivities, isSdf)
 
-        if (this.currentActivities != null && this.currentActivities!!.hasOneSelectionMin()) {
-            callback?.updateButtonNext(true)
-        }
-        else {
-            callback?.updateButtonNext(false)
+            if (currentActivities.hasOneSelectionMin()) {
+                callback?.updateButtonNext(true)
+            }
+            else {
+                callback?.updateButtonNext(false)
+            }
         }
     }
 

@@ -86,6 +86,6 @@ object EntourageCategoryManager {
             entourageCategories[BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION] = it
         }
         //TODO make sure we have this category
-        defaultGroup = entourageCategories[BaseEntourage.GROUPTYPE_ACTION_DEMAND]!!
+        defaultGroup = entourageCategories[BaseEntourage.GROUPTYPE_ACTION_DEMAND] ?: emptyList()
     }
 }

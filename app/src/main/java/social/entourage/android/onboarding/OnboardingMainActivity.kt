@@ -263,20 +263,21 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     fun sendAddress() {
         alertDialog.show(R.string.onboard_waiting_dialog)
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_ACTION_ZONE_SUBMIT)
-        OnboardingAPI.getInstance().updateAddress(temporaryPlaceAddress!!,false) { isOK, userResponse ->
-            if (isOK) {
-                val me = authenticationController.me
-                if (me != null && userResponse != null) {
-                    userResponse.user.phone = me.phone
-                    authenticationController.saveUser(userResponse.user)
+        temporaryPlaceAddress?.let {
+            OnboardingAPI.getInstance().updateAddress(it, false) { isOK, userResponse ->
+                if (isOK) {
+                    val me = authenticationController.me
+                    if (me != null && userResponse != null) {
+                        userResponse.user.phone = me.phone
+                        authenticationController.saveUser(userResponse.user)
+                    }
+                    displayToast(R.string.user_action_zone_send_ok)
+                    alertDialog.dismiss()
+                    goNextStep()
+                } else {
+                    alertDialog.dismiss()
+                    displayToast(R.string.user_action_zone_send_failed)
                 }
-                displayToast(R.string.user_action_zone_send_ok)
-                alertDialog.dismiss()
-                goNextStep()
-            }
-            else {
-                alertDialog.dismiss()
-                displayToast(R.string.user_action_zone_send_failed)
             }
         }
     }
@@ -369,9 +370,11 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     fun updateAssoActivities() {
         if (temporaryAssoActivities?.hasOneSelectionMin() == true) {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_PRO_MOSAIC)
-            OnboardingAPI.getInstance().updateUserInterests(temporaryAssoActivities!!.getArrayForWs()) { isOK, userResponse ->
-                currentFragmentPosition += 2
-                changeFragment()
+            temporaryAssoActivities?.let {
+                OnboardingAPI.getInstance().updateUserInterests(it.getArrayForWs()) { isOK, userResponse ->
+                    currentFragmentPosition += 2
+                    changeFragment()
+                }
             }
         }
         else {
