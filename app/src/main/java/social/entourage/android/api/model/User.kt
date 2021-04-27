@@ -256,7 +256,7 @@ class User : Serializable {
                 val stringId = string::class.java.getDeclaredField(resourceName)
                 stringId.getInt(stringId)
             } catch (e: Exception) {
-                Timber.e("Resource not found : $resourceName")
+                Timber.e(e, "Resource not found : $resourceName")
                 -1
             }
         }
