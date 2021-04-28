@@ -28,17 +28,14 @@ ext {
     // Libraries versions
     annotationVersion = "1.1.0"
     appCompatVersion = "1.2.0"
-    butterKnifeVersion = "10.2.3"
     constraintlayoutVersion = "2.0.1"
     coordinatorlayoutVersion="1.1.0"
     daggerVersion = "2.33"
     dateTimePickerVersion = "4.2.3"
     espressoVersion = "3.3.0"
-    exifinterfaceVersion = "1.3.2"
     facebookVersion = "9.1.0"
     floatingButtonVersion = "1.6.4"
     fragmentVersion = "1.3.2"
-    guavaVersion = "30.1.1-android"
     imageCropperVersion = "2.8.0"
     javaAnnotationVersion = "10.0-b28"
     jodaVersion = "2.10.9.1"
@@ -67,7 +64,6 @@ ext {
             cardview         : "androidx.cardview:cardview:$supportVersion",
             coordinatorLayout: "androidx.coordinatorlayout:coordinatorlayout:$coordinatorlayoutVersion",
             constraintLayout : "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion",
-            exifinterface    : "androidx.exifinterface:exifinterface:$exifinterfaceVersion",
             fragment         : "androidx.fragment:fragment-ktx:$fragmentVersion",
             legacyV4         : "androidx.legacy:legacy-support-v4:$supportVersion",
             legacyV13        : "androidx.legacy:legacy-support-v13:$supportVersion",
@@ -77,14 +73,12 @@ ext {
     ]
 
     annotationDependencies = [
-            daggerCompiler      : "com.google.dagger:dagger-compiler:$daggerVersion",
-            butterknifeCompiler : "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
+            daggerCompiler      : "com.google.dagger:dagger-compiler:$daggerVersion"
     ]
 
     devDependencies = [
             kotlinSdk       : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion",
             dagger          : "com.google.dagger:dagger:$daggerVersion",
-            guava           : "com.google.guava:guava:$guavaVersion",
             joda            : "net.danlew:android.joda:$jodaVersion",
             tape            : "com.squareup:tape:$tapeVersion",
             timber          : "com.jakewharton.timber:timber:$timberVersion",
@@ -149,7 +143,6 @@ ext {
     ]
 
     uiDependencies = [
-            butterknife             : "com.jakewharton:butterknife:$butterKnifeVersion",
             dateTimePicker          : "com.wdullaer:materialdatetimepicker:$dateTimePickerVersion",
             floatingButton          : "com.github.clans:fab:$floatingButtonVersion",
             imageCropper            : "com.theartofdev.edmodo:android-image-cropper:$imageCropperVersion",
