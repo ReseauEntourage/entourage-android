@@ -1,7 +1,7 @@
 package social.entourage.android
 
 import android.view.autofill.AutofillManager
-import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.IdlingResource
 import androidx.test.espresso.NoMatchingViewException
@@ -33,6 +33,7 @@ class LoginTest {
 
     @Before
     fun setUp() {
+        checkNoUserIsLoggedIn()
         activityRule.scenario.onActivity { activity ->
             val client = EntourageApplication[activity].components.okHttpClient
             resource = OkHttp3IdlingResource.create("OkHttp", client)
@@ -62,29 +63,69 @@ class LoginTest {
     fun loginOK() {
         Intents.init()
         checkNoUserIsLoggedIn()
-        checkFistConnexionScreen()
-        Espresso.onView(ViewMatchers.withId(R.id.ui_login_phone_et_phone)).perform(TypeTextAction(BuildConfig.TEST_ACCOUNT_LOGIN), ViewActions.closeSoftKeyboard())
+        checkFirstConnectionScreen()
+
+        onView(ViewMatchers.withId(R.id.ui_login_phone_et_phone)).perform(TypeTextAction(BuildConfig.TEST_ACCOUNT_LOGIN), ViewActions.closeSoftKeyboard())
         closeAutofill()
-        Espresso.onView(ViewMatchers.withId(R.id.ui_login_et_code)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_PWD), ViewActions.closeSoftKeyboard())
+        onView(ViewMatchers.withId(R.id.ui_login_et_code)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_PWD), ViewActions.closeSoftKeyboard())
         closeAutofill()
-        Espresso.onView(ViewMatchers.withId(R.id.ui_login_button_signup)).perform(ViewActions.click())
-        Espresso.onView(ViewMatchers.withText(R.string.login_error_title)).check(ViewAssertions.doesNotExist())
-        Intents.intended(IntentMatchers.hasComponent(MainActivity::class.java.name))
+        onView(ViewMatchers.withId(R.id.ui_login_button_signup)).perform(ViewActions.click())
+        onView(ViewMatchers.withText(R.string.login_error_title)).check(ViewAssertions.doesNotExist())
+
+        checkLoginSuccessful()
         Intents.release()
     }
 
     @Test
     fun loginOKwithoutCountryCode() {
         Intents.init()
-        checkFistConnexionScreen()
-        Espresso.onView(ViewMatchers.withId(R.id.ui_login_phone_et_phone)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_LOGIN.replaceFirst("\\+33".toRegex(), "0")), ViewActions.closeSoftKeyboard())
+        checkFirstConnectionScreen()
+
+        onView(ViewMatchers.withId(R.id.ui_login_phone_et_phone)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_LOGIN.replaceFirst("\\+33".toRegex(), "0")), ViewActions.closeSoftKeyboard())
         closeAutofill()
-        Espresso.onView(ViewMatchers.withId(R.id.ui_login_et_code)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_PWD), ViewActions.closeSoftKeyboard())
+        onView(ViewMatchers.withId(R.id.ui_login_et_code)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_PWD), ViewActions.closeSoftKeyboard())
         closeAutofill()
-        Espresso.onView(ViewMatchers.withId(R.id.ui_login_button_signup)).perform(ViewActions.click())
-        Espresso.onView(ViewMatchers.withText(R.string.login_error_title)).check(ViewAssertions.doesNotExist())
-        Intents.intended(IntentMatchers.hasComponent(MainActivity::class.java.name))
+        onView(ViewMatchers.withId(R.id.ui_login_button_signup)).perform(ViewActions.click())
+        onView(ViewMatchers.withText(R.string.login_error_title)).check(ViewAssertions.doesNotExist())
+
+        checkLoginSuccessful()
         Intents.release()
+    }
+
+    @Test
+    fun loginFailureWrongPassword() {
+        checkNoUserIsLoggedIn()
+        checkFirstConnectionScreen()
+
+        onView(ViewMatchers.withId(R.id.ui_login_phone_et_phone)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_LOGIN), ViewActions.closeSoftKeyboard())
+        closeAutofill()
+        onView(ViewMatchers.withId(R.id.ui_login_et_code)).perform(ViewActions.typeText("999999"), ViewActions.closeSoftKeyboard())
+        closeAutofill()
+        onView(ViewMatchers.withId(R.id.ui_login_button_signup)).perform(ViewActions.click())
+
+        checkLoginFailure()
+    }
+
+    @Test
+    fun loginFailureWrongPhoneNumberFormat() {
+        checkFirstConnectionScreen()
+
+        onView(ViewMatchers.withId(R.id.ui_login_phone_et_phone)).perform(ViewActions.typeText("012345678"), ViewActions.closeSoftKeyboard())
+        closeAutofill()
+        onView(ViewMatchers.withId(R.id.ui_login_et_code)).perform(ViewActions.typeText("000000"), ViewActions.closeSoftKeyboard())
+        closeAutofill()
+        onView(ViewMatchers.withId(R.id.ui_login_button_signup)).perform(ViewActions.click())
+
+        checkLoginFailure()
+    }
+
+    private fun checkLoginSuccessful() {
+        Intents.intended(IntentMatchers.hasComponent(MainActivity::class.java.name))
+    }
+
+    private fun checkLoginFailure() {
+        onView(ViewMatchers.withText(R.string.login_error_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(ViewMatchers.withText(R.string.login_retry_label)).perform(ViewActions.click())
     }
 
     private fun closeAutofill() {
@@ -97,39 +138,14 @@ class LoginTest {
         afM?.commit()
     }
 
-    private fun checkFistConnexionScreen() {
+    private fun checkFirstConnectionScreen() {
         try {
-            Espresso.onView(ViewMatchers.withId(R.id.ui_button_login)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-            Espresso.onView(ViewMatchers.withId(R.id.ui_button_login)).perform(ViewActions.click())
+            onView(ViewMatchers.withId(R.id.ui_button_login)).apply {
+                check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+                perform(ViewActions.click())
+            }
         } catch (e: NoMatchingViewException) {
             Timber.w(e)
         }
-    }
-
-    @Test
-    fun loginFailureWrongPassword() {
-        checkNoUserIsLoggedIn()
-        checkFistConnexionScreen()
-        Espresso.onView(ViewMatchers.withId(R.id.ui_login_phone_et_phone)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_LOGIN), ViewActions.closeSoftKeyboard())
-        closeAutofill()
-        Espresso.onView(ViewMatchers.withId(R.id.ui_login_et_code)).perform(ViewActions.typeText("999999"), ViewActions.closeSoftKeyboard())
-        closeAutofill()
-        Espresso.onView(ViewMatchers.withId(R.id.ui_login_button_signup)).perform(ViewActions.click())
-        Espresso.onView(ViewMatchers.withText(R.string.login_error_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText(R.string.login_retry_label)).perform(ViewActions.click())
-        //Espresso.onView(ViewMatchers.withId(R.id.login_back_button)).perform(ViewActions.click())
-    }
-
-    @Test
-    fun loginFailureWrongPhoneNumberFormat() {
-        checkFistConnexionScreen()
-        Espresso.onView(ViewMatchers.withId(R.id.ui_login_phone_et_phone)).perform(ViewActions.typeText("012345678"), ViewActions.closeSoftKeyboard())
-        closeAutofill()
-        Espresso.onView(ViewMatchers.withId(R.id.ui_login_et_code)).perform(ViewActions.typeText("000000"), ViewActions.closeSoftKeyboard())
-        closeAutofill()
-        Espresso.onView(ViewMatchers.withId(R.id.ui_login_button_signup)).perform(ViewActions.click())
-        Espresso.onView(ViewMatchers.withText(R.string.login_error_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText(R.string.login_retry_label)).perform(ViewActions.click())
-        //Espresso.onView(ViewMatchers.withId(R.id.login_back_button)).perform(ViewActions.click())
     }
 }
