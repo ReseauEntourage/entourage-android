@@ -123,14 +123,11 @@ class EntourageCategoriesAdapter(
     }
 
     override fun getGroupView(groupPosition: Int, isExpanded: Boolean, convertView: View?, parent: ViewGroup): View {
-        lateinit var groupView: View
-        convertView?.let {
-            groupView = it
-        } ?: run {
+        val groupView = convertView ?: run {
             // create the group view
             val layoutInflater = context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            groupView = if (groupPosition == 0) {
+            if (groupPosition == 0) {
                 layoutInflater.inflate(R.layout.layout_entourage_category_header, null)
             } else {
                 layoutInflater.inflate(R.layout.layout_entourage_category_group, null)
