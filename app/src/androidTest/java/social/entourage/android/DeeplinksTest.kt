@@ -118,7 +118,7 @@ class DeepLinkingTestWebview : DeepLinkingTest() {
 
 }
 
-class DeepLinkingTestPoneSettings : DeepLinkingTest() {
+/*class DeepLinkingTestPoneSettings : DeepLinkingTest() {
     @Test
     fun connectedPhoneSettingsDeeplink() {
         connectedPhoneSettingsDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://phone-settings")
@@ -139,7 +139,7 @@ class DeepLinkingTestPoneSettings : DeepLinkingTest() {
         startIntent(intent)
         Espresso.onView(ViewMatchers.withId(R.id.fragment_map_top_tab)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
-}
+}*/
 
 class DeepLinkingTestFilters : DeepLinkingTest() {
 
@@ -208,7 +208,7 @@ class DeepLinkingTestFeed : DeepLinkingTest() {
     private fun connectedFeedDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
-        Espresso.onView(ViewMatchers.withId(R.id.fragment_map_top_tab)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withText(R.string.home_title_headlines)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 }
 
