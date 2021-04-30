@@ -1,6 +1,5 @@
 package social.entourage.android
 
-import android.content.Context
 import android.view.autofill.AutofillManager
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.IdlingRegistry
@@ -9,10 +8,12 @@ import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.action.TypeTextAction
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.rule.ActivityTestRule
 import com.jakewharton.espresso.OkHttp3IdlingResource
 import org.junit.After
 import org.junit.Before
@@ -26,23 +27,29 @@ import timber.log.Timber
 @LargeTest
 class LoginTest {
     @get:Rule
-    var activityRule = ActivityTestRule(LoginActivity::class.java)
+    var activityRule = ActivityScenarioRule(LoginActivity::class.java)
     private var resource: IdlingResource? = null
     private var afM: AutofillManager? = null
 
     @Before
     fun setUp() {
-        checkNoUserIsLoggedIn()
-        val context: Context = activityRule.activity
-        val client = EntourageApplication.get(context).components.okHttpClient
-        resource = OkHttp3IdlingResource.create("OkHttp", client)
-        IdlingRegistry.getInstance().register(resource)
-        afM = context.getSystemService(AutofillManager::class.java)
-        afM?.disableAutofillServices()
+        activityRule.scenario.onActivity { activity ->
+            val client = EntourageApplication[activity].components.okHttpClient
+            resource = OkHttp3IdlingResource.create("OkHttp", client)
+            IdlingRegistry.getInstance().register(resource)
+            afM = activity.getSystemService(AutofillManager::class.java)
+            afM?.disableAutofillServices()
+        }
     }
 
     private fun checkNoUserIsLoggedIn() {
-        EntourageApplication.get(activityRule.activity).components.authenticationController.logOutUser()
+        try {
+            activityRule.scenario.onActivity { activity ->
+                EntourageApplication[activity].components.authenticationController.logOutUser()
+            }
+        } catch (e: RuntimeException) {
+            e.printStackTrace()
+        }
     }
 
     @After
@@ -53,6 +60,7 @@ class LoginTest {
 
     @Test
     fun loginOK() {
+        Intents.init()
         checkNoUserIsLoggedIn()
         checkFistConnexionScreen()
         Espresso.onView(ViewMatchers.withId(R.id.ui_login_phone_et_phone)).perform(TypeTextAction(BuildConfig.TEST_ACCOUNT_LOGIN), ViewActions.closeSoftKeyboard())
@@ -61,11 +69,13 @@ class LoginTest {
         closeAutofill()
         Espresso.onView(ViewMatchers.withId(R.id.ui_login_button_signup)).perform(ViewActions.click())
         Espresso.onView(ViewMatchers.withText(R.string.login_error_title)).check(ViewAssertions.doesNotExist())
-        //checkNoUserIsLoggedIn();
+        Intents.intended(IntentMatchers.hasComponent(MainActivity::class.java.name))
+        Intents.release()
     }
 
     @Test
     fun loginOKwithoutCountryCode() {
+        Intents.init()
         checkFistConnexionScreen()
         Espresso.onView(ViewMatchers.withId(R.id.ui_login_phone_et_phone)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_LOGIN.replaceFirst("\\+33".toRegex(), "0")), ViewActions.closeSoftKeyboard())
         closeAutofill()
@@ -73,12 +83,15 @@ class LoginTest {
         closeAutofill()
         Espresso.onView(ViewMatchers.withId(R.id.ui_login_button_signup)).perform(ViewActions.click())
         Espresso.onView(ViewMatchers.withText(R.string.login_error_title)).check(ViewAssertions.doesNotExist())
-        //checkNoUserIsLoggedIn();
+        Intents.intended(IntentMatchers.hasComponent(MainActivity::class.java.name))
+        Intents.release()
     }
 
     private fun closeAutofill() {
         if (afM == null) {
-            afM = activityRule.activity.getSystemService(AutofillManager::class.java)
+            activityRule.scenario.onActivity { activity ->
+                afM = activity.getSystemService(AutofillManager::class.java)
+            }
         }
         afM?.cancel()
         afM?.commit()
