@@ -3,9 +3,15 @@ package social.entourage.android
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.GeneralLocation
+import androidx.test.espresso.action.GeneralSwipeAction
+import androidx.test.espresso.action.Press
+import androidx.test.espresso.action.Swipe
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -20,6 +26,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
+
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
@@ -36,12 +43,22 @@ class PreOnboardingTest {
                                     withId(android.R.id.content),
                                     0),
                             9),
-                    isDisplayed()))
+                    isDisplayed()
+            )
+    )
+
+    private val imagesRecyclerView = onView(
+            allOf(withId(R.id.ui_recyclerView),
+                    isDisplayed()
+            )
+    )
 
     private val titleTv = onView(
             allOf(withId(R.id.ui_tv_title),
                     withParent(withParent(withId(android.R.id.content))),
-                    isDisplayed()))
+                    isDisplayed()
+            )
+    )
 
     @Before
     fun setUp() {
@@ -108,8 +125,43 @@ class PreOnboardingTest {
         checkSignupAndLoginButtonsExist()
     }
 
+    @Test
+    fun skipPreOnboardingAtPage2WithScrollingTest() {
+        checkPage2WithScrolling()
+        skipPreOnboardingTest()
+    }
+
+    @Test
+    fun skipPreOnboardingAtPage3WithScrollingTest() {
+        checkPage2WithScrolling()
+        checkPage3WithScrolling()
+        skipPreOnboardingTest()
+    }
+
+    @Test
+    fun skipPreOnboardingAtPage4WithScrollingTest() {
+        checkPage2WithScrolling()
+        checkPage3WithScrolling()
+        checkPage4WithScrolling()
+        skipPreOnboardingTest()
+    }
+
+    @Test
+    fun fullPreOnboardingWithScrollingTest() {
+        checkPage2WithScrolling()
+        checkPage3WithScrolling()
+        checkPage4WithScrolling()
+        nextButton.perform(click())
+        checkSignupAndLoginButtonsExist()
+    }
+
     private fun checkPage2() {
         nextButton.perform(click())
+        titleTv.check(matches(withText(R.string.pre_onboard_tutorial_title2)))
+    }
+
+    private fun checkPage2WithScrolling() {
+        swipeLeftFromPage(0)
         titleTv.check(matches(withText(R.string.pre_onboard_tutorial_title2)))
     }
 
@@ -118,8 +170,18 @@ class PreOnboardingTest {
         titleTv.check(matches(withText(R.string.pre_onboard_tutorial_title3)))
     }
 
+    private fun checkPage3WithScrolling() {
+        swipeLeftFromPage(1)
+        titleTv.check(matches(withText(R.string.pre_onboard_tutorial_title3)))
+    }
+
     private fun checkPage4() {
         nextButton.perform(click())
+        titleTv.check(matches(withText(R.string.pre_onboard_tutorial_title4)))
+    }
+
+    private fun checkPage4WithScrolling() {
+        swipeLeftFromPage(2)
         titleTv.check(matches(withText(R.string.pre_onboard_tutorial_title4)))
     }
 
@@ -135,6 +197,15 @@ class PreOnboardingTest {
                         withParent(withParent(withId(android.R.id.content))),
                         isDisplayed()))
         button2.check(matches(isDisplayed()))
+    }
+
+    private fun swipeLeftFromPage(startIndex: Int) {
+        imagesRecyclerView.perform(
+                RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(startIndex, GeneralSwipeAction(
+                        Swipe.SLOW, GeneralLocation.CENTER_RIGHT, GeneralLocation.CENTER_LEFT,
+                        Press.FINGER))
+        )
+        Thread.sleep(1000)
     }
 
     private fun childAtPosition(
