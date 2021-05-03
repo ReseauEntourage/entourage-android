@@ -505,6 +505,7 @@ class MainActivity : BaseSecuredActivity(),
         editor.remove(EntourageApplication.KEY_GEOLOCATION_ENABLED)
         editor.remove(EntourageApplication.KEY_NO_MORE_DEMAND)
         editor.putInt(EntourageApplication.KEY_NB_OF_LAUNCH,0)
+        editor.remove(EntourageApplication.KEY_HOME_IS_EXPERTMODE)
         editor.apply()
         super.logout()
     }

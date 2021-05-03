@@ -161,4 +161,10 @@ class ApiModule {
     fun providesSharingEntourageRequest(restAdapter: Retrofit): SharingRequest {
         return restAdapter.create(SharingRequest::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun providesTourAreaService(restAdapter: Retrofit): TourAreaRequest {
+        return restAdapter.create(TourAreaRequest::class.java)
+    }
 }

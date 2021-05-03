@@ -131,10 +131,10 @@ class NewsfeedPresenter @Inject constructor(
         }
     }
 
-    fun createEntourage(location: LatLng?, groupType: String, category: EntourageCategory?) {
+    fun createEntourage(location: LatLng?, groupType: String, category: EntourageCategory?,isFromNeo:Boolean) {
         if (fragment != null && !fragment.isStateSaved) {
             val fragmentManager = fragment.activity?.supportFragmentManager ?: return
-            BaseCreateEntourageFragment.newInstance(location, groupType, category).show(fragmentManager, BaseCreateEntourageFragment.TAG)
+            BaseCreateEntourageFragment.newInstance(location, groupType, category,isFromNeo).show(fragmentManager, BaseCreateEntourageFragment.TAG)
         }
     }
 
