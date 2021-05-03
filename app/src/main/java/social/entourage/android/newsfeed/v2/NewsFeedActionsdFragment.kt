@@ -73,6 +73,14 @@ open class NewsFeedActionsFragment : BaseNewsfeedFragment(), EntourageServiceLis
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        if (isFromNeo) {
+            EntourageApplication.get().components.authenticationController.mapFilter.setFiltersForNeo()
+        }
+        else {
+            EntourageApplication.get().components.authenticationController.mapFilter.setDefaultValues()
+        }
+
+        EntourageApplication.get().components.authenticationController.saveMapFilter()
         return inflater.inflate(R.layout.fragment_home_news, container, false)
     }
 
@@ -82,12 +90,14 @@ open class NewsFeedActionsFragment : BaseNewsfeedFragment(), EntourageServiceLis
         ui_bt_back?.setOnClickListener {
             requireActivity().onBackPressed()
         }
-
+        ui_tv_title?.visibility = View.VISIBLE
         if (isActionSelected) {
             fragment_map_filter_button?.visibility = View.VISIBLE
+            ui_tv_title?.text = getString(R.string.home_title_actions)
         }
         else {
             fragment_map_filter_button?.visibility = View.GONE
+            ui_tv_title?.text = getString(R.string.home_title_events)
         }
 //        if (isActionSelected) {
 //            (requireActivity() as? MainActivity)?.checkOnboarding()
@@ -339,10 +349,11 @@ open class NewsFeedActionsFragment : BaseNewsfeedFragment(), EntourageServiceLis
     }
 
     companion object {
-        fun newInstance(isAction:Boolean): NewsFeedActionsFragment {
+        fun newInstance(isAction:Boolean,isFromNeo:Boolean): NewsFeedActionsFragment {
             val _intent = NewsFeedActionsFragment()
             _intent.selectedTab = if (isAction) NewsfeedTabItem.ALL_TAB else NewsfeedTabItem.EVENTS_TAB
             _intent.isActionSelected = isAction
+            _intent.isFromNeo = isFromNeo
             return _intent
         }
     }

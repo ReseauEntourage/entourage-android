@@ -168,6 +168,22 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
         ui_tv_nb_actions?.text = if(user.stats?.actionsCount != null) "${user.stats!!.actionsCount}" else "0"
         ui_tv_nb_events?.text = if(user.stats?.eventsCount != null) "${user.stats!!.eventsCount}" else "0"
 
+        val isExpertMode = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_HOME_IS_EXPERTMODE,false)
+        ui_switch_change_mode?.isChecked = !isExpertMode
+
+        if (user.isUserTypeNeighbour) {
+            ui_layout_change_mode?.visibility = View.VISIBLE
+            ui_switch_change_mode?.setOnCheckedChangeListener { buttonView, isChecked ->
+                EntourageApplication.get().sharedPreferences.edit()
+                        .putBoolean(EntourageApplication.KEY_HOME_IS_EXPERTMODE, !isChecked)
+                        .remove("isNavNews")
+                        .remove("navType")
+                        .apply()
+            }
+        }
+        else {
+            ui_layout_change_mode?.visibility = View.GONE
+        }
     }
 
     private fun selectMenuProfile(position: String) {

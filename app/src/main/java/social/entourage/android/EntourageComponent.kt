@@ -38,4 +38,5 @@ interface EntourageComponent {
     val sharingRequest: SharingRequest
     val okHttpClient: OkHttpClient
     val complexPreferences: ComplexPreferences?
+    val tourAreaRequest:TourAreaRequest
 }

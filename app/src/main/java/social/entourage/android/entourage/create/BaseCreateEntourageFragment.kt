@@ -69,6 +69,8 @@ open class BaseCreateEntourageFragment
     protected var isSaving = false
     protected var editedEntourage: BaseEntourage? = null
     private var isStartDateEdited = true
+
+    protected var isFromNeo = false
     // ----------------------------------
     // Lifecycle
     // ----------------------------------
@@ -86,7 +88,7 @@ open class BaseCreateEntourageFragment
         title_close_button.setOnClickListener { onCloseClicked() }
         title_action_button.setOnClickListener { onValidateClicked() }
         bottom_action_button?.setOnClickListener { onValidateClicked() }
-        create_entourage_category_layout.setOnClickListener { onEditTypeClicked() }
+        create_entourage_category_layout.setOnClickListener { if(!isFromNeo) onEditTypeClicked() }
         create_entourage_position_layout.setOnClickListener { onPositionClicked() }
         create_entourage_title_layout.setOnClickListener { onEditTitleClicked() }
         create_entourage_description_layout.setOnClickListener { onEditDescriptionClicked() }
@@ -94,7 +96,7 @@ open class BaseCreateEntourageFragment
         create_entourage_date_end_layout.setOnClickListener { onEditDateEndClicked() }
         create_entourage_privacy_switch.setOnClickListener { onPrivacySwitchClicked() }
         //To show choice type at launch (if not an event)
-        if (!BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true) && entourageCategory?.isNewlyCreated==true) {
+        if (!isFromNeo && !BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true) && entourageCategory?.isNewlyCreated==true) {
             onEditTypeClicked()
         }
     }
@@ -139,6 +141,8 @@ open class BaseCreateEntourageFragment
     }
 
     private fun onValidateClicked() {
+        if (isFromNeo) { entourageCategory?.isNewlyCreated = false }
+
         if (!isSaving && isValid) {
             if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) {
                 joinRequestTypePublic = create_entourage_privacy_switch?.isChecked ?: false
@@ -334,6 +338,8 @@ open class BaseCreateEntourageFragment
             entourageMetadata = editedEntourage?.metadata ?: entourageMetadata
             groupType = args.getString(KEY_ENTOURAGE_GROUP_TYPE, null)
             entourageCategory = args.getSerializable(EntourageCategoryFragment.KEY_ENTOURAGE_CATEGORY) as EntourageCategory?
+            isFromNeo = args.getBoolean(KEY_ENTOURAGE_FROM_NEO,false)
+
         }
         initializeCategory()
         initializeLocation()
@@ -358,6 +364,10 @@ open class BaseCreateEntourageFragment
         }
         updateFragmentTitle()
         updateCategoryTextView()
+
+        if (isFromNeo) {
+            ui_img_arrow_cat_info?.visibility = View.INVISIBLE
+        }
     }
 
     private fun updateCategoryTextView() {
@@ -716,15 +726,17 @@ open class BaseCreateEntourageFragment
         const val TAG = "social.entourage.android.createentourage"
         protected const val KEY_ENTOURAGE_LOCATION = "social.entourage.android.KEY_ENTOURAGE_LOCATION"
         const val KEY_ENTOURAGE_GROUP_TYPE = "social.entourage.android.KEY_ENTOURAGE_GROUP_TYPE"
+        const val KEY_ENTOURAGE_FROM_NEO = "IS_FROM_NEO"
         private const val VOICE_RECOGNITION_TITLE_CODE = 1
         private const val VOICE_RECOGNITION_DESCRIPTION_CODE = 2
         private const val ADD_HOURS_TO_END_DATE = 3
 
-        fun newInstance(location: LatLng?, groupType: String, category: EntourageCategory?): CreateEntourageFragment {
+        fun newInstance(location: LatLng?, groupType: String, category: EntourageCategory?, isFromNeo:Boolean): CreateEntourageFragment {
             val fragment = CreateEntourageFragment()
             val args = Bundle()
             args.putParcelable(KEY_ENTOURAGE_LOCATION, location)
             args.putString(KEY_ENTOURAGE_GROUP_TYPE, groupType)
+            args.putBoolean(KEY_ENTOURAGE_FROM_NEO,isFromNeo)
             if (category != null) {
                 args.putSerializable(EntourageCategoryFragment.KEY_ENTOURAGE_CATEGORY, category)
             }

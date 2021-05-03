@@ -217,6 +217,7 @@ class EntourageApplication : MultiDexApplication() {
         const val KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN = "isFirstLogin"
         const val KEY_NB_OF_LAUNCH = "nbOfLaunch"
         const val KEY_NO_MORE_DEMAND = "noMoreDemand"
+        const val KEY_HOME_IS_EXPERTMODE = "isExpertMode"
 
         // ----------------------------------
         // MEMBERS

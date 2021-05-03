@@ -1,39 +1,45 @@
 package social.entourage.android.newsfeed.v2
 
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
+import android.content.*
+import android.net.Uri
 import android.os.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.otto.Subscribe
-import social.entourage.android.*
-import social.entourage.android.api.HomeTourArea
-import social.entourage.android.api.model.*
+import kotlinx.android.synthetic.main.fragment_home_expert.*
+import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
+import social.entourage.android.PlusFragment
+import social.entourage.android.R
+import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.Message
+import social.entourage.android.api.model.PushNotificationContent
+import social.entourage.android.api.model.TimestampedObject
+import social.entourage.android.api.model.feed.Announcement
+import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events
-import social.entourage.android.base.BackPressable
-import social.entourage.android.entourage.EntourageDisclaimerFragment
-import social.entourage.android.entourage.category.EntourageCategoryManager
+import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.location.EntLocation
 import social.entourage.android.message.push.PushNotificationManager
-import social.entourage.android.newsfeed.*
+import social.entourage.android.newsfeed.BaseNewsfeedFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tour.encounter.CreateEncounterActivity
+import social.entourage.android.user.edit.place.UserEditActionZoneFragment
+import social.entourage.android.user.edit.place.UserEditActionZoneFragmentCompat
 import timber.log.Timber
 
-
-class NewHomeFeedFragment : BaseNewsfeedFragment(), BackPressable {
+class HomeExpertFragment : BaseNewsfeedFragment() {
 
     private val connection = ServiceConnection()
     private var currentTourUUID = ""
     var isTourPostSend = false
 
+    var adapterHome:NewHomeFeedAdapter? = null
 
     // ----------------------------------
     // LIFECYCLE
@@ -50,164 +56,183 @@ class NewHomeFeedFragment : BaseNewsfeedFragment(), BackPressable {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_new_home_feed, container, false)
+        return inflater.inflate(R.layout.fragment_home_expert, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val fragmentChild:Fragment
-        var isExpertMode:Boolean
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_START_EXPERTFEED)
 
-        val hasExportKey = EntourageApplication.get().sharedPreferences.contains(EntourageApplication.KEY_HOME_IS_EXPERTMODE)
+        ui_bt_tour?.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_EXPERTFEED_Tour)
+            showTour()
+        }
 
-        if (hasExportKey) {
-            isExpertMode = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_HOME_IS_EXPERTMODE,false)
+        if(EntourageApplication.get().me()?.isPro == false) {
+            ui_bt_tour?.visibility = View.INVISIBLE
         }
         else {
-            isExpertMode = false
-            EntourageApplication.me(activity)?.let { user ->
-                isExpertMode = false
-                if (user.isUserTypeNeighbour) {
-                    if (user.isEngaged) {
-                        isExpertMode = true
-                    }
-                }
-                EntourageApplication.get().sharedPreferences.edit()
-                        .putBoolean(EntourageApplication.KEY_HOME_IS_EXPERTMODE, isExpertMode)
-                        .remove("isNavNews")
-                        .remove("navType")
-                        .apply()
-            }
+            ui_bt_tour?.visibility = View.VISIBLE
         }
 
-        EntourageApplication.me(activity)?.let { user ->
-            if (!user.isUserTypeNeighbour) {
-                isExpertMode = true
-            }
-        }
-
-        if (isExpertMode) {
-            fragmentChild = HomeExpertFragment()
-        }
-        else {
-            fragmentChild = HomeNeoMainFragment()
-        }
-
-        val transaction = getChildFragmentManager().beginTransaction()
-        transaction.replace(R.id.ui_container, fragmentChild).commit()
+        setupRecyclerView()
     }
 
-    // Home Neo navigation
-
-    fun goActions() {
-        val fg = HomeNeoActionFragment()
-        val transaction = getChildFragmentManager().beginTransaction()
-        transaction.setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
-        transaction.addToBackStack(HomeNeoActionFragment.TAG)
-        transaction.add(R.id.ui_container, fg).commit()
-    }
-
-    //Actions call from fg
-    fun createAction2(newGroupType: String, newActionGroupType: String, newActionType:String) {
-        createActionFromNeo(newGroupType,newActionGroupType,newActionType)
-        presenter.displayEntourageDisclaimer(newGroupType)
-
-    }
-
-    fun goDetailActions() {
-        val frag = NewsFeedActionsFragment.newInstance(true,true)
-        requireActivity().supportFragmentManager.commit {
-            setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
-            add(R.id.main_fragment, frag,"homeNew")
-            addToBackStack("homeNew")
-        }
-    }
-
-    fun goDetailEvents() {
-        val frag = NewsFeedActionsFragment.newInstance(false,true)
-        requireActivity().supportFragmentManager.commit {
-            setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
-            add(R.id.main_fragment,frag ,"homeNew")
-            addToBackStack("homeNew")
-        }
-    }
-
-    fun goHelp() {
-        val fg = HomeNeoHelpFragment()
-        val transaction = getChildFragmentManager().beginTransaction()
-        transaction.setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
-        transaction.addToBackStack(HomeHelpFragment.TAG)
-        transaction.add(R.id.ui_container, fg).commit()
-    }
-    fun goStreet() {
-        val fg = HomeNeoStreetFragment()
-        val transaction = getChildFragmentManager().beginTransaction()
-        transaction.setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
-        transaction.addToBackStack(HomeNeoStreetFragment.TAG)
-        transaction.add(R.id.ui_container, fg).commit()
-    }
-
-    fun showWebLink(slug:String) {
-        (activity as MainActivity).showWebViewForLinkId(slug)
-    }
-
-    fun goTourStart() {
-        val fg = HomeNeoTourStartFragment()
-        val transaction = getChildFragmentManager().beginTransaction()
-        transaction.setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
-        transaction.addToBackStack(HomeNeoTourStartFragment.TAG)
-        transaction.add(R.id.ui_container, fg).commit()
-    }
-
-    fun goTourList() {
-        val fg = HomeNeoTourListFragment()
-        val transaction = getChildFragmentManager().beginTransaction()
-        transaction.setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
-        transaction.addToBackStack(HomeNeoTourListFragment.TAG)
-        transaction.add(R.id.ui_container, fg).commit()
-    }
-
-    fun goTourSend(tourArea: HomeTourArea) {
-        val fg = HomeNeoTourSendFragment.newInstance(tourArea)
-        val transaction = getChildFragmentManager().beginTransaction()
-        transaction.setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
-        transaction.addToBackStack(HomeNeoTourSendFragment.TAG)
-        transaction.add(R.id.ui_container, fg).commit()
-    }
-
-    override fun onBackPressed(): Boolean {
-        if (childFragmentManager.fragments.size == 1) return false
-        childFragmentManager.popBackStackImmediate()
-        return true
+    override fun onResume() {
+        super.onResume()
+        entService?.updateHomefeed(pagination)
     }
 
     @Subscribe
-    override fun feedItemViewRequested(event: Events.OnFeedItemInfoViewRequestedEvent) {
-        if (isFromNeo) {
-            goDetailActions()
-        }
-        else {
-            super.feedItemViewRequested(event)
-        }
+    fun OnGetHomeFeed(response:HomeCard.OnGetHomeFeed) {
+        parseFeed(response.responseString)
     }
 
-    fun checkNavigation() {
-        if (isNavigation()) {
-            when(navType()) {
-                "action" -> {
+//    @Subscribe
+//    override fun feedItemViewRequested(event: Events.OnFeedItemInfoViewRequestedEvent) {
+//        super.feedItemViewRequested(event)
+//    }
+
+    fun  setupRecyclerView() {
+        val listener = object : HomeViewHolderListener{
+            override fun onDetailClicked(item: Any, position: Int, isFromHeadline: Boolean, isAction: Boolean) {
+                if (item is Announcement) {
+                    val actUrl = item.url ?: return
+                    val logString = "${AnalyticsEvents.ACTION_EXPERTFEED_News_Announce}${position+1}"
+                    AnalyticsEvents.logEvent(logString)
+
+                    val deeplink = DeepLinksManager.findFirstDeeplinkInText(actUrl)
+                    deeplink?.let {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(deeplink))
+                        requireActivity().startActivity(intent)
+                    } ?: run {
+                        val uri = Uri.parse(actUrl)
+                        var _action = Intent.ACTION_VIEW
+                        if (actUrl.contains("mailto:",true)) {_action = Intent.ACTION_SENDTO }
+                        val intent = Intent(_action,uri)
+                        try {
+                            requireActivity().startActivity(intent)
+                        } catch (e: ActivityNotFoundException) {
+                            Timber.e(e)
+                        }
+                    }
+                }
+                else if (item is FeedItem) {
+
+                    var logString = if (isFromHeadline) {
+                        if (isAction) {
+                            AnalyticsEvents.ACTION_EXPERTFEED_News_Action
+                        } else {
+                            AnalyticsEvents.ACTION_EXPERTFEED_News_Event
+                        }
+                    } else {
+                        if (isAction) {
+                            AnalyticsEvents.ACTION_EXPERTFEED_Action
+                        } else {
+                            AnalyticsEvents.ACTION_EXPERTFEED_Event
+                        }
+                    }
+                    logString += "${position + 1}"
+                    AnalyticsEvents.logEvent(logString)
+
+                    feedItemViewRequested(Events.OnFeedItemInfoViewRequestedEvent(item))
+                }
+            }
+
+            override fun onShowDetail(type: HomeCardType,isArrow:Boolean) {
+                var logString = ""
+                if (type == HomeCardType.ACTIONS) {
                     showActions(true)
+                    logString = if (isArrow) {
+                        AnalyticsEvents.ACTION_EXPERTFEED_MoreActionArrow
+                    } else {
+                        AnalyticsEvents.ACTION_EXPERTFEED_MoreAction
+                    }
                 }
-                "event" -> {
+                else if (type == HomeCardType.EVENTS) {
                     showActions(false)
+                    logString = if (isArrow) {
+                        AnalyticsEvents.ACTION_EXPERTFEED_MoreEventArrow
+                    } else {
+                        AnalyticsEvents.ACTION_EXPERTFEED_MoreEvent
+                    }
                 }
-                "tour" -> {
-                    showTour()
+                AnalyticsEvents.logEvent(logString)
+            }
+
+            override fun onShowChangeZone() {
+                val activity = (requireActivity() as? MainActivity) ?: return
+                AnalyticsEvents.logEvent(AnalyticsEvents.Event_EXPERTFEED_ModifyActionZone)
+
+                val listener = object : UserEditActionZoneFragment.FragmentListener {
+                    override fun onUserEditActionZoneFragmentDismiss() {
+                    }
+
+                    override fun onUserEditActionZoneFragmentAddressSaved() {
+                        entService?.updateHomefeed(pagination)
+                    }
+
+                    override fun onUserEditActionZoneFragmentIgnore() {
+                    }
                 }
-                else -> {}
+
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                    val userEditActionZoneFragmentCompat = UserEditActionZoneFragmentCompat.newInstance(null, false)
+                    userEditActionZoneFragmentCompat.addFragmentListener(listener)
+                    userEditActionZoneFragmentCompat.setFromLogin(true)
+                    userEditActionZoneFragmentCompat.show(activity.supportFragmentManager, UserEditActionZoneFragmentCompat.TAG)
+                } else {
+                    val userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null, false)
+                    userEditActionZoneFragment.setupListener(listener)
+                    userEditActionZoneFragment.show(activity.supportFragmentManager, UserEditActionZoneFragment.TAG)
+                }
+            }
+
+            override fun onShowEntourageHelp() {
+                val activity = (requireActivity() as? MainActivity) ?: return
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_EXPERTFEED_HelpDifferent)
+
+                val homeHelp = HomeHelpFragment()
+                homeHelp.show(activity.supportFragmentManager,HomeHelpFragment.TAG)
             }
         }
+
+        adapterHome = NewHomeFeedAdapter(listener)
+        ui_recyclerview?.layoutManager = LinearLayoutManager(context)
+        ui_recyclerview?.adapter = adapterHome
+
+        ui_home_swipeRefresh?.setOnRefreshListener { entService?.updateHomefeed(pagination) }
     }
+
+    fun parseFeed(responseString:String) {
+        pagination.isLoading = false
+        pagination.isRefreshing = false
+        val _arrayTest = HomeCard.parsingFeed(responseString)
+
+        ui_home_swipeRefresh?.isRefreshing = false
+        adapterHome?.updateDatas(_arrayTest)
+    }
+
+//    fun checkNavigation() {
+//        if (isNavigation()) {
+//            when(navType()) {
+//                "action" -> {
+//                    showActions(true)
+//                }
+//                "event" -> {
+//                    showActions(false)
+//                }
+////                "announcement" -> {
+////                    showAnnounces()
+////                }
+//                "tour" -> {
+//                    showTour()
+//                }
+//                else -> {}
+//            }
+//        }
+//    }
 
     fun showActions(isAction:Boolean) {
         requireActivity().supportFragmentManager.commit {
@@ -226,19 +251,19 @@ class NewHomeFeedFragment : BaseNewsfeedFragment(), BackPressable {
         }
     }
 
-    fun isNavigation() : Boolean {
-        val isNav = EntourageApplication.get().sharedPreferences
-                .getBoolean("isNavNews", false)
-
-        return isNav
-    }
-
-    fun navType() : String? {
-        val navType = EntourageApplication.get().sharedPreferences
-                .getString("navType", null)
-
-        return navType
-    }
+//    fun isNavigation() : Boolean {
+//        val isNav = EntourageApplication.get().sharedPreferences
+//                .getBoolean("isNavNews", false)
+//
+//        return isNav
+//    }
+//
+//    fun navType() : String? {
+//        val navType = EntourageApplication.get().sharedPreferences
+//                .getString("navType", null)
+//
+//        return navType
+//    }
 
     fun saveInfos(isNav:Boolean,type:String?) {
         val editor = EntourageApplication.get().sharedPreferences.edit()
@@ -249,7 +274,6 @@ class NewHomeFeedFragment : BaseNewsfeedFragment(), BackPressable {
 
     @Subscribe
     fun checkIntentAction(event: Events.OnCheckIntentActionEvent) {
-        Timber.d("******** ici check ontent actionEvent Start -> ${event.action}")
         if (activity == null) {
             Timber.w("No activity found")
             return
@@ -319,7 +343,7 @@ class NewHomeFeedFragment : BaseNewsfeedFragment(), BackPressable {
 
     /*****
      ** Methods & service for Tour add Encounter
-    *****/
+     *****/
     override fun onAddEncounter() {
         if (presenter.shouldDisplayEncounterDisclaimer()) {
             presenter.displayEncounterDisclaimer()
@@ -369,8 +393,8 @@ class NewHomeFeedFragment : BaseNewsfeedFragment(), BackPressable {
             }
             entService = (service as EntService.LocalBinder).service
             entService?.let {
-                it.registerServiceListener(this@NewHomeFeedFragment)
-                it.registerApiListener(this@NewHomeFeedFragment)
+                it.registerServiceListener(this@HomeExpertFragment)
+                it.registerApiListener(this@HomeExpertFragment)
                 updateFragmentFromService()
                 it.updateHomefeed(pagination)
                 isBound = true
@@ -381,8 +405,8 @@ class NewHomeFeedFragment : BaseNewsfeedFragment(), BackPressable {
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
-            entService?.unregisterServiceListener(this@NewHomeFeedFragment)
-            entService?.unregisterApiListener(this@NewHomeFeedFragment)
+            entService?.unregisterServiceListener(this@HomeExpertFragment)
+            entService?.unregisterApiListener(this@HomeExpertFragment)
             entService = null
             isBound = false
         }
@@ -408,13 +432,9 @@ class NewHomeFeedFragment : BaseNewsfeedFragment(), BackPressable {
 
         fun doUnbindService() {
             if (!isBound) return
-            entService?.unregisterServiceListener(this@NewHomeFeedFragment)
+            entService?.unregisterServiceListener(this@HomeExpertFragment)
             activity?.unbindService(this)
             isBound = false
         }
-    }
-
-    companion object {
-        const val TAG = "social.entourage.android.fragment_home"
     }
 }

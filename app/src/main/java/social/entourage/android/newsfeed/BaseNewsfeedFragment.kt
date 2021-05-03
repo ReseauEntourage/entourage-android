@@ -97,6 +97,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     protected var mapClusterManager: ClusterManager<ClusterItem>? = null
 
+    protected var isFromNeo = false
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -281,7 +282,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             location = longTapCoordinates
             longTapCoordinates = null
         }
-        presenter.createEntourage(location, groupType, entourageCategory)
+        presenter.createEntourage(location, groupType, entourageCategory,isFromNeo)
     }
 
     protected fun refreshFeed() {
@@ -567,6 +568,13 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         groupType = newGroupType
         entourageCategory?.isNewlyCreated = true
         displayEntourageDisclaimer()
+    }
+
+    fun createActionFromNeo(newGroupType: String, newActionGroupType: String,newActionType:String) {
+        entourageCategory = EntourageCategoryManager.findCategory(newActionGroupType,newActionType)
+        groupType = newGroupType
+        entourageCategory?.isNewlyCreated = true
+        isFromNeo = true
     }
 
     fun createAction(newEntourageGroupType: String) {
