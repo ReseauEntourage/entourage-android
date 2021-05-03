@@ -29,6 +29,20 @@ class PreOnboardingTest {
     @JvmField
     var activityRule = ActivityScenarioRule(PreOnboardingStartActivity::class.java)
 
+    private val nextButton = onView(
+            allOf(withId(R.id.ui_button_next), withText(R.string.pre_onboard_button_next),
+                    childAtPosition(
+                            childAtPosition(
+                                    withId(android.R.id.content),
+                                    0),
+                            9),
+                    isDisplayed()))
+
+    private val titleTv = onView(
+            allOf(withId(R.id.ui_tv_title),
+                    withParent(withParent(withId(android.R.id.content))),
+                    isDisplayed()))
+
     @Before
     fun setUp() {
         checkNoUserIsLoggedIn()
@@ -50,33 +64,6 @@ class PreOnboardingTest {
     }
 
     @Test
-    fun fullPreOnboardingTest() {
-        val nextButton = onView(
-                allOf(withId(R.id.ui_button_next), withText(R.string.pre_onboard_button_next),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                9),
-                        isDisplayed()))
-
-        val titleTv = onView(
-                allOf(withId(R.id.ui_tv_title),
-                        withParent(withParent(withId(android.R.id.content))),
-                        isDisplayed()))
-
-        nextButton.perform(click())
-        titleTv.check(matches(withText(R.string.pre_onboard_tutorial_title2)))
-        nextButton.perform(click())
-        titleTv.check(matches(withText(R.string.pre_onboard_tutorial_title3)))
-        nextButton.perform(click())
-        titleTv.check(matches(withText(R.string.pre_onboard_tutorial_title4)))
-        nextButton.perform(click())
-
-        checkSignupAndLoginButtonsExist()
-    }
-
-    @Test
     fun skipPreOnboardingTest() {
         val connectButton = onView(
                 allOf(withId(R.id.ui_button_connect), withText(R.string.pre_onboard_button_connect),
@@ -89,6 +76,51 @@ class PreOnboardingTest {
         connectButton.perform(click())
 
         checkSignupAndLoginButtonsExist()
+    }
+
+    @Test
+    fun skipPreOnboardingAtPage2Test() {
+        checkPage2()
+        skipPreOnboardingTest()
+    }
+
+    @Test
+    fun skipPreOnboardingAtPage3Test() {
+        checkPage2()
+        checkPage3()
+        skipPreOnboardingTest()
+    }
+
+    @Test
+    fun skipPreOnboardingAtPage4Test() {
+        checkPage2()
+        checkPage3()
+        checkPage4()
+        skipPreOnboardingTest()
+    }
+
+    @Test
+    fun fullPreOnboardingTest() {
+        checkPage2()
+        checkPage3()
+        checkPage4()
+        nextButton.perform(click())
+        checkSignupAndLoginButtonsExist()
+    }
+
+    private fun checkPage2() {
+        nextButton.perform(click())
+        titleTv.check(matches(withText(R.string.pre_onboard_tutorial_title2)))
+    }
+
+    private fun checkPage3() {
+        nextButton.perform(click())
+        titleTv.check(matches(withText(R.string.pre_onboard_tutorial_title3)))
+    }
+
+    private fun checkPage4() {
+        nextButton.perform(click())
+        titleTv.check(matches(withText(R.string.pre_onboard_tutorial_title4)))
     }
 
     private fun checkSignupAndLoginButtonsExist() {
