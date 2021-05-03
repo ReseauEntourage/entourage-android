@@ -92,7 +92,7 @@ class OnboardingEmailPwdFragment : Fragment() {
     //**********//**********//**********
 
     private fun updateButtonNext(isFromEmail:Boolean) {
-        if (ui_onboard_email_pwd_et_mail.text.toString().isValidEmail()) {
+        if (ui_onboard_email_pwd_et_mail?.text.toString().isValidEmail()) {
             callback?.updateButtonNext(true)
             callback?.updateEmailPwd(ui_onboard_email_pwd_et_mail.text.toString(),null,null)
 

@@ -79,7 +79,7 @@ class LoginEmailFragment : Fragment() {
     //******************************
 
     private fun updateButtonNext() {
-        if (ui_onboard_email_pwd_et_mail.text.toString().isValidEmail()) {
+        if (ui_onboard_email_pwd_et_mail?.text.toString().isValidEmail()) {
             callback?.updateButtonNext(true)
             callback?.updateEmailPwd(ui_onboard_email_pwd_et_mail.text.toString())
         }
