@@ -5,8 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.fragment_home_neo_main.*
+import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.tools.Utils
 
@@ -29,6 +32,32 @@ class HomeNeoMainFragment : Fragment() {
 
         ui_layout_button_neo_2?.setOnClickListener {
             (parentFragment as? NewHomeFeedFragment)?.goActions()
+        }
+
+        checkProfile()
+    }
+
+    fun checkProfile() {
+        val isAlreadyInfoNeo = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_HOME_IS_ALREADYINFO_NEO,false)
+
+        if (!isAlreadyInfoNeo) {
+            EntourageApplication.get().sharedPreferences.edit()
+                    .putBoolean(EntourageApplication.KEY_HOME_IS_ALREADYINFO_NEO,true).apply()
+
+            EntourageApplication.me(activity)?.let { user ->
+                if (user.isUserTypeNeighbour && !user.isEngaged) {
+                    AlertDialog.Builder(requireContext())
+                            .setTitle(R.string.home_neo_pop_info_title)
+                            .setMessage(R.string.home_neo_pop_info_message)
+                            .setNegativeButton(R.string.home_neo_pop_info_button_ok) { _,_ ->}
+                            .setPositiveButton(R.string.home_neo_pop_info_button_profil) { dialog, _ ->
+                                dialog.dismiss()
+                                (activity as? MainActivity)?.showProfileTab()
+                            }
+                            .create()
+                            .show()
+                }
+            }
         }
     }
 }
