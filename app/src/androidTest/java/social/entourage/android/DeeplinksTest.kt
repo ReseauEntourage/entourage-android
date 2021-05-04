@@ -185,7 +185,7 @@ class DeepLinkingTestEvents : DeepLinkingTest() {
     private fun connectedEventsDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
-        Espresso.onView(ViewMatchers.withText(R.string.map_tab_events)).check(ViewAssertions.matches(ViewMatchers.isSelected()))
+        Espresso.onView(ViewMatchers.withText(R.string.home_title_actions)).check(ViewAssertions.matches(ViewMatchers.isSelected()))
     }
 }
 
@@ -208,6 +208,7 @@ class DeepLinkingTestFeed : DeepLinkingTest() {
     private fun connectedFeedDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
+        Thread.sleep(1000) // We must wait for textview to appear
         Espresso.onView(ViewMatchers.withText(R.string.home_title_headlines)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 }
