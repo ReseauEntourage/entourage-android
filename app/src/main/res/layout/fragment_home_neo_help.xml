@@ -121,6 +121,7 @@
                     android:layout_marginTop="6dp"
                     android:layout_marginEnd="20dp"
                     android:text="@string/home_neo_help_cell1_description"
+                    android:textColor="@color/black"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/textView37"
@@ -151,7 +152,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/bg_button_rounded_pre_onboard_orange_stroke">
+                android:background="@drawable/bg_button_rounded_orange_stroke_1px">
 
                 <ImageView
                     android:id="@+id/imageView251"
@@ -185,6 +186,7 @@
                     android:layout_marginTop="6dp"
                     android:layout_marginEnd="20dp"
                     android:text="@string/home_neo_help_cell2_description"
+                    android:textColor="@color/black"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/textView371"
@@ -215,7 +217,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/bg_button_rounded_trans_orange_stroke">
+                android:background="@drawable/bg_button_rounded_orange_stroke_1px">
 
                 <ImageView
                     android:id="@+id/imageView250"
@@ -249,6 +251,7 @@
                     android:layout_marginTop="6dp"
                     android:layout_marginEnd="20dp"
                     android:text="@string/home_neo_help_cell3_description"
+                    android:textColor="@color/black"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/textView370"
