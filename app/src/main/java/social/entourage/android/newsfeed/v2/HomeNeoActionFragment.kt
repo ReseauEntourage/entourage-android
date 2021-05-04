@@ -11,6 +11,7 @@ import social.entourage.android.Constants
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.entourage.category.EntourageCategory
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class HomeNeoActionFragment : Fragment() {
 
@@ -28,33 +29,44 @@ class HomeNeoActionFragment : Fragment() {
         }
 
         ui_home_action_button_1?.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_NEOFEEDACT_Needs)
             (parentFragment as? NewHomeFeedFragment)?.goDetailActions()
         }
         ui_home_action_button_2?.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_NEOFEEDACT_Events)
             (parentFragment as? NewHomeFeedFragment)?.goDetailEvents()
         }
 
         ui_home_action_button_3?.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_NEOFEEDACT_OfferMaterial)
             (parentFragment as? NewHomeFeedFragment)?.createAction2(BaseEntourage.GROUPTYPE_ACTION,
-                    BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION,EntourageCategory.CATEGORY_MATHELP)
+                    BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION,EntourageCategory.CATEGORY_MATHELP,
+                    AnalyticsEvents.ACTION_NEOFEEDACT_NameMaterial)
             //Faire un don materiel -- "contrib - mat_help
         }
         ui_home_action_button_4?.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_NEOFEEDACT_OfferService)
             (parentFragment as? NewHomeFeedFragment)?.createAction2(BaseEntourage.GROUPTYPE_ACTION,
-                    BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION, EntourageCategory.CATEGORY_RESOURCE)
+                    BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION, EntourageCategory.CATEGORY_RESOURCE,
+                    AnalyticsEvents.ACTION_NEOFEEDACT_NameService)
             //Offrir un service ---contrib - resource
         }
         ui_home_action_button_5?.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_NEOFEEDACT_RelayNeed)
             (parentFragment as? NewHomeFeedFragment)?.createAction2(BaseEntourage.GROUPTYPE_ACTION,
-                    BaseEntourage.GROUPTYPE_ACTION_DEMAND, EntourageCategory.CATEGORY_MATHELP)
+                    BaseEntourage.GROUPTYPE_ACTION_DEMAND, EntourageCategory.CATEGORY_MATHELP,
+                    AnalyticsEvents.ACTION_NEOFEEDACT_NameNeeds)
             //Un don matériel --- ask_for_help - mat_help
         }
         ui_home_action_button_6?.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_NEOFEEDACT_Coffee)
             (parentFragment as? NewHomeFeedFragment)?.createAction2(BaseEntourage.GROUPTYPE_ACTION,
-                    BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION, EntourageCategory.CATEGORY_SOCIAL)
+                    BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION, EntourageCategory.CATEGORY_SOCIAL,
+                    AnalyticsEvents.ACTION_NEOFEEDACT_NameCoffee)
             //Partager un repas, un café - contrib - social
         }
         ui_button_show_help?.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_NEOFEEDACT_How1Step)
             (parentFragment as? NewHomeFeedFragment)?.showWebLink(Constants.SLUG_HOME_ACTION_HELP)
         }
     }

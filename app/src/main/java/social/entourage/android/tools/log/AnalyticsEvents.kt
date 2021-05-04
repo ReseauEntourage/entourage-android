@@ -495,6 +495,54 @@ object AnalyticsEvents {
     const val ACTION_EXPERTFEED_HelpDifferent = "Action__ExpertFeed__HelpDifferently"
 
 
+    /*************
+    Feed Expert NEO
+     *************/
+    const val VIEW_START_NeoFeed = "View__Start__NeoFeed"
+
+//First step
+    const val ACTION_NEOFEED_FirstStep = "Action__NeoFeed__FirstStep"
+
+    const val ACTION_NEOFEEDFIRST_Training = "Action__NeoFeedFirst__Training"
+    const val ACTION_NEOFEEDFIRST_OnlineTraining = "Action__NeoFeedFirst__OnlineTraining"
+    const val ACTION_NEOFEEDFIRST_SCBonjour = "Action__NeoFeedFirst__SCBonjour"
+
+    const val ACTION_NEOFEEDFIRST_Tour = "Action__NeoFeedFirst__Tour"
+    const val ACTION_NEOFEEDFIRST_GoTour = "Action__NeoFeedFirst__GoTour"
+
+    const val ACTION_NEOFEEDFIRST_TourCity = "Action__NeoFeedFirst__Tour%s" //***
+    const val ACTION_NEOFEEDFIRST_Send_TourCity = "Action__NeoFeedFirst__Send_Tour%s" //***
+
+    const val ACTION_NEOFEEDFIRST_Events = "Action__NeoFeedFirst__Events"
+
+//Act now
+    const val ACTION_NEOFEED_ActNow = "Action__NeoFeed__ActNow"
+
+    const val ACTION_NEOFEEDACT_Needs = "Action__NeoFeedAct__Needs"
+    const val ACTION_NEOFEEDACT_Events = "Action__NeoFeedAct__Events"
+
+    const val ACTION_NEOFEEDACT_OfferMaterial = "Action__NeoFeedAct__OfferMaterial"
+    const val ACTION_NEOFEEDACT_OfferService = "Action__NeoFeedAct__OfferService"
+    const val ACTION_NEOFEEDACT_RelayNeed = "Action__NeoFeedAct__RelayNeed"
+    const val ACTION_NEOFEEDACT_Coffee = "Action__NeoFeedAct__Coffee"
+
+    const val ACTION_NEOFEEDACT_NameMaterial = "Material"
+    const val ACTION_NEOFEEDACT_NameService = "Service"
+    const val ACTION_NEOFEEDACT_NameNeeds = "Needs"
+    const val ACTION_NEOFEEDACT_NameCoffee = "Coffee"
+
+    const val ACTION_NEOFEEDACT_Send_X = "Action__NeoFeedAct__Send_%s"
+    const val ACTION_NEOFEEDACT_Cancel_X = "Action__NeoFeedAct__Cancel_%s"
+
+    const val ACTION_NEOFEEDACT_AcceptCGU_X = "Action__NeoFeedAct__AcceptCGU_%s"
+    const val ACTION_NEOFEEDACT_CancelCGU_X = "Action__NeoFeedAct__CancelCGU_%s"
+
+    const val ACTION_NEOFEEDACT_How1Step = "Action__NeoFeedAct__How1Step"
+
+    const val ACTION_SWITCH_NeoToExpert = "Action__Switch__NeoToExpert"
+    const val ACTION_SWITCH_ExpertToNeo = "Action__Switch__ExpertToNeo"
+    
+
     var TAG = AnalyticsEvents::class.java.simpleName
 
     fun logEvent(event: String) {

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_home_neo_tour_start.*
 import kotlinx.android.synthetic.main.fragment_home_neo_tour_start.ui_bt_back
 import social.entourage.android.R
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class HomeNeoTourStartFragment : Fragment() {
 
@@ -25,6 +26,7 @@ class HomeNeoTourStartFragment : Fragment() {
 
         ui_home_neo_button_tour_start?.setOnClickListener {
             (parentFragment as? NewHomeFeedFragment)?.goTourList()
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_NEOFEEDFIRST_GoTour)
         }
     }
 

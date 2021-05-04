@@ -17,6 +17,7 @@ import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.TourAreaApi
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.isValidEmail
+import social.entourage.android.tools.log.AnalyticsEvents
 
 private const val ARG_PARAM1 = "param1"
 
@@ -83,6 +84,8 @@ class HomeNeoTourSendFragment : Fragment() {
     //Network
     fun sendTourRequest() {
         tourArea?.let { it ->
+            val tagAnalytic = String.format(AnalyticsEvents.ACTION_NEOFEEDFIRST_Send_TourCity,it.postalCode)
+            AnalyticsEvents.logEvent(tagAnalytic)
             TourAreaApi.getInstance().sendTourAreaRequest(it.areaId) { isOk, error ->
                 if (isOk) {
                     ui_view_email?.visibility = View.INVISIBLE

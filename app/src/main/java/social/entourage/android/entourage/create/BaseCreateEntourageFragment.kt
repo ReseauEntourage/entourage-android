@@ -71,6 +71,7 @@ open class BaseCreateEntourageFragment
     private var isStartDateEdited = true
 
     protected var isFromNeo = false
+    protected var tagAnalyticName = ""
     // ----------------------------------
     // Lifecycle
     // ----------------------------------
@@ -137,6 +138,10 @@ open class BaseCreateEntourageFragment
     // Interactions handling
     // ----------------------------------
     fun onCloseClicked() {
+        if (isFromNeo) {
+            val _tag = String.format(AnalyticsEvents.ACTION_NEOFEEDACT_Cancel_X,tagAnalyticName)
+            AnalyticsEvents.logEvent(_tag)
+        }
         dismiss()
     }
 
@@ -150,6 +155,10 @@ open class BaseCreateEntourageFragment
             if (editedEntourage != null) {
                 saveEditedEntourage()
             } else {
+                if (isFromNeo) {
+                    val _tag = String.format(AnalyticsEvents.ACTION_NEOFEEDACT_Send_X,tagAnalyticName)
+                    AnalyticsEvents.logEvent(_tag)
+                }
                 createEntourage()
             }
         }
@@ -339,6 +348,7 @@ open class BaseCreateEntourageFragment
             groupType = args.getString(KEY_ENTOURAGE_GROUP_TYPE, null)
             entourageCategory = args.getSerializable(EntourageCategoryFragment.KEY_ENTOURAGE_CATEGORY) as EntourageCategory?
             isFromNeo = args.getBoolean(KEY_ENTOURAGE_FROM_NEO,false)
+            tagAnalyticName = args.getString(KEY_ENTOURAGE_TAG_ANALYTICS,"")
 
         }
         initializeCategory()
@@ -727,16 +737,18 @@ open class BaseCreateEntourageFragment
         protected const val KEY_ENTOURAGE_LOCATION = "social.entourage.android.KEY_ENTOURAGE_LOCATION"
         const val KEY_ENTOURAGE_GROUP_TYPE = "social.entourage.android.KEY_ENTOURAGE_GROUP_TYPE"
         const val KEY_ENTOURAGE_FROM_NEO = "IS_FROM_NEO"
+        const val KEY_ENTOURAGE_TAG_ANALYTICS = "TAG_ANALYTICS"
         private const val VOICE_RECOGNITION_TITLE_CODE = 1
         private const val VOICE_RECOGNITION_DESCRIPTION_CODE = 2
         private const val ADD_HOURS_TO_END_DATE = 3
 
-        fun newInstance(location: LatLng?, groupType: String, category: EntourageCategory?, isFromNeo:Boolean): CreateEntourageFragment {
+        fun newInstance(location: LatLng?, groupType: String, category: EntourageCategory?, isFromNeo:Boolean,tagAnalyticName:String): CreateEntourageFragment {
             val fragment = CreateEntourageFragment()
             val args = Bundle()
             args.putParcelable(KEY_ENTOURAGE_LOCATION, location)
             args.putString(KEY_ENTOURAGE_GROUP_TYPE, groupType)
             args.putBoolean(KEY_ENTOURAGE_FROM_NEO,isFromNeo)
+            args.putString(KEY_ENTOURAGE_TAG_ANALYTICS,tagAnalyticName)
             if (category != null) {
                 args.putSerializable(EntourageCategoryFragment.KEY_ENTOURAGE_CATEGORY, category)
             }

@@ -12,6 +12,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.tools.Utils
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class HomeNeoMainFragment : Fragment() {
 
@@ -28,13 +29,17 @@ class HomeNeoMainFragment : Fragment() {
 
         ui_layout_button_neo_1?.setOnClickListener {
             (parentFragment as? NewHomeFeedFragment)?.goHelp()
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_NEOFEED_FirstStep)
         }
 
         ui_layout_button_neo_2?.setOnClickListener {
             (parentFragment as? NewHomeFeedFragment)?.goActions()
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_NEOFEED_ActNow)
         }
 
         checkProfile()
+
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_START_NeoFeed)
     }
 
     fun checkProfile() {
