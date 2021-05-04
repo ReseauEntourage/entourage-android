@@ -473,6 +473,10 @@ class MainActivity : BaseSecuredActivity(),
         presenter.displayTutorial(forced)
     }
 
+    fun showProfileTab() {
+        selectNavigationTab(navigationDataSource.profilTabIndex)
+    }
+
     private fun initializePushNotifications() {
         val notificationsEnabled = get().sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, true)
         if (notificationsEnabled) {
@@ -506,6 +510,7 @@ class MainActivity : BaseSecuredActivity(),
         editor.remove(EntourageApplication.KEY_NO_MORE_DEMAND)
         editor.putInt(EntourageApplication.KEY_NB_OF_LAUNCH,0)
         editor.remove(EntourageApplication.KEY_HOME_IS_EXPERTMODE)
+        editor.remove(EntourageApplication.KEY_HOME_IS_ALREADYINFO_NEO)
         editor.apply()
         super.logout()
     }
