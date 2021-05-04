@@ -491,7 +491,12 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             showNewsfeedBottomView(if (selectedTab == NewsfeedTabItem.ALL_TAB) newNewsFeeds.size < pagination.itemsPerPage else newsfeedAdapter?.dataItemCount == 0)
         }
         if (newsfeedAdapter?.dataItemCount == 0) {
+            if (isFromNeo) {
+                displayListWithMapHeader()
+                return
+            }
             if (!pagination.isRefreshing) {
+                isFullMapShown = false
                 displayFullMap()
             }
         } else {

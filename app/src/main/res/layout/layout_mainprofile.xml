@@ -123,7 +123,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:text="Mode premiers pas"
+                            android:text="@string/setting_home_button_type"
                             android:textColor="@color/black"
                             android:textSize="17sp"
                             app:layout_constraintBottom_toBottomOf="parent"

@@ -396,7 +396,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/bg_button_rounded_pre_onboard_orange_stroke">
+                android:background="@drawable/bg_button_rounded_orange_stroke_1px">
 
                 <TextView
                     android:id="@+id/textView371"
@@ -419,6 +419,7 @@
                     android:layout_marginTop="6dp"
                     android:layout_marginEnd="20dp"
                     android:text="@string/home_neo_action_bottom_description"
+                    android:textColor="@color/black"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"

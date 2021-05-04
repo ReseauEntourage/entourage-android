@@ -79,6 +79,7 @@
                     android:layout_marginTop="6dp"
                     android:layout_marginEnd="20dp"
                     android:text="@string/home_neo_cell1_description"
+                    android:textColor="@color/black"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/textView37"
@@ -109,7 +110,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/bg_button_rounded_white_stroke_grey">
+                android:background="@drawable/bg_button_rounded_orange_stroke_1px">
 
                 <ImageView
                     android:id="@+id/imageView250"
@@ -143,6 +144,7 @@
                     android:layout_marginTop="6dp"
                     android:layout_marginEnd="20dp"
                     android:text="@string/home_neo_cell2_description"
+                    android:textColor="@color/black"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/textView370"
@@ -155,12 +157,12 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="20dp"
-                    android:background="@drawable/bg_button_accent_rounded"
+                    android:background="@drawable/bg_button_rounded_pre_onboard_orange_stroke"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_horizontal|center_vertical"
                     android:text="@string/home_neo_cell2_button"
                     android:textAllCaps="true"
-                    android:textColor="@color/white"
+                    android:textColor="@color/accent"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
