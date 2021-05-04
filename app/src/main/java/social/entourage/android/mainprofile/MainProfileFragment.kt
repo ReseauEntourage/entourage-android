@@ -174,6 +174,12 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
         if (user.isUserTypeNeighbour) {
             ui_layout_change_mode?.visibility = View.VISIBLE
             ui_switch_change_mode?.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked) {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_SWITCH_ExpertToNeo)
+                }
+                else {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_SWITCH_NeoToExpert)
+                }
                 EntourageApplication.get().sharedPreferences.edit()
                         .putBoolean(EntourageApplication.KEY_HOME_IS_EXPERTMODE, !isChecked)
                         .remove("isNavNews")

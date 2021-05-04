@@ -98,6 +98,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     protected var mapClusterManager: ClusterManager<ClusterItem>? = null
 
     protected var isFromNeo = false
+    protected var tagNameAnalytic = ""
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -282,7 +283,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             location = longTapCoordinates
             longTapCoordinates = null
         }
-        presenter.createEntourage(location, groupType, entourageCategory,isFromNeo)
+        presenter.createEntourage(location, groupType, entourageCategory,isFromNeo,tagNameAnalytic)
     }
 
     protected fun refreshFeed() {
@@ -570,11 +571,12 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         displayEntourageDisclaimer()
     }
 
-    fun createActionFromNeo(newGroupType: String, newActionGroupType: String,newActionType:String) {
+    fun createActionFromNeo(newGroupType: String, newActionGroupType: String,newActionType:String,tagNameAnalytic:String) {
         entourageCategory = EntourageCategoryManager.findCategory(newActionGroupType,newActionType)
         groupType = newGroupType
         entourageCategory?.isNewlyCreated = true
         isFromNeo = true
+        this.tagNameAnalytic = tagNameAnalytic
     }
 
     fun createAction(newEntourageGroupType: String) {

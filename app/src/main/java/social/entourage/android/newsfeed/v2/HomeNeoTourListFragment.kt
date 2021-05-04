@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.layout_cell_home_neo_tour.view.*
 import social.entourage.android.R
 import social.entourage.android.api.HomeTourArea
 import social.entourage.android.api.TourAreaApi
+import social.entourage.android.tools.log.AnalyticsEvents
 
 
 class HomeNeoTourListFragment : Fragment() {
@@ -35,6 +36,9 @@ class HomeNeoTourListFragment : Fragment() {
         adapter = HomeNeoTourListAdapter(datas) { position ->
             val tourArea = datas[position]
             (parentFragment as? NewHomeFeedFragment)?.goTourSend(tourArea)
+
+            val tagAnalytic = String.format(AnalyticsEvents.ACTION_NEOFEEDFIRST_TourCity,tourArea.postalCode)
+            AnalyticsEvents.logEvent(tagAnalytic)
         }
 
         ui_recyclerview?.adapter = adapter

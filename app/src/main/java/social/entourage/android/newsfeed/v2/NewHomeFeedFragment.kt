@@ -109,10 +109,9 @@ class NewHomeFeedFragment : BaseNewsfeedFragment(), BackPressable {
     }
 
     //Actions call from fg
-    fun createAction2(newGroupType: String, newActionGroupType: String, newActionType:String) {
-        createActionFromNeo(newGroupType,newActionGroupType,newActionType)
-        presenter.displayEntourageDisclaimer(newGroupType)
-
+    fun createAction2(newGroupType: String, newActionGroupType: String, newActionType:String,tagNameAnalytic:String) {
+        createActionFromNeo(newGroupType,newActionGroupType,newActionType,tagNameAnalytic)
+        presenter.displayEntourageDisclaimer(newGroupType,tagNameAnalytic,true)
     }
 
     fun goDetailActions() {
