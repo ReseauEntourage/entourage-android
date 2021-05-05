@@ -212,9 +212,9 @@ class MainActivity : BaseSecuredActivity(),
             updateAnalyticsInfo()
         }
         refreshBadgeCount()
-        intent?.action?.let {
-            action ->
-            EntBus.post(OnCheckIntentActionEvent(action, intent.extras)) }
+        intent?.action?.let { action ->
+            EntBus.post(OnCheckIntentActionEvent(action, intent.extras))
+        }
       //  checkOnboarding()
     }
 

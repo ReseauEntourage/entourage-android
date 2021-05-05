@@ -1,7 +1,6 @@
 package social.entourage.android.tools.view
 
 import android.annotation.TargetApi
-import android.app.PendingIntent
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -29,7 +28,6 @@ import androidx.browser.customtabs.CustomTabsIntent.SHARE_STATE_ON
 import androidx.browser.customtabs.CustomTabsService.ACTION_CUSTOM_TABS_CONNECTION
 import androidx.core.view.GestureDetectorCompat
 import kotlinx.android.synthetic.main.fragment_webview.*
-import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
 import java.util.*
