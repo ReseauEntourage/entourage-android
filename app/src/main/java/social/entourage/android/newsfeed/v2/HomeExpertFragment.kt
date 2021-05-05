@@ -272,64 +272,6 @@ class HomeExpertFragment : BaseNewsfeedFragment() {
         editor.apply()
     }
 
-    @Subscribe
-    fun checkIntentAction(event: Events.OnCheckIntentActionEvent) {
-        if (activity == null) {
-            Timber.w("No activity found")
-            return
-        }
-        checkAction(event.action)
-        val content = (event.extras?.getSerializable(PushNotificationManager.PUSH_MESSAGE) as? Message)?.content
-                ?: return
-        when (event.action) {
-            PushNotificationContent.TYPE_NEW_CHAT_MESSAGE,
-            PushNotificationContent.TYPE_NEW_JOIN_REQUEST,
-            PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED -> if (content.isTourRelated) {
-                displayChosenFeedItem(content.joinableUUID, TimestampedObject.TOUR_CARD)
-            } else if (content.isEntourageRelated) {
-                displayChosenFeedItem(content.joinableUUID, TimestampedObject.ENTOURAGE_CARD)
-            }
-            PushNotificationContent.TYPE_ENTOURAGE_INVITATION -> content.extra?.let { extra ->
-                displayChosenFeedItem(extra.entourageId.toString(), TimestampedObject.ENTOURAGE_CARD, extra.invitationId.toLong())
-            }
-            PushNotificationContent.TYPE_INVITATION_STATUS -> content.extra?.let {
-                if (content.isEntourageRelated || content.isTourRelated) {
-                    displayChosenFeedItem(content.joinableUUID, if (content.isTourRelated) TimestampedObject.TOUR_CARD else TimestampedObject.ENTOURAGE_CARD)
-                }
-            }
-        }
-    }
-
-    fun checkAction(action: String) {
-        when (action) {
-            PlusFragment.KEY_CREATE_CONTRIBUTION -> createAction(BaseEntourage.GROUPTYPE_ACTION, BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)
-            PlusFragment.KEY_CREATE_DEMAND -> createAction(BaseEntourage.GROUPTYPE_ACTION, BaseEntourage.GROUPTYPE_ACTION_DEMAND)
-            PlusFragment.KEY_CREATE_OUTING -> createAction(BaseEntourage.GROUPTYPE_OUTING)
-            "android.intent.action.MAIN", "android.intent.action.VIEW" -> {}
-            else -> {
-                //Use for Tour
-                if (isTourPostSend) return
-
-                val frag = ToursFragment.newInstance()
-                requireActivity().supportFragmentManager.commit {
-                    add(R.id.main_fragment, frag,"homeNew")
-                    addToBackStack("homeNew")
-                    saveInfos(true,"tour")
-
-                    isTourPostSend = true
-                    val handler = Handler(Looper.getMainLooper())
-                    handler.postDelayed({
-                        EntBus.post(Events.OnCheckIntentActionEvent(action, null))
-                        val _handler = Handler(Looper.getMainLooper())
-                        _handler.postDelayed({
-                            isTourPostSend = false
-                        }, 2000)
-                    }, 1000)
-                }
-            }
-        }
-    }
-
     //To Handle deeplink for Event
     override fun onShowEvents() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEED_SHOWEVENTS)
