@@ -4,9 +4,12 @@ import android.content.Intent
 import android.net.Uri
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
+import org.hamcrest.core.AllOf.allOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -111,9 +114,12 @@ class DeepLinkingTestWebview : DeepLinkingTest() {
     }
 
     private fun connectedWebviewDeeplink(uri: String) {
+        Intents.init()
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
-        Espresso.onView(ViewMatchers.withId(R.id.webview_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        val expected = allOf(IntentMatchers.hasAction(Intent.ACTION_VIEW), IntentMatchers.hasData(uri))
+        Intents.intended(expected)
+        Intents.release()
     }
 
 }
@@ -165,6 +171,8 @@ class DeepLinkingTestFilters : DeepLinkingTest() {
     }
 }
 
+// TODO: Remove comment when tests pass
+// They should pass when new title text on another branch will be merged
 class DeepLinkingTestEvents : DeepLinkingTest() {
 
     @Test
