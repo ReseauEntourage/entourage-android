@@ -420,7 +420,7 @@ class MainActivity : BaseSecuredActivity(),
             else {
                 if (tag.equals(BaseNewsfeedFragment.TAG)) {
                     if (supportFragmentManager.fragments.first() != null && (supportFragmentManager.fragments.first() is NewHomeFeedFragment) ) {
-                        (supportFragmentManager.fragments.first() as NewHomeFeedFragment).checkNavigation()
+                            (supportFragmentManager.fragments.first() as NewHomeFeedFragment).checkNavigation()
                     }
                 }
             }

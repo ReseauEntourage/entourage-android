@@ -297,7 +297,7 @@ open class BaseCreateEntourageFragment
         Toast.makeText(
                 activity,
                 if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) R.string.outing_create_ok else R.string.entourage_create_ok,
-                Toast.LENGTH_SHORT
+                Toast.LENGTH_LONG
         ).show()
         try {
             dismiss()
