@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
@@ -27,58 +28,119 @@ class SignUpTest {
     @JvmField
     var activityRule = ActivityScenarioRule(OnboardingMainActivity::class.java)
 
+    val firstNameEt = onView(
+            allOf(withId(R.id.ui_onboard_names_et_firstname),
+                    childAtPosition(
+                            allOf(withId(R.id.onboard_names_mainlayout),
+                                    childAtPosition(
+                                            withId(R.id.ui_container),
+                                            0)),
+                            2),
+                    isDisplayed()))
+
+    val lastNameEt = onView(
+            allOf(withId(R.id.ui_onboard_names_et_lastname),
+                    childAtPosition(
+                            allOf(withId(R.id.onboard_names_mainlayout),
+                                    childAtPosition(
+                                            withId(R.id.ui_container),
+                                            0)),
+                            3),
+                    isDisplayed()))
+
+    val askPhoneNumberTv = onView(
+            allOf(withId(R.id.ui_onboard_phone_tv_description),
+                    withParent(allOf(withId(R.id.onboard_phone_mainlayout))),
+                    isDisplayed()))
+
+    val phoneNumberEt = onView(
+            allOf(withId(R.id.ui_onboard_phone_et_phone),
+                    childAtPosition(
+                            allOf(withId(R.id.onboard_phone_mainlayout),
+                                    childAtPosition(
+                                            withId(R.id.ui_container),
+                                            0)),
+                            3),
+                    isDisplayed()))
+
+    val inputCodeTitleTv = onView(allOf(withId(R.id.ui_onboard_code_tv_title), isDisplayed()))
+
+    val nextButton = onView(
+            allOf(withId(R.id.ui_bt_next),
+                    childAtPosition(
+                            childAtPosition(
+                                    withId(android.R.id.content),
+                                    0),
+                            3),
+                    isDisplayed()))
+
     @Test
-    fun onboardingMainActivityTest() {
-        val firstNameEt = onView(
-                allOf(withId(R.id.ui_onboard_names_et_firstname),
-                        childAtPosition(
-                                allOf(withId(R.id.onboard_names_mainlayout),
-                                        childAtPosition(
-                                                withId(R.id.ui_container),
-                                                0)),
-                                2),
-                        isDisplayed()))
+    fun validFirstNameAndLastNameTest() {
         firstNameEt.perform(replaceText("Jean"), closeSoftKeyboard())
-
-        val lastNameEt = onView(
-                allOf(withId(R.id.ui_onboard_names_et_lastname),
-                        childAtPosition(
-                                allOf(withId(R.id.onboard_names_mainlayout),
-                                        childAtPosition(
-                                                withId(R.id.ui_container),
-                                                0)),
-                                3),
-                        isDisplayed()))
         lastNameEt.perform(replaceText("Dupont"), closeSoftKeyboard())
-
-        val nextButton = onView(
-                allOf(withId(R.id.ui_bt_next),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                3),
-                        isDisplayed()))
         nextButton.perform(click())
 
-        val askPhoneNumberTv = onView(
-                allOf(withId(R.id.ui_onboard_phone_tv_description),
-                        withParent(allOf(withId(R.id.onboard_phone_mainlayout))),
-                        isDisplayed()))
         askPhoneNumberTv.check(matches(withText(R.string.onboard_phone_sub)))
+        firstNameEt.check(doesNotExist())
+        lastNameEt.check(doesNotExist())
+    }
 
-//        val phoneEt = onView(
-//                allOf(withId(R.id.ui_onboard_phone_et_phone),
-//                        childAtPosition(
-//                                allOf(withId(R.id.onboard_phone_mainlayout),
-//                                        childAtPosition(
-//                                                withId(R.id.ui_container),
-//                                                0)),
-//                                3),
-//                        isDisplayed()))
-//        phoneEt.perform(replaceText("601928374"), closeSoftKeyboard())
-//
-//        nextButton.perform(click())
+    @Test
+    fun emptyFirstNameAndLastNameTest() {
+        firstNameEt.perform(replaceText(""), closeSoftKeyboard())
+        lastNameEt.perform(replaceText(""), closeSoftKeyboard())
+        nextButton.perform(click())
+
+        firstNameEt.check(matches(isDisplayed()))
+        lastNameEt.check(matches(isDisplayed()))
+        askPhoneNumberTv.check(doesNotExist())
+    }
+
+    @Test
+    fun emptyFirstNameTest() {
+        firstNameEt.perform(replaceText(""), closeSoftKeyboard())
+        lastNameEt.perform(replaceText("Dupont"), closeSoftKeyboard())
+        nextButton.perform(click())
+
+        firstNameEt.check(matches(isDisplayed()))
+        lastNameEt.check(matches(isDisplayed()))
+        askPhoneNumberTv.check(doesNotExist())
+    }
+
+    @Test
+    fun emptyLastNameTest() {
+        firstNameEt.perform(replaceText("Jean"), closeSoftKeyboard())
+        lastNameEt.perform(replaceText(""), closeSoftKeyboard())
+        nextButton.perform(click())
+
+        firstNameEt.check(matches(isDisplayed()))
+        lastNameEt.check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun emptyPhoneNumberTest() {
+        firstNameEt.perform(replaceText("Jean"), closeSoftKeyboard())
+        lastNameEt.perform(replaceText("Dupont"), closeSoftKeyboard())
+        nextButton.perform(click())
+
+        phoneNumberEt.perform(replaceText(""), closeSoftKeyboard())
+        nextButton.perform(click())
+
+        phoneNumberEt.check(matches(isDisplayed()))
+        inputCodeTitleTv.check(doesNotExist())
+    }
+
+    @Test
+    fun alreadyUsedPhoneNumberTest() {
+        firstNameEt.perform(replaceText("Jean"), closeSoftKeyboard())
+        lastNameEt.perform(replaceText("Dupont"), closeSoftKeyboard())
+        nextButton.perform(click())
+
+        phoneNumberEt.perform(replaceText("123456789"), closeSoftKeyboard())
+        nextButton.perform(click())
+
+        Thread.sleep(5000) // Wait for API response
+        onView(withText(R.string.login_already_registered_go_back)).check(matches(isDisplayed()))
     }
 
     private fun childAtPosition(
