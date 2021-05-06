@@ -2,12 +2,15 @@ package social.entourage.android.onboarding
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.fragment_onboarding_names.*
 import kotlinx.android.synthetic.main.fragment_onboarding_phone.*
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
@@ -89,6 +92,16 @@ class OnboardingPhoneFragment : Fragment() {
             }
             false
         }
+
+        ui_onboard_phone_et_phone?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                checkAndUpdate(false)
+            }
+        })
 
         onboard_phone_mainlayout?.setOnTouchListener { view, motionEvent ->
             view.hideKeyboard()
