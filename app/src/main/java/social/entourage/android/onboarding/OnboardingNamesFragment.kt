@@ -2,15 +2,17 @@ package social.entourage.android.onboarding
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_onboarding_names.*
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.tools.hideKeyboard
+import social.entourage.android.tools.log.AnalyticsEvents
 
 private const val ARG_FIRSTNAME = "firstname"
 private const val ARG_LASTNAME = "lastname"
@@ -21,7 +23,7 @@ class OnboardingNamesFragment : Fragment() {
     private var firstname: String? = null
     private var lastname: String? = null
 
-    private var callback:OnboardingCallback? = null
+    private var callback: OnboardingCallback? = null
     private var isAllreadyCall = false
 
     //**********//**********//**********
@@ -76,6 +78,16 @@ class OnboardingNamesFragment : Fragment() {
             if (!b) updateButtonNext(false)
         }
 
+        ui_onboard_names_et_firstname?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                updateButtonNext(false)
+            }
+        })
+
         ui_onboard_names_et_lastname?.setOnFocusChangeListener { view, b ->
             if (!b && !isAllreadyCall) updateButtonNext(false)
             if (b) isAllreadyCall = false
@@ -89,24 +101,33 @@ class OnboardingNamesFragment : Fragment() {
             false
         }
 
+        ui_onboard_names_et_lastname?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                updateButtonNext(false)
+            }
+        })
+
         ui_onboard_names_et_firstname?.setText(firstname)
         ui_onboard_names_et_lastname?.setText(lastname)
     }
 
-    fun updateButtonNext(isValidate:Boolean) {
+    fun updateButtonNext(isValidate: Boolean) {
         if (checkAndValidateInput()) {
             callback?.updateButtonNext(true)
-            callback?.validateNames(ui_onboard_names_et_firstname?.text?.toString(),ui_onboard_names_et_lastname?.text?.toString(),isValidate)
-        }
-        else {
+            callback?.validateNames(ui_onboard_names_et_firstname?.text?.toString(), ui_onboard_names_et_lastname?.text?.toString(), isValidate)
+        } else {
             callback?.updateButtonNext(false)
-            callback?.validateNames(null,null,false)
+            callback?.validateNames(null, null, false)
         }
     }
 
-    fun checkAndValidateInput() : Boolean {
-        if (ui_onboard_names_et_firstname?.text?.length ?:0 >= minChars  && ui_onboard_names_et_lastname?.text?.length ?:0 >= minChars) {
-            return  true
+    fun checkAndValidateInput(): Boolean {
+        if (ui_onboard_names_et_firstname?.text?.length ?: 0 >= minChars && ui_onboard_names_et_lastname?.text?.length ?: 0 >= minChars) {
+            return true
         }
         return false
     }
