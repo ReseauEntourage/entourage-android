@@ -26,7 +26,7 @@ class OnboardingPhoneFragment : Fragment() {
     private var countryCode: String? = null
     private var phone: String? = null
 
-    private var callback:OnboardingCallback? = null
+    private var callback: OnboardingCallback? = null
 
     //**********//**********//**********
     // Lifecycle
@@ -51,10 +51,9 @@ class OnboardingPhoneFragment : Fragment() {
 
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
-        if (phone?.length ?: 0  >= minimumPhoneCharacters) {
+        if (phone?.length ?: 0 >= minimumPhoneCharacters) {
             callback?.updateButtonNext(true)
-        }
-        else {
+        } else {
             callback?.updateButtonNext(false)
         }
 
@@ -77,7 +76,7 @@ class OnboardingPhoneFragment : Fragment() {
     //**********//**********//**********
 
     fun setupViews() {
-        ui_onboard_phone_tv_title?.text = String.format(getString(R.string.onboard_phone_title),firstname)
+        ui_onboard_phone_tv_title?.text = String.format(getString(R.string.onboard_phone_title), firstname)
         ui_onboard_phone_et_phone?.setText(phone)
 
         ui_onboard_phone_et_phone?.setOnFocusChangeListener { _view, b ->
@@ -98,19 +97,18 @@ class OnboardingPhoneFragment : Fragment() {
         }
     }
 
-    fun checkAndUpdate(isFromPhone:Boolean) {
-        if (ui_onboard_phone_et_phone?.text?.length ?: 0  >= minimumPhoneCharacters) {
+    fun checkAndUpdate(isFromPhone: Boolean) {
+        if (ui_onboard_phone_et_phone?.text?.length ?: 0 >= minimumPhoneCharacters) {
             phone = ui_onboard_phone_et_phone?.text.toString()
             callback?.updateButtonNext(true)
             val countryCode = ui_onboard_phone_ccp_code?.selectedCountryCodeWithPlus
-            callback?.validatePhoneNumber(countryCode,ui_onboard_phone_et_phone?.text.toString())
+            callback?.validatePhoneNumber(countryCode, ui_onboard_phone_et_phone?.text.toString())
             if (isFromPhone) {
                 callback?.goNextManually()
             }
-        }
-        else {
+        } else {
             callback?.updateButtonNext(false)
-            callback?.validatePhoneNumber(null,null)
+            callback?.validatePhoneNumber(null, null)
         }
     }
 
@@ -119,7 +117,7 @@ class OnboardingPhoneFragment : Fragment() {
     //**********//**********//**********
 
     companion object {
-        fun newInstance(firstname: String?, countryCode: String?, phone:String?) =
+        fun newInstance(firstname: String?, countryCode: String?, phone: String?) =
                 OnboardingPhoneFragment().apply {
                     arguments = Bundle().apply {
                         putString(ARG_FIRSTNAME, firstname)

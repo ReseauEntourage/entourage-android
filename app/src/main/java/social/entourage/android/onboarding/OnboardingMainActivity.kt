@@ -665,10 +665,10 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     // Callbacks
     //**********//**********//**********
 
-    override fun validateNames(firstname: String?, lastname: String?,isValidate:Boolean) {
+    override fun validateNames(firstname: String?, lastname: String?, isValidate: Boolean) {
         temporaryUser.firstName = firstname ?: ""
         temporaryUser.lastName = lastname ?: ""
-        Timber.d("Validarte name : $firstname -- $lastname -- Validate : $isValidate")
+        Timber.d("Validate name : $firstname -- $lastname -- Validate : $isValidate")
         Timber.d("Validate name from temp : ${temporaryUser.firstName} -- ${temporaryUser.lastName}  - tempuser: $temporaryUser")
         if (isValidate) goNext()
     }
@@ -739,7 +739,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         }
     }
 
-    override fun updateButtonNext(isValid:Boolean) {
+    override fun updateButtonNext(isValid: Boolean) {
         if (isValid) {
             ui_bt_next?.enable(R.drawable.ic_onboard_bt_next)
         }
