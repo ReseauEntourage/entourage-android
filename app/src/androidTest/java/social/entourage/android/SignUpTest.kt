@@ -3,7 +3,9 @@ package social.entourage.android
 
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Root
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -131,6 +133,18 @@ class SignUpTest {
     }
 
     @Test
+    fun invalidPhoneNumberTest() {
+        firstNameEt.perform(replaceText("Jean"), closeSoftKeyboard())
+        lastNameEt.perform(replaceText("Dupont"), closeSoftKeyboard())
+        nextButton.perform(click())
+
+        phoneNumberEt.perform(replaceText("000000000"), closeSoftKeyboard())
+        nextButton.perform(click())
+
+        onView(withText(R.string.login_text_invalid_format)).inRoot(ToastMatcher()).check(matches(isDisplayed()))
+    }
+
+    @Test
     fun alreadyUsedPhoneNumberTest() {
         firstNameEt.perform(replaceText("Jean"), closeSoftKeyboard())
         lastNameEt.perform(replaceText("Dupont"), closeSoftKeyboard())
@@ -158,5 +172,23 @@ class SignUpTest {
                         && view == parent.getChildAt(position)
             }
         }
+    }
+
+    class ToastMatcher : TypeSafeMatcher<Root>() {
+        override fun matchesSafely(item: Root?): Boolean {
+            item?.windowLayoutParams?.get()?.type?.let { type ->
+                if (type == WindowManager.LayoutParams.TYPE_TOAST) {
+                    val windowToken = item.decorView.windowToken
+                    val appToken = item.decorView.applicationWindowToken
+                    if (windowToken == appToken) {
+                        //Means this window isn't contained by any other windows
+                        return true
+                    }
+                }
+            }
+            return false
+        }
+
+        override fun describeTo(description: Description?) {}
     }
 }
