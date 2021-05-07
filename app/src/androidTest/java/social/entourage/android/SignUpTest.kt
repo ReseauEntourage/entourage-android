@@ -119,6 +119,20 @@ class SignUpTest {
         lastNameEt.check(matches(isDisplayed()))
     }
 
+    //TODO For now there is no simple way to send a phone number and remove it to be able running the test again
+    // It would need for instance an API call that remove the sent number so that it is not already used for the next test call
+//    @Test
+//    fun validPhoneNumberTest() {
+//        firstNameEt.perform(replaceText("Jean"), closeSoftKeyboard())
+//        lastNameEt.perform(replaceText("Dupont"), closeSoftKeyboard())
+//        nextButton.perform(click())
+//
+//        phoneNumberEt.perform(replaceText(""), closeSoftKeyboard())
+//        nextButton.perform(click())
+//
+//        onView(withText(R.string.login_smscode_sent)).inRoot(ToastMatcher()).check(matches(isDisplayed()))
+//    }
+
     @Test
     fun emptyPhoneNumberTest() {
         firstNameEt.perform(replaceText("Jean"), closeSoftKeyboard())

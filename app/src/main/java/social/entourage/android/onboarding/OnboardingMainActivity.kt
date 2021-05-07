@@ -169,7 +169,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 .show()
     }
 
-    private fun showSmsAndGo(textId:Int) {
+    private fun showSmsAndGo(textId: Int) {
         displayToast(textId)
         temporaryUser.phone = temporaryPhone
         goNextStep()
