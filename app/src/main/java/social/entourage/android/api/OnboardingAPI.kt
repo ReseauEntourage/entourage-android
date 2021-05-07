@@ -71,7 +71,7 @@ class OnboardingAPI {
     /**********************
      * Login
      */
-    fun login(phoneNumber:String,smsCode:String,listener:(isOK:Boolean, loginResponse: LoginResponse?, error:String?) -> Unit) {
+    fun login(phoneNumber: String, smsCode: String, listener: (isOK: Boolean, loginResponse: LoginResponse?, error: String?) -> Unit) {
         loginService.login(LoginWrapper(phoneNumber, smsCode))
                 .enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {

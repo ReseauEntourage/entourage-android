@@ -29,6 +29,7 @@ import social.entourage.android.tools.disable
 import social.entourage.android.tools.enable
 import social.entourage.android.tools.view.CustomProgressDialog
 import timber.log.Timber
+import java.io.File
 import java.util.*
 
 /**
@@ -298,7 +299,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         }
     }
 
-    fun updateGoal(isAsso:Boolean) {
+    fun updateGoal(isAsso: Boolean) {
         alertDialog.show(R.string.onboard_waiting_dialog)
         val _currentGoal = userTypeSelected.getGoalString()
 
@@ -394,9 +395,9 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     private fun changeFragment() {
         ui_bt_next?.disable()
         val fragment = when(currentFragmentPosition) {
-            1 -> OnboardingNamesFragment.newInstance(temporaryUser.firstName,temporaryUser.lastName)
+            1 -> OnboardingNamesFragment.newInstance(temporaryUser.firstName, temporaryUser.lastName)
             2 -> OnboardingPhoneFragment.newInstance(temporaryUser.firstName, temporaryCountrycode, temporaryPhone)
-            3 -> OnboardingPasscodeFragment.newInstance(temporaryCountrycode,temporaryPhone)
+            3 -> OnboardingPasscodeFragment.newInstance(temporaryCountrycode, temporaryPhone)
             4 -> OnboardingTypeFragment.newInstance(temporaryUser.firstName, userTypeSelected)
             5 -> {
                 val isSdf = userTypeSelected == UserTypeSelection.ALONE
@@ -417,7 +418,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                     .beginTransaction()
                     .replace(R.id.ui_container, fragment)
                     .commit()
-        } catch (e:IllegalStateException) {
+        } catch (e: IllegalStateException) {
             Timber.e(e)
         }
 
@@ -771,11 +772,9 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     override fun updateSdfNeighbourActivities(sdfNeighbourActivities: SdfNeighbourActivities,isSdf:Boolean) {
         if (isSdf) {
             this.temporarySdfActivities = sdfNeighbourActivities
-            this.temporarySdfActivities?.setupForSdf(true)
         }
         else {
             this.temporaryNeighbourActivities = sdfNeighbourActivities
-            this.temporaryNeighbourActivities?.setupForSdf(false)
         }
     }
 }
