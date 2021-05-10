@@ -20,7 +20,7 @@ import timber.log.Timber
 
 class OnboardingAssoSearchActivity : AppCompatActivity() {
 
-    var searchRvAdapter:OnboardingAssoSearchAdapter? = null
+    var searchRvAdapter: OnboardingAssoSearchAdapter? = null
 
     var arrayAssos = ArrayList<Partner>()
     var arrayAssosSearch = ArrayList<Partner>()

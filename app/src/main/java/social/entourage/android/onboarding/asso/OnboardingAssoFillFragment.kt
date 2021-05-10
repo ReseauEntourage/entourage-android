@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,9 +73,29 @@ class OnboardingAssoFillFragment : Fragment() {
             false
         }
 
+        ui_onboard_asso_fill_function?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                processEditText(ui_onboard_asso_fill_function,true)
+            }
+        })
+
         ui_onboard_asso_fill_postal_code?.setOnFocusChangeListener { v, hasFocus ->
            processEditText(ui_onboard_asso_fill_postal_code,false)
         }
+
+        ui_onboard_asso_fill_postal_code?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                processEditText(ui_onboard_asso_fill_postal_code,true)
+            }
+        })
 
         updateAssoNameLabel()
         ui_onboard_asso_fill_postal_code?.setText(currentAssoInfo?.postalCode ?: "")

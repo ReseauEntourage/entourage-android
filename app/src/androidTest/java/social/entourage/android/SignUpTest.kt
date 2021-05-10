@@ -4,17 +4,24 @@ package social.entourage.android
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Root
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import kotlinx.android.synthetic.main.activity_onboard_asso_search.*
+import kotlinx.android.synthetic.main.fragment_onboarding_asso_fill.*
 import org.hamcrest.Description
 import org.hamcrest.Matcher
+import org.hamcrest.Matchers
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.TypeSafeMatcher
 import org.junit.Rule
@@ -22,6 +29,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.onboarding.OnboardingMainActivity
+import social.entourage.android.onboarding.asso.OnboardingAssoSearchActivity
 import java.util.*
 
 @LargeTest
@@ -32,49 +40,53 @@ class SignUpTest {
     @JvmField
     var activityRule = ActivityScenarioRule(OnboardingMainActivity::class.java)
 
-    val firstNameEt = onView(
+
+    /****************************** Views ******************************/
+
+    private val firstNameEt = onView(
             allOf(withId(R.id.ui_onboard_names_et_firstname),
-                    childAtPosition(
-                            allOf(withId(R.id.onboard_names_mainlayout),
-                                    childAtPosition(
-                                            withId(R.id.ui_container),
-                                            0)),
-                            2),
+                    withParent(withId(R.id.onboard_names_mainlayout)),
                     isDisplayed()))
 
-    val lastNameEt = onView(
+    private val lastNameEt = onView(
             allOf(withId(R.id.ui_onboard_names_et_lastname),
-                    childAtPosition(
-                            allOf(withId(R.id.onboard_names_mainlayout),
-                                    childAtPosition(
-                                            withId(R.id.ui_container),
-                                            0)),
-                            3),
+                    withParent(withId(R.id.onboard_names_mainlayout)),
                     isDisplayed()))
 
-    val askPhoneNumberTv = onView(
+    private val askPhoneNumberTv = onView(
             allOf(withId(R.id.ui_onboard_phone_tv_description),
+                    withParent(withId(R.id.onboard_phone_mainlayout)),
+                    isDisplayed()))
+
+    private val phoneNumberEt = onView(
+            allOf(withId(R.id.ui_onboard_phone_et_phone),
+                    withParent(withId(R.id.onboard_phone_mainlayout)),
+                    isDisplayed()))
+
+    private val placeTitleTv = onView(
+            allOf(withId(R.id.ui_onboard_place_tv_title),
                     withParent(allOf(withId(R.id.onboard_phone_mainlayout))),
                     isDisplayed()))
 
-    val phoneNumberEt = onView(
-            allOf(withId(R.id.ui_onboard_phone_et_phone),
-                    childAtPosition(
-                            allOf(withId(R.id.onboard_phone_mainlayout),
-                                    childAtPosition(
-                                            withId(R.id.ui_container),
-                                            0)),
-                            3),
+    private val emailSubtitleTv = onView(
+            allOf(withId(R.id.ui_onboard_email_tv_description),
                     isDisplayed()))
 
-    val nextButton = onView(
-            allOf(withId(R.id.ui_bt_next),
-                    childAtPosition(
-                            childAtPosition(
-                                    withId(android.R.id.content),
-                                    0),
-                            3),
+    private val emailEt = onView(
+            allOf(withId(R.id.ui_onboard_email_pwd_et_mail),
+                    withParent(withId(R.id.onboard_email_pwd_mainlayout)),
                     isDisplayed()))
+
+    private val assoFillTitleTv = onView(
+            allOf(withId(R.id.ui_onboard_email_tv_title),
+                    isDisplayed()))
+
+    private val nextButton = onView(
+            allOf(withId(R.id.ui_bt_next),
+                    isDisplayed()))
+
+
+    /****************************** OnboardingNamesFragment ******************************/
 
     @Test
     fun validFirstNameAndLastNameTest() {
@@ -90,8 +102,8 @@ class SignUpTest {
 
     @Test
     fun emptyFirstNameAndLastNameTest() {
-        firstNameEt.perform(replaceText(""), closeSoftKeyboard())
-        lastNameEt.perform(replaceText(""), closeSoftKeyboard())
+        firstNameEt.perform(typeText(""), closeSoftKeyboard())
+        lastNameEt.perform(typeText(""), closeSoftKeyboard())
         nextButton.perform(click())
 
         //Check that OnboardingNamesFragment is still displayed
@@ -104,8 +116,8 @@ class SignUpTest {
 
     @Test
     fun emptyFirstNameTest() {
-        firstNameEt.perform(replaceText(""), closeSoftKeyboard())
-        lastNameEt.perform(replaceText("Dupont"), closeSoftKeyboard())
+        firstNameEt.perform(typeText(""), closeSoftKeyboard())
+        lastNameEt.perform(typeText("Dupont"), closeSoftKeyboard())
         nextButton.perform(click())
 
         //Check that OnboardingNamesFragment is still displayed
@@ -118,8 +130,8 @@ class SignUpTest {
 
     @Test
     fun emptyLastNameTest() {
-        firstNameEt.perform(replaceText("Jean"), closeSoftKeyboard())
-        lastNameEt.perform(replaceText(""), closeSoftKeyboard())
+        firstNameEt.perform(typeText("Jean"), closeSoftKeyboard())
+        lastNameEt.perform(typeText(""), closeSoftKeyboard())
         nextButton.perform(click())
 
         //Check that OnboardingNamesFragment is still displayed
@@ -130,13 +142,16 @@ class SignUpTest {
         askPhoneNumberTv.check(doesNotExist())
     }
 
+
+    /****************************** OnboardingPhoneFragment ******************************/
+
     //TODO For now there is no simple way to send a phone number and remove it to be able running the test again
     // It would need for instance an API call that remove the sent number so that it is not already used for the next test call
 //    @Test
 //    fun validPhoneNumberTest() {
 //        fillValidNames()
 //
-//        phoneNumberEt.perform(replaceText(""), closeSoftKeyboard())
+//        phoneNumberEt.perform(typeText(""), closeSoftKeyboard())
 //        nextButton.perform(click())
 //
 //        //Check that toast shows given message
@@ -147,7 +162,7 @@ class SignUpTest {
     fun emptyPhoneNumberTest() {
         fillValidNames()
 
-        phoneNumberEt.perform(replaceText(""), closeSoftKeyboard())
+        phoneNumberEt.perform(typeText(""), closeSoftKeyboard())
         nextButton.perform(click())
 
         //Check that OnboardingPhoneFragment is still displayed
@@ -162,7 +177,7 @@ class SignUpTest {
     fun invalidPhoneNumberTest() {
         fillValidNames()
 
-        phoneNumberEt.perform(replaceText("000000000"), closeSoftKeyboard())
+        phoneNumberEt.perform(typeText("000000000"), closeSoftKeyboard())
         nextButton.perform(click())
 
         //Check that toast shows given message
@@ -173,13 +188,16 @@ class SignUpTest {
     fun alreadyUsedPhoneNumberTest() {
         fillValidNames()
 
-        phoneNumberEt.perform(replaceText("123456789"), closeSoftKeyboard())
+        phoneNumberEt.perform(typeText("123456789"), closeSoftKeyboard())
         nextButton.perform(click())
 
         //Check that dialog shows given message
         Thread.sleep(5000) // Wait for API response
         onView(withText(R.string.login_already_registered_go_back)).check(matches(isDisplayed()))
     }
+
+
+    /****************************** OnboardingPasscodeFragment ******************************/
 
     @Test
     fun validPasscodeTest() {
@@ -197,20 +215,19 @@ class SignUpTest {
         //Check that OnboardingTypeFragment is displayed
         val typeSubTitleTv = onView(
                 allOf(withId(R.id.ui_onboard_type_tv_description),
-                        withParent(allOf(withId(R.id.onboard_phone_mainlayout))),
+                        withParent(withId(R.id.onboard_phone_mainlayout)),
                         isDisplayed()))
         typeSubTitleTv.check(matches(withText(R.string.onboard_type_sub)))
     }
+
+
+    /****************************** OnboardingTypeFragment ******************************/
 
     @Test
     fun neighbourTypeTest() {
         clickTypeButton(R.id.ui_onboard_type_layout_neighbour)
 
         //Check that OnboardingPlaceFragment is displayed
-        val placeTitleTv = onView(
-                allOf(withId(R.id.ui_onboard_place_tv_title),
-                        withParent(allOf(withId(R.id.onboard_phone_mainlayout))),
-                        isDisplayed()))
         placeTitleTv.check(matches(withText(R.string.onboard_place_title)))
     }
 
@@ -219,10 +236,6 @@ class SignUpTest {
         clickTypeButton(R.id.ui_onboard_type_layout_alone)
 
         //Check that OnboardingPlaceFragment is displayed
-        val placeTitleTv = onView(
-                allOf(withId(R.id.ui_onboard_place_tv_title),
-                        withParent(allOf(withId(R.id.onboard_phone_mainlayout))),
-                        isDisplayed()))
         placeTitleTv.check(matches(withText(R.string.onboard_place_title_sdf)))
     }
 
@@ -233,14 +246,219 @@ class SignUpTest {
         //Check that OnboardingAssoStartFragment is displayed
         val assoTitleTv = onView(
                 allOf(withId(R.id.ui_onboard_asso_start_tv_title),
-                    withParent(allOf(withId(R.id.onboard_phone_mainlayout))),
+                    withParent(withId(R.id.onboard_phone_mainlayout)),
                     isDisplayed()))
         assoTitleTv.check(matches(withText(R.string.onboard_asso_start_title)))
     }
 
+
+    /****************************** OnboardingPlaceFragment ******************************/
+
+    @Test
+    fun neighbourPlaceTest() {
+        clickTypeButton(R.id.ui_onboard_type_layout_neighbour)
+
+        pickLocation("paris")
+
+        //Check that LoginEmailFragment is displayed
+        emailSubtitleTv.check(matches(withText(R.string.login_email_description)))
+    }
+
+    @Test
+    fun alonePlaceTest() {
+        clickTypeButton(R.id.ui_onboard_type_layout_alone)
+
+        pickLocation("toulouse")
+
+        //Check that LoginEmailFragment is displayed
+        emailSubtitleTv.check(matches(withText(R.string.login_email_description)))
+    }
+
+    @Test
+    fun neighbourEmptyPlaceTest() {
+        clickTypeButton(R.id.ui_onboard_type_layout_neighbour)
+
+        nextButton.perform(click())
+
+        //Check that OnboardingPlaceFragment is still displayed
+        placeTitleTv.check(matches(withText(R.string.onboard_place_title)))
+    }
+
+    @Test
+    fun aloneEmptyPlaceTest() {
+        clickTypeButton(R.id.ui_onboard_type_layout_alone)
+
+        nextButton.perform(click())
+
+        //Check that OnboardingPlaceFragment is still displayed
+        placeTitleTv.check(matches(withText(R.string.onboard_place_title_sdf)))
+    }
+
+
+    /****************************** LoginEmailFragment ******************************/
+
+    @Test
+    fun neighbourValidMailTest() {
+        clickTypeButton(R.id.ui_onboard_type_layout_neighbour)
+
+        pickLocation("paris")
+
+        testValidEmail()
+    }
+
+    @Test
+    fun neighbourInvalidMailTest() {
+        clickTypeButton(R.id.ui_onboard_type_layout_neighbour)
+
+        pickLocation("paris")
+
+        testInvalidEmail()
+    }
+
+    @Test
+    fun neighbourEmptyMailTest() {
+        clickTypeButton(R.id.ui_onboard_type_layout_neighbour)
+
+        pickLocation("paris")
+
+        nextButton.perform(click())
+
+        //Check that LoginEmailFragment is still displayed
+        emailSubtitleTv.check(matches(withText(R.string.login_email_description)))
+    }
+
+    @Test
+    fun aloneValidMailTest() {
+        clickTypeButton(R.id.ui_onboard_type_layout_alone)
+
+        pickLocation("toulouse")
+
+        testValidEmail()
+    }
+
+    @Test
+    fun aloneInvalidMailTest() {
+        clickTypeButton(R.id.ui_onboard_type_layout_alone)
+
+        pickLocation("toulouse")
+
+        testInvalidEmail()
+    }
+
+    @Test
+    fun aloneEmptyMailTest() {
+        clickTypeButton(R.id.ui_onboard_type_layout_alone)
+
+        pickLocation("toulouse")
+
+        nextButton.perform(click())
+
+        //Check that LoginEmailFragment is still displayed
+        emailSubtitleTv.check(matches(withText(R.string.login_email_description)))
+    }
+
+
+    /****************************** OnboardingAssoStartFragment ******************************/
+
+    @Test
+    fun assoTunnelTest() {
+        clickTypeButton(R.id.ui_onboard_type_layout_assos)
+
+        nextButton.perform(click())
+
+        //Check that OnboardingAssoStartFragment 2nd screen is displayed
+        val assoTitleTv = onView(
+                allOf(withId(R.id.ui_onboard_asso_info_tv_title),
+                        withParent(withId(R.id.onboard_phone_mainlayout)),
+                        isDisplayed()))
+        assoTitleTv.check(matches(withText(R.string.onboard_asso_info_title)))
+
+        nextButton.perform(click())
+
+        //Check that OnboardingAssoFillFragment is displayed
+        assoFillTitleTv.check(matches(withText(R.string.onboard_asso_fill_title)))
+    }
+
+
+    /****************************** OnboardingAssoFillFragment ******************************/
+
+    @Test
+    fun searchAssoNameTest() {
+        goToAssoInfo()
+
+        Intents.init()
+        val assoNameLayout = onView(
+                allOf(withId(R.id.ui_layout_asso_fill_location),
+                        isDisplayed()))
+        assoNameLayout.perform(click())
+
+        //Check that OnboardingAssoSearchActivity is displayed
+        Intents.intended(IntentMatchers.hasComponent(OnboardingAssoSearchActivity::class.java.name))
+        Intents.release()
+    }
+
+    @Test
+    fun fillAssoInfoTest() {
+        goToAssoInfo()
+
+        fillAssoName()
+        fillPostalCode()
+        fillFunction()
+
+        nextButton.perform(click())
+
+        //Check that OnboardingAssoActivitiesFragment is displayed
+        val activitySubtitleTv = onView(
+                allOf(withId(R.id.ui_onboard_type_tv_info),
+                        isDisplayed()))
+        activitySubtitleTv.check(matches(withText(R.string.onboard_asso_activity_description)))
+    }
+
+    @Test
+    fun missingAssoNameTest() {
+        goToAssoInfo()
+
+        fillPostalCode()
+        fillFunction()
+
+        nextButton.perform(click())
+
+        //Check that OnboardingAssoFillFragment is still displayed
+        assoFillTitleTv.check(matches(withText(R.string.onboard_asso_fill_title)))
+    }
+
+    @Test
+    fun missingPostalCodeTest() {
+        goToAssoInfo()
+
+        fillAssoName()
+        fillFunction()
+
+        nextButton.perform(click())
+
+        //Check that error message is displayed
+        onView(withText(R.string.onboard_asso_fill_error)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun missingFunctionTest() {
+        goToAssoInfo()
+
+        fillAssoName()
+        fillPostalCode()
+
+        nextButton.perform(click())
+
+        //Check that error message is displayed
+        onView(withText(R.string.onboard_asso_fill_error)).check(matches(isDisplayed()))
+    }
+
+
+    /****************************** Utils ******************************/
+
     private fun fillValidNames() {
-        firstNameEt.perform(replaceText("Jean"), closeSoftKeyboard())
-        lastNameEt.perform(replaceText("Dupont"), closeSoftKeyboard())
+        firstNameEt.perform(typeText("Jean"), closeSoftKeyboard())
+        lastNameEt.perform(typeText("Dupont"), closeSoftKeyboard())
         nextButton.perform(click())
     }
 
@@ -262,13 +480,12 @@ class SignUpTest {
         //Skip passcode validation and go to type fragment
         goNextStep()
 
-        val typeButton = onView(
-                allOf(withId(buttonId),
-                        isDisplayed()))
+        val typeButton = onView(allOf(withId(buttonId), isDisplayed()))
         typeButton.perform(click())
 
-        Thread.sleep(1000)
+        Thread.sleep(2000)
         nextButton.perform(click())
+        Thread.sleep(1000)
     }
 
     private fun login(phoneNumber: String, codePwd: String) {
@@ -289,6 +506,116 @@ class SignUpTest {
                 }
             }
         }
+    }
+
+    private fun pickLocation(locationInput: String) {
+        val locationTv = onView(allOf(withId(R.id.ui_onboard_place_tv_location), isDisplayed()))
+        locationTv.perform(click())
+
+        val locationSearchBar = onView(
+                allOf(withId(R.id.places_autocomplete_search_bar),
+                        childAtPosition(
+                                allOf(withId(R.id.places_autocomplete_search_bar_container),
+                                        childAtPosition(
+                                                withClassName(Matchers.`is`("android.widget.LinearLayout")),
+                                                0)),
+                                1),
+                        isDisplayed()))
+        locationSearchBar.perform(click())
+        locationSearchBar.perform(typeText(locationInput), closeSoftKeyboard())
+
+        val locationsResultRv = onView(
+                allOf(withId(R.id.places_autocomplete_list),
+                        childAtPosition(
+                                withClassName(Matchers.`is`("android.widget.LinearLayout")),
+                                2)))
+        locationsResultRv.perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+
+        Thread.sleep(1000)
+        nextButton.perform(click())
+        Thread.sleep(1000)
+    }
+
+    private fun testValidEmail() {
+        emailEt.perform(typeText("jean.dupont@jeandupont.fr"), closeSoftKeyboard())
+
+        //Lose email edit text focus to enable next button
+        emailSubtitleTv.perform(click())
+
+        nextButton.perform(click())
+
+        //Dismiss potential dialog
+        val fragmentContainer = onView(withId(R.id.ui_container))
+        fragmentContainer.perform(click())
+
+        //Check that OnboardingMainActivity is displayed
+        val feedButtonBottomBar = onView(
+                allOf(withId(R.id.bottom_bar_newsfeed), withContentDescription("actus"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.bottom_navigation),
+                                        0),
+                                0),
+                        isDisplayed()))
+        feedButtonBottomBar.check(matches(isDisplayed()))
+    }
+
+    private fun testInvalidEmail() {
+        emailEt.perform(typeText("jean.dupont@jeandupont"), closeSoftKeyboard())
+
+        //Lose email edit text focus to enable next button
+        emailSubtitleTv.perform(click())
+
+        nextButton.perform(click())
+
+        //Check that LoginEmailFragment is still displayed
+        emailSubtitleTv.check(matches(withText(R.string.login_email_description)))
+    }
+
+    private fun goToAssoInfo() {
+        clickTypeButton(R.id.ui_onboard_type_layout_assos)
+
+        nextButton.perform(click())
+
+        nextButton.perform(click())
+    }
+
+    private fun fillAssoName() {
+        val assoNameLayout = onView(
+                allOf(withId(R.id.ui_layout_asso_fill_location),
+                        isDisplayed()))
+        assoNameLayout.perform(click())
+
+        val searchAssoNameEt = onView(
+                allOf(withId(R.id.ui_asso_search_et_search),
+                        isDisplayed()))
+        searchAssoNameEt.perform(typeText("test"))
+
+        val assoNameResultsRv = onView(
+                allOf(withId(R.id.ui_asso_search_rv),
+                        isDisplayed()))
+        assoNameResultsRv.perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+
+        val validateButton = onView(
+                allOf(withId(R.id.ui_bt_asso_search_validate),
+                        isDisplayed()))
+        validateButton.perform(click())
+
+        Thread.sleep(1000)
+    }
+
+    private fun fillPostalCode() {
+        val postalCodeEt = onView(
+                allOf(withId(R.id.ui_onboard_asso_fill_postal_code),
+                        isDisplayed()))
+        postalCodeEt.perform(typeText("75008"), closeSoftKeyboard())
+    }
+
+    private fun fillFunction() {
+        val functionEt = onView(
+                allOf(withId(R.id.ui_onboard_asso_fill_function),
+                        isDisplayed()))
+        functionEt.perform(typeText("directeur"), closeSoftKeyboard())
     }
 
     private fun childAtPosition(
