@@ -17,8 +17,6 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import kotlinx.android.synthetic.main.activity_onboard_asso_search.*
-import kotlinx.android.synthetic.main.fragment_onboarding_asso_fill.*
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers
@@ -77,13 +75,8 @@ class SignUpTest {
                     withParent(withId(R.id.onboard_email_pwd_mainlayout)),
                     isDisplayed()))
 
-    private val feedButtonBottomBar = onView(
-            allOf(withId(R.id.bottom_bar_newsfeed), withContentDescription(R.string.action_map),
-                    childAtPosition(
-                            childAtPosition(
-                                    withId(R.id.bottom_navigation),
-                                    0),
-                            0),
+    private val homeNeoTitleTv = onView(
+            allOf(withId(R.id.ui_home_neo_start_title),
                     isDisplayed()))
 
     private val assoFillTitleTv = onView(
@@ -100,6 +93,15 @@ class SignUpTest {
 
     private val assoEmailEt = onView(
             allOf(withId(R.id.ui_onboard_email_pwd_et_mail),
+                    isDisplayed()))
+
+    private val feedButtonBottomBar = onView(
+            allOf(withId(R.id.bottom_bar_newsfeed), withContentDescription(R.string.action_map),
+                    childAtPosition(
+                            childAtPosition(
+                                    withId(R.id.bottom_navigation),
+                                    0),
+                            0),
                     isDisplayed()))
 
     private val nextButton = onView(
@@ -324,7 +326,17 @@ class SignUpTest {
 
         pickLocation("paris")
 
-        testValidEmail()
+        emailEt.perform(typeText("jean.dupont@jeandupont.fr"), closeSoftKeyboard())
+
+        //Lose email edit text focus to enable next button
+        emailSubtitleTv.perform(click())
+
+        nextButton.perform(click())
+
+        Thread.sleep(1000)
+
+        //Check that HomeNeoMainFragment is displayed
+        homeNeoTitleTv.check(matches(withText(R.string.home_neo_title)))
     }
 
     @Test
@@ -354,7 +366,17 @@ class SignUpTest {
 
         pickLocation("toulouse")
 
-        testValidEmail()
+        emailEt.perform(typeText("jean.dupont@jeandupont.fr"), closeSoftKeyboard())
+
+        //Lose email edit text focus to enable next button
+        emailSubtitleTv.perform(click())
+
+        nextButton.perform(click())
+
+        Thread.sleep(1000)
+
+        //Check that OnboardingMainActivity is displayed
+        feedButtonBottomBar.check(matches(isDisplayed()))
     }
 
     @Test
@@ -653,25 +675,8 @@ class SignUpTest {
                                 2)))
         locationsResultRv.perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
 
-        Thread.sleep(1000)
         nextButton.perform(click())
         Thread.sleep(1000)
-    }
-
-    private fun testValidEmail() {
-        emailEt.perform(typeText("jean.dupont@jeandupont.fr"), closeSoftKeyboard())
-
-        //Lose email edit text focus to enable next button
-        emailSubtitleTv.perform(click())
-
-        nextButton.perform(click())
-
-        //Dismiss potential dialog
-        val fragmentContainer = onView(withId(R.id.ui_container))
-        fragmentContainer.perform(click())
-
-        //Check that OnboardingMainActivity is displayed
-        feedButtonBottomBar.check(matches(isDisplayed()))
     }
 
     private fun testInvalidEmail() {
