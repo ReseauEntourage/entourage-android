@@ -77,8 +77,29 @@ class SignUpTest {
                     withParent(withId(R.id.onboard_email_pwd_mainlayout)),
                     isDisplayed()))
 
+    private val feedButtonBottomBar = onView(
+            allOf(withId(R.id.bottom_bar_newsfeed), withContentDescription(R.string.action_map),
+                    childAtPosition(
+                            childAtPosition(
+                                    withId(R.id.bottom_navigation),
+                                    0),
+                            0),
+                    isDisplayed()))
+
     private val assoFillTitleTv = onView(
             allOf(withId(R.id.ui_onboard_email_tv_title),
+                    isDisplayed()))
+
+    private val activitiesSubtitleTv = onView(
+            allOf(withId(R.id.ui_onboard_type_tv_info),
+                    isDisplayed()))
+
+    private val assoEmailSubtitleTv = onView(
+            allOf(withId(R.id.ui_onboard_email_tv_description),
+                    isDisplayed()))
+
+    private val assoEmailEt = onView(
+            allOf(withId(R.id.ui_onboard_email_pwd_et_mail),
                     isDisplayed()))
 
     private val nextButton = onView(
@@ -408,10 +429,7 @@ class SignUpTest {
         nextButton.perform(click())
 
         //Check that OnboardingAssoActivitiesFragment is displayed
-        val activitySubtitleTv = onView(
-                allOf(withId(R.id.ui_onboard_type_tv_info),
-                        isDisplayed()))
-        activitySubtitleTv.check(matches(withText(R.string.onboard_asso_activity_description)))
+        activitiesSubtitleTv.check(matches(withText(R.string.onboard_asso_activity_description)))
     }
 
     @Test
@@ -451,6 +469,110 @@ class SignUpTest {
 
         //Check that error message is displayed
         onView(withText(R.string.onboard_asso_fill_error)).check(matches(isDisplayed()))
+    }
+
+
+    /****************************** OnboardingAssoActivitiesFragment ******************************/
+
+    @Test
+    fun pick4AssoActivitiesTest() {
+        goToAssoActivities()
+
+        clickAssoActivity1()
+        clickAssoActivity2()
+        clickAssoActivity3()
+        clickAssoActivity4()
+
+        nextButton.perform(click())
+
+        //Check that OnboardingEmailPwdFragment is Displayed
+        assoEmailSubtitleTv.check(matches(withText(R.string.onboard_email_pwd_description)))
+    }
+
+    @Test
+    fun pick3AssoActivitiesTest() {
+        goToAssoActivities()
+
+        clickAssoActivity2()
+        clickAssoActivity3()
+        clickAssoActivity4()
+
+        nextButton.perform(click())
+
+        //Check that OnboardingEmailPwdFragment is Displayed
+        assoEmailSubtitleTv.check(matches(withText(R.string.onboard_email_pwd_description)))
+    }
+
+    @Test
+    fun pick2AssoActivitiesTest() {
+        goToAssoActivities()
+
+        clickAssoActivity1()
+        clickAssoActivity3()
+
+        nextButton.perform(click())
+
+        //Check that OnboardingEmailPwdFragment is Displayed
+        assoEmailSubtitleTv.check(matches(withText(R.string.onboard_email_pwd_description)))
+    }
+
+    @Test
+    fun pick1AssoActivityTest() {
+        goToAssoActivities()
+
+        clickAssoActivity2()
+
+        nextButton.perform(click())
+
+        //Check that OnboardingEmailPwdFragment is Displayed
+        assoEmailSubtitleTv.check(matches(withText(R.string.onboard_email_pwd_description)))
+    }
+
+    @Test
+    fun pickNoAssoActivitiesTest() {
+        goToAssoActivities()
+
+        nextButton.perform(click())
+
+        //Check that error message is displayed
+        onView(withText(R.string.onboard_asso_activity_error)).check(matches(isDisplayed()))
+    }
+
+
+    /****************************** OnboardingEmailPwdFragment ******************************/
+
+    @Test
+    fun assoValidMailTest() {
+        goToAssoEmail()
+
+        assoEmailEt.perform(typeText("jean.dupont@jeandupont.fr"), closeSoftKeyboard())
+
+        nextButton.perform(click())
+
+        //Check that OnboardingMainActivity is displayed
+        feedButtonBottomBar.check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun assoInvalidMailTest() {
+        goToAssoEmail()
+
+        assoEmailEt.perform(typeText("jean.dupont@jeandupont"), closeSoftKeyboard())
+
+        nextButton.perform(click())
+
+        //Check that OnboardingEmailPwdFragment is still Displayed
+        assoEmailSubtitleTv.check(matches(withText(R.string.onboard_email_pwd_description)))
+    }
+
+    @Test
+    fun assoEmptyMailTest() {
+        goToAssoEmail()
+
+        nextButton.perform(click())
+
+        //Check that OnboardingEmailPwdFragment is still Displayed
+        assoEmailSubtitleTv.check(matches(withText(R.string.onboard_email_pwd_description)))
     }
 
 
@@ -549,14 +671,6 @@ class SignUpTest {
         fragmentContainer.perform(click())
 
         //Check that OnboardingMainActivity is displayed
-        val feedButtonBottomBar = onView(
-                allOf(withId(R.id.bottom_bar_newsfeed), withContentDescription("actus"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.bottom_navigation),
-                                        0),
-                                0),
-                        isDisplayed()))
         feedButtonBottomBar.check(matches(isDisplayed()))
     }
 
@@ -581,6 +695,8 @@ class SignUpTest {
     }
 
     private fun fillAssoName() {
+        Thread.sleep(1000)
+
         val assoNameLayout = onView(
                 allOf(withId(R.id.ui_layout_asso_fill_location),
                         isDisplayed()))
@@ -616,6 +732,55 @@ class SignUpTest {
                 allOf(withId(R.id.ui_onboard_asso_fill_function),
                         isDisplayed()))
         functionEt.perform(typeText("directeur"), closeSoftKeyboard())
+    }
+
+    private fun goToAssoActivities() {
+        goToAssoInfo()
+
+        fillAssoName()
+        fillPostalCode()
+        fillFunction()
+
+        nextButton.perform(click())
+    }
+
+    private fun clickAssoActivity1() {
+        val assoActivity1Layout = onView(
+                allOf(withId(R.id.ui_onboard_asso_activities_layout_choice1),
+                        isDisplayed()))
+        assoActivity1Layout.perform(click())
+    }
+
+    private fun clickAssoActivity2() {
+        val assoActivity2Layout = onView(
+                allOf(withId(R.id.ui_onboard_asso_activities_layout_choice2),
+                        isDisplayed()))
+        assoActivity2Layout.perform(click())
+    }
+
+    private fun clickAssoActivity3() {
+        val assoActivity3Layout = onView(
+                allOf(withId(R.id.ui_onboard_asso_activities_layout_choice3),
+                        isDisplayed()))
+        assoActivity3Layout.perform(click())
+    }
+
+    private fun clickAssoActivity4() {
+        val assoActivity4Layout = onView(
+                allOf(withId(R.id.ui_onboard_asso_activities_layout_choice4),
+                        isDisplayed()))
+        assoActivity4Layout.perform(click())
+    }
+
+    private fun goToAssoEmail() {
+        goToAssoActivities()
+
+        clickAssoActivity1()
+        clickAssoActivity2()
+        clickAssoActivity3()
+        clickAssoActivity4()
+
+        nextButton.perform(click())
     }
 
     private fun childAtPosition(
