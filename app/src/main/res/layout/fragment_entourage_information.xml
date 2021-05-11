@@ -14,70 +14,82 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/entourage_info_title_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:padding="5dp"
-        android:background="@color/feeditem_details_topbar_background"
-        android:orientation="vertical">
-
-        <ImageButton
-            android:id="@+id/entourage_info_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:background="?attr/selectableItemBackground"
-            android:contentDescription="@string/empty_description"
-            android:padding="5dp"
-            android:tint="@color/feeditem_details_topbar_tint"
-            app:srcCompat="@drawable/ic_baseline_arrow_back_36"/>
-
-        <ImageView
-            android:id="@+id/entourage_info_icon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/entourage_info_close"
-            android:background="@drawable/bg_feeditem_icon"
-            android:contentDescription="@string/empty_description"
-            android:padding="5dp"
-            android:scaleType="centerInside"
-            android:visibility="gone"
-            app:srcCompat="@drawable/ic_entourage_category_question_chat"
-            tools:visibility="visible" />
-
-        <TextView
-            android:id="@+id/entourage_info_title"
+        <RelativeLayout
+            android:id="@+id/entourage_info_title_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="10dp"
-            android:layout_toStartOf="@+id/entourage_info_top_buttons"
-            android:layout_toEndOf="@+id/entourage_info_icon"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:lines="1"
-            android:textColor="@color/feeditem_details_title"
-            android:textSize="@dimen/entourage_font_medium"
-            android:textStyle="bold"
-            android:visibility="gone"
-            tools:text="Test description"
-            tools:visibility="visible" />
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="5dp">
 
-        <include
-            android:id="@+id/entourage_info_top_buttons"
-            layout="@layout/layout_entourage_information_top_buttons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            tools:visibility="visible" />
+            <ImageButton
+                android:id="@+id/entourage_info_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/empty_description"
+                android:padding="5dp"
+                android:tint="@color/accent"
+                app:srcCompat="@drawable/ic_baseline_arrow_back_36" />
 
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/entourage_info_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/entourage_info_close"
+                android:background="@drawable/bg_feeditem_icon"
+                android:contentDescription="@string/empty_description"
+                android:padding="5dp"
+                android:scaleType="centerInside"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_entourage_category_question_chat"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/entourage_info_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_toStartOf="@+id/entourage_info_top_buttons"
+                android:layout_toEndOf="@+id/entourage_info_icon"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:lines="1"
+                android:textColor="@color/black"
+                android:textSize="@dimen/entourage_font_medium"
+                android:textStyle="bold"
+                android:visibility="gone"
+                tools:text="Test description"
+                tools:visibility="visible" />
+
+            <include
+                android:id="@+id/entourage_info_top_buttons"
+                layout="@layout/layout_entourage_information_top_buttons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                tools:visibility="visible" />
+
+            <View
+                android:id="@+id/title_separator3"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:background="@color/greyish"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </RelativeLayout>
 
         <include
             android:id="@+id/entourage_info_private_section"
