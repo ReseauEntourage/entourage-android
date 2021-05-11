@@ -169,7 +169,6 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     override fun onResume() {
         super.onResume()
-        timerStart()
         EntBus.post(OnLocationPermissionGranted(isLocationPermissionGranted()))
     }
 

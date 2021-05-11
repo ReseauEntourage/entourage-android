@@ -116,6 +116,12 @@ open class ToursFragment : NewsFeedFragment(), TourServiceListener, BackPressabl
         ui_bt_back?.setOnClickListener {
             requireActivity().onBackPressed()
         }
+        selectedTab = NewsfeedTabItem.TOUR_TAB
+    }
+
+    override fun onResume() {
+        selectedTab = NewsfeedTabItem.TOUR_TAB
+        super.onResume()
     }
 
     override fun onLocationStatusUpdated(active: Boolean) {
@@ -352,11 +358,6 @@ open class ToursFragment : NewsFeedFragment(), TourServiceListener, BackPressabl
         }
         updateEncounter(updatedEncounter)
         putEncounterOnMap(updatedEncounter)
-    }
-
-    @Subscribe
-    override fun feedItemViewRequested(event: Events.OnFeedItemInfoViewRequestedEvent) {
-        super.feedItemViewRequested(event)
     }
 
     @Subscribe
