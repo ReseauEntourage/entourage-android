@@ -127,7 +127,7 @@ class SignUpTest {
     fun emptyFirstNameAndLastNameTest() {
         firstNameEt.perform(typeText(""), closeSoftKeyboard())
         lastNameEt.perform(typeText(""), closeSoftKeyboard())
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that OnboardingNamesFragment is still displayed
         firstNameEt.check(matches(isDisplayed()))
@@ -141,7 +141,7 @@ class SignUpTest {
     fun emptyFirstNameTest() {
         firstNameEt.perform(typeText(""), closeSoftKeyboard())
         lastNameEt.perform(typeText("Dupont"), closeSoftKeyboard())
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that OnboardingNamesFragment is still displayed
         firstNameEt.check(matches(isDisplayed()))
@@ -155,7 +155,7 @@ class SignUpTest {
     fun emptyLastNameTest() {
         firstNameEt.perform(typeText("Jean"), closeSoftKeyboard())
         lastNameEt.perform(typeText(""), closeSoftKeyboard())
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that OnboardingNamesFragment is still displayed
         firstNameEt.check(matches(isDisplayed()))
@@ -175,7 +175,7 @@ class SignUpTest {
 //        fillValidNames()
 //
 //        phoneNumberEt.perform(typeText(""), closeSoftKeyboard())
-//        nextButton.perform(click())
+//        clickNextButton()
 //
 //        //Check that toast shows given message
 //        onView(withText(R.string.login_smscode_sent)).inRoot(ToastMatcher()).check(matches(isDisplayed()))
@@ -186,7 +186,7 @@ class SignUpTest {
         fillValidNames()
 
         phoneNumberEt.perform(typeText(""), closeSoftKeyboard())
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that OnboardingPhoneFragment is still displayed
         phoneNumberEt.check(matches(isDisplayed()))
@@ -201,7 +201,7 @@ class SignUpTest {
         fillValidNames()
 
         phoneNumberEt.perform(typeText("000000000"), closeSoftKeyboard())
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that toast shows given message
         onView(withText(R.string.login_text_invalid_format)).inRoot(ToastMatcher()).check(matches(isDisplayed()))
@@ -212,10 +212,10 @@ class SignUpTest {
         fillValidNames()
 
         phoneNumberEt.perform(typeText("123456789"), closeSoftKeyboard())
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that dialog shows given message
-        Thread.sleep(5000) // Wait for API response
+        Thread.sleep(5000) //Wait for API response
         onView(withText(R.string.login_already_registered_go_back)).check(matches(isDisplayed()))
     }
 
@@ -301,7 +301,7 @@ class SignUpTest {
     fun neighbourEmptyPlaceTest() {
         clickTypeButton(R.id.ui_onboard_type_layout_neighbour)
 
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that OnboardingPlaceFragment is still displayed
         placeTitleTv.check(matches(withText(R.string.onboard_place_title)))
@@ -311,7 +311,7 @@ class SignUpTest {
     fun aloneEmptyPlaceTest() {
         clickTypeButton(R.id.ui_onboard_type_layout_alone)
 
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that OnboardingPlaceFragment is still displayed
         placeTitleTv.check(matches(withText(R.string.onboard_place_title_sdf)))
@@ -331,9 +331,7 @@ class SignUpTest {
         //Lose email edit text focus to enable next button
         emailSubtitleTv.perform(click())
 
-        nextButton.perform(click())
-
-        Thread.sleep(1000)
+        clickNextButton()
 
         //Check that HomeNeoMainFragment is displayed
         homeNeoTitleTv.check(matches(withText(R.string.home_neo_title)))
@@ -354,7 +352,7 @@ class SignUpTest {
 
         pickLocation("paris")
 
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that LoginEmailFragment is still displayed
         emailSubtitleTv.check(matches(withText(R.string.login_email_description)))
@@ -371,9 +369,7 @@ class SignUpTest {
         //Lose email edit text focus to enable next button
         emailSubtitleTv.perform(click())
 
-        nextButton.perform(click())
-
-        Thread.sleep(1000)
+        clickNextButton()
 
         //Check that OnboardingMainActivity is displayed
         feedButtonBottomBar.check(matches(isDisplayed()))
@@ -394,7 +390,7 @@ class SignUpTest {
 
         pickLocation("toulouse")
 
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that LoginEmailFragment is still displayed
         emailSubtitleTv.check(matches(withText(R.string.login_email_description)))
@@ -407,7 +403,7 @@ class SignUpTest {
     fun assoTunnelTest() {
         clickTypeButton(R.id.ui_onboard_type_layout_assos)
 
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that OnboardingAssoStartFragment 2nd screen is displayed
         val assoTitleTv = onView(
@@ -416,7 +412,7 @@ class SignUpTest {
                         isDisplayed()))
         assoTitleTv.check(matches(withText(R.string.onboard_asso_info_title)))
 
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that OnboardingAssoFillFragment is displayed
         assoFillTitleTv.check(matches(withText(R.string.onboard_asso_fill_title)))
@@ -448,7 +444,7 @@ class SignUpTest {
         fillPostalCode()
         fillFunction()
 
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that OnboardingAssoActivitiesFragment is displayed
         activitiesSubtitleTv.check(matches(withText(R.string.onboard_asso_activity_description)))
@@ -461,7 +457,7 @@ class SignUpTest {
         fillPostalCode()
         fillFunction()
 
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that OnboardingAssoFillFragment is still displayed
         assoFillTitleTv.check(matches(withText(R.string.onboard_asso_fill_title)))
@@ -474,7 +470,7 @@ class SignUpTest {
         fillAssoName()
         fillFunction()
 
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that error message is displayed
         onView(withText(R.string.onboard_asso_fill_error)).check(matches(isDisplayed()))
@@ -487,7 +483,7 @@ class SignUpTest {
         fillAssoName()
         fillPostalCode()
 
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that error message is displayed
         onView(withText(R.string.onboard_asso_fill_error)).check(matches(isDisplayed()))
@@ -505,7 +501,7 @@ class SignUpTest {
         clickAssoActivity3()
         clickAssoActivity4()
 
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that OnboardingEmailPwdFragment is Displayed
         assoEmailSubtitleTv.check(matches(withText(R.string.onboard_email_pwd_description)))
@@ -519,7 +515,7 @@ class SignUpTest {
         clickAssoActivity3()
         clickAssoActivity4()
 
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that OnboardingEmailPwdFragment is Displayed
         assoEmailSubtitleTv.check(matches(withText(R.string.onboard_email_pwd_description)))
@@ -532,7 +528,7 @@ class SignUpTest {
         clickAssoActivity1()
         clickAssoActivity3()
 
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that OnboardingEmailPwdFragment is Displayed
         assoEmailSubtitleTv.check(matches(withText(R.string.onboard_email_pwd_description)))
@@ -544,7 +540,7 @@ class SignUpTest {
 
         clickAssoActivity2()
 
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that OnboardingEmailPwdFragment is Displayed
         assoEmailSubtitleTv.check(matches(withText(R.string.onboard_email_pwd_description)))
@@ -554,7 +550,7 @@ class SignUpTest {
     fun pickNoAssoActivitiesTest() {
         goToAssoActivities()
 
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that error message is displayed
         onView(withText(R.string.onboard_asso_activity_error)).check(matches(isDisplayed()))
@@ -569,7 +565,7 @@ class SignUpTest {
 
         assoEmailEt.perform(typeText("jean.dupont@jeandupont.fr"), closeSoftKeyboard())
 
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that OnboardingMainActivity is displayed
         feedButtonBottomBar.check(matches(isDisplayed()))
@@ -581,7 +577,7 @@ class SignUpTest {
 
         assoEmailEt.perform(typeText("jean.dupont@jeandupont"), closeSoftKeyboard())
 
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that OnboardingEmailPwdFragment is still Displayed
         assoEmailSubtitleTv.check(matches(withText(R.string.onboard_email_pwd_description)))
@@ -591,7 +587,7 @@ class SignUpTest {
     fun assoEmptyMailTest() {
         goToAssoEmail()
 
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that OnboardingEmailPwdFragment is still Displayed
         assoEmailSubtitleTv.check(matches(withText(R.string.onboard_email_pwd_description)))
@@ -600,10 +596,15 @@ class SignUpTest {
 
     /****************************** Utils ******************************/
 
+    private fun clickNextButton() {
+        nextButton.perform(click())
+        Thread.sleep(1000)
+    }
+
     private fun fillValidNames() {
         firstNameEt.perform(typeText("Jean"), closeSoftKeyboard())
         lastNameEt.perform(typeText("Dupont"), closeSoftKeyboard())
-        nextButton.perform(click())
+        clickNextButton()
     }
 
     private fun goNextStep() {
@@ -626,10 +627,9 @@ class SignUpTest {
 
         val typeButton = onView(allOf(withId(buttonId), isDisplayed()))
         typeButton.perform(click())
-
-        Thread.sleep(2000)
-        nextButton.perform(click())
         Thread.sleep(1000)
+
+        clickNextButton()
     }
 
     private fun login(phoneNumber: String, codePwd: String) {
@@ -668,6 +668,8 @@ class SignUpTest {
         locationSearchBar.perform(click())
         locationSearchBar.perform(typeText(locationInput), closeSoftKeyboard())
 
+        Thread.sleep(1000) //Wait for search results
+
         val locationsResultRv = onView(
                 allOf(withId(R.id.places_autocomplete_list),
                         childAtPosition(
@@ -675,8 +677,7 @@ class SignUpTest {
                                 2)))
         locationsResultRv.perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
 
-        nextButton.perform(click())
-        Thread.sleep(1000)
+        clickNextButton()
     }
 
     private fun testInvalidEmail() {
@@ -685,7 +686,7 @@ class SignUpTest {
         //Lose email edit text focus to enable next button
         emailSubtitleTv.perform(click())
 
-        nextButton.perform(click())
+        clickNextButton()
 
         //Check that LoginEmailFragment is still displayed
         emailSubtitleTv.check(matches(withText(R.string.login_email_description)))
@@ -694,18 +695,18 @@ class SignUpTest {
     private fun goToAssoInfo() {
         clickTypeButton(R.id.ui_onboard_type_layout_assos)
 
-        nextButton.perform(click())
+        clickNextButton()
 
-        nextButton.perform(click())
+        clickNextButton()
     }
 
     private fun fillAssoName() {
-        Thread.sleep(1000)
-
         val assoNameLayout = onView(
                 allOf(withId(R.id.ui_layout_asso_fill_location),
                         isDisplayed()))
         assoNameLayout.perform(click())
+
+        Thread.sleep(1000) //Wait for search view to appear
 
         val searchAssoNameEt = onView(
                 allOf(withId(R.id.ui_asso_search_et_search),
@@ -722,7 +723,7 @@ class SignUpTest {
                         isDisplayed()))
         validateButton.perform(click())
 
-        Thread.sleep(1000)
+        Thread.sleep(1000) //Wait for search view to disappear
     }
 
     private fun fillPostalCode() {
@@ -746,7 +747,7 @@ class SignUpTest {
         fillPostalCode()
         fillFunction()
 
-        nextButton.perform(click())
+        clickNextButton()
     }
 
     private fun clickAssoActivity1() {
@@ -785,7 +786,7 @@ class SignUpTest {
         clickAssoActivity3()
         clickAssoActivity4()
 
-        nextButton.perform(click())
+        clickNextButton()
     }
 
     private fun childAtPosition(

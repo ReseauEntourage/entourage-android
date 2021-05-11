@@ -56,7 +56,8 @@ class OnboardingPhoneFragment : Fragment() {
 
         if (phone?.length ?: 0 >= minimumPhoneCharacters) {
             callback?.updateButtonNext(true)
-        } else {
+        }
+        else {
             callback?.updateButtonNext(false)
         }
 
@@ -119,7 +120,8 @@ class OnboardingPhoneFragment : Fragment() {
             if (isFromPhone) {
                 callback?.goNextManually()
             }
-        } else {
+        }
+        else {
             callback?.updateButtonNext(false)
             callback?.validatePhoneNumber(null, null)
         }

@@ -119,7 +119,8 @@ class OnboardingNamesFragment : Fragment() {
         if (checkAndValidateInput()) {
             callback?.updateButtonNext(true)
             callback?.validateNames(ui_onboard_names_et_firstname?.text?.toString(), ui_onboard_names_et_lastname?.text?.toString(), isValidate)
-        } else {
+        }
+        else {
             callback?.updateButtonNext(false)
             callback?.validateNames(null, null, false)
         }

@@ -772,9 +772,11 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     override fun updateSdfNeighbourActivities(sdfNeighbourActivities: SdfNeighbourActivities,isSdf:Boolean) {
         if (isSdf) {
             this.temporarySdfActivities = sdfNeighbourActivities
+            this.temporarySdfActivities?.setupForSdf(true)
         }
         else {
             this.temporaryNeighbourActivities = sdfNeighbourActivities
+            this.temporaryNeighbourActivities?.setupForSdf(false)
         }
     }
 }
