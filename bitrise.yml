@@ -158,7 +158,7 @@ workflows:
     - opts:
         is_expand: false
       PLAYSTORE_APP_NAME: social.entourage.android
-  app:
+app:
   envs:
   - opts:
       is_expand: false
