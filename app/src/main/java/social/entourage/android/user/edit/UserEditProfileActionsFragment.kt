@@ -2,6 +2,7 @@ package social.entourage.android.user.edit
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -284,10 +285,12 @@ class UserEditProfileActionsFragment : BaseDialogFragment() {
         if (isSelected) {
             layout.background = ResourcesCompat.getDrawable(resources,R.drawable.bg_rounded_onboard_orange_stroke,null)
             textView.setTypeface(textView.typeface, Typeface.BOLD)
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,15.5f)
         }
         else {
             layout.background = ResourcesCompat.getDrawable(resources,R.drawable.bg_rounded_onboard_grey_plain,null)
             textView.setTypeface(null, Typeface.NORMAL)
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,16f)
         }
     }
 
