@@ -9,189 +9,431 @@
    "headlines":{
       "metadata":{
          "order":[
+            "pin_neighborhood",
             "announcement_0",
             "outing",
-            "action"
+            "announcement_1",
+            "announcement_online"
          ]
+      },
+      "pin_neighborhood":{
+         "type":"Entourage",
+         "data":{
+            "id":2668,
+            "uuid":"esgXNfRFnvZ4",
+            "status":"open",
+            "title":"Groupe de voisins Paris Sud",
+            "group_type":"action",
+            "public":false,
+            "metadata":{
+               "city":"Paris",
+               "display_address":"Paris (75004)"
+            },
+            "entourage_type":"ask_for_help",
+            "display_category":"skill",
+            "postal_code":"75004",
+            "join_status":"not_requested",
+            "number_of_unread_messages":null,
+            "number_of_people":3,
+            "created_at":"2021-04-02T17:13:04.906+02:00",
+            "updated_at":"2021-04-28T10:51:52.618+02:00",
+            "description":"",
+            "share_url":"http://entourage-landingpages-preprod.herokuapp.com/entourages/esgXNfRFnvZ4",
+            "image_url":null,
+            "online":false,
+            "event_url":null,
+            "display_report_prompt":false,
+            "author":{
+               "id":3313,
+               "display_name":"Loïc L.",
+               "avatar_url":null,
+               "partner":null,
+               "partner_role_title":null
+            },
+            "location":{
+               "latitude":48.856957156351676,
+               "longitude":2.3521633492873364
+            }
+         }
       },
       "announcement_0":{
          "type":"Announcement",
          "data":{
-            "id":1,
-            "uuid":"1",
-            "title":"Une autre façon de contribuer.",
-            "body":"Entourage a besoin de vous pour continuer à accompagner les sans-abri.",
-            "image_url":null,
-            "action":"Aider",
-            "url":"http://example.org/api/v1/announcements/1/redirect/foobar22",
-            "icon_url":"http://example.org/api/v1/announcements/1/icon",
+            "id":77,
+            "uuid":"77",
+            "title":"Carte des lieux solidaires ",
+            "body":"description carte des lieux solidaires ",
+            "image_url":"https://entourage-avatars-production-thumb.s3.eu-west-1.amazonaws.com/staging/announcements/images/77-1617291825.png",
+            "action":"Découvrez les lieux solidaires maintenant",
+            "url":"entourage-staging://guidemap",
+            "icon_url":"https://api-preprod.entourage.social/api/v1/announcements/77/icon",
             "author":null
          }
       },
       "outing":{
          "type":"Entourage",
          "data":{
-            "id":685,
-            "uuid":"ey6fvArhNg_U",
+            "id":121739,
+            "uuid":"eR54Qe3ttn7M",
             "status":"open",
-            "title":"Foobar",
+            "title":"Test event temps long ;)",
             "group_type":"outing",
-            "public":false,
+            "public":true,
             "metadata":{
-               "ends_at":"2021-05-04T22:00:00.000+02:00",
-               "starts_at":"2021-05-04T19:00:00.000+02:00",
-               "place_name":"Café la Renaissance",
-               "street_address":"44 rue de l’Assomption, 75016 Paris, France",
-               "display_address":"Café la Renaissance, 44 rue de l’Assomption, 75016 Paris",
-               "google_place_id":"foobar"
+               "ends_at":"2021-05-27T19:30:35.000+02:00",
+               "starts_at":"2021-05-18T16:43:35.000+02:00",
+               "place_name":"Paris",
+               "previous_at":null,
+               "portrait_url":null,
+               "landscape_url":null,
+               "street_address":"Paris, France",
+               "display_address":"Paris",
+               "google_place_id":"ChIJD7fiBh9u5kcRYJSMaMOCCwQ",
+               "entourage_image_id":null
             },
-            "entourage_type":"ask_for_help",
-            "display_category":"social",
+            "entourage_type":"contribution",
+            "display_category":null,
             "postal_code":null,
             "join_status":"not_requested",
             "number_of_unread_messages":null,
             "number_of_people":1,
-            "created_at":"2021-05-03T11:34:23.270+02:00",
-            "updated_at":"2021-05-03T11:34:23.270+02:00",
-            "description":null,
-            "share_url":"https://app.entourage.social/actions/ey6fvArhNg_U",
+            "created_at":"2021-05-18T16:43:48.633+02:00",
+            "updated_at":"2021-05-18T16:43:48.633+02:00",
+            "description":"",
+            "share_url":"http://entourage-landingpages-preprod.herokuapp.com/entourages/eR54Qe3ttn7M",
             "image_url":null,
             "online":false,
             "event_url":null,
             "display_report_prompt":false,
             "author":{
-               "id":1606,
-               "display_name":"John D.",
+               "id":3589,
+               "display_name":"Aa A.",
                "avatar_url":null,
                "partner":null,
                "partner_role_title":null
             },
             "location":{
-               "latitude":48.854367553784954,
-               "longitude":2.270340589096274
+               "latitude":48.856614,
+               "longitude":2.3522219
             }
          }
       },
-      "action":{
-         "type":"Entourage",
+      "announcement_1":{
+         "type":"Announcement",
          "data":{
-            "id":684,
-            "uuid":"e5lCM3g_AVWw",
-            "status":"open",
-            "title":"Foobar",
-            "group_type":"action",
-            "public":false,
-            "metadata":{
-               "city":"",
-               "display_address":""
-            },
-            "entourage_type":"ask_for_help",
-            "display_category":"social",
-            "postal_code":null,
-            "join_status":"accepted",
-            "number_of_unread_messages":0,
-            "number_of_people":1,
-            "created_at":"2021-05-03T11:34:23.245+02:00",
-            "updated_at":"2021-05-03T11:34:23.245+02:00",
-            "description":null,
-            "share_url":"https://app.entourage.social/actions/e5lCM3g_AVWw",
-            "image_url":null,
-            "online":false,
-            "event_url":null,
-            "display_report_prompt":false,
-            "author":{
-               "id":1605,
-               "display_name":"John D.",
-               "avatar_url":null,
-               "partner":null,
-               "partner_role_title":null
-            },
-            "location":{
-               "latitude":48.85436,
-               "longitude":2.27034
-            }
+            "id":72,
+            "uuid":"72",
+            "title":"Gabrielle, à votre écoute",
+            "body":"description",
+            "image_url":"https://entourage-avatars-production-thumb.s3.eu-west-1.amazonaws.com/staging/announcements/images/72-1620658816.png",
+            "action":"Je contacte",
+            "url":"entourage-staging://entourage/1_list_me-moderator",
+            "icon_url":"https://api-preprod.entourage.social/api/v1/announcements/72/icon",
+            "author":null
+         }
+      },
+      "announcement_online":{
+         "type":"Announcement",
+         "data":{
+            "id":66,
+            "uuid":"66",
+            "title":"Par où commencer pour aider ?",
+            "body":"Participez à un atelier en ligne, on vous dit tout !",
+            "image_url":"https://entourage-avatars-production-thumb.s3.eu-west-1.amazonaws.com/staging/announcements/images/66-1617222846.png",
+            "action":"👉 S'inscrire à un atelier 👈",
+            "url":"entourage-staging://webview?url=https://api-preprod.entourage.social/api/v1/announcements/66/redirect/0cb4507e970462ca0b11320131e96610",
+            "icon_url":"https://api-preprod.entourage.social/api/v1/announcements/66/icon",
+            "author":null
          }
       }
    },
    "outings":[
       {
-         "id":685,
-         "uuid":"ey6fvArhNg_U",
+         "id":121744,
+         "uuid":"eBugLF7J_OO4",
          "status":"open",
-         "title":"Foobar",
+         "title":"Tests photo sans portrait",
          "group_type":"outing",
-         "public":false,
+         "public":true,
          "metadata":{
-            "ends_at":"2021-05-04T22:00:00.000+02:00",
-            "starts_at":"2021-05-04T19:00:00.000+02:00",
-            "place_name":"Café la Renaissance",
-            "street_address":"44 rue de l’Assomption, 75016 Paris, France",
-            "display_address":"Café la Renaissance, 44 rue de l’Assomption, 75016 Paris",
-            "google_place_id":"foobar"
+            "ends_at":"2021-05-21T17:15:02.000+02:00",
+            "starts_at":"2021-05-19T14:21:02.000+02:00",
+            "place_name":"Paris",
+            "previous_at":null,
+            "portrait_url":null,
+            "landscape_url":null,
+            "street_address":"",
+            "display_address":"Paris",
+            "google_place_id":"ChIJD7fiBh9u5kcRYJSMaMOCCwQ"
          },
          "entourage_type":"ask_for_help",
-         "display_category":"social",
-         "postal_code":null,
+         "display_category":"other",
+         "postal_code":"75004",
          "join_status":"not_requested",
          "number_of_unread_messages":null,
          "number_of_people":1,
-         "created_at":"2021-05-03T11:34:23.270+02:00",
-         "updated_at":"2021-05-03T11:34:23.270+02:00",
-         "description":null,
-         "share_url":"https://app.entourage.social/actions/ey6fvArhNg_U",
+         "created_at":"2021-05-19T14:21:12.407+02:00",
+         "updated_at":"2021-05-19T14:21:12.407+02:00",
+         "description":"",
+         "share_url":"http://entourage-landingpages-preprod.herokuapp.com/entourages/eBugLF7J_OO4",
          "image_url":null,
          "online":false,
          "event_url":null,
          "display_report_prompt":false,
          "author":{
-            "id":1606,
-            "display_name":"John D.",
+            "id":3589,
+            "display_name":"Aa A.",
             "avatar_url":null,
             "partner":null,
             "partner_role_title":null
          },
          "location":{
-            "latitude":48.854367553784954,
-            "longitude":2.270340589096274
+            "latitude":48.856614,
+            "longitude":2.3522219
+         }
+      },
+      {
+         "id":121743,
+         "uuid":"eKYL0L9QvMw8",
+         "status":"open",
+         "title":"Test photo 3",
+         "group_type":"outing",
+         "public":true,
+         "metadata":{
+            "ends_at":"2021-05-21T16:00:19.000+02:00",
+            "starts_at":"2021-05-19T13:10:19.000+02:00",
+            "place_name":"Paris",
+            "previous_at":null,
+            "portrait_url":null,
+            "landscape_url":null,
+            "street_address":"Paris, France",
+            "display_address":"Paris",
+            "google_place_id":"ChIJD7fiBh9u5kcRYJSMaMOCCwQ"
+         },
+         "entourage_type":"contribution",
+         "display_category":null,
+         "postal_code":"75004",
+         "join_status":"not_requested",
+         "number_of_unread_messages":null,
+         "number_of_people":1,
+         "created_at":"2021-05-19T13:10:33.586+02:00",
+         "updated_at":"2021-05-19T13:10:33.586+02:00",
+         "description":"",
+         "share_url":"http://entourage-landingpages-preprod.herokuapp.com/entourages/eKYL0L9QvMw8",
+         "image_url":null,
+         "online":false,
+         "event_url":null,
+         "display_report_prompt":false,
+         "author":{
+            "id":3589,
+            "display_name":"Aa A.",
+            "avatar_url":null,
+            "partner":null,
+            "partner_role_title":null
+         },
+         "location":{
+            "latitude":48.856614,
+            "longitude":2.3522219
+         }
+      },
+      {
+         "id":121742,
+         "uuid":"eNcemXxfc5E0",
+         "status":"open",
+         "title":"Test photo2",
+         "group_type":"outing",
+         "public":true,
+         "metadata":{
+            "ends_at":"2021-05-21T18:00:05.000+02:00",
+            "starts_at":"2021-05-19T13:07:05.000+02:00",
+            "place_name":"Paris",
+            "previous_at":null,
+            "portrait_url":null,
+            "landscape_url":null,
+            "street_address":"",
+            "display_address":"Paris",
+            "google_place_id":"ChIJD7fiBh9u5kcRYJSMaMOCCwQ"
+         },
+         "entourage_type":"ask_for_help",
+         "display_category":"other",
+         "postal_code":"75004",
+         "join_status":"not_requested",
+         "number_of_unread_messages":null,
+         "number_of_people":1,
+         "created_at":"2021-05-19T13:07:19.242+02:00",
+         "updated_at":"2021-05-19T13:07:19.242+02:00",
+         "description":"",
+         "share_url":"http://entourage-landingpages-preprod.herokuapp.com/entourages/eNcemXxfc5E0",
+         "image_url":null,
+         "online":false,
+         "event_url":null,
+         "display_report_prompt":false,
+         "author":{
+            "id":3589,
+            "display_name":"Aa A.",
+            "avatar_url":null,
+            "partner":null,
+            "partner_role_title":null
+         },
+         "location":{
+            "latitude":48.856614,
+            "longitude":2.3522219
          }
       }
    ],
    "entourages":[
       {
-         "id":684,
-         "uuid":"e5lCM3g_AVWw",
+         "id":121702,
+         "uuid":"eZZ6abCR30_k",
          "status":"open",
-         "title":"Foobar",
+         "title":"Aaaa",
          "group_type":"action",
-         "public":false,
+         "public":true,
          "metadata":{
-            "city":"",
-            "display_address":""
+            "city":"Paris",
+            "display_address":"Paris (75004)"
          },
          "entourage_type":"ask_for_help",
-         "display_category":"social",
-         "postal_code":null,
-         "join_status":"accepted",
-         "number_of_unread_messages":0,
-         "number_of_people":1,
-         "created_at":"2021-05-03T11:34:23.245+02:00",
-         "updated_at":"2021-05-03T11:34:23.245+02:00",
-         "description":null,
-         "share_url":"https://app.entourage.social/actions/e5lCM3g_AVWw",
+         "display_category":"mat_help",
+         "postal_code":"75004",
+         "join_status":"not_requested",
+         "number_of_unread_messages":null,
+         "number_of_people":2,
+         "created_at":"2021-05-06T16:56:32.957+02:00",
+         "updated_at":"2021-05-06T17:16:33.848+02:00",
+         "description":"",
+         "share_url":"http://entourage-landingpages-preprod.herokuapp.com/entourages/eZZ6abCR30_k",
          "image_url":null,
          "online":false,
          "event_url":null,
          "display_report_prompt":false,
          "author":{
-            "id":1605,
+            "id":3193,
             "display_name":"John D.",
+            "avatar_url":"https://entourage-avatars-production-thumb.s3.eu-west-1.amazonaws.com/staging/300x300/dca85049-0d42-45a3-8c33-ff7c4731e72b.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=AKIAXGPHKM3OQLCIZB7I%2F20210520%2Feu-west-1%2Fs3%2Faws4_request\u0026X-Amz-Date=20210520T072844Z\u0026X-Amz-Expires=86400\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=a7885e937e01d6a7cf7dcfc40f16fe5dee2937851e1b29a10c6450b1e8f4c23f",
+            "partner":null,
+            "partner_role_title":null
+         },
+         "location":{
+            "latitude":48.856484370248936,
+            "longitude":2.352736684039361
+         }
+      },
+      {
+         "id":121699,
+         "uuid":"ec8KJMCq0Nj4",
+         "status":"open",
+         "title":"Test",
+         "group_type":"action",
+         "public":true,
+         "metadata":{
+            "city":"Paris",
+            "display_address":"Paris (75004)"
+         },
+         "entourage_type":"ask_for_help",
+         "display_category":"social",
+         "postal_code":"75004",
+         "join_status":"not_requested",
+         "number_of_unread_messages":null,
+         "number_of_people":1,
+         "created_at":"2021-05-06T16:33:19.288+02:00",
+         "updated_at":"2021-05-06T16:33:19.288+02:00",
+         "description":"",
+         "share_url":"http://entourage-landingpages-preprod.herokuapp.com/entourages/ec8KJMCq0Nj4",
+         "image_url":null,
+         "online":false,
+         "event_url":null,
+         "display_report_prompt":false,
+         "author":{
+            "id":3193,
+            "display_name":"John D.",
+            "avatar_url":"https://entourage-avatars-production-thumb.s3.eu-west-1.amazonaws.com/staging/300x300/dca85049-0d42-45a3-8c33-ff7c4731e72b.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=AKIAXGPHKM3OQLCIZB7I%2F20210520%2Feu-west-1%2Fs3%2Faws4_request\u0026X-Amz-Date=20210520T072844Z\u0026X-Amz-Expires=86400\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=a7885e937e01d6a7cf7dcfc40f16fe5dee2937851e1b29a10c6450b1e8f4c23f",
+            "partner":null,
+            "partner_role_title":null
+         },
+         "location":{
+            "latitude":48.856961311893876,
+            "longitude":2.351445024458143
+         }
+      },
+      {
+         "id":121648,
+         "uuid":"evChjWKigHMM",
+         "status":"open",
+         "title":"Test taille",
+         "group_type":"action",
+         "public":false,
+         "metadata":{
+            "city":"Paris",
+            "display_address":"Paris (75004)"
+         },
+         "entourage_type":"ask_for_help",
+         "display_category":"social",
+         "postal_code":"75004",
+         "join_status":"not_requested",
+         "number_of_unread_messages":null,
+         "number_of_people":3,
+         "created_at":"2021-04-30T18:49:15.718+02:00",
+         "updated_at":"2021-05-06T16:56:43.673+02:00",
+         "description":"Test taille",
+         "share_url":"http://entourage-landingpages-preprod.herokuapp.com/entourages/evChjWKigHMM",
+         "image_url":null,
+         "online":false,
+         "event_url":null,
+         "display_report_prompt":false,
+         "author":{
+            "id":3331,
+            "display_name":"Emile B.",
+            "avatar_url":"https://entourage-avatars-production-thumb.s3.eu-west-1.amazonaws.com/staging/300x300/59bfd256-0bc6-4075-ad90-6c1655618826.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=AKIAXGPHKM3OQLCIZB7I%2F20210520%2Feu-west-1%2Fs3%2Faws4_request\u0026X-Amz-Date=20210520T072845Z\u0026X-Amz-Expires=86400\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=b674dc9dc3d042bbc7575bcc3b4cc669bd5858f134495d482e34a10c42f36a0e",
+            "partner":{
+               "id":206,
+               "name":"Test Asso",
+               "large_logo_url":"https://s3-eu-west-1.amazonaws.com/entourage-ressources/partner-placeholder.png",
+               "small_logo_url":"https://s3-eu-west-1.amazonaws.com/entourage-ressources/check-small.png",
+               "default":true
+            },
+            "partner_role_title":null
+         },
+         "location":{
+            "latitude":48.85631409777526,
+            "longitude":2.352967279360577
+         }
+      },
+      {
+         "id":121716,
+         "uuid":"eXyxBV-XICXI",
+         "status":"open",
+         "title":"Testp",
+         "group_type":"action",
+         "public":true,
+         "metadata":{
+            "city":"Paris",
+            "display_address":"Paris (75010)"
+         },
+         "entourage_type":"ask_for_help",
+         "display_category":"social",
+         "postal_code":"75010",
+         "join_status":"not_requested",
+         "number_of_unread_messages":null,
+         "number_of_people":1,
+         "created_at":"2021-05-10T11:26:25.682+02:00",
+         "updated_at":"2021-05-10T11:26:25.682+02:00",
+         "description":"",
+         "share_url":"http://entourage-landingpages-preprod.herokuapp.com/entourages/eXyxBV-XICXI",
+         "image_url":null,
+         "online":false,
+         "event_url":null,
+         "display_report_prompt":false,
+         "author":{
+            "id":3592,
+            "display_name":"Marie W.",
             "avatar_url":null,
             "partner":null,
             "partner_role_title":null
          },
          "location":{
-            "latitude":48.85436,
-            "longitude":2.27034
+            "latitude":48.87935028409967,
+            "longitude":2.364578507887731
          }
       }
    ]

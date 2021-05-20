@@ -32,10 +32,11 @@ class HomeExpertTest {
     @JvmField
     var activityRule = ActivityScenarioRule(LoginActivity::class.java)
 
+    private lateinit var context: Context
+
     private val mainRecyclerView = onView(allOf(withId(R.id.ui_recyclerview), isDisplayed()))
     private val backButton = onView(allOf(withId(R.id.ui_bt_back), isDisplayed()))
     private val closeButton = onView(allOf(withId(R.id.entourage_info_close), isDisplayed()))
-    private val titleCloseButton = onView(allOf(withId(R.id.title_close_button), isDisplayed()))
 
     private var jsonResponse: String = ""
 
@@ -43,6 +44,7 @@ class HomeExpertTest {
     fun setUp() {
         //Logout
         activityRule.scenario.onActivity { activity ->
+            context = activity
             EntourageApplication[activity].components.authenticationController.logOutUser()
             jsonResponse = getJsonDataFromAsset(activity, "home_response_success.json") ?: ""
         }
@@ -52,7 +54,7 @@ class HomeExpertTest {
         onView(withId(R.id.ui_login_et_code)).perform(typeText("661192"), closeSoftKeyboard())
         onView(withId(R.id.ui_login_button_signup)).perform(click())
 
-        Thread.sleep(6000)
+        Thread.sleep(4000)
     }
 
     //If you get PerformException, you may need to disable animations on your test device/emulator
@@ -60,47 +62,62 @@ class HomeExpertTest {
     @Test
     fun homeExpertTest() {
         //Change Home feed data with json file
-        runOnUiThread {
-            EntBus.post(HomeCard.OnGetHomeFeed(jsonResponse))
-        }
+        loadTestData()
 
         val headlineRv = onView(allOf(withId(R.id.ui_recyclerview_headline), isDisplayed()))
 
-        //Click on an Announcement item (without deeplink)
-//        headlineRv.perform(actionOnItemAtPosition<ViewHolder>(0, click()))
-//
-//        clickBackButton()
-
-        //Click on an Action item type outing
-        headlineRv.perform(actionOnItemAtPosition<ViewHolder>(1, click()))
+        //Click on an Action item type demand
+        headlineRv.perform(actionOnItemAtPosition<ViewHolder>(0, click()))
+        val joinButton = onView(allOf(withId(R.id.entourage_info_request_join_button), isDisplayed()))
+        joinButton.check(matches(withText(context.getString(R.string.tour_info_request_join_button_entourage).toUpperCase())))
 
         clickCloseButton()
 
-        //Click on an Action item type demand
+        //Click on an Announcement item
+        headlineRv.perform(actionOnItemAtPosition<ViewHolder>(1, click()))
+        val gdsTitleTv = onView(allOf(withId(R.id.textView28), isDisplayed()))
+        gdsTitleTv.check(matches(withText(R.string.gds_title)))
+
+        clickBackButton()
+
+        //Click on an Action item type outing
         headlineRv.perform(actionOnItemAtPosition<ViewHolder>(2, click()))
+        joinButton.check(matches(withText(context.getString(R.string.tour_info_request_join_button_event).toUpperCase())))
+
+        clickCloseButton()
+
+        //Click on an Announcement item
+        headlineRv.perform(actionOnItemAtPosition<ViewHolder>(3, click()))
+        val messageEditText = onView(withId(R.id.entourage_info_comment))
+        messageEditText.check(matches(isDisplayed()))
 
         clickCloseButton()
 
         //Test events section
-        mainRecyclerView.perform(scrollToPosition<ViewHolder>(2))
         val eventDetailButton = onView(allOf(withId(R.id.ui_event_show_more), isDisplayed()))
         eventDetailButton.perform(click())
+        val eventsAndActionsTitleTv = onView(allOf(withId(R.id.ui_tv_title), isDisplayed()))
+        eventsAndActionsTitleTv.check(matches(withText(R.string.home_title_events)))
 
         clickBackButton()
 
-//        val eventsRv = onView(allOf(withId(R.id.ui_recyclerview_event), isDisplayed()))
-//        eventsRv.perform(actionOnItemAtPosition<ViewHolder>(0, click()))
-//
-//        clickTitleCloseButton()
+        val eventsRv = onView(allOf(withId(R.id.ui_recyclerview_event), isDisplayed()))
+        eventsRv.perform(actionOnItemAtPosition<ViewHolder>(0, click()))
+        joinButton.check(matches(withText(context.getString(R.string.tour_info_request_join_button_event).toUpperCase())))
+
+        clickCloseButton()
 
         //Test actions section
+        mainRecyclerView.perform(scrollToPosition<ViewHolder>(2))
         val actionDetailButton = onView(allOf(withId(R.id.ui_action_show_more), isDisplayed()))
         actionDetailButton.perform(click())
+        eventsAndActionsTitleTv.check(matches(withText(R.string.home_title_actions)))
 
         clickBackButton()
 
         val actionsRv = onView(allOf(withId(R.id.ui_recyclerview_action), isDisplayed()))
         actionsRv.perform(actionOnItemAtPosition<ViewHolder>(0, click()))
+        joinButton.check(matches(withText(context.getString(R.string.tour_info_request_join_button_entourage).toUpperCase())))
 
         clickCloseButton()
     }
@@ -167,6 +184,8 @@ class HomeExpertTest {
 
     private fun clickBackButton() {
         backButton.perform(click())
+        //Pressing back button reload feed data so we need to replace it with test data
+        loadTestData()
         Thread.sleep(1000)
     }
 
@@ -175,9 +194,10 @@ class HomeExpertTest {
         Thread.sleep(1000)
     }
 
-    private fun clickTitleCloseButton() {
-        titleCloseButton.perform(click())
-        Thread.sleep(1000)
+    private fun loadTestData() {
+        runOnUiThread {
+            EntBus.post(HomeCard.OnGetHomeFeed(jsonResponse))
+        }
     }
 
     private fun getJsonDataFromAsset(context: Context, fileName: String): String? {
