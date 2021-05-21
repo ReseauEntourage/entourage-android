@@ -2,8 +2,10 @@ package social.entourage.android
 
 
 import android.content.Context
+import android.view.WindowManager
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Root
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
@@ -13,7 +15,9 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
+import org.hamcrest.Description
 import org.hamcrest.Matchers.allOf
+import org.hamcrest.TypeSafeMatcher
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -22,6 +26,7 @@ import social.entourage.android.newsfeed.v2.HomeCard
 import social.entourage.android.onboarding.login.LoginActivity
 import social.entourage.android.tools.EntBus
 import java.io.IOException
+import kotlin.random.Random
 
 
 @LargeTest
@@ -34,12 +39,24 @@ class HomeExpertTest {
 
     private lateinit var context: Context
 
+    private var jsonResponse: String = ""
+    private val login: String = "651234145"
+    private val password: String = "661192"
+
+
+    /****************************** Views ******************************/
+
     private val mainRecyclerView = onView(allOf(withId(R.id.ui_recyclerview), isDisplayed()))
     private val eventsAndActionsTitleTv = onView(allOf(withId(R.id.ui_tv_title), isDisplayed()))
     private val profilePictureIv = onView(allOf(withId(R.id.drawer_header_user_photo), isDisplayed()))
     private val editProfileButton = onView(allOf(withId(R.id.action_edit_profile), isDisplayed()))
     private val saveProfileButton = onView(withText(R.string.user_save_button))
     private val saveButton = onView(allOf(withId(R.id.user_edit_profile_save), withText(R.string.user_button_confirm_changes)))
+    private val editPasswordButton = onView(allOf(withId(R.id.user_password_layout), isDisplayed()))
+    private val oldPasswordEditText = onView(allOf(withId(R.id.user_old_password), isDisplayed()))
+    private val newPasswordEditText = onView(allOf(withId(R.id.user_new_password), isDisplayed()))
+    private val confirmPasswordEditText = onView(allOf(withId(R.id.user_confirm_password), isDisplayed()))
+    private val savePasswordButton = onView(allOf(withId(R.id.user_edit_password_save_button), isDisplayed()))
 
     private val bottomBarFeedButton = onView(
             allOf(withId(R.id.bottom_bar_newsfeed),
@@ -67,7 +84,8 @@ class HomeExpertTest {
     private val closeButton = onView(allOf(withId(R.id.entourage_info_close), isDisplayed()))
     private val titleCloseButton = onView(allOf(withId(R.id.title_close_button), isDisplayed()))
 
-    private var jsonResponse: String = ""
+
+    /****************************** Before each test ******************************/
 
     @Before
     fun setUp() {
@@ -79,12 +97,15 @@ class HomeExpertTest {
         }
 
         //Login
-        onView(withId(R.id.ui_login_phone_et_phone)).perform(typeText("651234145"), closeSoftKeyboard())
-        onView(withId(R.id.ui_login_et_code)).perform(typeText("661192"), closeSoftKeyboard())
+        onView(withId(R.id.ui_login_phone_et_phone)).perform(typeText(login), closeSoftKeyboard())
+        onView(withId(R.id.ui_login_et_code)).perform(typeText(password), closeSoftKeyboard())
         onView(withId(R.id.ui_login_button_signup)).perform(click())
 
         Thread.sleep(4000)
     }
+
+
+    /****************************** HomeExpertFragment ******************************/
 
     //If you get PerformException, you may need to disable animations on your test device/emulator
     //https://stackoverflow.com/questions/44005338/android-espresso-performexception
@@ -151,6 +172,9 @@ class HomeExpertTest {
         clickCloseButton()
     }
 
+
+    /****************************** GDSMainActivity ******************************/
+
     @Test
     fun homeExpertGuideTest() {
         clickGuideButton()
@@ -161,19 +185,43 @@ class HomeExpertTest {
         gdsTitleTv.check(matches(withText(R.string.gds_title)))
     }
 
+
+    /****************************** PlusFragment ******************************/
+
     @Test
     fun homeExpertPlusTest() {
         clickPlusButton()
 
-        //TODO
+        //TODO /!\ La charte revient tout le temps
     }
+
+
+    /****************************** MyEntouragesFragment ******************************/
 
     @Test
     fun homeExpertMessagesTest() {
         clickMessagesButton()
 
-        //TODO
+        //Test open chat
+        val messagesRecyclerView = onView(allOf(withId(R.id.myentourages_list_view), isDisplayed()))
+        messagesRecyclerView.perform(actionOnItemAtPosition<ViewHolder>(1, click()))
+        val typeMessageEditText = onView(withId(R.id.entourage_info_comment))
+        typeMessageEditText.check(matches(isDisplayed()))
+
+        //Test go to FeedItemInformationFragment
+        val infoButton = onView(allOf(withId(R.id.entourage_info_description_button), isDisplayed()))
+        infoButton.perform(click())
+        val showOptionsButton = onView(allOf(withId(R.id.entourage_info_more_button)))
+        showOptionsButton.check(matches(isDisplayed()))
+
+        //Test go to FeedItemOptionsFragment
+        showOptionsButton.perform(click())
+        val cancelButton = onView(allOf(withId(R.id.entourage_option_cancel), isDisplayed()))
+        cancelButton.check(matches(withText(R.string.tour_info_options_close)))
     }
+
+
+    /****************************** MainProfileFragment ******************************/
 
     @Test
     fun homeExpertProfileTest() {
@@ -307,7 +355,6 @@ class HomeExpertTest {
         testUserEditProfileFragmentDisplayed(R.id.user_email_layout)
 
         //Test go to UserEditPasswordFragment
-        val editPasswordButton = onView(allOf(withId(R.id.user_password_layout), isDisplayed()))
         editPasswordButton.perform(click())
         onView(allOf(withId(R.id.textView10), isDisplayed()))
                 .check(matches(withText(R.string.user_edit_password_old_password_label)))
@@ -324,12 +371,161 @@ class HomeExpertTest {
     }
 
 
+    /****************************** UserEditProfileFragment ******************************/
+
+    @Test
+    fun testEditNamesAndEmail() {
+        clickProfileButton()
+        editProfileButton.perform(click())
+        val firstNameLayout = onView(allOf(withId(R.id.user_firstname_layout), isDisplayed()))
+        firstNameLayout.perform(click())
+
+        //Input new firstname, lastname and email
+        val randomInt = Random.nextInt(0, 1000)
+        val randomFirstName = "Jean $randomInt"
+        val firstNameEditText = onView(allOf(withId(R.id.user_edit_profile_firstname), isDisplayed()))
+        firstNameEditText.perform(clearText(), typeText(randomFirstName))
+
+        val randomLastName = "Dupont $randomInt"
+        val lastNameEditText = onView(allOf(withId(R.id.user_edit_profile_lastname), isDisplayed()))
+        lastNameEditText.perform(clearText(), typeText(randomLastName))
+
+        val randomEmail = "jean.dupont$randomInt@jeandupont.fr"
+        val emailEditText = onView(allOf(withId(R.id.user_edit_profile_email), isDisplayed()))
+        emailEditText.perform(clearText(), typeText(randomEmail))
+
+        saveButton.perform(click())
+
+        //Test new values are set
+        val firstNameTv = onView(allOf(withId(R.id.user_edit_firstname), isDisplayed()))
+        firstNameTv.check(matches(withText(randomFirstName)))
+
+        val lastNameTv = onView(allOf(withId(R.id.user_edit_lastname), isDisplayed()))
+        lastNameTv.check(matches(withText(randomLastName)))
+
+        //Scroll to bottom
+        onView(allOf(withId(R.id.user_delete_account_button))).perform(scrollTo())
+
+        val emailTv = onView(allOf(withId(R.id.user_email), isDisplayed()))
+        emailTv.check(matches(withText(randomEmail)))
+    }
+
+
+    /****************************** UserEditPasswordFragment ******************************/
+
+    @Test
+    fun testEditPassword() {
+        clickProfileButton()
+        editProfileButton.perform(click())
+        //Scroll to bottom
+        onView(allOf(withId(R.id.user_delete_account_button))).perform(scrollTo())
+
+        //Test that wrong old password show snack bar message
+        changePassword("111111", "222222", "222222")
+        onView(withText(R.string.user_edit_password_invalid_current_password)).check(matches(isDisplayed()))
+        clickTitleCloseButton()
+
+        //Test that too short password show snack bar message
+        changePassword(password, "111", "111")
+        onView(withText(R.string.user_edit_password_new_password_too_short)).check(matches(isDisplayed()))
+        clickTitleCloseButton()
+
+        //Test that different new and confirm passwords show snack bar message
+        changePassword(password, "222222", "333333")
+        onView(withText(R.string.user_edit_password_not_match)).check(matches(isDisplayed()))
+        clickTitleCloseButton()
+
+        //Random valid password
+        val randomPassword = "${Random.nextInt(100000, 999999)}"
+
+        //Set new valid password
+        changePassword(password, randomPassword, randomPassword)
+
+        //Check that toast shows given message
+        onView(withText(R.string.user_text_update_ok)).inRoot(ToastMatcher()).check(matches(isDisplayed()))
+
+        //Reset initial password (for next test run)
+        changePassword(randomPassword, password, password)
+
+        //Check that toast shows given message
+        onView(withText(R.string.user_text_update_ok)).inRoot(ToastMatcher()).check(matches(isDisplayed()))
+    }
+
+    private fun changePassword(oldPassword: String, newPassword: String, confirmPassword: String) {
+        editPasswordButton.perform(click())
+        oldPasswordEditText.perform(typeText(oldPassword))
+        newPasswordEditText.perform(typeText(newPassword))
+        confirmPasswordEditText.perform(typeText(confirmPassword))
+        savePasswordButton.perform(click())
+    }
+
+
     /****************************** AboutFragment ******************************/
 
     @Test
-    fun homeExpertAboutTest() {
+    fun testAboutTutorial() {
+        goToTutorial()
+
+        //Test swipe pages
+        val viewPager = onView(allOf(withId(R.id.carousel_view), isDisplayed()))
+        viewPager.perform(swipeLeft())
+        val titlePage2Tv = onView(withText(R.string.carousel_p2_title))
+        titlePage2Tv.check(matches(isDisplayed()))
+
+        viewPager.perform(swipeLeft())
+        val titlePage3Tv = onView(withText(R.string.carousel_p3_title))
+        titlePage3Tv.check(matches(isDisplayed()))
+
+        viewPager.perform(swipeLeft())
+        val titlePage4Tv = onView(withText(R.string.carousel_p4_title))
+        titlePage4Tv.check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun testCloseTutorial() {
+        goToTutorial()
+
+        val closeTutorialButton = onView(allOf(withId(R.id.carousel_close_button), isDisplayed()))
+        closeTutorialButton.perform(click())
+        val aboutTitleTv = onView(withText(R.string.about_title))
+        aboutTitleTv.check(matches(isDisplayed()))
+    }
+
+    private fun goToTutorial() {
         clickProfileButton()
+        //Scroll to bottom
+        onView(withId(R.id.ui_iv_fb)).perform(scrollTo())
         aboutButton.perform(click())
+
+        //Test go to CarouselFragment
+        val tutorialButton = onView(allOf(withId(R.id.about_tutorial_layout), isDisplayed()))
+        tutorialButton.perform(click())
+        val titlePage1Tv = onView(withText(R.string.carousel_p1_title))
+        titlePage1Tv.check(matches(isDisplayed()))
+    }
+
+
+    /****************************** UserEditAboutFragment ******************************/
+
+    @Test
+    fun testEditAbout() {
+        clickProfileButton()
+        editProfileButton.perform(click())
+
+        val editAboutButton = onView(allOf(withId(R.id.user_about_edit_button), isDisplayed()))
+        editAboutButton.perform(click())
+
+        //Input new about text
+        val aboutEditText = onView(allOf(withId(R.id.user_edit_about), isDisplayed()))
+        val randomText = "Random text ${Random.nextInt(0, 1000)}"
+        aboutEditText.perform(typeText(randomText))
+
+        val validateAboutButton = onView(allOf(withId(R.id.user_edit_about_save_button), isDisplayed()))
+        validateAboutButton.perform(click())
+
+        //Test new value is set
+        val aboutTv = onView(allOf(withId(R.id.user_about), isDisplayed()))
+        aboutTv.check(matches(withText(randomText)))
     }
 
 
@@ -430,5 +626,23 @@ class HomeExpertTest {
             return null
         }
         return jsonString
+    }
+
+    class ToastMatcher : TypeSafeMatcher<Root>() {
+        override fun matchesSafely(item: Root?): Boolean {
+            item?.windowLayoutParams?.get()?.type?.let { type ->
+                if (type == WindowManager.LayoutParams.TYPE_TOAST) {
+                    val windowToken = item.decorView.windowToken
+                    val appToken = item.decorView.applicationWindowToken
+                    if (windowToken == appToken) {
+                        //Means this window isn't contained by any other windows
+                        return true
+                    }
+                }
+            }
+            return false
+        }
+
+        override fun describeTo(description: Description?) {}
     }
 }
