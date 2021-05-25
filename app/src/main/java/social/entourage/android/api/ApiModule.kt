@@ -167,4 +167,10 @@ class ApiModule {
     fun providesTourAreaService(restAdapter: Retrofit): TourAreaRequest {
         return restAdapter.create(TourAreaRequest::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun providesPhotoGalleryService(restAdapter: Retrofit): PhotoGalleryRequest {
+        return restAdapter.create(PhotoGalleryRequest::class.java)
+    }
 }

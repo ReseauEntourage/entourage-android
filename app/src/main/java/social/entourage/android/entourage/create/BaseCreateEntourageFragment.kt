@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.compat.Place
+import com.squareup.picasso.Picasso
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import com.wdullaer.materialdatetimepicker.time.Timepoint
@@ -72,6 +73,9 @@ open class BaseCreateEntourageFragment
 
     protected var isFromNeo = false
     protected var tagAnalyticName = ""
+
+    protected var landscape_photo_url:String? = null
+    protected var portrait_photo_url:String? = null
     // ----------------------------------
     // Lifecycle
     // ----------------------------------
@@ -99,6 +103,14 @@ open class BaseCreateEntourageFragment
         //To show choice type at launch (if not an event)
         if (!isFromNeo && !BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true) && entourageCategory?.isNewlyCreated==true) {
             onEditTypeClicked()
+        }
+
+        if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType)) {
+            create_entourage_photo_layout?.visibility = View.VISIBLE
+            create_entourage_photo_layout?.setOnClickListener { onEditPhotoClicked() }
+        }
+        else {
+            create_entourage_photo_layout?.visibility = View.GONE
         }
     }
 
@@ -231,6 +243,12 @@ open class BaseCreateEntourageFragment
         }
     }
 
+    private fun onEditPhotoClicked() {
+        val photoGallery = CreateEntouragePhotoGalleryFragment.newInstance(portrait_photo_url,landscape_photo_url)
+        photoGallery.setListener(this)
+        photoGallery.show(parentFragmentManager, CreateEntouragePhotoGalleryFragment.TAG)
+    }
+
     // ----------------------------------
     // Presenter callbacks
     // ----------------------------------
@@ -290,7 +308,9 @@ open class BaseCreateEntourageFragment
                 recipientConsentObtained,
                 groupType,
                 entourageMetadata,
-                joinRequestTypePublic)
+                joinRequestTypePublic,
+                portrait_photo_url,
+                landscape_photo_url)
     }
 
     protected open fun postEntourageCreated(entourage: BaseEntourage) {
@@ -323,6 +343,8 @@ open class BaseCreateEntourageFragment
                 entourage.category = cat.category
             }
             groupType?.let { entourage.setGroupType(it) }
+            entourage.metadata?.portrait_url = portrait_photo_url
+            entourage.metadata?.landscape_url = landscape_photo_url
             entourage.metadata = entourageMetadata
             entourage.isJoinRequestPublic = joinRequestTypePublic
             presenter.editEntourage(entourage)
@@ -359,6 +381,8 @@ open class BaseCreateEntourageFragment
         initializeJoinRequestType()
         initializeHelpHtmlView()
         initializePrivacyAction()
+
+        initializeEventPhoto()
     }
 
     private fun initializeCategory() {
@@ -468,6 +492,31 @@ open class BaseCreateEntourageFragment
             ui_create_entourage_privacyAction?.visibility = View.VISIBLE
             ui_layout_privacyAction_public?.setOnClickListener { changeActionView(true) }
             ui_layout_privacyAction_private?.setOnClickListener { changeActionView(false) }
+        }
+    }
+
+    private fun initializeEventPhoto() {
+        if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) {
+            create_entourage_photo_layout?.visibility = View.VISIBLE
+            create_entourage_photo_layout?.setOnClickListener { onEditPhotoClicked() }
+
+            if (editedEntourage?.metadata != null) {
+                landscape_photo_url = editedEntourage?.metadata?.landscape_url
+                portrait_photo_url = editedEntourage?.metadata?.portrait_url
+            }
+            else if (entourageMetadata != null) {
+                landscape_photo_url = entourageMetadata?.landscape_url
+                portrait_photo_url = entourageMetadata?.portrait_url
+            }
+
+            landscape_photo_url?.let { landscape_url ->
+                if (landscape_url.isNotEmpty()) {
+                    Picasso.get().load(landscape_url).into(ui_iv_photo)
+                }
+            }
+        }
+        else {
+            create_entourage_photo_layout?.visibility = View.GONE
         }
     }
 
@@ -586,6 +635,23 @@ open class BaseCreateEntourageFragment
         category.isNewlyCreated = false
         entourageCategory = category
         updateCategoryTextView()
+    }
+
+    override fun onPhotoEventAdded(portrait_url: String?, landscape_url: String?) {
+        landscape_photo_url = landscape_url
+        portrait_photo_url = portrait_url
+
+        editedEntourage?.metadata?.landscape_url = landscape_url
+        editedEntourage?.metadata?.portrait_url = portrait_url
+
+        entourageMetadata?.portrait_url = portrait_url
+        entourageMetadata?.landscape_url = landscape_url
+
+        landscape_photo_url?.let {
+            if (it.isNotEmpty()) {
+                Picasso.get().load(landscape_url).placeholder(R.drawable.ic_placeholder_detail_event).into(ui_iv_photo)
+            }
+        }
     }
 
     // ----------------------------------

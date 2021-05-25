@@ -331,10 +331,14 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         changeViewsVisibility(false)
 
         //Top view
-        ui_image_event_top?.visibility = View.GONE
-        if (entourage.isEvent() && !entourage.eventImageUrl.isNullOrEmpty()) {
-            Picasso.get().load(entourage.eventImageUrl).into(ui_image_event_top)
+        if (entourage.isEvent()) {
             ui_image_event_top?.visibility = View.VISIBLE
+            entourage.metadata?.landscape_url?.let { landscape_url ->
+                Picasso.get().load(landscape_url).placeholder(R.drawable.ic_placeholder_detail_event).into(ui_image_event_top)
+            } ?: kotlin.run { ui_image_event_top?.setImageResource(R.drawable.ic_placeholder_detail_event) }
+        }
+        else {
+            ui_image_event_top?.visibility = View.GONE
         }
 
         ui_title_event_action_top?.text = entourage.getTitle()

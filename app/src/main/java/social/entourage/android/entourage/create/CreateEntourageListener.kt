@@ -9,4 +9,5 @@ interface CreateEntourageListener {
     fun onTitleChanged(title: String)
     fun onDescriptionChanged(description: String)
     fun onCategoryChosen(category: EntourageCategory)
+    fun onPhotoEventAdded(portrait_url:String?,landscape_url:String?)
 }

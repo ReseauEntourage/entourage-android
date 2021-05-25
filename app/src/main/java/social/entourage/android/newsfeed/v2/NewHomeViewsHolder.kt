@@ -243,6 +243,19 @@ class EventVH(view: View) : RecyclerView.ViewHolder(view) {
             else {
                 itemView.ui_event_tv_users?.text = res.getString(R.string.cell_numberOfPeoples, feedItem.numberOfPeople)
             }
+
+            itemView.ui_event_iv?.let { eventView ->
+                if (feedItem is EntourageEvent) {
+                    feedItem.metadata?.portrait_url?.let {
+                        Picasso.get()
+                                .load(Uri.parse(it))
+                                .placeholder(R.drawable.partner_placeholder)
+                                .into(eventView)
+                    }?: run {
+                        eventView.setImageResource(R.drawable.ic_placeholder_event_feed)
+                    }
+                }
+            }
         }
     }
 }
