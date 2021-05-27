@@ -1,16 +1,16 @@
 package social.entourage.android
 
 
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import kotlinx.android.synthetic.main.layout_feed_action_card.view.*
-import kotlinx.android.synthetic.main.layout_map_launcher.*
-import kotlinx.android.synthetic.main.layout_plus_overlay.*
 import org.hamcrest.Matchers.allOf
 import org.junit.Before
 import org.junit.Rule
@@ -44,22 +44,74 @@ class ToursTest {
         Thread.sleep(4000)
     }
 
+    //This test needs to have no ongoing tour to pass
     @Test
-    fun tourTest() {
+    fun startAndStopTourTest() {
         val bottomBarPlusButton = onView(allOf(withId(R.id.bottom_bar_plus), isDisplayed()))
         bottomBarPlusButton.perform(click())
 
+        startTour()
+
+        bottomBarPlusButton.perform(click())
+
+        try {
+            //If EncounterDisclaimerFragment is displayed, validate checkbox and click OK button
+            onView(allOf(withText(R.string.encounter_disclaimer_text), isDisplayed()))
+            onView(allOf(withId(R.id.encounter_disclaimer_checkbox), isDisplayed())).perform(click())
+            onView(allOf(withId(R.id.encounter_disclaimer_ok_button), isDisplayed())).perform(click())
+        } catch (e: NoMatchingViewException) {
+            //EncounterDisclaimerFragment is not displayed
+        } finally {
+            createEncounter()
+            Thread.sleep(1000)
+
+            stopTour()
+
+            onView(allOf(withText(R.string.tour_freezed))).check(matches(isDisplayed()))
+        }
+    }
+
+    private fun startTour() {
         val createTourLayout = onView(allOf(withId(R.id.layout_line_start_tour_launcher), isDisplayed()))
         createTourLayout.perform(click())
 
         val createTourButton = onView(allOf(withId(R.id.launcher_tour_go), isDisplayed()))
         createTourButton.perform(click())
+    }
 
-        //Test tour is displayed
-        val tourCardTv = onView(allOf(withId(R.id.tour_card_button_act), withText(R.string.tour_cell_button_ongoing)))
-        tourCardTv.check(matches(isDisplayed()))
+    private fun createEncounter() {
+        //Address
+        val positionLayout = onView(allOf(withId(R.id.create_encounter_position_layout), isDisplayed()))
+        positionLayout.perform(click())
 
-//        val toursButton = onView(allOf(withId(R.id.ui_bt_tour), isDisplayed()))
-//        toursButton.perform(click())
+        val searchInput = onView(allOf(withId(R.id.places_autocomplete_search_input), isDisplayed()))
+        searchInput.perform(click())
+
+        val searchBar = onView(allOf(withId(R.id.places_autocomplete_search_bar), isDisplayed()))
+        searchBar.perform(typeText("avenue des champs-elysees"), closeSoftKeyboard())
+
+        val resultsRecyclerView = onView(allOf(withId(R.id.places_autocomplete_list), isDisplayed()))
+        resultsRecyclerView.perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+
+        val validateButton = onView(allOf(withId(R.id.title_action_button), isDisplayed()))
+        validateButton.perform(click())
+
+        //Name
+        val nameTv = onView(allOf(withId(R.id.edittext_street_person_name), isDisplayed()))
+        nameTv.perform(typeText("Bernard"))
+
+        //Description
+        val descriptionTv = onView(allOf(withId(R.id.edittext_message), isDisplayed()))
+        descriptionTv.perform(replaceText("Rencontre avec Bernard"))
+
+        validateButton.perform(click())
+    }
+
+    private fun stopTour() {
+        val tourStopButton = onView(allOf(withId(R.id.tour_stop_button), isDisplayed()))
+        tourStopButton.perform(click())
+
+        val confirmStopButton = onView(allOf(withId(R.id.confirmation_end_button), isDisplayed()))
+        confirmStopButton.perform(click())
     }
 }
