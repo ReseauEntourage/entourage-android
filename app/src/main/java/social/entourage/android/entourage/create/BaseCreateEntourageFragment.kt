@@ -649,7 +649,7 @@ open class BaseCreateEntourageFragment
 
         landscape_photo_url?.let {
             if (it.isNotEmpty()) {
-                Picasso.get().load(landscape_url).placeholder(R.drawable.ic_placeholder_detail_event).into(ui_iv_photo)
+                Picasso.get().load(landscape_url).error(R.drawable.ic_placeholder_detail_event).placeholder(R.drawable.ic_placeholder_event).into(ui_iv_photo)
             }
         }
     }

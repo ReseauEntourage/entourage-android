@@ -57,7 +57,7 @@ class EntouragePhotoGalleryAdapter(var photos: ArrayList<PhotoGallery>, val list
                 listener.onPhotoSelected(position)
             }
 
-            Picasso.get().load(photoUrl).placeholder(R.drawable.ic_placeholder_detail_event).into(itemView.ui_event_iv)
+            Picasso.get().load(photoUrl).error(R.drawable.ic_placeholder_detail_event).placeholder(R.drawable.ic_placeholder_event).into(itemView.ui_event_iv)
 
             selectImage(isSelected)
         }
