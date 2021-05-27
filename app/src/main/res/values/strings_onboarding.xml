@@ -110,7 +110,7 @@
     <string name= "onboard_asso_activity_description">Sélectionnez le ou les secteurs d’activité de votre structure, cela nous permettra de vous proposer la meilleure façon d’utiliser l’application et mobiliser la communauté Entourage.</string>
     <string name="onboard_asso_activity_error">Veuillez renseigner au minimum 1 centre d\'intéret.\nMerci</string>
     <string name= "onboard_asso_activity_choice_1">Aide aux\npersonnes</string>
-    <string name="onboard_asso_activity_choice_2">Initiatives culturelles\net sportives</string>
+    <string name="onboard_asso_activity_choice_2">Initiatives culturelles</string>
     <string name="onboard_asso_activity_choice_3">Service\nPublic</string>
     <string name="onboard_asso_activity_choice_4">Autres ?</string>
     <string name="onboard_asso_search">Recherche</string>
