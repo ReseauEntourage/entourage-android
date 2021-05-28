@@ -51,19 +51,22 @@ class ToursTest {
         bottomBarPlusButton.perform(click())
 
         startTour()
+        Thread.sleep(2000)
 
         bottomBarPlusButton.perform(click())
+        Thread.sleep(1000)
 
         try {
             //If EncounterDisclaimerFragment is displayed, validate checkbox and click OK button
             onView(allOf(withText(R.string.encounter_disclaimer_text), isDisplayed()))
             onView(allOf(withId(R.id.encounter_disclaimer_checkbox), isDisplayed())).perform(click())
             onView(allOf(withId(R.id.encounter_disclaimer_ok_button), isDisplayed())).perform(click())
+            Thread.sleep(1000)
         } catch (e: NoMatchingViewException) {
             //EncounterDisclaimerFragment is not displayed
         } finally {
             createEncounter()
-            Thread.sleep(1000)
+            Thread.sleep(2000)
 
             stopTour()
 
@@ -92,6 +95,7 @@ class ToursTest {
 
         val resultsRecyclerView = onView(allOf(withId(R.id.places_autocomplete_list), isDisplayed()))
         resultsRecyclerView.perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+        Thread.sleep(1000)
 
         val validateButton = onView(allOf(withId(R.id.title_action_button), isDisplayed()))
         validateButton.perform(click())
