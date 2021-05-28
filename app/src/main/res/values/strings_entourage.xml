@@ -221,6 +221,6 @@
     <string name="info_photo_profile_ignore">IGNORER</string>
     <string name="info_photo_profile_add">AJOUTER</string>
 
-    <string name="button_event_add_photo">Ajouter une photo</string>
+    <string name="button_event_add_photo">Photo</string>
     <string name="event_add_photo_info">Illustrez votre prochain événement avec une photo proposée par Entourage :</string>
 </resources>
