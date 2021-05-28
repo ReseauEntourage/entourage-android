@@ -36,7 +36,7 @@ class EntouragePhotoGalleryAdapter(var photos: ArrayList<PhotoGallery>, val list
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val isSelected = position == selectedItemPosition
-        (holder as PhotoGalleryVH).bind(position, photos[position].url_image_landscape,isSelected, listener)
+        (holder as PhotoGalleryVH).bind(position, photos[position].url_image_landscape_light,isSelected, listener)
     }
 
     override fun getItemCount(): Int {

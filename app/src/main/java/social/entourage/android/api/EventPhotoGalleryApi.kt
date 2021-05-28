@@ -65,6 +65,8 @@ class PhotoGallery : Serializable {
     var url_image_landscape:String = ""
     @SerializedName("portrait_url")
     var url_image_portrait:String = ""
+    @SerializedName("landscape_small_url")
+    var url_image_landscape_light:String = ""
 }
 
 /*****
