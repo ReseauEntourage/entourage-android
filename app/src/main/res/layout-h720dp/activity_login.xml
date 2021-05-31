@@ -215,6 +215,7 @@ tools:context="social.entourage.android.onboarding.login.LoginActivity">
         android:layout_height="30dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/btn_clear"
+        android:fontFamily="sans-serif"
         android:text="@string/login_change_phone"
         android:textAllCaps="false"
         android:textColor="@color/profile_name"
