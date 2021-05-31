@@ -189,10 +189,35 @@ class HomeExpertTest {
     /****************************** PlusFragment ******************************/
 
     @Test
-    fun homeExpertPlusTest() {
+    fun contributeTest() {
         clickPlusButton()
 
-        //TODO /!\ La charte revient tout le temps
+        val contributeLayout = onView(allOf(withId(R.id.layout_line_create_entourage_contribute), isDisplayed()))
+        contributeLayout.perform(click())
+        val disclaimerChartTv = onView(allOf(withId(R.id.entourage_disclaimer_text_chart), withText(R.string.entourage_disclaimer_text_chart2)))
+        disclaimerChartTv.check(matches(isDisplayed()))
+
+        val acceptChartSwitch = onView(allOf(withId(R.id.entourage_disclaimer_switch), isDisplayed()))
+        acceptChartSwitch.perform(click())
+        Thread.sleep(1000)
+        val contributeTitleTv = onView(allOf(withId(R.id.entourage_category_group_label), withText(R.string.entourage_category_type_contribution_label)))
+        contributeTitleTv.check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun askHelpTest() {
+        clickPlusButton()
+
+        val askHelpLayout = onView(allOf(withId(R.id.layout_line_create_entourage_ask_help), isDisplayed()))
+        askHelpLayout.perform(click())
+        val disclaimerChartTv = onView(allOf(withId(R.id.entourage_disclaimer_text_chart), withText(R.string.entourage_disclaimer_text_chart2)))
+        disclaimerChartTv.check(matches(isDisplayed()))
+
+        val acceptChartSwitch = onView(allOf(withId(R.id.entourage_disclaimer_switch), isDisplayed()))
+        acceptChartSwitch.perform(click())
+        Thread.sleep(1000)
+        val askHelpTitleTv = onView(allOf(withId(R.id.entourage_category_group_label), withText(R.string.entourage_category_type_demand_label)))
+        askHelpTitleTv.check(matches(isDisplayed()))
     }
 
 
