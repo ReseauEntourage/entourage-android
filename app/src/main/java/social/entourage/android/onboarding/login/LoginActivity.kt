@@ -69,6 +69,11 @@ class LoginActivity : BaseActivity() {
         ui_login_button_signup?.setOnClickListener {
             validateInputsAndLogin()
         }
+
+        ui_login_button_change_phone?.setOnClickListener {
+            val intent = Intent(this,LoginChangePhoneActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     /********************************

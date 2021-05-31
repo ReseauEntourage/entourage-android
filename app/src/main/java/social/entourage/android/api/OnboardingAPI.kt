@@ -327,6 +327,36 @@ class OnboardingAPI {
         })
     }
 
+    /***********
+     * Change phone
+     */
+    fun changePhone(oldPhone:String, newPhone:String,email:String,listener:(isOK:Boolean) -> Unit) {
+
+        val user: MutableMap<String, String> = ArrayMap()
+        user["current_phone"] = oldPhone
+        user["requested_phone"] = newPhone
+        user["email"] = email
+
+        val request = ArrayMap<String, Any>()
+        request["user"] = user
+
+        onboardingService.changePhone(request)
+                .enqueue(object : Callback<ResponseBody>{
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                        if (response.isSuccessful) {
+                            listener(true)
+                        }
+                        else {
+                            listener(false)
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        listener(false)
+                    }
+                })
+    }
+
     /**********************
      * Onboarding Asso
      */
