@@ -26,3 +26,8 @@ See also the list of [contributors](https://github.com/ReseauEntourage/entourage
 ## Acknowledgments
 
 * Thanks to Jean-Marc and all the team @ [Entourage](https://www.entourage.social)
+
+# Btirise (locally with CLI)
+bitrise run dev_entourage
+
+bitrise :workflow-editor *attention this is using your local version of code so please commit first !*
