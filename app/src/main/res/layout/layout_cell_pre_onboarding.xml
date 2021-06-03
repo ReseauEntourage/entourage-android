@@ -24,18 +24,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/pre_onboard_1" />
-
-        <view
-            android:id="@+id/ui_view_rounded"
-            class="social.entourage.android.tools.view.RoundedCornersView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:cornersColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:radius="8dp" />
     </androidx.cardview.widget.CardView>
 
 </RelativeLayout>
