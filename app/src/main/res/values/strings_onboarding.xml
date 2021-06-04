@@ -44,12 +44,12 @@
     <string name="onboard_type_title">Enchantés, %s.</string>
     <string name="onboard_type_sub">Comment voulez-vous personnaliser l’application ?</string>
     <string name="onboard_type_description">Entourage vous pose ces quelques questions pour vous accueillir et vous accompagner au mieux !\n<i>(Cette information ne sera pas visible par les autres membres du réseau).</i></string>
-    <string name="onboard_type_choice_neighbour">Pour aider les sans-abris et créer du lien dans votre quartier.</string>
+    <string name="onboard_type_choice_neighbour">Pour aider les personnes sans-abris et créer du lien dans votre quartier.</string>
     <string name="onboard_type_choice_alone">Pour demander de l’aide et découvrir des lieux de solidarité.</string>
     <string name="onboard_type_choice_asso">Pour parler au nom de votre structure.</string>
 
     <string name="onboard_type_choice1_title">Voisin solidaire</string>
-    <string name="onboard_type_choice2_title">Personne SDF</string>
+    <string name="onboard_type_choice2_title">Personne isolée ou en précarité</string>
     <string name="onboard_type_choice3_title">Association ou service public</string>
 
 
