@@ -4,6 +4,7 @@ import android.app.Application
 import dagger.Component
 import okhttp3.OkHttpClient
 import social.entourage.android.api.ApiModule
+import social.entourage.android.api.PhotoGalleryRequest
 import social.entourage.android.api.request.*
 import social.entourage.android.api.tape.EncounterTapeService
 import social.entourage.android.api.tape.EncounterTapeTaskQueue
@@ -39,4 +40,5 @@ interface EntourageComponent {
     val okHttpClient: OkHttpClient
     val complexPreferences: ComplexPreferences?
     val tourAreaRequest:TourAreaRequest
+    val photoGalleryRequest:PhotoGalleryRequest
 }

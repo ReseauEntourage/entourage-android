@@ -494,6 +494,11 @@ object AnalyticsEvents {
     const val ACTION_EXPERTFEED_MoreActionArrow = "Action__ExpertFeed__MoreActionsArrow"
     const val ACTION_EXPERTFEED_HelpDifferent = "Action__ExpertFeed__HelpDifferently"
 
+    const val Action_expertFeed_HelpReporter = "Action__ExpertFeed__Help_Reporter"
+    const val Action_expertFeed_HelpGift = "Action__ExpertFeed__Help_Gift"
+    const val Action_expertFeed_HelpShare = "Action__ExpertFeed__Help_Share"
+    const val Action_expertFeed_HelpAmbassador = "Action__ExpertFeed__Help_Ambassador"
+    const val Action_expertFeed_HelpLinkedout = "Action__ExpertFeed__Help_Linkedout"
 
     /*************
     Feed Expert NEO

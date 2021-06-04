@@ -41,6 +41,8 @@
         android:theme="@style/AppTheme"
         android:fullBackupContent="@xml/backup_descriptor"
         android:requestLegacyExternalStorage="true"><!-- use for accessing Storage Android 10+ -->
+        <activity android:name=".onboarding.login.LoginChangePhoneActivity"
+            android:screenOrientation="portrait"/>
 
         <activity android:name=".guide.GDSMainActivity"
             android:screenOrientation="portrait"/>

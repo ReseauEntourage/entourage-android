@@ -12,25 +12,17 @@ import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_home_expert.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
-import social.entourage.android.PlusFragment
 import social.entourage.android.R
-import social.entourage.android.api.model.BaseEntourage
-import social.entourage.android.api.model.Message
-import social.entourage.android.api.model.PushNotificationContent
-import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.Announcement
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events
 import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.location.EntLocation
-import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.newsfeed.BaseNewsfeedFragment
 import social.entourage.android.service.EntService
-import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tour.encounter.CreateEncounterActivity
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
-import social.entourage.android.user.edit.place.UserEditActionZoneFragmentCompat
 import timber.log.Timber
 
 class HomeExpertFragment : BaseNewsfeedFragment() {
@@ -177,16 +169,9 @@ class HomeExpertFragment : BaseNewsfeedFragment() {
                     }
                 }
 
-                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                    val userEditActionZoneFragmentCompat = UserEditActionZoneFragmentCompat.newInstance(null, false)
-                    userEditActionZoneFragmentCompat.addFragmentListener(listener)
-                    userEditActionZoneFragmentCompat.setFromLogin(true)
-                    userEditActionZoneFragmentCompat.show(activity.supportFragmentManager, UserEditActionZoneFragmentCompat.TAG)
-                } else {
-                    val userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null, false)
-                    userEditActionZoneFragment.setupListener(listener)
-                    userEditActionZoneFragment.show(activity.supportFragmentManager, UserEditActionZoneFragment.TAG)
-                }
+                val userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null, false)
+                userEditActionZoneFragment.setupListener(listener)
+                userEditActionZoneFragment.show(activity.supportFragmentManager, UserEditActionZoneFragment.TAG)
             }
 
             override fun onShowEntourageHelp() {

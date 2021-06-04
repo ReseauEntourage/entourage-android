@@ -14,13 +14,13 @@
         android:id="@+id/entourage_info_description_button"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginEnd="5dp"
         android:background="?attr/selectableItemBackground"
         android:contentDescription="Information"
         android:scaleType="fitXY"
-        android:tint="@color/feeditem_details_topbar_tint"
+        android:tint="@color/accent"
         android:visibility="gone"
         app:srcCompat="@drawable/ic_info_white_24dp"
-        android:layout_marginEnd="5dp"
         tools:visibility="visible" />
 
     <ImageButton
@@ -30,7 +30,7 @@
         android:background="?attr/selectableItemBackground"
         android:contentDescription="Plus"
         android:scaleType="fitXY"
-        android:tint="@color/feeditem_details_topbar_tint"
+        android:tint="@color/accent"
         android:visibility="gone"
         app:srcCompat="@drawable/ic_more_3filleddots"
         tools:visibility="visible" />

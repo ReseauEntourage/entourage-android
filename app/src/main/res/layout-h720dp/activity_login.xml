@@ -71,6 +71,7 @@ tools:context="social.entourage.android.onboarding.login.LoginActivity">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout17"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -207,5 +208,19 @@ tools:context="social.entourage.android.onboarding.login.LoginActivity">
             app:layout_constraintEnd_toEndOf="@+id/ui_login_et_code"
             app:layout_constraintTop_toBottomOf="@+id/ui_login_et_code" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/ui_login_button_change_phone"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/btn_clear"
+        android:fontFamily="sans-serif"
+        android:text="@string/login_change_phone"
+        android:textAllCaps="false"
+        android:textColor="@color/profile_name"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout17"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout17" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

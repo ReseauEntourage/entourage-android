@@ -7,6 +7,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import social.entourage.android.R
 import timber.log.Timber
@@ -63,4 +64,16 @@ fun EditText.showKeyboard() {
                 InputMethodManager.HIDE_IMPLICIT_ONLY
         )
     }
+}
+
+fun TextView.disable() {
+    alpha = 0.5f
+    isClickable = false
+    isEnabled = false
+}
+
+fun TextView.enable() {
+    alpha = 1f
+    isClickable = true
+    isEnabled = true
 }

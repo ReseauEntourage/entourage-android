@@ -86,6 +86,26 @@
     <string name="login_label_phone">Téléphone</string>
     <string name="login_label_code">Code</string>
 
+    <!-- Login Change Phone -->
+    <string name="login_change_phone">Changer de numéro de téléphone</string>
+    <string name="login_change_phone_title">Changement de numéro\nde téléphone</string>
+    <string name="login_change_phone_old_phone">Ancien numéro</string>
+    <string name="login_change_phone_old_phone_placeholder">Ancien numéro</string>
+    <string name="login_change_phone_new_phone">Nouveau numéro</string>
+    <string name="login_change_phone_new_phone_placeholder">Nouveau numéro</string>
+    <string name="login_change_phone_email">Email (optionnel)</string>
+    <string name="login_change_phone_email_placeholder">Email</string>
+    <string name="login_change_phone_bt_validate">Envoyer</string>
+    <string name="login_change_phone_send_ok">Votre demande a bien été envoyée.\n\n\nLe support Entourage vous informera lorsque le changement de numéro sera réalisé.</string>
+    <string name="login_change_phone_bt_return">Retour</string>
+
+    <string name="login_change_warning_title">Attention</string>
+    <string name="login_change_error_phone">Veuillez verifier vos numéros de téléphone</string>
+    <string name="login_change_error_mail">Veuillez vérifier votre adresse Email</string>
+
+    <string name="login_change_error_return">Erreur</string>
+    <string name="login_change_error_return_detail">L’ancien numéro est inconnu ou supprimé.\nVeuillez vérifier.</string>
+
     <!-- Onboarding Asso -->
 
     <string name="onboard_asso_start_title">Ça tombe bien !</string>
@@ -110,7 +130,7 @@
     <string name= "onboard_asso_activity_description">Sélectionnez le ou les secteurs d’activité de votre structure, cela nous permettra de vous proposer la meilleure façon d’utiliser l’application et mobiliser la communauté Entourage.</string>
     <string name="onboard_asso_activity_error">Veuillez renseigner au minimum 1 centre d\'intéret.\nMerci</string>
     <string name= "onboard_asso_activity_choice_1">Aide aux\npersonnes</string>
-    <string name="onboard_asso_activity_choice_2">Initiatives culturelles\net sportives</string>
+    <string name="onboard_asso_activity_choice_2">Initiatives culturelles</string>
     <string name="onboard_asso_activity_choice_3">Service\nPublic</string>
     <string name="onboard_asso_activity_choice_4">Autres ?</string>
     <string name="onboard_asso_search">Recherche</string>

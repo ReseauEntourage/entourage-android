@@ -248,6 +248,12 @@ open class BaseEntourage : FeedItem, Serializable {
         var googlePlaceId: String? = null
             private set
 
+        @SerializedName("portrait_url")
+        var portrait_url: String? = null
+
+        @SerializedName("landscape_url")
+        var landscape_url: String? = null
+
         fun setStartDate(startDate: Date) {
             this.startDate = startDate
         }

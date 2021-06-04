@@ -1,7 +1,6 @@
 allprojects {
     repositories {
         google()
-        jcenter()
     }
 }
 
@@ -10,7 +9,7 @@ ext {
     // SDK versions
     compileSdkVersion = 30
     buildToolsVersion = "30.0.3"
-    minSdkVersion = 19 /*October 2013: Android 4.4, KitKat*/
+    minSdkVersion = 21 /*November 2014: Android 5.0, Lollipop*/
     targetSdkVersion = 30
 
     // Java versions
@@ -19,7 +18,7 @@ ext {
 
     // App versions
     versionMajor = 7
-    versionMinor = 1
+    versionMinor = 2
     versionPatch = "git rev-list HEAD --count".execute().text.trim().toInteger()
     versionBranchName = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
     versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -47,12 +46,12 @@ ext {
     mapsUtilsVersion = "3.0.0"
     materialVersion = "1.2.0"
     multidexVersion = "2.0.1"
-    okHttpVersion = "3.12.13" //version 3.13+ needs API 21+ //https://square.github.io/okhttp/changelog_3x/
+    okHttpVersion = "3.14.9"
     okHttpIdlingVersion = "1.0.0"
     picassoVersion = "2.71828"
-    picassoTransformationsVersion = "2.3.1" //version 2.4.+ needs API 21+
+    picassoTransformationsVersion = "2.4.0"
     placesCompat = "2.4.0"
-    retrofitVersion = "2.6.4" //Version 2.7.0 changes the minimum requirements to Java 8+ or Android 5+ see https://github.com/square/retrofit/releases
+    retrofitVersion = "2.9.0"
     recyclerViewVersion = "1.1.0"
     shortcutBadgerVersion = "1.1.22"
     supportVersion = "1.0.0"

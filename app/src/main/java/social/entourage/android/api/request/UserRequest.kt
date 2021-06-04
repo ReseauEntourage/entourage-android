@@ -68,4 +68,7 @@ interface UserRequest {
     //Update partner follow
     @POST("users/me/following")
     fun updateUserPartner(@Body isFollowing: ArrayMap<String, Any>): Call<ResponseBody>
+
+    @POST("users/request_phone_change")
+    fun changePhone(@Body userInfo: ArrayMap<String, Any>): Call<ResponseBody>
 }

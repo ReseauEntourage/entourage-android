@@ -3,6 +3,7 @@ package social.entourage.android.onboarding.sdf_neighbour
 import android.content.Context
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +12,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_onboarding_sdf_neighbour_activities.*
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.onboarding.OnboardingCallback
+import social.entourage.android.tools.log.AnalyticsEvents
 import java.io.Serializable
+
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -186,13 +188,14 @@ class OnboardingSdfNeighbourActivitiesFragment : Fragment() {
         if (isSelected) {
             layout.background = ResourcesCompat.getDrawable(resources,R.drawable.bg_rounded_onboard_orange_stroke,null)
             textView.setTypeface(textView.typeface, Typeface.BOLD)
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,15.5f)
         }
         else {
             layout.background = ResourcesCompat.getDrawable(resources,R.drawable.bg_rounded_onboard_grey_plain,null)
             textView.setTypeface(null, Typeface.NORMAL)
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,16f)
         }
     }
-
     /********************************
      * Overrides
      ********************************/

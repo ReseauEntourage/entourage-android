@@ -778,7 +778,9 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         entourage_info_timestamps?.visibility = View.VISIBLE
     }
 
-    fun formattedDaysIntervalFromToday(rawDate: Date): String {
+    fun formattedDaysIntervalFromToday(rawDate: Date?): String {
+        if (rawDate == null) return this.getString(R.string.date_today).toLowerCase()
+
         val today = LocalDate()
         val date = LocalDate(rawDate)
         if (date.isEqual(today)) return this.getString(R.string.date_today).toLowerCase()
