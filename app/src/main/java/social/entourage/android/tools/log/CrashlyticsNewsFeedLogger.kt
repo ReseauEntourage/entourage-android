@@ -1,7 +1,7 @@
 package social.entourage.android.tools.log
 
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import social.entourage.android.api.ApiConnectionListener
+import timber.log.Timber
 
 class CrashlyticsNewsFeedLogger : ApiConnectionListener {
 
@@ -9,10 +9,10 @@ class CrashlyticsNewsFeedLogger : ApiConnectionListener {
     }
 
     override fun onServerException(throwable: Throwable) {
-        FirebaseCrashlytics.getInstance().recordException(throwable)
+        Timber.e(throwable)
     }
 
     override fun onTechnicalException(throwable: Throwable) {
-        FirebaseCrashlytics.getInstance().recordException(throwable)
+        Timber.e(throwable)
     }
 }

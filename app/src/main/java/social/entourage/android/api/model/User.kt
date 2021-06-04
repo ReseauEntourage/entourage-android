@@ -43,6 +43,9 @@ class User : Serializable {
     var stats: Stats? = null
     var organization: Organization? = null
 
+    @SerializedName("engaged")
+    var isEngaged:Boolean = false
+
     // ----------------------------------
     // ATTRIBUTES (Not Serialized)
     // ----------------------------------
@@ -178,15 +181,18 @@ class User : Serializable {
     val isUserTypeAlone: Boolean
         get() = USER_GOAL_ALONE.equals(goal, ignoreCase = true)
 
-    val isEngaged:Boolean
-        get() {
-            if(isPro) return true
-            if(organization !=null) return true
-            if(roles?.isNotEmpty()== true) return true
-            if(partner != null) return true
-            if(stats?.isEngaged==true) return true
-            return false
-        }
+    val isUserTypeNeighbour: Boolean
+        get() = USER_GOAL_NEIGHBOUR.equals(goal, ignoreCase = true)
+
+//    val isEngaged:Boolean
+//        get() {
+//            if(isPro) return true
+//            if(organization !=null) return true
+//            if(roles?.isNotEmpty()== true) return true
+//            if(partner != null) return true
+//            if(stats?.isEngaged==true) return true
+//            return false
+//        }
 
     // ----------------------------------
     // User Conversation
@@ -256,7 +262,7 @@ class User : Serializable {
                 val stringId = string::class.java.getDeclaredField(resourceName)
                 stringId.getInt(stringId)
             } catch (e: Exception) {
-                Timber.e("Resource not found : $resourceName")
+                Timber.e(e, "Resource not found : $resourceName")
                 -1
             }
         }

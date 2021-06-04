@@ -286,4 +286,16 @@ class SdfNeighbourActivities : Serializable {
 
         return _array
     }
+
+    fun setupForSdf(isSdf:Boolean) {
+        this.isSdf = isSdf
+
+        choice1Selected = true
+        choice2Selected = true
+        choice3Selected = true
+        choice4Selected = true
+        choice5Selected = true
+
+        choice6Selected = isSdf
+    }
 }

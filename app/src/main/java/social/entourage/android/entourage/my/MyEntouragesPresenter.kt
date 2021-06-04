@@ -91,7 +91,7 @@ class MyEntouragesPresenter @Inject constructor(
                     }
                 }
                 override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
-                    Timber.w("Entourage for Invitation not found")
+                    Timber.w(t, "Entourage for Invitation not found")
                 }
             })
         }

@@ -127,27 +127,42 @@ tools:context="social.entourage.android.user.edit.UserEditProfileType">
             android:layout_width="46dp"
             android:layout_height="46dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:adjustViewBounds="true"
             android:cropToPadding="true"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_onboard_picto_help" />
+
+        <TextView
+            android:id="@+id/ui_onboard_type_tv_1_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/onboard_type_choice1_title"
+            android:textColor="@color/onboard_black_36"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/imageView6"
+            app:layout_constraintTop_toTopOf="@+id/imageView6" />
 
         <TextView
             android:id="@+id/ui_onboard_type_tv_1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="sans-serif"
             android:text="@string/onboard_type_choice_neighbour"
             android:textColor="@color/onboard_black_36"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView6"
-            app:layout_constraintTop_toTopOf="@+id/imageView6" />
+            app:layout_constraintTop_toBottomOf="@+id/ui_onboard_type_tv_1_title" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -163,27 +178,42 @@ tools:context="social.entourage.android.user.edit.UserEditProfileType">
             android:layout_width="46dp"
             android:layout_height="46dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:adjustViewBounds="true"
             android:cropToPadding="true"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_onboard_picto_alone" />
+
+        <TextView
+            android:id="@+id/ui_onboard_type_tv_2_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/onboard_type_choice2_title"
+            android:textColor="@color/onboard_black_36"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/imageView7"
+            app:layout_constraintTop_toTopOf="@+id/imageView7" />
 
         <TextView
             android:id="@+id/ui_onboard_type_tv_2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="sans-serif"
             android:text="@string/onboard_type_choice_alone"
             android:textColor="@color/onboard_black_36"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView7"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView7"
-            app:layout_constraintTop_toTopOf="@+id/imageView7" />
+            app:layout_constraintTop_toBottomOf="@+id/ui_onboard_type_tv_2_title" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -199,27 +229,42 @@ tools:context="social.entourage.android.user.edit.UserEditProfileType">
             android:layout_width="46dp"
             android:layout_height="46dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:adjustViewBounds="true"
             android:cropToPadding="true"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_onboard_picto_asso" />
+
+        <TextView
+            android:id="@+id/ui_onboard_type_tv_3_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/onboard_type_choice3_title"
+            android:textColor="@color/onboard_black_36"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/imageView8"
+            app:layout_constraintTop_toTopOf="@+id/imageView8" />
 
         <TextView
             android:id="@+id/ui_onboard_type_tv_3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="sans-serif"
             android:text="@string/onboard_type_choice_asso"
             android:textColor="@color/onboard_black_36"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView8"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView8"
-            app:layout_constraintTop_toTopOf="@+id/imageView8" />
+            app:layout_constraintTop_toBottomOf="@+id/ui_onboard_type_tv_3_title" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
 

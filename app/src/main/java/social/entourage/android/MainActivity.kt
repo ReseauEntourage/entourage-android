@@ -101,6 +101,7 @@ class MainActivity : BaseSecuredActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         if (isFinishing) return
+        ui_layout_tooltips?.visibility = View.GONE
         configureBottombar()
         if (intent != null) {
             storeIntent(intent)
@@ -214,7 +215,7 @@ class MainActivity : BaseSecuredActivity(),
         intent?.action?.let {
             action ->
             EntBus.post(OnCheckIntentActionEvent(action, intent.extras)) }
-        checkOnboarding()
+      //  checkOnboarding()
     }
 
     override fun onStop() {
@@ -229,7 +230,7 @@ class MainActivity : BaseSecuredActivity(),
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
-    private fun checkOnboarding() {
+    fun checkOnboarding() {
         val sharedPreferences = get().sharedPreferences
         val isFromOnboarding = sharedPreferences.getBoolean(EntourageApplication.KEY_IS_FROM_ONBOARDING, false)
         if (isFromOnboarding) {
@@ -351,6 +352,9 @@ class MainActivity : BaseSecuredActivity(),
                 }
                 true
             }
+            //TODO: a remettre l'auto ?
+            //navigationDataSource.isEngaged = authenticationController.me?.isEngaged ?: false
+            navigationDataSource.isEngaged = true
             val defaultId = navigationDataSource.defaultSelectedTab
             bottomBar.selectedItemId = defaultId
             loadFragment(defaultId)
@@ -416,7 +420,7 @@ class MainActivity : BaseSecuredActivity(),
             else {
                 if (tag.equals(BaseNewsfeedFragment.TAG)) {
                     if (supportFragmentManager.fragments.first() != null && (supportFragmentManager.fragments.first() is NewHomeFeedFragment) ) {
-                        (supportFragmentManager.fragments.first() as NewHomeFeedFragment).checkNavigation()
+                            (supportFragmentManager.fragments.first() as NewHomeFeedFragment).checkNavigation()
                     }
                 }
             }
@@ -469,6 +473,10 @@ class MainActivity : BaseSecuredActivity(),
         presenter.displayTutorial(forced)
     }
 
+    fun showProfileTab() {
+        selectNavigationTab(navigationDataSource.profilTabIndex)
+    }
+
     private fun initializePushNotifications() {
         val notificationsEnabled = get().sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, true)
         if (notificationsEnabled) {
@@ -501,6 +509,8 @@ class MainActivity : BaseSecuredActivity(),
         editor.remove(EntourageApplication.KEY_GEOLOCATION_ENABLED)
         editor.remove(EntourageApplication.KEY_NO_MORE_DEMAND)
         editor.putInt(EntourageApplication.KEY_NB_OF_LAUNCH,0)
+        editor.remove(EntourageApplication.KEY_HOME_IS_EXPERTMODE)
+        editor.remove(EntourageApplication.KEY_HOME_IS_ALREADYINFO_NEO)
         editor.apply()
         super.logout()
     }

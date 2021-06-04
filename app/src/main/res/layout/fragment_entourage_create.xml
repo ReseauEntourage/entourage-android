@@ -67,6 +67,7 @@
                     android:textSize="@dimen/entourage_font_medium" />
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ui_img_arrow_cat_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/empty_description"

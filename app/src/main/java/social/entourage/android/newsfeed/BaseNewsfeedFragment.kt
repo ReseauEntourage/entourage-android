@@ -97,6 +97,8 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     protected var mapClusterManager: ClusterManager<ClusterItem>? = null
 
+    protected var isFromNeo = false
+    protected var tagNameAnalytic = ""
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -167,7 +169,6 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
 
     override fun onResume() {
         super.onResume()
-        timerStart()
         EntBus.post(OnLocationPermissionGranted(isLocationPermissionGranted()))
     }
 
@@ -281,7 +282,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             location = longTapCoordinates
             longTapCoordinates = null
         }
-        presenter.createEntourage(location, groupType, entourageCategory)
+        presenter.createEntourage(location, groupType, entourageCategory,isFromNeo,tagNameAnalytic)
     }
 
     protected fun refreshFeed() {
@@ -489,7 +490,12 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
             showNewsfeedBottomView(if (selectedTab == NewsfeedTabItem.ALL_TAB) newNewsFeeds.size < pagination.itemsPerPage else newsfeedAdapter?.dataItemCount == 0)
         }
         if (newsfeedAdapter?.dataItemCount == 0) {
+            if (isFromNeo) {
+                displayListWithMapHeader()
+                return
+            }
             if (!pagination.isRefreshing) {
+                isFullMapShown = false
                 displayFullMap()
             }
         } else {
@@ -567,6 +573,14 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         groupType = newGroupType
         entourageCategory?.isNewlyCreated = true
         displayEntourageDisclaimer()
+    }
+
+    fun createActionFromNeo(newGroupType: String, newActionGroupType: String,newActionType:String,tagNameAnalytic:String) {
+        entourageCategory = EntourageCategoryManager.findCategory(newActionGroupType,newActionType)
+        groupType = newGroupType
+        entourageCategory?.isNewlyCreated = true
+        isFromNeo = true
+        this.tagNameAnalytic = tagNameAnalytic
     }
 
     fun createAction(newEntourageGroupType: String) {

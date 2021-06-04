@@ -72,6 +72,40 @@ class MapFilter : MapFilterInterface, Serializable {
         timeframe = DAYS_3
         isShowPartnersOnly = false
         isShowAlls = true
+        entourageTypeOuting = false
+
+
+        setAllCategorySelected(true,true)
+    }
+
+    fun setAllCategorySelected(contribActive:Boolean,demandActive:Boolean) {
+        val entourageCategoryList = EntourageCategoryManager.getEntourageCategoriesForGroup(BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)
+
+        for (entourageCategory in entourageCategoryList) {
+            entourageCategory.key?.let {
+                setCategoryChecked(entourageCategory.key!!, contribActive)
+            }
+        }
+
+        val entourageCategoryList2 = EntourageCategoryManager.getEntourageCategoriesForGroup(BaseEntourage.GROUPTYPE_ACTION_DEMAND)
+
+        for (entourageCategory in entourageCategoryList2) {
+            entourageCategory.key?.let {
+                setCategoryChecked(entourageCategory.key!!, demandActive)
+            }
+        }
+    }
+
+    fun setFiltersForNeo() {
+        entourageTypeDemand = true
+        entourageTypeContribution = false
+        showPastEvents=false
+        timeframe = DAYS_3
+        isShowPartnersOnly = false
+        isShowAlls = true
+        entourageTypeOuting = false
+
+        setAllCategorySelected(false,true)
     }
 
     // ----------------------------------

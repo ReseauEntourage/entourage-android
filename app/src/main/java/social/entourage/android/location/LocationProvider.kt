@@ -105,14 +105,15 @@ class LocationProvider(context: Context,
 
     @SuppressLint("MissingPermission")
     private fun requestLocationUpdates() {
-        if (isLocationPermissionGranted() && googleApiClient.isConnected) {
-            LocationServices.getFusedLocationProviderClient(context).requestLocationUpdates(locationRequest, locationListener, null)
+        if (isLocationPermissionGranted() && googleApiClient.isConnected && locationListener != null) {
+            //TODO add a looper here
+            LocationServices.getFusedLocationProviderClient(context).requestLocationUpdates(locationRequest, locationListener!!, null)
         }
     }
 
     private fun removeLocationUpdates() {
-        if (isLocationPermissionGranted() && googleApiClient.isConnected) {
-            LocationServices.getFusedLocationProviderClient(context).removeLocationUpdates(locationListener)
+        if (isLocationPermissionGranted() && googleApiClient.isConnected && locationListener != null) {
+            LocationServices.getFusedLocationProviderClient(context).removeLocationUpdates(locationListener!!)
         }
     }
 

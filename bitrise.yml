@@ -102,12 +102,6 @@ workflows:
     - opts:
         is_expand: false
       GRADLE_TASK: assembleEntourageStagingRelease
-  develop:
-    steps:
-    - trigger-bitrise-workflow:
-        inputs:
-        - workflow_id: dev_entourage
-        - api_token: $BUILD_TRIGGER
   prod_entourage:
     steps:
     - activate-ssh-key:
@@ -124,7 +118,10 @@ workflows:
         - mapping_file_include_filter: ''
         - gradle_options: '--stacktrace'
         - gradle_task: $GRADLE_TASK
-    - deploy-to-bitrise-io: {}
+    - deploy-to-bitrise-io:
+        inputs:
+          - generate_universal_apk_if_none: 'false'
+          - is_enable_public_page: 'false'
     - google-play-deploy:
         inputs:
         - package_name: $PLAYSTORE_APP_NAME
@@ -161,12 +158,6 @@ workflows:
     - opts:
         is_expand: false
       PLAYSTORE_APP_NAME: social.entourage.android
-  prod:
-    steps:
-    - trigger-bitrise-workflow:
-        inputs:
-        - workflow_id: prod_entourage
-        - api_token: $BUILD_TRIGGER
 app:
   envs:
   - opts:

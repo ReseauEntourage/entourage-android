@@ -58,4 +58,8 @@ object Constants {
     const val SLUG_HUB_LINK_2 = "hub_2"
     const val SLUG_HUB_LINK_3 = "hub_3"
     const val SLUG_HUB_LINK_FAQ = "hub_faq"
+
+    const val SLUG_HOME_NEO_STREET_1 = "event-brite"
+    const val SLUG_HOME_NEO_STREET_2 = "pedagogic-content"
+    const val SLUG_HOME_ACTION_HELP = "pedagogic-content"
 }
