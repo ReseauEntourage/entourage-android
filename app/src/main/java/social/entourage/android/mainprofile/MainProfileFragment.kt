@@ -58,11 +58,15 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
     // ----------------------------------
     private fun initialiseView() {
         mainprofile_app_version?.text = getString(R.string.about_version_format, BuildConfig.VERSION_FULL_NAME)
-        mainprofile_app_debug_info?.text = getString(R.string.about_debug_info_format, BuildConfig.VERSION_DISPLAY_BRANCH_NAME,
-                EntourageApplication.get().sharedPreferences.getString(EntourageApplication.KEY_REGISTRATION_ID, null))
         mainprofile_app_version?.setOnLongClickListener { handleLongPress() }
-        mainprofile_app_debug_info?.setOnLongClickListener { handleLongPress() }
-
+        if (!BuildConfig.DEBUG) {
+            mainprofile_app_debug_info?.visibility=View.INVISIBLE
+        } else {
+            mainprofile_app_debug_info?.visibility=View.VISIBLE
+            mainprofile_app_debug_info?.text = getString(R.string.about_debug_info_format, BuildConfig.VERSION_DISPLAY_BRANCH_NAME,
+                EntourageApplication.get().sharedPreferences.getString(EntourageApplication.KEY_REGISTRATION_ID, null))
+            mainprofile_app_debug_info?.setOnLongClickListener { handleLongPress() }
+        }
         //add listener to user photo and name, that opens the user profile screen
         drawer_header_user_photo?.setOnClickListener { selectMenuProfile("user") }
         drawer_header_user_name?.setOnClickListener { selectMenuProfile("user") }
@@ -219,6 +223,6 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        val TAG = MainProfileFragment::class.java.simpleName
+        val TAG: String = MainProfileFragment::class.java.simpleName
     }
 }

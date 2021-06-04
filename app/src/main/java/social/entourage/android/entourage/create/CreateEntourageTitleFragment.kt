@@ -121,7 +121,7 @@ class CreateEntourageTitleFragment  : BaseDialogFragment() {
         // ----------------------------------
         // Constants
         // ----------------------------------
-        val TAG = CreateEntourageTitleFragment::class.java.simpleName
+        val TAG: String? = CreateEntourageTitleFragment::class.java.simpleName
         private const val KEY_ENTOURAGE_TITLE = "KEY_ENTOURAGE_TITLE"
         private const val TITLE_MAX_CHAR_COUNT = 100
 

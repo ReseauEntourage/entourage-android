@@ -2,7 +2,7 @@ package social.entourage.android.map
 
 import android.view.View
 import com.google.android.gms.maps.OnMapReadyCallback
-import kotlinx.android.synthetic.main.layout_feed_map_card.view.*
+import kotlinx.android.synthetic.main.layout_feed_header_map_card.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.base.BaseCardViewHolder
@@ -49,6 +49,6 @@ class MapViewHolder(view: View) : BaseCardViewHolder(view) {
 
     companion object {
         val layoutResource: Int
-            get() = R.layout.layout_feed_map_card
+            get() = R.layout.layout_feed_header_map_card
     }
 }

@@ -6,11 +6,10 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_onboarding_place.*
 import kotlinx.android.synthetic.main.layout_view_title.view.*
 import social.entourage.android.EntourageApplication
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
-import timber.log.Timber
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class UserEditActionZoneFragment : UserActionPlaceFragment() {
     private var mListener: FragmentListener? = null
@@ -107,7 +106,7 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
     //**********//**********//**********
 
     companion object {
-        val TAG = UserEditActionZoneFragment::class.java.simpleName
+        val TAG: String? = UserEditActionZoneFragment::class.java.simpleName
 
         fun newInstance(googlePlaceAddress: User.Address?,isSecondary:Boolean) =
                 UserEditActionZoneFragment().apply {
