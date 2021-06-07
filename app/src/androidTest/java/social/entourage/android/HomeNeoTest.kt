@@ -2,9 +2,13 @@ package social.entourage.android
 
 
 import android.content.Context
+import android.view.View
+import android.widget.Checkable
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.NoMatchingViewException
+import androidx.test.espresso.UiController
+import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
@@ -12,7 +16,9 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import org.hamcrest.BaseMatcher
 import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.isA
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -63,6 +69,16 @@ class HomeNeoTest {
         } catch (e: NoMatchingViewException) {
             //Dialog is not displayed
         }
+
+        //Ensure Neo interface is enabled
+        val bottomBarProfileButton = onView(allOf(withId(R.id.bottom_bar_profile), isDisplayed()))
+        bottomBarProfileButton.perform(click())
+        val neoModeSwitch = onView(allOf(withId(R.id.ui_switch_change_mode), isDisplayed()))
+        neoModeSwitch.perform(setChecked(true))
+
+        //Go back to feed tab
+        val bottomBarFeedButton = onView(allOf(withId(R.id.bottom_bar_newsfeed), isDisplayed()))
+        bottomBarFeedButton.perform(click())
     }
 
 
@@ -245,4 +261,20 @@ class HomeNeoTest {
         tourRecyclerView.perform(actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
     }
 
+    private fun setChecked(checked: Boolean) = object : ViewAction {
+        val checkableViewMatcher = object : BaseMatcher<View>() {
+            override fun describeTo(description: org.hamcrest.Description?) {
+                description?.appendText("is Checkable instance ")
+            }
+
+            override fun matches(item: Any?): Boolean = isA(Checkable::class.java).matches(item)
+        }
+
+        override fun getConstraints(): BaseMatcher<View> = checkableViewMatcher
+        override fun getDescription(): String? = null
+        override fun perform(uiController: UiController?, view: View) {
+            val checkableView: Checkable = view as Checkable
+            checkableView.isChecked = checked
+        }
+    }
 }
