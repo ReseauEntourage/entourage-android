@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.WindowManager
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.Root
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -41,7 +42,7 @@ class HomeExpertTest {
 
     private var jsonResponse: String = ""
     private val login: String = "651234145"
-    private val password: String = "661192"
+    private val password: String = "108674"
 
 
     /****************************** Views ******************************/
@@ -440,40 +441,46 @@ class HomeExpertTest {
 
     @Test
     fun testEditPassword() {
-        clickProfileButton()
-        editProfileButton.perform(click())
-        //Scroll to bottom
-        onView(allOf(withId(R.id.user_delete_account_button))).perform(scrollTo())
-
-        //Test that wrong old password show snack bar message
-        changePassword("111111", "222222", "222222")
-        onView(withText(R.string.user_edit_password_invalid_current_password)).check(matches(isDisplayed()))
-        clickTitleCloseButton()
-
-        //Test that too short password show snack bar message
-        changePassword(password, "111", "111")
-        onView(withText(R.string.user_edit_password_new_password_too_short)).check(matches(isDisplayed()))
-        clickTitleCloseButton()
-
-        //Test that different new and confirm passwords show snack bar message
-        changePassword(password, "222222", "333333")
-        onView(withText(R.string.user_edit_password_not_match)).check(matches(isDisplayed()))
-        clickTitleCloseButton()
-
         //Random valid password
         val randomPassword = "${Random.nextInt(100000, 999999)}"
 
-        //Set new valid password
-        changePassword(password, randomPassword, randomPassword)
+        try {
+            clickProfileButton()
+            editProfileButton.perform(click())
+            //Scroll to bottom
+            onView(allOf(withId(R.id.user_delete_account_button))).perform(scrollTo())
 
-        //Check that toast shows given message
-        onView(withText(R.string.user_text_update_ok)).inRoot(ToastMatcher()).check(matches(isDisplayed()))
+            //Test that wrong old password show snack bar message
+            changePassword("111111", "222222", "222222")
+            onView(withText(R.string.user_edit_password_invalid_current_password)).check(matches(isDisplayed()))
+            clickTitleCloseButton()
 
-        //Reset initial password (for next test run)
-        changePassword(randomPassword, password, password)
+            //Test that too short password show snack bar message
+            changePassword(password, "111", "111")
+            onView(withText(R.string.user_edit_password_new_password_too_short)).check(matches(isDisplayed()))
+            clickTitleCloseButton()
 
-        //Check that toast shows given message
-        onView(withText(R.string.user_text_update_ok)).inRoot(ToastMatcher()).check(matches(isDisplayed()))
+            //Test that different new and confirm passwords show snack bar message
+            changePassword(password, "222222", "333333")
+            onView(withText(R.string.user_edit_password_not_match)).check(matches(isDisplayed()))
+            clickTitleCloseButton()
+
+            //Set new valid password
+            changePassword(password, randomPassword, randomPassword)
+
+            //Check that toast shows given message
+            onView(withText(R.string.user_text_update_ok)).inRoot(ToastMatcher()).check(matches(isDisplayed()))
+        }
+        catch (e: NoMatchingViewException) {
+            //Some check went wrong
+        }
+        finally {
+            //Reset initial password (for next test run)
+            changePassword(randomPassword, password, password)
+
+            //Check that toast shows given message
+            onView(withText(R.string.user_text_update_ok)).inRoot(ToastMatcher()).check(matches(isDisplayed()))
+        }
     }
 
     private fun changePassword(oldPassword: String, newPassword: String, confirmPassword: String) {
