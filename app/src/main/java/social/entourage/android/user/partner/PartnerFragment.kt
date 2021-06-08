@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.collection.ArrayMap
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_partner_v2.*
 import kotlinx.android.synthetic.main.layout_view_title.view.*
 import okhttp3.ResponseBody
@@ -22,7 +22,6 @@ import social.entourage.android.api.model.Partner
 import social.entourage.android.api.request.PartnerResponse
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.deeplinks.DeepLinksManager
-import social.entourage.android.tools.CropCircleTransformation
 import timber.log.Timber
 
 class PartnerFragment : BaseDialogFragment() {
@@ -113,10 +112,10 @@ class PartnerFragment : BaseDialogFragment() {
             ui_asso_tv_subtitle?.text = ""
             ui_asso_iv_logo?.let { logoView ->
                 partner.largeLogoUrl?.let { url ->
-                    Picasso.get()
+                    Glide.with(this)
                             .load(Uri.parse(url))
                             .placeholder(R.drawable.partner_placeholder)
-                            .transform(CropCircleTransformation())
+                            .circleCrop()
                             .into(logoView)
                 }
             }

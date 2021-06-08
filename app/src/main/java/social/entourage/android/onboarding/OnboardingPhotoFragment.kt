@@ -17,12 +17,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.core.content.PermissionChecker
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_onboarding_photo.*
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
-import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 import java.io.File
@@ -295,13 +294,15 @@ open class OnboardingPhotoFragment : BaseDialogFragment(),PhotoEditDelegate {
 
         ui_onboard_photo_image?.let {
             if (pickedImageEditedUri != null) {
-                Picasso.get().load(pickedImageEditedUri)
+                Glide.with(this)
+                        .load(pickedImageEditedUri)
                         .placeholder(R.drawable.ic_user_photo)
-                        .transform(CropCircleTransformation())
+                        .circleCrop()
                         .into(it)
             } else {
-                Picasso.get().load(R.drawable.ic_user_photo)
-                        .transform(CropCircleTransformation())
+                Glide.with(this)
+                        .load(R.drawable.ic_user_photo)
+                        .circleCrop()
                         .into(it)
             }
         }

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.BaseAdapter
 import android.widget.CompoundButton
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.layout_edit_partner.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
@@ -76,13 +76,17 @@ class UserEditPartnerAdapter : BaseAdapter() {
             }
             partner.largeLogoUrl?.let { partnerLogo ->
                 currentView.partner_logo?.let {
-                    Picasso.get()
+                    Glide.with(it.context)
                             .load(Uri.parse(partnerLogo))
                             .placeholder(R.drawable.partner_placeholder)
                             .into(it)
                 }
             } ?: run  {
-                currentView.partner_logo?.setImageResource(R.drawable.partner_placeholder)
+                currentView.partner_logo?.let {
+                    Glide.with(it.context)
+                            .load(R.drawable.partner_placeholder)
+                            .into(it)
+                }
             }
 
             // set the tag to null so that oncheckedchangelistener exits when populating the view

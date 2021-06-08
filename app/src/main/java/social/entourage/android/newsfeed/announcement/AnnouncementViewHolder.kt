@@ -1,30 +1,29 @@
 package social.entourage.android.newsfeed.announcement
 
 import android.content.Intent
-import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.View
-import androidx.appcompat.content.res.AppCompatResources
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.snackbar.Snackbar
-import com.squareup.picasso.Picasso
-import com.squareup.picasso.Picasso.LoadedFrom
-import com.squareup.picasso.Target
 import kotlinx.android.synthetic.main.layout_card_announcement.view.*
+import kotlinx.android.synthetic.main.layout_feed_action_card.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.Announcement
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.tools.view.EntSnackbar
-import timber.log.Timber
 
 /**
  * View Holder for the announcement card
  * Created by Mihai Ionescu on 02/11/2017.
  */
-class AnnouncementViewHolder(view: View) : BaseCardViewHolder(view), Target {
+class AnnouncementViewHolder(view: View) : BaseCardViewHolder(view) {
     // ----------------------------------
     // Attributes
     // ----------------------------------
@@ -52,16 +51,16 @@ class AnnouncementViewHolder(view: View) : BaseCardViewHolder(view), Target {
     override fun populate(data: TimestampedObject) {
         val announcement: Announcement = data as Announcement
         //cancel previous net requests
-        Picasso.get().cancelRequest(this)
+        Glide.with(itemView.context).clear(itemView)
         //title
         itemView.announcement_card_title?.text = announcement.title
-        val iconUrl = announcement.iconUrl
-        if (iconUrl != null) {
-            Picasso.get()
+        announcement.iconUrl?.let { iconUrl ->
+            Glide.with(itemView.context)
                     .load(Uri.parse(iconUrl))
                     .placeholder(R.drawable.ic_broadcast)
-                    .into(this)
-        } else {
+                    .listener(requestListener)
+                    .into(itemView.announcement_card_image)
+        } ?: run {
             itemView.announcement_card_title?.setCompoundDrawables(null, null, null, null)
         }
         //body
@@ -69,7 +68,7 @@ class AnnouncementViewHolder(view: View) : BaseCardViewHolder(view), Target {
         //image
         //cancel previous net requests
         itemView.announcement_card_image?.let {imageView ->
-            Picasso.get().cancelRequest(imageView)
+            Glide.with(imageView.context).clear(imageView)
             val imageUrl = announcement.imageUrl
             if (imageUrl == null || imageUrl.trim { it <= ' ' }.isEmpty()) {
                 imageView.visibility = View.GONE
@@ -79,12 +78,11 @@ class AnnouncementViewHolder(view: View) : BaseCardViewHolder(view), Target {
                 imageView.visibility = View.VISIBLE
                 itemView.announcement_card_divider_left?.visibility = View.GONE
                 itemView.announcement_card_divider_right?.visibility = View.GONE
-                Picasso.get().load(Uri.parse(imageUrl)).let {
-                    AppCompatResources.getDrawable(itemView.context, R.drawable.ic_announcement_image_placeholder)?.let {
-                        itPlaceholder -> it.placeholder(itPlaceholder)
-                    }
-                    it.into(imageView)
-                }
+                Glide.with(imageView.context)
+                        .load(Uri.parse(imageUrl))
+                        .placeholder(R.drawable.ic_announcement_image_placeholder)
+                        .listener(requestListener)
+                        .into(imageView)
             }
         }
         //act button
@@ -93,22 +91,32 @@ class AnnouncementViewHolder(view: View) : BaseCardViewHolder(view), Target {
         actUrl = announcement.url
     }
 
-    // ----------------------------------
-    // Picasso Target implementation
-    // ----------------------------------
-    override fun onBitmapLoaded(bitmap: Bitmap, from: LoadedFrom) {
-        val targetWidth = itemView.resources.getDimensionPixelOffset(R.dimen.announcement_icon_width)
-        val targetHeight = itemView.resources.getDimensionPixelOffset(R.dimen.announcement_icon_height)
-        val bitmapDrawable = BitmapDrawable(Resources.getSystem(), Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, false))
-        itemView.announcement_card_title?.setCompoundDrawablesWithIntrinsicBounds(bitmapDrawable, null, null, null)
-    }
+    //--------------------------
+    // GLIDE LOADING LISTENER
+    //--------------------------
+    private val requestListener = object : RequestListener<Drawable> {
+        override fun onResourceReady(resource: Drawable?, model: Any?, target: com.bumptech.glide.request.target.Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+            itemView.announcement_card_title?.let { announcementCardTitle ->
+                val targetWidth = itemView.resources.getDimensionPixelOffset(R.dimen.announcement_icon_width)
+                val targetHeight = itemView.resources.getDimensionPixelOffset(R.dimen.announcement_icon_height)
+                Glide.with(itemView.context)
+                        .load(resource)
+                        .into(object : CustomTarget<Drawable>(targetWidth, targetHeight) {
+                            override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                                announcementCardTitle.setCompoundDrawablesWithIntrinsicBounds(resource, null, null, null)
+                            }
 
-    override fun onBitmapFailed(e: Exception, errorDrawable: Drawable?) {
-        Timber.w(e)
-    }
+                            override fun onLoadCleared(placeholder: Drawable?) {
+                                announcementCardTitle.setCompoundDrawablesWithIntrinsicBounds(placeholder, null, null, null)
+                            }
+                        })
+            }
+            return false
+        }
 
-    override fun onPrepareLoad(placeHolderDrawable: Drawable) {
-        itemView.announcement_card_title?.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+        override fun onLoadFailed(e: GlideException?, model: Any?, target: com.bumptech.glide.request.target.Target<Drawable>?, isFirstResource: Boolean): Boolean {
+            return false
+        }
     }
 
     companion object {
