@@ -1,22 +1,27 @@
 package social.entourage.android.onboarding
 
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.ImageDecoder
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
-import com.theartofdev.edmodo.cropper.CropImageView
-import com.theartofdev.edmodo.cropper.CropImageView.OnSetImageUriCompleteListener
+import com.takusemba.cropme.OnCropListener
 import kotlinx.android.synthetic.main.fragment_onboarding_edit_photo.*
 import social.entourage.android.R
+import social.entourage.android.tools.rotate
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,11 +30,14 @@ private const val PHOTO_PARAM = "social.entourage.android.photo_param"
 private const val PHOTO_SOURCE = "social.entourage.android.photo_source"
 
 
-class OnboardingEditPhotoFragment : DialogFragment(), OnSetImageUriCompleteListener {
-    private val ROTATE_DEGREES_STEP = -90
+class OnboardingEditPhotoFragment : DialogFragment() {
+    private val ROTATE_DEGREES_STEP = -90f
+    private var currentAngle = 0f
+
     private var mListener: PhotoEditDelegate? = null
     private var photoUri: Uri? = null
     private var photoSource = 0
+    private var photoFile: File? = null
 
     //**********//**********//**********
     // Lifecycle
@@ -97,14 +105,23 @@ class OnboardingEditPhotoFragment : DialogFragment(), OnSetImageUriCompleteListe
             ui_photo_edit_progressBar?.indeterminateDrawable?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.white), PorterDuff.Mode.SRC_ATOP)
         }
 
-        ui_photo_edit_cropImageView?.setOnSetImageUriCompleteListener(this)
-        if (photoUri != null) {
-            ui_photo_edit_progressBar?.visibility = View.VISIBLE
-            ui_photo_edit_cropImageView?.setImageUriAsync(photoUri)
-        }
-        ui_photo_edit_cropImageView?.cropShape = CropImageView.CropShape.OVAL
-        ui_photo_edit_cropImageView?.guidelines = CropImageView.Guidelines.OFF
-        ui_photo_edit_cropImageView?.setAspectRatio(1, 1)
+        photoUri?.let { crop_view.setUri(it) }
+
+        crop_view.addOnCropListener(object : OnCropListener {
+            override fun onSuccess(bitmap: Bitmap) {
+                try {
+                    saveBitmapToUri(bitmap)
+                    updateProfilePicture()
+                } catch (e: IOException) {
+                    Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(e: Exception) {
+                Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
+                ui_edit_photo_validate.isEnabled = true
+            }
+        })
 
         ui_edit_photo_cancel?.setOnClickListener {
             dismiss()
@@ -116,29 +133,40 @@ class OnboardingEditPhotoFragment : DialogFragment(), OnSetImageUriCompleteListe
 
         ui_edit_photo_validate?.setOnClickListener {
             ui_edit_photo_validate?.isEnabled = false
-            ui_photo_edit_cropImageView?.setOnCropImageCompleteListener { view, result ->
-                if (result.isSuccessful) {
-                    mListener?.onPhotoEdited(result.uri, photoSource)
-                    dismissAllowingStateLoss()
-                } else {
-                    Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
-                    ui_edit_photo_validate.isEnabled = true
-                }
-            }
-            try {
-                val croppedImageFile: File? = createImageFile()
-                ui_photo_edit_cropImageView?.saveCroppedImageAsync(Uri.fromFile(croppedImageFile))
-            } catch (e: IOException) {
-                Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show()
-            }
+            crop_view.crop()
         }
     }
 
-    fun rotateImage() {
-        ui_photo_edit_cropImageView?.rotateImage(ROTATE_DEGREES_STEP)
+    private fun saveBitmapToUri(bitmap: Bitmap) {
+        crop_view.setBitmap(bitmap)
+
+        if (photoFile == null) photoFile = createImageFile()
+        FileOutputStream(photoFile).use { out ->
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+        }
     }
 
-    fun setCallback(callback:PhotoEditDelegate) {
+    private fun updateProfilePicture() {
+        mListener?.onPhotoEdited(Uri.fromFile(photoFile), photoSource)
+        dismissAllowingStateLoss()
+    }
+
+    private fun rotateImage() {
+        currentAngle += ROTATE_DEGREES_STEP
+        photoUri?.let { saveBitmapToUri(getBitmapFromUri(it).rotate(currentAngle)) }
+    }
+
+    private fun getBitmapFromUri(uri: Uri): Bitmap {
+        val contentResolver = activity?.contentResolver
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && contentResolver != null) {
+            val source = ImageDecoder.createSource(contentResolver, uri)
+            ImageDecoder.decodeBitmap(source)
+        } else {
+            MediaStore.Images.Media.getBitmap(activity?.contentResolver, uri)
+        }
+    }
+
+    fun setCallback(callback: PhotoEditDelegate) {
         mListener = callback
     }
 
@@ -154,14 +182,6 @@ class OnboardingEditPhotoFragment : DialogFragment(), OnSetImageUriCompleteListe
                 ".jpg",
                 storageDir
         )
-    }
-
-    //**********//**********//**********
-    // CropImageView.OnSetImageUriCompleteListener
-    //**********//**********//**********
-
-    override fun onSetImageUriComplete(view: CropImageView?, uri: Uri?, error: Exception?) {
-        ui_photo_edit_progressBar?.visibility = View.GONE
     }
 
     //**********//**********//**********
