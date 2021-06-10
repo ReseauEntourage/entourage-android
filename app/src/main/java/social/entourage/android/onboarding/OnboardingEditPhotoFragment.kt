@@ -2,14 +2,10 @@ package social.entourage.android.onboarding
 
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.ImageDecoder
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,12 +15,10 @@ import androidx.fragment.app.DialogFragment
 import com.takusemba.cropme.OnCropListener
 import kotlinx.android.synthetic.main.fragment_onboarding_edit_photo.*
 import social.entourage.android.R
+import social.entourage.android.tools.Utils
 import social.entourage.android.tools.rotate
 import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.*
 
 private const val PHOTO_PARAM = "social.entourage.android.photo_param"
 private const val PHOTO_SOURCE = "social.entourage.android.photo_source"
@@ -110,7 +104,7 @@ class OnboardingEditPhotoFragment : DialogFragment() {
         crop_view.addOnCropListener(object : OnCropListener {
             override fun onSuccess(bitmap: Bitmap) {
                 try {
-                    saveBitmapToUri(bitmap)
+                    saveBitmap(bitmap)
                     updateProfilePicture()
                 } catch (e: IOException) {
                     Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show()
@@ -137,13 +131,16 @@ class OnboardingEditPhotoFragment : DialogFragment() {
         }
     }
 
-    private fun saveBitmapToUri(bitmap: Bitmap) {
-        crop_view.setBitmap(bitmap)
-
-        if (photoFile == null) photoFile = createImageFile()
-        FileOutputStream(photoFile).use { out ->
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+    private fun rotateImage() {
+        currentAngle += ROTATE_DEGREES_STEP
+        photoUri?.let {
+            saveBitmap(Utils.getBitmapFromUri(it, activity?.contentResolver).rotate(currentAngle))
         }
+    }
+
+    private fun saveBitmap(bitmap: Bitmap) {
+        crop_view.setBitmap(bitmap)
+        photoFile = Utils.saveBitmapToFile(bitmap, photoFile)
     }
 
     private fun updateProfilePicture() {
@@ -151,37 +148,8 @@ class OnboardingEditPhotoFragment : DialogFragment() {
         dismissAllowingStateLoss()
     }
 
-    private fun rotateImage() {
-        currentAngle += ROTATE_DEGREES_STEP
-        photoUri?.let { saveBitmapToUri(getBitmapFromUri(it).rotate(currentAngle)) }
-    }
-
-    private fun getBitmapFromUri(uri: Uri): Bitmap {
-        val contentResolver = activity?.contentResolver
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && contentResolver != null) {
-            val source = ImageDecoder.createSource(contentResolver, uri)
-            ImageDecoder.decodeBitmap(source)
-        } else {
-            MediaStore.Images.Media.getBitmap(activity?.contentResolver, uri)
-        }
-    }
-
     fun setCallback(callback: PhotoEditDelegate) {
         mListener = callback
-    }
-
-    @Throws(IOException::class)
-    private fun createImageFile(): File? {
-        // Create an image file name
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.FRANCE).format(Date())
-        val imageFileName = "ENTOURAGE_CROP_" + timeStamp + "_"
-        val storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES)
-        return File.createTempFile(
-                imageFileName,
-                ".jpg",
-                storageDir
-        )
     }
 
     //**********//**********//**********
