@@ -99,10 +99,13 @@ class OnboardingEditPhotoFragment : DialogFragment() {
             ui_photo_edit_progressBar?.indeterminateDrawable?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.white), PorterDuff.Mode.SRC_ATOP)
         }
 
-        photoUri?.let { crop_view.setUri(it) }
+        photoUri?.let {
+            crop_view.setUri(it)
+        }
 
         crop_view.addOnCropListener(object : OnCropListener {
             override fun onSuccess(bitmap: Bitmap) {
+                ui_photo_edit_progressBar?.visibility = View.GONE
                 try {
                     saveBitmap(bitmap)
                     updateProfilePicture()
@@ -113,6 +116,7 @@ class OnboardingEditPhotoFragment : DialogFragment() {
 
             override fun onFailure(e: Exception) {
                 Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
+                ui_photo_edit_progressBar?.visibility = View.GONE
                 ui_edit_photo_validate.isEnabled = true
             }
         })
@@ -127,6 +131,7 @@ class OnboardingEditPhotoFragment : DialogFragment() {
 
         ui_edit_photo_validate?.setOnClickListener {
             ui_edit_photo_validate?.isEnabled = false
+            ui_photo_edit_progressBar?.visibility = View.VISIBLE
             crop_view.crop()
         }
     }
