@@ -4,8 +4,6 @@ import androidx.collection.ArrayMap
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
-import social.entourage.android.api.AvatarUploadRequest
-import social.entourage.android.api.AvatarUploadResponse
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserReportWrapper
 import social.entourage.android.user.PrepareAvatarUploadRepository
@@ -19,10 +17,6 @@ interface UserRequest {
 
     @POST("users/me/presigned_avatar_upload.json")
     fun prepareAvatarUpload(@Body params: PrepareAvatarUploadRepository.Request): Call<PrepareAvatarUploadRepository.Response>
-
-    //New version for onboarding
-    @POST("users/me/presigned_avatar_upload.json")
-    fun prepareAvatarUpload(@Body params: AvatarUploadRequest): Call<AvatarUploadResponse>
 
     @PATCH("users/me/code.json")
     fun regenerateSecretCode(@Body userInfo: ArrayMap<String, Any>): Call<UserResponse>

@@ -287,27 +287,6 @@ class OnboardingAPI {
     /**********************
      * Upload Photo
      */
-    fun prepareUploadPhoto(listener: (avatarKey:String?, presignedUrl:String?, error: String?) -> Unit) {
-        val request = AvatarUploadRequest("image/jpeg")
-        val call = onboardingService.prepareAvatarUpload(request)
-
-        call.enqueue(object : Callback<AvatarUploadResponse> {
-            override fun onResponse(call: Call<AvatarUploadResponse>, response: Response<AvatarUploadResponse>) {
-                if (response.isSuccessful) {
-                    listener(response.body()?.avatarKey, response.body()?.presignedUrl, null)
-                }
-                else {
-
-                    listener(null,null,null)
-                }
-            }
-
-            override fun onFailure(call: Call<AvatarUploadResponse>, t: Throwable) {
-                listener(null,null,null)
-            }
-        })
-    }
-
     fun uploadPhotoFile(presignedUrl: String,file:File,listener: (isOk:Boolean) -> Unit) {
         val mediaType = MediaType.parse("image/jpeg")
         val requestBody = RequestBody.create(mediaType, file)
@@ -457,10 +436,3 @@ class OnboardingAPI {
         }
     }
 }
-
-/**********************
- * Class For network
- */
-class AvatarUploadRequest constructor(private var content_type: String)
-
-class AvatarUploadResponse(@SerializedName("avatar_key") var avatarKey: String, @SerializedName("presigned_url") var presignedUrl: String)
