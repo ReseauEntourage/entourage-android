@@ -10,6 +10,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
+import social.entourage.android.R
 import social.entourage.android.api.model.Partner
 import social.entourage.android.api.model.User
 import social.entourage.android.api.request.*
@@ -330,7 +331,7 @@ class OnboardingAPI {
     /***********
      * Change phone
      */
-    fun changePhone(oldPhone:String, newPhone:String,email:String,listener:(isOK:Boolean) -> Unit) {
+    fun changePhone(oldPhone:String, newPhone:String,email:String,listener:(isOK:Int) -> Unit) {
 
         val user: MutableMap<String, String> = ArrayMap()
         user["current_phone"] = oldPhone
@@ -344,17 +345,28 @@ class OnboardingAPI {
                 .enqueue(object : Callback<ResponseBody>{
                     override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                         if (response.isSuccessful) {
-                            listener(true)
+                            listener(R.string.login_change_phone_send_ok)
                         }
                         else {
-                            listener(false)
+                            checkPhoneChangeError(response.errorBody()?.string() ?:"", listener)
                         }
                     }
 
                     override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        listener(false)
+                        checkPhoneChangeError("", listener)
                     }
                 })
+    }
+
+    private fun checkPhoneChangeError(errorBody: String,listener:(isOK:Int) -> Unit) {
+        listener(when {
+            errorBody.contains("USER_NOT_FOUND") -> R.string.login_change_error_number_not_found
+            errorBody.contains("USER_DELETED")  -> R.string.login_change_error_number_deleted
+            errorBody.contains("USER_BLOCKED")  -> R.string.login_change_error_number_blocked
+            errorBody.contains("IDENTICAL_PHONES")  -> R.string.login_change_error_identical_number
+            else -> R.string.login_change_error_generic
+            }
+        )
     }
 
     /**********************

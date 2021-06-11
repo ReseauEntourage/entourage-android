@@ -22,7 +22,7 @@ class LoginChangePhoneActivity : BaseActivity() {
             finish()
         }
 
-        change_phone_mainLayout?.setOnTouchListener { view, motionEvent ->
+        change_phone_mainLayout?.setOnTouchListener { view, _ ->
             view.hideKeyboard()
             view.performClick()
             true
@@ -59,13 +59,13 @@ class LoginChangePhoneActivity : BaseActivity() {
             }
 
             ui_layout_waiting?.visibility = View.VISIBLE
-            OnboardingAPI.getInstance().changePhone(oldPhone,newPhone,email) { isOK ->
+            OnboardingAPI.getInstance().changePhone(oldPhone,newPhone,email) { resID ->
                 ui_layout_waiting?.visibility = View.GONE
-                if (isOK) {
+                if (resID==R.string.login_change_phone_send_ok) {
                     ui_layout_change_phone_ok?.visibility = View.VISIBLE
                 }
                 else {
-                    showError(R.string.login_change_error_return, getString(R.string.login_change_error_return_detail), R.string.button_OK)
+                    showError(R.string.login_change_error_return, getString(resID), R.string.button_OK)
                 }
             }
         }
@@ -79,7 +79,7 @@ class LoginChangePhoneActivity : BaseActivity() {
         AlertDialog.Builder(this)
                 .setTitle(titleId)
                 .setMessage(message)
-                .setPositiveButton(buttonTextId) { dialog, which -> }
+                .setPositiveButton(buttonTextId) { _, _ -> }
                 .create()
                 .show()
     }

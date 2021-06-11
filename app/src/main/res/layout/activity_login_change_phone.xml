@@ -138,7 +138,7 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginEnd="24dp"
-        android:autofillHints="phoneNumber"
+        android:autofillHints="emailAddress"
         android:background="@drawable/bg_rounded_login_grey_light_stroke"
         android:ems="10"
         android:hint="@string/login_change_phone_email_placeholder"
@@ -160,7 +160,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/ui_changeCode_bt_validate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView44">
+        app:layout_constraintTop_toBottomOf="@+id/textView44"
+        tools:visibility="gone">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -216,7 +217,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:focusable="true">
 
         <ProgressBar
             android:id="@+id/progressBar2"
