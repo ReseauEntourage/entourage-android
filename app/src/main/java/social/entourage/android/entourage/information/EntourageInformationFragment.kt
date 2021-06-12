@@ -333,11 +333,11 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         //Top view
         if (entourage.isEvent()) {
             ui_image_event_top?.visibility = View.VISIBLE
-            val landscape_url = entourage.metadata?.landscape_url
-            if(landscape_url.isNullOrBlank()){
+            val landscapeUrl = entourage.metadata?.landscape_url
+            if(landscapeUrl.isNullOrBlank()){
                 ui_image_event_top?.setImageResource(R.drawable.ic_placeholder_detail_event)
             } else {
-                Picasso.get().load(landscape_url).error(R.drawable.ic_placeholder_detail_event).placeholder(R.drawable.ic_placeholder_event).into(ui_image_event_top)
+                Picasso.get().load(landscapeUrl).error(R.drawable.ic_placeholder_detail_event).placeholder(R.drawable.ic_placeholder_event).into(ui_image_event_top)
             }
         }
         else {
