@@ -81,7 +81,7 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
                             newUser.phone = phone
                             authenticationController.saveUser(newUser)
                             mListener?.onUserEditActionZoneFragmentAddressSaved()
-                            dismiss()
+                            dismissAllowingStateLoss()
                         }
                     }
                     activity?.let {Toast.makeText(it, R.string.user_action_zone_send_ok, Toast.LENGTH_LONG).show()}
