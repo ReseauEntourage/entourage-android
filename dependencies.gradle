@@ -33,6 +33,7 @@ ext {
     daggerVersion = "2.36"
     dateTimePickerVersion = "4.2.3"
     espressoVersion = "3.3.0"
+    uiAutomatorVersion = "2.2.0"
     facebookVersion = "9.1.1"
     floatingButtonVersion = "1.6.4"
     fragmentVersion = "1.3.3"
@@ -128,6 +129,7 @@ ext {
             espressoIdling   :"androidx.test.espresso.idling:idling-concurrent:$espressoVersion",
             espressoIdlingRes:"androidx.test.espresso:espresso-idling-resource:$espressoVersion",
             espressoIntents  :"androidx.test.espresso:espresso-intents:$espressoVersion",
+            uiAutomator     : "androidx.test.uiautomator:uiautomator:$uiAutomatorVersion",
             okHttpIdling    : [
                     group: "com.jakewharton.espresso",
                     name: "okhttp3-idling-resource",
