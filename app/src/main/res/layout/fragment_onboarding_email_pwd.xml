@@ -89,9 +89,9 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="@color/pre_onboard_black"
-        app:layout_constraintBottom_toBottomOf="@+id/ui_onboard_names_et_firstname"
-        app:layout_constraintEnd_toEndOf="@+id/ui_onboard_names_et_firstname"
-        app:layout_constraintStart_toStartOf="@+id/ui_onboard_names_et_firstname">
+        app:layout_constraintBottom_toBottomOf="@+id/ui_onboard_email_pwd_et_mail"
+        app:layout_constraintEnd_toEndOf="@+id/ui_onboard_email_pwd_et_mail"
+        app:layout_constraintStart_toStartOf="@+id/ui_onboard_email_pwd_et_mail">
 
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

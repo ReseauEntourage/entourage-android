@@ -1,10 +1,8 @@
 package social.entourage.android.map
 
-import android.os.Build
 import android.view.View
-import androidx.appcompat.content.res.AppCompatResources
 import com.google.android.gms.maps.OnMapReadyCallback
-import kotlinx.android.synthetic.main.layout_feed_map_card.view.*
+import kotlinx.android.synthetic.main.layout_feed_header_map_card.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.base.BaseCardViewHolder
@@ -40,11 +38,7 @@ class MapViewHolder(view: View) : BaseCardViewHolder(view) {
     }
 
     fun setGeolocStatusIcon(active: Boolean) {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            itemView.layout_feed_map_card_recenter_button?.setImageDrawable(AppCompatResources.getDrawable(itemView.context, if (active) R.drawable.ic_my_location else R.drawable.ic_my_location_off))
-        } else {
-            itemView.layout_feed_map_card_recenter_button?.isSelected = active
-        }
+        itemView.layout_feed_map_card_recenter_button?.isSelected = active
     }
 
     fun setHeight(height: Int) {
@@ -55,6 +49,6 @@ class MapViewHolder(view: View) : BaseCardViewHolder(view) {
 
     companion object {
         val layoutResource: Int
-            get() = R.layout.layout_feed_map_card
+            get() = R.layout.layout_feed_header_map_card
     }
 }

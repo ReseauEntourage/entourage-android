@@ -126,7 +126,7 @@ class EntourageCloseFragment : DialogFragment() {
         // ----------------------------------
         // Constants
         // ----------------------------------
-        val TAG = EntourageCloseFragment::class.java.simpleName
+        val TAG: String? = EntourageCloseFragment::class.java.simpleName
 
         fun newInstance(feedItem: FeedItem?): EntourageCloseFragment {
             val fragment = EntourageCloseFragment()

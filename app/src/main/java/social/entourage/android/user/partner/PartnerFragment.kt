@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.collection.ArrayMap
+import androidx.core.content.res.ResourcesCompat
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_partner_v2.*
 import kotlinx.android.synthetic.main.layout_view_title.view.*
@@ -227,12 +228,12 @@ class PartnerFragment : BaseDialogFragment() {
             if (it.isFollowing) {
                 ui_button_follow?.text = getString(R.string.buttonFollowOnPartner)
                 ui_button_follow?.setTextColor(resources.getColor(R.color.white))
-                ui_button_follow?.background = resources.getDrawable(R.drawable.bg_button_rounded_pre_onboard_orange_plain)
+                ui_button_follow?.background = ResourcesCompat.getDrawable(resources, R.drawable.bg_button_rounded_pre_onboard_orange_plain, null)
             }
             else {
                 ui_button_follow?.text = getString(R.string.buttonFollowOffPartner)
                 ui_button_follow?.setTextColor(resources.getColor(R.color.accent))
-                ui_button_follow?.background = resources.getDrawable(R.drawable.bg_button_rounded_pre_onboard_orange_stroke)
+                ui_button_follow?.background = ResourcesCompat.getDrawable(resources, R.drawable.bg_button_rounded_pre_onboard_orange_stroke, null)
             }
         }
     }

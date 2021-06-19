@@ -110,7 +110,7 @@ class UserReportFragment  : BaseDialogFragment() {
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        val TAG = UserReportFragment::class.java.simpleName
+        val TAG: String? = UserReportFragment::class.java.simpleName
 
         /**
          * Use this factory method to create a new instance of

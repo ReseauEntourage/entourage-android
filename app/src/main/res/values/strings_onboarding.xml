@@ -87,7 +87,7 @@
     <string name="login_label_code">Code</string>
 
     <!-- Login Change Phone -->
-    <string name="login_change_phone">Changer de numéro de téléphone</string>
+    <string name="login_change_phone">J’ai changé de numéro de téléphone</string>
     <string name="login_change_phone_title">Changement de numéro\nde téléphone</string>
     <string name="login_change_phone_old_phone">Ancien numéro</string>
     <string name="login_change_phone_old_phone_placeholder">Ancien numéro</string>
@@ -104,7 +104,11 @@
     <string name="login_change_error_mail">Veuillez vérifier votre adresse Email</string>
 
     <string name="login_change_error_return">Erreur</string>
-    <string name="login_change_error_return_detail">L’ancien numéro est inconnu ou supprimé.\nVeuillez vérifier.</string>
+    <string name="login_change_error_number_not_found">L’ancien numéro est inconnu.\nVeuillez vérifier.</string>
+    <string name="login_change_error_number_deleted">L’ancien numéro a été supprimé.\nVeuillez vérifier.</string>
+    <string name="login_change_error_number_blocked">L’ancien numéro a été bloqué.\nVeuillez vérifier.</string>
+    <string name="login_change_error_identical_number">Les deux numéros sont identiques.\nVeuillez vérifier le nouveau numéro.</string>
+    <string name="login_change_error_generic">L’ancien numéro est inconnu ou supprimé.\nVeuillez vérifier les numéros.</string>
 
     <!-- Onboarding Asso -->
 

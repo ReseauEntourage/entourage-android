@@ -570,7 +570,7 @@ internal object CountryList {
         newCountries.add(Country(context.getString(R.string.country_zimbabwe_code),
                 context.getString(R.string.country_zimbabwe_number),
                 context.getString(R.string.country_zimbabwe_name)))
-        newCountries.sortWith({ o1: Country, o2: Country -> o1.name.compareTo(o2.name) })
+        newCountries.sortWith { o1: Country, o2: Country -> o1.name.compareTo(o2.name) }
         countries = newCountries
         return newCountries
     }

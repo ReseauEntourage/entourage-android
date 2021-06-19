@@ -1,4 +1,3 @@
-
 package social.entourage.android.onboarding
 
 import android.content.Intent
@@ -328,7 +327,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     fun updateActivities() {
         val activitiesSelection = SdfNeighbourActivities()
-        val isSdf = if(userTypeSelected == UserTypeSelection.ALONE) true else false
+        val isSdf = userTypeSelected == UserTypeSelection.ALONE
 
         activitiesSelection.setupForSdf(isSdf)
         OnboardingAPI.getInstance().updateUserInterests(activitiesSelection.getArrayForWs()) { isOK, userResponse ->

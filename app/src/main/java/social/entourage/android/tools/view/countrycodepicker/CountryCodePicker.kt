@@ -1,12 +1,10 @@
 package social.entourage.android.tools.view.countrycodepicker
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.Typeface
-import android.os.Build
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.telephony.TelephonyManager
 import android.util.AttributeSet
@@ -110,7 +108,6 @@ class CountryCodePicker : RelativeLayout {
         init(attrs)
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
         init(attrs)
     }
@@ -493,8 +490,6 @@ class CountryCodePicker : RelativeLayout {
 
         constructor() : super()
 
-        //TODO solve it! support for android kitkat
-        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         constructor(countryCode: String?) : super(countryCode)
     }
 

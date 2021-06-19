@@ -2,7 +2,6 @@ package social.entourage.android.entourage.invite.contacts
 
 import android.content.Context
 import android.database.Cursor
-import android.os.Build
 import android.provider.ContactsContract
 import android.telephony.PhoneNumberUtils
 import android.view.LayoutInflater
@@ -131,15 +130,10 @@ class InviteContactsAdapter(private val context: Context, fromColumn: String) : 
                         val currentNumbers = ArrayList<String>()
                         while (pCur.moveToNext()) {
                             val contactNumber = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                            val stripNumber = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                PhoneNumberUtils.formatNumber(contactNumber, "FR") ?: contactNumber
-                            } else {
-                                PhoneNumberUtils.stripSeparators(contactNumber)
-                            }
+                            val stripNumber = PhoneNumberUtils.formatNumber(contactNumber, "FR") ?: contactNumber
                             if(currentNumbers.contains(stripNumber))
                                 continue
-                            val displayNumber = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) stripNumber else contactNumber
-                            mData.add(InviteItemContactPhone(displayNumber, cursor.position))
+                            mData.add(InviteItemContactPhone(stripNumber, cursor.position))
                             currentNumbers.add(stripNumber)
                         }
                         pCur.close()

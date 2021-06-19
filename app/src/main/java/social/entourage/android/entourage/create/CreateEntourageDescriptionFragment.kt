@@ -99,7 +99,7 @@ class CreateEntourageDescriptionFragment  : BaseDialogFragment() {
         // ----------------------------------
         // Constants
         // ----------------------------------
-        val TAG = CreateEntourageDescriptionFragment::class.java.simpleName
+        val TAG: String? = CreateEntourageDescriptionFragment::class.java.simpleName
         private const val ENTOURAGE_DESCRIPTION = "ENTOURAGE_DESCRIPTION"
 
         fun newInstance(description: String?, entourageCategory: EntourageCategory?, groupType: String?): CreateEntourageDescriptionFragment {

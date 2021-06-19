@@ -137,7 +137,7 @@ class EntourageReportFragment  : BaseDialogFragment() {
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        val TAG = EntourageReportFragment::class.java.simpleName
+        val TAG: String? = EntourageReportFragment::class.java.simpleName
         const val KEY_ID = "entourageId"
         const val ISEVENT = "isEvent"
         const val ISREPORTUSER = "isReportUser"

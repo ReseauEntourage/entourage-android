@@ -4,12 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.layout_poi_card.view.*
-import social.entourage.android.Constants
 import social.entourage.android.R
-import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.model.guide.Poi
-import social.entourage.android.guide.poi.PoiRenderer
 import social.entourage.android.guide.poi.PoiViewHolder
 import java.util.ArrayList
 
@@ -26,15 +22,15 @@ class GDSSearchAdapter(var items: ArrayList<Poi>,val listenerClick: (position:In
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (items.size == 0) return Companion.TYPE_EMPTY
-        return Companion.TYPE_POI
+        if (items.size == 0) return TYPE_EMPTY
+        return TYPE_POI
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        when(viewType) {
-            Companion.TYPE_EMPTY -> return VHEmpty(layoutInflater.inflate(R.layout.layout_search_poi_empty, parent, false))
-            else -> return PoiViewHolder(layoutInflater.inflate(R.layout.layout_poi_card, parent, false)).apply { showCallButton = false }
+        return when(viewType) {
+            TYPE_EMPTY -> VHEmpty(layoutInflater.inflate(R.layout.layout_search_poi_empty, parent, false))
+            else -> PoiViewHolder(layoutInflater.inflate(R.layout.layout_poi_card, parent, false)).apply { showCallButton = false }
         }
     }
 

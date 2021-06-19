@@ -33,7 +33,6 @@ import social.entourage.android.user.UserOrganizationsAdapter
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment.FragmentListener
 import social.entourage.android.user.edit.partner.UserEditPartnerFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
-import social.entourage.android.user.edit.photo.PhotoChooseSourceFragmentCompat
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import timber.log.Timber
 import java.util.*
@@ -240,11 +239,7 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
     }
 
     private fun onPhotoClicked() {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            PhotoChooseSourceFragmentCompat().show(parentFragmentManager, PhotoChooseSourceFragmentCompat.TAG)
-        } else {
-            ChoosePhotoFragment.newInstance().show(parentFragmentManager, ChoosePhotoFragment.TAG)
-        }
+        ChoosePhotoFragment.newInstance().show(parentFragmentManager, ChoosePhotoFragment.TAG)
     }
 
     fun onAddAssociationClicked() {
@@ -262,15 +257,10 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
                         intent.action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
                         intent.putExtra(Settings.EXTRA_APP_PACKAGE, it.packageName)
                     }
-                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP -> {
+                    else -> {
                         intent.action = "android.settings.APP_NOTIFICATION_SETTINGS"
                         intent.putExtra("app_package", it.packageName)
                         intent.putExtra("app_uid", it.applicationInfo.uid)
-                    }
-                    else -> {
-                        intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                        intent.addCategory(Intent.CATEGORY_DEFAULT)
-                        intent.data = Uri.parse("package:" + it.packageName)
                     }
                 }
                 startActivity(intent)

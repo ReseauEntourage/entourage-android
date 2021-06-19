@@ -548,7 +548,7 @@ object AnalyticsEvents {
     const val ACTION_SWITCH_ExpertToNeo = "Action__Switch__ExpertToNeo"
     
 
-    var TAG = AnalyticsEvents::class.java.simpleName
+    val TAG: String? = AnalyticsEvents::class.java.simpleName
 
     fun logEvent(event: String) {
         get().firebase.logEvent(event, null)

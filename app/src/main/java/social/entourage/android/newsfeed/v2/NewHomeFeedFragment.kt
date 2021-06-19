@@ -16,8 +16,6 @@ import social.entourage.android.api.model.*
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.tape.Events
 import social.entourage.android.base.BackPressable
-import social.entourage.android.entourage.EntourageDisclaimerFragment
-import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.location.EntLocation
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.newsfeed.*
@@ -94,7 +92,7 @@ class NewHomeFeedFragment : BaseNewsfeedFragment(), BackPressable {
             fragmentChild = HomeNeoMainFragment()
         }
 
-        val transaction = getChildFragmentManager().beginTransaction()
+        val transaction = childFragmentManager.beginTransaction()
         transaction.replace(R.id.ui_container, fragmentChild).commit()
     }
 
@@ -102,7 +100,7 @@ class NewHomeFeedFragment : BaseNewsfeedFragment(), BackPressable {
 
     fun goActions() {
         val fg = HomeNeoActionFragment()
-        val transaction = getChildFragmentManager().beginTransaction()
+        val transaction = childFragmentManager.beginTransaction()
         transaction.setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
         transaction.addToBackStack(HomeNeoActionFragment.TAG)
         transaction.add(R.id.ui_container, fg).commit()
@@ -134,14 +132,14 @@ class NewHomeFeedFragment : BaseNewsfeedFragment(), BackPressable {
 
     fun goHelp() {
         val fg = HomeNeoHelpFragment()
-        val transaction = getChildFragmentManager().beginTransaction()
+        val transaction = childFragmentManager.beginTransaction()
         transaction.setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
         transaction.addToBackStack(HomeHelpFragment.TAG)
         transaction.add(R.id.ui_container, fg).commit()
     }
     fun goStreet() {
         val fg = HomeNeoStreetFragment()
-        val transaction = getChildFragmentManager().beginTransaction()
+        val transaction = childFragmentManager.beginTransaction()
         transaction.setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
         transaction.addToBackStack(HomeNeoStreetFragment.TAG)
         transaction.add(R.id.ui_container, fg).commit()
@@ -153,7 +151,7 @@ class NewHomeFeedFragment : BaseNewsfeedFragment(), BackPressable {
 
     fun goTourStart() {
         val fg = HomeNeoTourStartFragment()
-        val transaction = getChildFragmentManager().beginTransaction()
+        val transaction = childFragmentManager.beginTransaction()
         transaction.setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
         transaction.addToBackStack(HomeNeoTourStartFragment.TAG)
         transaction.add(R.id.ui_container, fg).commit()
@@ -161,7 +159,7 @@ class NewHomeFeedFragment : BaseNewsfeedFragment(), BackPressable {
 
     fun goTourList() {
         val fg = HomeNeoTourListFragment()
-        val transaction = getChildFragmentManager().beginTransaction()
+        val transaction = childFragmentManager.beginTransaction()
         transaction.setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
         transaction.addToBackStack(HomeNeoTourListFragment.TAG)
         transaction.add(R.id.ui_container, fg).commit()
@@ -169,7 +167,7 @@ class NewHomeFeedFragment : BaseNewsfeedFragment(), BackPressable {
 
     fun goTourSend(tourArea: HomeTourArea) {
         val fg = HomeNeoTourSendFragment.newInstance(tourArea)
-        val transaction = getChildFragmentManager().beginTransaction()
+        val transaction = childFragmentManager.beginTransaction()
         transaction.setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
         transaction.addToBackStack(HomeNeoTourSendFragment.TAG)
         transaction.add(R.id.ui_container, fg).commit()
@@ -225,18 +223,14 @@ class NewHomeFeedFragment : BaseNewsfeedFragment(), BackPressable {
         }
     }
 
-    fun isNavigation() : Boolean {
-        val isNav = EntourageApplication.get().sharedPreferences
-                .getBoolean("isNavNews", false)
-
-        return isNav
+    fun isNavigation(): Boolean {
+        return EntourageApplication.get().sharedPreferences
+            .getBoolean("isNavNews", false)
     }
 
-    fun navType() : String? {
-        val navType = EntourageApplication.get().sharedPreferences
-                .getString("navType", null)
-
-        return navType
+    fun navType(): String? {
+        return EntourageApplication.get().sharedPreferences
+            .getString("navType", null)
     }
 
     fun saveInfos(isNav:Boolean,type:String?) {

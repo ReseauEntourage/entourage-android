@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -213,48 +212,28 @@ class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
 
     private fun showChoosePhotoActivity() {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_PHOTO_UPLOAD_SUBMIT)
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            // Start a separate activity, to handle the issue with onActivityResult
-            val intent = Intent(context, ChoosePhotoCompatActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-        } else {
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
-            // Show only images, no videos or anything else
-            intent.type = "image/*"
-            // Always show the chooser (if there are multiple options available)
-            startActivityForResult(Intent.createChooser(intent, null), PICK_IMAGE_REQUEST)
-        }
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        // Show only images, no videos or anything else
+        intent.type = "image/*"
+        // Always show the chooser (if there are multiple options available)
+        startActivityForResult(Intent.createChooser(intent, null), PICK_IMAGE_REQUEST)
     }
 
     private fun showTakePhotoActivity() {
         activity?.let {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_PHOTO_TAKE_SUBMIT)
-            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             // Ensure that there's a camera activity to handle the intent
             try {
+                val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 // Create the File where the photo should go
-                try {
-                    val photoFileUri = createImageFile()
-                    // Continue only if the File was successfully created
-                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                        // Start a separate activity, to handle the issue with onActivityResult
-                        val intent = Intent(context, TakePhotoActivity::class.java)
-                        intent.data = photoFileUri
-                        if (mCurrentPhotoPath != null) {
-                            intent.putExtra(TakePhotoActivity.KEY_PHOTO_PATH, mCurrentPhotoPath)
-                        }
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                        startActivity(intent)
-                    } else {
-                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri)
-                        takePictureIntent.flags = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                        startActivityForResult(takePictureIntent, TAKE_PHOTO_REQUEST)
-                    }
-                } catch (ex: IOException) {
-                    // Error occurred while creating the File
-                    Toast.makeText(activity, R.string.user_photo_error_photo_path, Toast.LENGTH_SHORT).show()
-                }
+                val photoFileUri = createImageFile()
+                // Continue only if the File was successfully created
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri)
+                takePictureIntent.flags = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                startActivityForResult(takePictureIntent, TAKE_PHOTO_REQUEST)
+            } catch (ex: IOException) {
+                // Error occurred while creating the File
+                Toast.makeText(activity, R.string.user_photo_error_photo_path, Toast.LENGTH_SHORT).show()
             } catch (e: ActivityNotFoundException) {
                 Toast.makeText(activity, R.string.user_photo_error_no_camera, Toast.LENGTH_SHORT).show()
             }

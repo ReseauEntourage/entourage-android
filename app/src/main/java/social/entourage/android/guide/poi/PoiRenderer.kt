@@ -3,8 +3,6 @@ package social.entourage.android.guide.poi
 import android.content.Context
 import android.graphics.Color
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.content.res.ResourcesCompat
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.MarkerOptions
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage

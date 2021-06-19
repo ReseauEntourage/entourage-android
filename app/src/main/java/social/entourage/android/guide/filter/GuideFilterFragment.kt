@@ -225,6 +225,6 @@ class GuideFilterFragment : BaseDialogFragment() {
         // ----------------------------------
         // Constants
         // ----------------------------------
-        val TAG = GuideFilterFragment::class.java.simpleName
+        val TAG: String? = GuideFilterFragment::class.java.simpleName
     }
 }
