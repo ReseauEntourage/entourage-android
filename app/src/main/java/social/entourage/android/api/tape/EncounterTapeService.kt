@@ -5,6 +5,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.IBinder
 import com.squareup.otto.Subscribe
 import social.entourage.android.EntourageApplication.Companion.get
@@ -51,8 +53,7 @@ class EncounterTapeService : Service(), EncounterUploadCallback {
     // METHODS
     // ----------------------------------
     private fun isConnected(): Boolean {
-        val connectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        return connectivityManager.activeNetworkInfo?.isConnected == true
+        return Companion.isConnected(this)
     }
 
     private fun stopService() {
@@ -101,12 +102,39 @@ class EncounterTapeService : Service(), EncounterUploadCallback {
         override fun onReceive(context: Context, intent: Intent) {
             EntBus.register(this)
             val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            EntBus.post(OnConnectionChangedEvent(connectivityManager.activeNetworkInfo?.isConnected == true))
+            EntBus.post(OnConnectionChangedEvent(EncounterTapeService.isConnected(context)))
             EntBus.unregister(this)
         }
     }
 
     companion object {
         private var running = false
+        private fun isConnected(context: Context): Boolean {
+            val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val networkCapabilities = connectivityManager.activeNetwork ?: return false
+                val actNw =
+                    connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+                when {
+                    actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                    actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                    actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                    else -> false
+                }
+            } else {
+                connectivityManager.run {
+                    connectivityManager.activeNetworkInfo?.run {
+                        when (type) {
+                            ConnectivityManager.TYPE_WIFI -> true
+                            ConnectivityManager.TYPE_MOBILE -> true
+                            ConnectivityManager.TYPE_ETHERNET -> true
+                            else -> false
+                        }
+
+                    }
+                } ?: false
+            }
+        }
+
     }
 }

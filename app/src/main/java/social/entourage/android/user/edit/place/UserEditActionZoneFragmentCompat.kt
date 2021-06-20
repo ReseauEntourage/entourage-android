@@ -249,7 +249,7 @@ class UserEditActionZoneFragmentCompat  : BaseDialogFragment() {
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        val TAG = UserEditActionZoneFragmentCompat::class.java.simpleName
+        val TAG: String? = UserEditActionZoneFragmentCompat::class.java.simpleName
         private const val KEY_USER_ADDRESS = "social.entourage.android.KEY_USER_ADDRESS"
         private const val KEY_SECONDARY = "social.entourage.android.KEY_SECONDARY"
 

@@ -218,9 +218,9 @@ class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
     private fun showTakePhotoActivity() {
         activity?.let {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_PHOTO_TAKE_SUBMIT)
-            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             // Ensure that there's a camera activity to handle the intent
             try {
+                val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 // Create the File where the photo should go
                 try {
                     val photoFileUri = createImageFile()

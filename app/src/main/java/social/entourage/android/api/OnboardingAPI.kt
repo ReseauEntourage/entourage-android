@@ -10,6 +10,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
+import social.entourage.android.R
 import social.entourage.android.api.model.Partner
 import social.entourage.android.api.model.User
 import social.entourage.android.api.request.*
@@ -286,27 +287,6 @@ class OnboardingAPI {
     /**********************
      * Upload Photo
      */
-    fun prepareUploadPhoto(listener: (avatarKey:String?, presignedUrl:String?, error: String?) -> Unit) {
-        val request = AvatarUploadRequest("image/jpeg")
-        val call = onboardingService.prepareAvatarUpload(request)
-
-        call.enqueue(object : Callback<AvatarUploadResponse> {
-            override fun onResponse(call: Call<AvatarUploadResponse>, response: Response<AvatarUploadResponse>) {
-                if (response.isSuccessful) {
-                    listener(response.body()?.avatarKey, response.body()?.presignedUrl, null)
-                }
-                else {
-
-                    listener(null,null,null)
-                }
-            }
-
-            override fun onFailure(call: Call<AvatarUploadResponse>, t: Throwable) {
-                listener(null,null,null)
-            }
-        })
-    }
-
     fun uploadPhotoFile(presignedUrl: String,file:File,listener: (isOk:Boolean) -> Unit) {
         val mediaType = MediaType.parse("image/jpeg")
         val requestBody = RequestBody.create(mediaType, file)
@@ -328,7 +308,7 @@ class OnboardingAPI {
     /***********
      * Change phone
      */
-    fun changePhone(oldPhone:String, newPhone:String,email:String,listener:(isOK:Boolean) -> Unit) {
+    fun changePhone(oldPhone:String, newPhone:String,email:String,listener:(isOK:Int) -> Unit) {
 
         val user: MutableMap<String, String> = ArrayMap()
         user["current_phone"] = oldPhone
@@ -342,17 +322,28 @@ class OnboardingAPI {
                 .enqueue(object : Callback<ResponseBody>{
                     override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                         if (response.isSuccessful) {
-                            listener(true)
+                            listener(R.string.login_change_phone_send_ok)
                         }
                         else {
-                            listener(false)
+                            checkPhoneChangeError(response.errorBody()?.string() ?:"", listener)
                         }
                     }
 
                     override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        listener(false)
+                        checkPhoneChangeError("", listener)
                     }
                 })
+    }
+
+    private fun checkPhoneChangeError(errorBody: String,listener:(isOK:Int) -> Unit) {
+        listener(when {
+            errorBody.contains("USER_NOT_FOUND") -> R.string.login_change_error_number_not_found
+            errorBody.contains("USER_DELETED")  -> R.string.login_change_error_number_deleted
+            errorBody.contains("USER_BLOCKED")  -> R.string.login_change_error_number_blocked
+            errorBody.contains("IDENTICAL_PHONES")  -> R.string.login_change_error_identical_number
+            else -> R.string.login_change_error_generic
+            }
+        )
     }
 
     /**********************
@@ -445,10 +436,3 @@ class OnboardingAPI {
         }
     }
 }
-
-/**********************
- * Class For network
- */
-class AvatarUploadRequest constructor(private var content_type: String)
-
-class AvatarUploadResponse(@SerializedName("avatar_key") var avatarKey: String, @SerializedName("presigned_url") var presignedUrl: String)

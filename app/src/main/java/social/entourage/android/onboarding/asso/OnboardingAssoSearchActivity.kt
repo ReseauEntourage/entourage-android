@@ -2,14 +2,13 @@ package social.entourage.android.onboarding.asso
 
 
 import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_onboard_asso_search.*
-import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.Partner

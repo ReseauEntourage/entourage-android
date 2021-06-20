@@ -61,7 +61,7 @@ class CreateActionWizardPage3Fragment : BaseDialogFragment() {
         // ----------------------------------
         // Attributes
         // ----------------------------------
-        val TAG = CreateActionWizardPage3Fragment::class.java.simpleName
+        val TAG: String? = CreateActionWizardPage3Fragment::class.java.simpleName
         private const val STEP = 3
     }
 }

@@ -10,7 +10,8 @@
         android:id="@+id/action_zone_title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/title_close_button"

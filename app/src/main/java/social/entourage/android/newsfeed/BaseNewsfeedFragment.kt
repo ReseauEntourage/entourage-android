@@ -55,6 +55,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -684,6 +685,10 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                 presenter.onGroundOverlayClickListener
         )
 
+        if (activity == null) {
+            Timber.e("No activity found")
+            return
+        }
         mapClusterManager = ClusterManager<ClusterItem>(activity, googleMap)
                 .apply {
             this.renderer = MapClusterItemRenderer(requireActivity(), googleMap, this)

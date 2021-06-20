@@ -78,7 +78,7 @@ class HomeNeoTourSendFragment : Fragment() {
 
         ui_view_valid_ok?.visibility = View.GONE
 
-        getActivity()?.getWindow()?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
     }
 
     //Network

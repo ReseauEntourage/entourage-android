@@ -172,7 +172,7 @@
     <string name="entourage_share_intent_title">Partager via</string>
     <string name="entourage_share_link">https://www.entourage.social</string>
 
-    <string name="info_share_poi_sms">Bonjour ! Voici l’adresse de %s qui pourrait vous intéresser.\n%s\n%s\nPour plus d’infos sur ce lieu, et pour créer des liens entre voisins solidaires, je vous donne RDV sur le réseau Entourage %s</string>
+    <string name="info_share_poi_sms">Bonjour ! Voici l’adresse de %1$s qui pourrait vous intéresser.\n%2$s\n%3$s\nPour plus d’infos sur ce lieu, et pour créer des liens entre voisins solidaires, je vous donne RDV sur le réseau Entourage %4$s</string>
 
     <string name="entourage_share_text_for_entourage">%1$s.\n\nMerci beaucoup pour ta solidarité !</string>
     <!-- Entourage Mini Card -->

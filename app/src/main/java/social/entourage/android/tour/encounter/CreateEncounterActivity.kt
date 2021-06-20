@@ -212,7 +212,7 @@ class CreateEncounterActivity : BaseSecuredActivity(), LocationFragment.OnFragme
     // ----------------------------------
     // PRIVATE CLASSES
     // ----------------------------------
-    private class GeocoderTask internal constructor(context: CreateEncounterActivity) : AsyncTask<LatLng?, Void?, String?>() {
+    private class GeocoderTask constructor(context: CreateEncounterActivity) : AsyncTask<LatLng?, Void?, String?>() {
         private val activityReference: WeakReference<CreateEncounterActivity> = WeakReference(context)
 
         override fun doInBackground(vararg params: LatLng?): String? {

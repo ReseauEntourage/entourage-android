@@ -101,9 +101,9 @@ class GuideMapPresenter @Inject constructor(
 
     var isShowNoPOIsPopup: Boolean
         get() = authenticationController.isShowNoPOIsPopup
-        set(shouldShowNoPOIsPopup: Boolean) {authenticationController.isShowNoPOIsPopup = shouldShowNoPOIsPopup}
+        set(shouldShowNoPOIsPopup) {authenticationController.isShowNoPOIsPopup = shouldShowNoPOIsPopup}
 
     var isShowInfoPOIsPopup: Boolean
         get() = authenticationController.isShowInfoPOIsPopup
-        set(shouldShowInfoPOIsPopup: Boolean) {authenticationController.isShowInfoPOIsPopup = shouldShowInfoPOIsPopup}
+        set(shouldShowInfoPOIsPopup) {authenticationController.isShowInfoPOIsPopup = shouldShowInfoPOIsPopup}
 }

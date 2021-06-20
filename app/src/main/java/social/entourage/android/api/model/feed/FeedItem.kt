@@ -19,7 +19,7 @@ import java.util.*
  * Created by mihaiionescu on 18/05/16.
  * needed for deserialize
  */
-abstract class FeedItem() : TimestampedObject(), Serializable {
+abstract class FeedItem : TimestampedObject(), Serializable {
     // ----------------------------------
     // Attributes
     // ----------------------------------

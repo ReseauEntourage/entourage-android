@@ -101,7 +101,7 @@ class GetInvolvedFragment  : BaseDialogFragment() {
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        val TAG = GetInvolvedFragment::class.java.simpleName
+        val TAG: String? = GetInvolvedFragment::class.java.simpleName
         fun newInstance(): GetInvolvedFragment {
             return GetInvolvedFragment()
         }

@@ -142,6 +142,6 @@ class AboutFragment : BaseDialogFragment() {
     }
 
     companion object {
-        val TAG = AboutFragment::class.java.simpleName
+        val TAG: String = AboutFragment::class.java.simpleName
     }
 }

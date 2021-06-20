@@ -2,46 +2,89 @@ package social.entourage.android
 
 import android.content.Intent
 import android.net.Uri
-import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.ActivityTestRule
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.UiObject
+import androidx.test.uiautomator.UiObjectNotFoundException
+import androidx.test.uiautomator.UiSelector
 import org.hamcrest.core.AllOf.allOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.deeplinks.DeepLinksManager
+import social.entourage.android.onboarding.login.LoginActivity
+
 
 @RunWith(AndroidJUnit4::class)
 open class DeepLinkingTest {
 
-    private val isAppStarted = false
-
     @Rule
     @JvmField
-    val activityTestRule = ActivityTestRule(MainActivity::class.java, isAppStarted, isAppStarted)
+    val activityTestRule = ActivityScenarioRule(LoginActivity::class.java)
+
+    private lateinit var device: UiDevice
 
     protected fun startIntent(intent: Intent) {
-        if (!isAppStarted) {
-            activityTestRule.launchActivity(intent)
-        } else {
-            activityTestRule.activity.startActivity(intent)
+        activityTestRule.scenario.onActivity {
+            it.startActivity(intent)
+        }
+
+        try {
+            //Select Entourage app to open deeplink
+            val entourageButton: UiObject = device.findObject(
+                    UiSelector().text("EntourDBG")
+            )
+            entourageButton.click()
+
+            val alwaysButton: UiObject = device.findObject(
+                    UiSelector().text("ALWAYS")
+            )
+            alwaysButton.click()
+        } catch (e: UiObjectNotFoundException) {
+            //We arent asked to choose app
         }
     }
 
 
     @Before
     fun setUp() {
-        /*if(EntourageApplication.get(activityTestRule.activity).entourageComponent.authenticationController.isAuthenticated == false) {
-            Espresso.onView(ViewMatchers.withId(R.id.login_button_login)).perform(ViewActions.click())
-            Espresso.onView(ViewMatchers.withId(R.id.login_edit_phone)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_LOGIN), ViewActions.closeSoftKeyboard())
-            Espresso.onView(ViewMatchers.withId(R.id.login_edit_code)).perform(ViewActions.typeText(BuildConfig.TEST_ACCOUNT_PWD), ViewActions.closeSoftKeyboard())
-            Espresso.onView(ViewMatchers.withId(R.id.login_button_signin)).perform(ViewActions.click())
-        }*/
+        device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+
+        //User must be logged for the tests
+        login("0651234145", "108674")
+
+        //Wait for server response
+        Thread.sleep(4000)
+    }
+
+    private fun login(phoneNumber: String, codePwd: String) {
+        val authenticationController = EntourageApplication.get().components.authenticationController
+        OnboardingAPI.getInstance().login(phoneNumber, codePwd) { isOK, loginResponse, _ ->
+            if (isOK) {
+                loginResponse?.let {
+                    authenticationController.saveUser(loginResponse.user)
+                }
+                authenticationController.saveUserPhoneAndCode(phoneNumber, codePwd)
+                authenticationController.saveUserToursOnly(false)
+
+                //set the tutorial as done
+                val sharedPreferences = EntourageApplication.get().sharedPreferences
+                (sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, HashSet()) as HashSet<String>?)?.let { loggedNumbers ->
+                    loggedNumbers.add(phoneNumber)
+                    sharedPreferences.edit().putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers).apply()
+                }
+            }
+        }
     }
 
 }
@@ -68,7 +111,7 @@ class DeepLinkingTestCreateAction : DeepLinkingTest() {
     private fun connectedCreateActionDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
-        Espresso.onView(ViewMatchers.withId(R.id.fragment_plus_overlay)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.fragment_plus_overlay)).check(matches(isDisplayed()))
     }
 }
 
@@ -92,7 +135,7 @@ class DeepLinkingTestBadge : DeepLinkingTest() {
     private fun connectedBadgeDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
-        Espresso.onView(ViewMatchers.withText(R.string.user_profile_display_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withText(R.string.user_profile_display_title)).check(matches(isDisplayed()))
     }
 }
 
@@ -167,12 +210,10 @@ class DeepLinkingTestFilters : DeepLinkingTest() {
     private fun connectedFeedFilterDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
-        Espresso.onView(ViewMatchers.withText(R.string.map_filter_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withText(R.string.map_filter_title)).check(matches(isDisplayed()))
     }
 }
 
-// TODO: Remove comment when tests pass
-// They should pass when new title text on another branch will be merged
 class DeepLinkingTestEvents : DeepLinkingTest() {
 
     @Test
@@ -193,7 +234,7 @@ class DeepLinkingTestEvents : DeepLinkingTest() {
     private fun connectedEventsDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
-        Espresso.onView(ViewMatchers.withText(R.string.home_title_actions)).check(ViewAssertions.matches(ViewMatchers.isSelected()))
+        onView(allOf(withText(R.string.home_title_events), withId(R.id.ui_tv_title))).check(matches(isDisplayed()))
     }
 }
 
@@ -217,7 +258,7 @@ class DeepLinkingTestFeed : DeepLinkingTest() {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
         Thread.sleep(1000) // We must wait for view to appear (when we run all tests at once)
-        Espresso.onView(ViewMatchers.withText(R.string.home_title_headlines)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withText(R.string.home_title_headlines)).check(matches(isDisplayed()))
     }
 }
 
@@ -452,7 +493,7 @@ class DeepLinkingTestEntourage : DeepLinkingTest() {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
         Thread.sleep(1000) // We must wait for view to appear (when we run all tests at once)
-        Espresso.onView(ViewMatchers.withId(R.id.entourage_info_title_layout)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.entourage_info_title_layout)).check(matches(isDisplayed()))
     }
 }
 
@@ -476,7 +517,7 @@ class DeepLinkingTestMessages : DeepLinkingTest() {
     private fun connectedMessagesDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
-        Espresso.onView(ViewMatchers.withId(R.id.myentourages_tab)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.myentourages_tab)).check(matches(isDisplayed()))
     }
 }
 
@@ -501,7 +542,7 @@ class DeepLinkingTestTutorial : DeepLinkingTest() {
     private fun connectedTutorialDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
-        Espresso.onView(ViewMatchers.withId(R.id.carousel_indicator_layout)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.carousel_indicator_layout)).check(matches(isDisplayed()))
     }
 
 }
@@ -525,7 +566,7 @@ class DeepLinkingTestGuide : DeepLinkingTest() {
     private fun connectedGuideDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
-        Espresso.onView(ViewMatchers.withId(R.id.ui_title_top)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.ui_title_top)).check(matches(isDisplayed()))
     }
 
 }
@@ -549,7 +590,7 @@ class DeepLinkingTestProfile : DeepLinkingTest() {
     private fun connectedProfileDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
-        Espresso.onView(ViewMatchers.withText(R.string.user_profile_display_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withText(R.string.user_profile_display_title)).check(matches(isDisplayed()))
     }
 }
 
@@ -559,14 +600,14 @@ class DeepLinkingTestGeneric : DeepLinkingTest() {
     fun connectedWrongProfileDeeplink() {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.DEEP_LINKS_SCHEME + "://profile/toto"))
         startIntent(intent)
-        Espresso.onView(ViewMatchers.withText(R.string.user_profile_display_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withText(R.string.user_profile_display_title)).check(matches(isDisplayed()))
     }
 
     @Test
-    fun unkownDeeplinkDeeplink() {
+    fun unknownDeeplinkDeeplink() {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.DEEP_LINKS_SCHEME + "://deeplink/profile"))
         startIntent(intent)
-        Espresso.onView(ViewMatchers.withText(R.string.user_profile_display_title)).check(ViewAssertions.doesNotExist())
+        onView(withText(R.string.user_profile_display_title)).check(ViewAssertions.doesNotExist())
     }
 
 }

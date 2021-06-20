@@ -3,7 +3,6 @@ package social.entourage.android
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -743,17 +742,9 @@ class MainActivity : BaseSecuredActivity(),
         if (authenticationController.editActionZoneShown || authenticationController.isIgnoringActionZone) {
             return  //noNeedToShowEditScreen
         }
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            val userEditActionZoneFragmentCompat = UserEditActionZoneFragmentCompat.newInstance(null, false)
-            userEditActionZoneFragmentCompat.addFragmentListener(this)
-            extraFragmentListener?.let {userEditActionZoneFragmentCompat.addFragmentListener(it)}
-            userEditActionZoneFragmentCompat.setFromLogin(true)
-            userEditActionZoneFragmentCompat.show(supportFragmentManager, UserEditActionZoneFragmentCompat.TAG)
-        } else {
-            val userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null, isSecondaryAddress)
-            userEditActionZoneFragment.setupListener(extraFragmentListener ?: this)
-            userEditActionZoneFragment.show(supportFragmentManager, UserEditActionZoneFragment.TAG)
-        }
+        val userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null, isSecondaryAddress)
+        userEditActionZoneFragment.setupListener(extraFragmentListener ?: this)
+        userEditActionZoneFragment.show(supportFragmentManager, UserEditActionZoneFragment.TAG)
         authenticationController.editActionZoneShown = true
     }
 

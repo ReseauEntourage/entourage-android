@@ -1,12 +1,10 @@
 package social.entourage.android.user.edit
 
-import android.os.Build
 import androidx.collection.ArrayMap
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.UserRequest
 import social.entourage.android.api.request.UserResponse
 import social.entourage.android.api.model.User
@@ -14,7 +12,6 @@ import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.UserFragment
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
-import social.entourage.android.user.edit.place.UserEditActionZoneFragmentCompat
 import javax.inject.Inject
 
 /**
@@ -92,17 +89,9 @@ class UserEditPresenter @Inject constructor(
     fun storeActionZone(ignoreActionZone: Boolean) {
         authenticationController.isIgnoringActionZone = ignoreActionZone
 
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            (fragment?.parentFragmentManager?.findFragmentByTag(UserEditActionZoneFragmentCompat.TAG) as UserEditActionZoneFragmentCompat?)?.let { userEditActionZoneFragmentCompat ->
-                if (!userEditActionZoneFragmentCompat.isStateSaved) {
-                    userEditActionZoneFragmentCompat.dismiss()
-                }
-            }
-        } else {
-            (fragment?.parentFragmentManager?.findFragmentByTag(UserEditActionZoneFragment.TAG) as UserEditActionZoneFragment?)?.let { userEditActionZoneFragment ->
-                if (!userEditActionZoneFragment.isStateSaved) {
-                    userEditActionZoneFragment.dismiss()
-                }
+        (fragment?.parentFragmentManager?.findFragmentByTag(UserEditActionZoneFragment.TAG) as UserEditActionZoneFragment?)?.let { userEditActionZoneFragment ->
+            if (!userEditActionZoneFragment.isStateSaved) {
+                userEditActionZoneFragment.dismiss()
             }
         }
     }

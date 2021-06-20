@@ -35,6 +35,6 @@ class HomeHelpReporterFragment: BaseDialogFragment() {
     }
 
     companion object {
-        val TAG = HomeHelpReporterFragment::class.java.simpleName
+        val TAG: String? = HomeHelpReporterFragment::class.java.simpleName
     }
 }

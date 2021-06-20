@@ -9,7 +9,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Binder
-import android.os.Build
 import android.os.IBinder
 import android.os.SystemClock
 import android.widget.Chronometer
@@ -60,7 +59,7 @@ class EntService : Service() {
     @Inject lateinit var entourageRequest: EntourageRequest
 
     private lateinit var entServiceManager: EntServiceManager
-    val tourServiceManager:  TourServiceManager?
+    private val tourServiceManager:  TourServiceManager?
         get() = (entServiceManager as? TourServiceManager)
 
     private val apiListeners: MutableList<ApiConnectionListener> = ArrayList()
@@ -181,7 +180,6 @@ class EntService : Service() {
     }
 
     private fun createNotification() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return
         val notificationIntent = Intent(this, MainActivity::class.java)
         val contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
         var builder = NotificationCompat.Builder(this, getString(R.string.local_service_notification_title))
