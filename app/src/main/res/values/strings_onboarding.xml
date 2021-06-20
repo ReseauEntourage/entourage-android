@@ -87,7 +87,7 @@
     <string name="login_label_code">Code</string>
 
     <!-- Login Change Phone -->
-    <string name="login_change_phone">Changer de numéro de téléphone</string>
+    <string name="login_change_phone">J’ai changé de numéro de téléphone</string>
     <string name="login_change_phone_title">Changement de numéro\nde téléphone</string>
     <string name="login_change_phone_old_phone">Ancien numéro</string>
     <string name="login_change_phone_old_phone_placeholder">Ancien numéro</string>
@@ -104,7 +104,11 @@
     <string name="login_change_error_mail">Veuillez vérifier votre adresse Email</string>
 
     <string name="login_change_error_return">Erreur</string>
-    <string name="login_change_error_return_detail">L’ancien numéro est inconnu ou supprimé.\nVeuillez vérifier.</string>
+    <string name="login_change_error_number_not_found">L’ancien numéro est inconnu.\nVeuillez vérifier.</string>
+    <string name="login_change_error_number_deleted">L’ancien numéro a été supprimé.\nVeuillez vérifier.</string>
+    <string name="login_change_error_number_blocked">L’ancien numéro a été bloqué.\nVeuillez vérifier.</string>
+    <string name="login_change_error_identical_number">Les deux numéros sont identiques.\nVeuillez vérifier le nouveau numéro.</string>
+    <string name="login_change_error_generic">L’ancien numéro est inconnu ou supprimé.\nVeuillez vérifier les numéros.</string>
 
     <!-- Onboarding Asso -->
 
@@ -126,10 +130,10 @@
     <string name="onboard_asso_fill_cp_placeholder">Code postal de mon association</string>
     <string name="onboard_asso_fill_function_placeholder">Ma fonction</string>
     <string name="onboard_asso_fill_error">Veuillez renseigner tous les champs.\nMerci</string>
-    <string name= "onboard_asso_activity_title">%s, quel est votre coeur d’activité ?</string>
-    <string name= "onboard_asso_activity_description">Sélectionnez le ou les secteurs d’activité de votre structure, cela nous permettra de vous proposer la meilleure façon d’utiliser l’application et mobiliser la communauté Entourage.</string>
+    <string name="onboard_asso_activity_title">%s, quel est votre coeur d’activité ?</string>
+    <string name="onboard_asso_activity_description">Sélectionnez le ou les secteurs d’activité de votre structure, cela nous permettra de vous proposer la meilleure façon d’utiliser l’application et mobiliser la communauté Entourage.</string>
     <string name="onboard_asso_activity_error">Veuillez renseigner au minimum 1 centre d\'intéret.\nMerci</string>
-    <string name= "onboard_asso_activity_choice_1">Aide aux\npersonnes</string>
+    <string name="onboard_asso_activity_choice_1">Aide aux\npersonnes</string>
     <string name="onboard_asso_activity_choice_2">Initiatives culturelles</string>
     <string name="onboard_asso_activity_choice_3">Service\nPublic</string>
     <string name="onboard_asso_activity_choice_4">Autres ?</string>

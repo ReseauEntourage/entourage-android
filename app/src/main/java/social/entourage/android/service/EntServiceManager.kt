@@ -3,6 +3,8 @@ package social.entourage.android.service
 import android.content.Context
 import android.location.Location
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import com.google.android.gms.maps.model.LatLng
 import com.squareup.otto.Subscribe
 import okhttp3.ResponseBody
@@ -60,7 +62,31 @@ open class EntServiceManager(
     // GETTERS AND SETTERS
     // ----------------------------------
     val isNetworkConnected : Boolean
-        get() = connectivityManager.activeNetworkInfo?.isConnected == true
+        get() {
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val networkCapabilities = connectivityManager.activeNetwork ?: return false
+                val actNw =
+                    connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+                when {
+                    actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                    actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                    actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                    else -> false
+                }
+            } else {
+                connectivityManager.run {
+                    connectivityManager.activeNetworkInfo?.run {
+                        when (type) {
+                            ConnectivityManager.TYPE_WIFI -> true
+                            ConnectivityManager.TYPE_MOBILE -> true
+                            ConnectivityManager.TYPE_ETHERNET -> true
+                            else -> false
+                        }
+
+                    }
+                }
+            } ?: false
+        }
 
     // ----------------------------------
     // PUBLIC METHODS

@@ -72,7 +72,7 @@ class TourEndConfirmationFragment  : BaseDialogFragment() {
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        val TAG = TourEndConfirmationFragment::class.java.simpleName
+        val TAG: String? = TourEndConfirmationFragment::class.java.simpleName
         const val KEY_END_TOUR = "social.entourage.android.KEY_END_TOUR"
         const val KEY_RESUME_TOUR = "social.entourage.android.KEY_RESUME_TOUR"
 

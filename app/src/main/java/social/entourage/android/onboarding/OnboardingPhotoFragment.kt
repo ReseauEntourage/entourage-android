@@ -3,12 +3,10 @@ package social.entourage.android.onboarding
 import android.Manifest
 import android.app.Activity
 import android.content.ActivityNotFoundException
-import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -173,20 +171,10 @@ open class OnboardingPhotoFragment : BaseDialogFragment(),PhotoEditDelegate {
             // Continue only if the File was successfully created
             if (photoFileUri != null) {
                 //Hack Kitkat version return activity
-                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                    val takePictureIntentCompat = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                    val clip = ClipData.newUri(activity?.contentResolver, "A photo", photoFileUri)
-
-                    takePictureIntentCompat.clipData = clip
-                    takePictureIntentCompat.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                    takePictureIntentCompat.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri)
-                    startActivityForResult(takePictureIntentCompat, TAKE_PHOTO_REQUEST)
-                } else {
-                    val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri)
-                    takePictureIntent.flags = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                    startActivityForResult(takePictureIntent, TAKE_PHOTO_REQUEST)
-                }
+                val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri)
+                takePictureIntent.flags = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                startActivityForResult(takePictureIntent, TAKE_PHOTO_REQUEST)
             }
         } catch (e: ActivityNotFoundException) {
             Toast.makeText(activity, R.string.user_photo_error_no_camera, Toast.LENGTH_SHORT).show()

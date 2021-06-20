@@ -122,7 +122,7 @@ class EntourageCategoryFragment : BaseDialogFragment() {
         // ----------------------------------
         // Constants
         // ----------------------------------
-        val TAG = EntourageCategoryFragment::class.java.simpleName
+        val TAG: String? = EntourageCategoryFragment::class.java.simpleName
 
         // ----------------------------------
         // Attributes

@@ -157,7 +157,7 @@ class GDSSearchFragment : BaseDialogFragment() {
     }
 
     companion object {
-        val TAG = GDSSearchFragment::class.java.simpleName
+        val TAG: String? = GDSSearchFragment::class.java.simpleName
         fun newInstance(latitude: Double, longitude: Double, distance: Double): GDSSearchFragment {
             val fragment = GDSSearchFragment()
             val args = Bundle()

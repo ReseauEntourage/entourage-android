@@ -1,7 +1,6 @@
 package social.entourage.android.user
 
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,7 +29,6 @@ import social.entourage.android.user.edit.UserEditAboutFragment
 import social.entourage.android.user.edit.UserEditFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment.Companion.newInstance
-import social.entourage.android.user.edit.photo.PhotoChooseSourceFragmentCompat
 import social.entourage.android.user.partner.PartnerFragment
 import social.entourage.android.user.report.UserReportFragment
 import timber.log.Timber
@@ -266,13 +264,7 @@ class UserFragment : BaseDialogFragment() {
     }
 
     private fun onPhotoEditClicked() {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            val fragment = PhotoChooseSourceFragmentCompat()
-            fragment.show(parentFragmentManager, PhotoChooseSourceFragmentCompat.TAG)
-        } else {
-            val fragment = newInstance()
-            fragment.show(parentFragmentManager, ChoosePhotoFragment.TAG)
-        }
+        newInstance().show(parentFragmentManager, ChoosePhotoFragment.TAG)
     }
 
     private fun onAboutEditClicked() {

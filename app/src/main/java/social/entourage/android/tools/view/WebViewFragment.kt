@@ -262,7 +262,7 @@ class WebViewFragment : BaseDialogFragment() {
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        val TAG = WebViewFragment::class.java.simpleName
+        val TAG: String? = WebViewFragment::class.java.simpleName
         private const val REQUESTED_URL = "REQUESTED_URL"
         private const val SHARE_MESSAGE = "SHARE_MESSAGE"
         var customTabsPackages: ArrayList<ResolveInfo>? = null
@@ -286,7 +286,7 @@ class WebViewFragment : BaseDialogFragment() {
         /**
          * Returns a list of packages that support Custom Tabs.
          */
-        fun getCustomTabsPackages(context: Context): ArrayList<ResolveInfo>? {
+        fun getCustomTabsPackages(context: Context): ArrayList<ResolveInfo> {
             val pm = context.packageManager
             // Get default VIEW intent handler.
             val activityIntent = Intent()

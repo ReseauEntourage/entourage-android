@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/newsfeed_map_height">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/newsfeed_map_height">
 
     <social.entourage.android.map.FeedMapView
         android:id="@+id/layout_feed_map_card_mapview"
@@ -24,8 +24,7 @@
         android:layout_marginEnd="10dp"
         app:backgroundTint="@color/custom_button_white_enabled"
         app:fabSize="mini"
-        app:srcCompat="@drawable/ic_my_location"
+        app:srcCompat="@drawable/button_my_location"
         app:tint="@color/greyish_brown" />
-    <!-- not using button_my_location drawable because of Android 4.4-->
 
 </RelativeLayout>

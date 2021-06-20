@@ -2,16 +2,11 @@ package social.entourage.android.api
 
 import android.annotation.SuppressLint
 import com.google.gson.annotations.SerializedName
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
 import social.entourage.android.EntourageApplication
-import social.entourage.android.api.request.TourAreaRequest
-import social.entourage.android.api.request.TourAreasResponse
 import java.io.Serializable
 
 /**
