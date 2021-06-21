@@ -94,7 +94,7 @@ class OnboardingTypeFragment : Fragment() {
         }
     }
 
-    fun changeLayoutSelection(selectedLayout:ConstraintLayout?) {
+    fun changeLayoutSelection(selectedLayout: ConstraintLayout?) {
         when(selectedLayout) {
             ui_onboard_type_layout_neighbour -> {
                 userTypeSelected = UserTypeSelection.NEIGHBOUR

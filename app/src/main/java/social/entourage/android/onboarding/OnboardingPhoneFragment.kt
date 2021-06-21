@@ -2,12 +2,15 @@ package social.entourage.android.onboarding
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.fragment_onboarding_names.*
 import kotlinx.android.synthetic.main.fragment_onboarding_phone.*
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
@@ -26,7 +29,7 @@ class OnboardingPhoneFragment : Fragment() {
     private var countryCode: String? = null
     private var phone: String? = null
 
-    private var callback:OnboardingCallback? = null
+    private var callback: OnboardingCallback? = null
 
     //**********//**********//**********
     // Lifecycle
@@ -51,7 +54,7 @@ class OnboardingPhoneFragment : Fragment() {
 
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
-        if (phone?.length ?: 0  >= minimumPhoneCharacters) {
+        if (phone?.length ?: 0 >= minimumPhoneCharacters) {
             callback?.updateButtonNext(true)
         }
         else {
@@ -77,7 +80,7 @@ class OnboardingPhoneFragment : Fragment() {
     //**********//**********//**********
 
     fun setupViews() {
-        ui_onboard_phone_tv_title?.text = String.format(getString(R.string.onboard_phone_title),firstname)
+        ui_onboard_phone_tv_title?.text = String.format(getString(R.string.onboard_phone_title), firstname)
         ui_onboard_phone_et_phone?.setText(phone)
 
         ui_onboard_phone_et_phone?.setOnFocusChangeListener { _view, b ->
@@ -91,6 +94,16 @@ class OnboardingPhoneFragment : Fragment() {
             false
         }
 
+        ui_onboard_phone_et_phone?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                checkAndUpdate(false)
+            }
+        })
+
         onboard_phone_mainlayout?.setOnTouchListener { view, motionEvent ->
             view.hideKeyboard()
             view.performClick()
@@ -98,19 +111,19 @@ class OnboardingPhoneFragment : Fragment() {
         }
     }
 
-    fun checkAndUpdate(isFromPhone:Boolean) {
-        if (ui_onboard_phone_et_phone?.text?.length ?: 0  >= minimumPhoneCharacters) {
+    fun checkAndUpdate(isFromPhone: Boolean) {
+        if (ui_onboard_phone_et_phone?.text?.length ?: 0 >= minimumPhoneCharacters) {
             phone = ui_onboard_phone_et_phone?.text.toString()
             callback?.updateButtonNext(true)
             val countryCode = ui_onboard_phone_ccp_code?.selectedCountryCodeWithPlus
-            callback?.validatePhoneNumber(countryCode,ui_onboard_phone_et_phone?.text.toString())
+            callback?.validatePhoneNumber(countryCode, ui_onboard_phone_et_phone?.text.toString())
             if (isFromPhone) {
                 callback?.goNextManually()
             }
         }
         else {
             callback?.updateButtonNext(false)
-            callback?.validatePhoneNumber(null,null)
+            callback?.validatePhoneNumber(null, null)
         }
     }
 
@@ -119,7 +132,7 @@ class OnboardingPhoneFragment : Fragment() {
     //**********//**********//**********
 
     companion object {
-        fun newInstance(firstname: String?, countryCode: String?, phone:String?) =
+        fun newInstance(firstname: String?, countryCode: String?, phone: String?) =
                 OnboardingPhoneFragment().apply {
                     arguments = Bundle().apply {
                         putString(ARG_FIRSTNAME, firstname)

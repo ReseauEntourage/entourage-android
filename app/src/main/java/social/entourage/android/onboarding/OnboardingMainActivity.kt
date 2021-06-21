@@ -28,6 +28,7 @@ import social.entourage.android.tools.disable
 import social.entourage.android.tools.enable
 import social.entourage.android.tools.view.CustomProgressDialog
 import timber.log.Timber
+import java.io.File
 import java.util.*
 
 /**
@@ -168,7 +169,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                 .show()
     }
 
-    private fun showSmsAndGo(textId:Int) {
+    private fun showSmsAndGo(textId: Int) {
         displayToast(textId)
         temporaryUser.phone = temporaryPhone
         goNextStep()
@@ -297,7 +298,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         }
     }
 
-    fun updateGoal(isAsso:Boolean) {
+    fun updateGoal(isAsso: Boolean) {
         alertDialog.show(R.string.onboard_waiting_dialog)
         val _currentGoal = userTypeSelected.getGoalString()
 
@@ -393,9 +394,9 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     private fun changeFragment() {
         ui_bt_next?.disable()
         val fragment = when(currentFragmentPosition) {
-            1 -> OnboardingNamesFragment.newInstance(temporaryUser.firstName,temporaryUser.lastName)
+            1 -> OnboardingNamesFragment.newInstance(temporaryUser.firstName, temporaryUser.lastName)
             2 -> OnboardingPhoneFragment.newInstance(temporaryUser.firstName, temporaryCountrycode, temporaryPhone)
-            3 -> OnboardingPasscodeFragment.newInstance(temporaryCountrycode,temporaryPhone)
+            3 -> OnboardingPasscodeFragment.newInstance(temporaryCountrycode, temporaryPhone)
             4 -> OnboardingTypeFragment.newInstance(temporaryUser.firstName, userTypeSelected)
             5 -> {
                 val isSdf = userTypeSelected == UserTypeSelection.ALONE
@@ -416,7 +417,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                     .beginTransaction()
                     .replace(R.id.ui_container, fragment)
                     .commit()
-        } catch (e:IllegalStateException) {
+        } catch (e: IllegalStateException) {
             Timber.e(e)
         }
 
@@ -664,10 +665,10 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     // Callbacks
     //**********//**********//**********
 
-    override fun validateNames(firstname: String?, lastname: String?,isValidate:Boolean) {
+    override fun validateNames(firstname: String?, lastname: String?, isValidate: Boolean) {
         temporaryUser.firstName = firstname ?: ""
         temporaryUser.lastName = lastname ?: ""
-        Timber.d("Validarte name : $firstname -- $lastname -- Validate : $isValidate")
+        Timber.d("Validate name : $firstname -- $lastname -- Validate : $isValidate")
         Timber.d("Validate name from temp : ${temporaryUser.firstName} -- ${temporaryUser.lastName}  - tempuser: $temporaryUser")
         if (isValidate) goNext()
     }
@@ -738,7 +739,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         }
     }
 
-    override fun updateButtonNext(isValid:Boolean) {
+    override fun updateButtonNext(isValid: Boolean) {
         if (isValid) {
             ui_bt_next?.enable(R.drawable.ic_onboard_bt_next)
         }
