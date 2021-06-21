@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.collection.ArrayMap
+import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_partner_v2.*
 import kotlinx.android.synthetic.main.layout_view_title.view.*
