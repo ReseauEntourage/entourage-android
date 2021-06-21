@@ -6,7 +6,7 @@ import android.text.format.DateFormat
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.layout_entourage_information_chat_message_others_card_view.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.ChatMessage
@@ -16,7 +16,6 @@ import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.tools.EntBus
-import social.entourage.android.tools.CropCircleTransformation
 
 /**
  * Chat Message Card for Tour Information Screen
@@ -42,21 +41,25 @@ open class ChatMessageCardViewHolder(val view: View) : BaseCardViewHolder(view) 
         itemView.tic_chat_user_photo?.let { userPhotoView->
             isMine = false
             chatMessage.userAvatarURL?.let { avatarURL ->
-                Picasso.get().load(Uri.parse(avatarURL))
+                Glide.with(userPhotoView.context)
+                        .load(Uri.parse(avatarURL))
                         .placeholder(R.drawable.ic_user_photo_small)
-                        .transform(CropCircleTransformation())
+                        .circleCrop()
                         .into(userPhotoView)
             } ?: run {
-                userPhotoView.setImageResource(R.drawable.ic_user_photo_small)
+                Glide.with(userPhotoView.context)
+                        .load(R.drawable.ic_user_photo_small)
+                        .into(userPhotoView)
             }
         }
 
         // Partner logo
         itemView.tic_chat_user_partner_logo?.let { partnerLogoView ->
             chatMessage.partnerLogoSmall?.let { partnerLogoURL ->
-                Picasso.get().load(Uri.parse(partnerLogoURL))
+                Glide.with(partnerLogoView.context)
+                        .load(Uri.parse(partnerLogoURL))
                         .placeholder(R.drawable.partner_placeholder)
-                        .transform(CropCircleTransformation())
+                        .circleCrop()
                         .into(partnerLogoView)
             } ?: run {
                 partnerLogoView.setImageDrawable(null)

@@ -13,27 +13,28 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.squareup.otto.Subscribe
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_user_edit.*
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.*
 import social.entourage.android.EntourageApplication
+import social.entourage.android.EntourageComponent
+import social.entourage.android.MainActivity
+import social.entourage.android.R
 import social.entourage.android.api.model.BaseOrganization
 import social.entourage.android.api.model.User
 import social.entourage.android.api.tape.Events.OnPartnerViewRequestedEvent
 import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.base.BaseDialogFragment
-import social.entourage.android.user.partner.PartnerFragment
 import social.entourage.android.tools.EntBus
-import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.UserOrganizationsAdapter
-import social.entourage.android.user.edit.place.UserEditActionZoneFragment.FragmentListener
 import social.entourage.android.user.edit.partner.UserEditPartnerFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
+import social.entourage.android.user.edit.place.UserEditActionZoneFragment.FragmentListener
+import social.entourage.android.user.partner.PartnerFragment
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -133,13 +134,15 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
         presenter.editedUser?.let {user->
             user_photo?.let { userPhoto ->
                 user.avatarURL?.let { avatarURL->
-                    Picasso.get().load(Uri.parse(avatarURL))
+                    Glide.with(this)
+                            .load(Uri.parse(avatarURL))
                             .placeholder(R.drawable.ic_user_photo)
-                            .transform(CropCircleTransformation())
+                            .circleCrop()
                             .into(userPhoto)
                 } ?: run {
-                    Picasso.get().load(R.drawable.ic_user_photo)
-                            .transform(CropCircleTransformation())
+                    Glide.with(this)
+                            .load(R.drawable.ic_user_photo)
+                            .circleCrop()
                             .into(userPhoto)
                 }
             }

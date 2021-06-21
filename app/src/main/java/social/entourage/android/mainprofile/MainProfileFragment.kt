@@ -4,9 +4,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Subscribe
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.layout_mainprofile.*
 import kotlinx.android.synthetic.main.layout_mainprofile_appversion.*
 import social.entourage.android.BuildConfig
@@ -14,7 +14,6 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events
-import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
@@ -136,10 +135,10 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
 
         drawer_header_user_photo?.let { photoView ->
             user.avatarURL?.let {avatarURL ->
-                Picasso.get()
+                Glide.with(this)
                         .load(Uri.parse(avatarURL))
                         .placeholder(R.drawable.ic_user_photo_small)
-                        .transform(CropCircleTransformation())
+                        .circleCrop()
                         .into(photoView)
             } ?: run {
                 photoView.setImageResource(R.drawable.ic_user_photo_small)
@@ -148,10 +147,10 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
         // Show partner logo
         drawer_header_user_partner_logo?.let {logoView->
             user.partner?.smallLogoUrl?.let { partnerURL ->
-                Picasso.get()
+                Glide.with(this)
                         .load(Uri.parse(partnerURL))
                         .placeholder(R.drawable.partner_placeholder)
-                        .transform(CropCircleTransformation())
+                        .circleCrop()
                         .into(logoView)
             } ?: run {
                 logoView.setImageDrawable(null)

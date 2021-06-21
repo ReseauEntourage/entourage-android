@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.layout_user_profile_organization.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseOrganization
@@ -41,7 +41,7 @@ class UserOrganizationsAdapter(private var organizationList: List<BaseOrganizati
             organizationViewHolder.itemView.organization_type.text = organization.getTypeAsString(organizationViewHolder.itemView.context)
             organization.largeLogoUrl?.let { organizationLogoUrl ->
                 organizationViewHolder.itemView.organization_logo?.let { organizationLogoIv ->
-                    Picasso.get()
+                    Glide.with(organizationLogoIv.context)
                             .load(Uri.parse(organizationLogoUrl))
                             .into(organizationLogoIv)
                 }

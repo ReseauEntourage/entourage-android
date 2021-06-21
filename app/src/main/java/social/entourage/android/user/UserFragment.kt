@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.StringRes
+import com.bumptech.glide.Glide
 import com.squareup.otto.Subscribe
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.android.synthetic.main.fragment_user.user_photo
 import kotlinx.android.synthetic.main.fragment_user_edit.*
@@ -23,7 +23,6 @@ import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.entourage.information.FeedItemInformationFragment
-import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.edit.UserEditAboutFragment
@@ -111,23 +110,25 @@ class UserFragment : BaseDialogFragment() {
         user_about_edit_button?.visibility = if (isMyProfile) View.VISIBLE else View.GONE
         user_photo?.let { userPhoto ->
             user?.avatarURL?.let { avatarURL ->
-                Picasso.get().load(Uri.parse(avatarURL))
+                Glide.with(this)
+                        .load(Uri.parse(avatarURL))
                         .placeholder(R.drawable.ic_user_photo)
-                        .transform(CropCircleTransformation())
+                        .circleCrop()
                         .into(userPhoto)
             } ?: run  {
-                Picasso.get().load(R.drawable.ic_user_photo)
-                        .transform(CropCircleTransformation())
+                Glide.with(this)
+                        .load(R.drawable.ic_user_photo)
+                        .circleCrop()
                         .into(userPhoto)
             }
         }
         // Show the partner logo, if available
         user_partner_logo?.let { logoView ->
             user?.partner?.smallLogoUrl?.let {partnerURL->
-                Picasso.get()
+                Glide.with(this)
                         .load(Uri.parse(partnerURL))
                         .placeholder(R.drawable.partner_placeholder)
-                        .transform(CropCircleTransformation())
+                        .circleCrop()
                         .into(logoView)
             } ?: run {
                 logoView.setImageDrawable(null)

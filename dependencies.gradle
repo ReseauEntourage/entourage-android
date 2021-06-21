@@ -46,8 +46,7 @@ ext {
     multidexVersion = "2.0.1"
     okHttpVersion = "3.14.9"
     okHttpIdlingVersion = "1.0.0"
-    picassoVersion = "2.71828"
-    picassoTransformationsVersion = "2.4.0"
+    glideVersion = "4.12.0"
     placesCompat = "2.4.0"
     retrofitVersion = "2.9.0"
     recyclerViewVersion = "1.2.1"
@@ -149,8 +148,7 @@ ext {
             imageCropper            : "com.theartofdev.edmodo:android-image-cropper:$imageCropperVersion",
             mapsUtils               : "com.google.maps.android:maps-utils-ktx:$mapsUtilsVersion",
             material                : "com.google.android.material:material:$materialVersion",
-            picasso                 : "com.squareup.picasso:picasso:$picassoVersion",
-            picassoTransformations  : "jp.wasabeef:picasso-transformations:$picassoTransformationsVersion",
+            glide                   : "com.github.bumptech.glide:glide:$glideVersion",
             shortcutBadger          : "me.leolin:ShortcutBadger:$shortcutBadgerVersion@aar"
     ]
 }
