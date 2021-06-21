@@ -2,16 +2,15 @@ package social.entourage.android.entourage.information.members
 
 import android.net.Uri
 import android.view.View
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.layout_entourage_information_member_card.view.*
 import social.entourage.android.R
-import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.EntourageUser
+import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.tools.EntBus
-import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.user.role.UserRoleView
 import social.entourage.android.user.role.UserRolesFactory
 import java.util.*
@@ -35,21 +34,24 @@ class MemberCardViewHolder(view: View) : BaseCardViewHolder(view) {
         userId = entourageUser.userId
         itemView.tic_member_photo?.let {
             entourageUser.avatarURLAsString?.let {avatarURL ->
-            Picasso.get().load(Uri.parse(avatarURL))
+            Glide.with(it.context)
+                    .load(Uri.parse(avatarURL))
                     .placeholder(R.drawable.ic_user_photo_small)
-                    .transform(CropCircleTransformation())
+                    .circleCrop()
                     .into(it)
             } ?: run {
-                it.setImageResource(R.drawable.ic_user_photo_small)
+                Glide.with(it.context)
+                        .load(R.drawable.ic_user_photo_small)
+                        .into(it)
             }
         }
         // Partner logo
         itemView.tic_member_partner_logo?.let {
             entourageUser.partner?.smallLogoUrl?.let {partnerLogoURL->
-                Picasso.get()
+                Glide.with(it.context)
                         .load(Uri.parse(partnerLogoURL))
                         .placeholder(R.drawable.partner_placeholder)
-                        .transform(CropCircleTransformation())
+                        .circleCrop()
                         .into(it)
             } ?: run {
                 it.setImageDrawable(null)

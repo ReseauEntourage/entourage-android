@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.layout_cell_photo_gallery.view.*
 import social.entourage.android.R
 import social.entourage.android.api.PhotoGallery
@@ -57,7 +57,11 @@ class EntouragePhotoGalleryAdapter(var photos: ArrayList<PhotoGallery>, val list
                 listener.onPhotoSelected(position)
             }
 
-            Picasso.get().load(photoUrl).error(R.drawable.ic_placeholder_detail_event).placeholder(R.drawable.ic_placeholder_event).into(itemView.ui_event_iv)
+            Glide.with(itemView.context)
+                    .load(photoUrl)
+                    .error(R.drawable.ic_placeholder_detail_event)
+                    .placeholder(R.drawable.ic_placeholder_event)
+                    .into(itemView.ui_event_iv)
 
             selectImage(isSelected)
         }

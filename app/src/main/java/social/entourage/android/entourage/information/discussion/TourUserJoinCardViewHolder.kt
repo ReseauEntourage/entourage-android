@@ -4,10 +4,9 @@ import android.net.Uri
 import android.text.format.DateFormat
 import android.view.View
 import android.widget.TextView
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.layout_entourage_information_user_join_card_view.view.*
 import social.entourage.android.EntourageApplication
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.TimestampedObject
@@ -16,8 +15,8 @@ import social.entourage.android.api.tape.Events.OnUserJoinRequestUpdateEvent
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.tools.EntBus
-import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.tools.Utils
+import social.entourage.android.tools.log.AnalyticsEvents
 
 /**
  * User Card View in tour information screen
@@ -83,22 +82,25 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
 
         itemView.tic_photo?.let { photoView ->
             user.avatarURLAsString?.let {avatarURL ->
-                Picasso.get().load(Uri.parse(avatarURL))
+                Glide.with(photoView.context)
+                        .load(Uri.parse(avatarURL))
                         .placeholder(R.drawable.ic_user_photo_small)
-                        .transform(CropCircleTransformation())
+                        .circleCrop()
                         .into(photoView)
             } ?: run {
-                photoView.setImageResource(R.drawable.ic_user_photo_small)
+                Glide.with(photoView.context)
+                        .load(R.drawable.ic_user_photo_small)
+                        .into(photoView)
             }
         }
 
         // Partner logo
         itemView.tic_partner_logo?.let { partnerLogoView ->
             user.partner?.smallLogoUrl?.let {url ->
-                Picasso.get()
+                Glide.with(partnerLogoView.context)
                         .load(Uri.parse(url))
                         .placeholder(R.drawable.partner_placeholder)
-                        .transform(CropCircleTransformation())
+                        .circleCrop()
                         .into(partnerLogoView)
             } ?: run {
                 partnerLogoView.setImageDrawable(null)
@@ -122,22 +124,25 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
 
         itemView.tic_public_info_photo?.let { photoView ->
             user.avatarURLAsString?.let { avatarURL ->
-                Picasso.get().load(Uri.parse(avatarURL))
+                Glide.with(photoView.context)
+                        .load(Uri.parse(avatarURL))
                         .placeholder(R.drawable.ic_user_photo_small)
-                        .transform(CropCircleTransformation())
+                        .circleCrop()
                         .into(photoView)
             } ?: run {
-                photoView.setImageResource(R.drawable.ic_user_photo_small)
+                Glide.with(photoView.context)
+                        .load(R.drawable.ic_user_photo_small)
+                        .into(photoView)
             }
         }
 
         // Partner logo
         itemView.tic_public_info_partner_logo?.let { partnerLogoView ->
             user.partner?.smallLogoUrl?.let {partnerLogoURL ->
-                    Picasso.get()
+                    Glide.with(partnerLogoView.context)
                             .load(Uri.parse(partnerLogoURL))
                             .placeholder(R.drawable.partner_placeholder)
-                            .transform(CropCircleTransformation())
+                            .circleCrop()
                             .into(partnerLogoView)
             } ?: run {
                 partnerLogoView.setImageDrawable(null)

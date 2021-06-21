@@ -25,7 +25,7 @@ class HomeNeoMainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val colorId = ContextCompat.getColor(requireContext(), R.color.accent)
-        ui_home_neo_start_title?.text = Utils.formatTextWithBoldSpanAndColor(colorId,true,getString(R.string.home_neo_title),getString(R.string.home_neo_title_bold))
+        ui_home_neo_start_title?.text = Utils.formatTextWithBoldSpanAndColor(colorId,true, getString(R.string.home_neo_title), getString(R.string.home_neo_title_bold))
 
         ui_layout_button_neo_1?.setOnClickListener {
             (parentFragment as? NewHomeFeedFragment)?.goHelp()

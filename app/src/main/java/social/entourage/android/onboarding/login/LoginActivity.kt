@@ -108,7 +108,7 @@ class LoginActivity : BaseActivity() {
 
     fun goMain() {
         val sharedPreferences = EntourageApplication.get().sharedPreferences
-        sharedPreferences.edit().putBoolean(KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,true).apply()
+        sharedPreferences.edit().putBoolean(KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN, true).apply()
 
         if (authenticationController.me?.address == null || (authenticationController.me?.email == null || authenticationController.me?.email?.length ?: -1 == 0) ) {
             goLoginNext()

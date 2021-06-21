@@ -1,40 +1,40 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/white"
-android:clickable="true"
-android:focusable="true"
-android:focusableInTouchMode="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ui_asso_search_main_layout"
-tools:context="social.entourage.android.onboarding.asso.OnboardingAssoSearchActivity">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context="social.entourage.android.onboarding.asso.OnboardingAssoSearchActivity">
 
 
     <Button
-    android:id="@+id/ui_bt_asso_search_cancel"
-    style="@style/TransparentButton"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="7dp"
-    android:text="@string/cancel"
-    android:textColor="@color/pre_onboard_orange"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/ui_bt_asso_search_cancel"
+        style="@style/TransparentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="7dp"
+        android:text="@string/cancel"
+        android:textColor="@color/pre_onboard_orange"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-<Button
-    android:id="@+id/ui_bt_asso_search_validate"
-    style="@style/TransparentButton"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="16dp"
-    android:text="@string/validate"
-    android:textColor="@color/pre_onboard_orange"
-    android:textStyle="bold"
-    app:layout_constraintBottom_toBottomOf="@+id/ui_bt_asso_search_cancel"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="@+id/ui_bt_asso_search_cancel" />
+    <Button
+        android:id="@+id/ui_bt_asso_search_validate"
+        style="@style/TransparentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/validate"
+        android:textColor="@color/pre_onboard_orange"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/ui_bt_asso_search_cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ui_bt_asso_search_cancel" />
 
     <EditText
         android:id="@+id/ui_asso_search_et_search"
@@ -44,8 +44,8 @@ tools:context="social.entourage.android.onboarding.asso.OnboardingAssoSearchActi
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
-        android:inputType="textPersonName"
         android:hint="@string/onboard_asso_search"
+        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ui_bt_asso_search_cancel" />

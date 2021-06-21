@@ -1,15 +1,17 @@
 package social.entourage.android.newsfeed
 
-import android.graphics.Bitmap
 import android.graphics.Typeface
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.View
 import androidx.core.content.ContextCompat
-import com.squareup.picasso.Picasso
-import com.squareup.picasso.Picasso.LoadedFrom
-import com.squareup.picasso.Target
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.request.transition.Transition
 import kotlinx.android.synthetic.main.layout_feed_action_card.view.*
 import social.entourage.android.Constants
 import social.entourage.android.EntourageApplication
@@ -19,22 +21,22 @@ import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BaseCardViewHolder
-import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.Utils.formatLastUpdateDate
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 
 /**
  * Created by Mihai Ionescu on 24/03/2017.
  */
-open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Target {
+open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView) {
 
     private lateinit var feedItem: FeedItem
 
     override fun bindFields() {
-        itemView.setOnClickListener {onClickMainView()}
-        itemView.tour_card_photo?.setOnClickListener {onClickCardPhoto()}
-        itemView.tour_card_button_act?.setOnClickListener {onClickCardButton()}
+        itemView.setOnClickListener { onClickMainView() }
+        itemView.tour_card_photo?.setOnClickListener { onClickCardPhoto() }
+        itemView.tour_card_button_act?.setOnClickListener { onClickCardButton() }
     }
 
     override fun populate(data: TimestampedObject) {
@@ -44,21 +46,22 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
         val res = itemView.resources
 
         //title
-        itemView.tour_card_title?.let {titleView ->
+        itemView.tour_card_title?.let { titleView ->
             titleView.text = String.format(res.getString(R.string.tour_cell_title), feedItem.getTitle())
             titleView.setTypeface(null, if (feedItem.getUnreadMsgNb() == 0) Typeface.NORMAL else Typeface.BOLD)
         }
         //icon
-        if (showCategoryIcon() ) {
+        if (showCategoryIcon()) {
             // add the icon for entourages
-            itemView.tour_card_icon?.let {iconView ->
-                Picasso.get().cancelRequest(iconView)
+            itemView.tour_card_icon?.let { iconView ->
+                Glide.with(iconView.context).clear(iconView)
                 feedItem.getIconURL()?.let { iconURL ->
                     iconView.setImageDrawable(null)
-                    Picasso.get()
+                    Glide.with(iconView.context)
                             .load(iconURL)
                             .placeholder(R.drawable.ic_user_photo_small)
-                            .transform(CropCircleTransformation())
+                            .circleCrop()
+                            .listener(requestListener)
                             .into(iconView)
                 } ?: run {
                     iconView.setImageDrawable(feedItem.getIconDrawable(itemView.context))
@@ -73,23 +76,25 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
         } else {
             //author photo
             itemView.tour_card_photo?.let {
-                author.avatarURLAsString?.let {avatarURLAsString ->
-                    Picasso.get()
+                author.avatarURLAsString?.let { avatarURLAsString ->
+                    Glide.with(it.context)
                             .load(Uri.parse(avatarURLAsString))
                             .placeholder(R.drawable.ic_user_photo_small)
-                            .transform(CropCircleTransformation())
+                            .circleCrop()
+                            .listener(requestListener)
                             .into(it)
                 } ?: run {
                     it.setImageResource(R.drawable.ic_user_photo_small)
                 }
             }
             // Partner logo
-            itemView.tour_card_partner_logo?.let {logoView->
-                author.partner?.smallLogoUrl?.let {smallLogoUrl->
-                    Picasso.get()
+            itemView.tour_card_partner_logo?.let { logoView ->
+                author.partner?.smallLogoUrl?.let { smallLogoUrl ->
+                    Glide.with(logoView.context)
                             .load(Uri.parse(smallLogoUrl))
                             .placeholder(R.drawable.partner_placeholder)
-                            .transform(CropCircleTransformation())
+                            .circleCrop()
+                            .listener(requestListener)
                             .into(logoView)
                 } ?: run {
                     logoView.setImageDrawable(null)
@@ -118,8 +123,7 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
 
         if ((feedItem as? BaseEntourage)?.isOnlineEvent == true) {
             itemView.tour_card_location?.text = res.getString(R.string.info_event_online_feed)
-        }
-        else {
+        } else {
             val distanceAsString = feedItem.getStartPoint()?.distanceToCurrentLocation(Constants.DISTANCE_MAX_DISPLAY)
                     ?: ""
             var distStr = if (distanceAsString.equals("", ignoreCase = true)) "" else String.format(res.getString(R.string.tour_cell_location), distanceAsString)
@@ -156,20 +160,18 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
                 //dividerColor = R.color.greyish
                 textColor = feedItem.getClosedCTAColor()
             } else {
-                when(feedItem.joinStatus) {
+                when (feedItem.joinStatus) {
                     FeedItem.JOIN_STATUS_PENDING -> {
                         itemView.tour_card_button_act?.setText(R.string.tour_cell_button_pending)
                     }
                     FeedItem.JOIN_STATUS_ACCEPTED -> {
                         if (feedItem.type == TimestampedObject.TOUR_CARD && feedItem.isOngoing()) {
                             itemView.tour_card_button_act?.setText(R.string.tour_cell_button_ongoing)
-                        }
-                        else {
+                        } else {
                             EntourageApplication.get().me()?.let { currentUser ->
                                 if (author?.userID == currentUser.id) {
                                     itemView.tour_card_button_act?.setText(R.string.tour_cell_button_accepted)
-                                }
-                                else {
+                                } else {
                                     itemView.tour_card_button_act?.setText(R.string.tour_cell_button_accepted_other)
                                 }
                             } ?: run {
@@ -193,7 +195,8 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
 
         //last message
         EntourageApplication.get().me()?.let { currentUser ->
-            itemView.tour_card_last_message?.text = feedItem.lastMessage?.getText(currentUser.id) ?: ""
+            itemView.tour_card_last_message?.text = feedItem.lastMessage?.getText(currentUser.id)
+                    ?: ""
         } ?: kotlin.run { itemView.tour_card_last_message?.text = "" }
 
         itemView.tour_card_last_message?.visibility = if (itemView.tour_card_last_message?.text.isNullOrBlank()) View.GONE else View.VISIBLE
@@ -211,37 +214,36 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView), Ta
     }
 
     //--------------------------
-    // PICASSO TARGET IMPLEMENTATION
+    // GLIDE LOADING LISTENER
     //--------------------------
-    override fun onBitmapLoaded(bitmap: Bitmap, from: LoadedFrom) {
-        val targetWidth = itemView.resources.getDimensionPixelOffset(R.dimen.feeditem_icon_width)
-        val targetHeight = itemView.resources.getDimensionPixelOffset(R.dimen.feeditem_icon_height)
-        val drawable = BitmapDrawable(itemView.resources, Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, false))
-        itemView.tour_card_title?.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
-    }
+    private val requestListener = object : RequestListener<Drawable> {
+        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+            return false
+        }
 
-    override fun onBitmapFailed(e: Exception, errorDrawable: Drawable) {
-        itemView.tour_card_title?.setCompoundDrawablesWithIntrinsicBounds(errorDrawable, null, null, null)
+        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+            Timber.w(e)
+            return false
+        }
     }
-
-    override fun onPrepareLoad(placeHolderDrawable: Drawable) {}
 
     //--------------------------
     // INNER CLASSES
     //--------------------------
-    private fun onClickMainView(){
+    private fun onClickMainView() {
         viewHolderListener?.onViewHolderDetailsClicked(0)
         // The server wants the position starting with 1
         EntBus.post(OnFeedItemInfoViewRequestedEvent(feedItem, adapterPosition + 1))
     }
 
-    private fun onClickCardPhoto(){
+    private fun onClickCardPhoto() {
         feedItem.author?.let {
             EntBus.post(OnUserViewRequestedEvent(it.userID))
         }
 
     }
-    private fun onClickCardButton(){
+
+    private fun onClickCardButton() {
         when (feedItem.joinStatus) {
             FeedItem.JOIN_STATUS_PENDING -> {
                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_PENDING_OVERLAY)

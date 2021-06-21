@@ -10,13 +10,12 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.layout_cell_share_entourage.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.SharingEntourage
 import social.entourage.android.entourage.category.EntourageCategoryManager
-import social.entourage.android.tools.CropCircleTransformation
 
 /**
  * Created by Jr (MJ-DEVS) on 09/09/2020.
@@ -54,16 +53,18 @@ class ShareEntourageAdapter(val context: Context, private val myDataset: ArrayLi
             }
 
             itemView.ui_iv_avatar?.let {iconView ->
-                Picasso.get().cancelRequest(iconView)
+                Glide.with(iconView.context).clear(iconView)
                 if (imageUrl != null) {
                     iconView.setImageDrawable(null)
-                    Picasso.get()
+                    Glide.with(iconView.context)
                             .load(imageUrl)
                             .placeholder(R.drawable.ic_user_photo_small)
-                            .transform(CropCircleTransformation())
+                            .circleCrop()
                             .into(iconView)
                 } else {
-                    iconView.setImageDrawable(bitDraw)
+                    Glide.with(iconView.context)
+                            .load(bitDraw)
+                            .into(iconView)
                 }
             }
 

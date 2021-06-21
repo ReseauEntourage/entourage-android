@@ -13,9 +13,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
+import com.bumptech.glide.Glide
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.compat.Place
-import com.squareup.picasso.Picasso
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import com.wdullaer.materialdatetimepicker.time.Timepoint
@@ -511,7 +511,9 @@ open class BaseCreateEntourageFragment
 
             landscape_photo_url?.let { landscape_url ->
                 if (landscape_url.isNotEmpty()) {
-                    Picasso.get().load(landscape_url).into(ui_iv_photo)
+                    Glide.with(this)
+                            .load(landscape_url)
+                            .into(ui_iv_photo)
                 }
             }
         }
@@ -649,7 +651,11 @@ open class BaseCreateEntourageFragment
 
         landscape_photo_url?.let {
             if (it.isNotEmpty()) {
-                Picasso.get().load(landscape_url).error(R.drawable.ic_placeholder_detail_event).placeholder(R.drawable.ic_placeholder_event).into(ui_iv_photo)
+                Glide.with(this)
+                        .load(landscape_url)
+                        .error(R.drawable.ic_placeholder_detail_event)
+                        .placeholder(R.drawable.ic_placeholder_event)
+                        .into(ui_iv_photo)
             }
         }
     }
