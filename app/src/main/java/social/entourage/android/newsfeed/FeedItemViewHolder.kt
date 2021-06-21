@@ -24,6 +24,7 @@ import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.Utils.formatLastUpdateDate
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 
 /**
  * Created by Mihai Ionescu on 24/03/2017.
@@ -217,25 +218,11 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView) {
     //--------------------------
     private val requestListener = object : RequestListener<Drawable> {
         override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-            itemView.tour_card_title?.let { tourCardTitle ->
-                val targetWidth = itemView.resources.getDimensionPixelOffset(R.dimen.feeditem_icon_width)
-                val targetHeight = itemView.resources.getDimensionPixelOffset(R.dimen.feeditem_icon_height)
-                Glide.with(itemView.context)
-                        .load(resource)
-                        .into(object : CustomTarget<Drawable>(targetWidth, targetHeight) {
-                            override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                                tourCardTitle.setCompoundDrawablesWithIntrinsicBounds(null, resource, null, null)
-                            }
-
-                            override fun onLoadCleared(placeholder: Drawable?) {
-                                tourCardTitle.setCompoundDrawablesWithIntrinsicBounds(null, placeholder, null, null)
-                            }
-                        })
-            }
             return false
         }
 
         override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+            Timber.w(e)
             return false
         }
     }

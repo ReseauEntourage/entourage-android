@@ -8,8 +8,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.layout_card_announcement.view.*
 import kotlinx.android.synthetic.main.layout_feed_action_card.view.*
@@ -18,6 +16,7 @@ import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.Announcement
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.tools.view.EntSnackbar
+import timber.log.Timber
 
 /**
  * View Holder for the announcement card
@@ -96,25 +95,11 @@ class AnnouncementViewHolder(view: View) : BaseCardViewHolder(view) {
     //--------------------------
     private val requestListener = object : RequestListener<Drawable> {
         override fun onResourceReady(resource: Drawable?, model: Any?, target: com.bumptech.glide.request.target.Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-            itemView.announcement_card_title?.let { announcementCardTitle ->
-                val targetWidth = itemView.resources.getDimensionPixelOffset(R.dimen.announcement_icon_width)
-                val targetHeight = itemView.resources.getDimensionPixelOffset(R.dimen.announcement_icon_height)
-                Glide.with(itemView.context)
-                        .load(resource)
-                        .into(object : CustomTarget<Drawable>(targetWidth, targetHeight) {
-                            override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                                announcementCardTitle.setCompoundDrawablesWithIntrinsicBounds(resource, null, null, null)
-                            }
-
-                            override fun onLoadCleared(placeholder: Drawable?) {
-                                announcementCardTitle.setCompoundDrawablesWithIntrinsicBounds(placeholder, null, null, null)
-                            }
-                        })
-            }
             return false
         }
 
         override fun onLoadFailed(e: GlideException?, model: Any?, target: com.bumptech.glide.request.target.Target<Drawable>?, isFirstResource: Boolean): Boolean {
+            Timber.w(e)
             return false
         }
     }
