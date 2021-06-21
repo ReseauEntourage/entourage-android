@@ -230,7 +230,7 @@ class SignUpTest {
         goNextStep()
 
         //Login to an already existing account
-        login("0651234145", "661192")
+        login("0651234145", "108674")
 
         //Skip passcode validation and go to type fragment
         goNextStep()
