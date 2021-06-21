@@ -164,7 +164,7 @@ class PartnerFragment : BaseDialogFragment() {
             ui_button_asso_web?.text = partner.websiteUrl
             ui_button_asso_phone?.text = partner.phone
             ui_button_asso_address?.text = partner.address
-            ui_button_asso_mail.text = partner.email
+            ui_button_asso_mail?.text = partner.email
 
             ui_layout_phone?.visibility = if (partner.phone.isNullOrEmpty()) View.GONE else View.VISIBLE
             ui_layout_address?.visibility = if (partner.address.isNullOrEmpty()) View.GONE else View.VISIBLE
