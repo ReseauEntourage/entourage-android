@@ -10,11 +10,12 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_onboarding_names.*
+import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_onboarding_phone.*
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
+import social.entourage.android.tools.Utils
 import social.entourage.android.tools.hideKeyboard
+import social.entourage.android.tools.log.AnalyticsEvents
 
 
 private const val ARG_FIRSTNAME = "firstname"
@@ -30,6 +31,13 @@ class OnboardingPhoneFragment : Fragment() {
     private var phone: String? = null
 
     private var callback: OnboardingCallback? = null
+
+    private val errorMessageObserver: Observer<String> = Observer { message ->
+        if (message.isNotEmpty()) {
+            error_message_tv?.visibility = View.VISIBLE
+            error_message_tv?.text = message
+        }
+    }
 
     //**********//**********//**********
     // Lifecycle
@@ -68,11 +76,13 @@ class OnboardingPhoneFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callback = (activity as? OnboardingCallback)
+        callback?.errorMessage?.observe(this, errorMessageObserver)
     }
 
     override fun onDetach() {
         super.onDetach()
         callback = null
+        callback?.errorMessage?.removeObserver(errorMessageObserver)
     }
 
     //**********//**********//**********
@@ -83,8 +93,10 @@ class OnboardingPhoneFragment : Fragment() {
         ui_onboard_phone_tv_title?.text = String.format(getString(R.string.onboard_phone_title), firstname)
         ui_onboard_phone_et_phone?.setText(phone)
 
-        ui_onboard_phone_et_phone?.setOnFocusChangeListener { _view, b ->
-            checkAndUpdate(false)
+        ui_onboard_phone_et_phone?.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                checkAndUpdate(false)
+            }
         }
 
         ui_onboard_phone_et_phone?.setOnEditorActionListener { _, event, _ ->
@@ -104,7 +116,7 @@ class OnboardingPhoneFragment : Fragment() {
             }
         })
 
-        onboard_phone_mainlayout?.setOnTouchListener { view, motionEvent ->
+        onboard_phone_mainlayout?.setOnTouchListener { view, _ ->
             view.hideKeyboard()
             view.performClick()
             true
@@ -112,16 +124,21 @@ class OnboardingPhoneFragment : Fragment() {
     }
 
     fun checkAndUpdate(isFromPhone: Boolean) {
-        if (ui_onboard_phone_et_phone?.text?.length ?: 0 >= minimumPhoneCharacters) {
-            phone = ui_onboard_phone_et_phone?.text.toString()
+        val countryCode = ui_onboard_phone_ccp_code?.selectedCountryCodeWithPlus
+        val phoneNumber = ui_onboard_phone_et_phone?.text
+
+        if (phoneNumber?.length ?: 0 >= minimumPhoneCharacters
+            && Utils.checkPhoneNumberFormat(countryCode, phoneNumber.toString()) != null) {
+            error_message_tv.visibility = View.GONE
+            phone = phoneNumber.toString()
             callback?.updateButtonNext(true)
-            val countryCode = ui_onboard_phone_ccp_code?.selectedCountryCodeWithPlus
-            callback?.validatePhoneNumber(countryCode, ui_onboard_phone_et_phone?.text.toString())
+            callback?.validatePhoneNumber(countryCode, phone)
             if (isFromPhone) {
                 callback?.goNextManually()
             }
         }
         else {
+            error_message_tv.visibility = View.VISIBLE
             callback?.updateButtonNext(false)
             callback?.validatePhoneNumber(null, null)
         }
