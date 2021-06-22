@@ -1,12 +1,8 @@
 package social.entourage.android
 
 
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.Root
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -17,11 +13,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import org.hamcrest.Description
-import org.hamcrest.Matcher
-import org.hamcrest.Matchers
 import org.hamcrest.Matchers.allOf
-import org.hamcrest.TypeSafeMatcher
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -37,6 +29,9 @@ class SignUpTest {
     @Rule
     @JvmField
     var activityRule = ActivityScenarioRule(OnboardingMainActivity::class.java)
+
+    private val login = "0651234145"
+    private val password = "108674"
 
 
     /****************************** Views ******************************/
@@ -96,13 +91,9 @@ class SignUpTest {
                     isDisplayed()))
 
     private val feedButtonBottomBar = onView(
-            allOf(withId(R.id.bottom_bar_newsfeed), withContentDescription(R.string.action_map),
-                    childAtPosition(
-                            childAtPosition(
-                                    withId(R.id.bottom_navigation),
-                                    0),
-                            0),
-                    isDisplayed()))
+            allOf(withId(R.id.bottom_bar_newsfeed),
+                withContentDescription(R.string.action_map),
+                isDisplayed()))
 
     private val nextButton = onView(
             allOf(withId(R.id.ui_bt_next),
@@ -204,7 +195,7 @@ class SignUpTest {
         clickNextButton()
 
         //Check that toast shows given message
-        onView(withText(R.string.login_text_invalid_format)).inRoot(ToastMatcher()).check(matches(isDisplayed()))
+        onView(withText(R.string.login_text_invalid_format)).check(matches(isDisplayed()))
     }
 
     @Test
@@ -230,7 +221,7 @@ class SignUpTest {
         goNextStep()
 
         //Login to an already existing account
-        login("0651234145", "108674")
+        login(login, password)
 
         //Skip passcode validation and go to type fragment
         goNextStep()
@@ -333,8 +324,8 @@ class SignUpTest {
 
         clickNextButton()
 
-        //Check that HomeNeoMainFragment is displayed
-        homeNeoTitleTv.check(matches(withText(R.string.home_neo_title)))
+        //Check that OnboardingMainActivity is displayed
+        feedButtonBottomBar.check(matches(isDisplayed()))
     }
 
     @Test
@@ -620,7 +611,7 @@ class SignUpTest {
         goNextStep()
 
         //Login to an already existing account
-        login("0651234145", "661192")
+        login(login, password)
 
         //Skip passcode validation and go to type fragment
         goNextStep()
@@ -657,24 +648,13 @@ class SignUpTest {
         locationTv.perform(click())
 
         val locationSearchBar = onView(
-                allOf(withId(R.id.places_autocomplete_search_bar),
-                        childAtPosition(
-                                allOf(withId(R.id.places_autocomplete_search_bar_container),
-                                        childAtPosition(
-                                                withClassName(Matchers.`is`("android.widget.LinearLayout")),
-                                                0)),
-                                1),
-                        isDisplayed()))
+                allOf(withId(R.id.places_autocomplete_search_bar), isDisplayed()))
         locationSearchBar.perform(click())
         locationSearchBar.perform(typeText(locationInput), closeSoftKeyboard())
 
         Thread.sleep(1000) //Wait for search results
 
-        val locationsResultRv = onView(
-                allOf(withId(R.id.places_autocomplete_list),
-                        childAtPosition(
-                                withClassName(Matchers.`is`("android.widget.LinearLayout")),
-                                2)))
+        val locationsResultRv = onView(withId(R.id.places_autocomplete_list))
         locationsResultRv.perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
 
         clickNextButton()
@@ -787,40 +767,5 @@ class SignUpTest {
         clickAssoActivity4()
 
         clickNextButton()
-    }
-
-    private fun childAtPosition(
-            parentMatcher: Matcher<View>, position: Int): Matcher<View> {
-
-        return object : TypeSafeMatcher<View>() {
-            override fun describeTo(description: Description) {
-                description.appendText("Child at position $position in parent ")
-                parentMatcher.describeTo(description)
-            }
-
-            public override fun matchesSafely(view: View): Boolean {
-                val parent = view.parent
-                return parent is ViewGroup && parentMatcher.matches(parent)
-                        && view == parent.getChildAt(position)
-            }
-        }
-    }
-
-    class ToastMatcher : TypeSafeMatcher<Root>() {
-        override fun matchesSafely(item: Root?): Boolean {
-            item?.windowLayoutParams?.get()?.type?.let { type ->
-                if (type == WindowManager.LayoutParams.TYPE_TOAST) {
-                    val windowToken = item.decorView.windowToken
-                    val appToken = item.decorView.applicationWindowToken
-                    if (windowToken == appToken) {
-                        //Means this window isn't contained by any other windows
-                        return true
-                    }
-                }
-            }
-            return false
-        }
-
-        override fun describeTo(description: Description?) {}
     }
 }

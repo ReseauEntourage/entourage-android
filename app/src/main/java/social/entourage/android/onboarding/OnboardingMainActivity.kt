@@ -9,9 +9,9 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import kotlinx.android.synthetic.main.activity_onboarding_main.*
 import social.entourage.android.*
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.Partner
 import social.entourage.android.api.model.User
@@ -26,9 +26,9 @@ import social.entourage.android.onboarding.sdf_neighbour.SdfNeighbourActivities
 import social.entourage.android.tools.Utils.checkPhoneNumberFormat
 import social.entourage.android.tools.disable
 import social.entourage.android.tools.enable
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CustomProgressDialog
 import timber.log.Timber
-import java.io.File
 import java.util.*
 
 /**
@@ -48,26 +48,28 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     private val numberOfSteps = 6
 
     private var temporaryUser = User()
-    private var temporaryCountrycode:String? = null
-    private var temporaryPhone:String? = null
-    private var temporaryPasscode:String? = null
-    private var temporaryEmail:String? = null
-    private var temporaryImageUri:Uri? = null
+    private var temporaryCountrycode: String? = null
+    private var temporaryPhone: String? = null
+    private var temporaryPasscode: String? = null
+    private var temporaryEmail: String? = null
+    private var temporaryImageUri: Uri? = null
 
     private var userTypeSelected:UserTypeSelection = UserTypeSelection.NONE
     private var currentPositionAsso = 0
     private var currentPositionAlone = 0
     private var currentPositionNeighbour = 0
 
-    private var temporaryPlaceAddress:User.Address? = null
-    private var temporaryAssoInfo:Partner? = null
+    private var temporaryPlaceAddress: User.Address? = null
+    private var temporaryAssoInfo: Partner? = null
     private var temporaryAssoActivities: AssoActivities? = null
 
-    private var temporary2ndPlaceAddress:User.Address? = null
+    private var temporary2ndPlaceAddress: User.Address? = null
     private var temporarySdfActivities: SdfNeighbourActivities? = null
     private var temporaryNeighbourActivities: SdfNeighbourActivities? = null
 
     lateinit var alertDialog: CustomProgressDialog
+
+    override val errorMessage = MutableLiveData<String>()
 
     //**********//**********//**********
     // Lifecycle
@@ -137,18 +139,18 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_EXIST)
                         }
                         error.contains("INVALID_PHONE_FORMAT") -> {
-                            displayToast(R.string.login_text_invalid_format)
                             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_ERROR)
+                            errorMessage.value = getString(R.string.login_text_invalid_format)
                         }
                         else -> {
                             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_ERROR)
-                            displayToast(R.string.login_error_network)
+                            errorMessage.value = getString(R.string.login_error_network)
                         }
                     }
                     return@createUser
                 }
                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_ERROR)
-                displayToast(R.string.login_error)
+                errorMessage.value = getString(R.string.login_error)
             }
         }
     }
@@ -828,6 +830,8 @@ enum class UserTypeSelection(val pos:Int) {
 //**********//**********//**********
 
 interface OnboardingCallback {
+    val errorMessage: MutableLiveData<String>
+
     fun validateNames(firstname:String?,lastname:String?,isValidate:Boolean)
     fun validatePhoneNumber(prefix: String?, phoneNumber: String?)
     fun validatePasscode(password:String)

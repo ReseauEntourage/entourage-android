@@ -106,4 +106,18 @@
         app:layout_constraintBottom_toBottomOf="@+id/ui_onboard_phone_ccp_code"
         app:layout_constraintEnd_toEndOf="@+id/ui_onboard_phone_ccp_code"
         app:layout_constraintStart_toStartOf="@+id/ui_onboard_phone_ccp_code" />
+
+    <TextView
+        android:id="@+id/error_message_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:textColor="@color/tomato"
+        android:text="@string/login_text_invalid_format"
+        app:layout_constraintTop_toBottomOf="@id/ui_onboard_phone_et_phone"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
