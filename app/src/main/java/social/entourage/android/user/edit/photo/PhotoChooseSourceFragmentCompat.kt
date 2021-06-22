@@ -13,16 +13,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.content.PermissionChecker
 import com.squareup.otto.Subscribe
-import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_photo_choose_source.*
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events.OnPhotoChosen
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.tools.EntBus
+import social.entourage.android.tools.log.AnalyticsEvents
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -130,8 +130,8 @@ class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
-            CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PermissionChecker.PERMISSION_GRANTED) {
+            CAMERA_PERMISSION_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (PermissionChecker.checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
                         requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), WRITE_STORAGE_PERMISSION_CODE)
                     } else {
@@ -187,17 +187,13 @@ class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
     }
 
     private fun onTakePhotoClicked() {
-        activity?.let {
-            when {
-                CropImage.isExplicitCameraPermissionRequired(it) -> {
-                    requestPermissions(arrayOf(Manifest.permission.CAMERA), CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE)
-                }
-                PermissionChecker.checkSelfPermission(it, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED -> {
-                    requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), WRITE_STORAGE_PERMISSION_CODE)
-                }
-                else -> {
-                    showTakePhotoActivity()
-                }
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE)
+        } else {
+            if (PermissionChecker.checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
+                requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), WRITE_STORAGE_PERMISSION_CODE)
+            } else {
+                showTakePhotoActivity()
             }
         }
     }
@@ -226,14 +222,16 @@ class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
             try {
                 val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 // Create the File where the photo should go
-                val photoFileUri = createImageFile()
-                // Continue only if the File was successfully created
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri)
-                takePictureIntent.flags = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                startActivityForResult(takePictureIntent, TAKE_PHOTO_REQUEST)
-            } catch (ex: IOException) {
-                // Error occurred while creating the File
-                Toast.makeText(activity, R.string.user_photo_error_photo_path, Toast.LENGTH_SHORT).show()
+                try {
+                    val photoFileUri = createImageFile()
+                    // Continue only if the File was successfully created
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri)
+                    takePictureIntent.flags = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                    startActivityForResult(takePictureIntent, TAKE_PHOTO_REQUEST)
+                } catch (ex: IOException) {
+                    // Error occurred while creating the File
+                    Toast.makeText(activity, R.string.user_photo_error_photo_path, Toast.LENGTH_SHORT).show()
+                }
             } catch (e: ActivityNotFoundException) {
                 Toast.makeText(activity, R.string.user_photo_error_no_camera, Toast.LENGTH_SHORT).show()
             }
@@ -283,6 +281,7 @@ class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
         const val TAKE_PHOTO_REQUEST = 2
         private const val PICK_AND_CROP_IMAGE_PERMISSION_CODE = 3
         private const val WRITE_STORAGE_PERMISSION_CODE = 4
+        private const val CAMERA_PERMISSION_CODE = 5
         private const val KEY_PHOTO_PATH = "social.entourage.android.photo_path"
     }
 }

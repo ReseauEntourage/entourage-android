@@ -1,6 +1,8 @@
 package social.entourage.android.tools
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.graphics.PorterDuff
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -78,4 +80,9 @@ fun TextView.enable() {
     alpha = 1f
     isClickable = true
     isEnabled = true
+}
+
+fun Bitmap.rotate(degrees: Float): Bitmap {
+    val matrix = Matrix().apply { postRotate(degrees) }
+    return Bitmap.createBitmap(this, 0, 0, width, height, matrix, true)
 }

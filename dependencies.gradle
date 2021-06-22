@@ -37,7 +37,7 @@ ext {
     facebookVersion = "9.1.1"
     floatingButtonVersion = "1.6.4"
     fragmentVersion = "1.3.3"
-    imageCropperVersion = "2.8.0"
+    cropMeVersion = "2.0.8"
     javaAnnotationVersion = "10.0-b28"
     jodaVersion = "2.10.9.1"
     mapsVersion = "17.0.1"
@@ -145,7 +145,7 @@ ext {
     uiDependencies = [
             dateTimePicker          : "com.wdullaer:materialdatetimepicker:$dateTimePickerVersion",
             floatingButton          : "com.github.clans:fab:$floatingButtonVersion",
-            imageCropper            : "com.theartofdev.edmodo:android-image-cropper:$imageCropperVersion",
+            cropMe                  : "com.github.takusemba:cropme:$cropMeVersion",
             mapsUtils               : "com.google.maps.android:maps-utils-ktx:$mapsUtilsVersion",
             material                : "com.google.android.material:material:$materialVersion",
             glide                   : "com.github.bumptech.glide:glide:$glideVersion",
