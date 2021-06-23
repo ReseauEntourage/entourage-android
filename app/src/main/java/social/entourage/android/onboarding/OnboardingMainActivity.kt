@@ -519,7 +519,10 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     fun goNext() {
         when(currentFragmentPosition) {
-            PositionType.Phone.pos -> {callSignup(); return}
+            PositionType.Phone.pos -> {
+                callSignup()
+                return
+            }
             PositionType.Type.pos -> {
                 if (userTypeSelected == UserTypeSelection.ASSOS) {
                     if (currentPositionAsso == AssoPositionType.NONE.pos) {
