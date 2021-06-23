@@ -194,7 +194,7 @@ class SignUpTest {
         phoneNumberEt.perform(typeText("000000000"), closeSoftKeyboard())
         clickNextButton()
 
-        //Check that toast shows given message
+        //Check that error shows given message
         onView(withText(R.string.login_text_invalid_format)).check(matches(isDisplayed()))
     }
 
