@@ -2,8 +2,6 @@ package social.entourage.android.onboarding
 
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +10,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_onboarding_phone.*
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import social.entourage.android.R
 import social.entourage.android.tools.Utils
 import social.entourage.android.tools.hideKeyboard
@@ -34,7 +33,7 @@ class OnboardingPhoneFragment : Fragment() {
 
     private val errorMessageObserver: Observer<String> = Observer { message ->
         if (message.isNotEmpty()) {
-            error_message_tv?.visibility = View.VISIBLE
+            showErrorMessage(true)
             error_message_tv?.text = message
         }
     }
@@ -93,12 +92,6 @@ class OnboardingPhoneFragment : Fragment() {
         ui_onboard_phone_tv_title?.text = String.format(getString(R.string.onboard_phone_title), firstname)
         ui_onboard_phone_et_phone?.setText(phone)
 
-        ui_onboard_phone_et_phone?.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) {
-                checkAndUpdate(false)
-            }
-        }
-
         ui_onboard_phone_et_phone?.setOnEditorActionListener { _, event, _ ->
             if (event == EditorInfo.IME_ACTION_DONE) {
                 checkAndUpdate(true)
@@ -106,30 +99,28 @@ class OnboardingPhoneFragment : Fragment() {
             false
         }
 
-        ui_onboard_phone_et_phone?.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                checkAndUpdate(false)
-            }
-        })
-
         onboard_phone_mainlayout?.setOnTouchListener { view, _ ->
             view.hideKeyboard()
             view.performClick()
             true
         }
+
+        //Listen to keyboard visibility
+        activity?.let {
+            KeyboardVisibilityEvent.setEventListener(it) { isOpen ->
+                if (isOpen)
+                    showErrorMessage(false)
+                else
+                    checkAndUpdate(false)
+            }
+        }
     }
 
     fun checkAndUpdate(isFromPhone: Boolean) {
-        val countryCode = ui_onboard_phone_ccp_code?.selectedCountryCodeWithPlus
-        val phoneNumber = ui_onboard_phone_et_phone?.text
-
-        if (phoneNumber?.length ?: 0 >= minimumPhoneCharacters
-            && Utils.checkPhoneNumberFormat(countryCode, phoneNumber.toString()) != null) {
-            error_message_tv.visibility = View.GONE
+        if (isValidPhoneNumber()) {
+            showErrorMessage(false)
+            val countryCode = ui_onboard_phone_ccp_code?.selectedCountryCodeWithPlus
+            val phoneNumber = ui_onboard_phone_et_phone?.text
             phone = phoneNumber.toString()
             callback?.updateButtonNext(true)
             callback?.validatePhoneNumber(countryCode, phone)
@@ -138,10 +129,20 @@ class OnboardingPhoneFragment : Fragment() {
             }
         }
         else {
-            error_message_tv.visibility = View.VISIBLE
+            showErrorMessage(true)
             callback?.updateButtonNext(false)
             callback?.validatePhoneNumber(null, null)
         }
+    }
+
+    private fun isValidPhoneNumber(): Boolean {
+        val phoneNumber = ui_onboard_phone_et_phone?.text
+        return phoneNumber?.length ?: 0 >= minimumPhoneCharacters
+                && Utils.checkPhoneNumberFormat(countryCode, phoneNumber.toString()) != null
+    }
+
+    private fun showErrorMessage(show: Boolean) {
+        error_message_tv?.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     //**********//**********//**********

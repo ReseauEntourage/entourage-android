@@ -183,6 +183,8 @@ dependencies {
     kapt annotationDependencies.values()
 
     androidTestImplementation testDependencies.values()
+
+    implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:3.0.0-RC3'
 }
 
 apply plugin: "com.google.gms.google-services"
