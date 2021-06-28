@@ -448,7 +448,9 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     override fun onNetworkException() {
-        fragment_map_main_layout?.let {EntSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()}
+        activity?.window?.decorView?.rootView?.let {
+            EntSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()
+        }
         if (pagination.isLoading) {
             pagination.isLoading = false
             pagination.isRefreshing = false
@@ -456,7 +458,9 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     override fun onServerException(throwable: Throwable) {
-        fragment_map_main_layout?.let {EntSnackbar.make(it, R.string.server_error, Snackbar.LENGTH_LONG).show()}
+        activity?.window?.decorView?.rootView?.let {
+            EntSnackbar.make(it, R.string.server_error, Snackbar.LENGTH_LONG).show()
+        }
         if (pagination.isLoading) {
             pagination.isLoading = false
             pagination.isRefreshing = false
@@ -464,7 +468,9 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     override fun onTechnicalException(throwable: Throwable) {
-        fragment_map_main_layout?.let { EntSnackbar.make(it, R.string.technical_error, Snackbar.LENGTH_LONG).show() }
+        activity?.window?.decorView?.rootView?.let {
+            EntSnackbar.make(it, R.string.technical_error, Snackbar.LENGTH_LONG).show()
+        }
         if (pagination.isLoading) {
             pagination.isLoading = false
             pagination.isRefreshing = false
