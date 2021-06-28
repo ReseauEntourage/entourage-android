@@ -9,6 +9,7 @@ import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.request.*
 import social.entourage.android.entourage.my.filter.MyEntouragesFilter
 import timber.log.Timber
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 /**
@@ -52,6 +53,7 @@ class MyEntouragesPresenter @Inject constructor(
 
             override fun onFailure(call: Call<NewsfeedItemResponse>, t: Throwable) {
                 fragment.onNewsfeedReceived(null)
+                if (t is UnknownHostException) fragment.showErrorMessage()
             }
         })
     }
@@ -71,6 +73,7 @@ class MyEntouragesPresenter @Inject constructor(
 
             override fun onFailure(call: Call<InvitationListResponse>, t: Throwable) {
                 fragment.onNoInvitationReceived()
+                if (t is UnknownHostException) fragment.showErrorMessage()
             }
         })
     }
@@ -92,6 +95,7 @@ class MyEntouragesPresenter @Inject constructor(
                 }
                 override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
                     Timber.w(t, "Entourage for Invitation not found")
+                    if (t is UnknownHostException) fragment.showErrorMessage()
                 }
             })
         }
