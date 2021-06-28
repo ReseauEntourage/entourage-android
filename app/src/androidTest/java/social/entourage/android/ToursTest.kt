@@ -16,6 +16,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.onboarding.login.LoginActivity
 
 @LargeTest
@@ -26,6 +27,8 @@ class ToursTest {
     @JvmField
     var activityRule = ActivityScenarioRule(LoginActivity::class.java)
 
+    private lateinit var authenticationController: AuthenticationController
+
     private val login = "0606060607"
     private val password = "123456"
 
@@ -33,7 +36,8 @@ class ToursTest {
     fun setUp() {
         //Logout
         activityRule.scenario.onActivity { activity ->
-            EntourageApplication[activity].components.authenticationController.logOutUser()
+            authenticationController = EntourageApplication[activity].components.authenticationController
+            authenticationController.logOutUser()
         }
 
         //Login
@@ -42,6 +46,12 @@ class ToursTest {
         onView(withId(R.id.ui_login_button_signup)).perform(click())
 
         Thread.sleep(4000)
+
+        //If there already is an ongoing tour, close it
+        if (authenticationController.savedTour != null) {
+            onView(allOf(withId(R.id.ui_bt_tour), isDisplayed())).perform(click())
+            stopTour()
+        }
     }
 
     //This test needs to have no ongoing tour to pass
