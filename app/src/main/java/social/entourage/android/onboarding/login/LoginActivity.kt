@@ -172,8 +172,7 @@ class LoginActivity : BaseActivity() {
         }
     }
 
-    fun checkAndResendCode() {
-
+    private fun checkAndResendCode() {
         val countryCode = ui_login_phone_ccp_code?.selectedCountryCodeWithPlus
         val phoneNumber = ui_login_phone_et_phone?.text.toString()
 
