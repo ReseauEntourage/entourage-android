@@ -69,6 +69,7 @@ class GuideMapPresenter @Inject constructor(
 
             override fun onFailure(call: Call<PoiResponse>, t: Throwable) {
                 Timber.e(t, "Impossible to retrieve POIs")
+                fragment.showErrorMessage()
             }
         })
     }

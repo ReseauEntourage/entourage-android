@@ -182,6 +182,12 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         }
     }
 
+    fun showErrorMessage() {
+        activity?.window?.decorView?.rootView?.let {
+            EntSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()
+        }
+    }
+
     override fun initializeMap() {
         originalMapLayoutHeight = resources.getDimension(R.dimen.solidarity_guide_map_height).toInt()
         if (onMapReadyCallback == null) {
