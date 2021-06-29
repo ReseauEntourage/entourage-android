@@ -16,6 +16,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
+import androidx.test.platform.app.InstrumentationRegistry
 import org.hamcrest.Description
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.TypeSafeMatcher
@@ -171,6 +172,24 @@ class HomeExpertTest {
         joinButton.check(matches(withText(context.getString(R.string.tour_info_request_join_button_entourage).toUpperCase())))
 
         clickCloseButton()
+    }
+
+    @Test
+    fun retrieveFeedFailureNoInternetConnection() {
+        clickGuideButton()
+
+        //Disable wifi and data
+        enableWifiAndData(false)
+        Thread.sleep(1000)
+
+        //Try to retrieve feed
+        clickFeedButton()
+
+        //Check that error is displayed
+        onView(withText(R.string.network_error)).check(matches(isDisplayed()))
+
+        //Enable wifi and data
+        enableWifiAndData(true)
     }
 
 
@@ -658,6 +677,14 @@ class HomeExpertTest {
             return null
         }
         return jsonString
+    }
+
+    private fun enableWifiAndData(enable: Boolean) {
+        val parameter = if (enable) "enable" else "disable"
+        InstrumentationRegistry.getInstrumentation().uiAutomation.apply {
+            executeShellCommand("svc wifi $parameter")
+            executeShellCommand("svc data $parameter")
+        }
     }
 
     class ToastMatcher : TypeSafeMatcher<Root>() {

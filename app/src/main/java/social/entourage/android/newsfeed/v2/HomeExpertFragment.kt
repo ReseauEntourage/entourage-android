@@ -31,7 +31,7 @@ class HomeExpertFragment : BaseNewsfeedFragment() {
     private var currentTourUUID = ""
     var isTourPostSend = false
 
-    var adapterHome:NewHomeFeedAdapter? = null
+    var adapterHome: NewHomeFeedAdapter? = null
 
     // ----------------------------------
     // LIFECYCLE
