@@ -109,13 +109,13 @@
 
     <TextView
         android:id="@+id/error_message_tv"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:gravity="center"
         android:textSize="14sp"
         android:textColor="@color/tomato"
         android:text="@string/login_text_invalid_format"
+        app:layout_constraintStart_toStartOf="@id/ui_onboard_phone_et_phone"
         app:layout_constraintTop_toBottomOf="@id/ui_onboard_phone_et_phone"
         android:visibility="gone"
         tools:visibility="visible" />
