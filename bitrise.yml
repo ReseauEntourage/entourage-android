@@ -208,6 +208,13 @@ workflows:
             - gradle_options: --stacktrace
             - gradle_task: connectedAndroidTest
   testui_virtualdevice_entourage:
+    envs:
+      - GRADLE_TASK: assembleDebug
+        opts:
+          is_expand: false
+      - GRADLE_TEST_TASK: assembleAndroidTest
+        opts:
+          is_expand: false
     steps:
       - install-missing-android-tools: { }
       # Choose the right build step
@@ -215,13 +222,13 @@ workflows:
 #            - android-build@0:
 #                inputs:
 #                  - variant: EntourageStagingDebugAndroidTest
-#            - gradle-runner@1:
-#                inputs:
-#                  - gradle_task: assembleDebug assembleAndroidTest #Should be assembleDebug assembleDebugAndroidTest
-      - android-build-for-ui-testing@0:
+      - gradle-runner:
+          inputs:
+            - gradle_task: $GRADLE_TASK $GRADLE_TEST_TASK #Should be assembleDebug assembleDebugAndroidTest
+      - android-build-for-ui-testing:
           inputs:
             - variant: entourageStagingDebug
             - module: app
-      - virtual-device-testing-for-android@1:
+      - virtual-device-testing-for-android:
           inputs:
             - test_type: instrumentation
