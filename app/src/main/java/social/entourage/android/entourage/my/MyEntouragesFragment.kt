@@ -286,11 +286,11 @@ class MyEntouragesFragment  : BaseDialogFragment(), BaseViewHolderListener, Load
     }
 
     override fun onNetworkException() {
-        myentourages_layout?.let {make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()}
+        myentourages_layout?.let { make(it, R.string.network_error, Snackbar.LENGTH_LONG).show() }
     }
 
     override fun onServerException(throwable: Throwable) {
-        myentourages_layout?.let {make(it, R.string.network_error, Snackbar.LENGTH_LONG).show() }
+        myentourages_layout?.let { make(it, R.string.network_error, Snackbar.LENGTH_LONG).show() }
     }
 
     override fun onTechnicalException(throwable: Throwable) {
