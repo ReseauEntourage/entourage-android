@@ -13,6 +13,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import androidx.test.platform.app.InstrumentationRegistry
 import org.hamcrest.Matchers.allOf
 import org.junit.Rule
 import org.junit.Test
@@ -208,6 +209,23 @@ class SignUpTest {
         //Check that dialog shows given message
         Thread.sleep(5000) //Wait for API response
         onView(withText(R.string.login_already_registered_go_back)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun phoneNumberFailureNoInternetConnection() {
+        //Disable wifi and data
+        enableWifiAndData(false)
+
+        //Try to submit phone number
+        fillValidNames()
+        phoneNumberEt.perform(typeText("123456789"), closeSoftKeyboard())
+        clickNextButton()
+
+        //Check that error is displayed
+        onView(allOf(withId(R.id.error_message_tv), isDisplayed())).check(matches(withText(R.string.login_error_network)))
+
+        //Enable wifi and data
+        enableWifiAndData(true)
     }
 
 
@@ -767,5 +785,13 @@ class SignUpTest {
         clickAssoActivity4()
 
         clickNextButton()
+    }
+
+    private fun enableWifiAndData(enable: Boolean) {
+        val parameter = if (enable) "enable" else "disable"
+        InstrumentationRegistry.getInstrumentation().uiAutomation.apply {
+            executeShellCommand("svc wifi $parameter")
+            executeShellCommand("svc data $parameter")
+        }
     }
 }
