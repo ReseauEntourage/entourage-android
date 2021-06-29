@@ -31,10 +31,60 @@ trigger_map:
   workflow: dev_entourage
 workflows:
   dev_entourage:
+    before_run:
+    - prepare_workflow
     envs:
     - GRADLE_TASK: assembleEntourageStagingRelease
       opts:
         is_expand: false
+    steps:
+    - gradle-runner:
+        is_always_run: true
+        inputs:
+        - apk_file_include_filter: ""
+        - app_file_include_filter: '*.apk'
+        - gradle_options: --stacktrace
+        - gradle_task: $GRADLE_TASK
+    - deploy-to-bitrise-io: {}
+    - post-jira-comment-with-build-details:
+        inputs:
+        - base_url: $JIRA_BASE_URL
+        - api_token: $JIRA_API_TOKEN
+        - user_name: $JIRA_USER_EMAIL
+        - issue_keys: $JIRA_ISSUE_KEYS
+    - slack:
+        inputs:
+        - webhook_url: ""
+        - from_username: Bitrise
+        - from_username_on_error: Bitrise
+        - message: |-
+            New Entourage DEV android build is available: $BITRISE_BUILD_NUMBER  here:
+            $BITRISE_APP_URL
+        - message_on_error: 'Oups, build has failed for Entourage android... @here '
+        - icon_url: ""
+        - icon_url_on_error: ""
+        - pretext_on_error: '*Entourage Build Failed!*'
+        - pretext: '*Build Succeeded!* (Entourage dev only)'
+        - fields: |
+            App|${BITRISE_APP_TITLE}
+            Branch|${BITRISE_GIT_BRANCH}
+            Workflow|${BITRISE_TRIGGERED_WORKFLOW_ID}
+            Jira|<${JIRA_BASE_URL}browse/${JIRA_ISSUE_KEYS}|${JIRA_ISSUE_KEYS}>
+        - api_token: $SLACK__BOT_API_TOKEN
+        - channel: '#androiddev'
+    - cache-push: {}
+  linter_entourage:
+    before_run:
+    - prepare_workflow
+    steps:
+    - gradle-runner:
+        inputs:
+        - apk_file_include_filter: ""
+        - app_file_include_filter: '*.apk'
+        - gradle_task: assembleDebug
+        - gradle_options: --stacktrace
+    - android-lint@0: {}
+  prepare_workflow:
     steps:
     - activate-ssh-key:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
@@ -89,42 +139,9 @@ workflows:
         - gemfile_content: ""
     - cache-pull: {}
     - install-missing-android-tools: {}
-    - gradle-runner:
-        is_always_run: true
-        inputs:
-        - apk_file_include_filter: ""
-        - app_file_include_filter: '*.apk'
-        - gradle_options: --stacktrace
-        - gradle_task: $GRADLE_TASK
-    - deploy-to-bitrise-io: {}
-    - post-jira-comment-with-build-details:
-        inputs:
-        - base_url: $JIRA_BASE_URL
-        - api_token: $JIRA_API_TOKEN
-        - user_name: $JIRA_USER_EMAIL
-        - issue_keys: $JIRA_ISSUE_KEYS
-    - slack:
-        inputs:
-        - webhook_url: ""
-        - from_username: Bitrise
-        - from_username_on_error: Bitrise
-        - message: |-
-            New Entourage DEV android build is available: $BITRISE_BUILD_NUMBER  here:
-            $BITRISE_APP_URL
-        - message_on_error: 'Oups, build has failed for Entourage android... @here '
-        - icon_url: ""
-        - icon_url_on_error: ""
-        - pretext_on_error: '*Entourage Build Failed!*'
-        - pretext: '*Build Succeeded!* (Entourage dev only)'
-        - fields: |
-            App|${BITRISE_APP_TITLE}
-            Branch|${BITRISE_GIT_BRANCH}
-            Workflow|${BITRISE_TRIGGERED_WORKFLOW_ID}
-            Jira|<${JIRA_BASE_URL}browse/${JIRA_ISSUE_KEYS}|${JIRA_ISSUE_KEYS}>
-        - api_token: $SLACK__BOT_API_TOKEN
-        - channel: '#androiddev'
-    - cache-push: {}
   prod_entourage:
+    before_run:
+    - prepare_workflow
     envs:
     - GRADLE_TASK: bundleEntourageProdRelease
       opts:
@@ -133,10 +150,6 @@ workflows:
       opts:
         is_expand: false
     steps:
-    - activate-ssh-key:
-        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
-    - git-clone: {}
-    - install-missing-android-tools: {}
     - gradle-runner:
         inputs:
         - apk_file_include_filter: ""
@@ -179,56 +192,36 @@ workflows:
     - git-tag:
         inputs:
         - tag: Version_$BITRISE_BUILD_NUMBER
-  linter_entourage:
-    steps:
-      - install-missing-android-tools: { }
-      - gradle-runner:
-          inputs:
-            - apk_file_include_filter: ""
-            - app_file_include_filter: '*.apk'
-            - gradle_task: assembleDebug
-            - gradle_options: --stacktrace
-      - android-lint@0: { }
   testui_emulator_entourage:
+    before_run:
+    - prepare_workflow
     steps:
-      # Needed if you updated AndroidStudio which uses Java 11
-#      - script@1:
-#          inputs:
-#            - content: |-
-#                jenv global 11
-#                export JAVA_HOME="$(jenv prefix)"
-#                envman add --key JAVA_HOME --value "$(jenv prefix)"
-      - avd-manager@1: {}
-      - install-missing-android-tools: {}
-      - wait-for-android-emulator@1: {}
-      - gradle-runner:
-          inputs:
-            - apk_file_include_filter: ""
-            - app_file_include_filter: '*.apk'
-            - gradle_options: --stacktrace
-            - gradle_task: connectedAndroidTest
+    - avd-manager@1: {}
+    - wait-for-android-emulator@1: {}
+    - gradle-runner:
+        inputs:
+        - apk_file_include_filter: ""
+        - app_file_include_filter: '*.apk'
+        - gradle_options: --stacktrace
+        - gradle_task: connectedAndroidTest
   testui_virtualdevice_entourage:
+    before_run:
+    - prepare_workflow
     envs:
-      - GRADLE_TASK: assembleDebug
-        opts:
-          is_expand: false
-      - GRADLE_TEST_TASK: assembleAndroidTest
-        opts:
-          is_expand: false
+    - GRADLE_TASK: assembleDebug
+      opts:
+        is_expand: false
+    - GRADLE_TEST_TASK: assembleAndroidTest
+      opts:
+        is_expand: false
     steps:
-      - install-missing-android-tools: { }
-      # Choose the right build step
-#       virtual-device-testing-for-android step wont launch locally
-#            - android-build@0:
-#                inputs:
-#                  - variant: EntourageStagingDebugAndroidTest
-      - gradle-runner:
-          inputs:
-            - gradle_task: $GRADLE_TASK $GRADLE_TEST_TASK #Should be assembleDebug assembleDebugAndroidTest
-      - android-build-for-ui-testing:
-          inputs:
-            - variant: entourageStagingDebug
-            - module: app
-      - virtual-device-testing-for-android:
-          inputs:
-            - test_type: instrumentation
+    - gradle-runner:
+        inputs:
+        - gradle_task: $GRADLE_TASK $GRADLE_TEST_TASK
+    - android-build-for-ui-testing:
+        inputs:
+        - variant: entourageStagingDebug
+        - module: app
+    - virtual-device-testing-for-android:
+        inputs:
+        - test_type: instrumentation
