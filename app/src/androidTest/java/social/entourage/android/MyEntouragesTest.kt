@@ -3,7 +3,7 @@ package social.entourage.android
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
-import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -18,7 +18,7 @@ import social.entourage.android.onboarding.login.LoginActivity
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class GuideMapTest {
+class MyEntouragesTest {
 
     @Rule
     @JvmField
@@ -43,19 +43,16 @@ class GuideMapTest {
     }
 
     @Test
-    fun retrievePOIsFailureNoInternetConnection() {
+    fun retrieveFeedsFailureNoInternetConnection() {
         //Disable wifi and data
         enableWifiAndData(false)
 
-        //Try to retrieve POIs
-        val bottomBarGuideButton = onView(allOf(withId(R.id.bottom_bar_guide), withContentDescription(R.string.action_guide), isDisplayed()))
-        bottomBarGuideButton.perform(click())
-
-        val guideMapLayout = onView(allOf(withId(R.id.ui_layout_cell_1), isDisplayed()))
-        guideMapLayout.perform(scrollTo(), click())
+        //Try to retrieve feeds
+        val bottomBarMessagesButton = onView(allOf(withId(R.id.bottom_bar_mymessages), withContentDescription(R.string.action_my_messages), isDisplayed()))
+        bottomBarMessagesButton.perform(click())
 
         //Check that error is displayed
-        onView(allOf(withText(R.string.network_error))).check(matches(isDisplayed()))
+        onView(allOf(withText(R.string.network_error))).check(ViewAssertions.matches(isDisplayed()))
 
         //Enable wifi and data
         enableWifiAndData(true)
