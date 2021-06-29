@@ -150,7 +150,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                     return@createUser
                 }
                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ERROR_ONBOARDING_PHONE_SUBMIT_ERROR)
-                errorMessage.value = getString(R.string.login_error)
+                errorMessage.value = getString(R.string.login_error_network)
             }
         }
     }
