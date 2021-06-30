@@ -12,4 +12,5 @@
     app:itemIconSize="28dp"
     app:itemIconTint="@color/navigation_icons_state_list"
     app:itemTextColor="@color/navigation_icons_state_list"
+    app:itemHorizontalTranslationEnabled="false"
     app:menu="@menu/bottom_navigation_menu" />
