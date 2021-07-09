@@ -279,8 +279,8 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                 location = LatLng(address.latitude, address.longitude)
             }
         }
-        if (longTapCoordinates != null) {
-            location = longTapCoordinates
+        longTapCoordinates?.let {
+            location = it
             longTapCoordinates = null
         }
         presenter.createEntourage(location, groupType, entourageCategory,isFromNeo,tagNameAnalytic)
@@ -1030,6 +1030,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                     position--
                 }
             }
+            NewsfeedTabItem.ANNOUNCEMENTS -> TODO()
         }
     }
 
@@ -1179,7 +1180,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     // ----------------------------------
     // Heatzone Tap Handling
     // ----------------------------------
-    fun handleHeatzoneClick(location: LatLng?) {
+    fun handleHeatzoneClick(location: LatLng) {
         hideTourLauncher()
         if (isToursListVisible) {
             centerMapAndZoom(location, ZOOM_HEATZONE, true)
@@ -1189,7 +1190,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         }
     }
 
-    private fun showHeatzoneMiniCardsAtLocation(location: LatLng?) {
+    private fun showHeatzoneMiniCardsAtLocation(location: LatLng) {
         if (newsfeedAdapter == null) {
             return
         }

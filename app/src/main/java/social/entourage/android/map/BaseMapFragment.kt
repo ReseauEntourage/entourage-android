@@ -60,7 +60,7 @@ abstract class BaseMapFragment(protected var layout: Int) : Fragment(), BackPres
         centerMap(cameraPosition)
     }
 
-    protected fun centerMapAndZoom(latLng: LatLng?, zoom: Float, animated: Boolean) {
+    protected fun centerMapAndZoom(latLng: LatLng, zoom: Float, animated: Boolean) {
         val cameraPosition = CameraPosition(latLng, zoom, 0F, 0F)
         map?.let {
             if (animated) {
