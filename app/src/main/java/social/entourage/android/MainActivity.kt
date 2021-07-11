@@ -9,11 +9,15 @@ import android.os.Looper
 import android.provider.Settings
 import android.view.MenuItem
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
 import com.squareup.otto.Subscribe
@@ -63,15 +67,16 @@ import social.entourage.android.user.AvatarUploadPresenter
 import social.entourage.android.user.AvatarUploadView
 import social.entourage.android.user.UserFragment
 import social.entourage.android.user.UserFragment.Companion.newInstance
-import social.entourage.android.user.edit.place.UserEditActionZoneFragment
-import social.entourage.android.user.edit.place.UserEditActionZoneFragmentCompat
 import social.entourage.android.user.edit.UserEditFragment
 import social.entourage.android.user.edit.photo.PhotoChooseInterface
 import social.entourage.android.user.edit.photo.PhotoEditFragment
+import social.entourage.android.user.edit.place.UserEditActionZoneFragment
+import social.entourage.android.user.edit.place.UserEditActionZoneFragmentCompat
 import timber.log.Timber
 import java.io.File
 import java.util.*
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 class MainActivity : BaseSecuredActivity(),
         OnTourInformationFragmentFinish,
@@ -361,7 +366,29 @@ class MainActivity : BaseSecuredActivity(),
             messageBadge.backgroundColor = ResourcesCompat.getColor(resources, R.color.map_announcement_background, null)
             messageBadge.badgeTextColor = ResourcesCompat.getColor(resources, R.color.primary, null)
             messageBadge.maxCharacterCount = 3
+
+            configurePlusButton(bottomBar)
         }
+    }
+
+    private fun configurePlusButton(bottomBar: BottomNavigationView) {
+        val plusIcon = getPlusIconIv(bottomBar)
+        scaleView(plusIcon, 1.8f)
+        plusIcon.setColorFilter(ContextCompat.getColor(this, R.color.accent))
+    }
+
+    private fun getPlusIconIv(bottomBar: BottomNavigationView): ImageView {
+        val menuView = bottomBar.getChildAt(0) as BottomNavigationMenuView
+        val plusItemId = bottomBar.menu.getItem(2).itemId
+        val plusItem = menuView.findViewById<View>(plusItemId)
+        return plusItem.findViewById(com.google.android.material.R.id.icon)
+    }
+
+    private fun scaleView(view: View, scale: Float) {
+        val layoutParams = view.layoutParams as FrameLayout.LayoutParams
+        layoutParams.width = (scale * layoutParams.width).roundToInt()
+        layoutParams.height = (scale * layoutParams.height).roundToInt()
+        view.layoutParams = layoutParams
     }
 
     private fun sendAnalyticsTapTabbar(@IdRes itemId: Int) {

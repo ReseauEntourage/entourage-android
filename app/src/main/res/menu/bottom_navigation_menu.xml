@@ -12,7 +12,7 @@
     <item
         android:id="@+id/bottom_bar_plus"
         android:icon="@drawable/ic_add_circle_white_24dp"
-        android:title="@string/action_plus" />
+        android:title="" />
     <item
         android:id="@+id/bottom_bar_mymessages"
         android:icon="@drawable/ic_chat_bubble_outline_white_24dp"

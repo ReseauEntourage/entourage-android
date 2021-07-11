@@ -70,7 +70,6 @@ class HomeExpertTest {
                     isDisplayed()))
     private val bottomBarPlusButton = onView(
             allOf(withId(R.id.bottom_bar_plus),
-                    withContentDescription(R.string.action_plus),
                     isDisplayed()))
     private val bottomBarMessagesButton = onView(
             allOf(withId(R.id.bottom_bar_mymessages),
