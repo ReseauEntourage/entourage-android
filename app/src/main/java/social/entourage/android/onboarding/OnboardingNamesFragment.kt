@@ -17,8 +17,6 @@ private const val ARG_FIRSTNAME = "firstname"
 private const val ARG_LASTNAME = "lastname"
 
 class OnboardingNamesFragment : Fragment() {
-    private val minChars = 2
-
     private var firstname: String? = null
     private var lastname: String? = null
 
@@ -132,6 +130,8 @@ class OnboardingNamesFragment : Fragment() {
     //**********//**********//**********
 
     companion object {
+        const val minChars = 2
+
         fun newInstance(firstName: String?, lastName: String?) =
                 OnboardingNamesFragment().apply {
                     arguments = Bundle().apply {

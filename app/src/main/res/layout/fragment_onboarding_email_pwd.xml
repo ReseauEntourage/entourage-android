@@ -54,7 +54,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_email_tv_info2" />
+        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_email_tv_info2"
+        android:autofillHints="emailAddress" />
 
     <TextView
         android:id="@+id/ui_onboard_email_tv_info"
