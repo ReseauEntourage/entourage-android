@@ -99,7 +99,7 @@ class OnboardingAPI {
     /**********************
      * Send code
      */
-    fun resendCode(phone:String,listener:(isOK:Boolean, loginResponse: UserResponse?, error:String?) -> Unit) {
+    fun requestNewCode(phone:String,listener:(isOK:Boolean, loginResponse: UserResponse?, error:String?) -> Unit) {
         val user: MutableMap<String, String> = ArrayMap()
         user["phone"] = phone
 

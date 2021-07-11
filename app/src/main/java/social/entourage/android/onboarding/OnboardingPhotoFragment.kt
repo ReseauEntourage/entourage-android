@@ -30,8 +30,6 @@ private const val ARG_FIRSTNAME = "firstname"
 
 open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate, ActivityCompat.OnRequestPermissionsResultCallback {
 
-    private val KEY_PHOTO_PATH = "social.entourage.android.photo_path"
-
     protected var pickedImageUri: Uri? = null
     protected var pickedImageEditedUri: Uri? = null
     protected var mCurrentPhotoPath: String? = null
@@ -319,6 +317,8 @@ open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate, Ac
         const val PICK_AND_CROP_IMAGE_PERMISSION_CODE = 3
         const val WRITE_STORAGE_PERMISSION_CODE = 4
         const val CAMERA_PERMISSION_CODE = 5
+
+        const val KEY_PHOTO_PATH = "social.entourage.android.photo_path"
 
         fun newInstance(firstName: String) =
                 OnboardingPhotoFragment().apply {

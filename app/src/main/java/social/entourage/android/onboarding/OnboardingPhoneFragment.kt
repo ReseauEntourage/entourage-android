@@ -16,14 +16,7 @@ import social.entourage.android.tools.Utils
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.log.AnalyticsEvents
 
-
-private const val ARG_FIRSTNAME = "firstname"
-private const val ARG_COUNTRYCODE = "countrycode"
-private const val ARG_PHONE = "phone"
-
-
 class OnboardingPhoneFragment : Fragment() {
-    private val minimumPhoneCharacters = 9
 
     private var firstname: String? = null
     private var countryCode: String? = null
@@ -150,6 +143,11 @@ class OnboardingPhoneFragment : Fragment() {
     //**********//**********//**********
 
     companion object {
+        const val ARG_FIRSTNAME = "firstname"
+        const val ARG_COUNTRYCODE = "countrycode"
+        const val ARG_PHONE = "phone"
+        const val minimumPhoneCharacters = 9
+
         fun newInstance(firstname: String?, countryCode: String?, phone: String?) =
                 OnboardingPhoneFragment().apply {
                     arguments = Bundle().apply {

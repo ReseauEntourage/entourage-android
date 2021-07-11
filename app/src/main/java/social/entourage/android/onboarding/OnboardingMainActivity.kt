@@ -159,7 +159,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         AlertDialog.Builder(this)
                 .setTitle("")
                 .setMessage(R.string.login_already_registered_go_back)
-                .setPositiveButton(R.string.button_OK) { dialog, which ->
+                .setPositiveButton(R.string.button_OK) { dialog, _ ->
                     dialog.dismiss()
 
                     val intent = Intent(this, PreOnboardingChoiceActivity::class.java)
@@ -223,27 +223,26 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         }
     }
 
-    fun showLoginFail(errorCode: Int) {
-        @StringRes val errorMessage: Int
-        when (errorCode) {
+    private fun showLoginFail(errorCode: Int) {
+        @StringRes val errorMessage: Int = when (errorCode) {
             LOGIN_ERROR_INVALID_PHONE_FORMAT -> {
-                errorMessage = R.string.login_error_invalid_phone_format
+                R.string.login_error_invalid_phone_format
             }
             LOGIN_ERROR_UNAUTHORIZED -> {
-                errorMessage = R.string.login_error_invalid_credentials
+                R.string.login_error_invalid_credentials
             }
             LOGIN_ERROR_NETWORK -> {
-                errorMessage = R.string.login_error_network
+                R.string.login_error_network
             }
             else -> {
-                errorMessage = R.string.login_error
+                R.string.login_error
             }
         }
         if (!isFinishing) {
             AlertDialog.Builder(this)
                     .setTitle(R.string.login_error_title)
                     .setMessage(errorMessage)
-                    .setPositiveButton(R.string.login_retry_label) { dialog, which -> }
+                    .setPositiveButton(R.string.login_retry_label) { _, _ -> }
                     .create()
                     .show()
         }
@@ -252,10 +251,10 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     fun resendCode() {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_SMS)
         temporaryPhone?.let { tempPhone ->
-            OnboardingAPI.getInstance().resendCode(tempPhone) { isOK, loginResponse, error ->
+            OnboardingAPI.getInstance().requestNewCode(tempPhone) { isOK, _, _ ->
                 if (isOK) {
                     displayToast(R.string.login_smscode_sent)
-                    return@resendCode
+                    return@requestNewCode
                 }
             }
         }
@@ -300,9 +299,9 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         }
     }
 
-    fun updateGoal(isAsso: Boolean) {
+    private fun updateGoal(isAsso: Boolean) {
         alertDialog.show(R.string.onboard_waiting_dialog)
-        val _currentGoal = userTypeSelected.getGoalString()
+        val currentGoal = userTypeSelected.getGoalString()
 
         if (userTypeSelected == UserTypeSelection.NONE) {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_CHOOSE_PROFILE_SKIP)
@@ -311,7 +310,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_CHOOSE_PROFILE_SIGNUP)
         }
 
-        OnboardingAPI.getInstance().updateUserGoal(_currentGoal) { isOK, userResponse ->
+        OnboardingAPI.getInstance().updateUserGoal(currentGoal) { isOK, userResponse ->
             if (isOK && userResponse != null) {
                 authenticationController.saveUser(userResponse.user)
             }
@@ -347,7 +346,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         if (temporaryAssoInfo?.name?.length ?:0 > 0 && temporaryAssoInfo?.postalCode?.length ?:0 > 0 && temporaryAssoInfo?.userRoleTitle?.length ?:0 > 0) {
             alertDialog.show(R.string.onboard_waiting_dialog)
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_PRO_SIGNUP_SUBMIT)
-            OnboardingAPI.getInstance().updateAssoInfos(temporaryAssoInfo) { isOK, response ->
+            OnboardingAPI.getInstance().updateAssoInfos(temporaryAssoInfo) { isOK, _ ->
                 alertDialog.dismiss()
                 if (!isOK) {
                     AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ERROR_ONBOARDING_PRO_SIGNUP_ERROR)
@@ -363,7 +362,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             AlertDialog.Builder(this)
                     .setTitle(R.string.attention_pop_title)
                     .setMessage(R.string.onboard_asso_fill_error)
-                    .setPositiveButton("OK") { dialog, which -> }
+                    .setPositiveButton("OK") { _, _ -> }
                     .create()
                     .show()
         }
@@ -373,7 +372,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         if (temporaryAssoActivities?.hasOneSelectionMin() == true) {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_PRO_MOSAIC)
             temporaryAssoActivities?.let {
-                OnboardingAPI.getInstance().updateUserInterests(it.getArrayForWs()) { isOK, userResponse ->
+                OnboardingAPI.getInstance().updateUserInterests(it.getArrayForWs()) { _, _ ->
                     currentFragmentPosition += 2
                     changeFragment()
                 }
@@ -383,7 +382,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             AlertDialog.Builder(this)
                     .setTitle(R.string.attention_pop_title)
                     .setMessage(R.string.onboard_asso_activity_error)
-                    .setPositiveButton("OK") { dialog, which -> }
+                    .setPositiveButton("OK") { _, _ -> }
                     .create()
                     .show()
         }
@@ -432,18 +431,17 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     //**********
     // Navigation Asso
 
-    fun moveToTunnelAsso() {
+    private fun moveToTunnelAsso() {
         ui_bt_next?.enable(R.drawable.ic_onboard_bt_next)
-        val fragment: Fragment
 
-        when(currentPositionAsso) {
-            1 -> fragment = OnboardingAssoStartFragment.newInstance(true)
-            2 -> fragment = OnboardingAssoStartFragment.newInstance(false)
+        val fragment: Fragment = when(currentPositionAsso) {
+            1 -> OnboardingAssoStartFragment.newInstance(true)
+            2 -> OnboardingAssoStartFragment.newInstance(false)
             3 -> {
-                fragment = OnboardingAssoFillFragment.newInstance(temporaryAssoInfo)
+                OnboardingAssoFillFragment.newInstance(temporaryAssoInfo)
             }
             4 -> {
-                fragment = OnboardingAssoActivitiesFragment.newInstance(temporaryAssoActivities,temporaryUser.firstName)
+                OnboardingAssoActivitiesFragment.newInstance(temporaryAssoActivities,temporaryUser.firstName)
             }
             else -> {
                 changeFragment()
@@ -462,15 +460,14 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         ui_view_progress?.updatePercent(percent)
     }
 
-    fun moveToTunnelAlone() {
+    private fun moveToTunnelAlone() {
         ui_bt_next?.enable(R.drawable.ic_onboard_bt_next)
-        val fragment: Fragment
 
-        when(currentPositionAlone) {
+        val fragment: Fragment = when(currentPositionAlone) {
             1 ->  {
-                fragment = OnboardingPlaceFragment.newInstance(temporary2ndPlaceAddress, is2ndAddress = true, isSdf = true)
+                OnboardingPlaceFragment.newInstance(temporary2ndPlaceAddress, is2ndAddress = true, isSdf = true)
             }
-            2 -> fragment = OnboardingSdfNeighbourActivitiesFragment.newInstance(temporarySdfActivities,temporaryUser.firstName,true)
+            2 -> OnboardingSdfNeighbourActivitiesFragment.newInstance(temporarySdfActivities,temporaryUser.firstName,true)
             else -> {
                 changeFragment()
                 return
@@ -490,13 +487,12 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     fun moveToTunnelNeighbour() {
         ui_bt_next?.enable(R.drawable.ic_onboard_bt_next)
-        val fragment: Fragment
 
-        when(currentPositionNeighbour) {
+        val fragment: Fragment = when(currentPositionNeighbour) {
             1 ->  {
-                fragment = OnboardingPlaceFragment.newInstance(temporary2ndPlaceAddress, is2ndAddress = true, isSdf = false)
+                OnboardingPlaceFragment.newInstance(temporary2ndPlaceAddress, is2ndAddress = true, isSdf = false)
             }
-            2 -> fragment = OnboardingSdfNeighbourActivitiesFragment.newInstance(temporaryNeighbourActivities,temporaryUser.firstName,false)
+            2 -> OnboardingSdfNeighbourActivitiesFragment.newInstance(temporaryNeighbourActivities,temporaryUser.firstName,false)
             else -> {
                 changeFragment()
                 return
