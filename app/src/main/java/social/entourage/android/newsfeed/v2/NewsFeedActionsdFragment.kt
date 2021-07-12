@@ -98,9 +98,6 @@ open class NewsFeedActionsFragment : BaseNewsfeedFragment(), EntourageServiceLis
             fragment_map_filter_button?.visibility = View.GONE
             ui_tv_title?.text = getString(R.string.home_title_events)
         }
-//        if (isActionSelected) {
-//            (requireActivity() as? MainActivity)?.checkOnboarding()
-//        }
     }
 
     override fun updateFilterButtonText() {
