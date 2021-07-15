@@ -17,7 +17,6 @@ import social.entourage.android.newsfeed.v2.NewHomeFeedFragment
  */
 class BottomNavigationDataSource {
     private val navigationFragmentTags = SparseArray<String>()
-    var isEngaged = false
 
     val defaultSelectedTab: Int
         @IdRes get() = R.id.bottom_bar_newsfeed

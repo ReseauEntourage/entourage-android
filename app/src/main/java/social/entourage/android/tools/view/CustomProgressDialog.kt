@@ -6,6 +6,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import social.entourage.android.R
+import timber.log.Timber
 
 
 /**
@@ -45,7 +46,11 @@ class CustomProgressDialog(val context:Context) {
     fun dismiss() {
         alertDialog?.let {
             if (it.isShowing) {
-                it.dismiss()
+                try {
+                    it.dismiss()
+                } catch (e: Exception) {
+                    Timber.e(e)
+                }
             }
         }
         alertDialog = null

@@ -49,7 +49,7 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
         user = updatedUser
         saveCurrentUser()
         if (shouldLoadUserPreferences) loadUserPreferences()
-        EntBus.post(OnUserInfoUpdatedEvent())
+        EntBus.post(OnUserInfoUpdatedEvent(updatedUser))
     }
 
     fun saveUserPhoneAndCode(phone: String?, smsCode: String?) {

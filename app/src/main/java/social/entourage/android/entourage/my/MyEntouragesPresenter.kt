@@ -7,7 +7,9 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.request.*
+import social.entourage.android.api.tape.Events
 import social.entourage.android.entourage.my.filter.MyEntouragesFilter
+import social.entourage.android.tools.EntBus
 import timber.log.Timber
 import java.net.UnknownHostException
 import javax.inject.Inject
@@ -42,7 +44,7 @@ class MyEntouragesPresenter @Inject constructor(
                 response.body()?.let {
                     if (response.isSuccessful) {
                         if (page == 1) {
-                            fragment.updateUnreadCount(it.unreadCount)
+                            it.unreadCount?.let {count -> EntBus.post(Events.OnUnreadCountUpdate(count)) }
                         }
                         fragment.onNewsfeedReceived(it.newsfeedItems)
                         return

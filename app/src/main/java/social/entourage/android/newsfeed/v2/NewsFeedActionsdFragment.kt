@@ -120,7 +120,7 @@ open class NewsFeedActionsFragment : BaseNewsfeedFragment(), EntourageServiceLis
     open fun onUserChoiceChanged(event: OnUserChoiceEvent) {}
 
     @Subscribe
-    open fun onUserInfoUpdated(event: OnUserInfoUpdatedEvent?) {
+    open fun onUserInfoUpdated(event: OnUserInfoUpdatedEvent) {
         if (newsfeedAdapter == null) return
         val meAsAuthor = EntourageApplication.me(context)?.asTourAuthor() ?: return
         val dirtyList: MutableList<TimestampedObject> = ArrayList()

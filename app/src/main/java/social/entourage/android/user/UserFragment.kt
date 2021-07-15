@@ -275,12 +275,12 @@ class UserFragment : BaseDialogFragment() {
     // Events Handling
     // ----------------------------------
     @Subscribe
-    fun userInfoUpdated(event: OnUserInfoUpdatedEvent?) {
+    fun userInfoUpdated(event: OnUserInfoUpdatedEvent) {
         if (!isAdded) {
             return
         }
         //update the current view
-        user = EntourageApplication.me(activity)
+        user = event.user
         configureView()
     }
 

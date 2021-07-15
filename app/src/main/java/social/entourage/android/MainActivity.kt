@@ -9,7 +9,6 @@ import android.os.Looper
 import android.provider.Settings
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.IdRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessaging
@@ -368,7 +367,6 @@ class MainActivity : BaseSecuredActivity(),
                 }
             }
             get().removePushNotification(message)
-            bottomBar?.refreshBadgeCount()
         } else {
             // Handle the deep link
             handleCurrentDeepLink(this)
@@ -422,8 +420,11 @@ class MainActivity : BaseSecuredActivity(),
     }
 
     @Subscribe
-    fun onUserUpdateEvent(event: OnUserInfoUpdatedEvent?) {
+    fun onUserUpdateEvent(event: OnUserInfoUpdatedEvent) {
         updateAnalyticsInfo()
+        event.user.unreadCount?.let {
+            bottomBar?.updateBadgeCountForUser(it)
+        }
     }
 
     @Subscribe
@@ -563,7 +564,6 @@ class MainActivity : BaseSecuredActivity(),
         newsfeedFragment?.onPushNotificationReceived(message)
         val myEntouragesFragment = supportFragmentManager.findFragmentByTag(MyEntouragesFragment.TAG) as MyEntouragesFragment?
         myEntouragesFragment?.onPushNotificationReceived(message)
-        bottomBar?.refreshBadgeCount()
     }
 
     // ----------------------------------
@@ -607,16 +607,9 @@ class MainActivity : BaseSecuredActivity(),
     // BUS LISTENERS
     // ----------------------------------
     @Subscribe
-    fun onMyEntouragesForceRefresh(event: OnMyEntouragesForceRefresh) {
-        event.feedItem?.let {item ->
-            get().updateBadgeCountForFeedItem(item)
-            bottomBar?.refreshBadgeCount()
-        }
-    }
-
-    @Subscribe
     fun onUnreadCountUpdate(unreadCount:OnUnreadCountUpdate?) {
-        unreadCount?.unreadCount?.let { get().updateBadgeCountForCount(it) }
-        bottomBar?.refreshBadgeCount()
+        unreadCount?.unreadCount?.let {
+            bottomBar?.updateBadgeCountForUser(it)
+        }
     }
 }

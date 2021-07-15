@@ -307,7 +307,7 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
     // Events Handling
     // ----------------------------------
     @Subscribe
-    fun userInfoUpdated(event: OnUserInfoUpdatedEvent?) {
+    fun userInfoUpdated(event: OnUserInfoUpdatedEvent) {
         activity?.let {
             if (it.isFinishing) {
                 return
