@@ -48,7 +48,7 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
     // BUS LISTENERS
     // ----------------------------------
     @Subscribe
-    fun userInfoUpdated(event: Events.OnUserInfoUpdatedEvent?) {
+    fun userInfoUpdated(event: Events.OnUserInfoUpdatedEvent) {
         updateUserView()
     }
 

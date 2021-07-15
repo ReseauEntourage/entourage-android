@@ -12,9 +12,11 @@ import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+import me.leolin.shortcutbadger.ShortcutBadger
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
+import social.entourage.android.api.model.User
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.newsfeed.BaseNewsfeedFragment
 import social.entourage.android.newsfeed.v2.NewHomeFeedFragment
@@ -32,6 +34,7 @@ class EntBottomNavigationView : BottomNavigationView {
     constructor(context: Context)  : super(context)
 
     fun configure(activity: MainActivity) {
+        instance = this
         // we need to set the listener first, to respond to the default selected tab request
         this.setOnNavigationItemSelectedListener { item: MenuItem ->
             if (shouldBypassNavigation(activity, item.itemId)) {
@@ -43,9 +46,6 @@ class EntBottomNavigationView : BottomNavigationView {
             }
             true
         }
-        //TODO: a remettre l'auto ?
-        //navigationDataSource.isEngaged = authenticationController.me?.isEngaged ?: false
-        navigationDataSource.isEngaged = true
         val defaultId = navigationDataSource.defaultSelectedTab
         this.selectedItemId = defaultId
         loadFragment(activity.supportFragmentManager, defaultId)
@@ -169,12 +169,39 @@ class EntBottomNavigationView : BottomNavigationView {
     fun refreshBadgeCount() {
         val messageBadge = getOrCreateBadge(navigationDataSource.myMessagesTabIndex)
             ?: return
-        val badgeCount = EntourageApplication.get().badgeCount
         if (badgeCount > 0) {
             messageBadge.isVisible = true
             messageBadge.number = badgeCount
+            ShortcutBadger.applyCount(EntourageApplication.get().applicationContext, badgeCount)
         } else {
             messageBadge.isVisible = false
+            ShortcutBadger.removeCount(EntourageApplication.get().applicationContext)
+        }
+    }
+
+    fun updateBadgeCountForUser(count: Int) {
+        badgeCount = count
+        refreshBadgeCount()
+    }
+
+    companion object {
+        private var instance:EntBottomNavigationView?  = null
+        private var badgeCount = 0
+            private set
+
+        fun increaseBadgeCount() {
+            badgeCount++
+            instance?.refreshBadgeCount()
+        }
+
+        fun decreaseBadgeCount() {
+            badgeCount--
+            instance?.refreshBadgeCount()
+        }
+
+        fun resetBadgeCount() {
+            badgeCount = 0
+            instance?.refreshBadgeCount()
         }
     }
 

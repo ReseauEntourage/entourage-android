@@ -46,7 +46,6 @@ class MyEntouragesAdapter : BaseAdapter() {
             if(!invitationList.contains(it)) {
                 invitationListObject.removeFromInvitationList(it)
                 notifyItemChanged(0)
-                EntourageApplication.get().updateStorageInvitationCount(invitationListObject.invitationList.size)
             }
         }
     }
@@ -62,7 +61,6 @@ class MyEntouragesAdapter : BaseAdapter() {
         if(shouldAddInvitation) {
             invitationListObject.addToInvitationList(invitation)
             notifyItemChanged(0)
-            EntourageApplication.get().updateStorageInvitationCount(invitationListObject.invitationList.size)
         }
     }
 
@@ -76,7 +74,6 @@ class MyEntouragesAdapter : BaseAdapter() {
                } else {
                    invitationListObject.removeFromInvitationList(it)
                    notifyItemChanged(0)
-                   EntourageApplication.get().updateStorageInvitationCount(invitationListObject.invitationList.size)
                }
            }
         }

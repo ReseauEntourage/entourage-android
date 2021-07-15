@@ -269,10 +269,6 @@ class MyEntouragesFragment  : BaseDialogFragment(), BaseViewHolderListener, Load
         isRefreshingInvitations = false
     }
 
-    fun updateUnreadCount(unreadCount:Int?) {
-        EntBus.post(OnUnreadCountUpdate(unreadCount))
-    }
-
     // ----------------------------------
     // EntourageViewHolderListener
     // ----------------------------------

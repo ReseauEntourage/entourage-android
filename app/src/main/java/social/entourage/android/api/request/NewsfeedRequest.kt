@@ -11,7 +11,10 @@ import social.entourage.android.api.model.feed.NewsfeedItem
 /**
  * Created by mihaiionescu on 05/05/16.
  */
-class NewsfeedItemResponse(@field:SerializedName("feeds") var newsfeedItems: List<NewsfeedItem>, @field:SerializedName("unread_count") val unreadCount:Int?)
+class NewsfeedItemResponse(
+    @field:SerializedName("feeds") var newsfeedItems: List<NewsfeedItem>,
+    @field:SerializedName("unread_count") val unreadCount:Int?
+    )
 
 interface NewsfeedRequest {
     @GET("feeds")

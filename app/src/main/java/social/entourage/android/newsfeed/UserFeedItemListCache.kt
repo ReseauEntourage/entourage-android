@@ -4,6 +4,7 @@ import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.navigation.EntBottomNavigationView
 import timber.log.Timber
 import java.io.Serializable
 import java.util.*
@@ -14,11 +15,6 @@ import kotlin.collections.ArrayList
  * Created by mihaiionescu on 20/03/2017.
  */
 class UserFeedItemListCache : Serializable {
-    //cache
-    private var cacheCount = 0
-    private var cacheInvitationCount = 0
-    private var hasChanged = true
-
     // ----------------------------------
     // Attributes
     // ----------------------------------
@@ -48,28 +44,26 @@ class UserFeedItemListCache : Serializable {
             }
             if (feedItemStorage.type == TimestampedObject.ENTOURAGE_CARD && content.isEntourageRelated
                     || feedItemStorage.type == TimestampedObject.TOUR_CARD && content.isTourRelated) {
-                feedItemStorage.badgeCount += if (isAdded) 1 else -1
-                if (feedItemStorage.badgeCount < 0) {
-                    feedItemStorage.badgeCount = 0
-                }
-                hasChanged = true
+                    if(isAdded) {
+                        feedItemStorage.badgeCount++
+                        EntBottomNavigationView.increaseBadgeCount()
+                    } else {
+                        if (feedItemStorage.badgeCount > 0) {
+                            feedItemStorage.badgeCount--
+                            EntBottomNavigationView.decreaseBadgeCount()
+                        }
+                    }
                 return feedItemStorage.badgeCount
             }
         }
         if (isAdded) {
             // none found, add one
             userCache.add(FeedItemCache(content))
-            hasChanged = true
+            EntBottomNavigationView.increaseBadgeCount()
             return 1
         }
+        EntBottomNavigationView.decreaseBadgeCount()
         return -1
-    }
-
-    fun updateInvitationCount(count: Int) {
-        if (count != cacheInvitationCount) {
-            hasChanged = true
-            cacheInvitationCount = count
-        }
     }
 
     fun updateFeedItem(userId: Int, feedItem: FeedItem) {
@@ -78,36 +72,21 @@ class UserFeedItemListCache : Serializable {
         // search for a saved feeditem
         for (feedItemCache in userCache) {
             if (feedItemCache.feedId == feedItem.id && feedItemCache.type == feedItem.type) {
-                hasChanged = hasChanged or feedItemCache.update(feedItem)
+                val deltaNb = feedItemCache.update(feedItem)
+                if(deltaNb>0) EntBottomNavigationView.increaseBadgeCount()
+                else if(deltaNb<0) EntBottomNavigationView.decreaseBadgeCount()
                 return
             }
         }
         if (feedItem.getUnreadMsgNb() > 0) {
             userCache.add(FeedItemCache(feedItem))
-            hasChanged = true
+            EntBottomNavigationView.increaseBadgeCount()
         }
     }
 
     fun clear(userId: Int): Boolean {
         getUserCache(userId).clear()
-        hasChanged = false
-        cacheCount = 0
-        cacheInvitationCount = 0
         return true
-    }
-
-    fun getBadgeCount(userId: Int): Int {
-        if (!hasChanged) {
-            return cacheCount + cacheInvitationCount
-        }
-        Timber.d("old cacheCount=%d", cacheCount)
-        cacheCount = 0
-        hasChanged = false
-        for (feedItem in getUserCache(userId)) {
-            cacheCount += feedItem.badgeCount
-        }
-        Timber.d("new cacheCount=%d", cacheCount)
-        return cacheCount + cacheInvitationCount
     }
 
     // ----------------------------------
@@ -118,28 +97,24 @@ class UserFeedItemListCache : Serializable {
         var feedId: Long
         var badgeCount: Int
 
-        internal constructor(feedItem: FeedItem) {
+        constructor(feedItem: FeedItem) {
             type = feedItem.type
             feedId = feedItem.id
             badgeCount = feedItem.getUnreadMsgNb()
         }
 
-        internal constructor(pushNotificationContent: PushNotificationContent) {
+        constructor(pushNotificationContent: PushNotificationContent) {
             type = if (pushNotificationContent.isEntourageRelated) TimestampedObject.ENTOURAGE_CARD else TimestampedObject.TOUR_CARD
             feedId = pushNotificationContent.joinableId
             badgeCount = 1
         }
 
-        fun update(feedItem: FeedItem): Boolean {
-            var isChanged = false
-            if (feedItem.getUnreadMsgNb() != badgeCount) {
+        fun update(feedItem: FeedItem): Int {
+            val nbChanged = feedItem.getUnreadMsgNb() - badgeCount
+            if (nbChanged!=0) {
                 badgeCount = feedItem.getUnreadMsgNb()
-                isChanged = true
             }
-            if (feedItem.getUnreadMsgNb() != 0) {
-                Timber.d("New unread messages")
-            }
-            return isChanged
+            return nbChanged
         }
 
         companion object {
