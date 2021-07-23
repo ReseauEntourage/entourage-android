@@ -30,7 +30,7 @@ import social.entourage.android.service.EntService
 import social.entourage.android.service.EntService.LocalBinder
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.view.EntSnackbar.make
+import social.entourage.android.tools.view.EntSnackbar
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -285,15 +285,15 @@ class MyEntouragesFragment  : BaseDialogFragment(), BaseViewHolderListener, Load
     }
 
     override fun onNetworkException() {
-        myentourages_layout?.let {make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()}
+        myentourages_layout?.let {EntSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()}
     }
 
     override fun onServerException(throwable: Throwable) {
-        myentourages_layout?.let {make(it, R.string.network_error, Snackbar.LENGTH_LONG).show() }
+        myentourages_layout?.let {EntSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show() }
     }
 
     override fun onTechnicalException(throwable: Throwable) {
-        myentourages_layout?.let { make(it, R.string.technical_error, Snackbar.LENGTH_LONG).show() }
+        myentourages_layout?.let { EntSnackbar.make(it, R.string.technical_error, Snackbar.LENGTH_LONG).show() }
     }
 
     fun removeOldInvitations(invitationList: List<Invitation?>) {

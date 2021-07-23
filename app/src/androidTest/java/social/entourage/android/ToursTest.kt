@@ -2,6 +2,7 @@ package social.entourage.android
 
 
 import androidx.recyclerview.widget.RecyclerView
+import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.action.ViewActions.*
@@ -63,25 +64,29 @@ class ToursTest {
         startTour()
         Thread.sleep(2000)
 
-        bottomBarPlusButton.perform(click())
-        Thread.sleep(1000)
-
-        try {
-            //If EncounterDisclaimerFragment is displayed, validate checkbox and click OK button
-            onView(allOf(withText(R.string.encounter_disclaimer_text), isDisplayed()))
-            onView(allOf(withId(R.id.encounter_disclaimer_checkbox), isDisplayed())).perform(click())
-            onView(allOf(withId(R.id.encounter_disclaimer_ok_button), isDisplayed())).perform(click())
+        if(true) {
+            bottomBarPlusButton.perform(click())
             Thread.sleep(1000)
-        } catch (e: NoMatchingViewException) {
-            //EncounterDisclaimerFragment is not displayed
-        } finally {
-            createEncounter()
-            Thread.sleep(2000)
 
-            stopTour()
+            try {
+                //If EncounterDisclaimerFragment is displayed, validate checkbox and click OK button
+                onView(allOf(withText(R.string.encounter_disclaimer_text), isDisplayed()))
+                onView(allOf(withId(R.id.encounter_disclaimer_checkbox), isDisplayed())).perform(click())
+                onView(allOf(withId(R.id.encounter_disclaimer_ok_button), isDisplayed())).perform(click())
+                Thread.sleep(1000)
+            } catch (e: NoMatchingViewException) {
+                //EncounterDisclaimerFragment is not displayed
+            } finally {
+                createEncounter()
+                Thread.sleep(2000)
 
-            onView(allOf(withText(R.string.tour_freezed))).check(matches(isDisplayed()))
+            }
         }
+        stopTour()
+
+        Thread.sleep(5000)
+        assert(authenticationController.savedTour == null)
+        //not possible to catch the snackbar that display just for a little while
     }
 
     private fun startTour() {
@@ -124,6 +129,7 @@ class ToursTest {
     private fun stopTour() {
         val tourStopButton = onView(allOf(withId(R.id.tour_stop_button), isDisplayed()))
         tourStopButton.perform(click())
+        Thread.sleep(1000)
 
         val confirmStopButton = onView(allOf(withId(R.id.confirmation_end_button), isDisplayed()))
         confirmStopButton.perform(click())
