@@ -16,14 +16,14 @@ object AuthenticationInterceptor : Interceptor {
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
-        if (!request.url().toString().startsWith(BuildConfig.ENTOURAGE_URL)) {
+        if (!request.url.toString().startsWith(BuildConfig.ENTOURAGE_URL)) {
             return chain.proceed(request)
         }
         val authenticationController: AuthenticationController = EntourageApplication.get().components.authenticationController
         val url: HttpUrl = if (authenticationController.isAuthenticated) {
-            request.url().newBuilder().addQueryParameter("token", authenticationController.me?.token).build()
+            request.url.newBuilder().addQueryParameter("token", authenticationController.me?.token).build()
         } else {
-            request.url().newBuilder().build()
+            request.url.newBuilder().build()
         }
         request = request.newBuilder()
                 .header("Accept", "application/json")
@@ -32,8 +32,8 @@ object AuthenticationInterceptor : Interceptor {
                 .header("X-APP-VERSION", BuildConfig.VERSION_FULL_NAME)
                 .url(url).build()
         val response = chain.proceed(request)
-        if (response.code() == 401) {
-            if (response.message().equals("Unauthorized", ignoreCase = true)) {
+        if (response.code == 401) {
+            if (response.message.equals("Unauthorized", ignoreCase = true)) {
                 EntBus.post(OnUnauthorizedEvent())
             }
         }

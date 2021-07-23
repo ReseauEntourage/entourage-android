@@ -2,9 +2,8 @@ package social.entourage.android.api
 
 import android.annotation.SuppressLint
 import androidx.collection.ArrayMap
-import com.google.gson.annotations.SerializedName
-import okhttp3.MediaType
-import okhttp3.RequestBody
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -288,8 +287,7 @@ class OnboardingAPI {
      * Upload Photo
      */
     fun uploadPhotoFile(presignedUrl: String,file:File,listener: (isOk:Boolean) -> Unit) {
-        val mediaType = MediaType.parse("image/jpeg")
-        val requestBody = RequestBody.create(mediaType, file)
+        val requestBody = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
         val request = okhttp3.Request.Builder()
                 .url(presignedUrl)
                 .put(requestBody)

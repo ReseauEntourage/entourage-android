@@ -2,17 +2,17 @@
 
 buildscript {
     ext {
-        kotlinVersion = '1.5.10'
+        kotlinVersion = '1.5.21'
     }
 
     repositories {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.1'
+        classpath 'com.android.tools.build:gradle:4.2.2'
         classpath 'com.google.gms:google-services:4.3.8'
         classpath 'com.google.firebase:firebase-plugins:2.0.0'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.7.0'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.7.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "com.google.android.gms:oss-licenses-plugin:0.10.4"
         classpath 'com.google.firebase:perf-plugin:1.4.0'  // Performance Monitoring plugin
@@ -31,6 +31,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter() //needed for com.theartofdev.edmodo:android-image-cropper
+        jcenter() //needed for com.google.android.libraries.places:places-compat:2.4.0
     }
 }

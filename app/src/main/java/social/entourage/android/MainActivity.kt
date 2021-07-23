@@ -14,7 +14,6 @@ import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessaging
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.activity_main.*
-import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
@@ -48,14 +47,12 @@ import social.entourage.android.tour.TourInformationFragment.OnTourInformationFr
 import social.entourage.android.tour.choice.ChoiceFragment
 import social.entourage.android.tour.choice.ChoiceFragment.OnChoiceFragmentFinish
 import social.entourage.android.tour.confirmation.TourEndConfirmationFragment
-import social.entourage.android.tour.confirmation.TourEndConfirmationFragment.Companion.newInstance
 import social.entourage.android.tour.encounter.CreateEncounterActivity
 import social.entourage.android.tour.encounter.EncounterDisclaimerFragment
 import social.entourage.android.tour.encounter.ReadEncounterActivity
 import social.entourage.android.user.AvatarUploadPresenter
 import social.entourage.android.user.AvatarUploadView
 import social.entourage.android.user.UserFragment
-import social.entourage.android.user.UserFragment.Companion.newInstance
 import social.entourage.android.user.edit.UserEditFragment
 import social.entourage.android.user.edit.photo.PhotoChooseInterface
 import social.entourage.android.user.edit.photo.PhotoEditFragment
@@ -110,12 +107,12 @@ class MainActivity : BaseSecuredActivity(),
 
     private fun checkShowInfo() {
         //Check to show Action info
-        val isShowFirstLogin = get().sharedPreferences.getBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,false)
-        val noMoreDemand = get().sharedPreferences.getBoolean(EntourageApplication.KEY_NO_MORE_DEMAND,false)
-        var nbOfLaunch = get().sharedPreferences.getInt(EntourageApplication.KEY_NB_OF_LAUNCH,0)
+        val isShowFirstLogin = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,false)
+        val noMoreDemand = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_NO_MORE_DEMAND,false)
+        var nbOfLaunch = EntourageApplication.get().sharedPreferences.getInt(EntourageApplication.KEY_NB_OF_LAUNCH,0)
 
         nbOfLaunch += 1
-        get().sharedPreferences.edit()
+        EntourageApplication.get().sharedPreferences.edit()
                 .putInt(EntourageApplication.KEY_NB_OF_LAUNCH,nbOfLaunch)
                 .apply()
 
@@ -125,7 +122,7 @@ class MainActivity : BaseSecuredActivity(),
         }
 
         if (isShowFirstLogin || hasToShow) {
-            val sharedPreferences = get().sharedPreferences
+            val sharedPreferences = EntourageApplication.get().sharedPreferences
             sharedPreferences.edit().putBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,false).apply()
             if (authenticationController.me?.goal == null || authenticationController.me?.goal?.length == 0) {
                 AlertDialog.Builder(this)
@@ -137,7 +134,7 @@ class MainActivity : BaseSecuredActivity(),
                             showEditProfileAction()
                         }
                         .setNeutralButton(R.string.login_info_pop_action_noMore) { _,_ ->
-                            get().sharedPreferences.edit()
+                            EntourageApplication.get().sharedPreferences.edit()
                                     .putBoolean(EntourageApplication.KEY_NO_MORE_DEMAND,true)
                                     .apply()
                         }
@@ -311,7 +308,7 @@ class MainActivity : BaseSecuredActivity(),
     }
 
     private fun initializePushNotifications() {
-        val notificationsEnabled = get().sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, true)
+        val notificationsEnabled = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, true)
         if (notificationsEnabled) {
             FirebaseMessaging.getInstance().token.addOnSuccessListener { token -> presenter.updateApplicationInfo(token) }
         } else {
@@ -328,7 +325,7 @@ class MainActivity : BaseSecuredActivity(),
     public override fun logout() {
         newsfeedFragment?.saveOngoingTour()
         //remove user phone
-        val sharedPreferences = get().sharedPreferences
+        val sharedPreferences = EntourageApplication.get().sharedPreferences
         val editor = sharedPreferences.edit()
         authenticationController.me?.let { me ->
             (sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, HashSet()) as HashSet<String?>?)?.let { loggedNumbers ->
@@ -366,7 +363,7 @@ class MainActivity : BaseSecuredActivity(),
                     showMyEntourages()
                 }
             }
-            get().removePushNotification(message)
+            EntourageApplication.get().removePushNotification(message)
         } else {
             // Handle the deep link
             handleCurrentDeepLink(this)
@@ -378,7 +375,7 @@ class MainActivity : BaseSecuredActivity(),
     fun userViewRequested(event: OnUserViewRequestedEvent) {
         logEvent(AnalyticsEvents.EVENT_FEED_USERPROFILE)
         try {
-            val fragment = newInstance(event.userId)
+            val fragment = UserFragment.newInstance(event.userId)
             fragment.show(supportFragmentManager, UserFragment.TAG)
         } catch (e: IllegalStateException) {
             Timber.w(e)
@@ -442,8 +439,9 @@ class MainActivity : BaseSecuredActivity(),
 
     override fun showStopTourActivity(tour: Tour) {
         newsfeedFragment?.pauseTour(tour)
-        val tourEndConfirmationFragment = newInstance(tour)
-        tourEndConfirmationFragment.show(supportFragmentManager, TourEndConfirmationFragment.TAG)
+        TourEndConfirmationFragment
+            .newInstance(tour)
+            .show(supportFragmentManager, TourEndConfirmationFragment.TAG)
     }
 
     override fun closeChoiceFragment(fragment: ChoiceFragment, tour: Tour?) {
@@ -549,9 +547,9 @@ class MainActivity : BaseSecuredActivity(),
 
     private fun removePushNotification(content: PushNotificationContent, contentType: String) {
         if (content.isTourRelated) {
-            get().removePushNotification(content.joinableId, TimestampedObject.TOUR_CARD, content.userId, contentType)
+            EntourageApplication.get().removePushNotification(content.joinableId, TimestampedObject.TOUR_CARD, content.userId, contentType)
         } else if (content.isEntourageRelated) {
-            get().removePushNotification(content.joinableId, TimestampedObject.ENTOURAGE_CARD, content.userId, contentType)
+            EntourageApplication.get().removePushNotification(content.joinableId, TimestampedObject.ENTOURAGE_CARD, content.userId, contentType)
         }
     }
 
