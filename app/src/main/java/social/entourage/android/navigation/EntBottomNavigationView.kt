@@ -9,6 +9,7 @@ import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.FragmentManager
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -58,16 +59,14 @@ class EntBottomNavigationView : BottomNavigationView {
     }
 
     private fun configurePlusButton() {
-        val plusIcon = getPlusIconIv()
-        scaleView(plusIcon, 1.5f)
-        plusIcon.setColorFilter(ContextCompat.getColor(context, R.color.accent))
-    }
-
-    private fun getPlusIconIv(): ImageView {
         val menuView = getChildAt(0) as BottomNavigationMenuView
         val plusItemId = menu.getItem(2).itemId
-        val plusItem = menuView.findViewById<View>(plusItemId)
-        return plusItem.findViewById(com.google.android.material.R.id.icon)
+        menuView
+            .findViewById<BottomNavigationItemView>(plusItemId)
+            .findViewById<ImageView>(com.google.android.material.R.id.navigation_bar_item_icon_view).let { plusIcon ->
+            scaleView(plusIcon, 1.5f)
+            plusIcon.setColorFilter(ContextCompat.getColor(context, R.color.accent))
+        }
     }
 
     private fun scaleView(view: View, scale: Float) {
