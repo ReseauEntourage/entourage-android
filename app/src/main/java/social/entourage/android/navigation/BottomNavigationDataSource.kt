@@ -17,7 +17,6 @@ import social.entourage.android.newsfeed.v2.NewHomeFeedFragment
  */
 class BottomNavigationDataSource {
     private val navigationFragmentTags = SparseArray<String>()
-    var isEngaged = false
 
     val defaultSelectedTab: Int
         @IdRes get() = R.id.bottom_bar_newsfeed
@@ -26,8 +25,6 @@ class BottomNavigationDataSource {
         @IdRes get() = R.id.bottom_bar_newsfeed
     val myMessagesTabIndex
         @IdRes get() = R.id.bottom_bar_mymessages
-    val agirTabIndex
-        @IdRes get()= R.id.bottom_bar_plus
     val actionMenuId
         @IdRes get() = R.id.bottom_bar_plus
     val guideTabIndex
@@ -46,10 +43,8 @@ class BottomNavigationDataSource {
 
     fun getFragmentAtIndex(menuId: Int): Fragment? {
         return when (menuId) {
-            R.id.bottom_bar_newsfeed -> {
-                NewHomeFeedFragment()
-            }
-            R.id.bottom_bar_guide -> GuideHubFragment()//GuideMapFragment()
+            R.id.bottom_bar_newsfeed -> NewHomeFeedFragment()
+            R.id.bottom_bar_guide -> GuideHubFragment()
             R.id.bottom_bar_plus ->  PlusFragment()
             R.id.bottom_bar_mymessages -> MyEntouragesFragment()
             R.id.bottom_bar_profile -> MainProfileFragment()

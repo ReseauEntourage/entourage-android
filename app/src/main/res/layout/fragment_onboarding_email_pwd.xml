@@ -54,7 +54,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_email_tv_info2" />
+        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_email_tv_info2"
+        android:autofillHints="emailAddress" />
 
     <TextView
         android:id="@+id/ui_onboard_email_tv_info"
@@ -94,4 +95,18 @@
         app:layout_constraintStart_toStartOf="@+id/ui_onboard_email_pwd_et_mail">
 
     </FrameLayout>
+
+    <TextView
+        android:id="@+id/error_message_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textSize="14sp"
+        android:textColor="@color/tomato"
+        android:text="@string/user_edit_profile_invalid_email"
+        app:layout_constraintStart_toStartOf="@id/ui_onboard_email_pwd_et_mail"
+        app:layout_constraintTop_toBottomOf="@id/ui_onboard_email_tv_info"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

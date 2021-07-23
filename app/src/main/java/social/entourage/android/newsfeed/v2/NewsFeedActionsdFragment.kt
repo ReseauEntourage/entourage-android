@@ -98,9 +98,6 @@ open class NewsFeedActionsFragment : BaseNewsfeedFragment(), EntourageServiceLis
             fragment_map_filter_button?.visibility = View.GONE
             ui_tv_title?.text = getString(R.string.home_title_events)
         }
-//        if (isActionSelected) {
-//            (requireActivity() as? MainActivity)?.checkOnboarding()
-//        }
     }
 
     override fun updateFilterButtonText() {
@@ -123,7 +120,7 @@ open class NewsFeedActionsFragment : BaseNewsfeedFragment(), EntourageServiceLis
     open fun onUserChoiceChanged(event: OnUserChoiceEvent) {}
 
     @Subscribe
-    open fun onUserInfoUpdated(event: OnUserInfoUpdatedEvent?) {
+    open fun onUserInfoUpdated(event: OnUserInfoUpdatedEvent) {
         if (newsfeedAdapter == null) return
         val meAsAuthor = EntourageApplication.me(context)?.asTourAuthor() ?: return
         val dirtyList: MutableList<TimestampedObject> = ArrayList()

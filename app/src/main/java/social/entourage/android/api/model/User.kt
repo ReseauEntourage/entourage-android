@@ -45,6 +45,8 @@ class User : Serializable {
 
     @SerializedName("engaged")
     var isEngaged:Boolean = false
+    @SerializedName("unread_count")
+    var unreadCount:Int? = null
 
     // ----------------------------------
     // ATTRIBUTES (Not Serialized)
@@ -183,16 +185,6 @@ class User : Serializable {
 
     val isUserTypeNeighbour: Boolean
         get() = USER_GOAL_NEIGHBOUR.equals(goal, ignoreCase = true)
-
-//    val isEngaged:Boolean
-//        get() {
-//            if(isPro) return true
-//            if(organization !=null) return true
-//            if(roles?.isNotEmpty()== true) return true
-//            if(partner != null) return true
-//            if(stats?.isEngaged==true) return true
-//            return false
-//        }
 
     // ----------------------------------
     // User Conversation

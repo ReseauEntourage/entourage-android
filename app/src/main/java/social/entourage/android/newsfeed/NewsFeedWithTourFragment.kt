@@ -267,7 +267,7 @@ class NewsFeedWithTourFragment : NewsFeedFragment(), TourServiceListener {
     }
 
     @Subscribe
-    override fun onUserInfoUpdated(event: Events.OnUserInfoUpdatedEvent?) {
+    override fun onUserInfoUpdated(event: Events.OnUserInfoUpdatedEvent) {
         super.onUserInfoUpdated(event)
     }
     @Subscribe

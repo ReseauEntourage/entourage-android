@@ -1,6 +1,8 @@
 package social.entourage.android.user
 
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject
@@ -12,8 +14,7 @@ class AvatarUploadRepository @Inject constructor(private val client: OkHttpClien
     }
 
     fun uploadFile(file: File, presignedUrl: String) {
-        val mediaType = MediaType.parse("image/jpeg")
-        val requestBody = RequestBody.create(mediaType, file)
+        val requestBody = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
         val request = Request.Builder()
                 .url(presignedUrl)
                 .put(requestBody)

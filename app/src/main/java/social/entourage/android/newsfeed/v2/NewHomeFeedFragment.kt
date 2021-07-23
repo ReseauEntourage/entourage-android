@@ -242,7 +242,6 @@ class NewHomeFeedFragment : BaseNewsfeedFragment(), BackPressable {
 
     @Subscribe
     fun checkIntentAction(event: Events.OnCheckIntentActionEvent) {
-        Timber.d("******** ici check ontent actionEvent Start -> ${event.action}")
         if (activity == null) {
             Timber.w("No activity found")
             return

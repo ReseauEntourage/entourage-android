@@ -31,6 +31,7 @@ import social.entourage.android.service.EntService.LocalBinder
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
+import social.entourage.android.tools.view.EntSnackbar.make
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -269,10 +270,6 @@ class MyEntouragesFragment  : BaseDialogFragment(), BaseViewHolderListener, Load
         isRefreshingInvitations = false
     }
 
-    fun updateUnreadCount(unreadCount:Int?) {
-        EntBus.post(OnUnreadCountUpdate(unreadCount))
-    }
-
     // ----------------------------------
     // EntourageViewHolderListener
     // ----------------------------------
@@ -302,6 +299,12 @@ class MyEntouragesFragment  : BaseDialogFragment(), BaseViewHolderListener, Load
 
     fun addInvitation(it: Invitation) {
         entouragesAdapter.addInvitation(it)
+    }
+
+    fun showErrorMessage() {
+        activity?.window?.decorView?.rootView?.let {
+            make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()
+        }
     }
 
     private inner class ServiceConnection : android.content.ServiceConnection {

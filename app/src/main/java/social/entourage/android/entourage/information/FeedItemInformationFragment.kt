@@ -260,6 +260,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         } else {
             // inform the app to refresh the my entourages feed
             EntBus.post(OnMyEntouragesForceRefresh(feedItem))
+            EntourageApplication.get(context).updateBadgeCountForFeedItem(feedItem)
             try {
                 dismiss()
             } catch (e: IllegalStateException) {
