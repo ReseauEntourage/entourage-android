@@ -101,6 +101,7 @@ class MainActivity : BaseSecuredActivity(),
             //initialize the push notifications
             initializePushNotifications()
             updateAnalyticsInfo()
+            authenticationController.me?.unreadCount?.let { bottomBar?.updateBadgeCountForUser(it)}
         }
         checkShowInfo()
     }

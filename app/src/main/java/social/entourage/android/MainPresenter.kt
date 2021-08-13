@@ -247,8 +247,7 @@ import javax.inject.Inject
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
                     if (authenticationController.isAuthenticated) {
-                        val responseBody = response.body()
-                        if (responseBody != null) authenticationController.saveUser(responseBody.user)
+                        response.body()?.user?.let {user-> authenticationController.saveUser(user) }
                     }
                 }
             }
