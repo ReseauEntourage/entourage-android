@@ -1,12 +1,11 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_light"
     android:orientation="vertical"
-    tools:context="social.entourage.android.MainActivity"
-    android:background="@color/background_light">
+    tools:context="social.entourage.android.MainActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,8 +21,8 @@
                 android:layout_height="wrap_content"
                 app:entourageTitle="@string/activity_create_encounter_title"
                 app:entourageTitleAction="@string/validate"
-                app:entourageTitleCloseDrawableTint="@color/accent"
-                app:entourageTitleCloseDrawable="@drawable/ic_close_black_24dp"/>
+                app:entourageTitleCloseDrawable="@drawable/ic_close_black_24dp"
+                app:entourageTitleCloseDrawableTint="@color/accent" />
 
             <RelativeLayout
                 android:id="@+id/create_encounter_position_layout"
@@ -40,7 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/empty_description"
-                    app:srcCompat="@drawable/ic_map_pin_grey"/>
+                    app:srcCompat="@drawable/ic_map_pin_grey" />
 
                 <ImageView
                     android:id="@+id/create_encounter_position_arrow"
@@ -49,7 +48,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerHorizontal="true"
                     android:contentDescription="@string/empty_description"
-                    app:srcCompat="@drawable/arrow_grey"/>
+                    app:srcCompat="@drawable/arrow_grey" />
 
                 <TextView
                     android:id="@+id/create_encounter_location_description"
@@ -61,42 +60,42 @@
                     android:layout_toRightOf="@+id/create_encounter_position_pin"
                     android:text="@string/entourage_create_position_description"
                     android:textColor="@color/greyish"
-                    android:textSize="@dimen/entourage_font_medium"/>
+                    android:textSize="@dimen/entourage_font_medium" />
 
                 <TextView
                     android:id="@+id/create_encounter_position"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/create_encounter_location_description"
                     android:layout_toStartOf="@+id/create_encounter_position_arrow"
+                    android:layout_toEndOf="@+id/create_encounter_location_description"
                     android:gravity="end"
-                    android:paddingEnd="0dp"
                     android:paddingStart="5dp"
+                    android:paddingEnd="0dp"
                     android:textColor="@color/accent"
-                    android:textSize="@dimen/entourage_font_medium"/>
+                    android:textSize="@dimen/entourage_font_medium" />
 
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/create_encounter_person"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/create_encounter_person"
                 android:layout_below="@+id/create_encounter_position_layout">
 
                 <TextView
                     android:id="@+id/encounter_author"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
-                    android:paddingEnd="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
+                    android:layout_marginBottom="10dp"
                     android:paddingStart="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingRight="10dp"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/greyish_brown"
-                    android:textSize="@dimen/entourage_font_medium"/>
+                    android:textSize="@dimen/entourage_font_medium" />
 
                 <EditText
                     android:id="@+id/edittext_street_person_name"
@@ -109,20 +108,20 @@
                     android:padding="10dp"
                     android:textCursorDrawable="@drawable/bg_cursor_yellow"
                     android:textIsSelectable="false"
-                    android:textSize="@dimen/entourage_font_medium"/>
+                    android:textSize="@dimen/entourage_font_medium" />
 
                 <TextView
                     android:id="@+id/encounter_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/edittext_street_person_name"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/greyish_brown"
-                    android:textSize="@dimen/entourage_font_medium"/>
+                    android:textSize="@dimen/entourage_font_medium" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -140,33 +139,33 @@
                     android:hint="@string/encounter_hint_notes"
                     android:inputType="textMultiLine"
                     android:lines="5"
-                    android:paddingBottom="10dp"
-                    android:paddingEnd="45dp"
                     android:paddingStart="10dp"
                     android:paddingTop="10dp"
+                    android:paddingEnd="45dp"
+                    android:paddingBottom="10dp"
                     android:textCursorDrawable="@drawable/bg_cursor_yellow"
-                    android:textSize="@dimen/entourage_font_medium"/>
+                    android:textSize="@dimen/entourage_font_medium" />
 
                 <ImageButton
                     android:id="@+id/button_record"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignEnd="@+id/edittext_message"
-                    android:layout_marginEnd="10dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@string/encounter_voice_message_button"
-                    app:srcCompat="@drawable/ic_action_record_sound"/>
+                    app:srcCompat="@drawable/ic_action_record_sound" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@+id/edittext_message"
-                    android:background="@color/greyish"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_marginTop="-10dp"
-                    android:alpha="0.5"/>
+                    android:layout_marginRight="10dp"
+                    android:alpha="0.5"
+                    android:background="@color/greyish" />
 
             </RelativeLayout>
 

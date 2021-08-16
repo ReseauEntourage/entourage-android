@@ -117,7 +117,7 @@ class CreateEncounterActivity : BaseSecuredActivity(), LocationFragment.OnFragme
     private fun createEncounter() {
         val personName = edittext_street_person_name?.text.toString().trim { it <= ' ' }
         val message = edittext_message?.text.toString().trim { it <= ' ' }
-        if (message != "" && personName != "") {
+        if (personName != "") {
             showProgressDialog(if (editedEncounter == null) R.string.creating_encounter else R.string.updating_encounter)
             editedEncounter?.let {
                     it.streetPersonName = personName
@@ -128,11 +128,7 @@ class CreateEncounterActivity : BaseSecuredActivity(), LocationFragment.OnFragme
                         presenter.createEncounter(message, personName)
                     }
         } else {
-            if (personName == "") {
-                Toast.makeText(applicationContext, R.string.encounter_empty_name, Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(applicationContext, R.string.encounter_empty_fields, Toast.LENGTH_SHORT).show()
-            }
+            Toast.makeText(applicationContext, R.string.encounter_empty_name, Toast.LENGTH_SHORT).show()
         }
     }
 
