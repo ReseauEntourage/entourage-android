@@ -8,9 +8,9 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.text.format.DateFormat
-import android.widget.Toast
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.compat.Place
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_encounter_create.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.EntourageComponent
@@ -22,6 +22,7 @@ import social.entourage.android.api.tape.Events.OnEncounterCreated
 import social.entourage.android.api.tape.Events.OnEncounterUpdated
 import social.entourage.android.location.LocationFragment
 import social.entourage.android.tools.EntBus
+import social.entourage.android.tools.view.EntSnackbar
 import timber.log.Timber
 import java.io.IOException
 import java.lang.ref.WeakReference
@@ -128,7 +129,7 @@ class CreateEncounterActivity : BaseSecuredActivity(), LocationFragment.OnFragme
                         presenter.createEncounter(message, personName)
                     }
         } else {
-            Toast.makeText(applicationContext, R.string.encounter_empty_name, Toast.LENGTH_SHORT).show()
+            create_encounter_layout?.let {EntSnackbar.make(it, R.string.encounter_empty_name, Snackbar.LENGTH_SHORT).show()}
         }
     }
 
@@ -142,7 +143,7 @@ class CreateEncounterActivity : BaseSecuredActivity(), LocationFragment.OnFragme
         try {
             startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE)
         } catch (e: ActivityNotFoundException) {
-            Toast.makeText(applicationContext, getString(R.string.encounter_voice_message_not_supported), Toast.LENGTH_SHORT).show()
+            create_encounter_layout?.let {EntSnackbar.make(it,  R.string.encounter_voice_message_not_supported, Snackbar.LENGTH_SHORT).show()}
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_NOT_SUPPORTED)
         }
     }
@@ -156,36 +157,36 @@ class CreateEncounterActivity : BaseSecuredActivity(), LocationFragment.OnFragme
 
     fun onCreateEncounterFinished(errorMessage: String?, encounterResponse: Encounter?) {
         dismissProgressDialog()
-        val message: String
+        val messageId: Int
         if (errorMessage == null && encounterResponse!= null) {
+            messageId = R.string.create_encounter_success
             authenticationController.incrementUserEncountersCount()
-            message = getString(R.string.create_encounter_success)
             EntBus.post(OnEncounterCreated(encounterResponse))
-            finish()
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_CREATE_ENCOUNTER_OK)
+            finish()
         } else {
-            message = getString(R.string.create_encounter_failure)
-            Timber.e(message)
+            messageId = R.string.create_encounter_failure
+            Timber.e(getString(messageId))
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_CREATE_ENCOUNTER_FAILED)
         }
-        Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
+        create_encounter_layout?.let {EntSnackbar.make(it, messageId, Snackbar.LENGTH_LONG).show()}
     }
 
     fun onUpdatingEncounterFinished(errorMessage: String?, encounterResponse: Encounter?) {
         dismissProgressDialog()
-        val message: String
+        val messageId: Int
         if (errorMessage == null) {
             authenticationController.incrementUserEncountersCount()
-            message = getString(R.string.update_encounter_success)
+            messageId = R.string.update_encounter_success
             editedEncounter?.let {EntBus.post(OnEncounterUpdated(it))}
             finish()
             //EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_OK);
         } else {
-            message = getString(R.string.update_encounter_failure)
-            Timber.e(message)
+            messageId = R.string.update_encounter_failure
+            Timber.e(getString(messageId))
             //EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_FAILED);
         }
-        Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
+        create_encounter_layout?.let {EntSnackbar.make(it,  messageId, Snackbar.LENGTH_LONG).show()}
     }
 
     // ----------------------------------

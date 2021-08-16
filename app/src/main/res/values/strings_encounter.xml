@@ -4,7 +4,7 @@
     <string name="activity_read_encounter_title">COMPTE-RENDU</string>
     <string name="activity_create_encounter_title">RENCONTRE</string>
     <string name="encounter_hint_person_name">Nom de la personne*</string>
-    <string name="encounter_hint_notes">Détaillez votre rencontre</string>
+    <string name="encounter_hint_notes">Détaillez votre rencontre\n\n(Vous pouvez utiliser la reconnaissance vocale)</string>
     <string name="encounter_label_person_name_and">%1$s et</string>
     <string name="encounter_encountered">se sont rencontrés ici le %1$s</string>
     <string name="create_encounter_failure">Echec de la création de rencontre</string>

@@ -1,11 +1,13 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_light"
     android:orientation="vertical"
-    tools:context="social.entourage.android.MainActivity">
+    android:id="@+id/create_encounter_layout"
+    tools:context="social.entourage.android.tour.encounter.CreateEncounterActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -173,4 +175,4 @@
 
     </ScrollView>
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
