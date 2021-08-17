@@ -24,10 +24,10 @@ class ReadPoiPresenter @Inject constructor(private val fragment: ReadPoiFragment
         val call = poiRequest.getPoiDetail(poiUuid)
         call.enqueue(object : Callback<PoiDetailResponse> {
             override fun onResponse(call: Call<PoiDetailResponse>, response: Response<PoiDetailResponse>) {
-                response.body()?.let {
+                response.body()?.poi?.let { poi ->
                     if (response.isSuccessful) {
-                        it.poi.isSoliguide = it.poi.source == "soliguide"
-                        displayPoi(it.poi)
+                        poi.isSoliguide = poi.source == "soliguide"
+                        displayPoi(poi)
                         return
                     }
                 }
