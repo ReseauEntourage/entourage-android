@@ -1,12 +1,10 @@
 package social.entourage.android.tools.view.countrycodepicker
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.Typeface
-import android.os.Build
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.telephony.TelephonyManager
 import android.util.AttributeSet
@@ -110,7 +108,6 @@ class CountryCodePicker : RelativeLayout {
         init(attrs)
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
         init(attrs)
     }
@@ -165,15 +162,15 @@ class CountryCodePicker : RelativeLayout {
 
             //default country
             mDefaultCountryNameCode = a.getString(R.styleable.CountryCodePicker_ccp_defaultNameCode)
-            if (!mDefaultCountryNameCode.isNullOrEmpty()) {
-                val temp = mDefaultCountryNameCode!!.trim { it <= ' ' }
-                if (temp.isNotEmpty()) {
-                    setDefaultCountryUsingNameCode(mDefaultCountryNameCode)
-                    if (mDefaultCountryNameCode != null) {
+            mDefaultCountryNameCode?.let { nameCode ->
+                if (nameCode.isNotEmpty()) {
+                    val temp = nameCode.trim { it <= ' ' }
+                    if (temp.isNotEmpty()) {
+                        setDefaultCountryUsingNameCode(nameCode)
                         selectedCountry = defaultCountry
+                    } else {
+                        mDefaultCountryNameCode = null
                     }
-                } else {
-                    mDefaultCountryNameCode = null
                 }
             }
 
@@ -225,7 +222,7 @@ class CountryCodePicker : RelativeLayout {
             mSetCountryByTimeZone = a.getBoolean(R.styleable.CountryCodePicker_ccp_setCountryByTimeZone, true)
 
             // Set to default phone code if no country name code set in attribute.
-            if (mDefaultCountryNameCode == null || mDefaultCountryNameCode!!.isEmpty()) {
+            if (mDefaultCountryNameCode.isNullOrEmpty()) {
                 setDefaultCountryFlagAndCode()
             }
         } catch (e: Exception) {
@@ -281,12 +278,14 @@ class CountryCodePicker : RelativeLayout {
             preferredCountries = null
         } else {
             val localCountryList: MutableList<Country> = ArrayList()
-            for (nameCode in mCountryPreference!!.split(",".toRegex()).toTypedArray()) {
-                val country: Country? = CountryList.getByNameCodeFromCustomCountries(context, customCountries,
-                        nameCode)
-                if (country != null) {
-                    if (!isAlreadyInList(country, localCountryList)) { //to avoid duplicate entry of country
-                        localCountryList.add(country)
+            mCountryPreference?.let {
+                for (nameCode in it.split(",".toRegex()).toTypedArray()) {
+                    val country: Country? = CountryList.getByNameCodeFromCustomCountries(context, customCountries,
+                            nameCode)
+                    if (country != null) {
+                        if (!isAlreadyInList(country, localCountryList)) { //to avoid duplicate entry of country
+                            localCountryList.add(country)
+                        }
                     }
                 }
             }
@@ -306,11 +305,13 @@ class CountryCodePicker : RelativeLayout {
             customCountries = null
         } else {
             val localCountryList: MutableList<Country> = ArrayList()
-            for (nameCode in customMasterCountries!!.split(",".toRegex()).toTypedArray()) {
-                val country: Country? = CountryList.getByNameCodeFromAllCountries(context, nameCode)
-                if (country != null) {
-                    if (!isAlreadyInList(country, localCountryList)) { //to avoid duplicate entry of country
-                        localCountryList.add(country)
+            customMasterCountries?.let {
+                for (nameCode in it.split(",".toRegex()).toTypedArray()) {
+                    val country: Country? = CountryList.getByNameCodeFromAllCountries(context, nameCode)
+                    if (country != null) {
+                        if (!isAlreadyInList(country, localCountryList)) { //to avoid duplicate entry of country
+                            localCountryList.add(country)
+                        }
                     }
                 }
             }
@@ -489,8 +490,6 @@ class CountryCodePicker : RelativeLayout {
 
         constructor() : super()
 
-        //TODO solve it! support for android kitkat
-        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         constructor(countryCode: String?) : super(countryCode)
     }
 

@@ -1,6 +1,29 @@
----
 format_version: 1.3.0
-default_step_lib_source: 'https://github.com/bitrise-io/bitrise-steplib.git'
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: ""
+app:
+  envs:
+  - GRADLE_BUILD_FILE_PATH: build.gradle
+    opts:
+      is_expand: false
+  - GRADLE_TASK: assembleRelease
+    opts:
+      is_expand: false
+  - GRADLEW_PATH: ./gradlew
+    opts:
+      is_expand: false
+  - GRADLE_TASK_TEST: 'testPreprodDebugUnitTest '
+    opts:
+      is_expand: false
+  - GRADLE_TASK_LINT: 'lintEntourageProdRelease '
+    opts:
+      is_expand: false
+  - JAVA_OPTS: -Xms512m -Xmx2048m
+    opts:
+      is_expand: false
+  - GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"
+    opts:
+      is_expand: false
 trigger_map:
 - push_branch: develop
   workflow: dev_entourage
@@ -8,7 +31,64 @@ trigger_map:
   workflow: dev_entourage
 workflows:
   dev_entourage:
+    before_run:
+    - prepare_workflow
+    envs:
+    - GRADLE_TASK: assembleEntourageStagingRelease
+      opts:
+        is_expand: false
     steps:
+    - gradle-runner:
+        is_always_run: true
+        inputs:
+        - apk_file_include_filter: ""
+        - app_file_include_filter: '*.apk'
+        - gradle_options: --stacktrace
+        - gradle_task: $GRADLE_TASK
+    - deploy-to-bitrise-io: {}
+    - post-jira-comment-with-build-details:
+        inputs:
+        - base_url: $JIRA_BASE_URL
+        - api_token: $JIRA_API_TOKEN
+        - user_name: $JIRA_USER_EMAIL
+        - issue_keys: $JIRA_ISSUE_KEYS
+    - slack:
+        inputs:
+        - webhook_url: ""
+        - from_username: Bitrise
+        - from_username_on_error: Bitrise
+        - message: |-
+            New Entourage DEV android build is available: $BITRISE_BUILD_NUMBER  here:
+            $BITRISE_APP_URL
+        - message_on_error: 'Oups, build has failed for Entourage android... @here '
+        - icon_url: ""
+        - icon_url_on_error: ""
+        - pretext_on_error: '*Entourage Build Failed!*'
+        - pretext: '*Build Succeeded!* (Entourage dev only)'
+        - fields: |
+            App|${BITRISE_APP_TITLE}
+            Branch|${BITRISE_GIT_BRANCH}
+            Workflow|${BITRISE_TRIGGERED_WORKFLOW_ID}
+            Jira|<${JIRA_BASE_URL}browse/${JIRA_ISSUE_KEYS}|${JIRA_ISSUE_KEYS}>
+        - api_token: $SLACK__BOT_API_TOKEN
+        - channel: '#androiddev'
+    - cache-push: {}
+  linter_entourage:
+    before_run:
+    - prepare_workflow
+    steps:
+    - gradle-runner:
+        inputs:
+        - apk_file_include_filter: ""
+        - app_file_include_filter: '*.apk'
+        - gradle_task: assembleDebug
+        - gradle_options: --stacktrace
+    - android-lint@0: {}
+  prepare_workflow:
+    steps:
+    - script@1:
+        inputs:
+        - content: "#!/usr/bin/env bash\n# fail if any commands fails\nset -e\n# debug log\nset -x\n\n# switching to JAVA 11\nsudo update-alternatives --set javac /usr/lib/jvm/java-11-openjdk-amd64/bin/javac\nsudo update-alternatives --set java /usr/lib/jvm/java-11-openjdk-amd64/bin/java\n   \nexport JAVA_HOME='/usr/lib/jvm/java-11-openjdk-amd64'\nenvman add --key JAVA_HOME --value '/usr/lib/jvm/java-11-openjdk-amd64'"
     - activate-ssh-key:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
     - git-clone: {}
@@ -59,69 +139,34 @@ workflows:
                 '--value', issue_keys
               )
             end
-        - gemfile_content: ''
+        - gemfile_content: ""
     - cache-pull: {}
     - install-missing-android-tools: {}
-    - gradle-runner:
-        inputs:
-        - apk_file_include_filter: ''
-        - app_file_include_filter: '*.apk'
-        - gradle_options: '--stacktrace'
-        - gradle_task: $GRADLE_TASK
-    - deploy-to-bitrise-io: {}
-    - post-jira-comment-with-build-details:
-        inputs:
-        - base_url: $JIRA_BASE_URL
-        - api_token: $JIRA_API_TOKEN
-        - user_name: $JIRA_USER_EMAIL
-        - issue_keys: $JIRA_ISSUE_KEYS
-    - slack:
-        inputs:
-        - webhook_url: ''
-        - from_username: Bitrise
-        - from_username_on_error: Bitrise
-        - message: >-
-            New Entourage DEV android build is available: $BITRISE_BUILD_NUMBER 
-            here:
-
-            $BITRISE_APP_URL
-        - message_on_error: 'Oups, build has failed for Entourage android... @here '
-        - icon_url: ''
-        - icon_url_on_error: ''
-        - pretext_on_error: '*Entourage Build Failed!*'
-        - pretext: '*Build Succeeded!* (Entourage dev only)'
-        - fields: |
-            App|${BITRISE_APP_TITLE}
-            Branch|${BITRISE_GIT_BRANCH}
-            Workflow|${BITRISE_TRIGGERED_WORKFLOW_ID}
-            Jira|<${JIRA_BASE_URL}browse/${JIRA_ISSUE_KEYS}|${JIRA_ISSUE_KEYS}>
-        - api_token: $SLACK__BOT_API_TOKEN
-        - channel: '#androiddev'
-    - cache-push: {}
-    envs:
-    - opts:
-        is_expand: false
-      GRADLE_TASK: assembleEntourageStagingRelease
   prod_entourage:
+    before_run:
+    - prepare_workflow
+    envs:
+    - GRADLE_TASK: bundleEntourageProdRelease
+      opts:
+        is_expand: false
+    - PLAYSTORE_APP_NAME: social.entourage.android
+      opts:
+        is_expand: false
     steps:
-    - activate-ssh-key:
-        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
-    - git-clone: {}
-    - install-missing-android-tools: {}
     - gradle-runner:
         inputs:
-        - apk_file_include_filter: ''
+        - apk_file_include_filter: ""
         - app_file_include_filter: '*.aab'
         - app_file_exclude_filter: |
             *.apk
             *intermediary_bundle*.aab
-        - mapping_file_include_filter: ''
-        - gradle_options: '--stacktrace'
+        - mapping_file_include_filter: ""
+        - gradle_options: --stacktrace
         - gradle_task: $GRADLE_TASK
     - deploy-to-bitrise-io:
         inputs:
-          - generate_universal_apk_if_none: 'false'
-          - is_enable_public_page: 'false'
+        - generate_universal_apk_if_none: "false"
+        - is_enable_public_page: "false"
     - google-play-deploy:
         inputs:
         - package_name: $PLAYSTORE_APP_NAME
@@ -134,10 +179,9 @@ workflows:
         - message: |-
             New PROD android build is available: $BITRISE_BUILD_NUMBER  here:
             $BITRISE_APP_URL
-        - message_on_error: >-
-            Oups, production build has failed for android... @here
-        - icon_url: ''
-        - icon_url_on_error: ''
+        - message_on_error: Oups, production build has failed for android... @here
+        - icon_url: ""
+        - icon_url_on_error: ""
         - pretext_on_error: '*Build Failed!'
         - pretext: Build Succeeded for ENTOURAGE! (*production only*)
         - fields: |
@@ -151,33 +195,36 @@ workflows:
     - git-tag:
         inputs:
         - tag: Version_$BITRISE_BUILD_NUMBER
+  testui_emulator_entourage:
+    before_run:
+    - prepare_workflow
+    steps:
+    - avd-manager@1: {}
+    - wait-for-android-emulator@1: {}
+    - gradle-runner:
+        inputs:
+        - apk_file_include_filter: ""
+        - app_file_include_filter: '*.apk'
+        - gradle_options: --stacktrace
+        - gradle_task: connectedAndroidTest
+  testui_virtualdevice_entourage:
+    before_run:
+    - prepare_workflow
     envs:
-    - opts:
+    - GRADLE_TASK: assembleDebug
+      opts:
         is_expand: false
-      GRADLE_TASK: bundleEntourageProdRelease
-    - opts:
+    - GRADLE_TEST_TASK: assembleAndroidTest
+      opts:
         is_expand: false
-      PLAYSTORE_APP_NAME: social.entourage.android
-app:
-  envs:
-  - opts:
-      is_expand: false
-    GRADLE_BUILD_FILE_PATH: build.gradle
-  - opts:
-      is_expand: false
-    GRADLE_TASK: assembleRelease
-  - opts:
-      is_expand: false
-    GRADLEW_PATH: ./gradlew
-  - opts:
-      is_expand: false
-    GRADLE_TASK_TEST: 'testPreprodDebugUnitTest '
-  - opts:
-      is_expand: false
-    GRADLE_TASK_LINT: 'lintEntourageProdRelease '
-  - opts:
-      is_expand: false
-    JAVA_OPTS: '-Xms512m -Xmx2048m'
-  - opts:
-      is_expand: false
-    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
+    steps:
+    - gradle-runner:
+        inputs:
+        - gradle_task: $GRADLE_TASK $GRADLE_TEST_TASK
+    - android-build-for-ui-testing:
+        inputs:
+        - variant: entourageStagingDebug
+        - module: app
+    - virtual-device-testing-for-android:
+        inputs:
+        - test_type: instrumentation

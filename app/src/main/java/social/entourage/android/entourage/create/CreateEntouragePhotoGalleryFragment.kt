@@ -115,7 +115,7 @@ class CreateEntouragePhotoGalleryFragment : BaseDialogFragment() {
     }
 
     companion object {
-        val TAG = CreateEntouragePhotoGalleryFragment::class.java.simpleName
+        val TAG: String? = CreateEntouragePhotoGalleryFragment::class.java.simpleName
         @JvmStatic
         fun newInstance(portrait_url: String?, landscape_url: String?) =
                 CreateEntouragePhotoGalleryFragment().apply {

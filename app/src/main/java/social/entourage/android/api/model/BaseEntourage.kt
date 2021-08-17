@@ -50,7 +50,7 @@ open class BaseEntourage : FeedItem, Serializable {
     var isRecipientConsentObtained = true
 
     @SerializedName("public")
-    var isJoinRequestPublic = false
+    var isPublic = false
 
     @SerializedName("image_url")
     var eventImageUrl:String? = null
@@ -121,7 +121,7 @@ open class BaseEntourage : FeedItem, Serializable {
         if (numberOfUnreadMessages != entourage.numberOfUnreadMessages) return false
         if (actionGroupType != entourage.actionGroupType) return false
         if (category != null && category != entourage.category) return false
-        if (isJoinRequestPublic != entourage.isJoinRequestPublic) return false
+        if (isPublic != entourage.isPublic) return false
 
         return (author?.isSame(entourage.author)==true)
     }

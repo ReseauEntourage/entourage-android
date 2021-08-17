@@ -35,12 +35,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ui_edit_photo_tv_description">
 
-        <com.theartofdev.edmodo.cropper.CropImageView
-            android:id="@+id/ui_photo_edit_cropImageView"
+        <com.takusemba.cropme.CropLayout
+            android:id="@+id/crop_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </com.theartofdev.edmodo.cropper.CropImageView>
+            android:layout_height="match_parent"
+            app:cropme_background_alpha="80%"
+            app:cropme_frame_height_percent="50%"
+            app:cropme_frame_width_percent="50%"
+            app:cropme_max_scale="2.0"
+            app:cropme_overlay_shape="circle"
+            app:cropme_with_border="false" />
 
         <ImageButton
             android:id="@+id/ui_photo_edit_bt_rotate"

@@ -25,16 +25,16 @@ class CreateEntouragePresenter @Inject constructor(
     // Methods
     // ----------------------------------
     fun createEntourage(
-            actionGroupType: String?, category: String?,
-            title: String, description: String, location: LocationPoint, recipientConsentObtained: Boolean,
-            groupType: String?, metadata: BaseEntourage.Metadata?, joinRequestTypePublic: Boolean,
-            portrait_photo_url:String?,landscape_photo_url:String?) {
+        actionGroupType: String?, category: String?,
+        title: String, description: String, location: LocationPoint, recipientConsentObtained: Boolean,
+        groupType: String?, metadata: BaseEntourage.Metadata?, isPublic: Boolean,
+        portrait_photo_url:String?, landscape_photo_url:String?) {
         val entourage = create(groupType, actionGroupType, category, title, description, location)
         entourage.metadata = metadata
         entourage.metadata?.portrait_url = portrait_photo_url
         entourage.metadata?.landscape_url = landscape_photo_url
         entourage.isRecipientConsentObtained = recipientConsentObtained
-        entourage.isJoinRequestPublic = joinRequestTypePublic
+        entourage.isPublic = isPublic
         val entourageWrapper = EntourageWrapper(entourage)
         entourageRequest.createEntourage(entourageWrapper).enqueue(object : Callback<EntourageResponse> {
             override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {

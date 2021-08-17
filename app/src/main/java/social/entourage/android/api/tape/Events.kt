@@ -3,10 +3,7 @@ package social.entourage.android.api.tape
 import android.net.Uri
 import android.os.Bundle
 import com.google.android.gms.maps.model.LatLng
-import social.entourage.android.api.model.BaseEntourage
-import social.entourage.android.api.model.Message
-import social.entourage.android.api.model.Partner
-import social.entourage.android.api.model.TimestampedObject
+import social.entourage.android.api.model.*
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.tour.Encounter
 
@@ -44,7 +41,7 @@ open class Events {
     /**
      * Event signaling that user info is updated
      */
-    class OnUserInfoUpdatedEvent
+    class OnUserInfoUpdatedEvent(val user: User)
 
     /**
      * Event signaling that user wants to act on a tour

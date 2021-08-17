@@ -65,7 +65,6 @@ class CreateEntourageFragment : BaseCreateEntourageFragment(), CreateActionWizar
     // CreateActionWizard
     // ----------------------------------
     private fun showCreateActionWizard() {
-        joinRequestTypePublic = false
         try {
             val createActionWizardPage1Fragment = CreateActionWizardPage1Fragment()
             createActionWizardPage1Fragment.setListener(this)

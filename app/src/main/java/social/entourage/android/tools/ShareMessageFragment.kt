@@ -56,16 +56,18 @@ class ShareMessageFragment : BaseDialogFragment() {
         getSharing()
     }
 
-    fun sendSharing() {
+    private fun sendSharing() {
         val sharing = arraySharing[selectedPosition]
         MessageSharingAPI.getInstance(EntourageApplication.get()).postSharingMessage(sharing.uuid,uuid,isPoi) { isOK ->
-            Toast.makeText(activity, if(isOK) R.string.linkShared else R.string.linkNotShared, Toast.LENGTH_SHORT).show()
-            dismiss()
+            activity?.let {
+                Toast.makeText(it, if(isOK) R.string.linkShared else R.string.linkNotShared, Toast.LENGTH_SHORT).show()
+                dismiss()
+            }
         }
     }
 
     fun getSharing() {
-        MessageSharingAPI.getInstance(EntourageApplication.get()).getSharing { isOk, sharing, error ->
+        MessageSharingAPI.getInstance(EntourageApplication.get()).getSharing { _, sharing, _ ->
             sharing?.let {
                 arraySharing.clear()
 

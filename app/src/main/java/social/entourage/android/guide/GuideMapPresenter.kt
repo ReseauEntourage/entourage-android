@@ -14,6 +14,7 @@ import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.guide.filter.GuideFilter
 import social.entourage.android.location.EntLocation
 import timber.log.Timber
+import java.net.UnknownHostException
 import java.util.*
 import javax.inject.Inject
 
@@ -69,6 +70,7 @@ class GuideMapPresenter @Inject constructor(
 
             override fun onFailure(call: Call<PoiResponse>, t: Throwable) {
                 Timber.e(t, "Impossible to retrieve POIs")
+                if (t is UnknownHostException) fragment.showErrorMessage()
             }
         })
     }
@@ -101,9 +103,9 @@ class GuideMapPresenter @Inject constructor(
 
     var isShowNoPOIsPopup: Boolean
         get() = authenticationController.isShowNoPOIsPopup
-        set(shouldShowNoPOIsPopup: Boolean) {authenticationController.isShowNoPOIsPopup = shouldShowNoPOIsPopup}
+        set(shouldShowNoPOIsPopup) {authenticationController.isShowNoPOIsPopup = shouldShowNoPOIsPopup}
 
     var isShowInfoPOIsPopup: Boolean
         get() = authenticationController.isShowInfoPOIsPopup
-        set(shouldShowInfoPOIsPopup: Boolean) {authenticationController.isShowInfoPOIsPopup = shouldShowInfoPOIsPopup}
+        set(shouldShowInfoPOIsPopup) {authenticationController.isShowInfoPOIsPopup = shouldShowInfoPOIsPopup}
 }

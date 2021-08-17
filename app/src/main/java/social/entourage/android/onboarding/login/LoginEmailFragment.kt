@@ -2,16 +2,16 @@ package social.entourage.android.onboarding.login
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_onboarding_email_pwd.*
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.isValidEmail
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class LoginEmailFragment : Fragment() {
     private var callback:LoginNextCallback? = null
@@ -79,7 +79,7 @@ class LoginEmailFragment : Fragment() {
     //******************************
 
     private fun updateButtonNext() {
-        if (ui_onboard_email_pwd_et_mail?.text!= null && ui_onboard_email_pwd_et_mail.text.toString().isValidEmail()) {
+        if (ui_onboard_email_pwd_et_mail?.text.toString().isValidEmail()) {
             callback?.updateButtonNext(true)
             callback?.updateEmailPwd(ui_onboard_email_pwd_et_mail.text.toString())
         }

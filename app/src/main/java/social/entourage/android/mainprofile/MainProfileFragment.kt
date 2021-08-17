@@ -4,9 +4,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Subscribe
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.layout_mainprofile.*
 import kotlinx.android.synthetic.main.layout_mainprofile_appversion.*
 import social.entourage.android.BuildConfig
@@ -15,7 +15,6 @@ import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events
 import social.entourage.android.tools.EntBus
-import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 
@@ -49,7 +48,7 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
     // BUS LISTENERS
     // ----------------------------------
     @Subscribe
-    fun userInfoUpdated(event: Events.OnUserInfoUpdatedEvent?) {
+    fun userInfoUpdated(event: Events.OnUserInfoUpdatedEvent) {
         updateUserView()
     }
 
@@ -58,11 +57,15 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
     // ----------------------------------
     private fun initialiseView() {
         mainprofile_app_version?.text = getString(R.string.about_version_format, BuildConfig.VERSION_FULL_NAME)
-        mainprofile_app_debug_info?.text = getString(R.string.about_debug_info_format, BuildConfig.VERSION_DISPLAY_BRANCH_NAME,
-                EntourageApplication.get().sharedPreferences.getString(EntourageApplication.KEY_REGISTRATION_ID, null))
         mainprofile_app_version?.setOnLongClickListener { handleLongPress() }
-        mainprofile_app_debug_info?.setOnLongClickListener { handleLongPress() }
-
+        if (!BuildConfig.DEBUG) {
+            mainprofile_app_debug_info?.visibility=View.INVISIBLE
+        } else {
+            mainprofile_app_debug_info?.visibility=View.VISIBLE
+            mainprofile_app_debug_info?.text = getString(R.string.about_debug_info_format, BuildConfig.VERSION_DISPLAY_BRANCH_NAME,
+                EntourageApplication.get().sharedPreferences.getString(EntourageApplication.KEY_REGISTRATION_ID, null))
+            mainprofile_app_debug_info?.setOnLongClickListener { handleLongPress() }
+        }
         //add listener to user photo and name, that opens the user profile screen
         drawer_header_user_photo?.setOnClickListener { selectMenuProfile("user") }
         drawer_header_user_name?.setOnClickListener { selectMenuProfile("user") }
@@ -132,10 +135,10 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
 
         drawer_header_user_photo?.let { photoView ->
             user.avatarURL?.let {avatarURL ->
-                Picasso.get()
+                Glide.with(this)
                         .load(Uri.parse(avatarURL))
                         .placeholder(R.drawable.ic_user_photo_small)
-                        .transform(CropCircleTransformation())
+                        .circleCrop()
                         .into(photoView)
             } ?: run {
                 photoView.setImageResource(R.drawable.ic_user_photo_small)
@@ -144,10 +147,10 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
         // Show partner logo
         drawer_header_user_partner_logo?.let {logoView->
             user.partner?.smallLogoUrl?.let { partnerURL ->
-                Picasso.get()
+                Glide.with(this)
                         .load(Uri.parse(partnerURL))
                         .placeholder(R.drawable.partner_placeholder)
-                        .transform(CropCircleTransformation())
+                        .circleCrop()
                         .into(logoView)
             } ?: run {
                 logoView.setImageDrawable(null)
@@ -165,8 +168,8 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
             ui_layout_goodwaves?.visibility = View.VISIBLE
         }
 
-        ui_tv_nb_actions?.text = if(user.stats?.actionsCount != null) "${user.stats!!.actionsCount}" else "0"
-        ui_tv_nb_events?.text = if(user.stats?.eventsCount != null) "${user.stats!!.eventsCount}" else "0"
+        ui_tv_nb_actions?.text = user.stats?.actionsCount?.let { "$it" } ?: "0"
+        ui_tv_nb_events?.text = user.stats?.eventsCount?.let { "$it" } ?: "0"
 
         val isExpertMode = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_HOME_IS_EXPERTMODE,false)
         ui_switch_change_mode?.isChecked = !isExpertMode
@@ -219,6 +222,6 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        val TAG = MainProfileFragment::class.java.simpleName
+        val TAG: String = MainProfileFragment::class.java.simpleName
     }
 }

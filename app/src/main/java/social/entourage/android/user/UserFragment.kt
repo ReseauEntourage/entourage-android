@@ -1,15 +1,14 @@
 package social.entourage.android.user
 
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Toast
 import androidx.annotation.StringRes
+import com.bumptech.glide.Glide
 import com.squareup.otto.Subscribe
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.android.synthetic.main.fragment_user.user_photo
 import kotlinx.android.synthetic.main.fragment_user_edit.*
@@ -25,13 +24,11 @@ import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.tools.EntBus
-import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.edit.UserEditAboutFragment
 import social.entourage.android.user.edit.UserEditFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment.Companion.newInstance
-import social.entourage.android.user.edit.photo.PhotoChooseSourceFragmentCompat
 import social.entourage.android.user.partner.PartnerFragment
 import social.entourage.android.user.report.UserReportFragment
 import timber.log.Timber
@@ -113,23 +110,25 @@ class UserFragment : BaseDialogFragment() {
         user_about_edit_button?.visibility = if (isMyProfile) View.VISIBLE else View.GONE
         user_photo?.let { userPhoto ->
             user?.avatarURL?.let { avatarURL ->
-                Picasso.get().load(Uri.parse(avatarURL))
+                Glide.with(this)
+                        .load(Uri.parse(avatarURL))
                         .placeholder(R.drawable.ic_user_photo)
-                        .transform(CropCircleTransformation())
+                        .circleCrop()
                         .into(userPhoto)
             } ?: run  {
-                Picasso.get().load(R.drawable.ic_user_photo)
-                        .transform(CropCircleTransformation())
+                Glide.with(this)
+                        .load(R.drawable.ic_user_photo)
+                        .circleCrop()
                         .into(userPhoto)
             }
         }
         // Show the partner logo, if available
         user_partner_logo?.let { logoView ->
             user?.partner?.smallLogoUrl?.let {partnerURL->
-                Picasso.get()
+                Glide.with(this)
                         .load(Uri.parse(partnerURL))
                         .placeholder(R.drawable.partner_placeholder)
-                        .transform(CropCircleTransformation())
+                        .circleCrop()
                         .into(logoView)
             } ?: run {
                 logoView.setImageDrawable(null)
@@ -144,8 +143,8 @@ class UserFragment : BaseDialogFragment() {
             user_profile_about_layout?.visibility = if (userAbout.isNotBlank()) View.VISIBLE else View.GONE
             ui_tv_user_description?.text = userAbout
 
-            ui_tv_nb_actions?.text = if(u.stats?.actionsCount != null) "${u.stats!!.actionsCount}" else "0"
-            ui_tv_nb_events?.text = if(u.stats?.eventsCount != null) "${u.stats!!.eventsCount}" else "0"
+            ui_tv_nb_actions?.text = u.stats?.actionsCount?.let { "$it" } ?: "0"
+            ui_tv_nb_events?.text = u.stats?.eventsCount?.let { "$it" } ?: "0"
 
             ui_tv_good_waves?.visibility = if (u.stats?.isGoodWavesValidated == true) View.VISIBLE else View.GONE
 
@@ -265,13 +264,7 @@ class UserFragment : BaseDialogFragment() {
     }
 
     private fun onPhotoEditClicked() {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            val fragment = PhotoChooseSourceFragmentCompat()
-            fragment.show(parentFragmentManager, PhotoChooseSourceFragmentCompat.TAG)
-        } else {
-            val fragment = newInstance()
-            fragment.show(parentFragmentManager, ChoosePhotoFragment.TAG)
-        }
+        newInstance().show(parentFragmentManager, ChoosePhotoFragment.TAG)
     }
 
     private fun onAboutEditClicked() {
@@ -282,12 +275,12 @@ class UserFragment : BaseDialogFragment() {
     // Events Handling
     // ----------------------------------
     @Subscribe
-    fun userInfoUpdated(event: OnUserInfoUpdatedEvent?) {
+    fun userInfoUpdated(event: OnUserInfoUpdatedEvent) {
         if (!isAdded) {
             return
         }
         //update the current view
-        user = EntourageApplication.me(activity)
+        user = event.user
         configureView()
     }
 

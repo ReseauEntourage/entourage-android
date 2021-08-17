@@ -2,27 +2,25 @@ package social.entourage.android.onboarding
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_onboarding_names.*
-import social.entourage.android.tools.log.AnalyticsEvents
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import social.entourage.android.R
 import social.entourage.android.tools.hideKeyboard
+import social.entourage.android.tools.log.AnalyticsEvents
 
 private const val ARG_FIRSTNAME = "firstname"
 private const val ARG_LASTNAME = "lastname"
 
 class OnboardingNamesFragment : Fragment() {
-    private val minChars = 2
-
     private var firstname: String? = null
     private var lastname: String? = null
 
-    private var callback:OnboardingCallback? = null
-    private var isAllreadyCall = false
+    private var callback: OnboardingCallback? = null
 
     //**********//**********//**********
     // Lifecycle
@@ -66,24 +64,14 @@ class OnboardingNamesFragment : Fragment() {
     //**********//**********//**********
 
     fun setupViews() {
-        onboard_names_mainlayout?.setOnTouchListener { view, motionEvent ->
+        onboard_names_mainlayout?.setOnTouchListener { view, _ ->
             view.hideKeyboard()
             view.performClick()
             true
         }
 
-        ui_onboard_names_et_firstname?.setOnFocusChangeListener { view, b ->
-            if (!b) updateButtonNext(false)
-        }
-
-        ui_onboard_names_et_lastname?.setOnFocusChangeListener { view, b ->
-            if (!b && !isAllreadyCall) updateButtonNext(false)
-            if (b) isAllreadyCall = false
-        }
-
         ui_onboard_names_et_lastname?.setOnEditorActionListener { _, event, _ ->
             if (event == EditorInfo.IME_ACTION_DONE) {
-                isAllreadyCall = true
                 updateButtonNext(true)
             }
             false
@@ -91,24 +79,50 @@ class OnboardingNamesFragment : Fragment() {
 
         ui_onboard_names_et_firstname?.setText(firstname)
         ui_onboard_names_et_lastname?.setText(lastname)
+
+        //Listen to keyboard visibility
+        activity?.let {
+            KeyboardVisibilityEvent.setEventListener(it) { isOpen ->
+                if (isOpen)
+                    showErrorMessage(false)
+                else
+                    updateButtonNext(false)
+            }
+        }
     }
 
-    fun updateButtonNext(isValidate:Boolean) {
+    fun updateButtonNext(isValidate: Boolean) {
         if (checkAndValidateInput()) {
+            showErrorMessage(false)
             callback?.updateButtonNext(true)
-            callback?.validateNames(ui_onboard_names_et_firstname?.text?.toString(),ui_onboard_names_et_lastname?.text?.toString(),isValidate)
+            callback?.validateNames(ui_onboard_names_et_firstname?.text?.toString(), ui_onboard_names_et_lastname?.text?.toString(), isValidate)
         }
         else {
+            if (!ui_onboard_names_et_firstname?.text.isNullOrEmpty() &&
+                !ui_onboard_names_et_lastname?.text.isNullOrEmpty())
+                showErrorMessage(true)
+
             callback?.updateButtonNext(false)
-            callback?.validateNames(null,null,false)
+            callback?.validateNames(null, null, false)
         }
     }
 
-    fun checkAndValidateInput() : Boolean {
-        if (ui_onboard_names_et_firstname?.text?.length ?:0 >= minChars  && ui_onboard_names_et_lastname?.text?.length ?:0 >= minChars) {
-            return  true
+    fun checkAndValidateInput(): Boolean {
+        if (isValidFirstname() && isValidLastname()) {
+            return true
         }
         return false
+    }
+
+    private fun isValidFirstname() = ui_onboard_names_et_firstname?.text?.length ?: 0 >= minChars
+    private fun isValidLastname() = ui_onboard_names_et_lastname?.text?.length ?: 0 >= minChars
+
+    private fun showErrorMessage(show: Boolean) {
+        error_message_tv?.text = getString(
+            if (!isValidFirstname()) R.string.user_edit_profile_invalid_firstname
+            else R.string.user_edit_profile_invalid_lastname
+        )
+        error_message_tv?.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     //**********//**********//**********
@@ -116,6 +130,8 @@ class OnboardingNamesFragment : Fragment() {
     //**********//**********//**********
 
     companion object {
+        const val minChars = 2
+
         fun newInstance(firstName: String?, lastName: String?) =
                 OnboardingNamesFragment().apply {
                     arguments = Bundle().apply {

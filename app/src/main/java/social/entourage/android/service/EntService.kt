@@ -2,7 +2,6 @@ package social.entourage.android.service
 
 
 import android.app.Notification
-import androidx.core.app.NotificationManagerCompat
 import android.app.PendingIntent
 import android.app.Service
 import android.content.BroadcastReceiver
@@ -10,12 +9,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Binder
-import android.os.Build
 import android.os.IBinder
 import android.os.SystemClock
 import android.widget.Chronometer
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.google.android.gms.maps.model.LatLng
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
@@ -60,7 +59,7 @@ class EntService : Service() {
     @Inject lateinit var entourageRequest: EntourageRequest
 
     private lateinit var entServiceManager: EntServiceManager
-    val tourServiceManager:  TourServiceManager?
+    private val tourServiceManager:  TourServiceManager?
         get() = (entServiceManager as? TourServiceManager)
 
     private val apiListeners: MutableList<ApiConnectionListener> = ArrayList()
@@ -181,7 +180,6 @@ class EntService : Service() {
     }
 
     private fun createNotification() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return
         val notificationIntent = Intent(this, MainActivity::class.java)
         val contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
         var builder = NotificationCompat.Builder(this, getString(R.string.local_service_notification_title))
@@ -350,8 +348,10 @@ class EntService : Service() {
 
     fun registerServiceListener(listener: LocationUpdateListener) {
         locationUpdateListeners.add(listener)
-        if (tourServiceManager?.isRunning == true && listener is TourServiceListener) {
-            currentTour?.let { listener.onTourResumed(tourServiceManager!!.pointsToDraw, it.tourType, it.getStartTime()) }
+        tourServiceManager?.let { tourServiceManager ->
+            if (tourServiceManager.isRunning && listener is TourServiceListener) {
+                currentTour?.let { listener.onTourResumed(tourServiceManager.pointsToDraw, it.tourType, it.getStartTime()) }
+            }
         }
     }
 

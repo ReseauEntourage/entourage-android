@@ -31,7 +31,7 @@ class HomeExpertFragment : BaseNewsfeedFragment() {
     private var currentTourUUID = ""
     var isTourPostSend = false
 
-    var adapterHome:NewHomeFeedAdapter? = null
+    var adapterHome: NewHomeFeedAdapter? = null
 
     // ----------------------------------
     // LIFECYCLE
@@ -86,7 +86,7 @@ class HomeExpertFragment : BaseNewsfeedFragment() {
 //        super.feedItemViewRequested(event)
 //    }
 
-    fun  setupRecyclerView() {
+    private fun setupRecyclerView() {
         val listener = object : HomeViewHolderListener{
             override fun onDetailClicked(item: Any, position: Int, isFromHeadline: Boolean, isAction: Boolean) {
                 if (item is Announcement) {

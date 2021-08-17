@@ -108,7 +108,7 @@ class LoginActivity : BaseActivity() {
 
     fun goMain() {
         val sharedPreferences = EntourageApplication.get().sharedPreferences
-        sharedPreferences.edit().putBoolean(KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,true).apply()
+        sharedPreferences.edit().putBoolean(KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN, true).apply()
 
         if (authenticationController.me?.address == null || (authenticationController.me?.email == null || authenticationController.me?.email?.length ?: -1 == 0) ) {
             goLoginNext()
@@ -172,8 +172,7 @@ class LoginActivity : BaseActivity() {
         }
     }
 
-    fun checkAndResendCode() {
-
+    private fun checkAndResendCode() {
         val countryCode = ui_login_phone_ccp_code?.selectedCountryCodeWithPlus
         val phoneNumber = ui_login_phone_et_phone?.text.toString()
 
@@ -251,7 +250,7 @@ class LoginActivity : BaseActivity() {
 
     fun resendCode(phone:String) {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_SMS)
-        OnboardingAPI.getInstance().resendCode(phone) { isOK, loginResponse, error ->
+        OnboardingAPI.getInstance().requestNewCode(phone) { isOK, loginResponse, error ->
             if (isOK) {
                 Toast.makeText(this, R.string.login_smscode_sent, Toast.LENGTH_LONG).show()
                 activateTimer()

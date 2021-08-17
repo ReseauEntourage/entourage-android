@@ -2,16 +2,17 @@ package social.entourage.android.onboarding
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_onboarding_email_pwd.*
-import social.entourage.android.tools.log.AnalyticsEvents
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import social.entourage.android.R
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.isValidEmail
+import social.entourage.android.tools.log.AnalyticsEvents
 
 private const val ARG_EMAIL = "email"
 
@@ -19,7 +20,6 @@ class OnboardingEmailPwdFragment : Fragment() {
     private var tempEmail: String? = null
 
     private var callback:OnboardingCallback? = null
-    private var isAllreadyCall = false
 
     //**********//**********//**********
     // Lifecycle
@@ -40,12 +40,11 @@ class OnboardingEmailPwdFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (tempEmail == null || !tempEmail!!.isValidEmail()) {
-            callback?.updateButtonNext(false)
-        }
-        else {
+        if (tempEmail.isValidEmail()) {
             ui_onboard_email_pwd_et_mail?.setText(tempEmail)
             callback?.updateButtonNext(true)
+        } else {
+            callback?.updateButtonNext(false)
         }
 
         setupViews()
@@ -76,15 +75,19 @@ class OnboardingEmailPwdFragment : Fragment() {
 
         ui_onboard_email_pwd_et_mail?.setOnEditorActionListener { _, event, _ ->
             if (event == EditorInfo.IME_ACTION_DONE) {
-                isAllreadyCall = true
                 updateButtonNext(true)
             }
             false
         }
 
-        ui_onboard_email_pwd_et_mail?.setOnFocusChangeListener { _, b ->
-            if (!b && !isAllreadyCall) updateButtonNext(false)
-            if (b) isAllreadyCall = false
+        //Listen to keyboard visibility
+        activity?.let {
+            KeyboardVisibilityEvent.setEventListener(it) { isOpen ->
+                if (isOpen)
+                    showErrorMessage(false)
+                else
+                    updateButtonNext(false)
+            }
         }
     }
 
@@ -93,7 +96,8 @@ class OnboardingEmailPwdFragment : Fragment() {
     //**********//**********//**********
 
     private fun updateButtonNext(isFromEmail:Boolean) {
-        if (ui_onboard_email_pwd_et_mail?.text!= null && ui_onboard_email_pwd_et_mail.text.toString().isValidEmail()) {
+        if (ui_onboard_email_pwd_et_mail?.text.toString().isValidEmail()) {
+            showErrorMessage(false)
             callback?.updateButtonNext(true)
             callback?.updateEmailPwd(ui_onboard_email_pwd_et_mail.text.toString(),null,null)
 
@@ -102,9 +106,14 @@ class OnboardingEmailPwdFragment : Fragment() {
             }
         }
         else {
+            showErrorMessage(true)
             callback?.updateButtonNext(false)
             callback?.updateEmailPwd(null,null,null)
         }
+    }
+
+    private fun showErrorMessage(show: Boolean) {
+        error_message_tv?.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     //**********//**********//**********

@@ -28,13 +28,13 @@ import androidx.core.content.PermissionChecker
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.material.snackbar.Snackbar
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_entourage_information.*
 import kotlinx.android.synthetic.main.layout_detail_action_description.*
 import kotlinx.android.synthetic.main.layout_detail_event_action_creator.*
@@ -57,7 +57,6 @@ import social.entourage.android.api.model.feed.*
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.configuration.Configuration
-import social.entourage.android.tools.ShareMessageFragment
 import social.entourage.android.entourage.create.BaseCreateEntourageFragment
 import social.entourage.android.entourage.information.discussion.DiscussionAdapter
 import social.entourage.android.entourage.information.members.MembersAdapter
@@ -67,8 +66,8 @@ import social.entourage.android.location.EntLocation
 import social.entourage.android.service.EntService
 import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.tools.EntBus
-import social.entourage.android.tools.CropCircleTransformation
 import social.entourage.android.tools.EntError
+import social.entourage.android.tools.ShareMessageFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.tour.TourInformationFragment
@@ -261,6 +260,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         } else {
             // inform the app to refresh the my entourages feed
             EntBus.post(OnMyEntouragesForceRefresh(feedItem))
+            EntourageApplication.get(context).updateBadgeCountForFeedItem(feedItem)
             try {
                 dismiss()
             } catch (e: IllegalStateException) {
@@ -681,17 +681,19 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         entourage_info_icon?.let { iconView ->
             feedItem.getIconURL()?.let { iconURL ->
                 iconView.setPadding(0,0,0,0)
-                Picasso.get().cancelRequest(iconView)
-                Picasso.get()
+                Glide.with(this).clear(iconView)
+                Glide.with(this)
                         .load(iconURL)
                         .placeholder(R.drawable.ic_user_photo_small)
-                        .transform(CropCircleTransformation())
+                        .circleCrop()
                         .into(iconView)
                 iconView.visibility = View.VISIBLE
             } ?: run {
                 feedItem.getIconDrawable(requireContext())?.let { iconDrawable ->
                     iconView.visibility = View.VISIBLE
-                    iconView.setImageDrawable(iconDrawable)
+                    Glide.with(this)
+                            .load(iconDrawable)
+                            .into(iconView)
                 } ?: run {
                     iconView.visibility = View.GONE
                 }
@@ -723,21 +725,23 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
     fun updatePhotosAvatar(author:ImageView?,logo:ImageView?) {
         author?.let { authorPhotoView ->
             feedItem.author?.avatarURLAsString?.let { avatarURLAsString ->
-                Picasso.get()
+                Glide.with(this)
                         .load(Uri.parse(avatarURLAsString))
                         .placeholder(R.drawable.ic_user_photo_small)
-                        .transform(CropCircleTransformation())
+                        .circleCrop()
                         .into(authorPhotoView)
             } ?: run {
-                authorPhotoView.setImageResource(R.drawable.ic_user_photo_small)
+                Glide.with(this)
+                        .load(R.drawable.ic_user_photo_small)
+                        .into(authorPhotoView)
             }
         }
         logo?.let { partnerLogoView ->
             feedItem.author?.partner?.smallLogoUrl?.let { partnerLogoURL ->
-                Picasso.get()
+                Glide.with(this)
                         .load(Uri.parse(partnerLogoURL))
                         .placeholder(R.drawable.partner_placeholder)
-                        .transform(CropCircleTransformation())
+                        .circleCrop()
                         .into(partnerLogoView)
             } ?: run {
                 partnerLogoView.setImageDrawable(null)

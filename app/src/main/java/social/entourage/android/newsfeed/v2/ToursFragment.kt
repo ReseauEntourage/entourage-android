@@ -33,7 +33,6 @@ import social.entourage.android.api.model.tour.TourType
 import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BackPressable
-import social.entourage.android.service.EntService
 import social.entourage.android.location.EntLocation
 import social.entourage.android.location.LocationUtils
 import social.entourage.android.map.MapClusterEncounterItem
@@ -42,6 +41,7 @@ import social.entourage.android.map.filter.MapFilterFactory
 import social.entourage.android.map.filter.MapFilterFragment
 import social.entourage.android.newsfeed.NewsFeedFragment
 import social.entourage.android.newsfeed.NewsfeedTabItem
+import social.entourage.android.service.EntService
 import social.entourage.android.service.TourServiceListener
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
@@ -49,7 +49,6 @@ import social.entourage.android.tour.TourFilter
 import social.entourage.android.tour.TourFilterFragment
 import social.entourage.android.tour.confirmation.TourEndConfirmationFragment
 import social.entourage.android.tour.encounter.CreateEncounterActivity
-import timber.log.Timber
 import java.util.*
 
 open class ToursFragment : NewsFeedFragment(), TourServiceListener, BackPressable {
@@ -306,7 +305,7 @@ open class ToursFragment : NewsFeedFragment(), TourServiceListener, BackPressabl
     }
 
     @Subscribe
-    override fun onUserInfoUpdated(event: Events.OnUserInfoUpdatedEvent?) {
+    override fun onUserInfoUpdated(event: Events.OnUserInfoUpdatedEvent) {
         super.onUserInfoUpdated(event)
     }
     @Subscribe

@@ -55,6 +55,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -278,8 +279,8 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                 location = LatLng(address.latitude, address.longitude)
             }
         }
-        if (longTapCoordinates != null) {
-            location = longTapCoordinates
+        longTapCoordinates?.let {
+            location = it
             longTapCoordinates = null
         }
         presenter.createEntourage(location, groupType, entourageCategory,isFromNeo,tagNameAnalytic)
@@ -447,7 +448,9 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     override fun onNetworkException() {
-        fragment_map_main_layout?.let {EntSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()}
+        activity?.window?.decorView?.rootView?.let {
+            EntSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()
+        }
         if (pagination.isLoading) {
             pagination.isLoading = false
             pagination.isRefreshing = false
@@ -455,7 +458,9 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     override fun onServerException(throwable: Throwable) {
-        fragment_map_main_layout?.let {EntSnackbar.make(it, R.string.server_error, Snackbar.LENGTH_LONG).show()}
+        activity?.window?.decorView?.rootView?.let {
+            EntSnackbar.make(it, R.string.server_error, Snackbar.LENGTH_LONG).show()
+        }
         if (pagination.isLoading) {
             pagination.isLoading = false
             pagination.isRefreshing = false
@@ -463,7 +468,9 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     }
 
     override fun onTechnicalException(throwable: Throwable) {
-        fragment_map_main_layout?.let { EntSnackbar.make(it, R.string.technical_error, Snackbar.LENGTH_LONG).show() }
+        activity?.window?.decorView?.rootView?.let {
+            EntSnackbar.make(it, R.string.technical_error, Snackbar.LENGTH_LONG).show()
+        }
         if (pagination.isLoading) {
             pagination.isLoading = false
             pagination.isRefreshing = false
@@ -684,6 +691,10 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                 presenter.onGroundOverlayClickListener
         )
 
+        if (activity == null) {
+            Timber.e("No activity found")
+            return
+        }
         mapClusterManager = ClusterManager<ClusterItem>(activity, googleMap)
                 .apply {
             this.renderer = MapClusterItemRenderer(requireActivity(), googleMap, this)
@@ -1019,6 +1030,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                     position--
                 }
             }
+            NewsfeedTabItem.ANNOUNCEMENTS -> TODO()
         }
     }
 
@@ -1168,7 +1180,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     // ----------------------------------
     // Heatzone Tap Handling
     // ----------------------------------
-    fun handleHeatzoneClick(location: LatLng?) {
+    fun handleHeatzoneClick(location: LatLng) {
         hideTourLauncher()
         if (isToursListVisible) {
             centerMapAndZoom(location, ZOOM_HEATZONE, true)
@@ -1178,7 +1190,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         }
     }
 
-    private fun showHeatzoneMiniCardsAtLocation(location: LatLng?) {
+    private fun showHeatzoneMiniCardsAtLocation(location: LatLng) {
         if (newsfeedAdapter == null) {
             return
         }

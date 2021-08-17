@@ -1,7 +1,6 @@
 package social.entourage.android.tools.view
 
 import android.annotation.TargetApi
-import android.app.PendingIntent
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -29,7 +28,6 @@ import androidx.browser.customtabs.CustomTabsIntent.SHARE_STATE_ON
 import androidx.browser.customtabs.CustomTabsService.ACTION_CUSTOM_TABS_CONNECTION
 import androidx.core.view.GestureDetectorCompat
 import kotlinx.android.synthetic.main.fragment_webview.*
-import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
 import java.util.*
@@ -264,7 +262,7 @@ class WebViewFragment : BaseDialogFragment() {
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        val TAG = WebViewFragment::class.java.simpleName
+        val TAG: String? = WebViewFragment::class.java.simpleName
         private const val REQUESTED_URL = "REQUESTED_URL"
         private const val SHARE_MESSAGE = "SHARE_MESSAGE"
         var customTabsPackages: ArrayList<ResolveInfo>? = null
@@ -288,7 +286,7 @@ class WebViewFragment : BaseDialogFragment() {
         /**
          * Returns a list of packages that support Custom Tabs.
          */
-        fun getCustomTabsPackages(context: Context): ArrayList<ResolveInfo>? {
+        fun getCustomTabsPackages(context: Context): ArrayList<ResolveInfo> {
             val pm = context.packageManager
             // Get default VIEW intent handler.
             val activityIntent = Intent()

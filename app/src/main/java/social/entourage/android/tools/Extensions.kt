@@ -1,6 +1,8 @@
 package social.entourage.android.tools
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.graphics.PorterDuff
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -51,8 +53,10 @@ fun View.hideKeyboardFromLayout() {
     inputMethodManager?.hideSoftInputFromWindow(this.windowToken, 0)
 }
 
-fun String.isValidEmail(): Boolean {
-    return android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
+fun String?.isValidEmail(): Boolean {
+    return this?.let {
+        android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches()
+    } ?: false
 }
 
 fun EditText.showKeyboard() {
@@ -76,4 +80,9 @@ fun TextView.enable() {
     alpha = 1f
     isClickable = true
     isEnabled = true
+}
+
+fun Bitmap.rotate(degrees: Float): Bitmap {
+    val matrix = Matrix().apply { postRotate(degrees) }
+    return Bitmap.createBitmap(this, 0, 0, width, height, matrix, true)
 }

@@ -58,6 +58,6 @@ class HomeHelpFragment: BaseDialogFragment() {
     }
 
     companion object {
-        val TAG = HomeHelpFragment::class.java.simpleName
+        val TAG: String? = HomeHelpFragment::class.java.simpleName
     }
 }

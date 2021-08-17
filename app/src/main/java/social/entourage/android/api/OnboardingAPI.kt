@@ -2,9 +2,8 @@ package social.entourage.android.api
 
 import android.annotation.SuppressLint
 import androidx.collection.ArrayMap
-import com.google.gson.annotations.SerializedName
-import okhttp3.MediaType
-import okhttp3.RequestBody
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,8 +17,6 @@ import social.entourage.android.authentication.AuthenticationController
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
-import javax.inject.Inject
-import kotlin.collections.ArrayList
 import kotlin.collections.set
 
 /**
@@ -74,7 +71,7 @@ class OnboardingAPI {
     /**********************
      * Login
      */
-    fun login(phoneNumber:String,smsCode:String,listener:(isOK:Boolean, loginResponse: LoginResponse?, error:String?) -> Unit) {
+    fun login(phoneNumber: String, smsCode: String, listener: (isOK: Boolean, loginResponse: LoginResponse?, error: String?) -> Unit) {
         loginService.login(LoginWrapper(phoneNumber, smsCode))
                 .enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
@@ -101,7 +98,7 @@ class OnboardingAPI {
     /**********************
      * Send code
      */
-    fun resendCode(phone:String,listener:(isOK:Boolean, loginResponse: UserResponse?, error:String?) -> Unit) {
+    fun requestNewCode(phone:String,listener:(isOK:Boolean, loginResponse: UserResponse?, error:String?) -> Unit) {
         val user: MutableMap<String, String> = ArrayMap()
         user["phone"] = phone
 
@@ -141,7 +138,7 @@ class OnboardingAPI {
             address["place_name"] = userAddress.displayAddress
         }
         else {
-            address["google_place_id"] = userAddress.googlePlaceId!!
+            userAddress.googlePlaceId?.let { address["google_place_id"] = it }
         }
         val request = ArrayMap<String, Any>()
         request["address"] = address
@@ -289,30 +286,8 @@ class OnboardingAPI {
     /**********************
      * Upload Photo
      */
-    fun prepareUploadPhoto(listener: (avatarKey:String?, presignedUrl:String?, error: String?) -> Unit) {
-        val request = AvatarUploadRequest("image/jpeg")
-        val call = onboardingService.prepareAvatarUpload(request)
-
-        call.enqueue(object : Callback<AvatarUploadResponse> {
-            override fun onResponse(call: Call<AvatarUploadResponse>, response: Response<AvatarUploadResponse>) {
-                if (response.isSuccessful) {
-                    listener(response.body()?.avatarKey, response.body()?.presignedUrl, null)
-                }
-                else {
-
-                    listener(null,null,null)
-                }
-            }
-
-            override fun onFailure(call: Call<AvatarUploadResponse>, t: Throwable) {
-                listener(null,null,null)
-            }
-        })
-    }
-
     fun uploadPhotoFile(presignedUrl: String,file:File,listener: (isOk:Boolean) -> Unit) {
-        val mediaType = MediaType.parse("image/jpeg")
-        val requestBody = RequestBody.create(mediaType, file)
+        val requestBody = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
         val request = okhttp3.Request.Builder()
                 .url(presignedUrl)
                 .put(requestBody)
@@ -459,10 +434,3 @@ class OnboardingAPI {
         }
     }
 }
-
-/**********************
- * Class For network
- */
-class AvatarUploadRequest constructor(private var content_type: String)
-
-class AvatarUploadResponse(@SerializedName("avatar_key") var avatarKey: String, @SerializedName("presigned_url") var presignedUrl: String)

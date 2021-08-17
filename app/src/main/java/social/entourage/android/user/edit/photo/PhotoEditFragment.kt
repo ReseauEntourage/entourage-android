@@ -1,34 +1,36 @@
 package social.entourage.android.user.edit.photo
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import com.theartofdev.edmodo.cropper.CropImageView
+import com.takusemba.cropme.OnCropListener
 import kotlinx.android.synthetic.main.fragment_photo_edit.*
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.tools.Utils
+import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.rotate
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.*
 
-class PhotoEditFragment  : BaseDialogFragment(), CropImageView.OnSetImageUriCompleteListener {
+class PhotoEditFragment : BaseDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
     private var mListener: PhotoChooseInterface? = null
     private var photoUri: Uri? = null
     private var photoSource = 0
+
+    private var currentAngle = 0f
+    private var photoFile: File? = null
 
     // ----------------------------------
     // LIFECYCLE
@@ -41,6 +43,11 @@ class PhotoEditFragment  : BaseDialogFragment(), CropImageView.OnSetImageUriComp
             throw RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener")
         }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        mListener = null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,22 +71,43 @@ class PhotoEditFragment  : BaseDialogFragment(), CropImageView.OnSetImageUriComp
         if (context != null) {
             photo_edit_progressBar?.indeterminateDrawable?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.white), PorterDuff.Mode.SRC_ATOP)
         }
-        photo_edit_cropImageView?.setOnSetImageUriCompleteListener(this)
-        photoUri?.let{
-            photo_edit_progressBar?.visibility = View.VISIBLE
-            photo_edit_cropImageView?.setImageUriAsync(it)
-        }
-        //TODO use new lib com.theartofdev.edmodo:android-image-cropper 2.8 when migrating to AndroidX but meanwhile use this trick to avoid a crash
-        photo_edit_cropImageView?.cropShape = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) CropImageView.CropShape.RECTANGLE else CropImageView.CropShape.OVAL
-        photo_edit_cropImageView?.setAspectRatio(1, 1)
-        photo_edit_back_button.setOnClickListener { onBackClicked() }
-        photo_edit_rotate_button.setOnClickListener { onRotateClicked() }
-        photo_edit_fab_button.setOnClickListener { onOkClicked() }
-    }
 
-    override fun onDetach() {
-        super.onDetach()
-        mListener = null
+        photoUri?.let{
+            crop_view.setUri(it)
+        }
+
+        crop_view.addOnCropListener(object : OnCropListener {
+            override fun onSuccess(bitmap: Bitmap) {
+                photo_edit_progressBar?.visibility = View.GONE
+                try {
+                    saveBitmap(bitmap)
+                    updateProfilePicture()
+                } catch (e: IOException) {
+                    Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(e: Exception) {
+                Timber.e(e)
+                Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
+                photo_edit_progressBar?.visibility = View.GONE
+                photo_edit_fab_button?.isEnabled = true
+            }
+        })
+
+        photo_edit_back_button.setOnClickListener {
+            dismiss()
+        }
+
+        photo_edit_rotate_button.setOnClickListener {
+            rotateImage()
+        }
+
+        photo_edit_fab_button.setOnClickListener {
+            photo_edit_fab_button?.isEnabled = false
+            photo_edit_progressBar?.visibility = View.VISIBLE
+            crop_view.crop()
+        }
     }
 
     // ----------------------------------
@@ -98,59 +126,23 @@ class PhotoEditFragment  : BaseDialogFragment(), CropImageView.OnSetImageUriComp
         return false
     }
 
-    fun onBackClicked() {
-        dismiss()
-    }
-
-    fun onRotateClicked() {
-        photo_edit_cropImageView?.rotateImage(ROTATE_DEGREES_STEP)
+    private fun rotateImage() {
+        currentAngle += ROTATE_DEGREES_STEP
+        photoUri?.let {
+            saveBitmap(Utils.getBitmapFromUri(it, activity?.contentResolver).rotate(currentAngle))
+        }
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_USER_ROTATE_PHOTO)
     }
 
-    // ----------------------------------
-    // Upload handling
-    // ----------------------------------
-    fun onOkClicked() {
-        photo_edit_fab_button?.isEnabled = false
-        photo_edit_cropImageView?.setOnCropImageCompleteListener { _, result ->
-            if (result.isSuccessful) {
-                mListener?.onPhotoChosen(result.uri, photoSource)
-            } else {
-                Timber.e(result.error)
-                Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
-                photo_edit_fab_button?.isEnabled = true
-            }
-        }
-        try {
-            val croppedImageFile = createImageFile()
-            photo_edit_cropImageView?.saveCroppedImageAsync(Uri.fromFile(croppedImageFile))
-        } catch (e: IOException) {
-            Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show()
-        }
+    private fun saveBitmap(bitmap: Bitmap) {
+        crop_view.setBitmap(bitmap)
+        photoFile = Utils.saveBitmapToFile(bitmap, photoFile)
     }
 
-    // ----------------------------------
-    // CropImageView.OnSetImageUriCompleteListener
-    // ----------------------------------
-    override fun onSetImageUriComplete(view: CropImageView, uri: Uri, error: Exception?) {
-        photo_edit_progressBar?.visibility = View.GONE
+    private fun updateProfilePicture() {
+        mListener?.onPhotoChosen(Uri.fromFile(photoFile), photoSource)
     }
 
-    // ----------------------------------
-    // Private methods
-    // ----------------------------------
-    @Throws(IOException::class)
-    private fun createImageFile(): File {
-        // Create an image file name
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.FRANCE).format(Date())
-        val imageFileName = "ENTOURAGE_CROP_" + timeStamp + "_"
-        val storageDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",  /* suffix */
-                storageDir /* directory */
-        )
-    }
 
     companion object {
         // ----------------------------------
@@ -159,7 +151,8 @@ class PhotoEditFragment  : BaseDialogFragment(), CropImageView.OnSetImageUriComp
         const val TAG = "social.entourage.android.photo_edit"
         private const val PHOTO_PARAM = "social.entourage.android.photo_param"
         private const val PHOTO_SOURCE = "social.entourage.android.photo_source"
-        private const val ROTATE_DEGREES_STEP = -90
+        private const val ROTATE_DEGREES_STEP = -90f
+
         fun newInstance(photoUri: Uri, photoSource: Int): PhotoEditFragment {
             val fragment = PhotoEditFragment()
             val args = Bundle()

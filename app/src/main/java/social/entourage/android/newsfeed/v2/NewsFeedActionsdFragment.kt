@@ -17,7 +17,6 @@ import kotlinx.android.synthetic.main.fragment_map.fragment_map_filter_button
 import kotlinx.android.synthetic.main.fragment_map.fragment_map_main_layout
 import kotlinx.android.synthetic.main.fragment_map.tour_stop_button
 import social.entourage.android.EntourageApplication
-import social.entourage.android.MainActivity
 import social.entourage.android.PlusFragment
 import social.entourage.android.R
 import social.entourage.android.api.model.*
@@ -26,15 +25,15 @@ import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BackPressable
 import social.entourage.android.entourage.FeedItemOptionsFragment
-import social.entourage.android.service.EntService
-import social.entourage.android.service.EntService.LocalBinder
-import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.entourage.join.EntourageJoinRequestFragment
 import social.entourage.android.map.filter.MapFilterFactory
 import social.entourage.android.newsfeed.BaseNewsfeedFragment
 import social.entourage.android.newsfeed.NewsfeedTabItem
+import social.entourage.android.service.EntService
+import social.entourage.android.service.EntService.LocalBinder
+import social.entourage.android.service.EntourageServiceListener
+import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.tour.join.TourJoinRequestFragment
-import social.entourage.android.tools.view.EntSnackbar.make
 import timber.log.Timber
 import java.util.*
 
@@ -49,7 +48,7 @@ open class NewsFeedActionsFragment : BaseNewsfeedFragment(), EntourageServiceLis
 
     override fun onBackPressed(): Boolean {
         Timber.d("***** ici onback FG -- ${requireActivity().supportFragmentManager.fragments}")
-        requireActivity().supportFragmentManager.popBackStack(BaseNewsfeedFragment.TAG,0)
+        requireActivity().supportFragmentManager.popBackStack(TAG,0)
 
         val editor = EntourageApplication.get().sharedPreferences.edit()
         editor.putBoolean("isNavNews",false)
@@ -99,9 +98,6 @@ open class NewsFeedActionsFragment : BaseNewsfeedFragment(), EntourageServiceLis
             fragment_map_filter_button?.visibility = View.GONE
             ui_tv_title?.text = getString(R.string.home_title_events)
         }
-//        if (isActionSelected) {
-//            (requireActivity() as? MainActivity)?.checkOnboarding()
-//        }
     }
 
     override fun updateFilterButtonText() {
@@ -124,7 +120,7 @@ open class NewsFeedActionsFragment : BaseNewsfeedFragment(), EntourageServiceLis
     open fun onUserChoiceChanged(event: OnUserChoiceEvent) {}
 
     @Subscribe
-    open fun onUserInfoUpdated(event: OnUserInfoUpdatedEvent?) {
+    open fun onUserInfoUpdated(event: OnUserInfoUpdatedEvent) {
         if (newsfeedAdapter == null) return
         val meAsAuthor = EntourageApplication.me(context)?.asTourAuthor() ?: return
         val dirtyList: MutableList<TimestampedObject> = ArrayList()
@@ -206,7 +202,7 @@ open class NewsFeedActionsFragment : BaseNewsfeedFragment(), EntourageServiceLis
     override fun onFeedItemClosed(closed: Boolean, updatedFeedItem: FeedItem) {
         if (closed) {
             refreshFeed()
-            fragment_map_main_layout?.let { layout -> make(layout, updatedFeedItem.getClosedToastMessage(), Snackbar.LENGTH_SHORT).show() }
+            fragment_map_main_layout?.let { layout -> EntSnackbar.make(layout, updatedFeedItem.getClosedToastMessage(), Snackbar.LENGTH_SHORT).show() }
         }
         loaderStop?.dismiss()
         loaderStop = null

@@ -3,27 +3,23 @@ package social.entourage.android.onboarding
 import android.Manifest
 import android.app.Activity
 import android.content.ActivityNotFoundException
-import android.content.ClipData
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.core.content.PermissionChecker
-import com.squareup.picasso.Picasso
-import com.theartofdev.edmodo.cropper.CropImage
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_onboarding_photo.*
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
-import social.entourage.android.tools.CropCircleTransformation
+import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
@@ -32,9 +28,7 @@ import java.util.*
 
 private const val ARG_FIRSTNAME = "firstname"
 
-open class OnboardingPhotoFragment : BaseDialogFragment(),PhotoEditDelegate {
-
-    private val KEY_PHOTO_PATH = "social.entourage.android.photo_path"
+open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate, ActivityCompat.OnRequestPermissionsResultCallback {
 
     protected var pickedImageUri: Uri? = null
     protected var pickedImageEditedUri: Uri? = null
@@ -114,7 +108,6 @@ open class OnboardingPhotoFragment : BaseDialogFragment(),PhotoEditDelegate {
     //**********//**********//**********
 
     open fun setupViews() {
-
         user_edit_title_layout?.visibility = View.GONE
         ui_onboard_photo_tv_title?.text = String.format(getString(R.string.onboard_photo_title),firstname)
         ui_onboard_photo_tv_description?.text = getString(R.string.onboard_photo_description)
@@ -129,10 +122,10 @@ open class OnboardingPhotoFragment : BaseDialogFragment(),PhotoEditDelegate {
         }
 
         ui_bt_take?.setOnClickListener {
-            if (CropImage.isExplicitCameraPermissionRequired(requireActivity())) {
-                requestPermissions(arrayOf(Manifest.permission.CAMERA), CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE)
+            if (PermissionChecker.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PermissionChecker.PERMISSION_DENIED) {
+                requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE)
             } else {
-                if (PermissionChecker.checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
+                if (PermissionChecker.checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PermissionChecker.PERMISSION_DENIED) {
                     requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), WRITE_STORAGE_PERMISSION_CODE)
                 } else {
                     showTakePhotoActivity()
@@ -173,21 +166,10 @@ open class OnboardingPhotoFragment : BaseDialogFragment(),PhotoEditDelegate {
             }
             // Continue only if the File was successfully created
             if (photoFileUri != null) {
-                //Hack Kitkat version return activity
-                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                    val takePictureIntentCompat = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                    val clip = ClipData.newUri(activity?.contentResolver, "A photo", photoFileUri)
-
-                    takePictureIntentCompat.clipData = clip
-                    takePictureIntentCompat.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                    takePictureIntentCompat.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri)
-                    startActivityForResult(takePictureIntentCompat, TAKE_PHOTO_REQUEST)
-                } else {
-                    val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri)
-                    takePictureIntent.flags = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                    startActivityForResult(takePictureIntent, TAKE_PHOTO_REQUEST)
-                }
+                val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri)
+                takePictureIntent.flags = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                startActivityForResult(takePictureIntent, TAKE_PHOTO_REQUEST)
             }
         } catch (e: ActivityNotFoundException) {
             Toast.makeText(activity, R.string.user_photo_error_no_camera, Toast.LENGTH_SHORT).show()
@@ -249,16 +231,15 @@ open class OnboardingPhotoFragment : BaseDialogFragment(),PhotoEditDelegate {
                 showNextStep(intent.data)
                 return
             }
-            if (mCurrentPhotoPath != null) {
-                showNextStep(Uri.fromFile(File(mCurrentPhotoPath!!)))
-            }
+            mCurrentPhotoPath?.let { showNextStep(Uri.fromFile(File(it))) }
         }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
-        if (requestCode == CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == CAMERA_PERMISSION_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PermissionChecker.PERMISSION_GRANTED) {
-                if (PermissionChecker.checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
+                if (PermissionChecker.checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PermissionChecker.PERMISSION_DENIED) {
                     requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), WRITE_STORAGE_PERMISSION_CODE)
                 } else {
                     showTakePhotoActivity()
@@ -269,7 +250,7 @@ open class OnboardingPhotoFragment : BaseDialogFragment(),PhotoEditDelegate {
             return
         }
         if (requestCode == PICK_AND_CROP_IMAGE_PERMISSION_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PermissionChecker.PERMISSION_GRANTED) {
                 if (pickedImageUri != null) {
                     loadPickedImage(pickedImageUri)
                 } else {
@@ -280,7 +261,7 @@ open class OnboardingPhotoFragment : BaseDialogFragment(),PhotoEditDelegate {
             }
         }
         if (requestCode == WRITE_STORAGE_PERMISSION_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PermissionChecker.PERMISSION_GRANTED) {
                 showTakePhotoActivity()
             } else {
                 Toast.makeText(activity, R.string.user_photo_error_read_permission, Toast.LENGTH_LONG).show()
@@ -297,13 +278,15 @@ open class OnboardingPhotoFragment : BaseDialogFragment(),PhotoEditDelegate {
 
         ui_onboard_photo_image?.let {
             if (pickedImageEditedUri != null) {
-                Picasso.get().load(pickedImageEditedUri)
+                Glide.with(this)
+                        .load(pickedImageEditedUri)
                         .placeholder(R.drawable.ic_user_photo)
-                        .transform(CropCircleTransformation())
+                        .circleCrop()
                         .into(it)
             } else {
-                Picasso.get().load(R.drawable.ic_user_photo)
-                        .transform(CropCircleTransformation())
+                Glide.with(this)
+                        .load(R.drawable.ic_user_photo)
+                        .circleCrop()
                         .into(it)
             }
         }
@@ -333,6 +316,9 @@ open class OnboardingPhotoFragment : BaseDialogFragment(),PhotoEditDelegate {
         const val TAKE_PHOTO_REQUEST = 2
         const val PICK_AND_CROP_IMAGE_PERMISSION_CODE = 3
         const val WRITE_STORAGE_PERMISSION_CODE = 4
+        const val CAMERA_PERMISSION_CODE = 5
+
+        const val KEY_PHOTO_PATH = "social.entourage.android.photo_path"
 
         fun newInstance(firstName: String) =
                 OnboardingPhotoFragment().apply {

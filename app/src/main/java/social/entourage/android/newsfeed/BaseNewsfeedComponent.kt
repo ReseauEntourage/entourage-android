@@ -1,10 +1,9 @@
 package social.entourage.android.newsfeed
 
 import dagger.Component
-import social.entourage.android.base.ActivityScope
 import social.entourage.android.EntourageComponent
 import social.entourage.android.authentication.AuthenticationController
-import javax.inject.Inject
+import social.entourage.android.base.ActivityScope
 
 /**
  * Component linked to BaseNewsfeedFragment lifecycle

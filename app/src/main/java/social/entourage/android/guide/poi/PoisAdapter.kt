@@ -16,7 +16,7 @@ class PoisAdapter : HeaderBaseAdapter() {
     init {
         viewHolderFactory.registerViewHolder(
                 TimestampedObject.TOP_VIEW,
-                ViewHolderType(MapViewHolder::class.java, R.layout.layout_feed_map_full_card)
+                ViewHolderType(MapViewHolder::class.java, R.layout.layout_feed_full_map_card)
         )
         viewHolderFactory.registerViewHolder(
                 TimestampedObject.GUIDE_POI,

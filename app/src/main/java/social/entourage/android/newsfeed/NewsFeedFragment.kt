@@ -23,7 +23,7 @@ import social.entourage.android.service.EntService.LocalBinder
 import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.entourage.join.EntourageJoinRequestFragment
 import social.entourage.android.tour.join.TourJoinRequestFragment
-import social.entourage.android.tools.view.EntSnackbar.make
+import social.entourage.android.tools.view.EntSnackbar
 import timber.log.Timber
 import java.util.*
 
@@ -59,7 +59,7 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
     }
 
     @Subscribe
-    open fun onUserInfoUpdated(event: OnUserInfoUpdatedEvent?) {
+    open fun onUserInfoUpdated(event: OnUserInfoUpdatedEvent) {
         if (newsfeedAdapter == null) return
         val meAsAuthor = EntourageApplication.me(context)?.asTourAuthor() ?: return
         val dirtyList: MutableList<TimestampedObject> = ArrayList()
@@ -146,7 +146,7 @@ open class NewsFeedFragment : BaseNewsfeedFragment(), EntourageServiceListener {
     override fun onFeedItemClosed(closed: Boolean, updatedFeedItem: FeedItem) {
         if (closed) {
             refreshFeed()
-            fragment_map_main_layout?.let { layout -> make(layout, updatedFeedItem.getClosedToastMessage(), Snackbar.LENGTH_SHORT).show() }
+            fragment_map_main_layout?.let { layout -> EntSnackbar.make(layout, updatedFeedItem.getClosedToastMessage(), Snackbar.LENGTH_SHORT).show() }
         }
         loaderStop?.dismiss()
         loaderStop = null

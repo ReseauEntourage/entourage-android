@@ -3,23 +3,17 @@ package social.entourage.android
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
-import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.IdRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.res.ResourcesCompat
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.activity_main.*
-import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
@@ -29,7 +23,6 @@ import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BackPressable
 import social.entourage.android.base.BaseSecuredActivity
-import social.entourage.android.configuration.Configuration
 import social.entourage.android.deeplinks.DeepLinksManager.handleCurrentDeepLink
 import social.entourage.android.deeplinks.DeepLinksManager.storeIntent
 import social.entourage.android.entourage.EntourageDisclaimerFragment
@@ -40,11 +33,9 @@ import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.location.EntLocation.currentLocation
 import social.entourage.android.location.LocationUtils.isLocationEnabled
 import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
-import social.entourage.android.map.filter.MapFilterFactory.mapFilter
 import social.entourage.android.message.push.PushNotificationManager
-import social.entourage.android.navigation.BottomNavigationDataSource
+import social.entourage.android.navigation.EntBottomNavigationView
 import social.entourage.android.newsfeed.BaseNewsfeedFragment
-import social.entourage.android.newsfeed.v2.NewHomeFeedFragment
 import social.entourage.android.onboarding.OnboardingPhotoFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
@@ -56,19 +47,17 @@ import social.entourage.android.tour.TourInformationFragment.OnTourInformationFr
 import social.entourage.android.tour.choice.ChoiceFragment
 import social.entourage.android.tour.choice.ChoiceFragment.OnChoiceFragmentFinish
 import social.entourage.android.tour.confirmation.TourEndConfirmationFragment
-import social.entourage.android.tour.confirmation.TourEndConfirmationFragment.Companion.newInstance
 import social.entourage.android.tour.encounter.CreateEncounterActivity
 import social.entourage.android.tour.encounter.EncounterDisclaimerFragment
 import social.entourage.android.tour.encounter.ReadEncounterActivity
 import social.entourage.android.user.AvatarUploadPresenter
 import social.entourage.android.user.AvatarUploadView
 import social.entourage.android.user.UserFragment
-import social.entourage.android.user.UserFragment.Companion.newInstance
-import social.entourage.android.user.edit.place.UserEditActionZoneFragment
-import social.entourage.android.user.edit.place.UserEditActionZoneFragmentCompat
 import social.entourage.android.user.edit.UserEditFragment
 import social.entourage.android.user.edit.photo.PhotoChooseInterface
 import social.entourage.android.user.edit.photo.PhotoEditFragment
+import social.entourage.android.user.edit.place.UserEditActionZoneFragment
+import social.entourage.android.user.edit.place.UserEditActionZoneFragmentCompat
 import timber.log.Timber
 import java.io.File
 import java.util.*
@@ -89,9 +78,9 @@ class MainActivity : BaseSecuredActivity(),
 
     @Inject lateinit var avatarUploadPresenter: AvatarUploadPresenter
 
-    //Tooltips
-    private var postionTooltip = 0
-    private var navigationDataSource: BottomNavigationDataSource = BottomNavigationDataSource()
+    private val bottomBar
+        get() = (bottom_navigation as? EntBottomNavigationView)
+
     private var isAnalyticsSendFromStart = false
 
     // ----------------------------------
@@ -102,7 +91,7 @@ class MainActivity : BaseSecuredActivity(),
         setContentView(R.layout.activity_main)
         if (isFinishing) return
         ui_layout_tooltips?.visibility = View.GONE
-        configureBottombar()
+        bottomBar?.configure(this)
         if (intent != null) {
             storeIntent(intent)
         }
@@ -112,18 +101,19 @@ class MainActivity : BaseSecuredActivity(),
             //initialize the push notifications
             initializePushNotifications()
             updateAnalyticsInfo()
+            authenticationController.me?.unreadCount?.let { bottomBar?.updateBadgeCountForUser(it)}
         }
         checkShowInfo()
     }
 
-    fun checkShowInfo() {
+    private fun checkShowInfo() {
         //Check to show Action info
-        val isShowFirstLogin = get().sharedPreferences.getBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,false)
-        val noMoreDemand = get().sharedPreferences.getBoolean(EntourageApplication.KEY_NO_MORE_DEMAND,false)
-        var nbOfLaunch = get().sharedPreferences.getInt(EntourageApplication.KEY_NB_OF_LAUNCH,0)
+        val isShowFirstLogin = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,false)
+        val noMoreDemand = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_NO_MORE_DEMAND,false)
+        var nbOfLaunch = EntourageApplication.get().sharedPreferences.getInt(EntourageApplication.KEY_NB_OF_LAUNCH,0)
 
         nbOfLaunch += 1
-        get().sharedPreferences.edit()
+        EntourageApplication.get().sharedPreferences.edit()
                 .putInt(EntourageApplication.KEY_NB_OF_LAUNCH,nbOfLaunch)
                 .apply()
 
@@ -133,7 +123,7 @@ class MainActivity : BaseSecuredActivity(),
         }
 
         if (isShowFirstLogin || hasToShow) {
-            val sharedPreferences = get().sharedPreferences
+            val sharedPreferences = EntourageApplication.get().sharedPreferences
             sharedPreferences.edit().putBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,false).apply()
             if (authenticationController.me?.goal == null || authenticationController.me?.goal?.length == 0) {
                 AlertDialog.Builder(this)
@@ -145,7 +135,7 @@ class MainActivity : BaseSecuredActivity(),
                             showEditProfileAction()
                         }
                         .setNeutralButton(R.string.login_info_pop_action_noMore) { _,_ ->
-                            get().sharedPreferences.edit()
+                            EntourageApplication.get().sharedPreferences.edit()
                                     .putBoolean(EntourageApplication.KEY_NO_MORE_DEMAND,true)
                                     .apply()
                         }
@@ -156,9 +146,8 @@ class MainActivity : BaseSecuredActivity(),
         }
     }
 
-    fun showEditProfileAction() {
-        val fragment = UserEditFragment.newInstance(true)
-        fragment.show(supportFragmentManager, UserEditFragment.TAG)
+    private fun showEditProfileAction() {
+        UserEditFragment.newInstance(true).show(supportFragmentManager, UserEditFragment.TAG)
     }
 
     override fun setupComponent(entourageComponent: EntourageComponent?) {
@@ -211,11 +200,10 @@ class MainActivity : BaseSecuredActivity(),
             // user just returns to the app, update analytics
             updateAnalyticsInfo()
         }
-        refreshBadgeCount()
-        intent?.action?.let {
-            action ->
-            EntBus.post(OnCheckIntentActionEvent(action, intent.extras)) }
-      //  checkOnboarding()
+        bottomBar?.refreshBadgeCount()
+        intent?.action?.let { action ->
+            EntBus.post(OnCheckIntentActionEvent(action, intent.extras))
+        }
     }
 
     override fun onStop() {
@@ -225,78 +213,6 @@ class MainActivity : BaseSecuredActivity(),
             Timber.w(e)
         }
         super.onStop()
-    }
-
-    // ----------------------------------
-    // PRIVATE METHODS
-    // ----------------------------------
-    fun checkOnboarding() {
-        val sharedPreferences = get().sharedPreferences
-        val isFromOnboarding = sharedPreferences.getBoolean(EntourageApplication.KEY_IS_FROM_ONBOARDING, false)
-        if (isFromOnboarding) {
-            sharedPreferences.edit().putBoolean(EntourageApplication.KEY_IS_FROM_ONBOARDING, false).apply()
-            ui_tooltip_layout_bottom?.visibility = View.INVISIBLE
-            ui_tooltip_iv_bottom2?.visibility = View.INVISIBLE
-            ui_tooltip_iv_bottom1?.visibility = View.INVISIBLE
-            ui_tooltip_iv_bottom_bt1?.visibility = View.INVISIBLE
-            ui_tooltip_iv_bottom_bt2?.visibility = View.INVISIBLE
-            ui_layout_tooltips?.visibility = View.VISIBLE
-            ui_layout_tooltips_ignore?.setOnClickListener {
-                ui_layout_tooltips?.visibility = View.GONE
-                when (postionTooltip) {
-                    0 -> logEvent(AnalyticsEvents.EVENT_ACTION_TOOLTIP_FILTER_CLOSE)
-                    1 -> logEvent(AnalyticsEvents.EVENT_ACTION_TOOLTIP_GUIDE_CLOSE)
-                    else -> logEvent(AnalyticsEvents.EVENT_ACTION_TOOLTIP_PLUS_CLOSE)
-                }
-            }
-            ui_tooltip_button_next_top?.setOnClickListener {
-                ui_tooltip_layout_top?.visibility = View.GONE
-                ui_tooltip_button_filter?.visibility = View.GONE
-                val _txt = String.format(getString(R.string.tooltip_step_format), "2")
-                ui_tooltip_tv_step?.text = _txt
-                ui_tooltip_tv_bottom?.setText(R.string.tooltip_desc2)
-                ui_tooltip_tv_title?.setText(R.string.tooltip_title2)
-                ui_tooltip_iv_bottom1?.visibility = View.VISIBLE
-                ui_tooltip_iv_bottom2?.visibility = View.INVISIBLE
-                ui_tooltip_iv_bottom_bt1?.visibility = View.VISIBLE
-                ui_tooltip_iv_bottom_bt2?.visibility = View.INVISIBLE
-                ui_tooltip_layout_bottom?.visibility = View.VISIBLE
-                logEvent(AnalyticsEvents.EVENT_ACTION_TOOLTIP_FILTER_NEXT)
-            }
-            ui_tooltip_button_next_bottom?.setOnClickListener {
-                postionTooltip++
-                if (postionTooltip == 1) {
-                    val _txt = String.format(getString(R.string.tooltip_step_format), "3")
-                    ui_tooltip_tv_step?.text = _txt
-                    ui_tooltip_tv_bottom?.setText(R.string.tooltip_desc3)
-                    ui_tooltip_tv_title?.setText(R.string.tooltip_title3)
-                    ui_tooltip_iv_bottom2?.visibility = View.VISIBLE
-                    ui_tooltip_iv_bottom1?.visibility = View.INVISIBLE
-                    ui_tooltip_iv_bottom_bt1?.visibility = View.INVISIBLE
-                    ui_tooltip_iv_bottom_bt2?.visibility = View.VISIBLE
-                    logEvent(AnalyticsEvents.EVENT_ACTION_TOOLTIP_GUIDE_NEXT)
-                } else {
-                    ui_layout_tooltips?.visibility = View.GONE
-                    logEvent(AnalyticsEvents.EVENT_ACTION_TOOLTIP_PLUS_NEXT)
-                }
-            }
-            val usertype = sharedPreferences.getInt(EntourageApplication.KEY_ONBOARDING_USER_TYPE, 0)
-            setupFiltersAfterOnboarding(usertype)
-        } else {
-            ui_layout_tooltips?.visibility = View.GONE
-        }
-    }
-
-    private fun setupFiltersAfterOnboarding(userType: Int) {
-        /*when (userType) {
-            1 -> mapFilter.setNeighbourFilters()
-            2 -> mapFilter.setAloneFilters()
-            3 -> mapFilter.setDefaultValues()
-            else -> mapFilter.setDefaultValues()
-        }*/
-        mapFilter.setDefaultValues()
-        authenticationController.saveMapFilter()
-        EntBus.post(OnMapFilterChanged())
     }
 
     private fun displayLocationProviderDisabledAlert() {
@@ -339,67 +255,6 @@ class MainActivity : BaseSecuredActivity(),
         newsfeedFragment?.dismissAllDialogs()
     }
 
-    private fun configureBottombar() {
-        (bottom_navigation as? BottomNavigationView)?.let { bottomBar ->
-            // we need to set the listener first, to respond to the default selected tab request
-            bottomBar.setOnNavigationItemSelectedListener { item: MenuItem ->
-                if (shouldBypassNavigation(item.itemId)) {
-                    return@setOnNavigationItemSelectedListener false
-                }
-                if (bottomBar.selectedItemId != item.itemId) {
-                    sendAnalyticsTapTabbar(item.itemId)
-                    loadFragment(item.itemId)
-                }
-                true
-            }
-            //TODO: a remettre l'auto ?
-            //navigationDataSource.isEngaged = authenticationController.me?.isEngaged ?: false
-            navigationDataSource.isEngaged = true
-            val defaultId = navigationDataSource.defaultSelectedTab
-            bottomBar.selectedItemId = defaultId
-            loadFragment(defaultId)
-            val messageBadge = bottomBar.getOrCreateBadge(navigationDataSource.myMessagesTabIndex)
-            messageBadge.backgroundColor = ResourcesCompat.getColor(resources, R.color.map_announcement_background, null)
-            messageBadge.badgeTextColor = ResourcesCompat.getColor(resources, R.color.primary, null)
-            messageBadge.maxCharacterCount = 3
-        }
-    }
-
-    private fun sendAnalyticsTapTabbar(@IdRes itemId: Int) {
-        when (itemId) {
-            R.id.bottom_bar_newsfeed -> logEvent(AnalyticsEvents.ACTION_TAB_FEEDS)
-            R.id.bottom_bar_guide -> logEvent(AnalyticsEvents.ACTION_TAB_GDS)
-            R.id.bottom_bar_plus -> logEvent(AnalyticsEvents.ACTION_TAB_PLUS)
-            R.id.bottom_bar_mymessages -> logEvent(AnalyticsEvents.ACTION_TAB_MESSAGES)
-            R.id.bottom_bar_profile -> logEvent(AnalyticsEvents.ACTION_TAB_PROFIL)
-        }
-    }
-
-    private fun shouldBypassNavigation(@IdRes itemId: Int): Boolean {
-        if (itemId == navigationDataSource.actionMenuId) {
-            //Handling special cases
-            if (!Configuration.showPlusScreen()) {
-                // Show directly the create entourage disclaimer
-                createEntourage()
-                return true
-            } else if (authenticationController.savedTour != null) {
-                // Show directly the create encounter
-                //TODO should be bound to service
-                addEncounter()
-                return true
-            }
-        }
-        return false
-    }
-
-    private fun selectNavigationTab(menuIndex: Int) { //TODO: Voir pour afficher le bon frgagment de l'onglet Home si on est en nav horizontale
-        (bottom_navigation as? BottomNavigationView)?.let {
-            if (it.selectedItemId != menuIndex) {
-                it.selectedItemId = menuIndex
-            }
-        }
-    }
-
     fun selectMenuProfileItem(position: String) {
         if (position == "") {
             return
@@ -407,40 +262,16 @@ class MainActivity : BaseSecuredActivity(),
         presenter.handleMenuProfile(position)
     }
 
-    private fun loadFragment(menuId: Int) {
-        try {
-            val tag = navigationDataSource.getFragmentTagAtIndex(menuId)
-            if (!supportFragmentManager.popBackStackImmediate(tag, 0)) {
-                val newFragment = navigationDataSource.getFragmentAtIndex(menuId) ?: return
-                val fragmentTransaction = supportFragmentManager.beginTransaction()
-                fragmentTransaction.replace(R.id.main_fragment, newFragment, tag)
-                fragmentTransaction.addToBackStack(tag)
-                fragmentTransaction.commit()
-            }
-            else {
-                if (tag.equals(BaseNewsfeedFragment.TAG)) {
-                    if (supportFragmentManager.fragments.first() != null && (supportFragmentManager.fragments.first() is NewHomeFeedFragment) ) {
-                            (supportFragmentManager.fragments.first() as NewHomeFeedFragment).checkNavigation()
-                    }
-                }
-            }
-            //TODO check if we need to execute pending actions
-            //supportFragmentManager.executePendingTransactions();
-        } catch (e: IllegalStateException) {
-            Timber.w(e)
-        }
-    }
-
     fun showMapFilters() {
         newsfeedFragment?.onShowFilter()
     }
 
     fun showFeed() {
-        selectNavigationTab(navigationDataSource.feedTabIndex)
+        bottomBar?.showFeed()
     }
 
     fun showGuide() {
-        selectNavigationTab(navigationDataSource.guideTabIndex)
+        bottomBar?.showGuide()
     }
 
     fun showGuideMap() {
@@ -451,22 +282,22 @@ class MainActivity : BaseSecuredActivity(),
 
     fun showEvents() {
         EntBus.post(OnShowEventDeeplink())
-        selectNavigationTab(navigationDataSource.feedTabIndex)
+        bottomBar?.showEvents()
         newsfeedFragment?.onShowEvents()
     }
 
     fun showAllActions() {
-        selectNavigationTab(navigationDataSource.feedTabIndex)
+        bottomBar?.showAllActions()
         newsfeedFragment?.onShowAll()
     }
 
     fun showMyEntourages() {
-        selectNavigationTab(navigationDataSource.myMessagesTabIndex)
+        bottomBar?.showMyEntourages()
     }
 
     fun showActionsTab() {
         EntBus.post(OnShowEventDeeplink())
-        selectNavigationTab(navigationDataSource.agirTabIndex)
+        bottomBar?.showActionsTab()
     }
 
     fun showTutorial(forced: Boolean) {
@@ -474,11 +305,11 @@ class MainActivity : BaseSecuredActivity(),
     }
 
     fun showProfileTab() {
-        selectNavigationTab(navigationDataSource.profilTabIndex)
+        bottomBar?.showProfileTab()
     }
 
     private fun initializePushNotifications() {
-        val notificationsEnabled = get().sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, true)
+        val notificationsEnabled = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, true)
         if (notificationsEnabled) {
             FirebaseMessaging.getInstance().token.addOnSuccessListener { token -> presenter.updateApplicationInfo(token) }
         } else {
@@ -495,7 +326,7 @@ class MainActivity : BaseSecuredActivity(),
     public override fun logout() {
         newsfeedFragment?.saveOngoingTour()
         //remove user phone
-        val sharedPreferences = get().sharedPreferences
+        val sharedPreferences = EntourageApplication.get().sharedPreferences
         val editor = sharedPreferences.edit()
         authenticationController.me?.let { me ->
             (sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, HashSet()) as HashSet<String?>?)?.let { loggedNumbers ->
@@ -533,8 +364,7 @@ class MainActivity : BaseSecuredActivity(),
                     showMyEntourages()
                 }
             }
-            get().removePushNotification(message)
-            refreshBadgeCount()
+            EntourageApplication.get().removePushNotification(message)
         } else {
             // Handle the deep link
             handleCurrentDeepLink(this)
@@ -546,7 +376,7 @@ class MainActivity : BaseSecuredActivity(),
     fun userViewRequested(event: OnUserViewRequestedEvent) {
         logEvent(AnalyticsEvents.EVENT_FEED_USERPROFILE)
         try {
-            val fragment = newInstance(event.userId)
+            val fragment = UserFragment.newInstance(event.userId)
             fragment.show(supportFragmentManager, UserFragment.TAG)
         } catch (e: IllegalStateException) {
             Timber.w(e)
@@ -588,8 +418,11 @@ class MainActivity : BaseSecuredActivity(),
     }
 
     @Subscribe
-    fun onUserUpdateEvent(event: OnUserInfoUpdatedEvent?) {
+    fun onUserUpdateEvent(event: OnUserInfoUpdatedEvent) {
         updateAnalyticsInfo()
+        event.user.unreadCount?.let {
+            bottomBar?.updateBadgeCountForUser(it)
+        }
     }
 
     @Subscribe
@@ -607,8 +440,9 @@ class MainActivity : BaseSecuredActivity(),
 
     override fun showStopTourActivity(tour: Tour) {
         newsfeedFragment?.pauseTour(tour)
-        val tourEndConfirmationFragment = newInstance(tour)
-        tourEndConfirmationFragment.show(supportFragmentManager, TourEndConfirmationFragment.TAG)
+        TourEndConfirmationFragment
+            .newInstance(tour)
+            .show(supportFragmentManager, TourEndConfirmationFragment.TAG)
     }
 
     override fun closeChoiceFragment(fragment: ChoiceFragment, tour: Tour?) {
@@ -675,7 +509,7 @@ class MainActivity : BaseSecuredActivity(),
         newsfeedFragment?.displayEntourageDisclaimer()
     }
 
-    private fun addEncounter() {
+    fun addEncounter() {
         showFeed()
         dismissNewsfeedFragmentDialogs()
         newsfeedFragment?.onAddEncounter()
@@ -714,9 +548,9 @@ class MainActivity : BaseSecuredActivity(),
 
     private fun removePushNotification(content: PushNotificationContent, contentType: String) {
         if (content.isTourRelated) {
-            get().removePushNotification(content.joinableId, TimestampedObject.TOUR_CARD, content.userId, contentType)
+            EntourageApplication.get().removePushNotification(content.joinableId, TimestampedObject.TOUR_CARD, content.userId, contentType)
         } else if (content.isEntourageRelated) {
-            get().removePushNotification(content.joinableId, TimestampedObject.ENTOURAGE_CARD, content.userId, contentType)
+            EntourageApplication.get().removePushNotification(content.joinableId, TimestampedObject.ENTOURAGE_CARD, content.userId, contentType)
         }
     }
 
@@ -729,7 +563,6 @@ class MainActivity : BaseSecuredActivity(),
         newsfeedFragment?.onPushNotificationReceived(message)
         val myEntouragesFragment = supportFragmentManager.findFragmentByTag(MyEntouragesFragment.TAG) as MyEntouragesFragment?
         myEntouragesFragment?.onPushNotificationReceived(message)
-        refreshBadgeCount()
     }
 
     // ----------------------------------
@@ -743,17 +576,9 @@ class MainActivity : BaseSecuredActivity(),
         if (authenticationController.editActionZoneShown || authenticationController.isIgnoringActionZone) {
             return  //noNeedToShowEditScreen
         }
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            val userEditActionZoneFragmentCompat = UserEditActionZoneFragmentCompat.newInstance(null, false)
-            userEditActionZoneFragmentCompat.addFragmentListener(this)
-            extraFragmentListener?.let {userEditActionZoneFragmentCompat.addFragmentListener(it)}
-            userEditActionZoneFragmentCompat.setFromLogin(true)
-            userEditActionZoneFragmentCompat.show(supportFragmentManager, UserEditActionZoneFragmentCompat.TAG)
-        } else {
-            val userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null, isSecondaryAddress)
-            userEditActionZoneFragment.setupListener(extraFragmentListener ?: this)
-            userEditActionZoneFragment.show(supportFragmentManager, UserEditActionZoneFragment.TAG)
-        }
+        val userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null, isSecondaryAddress)
+        userEditActionZoneFragment.setupListener(extraFragmentListener ?: this)
+        userEditActionZoneFragment.show(supportFragmentManager, UserEditActionZoneFragment.TAG)
         authenticationController.editActionZoneShown = true
     }
 
@@ -781,33 +606,9 @@ class MainActivity : BaseSecuredActivity(),
     // BUS LISTENERS
     // ----------------------------------
     @Subscribe
-    fun onMyEntouragesForceRefresh(event: OnMyEntouragesForceRefresh) {
-        event.feedItem?.let {item ->
-            get().updateBadgeCountForFeedItem(item)
-            refreshBadgeCount()
-        }
-    }
-
-    @Subscribe
     fun onUnreadCountUpdate(unreadCount:OnUnreadCountUpdate?) {
-        unreadCount?.unreadCount?.let { get().updateBadgeCountForCount(it) }
-        refreshBadgeCount()
-    }
-
-    // ----------------------------------
-    // Helper functions
-    // ----------------------------------
-    private fun refreshBadgeCount() {
-        (bottom_navigation as? BottomNavigationView)?.let {
-            val messageBadge = it.getOrCreateBadge(navigationDataSource.myMessagesTabIndex)
-                    ?: return
-            val badgeCount = get().badgeCount
-            if (badgeCount > 0) {
-                messageBadge.isVisible = true
-                messageBadge.number = badgeCount
-            } else {
-                messageBadge.isVisible = false
-            }
+        unreadCount?.unreadCount?.let {
+            bottomBar?.updateBadgeCountForUser(it)
         }
     }
 }

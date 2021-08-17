@@ -9,6 +9,8 @@ import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.isValidEmail
+import timber.log.Timber
+import java.lang.Exception
 
 class LoginChangePhoneActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,11 +78,15 @@ class LoginChangePhoneActivity : BaseActivity() {
     }
 
     fun showError(titleId:Int, message:String,buttonTextId:Int) {
-        AlertDialog.Builder(this)
-                .setTitle(titleId)
-                .setMessage(message)
-                .setPositiveButton(buttonTextId) { _, _ -> }
-                .create()
-                .show()
+       try {
+           AlertDialog.Builder(this)
+               .setTitle(titleId)
+               .setMessage(message)
+               .setPositiveButton(buttonTextId) { _, _ -> }
+               .create()
+               .show()
+       } catch(e: Exception) {
+           Timber.e(e)
+       }
     }
 }

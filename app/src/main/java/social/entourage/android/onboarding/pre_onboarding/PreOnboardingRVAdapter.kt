@@ -1,7 +1,6 @@
 package social.entourage.android.onboarding.pre_onboarding
 
 import android.content.Context
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,13 +16,6 @@ class PreOnboardingRVAdapter(val context:Context,private val myDataset: ArrayLis
 
    inner class ImageVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(res: Int) {
-            //To create a fake rounded imageview overlay -> Kitkat
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                itemView.ui_view_rounded?.visibility = View.GONE
-            }
-            else {
-                itemView.ui_view_rounded?.visibility = View.VISIBLE
-            }
             itemView.ui_iv_cell_preonboard?.setImageResource(res)
         }
     }

@@ -26,13 +26,13 @@ class UserMembership : Serializable {
     val membershipUUID: String
         get() = membershipId.toString()
 
-    fun getIconDrawable(context: Context?): Drawable? {
+    fun getIconDrawable(context: Context): Drawable? {
         return when {
             BaseEntourage.GROUPTYPE_PRIVATE_CIRCLE.equals(type, ignoreCase = true) -> {
-                AppCompatResources.getDrawable(context!!, R.drawable.ic_favorite_border_black_24dp)
+                AppCompatResources.getDrawable(context, R.drawable.ic_favorite_border_black_24dp)
             }
             BaseEntourage.GROUPTYPE_NEIGHBORHOOD.equals(type, ignoreCase = true) -> {
-                AppCompatResources.getDrawable(context!!, R.drawable.ic_neighborhood)
+                AppCompatResources.getDrawable(context, R.drawable.ic_neighborhood)
             }
             else -> null
         }

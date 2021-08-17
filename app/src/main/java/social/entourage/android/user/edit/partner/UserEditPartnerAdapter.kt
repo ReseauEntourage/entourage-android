@@ -5,8 +5,10 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import com.squareup.picasso.Picasso
+import android.widget.AdapterView
+import android.widget.BaseAdapter
+import android.widget.CompoundButton
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.layout_edit_partner.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
@@ -74,13 +76,17 @@ class UserEditPartnerAdapter : BaseAdapter() {
             }
             partner.largeLogoUrl?.let { partnerLogo ->
                 currentView.partner_logo?.let {
-                    Picasso.get()
+                    Glide.with(it.context)
                             .load(Uri.parse(partnerLogo))
                             .placeholder(R.drawable.partner_placeholder)
                             .into(it)
                 }
             } ?: run  {
-                currentView.partner_logo?.setImageResource(R.drawable.partner_placeholder)
+                currentView.partner_logo?.let {
+                    Glide.with(it.context)
+                            .load(R.drawable.partner_placeholder)
+                            .into(it)
+                }
             }
 
             // set the tag to null so that oncheckedchangelistener exits when populating the view
@@ -101,7 +107,10 @@ class UserEditPartnerAdapter : BaseAdapter() {
     }
 
     override fun getItem(position: Int): Partner? {
-        return if (partnerList != null && position >= 0 && position < partnerList!!.size) partnerList!![position] else null
+        partnerList?.let { list ->
+            if (position >= 0 && position < list.size) return list[position]
+        }
+        return null
     }
 
     inner class OnCheckedChangeListener : CompoundButton.OnCheckedChangeListener {

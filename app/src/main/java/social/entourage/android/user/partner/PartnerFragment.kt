@@ -9,7 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.collection.ArrayMap
-import com.squareup.picasso.Picasso
+import androidx.core.content.res.ResourcesCompat
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_partner_v2.*
 import kotlinx.android.synthetic.main.layout_view_title.view.*
 import okhttp3.ResponseBody
@@ -22,7 +23,6 @@ import social.entourage.android.api.model.Partner
 import social.entourage.android.api.request.PartnerResponse
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.deeplinks.DeepLinksManager
-import social.entourage.android.tools.CropCircleTransformation
 import timber.log.Timber
 
 class PartnerFragment : BaseDialogFragment() {
@@ -113,10 +113,10 @@ class PartnerFragment : BaseDialogFragment() {
             ui_asso_tv_subtitle?.text = ""
             ui_asso_iv_logo?.let { logoView ->
                 partner.largeLogoUrl?.let { url ->
-                    Picasso.get()
+                    Glide.with(this)
                             .load(Uri.parse(url))
                             .placeholder(R.drawable.partner_placeholder)
-                            .transform(CropCircleTransformation())
+                            .circleCrop()
                             .into(logoView)
                 }
             }
@@ -163,7 +163,7 @@ class PartnerFragment : BaseDialogFragment() {
             ui_button_asso_web?.text = partner.websiteUrl
             ui_button_asso_phone?.text = partner.phone
             ui_button_asso_address?.text = partner.address
-            ui_button_asso_mail.text = partner.email
+            ui_button_asso_mail?.text = partner.email
 
             ui_layout_phone?.visibility = if (partner.phone.isNullOrEmpty()) View.GONE else View.VISIBLE
             ui_layout_address?.visibility = if (partner.address.isNullOrEmpty()) View.GONE else View.VISIBLE
@@ -227,12 +227,12 @@ class PartnerFragment : BaseDialogFragment() {
             if (it.isFollowing) {
                 ui_button_follow?.text = getString(R.string.buttonFollowOnPartner)
                 ui_button_follow?.setTextColor(resources.getColor(R.color.white))
-                ui_button_follow?.background = resources.getDrawable(R.drawable.bg_button_rounded_pre_onboard_orange_plain)
+                ui_button_follow?.background = ResourcesCompat.getDrawable(resources, R.drawable.bg_button_rounded_pre_onboard_orange_plain, null)
             }
             else {
                 ui_button_follow?.text = getString(R.string.buttonFollowOffPartner)
                 ui_button_follow?.setTextColor(resources.getColor(R.color.accent))
-                ui_button_follow?.background = resources.getDrawable(R.drawable.bg_button_rounded_pre_onboard_orange_stroke)
+                ui_button_follow?.background = ResourcesCompat.getDrawable(resources, R.drawable.bg_button_rounded_pre_onboard_orange_stroke, null)
             }
         }
     }

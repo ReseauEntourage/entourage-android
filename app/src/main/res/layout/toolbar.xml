@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.bottomnavigation.BottomNavigationView
+<social.entourage.android.navigation.EntBottomNavigationView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottom_navigation"
@@ -12,4 +12,5 @@
     app:itemIconSize="28dp"
     app:itemIconTint="@color/navigation_icons_state_list"
     app:itemTextColor="@color/navigation_icons_state_list"
+    app:itemHorizontalTranslationEnabled="false"
     app:menu="@menu/bottom_navigation_menu" />

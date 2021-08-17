@@ -13,9 +13,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
+import com.bumptech.glide.Glide
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.compat.Place
-import com.squareup.picasso.Picasso
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import com.wdullaer.materialdatetimepicker.time.Timepoint
@@ -31,12 +31,12 @@ import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent
 import social.entourage.android.base.BaseDialogFragment
-import social.entourage.android.tools.EntLinkMovementMethod
 import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryFragment
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.location.LocationFragment
 import social.entourage.android.tools.EntBus
+import social.entourage.android.tools.EntLinkMovementMethod
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 import java.io.IOException
@@ -66,7 +66,7 @@ open class BaseCreateEntourageFragment
     private var entourageDateEnd: Calendar? = null
     private var entourageMetadata: BaseEntourage.Metadata? = null
     protected var recipientConsentObtained = true
-    protected var joinRequestTypePublic = true
+    protected var isPublic = true
     protected var isSaving = false
     protected var editedEntourage: BaseEntourage? = null
     private var isStartDateEdited = true
@@ -162,7 +162,7 @@ open class BaseCreateEntourageFragment
 
         if (!isSaving && isValid) {
             if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) {
-                joinRequestTypePublic = create_entourage_privacy_switch?.isChecked ?: false
+                isPublic = create_entourage_privacy_switch?.isChecked ?: false
             }
             if (editedEntourage != null) {
                 saveEditedEntourage()
@@ -308,7 +308,7 @@ open class BaseCreateEntourageFragment
                 recipientConsentObtained,
                 groupType,
                 entourageMetadata,
-                joinRequestTypePublic,
+                isPublic,
                 portrait_photo_url,
                 landscape_photo_url)
     }
@@ -346,7 +346,7 @@ open class BaseCreateEntourageFragment
             entourage.metadata?.portrait_url = portrait_photo_url
             entourage.metadata?.landscape_url = landscape_photo_url
             entourage.metadata = entourageMetadata
-            entourage.isJoinRequestPublic = joinRequestTypePublic
+            entourage.isPublic = isPublic
             presenter.editEntourage(entourage)
         }
     }
@@ -466,7 +466,7 @@ open class BaseCreateEntourageFragment
     private fun initializeJoinRequestType() {
         create_entourage_privacy_layout?.visibility = if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) View.VISIBLE else View.GONE
         editedEntourage?.let {
-            create_entourage_privacy_switch?.isChecked = it.isJoinRequestPublic
+            create_entourage_privacy_switch?.isChecked = it.isPublic
             onPrivacySwitchClicked()
         }
     }
@@ -488,7 +488,7 @@ open class BaseCreateEntourageFragment
         if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) {
             ui_create_entourage_privacyAction?.visibility = View.GONE
         } else {
-            changeActionView(editedEntourage?.isJoinRequestPublic ?: true)
+            changeActionView(editedEntourage?.isPublic ?: true)
             ui_create_entourage_privacyAction?.visibility = View.VISIBLE
             ui_layout_privacyAction_public?.setOnClickListener { changeActionView(true) }
             ui_layout_privacyAction_private?.setOnClickListener { changeActionView(false) }
@@ -511,7 +511,9 @@ open class BaseCreateEntourageFragment
 
             landscape_photo_url?.let { landscape_url ->
                 if (landscape_url.isNotEmpty()) {
-                    Picasso.get().load(landscape_url).into(ui_iv_photo)
+                    Glide.with(this)
+                            .load(landscape_url)
+                            .into(ui_iv_photo)
                 }
             }
         }
@@ -520,14 +522,14 @@ open class BaseCreateEntourageFragment
         }
     }
 
-    private fun changeActionView(isPublicActive: Boolean) {
-        ui_tv_entourage_privacyAction_public_title?.let {it.typeface = Typeface.create(it.typeface, if (isPublicActive) Typeface.BOLD else Typeface.NORMAL)}
-        ui_tv_entourage_privacyAction_public?.let {it.typeface = Typeface.create(it.typeface, if (isPublicActive) Typeface.BOLD else Typeface.NORMAL)}
-        ui_tv_entourage_privacyAction_private_title?.let {it.typeface = Typeface.create(it.typeface, if (!isPublicActive) Typeface.BOLD else Typeface.NORMAL)}
-        ui_tv_entourage_privacyAction_private?.let {it.typeface = Typeface.create(it.typeface, if (!isPublicActive) Typeface.BOLD else Typeface.NORMAL)}
-        ui_iv_button_public?.visibility = if (isPublicActive) View.VISIBLE else View.INVISIBLE
-        ui_iv_button_private?.visibility = if (!isPublicActive) View.VISIBLE else View.INVISIBLE
-        joinRequestTypePublic = isPublicActive
+    private fun changeActionView(isPublicChecked: Boolean) {
+        ui_tv_entourage_privacyAction_public_title?.let {it.typeface = Typeface.create(it.typeface, if (isPublicChecked) Typeface.BOLD else Typeface.NORMAL)}
+        ui_tv_entourage_privacyAction_public?.let {it.typeface = Typeface.create(it.typeface, if (isPublicChecked) Typeface.BOLD else Typeface.NORMAL)}
+        ui_tv_entourage_privacyAction_private_title?.let {it.typeface = Typeface.create(it.typeface, if (!isPublicChecked) Typeface.BOLD else Typeface.NORMAL)}
+        ui_tv_entourage_privacyAction_private?.let {it.typeface = Typeface.create(it.typeface, if (!isPublicChecked) Typeface.BOLD else Typeface.NORMAL)}
+        ui_iv_button_public?.visibility = if (isPublicChecked) View.VISIBLE else View.INVISIBLE
+        ui_iv_button_private?.visibility = if (!isPublicChecked) View.VISIBLE else View.INVISIBLE
+        isPublic = isPublicChecked
     }
 
     private val isValid: Boolean
@@ -548,7 +550,7 @@ open class BaseCreateEntourageFragment
                 }
             }
             if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) {
-                if (entourageMetadata == null || entourageMetadata!!.googlePlaceId.isNullOrBlank()) {
+                if (entourageMetadata == null || entourageMetadata?.googlePlaceId.isNullOrBlank()) {
                     Toast.makeText(activity, R.string.entourage_create_error_location_empty, Toast.LENGTH_SHORT).show()
                     return false
                 }
@@ -649,7 +651,11 @@ open class BaseCreateEntourageFragment
 
         landscape_photo_url?.let {
             if (it.isNotEmpty()) {
-                Picasso.get().load(landscape_url).error(R.drawable.ic_placeholder_detail_event).placeholder(R.drawable.ic_placeholder_event).into(ui_iv_photo)
+                Glide.with(this)
+                        .load(landscape_url)
+                        .error(R.drawable.ic_placeholder_detail_event)
+                        .placeholder(R.drawable.ic_placeholder_event)
+                        .into(ui_iv_photo)
             }
         }
     }

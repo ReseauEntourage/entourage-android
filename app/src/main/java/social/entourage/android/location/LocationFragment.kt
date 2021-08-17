@@ -26,10 +26,10 @@ import com.google.android.libraries.places.compat.ui.PlaceSelectionListener
 import com.google.android.libraries.places.compat.ui.SupportPlaceAutocompleteFragment
 import kotlinx.android.synthetic.main.fragment_entourage_location.*
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted
 import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.tools.EntBus
 import timber.log.Timber
 import java.io.IOException
@@ -193,14 +193,14 @@ class LocationFragment  : BaseDialogFragment() {
                         activity, R.raw.map_styles_json))
                 googleMap.uiSettings.isMyLocationButtonEnabled = false
                 googleMap.uiSettings.isMapToolbarEnabled = false
-                pin = if (originalLocation != null) {
-                    val cameraUpdate = CameraUpdateFactory.newLatLngZoom(originalLocation, 15f)
+                pin = originalLocation?.let { location ->
+                    val cameraUpdate = CameraUpdateFactory.newLatLngZoom(location, 15f)
                     googleMap.moveCamera(cameraUpdate)
                     val markerOptions = MarkerOptions()
-                            .position(originalLocation!!)
+                            .position(location)
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_pin_orange))
                     googleMap.addMarker(markerOptions)
-                } else {
+                } ?: run {
                     val markerOptions = MarkerOptions()
                             .position(googleMap.cameraPosition.target)
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_pin_orange))

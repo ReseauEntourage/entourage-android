@@ -7,13 +7,12 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.res.ResourcesCompat
+import com.bumptech.glide.Glide
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Subscribe
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.layout_entourage_options.*
 import kotlinx.android.synthetic.main.fragment_entourage_information.*
 import kotlinx.android.synthetic.main.layout_detail_action_description.*
 import kotlinx.android.synthetic.main.layout_detail_event_action_creator.*
@@ -21,6 +20,7 @@ import kotlinx.android.synthetic.main.layout_detail_event_action_date.*
 import kotlinx.android.synthetic.main.layout_detail_event_action_location.*
 import kotlinx.android.synthetic.main.layout_detail_event_action_top_view.*
 import kotlinx.android.synthetic.main.layout_detail_event_description.*
+import kotlinx.android.synthetic.main.layout_entourage_options.*
 import kotlinx.android.synthetic.main.layout_invite_source.*
 import kotlinx.android.synthetic.main.layout_invite_source.view.*
 import kotlinx.android.synthetic.main.layout_private_entourage_information.*
@@ -32,7 +32,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageComponent
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.feed.FeedItem
@@ -46,6 +45,7 @@ import social.entourage.android.location.EntLocation
 import social.entourage.android.map.OnAddressClickListener
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.Utils
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.UserFragment
 import social.entourage.android.user.partner.PartnerFragment
@@ -332,11 +332,16 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         //Top view
         if (entourage.isEvent()) {
             ui_image_event_top?.visibility = View.VISIBLE
-            val landscape_url = entourage.metadata?.landscape_url
-            if(landscape_url.isNullOrBlank()){
-                ui_image_event_top?.setImageResource(R.drawable.ic_placeholder_detail_event)
-            } else {
-                Picasso.get().load(landscape_url).error(R.drawable.ic_placeholder_detail_event).placeholder(R.drawable.ic_placeholder_event).into(ui_image_event_top)
+            entourage.metadata?.landscape_url?.let { landscape_url ->
+                Glide.with(this)
+                        .load(landscape_url)
+                        .error(R.drawable.ic_placeholder_detail_event)
+                        .placeholder(R.drawable.ic_placeholder_event)
+                        .into(ui_image_event_top)
+            } ?: run {
+                Glide.with(this)
+                        .load(R.drawable.ic_placeholder_detail_event)
+                        .into(ui_image_event_top)
             }
         }
         else {
