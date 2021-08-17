@@ -224,7 +224,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
 
     fun validateReport() {
         (entourage as? EntourageConversation)?.isDisplay_report_prompt = false
-        ui_layout_report.visibility = View.GONE
+        ui_layout_report?.visibility = View.GONE
     }
 
     override fun addSpecificCards() {
