@@ -1,8 +1,10 @@
 package social.entourage.android.mainprofile
 
+import android.content.DialogInterface
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
@@ -183,11 +185,7 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
                 else {
                     AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_SWITCH_NeoToExpert)
                 }
-                EntourageApplication.get().sharedPreferences.edit()
-                        .putBoolean(EntourageApplication.KEY_HOME_IS_EXPERTMODE, !isChecked)
-                        .remove("isNavNews")
-                        .remove("navType")
-                        .apply()
+                showPopInfoMode(!isChecked)
             }
         }
         else {
@@ -216,6 +214,28 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
             ).show()
         }
         return true
+    }
+
+    private fun showPopInfoMode(isChecked:Boolean) {
+        EntourageApplication.get().sharedPreferences.edit()
+            .putBoolean(EntourageApplication.KEY_HOME_IS_EXPERTMODE, isChecked)
+            .remove("isNavNews")
+            .remove("navType")
+            .apply()
+
+        val alertDialog = AlertDialog.Builder(requireContext())
+        alertDialog.setTitle(R.string.profile_pop_switch_mode_title)
+        val modeStr = if(isChecked) R.string.profile_pop_switch_mode_expert else R.string.profile_pop_switch_mode_neo
+        val message = String.format(getString(R.string.profile_pop_switch_mode_message),getString(modeStr))
+        alertDialog.setMessage(message)
+        alertDialog.setNegativeButton(R.string.profile_pop_switch_mode_button_no) { dialog, _ ->
+            dialog.dismiss()
+        }
+        alertDialog.setPositiveButton(R.string.profile_pop_switch_mode_button_yes) { dialog, _ ->
+            dialog.dismiss()
+            (activity as? MainActivity)?.showHome(isChecked)
+        }
+        alertDialog.show()
     }
 
     companion object {

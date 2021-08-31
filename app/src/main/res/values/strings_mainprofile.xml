@@ -36,4 +36,15 @@
 
 
     <string name="menu_info_profile_share">Bonjour ! Grâce au réseau Entourage, je participe à des actions solidaires entre voisins avec et sans domicile. Rejoins-moi : %s</string>
+
+    <!-- Pop info Change mode -->
+    <string name="profile_pop_switch_mode_neo">Mode “Premier pas“</string>
+    <string name="profile_pop_switch_mode_expert">Mode “normal“</string>
+    <string name="profile_pop_switch_mode_title">Information</string>
+    <string name="profile_pop_switch_mode_message">Vous avez basculé en\n%s\n\nRedirection vers la nouvelle home ?</string>
+    <string name="profile_pop_switch_mode_button_no">Non</string>
+    <string name="profile_pop_switch_mode_button_yes">Oui</string>
+    <string name="info_pop_switch_mode_neo_on">Mode “Premier pas“ activé</string>
+    <string name="info_pop_switch_mode_neo_off">Mode “Premier pas“ désactivé</string>
+
 </resources>

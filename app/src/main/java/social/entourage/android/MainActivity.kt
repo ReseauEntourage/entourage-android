@@ -270,6 +270,12 @@ class MainActivity : BaseSecuredActivity(),
         bottomBar?.showFeed()
     }
 
+    fun showHome(isExpert:Boolean) {
+        bottomBar?.showFeed()
+        val message = if(isExpert) getString(R.string.info_pop_switch_mode_neo_off) else getString(R.string.info_pop_switch_mode_neo_on)
+        Toast.makeText(this,message,Toast.LENGTH_LONG).show()
+    }
+
     fun showGuide() {
         bottomBar?.showGuide()
     }
