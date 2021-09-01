@@ -118,6 +118,9 @@ class NewHomeFeedAdapter(val listener:HomeViewHolderListener): RecyclerView.Adap
             itemView.ui_action_show_more.setOnClickListener {
                 listener.onShowDetail(arrayItems[position].type,true)
             }
+            itemView.ui_action_show_more_txt.setOnClickListener {
+                listener.onShowDetail(arrayItems[position].type,true)
+            }
 
             itemView.ui_recyclerview_action?.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
             val adapter = ActionEventAdapter(arrayItems[position],listener)
@@ -138,6 +141,9 @@ class NewHomeFeedAdapter(val listener:HomeViewHolderListener): RecyclerView.Adap
             itemView.ui_event_show_more.setOnClickListener {
                 listener.onShowDetail(arrayItems[position].type,true)
             }
+            itemView.ui_event_show_more_txt.setOnClickListener {
+                listener.onShowDetail(arrayItems[position].type,true)
+            }
 
             itemView.ui_recyclerview_event?.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
             val adapter = ActionEventAdapter(arrayItems[position],listener)
@@ -154,6 +160,9 @@ class NewHomeFeedAdapter(val listener:HomeViewHolderListener): RecyclerView.Adap
             itemView.ui_title_empty.text = itemView.resources.getText(arrayItems[position].type.getName())
 
             itemView.ui_empty_show_more.setOnClickListener {
+                listener.onShowDetail(arrayItems[position].type,true)
+            }
+            itemView.ui_empty_show_more_txt.setOnClickListener {
                 listener.onShowDetail(arrayItems[position].type,true)
             }
         }

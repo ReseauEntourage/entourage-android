@@ -44,6 +44,7 @@
                 android:layout_marginEnd="8dp"
                 android:maxLines="2"
                 android:text="Event"
+                android:ellipsize="end"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"

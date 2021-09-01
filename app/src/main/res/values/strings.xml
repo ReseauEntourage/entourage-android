@@ -55,9 +55,9 @@
 
     //Home Cells
 
-    <string name="cell_demand_from">Une demande de :</string>
-    <string name="cell_invit_from">Invité par :</string>
-    <string name="cell_contrib_from">Une contribution de :</string>
+    <string name="cell_demand_from">Une demande de</string>
+    <string name="cell_invit_from">Invité par</string>
+    <string name="cell_contrib_from">Une contribution de</string>
 
     <string name="cell_numberOfPeople">%1$d participant</string>
     <string name="cell_numberOfPeoples">%1$d participants</string>
