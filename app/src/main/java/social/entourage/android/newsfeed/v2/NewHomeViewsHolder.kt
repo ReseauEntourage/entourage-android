@@ -63,6 +63,7 @@ class AnnounceVH(view: View) : RecyclerView.ViewHolder(view) {
                     Glide.with(imageView.context)
                             .load(Uri.parse(imageUrl))
                             .listener(requestListener)
+                        .placeholder(R.drawable.bg_button_rounded_pre_onboard_orange_plain)
                             .into(imageView)
                 }
             }
@@ -260,7 +261,7 @@ class EventVH(view: View) : RecyclerView.ViewHolder(view) {
                     feedItem.metadata?.portrait_url?.let {
                         Glide.with(eventView.context)
                                 .load(Uri.parse(it))
-                                .placeholder(R.drawable.partner_placeholder)
+                                .placeholder(R.drawable.ic_placeholder_event_feed)
                                 .into(eventView)
                     } ?: run {
                         Glide.with(eventView.context)
