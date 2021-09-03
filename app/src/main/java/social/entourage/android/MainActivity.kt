@@ -437,7 +437,7 @@ class MainActivity : BaseSecuredActivity(),
         try {
             val poi = Poi()
             poi.uuid = event.poiId
-            val fragment = ReadPoiFragment.newInstance(poi)
+            val fragment = ReadPoiFragment.newInstance(poi,"")
             fragment.show(supportFragmentManager, ReadPoiFragment.TAG)
         } catch (e: IllegalStateException) {
             Timber.w(e)

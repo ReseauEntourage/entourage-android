@@ -143,7 +143,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
 
     @Subscribe
     fun onPoiViewRequested(event: OnPoiViewRequestedEvent?) {
-        event?.poi?.let { showPoiDetails(it) }
+        event?.poi?.let { showPoiDetails(it,true) }
     }
 
     // ----------------------------------
@@ -242,13 +242,24 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         presenter.updatePoisNearby(map)
     }
 
-    private fun showPoiDetails(poi: Poi) {
+    private fun showPoiDetails(poi: Poi, isTxtSearch:Boolean) {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_POI)
         try {
             poi.partner_id?.let { partner_id ->
                 PartnerFragment.newInstance(partner_id).show(parentFragmentManager, PartnerFragment.TAG)
             } ?: run {
-                newInstance(poi).show(parentFragmentManager, ReadPoiFragment.TAG)
+
+                var stringFilters = "ALL"
+
+                if (instance.hasFilteredCategories()) {
+                    stringFilters = instance.getFiltersSelected()
+                }
+
+                if (isTxtSearch) {
+                    stringFilters = "TXT"
+                }
+
+                newInstance(poi,stringFilters).show(parentFragmentManager, ReadPoiFragment.TAG)
             }
         } catch (e: IllegalStateException) {
             Timber.w(e)
@@ -500,7 +511,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
 
     override fun onMarkerClick(poiMarker: Marker?): Boolean {
         (poiMarker?.tag as? Poi)?.let { poi ->
-            showPoiDetails(poi)
+            showPoiDetails(poi,false)
         }
         return true
     }

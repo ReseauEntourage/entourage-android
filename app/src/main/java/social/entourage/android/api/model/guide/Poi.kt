@@ -38,6 +38,8 @@ class Poi : TimestampedObject(), Serializable {
     var languagesTxt:String? = null
     @SerializedName("source_url")
     var soliguideUrl:String? = null
+    @SerializedName("source_category_id")
+    var soliguideId:Int? = null
 
     var source = ""
     var uuid = ""
