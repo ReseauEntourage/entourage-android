@@ -160,7 +160,7 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
         }
 
         // Changed the ethics charter text depending on signed/unsigned
-        ui_tv_charte?.setText(if (user.hasSignedEthicsCharter()) R.string.action_charter_signed else R.string.action_charter_unsigned)
+        ui_tv_charte?.setText(R.string.action_charter_read)
 
         //Show hide join Good waves
         if (user.stats?.isGoodWavesValidated == true) {

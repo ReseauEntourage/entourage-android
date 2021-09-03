@@ -71,7 +71,8 @@ import javax.inject.Inject
 
             "charte" -> {
                 AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_CHART)
-                val charteIntent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.CHARTE_LINK_ID)))
+                val charteUrl = activity.getString(R.string.disclaimer_link_public)
+                val charteIntent = Intent(Intent.ACTION_VIEW, Uri.parse(charteUrl))
                 try {
                     activity.startActivity(charteIntent)
                 } catch (ex: Exception) {
