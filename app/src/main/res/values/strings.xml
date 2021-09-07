@@ -170,8 +170,8 @@
     <string name="home_neo_pop_info_button_ok">OK</string>
     <string name="home_neo_pop_info_button_profil">Voir profil</string>
 
-    <string name="home_neo_pop_goExpert_title">Envie de changer ?</string>
-    <string name="home_neo_pop_goExpert_message">Vous êtes actuellement sur le mode "Premier pas" de l\'app.\nEssayez le mode normal pour accéder à plus de contenu</string>
+    <string name="home_neo_pop_goExpert_title"> </string>
+    <string name="home_neo_pop_goExpert_message">Vous êtes sur le mode “Premiers pas” de l’app.\nAccédez à plus de contenu en désactivant ce mode depuis votre page profil. </string>
     <string name="home_neo_pop_goExpert_button_ok">OK</string>
     <string name="home_neo_pop_goExpert_button_cancel">Non merci</string>
 
