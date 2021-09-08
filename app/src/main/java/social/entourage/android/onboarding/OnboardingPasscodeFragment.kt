@@ -1,6 +1,9 @@
 package social.entourage.android.onboarding
 
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
@@ -12,10 +15,12 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_onboarding_passcode.*
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.tools.hideKeyboard
+import social.entourage.android.tools.view.EntSnackbar
 
 
 private const val ARG_PHONE = "phone"
@@ -133,6 +138,18 @@ class OnboardingPasscodeFragment : Fragment() {
             else {
                 callback?.requestNewCode()
                 activateTimer()
+            }
+        }
+
+        ui_onboard_bt_help?.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SENDTO)
+            intent.data = Uri.parse("mailto:")
+            val addresses = arrayOf(getString(R.string.contact_email))
+            intent.putExtra(Intent.EXTRA_EMAIL, addresses)
+            try {
+                startActivity(intent)
+            } catch (e: ActivityNotFoundException) {
+                onboard_passcode_mainlayout?.let { EntSnackbar.make(it, R.string.error_no_email, Snackbar.LENGTH_SHORT).show()}
             }
         }
 
