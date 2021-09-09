@@ -143,6 +143,7 @@ class MainActivity : BaseSecuredActivity(),
                         .show()
                 return
             }
+            return
         }
 
         if (isAllreadyCheckCountNeo) {

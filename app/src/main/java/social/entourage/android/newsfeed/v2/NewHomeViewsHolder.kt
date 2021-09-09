@@ -274,13 +274,16 @@ class EventVH(view: View) : RecyclerView.ViewHolder(view) {
     }
 }
 
-class ShowMoreVH(view: View, val type: HomeCardType) : RecyclerView.ViewHolder(view) {
+class ShowMoreVH(view: View, val type: HomeCardType,val subtype:HomeCardType) : RecyclerView.ViewHolder(view) {
     fun bind(listener: HomeViewHolderListener) {
         itemView.setOnClickListener {
-            listener.onShowDetail(type, false)
+            listener.onShowDetail(type, false,subtype)
         }
 
-        val titleId = if (type == HomeCardType.ACTIONS) R.string.show_more_actions else R.string.show_more_events
+        var titleId = if (type == HomeCardType.ACTIONS) R.string.show_more_actions else R.string.show_more_events
+        if (subtype == HomeCardType.ACTIONS_ASK || subtype == HomeCardType.ACTIONS_CONTRIB) {
+            titleId = if (subtype == HomeCardType.ACTIONS_CONTRIB) R.string.show_more_actions_contrib else R.string.show_more_actions_ask
+        }
         itemView.ui_tv_title_more?.text = itemView.resources.getString(titleId)
     }
 }

@@ -65,11 +65,15 @@
     <string name="show_more_event">Voir l\'événement</string>
     <string name="show_more_actions">Afficher plus\nde demandes et\nd’initiatives</string>
     <string name="show_more_events">Afficher plus\nd’événements</string>
+    <string name="show_more_actions_ask">Voir toutes les demandes</string>
+    <string name="show_more_actions_contrib">Voir tous les dons</string>
 
     <string name="home_title_headlines">À la une</string>
     <string name="home_title_actions">Demandes et initiatives</string>
     <string name="home_title_events">Événements</string>
     <string name="home_title_none" />
+    <string name="home_title_actions_contrib">Dons</string>
+    <string name="home_title_actions_ask">Demandes</string>
 
     <string name="home_help_title">Entourage autrement</string>
     <string name="home_help_description">Voici comment prendre part au projet Entourage, s’il n’y a pas d’événements ou d’actions dans ta région :</string>

@@ -132,10 +132,10 @@ class HomeExpertFragment : BaseNewsfeedFragment() {
                 }
             }
 
-            override fun onShowDetail(type: HomeCardType,isArrow:Boolean) {
+            override fun onShowDetail(type: HomeCardType,isArrow:Boolean,subtype:HomeCardType) {
                 var logString = ""
                 if (type == HomeCardType.ACTIONS) {
-                    showActions(true)
+                    showActions(true,subtype)
                     logString = if (isArrow) {
                         AnalyticsEvents.ACTION_EXPERTFEED_MoreActionArrow
                     } else {
@@ -143,7 +143,7 @@ class HomeExpertFragment : BaseNewsfeedFragment() {
                     }
                 }
                 else if (type == HomeCardType.EVENTS) {
-                    showActions(false)
+                    showActions(false,HomeCardType.NONE)
                     logString = if (isArrow) {
                         AnalyticsEvents.ACTION_EXPERTFEED_MoreEventArrow
                     } else {
@@ -219,9 +219,12 @@ class HomeExpertFragment : BaseNewsfeedFragment() {
 //        }
 //    }
 
-    fun showActions(isAction:Boolean) {
+    fun showActions(isAction:Boolean,subtype:HomeCardType) {
         requireActivity().supportFragmentManager.commit {
-            add(R.id.main_fragment,NewsFeedActionsFragment.newInstance(isAction,false),"homeNew")
+            val isExpertAsk = if(subtype == HomeCardType.ACTIONS_ASK) true else false
+            val isExpertContrib = if(subtype == HomeCardType.ACTIONS_CONTRIB) true else false
+
+            add(R.id.main_fragment,NewsFeedActionsFragment.newInstance(isAction,false,isExpertAsk,isExpertContrib),"homeNew")
             addToBackStack("homeNew")
             val navKey = if (isAction) "action" else "event"
             saveInfos(true,navKey)
@@ -260,12 +263,12 @@ class HomeExpertFragment : BaseNewsfeedFragment() {
     //To Handle deeplink for Event
     override fun onShowEvents() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEED_SHOWEVENTS)
-        showActions(false)
+        showActions(false,HomeCardType.NONE)
     }
 
     override fun onShowAll() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEED_SHOWALL)
-        showActions(true)
+        showActions(true,HomeCardType.NONE)
     }
 
     /*****

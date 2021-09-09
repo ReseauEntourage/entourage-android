@@ -53,7 +53,7 @@ class ActionEventAdapter(var homecard:HomeCard,val listener:HomeViewHolderListen
         }
         val view = inflater.inflate(R.layout.layout_cell_action_more, parent, false)
 
-        return ShowMoreVH(view,homecard.type)
+        return ShowMoreVH(view,homecard.type,homecard.subtype)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
