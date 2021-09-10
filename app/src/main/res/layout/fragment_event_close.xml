@@ -49,8 +49,9 @@
         android:layout_marginTop="50dp"
         android:text="@string/event_validate_button"/>
 
-    <TextView
+    <Button
         android:id="@+id/entourage_close_cancel_button"
+        style="@style/TransparentButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
