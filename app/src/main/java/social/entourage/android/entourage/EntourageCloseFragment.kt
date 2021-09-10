@@ -77,7 +77,7 @@ class EntourageCloseFragment : DialogFragment() {
     private fun onSuccessClicked() {
         feedItem?.let {
             EntBus.post(OnFeedItemCloseRequestEvent(it, showUI = false, success = true))
-            showEmail(R.string.entourage_close_email_title_success)
+          //  showEmail(R.string.entourage_close_email_title_success)
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_CLOSE_POPUP_SUCCESS)
             dismiss()
         }
@@ -86,7 +86,7 @@ class EntourageCloseFragment : DialogFragment() {
     private fun onFailedClicked() {
         feedItem?.let {
             EntBus.post(OnFeedItemCloseRequestEvent(it, showUI = false, success = false))
-            showEmail(R.string.entourage_close_email_title_failed)
+           // showEmail(R.string.entourage_close_email_title_failed)
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_CLOSE_POPUP_FAILURE)
             dismiss()
         }
