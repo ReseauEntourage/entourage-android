@@ -43,6 +43,8 @@
     <string name="profile_pop_switch_mode_expert">Mode “normal“</string>
     <string name="profile_pop_switch_mode_title">Information</string>
     <string name="profile_pop_switch_mode_message">Vous avez basculé en\n%s\n\nRedirection vers la nouvelle home ?</string>
+    <string name="profile_pop_switch_mode_message_neo">Vous êtes sur le point d’activer le mode “Premiers pas” de l’application.\n\nEffectuer cette action ?</string>
+    <string name="profile_pop_switch_mode_message_expert">VVous êtes sur le point de désactiver le mode “Premiers pas” de l’application.\n\nEffectuer cette action ?</string>
     <string name="profile_pop_switch_mode_button_no">Non</string>
     <string name="profile_pop_switch_mode_button_yes">Oui</string>
     <string name="info_pop_switch_mode_neo_on">Mode “Premier pas“ activé</string>

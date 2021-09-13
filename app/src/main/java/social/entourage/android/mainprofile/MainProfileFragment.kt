@@ -225,9 +225,9 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
 
         val alertDialog = AlertDialog.Builder(requireContext())
         alertDialog.setTitle(R.string.profile_pop_switch_mode_title)
-        val modeStr = if(isChecked) R.string.profile_pop_switch_mode_expert else R.string.profile_pop_switch_mode_neo
-        val message = String.format(getString(R.string.profile_pop_switch_mode_message),getString(modeStr))
-        alertDialog.setMessage(message)
+        val modeStr = if(isChecked) R.string.profile_pop_switch_mode_message_expert else R.string.profile_pop_switch_mode_message_neo
+
+        alertDialog.setMessage(modeStr)
         alertDialog.setNegativeButton(R.string.profile_pop_switch_mode_button_no) { dialog, _ ->
             dialog.dismiss()
         }
