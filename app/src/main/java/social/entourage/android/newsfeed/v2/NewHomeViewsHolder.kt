@@ -288,9 +288,13 @@ class ShowMoreVH(view: View, val type: HomeCardType,val subtype:HomeCardType) : 
     }
 }
 
-class OtherVH(view: View, val type: HomeCardType) : RecyclerView.ViewHolder(view) {
+class OtherVH(view: View, val type: HomeCardType,val subtype: HomeCardType) : RecyclerView.ViewHolder(view) {
     fun bind(listener: HomeViewHolderListener) {
         itemView.setOnClickListener {
+            if (subtype == HomeCardType.ACTIONS_ASK) {
+                listener.onShowDetail(type, true,subtype)
+                return@setOnClickListener
+            }
             if (type == HomeCardType.ACTIONS) {
                 listener.onShowEntourageHelp()
             } else {

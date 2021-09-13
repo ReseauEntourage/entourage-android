@@ -84,6 +84,8 @@
     <string name="home_help_button_5">Programme LinkedOut</string>
     <string name="home_button_help_title">J’aide Entourage autrement</string>
     <string name="home_button_change_zone">Je modifie ma zone d’action</string>
+    <string name="home_cell_info_demand_empty">C\'est plutôt calme ici</string>
+    <string name="home_cell_info_demand_empty_button">Rechercher\nplus loin</string>
 
     <string name="home_help_report_description">Pour aider au déploiement futur d’Entourage dans votre région, soyez nos yeux et nos oreilles ! Partagez-nous ce que vous observez dans votre environnement.\n\nCe questionnaire couvre différentes thématiques, répondez-y autant que vous le pouvez. Si la situation évolue, vous pourrez le remplir à nouveau pour nous tenir informés.\n\nVotre collaboration est précieuse, nous vous en remercions chaleureusement !</string>
     <string name="home_button_help_title_report">Les reporters Entourage</string>
