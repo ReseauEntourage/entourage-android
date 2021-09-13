@@ -72,7 +72,7 @@
     <string name="home_title_actions">Demandes et initiatives</string>
     <string name="home_title_events">Événements</string>
     <string name="home_title_none" />
-    <string name="home_title_actions_contrib">Dons</string>
+    <string name="home_title_actions_contrib">Contributions</string>
     <string name="home_title_actions_ask">Demandes</string>
 
     <string name="home_help_title">Entourage autrement</string>
