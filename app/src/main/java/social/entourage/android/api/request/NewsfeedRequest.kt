@@ -78,5 +78,6 @@ interface NewsfeedRequest {
     fun getHomeFeed(
             @Query("longitude") longitude: Double?,
             @Query("latitude") latitude: Double?,
+            @Query("split_entourages") split: Boolean,
     ): Call<ResponseBody>
 }
