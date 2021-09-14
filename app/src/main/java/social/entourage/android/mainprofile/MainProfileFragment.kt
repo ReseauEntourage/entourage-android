@@ -25,6 +25,7 @@ import social.entourage.android.tools.view.EntSnackbar
  */
 class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
 
+    private var isManualChecked = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         EntBus.register(this)
@@ -185,7 +186,13 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
                 else {
                     AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_SWITCH_NeoToExpert)
                 }
-                showPopInfoMode(!isChecked)
+                if (!isManualChecked) {
+                    showPopInfoMode(!isChecked)
+                }
+                else {
+                    isManualChecked = false
+                }
+
             }
         }
         else {
@@ -217,11 +224,7 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
     }
 
     private fun showPopInfoMode(isChecked:Boolean) {
-        EntourageApplication.get().sharedPreferences.edit()
-            .putBoolean(EntourageApplication.KEY_HOME_IS_EXPERTMODE, isChecked)
-            .remove("isNavNews")
-            .remove("navType")
-            .apply()
+
 
         val alertDialog = AlertDialog.Builder(requireContext())
         alertDialog.setTitle(R.string.profile_pop_switch_mode_title)
@@ -229,10 +232,18 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
 
         alertDialog.setMessage(modeStr)
         alertDialog.setNegativeButton(R.string.profile_pop_switch_mode_button_no) { dialog, _ ->
+            isManualChecked = true
+            val isExpertMode = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_HOME_IS_EXPERTMODE,false)
+            ui_switch_change_mode?.isChecked = !isExpertMode
             dialog.dismiss()
         }
         alertDialog.setPositiveButton(R.string.profile_pop_switch_mode_button_yes) { dialog, _ ->
             dialog.dismiss()
+            EntourageApplication.get().sharedPreferences.edit()
+                .putBoolean(EntourageApplication.KEY_HOME_IS_EXPERTMODE, isChecked)
+                .remove("isNavNews")
+                .remove("navType")
+                .apply()
             (activity as? MainActivity)?.showHome(isChecked)
         }
         alertDialog.show()
