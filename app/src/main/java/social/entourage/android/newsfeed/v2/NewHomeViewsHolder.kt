@@ -109,9 +109,7 @@ class ActionVH(view: View) : RecyclerView.ViewHolder(view) {
                             .circleCrop()
                             .into(iconView)
                 } ?: run {
-                    Glide.with(iconView.context)
-                            .load(feedItem.getIconDrawable(itemView.context))
-                            .into(iconView)
+                    iconView.setImageDrawable(feedItem.getIconDrawable(itemView.context))
                 }
             }
 
