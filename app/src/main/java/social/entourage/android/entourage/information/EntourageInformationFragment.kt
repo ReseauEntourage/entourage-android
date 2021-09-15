@@ -18,11 +18,13 @@ import kotlinx.android.synthetic.main.layout_detail_action_description.*
 import kotlinx.android.synthetic.main.layout_detail_event_action_creator.*
 import kotlinx.android.synthetic.main.layout_detail_event_action_date.*
 import kotlinx.android.synthetic.main.layout_detail_event_action_location.*
+import kotlinx.android.synthetic.main.layout_detail_event_action_private.*
 import kotlinx.android.synthetic.main.layout_detail_event_action_top_view.*
 import kotlinx.android.synthetic.main.layout_detail_event_description.*
 import kotlinx.android.synthetic.main.layout_entourage_options.*
 import kotlinx.android.synthetic.main.layout_invite_source.*
 import kotlinx.android.synthetic.main.layout_invite_source.view.*
+import kotlinx.android.synthetic.main.layout_pop_info_private.*
 import kotlinx.android.synthetic.main.layout_private_entourage_information.*
 import kotlinx.android.synthetic.main.layout_public_entourage_information.*
 import okhttp3.ResponseBody
@@ -192,6 +194,21 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
                 entourage_option_promote?.visibility = View.VISIBLE
             }
         }
+        layout_detail_event_action_private?.visibility = View.GONE
+        if (feedItem is BaseEntourage) {
+            if (!(feedItem as BaseEntourage).isPublic) {
+                layout_detail_event_action_private?.visibility = View.VISIBLE
+
+                if ((feedItem as BaseEntourage).isEvent()) {
+                    ui_tv_event_action_private?.text = getString(R.string.info_event_private)
+                    ui_pop_private_message?.text = getString(R.string.info_pop_private_message_event)
+                }
+                else {
+                    ui_tv_event_action_private?.text = getString(R.string.info_action_private)
+                    ui_pop_private_message?.text = getString(R.string.info_pop_private_message_action)
+                }
+            }
+        }
     }
 
     override fun initializeView() {
@@ -214,6 +231,23 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         }
 
         entourage_option_report?.setOnClickListener {onReportEntourageButton()}
+
+        ui_bt_close_pop_private?.setOnClickListener {
+            ui_layout_private?.visibility = View.GONE
+        }
+
+        ui_bt_pop_private_close?.setOnClickListener {
+            entourage_info_pop_private?.visibility = View.GONE
+        }
+
+        ui_pop_private_bt_ok?.setOnClickListener {
+            entourage_info_pop_private?.visibility = View.GONE
+            onJoinButton()
+        }
+
+        ui_pop_private_bt_cancel?.setOnClickListener {
+            entourage_info_pop_private?.visibility = View.GONE
+        }
     }
 
     override fun switchToPrivateSection() {
@@ -356,6 +390,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         var showIcon = View.VISIBLE
         ui_layout_event_action_top_action?.setBackgroundResource(R.drawable.bg_button_rounded_pre_onboard_orange_stroke)
         ui_tv_button_action_top?.setTextColor(ResourcesCompat.getColor(resources,R.color.accent,null))
+        ui_layout_private?.visibility = View.GONE
         when(entourage.joinStatus) {
             FeedItem.JOIN_STATUS_ACCEPTED -> {
                 title = R.string.tour_cell_button_accepted_other
@@ -364,11 +399,16 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
                 ui_tv_button_action_top?.setTextColor(ResourcesCompat.getColor(resources,R.color.white,null))
             }
             FeedItem.JOIN_STATUS_PENDING -> {
-                showIcon = View.GONE
-                title = R.string.tour_cell_button_pending_new
+                showIcon = View.VISIBLE
+                title = R.string.tour_cell_button_pending
+                ui_layout_event_action_top_action?.setBackgroundResource(R.drawable.bg_button_rounded_orange_stroke_fill_light_pink)
+                ui_iv_button_action_top?.setImageResource(R.drawable.ic_picto_wait)
+                ui_layout_private?.visibility = View.VISIBLE
             }
             else -> {
                 title = R.string.tour_info_request_join_button_entourage
+                ui_iv_button_action_top?.setImageResource(R.drawable.ic_detail_action_plus)
+                ui_layout_event_action_top_action?.setBackgroundResource(R.drawable.bg_button_rounded_pre_onboard_orange_stroke)
                 if (entourage.isEvent()) {
                     title = R.string.tour_info_request_join_button_event
                 }
@@ -400,6 +440,10 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
                 alertDialog.show()
             }
             else if (entourage.joinStatus != FeedItem.JOIN_STATUS_ACCEPTED) {
+                if (!entourage.isPublic) {
+                    entourage_info_pop_private?.visibility = View.VISIBLE
+                    return@setOnClickListener
+                }
                 onJoinButton()
             }
         }

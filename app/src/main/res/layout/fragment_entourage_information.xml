@@ -34,8 +34,8 @@
                 android:background="?attr/selectableItemBackground"
                 android:contentDescription="@string/empty_description"
                 android:padding="5dp"
-                android:tint="@color/accent"
-                app:srcCompat="@drawable/ic_baseline_arrow_back_36" />
+                app:srcCompat="@drawable/ic_baseline_arrow_back_36"
+                app:tint="@color/accent" />
 
             <ImageView
                 android:id="@+id/entourage_info_icon"
@@ -102,13 +102,13 @@
             android:visibility="gone"
             tools:visibility="visible" />
 
-    <include
-        android:id="@+id/entourage_info_public_section"
-        layout="@layout/layout_public_entourage_information"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/entourage_info_title_layout"
-        tools:visibility="visible" />
+        <include
+            android:id="@+id/entourage_info_public_section"
+            layout="@layout/layout_public_entourage_information"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/entourage_info_title_layout"
+            tools:visibility="visible" />
 
     <View
         android:id="@+id/entourage_info_loading_view"
@@ -137,20 +137,28 @@
         android:visibility="gone"
         tools:visibility="gone" />
 
-    <include
-        android:id="@+id/entourage_info_invite_success_layout"
-        layout="@layout/layout_invite_success"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        tools:visibility="gone" />
+        <include
+            android:id="@+id/entourage_info_invite_success_layout"
+            layout="@layout/layout_invite_success"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="gone" />
 
-    <include
-        android:id="@+id/entourage_info_options"
-        layout="@layout/layout_entourage_options"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        tools:visibility="gone" />
+        <include
+            android:id="@+id/entourage_info_options"
+            layout="@layout/layout_entourage_options"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="gone" />
+
+        <include
+            android:id="@+id/entourage_info_pop_private"
+            layout="@layout/layout_pop_info_private"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="gone" />
     </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

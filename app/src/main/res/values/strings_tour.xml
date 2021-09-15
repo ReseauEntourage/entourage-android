@@ -152,4 +152,15 @@
     <string name="validate_cancel_demand">Confirmer</string>
 
     <string name="info_event_online_feed">En ligne</string>
+
+    <string name="info_action_private">Action privée</string>
+    <string name="info_event_private">Événement privé</string>
+    <string name="info_pop_message_private">Votre demande de participation est en attente de validation.</string>
+    <string name="info_pop_private_message_action">Pour participer à cette action privée, le créateur de cette action doit valider votre participation.\n\nUne fois votre demande acceptée, vous pourrez accéder à la conversation de groupe.</string>
+    <string name="info_pop_private_message_event">Pour participer à cet événement privé, le créateur de cet événement doit valider votre participation.\n\nUne fois votre demande acceptée, vous pourrez accéder à la conversation de groupe.</string>
+    <string name="info_pop_private_title">Demande de participation</string>
+    <string name="info_pop_private_bt_ok">Confirmer</string>
+    <string name="info_pop_private_bt_cancel">Annuler</string>
+
+
 </resources>
