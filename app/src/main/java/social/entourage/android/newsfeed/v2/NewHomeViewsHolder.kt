@@ -198,6 +198,10 @@ class ActionVH(view: View) : RecyclerView.ViewHolder(view) {
                 }
             }
 
+            if(feedItem.isOnlineEvent) {
+                distStr = itemView.context.getString(R.string.detail_action_event_online)
+            }
+
             itemView.ui_action_tv_location?.text = distStr
 
             //Nb people
@@ -245,6 +249,13 @@ class EventVH(view: View) : RecyclerView.ViewHolder(view) {
                     distStr = postalCode
                 }
             }
+
+            if(feedItem is BaseEntourage) {
+                if(feedItem.isOnlineEvent) {
+                    distStr = itemView.context.getString(R.string.detail_action_event_online)
+                }
+            }
+
             itemView.ui_event_tv_location?.text = distStr
 
             //Nb people
