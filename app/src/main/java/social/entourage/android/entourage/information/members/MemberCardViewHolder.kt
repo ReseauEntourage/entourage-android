@@ -2,7 +2,10 @@ package social.entourage.android.entourage.information.members
 
 import android.net.Uri
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.TypedArrayUtils.getText
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.layout_detail_event_action_creator.*
 import kotlinx.android.synthetic.main.layout_entourage_information_member_card.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
@@ -11,6 +14,7 @@ import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.tools.EntBus
+import social.entourage.android.tools.Utils
 import social.entourage.android.user.role.UserRoleView
 import social.entourage.android.user.role.UserRolesFactory
 import java.util.*
@@ -91,7 +95,11 @@ class MemberCardViewHolder(view: View) : BaseCardViewHolder(view) {
                 itemView.ui_tv_role?.visibility = View.GONE
             }
 
-            itemView.ui_tv_bt_asso?.text = partner?.name
+            val assoStr = partner?.name + " " + itemView.context.getText(R.string.info_asso_abo)
+            val colorId = ContextCompat.getColor(itemView.context, R.color.accent)
+            val assoSpanner = Utils.formatTextWithBoldSpanAndColor(colorId,true,assoStr, itemView.context.getString(R.string.info_asso_abo))
+
+            itemView.ui_tv_bt_asso?.text = assoSpanner
             itemView.ui_tv_bt_asso?.setOnClickListener {
                 entourageUser.partner?.id?.toInt()?.let { partnerId ->
                     EntBus.post(Events.OnShowDetailAssociation(partnerId))

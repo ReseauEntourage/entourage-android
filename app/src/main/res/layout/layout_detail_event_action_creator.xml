@@ -58,6 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/ui_action_event_creator_layout_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -78,6 +79,7 @@
             android:id="@+id/ui_action_event_creator_layout_bottom"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_main_info">
@@ -99,7 +101,7 @@
             <TextView
                 android:id="@+id/ui_action_event_creator_bt_asso"
                 android:layout_width="0dp"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:text="Asso"
                 android:textColor="@color/accent"

@@ -161,6 +161,7 @@
     <string name="info_pop_private_title">Demande de participation</string>
     <string name="info_pop_private_bt_ok">Confirmer</string>
     <string name="info_pop_private_bt_cancel">Annuler</string>
+    <string name="info_asso_abo">• S\'abonner ></string>
 
 
 </resources>

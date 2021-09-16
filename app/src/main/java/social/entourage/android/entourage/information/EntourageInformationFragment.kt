@@ -6,6 +6,7 @@ import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -515,10 +516,12 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             else {
                 ui_action_event_creator_role?.visibility = View.GONE
             }
-
-            ui_action_event_creator_bt_asso?.text = partner.name
+            val assoStr = partner.name + " " + getText(R.string.info_asso_abo)
+            val colorId = ContextCompat.getColor(requireContext(), R.color.accent)
+            val assoSpanner = Utils.formatTextWithBoldSpanAndColor(colorId,true,assoStr, getString(R.string.info_asso_abo))
+            ui_action_event_creator_bt_asso.text = assoSpanner
             ui_action_event_creator_bt_asso?.setOnClickListener {
-                partner.id.toInt().let { partnerId ->
+            partner.id.toInt().let { partnerId ->
                     EntBus.post(Events.OnShowDetailAssociation(partnerId))
                 }
             }

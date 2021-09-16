@@ -101,9 +101,10 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:minHeight="30dp"
                 android:id="@+id/ui_tv_bt_asso"
                 android:layout_width="0dp"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:text="Asso"
                 android:textColor="@color/accent"
