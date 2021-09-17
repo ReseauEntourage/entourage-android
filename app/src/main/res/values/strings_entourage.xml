@@ -24,8 +24,8 @@
     <string name="entourage_create_privacy_description_public">Vous acceptez que toute personne participe à votre événement, sans vérifier son profil au préalable.</string>
     <string name="entourage_create_privacy_description_private">Vous validez chaque personne individuellement avant de  lui confirmer qu’elle peut participer.</string>
 
-    <string name="entourage_create_privacy_description_public_action">Votre action solidaire est ouverte à tout membre du réseau souhaitant participer.</string>
-    <string name="entourage_create_privacy_description_private_action">Les membres d’Entourage vous demandent votre accord avant de participer.</string>
+    <string name="entourage_create_privacy_description_public_action">Votre action est publique, tout le monde peut y participer librement.</string>
+    <string name="entourage_create_privacy_description_private_action">Votre action est privée, vous aurez le choix  d’accepter ou de refuser toute personne demandant à y participer.</string>
 
     <string name="entourage_create_error">L\'entourage n\'a pas été créé!</string>
     <string name="entourage_create_ok">Entourage créé.</string>

@@ -7,6 +7,7 @@ import social.entourage.android.entourage.category.EntourageCategory
  */
 interface CreateEntourageListener {
     fun onTitleChanged(title: String)
+    fun onPrivacyChanged(privacy: Boolean)
     fun onDescriptionChanged(description: String)
     fun onCategoryChosen(category: EntourageCategory)
     fun onPhotoEventAdded(portrait_url:String?,landscape_url:String?)

@@ -488,10 +488,14 @@ open class BaseCreateEntourageFragment
         if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) {
             ui_create_entourage_privacyAction?.visibility = View.GONE
         } else {
-            changeActionView(editedEntourage?.isPublic ?: true)
+            changeActionPrivacyView(isPublic)
             ui_create_entourage_privacyAction?.visibility = View.VISIBLE
-            ui_layout_privacyAction_public?.setOnClickListener { changeActionView(true) }
-            ui_layout_privacyAction_private?.setOnClickListener { changeActionView(false) }
+
+            ui_layout_privacyAction_public?.setOnClickListener {
+                val entourageTitleFragment = CreateEntouragePrivacyActionFragment.newInstance(isPublic)
+                entourageTitleFragment.setListener(this)
+                entourageTitleFragment.show(parentFragmentManager, CreateEntourageTitleFragment.TAG)
+            }
         }
     }
 
@@ -522,14 +526,16 @@ open class BaseCreateEntourageFragment
         }
     }
 
-    private fun changeActionView(isPublicChecked: Boolean) {
-        ui_tv_entourage_privacyAction_public_title?.let {it.typeface = Typeface.create(it.typeface, if (isPublicChecked) Typeface.BOLD else Typeface.NORMAL)}
-        ui_tv_entourage_privacyAction_public?.let {it.typeface = Typeface.create(it.typeface, if (isPublicChecked) Typeface.BOLD else Typeface.NORMAL)}
-        ui_tv_entourage_privacyAction_private_title?.let {it.typeface = Typeface.create(it.typeface, if (!isPublicChecked) Typeface.BOLD else Typeface.NORMAL)}
-        ui_tv_entourage_privacyAction_private?.let {it.typeface = Typeface.create(it.typeface, if (!isPublicChecked) Typeface.BOLD else Typeface.NORMAL)}
-        ui_iv_button_public?.visibility = if (isPublicChecked) View.VISIBLE else View.INVISIBLE
-        ui_iv_button_private?.visibility = if (!isPublicChecked) View.VISIBLE else View.INVISIBLE
+    private fun changeActionPrivacyView(isPublicChecked: Boolean) {
         isPublic = isPublicChecked
+        if (isPublic) {
+            ui_tv_entourage_privacyAction_public_title?.text = getString(R.string.entourage_create_privacy_public)
+            ui_tv_entourage_privacyAction_public?.text = getString(R.string.entourage_create_privacy_description_public_action)
+        }
+        else {
+            ui_tv_entourage_privacyAction_public_title?.text = getString(R.string.entourage_create_privacy_private)
+            ui_tv_entourage_privacyAction_public?.text = getString(R.string.entourage_create_privacy_description_private_action)
+        }
     }
 
     private val isValid: Boolean
@@ -627,6 +633,10 @@ open class BaseCreateEntourageFragment
     // ----------------------------------
     override fun onTitleChanged(title: String) {
         create_entourage_title?.text = title
+    }
+
+    override fun onPrivacyChanged(privacy: Boolean) {
+        changeActionPrivacyView(privacy)
     }
 
     override fun onDescriptionChanged(description: String) {
