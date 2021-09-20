@@ -31,6 +31,7 @@
                 android:id="@+id/ui_layout_private"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
+                android:visibility="gone"
                 android:background="@color/pre_onboard_orange_trans">
 
                 <TextView
