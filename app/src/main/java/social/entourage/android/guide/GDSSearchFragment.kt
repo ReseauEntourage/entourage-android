@@ -20,6 +20,7 @@ import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.api.request.PoiResponse
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.guide.poi.ReadPoiFragment
+import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.showKeyboard
 import social.entourage.android.user.partner.PartnerFragment
@@ -63,6 +64,7 @@ class GDSSearchFragment : BaseDialogFragment() {
         ui_bt_search_close?.visibility = View.INVISIBLE
 
         ui_bt_back?.setOnClickListener {
+            ui_et_search?.hideKeyboard()
             dismiss()
         }
 

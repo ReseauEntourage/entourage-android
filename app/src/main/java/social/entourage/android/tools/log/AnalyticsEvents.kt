@@ -549,6 +549,14 @@ object AnalyticsEvents {
 
     const val ACTION_SWITCH_NeoToExpert = "Action__Switch__NeoToExpert"
     const val ACTION_SWITCH_ExpertToNeo = "Action__Switch__ExpertToNeo"
+
+    //Entourages search
+    const val ACTION_FEEDSEARCH_START_ASK = "Action__FeedSearch__Start_Ask"
+    const val ACTION_FEEDSEARCH_START_CONTRIB = "Action__FeedSearch__Start_Contrib"
+    const val ACTION_FEEDSEARCH_START_EVENT = "Action__FeedSearch__Start_Event"
+    const val ACTION_FEEDSEARCH_SHOW_DETAIL = "Action__FeedSearch__Show_Detail"
+    const val ACTION_FEEDSEARCH_SHOW_PROFILE = "Action__FeedSearch__Show_Profile"
+    const val VIEW_FEEDSEARCH_SEARCHRESULTS = "View__FeedSearch__SearchResults"
     
 
     val TAG: String? = AnalyticsEvents::class.java.simpleName
