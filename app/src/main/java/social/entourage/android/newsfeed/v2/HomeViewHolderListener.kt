@@ -8,4 +8,5 @@ interface HomeViewHolderListener {
     fun onShowDetail(type:HomeCardType,isArrow:Boolean,subtype:HomeCardType)
     fun onShowChangeZone()
     fun onShowEntourageHelp()
+    fun onShowChangeMode()
 }

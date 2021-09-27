@@ -197,6 +197,10 @@ class HomeExpertFragment : BaseNewsfeedFragment(), EntourageServiceListener {
                 val homeHelp = HomeHelpFragment()
                 homeHelp.show(activity.supportFragmentManager,HomeHelpFragment.TAG)
             }
+
+            override fun onShowChangeMode() {
+                (activity as? MainActivity)?.showProfileTab()
+            }
         }
 
         adapterHome = NewHomeFeedAdapter(listener)
@@ -212,7 +216,14 @@ class HomeExpertFragment : BaseNewsfeedFragment(), EntourageServiceListener {
         val _arrayTest = HomeCard.parsingFeed(responseString)
 
         ui_home_swipeRefresh?.isRefreshing = false
-        adapterHome?.updateDatas(_arrayTest)
+
+        EntourageApplication.me(activity)?.let { user ->
+            var isNeighbour = false
+            if (user.isUserTypeNeighbour && user.isEngaged) {
+                isNeighbour = true
+            }
+            adapterHome?.updateDatas(_arrayTest,isNeighbour)
+        } ?: run { adapterHome?.updateDatas(_arrayTest,false) }
     }
 
 //    fun checkNavigation() {

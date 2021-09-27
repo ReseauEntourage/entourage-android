@@ -37,6 +37,10 @@ class HomeNeoMainFragment : Fragment() {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_NEOFEED_ActNow)
         }
 
+        ui_tv_action_change_mode?.setOnClickListener {
+            (activity as? MainActivity)?.showProfileTab()
+        }
+
         checkProfile()
 
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_START_NeoFeed)
