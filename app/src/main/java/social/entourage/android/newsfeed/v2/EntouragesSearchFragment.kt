@@ -141,11 +141,12 @@ class EntouragesSearchFragment : BaseDialogFragment() {
 
         val userAddress = EntourageApplication.me(requireContext())?.address
 
-        var types = ""
+        val types: String
         when(searchType) {
             "outing" -> types = "ou"
             "ask" -> types = "as,ae,am,ar,ai,ak,ao,ah"
             "contrib" -> types = "cs,ce,cm,cr,ci,ck,co,ch"
+            else -> types = "as,ae,am,ar,ai,ak,ao,ah"
         }
 
         val call = request.searchEntourages(userAddress?.latitude, userAddress?.longitude,types, ui_et_search.text.toString())

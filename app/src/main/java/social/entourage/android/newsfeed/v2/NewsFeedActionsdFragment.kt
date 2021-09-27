@@ -111,7 +111,7 @@ open class NewsFeedActionsFragment : BaseNewsfeedFragment(), EntourageServiceLis
                 searchType = "ask"
             }
             else {
-                ui_tv_title?.text = getString(R.string.home_title_actions)
+                ui_tv_title?.text = getString(R.string.home_title_actions_ask)
             }
         }
         else {

@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.layout_cell_entourage_search.view.*
 import social.entourage.android.Constants
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
+import social.entourage.android.api.model.EntourageEvent
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.api.tape.Events
@@ -133,6 +134,15 @@ class EntourageSearchVH(view: View) : RecyclerView.ViewHolder(view) {
                 //author
                 itemView.ui_action_username?.text = String.format(res.getString(R.string.by_author_search), author.userName)
             }
+
+            if (feedItem is EntourageEvent)  {
+                itemView.ui_action_event.text = feedItem.getFeedTypeLong(itemView.context)
+                itemView.ui_action_event.visibility = View.VISIBLE
+            }
+            else {
+                itemView.ui_action_event.visibility = View.GONE
+            }
+
             if (!feedItem.showAuthor()) {
                 itemView.ui_action_username?.text = ""
                 itemView.ui_action_iv_user?.setImageDrawable(null)

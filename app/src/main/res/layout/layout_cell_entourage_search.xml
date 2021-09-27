@@ -25,17 +25,19 @@
         android:text="Type"
         android:textColor="@color/action_type_outing"
         android:textSize="17sp"
+        android:maxLines="2"
+        android:ellipsize="end"
         app:layout_constraintBottom_toBottomOf="@+id/ui_action_picto_type"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ui_action_picto_type"
         app:layout_constraintTop_toTopOf="@+id/ui_action_picto_type" />
 
     <TextView
-        android:id="@+id/ui_action_username"
+        android:id="@+id/ui_action_event"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:ellipsize="end"
         android:fontFamily="sans-serif-light"
@@ -46,6 +48,23 @@
         app:layout_constraintEnd_toStartOf="@+id/ui_action_iv_user"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ui_action_title" />
+
+    <TextView
+        android:id="@+id/ui_action_username"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-light"
+        android:maxLines="2"
+        android:text="Title\nL2"
+        android:textColor="@color/action_type_outing"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/ui_action_iv_user"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ui_action_event" />
 
     <TextView
         android:id="@+id/ui_action_tv_location"
