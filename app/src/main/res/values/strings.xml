@@ -103,6 +103,12 @@
     <string name="home_neo_cell2_description">Passez à l’action en rejoignant les initiatives solidaires de votre quartier.</string>
     <string name="home_neo_cell2_button">SE LANCER</string>
 
+    <string name="home_neo_cell_info_title">Vous êtes sur le mode Premiers pas.</string>
+    <string name="home_neo_cell_info">Prêt à découvrir tous nos programmes ? Désactivez le mode Premiers pas ici.</string>
+
+    <string name="home_expert_cell_info_title">Vous êtes sur le mode normal de l’application.</string>
+    <string name="home_expert_cell_info">Vous souhaitez être guidé pour débuter sur Entourage ? Activez le mode Premiers pas ici.</string>
+
     //Neo help
     <string name="home_neo_help_title">Entourage vous accompagne dans votre démarche</string>
     <string name="home_neo_help_title_bold">vous accompagne</string>
