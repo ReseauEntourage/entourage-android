@@ -172,16 +172,14 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
                 ui_tv_action_zone1_title?.text = getString(R.string.user_edit_action_zone_button_no_address)
             }
 
-            ui_layout_add_zone?.visibility = View.GONE
-            ui_layout_2nd_zone?.visibility = View.GONE
-//            user.addressSecondary?.let {addressSecondary ->
-//                ui_tv_action_zone2_title?.text = addressSecondary.displayAddress
-//                ui_layout_2nd_zone?.visibility = View.VISIBLE
-//                ui_layout_add_zone?.visibility = View.GONE
-//            } ?: run {
-//                ui_layout_2nd_zone?.visibility = View.GONE
-//                ui_layout_add_zone?.visibility = View.VISIBLE
-//            }
+            user.addressSecondary?.let {addressSecondary ->
+                ui_tv_action_zone2_title?.text = addressSecondary.displayAddress
+                ui_layout_2nd_zone?.visibility = View.VISIBLE
+                ui_layout_add_zone?.visibility = View.GONE
+            } ?: run {
+                ui_layout_2nd_zone?.visibility = View.GONE
+                ui_layout_add_zone?.visibility = View.VISIBLE
+            }
 
             //Type
             ui_tv_action_type_desc?.text = when(user.goal) {
