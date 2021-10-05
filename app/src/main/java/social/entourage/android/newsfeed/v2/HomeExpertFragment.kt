@@ -219,7 +219,7 @@ class HomeExpertFragment : BaseNewsfeedFragment(), EntourageServiceListener {
 
         EntourageApplication.me(activity)?.let { user ->
             var isNeighbour = false
-            if (user.isUserTypeNeighbour && user.isEngaged) {
+            if (user.isUserTypeNeighbour) {
                 isNeighbour = true
             }
             adapterHome?.updateDatas(_arrayTest,isNeighbour)
