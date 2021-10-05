@@ -241,8 +241,6 @@ open class NewsFeedActionsFragment : BaseNewsfeedFragment(), EntourageServiceLis
                 if (user.status == FeedItem.JOIN_STATUS_PENDING) {
                     if (updatedFeedItem is Tour) {
                         TourJoinRequestFragment.newInstance(updatedFeedItem).show(activity.supportFragmentManager, TourJoinRequestFragment.TAG)
-                    } else if (updatedFeedItem is BaseEntourage) {
-                        EntourageJoinRequestFragment.newInstance(updatedFeedItem).show(activity.supportFragmentManager, EntourageJoinRequestFragment.TAG)
                     }
                 }
             } catch (e: IllegalStateException) {
