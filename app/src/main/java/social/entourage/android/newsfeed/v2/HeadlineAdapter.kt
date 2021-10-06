@@ -9,12 +9,14 @@ import social.entourage.android.api.model.feed.Announcement
 /**
  * HeadlineAdapter.
  */
-class HeadlineAdapter(var homecard:HomeCard,val listener:HomeViewHolderListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HeadlineAdapter(var homecard:HomeCard,val listener:HomeViewHolderListener, val isLoading:Boolean): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val CELL_HEADLINE = 0
     val CELL_ACTION = 1
+    val CELL_EMPTY = 2
 
     override fun getItemViewType(position: Int): Int {
+        if (isLoading) return CELL_EMPTY
         val type = homecard.arrayCards[position].data
 
         if (type is Announcement) {
@@ -25,6 +27,11 @@ class HeadlineAdapter(var homecard:HomeCard,val listener:HomeViewHolderListener)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
+        if (isLoading) {
+            val view = inflater.inflate(R.layout.layout_cell_headline_empty, parent, false)
+            return AnnounceVH(view)
+        }
+
         if (viewType == CELL_HEADLINE) {
             val view = inflater.inflate(R.layout.layout_cell_headline_announce, parent, false)
             return AnnounceVH(view)
@@ -34,6 +41,8 @@ class HeadlineAdapter(var homecard:HomeCard,val listener:HomeViewHolderListener)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (isLoading) return
+
         if (getItemViewType(position) == CELL_HEADLINE) {
             (holder as AnnounceVH).bind(homecard.arrayCards[position].data, listener,position)
         }

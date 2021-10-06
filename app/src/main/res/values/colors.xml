@@ -26,7 +26,8 @@
     <color name="background_transparent">#66000000</color>
     <color name="background_accent_dark_translucent">@color/pale_grey</color>
     <color name="background_transparent_grey">#0D000000</color>
-
+    <color name="background_grey_empty">#EEF0F3</color>
+    <color name="transparent">#00000000</color>
     <!-- Login -->
     <color name="background_login_light">#FFFFFF</color>
     <color name="background_login_grey">#F7F7F7</color>

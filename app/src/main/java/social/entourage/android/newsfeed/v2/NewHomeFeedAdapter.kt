@@ -5,6 +5,7 @@ import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.layout_cell_home_action.view.*
@@ -20,10 +21,11 @@ import social.entourage.android.tools.view.RecyclerViewItemDecorationWithSpacing
  */
 class NewHomeFeedAdapter(val listener:HomeViewHolderListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    fun updateDatas(items:ArrayList<HomeCard>,isNeighbour:Boolean) {
+    fun updateDatas(items:ArrayList<HomeCard>,isNeighbour:Boolean,isLoading:Boolean) {
         this.isNeighbour = isNeighbour
         this.arrayItems.clear()
         this.arrayItems.addAll(items)
+        this.isLoading = isLoading
         notifyDataSetChanged()
     }
     var arrayItems = ArrayList<HomeCard>()
@@ -32,6 +34,7 @@ class NewHomeFeedAdapter(val listener:HomeViewHolderListener): RecyclerView.Adap
     val CELL_EVENTS = 2
     val CELL_INFO = 3
     var isNeighbour = false
+    var isLoading = false
 
     override fun getItemViewType(position: Int): Int {
         if (isNeighbour) {
@@ -104,7 +107,7 @@ class NewHomeFeedAdapter(val listener:HomeViewHolderListener): RecyclerView.Adap
     }
 
     override fun getItemCount(): Int {
-        if (isNeighbour) return arrayItems.size + 1
+        if (isNeighbour && !isLoading) return arrayItems.size + 1
 
         return arrayItems.size
     }
@@ -113,10 +116,20 @@ class NewHomeFeedAdapter(val listener:HomeViewHolderListener): RecyclerView.Adap
         var itemDecoration:RecyclerView.ItemDecoration? = null
 
         fun bind(context: Context,position: Int) {
-            itemView.ui_title_headline.text = context.getText(arrayItems[position].type.getName())
+            if (isLoading) {
+                itemView.ui_title_headline.text = "********** ***"
+                itemView.ui_title_headline.setTextColor(ResourcesCompat.getColor(context.resources,R.color.background_grey_empty,null))
+                itemView.ui_title_headline.setBackgroundColor(ResourcesCompat.getColor(context.resources,R.color.background_grey_empty,null))
+            }
+            else {
+                itemView.ui_title_headline.text = context.getText(arrayItems[position].type.getName())
+                itemView.ui_title_headline.setTextColor(ResourcesCompat.getColor(context.resources,R.color.black,null))
+                itemView.ui_title_headline.setBackgroundColor(ResourcesCompat.getColor(context.resources,R.color.transparent,null))
+            }
+
 
             itemView.ui_recyclerview_headline?.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
-            val adapter = HeadlineAdapter(arrayItems[position],listener)
+            val adapter = HeadlineAdapter(arrayItems[position],listener,isLoading)
             itemView.ui_recyclerview_headline?.adapter = adapter
 
             itemDecoration?.let { itemView.ui_recyclerview_headline?.removeItemDecoration(it) }
@@ -129,11 +142,23 @@ class NewHomeFeedAdapter(val listener:HomeViewHolderListener): RecyclerView.Adap
         var itemDecoration:RecyclerView.ItemDecoration? = null
 
         fun bind(context: Context, position: Int) {
-            if (arrayItems[position].subtype == HomeCardType.ACTIONS_CONTRIB || arrayItems[position].subtype == HomeCardType.ACTIONS_ASK ) {
-                itemView.ui_title_action.text = context.getText(arrayItems[position].subtype.getName())
+            if (isLoading) {
+                itemView.ui_title_action.text = "********** ***"
+                itemView.ui_title_action.setTextColor(ResourcesCompat.getColor(context.resources,R.color.background_grey_empty,null))
+                itemView.ui_title_action.setBackgroundColor(ResourcesCompat.getColor(context.resources,R.color.background_grey_empty,null))
+                itemView.ui_action_show_more.setImageDrawable(ResourcesCompat.getDrawable(context.resources,R.drawable.ic_home_arrow_show_grey,null))
             }
             else {
-                itemView.ui_title_action.text = context.getText(arrayItems[position].type.getName())
+                itemView.ui_title_action.setTextColor(ResourcesCompat.getColor(context.resources,R.color.black,null))
+                itemView.ui_title_action.setBackgroundColor(ResourcesCompat.getColor(context.resources,R.color.transparent,null))
+                itemView.ui_action_show_more.setImageDrawable(ResourcesCompat.getDrawable(context.resources,R.drawable.button_arrow_next_black_state,null))
+
+                if (arrayItems[position].subtype == HomeCardType.ACTIONS_CONTRIB || arrayItems[position].subtype == HomeCardType.ACTIONS_ASK ) {
+                    itemView.ui_title_action.text = context.getText(arrayItems[position].subtype.getName())
+                }
+                else {
+                    itemView.ui_title_action.text = context.getText(arrayItems[position].type.getName())
+                }
             }
 
             itemView.ui_action_show_more.setOnClickListener {
@@ -144,7 +169,7 @@ class NewHomeFeedAdapter(val listener:HomeViewHolderListener): RecyclerView.Adap
             }
 
             itemView.ui_recyclerview_action?.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
-            val adapter = ActionEventAdapter(arrayItems[position],listener)
+            val adapter = ActionEventAdapter(arrayItems[position],listener,isLoading)
             itemView.ui_recyclerview_action?.adapter = adapter
 
             itemDecoration?.let { itemView.ui_recyclerview_action?.removeItemDecoration(it) }
@@ -157,9 +182,21 @@ class NewHomeFeedAdapter(val listener:HomeViewHolderListener): RecyclerView.Adap
         var itemDecoration:RecyclerView.ItemDecoration? = null
 
         fun bind(context: Context, position: Int) {
-            itemView.ui_title_event.text = context.getText(arrayItems[position].type.getName())
 
-            itemView.ui_event_show_more.setOnClickListener {
+            if (isLoading) {
+                itemView.ui_title_event.text = "********** ***"
+                itemView.ui_title_event.setTextColor(ResourcesCompat.getColor(context.resources,R.color.background_grey_empty,null))
+                itemView.ui_title_event.setBackgroundColor(ResourcesCompat.getColor(context.resources,R.color.background_grey_empty,null))
+                itemView.ui_event_show_more.setImageDrawable(ResourcesCompat.getDrawable(context.resources,R.drawable.ic_home_arrow_show_grey,null))
+            }
+            else {
+                itemView.ui_title_event.setTextColor(ResourcesCompat.getColor(context.resources, R.color.black, null))
+                itemView.ui_title_event.setBackgroundColor(ResourcesCompat.getColor(context.resources, R.color.transparent, null))
+                itemView.ui_event_show_more.setImageDrawable(ResourcesCompat.getDrawable(context.resources, R.drawable.button_arrow_next_black_state, null))
+                itemView.ui_title_event.text = context.getText(arrayItems[position].type.getName())
+            }
+
+                itemView.ui_event_show_more.setOnClickListener {
                 listener.onShowDetail(arrayItems[position].type,true,arrayItems[position].subtype)
             }
             itemView.ui_event_show_more_txt.setOnClickListener {
@@ -167,7 +204,7 @@ class NewHomeFeedAdapter(val listener:HomeViewHolderListener): RecyclerView.Adap
             }
 
             itemView.ui_recyclerview_event?.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
-            val adapter = ActionEventAdapter(arrayItems[position],listener)
+            val adapter = ActionEventAdapter(arrayItems[position],listener,isLoading)
             itemView.ui_recyclerview_event?.adapter = adapter
 
             itemDecoration?.let { itemView.ui_recyclerview_event?.removeItemDecoration(it) }

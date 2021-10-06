@@ -17,6 +17,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.feed.Announcement
 import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.api.tape.Events
 import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.location.EntLocation
@@ -35,6 +36,7 @@ class HomeExpertFragment : BaseNewsfeedFragment(), EntourageServiceListener {
     var isTourPostSend = false
 
     var adapterHome: NewHomeFeedAdapter? = null
+    var arrayEmpty = ArrayList<HomeCard>()
 
     // ----------------------------------
     // LIFECYCLE
@@ -56,6 +58,8 @@ class HomeExpertFragment : BaseNewsfeedFragment(), EntourageServiceListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        createEmptyArray()
 
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_START_EXPERTFEED)
 
@@ -100,6 +104,30 @@ class HomeExpertFragment : BaseNewsfeedFragment(), EntourageServiceListener {
     }
 
     override fun onUserStatusChanged(user: EntourageUser, updatedFeedItem: FeedItem) {
+    }
+
+    private fun createEmptyArray() {
+        val card = NewsfeedItem()
+        val cards = arrayOf(card,card,card)
+
+        val home1 = HomeCard()
+        home1.type = HomeCardType.HEADLINES
+        home1.arrayCards = ArrayList()
+        home1.arrayCards.addAll(cards)
+
+        val home2 = HomeCard()
+        home2.type = HomeCardType.EVENTS
+        home2.arrayCards = ArrayList()
+        home2.arrayCards.addAll(cards)
+
+        val home3 = HomeCard()
+        home3.type = HomeCardType.ACTIONS
+        home3.arrayCards = ArrayList()
+        home3.arrayCards.addAll(cards)
+
+        arrayEmpty.add(home1)
+        arrayEmpty.add(home2)
+        arrayEmpty.add(home3)
     }
 
     private fun setupRecyclerView() {
@@ -207,6 +235,13 @@ class HomeExpertFragment : BaseNewsfeedFragment(), EntourageServiceListener {
         ui_recyclerview?.layoutManager = LinearLayoutManager(context)
         ui_recyclerview?.adapter = adapterHome
 
+        EntourageApplication.me(activity)?.let { user ->
+            var isNeighbour = false
+            if (user.isUserTypeNeighbour) {
+                isNeighbour = true
+            }
+            adapterHome?.updateDatas(arrayEmpty,isNeighbour,true)
+        } ?: run { adapterHome?.updateDatas(arrayEmpty,false,true) }
         ui_home_swipeRefresh?.setOnRefreshListener { entService?.updateHomefeed(pagination) }
     }
 
@@ -222,8 +257,8 @@ class HomeExpertFragment : BaseNewsfeedFragment(), EntourageServiceListener {
             if (user.isUserTypeNeighbour) {
                 isNeighbour = true
             }
-            adapterHome?.updateDatas(_arrayTest,isNeighbour)
-        } ?: run { adapterHome?.updateDatas(_arrayTest,false) }
+            adapterHome?.updateDatas(_arrayTest,isNeighbour,false)
+        } ?: run { adapterHome?.updateDatas(_arrayTest,false,false) }
     }
 
 //    fun checkNavigation() {

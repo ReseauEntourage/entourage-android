@@ -9,16 +9,19 @@ import social.entourage.android.R
 /**
  * ActionEventAdapter.
  */
-class ActionEventAdapter(var homecard:HomeCard,val listener:HomeViewHolderListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ActionEventAdapter(var homecard:HomeCard,val listener:HomeViewHolderListener, val isLoading:Boolean): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val minimumItemsToShowMore = 2
     private val minimalCellForSpecialCell = 1
     val TYPE_MORE = 0
     val TYPE_CELL = 1
     val TYPE_OTHER = 2
+    val CELL_EMPTY = 3
     var isSpecialCell = false
 
     override fun getItemViewType(position: Int): Int {
+        if (isLoading) return CELL_EMPTY
+
         if (isSpecialCell && position == homecard.arrayCards.size) {
             return TYPE_OTHER
         }
@@ -29,6 +32,19 @@ class ActionEventAdapter(var homecard:HomeCard,val listener:HomeViewHolderListen
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
+
+        if (isLoading) {
+            if (homecard.type == HomeCardType.ACTIONS) {
+                val view = inflater.inflate(R.layout.layout_cell_action_empty, parent, false)
+
+                return ActionVH(view)
+            }
+            else {
+                val view = inflater.inflate(R.layout.layout_cell_event_empty, parent, false)
+                return EventVH(view)
+            }
+        }
+
         if (viewType == TYPE_CELL) {
             if (homecard.type == HomeCardType.ACTIONS) {
                 val view = inflater.inflate(R.layout.layout_cell_action, parent, false)
@@ -63,6 +79,8 @@ class ActionEventAdapter(var homecard:HomeCard,val listener:HomeViewHolderListen
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (isLoading) return
+
         if ( isSpecialCell && position == homecard.arrayCards.size) {
             (holder as OtherVH).bind(listener)
             return
