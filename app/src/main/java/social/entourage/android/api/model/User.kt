@@ -124,7 +124,7 @@ class User : Serializable {
         get() = TYPE_PRO == type
 
     fun asTourAuthor(): FeedItemAuthor {
-        return FeedItemAuthor(avatarURL, id, displayName, partner)
+        return FeedItemAuthor(avatarURL, id, displayName, partner,false)
     }
 
     val arrayMapForUpdate: ArrayMap<String, Any>
