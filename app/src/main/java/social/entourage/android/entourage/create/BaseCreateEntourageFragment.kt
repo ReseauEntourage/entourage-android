@@ -465,6 +465,7 @@ open class BaseCreateEntourageFragment
 
     private fun initializeJoinRequestType() {
         create_entourage_privacy_layout?.visibility = if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) View.VISIBLE else View.GONE
+        create_entourage_privacy_layout?.visibility = View.GONE
         editedEntourage?.let {
             create_entourage_privacy_switch?.isChecked = it.isPublic
             onPrivacySwitchClicked()
@@ -489,7 +490,7 @@ open class BaseCreateEntourageFragment
             ui_create_entourage_privacyAction?.visibility = View.GONE
         } else {
             changeActionPrivacyView(isPublic)
-            ui_create_entourage_privacyAction?.visibility = View.VISIBLE
+            ui_create_entourage_privacyAction?.visibility = View.GONE
 
             ui_layout_privacyAction_public?.setOnClickListener {
                 val entourageTitleFragment = CreateEntouragePrivacyActionFragment.newInstance(isPublic)
