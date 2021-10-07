@@ -557,7 +557,14 @@ object AnalyticsEvents {
     const val ACTION_FEEDSEARCH_SHOW_DETAIL = "Action__FeedSearch__Show_Detail"
     const val ACTION_FEEDSEARCH_SHOW_PROFILE = "Action__FeedSearch__Show_Profile"
     const val VIEW_FEEDSEARCH_SEARCHRESULTS = "View__FeedSearch__SearchResults"
-    
+
+    //Feed Detail
+    const val VIEW_FEEDVIEW_EVENTS = "View__FeedView__Events"
+    const val VIEW_FEEDVIEW_CONTRIBS = "View__FeedView__Contribs"
+    const val VIEW_FEEDVIEW_ASKS = "View__FeedView__Asks"
+
+    const val VIEW_FEEDDETAIL_ACTION = "View__FeedDetail__Action"
+    const val VIEW_FEEDDETAIL_EVENT = "View__FeedDetail__Event"
 
     val TAG: String? = AnalyticsEvents::class.java.simpleName
 

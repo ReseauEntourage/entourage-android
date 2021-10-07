@@ -117,6 +117,14 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         invitationId = arguments?.getLong(KEY_INVITATION_ID) ?: 0
         (arguments?.getSerializable(FeedItem.KEY_FEEDITEM) as? FeedItem)?.let { newFeedItem ->
             feedItem = newFeedItem
+
+            if (feedItem is EntourageEvent) {
+                AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_FEEDDETAIL_EVENT)
+            }
+            else {
+                AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_FEEDDETAIL_ACTION)
+            }
+
             if (newFeedItem.isPrivate()) {
                 initializeView()
                 loadPrivateCards()

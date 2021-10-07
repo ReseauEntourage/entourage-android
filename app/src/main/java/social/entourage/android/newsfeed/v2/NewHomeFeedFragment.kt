@@ -113,6 +113,7 @@ class NewHomeFeedFragment : BaseNewsfeedFragment(), BackPressable {
     }
 
     fun goDetailActions() {
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_FEEDVIEW_ASKS)
         val frag = NewsFeedActionsFragment.newInstance(true,true)
         requireActivity().supportFragmentManager.commit {
             setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
@@ -122,6 +123,7 @@ class NewHomeFeedFragment : BaseNewsfeedFragment(), BackPressable {
     }
 
     fun goDetailEvents() {
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_FEEDVIEW_EVENTS)
         val frag = NewsFeedActionsFragment.newInstance(false,true)
         requireActivity().supportFragmentManager.commit {
             setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)

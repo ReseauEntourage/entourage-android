@@ -282,6 +282,17 @@ class HomeExpertFragment : BaseNewsfeedFragment(), EntourageServiceListener {
 //    }
 
     fun showActions(isAction:Boolean,subtype:HomeCardType) {
+        var tag = AnalyticsEvents.VIEW_FEEDVIEW_EVENTS
+        if (isAction) {
+            if (subtype == HomeCardType.ACTIONS_ASK) {
+               tag = AnalyticsEvents.VIEW_FEEDVIEW_ASKS
+            }
+            else {
+                tag = AnalyticsEvents.VIEW_FEEDVIEW_CONTRIBS
+            }
+        }
+        AnalyticsEvents.logEvent(tag)
+
         requireActivity().supportFragmentManager.commit {
             val isExpertAsk = if(subtype == HomeCardType.ACTIONS_ASK) true else false
             val isExpertContrib = if(subtype == HomeCardType.ACTIONS_CONTRIB) true else false
