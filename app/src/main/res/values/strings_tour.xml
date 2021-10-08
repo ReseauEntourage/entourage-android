@@ -162,7 +162,7 @@
     <string name="info_pop_private_bt_ok">Confirmer</string>
     <string name="info_pop_private_bt_cancel">Annuler</string>
     <string name="info_asso_abo">• S\'abonner ></string>
-    <string name="info_asso_joined">• Abonné.e</string>
+    <string name="info_asso_joined">• Abonné</string>
     <string name="by_author_search">Par %1$s</string>
 
 </resources>
