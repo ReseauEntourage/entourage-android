@@ -608,6 +608,12 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         PartnerFragment.newInstance(event.id).show(parentFragmentManager, PartnerFragment.TAG)
     }
 
+    @Subscribe
+    fun onRefreshEntourageInformation(event: Events.OnRefreshEntourageInformation) {
+        presenter().getFeedItem(feedItem.uuid
+                ?: "", feedItem.type, 0, 0)
+    }
+
     // ----------------------------------
     // API callbacks
     // ----------------------------------

@@ -223,4 +223,6 @@ open class Events {
     class OnShowEventDeeplink
 
     class OnShowDetailAssociation(val id:Int)
+
+    class OnRefreshEntourageInformation
 }

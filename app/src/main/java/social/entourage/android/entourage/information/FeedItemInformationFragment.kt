@@ -672,6 +672,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
             entourage_info_members?.adapter = membersAdapter
         }
 
+        membersAdapter?.removeAll()
         // add the members
         membersList?.let { membersAdapter?.addItems(it) }
 
