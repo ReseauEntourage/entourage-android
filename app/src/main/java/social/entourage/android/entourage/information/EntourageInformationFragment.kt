@@ -379,9 +379,17 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
                         .load(R.drawable.ic_placeholder_detail_event)
                         .into(ui_image_event_top)
             }
+
+            if (entourage.status.equals("full")) {
+                ui_layout_event_closed?.visibility = View.VISIBLE
+            }
+            else {
+                ui_layout_event_closed?.visibility = View.GONE
+            }
         }
         else {
             ui_image_event_top?.visibility = View.GONE
+            ui_layout_event_closed?.visibility = View.GONE
         }
 
         ui_title_event_action_top?.text = entourage.getTitle()
