@@ -8,8 +8,7 @@ class FeedItemAuthor (
         @field:SerializedName("avatar_url") var avatarURLAsString: String?,
         @field:SerializedName("id") var userID: Int,
         @field:SerializedName("display_name") var userName: String?,
-        @field:SerializedName("partner") var partner: Partner?,
-        @field:SerializedName("partner_with_current_user") var isPartnerWithCurrentUser:Boolean) : Serializable {
+        @field:SerializedName("partner") var partner: Partner?) : Serializable {
 
     fun isSame(author: FeedItemAuthor?): Boolean {
         if (author == null) return false

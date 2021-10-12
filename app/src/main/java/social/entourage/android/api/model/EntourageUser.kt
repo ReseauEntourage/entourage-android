@@ -48,9 +48,6 @@ class EntourageUser : TimestampedObject(), Serializable {
 
     var partner_role_title:String? = null
 
-    @SerializedName("partner_with_current_user")
-    var isPartnerWithCurrentUser = false
-
     override val timestamp: Date?
     get() = requestDate
 
@@ -83,7 +80,6 @@ class EntourageUser : TimestampedObject(), Serializable {
         clone.groupRole = groupRole
         clone.communityRoles = communityRoles
         clone.isDisplayedAsMember = isDisplayedAsMember
-        clone.isPartnerWithCurrentUser = isDisplayedAsMember
         return clone
     }
 

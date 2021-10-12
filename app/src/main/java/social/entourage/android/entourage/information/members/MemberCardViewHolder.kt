@@ -96,7 +96,7 @@ class MemberCardViewHolder(view: View) : BaseCardViewHolder(view) {
             }
 
             var assoInfo = itemView.context.getText(R.string.info_asso_abo)
-            if (entourageUser.isPartnerWithCurrentUser) {
+            if (entourageUser.partner?.isFollowing == true) {
                 assoInfo = itemView.context.getText(R.string.info_asso_joined)
             }
 

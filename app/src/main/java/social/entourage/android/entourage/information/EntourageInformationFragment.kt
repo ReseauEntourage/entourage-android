@@ -527,7 +527,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             }
 
             var info_abo = getText(R.string.info_asso_abo).toString()
-            if (author.isPartnerWithCurrentUser) {
+            if (partner.isFollowing) {
                 info_abo = getText(R.string.info_asso_joined).toString()
             }
 
