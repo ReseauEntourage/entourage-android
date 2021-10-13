@@ -61,27 +61,15 @@ class OnboardingEditPhotoFragment : DialogFragment() {
         }
 
         super.onActivityCreated(savedInstanceState)
-        val dialog = dialog
-        if (dialog != null) {
-            val window = dialog.window
-            if (window != null && window.attributes != null) {
-                window.attributes.windowAnimations = R.style.CustomDialogFragmentFromRight
-            }
-        }
+        dialog?.window?.attributes?.windowAnimations = R.style.CustomDialogFragmentFromRight
     }
 
     override fun onStart() {
         super.onStart()
-        val dialog = dialog
-        if (dialog != null) {
-            val window = dialog.window
-            if (window != null) {
-                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-                window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                if (window.attributes != null) {
-                    window.attributes.windowAnimations = R.style.CustomDialogFragmentFromRight
-                }
-            }
+        dialog?.window?.let { window ->
+            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            window.attributes?.windowAnimations = R.style.CustomDialogFragmentFromRight
         }
     }
 
@@ -95,15 +83,15 @@ class OnboardingEditPhotoFragment : DialogFragment() {
     //**********//**********//**********
 
     private fun setupViews() {
-        if (context != null) {
-            ui_photo_edit_progressBar?.indeterminateDrawable?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.white), PorterDuff.Mode.SRC_ATOP)
+        context?.let { context ->
+            ui_photo_edit_progressBar?.indeterminateDrawable?.setColorFilter(ContextCompat.getColor(context, R.color.white), PorterDuff.Mode.SRC_ATOP)
         }
 
         photoUri?.let {
-            crop_view.setUri(it)
+            crop_view?.setUri(it)
         }
 
-        crop_view.addOnCropListener(object : OnCropListener {
+        crop_view?.addOnCropListener(object : OnCropListener {
             override fun onSuccess(bitmap: Bitmap) {
                 ui_photo_edit_progressBar?.visibility = View.GONE
                 try {
@@ -117,7 +105,7 @@ class OnboardingEditPhotoFragment : DialogFragment() {
             override fun onFailure(e: Exception) {
                 Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
                 ui_photo_edit_progressBar?.visibility = View.GONE
-                ui_edit_photo_validate.isEnabled = true
+                ui_edit_photo_validate?.isEnabled = true
             }
         })
 
@@ -132,7 +120,7 @@ class OnboardingEditPhotoFragment : DialogFragment() {
         ui_edit_photo_validate?.setOnClickListener {
             ui_edit_photo_validate?.isEnabled = false
             ui_photo_edit_progressBar?.visibility = View.VISIBLE
-            crop_view.crop()
+            crop_view?.crop()
         }
     }
 
@@ -144,7 +132,7 @@ class OnboardingEditPhotoFragment : DialogFragment() {
     }
 
     private fun saveBitmap(bitmap: Bitmap) {
-        crop_view.setBitmap(bitmap)
+        crop_view?.setBitmap(bitmap)
         photoFile = Utils.saveBitmapToFile(bitmap, photoFile)
     }
 
