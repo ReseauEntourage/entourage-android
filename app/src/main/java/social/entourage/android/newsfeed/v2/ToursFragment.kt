@@ -116,6 +116,9 @@ open class ToursFragment : NewsFeedFragment(), TourServiceListener, BackPressabl
         ui_bt_back?.setOnClickListener {
             requireActivity().onBackPressed()
         }
+
+        ui_tv_title?.text = getString(R.string.map_filter_tours_text)
+        ui_tv_title?.visibility = View.VISIBLE
         selectedTab = NewsfeedTabItem.TOUR_TAB
     }
 
