@@ -194,15 +194,15 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView) {
         }
 
         //last message
-        EntourageApplication.get().me()?.let { currentUser ->
-            itemView.tour_card_last_message?.text = feedItem.lastMessage?.getText(currentUser.id)
-                    ?: ""
-        } ?: kotlin.run { itemView.tour_card_last_message?.text = "" }
-
-        itemView.tour_card_last_message?.visibility = if (itemView.tour_card_last_message?.text.isNullOrBlank()) View.GONE else View.VISIBLE
-        itemView.tour_card_last_message?.setTypeface(null, if (feedItem.getUnreadMsgNb() == 0) Typeface.NORMAL else Typeface.BOLD)
-        itemView.tour_card_last_message?.setTextColor(if (feedItem.getUnreadMsgNb() == 0) ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_normal) else ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_bold))
-
+//        EntourageApplication.get().me()?.let { currentUser ->
+//            itemView.tour_card_last_message?.text = feedItem.lastMessage?.getText(currentUser.id)
+//                    ?: ""
+//        } ?: kotlin.run { itemView.tour_card_last_message?.text = "" }
+//
+//        itemView.tour_card_last_message?.visibility = if (itemView.tour_card_last_message?.text.isNullOrBlank()) View.GONE else View.VISIBLE
+//        itemView.tour_card_last_message?.setTypeface(null, if (feedItem.getUnreadMsgNb() == 0) Typeface.NORMAL else Typeface.BOLD)
+//        itemView.tour_card_last_message?.setTextColor(if (feedItem.getUnreadMsgNb() == 0) ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_normal) else ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_bold))
+        itemView.tour_card_last_message?.visibility = View.GONE
         //last update date
         itemView.tour_card_last_update_date?.text = formatLastUpdateDate(feedItem.updatedTime, itemView.context)
         itemView.tour_card_last_update_date?.setTypeface(null, if (feedItem.getUnreadMsgNb() == 0) Typeface.NORMAL else Typeface.BOLD)

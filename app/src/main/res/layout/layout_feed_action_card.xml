@@ -87,7 +87,7 @@
         android:layout_alignParentEnd="true"
         android:layout_gravity="end"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="3dp"
+        android:layout_marginEnd="6dp"
         android:contentDescription="@string/empty_description"
         android:scaleType="centerInside"
         app:srcCompat="@drawable/ic_user_photo_small" />

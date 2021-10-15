@@ -8,6 +8,7 @@
     android:layout_gravity="bottom"
     android:background="@color/toolbar"
     android:elevation="16dp"
+    app:labelVisibilityMode="labeled"
     app:itemBackground="@color/white"
     app:itemIconSize="28dp"
     app:itemIconTint="@color/navigation_icons_state_list"
