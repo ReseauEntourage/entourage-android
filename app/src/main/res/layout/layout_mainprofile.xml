@@ -157,10 +157,35 @@
                     android:textColor="@color/action_type_outing"
                     android:textSize="15sp" />
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/ui_layout_actions"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/textView25"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/bg_button_rounded_white">
+
+                    <TextView
+                        android:id="@+id/textView351"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="@string/myActionsCreated"
+                        android:textColor="@color/black"
+                        android:textSize="17sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="140dp"
-                    android:layout_below="@id/textView25"
+                    android:layout_below="@id/ui_layout_actions"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="0dp"

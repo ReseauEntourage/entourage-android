@@ -19,6 +19,7 @@ import social.entourage.android.api.tape.Events
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
+import social.entourage.android.user.edit.UserEditFragment
 
 /**
  * Side menu fragment
@@ -84,6 +85,11 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
         ui_layout_show_actions?.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_SHOWACTIONS)
             showActions()
+        }
+
+        ui_layout_actions?.setOnClickListener{
+            val fragment = MyActionsFragment()
+            fragment.show(requireActivity().supportFragmentManager, MyActionsFragment.TAG)
         }
 
         ui_layout_charte?.setOnClickListener {

@@ -225,4 +225,5 @@ open class Events {
     class OnShowDetailAssociation(val id:Int)
 
     class OnRefreshEntourageInformation
+    class OnRefreshActionsInfos
 }

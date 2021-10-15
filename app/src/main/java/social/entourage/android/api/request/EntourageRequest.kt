@@ -13,6 +13,8 @@ import java.util.*
 class EntourageWrapper (var entourage: BaseEntourage)
 class EntourageResponse (var entourage: BaseEntourage)
 
+class EntouragesResponse (@field:SerializedName("entourages") var entourages: List<BaseEntourage>? = null)
+
 class MultipleInvitationsWrapper(@field:SerializedName("invite") var invitations: MultipleInvitations)
 
 class EntourageUserResponse {
@@ -134,4 +136,7 @@ interface EntourageRequest {
             @Query("types") types: String?,
             @Query("q") searchTxt: String,
     ): Call<ResponseBody>
+
+    @GET("entourages/owns")
+    fun getMyActions(): Call<EntouragesResponse>
 }

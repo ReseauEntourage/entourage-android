@@ -54,6 +54,7 @@ import org.joda.time.LocalDate
 import social.entourage.android.*
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.feed.*
+import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.configuration.Configuration
@@ -103,6 +104,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
     private val inviteSuccessHandler = Handler()
     private val inviteSuccessRunnable = Runnable { entourage_info_invite_success_layout?.visibility = View.GONE }
     private var startedTypingMessage = false
+    private var isFromActions = false
 
     abstract fun presenter(): FeedItemInformationPresenter
 
@@ -114,6 +116,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupComponent(EntourageApplication.get().components)
+        arguments?.let { isFromActions = it.getBoolean(KEY_ISFROMACTIONS) }
         invitationId = arguments?.getLong(KEY_INVITATION_ID) ?: 0
         (arguments?.getSerializable(FeedItem.KEY_FEEDITEM) as? FeedItem)?.let { newFeedItem ->
             feedItem = newFeedItem
@@ -236,6 +239,8 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
 
     override fun onStop() {
         entourage_info_discussion_view?.removeOnScrollListener(discussionScrollListener)
+        EntBus.post(OnRefreshActionsInfos())
+
         try {
             super.onStop()
         }
@@ -263,7 +268,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         // If we are showing the public section and the feed item is private
         // switch to the private section
         // otherwise just close the view
-        if (entourage_info_public_section?.visibility == View.VISIBLE && feedItem.isPrivate()) {
+        if (entourage_info_public_section?.visibility == View.VISIBLE && feedItem.isPrivate() && !isFromActions) {
             onSwitchSections()
         } else {
             // inform the app to refresh the my entourages feed
@@ -275,6 +280,11 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
                 Timber.w(e)
             }
         }
+    }
+
+    override fun onDestroy() {
+        EntBus.post(OnRefreshActionsInfos())
+        super.onDestroy()
     }
 
     private fun onSwitchSections() {
@@ -535,6 +545,10 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         // for newly created entourages, open the invite friends screen automatically if the feed item is not suspended
         if (feedItem.isNewlyCreated && feedItem.showInviteViewAfterCreation() && !feedItem.isSuspended()) {
             showInviteSource(false)
+        }
+
+        if(isFromActions) {
+            onSwitchSections()
         }
     }
 
@@ -1379,18 +1393,20 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         private const val SCROLL_DELTA_Y_THRESHOLD = 20
         private const val KEY_INVITATION_ID = "social.entourage.android_KEY_INVITATION_ID"
         private const val KEY_FEED_POSITION = "social.entourage.android.KEY_FEED_POSITION"
+        private const val KEY_ISFROMACTIONS = "isFromActions"
         //private const val KEY_FEED_SHARE_URL = "social.entourage.android.KEY_FEED_SHARE_URL"
 
         // ----------------------------------
         // LIFECYCLE
         // ----------------------------------
         //TODO check that all values are not null
-        fun newInstance(feedItem: FeedItem, invitationId: Long, feedRank: Int): FeedItemInformationFragment {
+        fun newInstance(feedItem: FeedItem, invitationId: Long, feedRank: Int, isFromActions:Boolean = false): FeedItemInformationFragment {
             val fragment = if (feedItem.type == TimestampedObject.TOUR_CARD) TourInformationFragment() else EntourageInformationFragment()
             val args = Bundle()
             args.putSerializable(FeedItem.KEY_FEEDITEM, feedItem)
             args.putLong(KEY_INVITATION_ID, invitationId)
             args.putInt(KEY_FEED_POSITION, feedRank)
+            args.putBoolean(KEY_ISFROMACTIONS,isFromActions)
             fragment.arguments = args
             return fragment
         }

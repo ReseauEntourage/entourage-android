@@ -50,4 +50,8 @@
     <string name="info_pop_switch_mode_neo_on">Mode “Premier pas“ activé</string>
     <string name="info_pop_switch_mode_neo_off">Mode “Premier pas“ désactivé</string>
 
+    <string name="myActionsCreated">Mes actions solidaires créées</string>
+    <string name="myActions">Mes actions solidaires</string>
+    <string name="myAsk">Mes demandes</string>
+    <string name="myContrib">Mes dons</string>
 </resources>
