@@ -566,6 +566,11 @@ object AnalyticsEvents {
     const val VIEW_FEEDDETAIL_ACTION = "View__FeedDetail__Action"
     const val VIEW_FEEDDETAIL_EVENT = "View__FeedDetail__Event"
 
+    const val VIEW_LISTACTIONS_SHOW = "View__ListActions__Show"
+    const val ACTION_LISTACTIONS_SWITCH_ASK = "Action__ListActions__Switch_Ask"
+    const val ACTION_LISTACTIONS_SWITCH_CONTRIB = "Action__ListActions__Switch_Contrib"
+    const val ACTION_LISTACTIONS_SHOW_DETAIL = "Action__ListActions__Show_Detail"
+
     val TAG: String? = AnalyticsEvents::class.java.simpleName
 
     fun logEvent(event: String) {

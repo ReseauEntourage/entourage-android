@@ -47,13 +47,16 @@ class MyActionsFragment : BaseDialogFragment() {
         ui_material_button_group?.addOnButtonCheckedListener { group, checkedId, isChecked ->
             if (checkedId == ui_button_asks.id && isChecked) {
                 indexSelected = 1
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_LISTACTIONS_SWITCH_ASK)
             }
             else if (checkedId == ui_button_contribs.id && isChecked) {
                 indexSelected = 0
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_LISTACTIONS_SWITCH_CONTRIB)
             }
             changeSelectedItems()
         }
 
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_LISTACTIONS_SHOW)
         setupRecyclerView()
 
         getMyActions()
@@ -80,6 +83,7 @@ class MyActionsFragment : BaseDialogFragment() {
             if (isAlreadyShow) return@MyActionsAdapter
             val feed = arrayItemsSelected[position]
             try {
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_LISTACTIONS_SHOW_DETAIL)
                 val fragmentManager = requireActivity().supportFragmentManager
                 FeedItemInformationFragment.newInstance(feed, 0, position,true).show(fragmentManager, FeedItemInformationFragment.TAG)
                 isAlreadyShow = true
