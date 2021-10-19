@@ -23,6 +23,7 @@ import social.entourage.android.newsfeed.BaseNewsfeedFragment
 import social.entourage.android.newsfeed.v2.NewHomeFeedFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
+import java.lang.Exception
 import kotlin.math.roundToInt
 
 class EntBottomNavigationView : BottomNavigationView {
@@ -166,15 +167,19 @@ class EntBottomNavigationView : BottomNavigationView {
     // Helper functions
     // ----------------------------------
     fun refreshBadgeCount() {
-        val messageBadge = getOrCreateBadge(navigationDataSource.myMessagesTabIndex)
-            ?: return
-        if (badgeCount > 0) {
-            messageBadge.isVisible = true
-            messageBadge.number = badgeCount
-            ShortcutBadger.applyCount(EntourageApplication.get().applicationContext, badgeCount)
-        } else {
-            messageBadge.isVisible = false
-            ShortcutBadger.removeCount(EntourageApplication.get().applicationContext)
+        try {
+            val messageBadge = getOrCreateBadge(navigationDataSource.myMessagesTabIndex)
+                ?: return
+            if (badgeCount > 0) {
+                messageBadge.isVisible = true
+                messageBadge.number = badgeCount
+                ShortcutBadger.applyCount(EntourageApplication.get().applicationContext, badgeCount)
+            } else {
+                messageBadge.isVisible = false
+                ShortcutBadger.removeCount(EntourageApplication.get().applicationContext)
+            }
+        } catch (e: Exception) {
+            Timber.w(e)
         }
     }
 
