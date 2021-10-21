@@ -53,7 +53,7 @@ class MyActionsAdapter(var items: ArrayList<BaseEntourage>, val listenerClick: (
 
             //Info
             val cat = EntourageCategoryManager.findCategory(feedItem)
-            itemView.ui_action_tv_info.text = cat.title
+            itemView.ui_action_tv_info.text = cat.title_list
 
             itemView.ui_action_picto_info?.let { iconView ->
                 Glide.with(iconView.context).clear(iconView)

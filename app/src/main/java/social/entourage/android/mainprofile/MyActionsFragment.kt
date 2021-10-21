@@ -10,6 +10,7 @@ import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_my_actions.*
 import kotlinx.android.synthetic.main.fragment_my_actions.ui_progress
 import kotlinx.android.synthetic.main.fragment_my_actions.ui_recyclerView
+import kotlinx.android.synthetic.main.layout_view_title.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -54,6 +55,10 @@ class MyActionsFragment : BaseDialogFragment() {
                 AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_LISTACTIONS_SWITCH_CONTRIB)
             }
             changeSelectedItems()
+        }
+
+        title_close_button?.setOnClickListener {
+            dismiss()
         }
 
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_LISTACTIONS_SHOW)

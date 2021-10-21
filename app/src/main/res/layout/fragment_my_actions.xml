@@ -12,10 +12,23 @@
         android:id="@+id/customTitleView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:entourageTitle="@string/myActions"
+        app:entourageTitle=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView58"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/myActions"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/customTitleView3"
+        app:layout_constraintEnd_toEndOf="@+id/customTitleView3"
+        app:layout_constraintStart_toStartOf="@+id/customTitleView3"
+        app:layout_constraintTop_toTopOf="@+id/customTitleView3" />
 
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/ui_material_button_group"
@@ -34,6 +47,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/ui_button_contribs"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:letterSpacing="0"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -51,6 +65,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/ui_button_asks"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:letterSpacing="0"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
