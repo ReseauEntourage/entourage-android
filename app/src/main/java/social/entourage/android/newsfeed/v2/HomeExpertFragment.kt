@@ -20,12 +20,10 @@ import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.api.tape.Events
 import social.entourage.android.deeplinks.DeepLinksManager
-import social.entourage.android.location.EntLocation
 import social.entourage.android.newsfeed.BaseNewsfeedFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tour.encounter.CreateEncounterActivity
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import timber.log.Timber
 
@@ -68,12 +66,7 @@ class HomeExpertFragment : BaseNewsfeedFragment(), EntourageServiceListener {
             showTour()
         }
 
-        if(EntourageApplication.get().me()?.isPro == false) {
-            ui_bt_tour?.visibility = View.INVISIBLE
-        }
-        else {
-            ui_bt_tour?.visibility = View.VISIBLE
-        }
+        ui_bt_tour?.visibility = if(EntourageApplication.get().me()?.isPro == false) View.INVISIBLE else View.VISIBLE
 
         setupRecyclerView()
     }
@@ -88,10 +81,6 @@ class HomeExpertFragment : BaseNewsfeedFragment(), EntourageServiceListener {
         parseFeed(response.responseString)
     }
 
-//    @Subscribe
-//    override fun feedItemViewRequested(event: Events.OnFeedItemInfoViewRequestedEvent) {
-//        super.feedItemViewRequested(event)
-//    }
     //To intercept eventbus info for event/action close
     @Subscribe
     override fun feedItemCloseRequested(event: Events.OnFeedItemCloseRequestEvent) {
@@ -334,46 +323,14 @@ class HomeExpertFragment : BaseNewsfeedFragment(), EntourageServiceListener {
     }
 
     //To Handle deeplink for Event
-    override fun onShowEvents() {
+    fun onShowEvents() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEED_SHOWEVENTS)
         showActions(false,HomeCardType.NONE)
     }
 
-    override fun onShowAll() {
+    fun onShowAll() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEED_SHOWALL)
         showActions(true,HomeCardType.NONE)
-    }
-
-    /*****
-     ** Methods & service for Tour add Encounter
-     *****/
-    override fun onAddEncounter() {
-        if (presenter.shouldDisplayEncounterDisclaimer()) {
-            presenter.displayEncounterDisclaimer()
-        } else {
-            addEncounter()
-        }
-    }
-
-    override fun addEncounter() {
-        if (activity != null) {
-            if (currentTourUUID.equals("")) {
-                entService?.let { currentTourUUID = it.currentTourId }
-            }
-            saveCameraPosition()
-            val args = Bundle()
-            args.putString(CreateEncounterActivity.BUNDLE_KEY_TOUR_ID, currentTourUUID)
-            val encounterPosition  = longTapCoordinates ?: EntLocation.currentLatLng ?: EntLocation.lastCameraPosition.target
-            args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, encounterPosition.latitude)
-            args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, encounterPosition.longitude)
-            longTapCoordinates = null
-            val intent = Intent(activity, CreateEncounterActivity::class.java)
-            intent.putExtras(args)
-            startActivity(intent)
-
-            // show the disclaimer only once per tour
-            presenter.setDisplayEncounterDisclaimer(false)
-        }
     }
 
     fun updateFragmentFromService() {

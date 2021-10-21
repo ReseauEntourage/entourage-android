@@ -71,7 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/empty_description"
-                    android:src="@drawable/arrow_grey"
+                    app:srcCompat="@drawable/arrow_grey"
                     android:tint="@color/accent" />
 
             </LinearLayout>
@@ -114,7 +114,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/empty_description"
-                    android:src="@drawable/arrow_grey"
+                    app:srcCompat="@drawable/arrow_grey"
                     android:tint="@color/accent" />
 
             </LinearLayout>
@@ -157,7 +157,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/empty_description"
-                    android:src="@drawable/arrow_grey"
+                    app:srcCompat="@drawable/arrow_grey"
                     android:tint="@color/accent" />
 
             </LinearLayout>
@@ -199,7 +199,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/empty_description"
-                    android:src="@drawable/arrow_grey"
+                    app:srcCompat="@drawable/arrow_grey"
                     android:tint="@color/accent" />
 
             </LinearLayout>
@@ -237,7 +237,7 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/arrow_grey"
+                    app:srcCompat="@drawable/arrow_grey"
                     android:tint="@color/accent" />
             </LinearLayout>
 
@@ -275,7 +275,7 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/arrow_grey"
+                    app:srcCompat="@drawable/arrow_grey"
                     android:tint="@color/accent" />
             </LinearLayout>
 
@@ -322,7 +322,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/empty_description"
-                    android:src="@drawable/arrow_grey"
+                    app:srcCompat="@drawable/arrow_grey"
                     android:tint="@color/accent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -418,7 +418,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/empty_description"
-                        android:src="@drawable/arrow_grey"
+                        app:srcCompat="@drawable/arrow_grey"
                         android:tint="@color/accent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

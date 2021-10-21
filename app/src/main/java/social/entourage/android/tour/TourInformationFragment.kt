@@ -388,7 +388,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
     }
 
     @Subscribe
-    fun onEncounterUpdated(event: Events.OnEncounterUpdated) {
+    fun onEncounterUpdated(event: Events.TourEvents.OnEncounterUpdated) {
         val updatedEncounter = event.encounter
         val oldEncounter = discussionAdapter.findCard(TimestampedObject.ENCOUNTER, updatedEncounter.id) as Encounter?
                 ?: return

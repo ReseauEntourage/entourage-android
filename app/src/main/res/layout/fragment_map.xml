@@ -12,47 +12,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.google.android.material.tabs.TabLayout
-
-            android:id="@+id/fragment_map_top_tab"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:background="@color/white"
-            android:elevation="10dp"
-            app:tabIconTint="@color/accent"
-            app:tabIndicatorColor="@color/accent"
-            app:tabInlineLabel="true"
-            app:tabMode="auto"
-            app:tabSelectedTextColor="@color/accent"
-            app:tabTextColor="@color/battleship_grey">
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/ic_entourage_logo_one_color"
-                android:text="@string/map_tab_all" />
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/ic_event_white_24dp"
-                android:text="@string/map_tab_events" />
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/fragment_map_tab_tours"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/ic_start_maraude"
-                android:text="@string/map_tab_tours" />
-
-        </com.google.android.material.tabs.TabLayout>
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/fragment_map_main_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/fragment_map_top_tab">
+            android:layout_alignParentTop="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"

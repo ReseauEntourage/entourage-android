@@ -59,7 +59,6 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="8dp"
                     android:layout_toEndOf="@+id/create_encounter_position_pin"
-                    android:layout_toRightOf="@+id/create_encounter_position_pin"
                     android:text="@string/entourage_create_position_description"
                     android:textColor="@color/greyish"
                     android:textSize="@dimen/entourage_font_medium" />

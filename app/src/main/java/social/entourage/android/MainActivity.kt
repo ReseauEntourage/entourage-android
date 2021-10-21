@@ -36,6 +36,8 @@ import social.entourage.android.location.LocationUtils.isLocationPermissionGrant
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.navigation.EntBottomNavigationView
 import social.entourage.android.newsfeed.BaseNewsfeedFragment
+import social.entourage.android.newsfeed.v2.HomeExpertFragment
+import social.entourage.android.newsfeed.v2.NewHomeFeedFragment
 import social.entourage.android.onboarding.OnboardingPhotoFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
@@ -47,9 +49,7 @@ import social.entourage.android.tour.TourInformationFragment.OnTourInformationFr
 import social.entourage.android.tour.choice.ChoiceFragment
 import social.entourage.android.tour.choice.ChoiceFragment.OnChoiceFragmentFinish
 import social.entourage.android.tour.confirmation.TourEndConfirmationFragment
-import social.entourage.android.tour.encounter.CreateEncounterActivity
 import social.entourage.android.tour.encounter.EncounterDisclaimerFragment
-import social.entourage.android.tour.encounter.ReadEncounterActivity
 import social.entourage.android.user.AvatarUploadPresenter
 import social.entourage.android.user.AvatarUploadView
 import social.entourage.android.user.UserFragment
@@ -316,12 +316,12 @@ class MainActivity : BaseSecuredActivity(),
     fun showEvents() {
         EntBus.post(OnShowEventDeeplink())
         bottomBar?.showEvents()
-        newsfeedFragment?.onShowEvents()
+        (newsfeedFragment as? HomeExpertFragment)?.onShowEvents()
     }
 
     fun showAllActions() {
         bottomBar?.showAllActions()
-        newsfeedFragment?.onShowAll()
+        (newsfeedFragment as? HomeExpertFragment)?.onShowAll()
     }
 
     fun showMyEntourages() {
@@ -417,24 +417,6 @@ class MainActivity : BaseSecuredActivity(),
     }
 
     @Subscribe
-    fun tourEncounterViewRequested(event: OnTourEncounterViewRequestedEvent) {
-        val encounter = event.encounter
-        if (encounter.isReadOnly) {
-            val intent = Intent(this, ReadEncounterActivity::class.java)
-            val extras = Bundle()
-            extras.putSerializable(ReadEncounterActivity.BUNDLE_KEY_ENCOUNTER, encounter)
-            intent.putExtras(extras)
-            this.startActivity(intent)
-        } else {
-            val intent = Intent(this, CreateEncounterActivity::class.java)
-            val extras = Bundle()
-            extras.putSerializable(CreateEncounterActivity.BUNDLE_KEY_ENCOUNTER, encounter)
-            intent.putExtras(extras)
-            this.startActivity(intent)
-        }
-    }
-
-    @Subscribe
     fun onUnauthorized(event: OnUnauthorizedEvent) {
         logout()
     }
@@ -490,6 +472,7 @@ class MainActivity : BaseSecuredActivity(),
         try {
             authenticationController.entourageDisclaimerShown = true
             // Dismiss the disclaimer fragment
+            fragment?.groupType?.let { newsfeedFragment?.setGroupType(it) }
             fragment?.dismiss()
             // Show the create entourage fragment
             newsfeedFragment?.createEntourage()
@@ -504,7 +487,7 @@ class MainActivity : BaseSecuredActivity(),
 
         // Dismiss the disclaimer fragment
         fragment.dismiss()
-        newsfeedFragment?.addEncounter()
+        addEncounter()
     }
 
     override fun onPhotoBack() {
@@ -545,7 +528,7 @@ class MainActivity : BaseSecuredActivity(),
     fun addEncounter() {
         showFeed()
         dismissNewsfeedFragmentDialogs()
-        newsfeedFragment?.onAddEncounter()
+        (newsfeedFragment as? NewHomeFeedFragment)?.onAddEncounter()
     }
 
     // ----------------------------------

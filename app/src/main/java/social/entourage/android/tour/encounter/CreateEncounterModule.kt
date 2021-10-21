@@ -4,7 +4,7 @@ import dagger.Module
 import dagger.Provides
 
 /**
- * Module related to ReadEncounterActivity
+ * Module related to CreateEncounterActivity
  * @see CreateEncounterActivity
  */
 @Module

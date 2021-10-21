@@ -6,8 +6,8 @@ import kotlinx.android.synthetic.main.layout_tour_information_encounter_card_vie
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.tour.Encounter
-import social.entourage.android.api.tape.Events.OnTourEncounterViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
+import social.entourage.android.newsfeed.v2.ToursFragment
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.Utils
 
@@ -20,14 +20,12 @@ class EncounterCardViewHolder(view: View) : BaseCardViewHolder(view) {
     override fun bindFields() {
         itemView.tic_encounter_author?.setOnClickListener {
             encounter?.let {
-            if (it.isMyEncounter)
-                EntBus.post(OnTourEncounterViewRequestedEvent(it))
+            if (it.isMyEncounter) ToursFragment.viewEncounter(itemView.context, it)
             }
         }
         itemView.tic_encounter_street_name?.setOnClickListener {
             encounter?.let {
-                if (it.isMyEncounter)
-                    EntBus.post(OnTourEncounterViewRequestedEvent(it))
+                if (it.isMyEncounter) ToursFragment.viewEncounter(itemView.context, it)
             }
         }
     }

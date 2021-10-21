@@ -14,7 +14,6 @@ import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.tour.Encounter
 import social.entourage.android.api.request.*
-import social.entourage.android.api.tape.Events.OnTourEncounterViewRequestedEvent
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.entourage.EntourageDisclaimerFragment
 import social.entourage.android.entourage.category.EntourageCategory
@@ -22,6 +21,7 @@ import social.entourage.android.entourage.create.BaseCreateEntourageFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.map.MapClusterEntourageItem
 import social.entourage.android.map.MapClusterTourItem
+import social.entourage.android.newsfeed.v2.ToursFragment
 import social.entourage.android.onboarding.InputNamesFragment
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -152,19 +152,6 @@ class NewsfeedPresenter @Inject constructor(
         }
     }
 
-    fun shouldDisplayEncounterDisclaimer(): Boolean {
-        return authenticationController.isShowEncounterDisclaimer
-    }
-
-    fun setDisplayEncounterDisclaimer(displayEncounterDisclaimer: Boolean) {
-        authenticationController.isShowEncounterDisclaimer = displayEncounterDisclaimer
-    }
-
-    fun displayEncounterDisclaimer() {
-        val fragmentManager = fragment?.activity?.supportFragmentManager ?: return
-        EncounterDisclaimerFragment().show(fragmentManager, EncounterDisclaimerFragment.TAG)
-    }
-
     fun getMyPendingInvitations() {
         val call = invitationRequest.retrieveUserInvitationsWithStatus(Invitation.STATUS_PENDING)
         call.enqueue(object : Callback<InvitationListResponse> {
@@ -213,7 +200,7 @@ class NewsfeedPresenter @Inject constructor(
     // ----------------------------------
     private fun openEncounter(encounter: Encounter) {
         fragment?.saveCameraPosition()
-        EntBus.post(OnTourEncounterViewRequestedEvent(encounter))
+        fragment?.context?.let { it -> ToursFragment.viewEncounter(it, encounter) }
     }
 
     // ----------------------------------

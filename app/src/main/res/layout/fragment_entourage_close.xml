@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:elevation="10dp"
-            android:src="@drawable/ic_smile_orange"
+            app:srcCompat="@drawable/ic_smile_orange"
             app:layout_constraintBottom_toBottomOf="@+id/entourage_close_success_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/entourage_close_success_button" />
@@ -136,7 +136,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:elevation="10dp"
-            android:src="@drawable/ic_action_cancel_24"
+            app:srcCompat="@drawable/ic_action_cancel_24"
             app:layout_constraintBottom_toBottomOf="@+id/entourage_close_failed_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/entourage_close_failed_button" />

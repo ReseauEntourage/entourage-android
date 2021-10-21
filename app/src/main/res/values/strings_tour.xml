@@ -134,11 +134,6 @@
     <string name="map_filter_entourage_outing_text">Événements</string>
     <string name="map_filter_past_events_text">Inclure passés</string>
 
-    <!-- Map Tab -->
-    <string name="map_tab_all">tous</string>
-    <string name="map_tab_events">événements</string>
-    <string name="map_tab_tours">maraudes</string>
-
 
     <!-- New detail action/event -->
     <string name="detail_button_action_join">Participer</string>

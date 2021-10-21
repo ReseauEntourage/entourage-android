@@ -140,6 +140,7 @@ object DeepLinksManager {
             if (pathSegments != null && pathSegments.isNotEmpty()) {
                 EntBus.post(OnFeedItemInfoViewRequestedEvent(TimestampedObject.ENTOURAGE_CARD, "", pathSegments[0]))
             }
+            //TODO check if it is working ??
         } else if (key == DeepLinksView.TUTORIAL.view) {
             activity.showTutorial(true)
         }
