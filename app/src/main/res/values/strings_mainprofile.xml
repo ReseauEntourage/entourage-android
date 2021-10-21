@@ -54,4 +54,6 @@
     <string name="myActions">Mes actions solidaires</string>
     <string name="myAsk">Mes demandes</string>
     <string name="myContrib">Mes dons</string>
+    <string name="myActionEmptyAsk">Actuellement vous n\'avez pas de demandes publiées sur l\'application ;)</string>
+    <string name="myActionEmptyContrib">Actuellement vous n\'avez pas de dons publiés sur l\'application ;)</string>
 </resources>

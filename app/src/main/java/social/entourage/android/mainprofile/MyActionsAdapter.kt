@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.layout_cell_my_action.view.*
 import kotlinx.android.synthetic.main.layout_cell_my_action.view.ui_action_tv_location
+import kotlinx.android.synthetic.main.layout_cell_my_action.view.ui_action_tv_title
+import kotlinx.android.synthetic.main.layout_cell_my_action_empty.view.*
 import social.entourage.android.Constants
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
@@ -17,25 +19,42 @@ import java.util.ArrayList
 /**
  * Created by Jerome on 14/10/2021.
  */
-class MyActionsAdapter(var items: ArrayList<BaseEntourage>, val listenerClick: (position:Int) -> Unit): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MyActionsAdapter(var items: ArrayList<BaseEntourage>, var isContrib:Boolean, val listenerClick: (position:Int) -> Unit): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    val CELL_EMPTY = 0
+    val CELL = 1
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateAdapter(items: ArrayList<BaseEntourage>) {
+    fun updateAdapter(items: ArrayList<BaseEntourage>,isContrib:Boolean) {
         this.items = items
+        this.isContrib = isContrib
         notifyDataSetChanged()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        if (items.size == 0) return CELL_EMPTY
+        return CELL
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
+        if (viewType == CELL_EMPTY) {
+            return MyActionEmptyVH(layoutInflater.inflate(R.layout.layout_cell_my_action_empty, parent, false))
+        }
         return MyActionVH(layoutInflater.inflate(R.layout.layout_cell_my_action, parent, false))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (getItemViewType(position) == CELL_EMPTY) {
+            (holder as MyActionEmptyVH).bind(this.isContrib)
+            return
+        }
         (holder as MyActionVH).bind(items[position], listenerClick,position)
     }
 
     override fun getItemCount(): Int {
-        return items.size
+
+        return if(items.size == 0) 1 else items.size
     }
 
     inner class MyActionVH(view: View) : RecyclerView.ViewHolder(view) {
@@ -83,6 +102,15 @@ class MyActionsAdapter(var items: ArrayList<BaseEntourage>, val listenerClick: (
             }
 
             itemView.ui_action_tv_location?.text = distStr
+        }
+    }
+
+    inner class MyActionEmptyVH(view: View) : RecyclerView.ViewHolder(view) {
+        fun bind(isContrib:Boolean) {
+            val res = itemView.resources
+            itemView.ui_tv_title?.let { titleView ->
+                titleView.text = if(isContrib) res.getString(R.string.myActionEmptyContrib) else res.getString(R.string.myActionEmptyAsk)
+            }
         }
     }
 }
