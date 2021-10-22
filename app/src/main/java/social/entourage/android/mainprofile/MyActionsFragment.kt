@@ -45,6 +45,9 @@ class MyActionsFragment : BaseDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         ui_progress?.visibility = View.GONE
 
+        val buttonId = if (indexSelected == 0) ui_button_contribs.id else ui_button_asks.id
+        ui_material_button_group?.check(buttonId)
+
         ui_material_button_group?.addOnButtonCheckedListener { group, checkedId, isChecked ->
             if (checkedId == ui_button_asks.id && isChecked) {
                 indexSelected = 1
@@ -149,5 +152,11 @@ class MyActionsFragment : BaseDialogFragment() {
 
     companion object {
         val TAG: String? = MyActionsFragment::class.java.simpleName
+
+        fun newInstance(isContrib:Boolean): MyActionsFragment {
+            val _intent = MyActionsFragment()
+            _intent.indexSelected = if (isContrib) 0 else 1
+            return _intent
+        }
     }
 }

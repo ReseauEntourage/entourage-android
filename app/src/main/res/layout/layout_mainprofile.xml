@@ -162,6 +162,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_below="@id/textView25"
+                    android:visibility="gone"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="8dp"
@@ -189,11 +190,12 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="0dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/bg_button_rounded_white"
                     android:orientation="horizontal">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/ui_layout_show_events"
+                        android:id="@+id/ui_layout_show_contribs"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1">
@@ -225,7 +227,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="0dp"
                                 android:layout_marginTop="4dp"
-                                android:text="@string/events_conviv"
+                                android:text="@string/contribCreated"
                                 android:textAlignment="center"
                                 android:textColor="@color/accent"
                                 android:textSize="13sp"
@@ -260,7 +262,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/ui_layout_show_actions"
+                        android:id="@+id/ui_layout_show_asks"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1">
@@ -292,7 +294,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="0dp"
                                 android:layout_marginTop="4dp"
-                                android:text="@string/actions_solidr"
+                                android:text="@string/askCreated"
                                 android:textAlignment="center"
                                 android:textColor="@color/accent"
                                 android:textSize="13sp"
