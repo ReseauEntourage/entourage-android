@@ -137,6 +137,6 @@ interface EntourageRequest {
             @Query("q") searchTxt: String,
     ): Call<ResponseBody>
 
-    @GET("entourages/owns")
+    @GET("entourages/owned")
     fun getMyActions(): Call<EntouragesResponse>
 }
