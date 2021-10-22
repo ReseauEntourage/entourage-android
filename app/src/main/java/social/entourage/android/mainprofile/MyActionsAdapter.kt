@@ -19,15 +19,16 @@ import java.util.ArrayList
 /**
  * Created by Jerome on 14/10/2021.
  */
-class MyActionsAdapter(var items: ArrayList<BaseEntourage>, var isContrib:Boolean, val listenerClick: (position:Int) -> Unit): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MyActionsAdapter(var items: ArrayList<BaseEntourage>, var isContrib:Boolean,var isFirstLoad:Boolean, val listenerClick: (position:Int) -> Unit): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val CELL_EMPTY = 0
     val CELL = 1
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateAdapter(items: ArrayList<BaseEntourage>,isContrib:Boolean) {
+    fun updateAdapter(items: ArrayList<BaseEntourage>,isContrib:Boolean,isFirstLoad:Boolean) {
         this.items = items
         this.isContrib = isContrib
+        this.isFirstLoad = isFirstLoad
         notifyDataSetChanged()
     }
 
@@ -53,7 +54,7 @@ class MyActionsAdapter(var items: ArrayList<BaseEntourage>, var isContrib:Boolea
     }
 
     override fun getItemCount(): Int {
-
+        if (isFirstLoad) return 0
         return if(items.size == 0) 1 else items.size
     }
 
