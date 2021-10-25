@@ -10,20 +10,17 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import me.leolin.shortcutbadger.ShortcutBadger
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
-import social.entourage.android.api.model.User
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.newsfeed.BaseNewsfeedFragment
 import social.entourage.android.newsfeed.v2.NewHomeFeedFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
-import java.lang.Exception
 import kotlin.math.roundToInt
 
 class EntBottomNavigationView : BottomNavigationView {
@@ -38,9 +35,9 @@ class EntBottomNavigationView : BottomNavigationView {
     fun configure(activity: MainActivity) {
         instance = this
         // we need to set the listener first, to respond to the default selected tab request
-        this.setOnNavigationItemSelectedListener { item: MenuItem ->
+        this.setOnItemSelectedListener { item: MenuItem ->
             if (shouldBypassNavigation(activity, item.itemId)) {
-                return@setOnNavigationItemSelectedListener false
+                return@setOnItemSelectedListener false
             }
             if (this.selectedItemId != item.itemId) {
                 sendAnalyticsTapTabbar(item.itemId)
@@ -60,14 +57,17 @@ class EntBottomNavigationView : BottomNavigationView {
     }
 
     private fun configurePlusButton() {
-        val menuView = getChildAt(0) as BottomNavigationMenuView
-        val plusItemId = menu.getItem(2).itemId
-        menuView
-            .findViewById<BottomNavigationItemView>(plusItemId)
-            .findViewById<ImageView>(com.google.android.material.R.id.navigation_bar_item_icon_view).let { plusIcon ->
-            scaleView(plusIcon, 1.5f)
-            plusIcon.setColorFilter(ContextCompat.getColor(context, R.color.accent))
-        }
+        this.findViewById<BottomNavigationItemView>(navigationDataSource.actionMenuId)
+            ?.findViewById<ImageView>(com.google.android.material.R.id.navigation_bar_item_icon_view)?.let { plusIcon ->
+                scaleView(plusIcon, 1.5f)
+                plusIcon.setColorFilter(ContextCompat.getColor(context, R.color.accent))
+            }
+    }
+
+    fun updatePlusButton(badge: Boolean) {
+        this.findViewById<BottomNavigationItemView>(navigationDataSource.actionMenuId)
+            ?.findViewById<ImageView>(com.google.android.material.R.id.navigation_bar_item_icon_view)
+            ?.setColorFilter(ContextCompat.getColor(context, if(badge) R.color.dodger_blue else R.color.accent))
     }
 
     private fun scaleView(view: View, scale: Float) {
@@ -95,7 +95,7 @@ class EntBottomNavigationView : BottomNavigationView {
     }
 
 
-    fun loadFragment(supportFragmentManager: FragmentManager, menuId: Int) {
+    private fun loadFragment(supportFragmentManager: FragmentManager, menuId: Int) {
         try {
             val tag = navigationDataSource.getFragmentTagAtIndex(menuId)
             if (!supportFragmentManager.popBackStackImmediate(tag, 0)) {
@@ -119,7 +119,7 @@ class EntBottomNavigationView : BottomNavigationView {
         }
     }
     private fun selectNavigationTab(menuIndex: Int) {
-        //TODO: Voir pour afficher le bon frgagment de l'onglet Home si on est en nav horizontale
+        //TODO: Voir pour afficher le bon fragment de l'onglet Home si on est en nav horizontale
         if (selectedItemId != menuIndex) {
             selectedItemId = menuIndex
         }
@@ -153,7 +153,7 @@ class EntBottomNavigationView : BottomNavigationView {
         selectNavigationTab(navigationDataSource.profilTabIndex)
     }
 
-    fun sendAnalyticsTapTabbar(@IdRes itemId: Int) {
+    private fun sendAnalyticsTapTabbar(@IdRes itemId: Int) {
         when (itemId) {
             R.id.bottom_bar_newsfeed -> AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_TAB_FEEDS)
             R.id.bottom_bar_guide -> AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_TAB_GDS)
@@ -169,7 +169,6 @@ class EntBottomNavigationView : BottomNavigationView {
     fun refreshBadgeCount() {
         try {
             val messageBadge = getOrCreateBadge(navigationDataSource.myMessagesTabIndex)
-                ?: return
             if (badgeCount > 0) {
                 messageBadge.isVisible = true
                 messageBadge.number = badgeCount
@@ -191,7 +190,6 @@ class EntBottomNavigationView : BottomNavigationView {
     companion object {
         private var instance:EntBottomNavigationView?  = null
         private var badgeCount = 0
-            private set
 
         fun increaseBadgeCount() {
             badgeCount++
@@ -206,6 +204,10 @@ class EntBottomNavigationView : BottomNavigationView {
         fun resetBadgeCount() {
             badgeCount = 0
             instance?.refreshBadgeCount()
+        }
+
+        fun updatePlusBadge(show: Boolean) {
+            instance?.updatePlusButton(show)
         }
     }
 

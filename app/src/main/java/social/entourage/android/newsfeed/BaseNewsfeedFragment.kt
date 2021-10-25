@@ -781,7 +781,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                     // Not ongoing tour, just stop the feed item
                     loaderStop = ProgressDialog.show(activity, requireActivity().getString(feedItem.getClosingLoaderMessage()), requireActivity().getString(R.string.button_loading), true)
                     loaderStop?.setCancelable(true)
-                    AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_STOP_TOUR)
+                    //TODO: proper event: AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_STOP_TOUR)
                     service.stopFeedItem(feedItem, success)
                 } else if (service.isRunning) {
                     loaderStop = ProgressDialog.show(activity, requireActivity().getString(R.string.loader_title_tour_finish), requireActivity().getString(R.string.button_loading), true)

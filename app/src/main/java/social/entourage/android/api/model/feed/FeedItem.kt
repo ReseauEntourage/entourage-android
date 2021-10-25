@@ -156,7 +156,7 @@ abstract class FeedItem : TimestampedObject(), Serializable {
     }
 
     @StringRes
-    open fun getClosingLoaderMessage(): Int {return R.string.loader_title_tour_finish}
+    open fun getClosingLoaderMessage(): Int {return R.string.entourage_info_text_close}
 
     @StringRes
     open fun getClosedToastMessage(): Int {return if (isClosed()) R.string.tour_freezed else R.string.tour_stopped}

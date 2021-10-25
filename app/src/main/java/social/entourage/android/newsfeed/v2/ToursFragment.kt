@@ -44,6 +44,7 @@ import social.entourage.android.map.MapClusterTourItem
 import social.entourage.android.map.filter.MapFilterFactory
 import social.entourage.android.map.filter.MapFilterFragment
 import social.entourage.android.message.push.PushNotificationManager
+import social.entourage.android.navigation.EntBottomNavigationView
 import social.entourage.android.newsfeed.BaseNewsfeedFragment
 import social.entourage.android.newsfeed.NewsfeedTabItem
 import social.entourage.android.service.EntService
@@ -72,7 +73,7 @@ open class ToursFragment : BaseNewsfeedFragment(), EntourageServiceListener, Tou
             return true
         }
         if (fragment_map_longclick?.visibility == View.VISIBLE && entService?.isRunning==true ) {
-            tour_stop_button?.visibility = View.VISIBLE
+            updateFloatingMenuOptions()
         }
 
         requireActivity().supportFragmentManager.popBackStack(TAG,0)
@@ -249,9 +250,7 @@ open class ToursFragment : BaseNewsfeedFragment(), EntourageServiceListener, Tou
                 .show()
             return
         }
-        if (entService?.isRunning==true) {
-            tour_stop_button?.visibility = View.VISIBLE
-        }
+        updateFloatingMenuOptions()
         super.displayEntourageDisclaimer()
     }
 
@@ -290,6 +289,7 @@ open class ToursFragment : BaseNewsfeedFragment(), EntourageServiceListener, Tou
 
     override fun updateFloatingMenuOptions() {
         tour_stop_button?.visibility = if (entService?.isRunning==true) View.VISIBLE else View.GONE
+        EntBottomNavigationView.updatePlusBadge(entService?.isRunning==true)
     }
 
     override fun needForGeoloc():Boolean {
@@ -377,7 +377,7 @@ open class ToursFragment : BaseNewsfeedFragment(), EntourageServiceListener, Tou
 
     @Subscribe
     fun onEncounterCreated(event: Events.TourEvents.OnEncounterCreated) {
-        tour_stop_button?.visibility = if (entService?.isRunning==true) View.VISIBLE else View.GONE
+        updateFloatingMenuOptions()
         event.encounter?.let { encounter ->
             addEncounter(encounter)
             putEncounterOnMap(encounter)
@@ -411,12 +411,12 @@ open class ToursFragment : BaseNewsfeedFragment(), EntourageServiceListener, Tou
                     displayFullMap()
                 }
                 addTourCard(currentTour)
-                tour_stop_button?.visibility = View.VISIBLE
                 presenter.incrementUserToursCount()
                 authenticationController.encounterDisclaimerShown = true
             } else if (fragment_map_main_layout != null) {
                 EntSnackbar.make(fragment_map_main_layout, R.string.tour_creation_fail, Snackbar.LENGTH_SHORT).show()
             }
+            updateFloatingMenuOptions()
         }
     }
 
@@ -431,7 +431,7 @@ open class ToursFragment : BaseNewsfeedFragment(), EntourageServiceListener, Tou
             EntLocation.currentLocation?.let { centerMap(LatLng(it.latitude, it.longitude)) }
             isFollowing = true
         }
-        tour_stop_button?.visibility = View.VISIBLE
+        updateFloatingMenuOptions()
     }
 
     override fun onRetrieveToursByUserId(tours: List<Tour>) {

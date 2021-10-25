@@ -134,8 +134,8 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
                     android:contentDescription="@string/empty_description"
-                    app:tint="@color/bright_blue"
-                    app:srcCompat="@drawable/ic_play_circle_filled_black_96dp" />
+                    app:srcCompat="@drawable/ic_play_circle_filled_black_96dp"
+                    app:tint="@color/bright_blue" />
 
                 <ProgressBar
                     android:id="@+id/launcher_tour_progressBar"
