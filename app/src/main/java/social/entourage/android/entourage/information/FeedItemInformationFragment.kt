@@ -54,7 +54,6 @@ import org.joda.time.LocalDate
 import social.entourage.android.*
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.feed.*
-import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.configuration.Configuration
@@ -63,7 +62,7 @@ import social.entourage.android.entourage.information.discussion.DiscussionAdapt
 import social.entourage.android.entourage.information.members.MembersAdapter
 import social.entourage.android.entourage.invite.InviteFriendsListener
 import social.entourage.android.entourage.invite.contacts.InviteContactsFragment
-import social.entourage.android.location.EntLocation
+import social.entourage.android.base.location.EntLocation
 import social.entourage.android.service.EntService
 import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.tools.EntBus

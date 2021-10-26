@@ -12,7 +12,7 @@ import social.entourage.android.api.request.PoiRequest
 import social.entourage.android.api.request.PoiResponse
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.guide.filter.GuideFilter
-import social.entourage.android.location.EntLocation
+import social.entourage.android.base.location.EntLocation
 import timber.log.Timber
 import java.net.UnknownHostException
 import java.util.*

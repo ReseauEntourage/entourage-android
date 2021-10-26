@@ -30,14 +30,14 @@ import social.entourage.android.entourage.information.FeedItemInformationFragmen
 import social.entourage.android.entourage.my.MyEntouragesFragment
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.guide.poi.ReadPoiFragment
-import social.entourage.android.location.EntLocation.currentLocation
-import social.entourage.android.location.LocationUtils.isLocationEnabled
-import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
+import social.entourage.android.base.location.EntLocation.currentLocation
+import social.entourage.android.base.location.LocationUtils.isLocationEnabled
+import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.navigation.EntBottomNavigationView
-import social.entourage.android.newsfeed.BaseNewsfeedFragment
-import social.entourage.android.newsfeed.v2.HomeExpertFragment
-import social.entourage.android.newsfeed.v2.NewHomeFeedFragment
+import social.entourage.android.base.newsfeed.NewsfeedFragment
+import social.entourage.android.home.HomeExpertFragment
+import social.entourage.android.home.NewHomeFeedFragment
 import social.entourage.android.onboarding.OnboardingPhotoFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
@@ -260,8 +260,8 @@ class MainActivity : BaseSecuredActivity(),
         }
     }
 
-    private val newsfeedFragment: BaseNewsfeedFragment?
-        get() = supportFragmentManager.findFragmentByTag(BaseNewsfeedFragment.TAG) as BaseNewsfeedFragment?
+    private val newsfeedFragment: NewsfeedFragment?
+        get() = supportFragmentManager.findFragmentByTag(NewsfeedFragment.TAG) as NewsfeedFragment?
 
     private fun sendNewsfeedFragmentExtras() {
         authenticationController.me?.let { me -> newsfeedFragment?.onNotificationExtras(me.id, authenticationController.isUserToursOnly)}

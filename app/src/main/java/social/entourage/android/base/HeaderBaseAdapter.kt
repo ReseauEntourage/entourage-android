@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.OnMapReadyCallback
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.location.LocationUtils.isLocationEnabled
-import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
-import social.entourage.android.map.MapViewHolder
+import social.entourage.android.base.location.LocationUtils.isLocationEnabled
+import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
+import social.entourage.android.base.map.MapViewHolder
 
 open class HeaderBaseAdapter : BaseAdapter() {
     protected var mapViewHolder: MapViewHolder? = null

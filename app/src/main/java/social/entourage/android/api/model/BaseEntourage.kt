@@ -13,7 +13,7 @@ import com.google.gson.annotations.SerializedName
 import social.entourage.android.R
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.entourage.category.EntourageCategoryManager
-import social.entourage.android.location.EntLocation
+import social.entourage.android.base.location.EntLocation
 import timber.log.Timber
 import java.io.Serializable
 import java.lang.reflect.Type

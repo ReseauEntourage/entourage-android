@@ -9,8 +9,8 @@ import social.entourage.android.R
 import social.entourage.android.entourage.my.MyEntouragesFragment
 import social.entourage.android.guide.GuideHubFragment
 import social.entourage.android.mainprofile.MainProfileFragment
-import social.entourage.android.newsfeed.BaseNewsfeedFragment
-import social.entourage.android.newsfeed.v2.NewHomeFeedFragment
+import social.entourage.android.base.newsfeed.NewsfeedFragment
+import social.entourage.android.home.NewHomeFeedFragment
 
 /**
  * Created by Mihai Ionescu on 23/04/2018.
@@ -53,7 +53,7 @@ class BottomNavigationDataSource {
     }
 
     init {
-        add(R.id.bottom_bar_newsfeed, BaseNewsfeedFragment.TAG)
+        add(R.id.bottom_bar_newsfeed, NewsfeedFragment.TAG)
         add(R.id.bottom_bar_guide, GuideHubFragment.TAG)
         add(R.id.bottom_bar_plus, PlusFragment.TAG)
         add(R.id.bottom_bar_mymessages, MyEntouragesFragment.TAG)

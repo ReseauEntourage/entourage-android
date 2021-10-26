@@ -267,7 +267,7 @@ class HomeNeoTest {
                 description?.appendText("is Checkable instance ")
             }
 
-            override fun matches(item: Any?): Boolean = isA(Checkable::class.java).matches(item)
+            override fun matches(item: Any?): Boolean = matches(item)
         }
 
         override fun getConstraints(): BaseMatcher<View> = checkableViewMatcher

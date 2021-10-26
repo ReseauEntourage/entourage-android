@@ -29,9 +29,9 @@ import social.entourage.android.guide.poi.PoiRenderer
 import social.entourage.android.guide.poi.PoisAdapter
 import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.guide.poi.ReadPoiFragment.Companion.newInstance
-import social.entourage.android.location.EntLocation
-import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
-import social.entourage.android.map.BaseMapFragment
+import social.entourage.android.base.location.EntLocation
+import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
+import social.entourage.android.base.map.BaseMapFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.EntLinkMovementMethod

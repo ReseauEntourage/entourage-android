@@ -44,8 +44,8 @@ import social.entourage.android.api.tape.Events.OnUserJoinRequestUpdateEvent
 import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.entourage.EntourageCloseFragment
 import social.entourage.android.entourage.information.report.EntourageReportFragment
-import social.entourage.android.location.EntLocation
-import social.entourage.android.map.OnAddressClickListener
+import social.entourage.android.base.location.EntLocation
+import social.entourage.android.base.map.OnAddressClickListener
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.Utils
 import social.entourage.android.tools.log.AnalyticsEvents

@@ -34,7 +34,7 @@ import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryFragment
 import social.entourage.android.entourage.category.EntourageCategoryManager
-import social.entourage.android.location.LocationFragment
+import social.entourage.android.base.location.LocationFragment
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.EntLinkMovementMethod
 import social.entourage.android.tools.log.AnalyticsEvents

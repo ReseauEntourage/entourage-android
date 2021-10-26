@@ -32,10 +32,10 @@ import social.entourage.android.api.request.EntourageRequest
 import social.entourage.android.api.request.NewsfeedRequest
 import social.entourage.android.api.request.TourRequest
 import social.entourage.android.authentication.AuthenticationController
-import social.entourage.android.location.LocationUpdateListener
-import social.entourage.android.newsfeed.NewsFeedListener
-import social.entourage.android.newsfeed.NewsfeedPagination
-import social.entourage.android.newsfeed.NewsfeedTabItem
+import social.entourage.android.base.location.LocationUpdateListener
+import social.entourage.android.base.newsfeed.NewsFeedListener
+import social.entourage.android.base.newsfeed.NewsfeedPagination
+import social.entourage.android.base.newsfeed.NewsfeedTabItem
 import social.entourage.android.tools.Utils.getDateStringFromSeconds
 import social.entourage.android.tools.log.CrashlyticsNewsFeedLogger
 import social.entourage.android.tools.log.LoggerNewsFeedLogger

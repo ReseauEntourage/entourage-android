@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_home"
-    tools:context=".newsfeed.v2.HomeExpertFragment">
+    tools:context=".home.HomeExpertFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/ui_home_swipeRefresh"

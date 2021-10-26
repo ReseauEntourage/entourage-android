@@ -7,7 +7,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.api.model.User
-import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
+import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
 import timber.log.Timber
 import java.util.*
 

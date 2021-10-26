@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDexApplication
 import com.google.firebase.analytics.FirebaseAnalytics
-import me.leolin.shortcutbadger.ShortcutBadger
 import social.entourage.android.api.ApiModule
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.User
@@ -14,7 +13,7 @@ import social.entourage.android.authentication.AuthenticationModule
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.navigation.EntBottomNavigationView
-import social.entourage.android.newsfeed.UserFeedItemListCache
+import social.entourage.android.base.newsfeed.UserFeedItemListCache
 import social.entourage.android.onboarding.login.LoginActivity
 import social.entourage.android.tools.LibrariesSupport
 import timber.log.Timber

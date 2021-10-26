@@ -32,8 +32,8 @@ import social.entourage.android.api.model.tour.TourInformation
 import social.entourage.android.api.tape.Events
 import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.entourage.information.*
-import social.entourage.android.location.EntLocation
-import social.entourage.android.newsfeed.BaseNewsfeedFragment
+import social.entourage.android.base.location.EntLocation
+import social.entourage.android.base.newsfeed.NewsfeedFragment
 import social.entourage.android.tools.Utils
 import social.entourage.android.tools.view.EntSnackbar
 import timber.log.Timber
@@ -195,8 +195,8 @@ class TourInformationFragment : FeedItemInformationFragment(){
     private fun getTrackColor(type: String, date: Date): Int {
         if (context == null) return Color.GRAY
         val color = ContextCompat.getColor(requireContext(), Tour.getTypeColorRes(type))
-        return if (!BaseNewsfeedFragment.isToday(date)) {
-            BaseNewsfeedFragment.getTransparentColor(color)
+        return if (!NewsfeedFragment.isToday(date)) {
+            NewsfeedFragment.getTransparentColor(color)
         } else color
     }
 

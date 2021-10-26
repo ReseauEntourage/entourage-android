@@ -1,7 +1,7 @@
 package social.entourage.android.entourage
 
 import android.view.View
-import social.entourage.android.newsfeed.FeedItemViewHolder
+import social.entourage.android.base.newsfeed.FeedItemViewHolder
 
 /**
  * Created by mihaiionescu on 05/05/16.

@@ -6,7 +6,7 @@ import social.entourage.android.api.model.User
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
 import social.entourage.android.entourage.my.filter.MyEntouragesFilter
-import social.entourage.android.map.filter.MapFilter
+import social.entourage.android.base.map.filter.MapFilter
 import social.entourage.android.tools.EntBus
 import java.util.*
 import kotlin.collections.HashMap

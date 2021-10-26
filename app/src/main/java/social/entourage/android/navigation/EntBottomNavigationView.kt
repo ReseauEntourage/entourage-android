@@ -17,8 +17,8 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.configuration.Configuration
-import social.entourage.android.newsfeed.BaseNewsfeedFragment
-import social.entourage.android.newsfeed.v2.NewHomeFeedFragment
+import social.entourage.android.base.newsfeed.NewsfeedFragment
+import social.entourage.android.home.NewHomeFeedFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 import kotlin.math.roundToInt
@@ -106,7 +106,7 @@ class EntBottomNavigationView : BottomNavigationView {
                 fragmentTransaction.commit()
             }
             else {
-                if (tag == BaseNewsfeedFragment.TAG) {
+                if (tag == NewsfeedFragment.TAG) {
                     if (supportFragmentManager.fragments.first() != null && (supportFragmentManager.fragments.first() is NewHomeFeedFragment) ) {
                         (supportFragmentManager.fragments.first() as NewHomeFeedFragment).checkNavigation()
                     }

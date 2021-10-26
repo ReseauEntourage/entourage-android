@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_onboarding_place.*
 import social.entourage.android.R
 import social.entourage.android.api.model.User
 import social.entourage.android.base.BaseDialogFragment
-import social.entourage.android.location.LocationUtils
+import social.entourage.android.base.location.LocationUtils
 import timber.log.Timber
 import java.io.IOException
 import java.util.*
