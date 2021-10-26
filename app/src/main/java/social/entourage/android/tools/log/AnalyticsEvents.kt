@@ -594,7 +594,6 @@ object AnalyticsEvents {
         val mFirebaseAnalytics = get().firebase
         mFirebaseAnalytics.setUserId(user.id.toString())
         mFirebaseAnalytics.setUserProperty("EntourageUserType", if (user.isPro) "Pro" else "Public")
-        mFirebaseAnalytics.setUserProperty("EntourageEngagedUser", if (user.isEngaged) "YES" else "NO")
         mFirebaseAnalytics.setUserProperty("Language", Locale.getDefault().language)
         user.partner?.let {
             mFirebaseAnalytics.setUserProperty("EntouragePartner", it.name)
@@ -614,5 +613,29 @@ object AnalyticsEvents {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             mFirebaseAnalytics.setUserProperty("BackgroundRestriction", if ((Objects.requireNonNull(context.getSystemService(Context.ACTIVITY_SERVICE)) as ActivityManager).isBackgroundRestricted) "YES" else "NO")
         }
+
+        mFirebaseAnalytics.setUserProperty("engaged_user", if (user.isEngaged) "Yes" else "No")
+        //Check expert mode
+        if (user.isUserTypeNeighbour) {
+            val hasExportKey = get().sharedPreferences.contains(EntourageApplication.KEY_HOME_IS_EXPERTMODE)
+
+            if (hasExportKey) {
+               val isExpertMode = get().sharedPreferences.getBoolean(EntourageApplication.KEY_HOME_IS_EXPERTMODE,false)
+                mFirebaseAnalytics.setUserProperty("home_view_mode", if (isExpertMode) "Expert" else "Neo")
+            }
+            else {
+                var isExpertMode = false
+                if (user.isEngaged) {
+                    isExpertMode = true
+                }
+                get().sharedPreferences.edit()
+                        .putBoolean(EntourageApplication.KEY_HOME_IS_EXPERTMODE, isExpertMode)
+                        .remove("isNavNews")
+                        .remove("navType")
+                        .apply()
+                mFirebaseAnalytics.setUserProperty("home_view_mode", if (isExpertMode) "Expert" else "Neo")
+            }
+        }
+
     }
 }
