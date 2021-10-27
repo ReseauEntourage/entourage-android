@@ -21,15 +21,15 @@ class HomeNeoStreetFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         ui_bt_back?.setOnClickListener {
-            (parentFragment as? NewHomeFeedFragment)?.onBackPressed()
+            (parentFragment as? HomeFragment)?.onBackPressed()
         }
         ui_layout_street1?.setOnClickListener {
-            (parentFragment as? NewHomeFeedFragment)?.showWebLink(Constants.SLUG_HOME_NEO_STREET_1)
+            (parentFragment as? HomeFragment)?.showWebLink(Constants.SLUG_HOME_NEO_STREET_1)
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_NEOFEEDFIRST_OnlineTraining)
         }
 
         ui_layout_street2?.setOnClickListener {
-            (parentFragment as? NewHomeFeedFragment)?.showWebLink(Constants.SLUG_HOME_NEO_STREET_2)
+            (parentFragment as? HomeFragment)?.showWebLink(Constants.SLUG_HOME_NEO_STREET_2)
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_NEOFEEDFIRST_SCBonjour)
         }
     }

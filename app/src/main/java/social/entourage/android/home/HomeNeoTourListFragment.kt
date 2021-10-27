@@ -30,12 +30,12 @@ class HomeNeoTourListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         ui_bt_back?.setOnClickListener {
-            (parentFragment as? NewHomeFeedFragment)?.onBackPressed()
+            (parentFragment as? HomeFragment)?.onBackPressed()
         }
 
         adapter = HomeNeoTourListAdapter(datas) { position ->
             val tourArea = datas[position]
-            (parentFragment as? NewHomeFeedFragment)?.goTourSend(tourArea)
+            (parentFragment as? HomeFragment)?.goTourSend(tourArea)
 
             val tagAnalytic = String.format(AnalyticsEvents.ACTION_NEOFEEDFIRST_TourCity,tourArea.postalCode)
             AnalyticsEvents.logEvent(tagAnalytic)

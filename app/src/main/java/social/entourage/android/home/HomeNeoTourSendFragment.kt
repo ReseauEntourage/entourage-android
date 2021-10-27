@@ -42,7 +42,7 @@ class HomeNeoTourSendFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         ui_bt_back?.setOnClickListener {
-            (parentFragment as? NewHomeFeedFragment)?.onBackPressed()
+            (parentFragment as? HomeFragment)?.onBackPressed()
         }
 
         ui_button_send_tour?.setOnClickListener {

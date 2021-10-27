@@ -9,8 +9,7 @@ import social.entourage.android.R
 import social.entourage.android.entourage.my.MyEntouragesFragment
 import social.entourage.android.guide.GuideHubFragment
 import social.entourage.android.mainprofile.MainProfileFragment
-import social.entourage.android.base.newsfeed.NewsfeedFragment
-import social.entourage.android.home.NewHomeFeedFragment
+import social.entourage.android.home.HomeFragment
 
 /**
  * Created by Mihai Ionescu on 23/04/2018.
@@ -43,7 +42,7 @@ class BottomNavigationDataSource {
 
     fun getFragmentAtIndex(menuId: Int): Fragment? {
         return when (menuId) {
-            R.id.bottom_bar_newsfeed -> NewHomeFeedFragment()
+            R.id.bottom_bar_newsfeed -> HomeFragment()
             R.id.bottom_bar_guide -> GuideHubFragment()
             R.id.bottom_bar_plus ->  PlusFragment()
             R.id.bottom_bar_mymessages -> MyEntouragesFragment()
@@ -53,7 +52,7 @@ class BottomNavigationDataSource {
     }
 
     init {
-        add(R.id.bottom_bar_newsfeed, NewHomeFeedFragment.TAG)
+        add(R.id.bottom_bar_newsfeed, HomeFragment.TAG)
         add(R.id.bottom_bar_guide, GuideHubFragment.TAG)
         add(R.id.bottom_bar_plus, PlusFragment.TAG)
         add(R.id.bottom_bar_mymessages, MyEntouragesFragment.TAG)

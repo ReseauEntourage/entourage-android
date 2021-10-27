@@ -38,7 +38,7 @@ import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.navigation.EntBottomNavigationView
 import social.entourage.android.base.newsfeed.NewsfeedFragment
 import social.entourage.android.home.HomeExpertFragment
-import social.entourage.android.home.NewHomeFeedFragment
+import social.entourage.android.home.HomeFragment
 import social.entourage.android.onboarding.OnboardingPhotoFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
@@ -262,8 +262,8 @@ class MainActivity : BaseSecuredActivity(),
         }
     }
 
-    private val homeFragment: NewHomeFeedFragment?
-        get() = supportFragmentManager.findFragmentByTag(NewHomeFeedFragment.TAG) as? NewHomeFeedFragment
+    private val homeFragment: HomeFragment?
+        get() = supportFragmentManager.findFragmentByTag(HomeFragment.TAG) as? HomeFragment
 
     private val tourFragment: ToursFragment?
         get() = supportFragmentManager.findFragmentByTag(ToursFragment.TAG) as? ToursFragment

@@ -21,11 +21,11 @@ class HomeNeoTourStartFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         ui_bt_back?.setOnClickListener {
-            (parentFragment as? NewHomeFeedFragment)?.onBackPressed()
+            (parentFragment as? HomeFragment)?.onBackPressed()
         }
 
         ui_home_neo_button_tour_start?.setOnClickListener {
-            (parentFragment as? NewHomeFeedFragment)?.goTourList()
+            (parentFragment as? HomeFragment)?.goTourList()
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_NEOFEEDFIRST_GoTour)
         }
     }

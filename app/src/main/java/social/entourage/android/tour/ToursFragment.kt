@@ -47,7 +47,6 @@ import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.navigation.EntBottomNavigationView
 import social.entourage.android.base.newsfeed.NewsfeedTabItem
 import social.entourage.android.base.newsfeed.NewsfeedFragment
-import social.entourage.android.home.NewHomeFeedFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.service.TourServiceListener

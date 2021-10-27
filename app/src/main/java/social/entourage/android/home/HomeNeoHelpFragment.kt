@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.fragment_home_neo_help.*
 import social.entourage.android.R
-import social.entourage.android.base.BackPressable
 import social.entourage.android.tools.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
 
@@ -28,19 +27,19 @@ class HomeNeoHelpFragment : Fragment() {
 
 
         ui_bt_back?.setOnClickListener {
-            (parentFragment as? NewHomeFeedFragment)?.onBackPressed()
+            (parentFragment as? HomeFragment)?.onBackPressed()
         }
 
         ui_layout_button_help_1?.setOnClickListener {
-            (parentFragment as? NewHomeFeedFragment)?.goStreet()
+            (parentFragment as? HomeFragment)?.goStreet()
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_NEOFEEDFIRST_Training)
         }
         ui_layout_button_help_2?.setOnClickListener {
-            (parentFragment as? NewHomeFeedFragment)?.goTourStart()
+            (parentFragment as? HomeFragment)?.goTourStart()
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_NEOFEEDFIRST_Tour)
         }
         ui_layout_button_help_3?.setOnClickListener {
-            (parentFragment as? NewHomeFeedFragment)?.showActions(false)
+            (parentFragment as? HomeFragment)?.showActions(false)
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_NEOFEEDFIRST_Events)
             AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_FEEDVIEW_EVENTS)
         }

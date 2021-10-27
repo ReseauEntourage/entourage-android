@@ -26,7 +26,6 @@ import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BackPressable
 import social.entourage.android.entourage.FeedItemOptionsFragment
 import social.entourage.android.base.map.filter.MapFilterFactory
-import social.entourage.android.home.NewHomeFeedFragment
 import social.entourage.android.home.actions.EntouragesSearchFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.service.EntService.LocalBinder

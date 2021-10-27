@@ -1,36 +1,13 @@
 package social.entourage.android.home
 
-import android.Manifest
-import android.animation.ValueAnimator
-import android.annotation.SuppressLint
-import android.app.ProgressDialog
 import android.content.*
-import android.content.pm.PackageManager
-import android.graphics.Color
-import android.graphics.Point
-import android.location.Location
-import android.net.Uri
 import android.os.*
-import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.RelativeLayout
-import androidx.annotation.StringRes
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.*
-import com.google.android.material.snackbar.Snackbar
-import com.google.maps.android.clustering.ClusterItem
-import com.google.maps.android.clustering.ClusterManager
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.layout_map_longclick.*
@@ -38,39 +15,21 @@ import social.entourage.android.*
 import social.entourage.android.api.HomeTourArea
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.Message
-import social.entourage.android.api.model.feed.FeedItem
-import social.entourage.android.api.model.feed.NewsfeedItem
-import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events
-import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.base.BackPressable
-import social.entourage.android.base.BaseFragment
-import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.base.location.EntLocation
-import social.entourage.android.base.location.LocationUtils
-import social.entourage.android.base.map.MapClusterEntourageItem
-import social.entourage.android.base.map.MapClusterItemRenderer
-import social.entourage.android.base.map.filter.MapFilterFactory
-import social.entourage.android.base.map.filter.MapFilterFragment
-import social.entourage.android.base.map.permissions.NoLocationPermissionFragment
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.base.newsfeed.*
-import social.entourage.android.configuration.Configuration
-import social.entourage.android.entourage.category.EntourageCategory
-import social.entourage.android.entourage.category.EntourageCategoryManager
-import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.tour.ToursFragment
 import social.entourage.android.tour.encounter.CreateEncounterActivity
 import social.entourage.android.tour.encounter.EncounterDisclaimerFragment
-import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import timber.log.Timber
 
 
-class NewHomeFeedFragment : NewsfeedFragment(), BackPressable {
+class HomeFragment : NewsfeedFragment(), BackPressable {
 
     private val connection = ServiceConnection()
     private var currentTourUUID = ""
@@ -410,8 +369,8 @@ class NewHomeFeedFragment : NewsfeedFragment(), BackPressable {
             }
             entService = (service as EntService.LocalBinder).service
             entService?.let {
-                it.registerServiceListener(this@NewHomeFeedFragment)
-                it.registerApiListener(this@NewHomeFeedFragment)
+                it.registerServiceListener(this@HomeFragment)
+                it.registerApiListener(this@HomeFragment)
                 updateFragmentFromService()
                 it.updateHomefeed(pagination)
                 isBound = true
@@ -422,8 +381,8 @@ class NewHomeFeedFragment : NewsfeedFragment(), BackPressable {
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
-            entService?.unregisterServiceListener(this@NewHomeFeedFragment)
-            entService?.unregisterApiListener(this@NewHomeFeedFragment)
+            entService?.unregisterServiceListener(this@HomeFragment)
+            entService?.unregisterApiListener(this@HomeFragment)
             entService = null
             isBound = false
         }
@@ -449,7 +408,7 @@ class NewHomeFeedFragment : NewsfeedFragment(), BackPressable {
 
         fun doUnbindService() {
             if (!isBound) return
-            entService?.unregisterServiceListener(this@NewHomeFeedFragment)
+            entService?.unregisterServiceListener(this@HomeFragment)
             activity?.unbindService(this)
             isBound = false
         }

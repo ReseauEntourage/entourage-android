@@ -28,12 +28,12 @@ class HomeNeoMainFragment : Fragment() {
         ui_home_neo_start_title?.text = Utils.formatTextWithBoldSpanAndColor(colorId,true, getString(R.string.home_neo_title), getString(R.string.home_neo_title_bold))
 
         ui_layout_button_neo_1?.setOnClickListener {
-            (parentFragment as? NewHomeFeedFragment)?.goHelp()
+            (parentFragment as? HomeFragment)?.goHelp()
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_NEOFEED_FirstStep)
         }
 
         ui_layout_button_neo_2?.setOnClickListener {
-            (parentFragment as? NewHomeFeedFragment)?.goActions()
+            (parentFragment as? HomeFragment)?.goActions()
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_NEOFEED_ActNow)
         }
 
