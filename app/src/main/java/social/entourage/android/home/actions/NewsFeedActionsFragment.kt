@@ -26,6 +26,7 @@ import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BackPressable
 import social.entourage.android.entourage.FeedItemOptionsFragment
 import social.entourage.android.base.map.filter.MapFilterFactory
+import social.entourage.android.home.NewHomeFeedFragment
 import social.entourage.android.home.actions.EntouragesSearchFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.service.EntService.LocalBinder
@@ -48,8 +49,7 @@ open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListene
      */
 
     override fun onBackPressed(): Boolean {
-        Timber.d("***** ici onback FG -- ${requireActivity().supportFragmentManager.fragments}")
-        requireActivity().supportFragmentManager.popBackStack(TAG,0)
+        requireActivity().supportFragmentManager.popBackStackImmediate()
 
         val editor = EntourageApplication.get().sharedPreferences.edit()
         editor.putBoolean("isNavNews",false)

@@ -53,7 +53,7 @@ class BottomNavigationDataSource {
     }
 
     init {
-        add(R.id.bottom_bar_newsfeed, NewsfeedFragment.TAG)
+        add(R.id.bottom_bar_newsfeed, NewHomeFeedFragment.TAG)
         add(R.id.bottom_bar_guide, GuideHubFragment.TAG)
         add(R.id.bottom_bar_plus, PlusFragment.TAG)
         add(R.id.bottom_bar_mymessages, MyEntouragesFragment.TAG)

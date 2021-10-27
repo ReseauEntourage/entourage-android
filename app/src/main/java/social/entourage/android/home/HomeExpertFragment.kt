@@ -10,7 +10,6 @@ import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_home_expert.*
-import kotlinx.android.synthetic.main.fragment_map.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
@@ -401,5 +400,9 @@ class HomeExpertFragment : NewsfeedFragment(), EntourageServiceListener {
             activity?.unbindService(this)
             isBound = false
         }
+    }
+
+    companion object{
+        const val TAG: String = "social.entourage.android.fragment.home.expert"
     }
 }

@@ -33,6 +33,7 @@ import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.base.location.EntLocation.currentLocation
 import social.entourage.android.base.location.LocationUtils.isLocationEnabled
 import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
+import social.entourage.android.base.newsfeed.NewsFeedActionsFragment
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.navigation.EntBottomNavigationView
 import social.entourage.android.base.newsfeed.NewsfeedFragment
@@ -46,6 +47,7 @@ import social.entourage.android.tools.log.AnalyticsEvents.logEvent
 import social.entourage.android.tools.log.AnalyticsEvents.onLocationPermissionGranted
 import social.entourage.android.tools.log.AnalyticsEvents.updateUserInfo
 import social.entourage.android.tour.TourInformationFragment.OnTourInformationFragmentFinish
+import social.entourage.android.tour.ToursFragment
 import social.entourage.android.tour.choice.ChoiceFragment
 import social.entourage.android.tour.choice.ChoiceFragment.OnChoiceFragmentFinish
 import social.entourage.android.tour.confirmation.TourEndConfirmationFragment
@@ -260,11 +262,22 @@ class MainActivity : BaseSecuredActivity(),
         }
     }
 
-    private val newsfeedFragment: NewsfeedFragment?
-        get() = supportFragmentManager.findFragmentByTag(NewsfeedFragment.TAG) as NewsfeedFragment?
+    private val homeFragment: NewHomeFeedFragment?
+        get() = supportFragmentManager.findFragmentByTag(NewHomeFeedFragment.TAG) as? NewHomeFeedFragment
+
+    private val tourFragment: ToursFragment?
+        get() = supportFragmentManager.findFragmentByTag(ToursFragment.TAG) as? ToursFragment
+
+    private val feedFragment: NewsfeedFragment?
+        get() = tourFragment ?: supportFragmentManager.findFragmentByTag(NewsFeedActionsFragment.TAG) as? NewsfeedFragment
+
+    private val messagesFragment: MyEntouragesFragment?
+        get() = supportFragmentManager.findFragmentByTag(MyEntouragesFragment.TAG) as? MyEntouragesFragment
+
+
 
     private fun sendNewsfeedFragmentExtras() {
-        authenticationController.me?.let { me -> newsfeedFragment?.onNotificationExtras(me.id, authenticationController.isUserToursOnly)}
+        authenticationController.me?.let { me -> feedFragment?.onNotificationExtras(me.id, authenticationController.isUserToursOnly)}
     }
 
     private fun setIntentAction(intent: Intent) {
@@ -278,8 +291,8 @@ class MainActivity : BaseSecuredActivity(),
         }
     }
 
-    fun dismissNewsfeedFragmentDialogs() {
-        newsfeedFragment?.dismissAllDialogs()
+    fun dismissHomeFragmentDialogs() {
+        feedFragment?.dismissAllDialogs()
     }
 
     fun selectMenuProfileItem(position: String) {
@@ -287,10 +300,6 @@ class MainActivity : BaseSecuredActivity(),
             return
         }
         presenter.handleMenuProfile(position)
-    }
-
-    fun showMapFilters() {
-        newsfeedFragment?.onShowFilter()
     }
 
     fun showFeed() {
@@ -316,12 +325,12 @@ class MainActivity : BaseSecuredActivity(),
     fun showEvents() {
         EntBus.post(OnShowEventDeeplink())
         bottomBar?.showEvents()
-        (newsfeedFragment as? HomeExpertFragment)?.onShowEvents()
+        (supportFragmentManager.findFragmentByTag(HomeExpertFragment.TAG) as? HomeExpertFragment)?.onShowEvents()
     }
 
     fun showAllActions() {
         bottomBar?.showAllActions()
-        (newsfeedFragment as? HomeExpertFragment)?.onShowAll()
+        (supportFragmentManager.findFragmentByTag(HomeExpertFragment.TAG) as? HomeExpertFragment)?.onShowAll()
     }
 
     fun showMyEntourages() {
@@ -357,7 +366,7 @@ class MainActivity : BaseSecuredActivity(),
     }
 
     public override fun logout() {
-        newsfeedFragment?.saveOngoingTour()
+        homeFragment?.saveOngoingTour()
         //remove user phone
         val sharedPreferences = EntourageApplication.get().sharedPreferences
         val editor = sharedPreferences.edit()
@@ -454,7 +463,7 @@ class MainActivity : BaseSecuredActivity(),
     }
 
     override fun showStopTourActivity(tour: Tour) {
-        newsfeedFragment?.pauseTour(tour)
+        homeFragment?.pauseTour(tour)
         TourEndConfirmationFragment
             .newInstance(tour)
             .show(supportFragmentManager, TourEndConfirmationFragment.TAG)
@@ -463,7 +472,7 @@ class MainActivity : BaseSecuredActivity(),
     override fun closeChoiceFragment(fragment: ChoiceFragment, tour: Tour?) {
         supportFragmentManager.beginTransaction().remove(fragment).commit()
         if (tour != null) {
-            newsfeedFragment?.displayChosenFeedItem(tour, 0)
+            tourFragment?.displayChosenFeedItem(tour, 0)
         }
     }
 
@@ -472,10 +481,10 @@ class MainActivity : BaseSecuredActivity(),
         try {
             authenticationController.entourageDisclaimerShown = true
             // Dismiss the disclaimer fragment
-            fragment?.groupType?.let { newsfeedFragment?.setGroupType(it) }
+            fragment?.groupType?.let { feedFragment?.setGroupType(it) }
             fragment?.dismiss()
             // Show the create entourage fragment
-            newsfeedFragment?.createEntourage()
+            feedFragment?.createEntourage()
         } catch (e: IllegalStateException) {
             Timber.w(e)
         }
@@ -512,8 +521,7 @@ class MainActivity : BaseSecuredActivity(),
     override fun onUploadError() {
         Toast.makeText(this@MainActivity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show()
         dismissProgressDialog()
-        val photoEditFragment = supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as PhotoEditFragment?
-        photoEditFragment?.onPhotoSent(false)
+        (supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as? PhotoEditFragment)?.onPhotoSent(false)
     }
 
     // ----------------------------------
@@ -521,14 +529,14 @@ class MainActivity : BaseSecuredActivity(),
     // ----------------------------------
     fun createEntourage() {
         showFeed()
-        dismissNewsfeedFragmentDialogs()
-        newsfeedFragment?.displayEntourageDisclaimer()
+        dismissHomeFragmentDialogs()
+        homeFragment?.displayEntourageDisclaimer()
     }
 
     fun addEncounter() {
         showFeed()
-        dismissNewsfeedFragmentDialogs()
-        (newsfeedFragment as? NewHomeFeedFragment)?.onAddEncounter()
+        dismissHomeFragmentDialogs()
+        homeFragment?.onAddEncounter()
     }
 
     // ----------------------------------
@@ -554,8 +562,7 @@ class MainActivity : BaseSecuredActivity(),
                     removePushNotification(content, PushNotificationContent.TYPE_NEW_JOIN_REQUEST)
                 PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED -> {
                     addPushNotification(message)
-                    val mapFragment = newsfeedFragment
-                    mapFragment?.userStatusChanged(content, FeedItem.JOIN_STATUS_ACCEPTED)
+                    feedFragment?.userStatusChanged(content, FeedItem.JOIN_STATUS_ACCEPTED)
                 }
                 else -> addPushNotification(message)                    /*TYPE_NEW_JOIN_REQUEST,TYPE_ENTOURAGE_INVITATION,TYPE_INVITATION_STATUS*/
             }
@@ -576,9 +583,8 @@ class MainActivity : BaseSecuredActivity(),
     }
 
     private fun addPushNotification(message: Message) {
-        newsfeedFragment?.onPushNotificationReceived(message)
-        val myEntouragesFragment = supportFragmentManager.findFragmentByTag(MyEntouragesFragment.TAG) as MyEntouragesFragment?
-        myEntouragesFragment?.onPushNotificationReceived(message)
+        feedFragment?.onPushNotificationReceived(message)
+        messagesFragment?.onPushNotificationReceived(message)
     }
 
     // ----------------------------------

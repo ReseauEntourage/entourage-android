@@ -1,30 +1,72 @@
 package social.entourage.android.home
 
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
+import android.Manifest
+import android.animation.ValueAnimator
+import android.annotation.SuppressLint
+import android.app.ProgressDialog
+import android.content.*
+import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.Point
+import android.location.Location
+import android.net.Uri
 import android.os.*
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.RelativeLayout
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.*
+import com.google.android.material.snackbar.Snackbar
+import com.google.maps.android.clustering.ClusterItem
+import com.google.maps.android.clustering.ClusterManager
 import com.squareup.otto.Subscribe
+import kotlinx.android.synthetic.main.fragment_map.*
+import kotlinx.android.synthetic.main.layout_map_longclick.*
 import social.entourage.android.*
 import social.entourage.android.api.HomeTourArea
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.Message
+import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.api.model.feed.NewsfeedItem
+import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events
+import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.base.BackPressable
+import social.entourage.android.base.BaseFragment
+import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.base.location.EntLocation
+import social.entourage.android.base.location.LocationUtils
+import social.entourage.android.base.map.MapClusterEntourageItem
+import social.entourage.android.base.map.MapClusterItemRenderer
+import social.entourage.android.base.map.filter.MapFilterFactory
+import social.entourage.android.base.map.filter.MapFilterFragment
+import social.entourage.android.base.map.permissions.NoLocationPermissionFragment
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.base.newsfeed.*
+import social.entourage.android.configuration.Configuration
+import social.entourage.android.entourage.category.EntourageCategory
+import social.entourage.android.entourage.category.EntourageCategoryManager
+import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.tour.ToursFragment
 import social.entourage.android.tour.encounter.CreateEncounterActivity
 import social.entourage.android.tour.encounter.EncounterDisclaimerFragment
+import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import timber.log.Timber
 
 
@@ -50,7 +92,7 @@ class NewHomeFeedFragment : NewsfeedFragment(), BackPressable {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_new_home_feed, container, false)
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -138,9 +180,10 @@ class NewHomeFeedFragment : NewsfeedFragment(), BackPressable {
         val fg = HomeNeoHelpFragment()
         val transaction = childFragmentManager.beginTransaction()
         transaction.setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
-        transaction.addToBackStack(HomeHelpFragment.TAG)
+        transaction.addToBackStack(HomeNeoHelpFragment.TAG)
         transaction.add(R.id.ui_container, fg).commit()
     }
+
     fun goStreet() {
         val fg = HomeNeoStreetFragment()
         val transaction = childFragmentManager.beginTransaction()
@@ -178,6 +221,9 @@ class NewHomeFeedFragment : NewsfeedFragment(), BackPressable {
     }
 
     override fun onBackPressed(): Boolean {
+        //before closing the fragment, send the cached tour points to server (if applicable)
+        entService?.updateOngoingTour()
+
         if (childFragmentManager.fragments.size == 1) return false
         childFragmentManager.popBackStackImmediate()
         return true

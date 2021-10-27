@@ -100,11 +100,11 @@ object DeepLinksManager {
     private fun handleDeepLink(activity: MainActivity, key: String, pathSegments: List<String>?) {
         if (key == DeepLinksView.FEED.view) {
             activity.showFeed()
-            activity.dismissNewsfeedFragmentDialogs()
+            activity.dismissHomeFragmentDialogs()
             if (pathSegments != null && pathSegments.isNotEmpty()) {
-                if (DeepLinksView.FILTERS.view.equals(pathSegments[0], ignoreCase = true)) {
-                    activity.showMapFilters()
-                }
+                /*if (DeepLinksView.FILTERS.view.equals(pathSegments[0], ignoreCase = true)) {
+                    //TODO: ??? activity.showMapFilters()
+                }*/
             }
         } else if (key == DeepLinksView.BADGE.view) {
             val userEditFragment = activity.supportFragmentManager.findFragmentByTag(UserEditFragment.TAG) as UserEditFragment?
@@ -120,7 +120,7 @@ object DeepLinksManager {
                         "https://$urlToOpen"
                     } else urlToOpen
                     activity.showFeed()
-                    activity.dismissNewsfeedFragmentDialogs()
+                    activity.dismissHomeFragmentDialogs()
                     activity.showWebView(url)
                 }
             } catch (ignored: Exception) {
@@ -132,7 +132,7 @@ object DeepLinksManager {
         } else if (key == DeepLinksView.EVENTS.view) {
             activity.showEvents()
         } else if (key == DeepLinksView.MY_CONVERSATIONS.view) {
-            activity.dismissNewsfeedFragmentDialogs()
+            activity.dismissHomeFragmentDialogs()
             activity.showMyEntourages()
         } else if (key == DeepLinksView.CREATE_ACTION.view) {
             activity.showActionsTab()
@@ -161,7 +161,7 @@ object DeepLinksManager {
         BADGE("badge"),
         WEBVIEW("webview"),
         PROFILE("profile"),
-        FILTERS("filters"),
+        //FILTERS("filters"),
         EVENTS("events"),
         GUIDE("guide"),
         MY_CONVERSATIONS("messages"),

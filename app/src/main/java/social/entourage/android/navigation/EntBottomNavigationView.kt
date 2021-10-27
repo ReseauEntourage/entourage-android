@@ -106,10 +106,8 @@ class EntBottomNavigationView : BottomNavigationView {
                 fragmentTransaction.commit()
             }
             else {
-                if (tag == NewsfeedFragment.TAG) {
-                    if (supportFragmentManager.fragments.first() != null && (supportFragmentManager.fragments.first() is NewHomeFeedFragment) ) {
-                        (supportFragmentManager.fragments.first() as NewHomeFeedFragment).checkNavigation()
-                    }
+                if (tag == NewHomeFeedFragment.TAG) {
+                    (supportFragmentManager.fragments.first() as? NewHomeFeedFragment)?.checkNavigation()
                 }
             }
             //TODO check if we need to execute pending actions

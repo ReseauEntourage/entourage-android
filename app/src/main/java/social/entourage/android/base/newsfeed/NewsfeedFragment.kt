@@ -1250,7 +1250,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        const val TAG = "social.entourage.android.fragment_map"
+        //const val TAG = "social.entourage.android.fragment_map"
         private const val DELAY_REFRESH_TOURS_INTERVAL: Long = 3000 // 3 seconds delay when starting the timer to refresh the feed
         private const val REFRESH_TOURS_INTERVAL: Long = 60000 //1 minute in ms
 

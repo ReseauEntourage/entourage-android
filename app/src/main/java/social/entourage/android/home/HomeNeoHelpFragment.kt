@@ -13,13 +13,7 @@ import social.entourage.android.tools.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
 
 
-class HomeNeoHelpFragment : Fragment(),BackPressable {
-
-    override fun onBackPressed(): Boolean {
-        requireActivity().supportFragmentManager.popBackStack(TAG,0)
-
-        return true
-    }
+class HomeNeoHelpFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
