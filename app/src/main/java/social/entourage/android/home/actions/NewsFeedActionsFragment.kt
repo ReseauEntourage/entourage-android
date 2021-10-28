@@ -281,24 +281,25 @@ open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListene
         newsfeedAdapter?.updateCard(timestampedObject)
     }
 
-    override fun userStatusChanged(content: PushNotificationContent, status: String) {
-        super.userStatusChanged(content, status)
-        if (entService == null) return
-        if (content.isTourRelated) {
-            val timestampedObject = newsfeedAdapter?.findCard(TimestampedObject.TOUR_CARD, content.joinableId)
-            if (timestampedObject is Tour) {
-                val user = EntourageUser()
-                user.userId = userId
-                user.status = status
-                entService?.notifyListenersUserStatusChanged(user, timestampedObject)
-            }
-        }
-    }
-
     override fun displayFeedItemOptions(feedItem: FeedItem) {
         if (activity != null) {
             FeedItemOptionsFragment.show(feedItem, requireActivity().supportFragmentManager)
         }
+    }
+
+    @Subscribe
+    override fun dismissAllDialogs() {
+        super.dismissAllDialogs()
+    }
+
+    @Subscribe
+    override fun onJoinRequestAccepted(content: PushNotificationContent) {
+        super.onJoinRequestAccepted(content)
+    }
+
+    @Subscribe
+    override fun onAddPushNotification(message: Message) {
+        onAddPushNotification(message)
     }
 
     @Subscribe

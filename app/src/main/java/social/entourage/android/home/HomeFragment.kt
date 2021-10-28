@@ -5,47 +5,75 @@ import android.os.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.google.android.gms.maps.model.*
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Subscribe
-import kotlinx.android.synthetic.main.fragment_map.*
-import kotlinx.android.synthetic.main.layout_map_longclick.*
+import kotlinx.android.synthetic.main.fragment_home.*
 import social.entourage.android.*
+import social.entourage.android.api.ApiConnectionListener
 import social.entourage.android.api.HomeTourArea
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.Message
+import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events
 import social.entourage.android.base.BackPressable
+import social.entourage.android.base.BaseFragment
 import social.entourage.android.base.location.EntLocation
-import social.entourage.android.message.push.PushNotificationManager
+import social.entourage.android.base.location.LocationUtils
 import social.entourage.android.base.newsfeed.*
+import social.entourage.android.configuration.Configuration
+import social.entourage.android.entourage.EntourageDisclaimerFragment
+import social.entourage.android.entourage.category.EntourageCategory
+import social.entourage.android.entourage.category.EntourageCategoryManager
+import social.entourage.android.entourage.create.BaseCreateEntourageFragment
+import social.entourage.android.entourage.information.FeedItemInformationFragment
+import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.tour.ToursFragment
-import social.entourage.android.tour.encounter.CreateEncounterActivity
-import social.entourage.android.tour.encounter.EncounterDisclaimerFragment
+import social.entourage.android.user.edit.photo.ChoosePhotoFragment
+import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import timber.log.Timber
+import java.util.*
+import javax.inject.Inject
 
+class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFragment.FragmentListener, BackPressable {
+    // ----------------------------------
+    // ATTRIBUTES
+    // ----------------------------------
+    @Inject lateinit var presenter: HomePresenter
+    private var entService: EntService? = null
 
-class HomeFragment : NewsfeedFragment(), BackPressable {
+    // requested entourage category
+    private var entourageCategory: EntourageCategory? = null
+
+    private var isFromNeo = false
+    private var tagNameAnalytic = ""
 
     private val connection = ServiceConnection()
-    private var currentTourUUID = ""
-    var isTourPostSend = false
+    private var isTourPostSend = false
 
+    // requested group type
+    private lateinit var groupType: String
 
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        EntBus.register(this)
         connection.doBindService()
     }
 
     override fun onDestroy() {
         connection.doUnbindService()
+        EntBus.unregister(this)
         super.onDestroy()
     }
 
@@ -54,10 +82,19 @@ class HomeFragment : NewsfeedFragment(), BackPressable {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
+    override fun onAttach(context: Context) {
+        setupComponent(EntourageApplication.get(activity).components)
+        super.onAttach(context)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setGroupType(BaseEntourage.GROUPTYPE_ACTION)
+        (activity as? MainActivity)?.showEditActionZoneFragment()
 
-        val fragmentChild:Fragment
+        presenter.initializeInvitations()
+        presenter.checkUserNamesInfos()
+
         var isExpertMode:Boolean
 
         val hasExportKey = EntourageApplication.get().sharedPreferences.contains(EntourageApplication.KEY_HOME_IS_EXPERTMODE)
@@ -88,15 +125,170 @@ class HomeFragment : NewsfeedFragment(), BackPressable {
             }
         }
 
-        if (isExpertMode) {
-            fragmentChild = HomeExpertFragment()
-        }
-        else {
-            fragmentChild = HomeNeoMainFragment()
+        val fragmentChild = if (isExpertMode) {
+            HomeExpertFragment()
+        } else {
+            HomeNeoMainFragment()
         }
 
-        val transaction = childFragmentManager.beginTransaction()
-        transaction.replace(R.id.ui_container, fragmentChild).commit()
+        childFragmentManager.beginTransaction()
+            .replace(R.id.ui_container, fragmentChild)
+            .commit()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (!LocationUtils.isLocationEnabled() && !LocationUtils.isLocationPermissionGranted()) {
+            (activity as? MainActivity)?.showEditActionZoneFragment(this,false)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        EntBus.post(Events.OnLocationPermissionGranted(LocationUtils.isLocationPermissionGranted()))
+    }
+
+
+
+    // ----------------------------------
+    // PRIVATE METHODS (lifecycle)
+    // ----------------------------------
+    private fun setupComponent(entourageComponent: EntourageComponent?) {
+        DaggerHomeComponent.builder()
+            .entourageComponent(entourageComponent)
+            .homeModule(HomeModule(this))
+            .build()
+            .inject(this)
+    }
+
+    // ----------------------------------
+    // PUBLIC METHODS
+    // ----------------------------------
+    private fun displayChosenFeedItem(feedItemUUID: String, feedItemType: Int, invitationId: Long = 0) {
+        //display the feed item
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_ENTOURAGE)
+        presenter.openFeedItemFromUUID(feedItemUUID, feedItemType, invitationId)
+    }
+
+    private fun displayChosenFeedItem(feedItem: FeedItem, feedRank: Int) {
+        displayChosenFeedItem(feedItem, 0, feedRank)
+    }
+
+    // ----------------------------------
+    // PRIVATE METHODS
+    // ----------------------------------
+    private fun displayChosenFeedItem(feedItem: FeedItem, invitationId: Long, feedRank: Int = 0) {
+        if (context == null || isStateSaved) return
+        // decrease the badge count
+        EntourageApplication.get(context).removePushNotificationsForFeedItem(feedItem)
+        //check if we are not already displaying the tour
+        (activity?.supportFragmentManager?.findFragmentByTag(FeedItemInformationFragment.TAG) as? FeedItemInformationFragment)?.let {
+            if (it.getItemType() == feedItem.type && it.feedItemId != null && it.feedItemId.equals(feedItem.uuid, ignoreCase = true)) {
+                //TODO refresh the tour info screen
+                return
+            }
+        }
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_ENTOURAGE)
+        presenter.openFeedItem(feedItem, invitationId, feedRank)
+    }
+
+    private fun displayChosenFeedItemFromShareURL(feedItemShareURL: String, feedItemType: Int) {
+        //display the feed item
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_ENTOURAGE)
+        presenter.openFeedItemFromShareURL(feedItemShareURL, feedItemType)
+    }
+
+    fun displayEntourageDisclaimer() {
+        // Check if we need to show the entourage disclaimer
+        if (Configuration.showEntourageDisclaimer()) {
+            displayEntourageDisclaimer(groupType)
+        } else {
+            (activity as? MainActivity)?.onEntourageDisclaimerAccepted(null)
+        }
+    }
+
+    fun createEntourage() {
+        var location = EntLocation.lastCameraPosition.target
+        if (!BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) {
+            // For demand/contribution, by default select the action zone location, if set
+            EntourageApplication.me(activity)?.address?.let { address ->
+                location = LatLng(address.latitude, address.longitude)
+            }
+        }
+        createEntourage(location, groupType, entourageCategory,isFromNeo,tagNameAnalytic)
+    }
+
+    // ----------------------------------
+    // SERVICE INTERFACE METHODS
+    // ----------------------------------
+    override fun onNetworkException() {
+        activity?.window?.decorView?.rootView?.let {
+            EntSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()
+        }
+    }
+
+    override fun onServerException(throwable: Throwable) {
+        activity?.window?.decorView?.rootView?.let {
+            EntSnackbar.make(it, R.string.server_error, Snackbar.LENGTH_LONG).show()
+        }
+    }
+
+    override fun onTechnicalException(throwable: Throwable) {
+        activity?.window?.decorView?.rootView?.let {
+            EntSnackbar.make(it, R.string.technical_error, Snackbar.LENGTH_LONG).show()
+        }
+    }
+
+    fun createAction(newGroupType: String, newActionGroupType: String) {
+        entourageCategory = EntourageCategoryManager.getDefaultCategory(newActionGroupType)
+        groupType = newGroupType
+        entourageCategory?.isNewlyCreated = true
+        displayEntourageDisclaimer()
+    }
+
+    private fun createActionFromNeo(newGroupType: String, newActionGroupType: String, newActionType:String, tagNameAnalytic:String) {
+        entourageCategory = EntourageCategoryManager.findCategory(newActionGroupType,newActionType)
+        groupType = newGroupType
+        entourageCategory?.isNewlyCreated = true
+        isFromNeo = true
+        this.tagNameAnalytic = tagNameAnalytic
+    }
+
+    fun createAction(newEntourageGroupType: String) {
+        entourageCategory = null
+        groupType = newEntourageGroupType
+        displayEntourageDisclaimer()
+    }
+
+    fun setGroupType(groupString:String) {
+        groupType = groupString
+    }
+
+    // ----------------------------------
+    // UserEditActionZoneFragment.FragmentListener
+    // ----------------------------------
+    override fun onUserEditActionZoneFragmentDismiss() {}
+    override fun onUserEditActionZoneFragmentAddressSaved() {
+        presenter.storeActionZoneInfo(false)
+    }
+
+    override fun onUserEditActionZoneFragmentIgnore() {
+        presenter.storeActionZoneInfo(true)
+    }
+
+    // ----------------------------------
+    // PRIVATE METHODS (tours events)
+    // ----------------------------------
+    fun pauseTour(tour: Tour) {
+        if (entService?.isRunning == true) {
+            if (entService?.currentTourId.equals(tour.uuid, ignoreCase = true)) {
+                entService?.pauseTreatment()
+            }
+        }
+    }
+
+    fun saveOngoingTour() {
+        entService?.updateOngoingTour()
     }
 
     // Home Neo navigation
@@ -109,15 +301,36 @@ class HomeFragment : NewsfeedFragment(), BackPressable {
         transaction.add(R.id.ui_container, fg).commit()
     }
 
+    private fun createEntourage(location: LatLng?, groupType: String, category: EntourageCategory?, isFromNeo:Boolean, tagAnalyticName:String) {
+        if (!isStateSaved) {
+            val fragmentManager = activity?.supportFragmentManager ?: return
+            BaseCreateEntourageFragment.newInstance(location, groupType, category,isFromNeo,tagAnalyticName).show(fragmentManager, BaseCreateEntourageFragment.TAG)
+        }
+    }
+
+    private fun displayEntourageDisclaimer(groupType: String) {
+        if (!isStateSaved) {
+            val fragmentManager = activity?.supportFragmentManager ?:return
+            EntourageDisclaimerFragment.newInstance(groupType,"",false).show(fragmentManager, EntourageDisclaimerFragment.TAG)
+        }
+    }
+
+    private fun displayEntourageDisclaimer(groupType: String, tagAnalyticName:String, isFromNeo: Boolean) {
+        if (!isStateSaved) {
+            val fragmentManager = activity?.supportFragmentManager ?:return
+            EntourageDisclaimerFragment.newInstance(groupType,tagAnalyticName,isFromNeo).show(fragmentManager, EntourageDisclaimerFragment.TAG)
+        }
+    }
+
     //Actions call from fg
     fun createAction2(newGroupType: String, newActionGroupType: String, newActionType:String,tagNameAnalytic:String) {
         createActionFromNeo(newGroupType,newActionGroupType,newActionType,tagNameAnalytic)
-        presenter.displayEntourageDisclaimer(newGroupType,tagNameAnalytic,true)
+        displayEntourageDisclaimer(newGroupType,tagNameAnalytic,true)
     }
 
     fun goDetailActions() {
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_FEEDVIEW_ASKS)
-        val frag = NewsFeedActionsFragment.newInstance(true, true)
+        val frag = NewsFeedActionsFragment.newInstance(isAction = true, isFromNeo = true)
         requireActivity().supportFragmentManager.commit {
             setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
             add(R.id.main_fragment, frag,NewsFeedActionsFragment.TAG)
@@ -127,7 +340,7 @@ class HomeFragment : NewsfeedFragment(), BackPressable {
 
     fun goDetailEvents() {
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_FEEDVIEW_EVENTS)
-        val frag = NewsFeedActionsFragment.newInstance(false, true)
+        val frag = NewsFeedActionsFragment.newInstance(isAction = false, isFromNeo = true)
         requireActivity().supportFragmentManager.commit {
             setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
             add(R.id.main_fragment,frag ,NewsFeedActionsFragment.TAG)
@@ -189,18 +402,52 @@ class HomeFragment : NewsfeedFragment(), BackPressable {
     }
 
     @Subscribe
-    override fun feedItemViewRequested(event: Events.OnFeedItemInfoViewRequestedEvent) {
+    fun feedItemViewRequested(event: Events.OnFeedItemInfoViewRequestedEvent) {
         if (isFromNeo) {
             goDetailActions()
+            return
         }
-        else {
-            super.feedItemViewRequested(event)
+        val feedItem = event.feedItem
+        if (feedItem != null) {
+            //Check user photo
+            presenter.authenticationController.me?.let { me ->
+                if (event.isFromCreate && (me.avatarURL.isNullOrEmpty() || me.avatarURL?.equals("null") != false)) {
+                    AlertDialog.Builder(requireContext())
+                        .setTitle(R.string.info_photo_profile_title)
+                        .setMessage(R.string.info_photo_profile_description)
+                        .setNegativeButton(R.string.info_photo_profile_ignore) { dialog,_ ->
+                            dialog.dismiss()
+                            displayChosenFeedItem(feedItem, event.getfeedRank())
+                        }
+                        .setPositiveButton(R.string.info_photo_profile_add) { dialog, _ ->
+                            dialog.dismiss()
+                            val fragment = ChoosePhotoFragment.newInstance()
+                            fragment.show(parentFragmentManager, ChoosePhotoFragment.TAG)
+                        }
+                        .create()
+                        .show()
+                }
+                else {
+                    displayChosenFeedItem(feedItem, event.getfeedRank())
+                }
+            }
+        } else {
+            //check if we are receiving feed type and id
+            val feedItemType = event.feedItemType
+            if (feedItemType != 0) {
+                val feedItemUUID = event.feedItemUUID
+                if (feedItemUUID.isNullOrEmpty()) {
+                    event.feedItemShareURL?.let { displayChosenFeedItemFromShareURL(it, feedItemType) }
+                } else {
+                    displayChosenFeedItem(feedItemUUID, feedItemType, event.invitationId)
+                }
+            }
         }
     }
 
     fun checkNavigation() {
-        if (isNavigation()) {
-            when(navType()) {
+        if (presenter.isNavigation()) {
+            when(presenter.navType()) {
                 "action" -> {
                     showActions(true)
                 }
@@ -220,33 +467,16 @@ class HomeFragment : NewsfeedFragment(), BackPressable {
             add(R.id.main_fragment, NewsFeedActionsFragment.newInstance(isAction, false),NewsFeedActionsFragment.TAG)
             addToBackStack(NewsFeedActionsFragment.TAG)
             val navKey = if (isAction) "action" else "event"
-            saveInfos(true,navKey)
+            presenter.saveInfo(true,navKey)
         }
     }
 
-    fun showTour() {
+    private fun showTour() {
         requireActivity().supportFragmentManager.commit {
             add(R.id.main_fragment, ToursFragment(),ToursFragment.TAG)
             addToBackStack(ToursFragment.TAG)
-            saveInfos(true,"tour")
+            presenter.saveInfo(true,"tour")
         }
-    }
-
-    fun isNavigation(): Boolean {
-        return EntourageApplication.get().sharedPreferences
-            .getBoolean("isNavNews", false)
-    }
-
-    fun navType(): String? {
-        return EntourageApplication.get().sharedPreferences
-            .getString("navType", null)
-    }
-
-    fun saveInfos(isNav:Boolean,type:String?) {
-        val editor = EntourageApplication.get().sharedPreferences.edit()
-        editor.putBoolean("isNavNews",isNav)
-        editor.putString("navType",type)
-        editor.apply()
     }
 
     @Subscribe
@@ -277,7 +507,7 @@ class HomeFragment : NewsfeedFragment(), BackPressable {
         }
     }
 
-    fun checkAction(action: String) {
+    private fun checkAction(action: String) {
         when (action) {
             PlusFragment.KEY_CREATE_CONTRIBUTION -> createAction(BaseEntourage.GROUPTYPE_ACTION, BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)
             PlusFragment.KEY_CREATE_DEMAND -> createAction(BaseEntourage.GROUPTYPE_ACTION, BaseEntourage.GROUPTYPE_ACTION_DEMAND)
@@ -291,14 +521,13 @@ class HomeFragment : NewsfeedFragment(), BackPressable {
                 requireActivity().supportFragmentManager.commit {
                     add(R.id.main_fragment, frag,ToursFragment.TAG)
                     addToBackStack(ToursFragment.TAG)
-                    saveInfos(true,"tour")
+                    presenter.saveInfo(true,"tour")
 
                     isTourPostSend = true
                     val handler = Handler(Looper.getMainLooper())
                     handler.postDelayed({
                         EntBus.post(Events.OnCheckIntentActionEvent(action, null))
-                        val _handler = Handler(Looper.getMainLooper())
-                        _handler.postDelayed({
+                        Handler(Looper.getMainLooper()).postDelayed({
                             isTourPostSend = false
                         }, 2000)
                     }, 1000)
@@ -308,54 +537,22 @@ class HomeFragment : NewsfeedFragment(), BackPressable {
     }
 
     //To Handle deeplink for Event
-    /*TODO check if we should handle this here)
     fun onShowEvents() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEED_SHOWEVENTS)
-        showActions(false)
+        (activity?.supportFragmentManager?.findFragmentByTag(HomeExpertFragment.TAG) as? HomeExpertFragment)?.onShowEvents()
     }
 
     fun onShowAll() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEED_SHOWALL)
-        showActions(true)
-    } */
+        (activity?.supportFragmentManager?.findFragmentByTag(HomeExpertFragment.TAG) as? HomeExpertFragment)?.onShowEvents()
+    }
 
     /*****
      ** Methods & service for Tour add Encounter
     *****/
     fun onAddEncounter() {
         showTour()
-        if (!authenticationController.encounterDisclaimerShown) {
-            activity?.supportFragmentManager?.let { fragmentManager -> EncounterDisclaimerFragment().show(fragmentManager, EncounterDisclaimerFragment.TAG) }
-        } else {
-            addEncounter()
-        }
-    }
-
-    private fun addEncounter() {
-        if (activity != null) {
-            if (currentTourUUID.equals("")) {
-                entService?.let { currentTourUUID = it.currentTourId }
-            }
-            saveCameraPosition()
-            val args = Bundle()
-            args.putString(CreateEncounterActivity.BUNDLE_KEY_TOUR_ID, currentTourUUID)
-            val encounterPosition  = longTapCoordinates ?: EntLocation.currentLatLng ?: EntLocation.lastCameraPosition.target
-            args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LATITUDE, encounterPosition.latitude)
-            args.putDouble(CreateEncounterActivity.BUNDLE_KEY_LONGITUDE, encounterPosition.longitude)
-            longTapCoordinates = null
-            val intent = Intent(activity, CreateEncounterActivity::class.java)
-            intent.putExtras(args)
-            startActivity(intent)
-        }
-    }
-
-    fun updateFragmentFromService() {
-        entService?.let {
-            if (it.isRunning) {
-                updateFloatingMenuOptions()
-                currentTourUUID = it.currentTourId
-            }
-        }
+        (activity?.supportFragmentManager?.findFragmentByTag(ToursFragment.TAG) as? ToursFragment)?.onAddEncounter()
     }
 
     private inner class ServiceConnection : android.content.ServiceConnection {
@@ -369,10 +566,7 @@ class HomeFragment : NewsfeedFragment(), BackPressable {
             }
             entService = (service as EntService.LocalBinder).service
             entService?.let {
-                it.registerServiceListener(this@HomeFragment)
                 it.registerApiListener(this@HomeFragment)
-                updateFragmentFromService()
-                it.updateHomefeed(pagination)
                 isBound = true
             } ?: run {
                 Timber.e("Service not found")
@@ -381,7 +575,6 @@ class HomeFragment : NewsfeedFragment(), BackPressable {
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
-            entService?.unregisterServiceListener(this@HomeFragment)
             entService?.unregisterApiListener(this@HomeFragment)
             entService = null
             isBound = false
@@ -408,7 +601,6 @@ class HomeFragment : NewsfeedFragment(), BackPressable {
 
         fun doUnbindService() {
             if (!isBound) return
-            entService?.unregisterServiceListener(this@HomeFragment)
             activity?.unbindService(this)
             isBound = false
         }

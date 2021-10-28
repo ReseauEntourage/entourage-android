@@ -17,28 +17,23 @@ import kotlinx.android.synthetic.main.activity_main.*
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BackPressable
 import social.entourage.android.base.BaseSecuredActivity
+import social.entourage.android.base.location.EntLocation.currentLocation
+import social.entourage.android.base.location.LocationUtils.isLocationEnabled
+import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
 import social.entourage.android.deeplinks.DeepLinksManager.handleCurrentDeepLink
 import social.entourage.android.deeplinks.DeepLinksManager.storeIntent
 import social.entourage.android.entourage.EntourageDisclaimerFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
-import social.entourage.android.entourage.my.MyEntouragesFragment
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.guide.poi.ReadPoiFragment
-import social.entourage.android.base.location.EntLocation.currentLocation
-import social.entourage.android.base.location.LocationUtils.isLocationEnabled
-import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
-import social.entourage.android.base.newsfeed.NewsFeedActionsFragment
+import social.entourage.android.home.HomeFragment
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.navigation.EntBottomNavigationView
-import social.entourage.android.base.newsfeed.NewsfeedFragment
-import social.entourage.android.home.HomeExpertFragment
-import social.entourage.android.home.HomeFragment
 import social.entourage.android.onboarding.OnboardingPhotoFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
@@ -85,6 +80,12 @@ class MainActivity : BaseSecuredActivity(),
 
     private var isAnalyticsSendFromStart = false
     private var isAllreadyCheckCountNeo = false
+
+    private val homeFragment: HomeFragment?
+        get() = supportFragmentManager.findFragmentByTag(HomeFragment.TAG) as? HomeFragment
+
+    private val tourFragment: ToursFragment?
+        get() = supportFragmentManager.findFragmentByTag(ToursFragment.TAG) as? ToursFragment
 
     // ----------------------------------
     // LIFECYCLE
@@ -219,15 +220,13 @@ class MainActivity : BaseSecuredActivity(),
                 }
                 EntService.KEY_NOTIFICATION_PAUSE_TOUR, EntService.KEY_NOTIFICATION_STOP_TOUR -> sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
             }
+        } else {
+            // user just returns to the app, update analytics
+            updateAnalyticsInfo()
         }
         if (!isAnalyticsSendFromStart) {
             isAnalyticsSendFromStart = true
             logEvent(AnalyticsEvents.SHOW_START_HOME)
-        }
-        sendNewsfeedFragmentExtras()
-        if (intent == null || intent.action == null) {
-            // user just returns to the app, update analytics
-            updateAnalyticsInfo()
         }
         bottomBar?.refreshBadgeCount()
         intent?.action?.let { action ->
@@ -262,24 +261,6 @@ class MainActivity : BaseSecuredActivity(),
         }
     }
 
-    private val homeFragment: HomeFragment?
-        get() = supportFragmentManager.findFragmentByTag(HomeFragment.TAG) as? HomeFragment
-
-    private val tourFragment: ToursFragment?
-        get() = supportFragmentManager.findFragmentByTag(ToursFragment.TAG) as? ToursFragment
-
-    private val feedFragment: NewsfeedFragment?
-        get() = tourFragment ?: supportFragmentManager.findFragmentByTag(NewsFeedActionsFragment.TAG) as? NewsfeedFragment
-
-    private val messagesFragment: MyEntouragesFragment?
-        get() = supportFragmentManager.findFragmentByTag(MyEntouragesFragment.TAG) as? MyEntouragesFragment
-
-
-
-    private fun sendNewsfeedFragmentExtras() {
-        authenticationController.me?.let { me -> feedFragment?.onNotificationExtras(me.id, authenticationController.isUserToursOnly)}
-    }
-
     private fun setIntentAction(intent: Intent) {
         if (intent.action != null) {
             when (intent.action) {
@@ -292,7 +273,7 @@ class MainActivity : BaseSecuredActivity(),
     }
 
     fun dismissHomeFragmentDialogs() {
-        feedFragment?.dismissAllDialogs()
+        EntBus.post(OnDismissAllDialogs())
     }
 
     fun selectMenuProfileItem(position: String) {
@@ -325,12 +306,12 @@ class MainActivity : BaseSecuredActivity(),
     fun showEvents() {
         EntBus.post(OnShowEventDeeplink())
         bottomBar?.showEvents()
-        (supportFragmentManager.findFragmentByTag(HomeExpertFragment.TAG) as? HomeExpertFragment)?.onShowEvents()
+        homeFragment?.onShowEvents()
     }
 
     fun showAllActions() {
         bottomBar?.showAllActions()
-        (supportFragmentManager.findFragmentByTag(HomeExpertFragment.TAG) as? HomeExpertFragment)?.onShowAll()
+        homeFragment?.onShowAll()
     }
 
     fun showMyEntourages() {
@@ -481,10 +462,10 @@ class MainActivity : BaseSecuredActivity(),
         try {
             authenticationController.entourageDisclaimerShown = true
             // Dismiss the disclaimer fragment
-            fragment?.groupType?.let { feedFragment?.setGroupType(it) }
+            fragment?.groupType?.let { homeFragment?.setGroupType(it) }
             fragment?.dismiss()
             // Show the create entourage fragment
-            feedFragment?.createEntourage()
+            homeFragment?.createEntourage()
         } catch (e: IllegalStateException) {
             Timber.w(e)
         }
@@ -562,7 +543,7 @@ class MainActivity : BaseSecuredActivity(),
                     removePushNotification(content, PushNotificationContent.TYPE_NEW_JOIN_REQUEST)
                 PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED -> {
                     addPushNotification(message)
-                    feedFragment?.userStatusChanged(content, FeedItem.JOIN_STATUS_ACCEPTED)
+                    EntBus.post(OnJoinRequestAccepted(content))
                 }
                 else -> addPushNotification(message)                    /*TYPE_NEW_JOIN_REQUEST,TYPE_ENTOURAGE_INVITATION,TYPE_INVITATION_STATUS*/
             }
@@ -583,8 +564,7 @@ class MainActivity : BaseSecuredActivity(),
     }
 
     private fun addPushNotification(message: Message) {
-        feedFragment?.onPushNotificationReceived(message)
-        messagesFragment?.onPushNotificationReceived(message)
+        EntBus.post(OnAddPushNotification(message))
     }
 
     // ----------------------------------

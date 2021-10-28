@@ -212,6 +212,12 @@ open class Events {
     class OnRefreshEntourageInformation
     class OnRefreshActionsInfos
 
+    class OnDismissAllDialogs
+
+    class OnJoinRequestAccepted(val content: PushNotificationContent)
+
+    class OnAddPushNotification(val message: Message)
+
     open class TourEvents {
         /**
          * Event signaling that an encounter was created (or not)

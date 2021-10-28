@@ -27,6 +27,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.clustering.ClusterManager
+import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.layout_map_longclick.*
 import social.entourage.android.*
@@ -65,7 +66,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
     @Inject lateinit var presenter: NewsfeedPresenter
     @Inject lateinit var authenticationController: AuthenticationController
     private var onMapReadyCallback: OnMapReadyCallback? = null
-    protected var userId = 0
     protected var longTapCoordinates: LatLng? = null
     private var previousEmptyListPopupLocation: Location? = null
     protected var entService: EntService? = null
@@ -99,6 +99,8 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
 
     protected var isFromNeo = false
     protected var tagNameAnalytic = ""
+
+    val userId = authenticationController.me?.id ?:0
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -194,11 +196,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
-    open fun onNotificationExtras(id: Int, choice: Boolean) {
-        userId = id
-    }
-
-    fun dismissAllDialogs() {
+    open fun dismissAllDialogs() {
         fragmentLifecycleCallbacks?.dismissAllDialogs()
     }
 
@@ -389,7 +387,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
                 if (FeedItem.JOIN_STATUS_PENDING == item.joinStatus) {
                     AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_CANCEL_JOIN_REQUEST)
                 }
-                entService?.removeUserFromFeedItem(item, userId)
+                authenticationController.me?.id?.let { entService?.removeUserFromFeedItem(item, it)}
             }
         }
     }
@@ -769,10 +767,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         }
     }
 
-    fun saveOngoingTour() {
-        entService?.updateOngoingTour()
-    }
-
     fun stopFeedItem(feedItem: FeedItem?, success: Boolean) {
         if (activity != null) {
             entService?.let { service ->
@@ -797,6 +791,14 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
 
     private fun freezeTour(tour: Tour) {
         entService?.freezeTour(tour)
+    }
+
+    open fun onJoinRequestAccepted(content: PushNotificationContent) {
+        userStatusChanged(content, FeedItem.JOIN_STATUS_ACCEPTED)
+    }
+
+    open fun onAddPushNotification(message: Message) {
+        onPushNotificationReceived(message)
     }
 
     open fun userStatusChanged(content: PushNotificationContent, status: String) {

@@ -90,7 +90,7 @@ open class ToursFragment : NewsfeedFragment(), EntourageServiceListener, TourSer
     private var drawnToursMap: MutableList<Polyline> = ArrayList()
     private var currentTourLines: MutableList<Polyline> = ArrayList()
     private var previousCoordinates: LatLng? = null
-    private var userHistory = false
+    //private var userHistory = false
     private var drawnUserHistory: MutableMap<Long, Polyline> = TreeMap()
     private var retrievedHistory: MutableMap<Long, Tour> = TreeMap()
     private var displayedTourHeads = 0
@@ -190,7 +190,7 @@ open class ToursFragment : NewsfeedFragment(), EntourageServiceListener, TourSer
         }
     }
 
-    private fun onAddEncounter() {
+    public fun onAddEncounter() {
         if (activity == null) {
             return
         }
@@ -308,14 +308,23 @@ open class ToursFragment : NewsfeedFragment(), EntourageServiceListener, TourSer
     }
 
     @Subscribe
+    override fun dismissAllDialogs() {
+        super.dismissAllDialogs()
+    }
+
+    @Subscribe
     fun onUserChoiceChanged(event: Events.OnUserChoiceEvent) {
-        userHistory = event.isUserHistory
-        if (userHistory) {
+        if (event.isUserHistory) {
             entService?.updateUserHistory(userId, 1, 500)
             showUserHistory()
         } else {
             hideUserHistory()
         }
+    }
+
+    @Subscribe
+    override fun onAddPushNotification(message: Message) {
+        onAddPushNotification(message)
     }
 
     @Subscribe
@@ -538,11 +547,6 @@ open class ToursFragment : NewsfeedFragment(), EntourageServiceListener, TourSer
         return uniqueTours
     }
 
-    override fun onNotificationExtras(id: Int, choice: Boolean) {
-        super.onNotificationExtras(id, choice)
-        userHistory = choice
-    }
-
     override fun onFeedItemClosed(closed: Boolean, updatedFeedItem: FeedItem) {
         (updatedFeedItem as? Tour)?.let { tour ->
             if (closed) {
@@ -552,7 +556,7 @@ open class ToursFragment : NewsfeedFragment(), EntourageServiceListener, TourSer
                 } else {
                     entService?.notifyListenersTourResumed()
                 }
-                if (userHistory) {
+                if (authenticationController.isUserToursOnly) {
                     entService?.updateUserHistory(userId, 1, 1)
                 }
                 fragment_map_main_layout?.let { EntSnackbar.make(it, tour.getClosedToastMessage(), Snackbar.LENGTH_SHORT).show() }
@@ -797,7 +801,7 @@ open class ToursFragment : NewsfeedFragment(), EntourageServiceListener, TourSer
                 //bottomTitleTextView.setText(R.string.tour_info_text_ongoing);
                 addCurrentTourEncounters()
             }
-            if (userHistory) {
+            if (authenticationController.isUserToursOnly) {
                 it.updateUserHistory(userId, 1, 500)
             }
         }
@@ -812,7 +816,7 @@ open class ToursFragment : NewsfeedFragment(), EntourageServiceListener, TourSer
             color = getTransparentColor(color)
         }
         return if (isHistory) {
-            if (!userHistory) {
+            if (!authenticationController.isUserToursOnly) {
                 Color.argb(0, Color.red(color), Color.green(color), Color.blue(color))
             } else {
                 Color.argb(255, Color.red(color), Color.green(color), Color.blue(color))
@@ -821,7 +825,7 @@ open class ToursFragment : NewsfeedFragment(), EntourageServiceListener, TourSer
     }
 
     override fun updateUserHistory() {
-        if (userHistory) {
+        if (authenticationController.isUserToursOnly) {
             entService?.updateUserHistory(userId, 1, 500)
         }
     }
