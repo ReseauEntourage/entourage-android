@@ -1,7 +1,7 @@
 package social.entourage.android.base.newsfeed
 
 import androidx.recyclerview.widget.RecyclerView
-import social.entourage.android.home.announcement.AnnouncementViewHolder
+import social.entourage.android.base.newsfeed.announcement.AnnouncementViewHolder
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.base.HeaderFooterBaseAdapter
 import social.entourage.android.base.ViewHolderFactory.ViewHolderType

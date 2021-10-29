@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.google.android.gms.maps.model.*
 import com.google.android.material.snackbar.Snackbar
@@ -31,6 +30,9 @@ import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.entourage.create.BaseCreateEntourageFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
+import social.entourage.android.home.actions.NewsFeedActionsFragment
+import social.entourage.android.home.expert.HomeExpertFragment
+import social.entourage.android.home.neo.*
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
@@ -304,7 +306,11 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
     private fun createEntourage(location: LatLng?, groupType: String, category: EntourageCategory?, isFromNeo:Boolean, tagAnalyticName:String) {
         if (!isStateSaved) {
             val fragmentManager = activity?.supportFragmentManager ?: return
-            BaseCreateEntourageFragment.newInstance(location, groupType, category,isFromNeo,tagAnalyticName).show(fragmentManager, BaseCreateEntourageFragment.TAG)
+            if(isFromNeo) {
+                BaseCreateEntourageFragment.newNeoInstance(location, groupType, category,tagAnalyticName).show(fragmentManager, BaseCreateEntourageFragment.TAG)
+            } else {
+                BaseCreateEntourageFragment.newExpertInstance(location, groupType, category).show(fragmentManager, BaseCreateEntourageFragment.TAG)
+            }
         }
     }
 
@@ -333,7 +339,7 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
         val frag = NewsFeedActionsFragment.newInstance(isAction = true, isFromNeo = true)
         requireActivity().supportFragmentManager.commit {
             setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
-            add(R.id.main_fragment, frag,NewsFeedActionsFragment.TAG)
+            add(R.id.main_fragment, frag, NewsFeedActionsFragment.TAG)
             addToBackStack(NewsFeedActionsFragment.TAG)
         }
     }
@@ -343,7 +349,7 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
         val frag = NewsFeedActionsFragment.newInstance(isAction = false, isFromNeo = true)
         requireActivity().supportFragmentManager.commit {
             setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
-            add(R.id.main_fragment,frag ,NewsFeedActionsFragment.TAG)
+            add(R.id.main_fragment,frag , NewsFeedActionsFragment.TAG)
             addToBackStack(NewsFeedActionsFragment.TAG)
         }
     }
@@ -464,7 +470,8 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
 
     fun showActions(isAction:Boolean) {
         requireActivity().supportFragmentManager.commit {
-            add(R.id.main_fragment, NewsFeedActionsFragment.newInstance(isAction, false),NewsFeedActionsFragment.TAG)
+            add(R.id.main_fragment, NewsFeedActionsFragment.newInstance(isAction, false),
+                NewsFeedActionsFragment.TAG)
             addToBackStack(NewsFeedActionsFragment.TAG)
             val navKey = if (isAction) "action" else "event"
             presenter.saveInfo(true,navKey)
@@ -544,7 +551,7 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
 
     fun onShowAll() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEED_SHOWALL)
-        (activity?.supportFragmentManager?.findFragmentByTag(HomeExpertFragment.TAG) as? HomeExpertFragment)?.onShowEvents()
+        (activity?.supportFragmentManager?.findFragmentByTag(HomeExpertFragment.TAG) as? HomeExpertFragment)?.onShowAll()
     }
 
     /*****

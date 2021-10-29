@@ -2,7 +2,6 @@ package social.entourage.android.home
 
 import dagger.Component
 import social.entourage.android.EntourageComponent
-import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.base.ActivityScope
 
 /**
@@ -17,5 +16,4 @@ import social.entourage.android.base.ActivityScope
 interface HomeComponent {
     fun inject(fragment: HomeFragment?)
     val homePresenter: HomePresenter?
-    val authenticationController: AuthenticationController
 }

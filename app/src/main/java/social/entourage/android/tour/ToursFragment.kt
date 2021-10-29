@@ -190,7 +190,7 @@ open class ToursFragment : NewsfeedFragment(), EntourageServiceListener, TourSer
         }
     }
 
-    public fun onAddEncounter() {
+    fun onAddEncounter() {
         if (activity == null) {
             return
         }
@@ -200,7 +200,7 @@ open class ToursFragment : NewsfeedFragment(), EntourageServiceListener, TourSer
 
         // MI: EMA-1669 Show the disclaimer only the first time when a tour was started
         // Show the disclaimer fragment
-        if (authenticationController.encounterDisclaimerShown == false) {
+        if (!presenter.authenticationController.encounterDisclaimerShown) {
             activity?.supportFragmentManager?.let { fragmentManager -> EncounterDisclaimerFragment().show(fragmentManager, EncounterDisclaimerFragment.TAG) }
         } else {
             addEncounter()
@@ -305,11 +305,6 @@ open class ToursFragment : NewsfeedFragment(), EntourageServiceListener, TourSer
         map_longclick_buttons?.map_longclick_button_start_tour_launcher?.visibility = if (isTourRunning) View.INVISIBLE else View.VISIBLE
         map_longclick_buttons?.map_longclick_button_create_encounter?.visibility = if (isTourRunning) View.VISIBLE else View.GONE
         super.showLongClickOnMapOptions(latLng)
-    }
-
-    @Subscribe
-    override fun dismissAllDialogs() {
-        super.dismissAllDialogs()
     }
 
     @Subscribe
@@ -419,7 +414,7 @@ open class ToursFragment : NewsfeedFragment(), EntourageServiceListener, TourSer
                 }
                 addTourCard(currentTour)
                 presenter.incrementUserToursCount()
-                authenticationController.encounterDisclaimerShown = true
+                presenter.authenticationController.encounterDisclaimerShown = true
             } else if (fragment_map_main_layout != null) {
                 EntSnackbar.make(fragment_map_main_layout, R.string.tour_creation_fail, Snackbar.LENGTH_SHORT).show()
             }
@@ -556,7 +551,7 @@ open class ToursFragment : NewsfeedFragment(), EntourageServiceListener, TourSer
                 } else {
                     entService?.notifyListenersTourResumed()
                 }
-                if (authenticationController.isUserToursOnly) {
+                if (presenter.authenticationController.isUserToursOnly) {
                     entService?.updateUserHistory(userId, 1, 1)
                 }
                 fragment_map_main_layout?.let { EntSnackbar.make(it, tour.getClosedToastMessage(), Snackbar.LENGTH_SHORT).show() }
@@ -801,7 +796,7 @@ open class ToursFragment : NewsfeedFragment(), EntourageServiceListener, TourSer
                 //bottomTitleTextView.setText(R.string.tour_info_text_ongoing);
                 addCurrentTourEncounters()
             }
-            if (authenticationController.isUserToursOnly) {
+            if (presenter.authenticationController.isUserToursOnly) {
                 it.updateUserHistory(userId, 1, 500)
             }
         }
@@ -816,7 +811,7 @@ open class ToursFragment : NewsfeedFragment(), EntourageServiceListener, TourSer
             color = getTransparentColor(color)
         }
         return if (isHistory) {
-            if (!authenticationController.isUserToursOnly) {
+            if (!presenter.authenticationController.isUserToursOnly) {
                 Color.argb(0, Color.red(color), Color.green(color), Color.blue(color))
             } else {
                 Color.argb(255, Color.red(color), Color.green(color), Color.blue(color))
@@ -825,7 +820,7 @@ open class ToursFragment : NewsfeedFragment(), EntourageServiceListener, TourSer
     }
 
     override fun updateUserHistory() {
-        if (authenticationController.isUserToursOnly) {
+        if (presenter.authenticationController.isUserToursOnly) {
             entService?.updateUserHistory(userId, 1, 500)
         }
     }

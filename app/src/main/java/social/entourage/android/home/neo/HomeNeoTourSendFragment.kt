@@ -1,4 +1,4 @@
-package social.entourage.android.home
+package social.entourage.android.home.neo
 
 import android.content.DialogInterface
 import android.os.Bundle
@@ -15,6 +15,7 @@ import social.entourage.android.R
 import social.entourage.android.api.HomeTourArea
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.TourAreaApi
+import social.entourage.android.home.HomeFragment
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.isValidEmail
 import social.entourage.android.tools.log.AnalyticsEvents

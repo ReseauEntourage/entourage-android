@@ -109,30 +109,14 @@ class NewsfeedPresenter @Inject constructor(
         }
     }
 
-    fun openFeedItemFromShareURL(feedItemShareURL: String, feedItemType: Int) {
-        when (feedItemType) {
-            TimestampedObject.ENTOURAGE_CARD -> {
-                val call = entourageRequest.retrieveEntourageByShareURL(feedItemShareURL)
-                call.enqueue(object : Callback<EntourageResponse> {
-                    override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
-                        response.body()?.entourage?.let {
-                            if (response.isSuccessful) {
-                                openFeedItem(it,0,0)
-                            }
-                        }
-                    }
-
-                    override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
-                    }
-                })
-            }
-        }
-    }
-
     fun createEntourage(location: LatLng?, groupType: String, category: EntourageCategory?,isFromNeo:Boolean,tagAnalyticName:String) {
         if (fragment != null && !fragment.isStateSaved) {
             val fragmentManager = fragment.activity?.supportFragmentManager ?: return
-            BaseCreateEntourageFragment.newInstance(location, groupType, category,isFromNeo,tagAnalyticName).show(fragmentManager, BaseCreateEntourageFragment.TAG)
+            if(isFromNeo) {
+                BaseCreateEntourageFragment.newNeoInstance(location, groupType, category,tagAnalyticName).show(fragmentManager, BaseCreateEntourageFragment.TAG)
+            } else {
+                BaseCreateEntourageFragment.newExpertInstance(location, groupType, category).show(fragmentManager, BaseCreateEntourageFragment.TAG)
+            }
         }
     }
 
@@ -140,13 +124,6 @@ class NewsfeedPresenter @Inject constructor(
         if (fragment != null && !fragment.isStateSaved) {
             val fragmentManager = fragment.activity?.supportFragmentManager ?:return
             EntourageDisclaimerFragment.newInstance(groupType,"",false).show(fragmentManager, EntourageDisclaimerFragment.TAG)
-        }
-    }
-
-    fun displayEntourageDisclaimer(groupType: String,tagAnalyticName:String,isFromNeo: Boolean) {
-        if (fragment != null && !fragment.isStateSaved) {
-            val fragmentManager = fragment.activity?.supportFragmentManager ?:return
-            EntourageDisclaimerFragment.newInstance(groupType,tagAnalyticName,isFromNeo).show(fragmentManager, EntourageDisclaimerFragment.TAG)
         }
     }
 

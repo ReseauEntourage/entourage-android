@@ -1,4 +1,4 @@
-package social.entourage.android.home
+package social.entourage.android.home.neo
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,6 +11,7 @@ import social.entourage.android.Constants
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.entourage.category.EntourageCategory
+import social.entourage.android.home.HomeFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class HomeNeoActionFragment : Fragment() {

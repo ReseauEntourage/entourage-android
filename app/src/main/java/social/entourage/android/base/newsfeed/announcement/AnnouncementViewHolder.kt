@@ -1,4 +1,4 @@
-package social.entourage.android.home.announcement
+package social.entourage.android.base.newsfeed.announcement
 
 import android.content.Intent
 import android.graphics.drawable.Drawable

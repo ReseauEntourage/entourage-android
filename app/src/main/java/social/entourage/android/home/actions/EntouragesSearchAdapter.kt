@@ -1,4 +1,4 @@
-package social.entourage.android.base.newsfeed
+package social.entourage.android.home.actions
 
 import android.annotation.SuppressLint
 import android.net.Uri

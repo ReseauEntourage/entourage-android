@@ -24,7 +24,6 @@ import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
-import social.entourage.android.base.newsfeed.EntouragesSearchAdapter
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.log.AnalyticsEvents.ACTION_FEEDSEARCH_START_ASK

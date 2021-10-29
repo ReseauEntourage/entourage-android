@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".home.HomeNeoTourListFragment">
+    tools:context=".home.neo.HomeNeoTourListFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/info_title_layout"

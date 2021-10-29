@@ -1,4 +1,4 @@
-package social.entourage.android.base.newsfeed
+package social.entourage.android.home.actions
 
 import android.content.ComponentName
 import android.content.Context
@@ -17,16 +17,16 @@ import kotlinx.android.synthetic.main.fragment_map.fragment_map_filter_button
 import kotlinx.android.synthetic.main.fragment_map.fragment_map_main_layout
 import kotlinx.android.synthetic.main.fragment_map.tour_stop_button
 import social.entourage.android.EntourageApplication
-import social.entourage.android.PlusFragment
 import social.entourage.android.R
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.feed.*
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BackPressable
-import social.entourage.android.entourage.FeedItemOptionsFragment
 import social.entourage.android.base.map.filter.MapFilterFactory
-import social.entourage.android.home.actions.EntouragesSearchFragment
+import social.entourage.android.base.newsfeed.NewsfeedFragment
+import social.entourage.android.base.newsfeed.NewsfeedTabItem
+import social.entourage.android.entourage.FeedItemOptionsFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.service.EntService.LocalBinder
 import social.entourage.android.service.EntourageServiceListener
@@ -126,14 +126,6 @@ open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListene
     override fun updateFilterButtonText() {
         val activefilters = MapFilterFactory.mapFilter.isDefaultFilter()
         fragment_map_filter_button?.setText(if (activefilters) R.string.map_no_filter else R.string.map_filters_activated)
-    }
-
-    protected open fun checkAction(action: String) {
-        when (action) {
-            PlusFragment.KEY_CREATE_CONTRIBUTION -> createAction(BaseEntourage.GROUPTYPE_ACTION, BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)
-            PlusFragment.KEY_CREATE_DEMAND -> createAction(BaseEntourage.GROUPTYPE_ACTION, BaseEntourage.GROUPTYPE_ACTION_DEMAND)
-            PlusFragment.KEY_CREATE_OUTING -> createAction(BaseEntourage.GROUPTYPE_OUTING)
-        }
     }
 
     // ----------------------------------
@@ -288,11 +280,6 @@ open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListene
     }
 
     @Subscribe
-    override fun dismissAllDialogs() {
-        super.dismissAllDialogs()
-    }
-
-    @Subscribe
     override fun onJoinRequestAccepted(content: PushNotificationContent) {
         super.onJoinRequestAccepted(content)
     }
@@ -370,13 +357,13 @@ open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListene
         const val TAG = "homeNew"//"social.entourage.android.home.actions"
 
         fun newInstance(isAction:Boolean, isFromNeo:Boolean, isExpertAsk:Boolean = false, isExpertContrib:Boolean = false): NewsFeedActionsFragment {
-            val _intent = NewsFeedActionsFragment()
-            _intent.selectedTab = if (isAction) NewsfeedTabItem.ALL_TAB else NewsfeedTabItem.EVENTS_TAB
-            _intent.isActionSelected = isAction
-            _intent.isFromNeo = isFromNeo
-            _intent.isExpertAsk = isExpertAsk
-            _intent.isExpertContrib = isExpertContrib
-            return _intent
+            val intent = NewsFeedActionsFragment()
+            intent.selectedTab = if (isAction) NewsfeedTabItem.ALL_TAB else NewsfeedTabItem.EVENTS_TAB
+            intent.isActionSelected = isAction
+            intent.isFromNeo = isFromNeo
+            intent.isExpertAsk = isExpertAsk
+            intent.isExpertContrib = isExpertContrib
+            return intent
         }
     }
 }

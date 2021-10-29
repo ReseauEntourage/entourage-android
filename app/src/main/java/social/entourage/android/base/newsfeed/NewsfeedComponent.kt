@@ -17,5 +17,4 @@ import social.entourage.android.base.ActivityScope
 interface NewsfeedComponent {
     fun inject(fragment: NewsfeedFragment?)
     val newsfeedPresenter: NewsfeedPresenter?
-    val authenticationController: AuthenticationController
 }

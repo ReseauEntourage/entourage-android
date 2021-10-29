@@ -1,4 +1,4 @@
-package social.entourage.android.home
+package social.entourage.android.home.neo
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.layout_cell_home_neo_tour.view.*
 import social.entourage.android.R
 import social.entourage.android.api.HomeTourArea
 import social.entourage.android.api.TourAreaApi
+import social.entourage.android.home.HomeFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 
 

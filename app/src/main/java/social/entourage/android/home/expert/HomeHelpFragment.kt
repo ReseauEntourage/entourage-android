@@ -1,4 +1,4 @@
-package social.entourage.android.home
+package social.entourage.android.home.expert
 
 import android.os.Bundle
 import android.view.LayoutInflater

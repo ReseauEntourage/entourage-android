@@ -1,4 +1,4 @@
-package social.entourage.android.home
+package social.entourage.android.home.neo
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.fragment_home_neo_main.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
+import social.entourage.android.home.HomeFragment
 import social.entourage.android.tools.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
 

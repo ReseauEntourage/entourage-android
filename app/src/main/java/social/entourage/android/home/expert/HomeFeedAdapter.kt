@@ -1,4 +1,4 @@
-package social.entourage.android.home
+package social.entourage.android.home.expert
 
 import android.content.Context
 import android.content.res.Resources
@@ -16,12 +16,15 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.home.actions.ActionEventAdapter
 import social.entourage.android.base.newsfeed.HeadlineAdapter
+import social.entourage.android.home.HomeCard
+import social.entourage.android.home.HomeCardType
+import social.entourage.android.home.HomeViewHolderListener
 import social.entourage.android.tools.view.RecyclerViewItemDecorationWithSpacing
 
 /**
- * NewHomeFeedAdapter.
+ * HomeFeedAdapter.
  */
-class NewHomeFeedAdapter(val listener: HomeViewHolderListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HomeFeedAdapter(val listener: HomeViewHolderListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun updateDatas(items:ArrayList<HomeCard>, isNeighbour:Boolean, isLoading:Boolean) {
         this.isNeighbour = isNeighbour

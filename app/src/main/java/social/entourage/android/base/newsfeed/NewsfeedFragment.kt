@@ -11,7 +11,6 @@ import android.graphics.Color
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
@@ -27,7 +26,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.clustering.ClusterManager
-import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.layout_map_longclick.*
 import social.entourage.android.*
@@ -35,12 +33,7 @@ import social.entourage.android.api.model.*
 import social.entourage.android.api.model.feed.*
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
-import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.base.HeaderBaseAdapter
-import social.entourage.android.configuration.Configuration
-import social.entourage.android.entourage.category.EntourageCategory
-import social.entourage.android.entourage.category.EntourageCategoryManager
-import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.base.location.LocationUtils.isLocationEnabled
 import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
@@ -49,12 +42,15 @@ import social.entourage.android.base.map.filter.MapFilterFactory
 import social.entourage.android.base.map.filter.MapFilterFragment
 import social.entourage.android.base.map.permissions.NoLocationPermissionFragment
 import social.entourage.android.base.newsfeed.*
+import social.entourage.android.configuration.Configuration
+import social.entourage.android.entourage.category.EntourageCategory
+import social.entourage.android.entourage.category.EntourageCategoryManager
+import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
-import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -64,7 +60,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
     // ATTRIBUTES
     // ----------------------------------
     @Inject lateinit var presenter: NewsfeedPresenter
-    @Inject lateinit var authenticationController: AuthenticationController
     private var onMapReadyCallback: OnMapReadyCallback? = null
     protected var longTapCoordinates: LatLng? = null
     private var previousEmptyListPopupLocation: Location? = null
@@ -74,10 +69,8 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
     private var initialNewsfeedLoaded = false
     protected var isRequestingToJoin = 0
     private var isStopped = false
-    private val refreshToursHandler = Handler()
 
     protected var newsfeedAdapter: NewsfeedAdapter? = null
-    private var refreshToursTimer: Timer? = null
 
     //pagination
     protected var pagination = NewsfeedPagination()
@@ -98,9 +91,10 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
     protected var mapClusterManager: ClusterManager<ClusterItem>? = null
 
     protected var isFromNeo = false
-    protected var tagNameAnalytic = ""
+    private var tagNameAnalytic = ""
 
-    val userId = authenticationController.me?.id ?:0
+    protected val userId: Int
+        get() = presenter.authenticationController.me?.id ?:0
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -173,11 +167,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         EntBus.post(OnLocationPermissionGranted(isLocationPermissionGranted()))
     }
 
-    override fun onPause() {
-        super.onPause()
-        timerStop()
-    }
-
     override fun onDestroy() {
         EntBus.unregister(this)
         super.onDestroy()
@@ -196,10 +185,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
-    open fun dismissAllDialogs() {
-        fragmentLifecycleCallbacks?.dismissAllDialogs()
-    }
-
     fun displayChosenFeedItem(feedItemUUID: String, feedItemType: Int, invitationId: Long = 0) {
         //display the feed item
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_ENTOURAGE)
@@ -227,12 +212,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         }
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_ENTOURAGE)
         presenter.openFeedItem(feedItem, invitationId, feedRank)
-    }
-
-    private fun displayChosenFeedItemFromShareURL(feedItemShareURL: String, feedItemType: Int) {
-        //display the feed item
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_ENTOURAGE)
-        presenter.openFeedItemFromShareURL(feedItemShareURL, feedItemType)
     }
 
     private fun act(timestampedObject: TimestampedObject) {
@@ -351,31 +330,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         }
     }
 
-    private fun onMapTabChanged(newSelectedTab: NewsfeedTabItem) {
-        if (newSelectedTab == selectedTab) {
-            return
-        }
-        selectedTab = newSelectedTab
-        when(selectedTab) {
-            NewsfeedTabItem.ALL_TAB -> {
-                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEED_SHOWALL)
-                fragment_map_filter_button?.visibility = View.VISIBLE
-            }
-            NewsfeedTabItem.TOUR_TAB -> {
-                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEED_SHOWTOURS)
-                fragment_map_filter_button?.visibility = View.VISIBLE
-            }
-            NewsfeedTabItem.EVENTS_TAB -> {
-                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEED_SHOWEVENTS)
-                fragment_map_filter_button?.visibility = View.GONE
-            }
-        }
-        clearAll()
-        newsfeedAdapter?.showBottomView(false,
-            NewsfeedBottomViewHolder.CONTENT_TYPE_NO_ITEMS, selectedTab)
-        entService?.updateNewsfeed(pagination, selectedTab)
-    }
-
     open fun userActRequested(event: OnUserActEvent) {
         if (OnUserActEvent.ACT_JOIN == event.act) {
             act(event.feedItem)
@@ -387,51 +341,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
                 if (FeedItem.JOIN_STATUS_PENDING == item.joinStatus) {
                     AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_CANCEL_JOIN_REQUEST)
                 }
-                authenticationController.me?.id?.let { entService?.removeUserFromFeedItem(item, it)}
-            }
-        }
-    }
-
-    open fun feedItemViewRequested(event: OnFeedItemInfoViewRequestedEvent) {
-        val feedItem = event.feedItem
-        if (feedItem != null) {
-            //Check user photo
-            presenter.authenticationController.me?.let { me ->
-               if (event.isFromCreate && (me.avatarURL.isNullOrEmpty() || me.avatarURL?.equals("null") != false)) {
-                   AlertDialog.Builder(requireContext())
-                           .setTitle(R.string.info_photo_profile_title)
-                           .setMessage(R.string.info_photo_profile_description)
-                           .setNegativeButton(R.string.info_photo_profile_ignore) { dialog,_ ->
-                               dialog.dismiss()
-                               displayChosenFeedItem(feedItem, event.getfeedRank())
-                               // update the newsfeed card
-                               onPushNotificationConsumedForFeedItem(feedItem)
-                           }
-                           .setPositiveButton(R.string.info_photo_profile_add) { dialog, _ ->
-                               dialog.dismiss()
-                               val fragment = ChoosePhotoFragment.newInstance()
-                               fragment.show(parentFragmentManager, ChoosePhotoFragment.TAG)
-                           }
-                           .create()
-                           .show()
-               }
-                else {
-                   displayChosenFeedItem(feedItem, event.getfeedRank())
-                   // update the newsfeed card
-                   onPushNotificationConsumedForFeedItem(feedItem)
-                   // update the my entourages card, if necessary
-               }
-            }
-        } else {
-            //check if we are receiving feed type and id
-            val feedItemType = event.feedItemType
-            if (feedItemType != 0) {
-                val feedItemUUID = event.feedItemUUID
-                if (feedItemUUID.isNullOrEmpty()) {
-                    event.feedItemShareURL?.let { displayChosenFeedItemFromShareURL(it, feedItemType) }
-                } else {
-                    displayChosenFeedItem(feedItemUUID, feedItemType, event.invitationId)
-                }
+                presenter.authenticationController.me?.id?.let { entService?.removeUserFromFeedItem(item, it)}
             }
         }
     }
@@ -578,14 +488,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         groupType = newGroupType
         entourageCategory?.isNewlyCreated = true
         displayEntourageDisclaimer()
-    }
-
-    fun createActionFromNeo(newGroupType: String, newActionGroupType: String,newActionType:String,tagNameAnalytic:String) {
-        entourageCategory = EntourageCategoryManager.findCategory(newActionGroupType,newActionType)
-        groupType = newGroupType
-        entourageCategory?.isNewlyCreated = true
-        isFromNeo = true
-        this.tagNameAnalytic = tagNameAnalytic
     }
 
     fun createAction(newEntourageGroupType: String) {
@@ -759,13 +661,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
     // PRIVATE METHODS (tours events)
     // ----------------------------------
     protected open fun hideTourLauncher() {}
-    fun pauseTour(tour: Tour) {
-        if (entService?.isRunning == true) {
-            if (entService?.currentTourId.equals(tour.uuid, ignoreCase = true)) {
-                entService?.pauseTreatment()
-            }
-        }
-    }
 
     fun stopFeedItem(feedItem: FeedItem?, success: Boolean) {
         if (activity != null) {
@@ -1012,7 +907,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
     // ----------------------------------
     // Push handling
     // ----------------------------------
-    fun onPushNotificationReceived(message: Message) {
+    private fun onPushNotificationReceived(message: Message) {
         //refresh the newsfeed
         if (entService != null) {
             pagination.isRefreshing = true
@@ -1036,41 +931,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
             entourage.increaseBadgeCount(isChatMessage)
             newsfeedAdapter?.updateCard(entourage)
         }
-    }
-
-    private fun onPushNotificationConsumedForFeedItem(feedItem: FeedItem) {
-        val feedItemCard = newsfeedAdapter?.findCard(feedItem) as? FeedItem
-                ?: return
-        feedItemCard.decreaseBadgeCount()
-        newsfeedAdapter?.updateCard(feedItemCard)
-    }
-
-    // ----------------------------------
-    // Refresh tours timer handling
-    // ----------------------------------
-    private fun timerStart() {
-        //create the timer
-        refreshToursTimer = Timer()
-        //create the task
-        val refreshToursTimerTask: TimerTask = object : TimerTask() {
-            override fun run() {
-                refreshToursHandler.post {
-                    if (entService != null) {
-                        if (selectedTab != NewsfeedTabItem.EVENTS_TAB) {
-                            pagination.isRefreshing = true
-                            entService?.updateNewsfeed(pagination, selectedTab)
-                        }
-                    }
-                }
-            }
-        }
-        //schedule the timer
-        refreshToursTimer?.schedule(refreshToursTimerTask, DELAY_REFRESH_TOURS_INTERVAL, REFRESH_TOURS_INTERVAL)
-    }
-
-    private fun timerStop() {
-        refreshToursTimer?.cancel()
-        refreshToursTimer = null
     }
 
     // ----------------------------------
@@ -1201,8 +1061,8 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
     }
 
     private fun storeActionZoneInfo(ignoreAddress: Boolean) {
-        authenticationController.isIgnoringActionZone = ignoreAddress
-        authenticationController.saveUserPreferences()
+        presenter.authenticationController.isIgnoringActionZone = ignoreAddress
+        presenter.authenticationController.saveUserPreferences()
         if (!ignoreAddress) {
             EntourageApplication.me(activity)?.address?.let {
                 centerMap(LatLng(it.latitude, it.longitude))
@@ -1252,10 +1112,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        //const val TAG = "social.entourage.android.fragment_map"
-        private const val DELAY_REFRESH_TOURS_INTERVAL: Long = 3000 // 3 seconds delay when starting the timer to refresh the feed
-        private const val REFRESH_TOURS_INTERVAL: Long = 60000 //1 minute in ms
-
         // Radius of the circle where to search for entourages when user taps a heatzone
         private const val HEATZONE_SEARCH_RADIUS = BaseEntourage.HEATMAP_SIZE.toInt() / 2 // meters
 
