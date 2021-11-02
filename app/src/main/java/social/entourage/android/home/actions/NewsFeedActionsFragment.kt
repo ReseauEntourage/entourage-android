@@ -102,6 +102,8 @@ open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListene
             if (isExpertContrib) {
                 ui_tv_title?.text = getString(R.string.home_title_actions_contrib)
                 searchType = "contrib"
+                //we force contributions here
+                setGroupType(BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)
             }
             else if (isExpertAsk) {
                 ui_tv_title?.text = getString(R.string.home_title_actions_ask)
