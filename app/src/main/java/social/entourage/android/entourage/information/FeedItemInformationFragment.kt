@@ -805,15 +805,17 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
     }
 
     fun formattedDaysIntervalFromToday(rawDate: Date?): String {
-        if (rawDate == null) return this.getString(R.string.date_today).toLowerCase()
+        if (rawDate == null) return this.getString(R.string.date_today)
+            .lowercase(Locale.getDefault())
 
         val today = LocalDate()
         val date = LocalDate(rawDate)
-        if (date.isEqual(today)) return this.getString(R.string.date_today).toLowerCase()
+        if (date.isEqual(today)) return this.getString(R.string.date_today)
+            .lowercase(Locale.getDefault())
         val days = Days.daysBetween(date, today).days
 
         return when (days) {
-            1 -> getString(R.string.date_yesterday).toLowerCase()
+            1 -> getString(R.string.date_yesterday).lowercase(Locale.getDefault())
             in 2..14 -> String.format(getString(R.string.x_days_ago),days)
             in 15..31 -> getString(R.string.date_this_month)
             else -> {
@@ -923,10 +925,14 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
                     entourage_info_request_join_layout?.visibility = View.VISIBLE
 //                    entourage_info_request_join_title?.setText(feedItem.getJoinRequestTitle())
                     if (feedItem is EntourageEvent) {
-                        entourage_info_request_join_button?.text = getString(R.string.tour_info_request_join_button_event).toUpperCase()
+                        entourage_info_request_join_button?.text = getString(R.string.tour_info_request_join_button_event).uppercase(
+                            Locale.getDefault()
+                        )
                     }
                     else {
-                        entourage_info_request_join_button?.text = getString(R.string.tour_info_request_join_button_entourage).toUpperCase()
+                        entourage_info_request_join_button?.text = getString(R.string.tour_info_request_join_button_entourage).uppercase(
+                            Locale.getDefault()
+                        )
                     }
                    // entourage_info_request_join_button?.setText(feedItem.getJoinRequestButton())
 

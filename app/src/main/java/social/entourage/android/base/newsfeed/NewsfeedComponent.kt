@@ -2,7 +2,6 @@ package social.entourage.android.base.newsfeed
 
 import dagger.Component
 import social.entourage.android.EntourageComponent
-import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.base.ActivityScope
 
 /**

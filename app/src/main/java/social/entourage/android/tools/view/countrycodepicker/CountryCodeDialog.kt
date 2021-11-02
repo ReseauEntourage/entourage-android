@@ -121,7 +121,7 @@ internal class CountryCodeDialog(private val mCountryCodePicker: CountryCodePick
      * @param query : text to match against country name, name code or phone code
      */
     private fun applyQuery(query: String) {
-        var newQuery = query.toLowerCase()
+        var newQuery = query.lowercase(Locale.getDefault())
         no_result_tv?.visibility = View.GONE
 
         //if query started from "+" ignore it

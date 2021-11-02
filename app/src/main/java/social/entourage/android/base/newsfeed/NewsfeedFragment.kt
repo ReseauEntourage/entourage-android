@@ -663,19 +663,19 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
     protected open fun hideTourLauncher() {}
 
     fun stopFeedItem(feedItem: FeedItem?, success: Boolean) {
-        if (activity != null) {
+        activity?.let { activity ->
             entService?.let { service ->
                 if (feedItem != null
                         && (!service.isRunning
                                 || feedItem.type != TimestampedObject.TOUR_CARD
                                 || service.currentTourId.equals(feedItem.uuid, ignoreCase = true))) {
                     // Not ongoing tour, just stop the feed item
-                    loaderStop = ProgressDialog.show(activity, requireActivity().getString(feedItem.getClosingLoaderMessage()), requireActivity().getString(R.string.button_loading), true)
+                    loaderStop = ProgressDialog.show(activity, activity.getString(feedItem.getClosingLoaderMessage()), activity.getString(R.string.button_loading), true)
                     loaderStop?.setCancelable(true)
                     //TODO: proper event: AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_STOP_TOUR)
                     service.stopFeedItem(feedItem, success)
                 } else if (service.isRunning) {
-                    loaderStop = ProgressDialog.show(activity, requireActivity().getString(R.string.loader_title_tour_finish), requireActivity().getString(R.string.button_loading), true)
+                    loaderStop = ProgressDialog.show(activity, activity.getString(R.string.loader_title_tour_finish), activity.getString(R.string.button_loading), true)
                     loaderStop?.setCancelable(true)
                     service.endTreatment()
                     AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_STOP_TOUR)

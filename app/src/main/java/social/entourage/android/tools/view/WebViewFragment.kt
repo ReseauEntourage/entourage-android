@@ -185,11 +185,15 @@ class WebViewFragment : BaseDialogFragment() {
             if (!loadedUrl.equals(url, ignoreCase = true)) {
                 loadedUrl = url
                 Uri.parse(url).host?.let { it->
-                    var host = it.toLowerCase(Locale.ROOT)
+                    var host = it.lowercase(Locale.ROOT)
                     if (host.startsWith("www.")) {
                         host = host.substring(4)
                     }
-                    webview_title?.text = if (host.isNotEmpty()) host.capitalize(Locale.ROOT) else ""
+                    webview_title?.text = if (host.isNotEmpty()) host.replaceFirstChar {
+                        if (it.isLowerCase()) it.titlecase(
+                            Locale.ROOT
+                        ) else it.toString()
+                    } else ""
 
                 } ?: run {
                     webview_title?.text = ""

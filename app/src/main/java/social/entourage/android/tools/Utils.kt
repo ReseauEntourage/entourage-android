@@ -81,18 +81,19 @@ object Utils {
         val now = Calendar.getInstance()
         // check for today
         if (now[Calendar.YEAR] == lastUpdate[Calendar.YEAR] && now[Calendar.MONTH] == lastUpdate[Calendar.MONTH] && now[Calendar.DAY_OF_MONTH] == lastUpdate[Calendar.DAY_OF_MONTH]) {
-            return context.getString(R.string.date_today).toUpperCase()
+            return context.getString(R.string.date_today).uppercase(Locale.getDefault())
         }
 
         // check for yesterday
         val yesterday = Calendar.getInstance()
         yesterday.add(Calendar.DATE, -1)
         if (yesterday[Calendar.YEAR] == lastUpdate[Calendar.YEAR] && yesterday[Calendar.MONTH] == lastUpdate[Calendar.MONTH] && yesterday[Calendar.DAY_OF_MONTH] == lastUpdate[Calendar.DAY_OF_MONTH]) {
-            return context.getString(R.string.date_yesterday).toUpperCase()
+            return context.getString(R.string.date_yesterday).uppercase(Locale.getDefault())
         }
         // regular date
         val month = getMonthAsString(lastUpdate[Calendar.MONTH], context)
-        return context.getString(R.string.date_format, lastUpdate[Calendar.DAY_OF_MONTH], month, lastUpdate[Calendar.YEAR]).toUpperCase()
+        return context.getString(R.string.date_format, lastUpdate[Calendar.DAY_OF_MONTH], month, lastUpdate[Calendar.YEAR])
+            .uppercase(Locale.getDefault())
     }
 
     fun getMonthAsString(month: Int, context: Context): String {
@@ -176,8 +177,8 @@ object Utils {
         for (textItem in textToBold) {
             if (textItem.isNotEmpty() && textItem.trim { it <= ' ' } != "") {
                 //for counting start/end indexes
-                val _text = text.toLowerCase()
-                val _textToBold = textItem.toLowerCase()
+                val _text = text.lowercase(Locale.getDefault())
+                val _textToBold = textItem.lowercase(Locale.getDefault())
                 val startingIndex = _text.indexOf(_textToBold)
                 val endingIndex = startingIndex + _textToBold.length
 

@@ -66,7 +66,7 @@ object DeepLinksManager {
             intent = null
             return
         }
-        handleDeepLink(activity, host.toLowerCase(Locale.ROOT), currentUri?.pathSegments)
+        handleDeepLink(activity, host.lowercase(Locale.ROOT), currentUri?.pathSegments)
     }
 
     /**
@@ -116,7 +116,7 @@ object DeepLinksManager {
         } else if (key == DeepLinksView.WEBVIEW.view) {
             try {
                 currentUri?.getQueryParameter("url")?.let { urlToOpen ->
-                    val url  = if (!urlToOpen.toLowerCase(Locale.ROOT).startsWith("http")) {
+                    val url  = if (!urlToOpen.lowercase(Locale.ROOT).startsWith("http")) {
                         "https://$urlToOpen"
                     } else urlToOpen
                     activity.showFeed()
