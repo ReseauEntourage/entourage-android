@@ -13,9 +13,11 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.layout_cell_action_more.view.*
-import kotlinx.android.synthetic.main.layout_cell_event.view.*
+import kotlinx.android.synthetic.main.layout_cell_event_original.view.*
 import kotlinx.android.synthetic.main.layout_cell_headline_action.view.*
+import kotlinx.android.synthetic.main.layout_cell_headline_action.view.ui_action_tv_location
 import kotlinx.android.synthetic.main.layout_cell_headline_announce.view.*
+import kotlinx.android.synthetic.main.layout_cell_my_action.view.*
 import social.entourage.android.Constants
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
@@ -23,6 +25,7 @@ import social.entourage.android.api.model.EntourageEvent
 import social.entourage.android.api.model.feed.Announcement
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events
+import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.tools.EntBus
 
 
@@ -85,7 +88,7 @@ class AnnounceVH(view: View) : RecyclerView.ViewHolder(view) {
 class ActionVH(view: View) : RecyclerView.ViewHolder(view) {
     private var isAction = true //Use for tracking Firebase click
 
-    fun bind(data: Any?, listener: HomeViewHolderListener, position: Int, isFromHeadline: Boolean) {
+    fun bind(data: Any?, listener: HomeViewHolderListener, position: Int, isFromHeadline: Boolean,isVariant:Boolean) {
         itemView.setOnClickListener {
             data?.let { listener.onDetailClicked(data, position, isFromHeadline, isAction) }
         }
@@ -122,12 +125,19 @@ class ActionVH(view: View) : RecyclerView.ViewHolder(view) {
             } else {
                 isAction = true
                 itemView.ui_action_tv_more?.text = itemView.context.resources.getString(R.string.show_more)
-                if (feedItem.actionGroupType == "ask_for_help") {
-                    itemView.ui_action_tv_type?.text = itemView.context.resources.getString(R.string.entourage_type_demand)
-                    itemView.ui_tv_info_by?.text = res.getString(R.string.cell_demand_from)
-                } else {
-                    itemView.ui_action_tv_type?.text = itemView.context.resources.getString(R.string.entourage_type_contribution)
-                    itemView.ui_tv_info_by?.text = res.getString(R.string.cell_contrib_from)
+
+                if (isVariant) {
+                    val cat = EntourageCategoryManager.findCategory(feedItem)
+                    itemView.ui_action_tv_type?.text = cat.title_list
+                }
+                else {
+                    if (feedItem.actionGroupType == "ask_for_help") {
+                        itemView.ui_action_tv_type?.text = itemView.context.resources.getString(R.string.entourage_type_demand)
+                        itemView.ui_tv_info_by?.text = res.getString(R.string.cell_demand_from)
+                    } else {
+                        itemView.ui_action_tv_type?.text = itemView.context.resources.getString(R.string.entourage_type_contribution)
+                        itemView.ui_tv_info_by?.text = res.getString(R.string.cell_contrib_from)
+                    }
                 }
             }
 

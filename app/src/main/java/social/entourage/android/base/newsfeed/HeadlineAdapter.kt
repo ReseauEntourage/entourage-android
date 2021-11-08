@@ -51,7 +51,7 @@ class HeadlineAdapter(var homecard: HomeCard, val listener: HomeViewHolderListen
             (holder as AnnounceVH).bind(homecard.arrayCards[position].data, listener,position)
         }
         else {
-            (holder as ActionVH).bind(homecard.arrayCards[position].data, listener,position,true)
+            (holder as ActionVH).bind(homecard.arrayCards[position].data, listener,position,true,false)
         }
     }
 

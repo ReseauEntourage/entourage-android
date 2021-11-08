@@ -11,6 +11,9 @@ import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.model.*
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_home_expert.*
 import social.entourage.android.*
@@ -44,6 +47,12 @@ import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
+enum class VariantCellType {
+    Original,
+    VariantA,
+    VariantB
+}
+
 class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener, UserEditActionZoneFragment.FragmentListener {
     // ----------------------------------
     // ATTRIBUTES
@@ -70,6 +79,8 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
 
     private val connection = ServiceConnection()
     private var arrayEmpty = ArrayList<HomeCard>()
+    var variantType: VariantCellType = VariantCellType.Original
+    val remoteConfig = Firebase.remoteConfig
 
     // ----------------------------------
     // LIFECYCLE
@@ -301,12 +312,56 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
 
         ui_bt_tour?.visibility = if(EntourageApplication.get().me()?.isPro == false) View.INVISIBLE else View.VISIBLE
 
-        setupRecyclerView()
+        val type = remoteConfig.getLong("cell_home_expert_type")
+        if (type == 0L) {
+            variantType = VariantCellType.Original
+        }
+        else if (type == 1L) {
+            variantType = VariantCellType.VariantA
+        }
+        else if (type == 2L) {
+            variantType = VariantCellType.VariantB
+        }
+        variantType = VariantCellType.VariantA
+        // setupRecyclerView()
+
+        setupTesting()
+    }
+
+    fun setupTesting() {
+
+        val configSettings = remoteConfigSettings {
+            minimumFetchIntervalInSeconds = 0//60 * 60 * 24 //TODO remettre les bonnes valuers après tests preprod
+        }
+        remoteConfig.setConfigSettingsAsync(configSettings)
+        val defaults = HashMap<String, Any>()
+        defaults.put("cell_home_expert_type",0)
+        remoteConfig.setDefaultsAsync(defaults)
+
+        remoteConfig.fetchAndActivate()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val type = remoteConfig.getLong("cell_home_expert_type")
+                        if (type == 0L) {
+                            variantType = VariantCellType.Original
+                        }
+                        else if (type == 1L) {
+                            variantType = VariantCellType.VariantA
+                        }
+                        else if (type == 2L) {
+                            variantType = VariantCellType.VariantB
+                        }
+                        setupRecyclerView()
+                        entService?.updateHomefeed(pagination)
+                    } else {
+                        Timber.d("Fetch failed")
+                    }
+                }
     }
 
     override fun onResume() {
         super.onResume()
-        entService?.updateHomefeed(pagination)
+        // entService?.updateHomefeed(pagination)
     }
 
     private fun setupComponent(entourageComponent: EntourageComponent?) {
@@ -388,6 +443,18 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
                     logString += "${position + 1}"
                     AnalyticsEvents.logEvent(logString)
 
+                    if (!isFromHeadline) {
+                        // Use for AB Testing precision variant Analytics
+                        var tagAB = ""
+                        when( variantType) {
+                            VariantCellType.Original -> tagAB = "Action__ExpertFeed__Show_O"
+                            VariantCellType.VariantA -> tagAB = "Action__ExpertFeed__Show_A"
+                            VariantCellType.VariantB -> tagAB = "Action__ExpertFeed__Show_B"
+                        }
+                        AnalyticsEvents.logEvent("Action__ExpertFeed__Show") //Use for AB Testing tracking
+                        AnalyticsEvents.logEvent(tagAB)
+                    }
+
                     feedItemViewRequested(Events.OnFeedItemInfoViewRequestedEvent(item))
                 }
             }
@@ -447,7 +514,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             }
         }
 
-        adapterHome = HomeFeedAdapter(listener)
+        adapterHome = HomeFeedAdapter(variantType,listener)
         ui_recyclerview?.layoutManager = LinearLayoutManager(context)
         ui_recyclerview?.adapter = adapterHome
 
@@ -456,8 +523,8 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             if (user.isUserTypeNeighbour) {
                 isNeighbour = true
             }
-            adapterHome?.updateDatas(arrayEmpty,isNeighbour,true)
-        } ?: run { adapterHome?.updateDatas(arrayEmpty,false,true) }
+            adapterHome?.updateDatas(arrayEmpty,isNeighbour,true,variantType)
+        } ?: run { adapterHome?.updateDatas(arrayEmpty,false,true,variantType) }
         ui_home_swipeRefresh?.setOnRefreshListener { entService?.updateHomefeed(pagination) }
     }
 
@@ -473,8 +540,8 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             if (user.isUserTypeNeighbour) {
                 isNeighbour = true
             }
-            adapterHome?.updateDatas(_arrayTest,isNeighbour,false)
-        } ?: run { adapterHome?.updateDatas(_arrayTest,false,false) }
+            adapterHome?.updateDatas(_arrayTest,isNeighbour,false,variantType)
+        } ?: run { adapterHome?.updateDatas(_arrayTest,false,false,variantType) }
     }
 
     fun showActions(isAction:Boolean,subtype: HomeCardType) {

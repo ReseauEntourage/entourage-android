@@ -172,6 +172,7 @@ dependencies {
     implementation gmsDependencies.values()
     implementation networkDependencies.values()
     implementation uiDependencies.values()
+    implementation "com.google.firebase:firebase-config-ktx"
 
     entourageImplementation facebookDependencies.values()
 

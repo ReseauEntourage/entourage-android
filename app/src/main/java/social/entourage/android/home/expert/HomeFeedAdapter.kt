@@ -1,5 +1,6 @@
 package social.entourage.android.home.expert
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.view.LayoutInflater
@@ -8,9 +9,9 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.layout_cell_home_action.view.*
+import kotlinx.android.synthetic.main.layout_cell_home_action_original.view.*
 import kotlinx.android.synthetic.main.layout_cell_home_empty.view.*
-import kotlinx.android.synthetic.main.layout_cell_home_event.view.*
+import kotlinx.android.synthetic.main.layout_cell_home_event_original.view.*
 import kotlinx.android.synthetic.main.layout_cell_home_headline.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -24,13 +25,15 @@ import social.entourage.android.tools.view.RecyclerViewItemDecorationWithSpacing
 /**
  * HomeFeedAdapter.
  */
-class HomeFeedAdapter(val listener: HomeViewHolderListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HomeFeedAdapter(var variantType:VariantCellType, val listener:HomeViewHolderListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    fun updateDatas(items:ArrayList<HomeCard>, isNeighbour:Boolean, isLoading:Boolean) {
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateDatas(items:ArrayList<HomeCard>, isNeighbour:Boolean, isLoading:Boolean, variantType:VariantCellType) {
         this.isNeighbour = isNeighbour
         this.arrayItems.clear()
         this.arrayItems.addAll(items)
         this.isLoading = isLoading
+        this.variantType = variantType
         notifyDataSetChanged()
     }
     var arrayItems = ArrayList<HomeCard>()
@@ -57,17 +60,33 @@ class HomeFeedAdapter(val listener: HomeViewHolderListener): RecyclerView.Adapte
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
 
+        var cell_Event_id = 0
+        var cell_action_id = 0
+        if (variantType == VariantCellType.Original) {
+            cell_Event_id = R.layout.layout_cell_home_event_original
+            cell_action_id = R.layout.layout_cell_home_action_original
+        }
+        else if (variantType == VariantCellType.VariantA) {
+            cell_Event_id = R.layout.layout_cell_home_event_variant_a
+            cell_action_id = R.layout.layout_cell_home_action_variant_a
+        }
+        else if (variantType == VariantCellType.VariantB) {
+            cell_Event_id = R.layout.layout_cell_home_event_variant_b
+            cell_action_id = R.layout.layout_cell_home_action_variant_b
+        }
+
         when(viewType) {
             CELL_HEADLINES -> {
                 val view = inflater.inflate(R.layout.layout_cell_home_headline, parent, false)
                 return HeadlineVH(view)
             }
             CELL_ACTIONS -> {
-                val view = inflater.inflate(R.layout.layout_cell_home_action, parent, false)
+                val view = inflater.inflate(cell_action_id, parent, false)
                 return  ActionVH(view)
             }
             CELL_EVENTS -> {
-                val view = inflater.inflate(R.layout.layout_cell_home_event, parent, false)
+
+                val view = inflater.inflate(cell_Event_id, parent, false)
                 return  EventVH(view)
             }
             CELL_INFO -> {
@@ -174,7 +193,7 @@ class HomeFeedAdapter(val listener: HomeViewHolderListener): RecyclerView.Adapte
             }
 
             itemView.ui_recyclerview_action?.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
-            val adapter = ActionEventAdapter(arrayItems[position],listener,isLoading)
+            val adapter = ActionEventAdapter(arrayItems[position],listener,isLoading,variantType)
             itemView.ui_recyclerview_action?.adapter = adapter
 
             itemDecoration?.let { itemView.ui_recyclerview_action?.removeItemDecoration(it) }
@@ -209,7 +228,7 @@ class HomeFeedAdapter(val listener: HomeViewHolderListener): RecyclerView.Adapte
             }
 
             itemView.ui_recyclerview_event?.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
-            val adapter = ActionEventAdapter(arrayItems[position],listener,isLoading)
+            val adapter = ActionEventAdapter(arrayItems[position],listener,isLoading,variantType)
             itemView.ui_recyclerview_event?.adapter = adapter
 
             itemDecoration?.let { itemView.ui_recyclerview_event?.removeItemDecoration(it) }
