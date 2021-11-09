@@ -190,7 +190,7 @@ class LocationFragment  : BaseDialogFragment() {
             frag.getMapAsync { googleMap ->
                 googleMap.isMyLocationEnabled = activity != null && LocationUtils.isLocationPermissionGranted()
                 googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-                        activity, R.raw.map_styles_json))
+                        requireContext(), R.raw.map_styles_json))
                 googleMap.uiSettings.isMyLocationButtonEnabled = false
                 googleMap.uiSettings.isMapToolbarEnabled = false
                 pin = originalLocation?.let { location ->
@@ -212,22 +212,21 @@ class LocationFragment  : BaseDialogFragment() {
                     }
                 }
                 googleMap.setOnCameraIdleListener {
-                    googleMap.cameraPosition.target?.let { loc ->
-                        location = loc
-                        pin?.position = loc
-                        //cancelling old ones if exists
-                        geocoderAddressTask?.cancel(true)
-                        //starts new task
-                        GeocoderAddressTask(this@LocationFragment, fromPlaceSelected).let { task ->
-                            geocoderAddressTask = task
-                            task.execute(location)
-                        }
-                        fromPlaceSelected = false
-                        autocompleteFragment?.setBoundsBias(LatLngBounds(
-                                LatLng(loc.latitude - LOCATION_SEARCH_RADIUS, loc.longitude - LOCATION_SEARCH_RADIUS),
-                                LatLng(loc.latitude + LOCATION_SEARCH_RADIUS, loc.longitude + LOCATION_SEARCH_RADIUS)
-                        ))
+                    val loc = googleMap.cameraPosition.target
+                    location = loc
+                    pin?.position = loc
+                    //cancelling old ones if exists
+                    geocoderAddressTask?.cancel(true)
+                    //starts new task
+                    GeocoderAddressTask(this@LocationFragment, fromPlaceSelected).let { task ->
+                        geocoderAddressTask = task
+                        task.execute(location)
                     }
+                    fromPlaceSelected = false
+                    autocompleteFragment?.setBoundsBias(LatLngBounds(
+                            LatLng(loc.latitude - LOCATION_SEARCH_RADIUS, loc.longitude - LOCATION_SEARCH_RADIUS),
+                            LatLng(loc.latitude + LOCATION_SEARCH_RADIUS, loc.longitude + LOCATION_SEARCH_RADIUS)
+                    ))
                 }
                 googleMap.setOnMapClickListener { latLng ->
                     location = latLng

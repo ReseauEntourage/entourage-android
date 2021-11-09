@@ -637,7 +637,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
             googleMap.uiSettings.isMyLocationButtonEnabled = false
             googleMap.uiSettings.isMapToolbarEnabled = false
             googleMap.clear()
-            googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_styles_json))
+            activity?.let { activity -> googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_styles_json))}
             drawMap(googleMap)
         }
     }

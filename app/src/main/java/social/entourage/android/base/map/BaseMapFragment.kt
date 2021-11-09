@@ -56,7 +56,7 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
 
     protected open fun initializeMap() {}
 
-    fun centerMap(latLng: LatLng?) {
+    fun centerMap(latLng: LatLng) {
         val cameraPosition = CameraPosition(latLng, EntLocation.lastCameraPosition.zoom, 0F, 0F)
         centerMap(cameraPosition)
     }
@@ -115,7 +115,7 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
         //mylocation is handled in MapViewHolder
         googleMap.uiSettings.isMyLocationButtonEnabled = false
         googleMap.uiSettings.isMapToolbarEnabled = false
-        googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_styles_json))
+        googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.map_styles_json))
         if (onGroundOverlayClickListener != null) {
             googleMap.setOnGroundOverlayClickListener(onGroundOverlayClickListener)
         }

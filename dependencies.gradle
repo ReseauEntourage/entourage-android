@@ -7,10 +7,10 @@ allprojects {
 ext {
 
     // SDK versions
-    compileSdkVersion = 30
-    buildToolsVersion = "30.0.3"
+    compileSdkVersion = 31
+    buildToolsVersion = "31.0.0"
     minSdkVersion = 21 /*November 2014: Android 5.0, Lollipop*/
-    targetSdkVersion = 30
+    targetSdkVersion = 31
 
     // Java versions
     sourceCompatibilityVersion = JavaVersion.VERSION_11
@@ -26,32 +26,32 @@ ext {
     appBundleName = System.env.APPBUNDLE_NAME ? System.env.APPBUNDLE_NAME : "app"
 
     // Libraries versions
-    annotationVersion = "1.1.0"
+    annotationVersion = "1.3.0"
     appCompatVersion = "1.3.0"
     constraintlayoutVersion = "2.1.1"
     coordinatorlayoutVersion="1.1.0"
-    daggerVersion = "2.39.1"
+    daggerVersion = "2.40"
     dateTimePickerVersion = "4.2.3"
     espressoVersion = "3.4.0"
     uiAutomatorVersion = "2.2.0"
-    facebookVersion = "12.0.1"
+    facebookVersion = "12.1.0"
     floatingButtonVersion = "1.6.4"
     fragmentVersion = "1.3.5"
     cropMeVersion = "2.0.8"
     javaAnnotationVersion = "10.0-b28"
-    jodaVersion = "2.10.12"
-    mapsVersion = "17.0.1"
+    jodaVersion = "2.10.12.2"
+    mapsVersion = "18.0.0"
     mapsUtilsVersion = "3.2.0"
     materialVersion = "1.4.0"
     multidexVersion = "2.0.1"
     okHttpIdlingVersion = "1.0.0"
     glideVersion = "4.12.0"
-    placesCompat = "2.4.0"
+    placesCompat = "2.5.0"
     retrofitVersion = "2.9.0"
     recyclerViewVersion = "1.2.1"
     shortcutBadgerVersion = "1.1.22"
     supportVersion = "1.0.0"
-    supportBrowserVersion = "1.3.0"
+    supportBrowserVersion = "1.4.0"
     tapeVersion = "1.2.3"
     timberVersion = "5.0.1"
     ottoVersion = "1.3.8"
@@ -90,10 +90,11 @@ ext {
     ]
 
     firebaseDependencies = [
-            firebaseAnalytics   : "com.google.firebase:firebase-analytics-ktx",
-            firebaseMessaging   : "com.google.firebase:firebase-messaging-ktx",
-            firebaseInapp       : "com.google.firebase:firebase-inappmessaging-display-ktx",
-            firebaseCrashlytics : "com.google.firebase:firebase-crashlytics-ktx"
+            analytics   : "com.google.firebase:firebase-analytics-ktx",
+            messaging   : "com.google.firebase:firebase-messaging-ktx",
+            inapp       : "com.google.firebase:firebase-inappmessaging-display-ktx",
+            crashlytics : "com.google.firebase:firebase-crashlytics-ktx",
+            config      : "com.google.firebase:firebase-config-ktx",
     ]
 
     firebaseDependenciesRelease = [
@@ -138,7 +139,7 @@ ext {
             ],
             testJunit       : "androidx.test.ext:junit:1.1.3",
             testRunner      : "androidx.test:runner:1.4.0",
-            testRules       : "androidx.test:rules:1.4.0"
+            testRules       : "androidx.test:rules:1.4.0",
     ]
 
     uiDependencies = [
@@ -148,6 +149,7 @@ ext {
             mapsUtils               : "com.google.maps.android:maps-utils-ktx:$mapsUtilsVersion",
             material                : "com.google.android.material:material:$materialVersion",
             glide                   : "com.github.bumptech.glide:glide:$glideVersion",
-            shortcutBadger          : "me.leolin:ShortcutBadger:$shortcutBadgerVersion@aar"
+            shortcutBadger          : "me.leolin:ShortcutBadger:$shortcutBadgerVersion@aar",
+            keyboardvisibilityevent : "net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:3.0.0-RC3"
     ]
 }

@@ -41,7 +41,7 @@ class LocationListener(private val manager: EntServiceManager,
 
     override fun onLocationResult(result: LocationResult) {
         super.onLocationResult(result)
-        result.lastLocation?.let { onUpdateLocation(it) }
+        onUpdateLocation(result.lastLocation)
     }
 
     override fun onLocationAvailability(result: LocationAvailability) {

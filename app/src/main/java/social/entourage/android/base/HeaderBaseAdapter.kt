@@ -51,7 +51,7 @@ open class HeaderBaseAdapter : BaseAdapter() {
         val cardViewHolder = super.onCreateViewHolder(parent, viewType)
         if (cardViewHolder is MapViewHolder && viewType == TimestampedObject.TOP_VIEW) {
             mapViewHolder = cardViewHolder
-            cardViewHolder.setMapReadyCallback(onMapReadyCallback)
+            onMapReadyCallback?.let {cardViewHolder.setMapReadyCallback(it)}
             cardViewHolder.setFollowButtonOnClickListener(onFollowButtonClickListener)
             cardViewHolder.setGeolocStatusIcon(isLocationEnabled() && isLocationPermissionGranted())
         }

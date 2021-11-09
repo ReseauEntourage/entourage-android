@@ -229,33 +229,32 @@ class TourInformationFragment : FeedItemInformationFragment(){
         try {
             val googleMapOptions = GoogleMapOptions()
             googleMapOptions.zOrderOnTop(true)
-            SupportMapFragment.newInstance(googleMapOptions)?.let {
-                hiddenMapFragment = it
-                childFragmentManager.beginTransaction().replace(R.id.tour_info_hidden_map_layout, it).commit()
-                it.getMapAsync { googleMap ->
-                    googleMap.uiSettings.isMyLocationButtonEnabled = false
-                    googleMap.uiSettings.isMapToolbarEnabled = false
-                    googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-                            activity, R.raw.map_styles_json))
-                    tourInformationList.firstOrNull()?.locationPoint?.let { locationPoint->
-                        //put the pin
-                        val pin = MarkerOptions().position(locationPoint.location)
-                        googleMap.addMarker(pin)
-                        //move the camera
-                        val camera = CameraUpdateFactory.newLatLngZoom(locationPoint.location, MAP_SNAPSHOT_ZOOM.toFloat())
-                        googleMap.moveCamera(camera)
-                    } ?: run {
-                        googleMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_SNAPSHOT_ZOOM.toFloat()))
-                    }
-                    googleMap.setOnMapLoadedCallback { getMapSnapshot() }
-                    googleMap.setOnCameraIdleListener {
-                        if (takeSnapshotOnCameraMove) {
-                            getMapSnapshot()
-                            hiddenGoogleMap = null
-                        }
-                    }
-                    hiddenGoogleMap = googleMap
+            val mapFragment = SupportMapFragment.newInstance(googleMapOptions)
+            hiddenMapFragment = mapFragment
+            childFragmentManager.beginTransaction().replace(R.id.tour_info_hidden_map_layout, mapFragment).commit()
+            mapFragment.getMapAsync { googleMap ->
+                googleMap.uiSettings.isMyLocationButtonEnabled = false
+                googleMap.uiSettings.isMapToolbarEnabled = false
+                googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                        requireContext(), R.raw.map_styles_json))
+                tourInformationList.firstOrNull()?.locationPoint?.let { locationPoint->
+                    //put the pin
+                    val pin = MarkerOptions().position(locationPoint.location)
+                    googleMap.addMarker(pin)
+                    //move the camera
+                    val camera = CameraUpdateFactory.newLatLngZoom(locationPoint.location, MAP_SNAPSHOT_ZOOM.toFloat())
+                    googleMap.moveCamera(camera)
+                } ?: run {
+                    googleMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_SNAPSHOT_ZOOM.toFloat()))
                 }
+                googleMap.setOnMapLoadedCallback { getMapSnapshot() }
+                googleMap.setOnCameraIdleListener {
+                    if (takeSnapshotOnCameraMove) {
+                        getMapSnapshot()
+                        hiddenGoogleMap = null
+                    }
+                }
+                hiddenGoogleMap = googleMap
             }
         } catch (e: IllegalStateException) {
             Timber.w(e)

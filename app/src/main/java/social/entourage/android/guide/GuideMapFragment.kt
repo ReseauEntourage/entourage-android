@@ -158,7 +158,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
                     poiCollection.forEach { poi ->
                         mapRenderer.getMarkerOptions(poi, requireContext())?.let { markerOptions ->
                             map.addMarker(markerOptions).apply {
-                                this.tag = poi
+                                this?.tag = poi
                             }
                         }
                     }
@@ -509,8 +509,8 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         }
     }
 
-    override fun onMarkerClick(poiMarker: Marker?): Boolean {
-        (poiMarker?.tag as? Poi)?.let { poi ->
+    override fun onMarkerClick(poiMarker: Marker): Boolean {
+        (poiMarker.tag as? Poi)?.let { poi ->
             showPoiDetails(poi,false)
         }
         return true

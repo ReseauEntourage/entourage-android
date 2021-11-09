@@ -179,7 +179,7 @@ class WebViewFragment : BaseDialogFragment() {
             return true
         }
 
-        @ExperimentalStdlibApi
+        //@ExperimentalStdlibApi
         override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
             super.onPageStarted(view, url, favicon)
             if (!loadedUrl.equals(url, ignoreCase = true)) {

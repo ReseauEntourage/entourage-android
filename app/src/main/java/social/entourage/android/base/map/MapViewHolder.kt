@@ -25,7 +25,7 @@ class MapViewHolder(view: View) : BaseCardViewHolder(view) {
         itemView.layout_feed_map_card_mapview?.onResume()
     }
 
-    fun setMapReadyCallback(callback: OnMapReadyCallback?) {
+    fun setMapReadyCallback(callback: OnMapReadyCallback) {
         itemView.layout_feed_map_card_mapview?.getMapAsync(callback)
     }
 

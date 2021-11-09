@@ -10,10 +10,10 @@ import com.google.android.gms.maps.MapView
  * Created by mihaiionescu on 28/06/2017.
  */
 class FeedMapView : MapView {
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attributeSet: AttributeSet?) : super(context, attributeSet)
-    constructor(context: Context?, attributeSet: AttributeSet?, i: Int) : super(context, attributeSet, i)
-    constructor(context: Context?, googleMapOptions: GoogleMapOptions?) : super(context, googleMapOptions)
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attributeSet: AttributeSet?) : super(context, attributeSet)
+    constructor(context: Context, attributeSet: AttributeSet, i: Int) : super(context, attributeSet, i)
+    constructor(context: Context, googleMapOptions: GoogleMapOptions?) : super(context, googleMapOptions)
 
     override fun dispatchTouchEvent(motionEvent: MotionEvent): Boolean {
         when (motionEvent.actionMasked) {
