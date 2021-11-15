@@ -314,11 +314,11 @@ open class BaseCreateEntourageFragment
     }
 
     protected open fun postEntourageCreated(entourage: BaseEntourage) {
-        Toast.makeText(
-                activity,
-                if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) R.string.outing_create_ok else R.string.entourage_create_ok,
-                Toast.LENGTH_LONG
-        ).show()
+//        Toast.makeText(
+//                activity,
+//                if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) R.string.outing_create_ok else R.string.entourage_create_ok,
+//                Toast.LENGTH_LONG
+//        ).show()
         try {
             dismiss()
         } catch (e: IllegalStateException) {

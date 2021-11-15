@@ -69,7 +69,7 @@ class NewsfeedPresenter @Inject constructor(
     fun openFeedItem(feedItem: FeedItem, invitationId: Long, feedRank: Int) {
         try {
             val fragmentManager = fragment?.activity?.supportFragmentManager ?: return
-            FeedItemInformationFragment.newInstance(feedItem, invitationId, feedRank).show(fragmentManager, FeedItemInformationFragment.TAG)
+            FeedItemInformationFragment.newInstance(feedItem, invitationId, feedRank,false).show(fragmentManager, FeedItemInformationFragment.TAG)
         } catch (e: IllegalStateException) {
             Timber.w(e)
         }

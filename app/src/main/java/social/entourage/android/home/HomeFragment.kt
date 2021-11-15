@@ -44,6 +44,7 @@ import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
+import android.os.CountDownTimer
 
 class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFragment.FragmentListener, BackPressable {
     // ----------------------------------
@@ -63,6 +64,11 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
 
     // requested group type
     private lateinit var groupType: String
+
+    var feedItemTemporary:FeedItem? = null
+    var countDownTimer:CountDownTimer? = null
+    var popInfoCreateEntourageFragment:PopInfoCreateEntourageFragment? = null
+    val countDown = 5000L
 
     // ----------------------------------
     // LIFECYCLE
@@ -172,14 +178,14 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
         presenter.openFeedItemFromUUID(feedItemUUID, feedItemType, invitationId)
     }
 
-    private fun displayChosenFeedItem(feedItem: FeedItem, feedRank: Int) {
-        displayChosenFeedItem(feedItem, 0, feedRank)
+    private fun displayChosenFeedItem(feedItem: FeedItem, feedRank: Int,isFromCreate:Boolean) {
+        displayChosenFeedItem(feedItem, 0, feedRank,isFromCreate)
     }
 
     // ----------------------------------
     // PRIVATE METHODS
     // ----------------------------------
-    private fun displayChosenFeedItem(feedItem: FeedItem, invitationId: Long, feedRank: Int = 0) {
+    private fun displayChosenFeedItem(feedItem: FeedItem, invitationId: Long, feedRank: Int = 0,isFromCreate: Boolean) {
         if (context == null || isStateSaved) return
         // decrease the badge count
         EntourageApplication.get(context).removePushNotificationsForFeedItem(feedItem)
@@ -191,7 +197,55 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
             }
         }
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_ENTOURAGE)
-        presenter.openFeedItem(feedItem, invitationId, feedRank)
+
+        if (!isFromCreate) {
+            presenter.openFeedItem(feedItem, 0 , 0,false)
+            return
+        }
+        feedItemTemporary = feedItem
+
+        updatePopCreateAndShow()
+    }
+
+    fun updatePopCreateAndShow() {
+        var title = ""
+        var subtitle = ""
+
+        if (feedItemTemporary is EntourageEvent) {
+            title = getString(R.string.infoPopCreateEventTitle)
+            subtitle = getString(R.string.infoPopCreateEvent)
+        }
+        else {
+            if (feedItemTemporary is EntourageContribution) {
+                title = getString(R.string.infoPopCreateContribTitle)
+                subtitle = getString(R.string.infoPopCreateContrib)
+            }
+            else {
+                title = getString(R.string.infoPopCreateAskTitle)
+                subtitle = getString(R.string.infoPopCreateAsk)
+            }
+        }
+
+        popInfoCreateEntourageFragment = PopInfoCreateEntourageFragment.newInstance(title,subtitle)
+        popInfoCreateEntourageFragment?.homeFragment = this
+        popInfoCreateEntourageFragment?.show(requireActivity().supportFragmentManager,PopInfoCreateEntourageFragment.TAG)
+
+        countDownTimer = object : CountDownTimer(countDown, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+            }
+
+            override fun onFinish() {
+                closePopAndGo()
+            }
+        }
+        countDownTimer?.start()
+    }
+
+    fun closePopAndGo() {
+        popInfoCreateEntourageFragment?.dismiss()
+        countDownTimer?.cancel()
+        countDownTimer = null
+        feedItemTemporary?.let { presenter.openFeedItem(it, 0 , 0,true) }
     }
 
     private fun displayChosenFeedItemFromShareURL(feedItemShareURL: String, feedItemType: Int) {
@@ -423,7 +477,7 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
                         .setMessage(R.string.info_photo_profile_description)
                         .setNegativeButton(R.string.info_photo_profile_ignore) { dialog,_ ->
                             dialog.dismiss()
-                            displayChosenFeedItem(feedItem, event.getfeedRank())
+                            displayChosenFeedItem(feedItem, event.getfeedRank(),true)
                         }
                         .setPositiveButton(R.string.info_photo_profile_add) { dialog, _ ->
                             dialog.dismiss()
@@ -434,7 +488,7 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
                         .show()
                 }
                 else {
-                    displayChosenFeedItem(feedItem, event.getfeedRank())
+                    displayChosenFeedItem(feedItem, event.getfeedRank(),true)
                 }
             }
         } else {

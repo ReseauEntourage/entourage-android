@@ -227,4 +227,13 @@
 
     <string name="button_event_add_photo">Photo</string>
     <string name="event_add_photo_info">Illustrez votre prochain événement avec une photo proposée par Entourage :</string>
+
+
+    <string name="infoPopCreateContrib">Félicitations !\nVotre contribution a bien été créée.</string>
+    <string name="infoPopCreateAsk">Félicitations !\nVotre demande a bien été créée.</string>
+    <string name="infoPopCreateEvent">Félicitations !\nVotre événement a bien été créé.</string>
+    <string name="infoPopCreateContribTitle">Action solidaire\ncréée</string>
+    <string name="infoPopCreateAskTitle">Action solidaire\ncréée</string>
+    <string name="infoPopCreateEventTitle">Événement créé</string>
+
 </resources>

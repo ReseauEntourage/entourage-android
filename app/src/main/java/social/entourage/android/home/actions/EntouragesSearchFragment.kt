@@ -124,7 +124,7 @@ class EntouragesSearchFragment : BaseDialogFragment() {
     fun openFeedItem(feedItem: FeedItem,position:Int) {
         try {
             val fragmentManager = requireActivity().supportFragmentManager
-            FeedItemInformationFragment.newInstance(feedItem, 0, position).show(fragmentManager, FeedItemInformationFragment.TAG)
+            FeedItemInformationFragment.newInstance(feedItem, 0, position,false).show(fragmentManager, FeedItemInformationFragment.TAG)
         } catch (e: IllegalStateException) {
             Timber.w(e)
         }

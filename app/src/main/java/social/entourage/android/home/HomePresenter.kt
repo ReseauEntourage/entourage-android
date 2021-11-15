@@ -33,10 +33,10 @@ class HomePresenter @Inject constructor(
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
-    fun openFeedItem(feedItem: FeedItem, invitationId: Long, feedRank: Int) {
+    fun openFeedItem(feedItem: FeedItem, invitationId: Long, feedRank: Int,isFromActions:Boolean) {
         try {
             val fragmentManager = fragment?.activity?.supportFragmentManager ?: return
-            FeedItemInformationFragment.newInstance(feedItem, invitationId, feedRank).show(fragmentManager, FeedItemInformationFragment.TAG)
+            FeedItemInformationFragment.newInstance(feedItem, invitationId, feedRank,isFromActions).show(fragmentManager, FeedItemInformationFragment.TAG)
         } catch (e: IllegalStateException) {
             Timber.w(e)
         }
@@ -51,7 +51,7 @@ class HomePresenter @Inject constructor(
                     override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
                         response.body()?.entourage?.let {
                             if (response.isSuccessful) {
-                                openFeedItem(it, invitationId, 0)
+                                openFeedItem(it, invitationId, 0,false)
                             }
                         }
                     }
@@ -65,7 +65,7 @@ class HomePresenter @Inject constructor(
                     override fun onResponse(call: Call<TourResponse>, response: Response<TourResponse>) {
                         response.body()?.tour?.let {
                             if (response.isSuccessful) {
-                                openFeedItem(it, invitationId, 0)
+                                openFeedItem(it, invitationId, 0,false)
                             }
                         }
                     }
@@ -84,7 +84,7 @@ class HomePresenter @Inject constructor(
                     override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
                         response.body()?.entourage?.let {
                             if (response.isSuccessful) {
-                                openFeedItem(it,0,0)
+                                openFeedItem(it,0,0,false)
                             }
                         }
                     }

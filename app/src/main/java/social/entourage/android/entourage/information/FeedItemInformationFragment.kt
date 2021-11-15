@@ -541,11 +541,6 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         // update the scroll list layout
         updatePublicScrollViewLayout()
 
-        // for newly created entourages, open the invite friends screen automatically if the feed item is not suspended
-        if (feedItem.isNewlyCreated && feedItem.showInviteViewAfterCreation() && !feedItem.isSuspended()) {
-            showInviteSource(false)
-        }
-
         if(isFromActions) {
             onSwitchSections()
         }
@@ -1405,7 +1400,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         // LIFECYCLE
         // ----------------------------------
         //TODO check that all values are not null
-        fun newInstance(feedItem: FeedItem, invitationId: Long, feedRank: Int, isFromActions:Boolean = false): FeedItemInformationFragment {
+        fun newInstance(feedItem: FeedItem, invitationId: Long, feedRank: Int, isFromActions:Boolean): FeedItemInformationFragment {
             val fragment = if (feedItem.type == TimestampedObject.TOUR_CARD) TourInformationFragment() else EntourageInformationFragment()
             val args = Bundle()
             args.putSerializable(FeedItem.KEY_FEEDITEM, feedItem)
