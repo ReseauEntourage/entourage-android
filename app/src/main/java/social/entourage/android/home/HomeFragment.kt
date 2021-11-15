@@ -555,6 +555,52 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
     }
 
     /*****
+     ** Method from NewsFeedFragment for handling closing action/event/tour
+     *****/
+    @Subscribe
+    fun feedItemCloseRequested(event: Events.OnFeedItemCloseRequestEvent) {
+        val feedItem = event.feedItem
+
+        // Only the author can close entourages/tours
+        val myId = EntourageApplication.me(context)?.id
+                ?: return
+        val author = feedItem.author ?: return
+        if (author.userID != myId) {
+            return
+        }
+        if (!feedItem.isClosed()) {
+            // close
+            stopFeedItem(feedItem, event.isSuccess)
+        } else {
+            (feedItem as? Tour)?.let { tour ->
+                if (!tour.isFreezed()) {
+                    freezeTour(tour)
+                }
+            }
+        }
+    }
+
+    fun stopFeedItem(feedItem: FeedItem?, success: Boolean) {
+        activity?.let { activity ->
+            entService?.let { service ->
+                if (feedItem != null
+                        && (!service.isRunning
+                                || feedItem.type != TimestampedObject.TOUR_CARD
+                                || service.currentTourId.equals(feedItem.uuid, ignoreCase = true))) {
+                    service.stopFeedItem(feedItem, success)
+                } else if (service.isRunning) {
+                    service.endTreatment()
+                    AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_STOP_TOUR)
+                }
+            }
+        }
+    }
+
+    private fun freezeTour(tour: Tour) {
+        entService?.freezeTour(tour)
+    }
+
+    /*****
      ** Methods & service for Tour add Encounter
     *****/
     fun onAddEncounter() {
