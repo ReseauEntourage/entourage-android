@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
                 android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:background="@color/background_transparent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+    android:clickable="true"
+    android:focusable="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,57 +15,10 @@
         android:layout_centerInParent="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:background="@drawable/rounded_dialog"
+        android:background="@drawable/bg_button_rounded_white"
         android:orientation="vertical"
-        android:padding="20dp">
-
-        <ImageButton
-            android:id="@+id/invite_source_close_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            android:contentDescription="@string/empty_description"
-            app:srcCompat="@drawable/ic_close_black_24dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/invite_source_title"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/white"
-            android:textSize="@dimen/entourage_font_xtra_large"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/invite_source_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="@string/invite_source_description"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/white"
-            android:textSize="@dimen/entourage_font_large"/>
-
-        <Button
-            android:id="@+id/invite_source_share_button"
-            style="@style/WhiteButton.RoundedCorners"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:drawableStartCompat="@drawable/ic_entourage_logo_orange"
-            android:text="@string/invite_source_share_entourage" />
-
-        <Button
-            android:id="@+id/invite_source_contacts_button"
-            style="@style/WhiteButton.RoundedCorners"
-            android:paddingStart="24dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:drawableStartCompat="@drawable/ic_detail_action_share"
-            android:text="@string/invite_source_share"
-            android:textAlignment="center" />
+        android:padding="20dp"
+        android:visibility="gone">
 
         <Button
             android:id="@+id/invite_source_number_button"
@@ -79,7 +35,144 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="@string/close"/>
+            android:text="@string/close" />
 
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bg_button_rounded_white">
+
+        <ImageButton
+            android:id="@+id/invite_source_close_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/transparent"
+            android:contentDescription="@string/empty_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_close_black_24dp"
+            app:tint="@color/accent" />
+
+        <TextView
+            android:id="@+id/textView59"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/invite_source_title"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/accent"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/invite_source_close_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/invite_source_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/invite_source_description"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/accent"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/textView59"
+            app:layout_constraintStart_toStartOf="@+id/textView59"
+            app:layout_constraintTop_toBottomOf="@+id/textView59" />
+
+        <FrameLayout
+            android:id="@+id/frameLayout10"
+            android:layout_width="60dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/accent"
+            app:layout_constraintStart_toStartOf="@+id/invite_source_description"
+            app:layout_constraintTop_toBottomOf="@+id/invite_source_description">
+
+        </FrameLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/invite_source_share_button"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/bg_button_rounded_orange_stroke_1px"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/frameLayout10"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout10" >
+
+            <TextView
+                android:id="@+id/textView61"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/invite_source_share_entourage"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView32"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView32"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_entourage_logo_orange" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/invite_source_contacts_button"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_button_rounded_orange_stroke_1px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/invite_source_share_button"
+            app:layout_constraintTop_toBottomOf="@+id/invite_source_share_button" >
+
+            <TextView
+                android:id="@+id/textView60"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/invite_source_share"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView31"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView31"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_detail_action_share" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </RelativeLayout>
