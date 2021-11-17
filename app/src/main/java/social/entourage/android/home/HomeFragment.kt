@@ -488,7 +488,7 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
                         .show()
                 }
                 else {
-                    displayChosenFeedItem(feedItem, event.getfeedRank(),true)
+                    displayChosenFeedItem(feedItem, event.getfeedRank(),event.isFromCreate)
                 }
             }
         } else {
