@@ -357,7 +357,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
     private fun onShareEntourageButton() {
         // close the invite source view
         entourage_info_invite_source_layout?.visibility = View.GONE
-
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_POP_SHARE_ENTOURAGE)
         feedItem.uuid?.let {
             ShareMessageFragment.newInstance(it).show(parentFragmentManager, ShareMessageFragment.TAG)
         }
@@ -366,7 +366,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
     private fun onShareButton() {
         // close the invite source view
         entourage_info_invite_source_layout?.visibility = View.GONE
-
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_POP_SHARE_LINK)
         // build the share text
         val shareLink = feedItem.shareURL ?:getString(R.string.entourage_share_link)
         val shareText = getString(R.string.entourage_share_text_for_entourage, shareLink)
@@ -384,7 +384,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
                 R.anim.bottom_up)
         entourage_info_options?.startAnimation(bottomUp)
         entourage_info_options?.visibility = View.VISIBLE
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_OVERLAY)
+        AnalyticsEvents.logEvent(AnalyticsEvents.SHOW_MENU_OPTIONS)
     }
 
     private fun onCloseOptionsButton() {
@@ -421,7 +421,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         entourage_info_options?.visibility = View.GONE
         BaseCreateEntourageFragment.newInstance(feedItem as BaseEntourage).show(parentFragmentManager, BaseCreateEntourageFragment.TAG)
         //hide the options
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_EDIT)
+        AnalyticsEvents.logEvent(AnalyticsEvents.SHOW_MODIFY_ENTOURAGE)
     }
 
     private fun onPromoteEntourageButton() {

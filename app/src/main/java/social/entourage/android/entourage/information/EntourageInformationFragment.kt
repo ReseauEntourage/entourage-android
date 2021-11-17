@@ -116,6 +116,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
     }
 
     override fun showInviteSource(isShareOnly:Boolean) {
+        AnalyticsEvents.logEvent(AnalyticsEvents.SHOW_POP_SHARE)
         entourage_info_invite_source_layout?.visibility = View.VISIBLE
         entourage_info_invite_source_layout?.invite_source_number_button?.visibility = if (isShareOnly) View.GONE else View.VISIBLE
         invite_source_description?.setText(entourage.getInviteSourceDescription())
