@@ -277,14 +277,15 @@ class EventVH(view: View) : RecyclerView.ViewHolder(view) {
 
             itemView.ui_event_iv?.let { eventView ->
                 if (feedItem is EntourageEvent) {
-                    feedItem.metadata?.portrait_url?.let {
+                    feedItem.metadata?.landscape_url?.let {
                         Glide.with(eventView.context)
                                 .load(Uri.parse(it))
-                                .placeholder(R.drawable.ic_placeholder_event_feed)
+                                .placeholder(R.drawable.ic_placeholder_event)
+                                .error(R.drawable.ic_placeholder_detail_event)
                                 .into(eventView)
                     } ?: run {
                         Glide.with(eventView.context)
-                                .load(R.drawable.ic_placeholder_event_feed)
+                                .load(R.drawable.ic_placeholder_detail_event)
                                 .into(eventView)
                     }
                 }

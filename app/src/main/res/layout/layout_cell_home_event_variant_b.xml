@@ -41,7 +41,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ui_recyclerview_event"
         android:layout_width="0dp"
-        android:layout_height="260dp"
+        android:layout_height="234dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"

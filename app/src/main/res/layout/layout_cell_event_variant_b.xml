@@ -2,9 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="230dp"
-    android:layout_height="260dp"
-    android:background="@color/background_light">
+    android:layout_width="200dp"
+    android:layout_height="234dp"
+    android:background="@color/transparent">
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
@@ -57,7 +57,7 @@
                 android:id="@+id/ui_event_picto_location"
                 android:layout_width="24dp"
                 android:layout_height="20dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="4dp"
                 app:layout_constraintBottom_toTopOf="@+id/ui_event_picto_user"
                 app:layout_constraintStart_toStartOf="@+id/ui_event_picto_user"
                 app:srcCompat="@drawable/ic_location_gds_detail" />
@@ -67,7 +67,8 @@
                 android:layout_width="24dp"
                 android:layout_height="20dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginBottom="24dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:srcCompat="@drawable/ic_home_user_contrib_orange" />
@@ -107,7 +108,9 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
+                android:fontFamily="sans-serif-medium"
                 android:text="Date"
+                android:textAllCaps="true"
                 android:textColor="@color/accent"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"

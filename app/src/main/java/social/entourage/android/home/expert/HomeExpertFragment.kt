@@ -322,7 +322,6 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
         else if (type == 2L) {
             variantType = VariantCellType.VariantB
         }
-        variantType = VariantCellType.VariantA
         // setupRecyclerView()
 
         setupTesting()
