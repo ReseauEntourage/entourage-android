@@ -322,7 +322,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
         else if (type == 2L) {
             variantType = VariantCellType.VariantB
         }
-        // setupRecyclerView()
+        setupRecyclerView()
 
         setupTesting()
     }
@@ -330,7 +330,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
     fun setupTesting() {
 
         val configSettings = remoteConfigSettings {
-            minimumFetchIntervalInSeconds = 0//60 * 60 * 24 //TODO remettre les bonnes valuers après tests preprod
+            minimumFetchIntervalInSeconds = 60 * 60 * 24 //TODO remettre les bonnes valuers après tests preprod sinon 0
         }
         remoteConfig.setConfigSettingsAsync(configSettings)
         val defaults = HashMap<String, Any>()

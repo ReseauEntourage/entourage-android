@@ -330,16 +330,6 @@
 
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/ui_bt_abtest"
-                    style="@style/TransparentButton.White"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:text="Copy Token AbTest"
-                    android:textColor="@color/black"
-                    android:textSize="13sp" />
-
             </RelativeLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout

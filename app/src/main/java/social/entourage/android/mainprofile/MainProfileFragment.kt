@@ -139,23 +139,6 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
         ui_iv_twit?.setOnClickListener {
             selectMenuProfile("twit")
         }
-
-        ui_bt_abtest?.setOnClickListener {
-            FirebaseInstallations.getInstance().getToken(/* forceRefresh */ true)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            val clipboardManager = EntourageApplication.get().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                            val clipData = ClipData.newPlainText("Ab test Token",task.result?.token)
-                            clipboardManager.setPrimaryClip(clipData)
-
-                            EntSnackbar.make(
-                                    mainProfileCoordinatorLayout,
-                                    R.string.debug_info_clipboard,
-                                    Snackbar.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-        }
     }
 
     private fun updateUserView() {
