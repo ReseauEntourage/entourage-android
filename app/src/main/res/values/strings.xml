@@ -192,5 +192,7 @@
     <string name="setting_home_button_type">Mode “Premiers pas”</string>
     <string name="quitter">Quitter</string>
     <string name="equip_mod">L\'équipe de modération d\'Entourage</string>
+    <string name="back_button_hint">retour</string>
+    <string name="button_clear_hint">effacer</string>
 
 </resources>
