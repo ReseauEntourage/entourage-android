@@ -9,7 +9,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
-        android:layout_height="228dp"
+        android:layout_height="176dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:background="@color/red_dark"
@@ -29,10 +29,10 @@
                 android:id="@+id/ui_bt_close_pop_creeate"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/ui_tv_title_pop"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/ui_tv_title_pop"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_close_black_24dp"
                 app:tint="@color/accent" />
 
