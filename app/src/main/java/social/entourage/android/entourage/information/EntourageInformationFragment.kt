@@ -378,9 +378,17 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
                         .load(R.drawable.ic_placeholder_detail_event)
                         .into(ui_image_event_top)
             }
+
+            if (entourage.status.equals("full")) {
+                ui_layout_event_closed?.visibility = View.VISIBLE
+            }
+            else {
+                ui_layout_event_closed?.visibility = View.GONE
+            }
         }
         else {
             ui_image_event_top?.visibility = View.GONE
+            ui_layout_event_closed?.visibility = View.GONE
         }
 
         ui_title_event_action_top?.text = entourage.getTitle()
@@ -495,10 +503,11 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         //Layout creator
         updatePhotosAvatar(ui_action_event_creator_photo,ui_action_event_creator_logo)
         ui_action_event_creator_name?.text = entourage.author?.userName ?: ""
-        val partner = entourage.author?.partner
+        val author = entourage.author
+        val partner = author?.partner
         val role = partner?.userRoleTitle
 
-        entourage.author?.userID?.let { userId ->
+        author?.userID?.let { userId ->
             layout_detail_event_action_creator?.setOnClickListener {
                 val fragment = UserFragment.newInstance(userId)
                 fragment.show(requireActivity(). supportFragmentManager, UserFragment.TAG)
@@ -515,9 +524,16 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             else {
                 ui_action_event_creator_role?.visibility = View.GONE
             }
-            val assoStr = partner.name + " " + getText(R.string.info_asso_abo)
+
+            var info_abo = getText(R.string.info_asso_abo).toString()
+            if (partner.isFollowing) {
+                info_abo = getText(R.string.info_asso_joined).toString()
+            }
+
+            val assoStr = partner.name + " " + info_abo
+
             val colorId = ContextCompat.getColor(requireContext(), R.color.accent)
-            val assoSpanner = Utils.formatTextWithBoldSpanAndColor(colorId,true,assoStr, getString(R.string.info_asso_abo))
+            val assoSpanner = Utils.formatTextWithBoldSpanAndColor(colorId,true,assoStr, info_abo)
             ui_action_event_creator_bt_asso.text = assoSpanner
             ui_action_event_creator_bt_asso?.setOnClickListener {
             partner.id.toInt().let { partnerId ->
@@ -597,6 +613,12 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
     @Subscribe
     fun onShowDetailAssociation(event: Events.OnShowDetailAssociation) {
         PartnerFragment.newInstance(event.id).show(parentFragmentManager, PartnerFragment.TAG)
+    }
+
+    @Subscribe
+    fun onRefreshEntourageInformation(event: Events.OnRefreshEntourageInformation) {
+        presenter().getFeedItem(feedItem.uuid
+                ?: "", feedItem.type, 0, 0)
     }
 
     // ----------------------------------

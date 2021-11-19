@@ -14,10 +14,12 @@
     <string name="debug_info_clipboard">Information copiée dans le presse-papier</string>
 
     <string name="events_conviv">événements\nconviviaux</string>
-    <string name="events_button">J’en trouve →</string>
+    <string name="events_button">Voir la liste →</string>
     <string name="actions_solidr">actions\nsolidaires</string>
-    <string name="actions_button">J’y vais →</string>
+    <string name="actions_button">Voir la liste →</string>
     <string name="title_my_activity">👌  MON ACTIVITÉ</string>
+    <string name="contribCreated">dons\ncrées</string>
+    <string name="askCreated">demandes\ncréées</string>
 
 
     <string name="menu_info_social">Pour vivre <b>encore plus de solidarité</b> suivez Entourage sur vos réseaux !</string>
@@ -50,4 +52,10 @@
     <string name="info_pop_switch_mode_neo_on">Mode “Premier pas“ activé</string>
     <string name="info_pop_switch_mode_neo_off">Mode “Premier pas“ désactivé</string>
 
+    <string name="myActionsCreated">Mes actions solidaires créées</string>
+    <string name="myActions">Mes actions solidaires</string>
+    <string name="myAsk">Mes demandes</string>
+    <string name="myContrib">Mes dons</string>
+    <string name="myActionEmptyAsk">Actuellement vous n\'avez pas de demandes publiées sur l\'application ;)</string>
+    <string name="myActionEmptyContrib">Actuellement vous n\'avez pas de dons publiés sur l\'application ;)</string>
 </resources>

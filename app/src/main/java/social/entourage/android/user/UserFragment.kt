@@ -18,6 +18,7 @@ import social.entourage.android.EntourageComponent
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageConversation
 import social.entourage.android.api.model.User
+import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.OnPartnerViewRequestedEvent
 import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
 import social.entourage.android.base.BaseDialogFragment
@@ -95,6 +96,7 @@ class UserFragment : BaseDialogFragment() {
 
     override fun onStop() {
         super.onStop()
+        EntBus.post(Events.OnRefreshEntourageInformation())
         EntBus.unregister(this)
     }
 

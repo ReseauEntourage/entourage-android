@@ -95,9 +95,14 @@ class MemberCardViewHolder(view: View) : BaseCardViewHolder(view) {
                 itemView.ui_tv_role?.visibility = View.GONE
             }
 
-            val assoStr = partner?.name + " " + itemView.context.getText(R.string.info_asso_abo)
+            var assoInfo = itemView.context.getText(R.string.info_asso_abo)
+            if (entourageUser.partner?.isFollowing == true) {
+                assoInfo = itemView.context.getText(R.string.info_asso_joined)
+            }
+
+            val assoStr = partner?.name + " " + assoInfo
             val colorId = ContextCompat.getColor(itemView.context, R.color.accent)
-            val assoSpanner = Utils.formatTextWithBoldSpanAndColor(colorId,true,assoStr, itemView.context.getString(R.string.info_asso_abo))
+            val assoSpanner = Utils.formatTextWithBoldSpanAndColor(colorId,true,assoStr, assoInfo.toString())
 
             itemView.ui_tv_bt_asso?.text = assoSpanner
             itemView.ui_tv_bt_asso?.setOnClickListener {

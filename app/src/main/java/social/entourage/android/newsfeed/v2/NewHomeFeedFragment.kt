@@ -23,6 +23,7 @@ import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tour.encounter.CreateEncounterActivity
+import social.entourage.android.tour.encounter.EncounterDisclaimerFragment
 import timber.log.Timber
 
 
@@ -113,6 +114,7 @@ class NewHomeFeedFragment : BaseNewsfeedFragment(), BackPressable {
     }
 
     fun goDetailActions() {
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_FEEDVIEW_ASKS)
         val frag = NewsFeedActionsFragment.newInstance(true,true)
         requireActivity().supportFragmentManager.commit {
             setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
@@ -122,6 +124,7 @@ class NewHomeFeedFragment : BaseNewsfeedFragment(), BackPressable {
     }
 
     fun goDetailEvents() {
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_FEEDVIEW_EVENTS)
         val frag = NewsFeedActionsFragment.newInstance(false,true)
         requireActivity().supportFragmentManager.commit {
             setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
@@ -299,28 +302,30 @@ class NewHomeFeedFragment : BaseNewsfeedFragment(), BackPressable {
     }
 
     //To Handle deeplink for Event
-    override fun onShowEvents() {
+    /*TODO check if we should handle this here)
+    fun onShowEvents() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEED_SHOWEVENTS)
         showActions(false)
     }
 
-    override fun onShowAll() {
+    fun onShowAll() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEED_SHOWALL)
         showActions(true)
-    }
+    } */
 
     /*****
      ** Methods & service for Tour add Encounter
     *****/
-    override fun onAddEncounter() {
-        if (presenter.shouldDisplayEncounterDisclaimer()) {
-            presenter.displayEncounterDisclaimer()
+    fun onAddEncounter() {
+        showTour()
+        if (!authenticationController.encounterDisclaimerShown) {
+            activity?.supportFragmentManager?.let { fragmentManager -> EncounterDisclaimerFragment().show(fragmentManager, EncounterDisclaimerFragment.TAG) }
         } else {
             addEncounter()
         }
     }
 
-    override fun addEncounter() {
+    private fun addEncounter() {
         if (activity != null) {
             if (currentTourUUID.equals("")) {
                 entService?.let { currentTourUUID = it.currentTourId }
@@ -335,9 +340,6 @@ class NewHomeFeedFragment : BaseNewsfeedFragment(), BackPressable {
             val intent = Intent(activity, CreateEncounterActivity::class.java)
             intent.putExtras(args)
             startActivity(intent)
-
-            // show the disclaimer only once per tour
-            presenter.setDisplayEncounterDisclaimer(false)
         }
     }
 

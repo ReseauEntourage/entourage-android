@@ -9,7 +9,9 @@ class Stats (
         @field:SerializedName("entourage_count") private var entourageCount: Int,
         @field:SerializedName("actions_count") var actionsCount: Int,
         @field:SerializedName("events_count") var eventsCount: Int,
-        @field:SerializedName("good_waves_participation") var isGoodWavesValidated: Boolean): Serializable {
+        @field:SerializedName("good_waves_participation") var isGoodWavesValidated: Boolean,
+        @field:SerializedName("contribution_creation_count") var contribCreationCount: Int,
+        @field:SerializedName("ask_for_help_creation_count") var askCreationCount: Int): Serializable {
 
     fun getActionCount(): Int {
         return entourageCount + tourCount

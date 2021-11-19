@@ -36,6 +36,9 @@ class EntourageCategory : Serializable {
     @SerializedName("default")
     var isDefault = false
 
+    @SerializedName("display_category_title_list")
+    var title_list: String? = null
+
     // ----------------------------------
     // Attributes not in JSON
     // ----------------------------------

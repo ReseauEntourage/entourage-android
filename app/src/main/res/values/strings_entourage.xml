@@ -148,7 +148,8 @@
     <string name="entourage_tour_ongoing_title">@string/tour_info_text_ongoing</string>
     <string name="entourage_tour_ongoing_description">Souhaitez-vous créer une rencontre avec une personne de la rue, ou créer une action visible de tous?</string>
     <string name="entourage_tour_ongoing_proceed">Rencontre</string>
-    <string name="entourage_tour_ongoing_action">Action</string>
+    <string name="entourage_tour_ongoing_demande">Demande</string>
+    <string name="entourage_tour_ongoing_contrib">Contribution</string>
 
     <!-- Close Entourage Popup -->
     <string name="entourage_close_title">Comment cela s’est passé?</string>

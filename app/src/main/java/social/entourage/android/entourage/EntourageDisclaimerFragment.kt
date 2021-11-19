@@ -27,6 +27,9 @@ class EntourageDisclaimerFragment : BaseDialogFragment() {
     private var mListener: OnFragmentInteractionListener? = null
     private var isFromNeo = false
     private var tagAnalyticNeoName = ""
+
+    var groupType: String? = null
+
     // ----------------------------------
     // Lifecycle
     // ----------------------------------
@@ -34,10 +37,10 @@ class EntourageDisclaimerFragment : BaseDialogFragment() {
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         // Inflate the layout for this fragment
-        val groupType: String? = arguments?.getString(KEY_GROUP_TYPE, null)
-        arguments?.let { _args ->
-            isFromNeo = _args.getBoolean(ISFROMNEO,false)
-            tagAnalyticNeoName = _args.getString(TAGANALYTICS,"")
+        arguments?.let { arguments ->
+            isFromNeo = arguments.getBoolean(ISFROMNEO,false)
+            tagAnalyticNeoName = arguments.getString(TAGANALYTICS,"")
+            groupType = arguments.getString(KEY_GROUP_TYPE, null)
         }
 
         return inflater.inflate(
@@ -137,7 +140,7 @@ class EntourageDisclaimerFragment : BaseDialogFragment() {
         private const val ISFROMNEO = "isFromNeo"
         private const val TAGANALYTICS = "tagAnalytics"
 
-        fun newInstance(groupType: String,tagAnalyticName:String,isFromNeo:Boolean): EntourageDisclaimerFragment {
+        fun newInstance(groupType: String, tagAnalyticName:String, isFromNeo:Boolean): EntourageDisclaimerFragment {
             val fragment = EntourageDisclaimerFragment()
             val args = Bundle()
             args.putString(KEY_GROUP_TYPE, groupType)

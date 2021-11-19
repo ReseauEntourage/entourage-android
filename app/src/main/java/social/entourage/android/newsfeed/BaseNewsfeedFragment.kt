@@ -126,7 +126,6 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         }
         initializeMap()
         initializeFloatingMenu()
-        initializeFilterTab()
         initializeNewsfeedView()
         initializeInvitations()
         (activity as? MainActivity)?.showEditActionZoneFragment()
@@ -595,6 +594,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         groupType = newEntourageGroupType
         displayEntourageDisclaimer()
     }
+
     fun setGroupType(_groupString:String) {
         groupType = _groupString
     }
@@ -606,15 +606,6 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
     open fun onShowFilter() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEED_SHOWFILTERS)
         MapFilterFragment().show(parentFragmentManager, MapFilterFragment.TAG)
-    }
-
-    open fun onShowEvents() {
-        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEED_SHOWEVENTS)
-        fragment_map_top_tab?.getTabAt(NewsfeedTabItem.EVENTS_TAB.id)?.select()
-    }
-
-    open fun onShowAll() {
-        fragment_map_top_tab?.getTabAt(NewsfeedTabItem.ALL_TAB.id)?.select()
     }
 
     private fun onNewEntouragesReceivedButton() {
@@ -764,26 +755,6 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         }
     }
 
-    private fun initializeFilterTab() {
-        if(EntourageApplication.me(activity)?.isPro ==false && fragment_map_top_tab?.getTabAt(NewsfeedTabItem.TOUR_TAB.id)!=null) {
-            fragment_map_top_tab?.removeTabAt(NewsfeedTabItem.TOUR_TAB.id)
-            fragment_map_top_tab?.tabMode = TabLayout.MODE_FIXED
-        }
-        fragment_map_top_tab?.addOnTabSelectedListener(object : OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                val newTab = when (tab.position) {
-                    NewsfeedTabItem.EVENTS_TAB.id -> NewsfeedTabItem.EVENTS_TAB
-                    NewsfeedTabItem.TOUR_TAB.id -> NewsfeedTabItem.TOUR_TAB
-                    else -> NewsfeedTabItem.ALL_TAB
-                }
-                onMapTabChanged(newTab)
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab) {}
-            override fun onTabReselected(tab: TabLayout.Tab) {}
-        })
-    }
-
     // ----------------------------------
     // PRIVATE METHODS (tours events)
     // ----------------------------------
@@ -810,7 +781,7 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
                     // Not ongoing tour, just stop the feed item
                     loaderStop = ProgressDialog.show(activity, requireActivity().getString(feedItem.getClosingLoaderMessage()), requireActivity().getString(R.string.button_loading), true)
                     loaderStop?.setCancelable(true)
-                    AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_STOP_TOUR)
+                    //TODO: proper event: AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_STOP_TOUR)
                     service.stopFeedItem(feedItem, success)
                 } else if (service.isRunning) {
                     loaderStop = ProgressDialog.show(activity, requireActivity().getString(R.string.loader_title_tour_finish), requireActivity().getString(R.string.button_loading), true)
@@ -1235,8 +1206,8 @@ abstract class BaseNewsfeedFragment : BaseMapFragment(R.layout.fragment_map), Ne
         }
     }
 
-    open fun onAddEncounter() {}
-    open fun addEncounter() {}
+    //open fun onAddEncounter() {}
+    //open fun addEncounter() {}
     private fun onAnimationUpdate(valueAnimator: ValueAnimator) {
         if (newsfeedAdapter == null) {
             return

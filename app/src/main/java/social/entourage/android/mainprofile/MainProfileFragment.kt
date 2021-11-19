@@ -19,6 +19,7 @@ import social.entourage.android.api.tape.Events
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
+import social.entourage.android.user.edit.UserEditFragment
 
 /**
  * Side menu fragment
@@ -77,13 +78,18 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
 
         //add listeners to side menu items
 
-        ui_layout_show_events?.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_SHOWEVENTS)
-            showEvents()
+        ui_layout_show_contribs?.setOnClickListener {
+            val fragment = MyActionsFragment.newInstance(true)
+            fragment.show(requireActivity().supportFragmentManager, MyActionsFragment.TAG)
         }
-        ui_layout_show_actions?.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_SHOWACTIONS)
-            showActions()
+        ui_layout_show_asks?.setOnClickListener {
+            val fragment = MyActionsFragment.newInstance(false)
+            fragment.show(requireActivity().supportFragmentManager, MyActionsFragment.TAG)
+        }
+
+        ui_layout_actions?.setOnClickListener{
+            val fragment = MyActionsFragment()
+            fragment.show(requireActivity().supportFragmentManager, MyActionsFragment.TAG)
         }
 
         ui_layout_charte?.setOnClickListener {
@@ -171,8 +177,8 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
             ui_layout_goodwaves?.visibility = View.VISIBLE
         }
 
-        ui_tv_nb_actions?.text = user.stats?.actionsCount?.let { "$it" } ?: "0"
-        ui_tv_nb_events?.text = user.stats?.eventsCount?.let { "$it" } ?: "0"
+        ui_tv_nb_events?.text = user.stats?.contribCreationCount?.let { "$it" } ?: "0"
+        ui_tv_nb_actions?.text = user.stats?.askCreationCount?.let { "$it" } ?: "0"
 
         val isExpertMode = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_HOME_IS_EXPERTMODE,false)
         ui_switch_change_mode?.isChecked = !isExpertMode

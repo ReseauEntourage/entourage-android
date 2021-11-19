@@ -48,6 +48,7 @@ class HomeNeoHelpFragment : Fragment(),BackPressable {
         ui_layout_button_help_3?.setOnClickListener {
             (parentFragment as? NewHomeFeedFragment)?.showActions(false)
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_NEOFEEDFIRST_Events)
+            AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_FEEDVIEW_EVENTS)
         }
     }
 

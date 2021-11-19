@@ -116,11 +116,6 @@ open class Events {
     }
 
     /**
-     * Event signaling that tour info view is requested
-     */
-    class OnTourEncounterViewRequestedEvent(val encounter: Encounter)
-
-    /**
      * Event signaling that the tour needs to be closed/freezed
      */
     class OnFeedItemCloseRequestEvent {
@@ -152,16 +147,6 @@ open class Events {
      * Event signaling a push notification has been received
      */
     class OnPushNotificationReceived(val message: Message)
-
-    /**
-     * Event signaling that an encounter was created (or not)
-     */
-    class OnEncounterCreated(val encounter: Encounter?)
-
-    /**
-     * Event signaling that an encounter was updated
-     */
-    class OnEncounterUpdated(val encounter: Encounter)
 
     /**
      * Event signaling that an entourage was created
@@ -223,4 +208,20 @@ open class Events {
     class OnShowEventDeeplink
 
     class OnShowDetailAssociation(val id:Int)
+
+    class OnRefreshEntourageInformation
+    class OnRefreshActionsInfos
+
+    open class TourEvents {
+        /**
+         * Event signaling that an encounter was created (or not)
+         */
+        class OnEncounterCreated(val encounter: Encounter?)
+
+        /**
+         * Event signaling that an encounter was updated
+         */
+        class OnEncounterUpdated(val encounter: Encounter)
+
+    }
 }
