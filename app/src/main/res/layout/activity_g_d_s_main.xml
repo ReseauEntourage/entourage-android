@@ -56,7 +56,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:background="?attr/selectableItemBackground"
             android:contentDescription="@string/search_hint"
             android:padding="5dp"

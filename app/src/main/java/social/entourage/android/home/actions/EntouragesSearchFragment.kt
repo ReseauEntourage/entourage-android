@@ -40,6 +40,7 @@ class EntouragesSearchFragment : BaseDialogFragment() {
     var arrayItems = ArrayList<NewsfeedItem>()
     var rvAdapter: EntouragesSearchAdapter? = null
     var searchType:String? = null
+    var placeholderTxt = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,9 +50,18 @@ class EntouragesSearchFragment : BaseDialogFragment() {
 
         var tag = ""
         when(searchType) {
-            "ask" -> tag = ACTION_FEEDSEARCH_START_ASK
-            "contrib" -> tag = ACTION_FEEDSEARCH_START_CONTRIB
-            "outing" -> tag = ACTION_FEEDSEARCH_START_EVENT
+            "ask" -> {
+                tag = ACTION_FEEDSEARCH_START_ASK
+                placeholderTxt = getString(R.string.searchAskPlaceholder)
+            }
+            "contrib" -> {
+                tag = ACTION_FEEDSEARCH_START_CONTRIB
+                placeholderTxt = getString(R.string.searchContribPlaceholder)
+            }
+            "outing" -> {
+                tag = ACTION_FEEDSEARCH_START_EVENT
+                placeholderTxt = getString(R.string.searchEventPlaceholder)
+            }
         }
         AnalyticsEvents.logEvent(tag)
     }
@@ -67,6 +77,7 @@ class EntouragesSearchFragment : BaseDialogFragment() {
         ui_progress?.visibility = View.GONE
         ui_bt_search_close?.visibility = View.INVISIBLE
 
+        ui_et_search?.hint = placeholderTxt
         ui_bt_back?.setOnClickListener {
             ui_et_search?.hideKeyboard()
             dismiss()

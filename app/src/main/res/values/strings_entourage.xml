@@ -236,4 +236,8 @@
     <string name="infoPopCreateAskTitle">Action solidaire\ncréée</string>
     <string name="infoPopCreateEventTitle">Événement créé</string>
 
+    <!-- Search action/event placeholder -->
+    <string name="searchEventPlaceholder">Rechercher un événement</string>
+    <string name="searchAskPlaceholder">Rechercher une action</string>
+    <string name="searchContribPlaceholder">Rechercher une action</string>
 </resources>
