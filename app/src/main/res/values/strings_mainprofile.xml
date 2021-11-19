@@ -18,8 +18,8 @@
     <string name="actions_solidr">actions\nsolidaires</string>
     <string name="actions_button">Voir la liste →</string>
     <string name="title_my_activity">👌  MON ACTIVITÉ</string>
-    <string name="contribCreated">dons\ncrées</string>
-    <string name="askCreated">demandes\ncréées</string>
+    <string name="contribCreated">dons\npubliés</string>
+    <string name="askCreated">demandes\n publiées</string>
 
 
     <string name="menu_info_social">Pour vivre <b>encore plus de solidarité</b> suivez Entourage sur vos réseaux !</string>
