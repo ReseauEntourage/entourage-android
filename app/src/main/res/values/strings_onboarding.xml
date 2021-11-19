@@ -169,4 +169,6 @@
     <string name="input_names_title">Heureux de vous revoir !</string>
     <string name="input_names_sub">Cette fois, pourriez-vous me dire comment vous vous appelez ?</string>
     <string name="input_names_error">Veuillez remplir les 2 champs avec un minimum de %s caractères.</string>
+
+    <string name="onboard_sms_help">Besoin d’aide ?\nContacter l\'équipe Entourage.</string>
 </resources>

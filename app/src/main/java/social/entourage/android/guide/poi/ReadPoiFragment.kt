@@ -34,6 +34,7 @@ class ReadPoiFragment : BaseDialogFragment() {
     // ATTRIBUTES
     // ----------------------------------
     private lateinit var poi: Poi
+    private var filtersSelectedFromMap:String? = null
     @Inject lateinit var presenter: ReadPoiPresenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -45,6 +46,7 @@ class ReadPoiFragment : BaseDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         poi = arguments?.getSerializable(BUNDLE_KEY_POI) as Poi
+        filtersSelectedFromMap = arguments?.getString(BUNDLE_KEY_SEARCH,"")
         setupComponent(EntourageApplication.get(activity).components)
 
         //Actually WS return id and not uuid for entourage poi
@@ -79,6 +81,9 @@ class ReadPoiFragment : BaseDialogFragment() {
         ui_button_show_soliguide?.setOnClickListener {
             //TODO: link inside or outside app ?
             poi.soliguideUrl?.let {
+                val stringTag = String.format(AnalyticsEvents.SOLIGUIDE_CLICK,poi.soliguideId,poi.uuid,filtersSelectedFromMap)
+                AnalyticsEvents.logEvent(stringTag)
+
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.data = Uri.parse(it)
                 startActivity(intent)
@@ -166,6 +171,9 @@ class ReadPoiFragment : BaseDialogFragment() {
                 ui_tv_poi_language?.text = it
             }
             poi_report_layout?.visibility = View.GONE
+
+            val stringTag = String.format(AnalyticsEvents.SOLIGUIDE_SHOW_POI,poi.soliguideId,poi.uuid,filtersSelectedFromMap)
+            AnalyticsEvents.logEvent(stringTag)
         }
         else {
             poi_report_layout?.visibility = View.VISIBLE
@@ -279,13 +287,15 @@ class ReadPoiFragment : BaseDialogFragment() {
         // ----------------------------------
         val TAG: String = ReadPoiFragment::class.java.simpleName
         const val BUNDLE_KEY_POI = "BUNDLE_KEY_POI"
+        const val BUNDLE_KEY_SEARCH = "BUNDLE_KEY_SEARCH"
         // ----------------------------------
         // LIFECYCLE
         // ----------------------------------
-        fun newInstance(poi: Poi): ReadPoiFragment {
+        fun newInstance(poi: Poi,filtersSelectedFromMap:String): ReadPoiFragment {
             val readPoiFragment = ReadPoiFragment()
             val args = Bundle()
             args.putSerializable(BUNDLE_KEY_POI, poi)
+            args.putString(BUNDLE_KEY_SEARCH,filtersSelectedFromMap)
             readPoiFragment.arguments = args
             return readPoiFragment
         }

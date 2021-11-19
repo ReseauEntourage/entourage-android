@@ -1,8 +1,10 @@
 package social.entourage.android.mainprofile
 
+import android.content.DialogInterface
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
@@ -23,6 +25,7 @@ import social.entourage.android.tools.view.EntSnackbar
  */
 class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
 
+    private var isManualChecked = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         EntBus.register(this)
@@ -158,7 +161,7 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
         }
 
         // Changed the ethics charter text depending on signed/unsigned
-        ui_tv_charte?.setText(if (user.hasSignedEthicsCharter()) R.string.action_charter_signed else R.string.action_charter_unsigned)
+        ui_tv_charte?.setText(R.string.action_charter_read)
 
         //Show hide join Good waves
         if (user.stats?.isGoodWavesValidated == true) {
@@ -183,11 +186,13 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
                 else {
                     AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_SWITCH_NeoToExpert)
                 }
-                EntourageApplication.get().sharedPreferences.edit()
-                        .putBoolean(EntourageApplication.KEY_HOME_IS_EXPERTMODE, !isChecked)
-                        .remove("isNavNews")
-                        .remove("navType")
-                        .apply()
+                if (!isManualChecked) {
+                    showPopInfoMode(!isChecked)
+                }
+                else {
+                    isManualChecked = false
+                }
+
             }
         }
         else {
@@ -216,6 +221,32 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
             ).show()
         }
         return true
+    }
+
+    private fun showPopInfoMode(isChecked:Boolean) {
+
+
+        val alertDialog = AlertDialog.Builder(requireContext())
+        alertDialog.setTitle(R.string.profile_pop_switch_mode_title)
+        val modeStr = if(isChecked) R.string.profile_pop_switch_mode_message_expert else R.string.profile_pop_switch_mode_message_neo
+
+        alertDialog.setMessage(modeStr)
+        alertDialog.setNegativeButton(R.string.profile_pop_switch_mode_button_no) { dialog, _ ->
+            isManualChecked = true
+            val isExpertMode = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_HOME_IS_EXPERTMODE,false)
+            ui_switch_change_mode?.isChecked = !isExpertMode
+            dialog.dismiss()
+        }
+        alertDialog.setPositiveButton(R.string.profile_pop_switch_mode_button_yes) { dialog, _ ->
+            dialog.dismiss()
+            EntourageApplication.get().sharedPreferences.edit()
+                .putBoolean(EntourageApplication.KEY_HOME_IS_EXPERTMODE, isChecked)
+                .remove("isNavNews")
+                .remove("navType")
+                .apply()
+            (activity as? MainActivity)?.showHome(isChecked)
+        }
+        alertDialog.show()
     }
 
     companion object {

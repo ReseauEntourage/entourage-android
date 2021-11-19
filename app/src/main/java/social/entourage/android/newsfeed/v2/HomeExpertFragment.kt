@@ -10,9 +10,11 @@ import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_home_expert.*
+import kotlinx.android.synthetic.main.fragment_map.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
+import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.feed.Announcement
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events
@@ -20,12 +22,13 @@ import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.location.EntLocation
 import social.entourage.android.newsfeed.BaseNewsfeedFragment
 import social.entourage.android.service.EntService
+import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tour.encounter.CreateEncounterActivity
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import timber.log.Timber
 
-class HomeExpertFragment : BaseNewsfeedFragment() {
+class HomeExpertFragment : BaseNewsfeedFragment(), EntourageServiceListener {
 
     private val connection = ServiceConnection()
     private var currentTourUUID = ""
@@ -85,6 +88,19 @@ class HomeExpertFragment : BaseNewsfeedFragment() {
 //    override fun feedItemViewRequested(event: Events.OnFeedItemInfoViewRequestedEvent) {
 //        super.feedItemViewRequested(event)
 //    }
+    //To intercept eventbus info for event/action close
+    @Subscribe
+    override fun feedItemCloseRequested(event: Events.OnFeedItemCloseRequestEvent) {
+        super.feedItemCloseRequested(event)
+    }
+
+    override fun onFeedItemClosed(closed: Boolean, updatedFeedItem: FeedItem) {
+        loaderStop?.dismiss()
+        loaderStop = null
+    }
+
+    override fun onUserStatusChanged(user: EntourageUser, updatedFeedItem: FeedItem) {
+    }
 
     private fun setupRecyclerView() {
         val listener = object : HomeViewHolderListener{
@@ -132,10 +148,10 @@ class HomeExpertFragment : BaseNewsfeedFragment() {
                 }
             }
 
-            override fun onShowDetail(type: HomeCardType,isArrow:Boolean) {
+            override fun onShowDetail(type: HomeCardType,isArrow:Boolean,subtype:HomeCardType) {
                 var logString = ""
                 if (type == HomeCardType.ACTIONS) {
-                    showActions(true)
+                    showActions(true,subtype)
                     logString = if (isArrow) {
                         AnalyticsEvents.ACTION_EXPERTFEED_MoreActionArrow
                     } else {
@@ -143,7 +159,7 @@ class HomeExpertFragment : BaseNewsfeedFragment() {
                     }
                 }
                 else if (type == HomeCardType.EVENTS) {
-                    showActions(false)
+                    showActions(false,HomeCardType.NONE)
                     logString = if (isArrow) {
                         AnalyticsEvents.ACTION_EXPERTFEED_MoreEventArrow
                     } else {
@@ -219,9 +235,12 @@ class HomeExpertFragment : BaseNewsfeedFragment() {
 //        }
 //    }
 
-    fun showActions(isAction:Boolean) {
+    fun showActions(isAction:Boolean,subtype:HomeCardType) {
         requireActivity().supportFragmentManager.commit {
-            add(R.id.main_fragment,NewsFeedActionsFragment.newInstance(isAction,false),"homeNew")
+            val isExpertAsk = if(subtype == HomeCardType.ACTIONS_ASK) true else false
+            val isExpertContrib = if(subtype == HomeCardType.ACTIONS_CONTRIB) true else false
+
+            add(R.id.main_fragment,NewsFeedActionsFragment.newInstance(isAction,false,isExpertAsk,isExpertContrib),"homeNew")
             addToBackStack("homeNew")
             val navKey = if (isAction) "action" else "event"
             saveInfos(true,navKey)
@@ -260,12 +279,12 @@ class HomeExpertFragment : BaseNewsfeedFragment() {
     //To Handle deeplink for Event
     override fun onShowEvents() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEED_SHOWEVENTS)
-        showActions(false)
+        showActions(false,HomeCardType.NONE)
     }
 
     override fun onShowAll() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEED_SHOWALL)
-        showActions(true)
+        showActions(true,HomeCardType.NONE)
     }
 
     /*****

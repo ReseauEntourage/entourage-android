@@ -55,9 +55,9 @@
 
     //Home Cells
 
-    <string name="cell_demand_from">Une demande de :</string>
-    <string name="cell_invit_from">Invité par :</string>
-    <string name="cell_contrib_from">Une contribution de :</string>
+    <string name="cell_demand_from">Une demande de</string>
+    <string name="cell_invit_from">Invité par</string>
+    <string name="cell_contrib_from">Une contribution de</string>
 
     <string name="cell_numberOfPeople">%1$d participant</string>
     <string name="cell_numberOfPeoples">%1$d participants</string>
@@ -65,11 +65,15 @@
     <string name="show_more_event">Voir l\'événement</string>
     <string name="show_more_actions">Afficher plus\nde demandes et\nd’initiatives</string>
     <string name="show_more_events">Afficher plus\nd’événements</string>
+    <string name="show_more_actions_ask">Voir toutes les demandes</string>
+    <string name="show_more_actions_contrib">Voir tous les dons</string>
 
     <string name="home_title_headlines">À la une</string>
     <string name="home_title_actions">Demandes et initiatives</string>
     <string name="home_title_events">Événements</string>
     <string name="home_title_none" />
+    <string name="home_title_actions_contrib">Contributions</string>
+    <string name="home_title_actions_ask">Demandes</string>
 
     <string name="home_help_title">Entourage autrement</string>
     <string name="home_help_description">Voici comment prendre part au projet Entourage, s’il n’y a pas d’événements ou d’actions dans ta région :</string>
@@ -80,6 +84,8 @@
     <string name="home_help_button_5">Programme LinkedOut</string>
     <string name="home_button_help_title">J’aide Entourage autrement</string>
     <string name="home_button_change_zone">Je modifie ma zone d’action</string>
+    <string name="home_cell_info_demand_empty">C\'est plutôt calme ici</string>
+    <string name="home_cell_info_demand_empty_button">Rechercher\nplus loin</string>
 
     <string name="home_help_report_description">Pour aider au déploiement futur d’Entourage dans votre région, soyez nos yeux et nos oreilles ! Partagez-nous ce que vous observez dans votre environnement.\n\nCe questionnaire couvre différentes thématiques, répondez-y autant que vous le pouvez. Si la situation évolue, vous pourrez le remplir à nouveau pour nous tenir informés.\n\nVotre collaboration est précieuse, nous vous en remercions chaleureusement !</string>
     <string name="home_button_help_title_report">Les reporters Entourage</string>
@@ -170,8 +176,14 @@
     <string name="home_neo_pop_info_button_ok">OK</string>
     <string name="home_neo_pop_info_button_profil">Voir profil</string>
 
+    <string name="home_neo_pop_goExpert_title"> </string>
+    <string name="home_neo_pop_goExpert_message">Vous êtes sur le mode “Premiers pas” de l’application.\nAccédez à plus de contenu en désactivant ce mode depuis votre page profil. </string>
+    <string name="home_neo_pop_goExpert_button_ok">OK</string>
+    <string name="home_neo_pop_goExpert_button_cancel">Non merci</string>
+
     <string name="setting_home_title">📱 MON COMPTE ENTOURAGE</string>
     <string name="setting_home_description">Le mode “Premiers pas” vous guide pour découvrir les programmes Entourage.</string>
     <string name="setting_home_button_type">Mode “Premiers pas”</string>
+    <string name="quitter">Quitter</string>
 
 </resources>

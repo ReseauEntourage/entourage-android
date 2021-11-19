@@ -42,6 +42,9 @@ open class NewsFeedActionsFragment : BaseNewsfeedFragment(), EntourageServiceLis
     var isActionSelected = true
     private val connection = ServiceConnection()
 
+    var isExpertAsk = false
+    var isExpertContrib = false
+
     /******
      * BackPressable
      */
@@ -75,6 +78,12 @@ open class NewsFeedActionsFragment : BaseNewsfeedFragment(), EntourageServiceLis
         if (isFromNeo) {
             EntourageApplication.get().components.authenticationController.mapFilter.setFiltersForNeo()
         }
+        else if (isExpertContrib) {
+            EntourageApplication.get().components.authenticationController.mapFilter.setAllCategorySelected(true,false)
+        }
+        else if (isExpertAsk) {
+            EntourageApplication.get().components.authenticationController.mapFilter.setAllCategorySelected(false,true)
+        }
         else {
             EntourageApplication.get().components.authenticationController.mapFilter.setDefaultValues()
         }
@@ -92,7 +101,15 @@ open class NewsFeedActionsFragment : BaseNewsfeedFragment(), EntourageServiceLis
         ui_tv_title?.visibility = View.VISIBLE
         if (isActionSelected) {
             fragment_map_filter_button?.visibility = View.VISIBLE
-            ui_tv_title?.text = getString(R.string.home_title_actions)
+            if (isExpertContrib) {
+                ui_tv_title?.text = getString(R.string.home_title_actions_contrib)
+            }
+            else if (isExpertAsk) {
+                ui_tv_title?.text = getString(R.string.home_title_actions_ask)
+            }
+            else {
+                ui_tv_title?.text = getString(R.string.home_title_actions)
+            }
         }
         else {
             fragment_map_filter_button?.visibility = View.GONE
@@ -345,11 +362,13 @@ open class NewsFeedActionsFragment : BaseNewsfeedFragment(), EntourageServiceLis
     }
 
     companion object {
-        fun newInstance(isAction:Boolean,isFromNeo:Boolean): NewsFeedActionsFragment {
+        fun newInstance(isAction:Boolean,isFromNeo:Boolean,isExpertAsk:Boolean = false,isExpertContrib:Boolean = false): NewsFeedActionsFragment {
             val _intent = NewsFeedActionsFragment()
             _intent.selectedTab = if (isAction) NewsfeedTabItem.ALL_TAB else NewsfeedTabItem.EVENTS_TAB
             _intent.isActionSelected = isAction
             _intent.isFromNeo = isFromNeo
+            _intent.isExpertAsk = isExpertAsk
+            _intent.isExpertContrib = isExpertContrib
             return _intent
         }
     }

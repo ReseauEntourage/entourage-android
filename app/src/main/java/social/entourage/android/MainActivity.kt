@@ -82,6 +82,7 @@ class MainActivity : BaseSecuredActivity(),
         get() = (bottom_navigation as? EntBottomNavigationView)
 
     private var isAnalyticsSendFromStart = false
+    private var isAllreadyCheckCountNeo = false
 
     // ----------------------------------
     // LIFECYCLE
@@ -105,7 +106,6 @@ class MainActivity : BaseSecuredActivity(),
         }
         checkShowInfo()
     }
-
     private fun checkShowInfo() {
         //Check to show Action info
         val isShowFirstLogin = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,false)
@@ -142,6 +142,33 @@ class MainActivity : BaseSecuredActivity(),
                         .create()
                         .show()
                 return
+            }
+            return
+        }
+
+        if (isAllreadyCheckCountNeo) {
+            return
+        }
+        isAllreadyCheckCountNeo = true
+        var countNeoPop = EntourageApplication.get().sharedPreferences.getInt(EntourageApplication.KEY_HOME_COUNT_POP_NEO_MODE,0)
+
+        if (authenticationController.me?.isEngaged == false && authenticationController.me?.isUserTypeNeighbour == true) {
+            if (countNeoPop >= 2) {
+                EntourageApplication.get().sharedPreferences.edit().putInt(EntourageApplication.KEY_HOME_COUNT_POP_NEO_MODE,0).apply()
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.home_neo_pop_goExpert_title)
+                    .setMessage(R.string.home_neo_pop_goExpert_message)
+                    .setNegativeButton(R.string.home_neo_pop_goExpert_button_cancel) { _,_ ->}
+                    .setPositiveButton(R.string.home_neo_pop_goExpert_button_ok) { dialog, _ ->
+                        dialog.dismiss()
+                        showProfileTab()
+                    }
+                    .create()
+                    .show()
+            }
+            else {
+                countNeoPop += 1
+                EntourageApplication.get().sharedPreferences.edit().putInt(EntourageApplication.KEY_HOME_COUNT_POP_NEO_MODE,countNeoPop).apply()
             }
         }
     }
@@ -268,6 +295,12 @@ class MainActivity : BaseSecuredActivity(),
 
     fun showFeed() {
         bottomBar?.showFeed()
+    }
+
+    fun showHome(isExpert:Boolean) {
+        bottomBar?.showFeed()
+        val message = if(isExpert) getString(R.string.info_pop_switch_mode_neo_off) else getString(R.string.info_pop_switch_mode_neo_on)
+        Toast.makeText(this,message,Toast.LENGTH_LONG).show()
     }
 
     fun showGuide() {
@@ -431,7 +464,7 @@ class MainActivity : BaseSecuredActivity(),
         try {
             val poi = Poi()
             poi.uuid = event.poiId
-            val fragment = ReadPoiFragment.newInstance(poi)
+            val fragment = ReadPoiFragment.newInstance(poi,"")
             fragment.show(supportFragmentManager, ReadPoiFragment.TAG)
         } catch (e: IllegalStateException) {
             Timber.w(e)

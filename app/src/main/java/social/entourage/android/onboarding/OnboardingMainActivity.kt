@@ -114,6 +114,10 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             finish()
         }
 
+        ui_bt_pass?.setOnClickListener {
+            action_pass()
+        }
+
         ui_bt_previous?.visibility = View.INVISIBLE
         ui_bt_next?.disable()
     }
@@ -654,7 +658,17 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             PositionType.Place.pos -> {
                 ui_bt_previous?.visibility = View.VISIBLE
             }
+            PositionType.EmailPwd.pos -> {
+                ui_bt_previous?.visibility = View.VISIBLE
+                ui_bt_pass?.visibility = View.VISIBLE
+            }
             else -> ui_bt_previous?.visibility = View.VISIBLE
+        }
+    }
+
+    fun action_pass() {
+        if (currentFragmentPosition == PositionType.EmailPwd.pos) {
+            goMain()
         }
     }
 

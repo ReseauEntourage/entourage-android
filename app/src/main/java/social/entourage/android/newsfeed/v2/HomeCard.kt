@@ -18,6 +18,7 @@ import timber.log.Timber
  */
 class HomeCard {
     var type = HomeCardType.NONE
+    var subtype = HomeCardType.NONE
     var arrayCards = ArrayList<NewsfeedItem>()
 
     class OnGetHomeFeed(val responseString: String)
@@ -50,6 +51,7 @@ class HomeCard {
         private fun parsingArray(jsonArray:JSONArray, name:String) : HomeCard {
             val homeCard = HomeCard()
             homeCard.type = HomeCardType.getStr(name)
+            homeCard.subtype = HomeCardType.getSubStr(name)
 
             if (homeCard.type == HomeCardType.HEADLINES) {
                 return homeCard
@@ -112,6 +114,7 @@ class HomeCard {
         private fun parsingDictionnary(jsonObject:JSONObject, name:String) : HomeCard {
             val homeCard = HomeCard()
             homeCard.type = HomeCardType.getStr(name)
+            homeCard.subtype = HomeCardType.getSubStr(name)
 
             if (homeCard.type == HomeCardType.HEADLINES) {
                 if (jsonObject["metadata"] is JSONObject) {
@@ -141,6 +144,8 @@ enum class HomeCardType {
     HEADLINES,
     EVENTS,
     ACTIONS,
+    ACTIONS_ASK,
+    ACTIONS_CONTRIB,
     NONE;
 
     fun getName() : Int {
@@ -148,15 +153,24 @@ enum class HomeCardType {
             HEADLINES -> return R.string.home_title_headlines
             ACTIONS -> return R.string.home_title_actions
             EVENTS -> return R.string.home_title_events
+            ACTIONS_ASK -> return R.string.home_title_actions_ask
+            ACTIONS_CONTRIB -> return R.string.home_title_actions_contrib
             NONE -> return R.string.home_title_none
         }
     }
     companion object {
         fun getStr(name:String) : HomeCardType {
             when(name) {
-                "entourages" -> return ACTIONS
+                "entourages","entourage_ask_for_helps","entourage_contributions" -> return ACTIONS
                 "outings" -> return EVENTS
                 "headlines" -> return HEADLINES
+                else -> return NONE
+            }
+        }
+        fun getSubStr(name:String) : HomeCardType {
+            when(name) {
+                "entourage_ask_for_helps" -> return ACTIONS_ASK
+                "entourage_contributions" -> return ACTIONS_CONTRIB
                 else -> return NONE
             }
         }

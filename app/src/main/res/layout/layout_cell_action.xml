@@ -7,6 +7,7 @@
     android:background="@drawable/bg_rounded_white_plain_eight">
 
     <androidx.cardview.widget.CardView
+        android:foreground="@drawable/button_text_black_state"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:cardBackgroundColor="@color/white"
@@ -52,8 +53,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Title\nL2"
+                android:ellipsize="end"
                 android:maxLines="2"
+                android:text="Title\nL2"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"

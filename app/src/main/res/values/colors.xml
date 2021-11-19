@@ -25,6 +25,7 @@
     <color name="background_home">#e5e5e5</color>
     <color name="background_transparent">#66000000</color>
     <color name="background_accent_dark_translucent">@color/pale_grey</color>
+    <color name="background_transparent_grey">#0D000000</color>
 
     <!-- Login -->
     <color name="background_login_light">#FFFFFF</color>

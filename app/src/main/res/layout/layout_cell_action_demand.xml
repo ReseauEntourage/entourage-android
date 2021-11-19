@@ -21,19 +21,19 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout15"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/accent">
 
             <ImageView
                 android:id="@+id/imageView24"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:layout_marginEnd="16dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/bg_help_entourage" />
+                app:srcCompat="@drawable/perso_violet" />
 
             <TextView
                 android:id="@+id/ui_tv_title_more"
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
-                android:text="@string/home_button_help_title"
+                android:text="@string/home_cell_info_demand_empty"
                 android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:textSize="27sp"
@@ -62,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="2"
-                    android:text="@string/show_more"
+                    android:text="@string/home_cell_info_demand_empty_button"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     android:textStyle="bold"

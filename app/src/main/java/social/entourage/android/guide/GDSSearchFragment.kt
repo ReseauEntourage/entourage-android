@@ -149,7 +149,7 @@ class GDSSearchFragment : BaseDialogFragment() {
             poi.partner_id?.let { partner_id ->
                 PartnerFragment.newInstance(partner_id).show(parentFragmentManager, PartnerFragment.TAG)
             } ?: run {
-                ReadPoiFragment.newInstance(poi).show(parentFragmentManager, ReadPoiFragment.TAG)
+                ReadPoiFragment.newInstance(poi,"").show(parentFragmentManager, ReadPoiFragment.TAG)
             }
         } catch (e: IllegalStateException) {
             Timber.w(e)

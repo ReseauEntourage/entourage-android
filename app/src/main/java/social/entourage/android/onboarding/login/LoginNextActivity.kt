@@ -17,10 +17,9 @@ import social.entourage.android.tools.view.CustomProgressDialog
 
 class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
 
-    private var temporaryEmail:String? = null
     private var temporaryPlaceAddress:User.Address? = null
     private var currentPosition = 0
-    private var numberOfSteps = 2
+    private var numberOfSteps = 1
     lateinit var alertDialog: CustomProgressDialog
     private var currentUser:User? = null
 
@@ -32,18 +31,12 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
 
         currentUser = EntourageApplication.get().components.authenticationController.me
 
-        currentUser?.let { user ->
-            if (user.address != null || user.address?.displayAddress?.length ?: 0 > 0) {
-                currentPosition = 1
-            }
-        }
-
         if (savedInstanceState == null) {
             changeFragment()
         }
 
         ui_bt_next?.setOnClickListener {
-            goNext()
+            sendAddress()
         }
 
         ui_bt_next?.disable()
@@ -76,28 +69,12 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
                     }
                     Toast.makeText(this, R.string.user_action_zone_send_ok, Toast.LENGTH_SHORT).show()
                     alertDialog.dismiss()
-                    goNextStep()
+                    goMain()
                 } else {
                     alertDialog.dismiss()
                     Toast.makeText(this, R.string.user_action_zone_send_failed, Toast.LENGTH_SHORT).show()
                 }
             }
-        }
-    }
-
-    fun updateUserEmail() {
-        alertDialog.show(R.string.onboard_waiting_dialog)
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_EMAIL_SUBMIT)
-        OnboardingAPI.getInstance().updateUser(temporaryEmail) { isOK, userResponse ->
-            if (isOK && userResponse != null) {
-                val authenticationController = EntourageApplication.get().components.authenticationController
-                authenticationController.saveUser(userResponse.user)
-            }
-            else {
-                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ERROR_LOGIN_EMAIL_SUBMIT_ERROR)
-            }
-            alertDialog.dismiss()
-            goMain()
         }
     }
 
@@ -115,11 +92,6 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
         }
     }
 
-    override fun updateEmailPwd(email: String?) {
-        temporaryEmail = email
-        currentUser?.email = temporaryEmail
-    }
-
     override fun updateButtonNext(isValid:Boolean) {
         if (isValid) {
             ui_bt_next?.enable(R.drawable.ic_onboard_bt_next)
@@ -135,7 +107,7 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
 
     private fun changeFragment() {
         ui_bt_next?.disable()
-        val fragment = if (currentPosition == 0) LoginPlaceFragment.newInstance() else LoginEmailFragment.newInstance()
+        val fragment = LoginPlaceFragment.newInstance()
 
         supportFragmentManager
                 .beginTransaction()
@@ -149,31 +121,6 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
         val percent = (currentPosition + 1).toFloat() / numberOfSteps.toFloat() * 100
         ui_view_progress?.updatePercent(percent)
     }
-
-    //**********
-    // Navigation Methods
-    //***
-
-    fun goNext() {
-        if (currentPosition == 0) {
-            sendAddress()
-        }
-        else {
-            updateUserEmail()
-        }
-    }
-
-    fun goNextStep() {
-        val authController = EntourageApplication.get().components.authenticationController
-
-        if (authController.me?.email == null || authController.me?.email?.length ?: -1 == 0)  {
-            currentPosition = 1
-            changeFragment()
-        }
-        else {
-            goMain()
-        }
-    }
 }
 
 //******************************
@@ -182,6 +129,5 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
 
 interface LoginNextCallback {
     fun updateAddress(placeAddress: User.Address?)
-    fun updateEmailPwd(email:String?)
     fun updateButtonNext(isValid:Boolean)
 }

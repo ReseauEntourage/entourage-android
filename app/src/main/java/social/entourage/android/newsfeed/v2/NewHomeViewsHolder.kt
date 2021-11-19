@@ -63,6 +63,7 @@ class AnnounceVH(view: View) : RecyclerView.ViewHolder(view) {
                     Glide.with(imageView.context)
                             .load(Uri.parse(imageUrl))
                             .listener(requestListener)
+                        .placeholder(R.drawable.bg_button_rounded_pre_onboard_orange_plain)
                             .into(imageView)
                 }
             }
@@ -108,9 +109,7 @@ class ActionVH(view: View) : RecyclerView.ViewHolder(view) {
                             .circleCrop()
                             .into(iconView)
                 } ?: run {
-                    Glide.with(iconView.context)
-                            .load(feedItem.getIconDrawable(itemView.context))
-                            .into(iconView)
+                    iconView.setImageDrawable(feedItem.getIconDrawable(itemView.context))
                 }
             }
 
@@ -260,7 +259,7 @@ class EventVH(view: View) : RecyclerView.ViewHolder(view) {
                     feedItem.metadata?.portrait_url?.let {
                         Glide.with(eventView.context)
                                 .load(Uri.parse(it))
-                                .placeholder(R.drawable.partner_placeholder)
+                                .placeholder(R.drawable.ic_placeholder_event_feed)
                                 .into(eventView)
                     } ?: run {
                         Glide.with(eventView.context)
@@ -273,20 +272,27 @@ class EventVH(view: View) : RecyclerView.ViewHolder(view) {
     }
 }
 
-class ShowMoreVH(view: View, val type: HomeCardType) : RecyclerView.ViewHolder(view) {
+class ShowMoreVH(view: View, val type: HomeCardType,val subtype:HomeCardType) : RecyclerView.ViewHolder(view) {
     fun bind(listener: HomeViewHolderListener) {
         itemView.setOnClickListener {
-            listener.onShowDetail(type, false)
+            listener.onShowDetail(type, false,subtype)
         }
 
-        val titleId = if (type == HomeCardType.ACTIONS) R.string.show_more_actions else R.string.show_more_events
+        var titleId = if (type == HomeCardType.ACTIONS) R.string.show_more_actions else R.string.show_more_events
+        if (subtype == HomeCardType.ACTIONS_ASK || subtype == HomeCardType.ACTIONS_CONTRIB) {
+            titleId = if (subtype == HomeCardType.ACTIONS_CONTRIB) R.string.show_more_actions_contrib else R.string.show_more_actions_ask
+        }
         itemView.ui_tv_title_more?.text = itemView.resources.getString(titleId)
     }
 }
 
-class OtherVH(view: View, val type: HomeCardType) : RecyclerView.ViewHolder(view) {
+class OtherVH(view: View, val type: HomeCardType,val subtype: HomeCardType) : RecyclerView.ViewHolder(view) {
     fun bind(listener: HomeViewHolderListener) {
         itemView.setOnClickListener {
+            if (subtype == HomeCardType.ACTIONS_ASK) {
+                listener.onShowDetail(type, true,subtype)
+                return@setOnClickListener
+            }
             if (type == HomeCardType.ACTIONS) {
                 listener.onShowEntourageHelp()
             } else {

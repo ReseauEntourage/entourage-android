@@ -59,7 +59,6 @@ class EntourageCloseFragment : DialogFragment() {
         entourage_close_cancel_button?.setOnClickListener {onCloseClicked()}
         entourage_close_success_button?.setOnClickListener {onSuccessClicked()}
         entourage_close_failed_button?.setOnClickListener {onFailedClicked()}
-        entourage_close_help_button?.setOnClickListener {onHelpClicked()}
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -78,7 +77,7 @@ class EntourageCloseFragment : DialogFragment() {
     private fun onSuccessClicked() {
         feedItem?.let {
             EntBus.post(OnFeedItemCloseRequestEvent(it, showUI = false, success = true))
-            showEmail(R.string.entourage_close_email_title_success)
+          //  showEmail(R.string.entourage_close_email_title_success)
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_CLOSE_POPUP_SUCCESS)
             dismiss()
         }
@@ -87,16 +86,10 @@ class EntourageCloseFragment : DialogFragment() {
     private fun onFailedClicked() {
         feedItem?.let {
             EntBus.post(OnFeedItemCloseRequestEvent(it, showUI = false, success = false))
-            showEmail(R.string.entourage_close_email_title_failed)
+           // showEmail(R.string.entourage_close_email_title_failed)
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_CLOSE_POPUP_FAILURE)
             dismiss()
         }
-    }
-
-    private fun onHelpClicked() {
-        showEmail(R.string.entourage_close_email_title_help)
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_CLOSE_POPUP_HELP)
-        dismiss()
     }
 
     // ----------------------------------

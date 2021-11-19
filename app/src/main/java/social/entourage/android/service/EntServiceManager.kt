@@ -136,7 +136,7 @@ open class EntServiceManager(
       //  val _currNewsFeedCall = newsfeedRequest.getHomeFeed(currentCameraPosition.target.longitude,currentCameraPosition.target.latitude)
         val userAddress = EntourageApplication.me(this.entService)?.address
 
-        val _currNewsFeedCall = newsfeedRequest.getHomeFeed(userAddress?.longitude,userAddress?.latitude)
+        val _currNewsFeedCall = newsfeedRequest.getHomeFeed(userAddress?.longitude,userAddress?.latitude,true)
 
         _currNewsFeedCall.enqueue(HomeFeedCallback(this,entService))
     }

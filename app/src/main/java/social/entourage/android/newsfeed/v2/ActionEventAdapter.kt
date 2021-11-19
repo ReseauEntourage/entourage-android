@@ -43,17 +43,23 @@ class ActionEventAdapter(var homecard:HomeCard,val listener:HomeViewHolderListen
         else if (viewType == TYPE_OTHER) {
             val view:View
             if (homecard.type == HomeCardType.ACTIONS) {
-                view = inflater.inflate(R.layout.layout_cell_action_help, parent, false)
+                if(homecard.subtype == HomeCardType.ACTIONS_ASK) {
+                    view = inflater.inflate(R.layout.layout_cell_action_demand, parent, false)
+                }
+                else {
+                    view = inflater.inflate(R.layout.layout_cell_action_help, parent, false)
+                }
+
             }
             else {
                 view = inflater.inflate(R.layout.layout_cell_event_zone, parent, false)
             }
 
-            return OtherVH(view,homecard.type)
+            return OtherVH(view,homecard.type,homecard.subtype)
         }
         val view = inflater.inflate(R.layout.layout_cell_action_more, parent, false)
 
-        return ShowMoreVH(view,homecard.type)
+        return ShowMoreVH(view,homecard.type,homecard.subtype)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

@@ -287,6 +287,20 @@ tools:context="social.entourage.android.onboarding.OnboardingPasscodeFragment">
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
+    <Button
+        android:id="@+id/ui_onboard_bt_help"
+        style="@style/TransparentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="46dp"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/onboard_sms_help"
+        android:textColor="@color/accent"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_bt_code_retry" />
+
     <TextView
         android:id="@+id/ui_onboard_code_tv_phone_mod"
         android:layout_width="wrap_content"

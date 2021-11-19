@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="292dp"
     android:layout_height="214dp"
-    android:background="@color/background_home">
+    android:background="@color/background_light">
 
     <androidx.cardview.widget.CardView
+        android:foreground="@drawable/button_text_black_state"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:cardBackgroundColor="@color/white"
@@ -44,6 +45,7 @@
                 android:layout_marginEnd="8dp"
                 android:maxLines="2"
                 android:text="Event"
+                android:ellipsize="end"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"

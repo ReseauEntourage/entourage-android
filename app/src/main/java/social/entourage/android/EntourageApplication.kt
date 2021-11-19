@@ -183,6 +183,7 @@ class EntourageApplication : MultiDexApplication() {
         const val KEY_NO_MORE_DEMAND = "noMoreDemand"
         const val KEY_HOME_IS_EXPERTMODE = "isExpertMode"
         const val KEY_HOME_IS_ALREADYINFO_NEO = "isAlreadyInfoNeo"
+        const val KEY_HOME_COUNT_POP_NEO_MODE = "countPopNeoMode"
 
         // ----------------------------------
         // MEMBERS
