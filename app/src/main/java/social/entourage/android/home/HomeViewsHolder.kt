@@ -141,10 +141,6 @@ class ActionVH(view: View) : RecyclerView.ViewHolder(view) {
                 }
             }
 
-            if (feedItem.getFeedTypeColor() != 0) {
-                itemView.ui_action_tv_type?.setTextColor(ContextCompat.getColor(itemView.context, feedItem.getFeedTypeColor()))
-            }
-
             //Author
             val author = feedItem.author
             if (author == null) {

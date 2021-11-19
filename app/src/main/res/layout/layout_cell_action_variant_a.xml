@@ -39,7 +39,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="Type"
-                android:textColor="@color/pre_onboard_orange"
+                android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/ui_action_picto_type"
                 app:layout_constraintEnd_toEndOf="parent"
