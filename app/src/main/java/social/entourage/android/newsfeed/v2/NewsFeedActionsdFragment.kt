@@ -99,21 +99,29 @@ open class NewsFeedActionsFragment : BaseNewsfeedFragment(), EntourageServiceLis
             requireActivity().onBackPressed()
         }
         ui_tv_title?.visibility = View.VISIBLE
+        var searchType = ""
         if (isActionSelected) {
             fragment_map_filter_button?.visibility = View.VISIBLE
             if (isExpertContrib) {
                 ui_tv_title?.text = getString(R.string.home_title_actions_contrib)
+                searchType = "contrib"
             }
             else if (isExpertAsk) {
                 ui_tv_title?.text = getString(R.string.home_title_actions_ask)
+                searchType = "ask"
             }
             else {
-                ui_tv_title?.text = getString(R.string.home_title_actions)
+                ui_tv_title?.text = getString(R.string.home_title_actions_ask)
             }
         }
         else {
             fragment_map_filter_button?.visibility = View.GONE
             ui_tv_title?.text = getString(R.string.home_title_events)
+            searchType = "outing"
+        }
+
+        ui_bt_search?.setOnClickListener {
+            EntouragesSearchFragment.newInstance(searchType).show(parentFragmentManager, EntouragesSearchFragment.TAG)
         }
     }
 
@@ -233,8 +241,6 @@ open class NewsFeedActionsFragment : BaseNewsfeedFragment(), EntourageServiceLis
                 if (user.status == FeedItem.JOIN_STATUS_PENDING) {
                     if (updatedFeedItem is Tour) {
                         TourJoinRequestFragment.newInstance(updatedFeedItem).show(activity.supportFragmentManager, TourJoinRequestFragment.TAG)
-                    } else if (updatedFeedItem is BaseEntourage) {
-                        EntourageJoinRequestFragment.newInstance(updatedFeedItem).show(activity.supportFragmentManager, EntourageJoinRequestFragment.TAG)
                     }
                 }
             } catch (e: IllegalStateException) {

@@ -112,6 +112,7 @@ open class ToursFragment : NewsFeedFragment(), TourServiceListener, BackPressabl
         map_longclick_button_create_encounter?.setOnClickListener {onAddEncounter()}
         launcher_tour_go?.setOnClickListener {onStartNewTour()}
 
+        ui_bt_search?.visibility = View.INVISIBLE
         ui_bt_back?.setOnClickListener {
             requireActivity().onBackPressed()
         }

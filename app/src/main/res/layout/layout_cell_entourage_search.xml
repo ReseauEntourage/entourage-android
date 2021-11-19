@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/ui_action_picto_type"
+        android:layout_width="24dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_event_accent_24dp" />
+
+    <TextView
+        android:id="@+id/ui_action_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Type"
+        android:textColor="@color/action_type_outing"
+        android:textSize="17sp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        app:layout_constraintBottom_toBottomOf="@+id/ui_action_picto_type"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ui_action_picto_type"
+        app:layout_constraintTop_toTopOf="@+id/ui_action_picto_type" />
+
+    <TextView
+        android:id="@+id/ui_action_event"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-light"
+        android:maxLines="2"
+        android:text="Title\nL2"
+        android:textColor="@color/action_type_outing"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/ui_action_iv_user"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ui_action_title" />
+
+    <TextView
+        android:id="@+id/ui_action_username"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-light"
+        android:maxLines="2"
+        android:text="Title\nL2"
+        android:textColor="@color/action_type_outing"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/ui_action_iv_user"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ui_action_event" />
+
+    <TextView
+        android:id="@+id/ui_action_tv_location"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="sans-serif-light"
+        android:text="location"
+        android:textColor="@color/action_type_outing"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ui_action_iv_user"
+        app:layout_constraintStart_toStartOf="@+id/ui_action_username"
+        app:layout_constraintTop_toBottomOf="@+id/ui_action_username" />
+
+    <ImageView
+        android:id="@+id/ui_action_iv_user"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="end"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/empty_description"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ui_action_title"
+        app:srcCompat="@drawable/ic_user_photo_small" />
+
+    <social.entourage.android.tools.view.PartnerLogoImageView
+        android:id="@+id/ui_action_iv_user_check"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="19dp"
+        app:layout_constraintStart_toStartOf="@+id/ui_action_iv_user"
+        app:layout_constraintTop_toTopOf="@+id/ui_action_iv_user"
+        app:srcCompat="@drawable/ic_entourage_logo_two_colors" />
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginBottom="1dp"
+        android:background="@color/separator"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

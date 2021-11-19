@@ -126,4 +126,12 @@ interface EntourageRequest {
     fun removeUserReportPrompt(
             @Path("entourage_id") entourageUUID: String
     ): Call<ResponseBody>
+
+    @GET("entourages/search")
+    fun searchEntourages(
+            @Query("latitude") latitude: Double?,
+            @Query("longitude") longitude: Double?,
+            @Query("types") types: String?,
+            @Query("q") searchTxt: String,
+    ): Call<ResponseBody>
 }

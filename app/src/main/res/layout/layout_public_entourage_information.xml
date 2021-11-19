@@ -27,13 +27,52 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ui_layout_private"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:visibility="gone"
+                android:background="@color/pre_onboard_orange_trans">
+
+                <TextView
+                    android:id="@+id/textView52"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="32dp"
+                    android:text="@string/info_pop_message_private"
+                    android:textColor="@color/accent"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/ui_bt_close_pop_private"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ui_bt_close_pop_private"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_close_black_24dp"
+                    app:tint="@color/accent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <include
                 android:id="@+id/layout_detail_event_action_top_view"
                 layout="@layout/layout_detail_event_action_top_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:visibility="visible" />
-
+            <include
+                android:id="@+id/layout_detail_event_action_private"
+                layout="@layout/layout_detail_event_action_private"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:visibility="visible" />
             <include
                 android:id="@+id/layout_detail_event_action_date"
                 layout="@layout/layout_detail_event_action_date"
