@@ -167,7 +167,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         entourage_info_options?.setOnClickListener {onCloseOptionsButton()}
         entourage_option_cancel?.setOnClickListener {onCloseOptionsButton()}
         entourage_option_stop?.setOnClickListener {onStopTourButton()}
-        ui_bt_close?.setOnClickListener {onStopTourButton()}
+        ui_layout_button_close?.setOnClickListener {onStopTourButton()}
         entourage_option_quit?.setOnClickListener {quitEntourage()}
         entourage_info_request_join_button?.setOnClickListener {onJoinButton()}
         entourage_option_contact?.setOnClickListener {onJoinButton()}

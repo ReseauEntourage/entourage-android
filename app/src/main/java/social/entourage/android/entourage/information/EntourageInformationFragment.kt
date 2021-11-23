@@ -164,7 +164,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         entourage_option_contact?.visibility = View.GONE
         entourage_option_promote?.visibility = View.GONE
 
-        ui_bt_close?.visibility = View.GONE
+        ui_layout_button_close?.visibility = View.GONE
 
         val hideJoinButton = entourage.isPrivate() || FeedItem.JOIN_STATUS_PENDING == entourage.joinStatus || entourage.isClosed()
         entourage_option_join?.visibility =  if (hideJoinButton) View.GONE else View.VISIBLE
@@ -178,7 +178,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             }
             entourage_option_report?.visibility = View.VISIBLE
         } else {
-            ui_bt_close?.visibility = if (entourage.isClosed() || !entourage.canBeClosed()) View.GONE else View.VISIBLE
+            ui_layout_button_close?.visibility = if (entourage.isClosed() || !entourage.canBeClosed()) View.GONE else View.VISIBLE
             entourage_option_stop?.visibility = if (entourage.isClosed() || !entourage.canBeClosed()) View.GONE else View.VISIBLE
             entourage_option_stop?.setText( R.string.tour_info_options_freeze_tour)
             if ((entourage.isOpen())  || (entourage.isSuspended())){
@@ -187,6 +187,12 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             }
             else {
                 entourage_option_reopen?.visibility = View.VISIBLE
+            }
+            if (entourage.isEvent()) {
+                ui_tv_button_close?.text = getString(R.string.button_close_event)
+            }
+            else {
+                ui_tv_button_close?.text = getString(R.string.button_close_action)
             }
         }
         if (!entourage.isSuspended()) {

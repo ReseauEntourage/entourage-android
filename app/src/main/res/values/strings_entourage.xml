@@ -240,4 +240,7 @@
     <string name="searchEventPlaceholder">Rechercher un événement</string>
     <string name="searchAskPlaceholder">Rechercher une action</string>
     <string name="searchContribPlaceholder">Rechercher une action</string>
+
+    <string name="button_close_event">Clôturer mon événement</string>
+    <string name="button_close_action">Clôturer mon action</string>
 </resources>
