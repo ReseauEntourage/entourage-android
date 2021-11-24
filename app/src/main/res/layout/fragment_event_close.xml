@@ -3,63 +3,90 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@drawable/rounded_dialog"
+              android:background="@drawable/bg_rounded_white_plain_eight"
               android:orientation="vertical"
               android:padding="10dp"
               tools:context=".entourage.EntourageCloseFragment">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageButton
-            android:id="@+id/entourage_close_close_button"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:background="?attr/selectableItemBackground"
-            android:contentDescription="@string/empty_description"
-            app:srcCompat="@drawable/ic_close_black_24dp"/>
+            android:background="@drawable/bg_rounded_white_plain_eight"
+            tools:context=".entourage.EntourageCloseFragment">
 
-    </RelativeLayout>
+            <ImageButton
+                android:id="@+id/entourage_close_close_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="20dp"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/empty_description"
+                app:srcCompat="@drawable/ic_close_black_24dp"
+                app:tint="@color/accent"
+                tools:ignore="TouchTargetSizeCheck" />
 
-    <TextView
+            <TextView
+                android:id="@+id/textView49"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="64dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/event_close_title2"
+                android:textColor="@color/accent"
+                android:textSize="@dimen/entourage_font_xtra_large" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:id="@+id/frameLayout8"
+                android:layout_width="60dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/accent" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textView50"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="@string/event_close_description2"
+            android:textColor="@color/action_type_outing"
+            android:textSize="@dimen/entourage_font_medium" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="@string/event_close_title"
-        android:textColor="@color/white"
-        android:textSize="@dimen/entourage_font_xtra_large"
-        />
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/bg_button_accent_rounded">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="@string/event_close_description"
-        android:textColor="@color/white"
-        android:textSize="@dimen/entourage_font_medium"/>
+        <TextView
+            android:id="@+id/entourage_close_success_button"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:elevation="0dp"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:text="@string/event_validate_button2"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/entourage_close_success_button"
-        style="@style/WhiteButton.RoundedCorners"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="@string/event_validate_button"/>
-
-    <Button
-        android:id="@+id/entourage_close_cancel_button"
-        style="@style/TransparentButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/event_cancel_button"
-        android:textColor="@color/white"
-        android:textAlignment="center"
-        android:textStyle="bold" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
