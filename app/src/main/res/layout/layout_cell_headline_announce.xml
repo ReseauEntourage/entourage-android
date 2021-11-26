@@ -6,10 +6,10 @@
     android:layout_height="264dp">
 
     <androidx.cardview.widget.CardView
-        android:foreground="@drawable/button_text_black_state"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:cardBackgroundColor="@color/white"
+        android:foreground="@drawable/button_text_black_state"
+        app:cardBackgroundColor="@color/transparent"
         app:cardCornerRadius="8dp"
         app:cardElevation="0dp"
         app:cardPreventCornerOverlap="true"
@@ -30,8 +30,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@color/accent" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <FrameLayout
                 android:id="@+id/ui_bg_trans_black"
@@ -53,8 +52,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:text="Announce"
                 android:maxLines="6"
+                android:text="Announce"
                 android:textColor="@color/white"
                 android:textSize="22sp"
                 app:layout_constraintEnd_toEndOf="parent"

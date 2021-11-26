@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.layout_cell_action_more.view.*
@@ -66,7 +68,8 @@ class AnnounceVH(view: View) : RecyclerView.ViewHolder(view) {
                     Glide.with(imageView.context)
                             .load(Uri.parse(imageUrl))
                             .listener(requestListener)
-                        .placeholder(R.drawable.bg_button_rounded_pre_onboard_orange_plain)
+                            .transform(CenterCrop(),RoundedCorners(8))
+                            .placeholder(R.drawable.bg_button_rounded_pre_onboard_orange_plain)
                             .into(imageView)
                 }
             }
