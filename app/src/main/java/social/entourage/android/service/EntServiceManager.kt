@@ -145,11 +145,15 @@ open class EntServiceManager(
         currentNewsFeedCall?.let { call -> if (!call.isCanceled) call.cancel() }
     }
 
-    fun closeEntourage(entourage: BaseEntourage, success: Boolean) {
+    fun closeEntourage(entourage: BaseEntourage, success: Boolean, comment:String?) {
         val oldStatus = entourage.status
         entourage.status = FeedItem.STATUS_CLOSED
         entourage.setEndTime(Date())
         entourage.outcome = EntourageCloseOutcome(success)
+        if (entourage.metadata == null) {
+            entourage.metadata = BaseEntourage.Metadata()
+        }
+        entourage.metadata?.close_message = comment
         entourage.uuid?.let { uuid ->
             entourageRequest.closeEntourage(uuid, EntourageWrapper(entourage)).enqueue(object : Callback<EntourageResponse> {
                 override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {

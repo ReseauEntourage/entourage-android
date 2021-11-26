@@ -541,7 +541,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         }
         if (!feedItem.isClosed()) {
             // close
-            stopFeedItem(feedItem, event.isSuccess)
+            stopFeedItem(feedItem, event.isSuccess,event.comment)
         } else {
             (feedItem as? Tour)?.let { tour ->
                 if (!tour.isFreezed()) {
@@ -662,7 +662,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
     // ----------------------------------
     protected open fun hideTourLauncher() {}
 
-    fun stopFeedItem(feedItem: FeedItem?, success: Boolean) {
+    fun stopFeedItem(feedItem: FeedItem?, success: Boolean, comment:String?) {
         activity?.let { activity ->
             entService?.let { service ->
                 if (feedItem != null
@@ -673,7 +673,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
                     loaderStop = ProgressDialog.show(activity, activity.getString(feedItem.getClosingLoaderMessage()), activity.getString(R.string.button_loading), true)
                     loaderStop?.setCancelable(true)
                     //TODO: proper event: AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_STOP_TOUR)
-                    service.stopFeedItem(feedItem, success)
+                    service.stopFeedItem(feedItem, success,comment)
                 } else if (service.isRunning) {
                     loaderStop = ProgressDialog.show(activity, activity.getString(R.string.loader_title_tour_finish), activity.getString(R.string.button_loading), true)
                     loaderStop?.setCancelable(true)

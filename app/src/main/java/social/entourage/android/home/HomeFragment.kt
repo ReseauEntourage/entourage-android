@@ -624,7 +624,7 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
         }
         if (!feedItem.isClosed()) {
             // close
-            stopFeedItem(feedItem, event.isSuccess)
+            stopFeedItem(feedItem, event.isSuccess,event.comment)
         } else {
             (feedItem as? Tour)?.let { tour ->
                 if (!tour.isFreezed()) {
@@ -634,14 +634,14 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
         }
     }
 
-    fun stopFeedItem(feedItem: FeedItem?, success: Boolean) {
+    fun stopFeedItem(feedItem: FeedItem?, success: Boolean,comment:String?) {
         activity?.let { activity ->
             entService?.let { service ->
                 if (feedItem != null
                         && (!service.isRunning
                                 || feedItem.type != TimestampedObject.TOUR_CARD
                                 || service.currentTourId.equals(feedItem.uuid, ignoreCase = true))) {
-                    service.stopFeedItem(feedItem, success)
+                    service.stopFeedItem(feedItem, success,comment)
                 } else if (service.isRunning) {
                     service.endTreatment()
                     AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_STOP_TOUR)

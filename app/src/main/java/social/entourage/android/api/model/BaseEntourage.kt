@@ -254,6 +254,8 @@ open class BaseEntourage : FeedItem, Serializable {
         @SerializedName("landscape_url")
         var landscape_url: String? = null
 
+        var close_message:String? = null
+
         fun setStartDate(startDate: Date) {
             this.startDate = startDate
         }

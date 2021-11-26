@@ -125,15 +125,17 @@ open class Events {
             private set
         var isSuccess = true
             private set
+        var comment:String? = null
 
         constructor(feedItem: FeedItem) {
             this.feedItem = feedItem
         }
 
-        constructor(feedItem: FeedItem, showUI: Boolean, success: Boolean) {
+        constructor(feedItem: FeedItem, showUI: Boolean, success: Boolean, comment:String?) {
             this.feedItem = feedItem
             isShowUI = showUI
             isSuccess = success
+            this.comment = comment
         }
 
     }

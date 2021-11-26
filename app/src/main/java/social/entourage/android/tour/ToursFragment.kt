@@ -274,7 +274,7 @@ open class ToursFragment : NewsfeedFragment(), EntourageServiceListener, TourSer
             TourEndConfirmationFragment.KEY_RESUME_TOUR -> resumeTour()
             TourEndConfirmationFragment.KEY_END_TOUR-> {
                 if (entService?.isRunning==true)
-                    stopFeedItem(null, true)
+                    stopFeedItem(null, true,"")
                 else if (entService?.isPaused==true)
                     launchConfirmationFragment()
             }
