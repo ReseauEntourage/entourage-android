@@ -52,6 +52,8 @@ class EntBottomNavigationView : BottomNavigationView {
         messageBadge.badgeTextColor = ResourcesCompat.getColor(resources, R.color.primary, null)
         messageBadge.maxCharacterCount = 3
 
+        messageBadge.verticalOffset = 10
+
         configurePlusButton()
     }
 
