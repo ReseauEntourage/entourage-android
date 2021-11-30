@@ -4,11 +4,10 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import social.entourage.android.EntourageApplication
+import social.entourage.android.api.model.*
 import social.entourage.android.tools.EntError
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.api.model.ChatMessage
-import social.entourage.android.api.model.Invitation
-import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.request.*
 import java.util.*
@@ -52,6 +51,20 @@ class EntourageInformationPresenter @Inject constructor(
                 fragment.onFeedItemNotFound()
             }
         }
+    }
+
+    override fun getUserInfo(userId: Int?) {
+        if(userId == null) return
+       val userRequest = EntourageApplication.get().components.userRequest
+        userRequest.getUser(userId).enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                if (response.isSuccessful) {
+                    response.body()?.user?.let {fragment.onAuthorUserReceived(it)}
+                }
+            }
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+            }
+        })
     }
 
     override fun getFeedItemMembers(feedItem: FeedItem) {

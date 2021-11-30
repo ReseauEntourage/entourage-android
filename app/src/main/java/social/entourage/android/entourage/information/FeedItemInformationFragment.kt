@@ -105,6 +105,8 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
     private var startedTypingMessage = false
     private var isFromActions = false
 
+    protected var authorUser:User? = null
+
     abstract fun presenter(): FeedItemInformationPresenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -1014,7 +1016,15 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         } else {
             presenter().getFeedItemMembers(feedItem)
         }
+        presenter().getUserInfo(feedItem.author?.userID)
     }
+
+    fun onAuthorUserReceived(authorUser:User) {
+        this.authorUser = authorUser
+        updateAuthorView()
+    }
+
+    open fun updateAuthorView() {}
 
     fun onFeedItemNotFound() {
         //if (activity == null || !isAdded) return

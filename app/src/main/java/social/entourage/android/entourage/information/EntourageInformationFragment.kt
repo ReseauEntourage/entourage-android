@@ -52,6 +52,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.UserFragment
 import social.entourage.android.user.partner.PartnerFragment
+import social.entourage.android.user.role.UserRolesFactory
 import java.util.*
 import javax.inject.Inject
 
@@ -512,55 +513,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         }
 
         //Layout creator
-        updatePhotosAvatar(ui_action_event_creator_photo,ui_action_event_creator_logo)
-        ui_action_event_creator_name?.text = entourage.author?.userName ?: ""
-        val author = entourage.author
-        val partner = author?.partner
-        val role = partner?.userRoleTitle
-
-        author?.userID?.let { userId ->
-            layout_detail_event_action_creator?.setOnClickListener {
-                val fragment = UserFragment.newInstance(userId)
-                fragment.show(requireActivity(). supportFragmentManager, UserFragment.TAG)
-            }
-        }
-
-        if (partner != null || !role.isNullOrEmpty()) {
-            ui_action_event_creator_layout_bottom?.visibility = View.VISIBLE
-            if (role != null && role.isNotEmpty()) {
-                val roleStr = "$role -"
-                ui_action_event_creator_role?.text = roleStr
-                ui_action_event_creator_role?.visibility = View.VISIBLE
-            }
-            else {
-                ui_action_event_creator_role?.visibility = View.GONE
-            }
-
-            var info_abo = getText(R.string.info_asso_abo).toString()
-            if (partner.isFollowing) {
-                info_abo = getText(R.string.info_asso_joined).toString()
-            }
-
-            val assoStr = partner.name + " " + info_abo
-
-            val colorId = ContextCompat.getColor(requireContext(), R.color.accent)
-            val assoSpanner = Utils.formatTextWithBoldSpanAndColor(colorId,true,assoStr, info_abo)
-            ui_action_event_creator_bt_asso.text = assoSpanner
-            ui_action_event_creator_bt_asso?.setOnClickListener {
-            partner.id.toInt().let { partnerId ->
-                    EntBus.post(Events.OnShowDetailAssociation(partnerId))
-                }
-            }
-        }
-        else {
-            ui_action_event_creator_layout_bottom?.visibility = View.INVISIBLE
-        }
-
-        ui_action_event_creator_information?.text = when {
-            entourage.isEvent() -> getString(R.string.detail_action_event_info_rdv)
-            entourage.actionGroupType == BaseEntourage.GROUPTYPE_ACTION_DEMAND -> getText(R.string.detail_action_event_info_demand)
-            else -> getText(R.string.detail_action_event_info_gift)
-        }
+        updateAuthorView()
 
         //Layout description
         if (entourage.isEvent()) {
@@ -599,6 +552,75 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
                 timestamps.add(getString(R.string.entourage_info_update_time, formattedDaysIntervalFromToday(entourage.updatedTime)))
             }
             ui_tv_detail_action_last_update?.text = TextUtils.join(" - ", timestamps)
+        }
+    }
+
+    override fun updateAuthorView() {
+        updatePhotosAvatar(ui_action_event_creator_photo,ui_action_event_creator_logo)
+        ui_action_event_creator_name?.text = entourage.author?.userName ?: ""
+        val author = entourage.author
+        val partner = author?.partner
+        val role = partner?.userRoleTitle
+
+        author?.userID?.let { userId ->
+            layout_detail_event_action_creator?.setOnClickListener {
+                val fragment = UserFragment.newInstance(userId)
+                fragment.show(requireActivity(). supportFragmentManager, UserFragment.TAG)
+            }
+        }
+
+        if (partner != null || !role.isNullOrEmpty()) {
+            ui_action_event_creator_layout_bottom?.visibility = View.VISIBLE
+            if (role != null && role.isNotEmpty()) {
+                val roleStr = "$role -"
+                ui_action_event_creator_role?.text = roleStr
+                ui_action_event_creator_role?.visibility = View.VISIBLE
+            }
+            else {
+                ui_action_event_creator_role?.visibility = View.GONE
+            }
+
+            var info_abo = getText(R.string.info_asso_abo).toString()
+            if (partner.isFollowing) {
+                info_abo = getText(R.string.info_asso_joined).toString()
+            }
+
+            val assoStr = partner.name + " " + info_abo
+
+            val colorId = ContextCompat.getColor(requireContext(), R.color.accent)
+            val assoSpanner = Utils.formatTextWithBoldSpanAndColor(colorId,true,assoStr, info_abo)
+            ui_action_event_creator_bt_asso.text = assoSpanner
+            ui_action_event_creator_bt_asso?.setOnClickListener {
+                partner.id.toInt().let { partnerId ->
+                    EntBus.post(Events.OnShowDetailAssociation(partnerId))
+                }
+            }
+        }
+        else if (authorUser != null) {
+            ui_action_event_creator_layout_bottom?.visibility = View.VISIBLE
+
+            authorUser?.roles?.let { roles ->
+                for (roleStr in roles) {
+                    if (roleStr.equals("ambassador",true)) {
+                        UserRolesFactory.findByName(roleStr)?.let { userRole ->
+                            ui_action_event_creator_bt_asso.text = ""
+                            val ambassador = "  ${getString(userRole.nameResourceId)}  "
+                            ui_action_event_creator_role?.text = ambassador
+                            ui_action_event_creator_role?.setTextColor(ContextCompat.getColor(requireContext(),R.color.white))
+                            ui_action_event_creator_role?.background = ContextCompat.getDrawable(requireContext(),R.drawable.bg_button_rounded_orange_plain_4)
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            ui_action_event_creator_layout_bottom?.visibility = View.INVISIBLE
+        }
+
+        ui_action_event_creator_information?.text = when {
+            entourage.isEvent() -> getString(R.string.detail_action_event_info_rdv)
+            entourage.actionGroupType == BaseEntourage.GROUPTYPE_ACTION_DEMAND -> getText(R.string.detail_action_event_info_demand)
+            else -> getText(R.string.detail_action_event_info_gift)
         }
     }
 

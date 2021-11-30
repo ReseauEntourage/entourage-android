@@ -56,6 +56,9 @@ class TourInformationPresenter @Inject constructor(
         }
     }
 
+    override fun getUserInfo(userId: Int?) {
+    }
+
     /*override fun getFeedItem(feedItemShareURL: String, feedItemType: Int) {
         fragment.onFeedItemNotFound()
     }*/
