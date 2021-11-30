@@ -596,7 +596,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
                 }
             }
         }
-        else if (authorUser != null) {
+        else if (authorUser != null && authorUser?.roles?.size ?: 0 > 0) {
             ui_action_event_creator_layout_bottom?.visibility = View.VISIBLE
 
             authorUser?.roles?.let { roles ->
@@ -609,6 +609,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
                             ui_action_event_creator_role?.setTextColor(ContextCompat.getColor(requireContext(),R.color.white))
                             ui_action_event_creator_role?.background = ContextCompat.getDrawable(requireContext(),R.drawable.bg_button_rounded_orange_plain_4)
                         }
+                        break
                     }
                 }
             }
