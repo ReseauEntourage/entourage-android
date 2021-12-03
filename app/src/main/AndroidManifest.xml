@@ -151,6 +151,28 @@
                     android:host="${deepLinksHostName}"
                     android:pathPrefix="/entourage/" />
             </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="${appLinksHostName}"
+                    android:pathPrefix="/actions/" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="${appLinksHostName}"
+                    android:pathPrefix="/entourage/" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".tour.encounter.ReadEncounterActivity"
