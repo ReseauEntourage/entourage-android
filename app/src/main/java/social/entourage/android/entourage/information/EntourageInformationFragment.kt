@@ -562,6 +562,8 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         val partner = author?.partner
         val role = partner?.userRoleTitle
 
+        ui_action_event_creator_ambassador?.visibility = View.GONE
+
         author?.userID?.let { userId ->
             layout_detail_event_action_creator?.setOnClickListener {
                 val fragment = UserFragment.newInstance(userId)
@@ -605,9 +607,11 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
                         UserRolesFactory.findByName(roleStr)?.let { userRole ->
                             ui_action_event_creator_bt_asso.text = ""
                             val ambassador = "  ${getString(userRole.nameResourceId)}  "
-                            ui_action_event_creator_role?.text = ambassador
-                            ui_action_event_creator_role?.setTextColor(ContextCompat.getColor(requireContext(),R.color.white))
-                            ui_action_event_creator_role?.background = ContextCompat.getDrawable(requireContext(),R.drawable.bg_button_rounded_orange_plain_4)
+                            ui_action_event_creator_role?.text = ""
+                            ui_action_event_creator_ambassador?.text = ambassador
+                            ui_action_event_creator_ambassador?.setTextColor(ContextCompat.getColor(requireContext(),R.color.white))
+                            ui_action_event_creator_ambassador?.background = ContextCompat.getDrawable(requireContext(),R.drawable.bg_button_rounded_orange_plain_4)
+                            ui_action_event_creator_ambassador?.visibility = View.VISIBLE
                         }
                         break
                     }
