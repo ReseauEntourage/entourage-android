@@ -104,6 +104,7 @@
     <string name="tour_cell_button_view">Voir plus</string>
     <string name="tour_cell_button_pending_new">Demandé</string>
 
+    <string name="tour_cell_title_event">Événement %1$s</string>
     <!-- Join Request -->
     <string name="tour_join_request_success">Demande acceptée</string>
     <string name="tour_join_request_error">Erreur d\'envoi de la requête</string>

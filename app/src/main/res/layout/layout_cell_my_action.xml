@@ -22,7 +22,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="15dp"
             android:ellipsize="end"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="sans-serif"
             android:maxLines="2"
             android:text="Type\n L2 blabla bleddg sgsdgnj sdgjskhgjsghs"
             android:textColor="@color/black"
