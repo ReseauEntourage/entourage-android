@@ -72,17 +72,16 @@ open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListene
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        if (isFromNeo) {
-            EntourageApplication.get().components.authenticationController.mapFilter.setFiltersForNeo()
-        }
-        else if (isExpertContrib) {
-            EntourageApplication.get().components.authenticationController.mapFilter.setAllCategorySelected(true,false)
-        }
-        else if (isExpertAsk) {
-            EntourageApplication.get().components.authenticationController.mapFilter.setAllCategorySelected(false,true)
-        }
-        else {
-            EntourageApplication.get().components.authenticationController.mapFilter.setDefaultValues()
+        when {
+            isExpertContrib -> {
+                EntourageApplication.get().components.authenticationController.mapFilter.setAllCategorySelected(true,false)
+            }
+            isExpertAsk -> {
+                EntourageApplication.get().components.authenticationController.mapFilter.setAllCategorySelected(false,true)
+            }
+            else -> {
+                EntourageApplication.get().components.authenticationController.mapFilter.setDefaultValues()
+            }
         }
 
         EntourageApplication.get().components.authenticationController.saveMapFilter()
@@ -358,11 +357,10 @@ open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListene
     companion object {
         const val TAG = "homeNew"//"social.entourage.android.home.actions"
 
-        fun newInstance(isAction:Boolean, isFromNeo:Boolean, isExpertAsk:Boolean = false, isExpertContrib:Boolean = false): NewsFeedActionsFragment {
+        fun newInstance(isAction:Boolean, isExpertAsk:Boolean = false, isExpertContrib:Boolean = false): NewsFeedActionsFragment {
             val intent = NewsFeedActionsFragment()
             intent.selectedTab = if (isAction) NewsfeedTabItem.ALL_TAB else NewsfeedTabItem.EVENTS_TAB
             intent.isActionSelected = isAction
-            intent.isFromNeo = isFromNeo
             intent.isExpertAsk = isExpertAsk
             intent.isExpertContrib = isExpertContrib
             return intent

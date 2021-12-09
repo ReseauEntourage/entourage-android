@@ -1,17 +1,11 @@
 package social.entourage.android.mainprofile
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.DialogInterface
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.installations.FirebaseInstallations
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.layout_mainprofile.*
 import kotlinx.android.synthetic.main.layout_mainprofile_appversion.*
@@ -29,7 +23,6 @@ import social.entourage.android.tools.view.EntSnackbar
  */
 class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
 
-    private var isManualChecked = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         EntBus.register(this)
@@ -182,31 +175,6 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
 
         ui_tv_nb_events?.text = user.stats?.contribCreationCount?.let { "$it" } ?: "0"
         ui_tv_nb_actions?.text = user.stats?.askCreationCount?.let { "$it" } ?: "0"
-
-        val isExpertMode = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_HOME_IS_EXPERTMODE,false)
-        ui_switch_change_mode?.isChecked = !isExpertMode
-
-        if (user.isUserTypeNeighbour) {
-            ui_layout_change_mode?.visibility = View.VISIBLE
-            ui_switch_change_mode?.setOnCheckedChangeListener { buttonView, isChecked ->
-                if (isChecked) {
-                    AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_SWITCH_ExpertToNeo)
-                }
-                else {
-                    AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_SWITCH_NeoToExpert)
-                }
-                if (!isManualChecked) {
-                    showPopInfoMode(!isChecked)
-                }
-                else {
-                    isManualChecked = false
-                }
-
-            }
-        }
-        else {
-            ui_layout_change_mode?.visibility = View.GONE
-        }
     }
 
     private fun selectMenuProfile(position: String) {
@@ -230,32 +198,6 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
             ).show()
         }
         return true
-    }
-
-    private fun showPopInfoMode(isChecked:Boolean) {
-
-
-        val alertDialog = AlertDialog.Builder(requireContext())
-        alertDialog.setTitle(R.string.profile_pop_switch_mode_title)
-        val modeStr = if(isChecked) R.string.profile_pop_switch_mode_message_expert else R.string.profile_pop_switch_mode_message_neo
-
-        alertDialog.setMessage(modeStr)
-        alertDialog.setNegativeButton(R.string.profile_pop_switch_mode_button_no) { dialog, _ ->
-            isManualChecked = true
-            val isExpertMode = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_HOME_IS_EXPERTMODE,false)
-            ui_switch_change_mode?.isChecked = !isExpertMode
-            dialog.dismiss()
-        }
-        alertDialog.setPositiveButton(R.string.profile_pop_switch_mode_button_yes) { dialog, _ ->
-            dialog.dismiss()
-            EntourageApplication.get().sharedPreferences.edit()
-                .putBoolean(EntourageApplication.KEY_HOME_IS_EXPERTMODE, isChecked)
-                .remove("isNavNews")
-                .remove("navType")
-                .apply()
-            (activity as? MainActivity)?.showHome(isChecked)
-        }
-        alertDialog.show()
     }
 
     companion object {

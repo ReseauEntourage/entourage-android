@@ -79,7 +79,6 @@ class MainActivity : BaseSecuredActivity(),
         get() = (bottom_navigation as? EntBottomNavigationView)
 
     private var isAnalyticsSendFromStart = false
-    private var isAllreadyCheckCountNeo = false
 
     private val homeFragment: HomeFragment?
         get() = supportFragmentManager.findFragmentByTag(HomeFragment.TAG) as? HomeFragment
@@ -147,32 +146,6 @@ class MainActivity : BaseSecuredActivity(),
                 return
             }
             return
-        }
-
-        if (isAllreadyCheckCountNeo) {
-            return
-        }
-        isAllreadyCheckCountNeo = true
-        var countNeoPop = EntourageApplication.get().sharedPreferences.getInt(EntourageApplication.KEY_HOME_COUNT_POP_NEO_MODE,0)
-
-        if (authenticationController.me?.isEngaged == false && authenticationController.me?.isUserTypeNeighbour == true) {
-            if (countNeoPop >= 2) {
-                EntourageApplication.get().sharedPreferences.edit().putInt(EntourageApplication.KEY_HOME_COUNT_POP_NEO_MODE,0).apply()
-                AlertDialog.Builder(this)
-                    .setTitle(R.string.home_neo_pop_goExpert_title)
-                    .setMessage(R.string.home_neo_pop_goExpert_message)
-                    .setNegativeButton(R.string.home_neo_pop_goExpert_button_cancel) { _,_ ->}
-                    .setPositiveButton(R.string.home_neo_pop_goExpert_button_ok) { dialog, _ ->
-                        dialog.dismiss()
-                        showProfileTab()
-                    }
-                    .create()
-                    .show()
-            }
-            else {
-                countNeoPop += 1
-                EntourageApplication.get().sharedPreferences.edit().putInt(EntourageApplication.KEY_HOME_COUNT_POP_NEO_MODE,countNeoPop).apply()
-            }
         }
     }
 
@@ -363,8 +336,6 @@ class MainActivity : BaseSecuredActivity(),
         editor.remove(EntourageApplication.KEY_GEOLOCATION_ENABLED)
         editor.remove(EntourageApplication.KEY_NO_MORE_DEMAND)
         editor.putInt(EntourageApplication.KEY_NB_OF_LAUNCH,0)
-        editor.remove(EntourageApplication.KEY_HOME_IS_EXPERTMODE)
-        editor.remove(EntourageApplication.KEY_HOME_IS_ALREADYINFO_NEO)
         editor.apply()
         super.logout()
     }

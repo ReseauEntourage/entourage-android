@@ -107,7 +107,7 @@ class HomeExpertPresenter @Inject constructor(
     fun displayEntourageDisclaimer(groupType: String) {
         if (fragment != null && !fragment.isStateSaved) {
             val fragmentManager = fragment.activity?.supportFragmentManager ?:return
-            EntourageDisclaimerFragment.newInstance(groupType,"",false).show(fragmentManager, EntourageDisclaimerFragment.TAG)
+            EntourageDisclaimerFragment.newInstance(groupType).show(fragmentManager, EntourageDisclaimerFragment.TAG)
         }
     }
 

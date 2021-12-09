@@ -90,9 +90,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
 
     protected var mapClusterManager: ClusterManager<ClusterItem>? = null
 
-    protected var isFromNeo = false
-    private var tagNameAnalytic = ""
-
     protected val userId: Int
         get() = presenter.authenticationController.me?.id ?:0
     // ----------------------------------
@@ -258,7 +255,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
             location = it
             longTapCoordinates = null
         }
-        presenter.createEntourage(location, groupType, entourageCategory,isFromNeo,tagNameAnalytic)
+        presenter.createEntourage(location, groupType, entourageCategory)
     }
 
     protected fun refreshFeed() {
@@ -405,10 +402,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
             showNewsfeedBottomView(if (selectedTab == NewsfeedTabItem.ALL_TAB) newNewsFeeds.size < pagination.itemsPerPage else newsfeedAdapter?.dataItemCount == 0)
         }
         if (newsfeedAdapter?.dataItemCount == 0) {
-            if (isFromNeo) {
-                displayListWithMapHeader()
-                return
-            }
+
             if (!pagination.isRefreshing) {
                 isFullMapShown = false
                 displayFullMap()
