@@ -24,7 +24,7 @@ import org.hamcrest.TypeSafeMatcher
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
 import social.entourage.android.onboarding.login.LoginActivity
 import timber.log.Timber
@@ -205,7 +205,7 @@ class LoginTest {
     class ToastMatcher : TypeSafeMatcher<Root>() {
         override fun matchesSafely(item: Root?): Boolean {
             item?.windowLayoutParams?.get()?.type?.let { type ->
-                if (type == WindowManager.LayoutParams.TYPE_TOAST) {
+                if (type == WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY) {
                     val windowToken = item.decorView.windowToken
                     val appToken = item.decorView.applicationWindowToken
                     if (windowToken == appToken) {

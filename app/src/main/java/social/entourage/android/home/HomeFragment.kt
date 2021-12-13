@@ -168,7 +168,7 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
         updatePopCreateAndShow()
     }
 
-    fun updatePopCreateAndShow() {
+    private fun updatePopCreateAndShow() {
         var title = ""
         var subtitle = ""
 
@@ -300,8 +300,6 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
         entService?.updateOngoingTour()
     }
 
-    // Home Neo navigation
-
 
     private fun createEntourage(location: LatLng?, groupType: String, category: EntourageCategory?) {
         if (!isStateSaved) {
@@ -383,7 +381,7 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
         }
     }
 
-    fun showActions(isAction:Boolean) {
+    private fun showActions(isAction:Boolean) {
         requireActivity().supportFragmentManager.commit {
             add(R.id.main_fragment, NewsFeedActionsFragment.newInstance(isAction, false),
                 NewsFeedActionsFragment.TAG)
@@ -495,7 +493,7 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
         }
     }
 
-    fun stopFeedItem(feedItem: FeedItem?, success: Boolean,comment:String?) {
+    private fun stopFeedItem(feedItem: FeedItem?, success: Boolean, comment:String?) {
         activity?.let { activity ->
             entService?.let { service ->
                 if (feedItem != null
