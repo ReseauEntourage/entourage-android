@@ -3,7 +3,7 @@ package social.entourage.android.authentication
 import com.google.gson.annotations.Expose
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.entourage.my.filter.MyEntouragesFilter
-import social.entourage.android.map.filter.MapFilter
+import social.entourage.android.base.map.filter.MapFilter
 import java.io.Serializable
 
 /**

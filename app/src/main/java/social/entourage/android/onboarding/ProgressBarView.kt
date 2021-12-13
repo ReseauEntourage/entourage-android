@@ -106,10 +106,10 @@ object ProgressBar {
     // Canvas Drawings
     // Tab
     private object CacheForProgressBar {
-        internal val paint = Paint()
-        internal val progressBackgroundRect = RectF()
-        internal val progressBackgroundPath = Path()
-        internal val progressActiveRect = RectF()
-        internal val progressActivePath = Path()
+        val paint = Paint()
+        val progressBackgroundRect = RectF()
+        val progressBackgroundPath = Path()
+        val progressActiveRect = RectF()
+        val progressActivePath = Path()
     }
 }

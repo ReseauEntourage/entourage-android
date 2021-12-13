@@ -54,7 +54,6 @@ import org.joda.time.LocalDate
 import social.entourage.android.*
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.feed.*
-import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.configuration.Configuration
@@ -63,7 +62,7 @@ import social.entourage.android.entourage.information.discussion.DiscussionAdapt
 import social.entourage.android.entourage.information.members.MembersAdapter
 import social.entourage.android.entourage.invite.InviteFriendsListener
 import social.entourage.android.entourage.invite.contacts.InviteContactsFragment
-import social.entourage.android.location.EntLocation
+import social.entourage.android.base.location.EntLocation
 import social.entourage.android.service.EntService
 import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.tools.EntBus
@@ -358,7 +357,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
     private fun onShareEntourageButton() {
         // close the invite source view
         entourage_info_invite_source_layout?.visibility = View.GONE
-
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_POP_SHARE_ENTOURAGE)
         feedItem.uuid?.let {
             ShareMessageFragment.newInstance(it).show(parentFragmentManager, ShareMessageFragment.TAG)
         }
@@ -367,7 +366,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
     private fun onShareButton() {
         // close the invite source view
         entourage_info_invite_source_layout?.visibility = View.GONE
-
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_POP_SHARE_LINK)
         // build the share text
         val shareLink = feedItem.shareURL ?:getString(R.string.entourage_share_link)
         val shareText = getString(R.string.entourage_share_text_for_entourage, shareLink)
@@ -385,7 +384,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
                 R.anim.bottom_up)
         entourage_info_options?.startAnimation(bottomUp)
         entourage_info_options?.visibility = View.VISIBLE
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_OVERLAY)
+        AnalyticsEvents.logEvent(AnalyticsEvents.SHOW_MENU_OPTIONS)
     }
 
     private fun onCloseOptionsButton() {
@@ -422,7 +421,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         entourage_info_options?.visibility = View.GONE
         BaseCreateEntourageFragment.newInstance(feedItem as BaseEntourage).show(parentFragmentManager, BaseCreateEntourageFragment.TAG)
         //hide the options
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_EDIT)
+        AnalyticsEvents.logEvent(AnalyticsEvents.SHOW_MODIFY_ENTOURAGE)
     }
 
     private fun onPromoteEntourageButton() {
@@ -542,11 +541,6 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         // update the scroll list layout
         updatePublicScrollViewLayout()
 
-        // for newly created entourages, open the invite friends screen automatically if the feed item is not suspended
-        if (feedItem.isNewlyCreated && feedItem.showInviteViewAfterCreation() && !feedItem.isSuspended()) {
-            showInviteSource(false)
-        }
-
         if(isFromActions) {
             onSwitchSections()
         }
@@ -638,7 +632,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
             googleMap.uiSettings.isMyLocationButtonEnabled = false
             googleMap.uiSettings.isMapToolbarEnabled = false
             googleMap.clear()
-            googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_styles_json))
+            activity?.let { activity -> googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_styles_json))}
             drawMap(googleMap)
         }
     }
@@ -806,15 +800,17 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
     }
 
     fun formattedDaysIntervalFromToday(rawDate: Date?): String {
-        if (rawDate == null) return this.getString(R.string.date_today).toLowerCase()
+        if (rawDate == null) return this.getString(R.string.date_today)
+            .lowercase(Locale.getDefault())
 
         val today = LocalDate()
         val date = LocalDate(rawDate)
-        if (date.isEqual(today)) return this.getString(R.string.date_today).toLowerCase()
+        if (date.isEqual(today)) return this.getString(R.string.date_today)
+            .lowercase(Locale.getDefault())
         val days = Days.daysBetween(date, today).days
 
         return when (days) {
-            1 -> getString(R.string.date_yesterday).toLowerCase()
+            1 -> getString(R.string.date_yesterday).lowercase(Locale.getDefault())
             in 2..14 -> String.format(getString(R.string.x_days_ago),days)
             in 15..31 -> getString(R.string.date_this_month)
             else -> {
@@ -924,10 +920,14 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
                     entourage_info_request_join_layout?.visibility = View.VISIBLE
 //                    entourage_info_request_join_title?.setText(feedItem.getJoinRequestTitle())
                     if (feedItem is EntourageEvent) {
-                        entourage_info_request_join_button?.text = getString(R.string.tour_info_request_join_button_event).toUpperCase()
+                        entourage_info_request_join_button?.text = getString(R.string.tour_info_request_join_button_event).uppercase(
+                            Locale.getDefault()
+                        )
                     }
                     else {
-                        entourage_info_request_join_button?.text = getString(R.string.tour_info_request_join_button_entourage).toUpperCase()
+                        entourage_info_request_join_button?.text = getString(R.string.tour_info_request_join_button_entourage).uppercase(
+                            Locale.getDefault()
+                        )
                     }
                    // entourage_info_request_join_button?.setText(feedItem.getJoinRequestButton())
 
@@ -1400,7 +1400,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         // LIFECYCLE
         // ----------------------------------
         //TODO check that all values are not null
-        fun newInstance(feedItem: FeedItem, invitationId: Long, feedRank: Int, isFromActions:Boolean = false): FeedItemInformationFragment {
+        fun newInstance(feedItem: FeedItem, invitationId: Long, feedRank: Int, isFromActions:Boolean): FeedItemInformationFragment {
             val fragment = if (feedItem.type == TimestampedObject.TOUR_CARD) TourInformationFragment() else EntourageInformationFragment()
             val args = Bundle()
             args.putSerializable(FeedItem.KEY_FEEDITEM, feedItem)

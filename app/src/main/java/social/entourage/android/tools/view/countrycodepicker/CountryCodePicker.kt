@@ -253,16 +253,16 @@ class CountryCodePicker : RelativeLayout {
                 if (mShowFullName) {
                     if (!mHidePhoneCode) {
                         context.getString(R.string.country_full_name_and_phone_code,
-                                newSelectedCountry.name.toUpperCase(), newSelectedCountry.phoneCode)
+                            newSelectedCountry.name.uppercase(Locale.getDefault()), newSelectedCountry.phoneCode)
                     } else {
-                        newSelectedCountry.name.toUpperCase()
+                        newSelectedCountry.name.uppercase(Locale.getDefault())
                     }
                 } else {
                     if (!mHidePhoneCode) {
                         context.getString(R.string.country_code_and_phone_code,
-                                newSelectedCountry.iso.toUpperCase(), newSelectedCountry.phoneCode)
+                            newSelectedCountry.iso.uppercase(Locale.getDefault()), newSelectedCountry.phoneCode)
                     } else {
-                        newSelectedCountry.iso.toUpperCase()
+                        newSelectedCountry.iso.uppercase(Locale.getDefault())
                     }
                 }
             } else {

@@ -32,10 +32,10 @@ import social.entourage.android.api.request.EntourageRequest
 import social.entourage.android.api.request.NewsfeedRequest
 import social.entourage.android.api.request.TourRequest
 import social.entourage.android.authentication.AuthenticationController
-import social.entourage.android.location.LocationUpdateListener
-import social.entourage.android.newsfeed.NewsFeedListener
-import social.entourage.android.newsfeed.NewsfeedPagination
-import social.entourage.android.newsfeed.NewsfeedTabItem
+import social.entourage.android.base.location.LocationUpdateListener
+import social.entourage.android.base.newsfeed.NewsFeedListener
+import social.entourage.android.base.newsfeed.NewsfeedPagination
+import social.entourage.android.base.newsfeed.NewsfeedTabItem
 import social.entourage.android.tools.Utils.getDateStringFromSeconds
 import social.entourage.android.tools.log.CrashlyticsNewsFeedLogger
 import social.entourage.android.tools.log.LoggerNewsFeedLogger
@@ -168,7 +168,7 @@ class EntService : Service() {
     private fun createPendingIntent(action: String): PendingIntent {
         val intent = Intent()
         intent.action = action
-        return PendingIntent.getBroadcast(this, 0, intent, 0)
+        return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
     }
 
     private fun showNotification(action: Int) {
@@ -181,7 +181,7 @@ class EntService : Service() {
 
     private fun createNotification() {
         val notificationIntent = Intent(this, MainActivity::class.java)
-        val contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
+        val contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
         var builder = NotificationCompat.Builder(this, getString(R.string.local_service_notification_title))
                 .setSmallIcon(R.drawable.ic_baseline_play_arrow_24)
                 .setContentTitle(getString(R.string.local_service_running))

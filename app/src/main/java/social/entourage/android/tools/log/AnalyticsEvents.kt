@@ -7,7 +7,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.api.model.User
-import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
+import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
 import timber.log.Timber
 import java.util.*
 
@@ -284,10 +284,8 @@ object AnalyticsEvents {
     const val EVENT_ENTOURAGE_VIEW_WRITE_MESSAGE = "WriteMessage"
     const val EVENT_ENTOURAGE_VIEW_SPEECH = "SpeechRecognitionMessage"
     const val EVENT_ENTOURAGE_VIEW_ADD_MESSAGE = "AddContentToMessage"
-    const val EVENT_ENTOURAGE_VIEW_OPTIONS_OVERLAY = "OpenEntourageOptionsOverlay"
     const val EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE = "CloseEntourageConfirm"
     const val EVENT_ENTOURAGE_VIEW_OPTIONS_QUIT = "ExitEntourageConfirm"
-    const val EVENT_ENTOURAGE_VIEW_OPTIONS_EDIT = "EditEntourageConfirm"
     const val EVENT_ENTOURAGE_VIEW_INVITE_FRIENDS = "InviteFriendsClick"
     const val EVENT_ENTOURAGE_VIEW_INVITE_CONTACTS = "InviteContacts"
     const val EVENT_ENTOURAGE_VIEW_INVITE_PHONE = "InviteByPhoneNumber"
@@ -295,8 +293,6 @@ object AnalyticsEvents {
     const val EVENT_ENTOURAGE_VIEW_SWITCH_PUBLIC = "EntouragePublicPageFromMessages"
     const val EVENT_ENTOURAGE_VIEW_ASK_JOIN = "AskJoinFromPublicPage"
     const val EVENT_ENTOURAGE_CREATE_CHANGE_LOCATION = "ChangeLocationClick"
-    const val EVENT_ENTOURAGE_CLOSE_POPUP_SUCCESS = "SuccessfulClosePopup"
-    const val EVENT_ENTOURAGE_CLOSE_POPUP_FAILURE = "BlockedClosePopup"
     const val EVENT_ENTOURAGE_CLOSE_POPUP_HELP = "HelpRequestOnClosePopup"
     const val EVENT_ENTOURAGE_CLOSE_POPUP_CANCEL = "CancelClosePopup"
     const val EVENT_ENTOURAGE_SHARE_MEMBER = "ShareLinkAsMemberOrCreator"
@@ -570,6 +566,18 @@ object AnalyticsEvents {
     const val ACTION_LISTACTIONS_SWITCH_ASK = "Action__ListActions__Switch_Ask"
     const val ACTION_LISTACTIONS_SWITCH_CONTRIB = "Action__ListActions__Switch_Contrib"
     const val ACTION_LISTACTIONS_SHOW_DETAIL = "Action__ListActions__Show_Detail"
+
+    //POP Share / modify / close entourage
+    const val SHOW_MENU_OPTIONS = "View__Menu_Options__Show"
+    const val SHOW_MODIFY_ENTOURAGE = "View__Modify_Entourage__Show"
+
+    const val SHOW_POP_SHARE = "View__Pop_Share__Show"
+    const val ACTION_POP_SHARE_LINK = "Action__Pop_Share__Link"
+    const val ACTION_POP_SHARE_ENTOURAGE = "Action__Pop_Share__On_Entourage"
+
+    const val SHOW_POP_CLOSE = "View__Pop_Close_Entourage__Show"
+    const val ACTION_POP_CLOSE_SUCCESS = "Action__Pop_Close_Entourage__Success"
+    const val ACTION_POP_CLOSE_FAILED = "Action__Pop_Close_Entourage__Fail"
 
     val TAG: String? = AnalyticsEvents::class.java.simpleName
 

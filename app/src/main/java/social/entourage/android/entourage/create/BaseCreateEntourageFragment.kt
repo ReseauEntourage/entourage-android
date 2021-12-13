@@ -34,7 +34,7 @@ import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryFragment
 import social.entourage.android.entourage.category.EntourageCategoryManager
-import social.entourage.android.location.LocationFragment
+import social.entourage.android.base.location.LocationFragment
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.EntLinkMovementMethod
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -72,7 +72,7 @@ open class BaseCreateEntourageFragment
     private var isStartDateEdited = true
 
     protected var isFromNeo = false
-    protected var tagAnalyticName = ""
+    protected var tagAnalyticNameFromNeo = ""
 
     protected var landscape_photo_url:String? = null
     protected var portrait_photo_url:String? = null
@@ -151,7 +151,7 @@ open class BaseCreateEntourageFragment
     // ----------------------------------
     fun onCloseClicked() {
         if (isFromNeo) {
-            val _tag = String.format(AnalyticsEvents.ACTION_NEOFEEDACT_Cancel_X,tagAnalyticName)
+            val _tag = String.format(AnalyticsEvents.ACTION_NEOFEEDACT_Cancel_X,tagAnalyticNameFromNeo)
             AnalyticsEvents.logEvent(_tag)
         }
         dismiss()
@@ -168,7 +168,7 @@ open class BaseCreateEntourageFragment
                 saveEditedEntourage()
             } else {
                 if (isFromNeo) {
-                    val _tag = String.format(AnalyticsEvents.ACTION_NEOFEEDACT_Send_X,tagAnalyticName)
+                    val _tag = String.format(AnalyticsEvents.ACTION_NEOFEEDACT_Send_X,tagAnalyticNameFromNeo)
                     AnalyticsEvents.logEvent(_tag)
                 }
                 createEntourage()
@@ -314,11 +314,11 @@ open class BaseCreateEntourageFragment
     }
 
     protected open fun postEntourageCreated(entourage: BaseEntourage) {
-        Toast.makeText(
-                activity,
-                if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) R.string.outing_create_ok else R.string.entourage_create_ok,
-                Toast.LENGTH_LONG
-        ).show()
+//        Toast.makeText(
+//                activity,
+//                if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) R.string.outing_create_ok else R.string.entourage_create_ok,
+//                Toast.LENGTH_LONG
+//        ).show()
         try {
             dismiss()
         } catch (e: IllegalStateException) {
@@ -370,7 +370,7 @@ open class BaseCreateEntourageFragment
             groupType = args.getString(KEY_ENTOURAGE_GROUP_TYPE, null)
             entourageCategory = args.getSerializable(EntourageCategoryFragment.KEY_ENTOURAGE_CATEGORY) as EntourageCategory?
             isFromNeo = args.getBoolean(KEY_ENTOURAGE_FROM_NEO,false)
-            tagAnalyticName = args.getString(KEY_ENTOURAGE_TAG_ANALYTICS,"")
+            tagAnalyticNameFromNeo = args.getString(KEY_ENTOURAGE_TAG_ANALYTICS,"")
 
         }
         initializeCategory()
@@ -825,13 +825,25 @@ open class BaseCreateEntourageFragment
         private const val VOICE_RECOGNITION_DESCRIPTION_CODE = 2
         private const val ADD_HOURS_TO_END_DATE = 3
 
-        fun newInstance(location: LatLng?, groupType: String, category: EntourageCategory?, isFromNeo:Boolean,tagAnalyticName:String): CreateEntourageFragment {
+        fun newNeoInstance(location: LatLng?, groupType: String, category: EntourageCategory?, tagAnalyticName:String): CreateEntourageFragment {
             val fragment = CreateEntourageFragment()
             val args = Bundle()
             args.putParcelable(KEY_ENTOURAGE_LOCATION, location)
             args.putString(KEY_ENTOURAGE_GROUP_TYPE, groupType)
-            args.putBoolean(KEY_ENTOURAGE_FROM_NEO,isFromNeo)
+            args.putBoolean(KEY_ENTOURAGE_FROM_NEO,true)
             args.putString(KEY_ENTOURAGE_TAG_ANALYTICS,tagAnalyticName)
+            if (category != null) {
+                args.putSerializable(EntourageCategoryFragment.KEY_ENTOURAGE_CATEGORY, category)
+            }
+            fragment.arguments = args
+            return fragment
+        }
+
+        fun newExpertInstance(location: LatLng?, groupType: String, category: EntourageCategory?): CreateEntourageFragment {
+            val fragment = CreateEntourageFragment()
+            val args = Bundle()
+            args.putParcelable(KEY_ENTOURAGE_LOCATION, location)
+            args.putString(KEY_ENTOURAGE_GROUP_TYPE, groupType)
             if (category != null) {
                 args.putSerializable(EntourageCategoryFragment.KEY_ENTOURAGE_CATEGORY, category)
             }

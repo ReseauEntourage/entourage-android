@@ -18,10 +18,10 @@
         android:background="?attr/selectableItemBackground"
         android:contentDescription="Information"
         android:scaleType="fitXY"
-        android:tint="@color/accent"
         android:visibility="gone"
         app:srcCompat="@drawable/ic_info_white_24dp"
-        tools:visibility="visible" />
+        tools:visibility="visible"
+        app:tint="@color/accent" />
 
     <ImageButton
         android:id="@+id/entourage_info_more_button"
@@ -30,8 +30,8 @@
         android:background="?attr/selectableItemBackground"
         android:contentDescription="Plus"
         android:scaleType="fitXY"
-        android:tint="@color/accent"
         android:visibility="gone"
         app:srcCompat="@drawable/ic_more_3filleddots"
-        tools:visibility="visible" />
+        tools:visibility="visible"
+        app:tint="@color/accent" />
 </LinearLayout>

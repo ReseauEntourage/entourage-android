@@ -119,7 +119,7 @@ class InviteContactsAdapter(private val context: Context, fromColumn: String) : 
         while (cursor.moveToNext()) {
             val cursorData = cursor.getString(columnIndex)
             val contactID = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))
-            val startChar = cursorData.substring(0, 1).toUpperCase(Locale.ENGLISH)
+            val startChar = cursorData.substring(0, 1).uppercase(Locale.ENGLISH)
             if (!mSectionHeader.containsKey(startChar)) {
                 mData.add(InviteItemSection(startChar))
                 mSectionHeader[startChar] = mData.size - 1

@@ -34,10 +34,10 @@
                 android:background="?attr/selectableItemBackground"
                 android:contentDescription="@string/empty_description"
                 android:padding="5dp"
-                android:tint="@color/feeditem_details_topbar_background"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/ic_baseline_arrow_back_36" />
+                app:srcCompat="@drawable/ic_baseline_arrow_back_36"
+                app:tint="@color/feeditem_details_topbar_background" />
 
             <TextView
                 android:id="@+id/ui_tv_title"

@@ -47,7 +47,7 @@
                     android:contentDescription="@string/empty_description"
                     android:padding="5dp"
                     app:srcCompat="@drawable/ic_baseline_arrow_back_24"
-                    android:tint="@color/accent"/>
+                    app:tint="@color/accent" />
 
                 <TextView
                     android:id="@+id/webview_title"
@@ -72,7 +72,7 @@
                     android:contentDescription="@string/empty_description"
                     android:padding="5dp"
                     app:srcCompat="@drawable/ic_more_3filleddots"
-                    android:tint="@color/accent"/>
+                    app:tint="@color/accent" />
             </LinearLayout>
 
             <View

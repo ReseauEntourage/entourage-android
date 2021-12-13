@@ -72,7 +72,7 @@ class ReadEncounterActivity : BaseActivity() {
         }
     }
 
-    private class GeocoderTask internal constructor(context: ReadEncounterActivity) : AsyncTask<Encounter?, Void?, Encounter?>() {
+    private class GeocoderTask(context: ReadEncounterActivity) : AsyncTask<Encounter?, Void?, Encounter?>() {
         private val activityReference: WeakReference<ReadEncounterActivity> = WeakReference(context)
 
         override fun doInBackground(vararg params: Encounter?): Encounter? {

@@ -33,11 +33,11 @@
                     android:adjustViewBounds="true"
                     android:background="@drawable/bg_clickable_layout_alert"
                     android:contentDescription="@string/guide_alert_info_desc"
-                    android:tint="@color/white"
                     app:layout_constraintBottom_toBottomOf="@+id/fragment_guide_alert"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_info_white_24dp" />
+                    app:srcCompat="@drawable/ic_info_white_24dp"
+                    app:tint="@color/white" />
 
                 <TextView
                     android:id="@+id/fragment_guide_alert"
@@ -63,11 +63,11 @@
                     android:adjustViewBounds="true"
                     android:background="@drawable/bg_clickable_layout_alert"
                     android:contentDescription="@string/guide_alert_arrow_desc"
-                    android:tint="@color/white"
                     app:layout_constraintBottom_toBottomOf="@+id/fragment_guide_alert"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_expand_more_black_24dp" />
+                    app:srcCompat="@drawable/ic_expand_more_black_24dp"
+                    app:tint="@color/white" />
 
                 <social.entourage.android.tools.view.HtmlTextView
                     android:id="@+id/fragment_guide_alert_description"

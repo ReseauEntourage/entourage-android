@@ -29,9 +29,9 @@ import social.entourage.android.guide.poi.PoiRenderer
 import social.entourage.android.guide.poi.PoisAdapter
 import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.guide.poi.ReadPoiFragment.Companion.newInstance
-import social.entourage.android.location.EntLocation
-import social.entourage.android.location.LocationUtils.isLocationPermissionGranted
-import social.entourage.android.map.BaseMapFragment
+import social.entourage.android.base.location.EntLocation
+import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
+import social.entourage.android.base.map.BaseMapFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.EntLinkMovementMethod
@@ -158,7 +158,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
                     poiCollection.forEach { poi ->
                         mapRenderer.getMarkerOptions(poi, requireContext())?.let { markerOptions ->
                             map.addMarker(markerOptions).apply {
-                                this.tag = poi
+                                this?.tag = poi
                             }
                         }
                     }
@@ -509,8 +509,8 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         }
     }
 
-    override fun onMarkerClick(poiMarker: Marker?): Boolean {
-        (poiMarker?.tag as? Poi)?.let { poi ->
+    override fun onMarkerClick(poiMarker: Marker): Boolean {
+        (poiMarker.tag as? Poi)?.let { poi ->
             showPoiDetails(poi,false)
         }
         return true

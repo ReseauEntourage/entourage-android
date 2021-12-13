@@ -24,10 +24,11 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import social.entourage.android.newsfeed.v2.HomeCard
+import social.entourage.android.home.HomeCard
 import social.entourage.android.onboarding.login.LoginActivity
 import social.entourage.android.tools.EntBus
 import java.io.IOException
+import java.util.*
 import kotlin.random.Random
 
 
@@ -120,7 +121,8 @@ class HomeExpertTest {
         //Click on an Action item type demand
         headlineRv.perform(actionOnItemAtPosition<ViewHolder>(0, click()))
         val joinButton = onView(allOf(withId(R.id.entourage_info_request_join_button), isDisplayed()))
-        joinButton.check(matches(withText(context.getString(R.string.tour_info_request_join_button_entourage).toUpperCase())))
+        joinButton.check(matches(withText(context.getString(R.string.tour_info_request_join_button_entourage)
+            .uppercase(Locale.getDefault()))))
 
         clickCloseButton()
 
@@ -133,7 +135,8 @@ class HomeExpertTest {
 
         //Click on an Action item type outing
         headlineRv.perform(actionOnItemAtPosition<ViewHolder>(2, click()))
-        joinButton.check(matches(withText(context.getString(R.string.tour_info_request_join_button_event).toUpperCase())))
+        joinButton.check(matches(withText(context.getString(R.string.tour_info_request_join_button_event)
+            .uppercase(Locale.getDefault()))))
 
         clickCloseButton()
 
@@ -154,7 +157,8 @@ class HomeExpertTest {
 
         val eventsRv = onView(allOf(withId(R.id.ui_recyclerview_event), isDisplayed()))
         eventsRv.perform(actionOnItemAtPosition<ViewHolder>(0, click()))
-        joinButton.check(matches(withText(context.getString(R.string.tour_info_request_join_button_event).toUpperCase())))
+        joinButton.check(matches(withText(context.getString(R.string.tour_info_request_join_button_event)
+            .uppercase(Locale.getDefault()))))
 
         clickCloseButton()
 
@@ -168,7 +172,8 @@ class HomeExpertTest {
 
         val actionsRv = onView(allOf(withId(R.id.ui_recyclerview_action), isDisplayed()))
         actionsRv.perform(actionOnItemAtPosition<ViewHolder>(0, click()))
-        joinButton.check(matches(withText(context.getString(R.string.tour_info_request_join_button_entourage).toUpperCase())))
+        joinButton.check(matches(withText(context.getString(R.string.tour_info_request_join_button_entourage)
+            .uppercase(Locale.getDefault()))))
 
         clickCloseButton()
     }

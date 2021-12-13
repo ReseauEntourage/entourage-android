@@ -44,8 +44,8 @@ import social.entourage.android.api.tape.Events.OnUserJoinRequestUpdateEvent
 import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.entourage.EntourageCloseFragment
 import social.entourage.android.entourage.information.report.EntourageReportFragment
-import social.entourage.android.location.EntLocation
-import social.entourage.android.map.OnAddressClickListener
+import social.entourage.android.base.location.EntLocation
+import social.entourage.android.base.map.OnAddressClickListener
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -115,6 +115,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
     }
 
     override fun showInviteSource(isShareOnly:Boolean) {
+        AnalyticsEvents.logEvent(AnalyticsEvents.SHOW_POP_SHARE)
         entourage_info_invite_source_layout?.visibility = View.VISIBLE
         entourage_info_invite_source_layout?.invite_source_number_button?.visibility = if (isShareOnly) View.GONE else View.VISIBLE
         invite_source_description?.setText(entourage.getInviteSourceDescription())

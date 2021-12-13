@@ -57,7 +57,7 @@ object EntourageCategoryManager {
 
     @StringRes
     fun getGroupTypeDescription(groupType: String): Int {
-        return when (groupType.toLowerCase(Locale.ROOT)) {
+        return when (groupType.lowercase(Locale.ROOT)) {
             BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION -> R.string.entourage_category_type_contribution_label
             BaseEntourage.GROUPTYPE_ACTION_DEMAND -> R.string.entourage_category_type_demand_label
             else -> R.string.entourage_category_type_demand_label //By default : GROUPTYPE_DEMAND

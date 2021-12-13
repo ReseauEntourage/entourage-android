@@ -5,7 +5,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/white"
                 android:fitsSystemWindows="true"
-                tools:context="social.entourage.android.location.LocationFragment">
+                tools:context=".base.location.LocationFragment">
 
     <social.entourage.android.tools.view.CustomTitleView
         android:id="@+id/entourage_location_title_layout"

@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:entourageTitle="@string/user_profile_display_title"
-        app:entourageTitleAction="@string/user_save_button"/>
+        app:entourageTitleAction="@string/user_save_button" />
 
     <ScrollView
         android:id="@+id/scrollView"

@@ -197,7 +197,12 @@ class MyEntouragesFragment  : BaseDialogFragment(), BaseViewHolderListener, Load
     // ----------------------------------
     // Push handling
     // ----------------------------------
-    fun onPushNotificationReceived(message: Message) {
+    @Subscribe
+    fun onAddPushNotification(message: Message) {
+        onPushNotificationReceived(message)
+    }
+
+    private fun onPushNotificationReceived(message: Message) {
         val content = message.content ?: return
         val cardType: Int = if (content.isTourRelated) TimestampedObject.TOUR_CARD else if (content.isEntourageRelated) TimestampedObject.ENTOURAGE_CARD else return
         val card = entouragesAdapter.findCard(cardType, content.joinableId)

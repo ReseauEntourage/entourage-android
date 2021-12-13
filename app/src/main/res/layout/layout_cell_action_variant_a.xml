@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="200dp"
+    android:layout_height="218dp"
+    android:background="@drawable/bg_rounded_white_plain_eight">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:foreground="@drawable/button_text_black_state"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp"
+        app:cardPreventCornerOverlap="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/ui_action_picto_type"
+                android:layout_width="24dp"
+                android:layout_height="20dp"
+                android:layout_marginBottom="4dp"
+                app:layout_constraintBottom_toTopOf="@+id/ui_action_picto_location"
+                app:layout_constraintStart_toStartOf="@+id/ui_action_title"
+                app:srcCompat="@drawable/ic_event_accent_24dp" />
+
+            <TextView
+                android:id="@+id/ui_action_tv_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="Type"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/ui_action_picto_type"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ui_action_picto_type"
+                app:layout_constraintTop_toTopOf="@+id/ui_action_picto_type" />
+
+            <TextView
+                android:id="@+id/ui_action_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="Title\nL2"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ui_action_picto_location"
+                android:layout_width="24dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="@+id/ui_action_picto_type"
+                app:layout_constraintTop_toBottomOf="@+id/ui_action_picto_type"
+                app:srcCompat="@drawable/ic_location_gds_detail" />
+
+            <TextView
+                android:id="@+id/ui_action_tv_location"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="location"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/ui_action_picto_location"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ui_action_picto_location"
+                app:layout_constraintTop_toTopOf="@+id/ui_action_picto_location" />
+
+            <ImageView
+                android:id="@+id/ui_action_iv_user"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/empty_description"
+                android:scaleType="centerInside"
+                app:layout_constraintStart_toStartOf="@+id/ui_action_picto_location"
+                app:layout_constraintTop_toBottomOf="@+id/ui_action_picto_location"
+                app:srcCompat="@drawable/ic_user_photo_small" />
+
+            <social.entourage.android.tools.view.PartnerLogoImageView
+                android:id="@+id/ui_action_iv_user_check"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="19dp"
+                android:layout_marginTop="19dp"
+                app:layout_constraintStart_toStartOf="@+id/ui_action_iv_user"
+                app:layout_constraintTop_toTopOf="@+id/ui_action_iv_user"
+                app:srcCompat="@drawable/ic_entourage_logo_two_colors" />
+
+            <TextView
+                android:id="@+id/ui_action_tv_username"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="username"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/ui_action_iv_user"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ui_action_iv_user"
+                app:layout_constraintTop_toTopOf="@+id/ui_action_iv_user" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/ui_action_iv_user"
+                app:layout_constraintTop_toBottomOf="@+id/ui_action_iv_user_check">
+
+                <TextView
+                    android:id="@+id/textView34"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:text="@string/show_more"
+                    android:textColor="@color/accent"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView28"
+                    android:layout_width="24dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView34"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView34"
+                    app:layout_constraintTop_toTopOf="@+id/textView34"
+                    app:srcCompat="@drawable/ic_home_arrow_show_orange" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

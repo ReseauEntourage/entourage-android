@@ -3,7 +3,7 @@ package social.entourage.android.api.model
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.annotations.SerializedName
-import social.entourage.android.location.EntLocation.currentLocation
+import social.entourage.android.base.location.EntLocation.currentLocation
 import java.io.Serializable
 import java.util.*
 

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_map_tour_filter.*
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
-import social.entourage.android.map.filter.BaseMapFilterFragment
+import social.entourage.android.base.map.filter.BaseMapFilterFragment
 
 class TourFilterFragment  : BaseMapFilterFragment() {
     // ----------------------------------

@@ -20,7 +20,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.tour.Encounter
 import social.entourage.android.api.tape.Events.TourEvents.OnEncounterCreated
 import social.entourage.android.api.tape.Events.TourEvents.OnEncounterUpdated
-import social.entourage.android.location.LocationFragment
+import social.entourage.android.base.location.LocationFragment
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.view.EntSnackbar
 import timber.log.Timber

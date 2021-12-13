@@ -190,12 +190,18 @@ class Tour : FeedItem, Serializable {
 
     override fun getFeedTypeLong(context: Context): String {
         if (tourType == TourType.MEDICAL.typeName) {
-            return context.getString(R.string.tour_info_text_type_title, context.getString(R.string.tour_type_medical).toLowerCase())
+            return context.getString(R.string.tour_info_text_type_title,
+                context.getString(R.string.tour_type_medical).lowercase(Locale.getDefault())
+            )
         } else if (tourType == TourType.ALIMENTARY.typeName) {
-            return context.getString(R.string.tour_info_text_type_title, context.getString(R.string.tour_type_alimentary).toLowerCase())
+            return context.getString(R.string.tour_info_text_type_title,
+                context.getString(R.string.tour_type_alimentary).lowercase(Locale.getDefault())
+            )
         }
         ////Default Type: if (tourType.equals(TourType.BARE_HANDS.getName())) {
-        return context.getString(R.string.tour_info_text_type_title, context.getString(R.string.tour_type_bare_hands).toLowerCase())
+        return context.getString(R.string.tour_info_text_type_title,
+            context.getString(R.string.tour_type_bare_hands).lowercase(Locale.getDefault())
+        )
     }
 
     override fun getTitle(): String? {

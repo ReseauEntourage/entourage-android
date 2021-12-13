@@ -87,7 +87,7 @@ class MyActionsFragment : BaseDialogFragment() {
     }
 
     fun setupRecyclerView() {
-        val isContrib = if (indexSelected == 0) true else false
+        val isContrib = indexSelected == 0
         adapter = MyActionsAdapter(arrayItemsSelected, isContrib,true) { position ->
             if (isAlreadyShow) return@MyActionsAdapter
             val feed = arrayItemsSelected[position]
@@ -120,7 +120,7 @@ class MyActionsFragment : BaseDialogFragment() {
                 }
             }
         }
-        val isContrib = if (indexSelected == 0) true else false
+        val isContrib = indexSelected == 0
         adapter?.updateAdapter(arrayItemsSelected,isContrib,false)
 
         ui_recyclerView?.layoutManager?.scrollToPosition(0)

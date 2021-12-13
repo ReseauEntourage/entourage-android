@@ -277,7 +277,7 @@ object PushNotificationManager {
         val ctaIntent = Intent(Intent.ACTION_VIEW, Uri.parse(fcmCTA))
         val builder = NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.drawable.ic_entourage_logo_one_color)
-                .setContentIntent(PendingIntent.getActivity(context, 0, ctaIntent, PendingIntent.FLAG_UPDATE_CURRENT))
+                .setContentIntent(PendingIntent.getActivity(context, 0, ctaIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
                 .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.ic_entourage_logo_two_colors))
                 .setContentTitle(fcmTitle)
                 .setContentText(fcmBody)
@@ -344,7 +344,7 @@ object PushNotificationManager {
         }
         messageIntent.action = messageType
         messageIntent.putExtras(args)
-        return PendingIntent.getActivity(context, message.pushNotificationId, messageIntent, 0)
+        return PendingIntent.getActivity(context, message.pushNotificationId, messageIntent, PendingIntent.FLAG_IMMUTABLE)
     }
 
     // ----------------------------------

@@ -20,11 +20,11 @@ import social.entourage.android.api.tape.EncounterTaskResult
 import social.entourage.android.api.tape.Events.OnBetterLocationEvent
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted
 import social.entourage.android.authentication.AuthenticationController
-import social.entourage.android.location.EntLocation.currentLocation
-import social.entourage.android.location.LocationProvider
-import social.entourage.android.location.LocationProvider.UserType
-import social.entourage.android.newsfeed.NewsfeedPagination
-import social.entourage.android.newsfeed.NewsfeedTabItem
+import social.entourage.android.base.location.EntLocation.currentLocation
+import social.entourage.android.base.location.LocationProvider
+import social.entourage.android.base.location.LocationProvider.UserType
+import social.entourage.android.base.newsfeed.NewsfeedPagination
+import social.entourage.android.base.newsfeed.NewsfeedTabItem
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tour.TourFilter
 import social.entourage.android.tour.encounter.CreateEncounterPresenter.EncounterUploadTask

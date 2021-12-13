@@ -1,5 +1,8 @@
 package social.entourage.android.mainprofile
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.DialogInterface
 import android.net.Uri
 import android.os.Bundle
@@ -8,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.installations.FirebaseInstallations
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.layout_mainprofile.*
 import kotlinx.android.synthetic.main.layout_mainprofile_appversion.*
@@ -19,7 +23,6 @@ import social.entourage.android.api.tape.Events
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
-import social.entourage.android.user.edit.UserEditFragment
 
 /**
  * Side menu fragment

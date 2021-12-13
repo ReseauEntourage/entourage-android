@@ -7,8 +7,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.tour.Encounter
 import social.entourage.android.base.BaseCardViewHolder
-import social.entourage.android.newsfeed.v2.ToursFragment
-import social.entourage.android.tools.EntBus
+import social.entourage.android.tour.ToursFragment
 import social.entourage.android.tools.Utils
 
 /**
