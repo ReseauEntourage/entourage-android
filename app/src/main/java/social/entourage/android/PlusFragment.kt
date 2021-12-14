@@ -81,13 +81,7 @@ class PlusFragment : Fragment(), BackPressable {
                ui_tv_agir_good_waves_subtitle?.text = getString(R.string.agir_bonnes_ondes_others)
            }
 
-           val isUserHelp = currentUser.goal?.contains(User.USER_GOAL_ALONE, true) ==true
-                   || currentUser.goal?.contains(User.USER_GOAL_NEIGHBOUR, true)==true
-           val hasPartnerId = currentUser.partner?.id != null
-           val isAmbassador = currentUser.roles?.contains("ambassador")==true
-
-           val showAddEvent = !isUserHelp || hasPartnerId || isAmbassador
-           layout_line_create_outing?.visibility = if (showAddEvent) View.VISIBLE else View.GONE
+           layout_line_create_outing?.visibility = if (currentUser.isCreateEventActive()) View.VISIBLE else View.GONE
        }
     }
 

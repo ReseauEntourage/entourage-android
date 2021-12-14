@@ -48,6 +48,9 @@ class User : Serializable {
     @SerializedName("unread_count")
     var unreadCount:Int? = null
 
+    @SerializedName("permissions")
+    private var permissions:UserPermissions? = null
+
     // ----------------------------------
     // ATTRIBUTES (Not Serialized)
     // ----------------------------------
@@ -97,6 +100,10 @@ class User : Serializable {
     // ----------------------------------
     // Other methods
     // ----------------------------------
+    fun isCreateEventActive() : Boolean {
+        return permissions?.isEventCreationActive() ?: false
+    }
+
     fun getMemberships(type: String?): ArrayList<UserMembership> {
         type?.let {
             memberships?.forEach { membershipList ->
