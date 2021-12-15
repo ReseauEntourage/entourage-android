@@ -618,7 +618,6 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         }
         else if (authorUser != null && authorUser?.roles?.size ?: 0 > 0) {
             ui_action_event_creator_layout_bottom?.visibility = View.VISIBLE
-            Timber.d("***$* ici update authorView ici roles > 0")
             authorUser?.roles?.let { roles ->
                 for (roleStr in roles) {
                     if (roleStr.equals("ambassador",true)) {
