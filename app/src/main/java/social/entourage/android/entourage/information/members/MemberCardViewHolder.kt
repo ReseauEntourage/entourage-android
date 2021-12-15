@@ -1,6 +1,7 @@
 package social.entourage.android.entourage.information.members
 
 import android.net.Uri
+import android.view.Gravity
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.TypedArrayUtils.getText
@@ -78,6 +79,9 @@ class MemberCardViewHolder(view: View) : BaseCardViewHolder(view) {
                 continue
             }
             val userRoleView = UserRoleView(itemView.context)
+            userRoleView.backgroundCornerRadius = 8f
+            userRoleView.textSize = 12f
+            userRoleView.gravity = Gravity.CENTER_VERTICAL
             userRoleView.setRole(userRole)
             itemView.tic_member_tags?.addView(userRoleView)
         }

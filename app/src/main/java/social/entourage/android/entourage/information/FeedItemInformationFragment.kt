@@ -132,6 +132,13 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
             if (newFeedItem.isPrivate()) {
                 initializeView()
                 loadPrivateCards()
+                val distance = newFeedItem.getStartPoint()?.let { startPoint ->
+                    EntLocation.currentLocation?.let { currentLocation ->
+                        ceil(startPoint.distanceTo(LocationPoint(currentLocation.latitude, currentLocation.longitude)) / 1000.toDouble()).toInt() // in kilometers
+                    } ?: 0
+                } ?: 0
+                presenter().getFeedItem(newFeedItem.uuid
+                        ?: "", newFeedItem.type, 0, distance)
             } else {
                 // public entourage
                 // we need to retrieve the whole entourage again, just to send the distance and feed position

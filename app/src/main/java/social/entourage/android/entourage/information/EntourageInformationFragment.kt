@@ -563,6 +563,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         val role = partner?.userRoleTitle
 
         ui_action_event_creator_ambassador?.visibility = View.GONE
+        ui_action_event_creator_ambassador2?.visibility = View.GONE
 
         author?.userID?.let { userId ->
             layout_detail_event_action_creator?.setOnClickListener {
@@ -597,10 +598,27 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
                     EntBus.post(Events.OnShowDetailAssociation(partnerId))
                 }
             }
+
+            if (authorUser != null && authorUser?.roles?.size ?: 0 > 0) {
+                authorUser?.roles?.let { roles ->
+                    for (roleStr in roles) {
+                        if (roleStr.equals("ambassador",true)) {
+                            UserRolesFactory.findByName(roleStr)?.let { userRole ->
+                                val ambassador = "  ${getString(userRole.nameResourceId)}  "
+                                ui_action_event_creator_ambassador2?.text = ambassador
+                                ui_action_event_creator_ambassador2?.setTextColor(ContextCompat.getColor(requireContext(),R.color.white))
+                                ui_action_event_creator_ambassador2?.background = ContextCompat.getDrawable(requireContext(),R.drawable.bg_button_rounded_orange_plain_4)
+                                ui_action_event_creator_ambassador2?.visibility = View.VISIBLE
+                            }
+                            break
+                        }
+                    }
+                }
+            }
         }
         else if (authorUser != null && authorUser?.roles?.size ?: 0 > 0) {
             ui_action_event_creator_layout_bottom?.visibility = View.VISIBLE
-
+            Timber.d("***$* ici update authorView ici roles > 0")
             authorUser?.roles?.let { roles ->
                 for (roleStr in roles) {
                     if (roleStr.equals("ambassador",true)) {
