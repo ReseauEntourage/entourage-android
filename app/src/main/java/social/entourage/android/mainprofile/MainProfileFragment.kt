@@ -9,10 +9,14 @@ import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.layout_mainprofile.*
 import kotlinx.android.synthetic.main.layout_mainprofile_appversion.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
+import social.entourage.android.api.request.UserResponse
 import social.entourage.android.api.tape.Events
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -37,6 +41,7 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
         super.onViewCreated(view, savedInstanceState)
         initialiseView()
         updateUserView()
+        getUser()
     }
 
     override fun onResume() {
@@ -198,6 +203,24 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
             ).show()
         }
         return true
+    }
+
+
+    fun getUser() {
+        val user = EntourageApplication.me(activity) ?: return
+        val userRequest = EntourageApplication.get().components.userRequest
+        userRequest.getUser(user.id).enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                if (response.isSuccessful) {
+                    response.body()?.user?.let { EntourageApplication.get().components.authenticationController.saveUser(it) }
+                }
+                updateUserView()
+            }
+
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                updateUserView()
+            }
+        })
     }
 
     companion object {
