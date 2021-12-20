@@ -182,6 +182,11 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             ui_layout_button_close?.visibility = if (entourage.isClosed() || !entourage.canBeClosed()) View.GONE else View.VISIBLE
             entourage_option_stop?.visibility = if (entourage.isClosed() || !entourage.canBeClosed()) View.GONE else View.VISIBLE
             entourage_option_stop?.setText( R.string.tour_info_options_freeze_tour)
+
+            if (entourage.isEvent()) {
+                entourage_option_stop?.setText(R.string.tour_info_options_cancel_event)
+            }
+
             if ((entourage.isOpen())  || (entourage.isSuspended())){
                 entourage_option_edit?.visibility = View.VISIBLE
                 entourage_option_reopen?.visibility = View.GONE

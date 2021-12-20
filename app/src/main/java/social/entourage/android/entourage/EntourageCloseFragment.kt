@@ -70,7 +70,7 @@ class EntourageCloseFragment : DialogFragment() {
         isCancelable = false
 
         entourage_close_close_button?.setOnClickListener {onCloseClicked()}
-        entourage_close_success_button?.setOnClickListener {onSuccessClicked(null)}
+        entourage_close_success_button?.setOnClickListener {onFailedClicked(null)}
 
         ui_bt_action_success?.setOnClickListener {
             isSuccess = !isSuccess

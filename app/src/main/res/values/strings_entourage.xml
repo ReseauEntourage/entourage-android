@@ -183,7 +183,7 @@
     <string name="entourage_close_email_title_help">Aide pour l\'entourage \'%1$s\'</string>
 
     <string name="event_close_title2">J’annule\nmon événement</string>
-    <string name="event_close_description2">En annulant l’événement, vous fermez la discussion et retirez l’événement du fil d’actualité.</string>
+    <string name="event_close_description2">En annulant l’événement, la discussion sera fermée et l’événement n’apparaîtra plus dans le fil d’actualité.</string>
     <string name="event_validate_button2">ANNULER L’EVENEMENT</string>
 
     <!-- Share Entourage -->

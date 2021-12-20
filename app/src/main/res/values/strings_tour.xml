@@ -34,6 +34,7 @@
     <string name="tour_info_error_chat_message">Message non envoyé</string>
 
     <string name="tour_info_options_freeze_tour">Clôturer</string>
+    <string name="tour_info_options_cancel_event">Annuler l\'événement</string>
     <string name="tour_info_options_stop_tour">@string/tour_stop</string>
     <string name="tour_info_options_quit_tour">Quitter</string>
     <string name="tour_info_options_report">Signaler un problème</string>
@@ -103,6 +104,7 @@
     <string name="tour_cell_button_freezed_success">Succès</string>
     <string name="tour_cell_button_view">Voir plus</string>
     <string name="tour_cell_button_pending_new">Demandé</string>
+    <string name="tour_cell_button_freezed_success_cancel">Annulé</string>
 
     <string name="tour_cell_title_event">Événement %1$s</string>
     <!-- Join Request -->

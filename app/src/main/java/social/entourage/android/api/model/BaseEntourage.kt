@@ -187,6 +187,7 @@ open class BaseEntourage : FeedItem, Serializable {
 
     @StringRes
     override fun getClosedCTAText(): Int {
+        if (isEvent()) return R.string.tour_cell_button_freezed_success_cancel
         return if (outcome?.success==true) R.string.tour_cell_button_freezed_success else super.getClosedCTAText()
     }
 
