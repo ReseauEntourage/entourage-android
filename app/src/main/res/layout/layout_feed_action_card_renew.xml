@@ -52,12 +52,12 @@
 
         <TextView
             android:id="@+id/ui_action_tv_location"
-            android:layout_width="82dp"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="75001"
+            android:text="à 40km - 75000"
             android:textColor="@color/black"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/ui_action_picto_location2"
