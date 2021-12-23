@@ -378,8 +378,6 @@ open class BaseEntourage : FeedItem, Serializable {
         private const val HASH_STRING_HEAD = "Entourage-"
         const val GROUPTYPE_ACTION_CONTRIBUTION = "contribution"
         const val GROUPTYPE_ACTION_DEMAND = "ask_for_help"
-        const val GROUPTYPE_PRIVATE_CIRCLE = "private_circle"
-        const val GROUPTYPE_NEIGHBORHOOD = "neighborhood"
         const val GROUPTYPE_CONVERSATION = "conversation"
         const val GROUPTYPE_OUTING = "outing"
         const val GROUPTYPE_ACTION = "action"
@@ -404,8 +402,6 @@ open class BaseEntourage : FeedItem, Serializable {
                 }
                 GROUPTYPE_CONVERSATION -> EntourageConversation::class.java
                 GROUPTYPE_OUTING -> EntourageEvent::class.java
-                GROUPTYPE_NEIGHBORHOOD -> EntourageNeighborhood::class.java
-                GROUPTYPE_PRIVATE_CIRCLE -> EntouragePrivateCircle::class.java
                 else -> EntourageDemand::class.java
             }
         }
@@ -423,8 +419,6 @@ open class BaseEntourage : FeedItem, Serializable {
                 }
                 GROUPTYPE_CONVERSATION -> EntourageConversation(category, title, description, location)
                 GROUPTYPE_OUTING -> EntourageEvent(category, title, description, location)
-                GROUPTYPE_NEIGHBORHOOD -> EntourageNeighborhood(category, title, description, location)
-                GROUPTYPE_PRIVATE_CIRCLE -> EntouragePrivateCircle(category, title, description, location)
                 else -> EntourageDemand(category, title, description, location)
             }
         }

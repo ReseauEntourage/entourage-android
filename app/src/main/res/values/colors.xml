@@ -27,6 +27,7 @@
     <color name="background_accent_dark_translucent">@color/pale_grey</color>
     <color name="background_transparent_grey">#0D000000</color>
     <color name="background_grey_empty">#EEF0F3</color>
+    <color name="background_toast">#025E7F</color>
     <color name="transparent">#00000000</color>
     <!-- Login -->
     <color name="background_login_light">#FFFFFF</color>
@@ -72,7 +73,6 @@
     <color name="tour_type_distributive">#ffc57f</color>
 
     <!-- Action types -->
-    <color name="action_type_neighborhood">#025E7F</color>
     <color name="action_type_outing">@color/greyish_brown</color>
     <color name="action_type_outing_icon_tint">#78104a</color>
 
