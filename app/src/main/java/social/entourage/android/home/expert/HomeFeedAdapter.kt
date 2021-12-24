@@ -9,10 +9,10 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.layout_cell_home_action_original.view.*
-import kotlinx.android.synthetic.main.layout_cell_home_empty.view.*
-import kotlinx.android.synthetic.main.layout_cell_home_event_original.view.*
-import kotlinx.android.synthetic.main.layout_cell_home_headline.view.*
+import kotlinx.android.synthetic.main.layout_cell_home_actions.view.*
+import kotlinx.android.synthetic.main.layout_cell_home_emptys.view.*
+import kotlinx.android.synthetic.main.layout_cell_home_events.view.*
+import kotlinx.android.synthetic.main.layout_cell_home_headlines.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.home.actions.ActionEventAdapter
@@ -25,14 +25,13 @@ import social.entourage.android.tools.view.RecyclerViewItemDecorationWithSpacing
 /**
  * HomeFeedAdapter.
  */
-class HomeFeedAdapter(var variantType:VariantCellType, val listener:HomeViewHolderListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HomeFeedAdapter(val listener:HomeViewHolderListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateDatas(items:ArrayList<HomeCard>, isLoading:Boolean, variantType:VariantCellType) {
+    fun updateDatas(items:ArrayList<HomeCard>, isLoading:Boolean) {
         this.arrayItems.clear()
         this.arrayItems.addAll(items)
         this.isLoading = isLoading
-        this.variantType = variantType
         notifyDataSetChanged()
     }
     var arrayItems = ArrayList<HomeCard>()
@@ -54,37 +53,22 @@ class HomeFeedAdapter(var variantType:VariantCellType, val listener:HomeViewHold
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
 
-        var cell_Event_id = 0
-        var cell_action_id = 0
-        if (variantType == VariantCellType.Original) {
-            cell_Event_id = R.layout.layout_cell_home_event_original
-            cell_action_id = R.layout.layout_cell_home_action_original
-        }
-        else if (variantType == VariantCellType.VariantA) {
-            cell_Event_id = R.layout.layout_cell_home_event_variant_a
-            cell_action_id = R.layout.layout_cell_home_action_variant_a
-        }
-        else if (variantType == VariantCellType.VariantB) {
-            cell_Event_id = R.layout.layout_cell_home_event_variant_b
-            cell_action_id = R.layout.layout_cell_home_action_variant_b
-        }
-
         when(viewType) {
             CELL_HEADLINES -> {
-                val view = inflater.inflate(R.layout.layout_cell_home_headline, parent, false)
+                val view = inflater.inflate(R.layout.layout_cell_home_headlines, parent, false)
                 return HeadlineVH(view)
             }
             CELL_ACTIONS -> {
-                val view = inflater.inflate(cell_action_id, parent, false)
+                val view = inflater.inflate(R.layout.layout_cell_home_actions, parent, false)
                 return  ActionVH(view)
             }
             CELL_EVENTS -> {
 
-                val view = inflater.inflate(cell_Event_id, parent, false)
+                val view = inflater.inflate(R.layout.layout_cell_home_events, parent, false)
                 return  EventVH(view)
             }
             else -> {
-                val view = inflater.inflate(R.layout.layout_cell_home_empty, parent, false)
+                val view = inflater.inflate(R.layout.layout_cell_home_emptys, parent, false)
                 return EmptyVH(view)
             }
         }
@@ -134,7 +118,6 @@ class HomeFeedAdapter(var variantType:VariantCellType, val listener:HomeViewHold
                 itemView.ui_title_headline.setBackgroundColor(ResourcesCompat.getColor(context.resources,R.color.transparent,null))
             }
 
-
             itemView.ui_recyclerview_headline?.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
             val adapter = HeadlineAdapter(arrayItems[position],listener,isLoading)
             itemView.ui_recyclerview_headline?.adapter = adapter
@@ -176,7 +159,7 @@ class HomeFeedAdapter(var variantType:VariantCellType, val listener:HomeViewHold
             }
 
             itemView.ui_recyclerview_action?.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
-            val adapter = ActionEventAdapter(arrayItems[position],listener,isLoading,variantType)
+            val adapter = ActionEventAdapter(arrayItems[position],listener,isLoading)
             itemView.ui_recyclerview_action?.adapter = adapter
 
             itemDecoration?.let { itemView.ui_recyclerview_action?.removeItemDecoration(it) }
@@ -211,7 +194,7 @@ class HomeFeedAdapter(var variantType:VariantCellType, val listener:HomeViewHold
             }
 
             itemView.ui_recyclerview_event?.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
-            val adapter = ActionEventAdapter(arrayItems[position],listener,isLoading,variantType)
+            val adapter = ActionEventAdapter(arrayItems[position],listener,isLoading)
             itemView.ui_recyclerview_event?.adapter = adapter
 
             itemDecoration?.let { itemView.ui_recyclerview_event?.removeItemDecoration(it) }

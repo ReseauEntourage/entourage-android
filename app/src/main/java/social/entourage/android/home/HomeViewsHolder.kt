@@ -15,7 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.layout_cell_action_more.view.*
-import kotlinx.android.synthetic.main.layout_cell_event_original.view.*
+import kotlinx.android.synthetic.main.layout_cell_event.view.*
 import kotlinx.android.synthetic.main.layout_cell_headline_action.view.*
 import kotlinx.android.synthetic.main.layout_cell_headline_action.view.ui_action_tv_location
 import kotlinx.android.synthetic.main.layout_cell_headline_announce.view.*
@@ -91,7 +91,7 @@ class AnnounceVH(view: View) : RecyclerView.ViewHolder(view) {
 class ActionVH(view: View) : RecyclerView.ViewHolder(view) {
     private var isAction = true //Use for tracking Firebase click
 
-    fun bind(data: Any?, listener: HomeViewHolderListener, position: Int, isFromHeadline: Boolean,isVariant:Boolean) {
+    fun bind(data: Any?, listener: HomeViewHolderListener, position: Int, isFromHeadline: Boolean) {
         itemView.setOnClickListener {
             data?.let { listener.onDetailClicked(data, position, isFromHeadline, isAction) }
         }
@@ -129,7 +129,7 @@ class ActionVH(view: View) : RecyclerView.ViewHolder(view) {
                 isAction = true
                 itemView.ui_action_tv_more?.text = itemView.context.resources.getString(R.string.show_more)
 
-                if (isVariant) {
+                if (!isFromHeadline) {
                     val cat = EntourageCategoryManager.findCategory(feedItem)
                     itemView.ui_action_tv_type?.text = cat.title_list
                 }
