@@ -367,7 +367,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginEnd="@dimen/act_button_right_padding"
-                android:drawableStart="@drawable/button_act_join"
+                app:drawableStartCompat="@drawable/button_act_join"
                 android:enabled="true"
                 android:text="@string/tour_cell_button_join" />
 

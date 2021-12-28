@@ -97,7 +97,6 @@
                     android:layout_centerInParent="true"
                     android:layout_marginTop="20dp"
                     android:background="@drawable/new_entourages"
-                    android:drawableStart="@drawable/arrow_new_entourages"
                     android:paddingStart="10dp"
                     android:paddingLeft="10dp"
                     android:paddingEnd="10dp"
@@ -107,6 +106,7 @@
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:visibility="gone"
+                    app:drawableStartCompat="@drawable/arrow_new_entourages"
                     tools:visibility="visible" />
 
                 <TextView
@@ -190,11 +190,11 @@
             class="social.entourage.android.entourage.minicards.EntourageMiniCardsView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/info_title_layout"
             android:layout_alignParentStart="true"
             android:layout_marginBottom="10dp"
             android:visibility="invisible"
-            tools:visibility="invisible"
-            android:layout_below="@+id/info_title_layout"/>
+            tools:visibility="invisible"/>
 
         <LinearLayout
             android:id="@+id/fragment_map_empty_list_popup"

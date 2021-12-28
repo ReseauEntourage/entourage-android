@@ -29,14 +29,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:drawableLeft="@android:drawable/ic_menu_search"
-            android:drawableStart="@android:drawable/ic_menu_search"
             android:ems="10"
             android:gravity="center"
             android:hint="@string/invite_contacts_search_hint"
             android:imeOptions="actionSearch"
             android:inputType="textPersonName"
-            android:textSize="@dimen/entourage_font_large"/>
+            android:textSize="@dimen/entourage_font_large"
+            app:drawableStartCompat="@android:drawable/ic_menu_search" />
     </LinearLayout>
 
     <ListView
@@ -52,8 +51,8 @@
         android:id="@+id/invite_contacts_quick_jump_listview"
         android:layout_width="20dp"
         android:layout_height="match_parent"
+        android:layout_below="@+id/invite_contacts_search_layout"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/invite_contacts_search_layout"
-        android:choiceMode="singleChoice"/>
+        android:choiceMode="singleChoice" />
 </RelativeLayout>
