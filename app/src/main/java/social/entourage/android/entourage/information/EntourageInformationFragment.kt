@@ -588,15 +588,12 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
                 ui_action_event_creator_role?.visibility = View.GONE
             }
 
-            var info_abo = getText(R.string.info_asso_abo).toString()
-            if (partner.isFollowing) {
-                info_abo = getText(R.string.info_asso_joined).toString()
-            }
+            val infoAbo = if (partner.isFollowing) getText(R.string.info_asso_joined).toString() else getText(R.string.info_asso_abo).toString()
 
-            val assoStr = partner.name + " " + info_abo
+            val assoStr = partner.name + " " + infoAbo
 
             val colorId = ContextCompat.getColor(requireContext(), R.color.accent)
-            val assoSpanner = Utils.formatTextWithBoldSpanAndColor(colorId,true,assoStr, info_abo)
+            val assoSpanner = Utils.formatTextWithBoldSpanAndColor(colorId,true,assoStr, infoAbo)
             ui_action_event_creator_bt_asso.text = assoSpanner
             ui_action_event_creator_bt_asso?.setOnClickListener {
                 partner.id.toInt().let { partnerId ->
