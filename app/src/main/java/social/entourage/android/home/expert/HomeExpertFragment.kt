@@ -72,15 +72,13 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
     // requested entourage category
     private var entourageCategory: EntourageCategory? = null
 
-    //val userId = presenter.authenticationController.me?.id ?:0
-
     private val connection = ServiceConnection()
     private var arrayEmpty = ArrayList<HomeCard>()
 
     private var isTourPostSend = false
-    var feedItemTemporary:FeedItem? = null
-    var countDownTimer:CountDownTimer? = null
-    var popInfoCreateEntourageFragment:PopInfoCreateEntourageFragment? = null
+    private var feedItemTemporary:FeedItem? = null
+    private var countDownTimer:CountDownTimer? = null
+    private var popInfoCreateEntourageFragment:PopInfoCreateEntourageFragment? = null
     val countDown = 5000L
 
 
@@ -112,41 +110,27 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
-    private fun displayChosenFeedItem(feedItemUUID: String, feedItemType: Int, invitationId: Long = 0) {
-        //display the feed item
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_ENTOURAGE)
-        presenter.openFeedItemFromUUID(feedItemUUID, feedItemType, invitationId)
-    }
-
-    private fun displayChosenFeedItem(feedItem: FeedItem, feedRank: Int) {
-        displayChosenFeedItem(feedItem, 0, feedRank)
-    }
-
-    private fun displayChosenFeedItem(feedItem: FeedItem, feedRank: Int,isFromCreate:Boolean) {
-        displayChosenFeedItem(feedItem, 0, feedRank,isFromCreate)
-    }
-
     fun closePopAndGo() {
         popInfoCreateEntourageFragment?.dismiss()
         countDownTimer?.cancel()
         countDownTimer = null
-        feedItemTemporary?.let { openFeedItem(it, 0 , 0,true) }
+        feedItemTemporary?.let { openFeedItem(it, true) }
     }
 
     private fun updatePopCreateAndShow() {
         var title = ""
         var subtitle = ""
 
-        if (feedItemTemporary is EntourageEvent) {
-            title = getString(R.string.infoPopCreateEventTitle)
-            subtitle = getString(R.string.infoPopCreateEvent)
-        }
-        else {
-            if (feedItemTemporary is EntourageContribution) {
+        when (feedItemTemporary) {
+            is EntourageEvent -> {
+                title = getString(R.string.infoPopCreateEventTitle)
+                subtitle = getString(R.string.infoPopCreateEvent)
+            }
+            is EntourageContribution -> {
                 title = getString(R.string.infoPopCreateContribTitle)
                 subtitle = getString(R.string.infoPopCreateContrib)
             }
-            else {
+            else -> {
                 title = getString(R.string.infoPopCreateAskTitle)
                 subtitle = getString(R.string.infoPopCreateAsk)
             }
@@ -167,7 +151,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
         countDownTimer?.start()
     }
 
-    private fun displayChosenFeedItem(feedItem: FeedItem, invitationId: Long, feedRank: Int = 0,isFromCreate: Boolean) {
+    private fun displayChosenFeedItem(feedItem: FeedItem, isFromCreate: Boolean) {
         if (context == null || isStateSaved) return
         // decrease the badge count
         EntourageApplication.get(context).removePushNotificationsForFeedItem(feedItem)
@@ -181,33 +165,11 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_ENTOURAGE)
 
         if (!isFromCreate) {
-            openFeedItem(feedItem, 0 , 0,false)
-            return
+            openFeedItem(feedItem,false)
+        } else {
+            feedItemTemporary = feedItem
+            updatePopCreateAndShow()
         }
-        feedItemTemporary = feedItem
-
-        updatePopCreateAndShow()
-    }
-
-    private fun displayChosenFeedItem(feedItem: FeedItem, invitationId: Long, feedRank: Int = 0) {
-        if (context == null || isStateSaved) return
-        // decrease the badge count
-        EntourageApplication.get(context).removePushNotificationsForFeedItem(feedItem)
-        //check if we are not already displaying the tour
-        (activity?.supportFragmentManager?.findFragmentByTag(FeedItemInformationFragment.TAG) as? FeedItemInformationFragment)?.let {
-            if (it.getItemType() == feedItem.type && it.feedItemId != null && it.feedItemId.equals(feedItem.uuid, ignoreCase = true)) {
-                //TODO refresh the tour info screen
-                return
-            }
-        }
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_ENTOURAGE)
-        openFeedItem(feedItem, invitationId, feedRank)
-    }
-
-    private fun displayChosenFeedItemFromShareURL(feedItemShareURL: String, feedItemType: Int) {
-        //display the feed item
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_ENTOURAGE)
-        presenter.openFeedItemFromShareURL(feedItemShareURL, feedItemType)
     }
 
     fun displayEntourageDisclaimer() {
@@ -231,31 +193,31 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             }
         }
         if (!isStateSaved) {
-            val fragmentManager = activity?.supportFragmentManager ?: return
-            BaseCreateEntourageFragment.newExpertInstance(location, groupType, entourageCategory).show(fragmentManager, BaseCreateEntourageFragment.TAG)
+            activity?.supportFragmentManager?.let { fragmentManager->
+                BaseCreateEntourageFragment.newExpertInstance(location, groupType, entourageCategory).show(fragmentManager, BaseCreateEntourageFragment.TAG)
+            }
         }
     }
 
-    fun openFeedItem(feedItem: FeedItem, invitationId: Long, feedRank: Int,isFromActions:Boolean) {
+    private fun openFeedItem(feedItem: FeedItem, isFromActions:Boolean) {
         try {
-            val fragmentManager = activity?.supportFragmentManager ?: return
-            FeedItemInformationFragment.newInstance(feedItem, invitationId, feedRank,isFromActions).show(fragmentManager, FeedItemInformationFragment.TAG)
+            activity?.supportFragmentManager?.let { fragmentManager ->
+                FeedItemInformationFragment.newInstance(feedItem,0,0,isFromActions).show(fragmentManager, FeedItemInformationFragment.TAG)
+            }
         } catch (e: IllegalStateException) {
             Timber.w(e)
         }
     }
-    fun openFeedItem(feedItem: FeedItem, invitationId: Long, feedRank: Int) {
+    fun openFeedItem(feedItem: FeedItem, invitationId: Long = 0) {
         try {
-            val fragmentManager = activity?.supportFragmentManager ?: return
-            FeedItemInformationFragment.newInstance(feedItem, invitationId, feedRank,false).show(fragmentManager, FeedItemInformationFragment.TAG)
+            activity?.supportFragmentManager?.let { fragmentManager->
+                FeedItemInformationFragment.newInstance(feedItem, invitationId, 0,false).show(fragmentManager, FeedItemInformationFragment.TAG)
+            }
         } catch (e: IllegalStateException) {
             Timber.w(e)
         }
     }
 
-    // ----------------------------------
-    // BUS LISTENERS : don't susbcribe here but in children !
-    // ----------------------------------
     @Subscribe
     fun feedItemViewRequested(event: Events.OnFeedItemInfoViewRequestedEvent) {
         val feedItem = event.feedItem
@@ -268,7 +230,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
                         .setMessage(R.string.info_photo_profile_description)
                         .setNegativeButton(R.string.info_photo_profile_ignore) { dialog,_ ->
                             dialog.dismiss()
-                            displayChosenFeedItem(feedItem, event.getfeedRank())
+                            displayChosenFeedItem(feedItem, isFromCreate = true)
                         }
                         .setPositiveButton(R.string.info_photo_profile_add) { dialog, _ ->
                             dialog.dismiss()
@@ -279,7 +241,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
                         .show()
                 }
                 else {
-                    displayChosenFeedItem(feedItem, event.getfeedRank())
+                    displayChosenFeedItem(feedItem, event.isFromCreate)
                 }
             }
         } else {
@@ -288,9 +250,13 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             if (feedItemType != 0) {
                 val feedItemUUID = event.feedItemUUID
                 if (feedItemUUID.isNullOrEmpty()) {
-                    event.feedItemShareURL?.let { displayChosenFeedItemFromShareURL(it, feedItemType) }
+                    event.feedItemShareURL?.let {
+                        //display the feed item from URL
+                        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_ENTOURAGE)
+                        presenter.openFeedItemFromShareURL(it, feedItemType)
+                    }
                 } else {
-                    displayChosenFeedItem(feedItemUUID, feedItemType, event.invitationId)
+                    presenter.openFeedItemFromUUID(feedItemUUID, feedItemType, event.invitationId)
                 }
             }
         }
@@ -599,24 +565,8 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             return
         }
         checkAction(event.action)
-        val content = (event.extras?.getSerializable(PushNotificationManager.PUSH_MESSAGE) as? Message)?.content
-            ?: return
-        when (event.action) {
-            PushNotificationContent.TYPE_NEW_CHAT_MESSAGE,
-            PushNotificationContent.TYPE_NEW_JOIN_REQUEST,
-            PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED -> if (content.isTourRelated) {
-                displayChosenFeedItem(content.joinableUUID, TimestampedObject.TOUR_CARD)
-            } else if (content.isEntourageRelated) {
-                displayChosenFeedItem(content.joinableUUID, TimestampedObject.ENTOURAGE_CARD)
-            }
-            PushNotificationContent.TYPE_ENTOURAGE_INVITATION -> content.extra?.let { extra ->
-                displayChosenFeedItem(extra.entourageId.toString(), TimestampedObject.ENTOURAGE_CARD, extra.invitationId.toLong())
-            }
-            PushNotificationContent.TYPE_INVITATION_STATUS -> content.extra?.let {
-                if (content.isEntourageRelated || content.isTourRelated) {
-                    displayChosenFeedItem(content.joinableUUID, if (content.isTourRelated) TimestampedObject.TOUR_CARD else TimestampedObject.ENTOURAGE_CARD)
-                }
-            }
+        (event.extras?.getSerializable(PushNotificationManager.PUSH_MESSAGE) as? Message)?.content?.let { content ->
+            presenter.checkIntentAction(content, event.action)
         }
     }
 

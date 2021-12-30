@@ -6,9 +6,15 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.Invitation
+import social.entourage.android.api.model.Message
+import social.entourage.android.api.model.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.request.*
+import social.entourage.android.api.tape.Events
 import social.entourage.android.authentication.AuthenticationController
+import social.entourage.android.message.push.PushNotificationManager
+import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -29,8 +35,29 @@ class HomeExpertPresenter @Inject constructor(
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
-    fun openFeedItemFromUUID(feedItemUUID: String, feedItemType: Int, invitationId: Long) {
+    fun checkIntentAction(content: PushNotificationContent, action: String) {
+        when (action) {
+            PushNotificationContent.TYPE_NEW_CHAT_MESSAGE,
+            PushNotificationContent.TYPE_NEW_JOIN_REQUEST,
+            PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED -> if (content.isTourRelated) {
+                openFeedItemFromUUID(content.joinableUUID, TimestampedObject.TOUR_CARD)
+            } else if (content.isEntourageRelated) {
+                openFeedItemFromUUID(content.joinableUUID, TimestampedObject.ENTOURAGE_CARD)
+            }
+            PushNotificationContent.TYPE_ENTOURAGE_INVITATION -> content.extra?.let { extra ->
+                openFeedItemFromUUID(extra.entourageId.toString(), TimestampedObject.ENTOURAGE_CARD, extra.invitationId.toLong())
+            }
+            PushNotificationContent.TYPE_INVITATION_STATUS -> content.extra?.let {
+                if (content.isEntourageRelated || content.isTourRelated) {
+                    openFeedItemFromUUID(content.joinableUUID, if (content.isTourRelated) TimestampedObject.TOUR_CARD else TimestampedObject.ENTOURAGE_CARD)
+                }
+            }
+        }
+    }
+
+    fun openFeedItemFromUUID(feedItemUUID: String, feedItemType: Int, invitationId: Long=0) {
         if(feedItemUUID.isBlank()) return
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_ENTOURAGE)
         when (feedItemType) {
             TimestampedObject.ENTOURAGE_CARD -> {
                 val call = entourageRequest.retrieveEntourageById(feedItemUUID, 0, 0)
@@ -38,7 +65,7 @@ class HomeExpertPresenter @Inject constructor(
                     override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
                         response.body()?.entourage?.let {
                             if (response.isSuccessful) {
-                                fragment?.openFeedItem(it, invitationId, 0)
+                                fragment?.openFeedItem(it, invitationId)
                             }
                         }
                     }
@@ -52,7 +79,7 @@ class HomeExpertPresenter @Inject constructor(
                     override fun onResponse(call: Call<TourResponse>, response: Response<TourResponse>) {
                         response.body()?.tour?.let {
                             if (response.isSuccessful) {
-                                fragment?.openFeedItem(it, invitationId, 0)
+                                fragment?.openFeedItem(it, invitationId)
                             }
                         }
                     }
@@ -71,7 +98,7 @@ class HomeExpertPresenter @Inject constructor(
                     override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
                         response.body()?.entourage?.let {
                             if (response.isSuccessful) {
-                                fragment?.openFeedItem(it,0,0)
+                                fragment?.openFeedItem(it)
                             }
                         }
                     }
@@ -121,10 +148,9 @@ class HomeExpertPresenter @Inject constructor(
         val call = invitationRequest.retrieveUserInvitationsWithStatus(Invitation.STATUS_PENDING)
         call.enqueue(object : Callback<InvitationListResponse> {
             override fun onResponse(call: Call<InvitationListResponse>, response: Response<InvitationListResponse>) {
-                response.body()?.invitations?.let {
-                    if (response.isSuccessful) {
+                if (response.isSuccessful) {
+                    response.body()?.invitations?.let {
                         onInvitationsReceived(it)
-                        return
                     }
                 }
             }
@@ -138,7 +164,9 @@ class HomeExpertPresenter @Inject constructor(
         val call = invitationRequest.acceptInvitation(invitationId)
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {}
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {}
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Timber.e(t)
+            }
         })
     }
 
@@ -151,11 +179,10 @@ class HomeExpertPresenter @Inject constructor(
         if (isOnboardingUser) {
             // Retrieve the list of invitations and then accept them automatically
             getMyPendingInvitations()
-            resetUserOnboardingFlag()
         }
     }
 
-    fun onInvitationsReceived(invitationList: List<Invitation>) {
+    private fun onInvitationsReceived(invitationList: List<Invitation>) {
         //during onboarding we check if the new user was invited to specific entourages and then automatically accept them
         if (isOnboardingUser && !invitationList.isNullOrEmpty()) {
             invitationList.forEach {
@@ -166,5 +193,6 @@ class HomeExpertPresenter @Inject constructor(
                 openFeedItemFromUUID(it.entourageUUID, TimestampedObject.ENTOURAGE_CARD, it.id)
             }
         }
+        resetUserOnboardingFlag()
     }
 }
