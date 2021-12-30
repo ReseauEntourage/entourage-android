@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_pop_info_create_entourage.*
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.home.expert.HomeExpertFragment
 
 private const val ARG_TITLE = "title"
 private const val ARG_SUBTITLE = "subtitle"
@@ -15,7 +16,7 @@ class PopInfoCreateEntourageFragment : BaseDialogFragment() {
     private var title: String? = null
     private var subtitle: String? = null
 
-    var homeFragment:HomeFragment? = null
+    var homeFragment:HomeExpertFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

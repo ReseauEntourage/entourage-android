@@ -10,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import kotlinx.android.synthetic.main.fragment_choice.*
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.model.tour.Tour.TourComparatorNewToOld
@@ -33,8 +34,8 @@ class ChoiceFragment : DialogFragment(), RecyclerViewClickListener {
         return toReturn
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         dialog?.window?.attributes?.windowAnimations = R.style.CustomDialogFragmentFade
     }
 
@@ -62,18 +63,8 @@ class ChoiceFragment : DialogFragment(), RecyclerViewClickListener {
         }
     }
 
-    private val onChoiceFragmentFinish: OnChoiceFragmentFinish?
-        get() = activity as? OnChoiceFragmentFinish?
-
     override fun recyclerViewListClicked(tour: Tour) {
-        onChoiceFragmentFinish?.closeChoiceFragment(this, tour)
-    }
-
-    // ----------------------------------
-    // INNER CLASS
-    // ----------------------------------
-    interface OnChoiceFragmentFinish {
-        fun closeChoiceFragment(fragment: ChoiceFragment, tour: Tour?)
+        (activity as? MainActivity)?.closeChoiceFragment(this, tour)
     }
 
     companion object {

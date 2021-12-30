@@ -32,7 +32,7 @@ import social.entourage.android.entourage.EntourageDisclaimerFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.guide.poi.ReadPoiFragment
-import social.entourage.android.home.HomeFragment
+import social.entourage.android.home.expert.HomeExpertFragment
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.navigation.EntBottomNavigationView
 import social.entourage.android.onboarding.OnboardingPhotoFragment
@@ -45,7 +45,6 @@ import social.entourage.android.tools.log.AnalyticsEvents.updateUserInfo
 import social.entourage.android.tour.TourInformationFragment.OnTourInformationFragmentFinish
 import social.entourage.android.tour.ToursFragment
 import social.entourage.android.tour.choice.ChoiceFragment
-import social.entourage.android.tour.choice.ChoiceFragment.OnChoiceFragmentFinish
 import social.entourage.android.tour.confirmation.TourEndConfirmationFragment
 import social.entourage.android.tour.encounter.EncounterDisclaimerFragment
 import social.entourage.android.user.AvatarUploadPresenter
@@ -63,7 +62,6 @@ import javax.inject.Inject
 
 class MainActivity : BaseSecuredActivity(),
         OnTourInformationFragmentFinish,
-        OnChoiceFragmentFinish,
         EntourageDisclaimerFragment.OnFragmentInteractionListener,
         EncounterDisclaimerFragment.OnFragmentInteractionListener,
         PhotoChooseInterface,
@@ -81,8 +79,8 @@ class MainActivity : BaseSecuredActivity(),
 
     private var isAnalyticsSendFromStart = false
 
-    private val homeFragment: HomeFragment?
-        get() = supportFragmentManager.findFragmentByTag(HomeFragment.TAG) as? HomeFragment
+    private val homeFragment: HomeExpertFragment?
+        get() = supportFragmentManager.findFragmentByTag(HomeExpertFragment.TAG) as? HomeExpertFragment
 
     private val tourFragment: ToursFragment?
         get() = supportFragmentManager.findFragmentByTag(ToursFragment.TAG) as? ToursFragment
@@ -418,11 +416,9 @@ class MainActivity : BaseSecuredActivity(),
             .show(supportFragmentManager, TourEndConfirmationFragment.TAG)
     }
 
-    override fun closeChoiceFragment(fragment: ChoiceFragment, tour: Tour?) {
+    fun closeChoiceFragment(fragment: ChoiceFragment, tour: Tour) {
         supportFragmentManager.beginTransaction().remove(fragment).commit()
-        if (tour != null) {
-            tourFragment?.displayChosenFeedItem(tour, 0)
-        }
+        tourFragment?.displayChosenFeedItem(tour, 0)
     }
 
     override fun onEntourageDisclaimerAccepted(fragment: EntourageDisclaimerFragment?) {

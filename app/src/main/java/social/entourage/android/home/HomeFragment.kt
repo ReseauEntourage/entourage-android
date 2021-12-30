@@ -1,28 +1,26 @@
 package social.entourage.android.home
 
-import android.content.*
-import android.os.*
+import android.os.Bundle
+import android.os.CountDownTimer
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.commit
-import com.google.android.gms.maps.model.*
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.gms.maps.model.LatLng
 import com.squareup.otto.Subscribe
-import kotlinx.android.synthetic.main.fragment_home.*
-import social.entourage.android.*
-import social.entourage.android.api.ApiConnectionListener
+import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
+import social.entourage.android.PlusFragment
+import social.entourage.android.R
 import social.entourage.android.api.model.*
-import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events
-import social.entourage.android.base.BackPressable
 import social.entourage.android.base.BaseFragment
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.base.location.LocationUtils
-import social.entourage.android.base.newsfeed.*
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.entourage.EntourageDisclaimerFragment
 import social.entourage.android.entourage.category.EntourageCategory
@@ -35,26 +33,20 @@ import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.tour.ToursFragment
-import social.entourage.android.user.edit.photo.ChoosePhotoFragment
-import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import timber.log.Timber
-import java.util.*
-import javax.inject.Inject
-import android.os.CountDownTimer
 
-class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFragment.FragmentListener, BackPressable {
+@Deprecated("You should use HomeExpertFragment")
+class HomeFragment : BaseFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-    @Inject lateinit var presenter: HomePresenter
     private var entService: EntService? = null
 
     // requested entourage category
     private var entourageCategory: EntourageCategory? = null
 
-    private val connection = ServiceConnection()
+    //private val connection = ServiceConnection()
     private var isTourPostSend = false
 
     // requested group type
@@ -68,66 +60,16 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        EntBus.register(this)
-        connection.doBindService()
-    }
-
-    override fun onDestroy() {
-        connection.doUnbindService()
-        EntBus.unregister(this)
-        super.onDestroy()
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
-    override fun onAttach(context: Context) {
-        setupComponent(EntourageApplication.get(activity).components)
-        super.onAttach(context)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setGroupType(BaseEntourage.GROUPTYPE_ACTION)
-        (activity as? MainActivity)?.showEditActionZoneFragment()
-
-        presenter.initializeInvitations()
-        presenter.checkUserNamesInfos()
-
-        val fragmentChild = HomeExpertFragment()
-
         childFragmentManager.beginTransaction()
-            .replace(R.id.ui_container, fragmentChild)
+            .replace(R.id.ui_container, HomeExpertFragment())
             .commit()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        if (!LocationUtils.isLocationEnabled() && !LocationUtils.isLocationPermissionGranted()) {
-            (activity as? MainActivity)?.showEditActionZoneFragment(this,false)
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        EntBus.post(Events.OnLocationPermissionGranted(LocationUtils.isLocationPermissionGranted()))
-    }
-
-
-
-    // ----------------------------------
-    // PRIVATE METHODS (lifecycle)
-    // ----------------------------------
-    private fun setupComponent(entourageComponent: EntourageComponent?) {
-        DaggerHomeComponent.builder()
-            .entourageComponent(entourageComponent)
-            .homeModule(HomeModule(this))
-            .build()
-            .inject(this)
     }
 
     // ----------------------------------
@@ -136,7 +78,7 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
     private fun displayChosenFeedItem(feedItemUUID: String, feedItemType: Int, invitationId: Long = 0) {
         //display the feed item
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_ENTOURAGE)
-        presenter.openFeedItemFromUUID(feedItemUUID, feedItemType, invitationId)
+        //presenter.openFeedItemFromUUID(feedItemUUID, feedItemType, invitationId)
     }
 
     private fun displayChosenFeedItem(feedItem: FeedItem, feedRank: Int,isFromCreate:Boolean) {
@@ -160,7 +102,7 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_ENTOURAGE)
 
         if (!isFromCreate) {
-            presenter.openFeedItem(feedItem, 0 , 0,false)
+            //presenter.openFeedItem(feedItem, 0 , 0,false)
             return
         }
         feedItemTemporary = feedItem
@@ -188,7 +130,7 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
         }
 
         popInfoCreateEntourageFragment = PopInfoCreateEntourageFragment.newInstance(title,subtitle)
-        popInfoCreateEntourageFragment?.homeFragment = this
+        //popInfoCreateEntourageFragment?.homeFragment = this
         popInfoCreateEntourageFragment?.show(requireActivity().supportFragmentManager,PopInfoCreateEntourageFragment.TAG)
 
         countDownTimer = object : CountDownTimer(countDown, 1000) {
@@ -206,13 +148,13 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
         popInfoCreateEntourageFragment?.dismiss()
         countDownTimer?.cancel()
         countDownTimer = null
-        feedItemTemporary?.let { presenter.openFeedItem(it, 0 , 0,true) }
+        //feedItemTemporary?.let { presenter.openFeedItem(it, 0 , 0,true) }
     }
 
     private fun displayChosenFeedItemFromShareURL(feedItemShareURL: String, feedItemType: Int) {
         //display the feed item
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_ENTOURAGE)
-        presenter.openFeedItemFromShareURL(feedItemShareURL, feedItemType)
+        //presenter.openFeedItemFromShareURL(feedItemShareURL, feedItemType)
     }
 
     fun displayEntourageDisclaimer() {
@@ -238,24 +180,6 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
     // ----------------------------------
     // SERVICE INTERFACE METHODS
     // ----------------------------------
-    override fun onNetworkException() {
-        activity?.window?.decorView?.rootView?.let {
-            EntSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()
-        }
-    }
-
-    override fun onServerException(throwable: Throwable) {
-        activity?.window?.decorView?.rootView?.let {
-            EntSnackbar.make(it, R.string.server_error, Snackbar.LENGTH_LONG).show()
-        }
-    }
-
-    override fun onTechnicalException(throwable: Throwable) {
-        activity?.window?.decorView?.rootView?.let {
-            EntSnackbar.make(it, R.string.technical_error, Snackbar.LENGTH_LONG).show()
-        }
-    }
-
     fun createAction(newGroupType: String, newActionGroupType: String) {
         entourageCategory = EntourageCategoryManager.getDefaultCategory(newActionGroupType)
         groupType = newGroupType
@@ -271,18 +195,6 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
 
     fun setGroupType(groupString:String) {
         groupType = groupString
-    }
-
-    // ----------------------------------
-    // UserEditActionZoneFragment.FragmentListener
-    // ----------------------------------
-    override fun onUserEditActionZoneFragmentDismiss() {}
-    override fun onUserEditActionZoneFragmentAddressSaved() {
-        presenter.storeActionZoneInfo(false)
-    }
-
-    override fun onUserEditActionZoneFragmentIgnore() {
-        presenter.storeActionZoneInfo(true)
     }
 
     // ----------------------------------
@@ -315,79 +227,13 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
         }
     }
 
-    override fun onBackPressed(): Boolean {
-        //before closing the fragment, send the cached tour points to server (if applicable)
-        entService?.updateOngoingTour()
-
-        if (childFragmentManager.fragments.size == 1) return false
-        childFragmentManager.popBackStackImmediate()
-        return true
-    }
-
-    @Subscribe
-    fun feedItemViewRequested(event: Events.OnFeedItemInfoViewRequestedEvent) {
-        val feedItem = event.feedItem
-        if (feedItem != null) {
-            //Check user photo
-            presenter.authenticationController.me?.let { me ->
-                if (event.isFromCreate && (me.avatarURL.isNullOrEmpty() || me.avatarURL?.equals("null") != false)) {
-                    AlertDialog.Builder(requireContext())
-                        .setTitle(R.string.info_photo_profile_title)
-                        .setMessage(R.string.info_photo_profile_description)
-                        .setNegativeButton(R.string.info_photo_profile_ignore) { dialog,_ ->
-                            dialog.dismiss()
-                            displayChosenFeedItem(feedItem, event.getfeedRank(),true)
-                        }
-                        .setPositiveButton(R.string.info_photo_profile_add) { dialog, _ ->
-                            dialog.dismiss()
-                            val fragment = ChoosePhotoFragment.newInstance()
-                            fragment.show(parentFragmentManager, ChoosePhotoFragment.TAG)
-                        }
-                        .create()
-                        .show()
-                }
-                else {
-                    displayChosenFeedItem(feedItem, event.getfeedRank(),event.isFromCreate)
-                }
-            }
-        } else {
-            //check if we are receiving feed type and id
-            val feedItemType = event.feedItemType
-            if (feedItemType != 0) {
-                val feedItemUUID = event.feedItemUUID
-                if (feedItemUUID.isNullOrEmpty()) {
-                    event.feedItemShareURL?.let { displayChosenFeedItemFromShareURL(it, feedItemType) }
-                } else {
-                    displayChosenFeedItem(feedItemUUID, feedItemType, event.invitationId)
-                }
-            }
-        }
-    }
-
-    fun checkNavigation() {
-        if (presenter.isNavigation()) {
-            when(presenter.navType()) {
-                "action" -> {
-                    showActions(true)
-                }
-                "event" -> {
-                    showActions(false)
-                }
-                "tour" -> {
-                    showTour()
-                }
-                else -> {}
-            }
-        }
-    }
-
     private fun showActions(isAction:Boolean) {
         requireActivity().supportFragmentManager.commit {
             add(R.id.main_fragment, NewsFeedActionsFragment.newInstance(isAction, false),
                 NewsFeedActionsFragment.TAG)
             addToBackStack(NewsFeedActionsFragment.TAG)
             val navKey = if (isAction) "action" else "event"
-            presenter.saveInfo(true,navKey)
+            //presenter.saveInfo(true,navKey)
         }
     }
 
@@ -395,7 +241,7 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
         requireActivity().supportFragmentManager.commit {
             add(R.id.main_fragment, ToursFragment(),ToursFragment.TAG)
             addToBackStack(ToursFragment.TAG)
-            presenter.saveInfo(true,"tour")
+            //presenter.saveInfo(true,"tour")
         }
     }
 
@@ -441,7 +287,7 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
                 requireActivity().supportFragmentManager.commit {
                     add(R.id.main_fragment, frag,ToursFragment.TAG)
                     addToBackStack(ToursFragment.TAG)
-                    presenter.saveInfo(true,"tour")
+                    //presenter.saveInfo(true,"tour")
 
                     isTourPostSend = true
                     val handler = Handler(Looper.getMainLooper())
@@ -519,57 +365,6 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
     fun onAddEncounter() {
         showTour()
         (activity?.supportFragmentManager?.findFragmentByTag(ToursFragment.TAG) as? ToursFragment)?.onAddEncounter()
-    }
-
-    private inner class ServiceConnection : android.content.ServiceConnection {
-        private var isBound = false
-
-        override fun onServiceConnected(name: ComponentName, service: IBinder) {
-            if (activity == null) {
-                isBound = false
-                Timber.e("No activity for service")
-                return
-            }
-            entService = (service as EntService.LocalBinder).service
-            entService?.let {
-                it.registerApiListener(this@HomeFragment)
-                isBound = true
-            } ?: run {
-                Timber.e("Service not found")
-                isBound = false
-            }
-        }
-
-        override fun onServiceDisconnected(name: ComponentName) {
-            entService?.unregisterApiListener(this@HomeFragment)
-            entService = null
-            isBound = false
-        }
-        // ----------------------------------
-        // SERVICE BINDING METHODS
-        // ----------------------------------
-        fun doBindService() {
-            if(isBound) return
-            activity?.let {
-                if(EntourageApplication.me(it) ==null) {
-                    // Don't start the service
-                    return
-                }
-                try {
-                    val intent = Intent(it, EntService::class.java)
-                    it.startService(intent)
-                    it.bindService(intent, this, Context.BIND_AUTO_CREATE)
-                } catch (e: IllegalStateException) {
-                    Timber.w(e)
-                }
-            }
-        }
-
-        fun doUnbindService() {
-            if (!isBound) return
-            activity?.unbindService(this)
-            isBound = false
-        }
     }
 
     companion object {
