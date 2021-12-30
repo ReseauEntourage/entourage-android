@@ -246,10 +246,6 @@ class MainActivity : BaseSecuredActivity(),
         }
     }
 
-    fun dismissHomeFragmentDialogs() {
-        EntBus.post(OnDismissAllDialogs())
-    }
-
     fun selectMenuProfileItem(position: String) {
         if (position == "") {
             return
@@ -474,13 +470,11 @@ class MainActivity : BaseSecuredActivity(),
     // ----------------------------------
     fun createEntourage() {
         showFeed()
-        dismissHomeFragmentDialogs()
         homeFragment?.displayEntourageDisclaimer()
     }
 
     fun addEncounter() {
         showFeed()
-        dismissHomeFragmentDialogs()
         homeFragment?.onAddEncounter()
     }
 

@@ -2,7 +2,7 @@
 <resources>
     <!-- Create Entourage -->
     <string name="entourage_create_action_title">ACTION</string>
-    <string name="entourage_create_outing_title">événement</string>
+    <string name="entourage_create_outing_title">Evénement</string>
     <string name="entourage_create_type_label">Catégorie</string>
     <string name="entourage_create_type_demand">Je cherche %1$s</string>
     <string name="entourage_create_type_contribution">Je me propose de %1$s</string>
