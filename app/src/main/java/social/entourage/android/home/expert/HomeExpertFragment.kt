@@ -365,13 +365,12 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             }
         }
         (activity as? MainActivity)?.showEditActionZoneFragment()
+        entService?.updateHomefeed(pagination)
 
         presenter.initializeInvitations()
         if(presenter.checkUserNamesInfo()) {
             InputNamesFragment().show(parentFragmentManager,"InputFGTag")
         }
-
-        createEmptyArray()
 
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_START_EXPERTFEED)
 
@@ -383,6 +382,10 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
         ui_bt_tour?.visibility = if(EntourageApplication.get().me()?.isPro == false) View.INVISIBLE else View.VISIBLE
 
         setupRecyclerView()
+    }
+
+    init {
+        createEmptyArray()
     }
 
     private fun setupComponent(entourageComponent: EntourageComponent?) {
@@ -436,11 +439,9 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
                         requireActivity().startActivity(intent)
                     } ?: run {
                         val uri = Uri.parse(actUrl)
-                        var _action = Intent.ACTION_VIEW
-                        if (actUrl.contains("mailto:",true)) {_action = Intent.ACTION_SENDTO }
-                        val intent = Intent(_action,uri)
+                        val action = if (actUrl.contains("mailto:",true)) Intent.ACTION_SENDTO else Intent.ACTION_VIEW
                         try {
-                            requireActivity().startActivity(intent)
+                            requireActivity().startActivity(Intent(action,uri))
                         } catch (e: ActivityNotFoundException) {
                             Timber.e(e)
                         }
@@ -523,22 +524,25 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             }
         }
 
-        adapterHome = HomeFeedAdapter(listener)
+        if(adapterHome == null) {
+            adapterHome = HomeFeedAdapter(listener).apply {
+                this.updateDatas(arrayEmpty,true)
+            }
+        }
         ui_recyclerview?.layoutManager = LinearLayoutManager(context)
         ui_recyclerview?.adapter = adapterHome
 
-        adapterHome?.updateDatas(arrayEmpty,true)
         ui_home_swipeRefresh?.setOnRefreshListener { entService?.updateHomefeed(pagination) }
     }
 
     fun parseFeed(responseString:String) {
         pagination.isLoading = false
         pagination.isRefreshing = false
-        val _arrayTest = HomeCard.parsingFeed(responseString)
+        val newFeed = HomeCard.parsingFeed(responseString)
 
         ui_home_swipeRefresh?.isRefreshing = false
 
-        adapterHome?.updateDatas(_arrayTest,false)
+        adapterHome?.updateDatas(newFeed,false)
     }
 
     fun checkNavigation() {
@@ -685,7 +689,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
     }
 
     private fun stopFeedItem(feedItem: FeedItem?, success: Boolean, comment:String?) {
-        activity?.let { activity ->
+        activity?.let { _ ->
             entService?.let { service ->
                 if (feedItem != null
                     && (!service.isRunning
@@ -741,6 +745,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             entService = null
             isBound = false
         }
+
         // ----------------------------------
         // SERVICE BINDING METHODS
         // ----------------------------------
