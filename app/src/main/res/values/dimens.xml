@@ -14,14 +14,9 @@
     <dimen name="newsfeed_map_height">255dp</dimen>
     <dimen name="solidarity_guide_map_height">155dp</dimen>
 
-    <dimen name="announcement_icon_width">29dp</dimen>
-    <dimen name="announcement_icon_height">29dp</dimen>
-
 
     <dimen name="mymessages_padding">4dp</dimen>
     <dimen name="newsfeed_padding">4dp</dimen>
-    <dimen name="feeditem_icon_width">29dp</dimen>
-    <dimen name="feeditem_icon_height">29dp</dimen>
 
     <dimen name="entourage_map_marker">50dp</dimen>
 
@@ -51,6 +46,5 @@
     </declare-styleable>
 
     <!-- Override design_bottom_navigation_active_text_size to prevent bottom bar text grow when selected -->
-    <dimen name="design_bottom_navigation_active_text_size" tools:override="true">@dimen/design_bottom_navigation_text_size</dimen>
 
 </resources>

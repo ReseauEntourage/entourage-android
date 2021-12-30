@@ -28,8 +28,6 @@
     <string name="entourage_create_privacy_description_private_action">Votre action est privée, vous aurez le choix  d’accepter ou de refuser toute personne demandant à y participer.</string>
 
     <string name="entourage_create_error">L\'entourage n\'a pas été créé!</string>
-    <string name="entourage_create_ok">Entourage créé.</string>
-    <string name="outing_create_ok">Événement créé.</string>
     <string name="outing_create_error">L\'événement n\'a pas pu être créé!</string>
     <string name="entourage_create_error_category_empty">Renseignez une catégorie pour votre action</string>
     <string name="entourage_create_error_title_empty">Le titre ne peut pas être vide</string>
@@ -72,10 +70,7 @@
     <!-- Entourage Card -->
     <string name="entourage_type_demand">Demande</string>
     <string name="entourage_type_contribution">Contribution</string>
-    <string name="entourage_type_neighborhood">Voisinage</string>
-    <string name="entourage_type_private_circle">Voisinage</string>
     <string name="entourage_type_outing">Événement</string>
-    <string name="entourage_type_format">%1$s par\u0020</string>
     <string name="entourage_type_format_bis">%1$s de\u0020</string>
     <string name="entourage_metadata_startAt_format">\'le\' EEEE dd/MM</string>
     <string name="entourage_metadata_startAt_format_full">EEEE dd MMMM yyyy</string>
@@ -152,15 +147,8 @@
     <string name="entourage_tour_ongoing_contrib">Contribution</string>
 
     <!-- Close Entourage Popup -->
-    <string name="entourage_close_title">Comment cela s’est passé?</string>
-    <string name="entourage_close_description">En clôturant l’action solidaire, vous fermez la discussion et retirez l’action du fil d’actualité.</string>
     <string name="entourage_close_success_button">Mon action a réussi</string>
     <string name="entourage_close_failed_button">Mon action n\'a pas abouti</string>
-    <string name="entourage_close_help_button">Je demande de l\'aide</string>
-    <string name="entourage_close_help_text">Mon action solidaire est bloquée</string>
-    <string name="entourage_close_title0">Comment s’est déroulée votre action ?</string>
-    <string name="entourage_close_subtitle">Dites-nous en plus avant de clôturer.</string>
-    <string name="entourage_close_description2">Dites-nous en plus avant de clôturer.</string>
 
     <string name="entourage_close_title_new">Je clôture mon\naction solidaire</string>
     <string name="entourage_close_description_new">En clôturant l’action, la discussion sera fermée et l’action n’apparaîtra plus dans le fil d’actualité.</string>
@@ -173,14 +161,6 @@
     <string name="entourage_close_add_comment_send_placeholder" >Mon action s’est bien passée parce que...</string>
 
     <!-- Close event popup -->
-    <string name="event_validate_button">Confirmer</string>
-    <string name="event_cancel_button">Annuler</string>
-    <string name="event_close_title">Comment cela s’est passé ?</string>
-    <string name="event_close_description">En clôturant l’événement, vous fermez la discussion et retirez l’événement du fil d’actualités. \n\nDites-nous en plus avant de clôturer !</string>
-
-    <string name="entourage_close_email_title_success">Mes retours sur l\'entourage \'%1$s\' qui a été un succès</string>
-    <string name="entourage_close_email_title_failed">Mes retours sur l\'entourage \'%1$s\' qui n\'a pas abouti</string>
-    <string name="entourage_close_email_title_help">Aide pour l\'entourage \'%1$s\'</string>
 
     <string name="event_close_title2">J’annule\nmon événement</string>
     <string name="event_close_description2">En annulant l’événement, la discussion sera fermée et l’événement n’apparaîtra plus dans le fil d’actualité.</string>
