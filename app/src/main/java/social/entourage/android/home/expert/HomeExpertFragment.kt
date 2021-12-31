@@ -43,6 +43,7 @@ import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.tour.ToursFragment
+import social.entourage.android.tour.confirmation.TourEndConfirmationFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import timber.log.Timber
@@ -208,6 +209,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             Timber.w(e)
         }
     }
+
     fun openFeedItem(feedItem: FeedItem, invitationId: Long = 0) {
         try {
             activity?.supportFragmentManager?.let { fragmentManager->
@@ -448,7 +450,6 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
                     }
                 }
                 else if (item is FeedItem) {
-
                     var logString = if (isFromHeadline) {
                         if (isAction) {
                             AnalyticsEvents.ACTION_EXPERTFEED_News_Action
@@ -579,8 +580,12 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             PlusFragment.KEY_CREATE_CONTRIBUTION -> createAction(BaseEntourage.GROUPTYPE_ACTION, BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)
             PlusFragment.KEY_CREATE_DEMAND -> createAction(BaseEntourage.GROUPTYPE_ACTION, BaseEntourage.GROUPTYPE_ACTION_DEMAND)
             PlusFragment.KEY_CREATE_OUTING -> createAction(BaseEntourage.GROUPTYPE_OUTING)
-            "android.intent.action.MAIN", "android.intent.action.VIEW" -> {}
-            else -> {
+            EntService.KEY_NOTIFICATION_PAUSE_TOUR,
+            EntService.KEY_NOTIFICATION_STOP_TOUR,
+            TourEndConfirmationFragment.KEY_RESUME_TOUR,
+            TourEndConfirmationFragment.KEY_END_TOUR,
+            PlusFragment.KEY_START_TOUR,
+            PlusFragment.KEY_ADD_ENCOUNTER -> {
                 //Use for Tour
                 if (isTourPostSend) return
 
@@ -600,6 +605,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
                     }, 1000)
                 }
             }
+            else -> {}
         }
     }
 

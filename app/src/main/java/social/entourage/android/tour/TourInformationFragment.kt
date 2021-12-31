@@ -152,7 +152,9 @@ class TourInformationFragment : FeedItemInformationFragment(){
         entourage_option_join?.visibility = View.GONE
         entourage_option_contact?.visibility = View.GONE
         entourage_option_promote?.visibility = View.GONE
+
         entourage_option_reopen?.visibility = View.GONE
+
         val hideJoinButton = tour.isPrivate() || FeedItem.JOIN_STATUS_PENDING == tour.joinStatus || tour.isFreezed()
         entourage_option_join?.visibility =  View.GONE
         entourage_option_contact?.visibility = if (hideJoinButton) View.GONE else View.VISIBLE
@@ -167,6 +169,8 @@ class TourInformationFragment : FeedItemInformationFragment(){
             entourage_option_stop?.visibility = if (tour.isFreezed() || !tour.canBeClosed()) View.GONE else View.VISIBLE
             entourage_option_stop?.setText(if (tour.isClosed()) R.string.tour_info_options_freeze_tour else R.string.tour_info_options_stop_tour)
         }
+
+        ui_tv_button_close?.text = getString(R.string.tour_stop)
     }
 
     override fun addSpecificCards() {

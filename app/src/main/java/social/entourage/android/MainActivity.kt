@@ -164,7 +164,6 @@ class MainActivity : BaseSecuredActivity(),
         super.onNewIntent(intent)
         this.intent = intent
         storeIntent(intent)
-        setIntentAction(intent)
     }
 
     override fun onBackPressed() {
@@ -232,17 +231,6 @@ class MainActivity : BaseSecuredActivity(),
                     .show()
         } catch (e: Exception) {
             Timber.e(e)
-        }
-    }
-
-    private fun setIntentAction(intent: Intent) {
-        if (intent.action != null) {
-            when (intent.action) {
-                PushNotificationContent.TYPE_NEW_CHAT_MESSAGE, PushNotificationContent.TYPE_NEW_JOIN_REQUEST, PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED, PushNotificationContent.TYPE_ENTOURAGE_INVITATION, PushNotificationContent.TYPE_INVITATION_STATUS, EntService.KEY_LOCATION_PROVIDER_DISABLED, EntService.KEY_NOTIFICATION_PAUSE_TOUR, EntService.KEY_NOTIFICATION_STOP_TOUR, TourEndConfirmationFragment.KEY_RESUME_TOUR, TourEndConfirmationFragment.KEY_END_TOUR, PlusFragment.KEY_START_TOUR, PlusFragment.KEY_ADD_ENCOUNTER, PlusFragment.KEY_CREATE_CONTRIBUTION, PlusFragment.KEY_CREATE_DEMAND, PlusFragment.KEY_CREATE_OUTING -> {
-                }
-                else -> {
-                }
-            }
         }
     }
 
