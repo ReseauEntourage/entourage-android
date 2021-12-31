@@ -275,6 +275,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             pagination.isLoading = false
             pagination.isRefreshing = false
         }
+        ui_home_swipeRefresh?.isRefreshing = false
     }
 
     override fun onServerException(throwable: Throwable) {
@@ -285,6 +286,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             pagination.isLoading = false
             pagination.isRefreshing = false
         }
+        ui_home_swipeRefresh?.isRefreshing = false
     }
 
     override fun onTechnicalException(throwable: Throwable) {
@@ -295,6 +297,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             pagination.isLoading = false
             pagination.isRefreshing = false
         }
+        ui_home_swipeRefresh?.isRefreshing = false
     }
 
     fun createAction(newGroupType: String, newActionGroupType: String) {
