@@ -300,16 +300,16 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
         ui_home_swipeRefresh?.isRefreshing = false
     }
 
-    fun createAction(newGroupType: String, newActionGroupType: String) {
+    fun createAction(newActionGroupType: String) {
         entourageCategory = EntourageCategoryManager.getDefaultCategory(newActionGroupType)
-        groupType = newGroupType
+        groupType = BaseEntourage.GROUPTYPE_ACTION
         entourageCategory?.isNewlyCreated = true
         displayEntourageDisclaimer()
     }
 
-    fun createAction(newEntourageGroupType: String) {
+    fun createOuting() {
         entourageCategory = null
-        groupType = newEntourageGroupType
+        groupType = BaseEntourage.GROUPTYPE_OUTING
         displayEntourageDisclaimer()
     }
 
@@ -580,9 +580,9 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
 
     private fun checkAction(action: String) {
         when (action) {
-            PlusFragment.KEY_CREATE_CONTRIBUTION -> createAction(BaseEntourage.GROUPTYPE_ACTION, BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)
-            PlusFragment.KEY_CREATE_DEMAND -> createAction(BaseEntourage.GROUPTYPE_ACTION, BaseEntourage.GROUPTYPE_ACTION_DEMAND)
-            PlusFragment.KEY_CREATE_OUTING -> createAction(BaseEntourage.GROUPTYPE_OUTING)
+            PlusFragment.KEY_CREATE_CONTRIBUTION -> createAction(BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)
+            PlusFragment.KEY_CREATE_DEMAND -> createAction(BaseEntourage.GROUPTYPE_ACTION_DEMAND)
+            PlusFragment.KEY_CREATE_OUTING -> createOuting()
             EntService.KEY_NOTIFICATION_PAUSE_TOUR,
             EntService.KEY_NOTIFICATION_STOP_TOUR,
             TourEndConfirmationFragment.KEY_RESUME_TOUR,

@@ -104,7 +104,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
 
             //show stop tour activity
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE)
-            mListener?.showStopTourActivity(tour)
+            mListener?.showStopTourFragment(tour)
         } else if (tour.isClosed()) {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE)
             serviceConnection.boundService?.freezeTour(tour)
@@ -460,7 +460,7 @@ class TourInformationFragment : FeedItemInformationFragment(){
     // INNER CLASSES
     // ----------------------------------
     interface OnTourInformationFragmentFinish {
-        fun showStopTourActivity(tour: Tour)
+        fun showStopTourFragment(tour: Tour)
     }
 
     companion object {

@@ -393,7 +393,7 @@ class MainActivity : BaseSecuredActivity(),
         }
     }
 
-    override fun showStopTourActivity(tour: Tour) {
+    override fun showStopTourFragment(tour: Tour) {
         homeFragment?.pauseTour(tour)
         TourEndConfirmationFragment
             .newInstance(tour)

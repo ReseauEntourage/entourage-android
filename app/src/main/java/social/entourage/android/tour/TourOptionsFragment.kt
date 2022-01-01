@@ -46,10 +46,7 @@ class TourOptionsFragment : FeedItemOptionsFragment() {
             tour.duration = getDateStringFromSeconds(now.time - tour.getStartTime().time)
 
             //show stop tour activity
-            val activity: Activity? = activity
-            if (activity is MainActivity) {
-                activity.showStopTourActivity(tour)
-            }
+            (activity as? MainActivity)?.showStopTourFragment(tour)
 
             //hide the options
             dismiss()
