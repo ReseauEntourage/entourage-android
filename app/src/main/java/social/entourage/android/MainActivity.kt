@@ -518,7 +518,7 @@ class MainActivity : BaseSecuredActivity(),
     // ----------------------------------
     fun showEditActionZoneFragment(extraFragmentListener: UserEditActionZoneFragment.FragmentListener? = null, isSecondaryAddress: Boolean = false) {
         val me = authenticationController.me ?: return
-        if (me.address?.displayAddress?.isNotEmpty() == true) {
+        if (me.address?.displayAddress?.isNotEmpty() == true || me.isUserTypeAsso) {
             return
         }
         if (authenticationController.editActionZoneShown || authenticationController.isIgnoringActionZone) {

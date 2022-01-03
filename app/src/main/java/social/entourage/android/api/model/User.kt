@@ -180,6 +180,9 @@ class User : Serializable {
     val isUserTypeNeighbour: Boolean
         get() = USER_GOAL_NEIGHBOUR.equals(goal, ignoreCase = true)
 
+    val isUserTypeAsso: Boolean
+        get() = USER_GOAL_ASSO.equals(goal, ignoreCase = true)
+
     // ----------------------------------
     // User Conversation
     // ----------------------------------
