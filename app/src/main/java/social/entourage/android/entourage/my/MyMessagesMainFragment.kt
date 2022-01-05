@@ -22,7 +22,7 @@ import java.util.ArrayList
  */
 class MyMessagesMainFragment : BaseDialogFragment(), MyMessagesRecyclerViewAdapter.LoadMoreCallback {
     private val entouragesPagination = BasePagination(Constants.ITEMS_PER_PAGE)
-    private val entouragesAdapter: MyMessagesRecyclerViewAdapter = MyMessagesRecyclerViewAdapter()
+    private var entouragesAdapter: MyMessagesRecyclerViewAdapter? = null
 
     var messagesList: ArrayList<BaseEntourage> = ArrayList()
 
@@ -59,7 +59,11 @@ class MyMessagesMainFragment : BaseDialogFragment(), MyMessagesRecyclerViewAdapt
 
     fun setupRecyclerView() {
         ui_mymessages_recyclerview?.layoutManager = LinearLayoutManager(context)
-        entouragesAdapter.setLoaderCallback(this)
+        entouragesAdapter = MyMessagesRecyclerViewAdapter { position ->
+            messagesList[position].numberOfUnreadMessages = 0
+            entouragesAdapter?.updateItemAtPositon(position)
+        }
+        entouragesAdapter?.setLoaderCallback(this)
         ui_mymessages_recyclerview?.adapter = entouragesAdapter
         ui_mymessages_swipeRefreshLayout?.setOnRefreshListener {
             if (ui_mymessages_tab?.selectedTabPosition == 0) {
@@ -82,7 +86,7 @@ class MyMessagesMainFragment : BaseDialogFragment(), MyMessagesRecyclerViewAdapt
         ui_mymessages_swipeRefreshLayout?.isRefreshing = true
         // remove the current feed
         messagesList.clear()
-        entouragesAdapter.updateDatas(messagesList)
+        entouragesAdapter?.updateDatas(messagesList)
         entouragesPagination.reset()
         // request a new feed
         retrieveMyMessages(isGroup)
@@ -138,7 +142,7 @@ class MyMessagesMainFragment : BaseDialogFragment(), MyMessagesRecyclerViewAdapt
             }
         }
 
-        entouragesAdapter.updateDatas(this.messagesList)
+        entouragesAdapter?.updateDatas(this.messagesList)
 
         if (this.messagesList.size == 0) {
             ui_messages_layout_no_items?.visibility = View.VISIBLE

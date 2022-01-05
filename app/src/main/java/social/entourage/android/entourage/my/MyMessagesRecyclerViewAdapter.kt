@@ -2,21 +2,17 @@ package social.entourage.android.entourage.my
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
-import social.entourage.android.base.newsfeed.FeedItemViewHolder
-import social.entourage.android.entourage.EntourageViewHolder
 import social.entourage.android.tools.LoaderCardViewHolder
-import timber.log.Timber
 import java.util.ArrayList
 
 /**
  * Created by Jerome on 21/12/2021.
  */
-class MyMessagesRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class MyMessagesRecyclerViewAdapter(val listenerClick: (position:Int) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     val VIEW_LOADING = 0
     val VIEW_ITEM = 1
@@ -31,6 +27,11 @@ class MyMessagesRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
     fun updateDatas(messages:ArrayList<BaseEntourage>) {
         this.messages = messages
         notifyDataSetChanged()
+    }
+
+    fun updateItemAtPositon(position: Int) {
+        messages[position].numberOfUnreadMessages = 0
+        notifyItemChanged(position)
     }
 
     fun setLoaderCallback(loaderCallback: LoadMoreCallback?) {
@@ -57,7 +58,7 @@ class MyMessagesRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == VIEW_ITEM) {
-            (holder as? MyMessagesViewHolder)?.populate(messages[position])
+            (holder as? MyMessagesViewHolder)?.populate(messages[position],position,listenerClick)
         }
         else {
             (holder as? LoaderCardViewHolder)?.populate(messages[position])
@@ -79,4 +80,8 @@ class MyMessagesRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
     interface LoadMoreCallback {
         fun loadMoreItems()
     }
+}
+
+interface MyMessagesViewHolderListener {
+    fun onDetailClicked(position:Int)
 }

@@ -25,15 +25,15 @@ import timber.log.Timber
 class MyMessagesViewHolder(view: View) : RecyclerView.ViewHolder(view){
     private lateinit var message: BaseEntourage
 
-    init {
-        itemView.setOnClickListener { onClickMainView() }
-    }
-
-    fun populate(message: BaseEntourage) {
+    fun populate(message: BaseEntourage, messagePosition:Int, listenerClick: (position:Int) -> Unit) {
         this.message = message
-
         //configure the cell fields
         val res = itemView.resources
+
+        itemView.setOnClickListener {
+            onClickMainView()
+            listenerClick(messagePosition)
+        }
 
         //title
         itemView.tour_card_title?.let { titleView ->
