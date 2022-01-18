@@ -128,6 +128,8 @@
     <string name="myentourages_no_items_title">Vous n\'avez pas encore de messages…</string>
     <string name="myentourages_no_unread_items_details">Vous n\'avez pas de messages non lus</string>
 
+    <string name="myentourages_tab_group">Discussions de groupe</string>
+    <string name="myentourages_tab_messages">Messages privés</string>
     <!-- My Entourages Filter -->
     <string name="myentourages_filter_entourages_title">Montrer</string>
     <string name="myentourages_filter_closed">Inclure les actions clôturées</string>

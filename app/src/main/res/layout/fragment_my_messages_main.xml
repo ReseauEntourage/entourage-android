@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".entourage.my.MyMessagesMainFragment">
 
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/ui_mymessages_tab"
         android:layout_width="match_parent"
@@ -14,6 +15,8 @@
         android:background="@color/white"
         android:elevation="10dp"
         app:layout_constraintBottom_toTopOf="@id/ui_mymessages_swipeRefreshLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tabIndicatorColor="@color/accent"
         app:tabSelectedTextColor="@color/accent"
@@ -22,12 +25,12 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Messages de groupe" />
+            android:text="@string/myentourages_tab_group" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mes messages" />
+            android:text="@string/myentourages_tab_messages" />
 
     </com.google.android.material.tabs.TabLayout>
 
