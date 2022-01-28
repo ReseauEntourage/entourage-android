@@ -53,7 +53,11 @@ class MyMessagesViewHolder(view: View) : RecyclerView.ViewHolder(view){
                         .listener(requestListener)
                         .into(iconView)
             } ?: run {
-                iconView.setImageDrawable(ContextCompat.getDrawable(iconView.context,R.drawable.ic_user_photo_small))
+                this.message.getIconDrawable(itemView.context)?.let { _icon ->
+                    iconView.setImageDrawable(_icon)
+                } ?: run {
+                    iconView.setImageDrawable(ContextCompat.getDrawable(iconView.context, R.drawable.ic_user_photo_small))
+                }
             }
         }
 
