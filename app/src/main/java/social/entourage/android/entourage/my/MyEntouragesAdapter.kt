@@ -1,18 +1,13 @@
 package social.entourage.android.entourage.my
 
 import androidx.recyclerview.widget.RecyclerView
-import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.api.model.Invitation
-import social.entourage.android.api.model.InvitationList
-import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.BaseEntourage
-import social.entourage.android.api.model.LoaderCardItem
+import social.entourage.android.api.model.*
 import social.entourage.android.base.BaseAdapter
-import social.entourage.android.tools.LoaderCardViewHolder
 import social.entourage.android.base.ViewHolderFactory.ViewHolderType
 import social.entourage.android.entourage.EntourageViewHolder
 import social.entourage.android.entourage.my.invitations.InvitationListViewHolder
+import social.entourage.android.tools.LoaderCardViewHolder
 import social.entourage.android.tour.TourViewHolder
 
 /**

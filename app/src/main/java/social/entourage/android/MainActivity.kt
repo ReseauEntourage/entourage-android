@@ -184,14 +184,8 @@ class MainActivity : BaseSecuredActivity(),
     override fun onResume() {
         super.onResume()
         if (intent?.action != null) {
-            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-                when (intent.action) {
-                    EntService.KEY_LOCATION_PROVIDER_DISABLED -> {
-                        displayLocationProviderDisabledAlert()
-                        sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
-                    }
-                    EntService.KEY_NOTIFICATION_PAUSE_TOUR, EntService.KEY_NOTIFICATION_STOP_TOUR -> sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
-                }
+            if(intent.action==EntService.KEY_LOCATION_PROVIDER_DISABLED) {
+                    displayLocationProviderDisabledAlert()
             }
         } else {
             // user just returns to the app, update analytics

@@ -1,6 +1,9 @@
 package social.entourage.android.home.expert
 
-import android.content.*
+import android.content.ActivityNotFoundException
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.*
 import android.view.LayoutInflater
@@ -9,7 +12,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_home_expert.*
@@ -26,7 +29,8 @@ import social.entourage.android.base.BackPressable
 import social.entourage.android.base.BaseFragment
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.base.location.LocationUtils
-import social.entourage.android.base.newsfeed.*
+import social.entourage.android.base.newsfeed.NewsfeedFragmentLifecycleCallbacks
+import social.entourage.android.base.newsfeed.NewsfeedPagination
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.entourage.EntourageDisclaimerFragment
@@ -34,7 +38,10 @@ import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.entourage.create.BaseCreateEntourageFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
-import social.entourage.android.home.*
+import social.entourage.android.home.HomeCard
+import social.entourage.android.home.HomeCardType
+import social.entourage.android.home.HomeViewHolderListener
+import social.entourage.android.home.PopInfoCreateEntourageFragment
 import social.entourage.android.home.actions.NewsFeedActionsFragment
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.onboarding.InputNamesFragment
@@ -47,9 +54,7 @@ import social.entourage.android.tour.confirmation.TourEndConfirmationFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import timber.log.Timber
-import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener, UserEditActionZoneFragment.FragmentListener {
     // ----------------------------------

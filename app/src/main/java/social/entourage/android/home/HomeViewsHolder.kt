@@ -17,9 +17,7 @@ import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.layout_cell_action_more.view.*
 import kotlinx.android.synthetic.main.layout_cell_event.view.*
 import kotlinx.android.synthetic.main.layout_cell_headline_action.view.*
-import kotlinx.android.synthetic.main.layout_cell_headline_action.view.ui_action_tv_location
 import kotlinx.android.synthetic.main.layout_cell_headline_announce.view.*
-import kotlinx.android.synthetic.main.layout_cell_my_action.view.*
 import social.entourage.android.Constants
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage

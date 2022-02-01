@@ -4,9 +4,7 @@ import android.net.Uri
 import android.view.Gravity
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.TypedArrayUtils.getText
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.layout_detail_event_action_creator.*
 import kotlinx.android.synthetic.main.layout_entourage_information_member_card.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
@@ -18,7 +16,6 @@ import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.Utils
 import social.entourage.android.user.role.UserRoleView
 import social.entourage.android.user.role.UserRolesFactory
-import java.util.*
 
 /**
  * Created by mihaiionescu on 23/05/16.

@@ -12,14 +12,14 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_home_news.*
-import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.fragment_map.fragment_map_filter_button
 import kotlinx.android.synthetic.main.fragment_map.fragment_map_main_layout
 import kotlinx.android.synthetic.main.fragment_map.tour_stop_button
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.*
-import social.entourage.android.api.model.feed.*
+import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BackPressable
@@ -33,7 +33,6 @@ import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.tour.join.TourJoinRequestFragment
 import timber.log.Timber
-import java.util.*
 
 open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListener, BackPressable {
 

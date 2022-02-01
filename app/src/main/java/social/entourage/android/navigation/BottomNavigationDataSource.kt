@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import social.entourage.android.EntourageApplication
 import social.entourage.android.PlusFragment
 import social.entourage.android.R
-import social.entourage.android.entourage.my.MyEntouragesFragment
 import social.entourage.android.entourage.my.MyMessagesMainFragment
 import social.entourage.android.guide.GuideHubFragment
 import social.entourage.android.home.expert.HomeExpertFragment
