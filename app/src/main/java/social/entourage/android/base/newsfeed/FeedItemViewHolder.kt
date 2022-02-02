@@ -13,10 +13,12 @@ import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.layout_feed_action_card.view.*
 import social.entourage.android.Constants
 import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.tools.EntBus
@@ -249,7 +251,11 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView) {
             }
             FeedItem.JOIN_STATUS_ACCEPTED -> {
                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_ACTIVE_OVERLAY)
-                EntBus.post(OnFeedItemCloseRequestEvent(feedItem))
+                if (feedItem is Tour && feedItem.type == TimestampedObject.TOUR_CARD && feedItem.isOngoing()) {
+                    (itemView.context as? MainActivity)?.showStopTourFragment(feedItem as Tour)
+                } else {
+                    EntBus.post(OnFeedItemCloseRequestEvent(feedItem))
+                }
             }
             FeedItem.JOIN_STATUS_REJECTED -> {
                 //TODO: What to do on rejected status ?

@@ -19,7 +19,6 @@
     <string name="login_info_pop_action_yes">Personnaliser</string>
     <string name="login_info_pop_action_no">Plus tard</string>
     <string name="login_info_pop_action_noMore">Ne plus me montrer</string>
-    <string name="login_email_title">Ok super !</string>
     <string name="login_email_description">Maintenant, finalisons la création de votre compte !</string>
     <string name="login_place_title">Quel est votre quartier ?</string>
     <string name="login_place_description">Vous pourrez répondre aux demandes de personnes en difficulté et d’associations de votre quartier, et vous pourrez vous-même proposer des dons de votre temps ou matériels.</string>

@@ -235,6 +235,7 @@ class LocationFragment  : BaseDialogFragment() {
                     hideKeyboard()
                 }
                 map = googleMap
+                pin?.isVisible = false
             }
         }
     }

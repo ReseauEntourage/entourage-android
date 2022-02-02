@@ -17,7 +17,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.configuration.Configuration
-import social.entourage.android.home.HomeFragment
+import social.entourage.android.home.expert.HomeExpertFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 import kotlin.math.roundToInt
@@ -107,8 +107,8 @@ class EntBottomNavigationView : BottomNavigationView {
                 fragmentTransaction.commit()
             }
             else {
-                if (tag == HomeFragment.TAG) {
-                    (supportFragmentManager.fragments.first() as? HomeFragment)?.checkNavigation()
+                if (tag == HomeExpertFragment.TAG) {
+                    (supportFragmentManager.fragments.first() as? HomeExpertFragment)?.checkNavigation()
                 }
             }
             //TODO check if we need to execute pending actions

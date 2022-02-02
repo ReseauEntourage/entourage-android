@@ -17,7 +17,9 @@ import kotlinx.android.synthetic.main.fragment_onboarding_edit_photo.*
 import social.entourage.android.R
 import social.entourage.android.tools.Utils
 import social.entourage.android.tools.rotate
+import timber.log.Timber
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.IOException
 
 private const val PHOTO_PARAM = "social.entourage.android.photo_param"
@@ -127,7 +129,11 @@ class OnboardingEditPhotoFragment : DialogFragment() {
     private fun rotateImage() {
         currentAngle += ROTATE_DEGREES_STEP
         photoUri?.let {
-            saveBitmap(Utils.getBitmapFromUri(it, activity?.contentResolver).rotate(currentAngle))
+            try {
+                saveBitmap(Utils.getBitmapFromUri(it, activity?.contentResolver).rotate(currentAngle))
+            } catch(e: FileNotFoundException) {
+                Timber.e(e)
+            }
         }
     }
 

@@ -53,3 +53,4 @@ app/pfp/release/
 app/.classpath
 *.aab
 .bitrise.secrets.yml
+.run

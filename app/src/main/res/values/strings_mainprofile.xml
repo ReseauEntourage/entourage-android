@@ -3,12 +3,10 @@
     <string name="action_about">Aide &amp; à propos</string>
     <string name="action_edit_profile_regular">Modifier mon profil</string>
     <string name="action_charter_unsigned">Signer la Charte éthique</string>
-    <string name="action_charter_signed">Consulter la Charte éthique</string>
     <string name="action_charter_read">Lire la Charte éthique</string>
     <string name="action_faq">Questions fréquentes</string>
     <string name="action_map">actus</string>
     <string name="action_guide">guide</string>
-    <string name="action_plus">agir</string>
     <string name="action_my_messages">messages</string>
     <string name="action_profile">profil</string>
     <string name="debug_info_clipboard">Information copiée dans le presse-papier</string>

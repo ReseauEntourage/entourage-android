@@ -6,12 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.R
 import social.entourage.android.home.*
-import social.entourage.android.home.expert.VariantCellType
 
 /**
  * ActionEventAdapter.
  */
-class ActionEventAdapter(var homecard:HomeCard,val listener:HomeViewHolderListener, val isLoading:Boolean,val variantType: VariantCellType): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ActionEventAdapter(var homecard:HomeCard,val listener:HomeViewHolderListener, val isLoading:Boolean): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val minimumItemsToShowMore = 2
     private val minimalCellForSpecialCell = 1
@@ -35,58 +34,27 @@ class ActionEventAdapter(var homecard:HomeCard,val listener:HomeViewHolderListen
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
 
-        var cellEventId = R.layout.layout_cell_event_original
-        var cellActionId = R.layout.layout_cell_action_original
-        var cellEvent_zoneId = R.layout.layout_cell_event_zone_original
-        var cell_action_empty = R.layout.layout_cell_action_empty_original
-        var cell_event_empty = R.layout.layout_cell_event_empty_original
-
-        if (variantType == VariantCellType.Original) {
-            cellEventId = R.layout.layout_cell_event_original
-            cellEvent_zoneId = R.layout.layout_cell_event_zone_original
-            cell_event_empty = R.layout.layout_cell_event_empty_original
-
-            cellActionId = R.layout.layout_cell_action_original
-            cell_action_empty = R.layout.layout_cell_action_empty_original
-        }
-        else if (variantType == VariantCellType.VariantA) {
-            cellEventId = R.layout.layout_cell_event_variant_a
-            cellEvent_zoneId = R.layout.layout_cell_event_zone_variant_a
-            cell_event_empty = R.layout.layout_cell_event_empty_variant_a
-
-            cellActionId = R.layout.layout_cell_action_variant_a
-            cell_action_empty = R.layout.layout_cell_action_empty_variant_a
-        }
-        else if (variantType == VariantCellType.VariantB) {
-            cellEventId = R.layout.layout_cell_event_variant_b
-            cellEvent_zoneId = R.layout.layout_cell_event_zone_variant_b
-            cell_event_empty = R.layout.layout_cell_event_empty_variant_b
-
-            cellActionId = R.layout.layout_cell_action_variant_b
-            cell_action_empty = R.layout.layout_cell_action_empty_variant_b
-        }
-
         if (isLoading) {
             if (homecard.type == HomeCardType.ACTIONS) {
-                val view = inflater.inflate(cell_action_empty, parent, false)
+                val view = inflater.inflate(R.layout.layout_cell_action_empty, parent, false)
 
                 return ActionVH(view)
             }
             else {
-                val view = inflater.inflate(cell_event_empty, parent, false)
+                val view = inflater.inflate( R.layout.layout_cell_event_empty, parent, false)
                 return EventVH(view)
             }
         }
 
         if (viewType == TYPE_CELL) {
             if (homecard.type == HomeCardType.ACTIONS) {
-                val view = inflater.inflate(cellActionId, parent, false)
+                val view = inflater.inflate(R.layout.layout_cell_action, parent, false)
 
                 return ActionVH(view)
             }
             else {
 
-                val view = inflater.inflate(cellEventId, parent, false)
+                val view = inflater.inflate(R.layout.layout_cell_event, parent, false)
                 return EventVH(view)
             }
         }
@@ -103,7 +71,7 @@ class ActionEventAdapter(var homecard:HomeCard,val listener:HomeViewHolderListen
             }
             else {
 
-                view = inflater.inflate(cellEvent_zoneId, parent, false)
+                view = inflater.inflate(R.layout.layout_cell_event_zone, parent, false)
             }
 
             return OtherVH(view,homecard.type,homecard.subtype)
@@ -125,9 +93,7 @@ class ActionEventAdapter(var homecard:HomeCard,val listener:HomeViewHolderListen
             return
         }
         if (homecard.type == HomeCardType.ACTIONS) {
-            var isVariant = false
-            if (variantType == VariantCellType.VariantA || variantType == VariantCellType.VariantB) isVariant = true
-            (holder as ActionVH).bind(homecard.arrayCards[position].data, listener,position,false,isVariant)
+            (holder as ActionVH).bind(homecard.arrayCards[position].data, listener,position,false)
         }
         else {
             (holder as EventVH).bind(homecard.arrayCards[position].data, listener,position,false)

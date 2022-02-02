@@ -39,7 +39,7 @@ class NewsfeedAdapter : HeaderFooterBaseAdapter() {
         )
         viewHolderFactory.registerViewHolder(
                 TimestampedObject.ENTOURAGE_CARD,
-                ViewHolderType(EntourageViewHolder::class.java, FeedItemViewHolderRenew.layoutResource)
+                ViewHolderType(FeedItemViewHolderRenew::class.java, FeedItemViewHolderRenew.layoutResource)
         )
         viewHolderFactory.registerViewHolder(
                 TimestampedObject.ANNOUNCEMENT_CARD,

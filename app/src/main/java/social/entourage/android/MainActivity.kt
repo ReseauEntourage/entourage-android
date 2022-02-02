@@ -4,6 +4,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
@@ -31,7 +32,7 @@ import social.entourage.android.entourage.EntourageDisclaimerFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.guide.poi.ReadPoiFragment
-import social.entourage.android.home.HomeFragment
+import social.entourage.android.home.expert.HomeExpertFragment
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.navigation.EntBottomNavigationView
 import social.entourage.android.onboarding.OnboardingPhotoFragment
@@ -44,7 +45,6 @@ import social.entourage.android.tools.log.AnalyticsEvents.updateUserInfo
 import social.entourage.android.tour.TourInformationFragment.OnTourInformationFragmentFinish
 import social.entourage.android.tour.ToursFragment
 import social.entourage.android.tour.choice.ChoiceFragment
-import social.entourage.android.tour.choice.ChoiceFragment.OnChoiceFragmentFinish
 import social.entourage.android.tour.confirmation.TourEndConfirmationFragment
 import social.entourage.android.tour.encounter.EncounterDisclaimerFragment
 import social.entourage.android.user.AvatarUploadPresenter
@@ -62,7 +62,6 @@ import javax.inject.Inject
 
 class MainActivity : BaseSecuredActivity(),
         OnTourInformationFragmentFinish,
-        OnChoiceFragmentFinish,
         EntourageDisclaimerFragment.OnFragmentInteractionListener,
         EncounterDisclaimerFragment.OnFragmentInteractionListener,
         PhotoChooseInterface,
@@ -80,8 +79,8 @@ class MainActivity : BaseSecuredActivity(),
 
     private var isAnalyticsSendFromStart = false
 
-    private val homeFragment: HomeFragment?
-        get() = supportFragmentManager.findFragmentByTag(HomeFragment.TAG) as? HomeFragment
+    private val homeFragment: HomeExpertFragment?
+        get() = supportFragmentManager.findFragmentByTag(HomeExpertFragment.TAG) as? HomeExpertFragment
 
     private val tourFragment: ToursFragment?
         get() = supportFragmentManager.findFragmentByTag(ToursFragment.TAG) as? ToursFragment
@@ -165,7 +164,6 @@ class MainActivity : BaseSecuredActivity(),
         super.onNewIntent(intent)
         this.intent = intent
         storeIntent(intent)
-        setIntentAction(intent)
     }
 
     override fun onBackPressed() {
@@ -186,12 +184,14 @@ class MainActivity : BaseSecuredActivity(),
     override fun onResume() {
         super.onResume()
         if (intent?.action != null) {
-            when (intent.action) {
-                EntService.KEY_LOCATION_PROVIDER_DISABLED -> {
-                    displayLocationProviderDisabledAlert()
-                    sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
+            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+                when (intent.action) {
+                    EntService.KEY_LOCATION_PROVIDER_DISABLED -> {
+                        displayLocationProviderDisabledAlert()
+                        sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
+                    }
+                    EntService.KEY_NOTIFICATION_PAUSE_TOUR, EntService.KEY_NOTIFICATION_STOP_TOUR -> sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
                 }
-                EntService.KEY_NOTIFICATION_PAUSE_TOUR, EntService.KEY_NOTIFICATION_STOP_TOUR -> sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
             }
         } else {
             // user just returns to the app, update analytics
@@ -232,21 +232,6 @@ class MainActivity : BaseSecuredActivity(),
         } catch (e: Exception) {
             Timber.e(e)
         }
-    }
-
-    private fun setIntentAction(intent: Intent) {
-        if (intent.action != null) {
-            when (intent.action) {
-                PushNotificationContent.TYPE_NEW_CHAT_MESSAGE, PushNotificationContent.TYPE_NEW_JOIN_REQUEST, PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED, PushNotificationContent.TYPE_ENTOURAGE_INVITATION, PushNotificationContent.TYPE_INVITATION_STATUS, EntService.KEY_LOCATION_PROVIDER_DISABLED, EntService.KEY_NOTIFICATION_PAUSE_TOUR, EntService.KEY_NOTIFICATION_STOP_TOUR, TourEndConfirmationFragment.KEY_RESUME_TOUR, TourEndConfirmationFragment.KEY_END_TOUR, PlusFragment.KEY_START_TOUR, PlusFragment.KEY_ADD_ENCOUNTER, PlusFragment.KEY_CREATE_CONTRIBUTION, PlusFragment.KEY_CREATE_DEMAND, PlusFragment.KEY_CREATE_OUTING -> {
-                }
-                else -> {
-                }
-            }
-        }
-    }
-
-    fun dismissHomeFragmentDialogs() {
-        EntBus.post(OnDismissAllDialogs())
     }
 
     fun selectMenuProfileItem(position: String) {
@@ -408,18 +393,16 @@ class MainActivity : BaseSecuredActivity(),
         }
     }
 
-    override fun showStopTourActivity(tour: Tour) {
+    override fun showStopTourFragment(tour: Tour) {
         homeFragment?.pauseTour(tour)
         TourEndConfirmationFragment
             .newInstance(tour)
             .show(supportFragmentManager, TourEndConfirmationFragment.TAG)
     }
 
-    override fun closeChoiceFragment(fragment: ChoiceFragment, tour: Tour?) {
+    fun closeChoiceFragment(fragment: ChoiceFragment, tour: Tour) {
         supportFragmentManager.beginTransaction().remove(fragment).commit()
-        if (tour != null) {
-            tourFragment?.displayChosenFeedItem(tour, 0)
-        }
+        tourFragment?.displayChosenFeedItem(tour, 0)
     }
 
     override fun onEntourageDisclaimerAccepted(fragment: EntourageDisclaimerFragment?) {
@@ -475,13 +458,11 @@ class MainActivity : BaseSecuredActivity(),
     // ----------------------------------
     fun createEntourage() {
         showFeed()
-        dismissHomeFragmentDialogs()
         homeFragment?.displayEntourageDisclaimer()
     }
 
     fun addEncounter() {
         showFeed()
-        dismissHomeFragmentDialogs()
         homeFragment?.onAddEncounter()
     }
 
@@ -537,7 +518,7 @@ class MainActivity : BaseSecuredActivity(),
     // ----------------------------------
     fun showEditActionZoneFragment(extraFragmentListener: UserEditActionZoneFragment.FragmentListener? = null, isSecondaryAddress: Boolean = false) {
         val me = authenticationController.me ?: return
-        if (me.address?.displayAddress?.isNotEmpty() == true) {
+        if (me.address?.displayAddress?.isNotEmpty() == true || me.isUserTypeAsso) {
             return
         }
         if (authenticationController.editActionZoneShown || authenticationController.isIgnoringActionZone) {

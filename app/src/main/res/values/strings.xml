@@ -48,9 +48,6 @@
     <string name="tooltip_desc1">Votre fil d’actualité a été filtré en fonction de vos préférences. Modifiez vos paramètres en cliquant sur ce bouton.</string>
     <string name="tooltip_title2">Annuaire solidaire</string>
     <string name="tooltip_desc2">Besoin d’informations ? Retrouvez tous les lieux solidaires autour de vous.</string>
-    <string name="tooltip_title3">Passez à l’action</string>
-    <string name="tooltip_desc3">Vous pouvez maintenant proposer ou demander de l’aide au réseau !</string>
-    <string name="tooltip_step_format">%s sur 3</string>
 
 
     //Home Cells
@@ -91,10 +88,6 @@
     <string name="home_button_help_title_report">Les reporters Entourage</string>
     <string name="i_participe">Participer</string>
 
-    <string name="setting_home_title">📱 MON COMPTE ENTOURAGE</string>
-    <string name="setting_home_description">Le mode “Premiers pas” vous guide pour découvrir les programmes Entourage.</string>
-    <string name="setting_home_button_type">Mode “Premiers pas”</string>
-    <string name="quitter">Quitter</string>
     <string name="equip_mod">L\'équipe de modération d\'Entourage</string>
     <string name="back_button_hint">retour</string>
     <string name="button_clear_hint">effacer</string>

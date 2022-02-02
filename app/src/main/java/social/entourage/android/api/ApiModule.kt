@@ -173,4 +173,10 @@ class ApiModule {
     fun providesPhotoGalleryService(restAdapter: Retrofit): PhotoGalleryRequest {
         return restAdapter.create(PhotoGalleryRequest::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun providesConversationsRequest(restAdapter: Retrofit): ConversationsRequest {
+        return restAdapter.create(ConversationsRequest::class.java)
+    }
 }

@@ -10,6 +10,8 @@ import social.entourage.android.tools.EntError
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.request.*
+import timber.log.Timber
+import java.lang.IllegalStateException
 import java.util.*
 import javax.inject.Inject
 
@@ -59,7 +61,13 @@ class EntourageInformationPresenter @Inject constructor(
         userRequest.getUser(userId).enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
-                    response.body()?.user?.let {fragment.onAuthorUserReceived(it)}
+                    response.body()?.user?.let {
+                        try {
+                            fragment.onAuthorUserReceived(it)
+                        } catch(e:IllegalStateException) {
+                            Timber.e(e)
+                        }
+                    }
                 }
             }
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {

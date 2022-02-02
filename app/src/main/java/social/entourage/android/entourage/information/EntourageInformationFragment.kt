@@ -53,6 +53,7 @@ import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.UserFragment
 import social.entourage.android.user.partner.PartnerFragment
 import social.entourage.android.user.role.UserRolesFactory
+import java.lang.Exception
 import java.util.*
 import javax.inject.Inject
 
@@ -587,15 +588,18 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
                 ui_action_event_creator_role?.visibility = View.GONE
             }
 
-            var info_abo = getText(R.string.info_asso_abo).toString()
-            if (partner.isFollowing) {
-                info_abo = getText(R.string.info_asso_joined).toString()
+            val infoAbo:String
+            try {
+                infoAbo = if (partner.isFollowing) getText(R.string.info_asso_joined).toString() else getText(R.string.info_asso_abo).toString()
+            }
+            catch (ex: Exception) {
+                return
             }
 
-            val assoStr = partner.name + " " + info_abo
+            val assoStr = partner.name + " " + infoAbo
 
             val colorId = ContextCompat.getColor(requireContext(), R.color.accent)
-            val assoSpanner = Utils.formatTextWithBoldSpanAndColor(colorId,true,assoStr, info_abo)
+            val assoSpanner = Utils.formatTextWithBoldSpanAndColor(colorId,true,assoStr, infoAbo)
             ui_action_event_creator_bt_asso.text = assoSpanner
             ui_action_event_creator_bt_asso?.setOnClickListener {
                 partner.id.toInt().let { partnerId ->

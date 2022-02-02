@@ -13,6 +13,7 @@ import androidx.core.app.NotificationCompat
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.res.ResourcesCompat
 import com.google.firebase.messaging.RemoteMessage
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
@@ -255,6 +256,7 @@ object PushNotificationManager {
                 .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.ic_entourage_logo_two_colors))
                 .setContentTitle(message.getContentTitleForCount(count, context))
                 .setContentText(message.getContentTextForCount(count, context))
+                .setColor(ResourcesCompat.getColor(context.resources,R.color.accent,null))
 
         val notification = builder.build()
         notification.defaults = NotificationCompat.DEFAULT_LIGHTS
@@ -281,6 +283,8 @@ object PushNotificationManager {
                 .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.ic_entourage_logo_two_colors))
                 .setContentTitle(fcmTitle)
                 .setContentText(fcmBody)
+                .setColor(ResourcesCompat.getColor(context.resources,R.color.accent,null))
+
         val notification = builder.build()
         notification.defaults = NotificationCompat.DEFAULT_LIGHTS
         notification.flags = NotificationCompat.FLAG_AUTO_CANCEL or NotificationCompat.FLAG_SHOW_LIGHTS

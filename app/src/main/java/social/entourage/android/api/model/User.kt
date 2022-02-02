@@ -5,7 +5,6 @@ import androidx.collection.ArrayMap
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.R.string
-import social.entourage.android.api.model.UserMembership.UserMembershipList
 import social.entourage.android.api.model.feed.FeedItemAuthor
 import timber.log.Timber
 import java.io.*
@@ -33,7 +32,6 @@ class User : Serializable {
     var about: String? = ""
         get() = field ?: ""
     val roles: ArrayList<String>? = null
-    private val memberships: ArrayList<UserMembershipList>? = null
     val conversation: UserConversation? = null
     var address: Address? = null
     @SerializedName("address_2")
@@ -102,17 +100,6 @@ class User : Serializable {
     // ----------------------------------
     fun isCreateEventActive() : Boolean {
         return permissions?.isEventCreationActive() ?: false
-    }
-
-    fun getMemberships(type: String?): ArrayList<UserMembership> {
-        type?.let {
-            memberships?.forEach { membershipList ->
-                if (it.equals(membershipList.type, ignoreCase = true)) {
-                    return membershipList.list
-                }
-            }
-        }
-        return ArrayList()
     }
 
     fun incrementTours() {
@@ -192,6 +179,9 @@ class User : Serializable {
 
     val isUserTypeNeighbour: Boolean
         get() = USER_GOAL_NEIGHBOUR.equals(goal, ignoreCase = true)
+
+    val isUserTypeAsso: Boolean
+        get() = USER_GOAL_ASSO.equals(goal, ignoreCase = true)
 
     // ----------------------------------
     // User Conversation

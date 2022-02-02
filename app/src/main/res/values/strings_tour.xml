@@ -103,7 +103,6 @@
     <string name="tour_cell_button_freezed">Clôturé</string>
     <string name="tour_cell_button_freezed_success">Succès</string>
     <string name="tour_cell_button_view">Voir plus</string>
-    <string name="tour_cell_button_pending_new">Demandé</string>
     <string name="tour_cell_button_freezed_success_cancel">Annulé</string>
 
     <string name="tour_cell_title_event">Événement %1$s</string>
@@ -125,8 +124,6 @@
     <!-- Promote Entourage Email -->
     <string name="promote_entourage_email_title">Veuillez envoyer une notification pour la sortie %1$s</string>
     <string name="promote_entourage_email_body">Bonjour,\nVeuillez promouvoir la sortie "%1$s" grâce à une notification envoyée aux téléphones des personnes membres des voisinages suivants :\n\nMerci</string>
-    <string name="entourage_create_submenu_add_tour_encounter">lors de votre maraude</string>
-    <string name="entourage_create_submenu_start_tour_launcher">Pour votre association</string>
 
     <!-- Newsfeed -->
     <string name="newsfeed_load_more_description">C\'est tout pour les actions dans ce rayon !</string>

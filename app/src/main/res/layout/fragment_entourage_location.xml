@@ -50,9 +50,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/entourage_location_bar_layout"
-        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/entourage_location_title_layout"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/entourage_location_title_layout">
+        android:layout_alignParentLeft="true">
 
     </FrameLayout>
 
@@ -75,5 +75,15 @@
         </FrameLayout>
 
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imageView25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/entourage_location_map_layout"
+        android:layout_alignBottom="@id/entourage_location_map_layout"
+        android:layout_centerInParent="true"
+        android:paddingBottom="36dp"
+        android:src="@drawable/ic_map_pin_orange" />
 
 </RelativeLayout>

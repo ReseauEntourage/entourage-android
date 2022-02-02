@@ -41,4 +41,5 @@ interface EntourageComponent {
     val complexPreferences: ComplexPreferences?
     val tourAreaRequest:TourAreaRequest
     val photoGalleryRequest:PhotoGalleryRequest
+    val conversationsRequest: ConversationsRequest
 }

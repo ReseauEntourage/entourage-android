@@ -11,17 +11,16 @@ import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.model.*
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.ktx.remoteConfig
-import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_home_expert.*
 import social.entourage.android.*
 import social.entourage.android.api.ApiConnectionListener
 import social.entourage.android.api.model.*
+import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.feed.Announcement
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.feed.NewsfeedItem
+import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events
 import social.entourage.android.base.BackPressable
 import social.entourage.android.base.BaseFragment
@@ -30,28 +29,27 @@ import social.entourage.android.base.location.LocationUtils
 import social.entourage.android.base.newsfeed.*
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.deeplinks.DeepLinksManager
+import social.entourage.android.entourage.EntourageDisclaimerFragment
 import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryManager
+import social.entourage.android.entourage.create.BaseCreateEntourageFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.home.*
 import social.entourage.android.home.actions.NewsFeedActionsFragment
+import social.entourage.android.message.push.PushNotificationManager
+import social.entourage.android.onboarding.InputNamesFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.tour.ToursFragment
+import social.entourage.android.tour.confirmation.TourEndConfirmationFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
-
-enum class VariantCellType {
-    Original,
-    VariantA,
-    VariantB
-}
 
 class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener, UserEditActionZoneFragment.FragmentListener {
     // ----------------------------------
@@ -75,12 +73,15 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
     // requested entourage category
     private var entourageCategory: EntourageCategory? = null
 
-    //val userId = presenter.authenticationController.me?.id ?:0
-
     private val connection = ServiceConnection()
     private var arrayEmpty = ArrayList<HomeCard>()
-    var variantType: VariantCellType = VariantCellType.Original
-    val remoteConfig = Firebase.remoteConfig
+
+    private var isTourPostSend = false
+    private var feedItemTemporary:FeedItem? = null
+    private var countDownTimer:CountDownTimer? = null
+    private var popInfoCreateEntourageFragment:PopInfoCreateEntourageFragment? = null
+    val countDown = 5000L
+
 
     // ----------------------------------
     // LIFECYCLE
@@ -101,23 +102,57 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
     override fun onBackPressed(): Boolean {
         //before closing the fragment, send the cached tour points to server (if applicable)
         entService?.updateOngoingTour()
-        return false
+        if (childFragmentManager.fragments.size == 1) return false
+        childFragmentManager.popBackStackImmediate()
+        return true
+
     }
 
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
-    private fun displayChosenFeedItem(feedItemUUID: String, feedItemType: Int, invitationId: Long = 0) {
-        //display the feed item
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_ENTOURAGE)
-        presenter.openFeedItemFromUUID(feedItemUUID, feedItemType, invitationId)
+    fun closePopAndGo() {
+        popInfoCreateEntourageFragment?.dismiss()
+        countDownTimer?.cancel()
+        countDownTimer = null
+        feedItemTemporary?.let { openFeedItem(it, true) }
     }
 
-    private fun displayChosenFeedItem(feedItem: FeedItem, feedRank: Int) {
-        displayChosenFeedItem(feedItem, 0, feedRank)
+    private fun updatePopCreateAndShow() {
+        var title = ""
+        var subtitle = ""
+
+        when (feedItemTemporary) {
+            is EntourageEvent -> {
+                title = getString(R.string.infoPopCreateEventTitle)
+                subtitle = getString(R.string.infoPopCreateEvent)
+            }
+            is EntourageContribution -> {
+                title = getString(R.string.infoPopCreateContribTitle)
+                subtitle = getString(R.string.infoPopCreateContrib)
+            }
+            else -> {
+                title = getString(R.string.infoPopCreateAskTitle)
+                subtitle = getString(R.string.infoPopCreateAsk)
+            }
+        }
+
+        popInfoCreateEntourageFragment = PopInfoCreateEntourageFragment.newInstance(title,subtitle)
+        popInfoCreateEntourageFragment?.homeFragment = this
+        popInfoCreateEntourageFragment?.show(requireActivity().supportFragmentManager,PopInfoCreateEntourageFragment.TAG)
+
+        countDownTimer = object : CountDownTimer(countDown, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+            }
+
+            override fun onFinish() {
+                closePopAndGo()
+            }
+        }
+        countDownTimer?.start()
     }
 
-    private fun displayChosenFeedItem(feedItem: FeedItem, invitationId: Long, feedRank: Int = 0) {
+    private fun displayChosenFeedItem(feedItem: FeedItem, isFromCreate: Boolean) {
         if (context == null || isStateSaved) return
         // decrease the badge count
         EntourageApplication.get(context).removePushNotificationsForFeedItem(feedItem)
@@ -129,19 +164,22 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             }
         }
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_ENTOURAGE)
-        presenter.openFeedItem(feedItem, invitationId, feedRank)
+
+        if (!isFromCreate) {
+            openFeedItem(feedItem,false)
+        } else {
+            feedItemTemporary = feedItem
+            updatePopCreateAndShow()
+        }
     }
 
-    private fun displayChosenFeedItemFromShareURL(feedItemShareURL: String, feedItemType: Int) {
-        //display the feed item
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_ENTOURAGE)
-        presenter.openFeedItemFromShareURL(feedItemShareURL, feedItemType)
-    }
-
-    private fun displayEntourageDisclaimer() {
+    fun displayEntourageDisclaimer() {
         // Check if we need to show the entourage disclaimer
         if (Configuration.showEntourageDisclaimer()) {
-            presenter.displayEntourageDisclaimer(groupType)
+            if (!isStateSaved) {
+                val fragmentManager = activity?.supportFragmentManager ?:return
+                EntourageDisclaimerFragment.newInstance(groupType).show(fragmentManager, EntourageDisclaimerFragment.TAG)
+            }
         } else {
             (activity as? MainActivity)?.onEntourageDisclaimerAccepted(null)
         }
@@ -155,12 +193,34 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
                 location = LatLng(address.latitude, address.longitude)
             }
         }
-        presenter.createEntourage(location, groupType, entourageCategory)
+        if (!isStateSaved) {
+            activity?.supportFragmentManager?.let { fragmentManager->
+                BaseCreateEntourageFragment.newExpertInstance(location, groupType, entourageCategory).show(fragmentManager, BaseCreateEntourageFragment.TAG)
+            }
+        }
     }
 
-    // ----------------------------------
-    // BUS LISTENERS : don't susbcribe here but in children !
-    // ----------------------------------
+    private fun openFeedItem(feedItem: FeedItem, isFromActions:Boolean) {
+        try {
+            activity?.supportFragmentManager?.let { fragmentManager ->
+                FeedItemInformationFragment.newInstance(feedItem,0,0,isFromActions).show(fragmentManager, FeedItemInformationFragment.TAG)
+            }
+        } catch (e: IllegalStateException) {
+            Timber.w(e)
+        }
+    }
+
+    fun openFeedItem(feedItem: FeedItem, invitationId: Long = 0) {
+        try {
+            activity?.supportFragmentManager?.let { fragmentManager->
+                FeedItemInformationFragment.newInstance(feedItem, invitationId, 0,false).show(fragmentManager, FeedItemInformationFragment.TAG)
+            }
+        } catch (e: IllegalStateException) {
+            Timber.w(e)
+        }
+    }
+
+    @Subscribe
     fun feedItemViewRequested(event: Events.OnFeedItemInfoViewRequestedEvent) {
         val feedItem = event.feedItem
         if (feedItem != null) {
@@ -172,7 +232,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
                         .setMessage(R.string.info_photo_profile_description)
                         .setNegativeButton(R.string.info_photo_profile_ignore) { dialog,_ ->
                             dialog.dismiss()
-                            displayChosenFeedItem(feedItem, event.getfeedRank())
+                            displayChosenFeedItem(feedItem, isFromCreate = true)
                         }
                         .setPositiveButton(R.string.info_photo_profile_add) { dialog, _ ->
                             dialog.dismiss()
@@ -183,7 +243,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
                         .show()
                 }
                 else {
-                    displayChosenFeedItem(feedItem, event.getfeedRank())
+                    displayChosenFeedItem(feedItem, event.isFromCreate)
                 }
             }
         } else {
@@ -192,9 +252,13 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             if (feedItemType != 0) {
                 val feedItemUUID = event.feedItemUUID
                 if (feedItemUUID.isNullOrEmpty()) {
-                    event.feedItemShareURL?.let { displayChosenFeedItemFromShareURL(it, feedItemType) }
+                    event.feedItemShareURL?.let {
+                        //display the feed item from URL
+                        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_ENTOURAGE)
+                        presenter.openFeedItemFromShareURL(it, feedItemType)
+                    }
                 } else {
-                    displayChosenFeedItem(feedItemUUID, feedItemType, event.invitationId)
+                    presenter.openFeedItemFromUUID(feedItemUUID, feedItemType, event.invitationId)
                 }
             }
         }
@@ -211,6 +275,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             pagination.isLoading = false
             pagination.isRefreshing = false
         }
+        ui_home_swipeRefresh?.isRefreshing = false
     }
 
     override fun onServerException(throwable: Throwable) {
@@ -221,6 +286,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             pagination.isLoading = false
             pagination.isRefreshing = false
         }
+        ui_home_swipeRefresh?.isRefreshing = false
     }
 
     override fun onTechnicalException(throwable: Throwable) {
@@ -231,22 +297,23 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             pagination.isLoading = false
             pagination.isRefreshing = false
         }
+        ui_home_swipeRefresh?.isRefreshing = false
     }
 
-    fun createAction(newGroupType: String, newActionGroupType: String) {
+    fun createAction(newActionGroupType: String) {
         entourageCategory = EntourageCategoryManager.getDefaultCategory(newActionGroupType)
-        groupType = newGroupType
+        groupType = BaseEntourage.GROUPTYPE_ACTION
         entourageCategory?.isNewlyCreated = true
         displayEntourageDisclaimer()
     }
 
-    fun createAction(newEntourageGroupType: String) {
+    fun createOuting() {
         entourageCategory = null
-        groupType = newEntourageGroupType
+        groupType = BaseEntourage.GROUPTYPE_OUTING
         displayEntourageDisclaimer()
     }
 
-    private fun setGroupType(_groupString:String) {
+    fun setGroupType(_groupString:String) {
         groupType = _groupString
     }
 
@@ -277,6 +344,11 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
         super.onAttach(context)
     }
 
+    override fun onResume() {
+        super.onResume()
+        EntBus.post(Events.OnLocationPermissionGranted(LocationUtils.isLocationPermissionGranted()))
+    }
+
     override fun onDestroy() {
         EntBus.unregister(this)
         connection.doUnbindService()
@@ -298,10 +370,12 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             }
         }
         (activity as? MainActivity)?.showEditActionZoneFragment()
+        entService?.updateHomefeed(pagination)
 
-        presenter.checkUserNamesInfo()
-
-        createEmptyArray()
+        presenter.initializeInvitations()
+        if(presenter.checkUserNamesInfo()) {
+            InputNamesFragment().show(parentFragmentManager,"InputFGTag")
+        }
 
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_START_EXPERTFEED)
 
@@ -312,55 +386,11 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
 
         ui_bt_tour?.visibility = if(EntourageApplication.get().me()?.isPro == false) View.INVISIBLE else View.VISIBLE
 
-        val type = remoteConfig.getLong("cell_home_expert_type")
-        if (type == 0L) {
-            variantType = VariantCellType.Original
-        }
-        else if (type == 1L) {
-            variantType = VariantCellType.VariantA
-        }
-        else if (type == 2L) {
-            variantType = VariantCellType.VariantB
-        }
         setupRecyclerView()
-
-        setupTesting()
     }
 
-    fun setupTesting() {
-
-        val configSettings = remoteConfigSettings {
-            minimumFetchIntervalInSeconds = 60 * 60 * 24 //TODO remettre les bonnes valuers après tests preprod sinon 0
-        }
-        remoteConfig.setConfigSettingsAsync(configSettings)
-        val defaults = HashMap<String, Any>()
-        defaults.put("cell_home_expert_type",0)
-        remoteConfig.setDefaultsAsync(defaults)
-
-        remoteConfig.fetchAndActivate()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val type = remoteConfig.getLong("cell_home_expert_type")
-                        if (type == 0L) {
-                            variantType = VariantCellType.Original
-                        }
-                        else if (type == 1L) {
-                            variantType = VariantCellType.VariantA
-                        }
-                        else if (type == 2L) {
-                            variantType = VariantCellType.VariantB
-                        }
-                        setupRecyclerView()
-                        entService?.updateHomefeed(pagination)
-                    } else {
-                        Timber.d("Fetch failed")
-                    }
-                }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // entService?.updateHomefeed(pagination)
+    init {
+        createEmptyArray()
     }
 
     private fun setupComponent(entourageComponent: EntourageComponent?) {
@@ -414,18 +444,15 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
                         requireActivity().startActivity(intent)
                     } ?: run {
                         val uri = Uri.parse(actUrl)
-                        var _action = Intent.ACTION_VIEW
-                        if (actUrl.contains("mailto:",true)) {_action = Intent.ACTION_SENDTO }
-                        val intent = Intent(_action,uri)
+                        val action = if (actUrl.contains("mailto:",true)) Intent.ACTION_SENDTO else Intent.ACTION_VIEW
                         try {
-                            requireActivity().startActivity(intent)
+                            requireActivity().startActivity(Intent(action,uri))
                         } catch (e: ActivityNotFoundException) {
                             Timber.e(e)
                         }
                     }
                 }
                 else if (item is FeedItem) {
-
                     var logString = if (isFromHeadline) {
                         if (isAction) {
                             AnalyticsEvents.ACTION_EXPERTFEED_News_Action
@@ -441,18 +468,6 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
                     }
                     logString += "${position + 1}"
                     AnalyticsEvents.logEvent(logString)
-
-                    if (!isFromHeadline) {
-                        // Use for AB Testing precision variant Analytics
-                        var tagAB = ""
-                        when( variantType) {
-                            VariantCellType.Original -> tagAB = "Action__ExpertFeed__Show_O"
-                            VariantCellType.VariantA -> tagAB = "Action__ExpertFeed__Show_A"
-                            VariantCellType.VariantB -> tagAB = "Action__ExpertFeed__Show_B"
-                        }
-                        AnalyticsEvents.logEvent("Action__ExpertFeed__Show") //Use for AB Testing tracking
-                        AnalyticsEvents.logEvent(tagAB)
-                    }
 
                     feedItemViewRequested(Events.OnFeedItemInfoViewRequestedEvent(item))
                 }
@@ -513,22 +528,98 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             }
         }
 
-        adapterHome = HomeFeedAdapter(variantType,listener)
+        if(adapterHome == null) {
+            adapterHome = HomeFeedAdapter(listener).apply {
+                this.updateDatas(arrayEmpty,true)
+            }
+        }
         ui_recyclerview?.layoutManager = LinearLayoutManager(context)
         ui_recyclerview?.adapter = adapterHome
 
-        adapterHome?.updateDatas(arrayEmpty,true,variantType)
         ui_home_swipeRefresh?.setOnRefreshListener { entService?.updateHomefeed(pagination) }
     }
 
     fun parseFeed(responseString:String) {
         pagination.isLoading = false
         pagination.isRefreshing = false
-        val _arrayTest = HomeCard.parsingFeed(responseString)
+        val newFeed = HomeCard.parsingFeed(responseString)
 
         ui_home_swipeRefresh?.isRefreshing = false
 
-        adapterHome?.updateDatas(_arrayTest,false,variantType)
+        adapterHome?.updateDatas(newFeed,false)
+    }
+
+    fun checkNavigation() {
+        if (presenter.isNavigation()) {
+            when(presenter.navType()) {
+                "action" -> {
+                    showActions(true)
+                }
+                "event" -> {
+                    showActions(false)
+                }
+                "tour" -> {
+                    showTour()
+                }
+                else -> {}
+            }
+        }
+    }
+
+    @Subscribe
+    fun checkIntentAction(event: Events.OnCheckIntentActionEvent) {
+        if (activity == null) {
+            Timber.w("No activity found")
+            return
+        }
+        checkAction(event.action)
+        (event.extras?.getSerializable(PushNotificationManager.PUSH_MESSAGE) as? Message)?.content?.let { content ->
+            presenter.checkIntentAction(content, event.action)
+        }
+    }
+
+    private fun checkAction(action: String) {
+        when (action) {
+            PlusFragment.KEY_CREATE_CONTRIBUTION -> createAction(BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)
+            PlusFragment.KEY_CREATE_DEMAND -> createAction(BaseEntourage.GROUPTYPE_ACTION_DEMAND)
+            PlusFragment.KEY_CREATE_OUTING -> createOuting()
+            EntService.KEY_NOTIFICATION_PAUSE_TOUR,
+            EntService.KEY_NOTIFICATION_STOP_TOUR,
+            TourEndConfirmationFragment.KEY_RESUME_TOUR,
+            TourEndConfirmationFragment.KEY_END_TOUR,
+            PlusFragment.KEY_START_TOUR,
+            PlusFragment.KEY_ADD_ENCOUNTER -> {
+                //Use for Tour
+                if (isTourPostSend) return
+
+                val frag = ToursFragment.newInstance()
+                requireActivity().supportFragmentManager.commit {
+                    add(R.id.main_fragment, frag,ToursFragment.TAG)
+                    addToBackStack(ToursFragment.TAG)
+                    presenter.saveInfo(true,"tour")
+
+                    isTourPostSend = true
+                    val handler = Handler(Looper.getMainLooper())
+                    handler.postDelayed({
+                        EntBus.post(Events.OnCheckIntentActionEvent(action, null))
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            isTourPostSend = false
+                        }, 2000)
+                    }, 1000)
+                }
+            }
+            else -> {}
+        }
+    }
+
+    private fun showActions(isAction:Boolean) {
+        requireActivity().supportFragmentManager.commit {
+            add(R.id.main_fragment, NewsFeedActionsFragment.newInstance(isAction, false),
+                NewsFeedActionsFragment.TAG)
+            addToBackStack(NewsFeedActionsFragment.TAG)
+            val navKey = if (isAction) "action" else "event"
+            presenter.saveInfo(true,navKey)
+        }
     }
 
     fun showActions(isAction:Boolean,subtype: HomeCardType) {
@@ -575,6 +666,69 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
         showActions(true, HomeCardType.NONE)
     }
 
+    fun onAddEncounter() {
+        showTour()
+        (activity?.supportFragmentManager?.findFragmentByTag(ToursFragment.TAG) as? ToursFragment)?.onAddEncounter()
+    }
+
+    /*****
+     ** Method from NewsFeedFragment for handling closing action/event/tour
+     *****/
+    @Subscribe
+    fun feedItemCloseRequested(event: Events.OnFeedItemCloseRequestEvent) {
+        val feedItem = event.feedItem
+
+        // Only the author can close entourages/tours
+        val myId = EntourageApplication.me(context)?.id
+            ?: return
+        val author = feedItem.author ?: return
+        if (author.userID != myId) {
+            return
+        }
+        if (!feedItem.isClosed()) {
+            // close
+            stopFeedItem(feedItem, event.isSuccess,event.comment)
+        } else {
+            (feedItem as? Tour)?.let { tour ->
+                if (!tour.isFreezed()) {
+                    freezeTour(tour)
+                }
+            }
+        }
+    }
+
+    private fun stopFeedItem(feedItem: FeedItem?, success: Boolean, comment:String?) {
+        activity?.let { _ ->
+            entService?.let { service ->
+                if (feedItem != null
+                    && (!service.isRunning
+                            || feedItem.type != TimestampedObject.TOUR_CARD
+                            || service.currentTourId.equals(feedItem.uuid, ignoreCase = true))) {
+                    service.stopFeedItem(feedItem, success,comment)
+                } else if (service.isRunning) {
+                    service.endTreatment()
+                    AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_STOP_TOUR)
+                }
+            }
+        }
+    }
+
+    private fun freezeTour(tour: Tour) {
+        entService?.freezeTour(tour)
+    }
+
+    fun pauseTour(tour: Tour) {
+        if (entService?.isRunning == true) {
+            if (entService?.currentTourId.equals(tour.uuid, ignoreCase = true)) {
+                entService?.pauseTreatment()
+            }
+        }
+    }
+
+    fun saveOngoingTour() {
+        entService?.updateOngoingTour()
+    }
+
     private inner class ServiceConnection : android.content.ServiceConnection {
         private var isBound = false
 
@@ -600,6 +754,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             entService = null
             isBound = false
         }
+
         // ----------------------------------
         // SERVICE BINDING METHODS
         // ----------------------------------
