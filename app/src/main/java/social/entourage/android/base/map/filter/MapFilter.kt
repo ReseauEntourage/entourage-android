@@ -96,18 +96,6 @@ class MapFilter : MapFilterInterface, Serializable {
         }
     }
 
-    fun setFiltersForNeo() {
-        entourageTypeDemand = true
-        entourageTypeContribution = false
-        showPastEvents=false
-        timeframe = DAYS_3
-        isShowPartnersOnly = false
-        isShowAlls = true
-        entourageTypeOuting = false
-
-        setAllCategorySelected(false,true)
-    }
-
     // ----------------------------------
     // Methods
     // ----------------------------------

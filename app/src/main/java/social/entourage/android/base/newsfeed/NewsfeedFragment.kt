@@ -90,9 +90,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
 
     protected var mapClusterManager: ClusterManager<ClusterItem>? = null
 
-    protected var isFromNeo = false
-    private var tagNameAnalytic = ""
-
     protected val userId: Int
         get() = presenter.authenticationController.me?.id ?:0
     // ----------------------------------
@@ -258,7 +255,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
             location = it
             longTapCoordinates = null
         }
-        presenter.createEntourage(location, groupType, entourageCategory,isFromNeo,tagNameAnalytic)
+        presenter.createEntourage(location, groupType, entourageCategory)
     }
 
     protected fun refreshFeed() {
@@ -405,10 +402,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
             showNewsfeedBottomView(if (selectedTab == NewsfeedTabItem.ALL_TAB) newNewsFeeds.size < pagination.itemsPerPage else newsfeedAdapter?.dataItemCount == 0)
         }
         if (newsfeedAdapter?.dataItemCount == 0) {
-            if (isFromNeo) {
-                displayListWithMapHeader()
-                return
-            }
+
             if (!pagination.isRefreshing) {
                 isFullMapShown = false
                 displayFullMap()
@@ -541,7 +535,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         }
         if (!feedItem.isClosed()) {
             // close
-            stopFeedItem(feedItem, event.isSuccess)
+            stopFeedItem(feedItem, event.isSuccess,event.comment)
         } else {
             (feedItem as? Tour)?.let { tour ->
                 if (!tour.isFreezed()) {
@@ -662,7 +656,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
     // ----------------------------------
     protected open fun hideTourLauncher() {}
 
-    fun stopFeedItem(feedItem: FeedItem?, success: Boolean) {
+    fun stopFeedItem(feedItem: FeedItem?, success: Boolean, comment:String?) {
         activity?.let { activity ->
             entService?.let { service ->
                 if (feedItem != null
@@ -673,7 +667,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
                     loaderStop = ProgressDialog.show(activity, activity.getString(feedItem.getClosingLoaderMessage()), activity.getString(R.string.button_loading), true)
                     loaderStop?.setCancelable(true)
                     //TODO: proper event: AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_STOP_TOUR)
-                    service.stopFeedItem(feedItem, success)
+                    service.stopFeedItem(feedItem, success,comment)
                 } else if (service.isRunning) {
                     loaderStop = ProgressDialog.show(activity, activity.getString(R.string.loader_title_tour_finish), activity.getString(R.string.button_loading), true)
                     loaderStop?.setCancelable(true)

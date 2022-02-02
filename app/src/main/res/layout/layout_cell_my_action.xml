@@ -7,7 +7,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="150dp"
+        android:layout_height="130dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/bg_button_rounded_white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -23,12 +23,13 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="15dp"
             android:ellipsize="end"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="sans-serif"
             android:maxLines="2"
             android:text="Type\n L2 blabla bleddg sgsdgnj sdgjskhgjsghs"
-            android:textColor="@color/action_type_outing"
+            android:textColor="@color/black"
             android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/ui_action_picto_type3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,31 +38,30 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="15dp"
             android:ellipsize="end"
             android:fontFamily="sans-serif"
             android:maxLines="2"
             android:text="Type\nLigne2"
-            android:textColor="@color/action_type_outing"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/ui_action_tv_location"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ui_action_picto_info"
             app:layout_constraintEnd_toStartOf="@+id/ui_action_picto_type3"
-            app:layout_constraintStart_toEndOf="@+id/ui_action_picto_info" />
+            app:layout_constraintStart_toEndOf="@+id/ui_action_picto_info"
+            app:layout_constraintTop_toTopOf="@+id/ui_action_picto_info" />
 
         <TextView
             android:id="@+id/ui_action_tv_location"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="15dp"
             android:ellipsize="end"
             android:fontFamily="sans-serif"
             android:maxLines="2"
             android:text="Type"
-            android:textColor="@color/action_type_outing"
-            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/ui_action_picto_location"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ui_action_picto_location"
             app:layout_constraintTop_toTopOf="@+id/ui_action_picto_location" />
 
@@ -69,9 +69,11 @@
             android:id="@+id/ui_action_picto_info"
             android:layout_width="24dp"
             android:layout_height="20dp"
-            app:layout_constraintBottom_toBottomOf="@+id/ui_action_tv_info"
+            android:layout_marginTop="9dp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toTopOf="@+id/ui_action_picto_location"
             app:layout_constraintStart_toStartOf="@+id/ui_action_tv_title"
-            app:layout_constraintTop_toTopOf="@+id/ui_action_tv_info"
+            app:layout_constraintTop_toBottomOf="@+id/ui_action_tv_title"
             app:srcCompat="@drawable/ic_event_accent_24dp" />
 
         <ImageView
@@ -87,11 +89,46 @@
             android:id="@+id/ui_action_picto_type3"
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="15dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_home_arrow_show_orange" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout19"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintBottom_toBottomOf="@+id/ui_action_picto_location"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ui_action_picto_location">
+
+            <TextView
+                android:id="@+id/textView34"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:text="@string/show_more"
+                android:textColor="@color/accent"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView28"
+                android:layout_width="24dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView34"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView34"
+                app:layout_constraintTop_toTopOf="@+id/textView34"
+                app:srcCompat="@drawable/ic_home_arrow_show_orange" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

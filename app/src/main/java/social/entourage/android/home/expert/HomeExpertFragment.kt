@@ -517,13 +517,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
         ui_recyclerview?.layoutManager = LinearLayoutManager(context)
         ui_recyclerview?.adapter = adapterHome
 
-        EntourageApplication.me(activity)?.let { user ->
-            var isNeighbour = false
-            if (user.isUserTypeNeighbour) {
-                isNeighbour = true
-            }
-            adapterHome?.updateDatas(arrayEmpty,isNeighbour,true,variantType)
-        } ?: run { adapterHome?.updateDatas(arrayEmpty,false,true,variantType) }
+        adapterHome?.updateDatas(arrayEmpty,true,variantType)
         ui_home_swipeRefresh?.setOnRefreshListener { entService?.updateHomefeed(pagination) }
     }
 
@@ -534,13 +528,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
 
         ui_home_swipeRefresh?.isRefreshing = false
 
-        EntourageApplication.me(activity)?.let { user ->
-            var isNeighbour = false
-            if (user.isUserTypeNeighbour) {
-                isNeighbour = true
-            }
-            adapterHome?.updateDatas(_arrayTest,isNeighbour,false,variantType)
-        } ?: run { adapterHome?.updateDatas(_arrayTest,false,false,variantType) }
+        adapterHome?.updateDatas(_arrayTest,false,variantType)
     }
 
     fun showActions(isAction:Boolean,subtype: HomeCardType) {
@@ -559,7 +547,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             val isExpertContrib = subtype == HomeCardType.ACTIONS_CONTRIB
 
             add(R.id.main_fragment,
-                NewsFeedActionsFragment.newInstance(isAction, false, isExpertAsk, isExpertContrib),
+                NewsFeedActionsFragment.newInstance(isAction, isExpertAsk, isExpertContrib),
                 NewsFeedActionsFragment.TAG
             )
             addToBackStack(NewsFeedActionsFragment.TAG)

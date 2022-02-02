@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView58"
+        android:id="@+id/ui_tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/myActions"
@@ -30,70 +30,17 @@
         app:layout_constraintStart_toStartOf="@+id/customTitleView3"
         app:layout_constraintTop_toTopOf="@+id/customTitleView3" />
 
-    <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/ui_material_button_group"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        app:checkedButton="@id/ui_button_contribs"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/customTitleView3"
-        app:selectionRequired="true"
-        app:singleSelection="true">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/ui_button_contribs"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:letterSpacing="0"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:backgroundTint="@color/color_state_material_group"
-            android:checkable="true"
-            android:fontFamily="sans-serif"
-            android:text="@string/myContrib"
-            android:textAllCaps="false"
-            android:textColor="@color/color_state_material_group_txt"
-            android:textSize="16sp"
-            app:shapeAppearance="@style/Rounded"
-            app:strokeColor="@android:color/white"
-            app:strokeWidth="2dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/ui_button_asks"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:letterSpacing="0"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:backgroundTint="@color/color_state_material_group"
-            android:checkable="true"
-            android:fontFamily="sans-serif"
-            android:text="@string/myAsk"
-            android:textAllCaps="false"
-            android:textColor="@color/color_state_material_group_txt"
-            android:textSize="16sp"
-            app:shapeAppearance="@style/Rounded"
-            app:strokeColor="@android:color/white"
-            app:strokeWidth="2dp" />
-
-
-    </com.google.android.material.button.MaterialButtonToggleGroup>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ui_recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ui_material_button_group" >
+        app:layout_constraintTop_toBottomOf="@+id/customTitleView3">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -105,6 +52,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/ui_recyclerView"
         app:layout_constraintEnd_toEndOf="@+id/ui_recyclerView"
         app:layout_constraintStart_toStartOf="@+id/ui_recyclerView"
-        app:layout_constraintTop_toBottomOf="@+id/ui_material_button_group" />
+        app:layout_constraintTop_toTopOf="@+id/ui_recyclerView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

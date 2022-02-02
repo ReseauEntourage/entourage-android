@@ -25,8 +25,6 @@ class EntourageDisclaimerFragment : BaseDialogFragment() {
 
 
     private var mListener: OnFragmentInteractionListener? = null
-    private var isFromNeo = false
-    private var tagAnalyticNeoName = ""
 
     var groupType: String? = null
 
@@ -38,8 +36,6 @@ class EntourageDisclaimerFragment : BaseDialogFragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         // Inflate the layout for this fragment
         arguments?.let { arguments ->
-            isFromNeo = arguments.getBoolean(ISFROMNEO,false)
-            tagAnalyticNeoName = arguments.getString(TAGANALYTICS,"")
             groupType = arguments.getString(KEY_GROUP_TYPE, null)
         }
 
@@ -63,14 +59,7 @@ class EntourageDisclaimerFragment : BaseDialogFragment() {
         }
         entourage_disclaimer_switch?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                val _tag:String
-                if (isFromNeo) {
-                    _tag = String.format(AnalyticsEvents.ACTION_NEOFEEDACT_AcceptCGU_X,tagAnalyticNeoName)
-                }
-                else {
-                    _tag = AnalyticsEvents.EVENT_ENTOURAGE_DISCLAIMER_ACCEPT
-                }
-                AnalyticsEvents.logEvent(_tag)
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_DISCLAIMER_ACCEPT)
 
                 // trigger the accept after a delay
                 val handler = Handler(Looper.getMainLooper())
@@ -103,14 +92,7 @@ class EntourageDisclaimerFragment : BaseDialogFragment() {
     // Button handling
     // ----------------------------------
     fun onCloseClicked() {
-        val _tag:String
-        if (isFromNeo) {
-            _tag = String.format(AnalyticsEvents.ACTION_NEOFEEDACT_CancelCGU_X,tagAnalyticNeoName)
-        }
-        else {
-            _tag = AnalyticsEvents.EVENT_ENTOURAGE_DISCLAIMER_CLOSE
-        }
-        AnalyticsEvents.logEvent(_tag)
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_DISCLAIMER_CLOSE)
         dismiss()
     }
 
@@ -137,15 +119,10 @@ class EntourageDisclaimerFragment : BaseDialogFragment() {
         const val TAG = "social.entourage.android.entourage.disclaimer"
         private const val KEY_GROUP_TYPE = "social.entourage.android.KEY_GROUP_TYPE"
 
-        private const val ISFROMNEO = "isFromNeo"
-        private const val TAGANALYTICS = "tagAnalytics"
-
-        fun newInstance(groupType: String, tagAnalyticName:String, isFromNeo:Boolean): EntourageDisclaimerFragment {
+        fun newInstance(groupType: String): EntourageDisclaimerFragment {
             val fragment = EntourageDisclaimerFragment()
             val args = Bundle()
             args.putString(KEY_GROUP_TYPE, groupType)
-            args.putString(TAGANALYTICS,tagAnalyticName)
-            args.putBoolean(ISFROMNEO,isFromNeo)
             fragment.arguments = args
             return fragment
         }

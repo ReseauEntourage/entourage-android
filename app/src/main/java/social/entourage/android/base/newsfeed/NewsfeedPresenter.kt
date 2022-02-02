@@ -109,21 +109,17 @@ class NewsfeedPresenter @Inject constructor(
         }
     }
 
-    fun createEntourage(location: LatLng?, groupType: String, category: EntourageCategory?,isFromNeo:Boolean,tagAnalyticName:String) {
+    fun createEntourage(location: LatLng?, groupType: String, category: EntourageCategory?) {
         if (fragment != null && !fragment.isStateSaved) {
             val fragmentManager = fragment.activity?.supportFragmentManager ?: return
-            if(isFromNeo) {
-                BaseCreateEntourageFragment.newNeoInstance(location, groupType, category,tagAnalyticName).show(fragmentManager, BaseCreateEntourageFragment.TAG)
-            } else {
-                BaseCreateEntourageFragment.newExpertInstance(location, groupType, category).show(fragmentManager, BaseCreateEntourageFragment.TAG)
-            }
+            BaseCreateEntourageFragment.newExpertInstance(location, groupType, category).show(fragmentManager, BaseCreateEntourageFragment.TAG)
         }
     }
 
     fun displayEntourageDisclaimer(groupType: String) {
         if (fragment != null && !fragment.isStateSaved) {
             val fragmentManager = fragment.activity?.supportFragmentManager ?:return
-            EntourageDisclaimerFragment.newInstance(groupType,"",false).show(fragmentManager, EntourageDisclaimerFragment.TAG)
+            EntourageDisclaimerFragment.newInstance(groupType).show(fragmentManager, EntourageDisclaimerFragment.TAG)
         }
     }
 

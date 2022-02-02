@@ -12,6 +12,7 @@
         android:id="@+id/constraintLayout14"
         android:layout_width="match_parent"
         android:layout_height="44dp"
+        android:elevation="10dp"
         android:background="@color/background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,13 +24,14 @@
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:background="?attr/selectableItemBackground"
-            android:contentDescription="@string/empty_description"
+            android:contentDescription="@string/back_button_hint"
             android:padding="5dp"
+            app:tint="@color/accent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/greyish_brown"
-            app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
+            app:srcCompat="@drawable/ic_baseline_arrow_back_24"
+             />
 
         <ImageButton
             android:id="@+id/ui_bt_search_close"
@@ -37,13 +39,14 @@
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:background="?attr/selectableItemBackground"
-            android:contentDescription="@string/empty_description"
-            android:padding="5dp"
+            android:contentDescription="@string/button_clear_hint"
+            android:padding="12dp"
+            android:scaleType="centerInside"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/greyish_brown"
-            app:srcCompat="@drawable/ic_close_round" />
+            app:srcCompat="@drawable/ic_close_round"
+            app:tint="@color/greyish_brown" />
 
         <EditText
             android:id="@+id/ui_et_search"
@@ -62,16 +65,19 @@
             app:layout_constraintStart_toEndOf="@+id/ui_bt_back"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@color/greyish_brown"
-            app:layout_constraintBottom_toBottomOf="@+id/ui_et_search"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-        </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/frameLayout11"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/greyish"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout14">
+
+    </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ui_recyclerView"
@@ -80,7 +86,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout14" />
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout11" />
 
     <ProgressBar
         android:id="@+id/ui_progress"

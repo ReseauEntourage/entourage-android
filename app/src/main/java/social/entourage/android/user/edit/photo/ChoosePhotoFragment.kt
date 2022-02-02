@@ -54,7 +54,7 @@ class ChoosePhotoFragment : OnboardingPhotoFragment() {
         super.onPhotoEdited(photoURI, photoSource)
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_PHOTO_SUBMIT)
         mListener?.onPhotoChosen(photoURI,photoSource)
-        dismiss()
+        dismissAllowingStateLoss()
     }
 
     //**********//**********//**********

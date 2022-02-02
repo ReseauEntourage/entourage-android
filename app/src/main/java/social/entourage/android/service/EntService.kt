@@ -304,11 +304,11 @@ class EntService : Service() {
         }
     }
 
-    fun stopFeedItem(feedItem: FeedItem, success: Boolean) {
+    fun stopFeedItem(feedItem: FeedItem, success: Boolean, comment:String?) {
         if (feedItem.type == TimestampedObject.TOUR_CARD) {
             tourServiceManager?.finishTour(feedItem as Tour)
         } else if (feedItem.type == TimestampedObject.ENTOURAGE_CARD) {
-            entServiceManager.closeEntourage(feedItem as BaseEntourage, success)
+            entServiceManager.closeEntourage(feedItem as BaseEntourage, success,comment)
         }
     }
 

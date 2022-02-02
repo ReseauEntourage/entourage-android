@@ -187,6 +187,7 @@ open class BaseEntourage : FeedItem, Serializable {
 
     @StringRes
     override fun getClosedCTAText(): Int {
+        if (isEvent()) return R.string.tour_cell_button_freezed_success_cancel
         return if (outcome?.success==true) R.string.tour_cell_button_freezed_success else super.getClosedCTAText()
     }
 
@@ -253,6 +254,8 @@ open class BaseEntourage : FeedItem, Serializable {
 
         @SerializedName("landscape_url")
         var landscape_url: String? = null
+
+        var close_message:String? = null
 
         fun setStartDate(startDate: Date) {
             this.startDate = startDate

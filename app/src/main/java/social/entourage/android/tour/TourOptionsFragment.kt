@@ -54,7 +54,7 @@ class TourOptionsFragment : FeedItemOptionsFragment() {
             //hide the options
             dismiss()
         } else if (tour.isClosed()) {
-            EntBus.post(OnFeedItemCloseRequestEvent(tour, showUI = false, success = true))
+            EntBus.post(OnFeedItemCloseRequestEvent(tour, showUI = false, success = true,""))
             dismiss()
         }
     }

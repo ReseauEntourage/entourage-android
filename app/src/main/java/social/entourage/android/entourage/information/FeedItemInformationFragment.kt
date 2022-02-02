@@ -105,6 +105,8 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
     private var startedTypingMessage = false
     private var isFromActions = false
 
+    protected var authorUser:User? = null
+
     abstract fun presenter(): FeedItemInformationPresenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -130,6 +132,13 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
             if (newFeedItem.isPrivate()) {
                 initializeView()
                 loadPrivateCards()
+                val distance = newFeedItem.getStartPoint()?.let { startPoint ->
+                    EntLocation.currentLocation?.let { currentLocation ->
+                        ceil(startPoint.distanceTo(LocationPoint(currentLocation.latitude, currentLocation.longitude)) / 1000.toDouble()).toInt() // in kilometers
+                    } ?: 0
+                } ?: 0
+                presenter().getFeedItem(newFeedItem.uuid
+                        ?: "", newFeedItem.type, 0, distance)
             } else {
                 // public entourage
                 // we need to retrieve the whole entourage again, just to send the distance and feed position
@@ -167,6 +176,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         entourage_info_options?.setOnClickListener {onCloseOptionsButton()}
         entourage_option_cancel?.setOnClickListener {onCloseOptionsButton()}
         entourage_option_stop?.setOnClickListener {onStopTourButton()}
+        ui_layout_button_close?.setOnClickListener {onStopTourButton()}
         entourage_option_quit?.setOnClickListener {quitEntourage()}
         entourage_info_request_join_button?.setOnClickListener {onJoinButton()}
         entourage_option_contact?.setOnClickListener {onJoinButton()}
@@ -1013,7 +1023,15 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         } else {
             presenter().getFeedItemMembers(feedItem)
         }
+        presenter().getUserInfo(feedItem.author?.userID)
     }
+
+    fun onAuthorUserReceived(authorUser:User) {
+        this.authorUser = authorUser
+        updateAuthorView()
+    }
+
+    open fun updateAuthorView() {}
 
     fun onFeedItemNotFound() {
         //if (activity == null || !isAdded) return

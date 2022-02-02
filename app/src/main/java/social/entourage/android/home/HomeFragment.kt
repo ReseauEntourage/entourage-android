@@ -13,7 +13,6 @@ import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_home.*
 import social.entourage.android.*
 import social.entourage.android.api.ApiConnectionListener
-import social.entourage.android.api.HomeTourArea
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.feed.FeedItem
@@ -32,7 +31,6 @@ import social.entourage.android.entourage.create.BaseCreateEntourageFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.home.actions.NewsFeedActionsFragment
 import social.entourage.android.home.expert.HomeExpertFragment
-import social.entourage.android.home.neo.*
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
@@ -55,9 +53,6 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
 
     // requested entourage category
     private var entourageCategory: EntourageCategory? = null
-
-    private var isFromNeo = false
-    private var tagNameAnalytic = ""
 
     private val connection = ServiceConnection()
     private var isTourPostSend = false
@@ -103,41 +98,7 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
         presenter.initializeInvitations()
         presenter.checkUserNamesInfos()
 
-        var isExpertMode:Boolean
-
-        val hasExportKey = EntourageApplication.get().sharedPreferences.contains(EntourageApplication.KEY_HOME_IS_EXPERTMODE)
-
-        if (hasExportKey) {
-            isExpertMode = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_HOME_IS_EXPERTMODE,false)
-        }
-        else {
-            isExpertMode = false
-            EntourageApplication.me(activity)?.let { user ->
-                isExpertMode = false
-                if (user.isUserTypeNeighbour) {
-                    if (user.isEngaged) {
-                        isExpertMode = true
-                    }
-                }
-                EntourageApplication.get().sharedPreferences.edit()
-                        .putBoolean(EntourageApplication.KEY_HOME_IS_EXPERTMODE, isExpertMode)
-                        .remove("isNavNews")
-                        .remove("navType")
-                        .apply()
-            }
-        }
-
-        EntourageApplication.me(activity)?.let { user ->
-            if (!user.isUserTypeNeighbour) {
-                isExpertMode = true
-            }
-        }
-
-        val fragmentChild = if (isExpertMode) {
-            HomeExpertFragment()
-        } else {
-            HomeNeoMainFragment()
-        }
+        val fragmentChild = HomeExpertFragment()
 
         childFragmentManager.beginTransaction()
             .replace(R.id.ui_container, fragmentChild)
@@ -207,7 +168,7 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
         updatePopCreateAndShow()
     }
 
-    fun updatePopCreateAndShow() {
+    private fun updatePopCreateAndShow() {
         var title = ""
         var subtitle = ""
 
@@ -271,7 +232,7 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
                 location = LatLng(address.latitude, address.longitude)
             }
         }
-        createEntourage(location, groupType, entourageCategory,isFromNeo,tagNameAnalytic)
+        createEntourage(location, groupType, entourageCategory)
     }
 
     // ----------------------------------
@@ -300,14 +261,6 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
         groupType = newGroupType
         entourageCategory?.isNewlyCreated = true
         displayEntourageDisclaimer()
-    }
-
-    private fun createActionFromNeo(newGroupType: String, newActionGroupType: String, newActionType:String, tagNameAnalytic:String) {
-        entourageCategory = EntourageCategoryManager.findCategory(newActionGroupType,newActionType)
-        groupType = newGroupType
-        entourageCategory?.isNewlyCreated = true
-        isFromNeo = true
-        this.tagNameAnalytic = tagNameAnalytic
     }
 
     fun createAction(newEntourageGroupType: String) {
@@ -347,109 +300,19 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
         entService?.updateOngoingTour()
     }
 
-    // Home Neo navigation
 
-    fun goActions() {
-        val fg = HomeNeoActionFragment()
-        val transaction = childFragmentManager.beginTransaction()
-        transaction.setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
-        transaction.addToBackStack(HomeNeoActionFragment.TAG)
-        transaction.add(R.id.ui_container, fg).commit()
-    }
-
-    private fun createEntourage(location: LatLng?, groupType: String, category: EntourageCategory?, isFromNeo:Boolean, tagAnalyticName:String) {
+    private fun createEntourage(location: LatLng?, groupType: String, category: EntourageCategory?) {
         if (!isStateSaved) {
             val fragmentManager = activity?.supportFragmentManager ?: return
-            if(isFromNeo) {
-                BaseCreateEntourageFragment.newNeoInstance(location, groupType, category,tagAnalyticName).show(fragmentManager, BaseCreateEntourageFragment.TAG)
-            } else {
-                BaseCreateEntourageFragment.newExpertInstance(location, groupType, category).show(fragmentManager, BaseCreateEntourageFragment.TAG)
-            }
+            BaseCreateEntourageFragment.newExpertInstance(location, groupType, category).show(fragmentManager, BaseCreateEntourageFragment.TAG)
         }
     }
 
     private fun displayEntourageDisclaimer(groupType: String) {
         if (!isStateSaved) {
             val fragmentManager = activity?.supportFragmentManager ?:return
-            EntourageDisclaimerFragment.newInstance(groupType,"",false).show(fragmentManager, EntourageDisclaimerFragment.TAG)
+            EntourageDisclaimerFragment.newInstance(groupType).show(fragmentManager, EntourageDisclaimerFragment.TAG)
         }
-    }
-
-    private fun displayEntourageDisclaimer(groupType: String, tagAnalyticName:String, isFromNeo: Boolean) {
-        if (!isStateSaved) {
-            val fragmentManager = activity?.supportFragmentManager ?:return
-            EntourageDisclaimerFragment.newInstance(groupType,tagAnalyticName,isFromNeo).show(fragmentManager, EntourageDisclaimerFragment.TAG)
-        }
-    }
-
-    //Actions call from fg
-    fun createAction2(newGroupType: String, newActionGroupType: String, newActionType:String,tagNameAnalytic:String) {
-        createActionFromNeo(newGroupType,newActionGroupType,newActionType,tagNameAnalytic)
-        displayEntourageDisclaimer(newGroupType,tagNameAnalytic,true)
-    }
-
-    fun goDetailActions() {
-        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_FEEDVIEW_ASKS)
-        val frag = NewsFeedActionsFragment.newInstance(isAction = true, isFromNeo = true)
-        requireActivity().supportFragmentManager.commit {
-            setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
-            add(R.id.main_fragment, frag, NewsFeedActionsFragment.TAG)
-            addToBackStack(NewsFeedActionsFragment.TAG)
-        }
-    }
-
-    fun goDetailEvents() {
-        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_FEEDVIEW_EVENTS)
-        val frag = NewsFeedActionsFragment.newInstance(isAction = false, isFromNeo = true)
-        requireActivity().supportFragmentManager.commit {
-            setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
-            add(R.id.main_fragment,frag , NewsFeedActionsFragment.TAG)
-            addToBackStack(NewsFeedActionsFragment.TAG)
-        }
-    }
-
-    fun goHelp() {
-        val fg = HomeNeoHelpFragment()
-        val transaction = childFragmentManager.beginTransaction()
-        transaction.setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
-        transaction.addToBackStack(HomeNeoHelpFragment.TAG)
-        transaction.add(R.id.ui_container, fg).commit()
-    }
-
-    fun goStreet() {
-        val fg = HomeNeoStreetFragment()
-        val transaction = childFragmentManager.beginTransaction()
-        transaction.setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
-        transaction.addToBackStack(HomeNeoStreetFragment.TAG)
-        transaction.add(R.id.ui_container, fg).commit()
-    }
-
-    fun showWebLink(slug:String) {
-        (activity as MainActivity).showWebViewForLinkId(slug)
-    }
-
-    fun goTourStart() {
-        val fg = HomeNeoTourStartFragment()
-        val transaction = childFragmentManager.beginTransaction()
-        transaction.setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
-        transaction.addToBackStack(HomeNeoTourStartFragment.TAG)
-        transaction.add(R.id.ui_container, fg).commit()
-    }
-
-    fun goTourList() {
-        val fg = HomeNeoTourListFragment()
-        val transaction = childFragmentManager.beginTransaction()
-        transaction.setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
-        transaction.addToBackStack(HomeNeoTourListFragment.TAG)
-        transaction.add(R.id.ui_container, fg).commit()
-    }
-
-    fun goTourSend(tourArea: HomeTourArea) {
-        val fg = HomeNeoTourSendFragment.newInstance(tourArea)
-        val transaction = childFragmentManager.beginTransaction()
-        transaction.setCustomAnimations(R.anim.slide_in_from_right,R.anim.slide_in_from_right)
-        transaction.addToBackStack(HomeNeoTourSendFragment.TAG)
-        transaction.add(R.id.ui_container, fg).commit()
     }
 
     override fun onBackPressed(): Boolean {
@@ -463,10 +326,6 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
 
     @Subscribe
     fun feedItemViewRequested(event: Events.OnFeedItemInfoViewRequestedEvent) {
-        if (isFromNeo) {
-            goDetailActions()
-            return
-        }
         val feedItem = event.feedItem
         if (feedItem != null) {
             //Check user photo
@@ -522,7 +381,7 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
         }
     }
 
-    fun showActions(isAction:Boolean) {
+    private fun showActions(isAction:Boolean) {
         requireActivity().supportFragmentManager.commit {
             add(R.id.main_fragment, NewsFeedActionsFragment.newInstance(isAction, false),
                 NewsFeedActionsFragment.TAG)
@@ -624,7 +483,7 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
         }
         if (!feedItem.isClosed()) {
             // close
-            stopFeedItem(feedItem, event.isSuccess)
+            stopFeedItem(feedItem, event.isSuccess,event.comment)
         } else {
             (feedItem as? Tour)?.let { tour ->
                 if (!tour.isFreezed()) {
@@ -634,14 +493,14 @@ class HomeFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFr
         }
     }
 
-    fun stopFeedItem(feedItem: FeedItem?, success: Boolean) {
+    private fun stopFeedItem(feedItem: FeedItem?, success: Boolean, comment:String?) {
         activity?.let { activity ->
             entService?.let { service ->
                 if (feedItem != null
                         && (!service.isRunning
                                 || feedItem.type != TimestampedObject.TOUR_CARD
                                 || service.currentTourId.equals(feedItem.uuid, ignoreCase = true))) {
-                    service.stopFeedItem(feedItem, success)
+                    service.stopFeedItem(feedItem, success,comment)
                 } else if (service.isRunning) {
                     service.endTreatment()
                     AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_STOP_TOUR)

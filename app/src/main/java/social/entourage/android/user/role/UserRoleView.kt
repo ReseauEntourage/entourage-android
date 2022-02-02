@@ -14,7 +14,7 @@ import social.entourage.android.R
  * Created by Mihai Ionescu on 18/05/2018.
  */
 class UserRoleView : AppCompatTextView {
-    private var backgroundCornerRadius = 5.0f
+    var backgroundCornerRadius = 5.0f
 
     @ColorRes
     private var backgroundColor = 0
@@ -68,9 +68,11 @@ class UserRoleView : AppCompatTextView {
         background.cornerRadius = backgroundCornerRadius
         setPadding(
                 (textSize * 2 / 3.0).toInt(),
-                (textSize * 1 / 4.0).toInt(),
+                0,
+               // (textSize * 1 / 4.0).toInt(),
                 (textSize * 2 / 3.0).toInt(),
-                (textSize * 1 / 4.0).toInt()
+                0
+               // (textSize * 1 / 4.0).toInt()
         )
         setBackground(background)
     }

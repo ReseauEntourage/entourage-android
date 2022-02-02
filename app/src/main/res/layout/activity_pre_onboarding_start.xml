@@ -15,7 +15,6 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/empty_description"
         android:cropToPadding="true"
-        app:layout_constraintEnd_toEndOf="@+id/ui_tv_title"
         app:layout_constraintStart_toStartOf="@+id/ui_tv_title"
         app:layout_constraintTop_toBottomOf="@+id/ui_tv_title"
         app:srcCompat="@drawable/pre_onboard_event" />

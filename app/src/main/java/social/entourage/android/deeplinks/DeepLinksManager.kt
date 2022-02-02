@@ -80,7 +80,8 @@ object DeepLinksManager {
                 val requestedView = pathSegments[0]
                 val key = pathSegments[1]
                 if (requestedView.equals(DeepLinksView.ENTOURAGES.view, ignoreCase = true)
-                        || requestedView.equals(DeepLinksView.ENTOURAGE.view, ignoreCase = true)) {
+                        || requestedView.equals(DeepLinksView.ENTOURAGE.view, ignoreCase = true )
+                                || requestedView.equals(DeepLinksView.APPLINK_ACTION.view,true)) {
                     //path like /entourage/UUID...
                     EntBus.post(OnFeedItemInfoViewRequestedEvent(TimestampedObject.ENTOURAGE_CARD, "", key))
                 } else if (requestedView.equals(DeepLinksView.DEEPLINK.view, ignoreCase = true)) {
@@ -167,7 +168,8 @@ object DeepLinksManager {
         MY_CONVERSATIONS("messages"),
         CREATE_ACTION("create-action"),
         TUTORIAL("tutorial"),
-        GUIDE_MAP("guidemap");
+        GUIDE_MAP("guidemap"),
+        APPLINK_ACTION("actions"); //Deeplink from https web link
     }
 
     /**

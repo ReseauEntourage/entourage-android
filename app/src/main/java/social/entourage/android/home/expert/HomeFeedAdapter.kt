@@ -28,8 +28,7 @@ import social.entourage.android.tools.view.RecyclerViewItemDecorationWithSpacing
 class HomeFeedAdapter(var variantType:VariantCellType, val listener:HomeViewHolderListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateDatas(items:ArrayList<HomeCard>, isNeighbour:Boolean, isLoading:Boolean, variantType:VariantCellType) {
-        this.isNeighbour = isNeighbour
+    fun updateDatas(items:ArrayList<HomeCard>, isLoading:Boolean, variantType:VariantCellType) {
         this.arrayItems.clear()
         this.arrayItems.addAll(items)
         this.isLoading = isLoading
@@ -40,14 +39,9 @@ class HomeFeedAdapter(var variantType:VariantCellType, val listener:HomeViewHold
     val CELL_HEADLINES = 0
     val CELL_ACTIONS = 1
     val CELL_EVENTS = 2
-    val CELL_INFO = 3
-    var isNeighbour = false
     var isLoading = false
 
     override fun getItemViewType(position: Int): Int {
-        if (isNeighbour) {
-            if (position == arrayItems.size) return CELL_INFO
-        }
        val type = arrayItems[position].type
 
         when(type) {
@@ -89,10 +83,6 @@ class HomeFeedAdapter(var variantType:VariantCellType, val listener:HomeViewHold
                 val view = inflater.inflate(cell_Event_id, parent, false)
                 return  EventVH(view)
             }
-            CELL_INFO -> {
-                val view = inflater.inflate(R.layout.layout_cell_home_info, parent, false)
-                return  InfoVH(view)
-            }
             else -> {
                 val view = inflater.inflate(R.layout.layout_cell_home_empty, parent, false)
                 return EmptyVH(view)
@@ -117,11 +107,6 @@ class HomeFeedAdapter(var variantType:VariantCellType, val listener:HomeViewHold
                     holder.bind(EntourageApplication.get(), position)
                 }
             }
-            CELL_INFO -> {
-                if (holder is InfoVH) {
-                    holder.bind()
-                }
-            }
             else-> {
                 if (holder is EmptyVH) {
                     holder.bind(position)
@@ -131,8 +116,6 @@ class HomeFeedAdapter(var variantType:VariantCellType, val listener:HomeViewHold
     }
 
     override fun getItemCount(): Int {
-        if (isNeighbour && !isLoading) return arrayItems.size + 1
-
         return arrayItems.size
     }
 
@@ -234,14 +217,6 @@ class HomeFeedAdapter(var variantType:VariantCellType, val listener:HomeViewHold
             itemDecoration?.let { itemView.ui_recyclerview_event?.removeItemDecoration(it) }
             itemDecoration = RecyclerViewItemDecorationWithSpacing(5,24, Resources.getSystem())
             itemDecoration?.let { itemView.ui_recyclerview_event?.addItemDecoration(it) }
-        }
-    }
-
-    inner class InfoVH(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind() {
-            itemView.setOnClickListener {
-                listener.onShowChangeMode()
-            }
         }
     }
 

@@ -74,12 +74,14 @@ android {
                 prod = [
                         serverURL        : "https://api.entourage.social/api/v1/",
                         deepLinksHostName: "www.entourage.social",
-                        deepLinksScheme  : "entourage"
+                        deepLinksScheme  : "entourage",
+                        appLinksHostName: "app.entourage.social"
                 ]
                 staging = [
                         serverURL        : "https://api-preprod.entourage.social/api/v1/",
                         deepLinksHostName: "entourage-landingpages-preprod.herokuapp.com",
-                        deepLinksScheme  : "entourage-staging"
+                        deepLinksScheme  : "entourage-staging",
+                        appLinksHostName: "entourage-webapp-preprod.herokuapp.com"
                 ]
             }
         }
@@ -124,9 +126,11 @@ android {
         variant.buildConfigField "String", "ENTOURAGE_URL", "\"${app[environment.name]['serverURL']}\""
         variant.buildConfigField "String", "DEEP_LINKS_SCHEME", "\"${app[environment.name]['deepLinksScheme']}\""
         variant.buildConfigField "String", "DEEP_LINKS_URL", "\"${app[environment.name]['deepLinksHostName']}\""
+        variant.buildConfigField "String", "APP_LINKS_URL", "\"${app[environment.name]['appLinksHostName']}\""
 
         variant.mergedFlavor.manifestPlaceholders = [
                 deepLinksHostName       : "${app[environment.name]['deepLinksHostName']}",
+                appLinksHostName       : "${app[environment.name]['appLinksHostName']}",
                 deepLinksEntourageScheme: "${app[environment.name]['deepLinksScheme']}"
         ]
 

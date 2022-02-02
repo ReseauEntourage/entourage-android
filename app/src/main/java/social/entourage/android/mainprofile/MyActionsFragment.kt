@@ -45,19 +45,11 @@ class MyActionsFragment : BaseDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         ui_progress?.visibility = View.GONE
 
-        val buttonId = if (indexSelected == 0) ui_button_contribs.id else ui_button_asks.id
-        ui_material_button_group?.check(buttonId)
-
-        ui_material_button_group?.addOnButtonCheckedListener { group, checkedId, isChecked ->
-            if (checkedId == ui_button_asks.id && isChecked) {
-                indexSelected = 1
-                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_LISTACTIONS_SWITCH_ASK)
-            }
-            else if (checkedId == ui_button_contribs.id && isChecked) {
-                indexSelected = 0
-                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_LISTACTIONS_SWITCH_CONTRIB)
-            }
-            changeSelectedItems()
+        if (indexSelected == 1) {
+            ui_tv_title.text = getString(R.string.myAsk)
+        }
+        else {
+            ui_tv_title.text = getString(R.string.myContrib)
         }
 
         title_close_button?.setOnClickListener {

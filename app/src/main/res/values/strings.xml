@@ -91,106 +91,12 @@
     <string name="home_button_help_title_report">Les reporters Entourage</string>
     <string name="i_participe">Participer</string>
 
-
-    //Home Neo
-    //Main
-    <string name="home_neo_title">Démarrez l’aventure humaine Entourage !</string>
-    <string name="home_neo_title_bold">Entourage !</string>
-    <string name="home_neo_cell1_title">Premiers pas chez Entourage</string>
-    <string name="home_neo_cell1_description">Vous souhaitez aider les personnes SDF mais vous ne savez pas comment ? Laissez-vous guider pour oser la rencontre.</string>
-    <string name="home_neo_cell1_button">DÉCOUVRIR</string>
-    <string name="home_neo_cell2_title">Agir maintenant</string>
-    <string name="home_neo_cell2_description">Passez à l’action en rejoignant les initiatives solidaires de votre quartier.</string>
-    <string name="home_neo_cell2_button">SE LANCER</string>
-
-    <string name="home_neo_cell_info_title">Vous êtes sur le mode Premiers pas.</string>
-    <string name="home_neo_cell_info">Prêt à découvrir tous nos programmes ? Désactivez le mode Premiers pas ici.</string>
-
-    <string name="home_expert_cell_info_title">Vous êtes sur le mode normal de l’application.</string>
-    <string name="home_expert_cell_info">Vous souhaitez être guidé pour débuter sur Entourage ? Activez le mode Premiers pas ici.</string>
-
-    //Neo help
-    <string name="home_neo_help_title">Entourage vous accompagne dans votre démarche</string>
-    <string name="home_neo_help_title_bold">vous accompagne</string>
-    <string name="home_neo_help_cell1_title">Comprendre le monde de la rue</string>
-    <string name="home_neo_help_cell1_description">Faites le plein de conseils et de témoignages  pour gagner en confiance.</string>
-    <string name="home_neo_help_cell1_button">C’est parti !</string>
-
-    <string name="home_neo_help_cell2_title">Faire des rencontres dans la rue</string>
-    <string name="home_neo_help_cell2_description">Prenez part aux Rencontres Nomades avec des membres du réseau Entourage pour aller discuter avec des personnes SDF.</string>
-    <string name="home_neo_help_cell2_button">En savoir plus</string>
-
-    <string name="home_neo_help_cell3_title">Participer à un événement</string>
-    <string name="home_neo_help_cell3_description">Passez un moment entre voisins avec et sans domicile dans un cadre convivial : pique-nique, apéro, pétanque…</string>
-    <string name="home_neo_help_cell3_button">DÉCOUVRIR</string>
-
-    //Neo Street
-
-    <string name="home_neo_street_title">Comprendre le monde de la rue</string>
-    <string name="home_neo_street_subtitle">Les formats proposés :</string>
-    <string name="home_neo_street_cell1_title">Atelier en ligne</string>
-    <string name="home_neo_street_cell1_description">1h de sensibilisation par l’équipe Entourage enrichie de témoignages de la rue pour poser toutes vos questions en direct.</string>
-    <string name="home_neo_street_cell1_button">S’inscrire</string>
-
-    <string name="home_neo_street_cell2_title">Simple Comme Bonjour</string>
-    <string name="home_neo_street_cell2_description">Des vidéos et un guide pédagogique pour déconstruire ses préjugés et oser la rencontre.</string>
-    <string name="home_neo_street_cell2_button">DÉCOUVRIR</string>
-
-    //Home neo tour
-    <string name="home_neo_tour_start_title_top">Maraude en groupe</string>
-    <string name="home_neo_tour_start_title">Comment ça se passe ?</string>
-    <string name="home_neo_tour_start_info1">Les maraudes sociales sont proposées dans les villes où Entourage a une communauté active.</string>
-    <string name="home_neo_tour_start_info2">Leur but est d’aller à la rencontre des personnes SDF.</string>
-    <string name="home_neo_tour_start_info3">Par groupe de 2 ou 3, toujours avec un membre de l’association.</string>
-    <string name="home_neo_tour_start_info4">L’organisation se fait par e-mail avec les équipes locales d’Entourage.</string>
-    <string name="home_neo_tour_start_button_title">Voir la liste</string>
-
-
-    <string name="home_neo_tour_areas_top_title">Maraude en groupe</string>
-    <string name="home_neo_tour_areas_title">Où voulez-vous participer à une maraude sociale ?</string>
-    <string name="home_neo_tour_areas_description">Sélectionnez une localisation parmi celles disponibles :</string>
-
-    <string name="home_neo_tour_send_top_title">Maraude en groupe</string>
-    <string name="home_neo_tour_send_title">Demande de renseignements pour %s</string>
-    <string name="home_neo_tour_send_description">Envoyez un message à l’équipe Entourage de %s pour en savoir plus sur les modalités d’inscription et les prochaines dates de maraudes.\n\nL’équipe vous recontactera par email.</string>
-    <string name="home_neo_tour_send_button">J’envoie ma demande</string>
-    <string name="home_neo_tour_send_pop_email_error">Adresse email invalide.\nVeuillez renseigner une adresse email valide.\nMerci</string>
-
-    <string name="home_neo_tour_send_email">Plus qu’un pas !\nRenseignez votre email pour recevoir la réponse de l’équipe Entourage :</string>
-    <string name="home_neo_tour_send_email_placeholder">Adresse email</string>
-    <string name="home_neo_tour_send_ok">Votre demande \na bien été envoyée.</string>
-
-
-    //Actions
-    <string name="home_neo_action_title">Les actions concrètes</string>
-    <string name="home_neo_action_title_top1">Participer</string>
-    <string name="home_neo_action_title1">Répondre à un besoin</string>
-    <string name="home_neo_action_title2">Événements Entourage</string>
-    <string name="home_neo_action_title_top3">Proposer</string>
-    <string name="home_neo_action_title3">Proposer du matériel</string>
-    <string name="home_neo_action_title4">Proposer un service</string>
-    <string name="home_neo_action_title5">Relayer un besoin</string>
-    <string name="home_neo_action_title6">Offrir un café solidaire</string>
-
-    <string name="home_neo_action_bottom_title">Comment franchir le pas ?</string>
-    <string name="home_neo_action_bottom_description">Des vidéos et un guide pédagogique pour déconstruire ses préjugés et se sentir prêt à oser la rencontre.</string>
-    <string name="home_neo_action_bottom_button">S’informer</string>
-
-    //Info popup
-    <string name="home_neo_pop_info_title">Nouveauté Entourage !</string>
-    <string name="home_neo_pop_info_message">Découvrez le mode d’affichage “Premiers pas” pour être guidé dans les programmes Entourage.\n\nVous pouvez changer de mode depuis votre page profil.</string>
-    <string name="home_neo_pop_info_button_ok">OK</string>
-    <string name="home_neo_pop_info_button_profil">Voir profil</string>
-
-    <string name="home_neo_pop_goExpert_title"> </string>
-    <string name="home_neo_pop_goExpert_message">Vous êtes sur le mode “Premiers pas” de l’application.\nAccédez à plus de contenu en désactivant ce mode depuis votre page profil. </string>
-    <string name="home_neo_pop_goExpert_button_ok">OK</string>
-    <string name="home_neo_pop_goExpert_button_cancel">Non merci</string>
-
     <string name="setting_home_title">📱 MON COMPTE ENTOURAGE</string>
     <string name="setting_home_description">Le mode “Premiers pas” vous guide pour découvrir les programmes Entourage.</string>
     <string name="setting_home_button_type">Mode “Premiers pas”</string>
     <string name="quitter">Quitter</string>
     <string name="equip_mod">L\'équipe de modération d\'Entourage</string>
+    <string name="back_button_hint">retour</string>
+    <string name="button_clear_hint">effacer</string>
 
 </resources>

@@ -18,8 +18,8 @@
     <string name="actions_solidr">actions\nsolidaires</string>
     <string name="actions_button">Voir la liste →</string>
     <string name="title_my_activity">👌  MON ACTIVITÉ</string>
-    <string name="contribCreated">dons\ncrées</string>
-    <string name="askCreated">demandes\ncréées</string>
+    <string name="contribCreated">dons\npubliés</string>
+    <string name="askCreated">demandes\n publiées</string>
 
 
     <string name="menu_info_social">Pour vivre <b>encore plus de solidarité</b> suivez Entourage sur vos réseaux !</string>
@@ -37,20 +37,7 @@
     <string name="menu_info_third_share">Répandez la solidarité autour de vous !</string>
     <string name="menu_info_third_title">📣 PARTAGER ENTOURAGE</string>
 
-
     <string name="menu_info_profile_share">Bonjour ! Grâce au réseau Entourage, je participe à des actions solidaires entre voisins avec et sans domicile. Rejoins-moi : %s</string>
-
-    <!-- Pop info Change mode -->
-    <string name="profile_pop_switch_mode_neo">Mode “Premier pas“</string>
-    <string name="profile_pop_switch_mode_expert">Mode “normal“</string>
-    <string name="profile_pop_switch_mode_title">Information</string>
-    <string name="profile_pop_switch_mode_message">Vous avez basculé en\n%s\n\nRedirection vers la nouvelle home ?</string>
-    <string name="profile_pop_switch_mode_message_neo">Vous êtes sur le point d’activer le mode “Premiers pas” de l’application.\n\nEffectuer cette action ?</string>
-    <string name="profile_pop_switch_mode_message_expert">Vous êtes sur le point de désactiver le mode “Premiers pas” de l’application.\n\nEffectuer cette action ?</string>
-    <string name="profile_pop_switch_mode_button_no">Non</string>
-    <string name="profile_pop_switch_mode_button_yes">Oui</string>
-    <string name="info_pop_switch_mode_neo_on">Mode “Premier pas“ activé</string>
-    <string name="info_pop_switch_mode_neo_off">Mode “Premier pas“ désactivé</string>
 
     <string name="myActionsCreated">Mes actions solidaires créées</string>
     <string name="myActions">Mes actions solidaires</string>

@@ -71,10 +71,6 @@ class SignUpTest {
                     withParent(withId(R.id.onboard_email_pwd_mainlayout)),
                     isDisplayed()))
 
-    private val homeNeoTitleTv = onView(
-            allOf(withId(R.id.ui_home_neo_start_title),
-                    isDisplayed()))
-
     private val assoFillTitleTv = onView(
             allOf(withId(R.id.ui_onboard_email_tv_title),
                     isDisplayed()))

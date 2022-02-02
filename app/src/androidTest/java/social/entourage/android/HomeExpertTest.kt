@@ -694,7 +694,7 @@ class HomeExpertTest {
     class ToastMatcher : TypeSafeMatcher<Root>() {
         override fun matchesSafely(item: Root?): Boolean {
             item?.windowLayoutParams?.get()?.type?.let { type ->
-                if (type == WindowManager.LayoutParams.TYPE_TOAST) {
+                if (type == WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY) {
                     val windowToken = item.decorView.windowToken
                     val appToken = item.decorView.applicationWindowToken
                     if (windowToken == appToken) {
