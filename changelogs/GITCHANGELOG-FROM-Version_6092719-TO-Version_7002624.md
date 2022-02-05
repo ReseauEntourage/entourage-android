@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_7002624
-##Previous tag: Version_6092719
+# Changelog
+## Latest tag: Version_7002624
+## Previous tag: Version_6092719
 * Add deeplink show GDS map (2021-04-02) by <Jr>
 * update Feed Expert (2021-03-26) by <Jr>
 * New home expert + new feed + Bump version 7.0 (2021-03-22) by <Jr>

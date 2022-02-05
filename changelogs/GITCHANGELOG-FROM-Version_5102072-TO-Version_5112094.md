@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_5112094
-##Previous tag: Version_5102072
+# Changelog
+## Latest tag: Version_5112094
+## Previous tag: Version_5102072
 * feature: redesign de la page de description EN-635 (2019-10-14) by <gregclermont>
 * feature: EN-850 fix for API 21+ (Android 5+) (2019-10-08) by <Francois Pellissier>
 * feature: EN-850 fix for API 19 (Android 4.4) (2019-09-27) by <François Pellissier>

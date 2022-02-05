@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_401392
-##Previous tag: Version_381317
+# Changelog
+## Latest tag: Version_401392
+## Previous tag: Version_381317
 
 * EMA-1665 Changed a few deprecated gradle configurations (2017-11-14) by <Mihai Ionescu>
 * EMA-1665 Added google to the repositories (2017-11-14) by <Mihai Ionescu>

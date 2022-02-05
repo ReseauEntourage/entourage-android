@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_441506
-##Previous tag: Version_431485
+# Changelog
+## Latest tag: Version_441506
+## Previous tag: Version_431485
 * feature(analytics) adding user info to firebase (2018-02-06) by <François Pellissier>
 * feature(analytics) adding firebase connector 
 * feature(analytics) removing flurry analytics (2018-02-02) by <François Pellissier>

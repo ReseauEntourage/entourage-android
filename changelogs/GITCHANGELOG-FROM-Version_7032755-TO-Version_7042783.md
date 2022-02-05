@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_7042783
-##Previous tag: Version_7032755
+# Changelog
+## Latest tag: Version_7042783
+## Previous tag: Version_7032755
 * Add param for home feed API call (2021-09-14) by <Jr>
 * [EN-4017] fix (2021-09-14) by <Jr>
 * [EN-4116][EN-4125] change placeholder + fix color picto (2021-09-14) by <Jr>

@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_6032419
-##Previous tag: Version_6032392
+# Changelog
+## Latest tag: Version_6032419
+## Previous tag: Version_6032392
 * Activate Banner "Horaires d'été" (2020-07-31) by <Jr>
 * [EN-1793] fix recyclerView inside scrollview (2020-07-31) by <Jr>
 * [EN-2730] add share button detail poi (2020-07-31) by <Jr>

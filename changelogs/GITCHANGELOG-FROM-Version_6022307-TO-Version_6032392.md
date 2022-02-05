@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_6032391
-##Previous tag: Version_6022307
+# Changelog
+## Latest tag: Version_6032391
+## Previous tag: Version_6022307
 * Add FAQ Feed item detail [EN-2631] (2020-07-03) by <Jr>
 * Page Agir add Analytic [EN-2569] (2020-07-03) by <Jr>
 * Mod agir page [EN-2569] (2020-07-03) by <Jr>

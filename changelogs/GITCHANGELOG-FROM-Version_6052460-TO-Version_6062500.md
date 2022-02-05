@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_6062500
-##Previous tag: Version_6052460
+# Changelog
+## Latest tag: Version_6062500
+## Previous tag: Version_6052460
 * [EN-3003] add share POI from detail (2020-10-13) by <Jr>
 * [EN-2989] Filters GDS change behavior + UI (2020-10-12) by <Jr>
 * [EN-2999] add analytics GDS (2020-10-09) by <Jr>

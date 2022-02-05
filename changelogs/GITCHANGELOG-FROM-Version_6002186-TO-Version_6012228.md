@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_6012228
-##Previous tag: Version_6002186
+# Changelog
+## Latest tag: Version_6012228
+## Previous tag: Version_6002186
 * feature: hding pop-up in Guide (WIP) (2020-02-28) by <Francois Pellissier>
 * feature: try adding a pop-up in Guide (WIP) (2020-02-28) by <Francois Pellissier>
 * feature: EN-299 display filter status in button 

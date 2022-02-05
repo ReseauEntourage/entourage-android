@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_581903
-##Previous tag: Version_571888
+# Changelog
+## Latest tag: Version_581903
+## Previous tag: Version_571888
 * fix(crash) EN-603 crash during login (2019-01-08) by <François Pellissier>
 * fix(crash) EN-601 fix crash when saving phone number in forget password (2019-01-08) by <François Pellissier>
 * fix(tours) fix some crashes on tours (2019-01-08) by <François Pellissier>

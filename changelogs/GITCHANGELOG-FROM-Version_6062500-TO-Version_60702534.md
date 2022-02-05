@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_60702534
-##Previous tag: Version_6062500
+# Changelog
+## Latest tag: Version_60702534
+## Previous tag: Version_6062500
 * chore: cleaning bitrise from PFP config (2020-11-20) by <Francois Pellissier>
 * [EN-3275] fix share event date. (2020-11-20) by <Jr>
 * [EN-3184] fix (2020-11-20) by <Jr>

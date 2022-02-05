@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_591962
-##Previous tag: Version_581939
+# Changelog
+## Latest tag: Version_591962
+## Previous tag: Version_581939
 * feature(fcm) EN-967: adding inapp messaging (2019-03-12) by <Francois Pellissier>
 * feature(fcm) adding inapp messaging (2019-03-12) by <Francois Pellissier>
 * feature(asso) EN-525 removing button "Add an association" (2019-03-05) by <François Pellissier>

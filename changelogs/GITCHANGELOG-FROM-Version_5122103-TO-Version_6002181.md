@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_6002181
-##Previous tag: Version_5122103
+# Changelog
+## Latest tag: Version_6002181
+## Previous tag: Version_5122103
 * feature: new PLUS screen (new header + new wording + new icons) 
 * feature: EN-1849 ajout de deux boutons d'actions Demande et Contribution sur le bouton plus 
 * feature: EN-1333 suggestions/feedbacks dans le menu A propos (PFP version, small screen version) (2019-11-18) by <Francois Pellissier>

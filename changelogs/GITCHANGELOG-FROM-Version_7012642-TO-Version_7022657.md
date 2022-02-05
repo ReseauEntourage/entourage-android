@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_7022657
-##Previous tag: Version_7012642
+# Changelog
+## Latest tag: Version_7022657
+## Previous tag: Version_7012642
 * bump to version 7.2 (2021-05-31) by <Jr>
 * Fix ui (2021-05-31) by <Jr>
 * Fix ui text align. (2021-05-31) by <Jr>

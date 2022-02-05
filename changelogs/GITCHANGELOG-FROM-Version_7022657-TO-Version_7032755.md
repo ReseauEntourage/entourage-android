@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_7032755
-##Previous tag: Version_7022657
+# Changelog
+## Latest tag: Version_7032755
+## Previous tag: Version_7022657
 * feature: EN-3919 allow empty messages for Encounters (2021-08-16) by <Francois Pellissier>
 * feature: Rework button + icon: bigger and always orange (2021-07-23) by <François Pellissier>
 * feature: Add lib to track keyboard visibility and improve error message display (2021-07-11) by <François Pellissier>

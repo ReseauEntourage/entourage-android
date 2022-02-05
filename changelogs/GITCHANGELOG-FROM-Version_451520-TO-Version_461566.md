@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_461566
-##Previous tag: Version_451520
+# Changelog
+## Latest tag: Version_461566
+## Previous tag: Version_451520
 * EMA-1845 Fixed crash on Android 8 when trying to close a tour (refactored confirmation activity into a fragment) (2018-04-17) by <Mihai Ionescu>
 * EMA-1572 Screen09.1 New Report User Screen - text translations and the keyboard is automatically shown when the screen pops up (2018-04-13) by <Mihai Ionescu>
 * EMA-1572 Screen09.1 New Report User Screen (UI and API call) (2018-04-12) by <Mihai Ionescu>

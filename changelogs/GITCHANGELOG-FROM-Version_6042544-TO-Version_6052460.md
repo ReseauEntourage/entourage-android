@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_6052460
-##Previous tag: Version_6042544
+# Changelog
+## Latest tag: Version_6052460
+## Previous tag: Version_6042544
 * [EN-2887] add 2nd button pop info first login (2020-09-11) by <Jr>
 * [EN-2880] category action add automatic validate (2020-09-11) by <Jr>
 * [EN-2777] change icon report (2020-09-11) by <Jr>

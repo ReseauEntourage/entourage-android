@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_571888
-##Previous tag: Version_571878
+# Changelog
+## Latest tag: Version_571888
+## Previous tag: Version_571878
 * fix(crash) fix 1 crash because of null pointer (2018-11-29) by <Francois Pellissier>
 * fix(crash) fixed 2 crashes (2018-11-29) by <Francois Pellissier>
 * fix(crash) trying to fix a crash on maps (2018-11-29) by <Francois Pellissier>

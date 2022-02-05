@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_5122103
-##Previous tag: Version_5112094
+# Changelog
+## Latest tag: Version_5122103
+## Previous tag: Version_5112094
 * feature: EN-828 change floating button for guide (2019-10-30) by <Francois Pellissier>
 * feature: EN-1708 adding shorcuts (share, rate) to desktop icon (2019-10-29) by <Francois Pellissier>
 * feature: bitrise push to Google Play Store on release builds (2019-10-16) by <Francois Pellissier>

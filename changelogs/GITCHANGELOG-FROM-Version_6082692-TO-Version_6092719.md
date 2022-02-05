@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_6092719
-##Previous tag: Version_6082692
+# Changelog
+## Latest tag: Version_6092719
+## Previous tag: Version_6082692
 * feature: remove1km limit for POIs display (2021-01-31) by <Francois Pellissier>
 * feature: show guide as home when not engaged user
 * feature: remove clustering of POI in guide

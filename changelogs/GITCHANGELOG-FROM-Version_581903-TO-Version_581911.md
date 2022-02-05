@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_581911
-##Previous tag: Version_581903
+# Changelog
+## Latest tag: Version_581911
+## Previous tag: Version_581903
 * fix(crashes) EN-516 fix badge crashes on XIAMI device (2019-02-07) by <Francois Pellissier>
 * fix(crashes) when pushnotif is empty (2019-02-07) by <Francois Pellissier>
 * fix(crash) EN-588 illegal state exception (2019-02-07) by <Francois Pellissier>

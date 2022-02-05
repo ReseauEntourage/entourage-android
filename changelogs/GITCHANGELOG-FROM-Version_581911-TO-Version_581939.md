@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_582003
-##Previous tag: Version_581911
+# Changelog
+## Latest tag: Version_582003
+## Previous tag: Version_581911
 * feature(amabssadeur): EN-579 tag ambassadeur (2019-02-13) by <Grégoire Clermont>
 * feature(liens) EN-694 add instagram link 
 * fix(notifs) EN-636 fix click on pushnotif 

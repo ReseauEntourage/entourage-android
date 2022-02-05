@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_5102072
-##Previous tag: Version_592027
+# Changelog
+## Latest tag: Version_5102072
+## Previous tag: Version_592027
 * feature(messages) add swipe to refresh + cleaning old code (2019-09-06) by <Francois Pellissier>
 * feature(firebase) EN-1155 add user properties in firebase events chore(libs) update libs chore(version) update versionning method chore(version) switch to 5.10 (2019-08-26) by <Francois Pellissier>
 * fix: display Event in floating menu (2019-09-25) by <Francois Pellissier>

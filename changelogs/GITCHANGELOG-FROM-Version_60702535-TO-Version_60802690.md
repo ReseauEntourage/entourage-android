@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_60802690
-##Previous tag: Version_60702535
+# Changelog
+## Latest tag: Version_60802690
+## Previous tag: Version_60702535
 * [EN-2107] add report user/entourage inside 1to1 messaging (2020-12-04) by <Jr>
 * [EN-3289] Tab agir change wording + link for goal=organization (2020-12-03) by <Jr>
 * [EN-1003] fix sharing (2020-12-03) by <Jr>

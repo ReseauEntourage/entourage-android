@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_6012263
-##Previous tag: Version_6012238
+# Changelog
+## Latest tag: Version_6012263
+## Previous tag: Version_6012238
 * feature: Mod create Actions + filters + wording (2020-04-09) by <Jr>
 * feature: Ajout de la date de fin d'un Event [EN-1065] (2020-04-07) by <Francois Pellissier>
 * feature: EN-2089 banner for COVID in Guide 

@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_6022307
-##Previous tag: Version_6012263
+# Changelog
+## Latest tag: Version_6022307
+## Previous tag: Version_6012263
 * fix: EN-1816 change invitation text size and remove icon (2020-05-11) by <Francois Pellissier>
 * fix: EN-2387 add shadow on different UI elements (2020-05-11) by <Francois Pellissier>
 * chore: fix some tests (2020-05-04) by <Francois Pellissier>

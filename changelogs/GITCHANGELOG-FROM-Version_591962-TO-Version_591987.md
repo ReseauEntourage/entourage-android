@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_591987
-##Previous tag: Version_591962
+# Changelog
+## Latest tag: Version_591987
+## Previous tag: Version_591962
 * fix(crash) EN-1158 crash when pausing tour (2019-05-29) by <Francois Pellissier>
 * fix(geoloc) fix bug in geoloc detection for guide (2019-05-21) by <François Pellissier>
 * fix(geoloc) EN-849 fix screens asking for action zone (2019-05-21) by <François Pellissier>

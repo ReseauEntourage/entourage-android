@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_7052799
-##Previous tag: Version_7042783
+# Changelog
+## Latest tag: Version_7052799
+## Previous tag: Version_7042783
 * [EN-4071] Fix Footer information neighbour (2021-10-05) by <Jr>
 * [EN-4078] remove pop "send message" (2021-10-05) by <Jr>
 * [EN-4078] fix font (2021-10-04) by <Jr>

@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_411437
-##Previous tag: Version_401392
+# Changelog
+## Latest tag: Version_411437
+## Previous tag: Version_401392
 
 * EMA-1475 Screen06.6 Action categories UI, persistence (2017-11-22) by <Mihai Ionescu>
 * EMA-1475 Screen06.6 Collapsable tour types filter (2017-11-21) by <Mihai Ionescu>

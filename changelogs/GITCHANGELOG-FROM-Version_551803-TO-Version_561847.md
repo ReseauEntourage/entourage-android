@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_561847
-##Previous tag: Version_551803
+# Changelog
+## Latest tag: Version_561847
+## Previous tag: Version_551803
 * EMA-2437 [PFP] Screen14.2 Changed texts for join request popup (2018-10-16) by <Mihai Ionescu>
 * EMA-2434 Screen14.2, Screen06.1 No longer displaying the confirmation popup when quitting (2018-10-16) by <Mihai Ionescu>
 * EMA-2433 Screen19.1D Step 3 Replaced button text (2018-10-16) by <Mihai Ionescu>

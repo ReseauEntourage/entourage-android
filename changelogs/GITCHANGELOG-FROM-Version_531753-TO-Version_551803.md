@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_551803
-##Previous tag: Version_531753
+# Changelog
+## Latest tag: Version_551803
+## Previous tag: Version_531753
 * EMA-2396 Screen01 [PFP] Adjusted the slideshow layouts for tablet screens (2018-10-03) by <Mihai Ionescu>
 * (fix) Screen 14.2 metadata view is no longer visible for tours (2018-10-02) by <Mihai Ionescu>
 * EMA-2282 Screen09.2 Fixed showing the notifications page on android 8+ (2018-10-01) by <Mihai Ionescu>

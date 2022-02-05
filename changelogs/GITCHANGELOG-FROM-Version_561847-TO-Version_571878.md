@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_571878
-##Previous tag: Version_561847
+# Changelog
+## Latest tag: Version_571878
+## Previous tag: Version_561847
 * feature(guide) fix floating menu + add analytics (2018-11-16) by <Francois Pellissier>
 * feature(guide) fix floating menu (2018-11-16) by <Francois Pellissier>
 * feature(guide) fix for PFP app (2018-11-12) by <Francois Pellissier>

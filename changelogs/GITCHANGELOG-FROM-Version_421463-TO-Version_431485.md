@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_431485
-##Previous tag: Version_421463
+# Changelog
+## Latest tag: Version_431485
+## Previous tag: Version_421463
 * Merge branch 'develop' (2018-01-29) by <François Pellissier>
 * fix(filter options) fix loading user filter options (2018-01-29) by <François Pellissier>
 * fix(crash) fix crashes on join request (2018-01-29) by <François Pellissier>

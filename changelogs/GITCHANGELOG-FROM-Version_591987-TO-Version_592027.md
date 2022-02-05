@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_592027
-##Previous tag: Version_591987
+# Changelog
+## Latest tag: Version_592027
+## Previous tag: Version_591987
 * EN-837 Cancel the opening of the floating menu in the guide fragment. Now it triggers directly the onclick button action (2019-07-17) by <Francois Pellissier>
 * fix(geoloc) EN-997 refactoring handling of location permission (2019-07-17) by <Francois Pellissier>
 * fix(geoloc) click on recenter (2019-07-10) by <Francois Pellissier>

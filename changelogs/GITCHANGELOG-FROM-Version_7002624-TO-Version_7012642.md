@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_7012642
-##Previous tag: Version_7002624
+# Changelog
+## Latest tag: Version_7012642
+## Previous tag: Version_7002624
 * Fix : [EN-3649] [EN-3663] (2021-05-11) by <Jr>
 * [EN-3670] harmonize top bar colors (2021-05-11) by <Jr>
 * Fix [EN-3546] (2021-05-07) by <Jr>

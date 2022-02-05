@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_451520
-##Previous tag: Version_441506
+# Changelog
+## Latest tag: Version_451520
+## Previous tag: Version_441506
 * fix(tests) fixed tests with wrong login chore(libraries) remove old test libs (2018-03-29) by <François Pellissier>
 * fix(test) restore old test configuration (2018-03-27) by <François Pellissier>
 * fix(test): fixed first test on login screen 

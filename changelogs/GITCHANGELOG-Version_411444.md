@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_411444
-##Previous tag: Version_411437
+# Changelog
+## Latest tag: Version_411444
+## Previous tag: Version_411437
 * EMA-1623 Location screen: removed placedetector (2017-12-07) by <François Pellissier>
 * EMA-1685 Location search: the screen is no longer resized when the google places pops up (2017-12-07) by <François Pellissier>
 * EMA-1689 Fixed crashes in GcmBroadcastReceiver, upgrade it for android >= 7 (2017-12-07) by <François Pellissier>

@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_7072846
-##Previous tag: Version_7062824
+# Changelog
+## Latest tag: Version_7072846
+## Previous tag: Version_7062824
 * [EN-4271] fix wording (2021-11-23) by <Jr>
 * [En-4269] Fix pop bottom margin (2021-11-23) by <Jr>
 * [EN-4274] Fix headline action text color (2021-11-23) by <Jr>

@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_421463
-##Previous tag: Version_411444
+# Changelog
+## Latest tag: Version_421463
+## Previous tag: Version_411444
 
 * (fix) fixed the double display of stop tour screen (2017-12-07) by <Mihai Ionescu>
 * chore(release) add automatic changelog (2017-12-07) by <François Pellissier>

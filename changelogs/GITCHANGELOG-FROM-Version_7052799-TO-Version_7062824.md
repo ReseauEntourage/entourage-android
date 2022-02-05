@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_7062824
-##Previous tag: Version_7052799
+# Changelog
+## Latest tag: Version_7062824
+## Previous tag: Version_7052799
 * [EN-4315] Add tracking new dimensions user (2021-10-26) by <Jr>
 * chore: change plus button color when tour is running (2021-10-25) by <François Pellissier>
 * chore: updating/cleaning code for tour encounters (2021-10-25) by <François Pellissier>

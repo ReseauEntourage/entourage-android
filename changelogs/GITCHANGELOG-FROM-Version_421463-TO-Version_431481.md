@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_431481
-##Previous tag: Version_421463
+# Changelog
+## Latest tag: Version_431481
+## Previous tag: Version_421463
 * EMA-1750 Screen04.5 Updated the carousel design - Close button position, page 1 top text, page 2 and 3 images (2018-01-15) by <Mihai Ionescu>
 * EMA-1750 Screen04.5 Updated the carousel design - part 2 (2018-01-12) by <Mihai Ionescu>
 * EMA-1750 Screen04.5 Updated the carousel design (2018-01-12) by <Mihai Ionescu>

@@ -1,6 +1,6 @@
-#Changelog
-##Latest tag: Version_531753
-##Previous tag: Version_461573
+# Changelog
+## Latest tag: Version_531753
+## Previous tag: Version_461573
 * EMA-2263 PFP - Added the possibility to edit an outing (2018-08-10) by <Mihai Ionescu>
 * EMA-2260 Screen19.1A-B Changed the texts for outing (2018-08-09) by <Mihai Ionescu>
 * EMA-2258 Added option to disable the invite popup after an entourage is created. Disabled the popup for PFP (2018-08-09) by <Mihai Ionescu>
