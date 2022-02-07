@@ -631,7 +631,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
                 for (roleStr in roles) {
                     if (roleStr.equals("ambassador",true)) {
                         UserRolesFactory.findByName(roleStr)?.let { userRole ->
-                            ui_action_event_creator_bt_asso.text = ""
+                            ui_action_event_creator_bt_asso?.text = ""
                             val ambassador = "  ${getString(userRole.nameResourceId)}  "
                             ui_action_event_creator_role?.text = ""
                             ui_action_event_creator_ambassador?.text = ambassador
