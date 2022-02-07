@@ -117,10 +117,14 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
     // PUBLIC METHODS
     // ----------------------------------
     fun closePopAndGo() {
-        popInfoCreateEntourageFragment?.dismiss()
-        countDownTimer?.cancel()
-        countDownTimer = null
-        feedItemTemporary?.let { openFeedItem(it, true) }
+        try  {
+            countDownTimer?.cancel()
+            countDownTimer = null
+            popInfoCreateEntourageFragment?.dismiss()
+            feedItemTemporary?.let { openFeedItem(it, true) }
+        } catch(e: IllegalStateException) {
+            Timber.w(e)
+        }
     }
 
     private fun updatePopCreateAndShow() {
