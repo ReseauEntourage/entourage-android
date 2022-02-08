@@ -128,9 +128,11 @@ class OnboardingEditPhotoFragment : DialogFragment() {
 
     private fun rotateImage() {
         currentAngle += ROTATE_DEGREES_STEP
-        photoUri?.let {
+        photoUri?.let { photoUri->
             try {
-                saveBitmap(Utils.getBitmapFromUri(it, activity?.contentResolver).rotate(currentAngle))
+                activity?.contentResolver?.let { contentResolver ->
+                    saveBitmap(Utils.getBitmapFromUri(photoUri, contentResolver).rotate(currentAngle))
+                }
             } catch(e: FileNotFoundException) {
                 Timber.e(e)
             }
