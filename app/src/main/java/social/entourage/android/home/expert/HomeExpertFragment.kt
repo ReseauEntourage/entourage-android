@@ -212,6 +212,9 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
     private fun openFeedItem(feedItem: FeedItem, isFromActions:Boolean) {
         try {
             activity?.supportFragmentManager?.let { fragmentManager ->
+                val oldFragment = fragmentManager.findFragmentByTag(FeedItemInformationFragment.TAG)
+                if (oldFragment != null && oldFragment.isAdded()) return
+
                 FeedItemInformationFragment.newInstance(feedItem,0,0,isFromActions).show(fragmentManager, FeedItemInformationFragment.TAG)
             }
         } catch (e: IllegalStateException) {
