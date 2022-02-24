@@ -7,6 +7,7 @@ import retrofit2.http.Query
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.ConversationsRequest
 import social.entourage.android.api.request.ConversationsResponse
+import social.entourage.android.api.request.MessagesMetadatasResponse
 
 /**
  * Created by Jerome on 22/12/2021.
@@ -51,6 +52,24 @@ class ConversationsAPI(val application: EntourageApplication) {
             }
 
             override fun onFailure(call: Call<ConversationsResponse>, t: Throwable) {
+                listener(null,null)
+            }
+        })
+    }
+
+    fun getMessagesMetadatas(listener:(conversations: MessagesMetadatasResponse?, error:String?) -> Unit) {
+        val call: Call<MessagesMetadatasResponse> = conversationsRequest.retrieveMessagesMetadatas()
+        call.enqueue(object : Callback<MessagesMetadatasResponse> {
+            override fun onResponse(call: Call<MessagesMetadatasResponse>, response: Response<MessagesMetadatasResponse>) {
+                if (response.isSuccessful) {
+                    listener(response.body(),null)
+                } else {
+                    val error = ApiError.fromResponse(response)
+                    listener(null,error.code)
+                }
+            }
+
+            override fun onFailure(call: Call<MessagesMetadatasResponse>, t: Throwable) {
                 listener(null,null)
             }
         })
