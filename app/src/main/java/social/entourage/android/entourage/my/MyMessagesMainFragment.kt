@@ -38,6 +38,8 @@ class MyMessagesMainFragment : BaseDialogFragment(), MyMessagesRecyclerViewAdapt
         setupRecyclerView()
 
         refreshMyMessages(true)
+
+        retrieveCounts()
     }
 
     private fun initializeSelector() {
@@ -71,6 +73,34 @@ class MyMessagesMainFragment : BaseDialogFragment(), MyMessagesRecyclerViewAdapt
             }
             else {
                 refreshMyMessages(false)
+            }
+        }
+    }
+
+    private fun retrieveCounts() {
+        ConversationsAPI(EntourageApplication.get()).getMessagesMetadatas { conversations, error ->
+
+            conversations?.let {
+                val unread_private:Int = it.conversations.unread ?: 0
+                val unread_actions:Int = it.actions.unread ?: 0
+                val unread_outings:Int = it.outings.unread ?: 0
+                val unread_group = unread_actions + unread_outings
+
+                if (unread_private > 0) {
+                    ui_layout_bubble_private?.visibility = View.VISIBLE
+                    ui_tv_count_private?.text = "$unread_private"
+                }
+                else {
+                    ui_layout_bubble_private?.visibility = View.INVISIBLE
+                }
+
+                if (unread_group > 0) {
+                    ui_layout_bubble_group?.visibility = View.VISIBLE
+                    ui_tv_count_group?.text = "$unread_group"
+                }
+                else {
+                    ui_layout_bubble_group?.visibility = View.INVISIBLE
+                }
             }
         }
     }
