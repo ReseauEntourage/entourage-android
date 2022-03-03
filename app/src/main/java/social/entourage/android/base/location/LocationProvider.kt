@@ -3,15 +3,10 @@ package social.entourage.android.base.location
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
-import android.os.Bundle
-import android.util.Log
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
-import timber.log.Timber
 import java.util.concurrent.TimeUnit.MINUTES
 import java.util.concurrent.TimeUnit.SECONDS
 
@@ -64,12 +59,12 @@ class LocationProvider(
      */
     fun start() {
         requestLocationUpdates()
-    /* if (!googleApiClient.isConnected) {
-             googleApiClient.connect()
-         } else {
-             requestLocationUpdates()
-         }
-         */
+        /* if (!googleApiClient.isConnected) {
+                 googleApiClient.connect()
+             } else {
+                 requestLocationUpdates()
+             }
+             */
     }
 
     fun stop() {
@@ -82,7 +77,6 @@ class LocationProvider(
     }
 
     fun setLocationListener(listener: LocationListener) {
-
         locationListener = listener
     }
 
