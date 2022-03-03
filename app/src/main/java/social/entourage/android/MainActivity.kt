@@ -61,18 +61,20 @@ import java.util.*
 import javax.inject.Inject
 
 class MainActivity : BaseSecuredActivity(),
-        OnTourInformationFragmentFinish,
-        EntourageDisclaimerFragment.OnFragmentInteractionListener,
-        EncounterDisclaimerFragment.OnFragmentInteractionListener,
-        PhotoChooseInterface,
-        UserEditActionZoneFragment.FragmentListener,
-        AvatarUploadView {
+    OnTourInformationFragmentFinish,
+    EntourageDisclaimerFragment.OnFragmentInteractionListener,
+    EncounterDisclaimerFragment.OnFragmentInteractionListener,
+    PhotoChooseInterface,
+    UserEditActionZoneFragment.FragmentListener,
+    AvatarUploadView {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-    @Inject lateinit var presenter: MainPresenter
+    @Inject
+    lateinit var presenter: MainPresenter
 
-    @Inject lateinit var avatarUploadPresenter: AvatarUploadPresenter
+    @Inject
+    lateinit var avatarUploadPresenter: AvatarUploadPresenter
 
     private val bottomBar
         get() = (bottom_navigation as? EntBottomNavigationView)
@@ -103,20 +105,30 @@ class MainActivity : BaseSecuredActivity(),
             //initialize the push notifications
             initializePushNotifications()
             updateAnalyticsInfo()
-            authenticationController.me?.unreadCount?.let { bottomBar?.updateBadgeCountForUser(it)}
+            authenticationController.me?.unreadCount?.let { bottomBar?.updateBadgeCountForUser(it) }
         }
         checkShowInfo()
     }
+
     private fun checkShowInfo() {
         //Check to show Action info
-        val isShowFirstLogin = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,false)
-        val noMoreDemand = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_NO_MORE_DEMAND,false)
-        var nbOfLaunch = EntourageApplication.get().sharedPreferences.getInt(EntourageApplication.KEY_NB_OF_LAUNCH,0)
+        val isShowFirstLogin = EntourageApplication.get().sharedPreferences.getBoolean(
+            EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,
+            false
+        )
+        val noMoreDemand = EntourageApplication.get().sharedPreferences.getBoolean(
+            EntourageApplication.KEY_NO_MORE_DEMAND,
+            false
+        )
+        var nbOfLaunch = EntourageApplication.get().sharedPreferences.getInt(
+            EntourageApplication.KEY_NB_OF_LAUNCH,
+            0
+        )
 
         nbOfLaunch += 1
         EntourageApplication.get().sharedPreferences.edit()
-                .putInt(EntourageApplication.KEY_NB_OF_LAUNCH,nbOfLaunch)
-                .apply()
+            .putInt(EntourageApplication.KEY_NB_OF_LAUNCH, nbOfLaunch)
+            .apply()
 
         var hasToShow = false
         if (!noMoreDemand) {
@@ -125,23 +137,24 @@ class MainActivity : BaseSecuredActivity(),
 
         if (isShowFirstLogin || hasToShow) {
             val sharedPreferences = EntourageApplication.get().sharedPreferences
-            sharedPreferences.edit().putBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,false).apply()
+            sharedPreferences.edit()
+                .putBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN, false).apply()
             if (authenticationController.me?.goal == null || authenticationController.me?.goal?.length == 0) {
                 AlertDialog.Builder(this)
-                        .setTitle(R.string.login_pop_information)
-                        .setMessage(R.string.login_info_pop_action)
-                        .setNegativeButton(R.string.login_info_pop_action_no) { _,_ ->}
-                        .setPositiveButton(R.string.login_info_pop_action_yes) { dialog, _ ->
-                            dialog.dismiss()
-                            showEditProfileAction()
-                        }
-                        .setNeutralButton(R.string.login_info_pop_action_noMore) { _,_ ->
-                            EntourageApplication.get().sharedPreferences.edit()
-                                    .putBoolean(EntourageApplication.KEY_NO_MORE_DEMAND,true)
-                                    .apply()
-                        }
-                        .create()
-                        .show()
+                    .setTitle(R.string.login_pop_information)
+                    .setMessage(R.string.login_info_pop_action)
+                    .setNegativeButton(R.string.login_info_pop_action_no) { _, _ -> }
+                    .setPositiveButton(R.string.login_info_pop_action_yes) { dialog, _ ->
+                        dialog.dismiss()
+                        showEditProfileAction()
+                    }
+                    .setNeutralButton(R.string.login_info_pop_action_noMore) { _, _ ->
+                        EntourageApplication.get().sharedPreferences.edit()
+                            .putBoolean(EntourageApplication.KEY_NO_MORE_DEMAND, true)
+                            .apply()
+                    }
+                    .create()
+                    .show()
                 return
             }
             return
@@ -154,10 +167,10 @@ class MainActivity : BaseSecuredActivity(),
 
     override fun setupComponent(entourageComponent: EntourageComponent?) {
         DaggerMainComponent.builder()
-                .entourageComponent(entourageComponent)
-                .mainModule(MainModule(this))
-                .build()
-                .inject(this)
+            .entourageComponent(entourageComponent)
+            .mainModule(MainModule(this))
+            .build()
+            .inject(this)
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -167,7 +180,8 @@ class MainActivity : BaseSecuredActivity(),
     }
 
     override fun onBackPressed() {
-        val currentFragment = supportFragmentManager.findFragmentById(R.id.main_fragment) as? BackPressable
+        val currentFragment =
+            supportFragmentManager.findFragmentById(R.id.main_fragment) as? BackPressable
         if (currentFragment?.onBackPressed() == true) {
             //backAction is done in the fragment
             return
@@ -184,8 +198,8 @@ class MainActivity : BaseSecuredActivity(),
     override fun onResume() {
         super.onResume()
         if (intent?.action != null) {
-            if(intent.action==EntService.KEY_LOCATION_PROVIDER_DISABLED) {
-                    displayLocationProviderDisabledAlert()
+            if (intent.action == EntService.KEY_LOCATION_PROVIDER_DISABLED) {
+                displayLocationProviderDisabledAlert()
             }
         } else {
             // user just returns to the app, update analytics
@@ -204,7 +218,7 @@ class MainActivity : BaseSecuredActivity(),
     override fun onStop() {
         try {
             EntBus.unregister(this)
-        } catch(e: IllegalStateException) {
+        } catch (e: IllegalStateException) {
             Timber.w(e)
         }
         super.onStop()
@@ -217,12 +231,18 @@ class MainActivity : BaseSecuredActivity(),
         }
         try {
             AlertDialog.Builder(this)
-                    .setMessage(getString(R.string.error_dialog_disabled))
-                    .setCancelable(false)
-                    .setPositiveButton("Oui") { _: DialogInterface?, _: Int -> startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
-                    .setNegativeButton("Non") { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
-                    .create()
-                    .show()
+                .setMessage(getString(R.string.error_dialog_disabled))
+                .setCancelable(false)
+                .setPositiveButton("Oui") { _: DialogInterface?, _: Int ->
+                    startActivity(
+                        Intent(
+                            Settings.ACTION_LOCATION_SOURCE_SETTINGS
+                        )
+                    )
+                }
+                .setNegativeButton("Non") { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+                .create()
+                .show()
         } catch (e: Exception) {
             Timber.e(e)
         }
@@ -278,9 +298,16 @@ class MainActivity : BaseSecuredActivity(),
     }
 
     private fun initializePushNotifications() {
-        val notificationsEnabled = EntourageApplication.get().sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, true)
+        val notificationsEnabled = EntourageApplication.get().sharedPreferences.getBoolean(
+            EntourageApplication.KEY_NOTIFICATIONS_ENABLED,
+            true
+        )
         if (notificationsEnabled) {
-            FirebaseMessaging.getInstance().token.addOnSuccessListener { token -> presenter.updateApplicationInfo(token) }
+            FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+                presenter.updateApplicationInfo(
+                    token
+                )
+            }
         } else {
             presenter.deleteApplicationInfo()
         }
@@ -288,7 +315,11 @@ class MainActivity : BaseSecuredActivity(),
 
     private fun updateAnalyticsInfo() {
         authenticationController.me?.let { user ->
-            updateUserInfo(user, applicationContext, NotificationManagerCompat.from(this).areNotificationsEnabled())
+            updateUserInfo(
+                user,
+                applicationContext,
+                NotificationManagerCompat.from(this).areNotificationsEnabled()
+            )
         }
     }
 
@@ -298,7 +329,10 @@ class MainActivity : BaseSecuredActivity(),
         val sharedPreferences = EntourageApplication.get().sharedPreferences
         val editor = sharedPreferences.edit()
         authenticationController.me?.let { me ->
-            (sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, HashSet()) as HashSet<String?>?)?.let { loggedNumbers ->
+            (sharedPreferences.getStringSet(
+                EntourageApplication.KEY_TUTORIAL_DONE,
+                HashSet()
+            ) as HashSet<String?>?)?.let { loggedNumbers ->
                 loggedNumbers.remove(me.phone)
                 editor.putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers)
             }
@@ -308,7 +342,7 @@ class MainActivity : BaseSecuredActivity(),
         editor.remove(EntourageApplication.KEY_NOTIFICATIONS_ENABLED)
         editor.remove(EntourageApplication.KEY_GEOLOCATION_ENABLED)
         editor.remove(EntourageApplication.KEY_NO_MORE_DEMAND)
-        editor.putInt(EntourageApplication.KEY_NB_OF_LAUNCH,0)
+        editor.putInt(EntourageApplication.KEY_NB_OF_LAUNCH, 0)
         editor.apply()
         super.logout()
     }
@@ -324,7 +358,8 @@ class MainActivity : BaseSecuredActivity(),
     @Subscribe
     fun checkIntentAction(event: OnCheckIntentActionEvent) {
         //if (!isSafeToCommit()) return;
-        val message = event.extras?.getSerializable(PushNotificationManager.PUSH_MESSAGE) as Message?
+        val message =
+            event.extras?.getSerializable(PushNotificationManager.PUSH_MESSAGE) as Message?
         if (message != null) {
             message.content?.let { content ->
                 if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE == event.action && !content.isTourRelated && !content.isEntourageRelated) {
@@ -380,7 +415,7 @@ class MainActivity : BaseSecuredActivity(),
         try {
             val poi = Poi()
             poi.uuid = event.poiId
-            val fragment = ReadPoiFragment.newInstance(poi,"")
+            val fragment = ReadPoiFragment.newInstance(poi, "")
             fragment.show(supportFragmentManager, ReadPoiFragment.TAG)
         } catch (e: IllegalStateException) {
             Timber.w(e)
@@ -442,9 +477,12 @@ class MainActivity : BaseSecuredActivity(),
     }
 
     override fun onUploadError() {
-        Toast.makeText(this@MainActivity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this@MainActivity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT)
+            .show()
         dismissProgressDialog()
-        (supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as? PhotoEditFragment)?.onPhotoSent(false)
+        (supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as? PhotoEditFragment)?.onPhotoSent(
+            false
+        )
     }
 
     // ----------------------------------
@@ -473,7 +511,10 @@ class MainActivity : BaseSecuredActivity(),
         val handler = Handler(Looper.getMainLooper())
         handler.post {
             when (content.type) {
-                PushNotificationContent.TYPE_NEW_CHAT_MESSAGE -> if (displayMessageOnCurrentTourInfoFragment(message)) {
+                PushNotificationContent.TYPE_NEW_CHAT_MESSAGE -> if (displayMessageOnCurrentTourInfoFragment(
+                        message
+                    )
+                ) {
                     //already displayed
                     removePushNotification(content, content.type)
                 } else {
@@ -492,14 +533,25 @@ class MainActivity : BaseSecuredActivity(),
 
     private fun removePushNotification(content: PushNotificationContent, contentType: String) {
         if (content.isTourRelated) {
-            EntourageApplication.get().removePushNotification(content.joinableId, TimestampedObject.TOUR_CARD, content.userId, contentType)
+            EntourageApplication.get().removePushNotification(
+                content.joinableId,
+                TimestampedObject.TOUR_CARD,
+                content.userId,
+                contentType
+            )
         } else if (content.isEntourageRelated) {
-            EntourageApplication.get().removePushNotification(content.joinableId, TimestampedObject.ENTOURAGE_CARD, content.userId, contentType)
+            EntourageApplication.get().removePushNotification(
+                content.joinableId,
+                TimestampedObject.ENTOURAGE_CARD,
+                content.userId,
+                contentType
+            )
         }
     }
 
     private fun displayMessageOnCurrentTourInfoFragment(message: Message): Boolean {
-        val fragment = supportFragmentManager.findFragmentByTag(FeedItemInformationFragment.TAG) as FeedItemInformationFragment?
+        val fragment =
+            supportFragmentManager.findFragmentByTag(FeedItemInformationFragment.TAG) as FeedItemInformationFragment?
         return fragment != null && fragment.onPushNotificationChatMessageReceived(message)
     }
 
@@ -510,7 +562,10 @@ class MainActivity : BaseSecuredActivity(),
     // ----------------------------------
     // ACTION ZONE HANDLING
     // ----------------------------------
-    fun showEditActionZoneFragment(extraFragmentListener: UserEditActionZoneFragment.FragmentListener? = null, isSecondaryAddress: Boolean = false) {
+    fun showEditActionZoneFragment(
+        extraFragmentListener: UserEditActionZoneFragment.FragmentListener? = null,
+        isSecondaryAddress: Boolean = false
+    ) {
         val me = authenticationController.me ?: return
         if (me.address?.displayAddress?.isNotEmpty() == true || me.isUserTypeAsso) {
             return
@@ -518,7 +573,8 @@ class MainActivity : BaseSecuredActivity(),
         if (authenticationController.editActionZoneShown || authenticationController.isIgnoringActionZone) {
             return  //noNeedToShowEditScreen
         }
-        val userEditActionZoneFragment = UserEditActionZoneFragment.newInstance(null, isSecondaryAddress)
+        val userEditActionZoneFragment =
+            UserEditActionZoneFragment.newInstance(null, isSecondaryAddress)
         userEditActionZoneFragment.setupListener(extraFragmentListener ?: this)
         userEditActionZoneFragment.show(supportFragmentManager, UserEditActionZoneFragment.TAG)
         authenticationController.editActionZoneShown = true
@@ -537,7 +593,7 @@ class MainActivity : BaseSecuredActivity(),
         if (authenticationController.isAuthenticated) {
             authenticationController.isIgnoringActionZone = ignoreZone
         }
-        (supportFragmentManager.findFragmentByTag(UserEditActionZoneFragmentCompat.TAG) as UserEditActionZoneFragmentCompat?)?.let { fragment ->
+        (supportFragmentManager.findFragmentByTag(UserEditActionZoneFragment.TAG) as UserEditActionZoneFragment?)?.let { fragment ->
             if (!fragment.isStateSaved) {
                 fragment.dismiss()
             }
@@ -548,7 +604,7 @@ class MainActivity : BaseSecuredActivity(),
     // BUS LISTENERS
     // ----------------------------------
     @Subscribe
-    fun onUnreadCountUpdate(unreadCount:OnUnreadCountUpdate?) {
+    fun onUnreadCountUpdate(unreadCount: OnUnreadCountUpdate?) {
         unreadCount?.unreadCount?.let {
             bottomBar?.updateBadgeCountForUser(it)
         }

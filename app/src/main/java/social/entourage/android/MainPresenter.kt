@@ -25,7 +25,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.AvatarUpdatePresenter
 import social.entourage.android.user.UserFragment
 import social.entourage.android.user.edit.UserEditFragment
-import social.entourage.android.user.edit.photo.PhotoChooseSourceFragmentCompat
+import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import social.entourage.android.user.edit.photo.PhotoEditFragment
 import timber.log.Timber
 import javax.inject.Inject
@@ -33,11 +33,12 @@ import javax.inject.Inject
 /**
  * Created by Mihai Ionescu on 27/04/2018.
  */
- class MainPresenter @Inject internal constructor(
-        private val activity: MainActivity,
-        private val applicationInfoRequest: ApplicationInfoRequest,
-        private val authenticationController: AuthenticationController,
-        private val userRequest: UserRequest) : AvatarUpdatePresenter {
+class MainPresenter @Inject internal constructor(
+    private val activity: MainActivity,
+    private val applicationInfoRequest: ApplicationInfoRequest,
+    private val authenticationController: AuthenticationController,
+    private val userRequest: UserRequest
+) : AvatarUpdatePresenter {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -57,15 +58,22 @@ import javax.inject.Inject
             "user" -> {
                 authenticationController.me?.let { user ->
                     AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_SHOWPROFIL)
-                    val userFragment = activity.supportFragmentManager.findFragmentByTag(UserFragment.TAG) as UserFragment?
+                    val userFragment =
+                        activity.supportFragmentManager.findFragmentByTag(UserFragment.TAG) as UserFragment?
                             ?: UserFragment.newInstance(user.id)
                     userFragment.show(activity.supportFragmentManager, UserFragment.TAG)
                 }
             }
             "appVersion" -> {
-                val clipboardManager = get().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                val clipData = ClipData.newPlainText("FirebaseID",
-                        get().sharedPreferences.getString(EntourageApplication.KEY_REGISTRATION_ID, null))
+                val clipboardManager =
+                    get().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clipData = ClipData.newPlainText(
+                    "FirebaseID",
+                    get().sharedPreferences.getString(
+                        EntourageApplication.KEY_REGISTRATION_ID,
+                        null
+                    )
+                )
                 clipboardManager.setPrimaryClip(clipData)
             }
 
@@ -90,7 +98,8 @@ import javax.inject.Inject
             }
             "ambassador" -> {
                 AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_AMBASSADOR)
-                val ambassadorIntent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.AMBASSADOR_ID)))
+                val ambassadorIntent =
+                    Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.AMBASSADOR_ID)))
                 try {
                     activity.startActivity(ambassadorIntent)
                 } catch (ex: Exception) {
@@ -98,7 +107,10 @@ import javax.inject.Inject
                 }
             }
             "linkedout" -> {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.url_linkedout)))
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(activity.getString(R.string.url_linkedout))
+                )
                 try {
                     activity.startActivity(intent)
                 } catch (ex: Exception) {
@@ -107,7 +119,10 @@ import javax.inject.Inject
             }
             "donation" -> {
                 AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_DONATION)
-                val donationIntent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getLink(Constants.DONATE_LINK_ID)))
+                val donationIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(activity.getLink(Constants.DONATE_LINK_ID))
+                )
                 try {
                     activity.startActivity(donationIntent)
                 } catch (ex: Exception) {
@@ -117,7 +132,10 @@ import javax.inject.Inject
 
             "share" -> {
                 val intent = Intent(Intent.ACTION_SEND)
-                val emailBody = activity.getString(R.string.menu_info_profile_share, activity.getString(R.string.url_share_entourage_bitly))
+                val emailBody = activity.getString(
+                    R.string.menu_info_profile_share,
+                    activity.getString(R.string.url_share_entourage_bitly)
+                )
                 intent.putExtra(Intent.EXTRA_TEXT, emailBody)
                 intent.type = "text/plain"
 
@@ -140,7 +158,8 @@ import javax.inject.Inject
 
             "fb" -> {
                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ABOUT_FACEBOOK)
-                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.facebook_url)))
+                val browserIntent =
+                    Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.facebook_url)))
                 try {
                     activity.startActivity(browserIntent)
                 } catch (ex: ActivityNotFoundException) {
@@ -148,7 +167,10 @@ import javax.inject.Inject
                 }
             }
             "insta" -> {
-                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.instagram_url)))
+                val browserIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(activity.getString(R.string.instagram_url))
+                )
                 try {
                     activity.startActivity(browserIntent)
                 } catch (ex: ActivityNotFoundException) {
@@ -156,7 +178,8 @@ import javax.inject.Inject
                 }
             }
             "twit" -> {
-                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.twitter_url)))
+                val browserIntent =
+                    Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.twitter_url)))
                 try {
                     activity.startActivity(browserIntent)
                 } catch (ex: ActivityNotFoundException) {
@@ -164,7 +187,8 @@ import javax.inject.Inject
                 }
             }
 
-            else -> Toast.makeText(activity, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT).show()
+            else -> Toast.makeText(activity, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
@@ -174,8 +198,8 @@ import javax.inject.Inject
     private fun displayAppUpdateDialog() {
         val builder = AlertDialog.Builder(activity)
         val dialog = builder.setView(R.layout.layout_dialog_version_update)
-                .setCancelable(false)
-                .create()
+            .setCancelable(false)
+            .create()
         dialog.show()
         val updateButton = dialog.findViewById<Button>(R.id.update_dialog_button)
         updateButton?.setOnClickListener {
@@ -183,7 +207,11 @@ import javax.inject.Inject
                 val uri = Uri.parse(activity.getString(R.string.market_url, activity.packageName))
                 activity.startActivity(Intent(Intent.ACTION_VIEW, uri))
             } catch (e: Exception) {
-                Toast.makeText(activity, R.string.error_google_play_store_not_installed, Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    activity,
+                    R.string.error_google_play_store_not_installed,
+                    Toast.LENGTH_SHORT
+                ).show()
                 dialog.cancel()
             }
         }
@@ -205,7 +233,7 @@ import javax.inject.Inject
     // ----------------------------------
     private var deviceID: String?
         get() = get().sharedPreferences
-                .getString(EntourageApplication.KEY_REGISTRATION_ID, null)
+            .getString(EntourageApplication.KEY_REGISTRATION_ID, null)
         private set(pushNotificationToken) {
             val editor = get().sharedPreferences.edit()
             editor.putString(EntourageApplication.KEY_REGISTRATION_ID, pushNotificationToken)
@@ -219,7 +247,10 @@ import javax.inject.Inject
         if (checkForUpdate) {
             val call = applicationInfoRequest.checkForUpdate()
             call.enqueue(object : Callback<ResponseBody> {
-                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
                     if (response.code() == 426) {
                         if (!BuildConfig.DEBUG) {
                             displayAppUpdateDialog()
@@ -248,7 +279,7 @@ import javax.inject.Inject
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
                     if (authenticationController.isAuthenticated) {
-                        response.body()?.user?.let {user-> authenticationController.saveUser(user) }
+                        response.body()?.user?.let { user -> authenticationController.saveUser(user) }
                     }
                 }
             }
@@ -270,17 +301,26 @@ import javax.inject.Inject
                 activity.dismissProgressDialog()
                 if (response.isSuccessful) {
                     if (authenticationController.isAuthenticated) {
-                        response.body()?.let { responseBody-> authenticationController.saveUser(responseBody.user)}
+                        response.body()
+                            ?.let { responseBody -> authenticationController.saveUser(responseBody.user) }
                     }
-                    (activity.supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as PhotoEditFragment?)?.let { photoEditFragment->
+                    (activity.supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as PhotoEditFragment?)?.let { photoEditFragment ->
                         if (photoEditFragment.onPhotoSent(true)) {
-                            val photoChooseSourceFragment = activity.supportFragmentManager.findFragmentByTag(PhotoChooseSourceFragmentCompat.TAG) as PhotoChooseSourceFragmentCompat?
+                            val photoChooseSourceFragment =
+                                activity.supportFragmentManager.findFragmentByTag(
+                                    ChoosePhotoFragment.TAG
+                                ) as ChoosePhotoFragment?
                             photoChooseSourceFragment?.dismiss()
                         }
                     }
                 } else {
-                    Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show()
-                    val photoEditFragment = activity.supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as PhotoEditFragment?
+                    Toast.makeText(
+                        activity,
+                        R.string.user_photo_error_not_saved,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    val photoEditFragment =
+                        activity.supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as PhotoEditFragment?
                     photoEditFragment?.onPhotoSent(false)
                     Timber.e(activity.getString(R.string.user_photo_error_not_saved))
                 }
@@ -289,8 +329,10 @@ import javax.inject.Inject
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 activity.dismissProgressDialog()
                 Timber.e(t)
-                Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show()
-                val photoEditFragment = activity.supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as PhotoEditFragment?
+                Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT)
+                    .show()
+                val photoEditFragment =
+                    activity.supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as PhotoEditFragment?
                 photoEditFragment?.onPhotoSent(false)
             }
         })

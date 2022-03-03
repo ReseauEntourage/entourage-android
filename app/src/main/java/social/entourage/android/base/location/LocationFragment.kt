@@ -14,6 +14,8 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -44,7 +46,7 @@ import java.util.*
  * Use the [LocationFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class LocationFragment  : BaseDialogFragment() {
+class LocationFragment : BaseDialogFragment() {
     // ----------------------------------
     // Attributes
     // ----------------------------------
@@ -63,6 +65,21 @@ class LocationFragment  : BaseDialogFragment() {
     private var fromPlaceSelected = false
     private var pin: Marker? = null
 
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                EntBus.post(OnLocationPermissionGranted(isGranted))
+                try {
+                    map?.isMyLocationEnabled = isGranted
+                } catch (ex: SecurityException) {
+                    Timber.e(ex)
+                }
+
+            }
+        }
+
     // ----------------------------------
     // Lifecycle
     // ----------------------------------
@@ -78,8 +95,10 @@ class LocationFragment  : BaseDialogFragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         // Inflate the layout for this fragment
         val toReturn = inflater.inflate(R.layout.fragment_entourage_location, container, false)
@@ -109,23 +128,6 @@ class LocationFragment  : BaseDialogFragment() {
         cancelTimer()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
-            for (index in permissions.indices) {
-                if (permissions[index].equals(permission.ACCESS_FINE_LOCATION, ignoreCase = true)) {
-                    val isGranted = grantResults[index] == PackageManager.PERMISSION_GRANTED
-                    EntBus.post(OnLocationPermissionGranted(isGranted))
-                    try {
-                        map?.isMyLocationEnabled = isGranted
-                    } catch (ex: SecurityException) {
-                        Timber.e(ex)
-                    }
-                }
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
     // ----------------------------------
     // INTERFACE CALLBACKS
     // ----------------------------------
@@ -134,7 +136,11 @@ class LocationFragment  : BaseDialogFragment() {
     }
 
     fun onValidateClicked() {
-        mListener?.onEntourageLocationChosen(location, entourage_location_address?.text.toString(), selectedPlace)
+        mListener?.onEntourageLocationChosen(
+            location,
+            entourage_location_address?.text.toString(),
+            selectedPlace
+        )
         cancelTimer()
         dismiss()
     }
@@ -143,10 +149,17 @@ class LocationFragment  : BaseDialogFragment() {
         (activity as? BaseSecuredActivity)?.let {
             if (LocationUtils.isLocationPermissionGranted()) {
                 EntLocation.currentLocation?.let { currentLocation ->
-                    map?.moveCamera(CameraUpdateFactory.newLatLng(LatLng(currentLocation.latitude, currentLocation.longitude)))
+                    map?.moveCamera(
+                        CameraUpdateFactory.newLatLng(
+                            LatLng(
+                                currentLocation.latitude,
+                                currentLocation.longitude
+                            )
+                        )
+                    )
                 }
             } else {
-                requestPermissions(arrayOf(permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_LOCATION)
+                requestPermissionLauncher.launch(permission.ACCESS_FINE_LOCATION)
             }
         }
     }
@@ -162,8 +175,7 @@ class LocationFragment  : BaseDialogFragment() {
         if (!useGooglePlacesOnly) {
             initializeMap()
             entourage_location_bar_layout?.visibility = View.VISIBLE
-        }
-        else {
+        } else {
             entourage_location_bar_layout?.visibility = View.GONE
         }
         initializePlaces()
@@ -174,11 +186,10 @@ class LocationFragment  : BaseDialogFragment() {
 
         if (useGooglePlacesOnly) {
             cancelTimer()
-            timerTask?.let { handler?.postDelayed(it, SEARCH_DELAY)}
+            timerTask?.let { handler?.postDelayed(it, SEARCH_DELAY) }
         }
     }
 
-    @SuppressLint("MissingPermission")
     private fun initializeMap() {
         if (mapFragment == null) {
             val googleMapOptions = GoogleMapOptions()
@@ -186,24 +197,36 @@ class LocationFragment  : BaseDialogFragment() {
             mapFragment = SupportMapFragment.newInstance(googleMapOptions)
         }
         mapFragment?.let { frag ->
-            childFragmentManager.beginTransaction().replace(R.id.entourage_location_map_layout, frag).commit()
+            childFragmentManager.beginTransaction()
+                .replace(R.id.entourage_location_map_layout, frag).commit()
             frag.getMapAsync { googleMap ->
-                googleMap.isMyLocationEnabled = activity != null && LocationUtils.isLocationPermissionGranted()
-                googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-                        requireContext(), R.raw.map_styles_json))
+                val isLocationPermissionGranted = ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+
+                googleMap.isMyLocationEnabled = isLocationPermissionGranted
+                googleMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                        requireContext(), R.raw.map_styles_json
+                    )
+                )
                 googleMap.uiSettings.isMyLocationButtonEnabled = false
                 googleMap.uiSettings.isMapToolbarEnabled = false
                 pin = originalLocation?.let { location ->
                     val cameraUpdate = CameraUpdateFactory.newLatLngZoom(location, 15f)
                     googleMap.moveCamera(cameraUpdate)
                     val markerOptions = MarkerOptions()
-                            .position(location)
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_pin_orange))
+                        .position(location)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_pin_orange))
                     googleMap.addMarker(markerOptions)
                 } ?: run {
                     val markerOptions = MarkerOptions()
-                            .position(googleMap.cameraPosition.target)
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_pin_orange))
+                        .position(googleMap.cameraPosition.target)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_pin_orange))
                     googleMap.addMarker(markerOptions)
                 }
                 googleMap.setOnCameraMoveStartedListener { i ->
@@ -223,10 +246,18 @@ class LocationFragment  : BaseDialogFragment() {
                         task.execute(location)
                     }
                     fromPlaceSelected = false
-                    autocompleteFragment?.setBoundsBias(LatLngBounds(
-                            LatLng(loc.latitude - LOCATION_SEARCH_RADIUS, loc.longitude - LOCATION_SEARCH_RADIUS),
-                            LatLng(loc.latitude + LOCATION_SEARCH_RADIUS, loc.longitude + LOCATION_SEARCH_RADIUS)
-                    ))
+                    autocompleteFragment?.setBoundsBias(
+                        LatLngBounds(
+                            LatLng(
+                                loc.latitude - LOCATION_SEARCH_RADIUS,
+                                loc.longitude - LOCATION_SEARCH_RADIUS
+                            ),
+                            LatLng(
+                                loc.latitude + LOCATION_SEARCH_RADIUS,
+                                loc.longitude + LOCATION_SEARCH_RADIUS
+                            )
+                        )
+                    )
                 }
                 googleMap.setOnMapClickListener { latLng ->
                     location = latLng
@@ -245,14 +276,23 @@ class LocationFragment  : BaseDialogFragment() {
             autocompleteFragment = SupportPlaceAutocompleteFragment()
         }
         autocompleteFragment?.let { frag ->
-            childFragmentManager.beginTransaction().replace(R.id.entourage_location_places, frag).commit()
+            childFragmentManager.beginTransaction().replace(R.id.entourage_location_places, frag)
+                .commit()
 
             originalLocation?.let { loc ->
-                frag.setBoundsBias(LatLngBounds(
-                        LatLng(loc.latitude - LOCATION_SEARCH_RADIUS, loc.longitude - LOCATION_SEARCH_RADIUS),
-                        LatLng(loc.latitude + LOCATION_SEARCH_RADIUS, loc.longitude + LOCATION_SEARCH_RADIUS)
-                ))
-            } ?: run  {
+                frag.setBoundsBias(
+                    LatLngBounds(
+                        LatLng(
+                            loc.latitude - LOCATION_SEARCH_RADIUS,
+                            loc.longitude - LOCATION_SEARCH_RADIUS
+                        ),
+                        LatLng(
+                            loc.latitude + LOCATION_SEARCH_RADIUS,
+                            loc.longitude + LOCATION_SEARCH_RADIUS
+                        )
+                    )
+                )
+            } ?: run {
                 frag.setBoundsBias(LatLngBounds(LatLng(42.0, -5.0), LatLng(51.0, 9.0)))
             }
             frag.setOnPlaceSelectedListener(object : PlaceSelectionListener {
@@ -267,7 +307,13 @@ class LocationFragment  : BaseDialogFragment() {
                 }
 
                 override fun onError(status: Status) {
-                    activity?.let { Toast.makeText(it, R.string.entourage_location_address_not_found, Toast.LENGTH_SHORT).show() }
+                    activity?.let {
+                        Toast.makeText(
+                            it,
+                            R.string.entourage_location_address_not_found,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             })
         }
@@ -278,40 +324,49 @@ class LocationFragment  : BaseDialogFragment() {
         timerTask = object : TimerTask() {
             override fun run() {
                 val autocompleteView = autocompleteFragment?.view ?: return
-                val autocompleteEditText = autocompleteView.findViewById<TextView>(com.google.android.libraries.places.R.id.places_autocomplete_search_input) ?: return
+                val autocompleteEditText =
+                    autocompleteView.findViewById<TextView>(com.google.android.libraries.places.R.id.places_autocomplete_search_input)
+                        ?: return
                 if (autocompleteEditText.text.isBlank() && !useGooglePlacesOnly) return
-                val autocompleteSearchView = autocompleteView.findViewById<View>(com.google.android.libraries.places.R.id.places_autocomplete_search_button)
+                val autocompleteSearchView =
+                    autocompleteView.findViewById<View>(com.google.android.libraries.places.R.id.places_autocomplete_search_button)
                 autocompleteSearchView?.performClick()
             }
         }
     }
 
     private fun cancelTimer() {
-        timerTask?.let {handler?.removeCallbacks(it)}
+        timerTask?.let { handler?.removeCallbacks(it) }
     }
 
     private fun setAddress(address: String, fromPlaceSelected: Boolean) {
         entourage_location_address?.text = address
         if (useGooglePlacesOnly && !fromPlaceSelected) {
-            autocompleteFragment?.view?.findViewById<TextView>(com.google.android.libraries.places.R.id.places_autocomplete_search_input)?.let { autocompleteEditText ->
-                cancelTimer()
-                timerTask?.let { handler?.postDelayed(it, SEARCH_DELAY)}
-                autocompleteEditText.text = address
-            }
+            autocompleteFragment?.view?.findViewById<TextView>(com.google.android.libraries.places.R.id.places_autocomplete_search_input)
+                ?.let { autocompleteEditText ->
+                    cancelTimer()
+                    timerTask?.let { handler?.postDelayed(it, SEARCH_DELAY) }
+                    autocompleteEditText.text = address
+                }
         }
     }
 
     // ----------------------------------
     // INNER CLASSES
     // ----------------------------------
-    private class GeocoderAddressTask(locationFragment: LocationFragment, var fromPlaceSelected: Boolean) : AsyncTask<LatLng?, Void?, String?>() {
-        var locationFragmentWeakReference: WeakReference<LocationFragment>? = WeakReference(locationFragment)
+    private class GeocoderAddressTask(
+        locationFragment: LocationFragment,
+        var fromPlaceSelected: Boolean
+    ) : AsyncTask<LatLng?, Void?, String?>() {
+        var locationFragmentWeakReference: WeakReference<LocationFragment>? =
+            WeakReference(locationFragment)
+
         override fun doInBackground(vararg params: LatLng?): String? {
             try {
                 params[0]?.let { location ->
                     locationFragmentWeakReference?.get()?.activity?.let { activity ->
                         val addresses = Geocoder(activity, Locale.getDefault())
-                                .getFromLocation(location.latitude, location.longitude, 1)
+                            .getFromLocation(location.latitude, location.longitude, 1)
                         if (addresses.size > 0) {
                             addresses?.first()?.let { address ->
                                 if (address.maxAddressLineIndex >= 0) {
@@ -348,7 +403,8 @@ class LocationFragment  : BaseDialogFragment() {
         const val TAG = "social.entourage.android.entourage.location"
         private const val KEY_ENTOURAGE_LOCATION = "social.entourage.android.KEY_ENTOURAGE_LOCATION"
         private const val KEY_ENTOURAGE_ADDRESS = "social.entourage.android.KEY_ENTOURAGE_ADDRESS"
-        private const val KEY_USE_GOOGLE_PLACES_ONLY = "social.entourage.android.KEY_USE_GOOGLE_PLACES_ONLY"
+        private const val KEY_USE_GOOGLE_PLACES_ONLY =
+            "social.entourage.android.KEY_USE_GOOGLE_PLACES_ONLY"
         private const val LOCATION_MOVE_DELTA = 50f //meters
         private const val LOCATION_SEARCH_RADIUS = 0.18f // 20 kilometers in lat/long degrees
         private const val PERMISSIONS_REQUEST_LOCATION = 1
@@ -363,7 +419,11 @@ class LocationFragment  : BaseDialogFragment() {
          * @param listener The listener
          * @return A new instance of fragment LocationFragment.
          */
-        fun newInstance(location: LatLng?, address: String?, listener: OnFragmentInteractionListener?): LocationFragment {
+        fun newInstance(
+            location: LatLng?,
+            address: String?,
+            listener: OnFragmentInteractionListener?
+        ): LocationFragment {
             val args = Bundle()
             args.putParcelable(KEY_ENTOURAGE_LOCATION, location)
             args.putString(KEY_ENTOURAGE_ADDRESS, address)
@@ -383,7 +443,12 @@ class LocationFragment  : BaseDialogFragment() {
          * @param listener The listener
          * @return A new instance of fragment LocationFragment.
          */
-        fun newInstance(location: LatLng?, address: String?, useGooglePlacesOnly: Boolean, listener: OnFragmentInteractionListener?): LocationFragment {
+        fun newInstance(
+            location: LatLng?,
+            address: String?,
+            useGooglePlacesOnly: Boolean,
+            listener: OnFragmentInteractionListener?
+        ): LocationFragment {
             val args = Bundle()
             args.putParcelable(KEY_ENTOURAGE_LOCATION, location)
             args.putString(KEY_ENTOURAGE_ADDRESS, address)

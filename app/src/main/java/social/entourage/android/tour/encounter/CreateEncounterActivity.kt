@@ -8,6 +8,8 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.text.format.DateFormat
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.compat.Place
 import com.google.android.material.snackbar.Snackbar
@@ -29,15 +31,38 @@ import java.lang.ref.WeakReference
 import java.util.*
 import javax.inject.Inject
 
-class CreateEncounterActivity : BaseSecuredActivity(), LocationFragment.OnFragmentInteractionListener {
+class CreateEncounterActivity : BaseSecuredActivity(),
+    LocationFragment.OnFragmentInteractionListener {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-    @Inject lateinit var presenter: CreateEncounterPresenter
+    @Inject
+    lateinit var presenter: CreateEncounterPresenter
 
     private var location: LatLng? = null
     private var editedEncounter: Encounter? = null
     private var readOnly = true
+
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+        { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val textMatchList: List<String>? =
+                    result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                if (!textMatchList.isNullOrEmpty()) {
+                    edittext_message?.let {
+                        if (it.text.toString() == "") {
+                            it.setText(textMatchList[0])
+                        } else {
+                            it.setText(it.text.toString() + " " + textMatchList[0])
+                        }
+                        it.setSelection(it.text.length)
+                        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_OK)
+                    }
+                }
+            }
+        }
+
 
     // ----------------------------------
     // LIFECYCLE
@@ -58,50 +83,35 @@ class CreateEncounterActivity : BaseSecuredActivity(), LocationFragment.OnFragme
             presenter.setTourUUID(arguments.getString(BUNDLE_KEY_TOUR_ID))
             presenter.setLatitude(arguments.getDouble(BUNDLE_KEY_LATITUDE))
             presenter.setLongitude(arguments.getDouble(BUNDLE_KEY_LONGITUDE))
-            location = LatLng(arguments.getDouble(BUNDLE_KEY_LATITUDE), arguments.getDouble(BUNDLE_KEY_LONGITUDE))
+            location = LatLng(
+                arguments.getDouble(BUNDLE_KEY_LATITUDE),
+                arguments.getDouble(BUNDLE_KEY_LONGITUDE)
+            )
         }
-        title_close_button?.setOnClickListener {onCloseButton()}
-        title_action_button?.setOnClickListener {createEncounter()}
-        create_encounter_position_layout?.setOnClickListener {onPositionClicked()}
-        button_record?.setOnClickListener {onRecord()}
+        title_close_button?.setOnClickListener { onCloseButton() }
+        title_action_button?.setOnClickListener { createEncounter() }
+        create_encounter_position_layout?.setOnClickListener { onPositionClicked() }
+        button_record?.setOnClickListener { onRecord() }
         initialiseFields()
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_CREATE_ENCOUNTER_START)
     }
 
     override fun setupComponent(entourageComponent: EntourageComponent?) {
         DaggerCreateEncounterComponent.builder()
-                .entourageComponent(entourageComponent)
-                .createEncounterModule(CreateEncounterModule(this))
-                .build()
-                .inject(this)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == VOICE_RECOGNITION_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                val textMatchList: List<String>? = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
-                if (!textMatchList.isNullOrEmpty()) {
-                    edittext_message?.let {
-                        if (it.text.toString() == "") {
-                            it.setText(textMatchList[0])
-                        } else {
-                            it.setText(it.text.toString() + " " + textMatchList[0])
-                        }
-                        it.setSelection(it.text.length)
-                        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_OK)
-                    }
-                }
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data)
+            .entourageComponent(entourageComponent)
+            .createEncounterModule(CreateEncounterModule(this))
+            .build()
+            .inject(this)
     }
 
     private fun initialiseFields() {
-        encounter_author?.text = resources.getString(R.string.encounter_label_person_name_and, presenter.author)
+        encounter_author?.text =
+            resources.getString(R.string.encounter_label_person_name_and, presenter.author)
         edittext_street_person_name?.setText(editedEncounter?.streetPersonName ?: "")
-        val todayDateString = DateFormat.getDateFormat(applicationContext).format(editedEncounter?.creationDate ?: Date())
+        val todayDateString = DateFormat.getDateFormat(applicationContext)
+            .format(editedEncounter?.creationDate ?: Date())
         encounter_date?.text = resources.getString(R.string.encounter_encountered, todayDateString)
-        edittext_message?.setText(editedEncounter?.message ?:"")
+        edittext_message?.setText(editedEncounter?.message ?: "")
         if (location != null) {
             GeocoderTask(this).execute(location)
         }
@@ -121,29 +131,47 @@ class CreateEncounterActivity : BaseSecuredActivity(), LocationFragment.OnFragme
         if (personName != "") {
             showProgressDialog(if (editedEncounter == null) R.string.creating_encounter else R.string.updating_encounter)
             editedEncounter?.let {
-                    it.streetPersonName = personName
-                    it.message = message
-                    presenter.updateEncounter(it)
+                it.streetPersonName = personName
+                it.message = message
+                presenter.updateEncounter(it)
+            }
+                ?: run {
+                    presenter.createEncounter(message, personName)
                 }
-                    ?: run {
-                        presenter.createEncounter(message, personName)
-                    }
         } else {
-            create_encounter_layout?.let {EntSnackbar.make(it, R.string.encounter_empty_name, Snackbar.LENGTH_SHORT).show()}
+            create_encounter_layout?.let {
+                EntSnackbar.make(
+                    it,
+                    R.string.encounter_empty_name,
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
     fun onRecord() {
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+        intent.putExtra(
+            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+        )
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
         intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.encounter_leave_voice_message))
+        intent.putExtra(
+            RecognizerIntent.EXTRA_PROMPT,
+            getString(R.string.encounter_leave_voice_message)
+        )
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_STARTED)
         try {
-            startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE)
+            startForResult.launch(intent)
         } catch (e: ActivityNotFoundException) {
-            create_encounter_layout?.let {EntSnackbar.make(it,  R.string.encounter_voice_message_not_supported, Snackbar.LENGTH_SHORT).show()}
+            create_encounter_layout?.let {
+                EntSnackbar.make(
+                    it,
+                    R.string.encounter_voice_message_not_supported,
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_NOT_SUPPORTED)
         }
     }
@@ -151,14 +179,15 @@ class CreateEncounterActivity : BaseSecuredActivity(), LocationFragment.OnFragme
     fun onPositionClicked() {
         hideKeyboard()
         create_encounter_position?.let {
-            LocationFragment.newInstance(location, it.text.toString(), this).show(supportFragmentManager, LocationFragment.TAG)
+            LocationFragment.newInstance(location, it.text.toString(), this)
+                .show(supportFragmentManager, LocationFragment.TAG)
         }
     }
 
     fun onCreateEncounterFinished(errorMessage: String?, encounterResponse: Encounter?) {
         dismissProgressDialog()
         val messageId: Int
-        if (errorMessage == null && encounterResponse!= null) {
+        if (errorMessage == null && encounterResponse != null) {
             messageId = R.string.create_encounter_success
             authenticationController.incrementUserEncountersCount()
             EntBus.post(OnEncounterCreated(encounterResponse))
@@ -169,7 +198,9 @@ class CreateEncounterActivity : BaseSecuredActivity(), LocationFragment.OnFragme
             Timber.e(getString(messageId))
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_CREATE_ENCOUNTER_FAILED)
         }
-        create_encounter_layout?.let {EntSnackbar.make(it, messageId, Snackbar.LENGTH_LONG).show()}
+        create_encounter_layout?.let {
+            EntSnackbar.make(it, messageId, Snackbar.LENGTH_LONG).show()
+        }
     }
 
     fun onUpdatingEncounterFinished(errorMessage: String?, encounterResponse: Encounter?) {
@@ -178,7 +209,7 @@ class CreateEncounterActivity : BaseSecuredActivity(), LocationFragment.OnFragme
         if (errorMessage == null) {
             authenticationController.incrementUserEncountersCount()
             messageId = R.string.update_encounter_success
-            editedEncounter?.let {EntBus.post(OnEncounterUpdated(it))}
+            editedEncounter?.let { EntBus.post(OnEncounterUpdated(it)) }
             finish()
             //EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_OK);
         } else {
@@ -186,14 +217,16 @@ class CreateEncounterActivity : BaseSecuredActivity(), LocationFragment.OnFragme
             Timber.e(getString(messageId))
             //EntourageEvents.logEvent(EntourageEvents.EVENT_CREATE_ENCOUNTER_FAILED);
         }
-        create_encounter_layout?.let {EntSnackbar.make(it,  messageId, Snackbar.LENGTH_LONG).show()}
+        create_encounter_layout?.let {
+            EntSnackbar.make(it, messageId, Snackbar.LENGTH_LONG).show()
+        }
     }
 
     // ----------------------------------
     // LocationFragment.OnFragmentInteractionListener
     // ----------------------------------
     override fun onEntourageLocationChosen(newLocation: LatLng?, address: String?, place: Place?) {
-        val curLocation  = newLocation ?: place?.latLng ?: return
+        val curLocation = newLocation ?: place?.latLng ?: return
         this.location = curLocation
         presenter.setLatitude(curLocation.latitude)
         presenter.setLongitude(curLocation.longitude)
@@ -209,8 +242,10 @@ class CreateEncounterActivity : BaseSecuredActivity(), LocationFragment.OnFragme
     // ----------------------------------
     // PRIVATE CLASSES
     // ----------------------------------
-    private class GeocoderTask constructor(context: CreateEncounterActivity) : AsyncTask<LatLng?, Void?, String?>() {
-        private val activityReference: WeakReference<CreateEncounterActivity> = WeakReference(context)
+    private class GeocoderTask constructor(context: CreateEncounterActivity) :
+        AsyncTask<LatLng?, Void?, String?>() {
+        private val activityReference: WeakReference<CreateEncounterActivity> =
+            WeakReference(context)
 
         override fun doInBackground(vararg params: LatLng?): String? {
             try {
