@@ -64,8 +64,7 @@ class LocationProvider(
      */
     fun start() {
         requestLocationUpdates()
-        Log.e("SALIM", "In Start")
-        /* if (!googleApiClient.isConnected) {
+    /* if (!googleApiClient.isConnected) {
              googleApiClient.connect()
          } else {
              requestLocationUpdates()
@@ -75,8 +74,6 @@ class LocationProvider(
 
     fun stop() {
         removeLocationUpdates()
-        Log.e("SALIM", "In STOP")
-
         /*if (googleApiClient.isConnected) {
             googleApiClient.disconnect()
             removeLocationUpdates()
@@ -85,14 +82,11 @@ class LocationProvider(
     }
 
     fun setLocationListener(listener: LocationListener) {
-        Log.e("SALIM", "In setLocationListener")
 
         locationListener = listener
     }
 
     fun setUserType(newUserType: UserType) {
-        Log.e("SALIM", "In setUserType")
-
         if (userType != newUserType) {
             userType = newUserType
             requestLocationUpdates()
