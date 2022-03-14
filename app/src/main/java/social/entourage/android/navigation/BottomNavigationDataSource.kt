@@ -3,6 +3,8 @@ package social.entourage.android.navigation
 import android.util.SparseArray
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
+import entourage.social.android.profile.MyProfileFragment
+import entourage.social.android.profile.ProfileFragment
 import social.entourage.android.EntourageApplication
 import social.entourage.android.PlusFragment
 import social.entourage.android.R
@@ -44,9 +46,9 @@ class BottomNavigationDataSource {
         return when (menuId) {
             R.id.bottom_bar_newsfeed -> HomeExpertFragment()
             R.id.bottom_bar_guide -> GuideHubFragment()
-            R.id.bottom_bar_plus ->  PlusFragment()
+            R.id.bottom_bar_plus -> PlusFragment()
             R.id.bottom_bar_mymessages -> MyMessagesMainFragment()
-            R.id.bottom_bar_profile -> MainProfileFragment()
+            R.id.bottom_bar_profile -> ProfileFragment()
             else -> null
         }
     }
@@ -55,13 +57,13 @@ class BottomNavigationDataSource {
         add(R.id.bottom_bar_newsfeed, HomeExpertFragment.TAG)
         add(R.id.bottom_bar_guide, GuideHubFragment.TAG)
         add(R.id.bottom_bar_plus, PlusFragment.TAG)
-        add(R.id.bottom_bar_mymessages, MyMessagesMainFragment.TAG )
+        add(R.id.bottom_bar_mymessages, MyMessagesMainFragment.TAG)
         add(R.id.bottom_bar_profile, MainProfileFragment.TAG)
 
         //Use to reset navigation stack home tab
         val editor = EntourageApplication.get().sharedPreferences.edit()
-        editor.putBoolean("isNavNews",false)
-        editor.putString("navType",null)
+        editor.putBoolean("isNavNews", false)
+        editor.putString("navType", null)
         editor.apply()
     }
 }

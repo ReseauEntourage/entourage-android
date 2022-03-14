@@ -16,17 +16,23 @@ class User : Serializable {
     // ----------------------------------
     val id: Int
     var email: String? = null
+
     @SerializedName("first_name")
     var firstName: String? = null
+
     @SerializedName("last_name")
     var lastName: String? = null
+
     @SerializedName("display_name")
     val displayName: String?
     var partner: Partner?
+
     @SerializedName("avatar_url")
     var avatarURL: String?
+
     @SerializedName("user_type")
     private val type: String = TYPE_PUBLIC
+
     @SerializedName("firebase_properties")
     val firebaseProperties: UserFirebaseProperties? = null
     var about: String? = ""
@@ -34,28 +40,35 @@ class User : Serializable {
     val roles: ArrayList<String>? = null
     val conversation: UserConversation? = null
     var address: Address? = null
+
     @SerializedName("address_2")
     var addressSecondary: Address? = null
-    var goal:String? = null
+    var goal: String? = null
     val interests: ArrayList<String> = ArrayList()
     var stats: Stats? = null
     var organization: Organization? = null
 
     @SerializedName("engaged")
-    var isEngaged:Boolean = false
+    var isEngaged: Boolean = false
+
     @SerializedName("unread_count")
-    var unreadCount:Int? = null
+    var unreadCount: Int? = null
 
     @SerializedName("permissions")
-    private var permissions:UserPermissions? = null
+    private var permissions: UserPermissions? = null
+
+    @SerializedName("travel_distance")
+    private var travelDistance: Int? = null
 
     // ----------------------------------
     // ATTRIBUTES (Not Serialized)
     // ----------------------------------
     @Expose(serialize = false)
     var phone: String? = null
+
     @Expose(serialize = false)
     var smsCode: String? = null
+
     @Expose(serialize = false)
     val token: String?
 
@@ -66,7 +79,7 @@ class User : Serializable {
         id = 0
         email = ""
         displayName = ""
-        about=""
+        about = ""
         stats = null
         organization = null
         partner = null
@@ -74,13 +87,21 @@ class User : Serializable {
         avatarURL = null
     }
 
-    private constructor(id: Int, email: String, displayName: String, stats: Stats, organization: Organization, token: String, avatarURL: String?) {
+    private constructor(
+        id: Int,
+        email: String,
+        displayName: String,
+        stats: Stats,
+        organization: Organization,
+        token: String,
+        avatarURL: String?
+    ) {
         this.id = id
         this.email = email
         this.displayName = displayName
         this.stats = stats
         this.organization = organization
-        about=""
+        about = ""
         partner = null
         this.token = token
         this.avatarURL = avatarURL
@@ -98,7 +119,7 @@ class User : Serializable {
     // ----------------------------------
     // Other methods
     // ----------------------------------
-    fun isCreateEventActive() : Boolean {
+    fun isCreateEventActive(): Boolean {
         return permissions?.isEventCreationActive() ?: false
     }
 
@@ -144,13 +165,14 @@ class User : Serializable {
         val interestsString = StringBuilder()
         var isFirst = true
         interests.forEach { interest ->
-            if(isFirst) {
+            if (isFirst) {
                 isFirst = false
             } else {
                 interestsString.append(", ")
             }
             val stringId = getStringId(interest)
-            interestsString.append(context.getString(
+            interestsString.append(
+                context.getString(
                     when (stringId) {
                         string.rencontrer_sdf,
                         string.event_sdf,
@@ -167,9 +189,10 @@ class User : Serializable {
                         string.cult_sport_asso,
                         string.serv_pub_asso,
                         string.autre_asso -> stringId
-                        else -> if(stringId==-1) string.empty_description else stringId
+                        else -> if (stringId == -1) string.empty_description else stringId
                     }
-            ))
+                )
+            )
         }
         return interestsString.toString()
     }
@@ -233,10 +256,12 @@ class User : Serializable {
 
     companion object {
         private const val serialVersionUID: Long = -90000034L
+
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
         const val KEY_USER_ID = "social.entourage.android.KEY_USER_ID"
+
         //const val KEY_USER = "social.entourage.android.KEY_USER"
         const val TYPE_PUBLIC = "public"
         const val TYPE_PRO = "pro"
