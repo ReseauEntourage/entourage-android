@@ -22,6 +22,12 @@ android {
         jvmTarget = "11"
     }
 
+
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
+
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 

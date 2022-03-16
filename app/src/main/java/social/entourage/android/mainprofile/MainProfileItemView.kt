@@ -36,10 +36,10 @@ class MainProfileItemView : RelativeLayout {
                 attrs, R.styleable.MainProfileItemView, defStyle, 0)
         try {
             //Handle divider
-            val bShowDivider = styledAttributes.getBoolean(R.styleable.MainProfileItemView_showDivider, true)
-            if (!bShowDivider) {
-                mainprofile_item_divider?.visibility = View.GONE
-            }
+//            val bShowDivider = styledAttributes.getBoolean(R.styleable.MainProfileItemView_showDividers, true)
+//            if (!bShowDivider) {
+//                mainprofile_item_divider?.visibility = View.GONE
+//            }
 
             //Icon
             mainprofile_item_icon?.let {

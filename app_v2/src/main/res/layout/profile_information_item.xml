@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="icon"
+            type="android.graphics.drawable.Drawable" />
+
+        <variable
+            name="title"
+            type="java.lang.String" />
+
+        <variable
+            name="content"
+            type="java.lang.String" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="20dp"
+            android:adjustViewBounds="true"
+            android:cropToPadding="true"
+            android:paddingLeft="30dp"
+            android:paddingRight="40dp"
+            android:src="@{icon}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:src="@drawable/edit_profile" />
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/profile_information_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{title}"
+            app:layout_constraintBottom_toTopOf="@+id/content"
+            app:layout_constraintStart_toEndOf="@+id/icon"
+            tools:text="Date d'annif" />
+
+
+        <TextView
+            android:id="@+id/content"
+            style="@style/profile_information_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{content}"
+            app:layout_constraintStart_toEndOf="@+id/icon"
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            tools:text="04/12" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/light_orange_opacity_50"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/content" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
