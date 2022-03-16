@@ -1,8 +1,7 @@
 <resources>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="my_activity">Mon activité</string>
-    <string name="five">5</string>
+    <string name="test">5</string>
     <string name="events">Évènements</string>
     <string name="contributions">Contributions</string>
     <string name="birthday">Date d’anniversaire</string>

@@ -14,10 +14,8 @@
         android:layout_margin="5dp"
         android:background="@drawable/rounded_background_interests"
         android:gravity="center"
-
         android:orientation="vertical"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp">
+        android:paddingHorizontal="15dp">
 
         <TextView
             android:id="@+id/content"

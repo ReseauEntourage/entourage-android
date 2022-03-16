@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.Dimension
 import com.google.android.material.tabs.TabLayoutMediator
 import entourage.social.android.R
 import entourage.social.android.databinding.FragmentProfileBinding
@@ -35,8 +36,8 @@ class ProfileFragment : Fragment() {
         viewPager.adapter = adapter
         val tabLayout = binding.tabLayout
         val animalsArray = arrayOf(
-            context?.getString(R.string.my_profile),
-            context?.getString(R.string.settings)
+            requireContext().getString(R.string.my_profile),
+            requireContext().getString(R.string.settings)
         )
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = animalsArray[position]

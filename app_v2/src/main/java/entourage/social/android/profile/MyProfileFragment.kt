@@ -34,7 +34,6 @@ class MyProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeInterests()
-        setProgressBarIndicator()
     }
 
 
@@ -46,34 +45,5 @@ class MyProfileFragment : Fragment() {
             layoutManager = layoutManagerFlex
             adapter = InterestsAdapter(interests)
         }
-    }
-
-    private fun setProgressBarIndicator() {
-        val progressBar = binding.progressBar
-        val score = binding.progressbarValue
-        score.text = progressBar.progress.toString()
-
-        val maxSizePoint = Point()
-        val maxX = maxSizePoint.x
-        progressBar.setOnSeekBarChangeListener(object :
-            OnSeekBarChangeListener {
-            override fun onProgressChanged(
-                seekBar: SeekBar,
-                progressValue: Int,
-                fromUser: Boolean
-            ) {
-                val value: Int =
-                    progressValue * (progressBar.width - 2 * progressBar.thumbOffset) / progressBar.max
-                score.text = progressValue.toString()
-                val textViewX: Int = value - score.width / 2
-                val finalX =
-                    if (score.width + textViewX > maxX) maxX - score.width - 16 else textViewX + 16 /*your margin*/
-                score.x = if (finalX < 0) 16F /*your margin*/ else finalX.toFloat()
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar) {}
-        })
-
     }
 }
