@@ -5,4 +5,7 @@
     <color name="light_orange">#ff9c5d</color>
     <color name="light_orange_opacity_50">#80ff9c5d</color>
     <color name="light_orange_opacity_25">#40ff9c5d</color>
+    <color name="green">#2BBA7A</color>
+
+
 </resources>

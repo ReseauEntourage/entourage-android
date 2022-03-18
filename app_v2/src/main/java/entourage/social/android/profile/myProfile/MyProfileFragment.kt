@@ -1,12 +1,9 @@
-package entourage.social.android.profile
+package entourage.social.android.profile.myProfile
 
-import android.graphics.Point
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SeekBar
-import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -33,6 +30,7 @@ class MyProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initializeView()
         initializeInterests()
     }
 
@@ -46,4 +44,10 @@ class MyProfileFragment : Fragment() {
             adapter = InterestsAdapter(interests)
         }
     }
+
+
+    private fun initializeView() {
+        binding.city.divider.visibility = View.GONE
+    }
+
 }

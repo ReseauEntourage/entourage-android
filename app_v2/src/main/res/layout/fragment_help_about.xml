@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="25dp"
+            android:paddingTop="20dp"
+            android:paddingRight="25dp"
+            android:paddingBottom="20dp">
+
+
+            <include
+                android:id="@+id/header"
+                layout="@layout/header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:title="@{@string/help_about}" />
+
+            <include
+                android:id="@+id/ethic"
+                layout="@layout/about_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:label="@{@string/ethics}" />
+
+            <include
+                android:id="@+id/ambassador_program"
+                layout="@layout/about_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:label="@{@string/ambassador_program}" />
+
+            <include
+                android:id="@+id/donation"
+                layout="@layout/about_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:label="@{@string/donation}" />
+
+            <include
+                android:id="@+id/faq"
+                layout="@layout/about_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:label="@{@string/faq}" />
+
+            <include
+                android:id="@+id/feedback"
+                layout="@layout/about_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:label="@{@string/feedback}" />
+
+
+            <include
+                android:id="@+id/cgu"
+                layout="@layout/about_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:label="@{@string/cgu}" />
+
+
+            <include
+                android:id="@+id/confidentiality"
+                layout="@layout/about_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:label="@{@string/confidentiality}" />
+
+
+            <include
+                android:id="@+id/licence"
+                layout="@layout/about_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:label="@{@string/licence}" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+</layout>

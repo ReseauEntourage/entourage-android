@@ -1,5 +1,6 @@
 package social.entourage.android.mainprofile
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -7,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Subscribe
+import entourage.social.android.profile.ProfileActivity
 import kotlinx.android.synthetic.main.layout_mainprofile.*
 import kotlinx.android.synthetic.main.layout_mainprofile_appversion.*
 import retrofit2.Call
@@ -73,8 +75,12 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
         }
         //add listener to user photo and name, that opens the user profile screen
         drawer_header_user_photo?.setOnClickListener { selectMenuProfile("user") }
-        drawer_header_user_name?.setOnClickListener { selectMenuProfile("user") }
-        //add listener to modify profile text view
+        //drawer_header_user_name?.setOnClickListener { selectMenuProfile("user") }
+        drawer_header_user_name?.setOnClickListener {
+            startActivity(
+                Intent(context, ProfileActivity::class.java)
+            )
+        }        //add listener to modify profile text view
         action_edit_profile?.setOnClickListener { selectMenuProfile("editProfile") }
 
         //add listeners to side menu items

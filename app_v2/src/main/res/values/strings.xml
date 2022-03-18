@@ -16,5 +16,32 @@
     <string name="min_progressbar">1 km</string>
     <string name="max_progressbar">200 km</string>
     <string name="indications">* Votre zone d’action permet de définir à quelle distance vous pouvez agir et vous déplacer  </string>
+    <string name="notifications">Notifications</string>
+    <string name="help_about">Aide et à propos</string>
+    <string name="unblock">Débloquer des membres</string>
+    <string name="sign_out">Se déconnecter</string>
+    <string name="delete_account">Supprimer mon compte</string>
+    <string name="share_app">Bonjour ! Grâce au réseau Entourage, je participe à des actions solidaires entre voisins avec et sans domicile. Rejoins-moi : https://bit.ly/applientourage</string>
+
+    <string name="ethics">Charte éthique</string>
+    <string name="ambassador_program">Postuler au programme ambassadeur</string>
+    <string name="donation">Faire un don</string>
+    <string name="faq">FAQ</string>
+    <string name="share">Partager l’application</string>
+    <string name="feedback">Noter l’app sur les stores</string>
+    <string name="cgu">Conditions générales d’utilisation</string>
+    <string name="confidentiality">Politique de Confidentialité</string>
+    <string name="licence">Licence open-source</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+
+    <string name="delete_account_dialog_title">Suppression du compte</string>
+    <string name="delete_account_dialog_content">Souhaitez-vous supprimer votre compte ?</string>
+
+    <string name="sign_out_dialog_title">Déconnexion</string>
+    <string name="sign_out_dialog_content">Voulez-vous vous déconnecter ?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>
