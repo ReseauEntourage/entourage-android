@@ -1,7 +1,7 @@
 package entourage.social.android.profile
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import entourage.social.android.R
 
 class ProfileActivity : AppCompatActivity() {
