@@ -3,8 +3,6 @@ package social.entourage.android.navigation
 import android.util.SparseArray
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
-import entourage.social.android.profile.MyProfileFragment
-import entourage.social.android.profile.ProfileFragment
 import social.entourage.android.EntourageApplication
 import social.entourage.android.PlusFragment
 import social.entourage.android.R
@@ -48,7 +46,7 @@ class BottomNavigationDataSource {
             R.id.bottom_bar_guide -> GuideHubFragment()
             R.id.bottom_bar_plus -> PlusFragment()
             R.id.bottom_bar_mymessages -> MyMessagesMainFragment()
-            R.id.bottom_bar_profile -> ProfileFragment()
+            R.id.bottom_bar_profile -> MainProfileFragment()
             else -> null
         }
     }

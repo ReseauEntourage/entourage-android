@@ -1,4 +1,4 @@
-package entourage.social.android.profile
+package entourage.social.android.profile.myProfile
 
 import android.view.LayoutInflater
 import android.view.View

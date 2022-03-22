@@ -1,11 +1,10 @@
 package entourage.social.android.profile
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.Dimension
+import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import entourage.social.android.R
 import entourage.social.android.databinding.FragmentProfileBinding
@@ -32,15 +31,15 @@ class ProfileFragment : Fragment() {
 
     private fun initializeTab() {
         val viewPager = binding.viewPager
-        val adapter = ViewPagerAdapter(parentFragmentManager, lifecycle)
+        val adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
         viewPager.adapter = adapter
         val tabLayout = binding.tabLayout
-        val animalsArray = arrayOf(
+        val tabs = arrayOf(
             requireContext().getString(R.string.my_profile),
             requireContext().getString(R.string.settings)
         )
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = animalsArray[position]
+            tab.text = tabs[position]
         }.attach()
     }
 }

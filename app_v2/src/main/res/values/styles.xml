@@ -56,7 +56,7 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
 
-    <style name="profile_information_content">
+    <style name="h4">
         <item name="android:textSize">@dimen/profile_description</item>
         <item name="android:fontFamily">@font/nunitosans_regular</item>
         <item name="android:textColor">@android:color/black</item>
@@ -74,6 +74,30 @@
         <item name="android:textColor">@color/light_orange_opacity_50</item>
     </style>
 
+
+    <style name="settings_items">
+        <item name="android:textSize">@dimen/settings_titles</item>
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+    </style>
+
+    <style name="h2">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="h2_white">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+
+    <style name="h2_orange">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
 
 
 </resources>
