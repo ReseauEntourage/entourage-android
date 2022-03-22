@@ -12,10 +12,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="25dp"
-            android:paddingTop="20dp"
-            android:paddingRight="25dp"
-            android:paddingBottom="20dp">
+            android:paddingHorizontal="25dp"
+            android:paddingVertical="20dp">
 
             <include
                 android:id="@+id/notifications"

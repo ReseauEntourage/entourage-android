@@ -13,7 +13,6 @@
         style="@style/h2_orange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="title"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="content" />
@@ -32,7 +31,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title"
         tools:text="content" />
