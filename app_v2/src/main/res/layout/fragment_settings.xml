@@ -47,7 +47,7 @@
                 layout="@layout/profile_settings_item"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:color="@{@color/green}"
+                app:color="@{@color/orange}"
                 app:icon="@{@drawable/sign_out}"
                 app:label="@{@string/sign_out}" />
 
