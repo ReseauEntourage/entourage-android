@@ -7,24 +7,22 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.tabs.TabLayoutMediator
 import entourage.social.android.R
-import entourage.social.android.databinding.FragmentProfileBinding
+import entourage.social.android.databinding.NewFragmentProfileBinding
 
 
 class ProfileFragment : Fragment() {
 
-    private var _binding: FragmentProfileBinding? = null
-    val binding: FragmentProfileBinding get() = _binding!!
+    private var _binding: NewFragmentProfileBinding? = null
+    val binding: NewFragmentProfileBinding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        _binding = NewFragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -34,7 +32,7 @@ class ProfileFragment : Fragment() {
         initializeEditButton()
 
         Glide.with(requireContext())
-            .load(R.drawable.profile).circleCrop()
+            .load(R.drawable.new_profile).circleCrop()
             .into(binding.imageProfile)
     }
 

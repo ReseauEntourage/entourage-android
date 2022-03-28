@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -11,19 +12,18 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@drawable/rounded_background_interests"
+        android:background="@drawable/new_rounded_background_pins"
         android:gravity="center"
-        android:orientation="vertical"
-        android:paddingHorizontal="15dp">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/content"
-            style="@style/profile_interest"
+            style="@style/profile_pins"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:text="@{label}" />
+            android:padding="7dp"
+            android:text="@{label}"
+            tools:text="salim" />
 
     </LinearLayout>
 </layout>

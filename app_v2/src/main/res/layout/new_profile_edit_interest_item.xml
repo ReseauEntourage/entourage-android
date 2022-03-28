@@ -11,12 +11,12 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/padding_horizental"
-            android:src="@drawable/arrow"
+            android:src="@drawable/new_arrow"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toLeftOf="@id/title"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.2"
-            tools:src="@drawable/edit_profile" />
+            tools:src="@drawable/new_edit_profile" />
 
 
         <TextView

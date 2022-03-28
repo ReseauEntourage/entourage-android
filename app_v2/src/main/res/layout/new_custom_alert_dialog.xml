@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/rounded_button"
+    android:background="@drawable/new_rounded_button"
     android:paddingHorizontal="20dp"
     android:paddingVertical="30dp">
 
@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
-        android:background="@drawable/alert_dialog_button_yes"
+        android:background="@drawable/new_alert_dialog_button_yes"
         android:padding="10dp"
         android:textAllCaps="false"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -46,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
-        android:background="@drawable/alert_dialog_button_no"
+        android:background="@drawable/new_alert_dialog_button_no"
         android:padding="10dp"
         android:text="@string/cancel"
         android:textAllCaps="false"

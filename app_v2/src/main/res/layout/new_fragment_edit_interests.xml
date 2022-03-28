@@ -13,7 +13,7 @@
 
         <include
             android:id="@+id/header"
-            layout="@layout/header"
+            layout="@layout/new_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/title"
@@ -51,16 +51,16 @@
             app:layout_constraintTop_toBottomOf="@id/divider"
             app:layout_constraintVertical_weight="0.7"
             tools:itemCount="5"
-            tools:listitem="@layout/profile_edit_interest_item" />
+            tools:listitem="@layout/new_profile_edit_interest_item" />
 
         <include
             android:id="@+id/validate"
-            layout="@layout/rounded_button_orange"
+            layout="@layout/new_rounded_button_orange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="40dp"
             app:content="@{@string/apply_modifications}"
-            app:drawable="@{@drawable/rounded_button_orange}"
+            app:drawable="@{@drawable/new_rounded_button_orange}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />

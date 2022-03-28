@@ -17,47 +17,47 @@
 
             <include
                 android:id="@+id/notifications"
-                layout="@layout/profile_settings_item"
+                layout="@layout/new_profile_settings_item"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:color="@{@android:color/black}"
-                app:icon="@{@drawable/notification}"
+                app:icon="@{@drawable/new_notification}"
                 app:label="@{@string/notifications}" />
 
             <include
                 android:id="@+id/help_about"
-                layout="@layout/profile_settings_item"
+                layout="@layout/new_profile_settings_item"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:color="@{@android:color/black}"
-                app:icon="@{@drawable/help_about}"
+                app:icon="@{@drawable/new_help_about}"
                 app:label="@{@string/help_about}" />
 
             <include
                 android:id="@+id/share"
-                layout="@layout/profile_settings_item"
+                layout="@layout/new_profile_settings_item"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:color="@{@android:color/black}"
-                app:icon="@{@drawable/share}"
+                app:icon="@{@drawable/new_share}"
                 app:label="@{@string/share}" />
 
             <include
                 android:id="@+id/sign_out"
-                layout="@layout/profile_settings_item"
+                layout="@layout/new_profile_settings_item"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:color="@{@color/orange}"
-                app:icon="@{@drawable/sign_out}"
+                app:icon="@{@drawable/new_sign_out}"
                 app:label="@{@string/sign_out}" />
 
             <include
                 android:id="@+id/delete_account"
-                layout="@layout/profile_settings_item"
+                layout="@layout/new_profile_settings_item"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:color="@{@color/orange}"
-                app:icon="@{@drawable/delete}"
+                app:icon="@{@drawable/new_delete}"
                 app:label="@{@string/delete_account}" />
 
         </LinearLayout>

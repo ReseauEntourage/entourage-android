@@ -8,27 +8,26 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import entourage.social.android.R
-import entourage.social.android.databinding.FragmentEditImageBinding
-import entourage.social.android.databinding.FragmentEditInterestsBinding
+import entourage.social.android.databinding.NewFragmentEditImageBinding
 
 class EditImageFragment : Fragment() {
 
 
-    private var _binding: FragmentEditImageBinding? = null
-    val binding: FragmentEditImageBinding get() = _binding!!
+    private var _binding: NewFragmentEditImageBinding? = null
+    val binding: NewFragmentEditImageBinding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentEditImageBinding.inflate(inflater, container, false)
+        _binding = NewFragmentEditImageBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Glide.with(requireContext())
-            .load(R.drawable.profile).circleCrop()
+            .load(R.drawable.new_profile).circleCrop()
             .into(binding.imageProfile)
         setBackButton()
 

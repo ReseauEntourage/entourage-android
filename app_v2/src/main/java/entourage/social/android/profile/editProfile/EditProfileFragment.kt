@@ -12,13 +12,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import entourage.social.android.R
-import entourage.social.android.databinding.FragmentEditProfileBinding
+import entourage.social.android.databinding.NewFragmentEditProfileBinding
 
 
 class EditProfileFragment : Fragment() {
 
-    private var _binding: FragmentEditProfileBinding? = null
-    val binding: FragmentEditProfileBinding get() = _binding!!
+    private var _binding: NewFragmentEditProfileBinding? = null
+    val binding: NewFragmentEditProfileBinding get() = _binding!!
     private val paddingRight = 20
     private val paddingRightLimit = 60
     private val progressLimit = 96
@@ -28,7 +28,7 @@ class EditProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentEditProfileBinding.inflate(inflater, container, false)
+        _binding = NewFragmentEditProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -40,7 +40,7 @@ class EditProfileFragment : Fragment() {
         onEditActionZone()
         initializeDescriptionCounter()
         Glide.with(requireContext())
-            .load(R.drawable.profile).circleCrop()
+            .load(R.drawable.new_profile).circleCrop()
             .into(binding.imageProfile)
         setBackButton()
     }

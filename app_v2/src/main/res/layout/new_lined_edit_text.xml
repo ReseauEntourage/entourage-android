@@ -36,7 +36,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.2"
-            tools:src="@drawable/cross" />
+            tools:src="@drawable/new_cross" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -56,27 +56,30 @@
                 tools:text="Title" />
 
 
-            <TextView
+            <view
                 android:id="@+id/content"
                 style="@style/profile_activity_label"
+                class="entourage.social.android.profile.LinedEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="-4dp"
                 android:backgroundTint="@color/light_orange_opacity_50"
-                android:inputType="none"
-                android:text="@{content}"
+                android:maxLength="200"
                 tools:text="content" />
 
-            <View
-                android:id="@+id/divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/light_orange_opacity_50"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
 
         </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/counter"
+            style="@style/profile_information_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/linearLayout"
+            tools:text="Title" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

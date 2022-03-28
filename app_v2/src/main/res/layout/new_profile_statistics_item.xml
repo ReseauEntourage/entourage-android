@@ -21,7 +21,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_background_statistics"
+        android:background="@drawable/new_rounded_background_statistics"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingHorizontal="15dp"
@@ -39,7 +39,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/edit_profile" />
+            tools:src="@drawable/new_edit_profile" />
 
 
         <TextView

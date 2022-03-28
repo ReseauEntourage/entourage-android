@@ -12,7 +12,7 @@ class InterestsAdapter(private val mList: List<String>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.profile_interest_item, parent, false)
+            .inflate(R.layout.new_profile_interest_item, parent, false)
         return ViewHolder(view)
     }
 

@@ -19,7 +19,7 @@
 
             <include
                 android:id="@+id/header"
-                layout="@layout/header"
+                layout="@layout/new_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@id/scrollView"
@@ -45,7 +45,7 @@
                         android:layout_width="110dp"
                         android:layout_height="110dp"
                         android:layout_marginTop="20dp"
-                        android:src="@drawable/cross" />
+                        android:src="@drawable/new_cross" />
 
                     <TextView
                         android:id="@+id/edit_image"
@@ -57,71 +57,71 @@
 
                     <include
                         android:id="@+id/firstname"
-                        layout="@layout/profile_edit_item"
+                        layout="@layout/new_profile_edit_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:content="@{@string/edit_profile}"
-                        app:icon="@{@drawable/description}"
+                        app:icon="@{@drawable/new_description}"
                         app:title="@{@string/firstname}" />
 
                     <include
                         android:id="@+id/lastname"
-                        layout="@layout/profile_edit_item"
+                        layout="@layout/new_profile_edit_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:content="@{@string/edit_profile}"
-                        app:icon="@{@drawable/description}"
+                        app:icon="@{@drawable/new_description}"
                         app:title="@{@string/lastname}" />
 
                     <include
                         android:id="@+id/description"
-                        layout="@layout/lined_edit_text"
+                        layout="@layout/new_lined_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:content="@{@string/description}"
-                        app:icon="@{@drawable/description}"
+                        app:icon="@{@drawable/new_description}"
                         app:title="@{@string/description}" />
 
                     <include
                         android:id="@+id/birthday"
-                        layout="@layout/profile_edit_item"
+                        layout="@layout/new_profile_edit_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:content="@{@string/edit_profile}"
-                        app:icon="@{@drawable/birth}"
+                        app:icon="@{@drawable/new_birth}"
                         app:title="@{@string/birthday}" />
 
                     <include
                         android:id="@+id/phone"
-                        layout="@layout/profile_edit_item"
+                        layout="@layout/new_profile_edit_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:content="@{@string/edit_profile}"
-                        app:icon="@{@drawable/phone}"
+                        app:icon="@{@drawable/new_phone}"
                         app:title="@{@string/phone}" />
 
 
                     <include
                         android:id="@+id/email"
-                        layout="@layout/profile_edit_item"
+                        layout="@layout/new_profile_edit_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:content="@{@string/edit_profile}"
-                        app:icon="@{@drawable/mail}"
+                        app:icon="@{@drawable/new_mail}"
                         app:title="@{@string/email}" />
 
                     <include
                         android:id="@+id/city_action"
-                        layout="@layout/profile_edit_item_clickable"
+                        layout="@layout/new_profile_edit_item_clickable"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:content="@{@string/edit_profile}"
-                        app:icon="@{@drawable/location}"
+                        app:icon="@{@drawable/new_location}"
                         app:title="@{@string/city_action_zone}" />
 
                     <include
                         android:id="@+id/seek_bar_layout"
-                        layout="@layout/seek_bar_layout"
+                        layout="@layout/new_seek_bar_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
@@ -137,12 +137,12 @@
 
                     <include
                         android:id="@+id/interests"
-                        layout="@layout/profile_settings_item"
+                        layout="@layout/new_profile_settings_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="100dp"
                         app:color="@{@android:color/black}"
-                        app:icon="@{@drawable/description}"
+                        app:icon="@{@drawable/new_description}"
                         app:label="@{@string/interests}" />
 
                 </LinearLayout>
@@ -151,13 +151,13 @@
 
         <include
             android:id="@+id/import_picture"
-            layout="@layout/rounded_button_orange"
+            layout="@layout/new_rounded_button_orange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="65dp"
             android:layout_marginBottom="30dp"
             app:content="@{@string/import_picture}"
-            app:drawable="@{@drawable/rounded_button_orange}"
+            app:drawable="@{@drawable/new_rounded_button_orange}"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

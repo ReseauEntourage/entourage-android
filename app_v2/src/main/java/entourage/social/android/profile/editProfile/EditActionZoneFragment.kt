@@ -6,18 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import entourage.social.android.databinding.FragmentEditActionZoneBinding
+import entourage.social.android.databinding.NewFragmentEditActionZoneBinding
 
 class EditActionZoneFragment : Fragment() {
 
-    private var _binding: FragmentEditActionZoneBinding? = null
-    val binding: FragmentEditActionZoneBinding get() = _binding!!
+    private var _binding: NewFragmentEditActionZoneBinding? = null
+    val binding: NewFragmentEditActionZoneBinding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentEditActionZoneBinding.inflate(inflater, container, false)
+        _binding = NewFragmentEditActionZoneBinding.inflate(inflater, container, false)
         return binding.root
     }
 

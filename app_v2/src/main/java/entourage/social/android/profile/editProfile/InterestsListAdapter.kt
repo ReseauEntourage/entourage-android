@@ -4,18 +4,18 @@ import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import entourage.social.android.databinding.ProfileEditInterestItemBinding
+import entourage.social.android.databinding.NewProfileEditInterestItemBinding
 import entourage.social.android.profile.models.Interest
 
 class InterestsListAdapter(
     var interestsList: List<Interest>,
 ) : RecyclerView.Adapter<InterestsListAdapter.ViewHolder>() {
 
-    inner class ViewHolder(val binding: ProfileEditInterestItemBinding) :
+    inner class ViewHolder(val binding: NewProfileEditInterestItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ProfileEditInterestItemBinding.inflate(
+        val binding = NewProfileEditInterestItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false

@@ -8,19 +8,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import entourage.social.android.R
-import entourage.social.android.databinding.FragmentSettingsBinding
+import entourage.social.android.databinding.NewFragmentSettingsBinding
 import entourage.social.android.utils.Utils
 
 class SettingsFragment : Fragment() {
 
-    private var _binding: FragmentSettingsBinding? = null
-    val binding: FragmentSettingsBinding get() = _binding!!
+    private var _binding: NewFragmentSettingsBinding? = null
+    val binding: NewFragmentSettingsBinding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        _binding = NewFragmentSettingsBinding.inflate(inflater, container, false)
         return binding.root
     }
 

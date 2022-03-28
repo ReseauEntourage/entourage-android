@@ -6,19 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import entourage.social.android.databinding.FragmentHelpAboutBinding
+import entourage.social.android.databinding.NewFragmentHelpAboutBinding
 
 class HelpAboutFragment : Fragment() {
 
-    private var _binding: FragmentHelpAboutBinding? = null
-    val binding: FragmentHelpAboutBinding get() = _binding!!
+    private var _binding: NewFragmentHelpAboutBinding? = null
+    val binding: NewFragmentHelpAboutBinding get() = _binding!!
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHelpAboutBinding.inflate(inflater, container, false)
+        _binding = NewFragmentHelpAboutBinding.inflate(inflater, container, false)
         return binding.root
     }
 
