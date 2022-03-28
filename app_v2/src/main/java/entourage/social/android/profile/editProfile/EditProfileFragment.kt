@@ -7,7 +7,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -20,6 +19,9 @@ class EditProfileFragment : Fragment() {
 
     private var _binding: FragmentEditProfileBinding? = null
     val binding: FragmentEditProfileBinding get() = _binding!!
+    private val paddingRight = 20
+    private val paddingRightLimit = 60
+    private val progressLimit = 96
 
 
     override fun onCreateView(
@@ -41,7 +43,6 @@ class EditProfileFragment : Fragment() {
             .load(R.drawable.profile).circleCrop()
             .into(binding.imageProfile)
         setBackButton()
-        setProgressThumb(20)
     }
 
     private fun setProgressThumb(progress: Int) {
@@ -51,7 +52,7 @@ class EditProfileFragment : Fragment() {
                 progress.toString()
             )
         val bounds: Rect = binding.seekBarLayout.seekbar.thumb.dirtyBounds
-        val paddingRight = if (progress > 96) 60 else 20
+        val paddingRight = if (progress > progressLimit) paddingRightLimit else paddingRight
         binding.seekBarLayout.tvTrickleIndicator.x =
             (binding.seekBarLayout.seekbar.left + bounds.left - paddingRight).toFloat()
     }

@@ -14,6 +14,7 @@ class LinedEditText(context: Context, attrs: AttributeSet?) :
 
     private val mRect: Rect = Rect()
     private val mPaint: Paint = Paint()
+    private val marginVertical = 15
     override fun onDraw(canvas: Canvas) {
         val count = lineCount
         val r: Rect = mRect
@@ -21,8 +22,8 @@ class LinedEditText(context: Context, attrs: AttributeSet?) :
         for (i in 0 until count) {
             val baseline = getLineBounds(i, r)
             canvas.drawLine(
-                r.left.toFloat(), (baseline + 15).toFloat(),
-                r.right.toFloat(), (baseline + 15).toFloat(), paint
+                r.left.toFloat(), (baseline + marginVertical).toFloat(),
+                r.right.toFloat(), (baseline + marginVertical).toFloat(), paint
             )
         }
         super.onDraw(canvas)
