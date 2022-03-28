@@ -32,6 +32,8 @@ class SettingsFragment : Fragment() {
 
     private fun initializeView() {
         binding.deleteAccount.divider.visibility = View.GONE
+        binding.deleteAccount.arrow.visibility = View.GONE
+        binding.signOut.arrow.visibility = View.GONE
     }
 
     private fun addOnClickListeners() {
@@ -43,6 +45,7 @@ class SettingsFragment : Fragment() {
                 requireView(),
                 getString(R.string.delete_account_dialog_title),
                 getString(R.string.delete_account_dialog_content),
+                getString(R.string.delete),
                 {}
             )
         }
@@ -51,6 +54,7 @@ class SettingsFragment : Fragment() {
                 requireView(),
                 getString(R.string.sign_out_dialog_title),
                 getString(R.string.sign_out_dialog_content),
+                getString(R.string.signing_out),
                 {}
             )
         }

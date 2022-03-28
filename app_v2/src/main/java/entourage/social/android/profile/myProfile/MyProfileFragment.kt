@@ -3,6 +3,7 @@ package entourage.social.android.profile.myProfile
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.flexbox.FlexDirection
@@ -32,6 +33,7 @@ class MyProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initializeView()
         initializeInterests()
+        binding.seekBarLayout.seekbar.setOnTouchListener { _, _ -> true }
     }
 
 
@@ -45,9 +47,8 @@ class MyProfileFragment : Fragment() {
         }
     }
 
-
     private fun initializeView() {
-        binding.city.divider.visibility = View.GONE
+        binding.city.divider.visibility = View.INVISIBLE
     }
 
 }

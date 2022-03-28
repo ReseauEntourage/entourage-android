@@ -17,14 +17,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="content" />
 
-    <ImageView
-        android:id="@+id/close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/cross"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/content"
         style="@style/h4"
@@ -42,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
         android:background="@drawable/alert_dialog_button_yes"
-        android:text="@string/yes"
+        android:padding="10dp"
         android:textAllCaps="false"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/no"
@@ -55,7 +47,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
         android:background="@drawable/alert_dialog_button_no"
-        android:text="@string/no"
+        android:padding="10dp"
+        android:text="@string/cancel"
         android:textAllCaps="false"
         app:layout_constraintLeft_toRightOf="@id/yes"
         app:layout_constraintRight_toRightOf="parent"
