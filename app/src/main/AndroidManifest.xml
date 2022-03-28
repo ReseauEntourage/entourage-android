@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="social.entourage.android"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="social.entourage.android">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -36,26 +36,29 @@
     <application
         android:name=".EntourageApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme"
         android:fullBackupContent="@xml/backup_descriptor"
-        android:requestLegacyExternalStorage="true"><!-- use for accessing Storage Android 10+ -->
-        <activity android:name=".onboarding.login.LoginChangePhoneActivity"
-            android:screenOrientation="portrait"/>
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:theme="@style/AppTheme"><!-- use for accessing Storage Android 10+ -->
+        <activity
+            android:name=".onboarding.login.LoginChangePhoneActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".guide.GDSMainActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".guide.GDSMainActivity"
+            android:screenOrientation="portrait" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_api_key" />
 
         <activity
             android:name=".MainActivity"
+            android:exported="true"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait"
-            android:exported="true">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -125,9 +128,9 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="https"
                     android:host="${deepLinksHostName}"
-                    android:pathPrefix="/webview" />
+                    android:pathPrefix="/webview"
+                    android:scheme="https" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -136,9 +139,9 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="https"
                     android:host="${deepLinksHostName}"
-                    android:pathPrefix="/entourage/" />
+                    android:pathPrefix="/entourage/"
+                    android:scheme="https" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -147,9 +150,9 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="http"
                     android:host="${deepLinksHostName}"
-                    android:pathPrefix="/entourage/" />
+                    android:pathPrefix="/entourage/"
+                    android:scheme="http" />
             </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
@@ -158,9 +161,9 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="https"
                     android:host="${appLinksHostName}"
-                    android:pathPrefix="/actions/" />
+                    android:pathPrefix="/actions/"
+                    android:scheme="https" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -169,9 +172,9 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="https"
                     android:host="${appLinksHostName}"
-                    android:pathPrefix="/entourage/" />
+                    android:pathPrefix="/entourage/"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
         <activity
@@ -198,6 +201,7 @@
             android:theme="@style/EntourageOSSLicenses.Theme" />
         <activity android:name=".involvement.ShareActivity" />
         <activity android:name=".involvement.RateActivity" />
+        <activity android:name=".new_v8.profile.ProfileActivity" />
         <activity
             android:name=".onboarding.pre_onboarding.PreOnboardingChoiceActivity"
             android:screenOrientation="portrait" />
@@ -205,26 +209,32 @@
             android:name=".onboarding.pre_onboarding.PreOnboardingStartActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".onboarding.OnboardingMainActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".onboarding.OnboardingMainActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".onboarding.login.LoginActivity"
+        <activity
+            android:name=".onboarding.login.LoginActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
 
-        <activity android:name=".onboarding.login.LoginNextActivity"
+        <activity
+            android:name=".onboarding.login.LoginNextActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
 
-        <activity android:name=".onboarding.asso.OnboardingAssoSearchActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".onboarding.asso.OnboardingAssoSearchActivity"
+            android:screenOrientation="portrait" />
+
         <service
             android:name=".service.EntService"
             android:exported="false" />
         <service
             android:name=".api.tape.EncounterTapeService"
             android:exported="false" />
-        <service android:name=".message.push.EntourageFirebaseMessagingService"
+        <service
+            android:name=".message.push.EntourageFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
