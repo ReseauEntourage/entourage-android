@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="25dp"
+            android:paddingVertical="20dp"
+            tools:context="social.entourage.android.new_v8.profile.MyProfileFragment">
+
+            <TextView
+                android:id="@+id/name"
+                style="@style/profile_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="John Doe" />
+
+
+            <LinearLayout
+                android:id="@+id/pins"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@id/description"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/name">
+
+                <TextView
+                    android:id="@+id/ambassador"
+                    style="@style/profile_pins"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/new_rounded_background_pins"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/association"
+                    app:layout_constraintTop_toBottomOf="@id/name"
+                    tools:text="Ambassadeur" />
+
+                <LinearLayout
+                    android:id="@+id/association"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <TextView
+                        style="@style/profile_pins"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/new_rounded_background_pins"
+                        android:paddingVertical="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="23dp"
+                        tools:text="Entourage" />
+
+                    <LinearLayout
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="-20dp"
+                        android:background="@drawable/new_circle"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/new_circle"
+                            android:src="@drawable/new_edit_profile" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/description"
+                style="@style/profile_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pins"
+                tools:text="Bonjour je m'appelle Salim" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/interests"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/description"
+                tools:itemCount="5"
+                tools:listitem="@layout/new_profile_interest_item" />
+
+
+            <TextView
+                android:id="@+id/my_activity"
+                style="@style/profile_titles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="18dp"
+                android:text="@string/my_activity"
+                app:layout_constraintBottom_toTopOf="@id/events"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/interests" />
+
+            <include
+                android:id="@+id/events"
+                layout="@layout/new_profile_statistics_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:icon="@{@drawable/new_contribution}"
+                app:label="@{@string/contributions}"
+                app:layout_constraintLeft_toRightOf="@id/contribution"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/my_activity"
+                app:statistic="@{@string/test}" />
+
+            <include
+                android:id="@+id/contribution"
+                layout="@layout/new_profile_statistics_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:icon="@{@drawable/new_event}"
+                app:label="@{@string/events}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/events"
+                app:layout_constraintTop_toBottomOf="@id/my_activity"
+                app:statistic="@{@string/test}" />
+
+            <TextView
+                android:id="@+id/my_information"
+                style="@style/profile_titles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="18dp"
+                android:text="@string/my_activity"
+                app:layout_constraintBottom_toTopOf="@id/birthday"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/contribution" />
+
+            <include
+                android:id="@+id/birthday"
+                layout="@layout/new_profile_information_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                app:content="@{@string/test}"
+                app:icon="@{@drawable/new_edit_profile}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/my_information"
+                app:title="@{@string/birthday}" />
+
+            <include
+                android:id="@+id/phone"
+                layout="@layout/new_profile_information_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:content="@{@string/test}"
+                app:icon="@{@drawable/new_phone}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/birthday"
+                app:title="@{@string/phone}" />
+
+            <include
+                android:id="@+id/email"
+                layout="@layout/new_profile_information_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:content="@{@string/test}"
+                app:icon="@{@drawable/new_email}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/phone"
+                app:title="@{@string/email}" />
+
+            <include
+                android:id="@+id/city"
+                layout="@layout/new_profile_information_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:content="@{@string/test}"
+                app:icon="@{@drawable/new_city}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/email"
+                app:title="@{@string/city}" />
+
+            <include
+                android:id="@+id/seek_bar_layout"
+                layout="@layout/new_seek_bar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/city" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>
