@@ -23,6 +23,9 @@ class User : Serializable {
     @SerializedName("last_name")
     var lastName: String? = null
 
+    @SerializedName("birthday")
+    var birthday: String? = null
+
     @SerializedName("display_name")
     val displayName: String?
     var partner: Partner?
@@ -58,7 +61,7 @@ class User : Serializable {
     private var permissions: UserPermissions? = null
 
     @SerializedName("travel_distance")
-    private var travelDistance: Int? = null
+    var travelDistance: Int? = null
 
     // ----------------------------------
     // ATTRIBUTES (Not Serialized)

@@ -1,5 +1,6 @@
 package entourage.social.android.profile
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +11,18 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.tabs.TabLayoutMediator
+<<<<<<< Updated upstream:app_v2/src/main/java/entourage/social/android/profile/ProfileFragment.kt
 import entourage.social.android.R
 import entourage.social.android.databinding.FragmentProfileBinding
+=======
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import social.entourage.android.EntourageApplication
+import social.entourage.android.R
+import social.entourage.android.api.request.UserResponse
+import social.entourage.android.databinding.NewFragmentProfileBinding
+>>>>>>> Stashed changes:app/src/main/java/social/entourage/android/new_v8/profile/ProfileFragment.kt
 
 
 class ProfileFragment : Fragment() {
@@ -32,10 +43,10 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initializeTab()
         initializeEditButton()
-
         Glide.with(requireContext())
             .load(R.drawable.profile).circleCrop()
             .into(binding.imageProfile)
+        getUser()
     }
 
     private fun initializeTab() {
@@ -55,6 +66,42 @@ class ProfileFragment : Fragment() {
     private fun initializeEditButton() {
         binding.editProfile.setOnClickListener {
             findNavController().navigate(R.id.action_profile_fragment_to_edit_profile_fragment)
+        }
+    }
+
+    fun getUser() {
+        val user = EntourageApplication.me(activity) ?: return
+        val userRequest = EntourageApplication.get().components.userRequest
+        userRequest.getUser(user.id).enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                if (response.isSuccessful) {
+                    response.body()?.user?.let {
+                        EntourageApplication.get().components.authenticationController.saveUser(
+                            it
+                        )
+                    }
+                }
+                updateUserView()
+            }
+
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                updateUserView()
+            }
+        })
+    }
+
+    private fun updateUserView() {
+        val user = EntourageApplication.me(activity) ?: return
+        binding.imageProfile.let { photoView ->
+            user.avatarURL?.let { avatarURL ->
+                Glide.with(this)
+                    .load(Uri.parse(avatarURL))
+                    .placeholder(R.drawable.ic_user_photo_small)
+                    .circleCrop()
+                    .into(photoView)
+            } ?: run {
+                photoView.setImageResource(R.drawable.ic_user_photo_small)
+            }
         }
     }
 }

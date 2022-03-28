@@ -58,6 +58,7 @@
                     android:gravity="center">
 
                     <TextView
+                        android:id="@+id/association_name"
                         style="@style/profile_pins"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -75,6 +76,7 @@
                         android:gravity="center">
 
                         <ImageView
+                            android:id="@+id/association_avatar"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/circle"
@@ -168,8 +170,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
+<<<<<<< Updated upstream:app_v2/src/main/res/layout/fragment_my_profile.xml
                 app:content="@{@string/test}"
                 app:icon="@{@drawable/edit_profile}"
+=======
+                app:icon="@{@drawable/new_edit_profile}"
+>>>>>>> Stashed changes:app/src/main/res/layout/new_fragment_my_profile.xml
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/my_information"
                 app:title="@{@string/birthday}" />
@@ -179,8 +185,12 @@
                 layout="@layout/profile_information_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+<<<<<<< Updated upstream:app_v2/src/main/res/layout/fragment_my_profile.xml
                 app:content="@{@string/test}"
                 app:icon="@{@drawable/phone}"
+=======
+                app:icon="@{@drawable/new_phone}"
+>>>>>>> Stashed changes:app/src/main/res/layout/new_fragment_my_profile.xml
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/birthday"
                 app:title="@{@string/phone}" />
@@ -190,8 +200,12 @@
                 layout="@layout/profile_information_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+<<<<<<< Updated upstream:app_v2/src/main/res/layout/fragment_my_profile.xml
                 app:content="@{@string/test}"
                 app:icon="@{@drawable/email}"
+=======
+                app:icon="@{@drawable/new_email}"
+>>>>>>> Stashed changes:app/src/main/res/layout/new_fragment_my_profile.xml
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/phone"
                 app:title="@{@string/email}" />
@@ -201,8 +215,12 @@
                 layout="@layout/profile_information_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+<<<<<<< Updated upstream:app_v2/src/main/res/layout/fragment_my_profile.xml
                 app:content="@{@string/test}"
                 app:icon="@{@drawable/city}"
+=======
+                app:icon="@{@drawable/new_city}"
+>>>>>>> Stashed changes:app/src/main/res/layout/new_fragment_my_profile.xml
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/email"
                 app:title="@{@string/city}" />
