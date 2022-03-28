@@ -1,8 +1,8 @@
-package entourage.social.android.profile
+package social.entourage.android.new_v8.profile
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import entourage.social.android.R
+import social.entourage.android.R
 
 class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

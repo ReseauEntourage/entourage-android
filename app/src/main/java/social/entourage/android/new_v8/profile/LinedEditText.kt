@@ -1,4 +1,4 @@
-package entourage.social.android.profile
+package social.entourage.android.new_v8.profile
 
 import android.content.Context
 import android.graphics.Canvas
@@ -6,7 +6,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.util.AttributeSet
 import androidx.core.content.ContextCompat
-import entourage.social.android.R
+import social.entourage.android.R
 
 
 class LinedEditText(context: Context, attrs: AttributeSet?) :

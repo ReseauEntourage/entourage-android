@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="25dp"
             android:paddingVertical="20dp"
-            tools:context=".profile.MyProfileFragment">
+            tools:context="social.entourage.android.new_v8.profile.MyProfileFragment">
 
             <TextView
                 android:id="@+id/name"

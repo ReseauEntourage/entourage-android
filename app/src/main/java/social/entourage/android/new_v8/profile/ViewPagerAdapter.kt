@@ -1,11 +1,11 @@
-package entourage.social.android.profile
+package social.entourage.android.new_v8.profile
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import entourage.social.android.profile.myProfile.MyProfileFragment
-import entourage.social.android.profile.settings.SettingsFragment
+import social.entourage.android.new_v8.profile.myProfile.MyProfileFragment
+import social.entourage.android.new_v8.profile.settings.SettingsFragment
 
 private const val NB_TABS = 2
 

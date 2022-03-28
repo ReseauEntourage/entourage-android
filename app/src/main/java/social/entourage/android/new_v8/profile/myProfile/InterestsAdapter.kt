@@ -1,11 +1,11 @@
-package entourage.social.android.profile.myProfile
+package social.entourage.android.new_v8.profile.myProfile
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import entourage.social.android.R
+import social.entourage.android.R
 
 class InterestsAdapter(private val mList: List<String>) :
     RecyclerView.Adapter<InterestsAdapter.ViewHolder>() {

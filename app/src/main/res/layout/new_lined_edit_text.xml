@@ -59,7 +59,7 @@
             <view
                 android:id="@+id/content"
                 style="@style/profile_activity_label"
-                class="entourage.social.android.profile.LinedEditText"
+                class="social.entourage.android.new_v8.profile.LinedEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="-4dp"

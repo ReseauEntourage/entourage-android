@@ -1,4 +1,4 @@
-package entourage.social.android.profile
+package social.entourage.android.new_v8.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
-import entourage.social.android.R
-import entourage.social.android.databinding.NewFragmentProfileBinding
+import social.entourage.android.R
+import social.entourage.android.databinding.NewFragmentProfileBinding
 
 
 class ProfileFragment : Fragment() {

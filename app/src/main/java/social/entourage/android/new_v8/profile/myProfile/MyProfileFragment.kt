@@ -1,4 +1,4 @@
-package entourage.social.android.profile.myProfile
+package social.entourage.android.new_v8.profile.myProfile
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import entourage.social.android.databinding.NewFragmentMyProfileBinding
+import social.entourage.android.databinding.NewFragmentMyProfileBinding
 
 
 class MyProfileFragment : Fragment() {

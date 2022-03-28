@@ -1,11 +1,11 @@
-package entourage.social.android.profile.editProfile
+package social.entourage.android.new_v8.profile.editProfile
 
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import entourage.social.android.databinding.NewProfileEditInterestItemBinding
-import entourage.social.android.profile.models.Interest
+import social.entourage.android.databinding.NewProfileEditInterestItemBinding
+import social.entourage.android.new_v8.profile.models.Interest
 
 class InterestsListAdapter(
     var interestsList: List<Interest>,

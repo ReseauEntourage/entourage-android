@@ -1,35 +1,29 @@
-package entourage.social.android.profile.settings
+package social.entourage.android.new_v8.profile.editProfile
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import entourage.social.android.databinding.NewFragmentHelpAboutBinding
+import social.entourage.android.databinding.NewFragmentEditActionZoneBinding
 
-class HelpAboutFragment : Fragment() {
+class EditActionZoneFragment : Fragment() {
 
-    private var _binding: NewFragmentHelpAboutBinding? = null
-    val binding: NewFragmentHelpAboutBinding get() = _binding!!
-
+    private var _binding: NewFragmentEditActionZoneBinding? = null
+    val binding: NewFragmentEditActionZoneBinding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentHelpAboutBinding.inflate(inflater, container, false)
+        _binding = NewFragmentEditActionZoneBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initializeView()
         setBackButton()
-    }
-
-    private fun initializeView() {
-        binding.licence.divider.visibility = View.GONE
     }
 
     private fun setBackButton() {

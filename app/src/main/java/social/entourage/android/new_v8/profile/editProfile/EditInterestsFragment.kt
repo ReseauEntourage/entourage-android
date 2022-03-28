@@ -1,4 +1,4 @@
-package entourage.social.android.profile.editProfile
+package social.entourage.android.new_v8.profile.editProfile
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import entourage.social.android.R
-import entourage.social.android.databinding.NewFragmentEditInterestsBinding
-import entourage.social.android.profile.models.Interest
+import social.entourage.android.R
+import social.entourage.android.databinding.NewFragmentEditInterestsBinding
+import social.entourage.android.new_v8.profile.models.Interest
 
 class EditInterestsFragment : Fragment() {
 

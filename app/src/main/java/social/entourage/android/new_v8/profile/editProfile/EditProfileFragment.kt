@@ -1,4 +1,4 @@
-package entourage.social.android.profile.editProfile
+package social.entourage.android.new_v8.profile.editProfile
 
 import android.graphics.Rect
 import android.os.Bundle
@@ -11,8 +11,8 @@ import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import entourage.social.android.R
-import entourage.social.android.databinding.NewFragmentEditProfileBinding
+import social.entourage.android.R
+import social.entourage.android.databinding.NewFragmentEditProfileBinding
 
 
 class EditProfileFragment : Fragment() {

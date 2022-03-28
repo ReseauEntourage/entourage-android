@@ -1,4 +1,4 @@
-package entourage.social.android.profile.models
+package social.entourage.android.new_v8.profile.models
 
 class Interest(
     val icon: Int?,

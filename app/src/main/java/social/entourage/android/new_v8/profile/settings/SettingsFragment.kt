@@ -1,4 +1,4 @@
-package entourage.social.android.profile.settings
+package social.entourage.android.new_v8.profile.settings
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import entourage.social.android.R
-import entourage.social.android.databinding.NewFragmentSettingsBinding
-import entourage.social.android.utils.Utils
+import social.entourage.android.R
+import social.entourage.android.databinding.NewFragmentSettingsBinding
+import social.entourage.android.new_v8.utils.Utils
 
 class SettingsFragment : Fragment() {
 

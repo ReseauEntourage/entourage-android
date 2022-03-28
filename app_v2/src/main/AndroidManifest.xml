@@ -4,7 +4,7 @@
 
     <application>
         <activity
-            android:name=".profile.ProfileActivity"
+            android:name="social.entourage.android.new_v8.profile.ProfileActivity"
             android:exported="false" />
     </application>
 
