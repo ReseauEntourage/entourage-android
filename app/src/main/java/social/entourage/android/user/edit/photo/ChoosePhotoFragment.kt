@@ -2,20 +2,37 @@ package social.entourage.android.user.edit.photo
 
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import kotlinx.android.synthetic.main.fragment_onboarding_photo.*
-import kotlinx.android.synthetic.main.layout_view_title.*
+import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import social.entourage.android.EntourageApplication
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
+import social.entourage.android.databinding.FragmentOnboardingPhotoBinding
+import social.entourage.android.new_v8.profile.editProfile.EditProfileCallback
 import social.entourage.android.onboarding.OnboardingPhotoFragment
 
 class ChoosePhotoFragment : OnboardingPhotoFragment() {
 
     private var mListener: PhotoChooseInterface? = null
+    private var _binding: FragmentOnboardingPhotoBinding? = null
+    val binding: FragmentOnboardingPhotoBinding get() = _binding!!
+    var editProfileCallback: EditProfileCallback? = null
 
     //**********//**********//**********
     // Lifecycle
     //**********//**********//**********
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentOnboardingPhotoBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         isFromProfile = true
@@ -23,6 +40,8 @@ class ChoosePhotoFragment : OnboardingPhotoFragment() {
         if (context is PhotoChooseInterface) {
             mListener = requireContext() as PhotoChooseInterface
         }
+        setBackButton()
+        updateUserView()
     }
 
     override fun onDetach() {
@@ -34,17 +53,23 @@ class ChoosePhotoFragment : OnboardingPhotoFragment() {
     // methods
     //**********//**********//**********
 
-    override fun setupViews() {
-        super.setupViews()
-
-        title_close_button?.setOnClickListener {
-            dismiss()
+    private fun updateUserView() {
+        val user = EntourageApplication.me(activity) ?: return
+        user.avatarURL?.let { avatarURL ->
+            Glide.with(this)
+                .load(Uri.parse(avatarURL))
+                .placeholder(R.drawable.ic_user_photo_small)
+                .circleCrop()
+                .into(binding.imageProfile)
+        } ?: run {
+            binding.imageProfile.setImageResource(R.drawable.ic_user_photo_small)
         }
-        user_edit_title_layout?.visibility = View.VISIBLE
-        user_edit_title_layout?.setTitle(getString(R.string.take_photo_title))
-        ui_onboard_photo_tv_title?.visibility = View.INVISIBLE
-        ui_onboard_photo_tv_description?.text = getString(R.string.take_photo_description)
     }
+
+    private fun setBackButton() {
+        binding.header.iconBack.setOnClickListener { findNavController().popBackStack() }
+    }
+
 
     //**********//**********//**********
     // PhotoEditDelegate
@@ -53,7 +78,8 @@ class ChoosePhotoFragment : OnboardingPhotoFragment() {
     override fun onPhotoEdited(photoURI: Uri?, photoSource: Int) {
         super.onPhotoEdited(photoURI, photoSource)
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_PHOTO_SUBMIT)
-        mListener?.onPhotoChosen(photoURI,photoSource)
+        mListener?.onPhotoChosen(photoURI, photoSource)
+        editProfileCallback?.updateUserPhoto(photoURI)
         dismissAllowingStateLoss()
     }
 

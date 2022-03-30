@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import social.entourage.android.BuildConfig
 import social.entourage.android.R
 
 

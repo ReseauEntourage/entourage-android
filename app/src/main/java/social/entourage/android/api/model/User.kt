@@ -1,11 +1,15 @@
 package social.entourage.android.api.model
 
 import android.content.Context
+import android.util.Log
 import androidx.collection.ArrayMap
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import social.entourage.android.R
 import social.entourage.android.R.string
+import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.feed.FeedItemAuthor
+import social.entourage.android.new_v8.profile.models.Interest
 import timber.log.Timber
 import java.io.*
 import kotlin.collections.ArrayList
@@ -50,6 +54,47 @@ class User : Serializable {
     val interests: ArrayList<String> = ArrayList()
     var stats: Stats? = null
     var organization: Organization? = null
+
+    val myInterest: ArrayList<String>
+        get() {
+            val myInterests: ArrayList<String> = ArrayList()
+            val allInterests = MetaDataRepository.metaData.value?.interests
+
+            val values: ArrayList<InterestKeyValue> = ArrayList()
+            values.add(InterestKeyValue("activites", allInterests?.activities))
+            values.add(InterestKeyValue("animaux", allInterests?.animals))
+            values.add(InterestKeyValue("bien-etre", allInterests?.wellBeing))
+            values.add(InterestKeyValue("cuisine", allInterests?.cooking))
+            values.add(InterestKeyValue("culture", allInterests?.culture))
+            values.add(InterestKeyValue("jeux", allInterests?.games))
+            values.add(InterestKeyValue("nature", allInterests?.nature))
+            values.add(InterestKeyValue("sport", allInterests?.sport))
+
+            Timber.e(allInterests.toString())
+
+
+            return myInterests
+        }
+
+
+    val allInterest: ArrayList<Interest>
+        get() {
+            val myInterests: ArrayList<Interest> = ArrayList()
+            val allInterests = MetaDataRepository.metaData.value?.interests?.allInterests
+            Timber.e(allInterests.toString())
+            /*interests.forEach {
+                myInterests.add(
+                    Interest(
+                        2,
+                        allInterests?.get(it) ?: it,
+                        allInterests?.get(it) != null
+                    )
+                )
+            }
+
+             */
+            return myInterests
+        }
 
     @SerializedName("engaged")
     var isEngaged: Boolean = false

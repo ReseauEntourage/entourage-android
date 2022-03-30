@@ -1,6 +1,7 @@
 package social.entourage.android.new_v8.profile.editProfile
 
 import android.graphics.Rect
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,17 +12,26 @@ import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentEditProfileBinding
+import social.entourage.android.new_v8.profile.ProfileActivity
+import social.entourage.android.user.*
+import social.entourage.android.user.edit.photo.ChoosePhotoFragment
+import social.entourage.android.user.edit.photo.PhotoChooseInterface
+import java.io.File
 
 
-class EditProfileFragment : Fragment() {
+class EditProfileFragment : Fragment(), EditProfileCallback {
 
     private var _binding: NewFragmentEditProfileBinding? = null
     val binding: NewFragmentEditProfileBinding get() = _binding!!
+    private var mListener: PhotoChooseInterface? = null
     private val paddingRight = 20
     private val paddingRightLimit = 60
     private val progressLimit = 96
+
+    private lateinit var avatarUploadPresenter: AvatarUploadPresenter
 
 
     override fun onCreateView(
@@ -34,15 +44,24 @@ class EditProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        updateUserView()
         initializeSeekBar()
         onEditInterests()
         onEditImage()
         onEditActionZone()
         initializeDescriptionCounter()
-        Glide.with(requireContext())
-            .load(R.drawable.new_profile).circleCrop()
-            .into(binding.imageProfile)
         setBackButton()
+        avatarUploadPresenter = AvatarUploadPresenter(
+            (activity as AvatarUploadView),
+            PrepareAvatarUploadRepository(
+                EntourageApplication.get().components.userRequest
+            ), AvatarUploadRepository(EntourageApplication.get().components.okHttpClient),
+            (activity as ProfileActivity).profilePresenter as AvatarUpdatePresenter
+        )
+
+        if (context is PhotoChooseInterface) {
+            mListener = requireContext() as PhotoChooseInterface
+        }
     }
 
     private fun setProgressThumb(progress: Int) {
@@ -101,7 +120,9 @@ class EditProfileFragment : Fragment() {
 
     private fun onEditImage() {
         binding.editImage.setOnClickListener {
-            findNavController().navigate(R.id.action_edit_profile_fragment_to_edit_profile_image_fragment)
+            val photoFragment = ChoosePhotoFragment.newInstance()
+            photoFragment.editProfileCallback = this
+            photoFragment.show(parentFragmentManager, ChoosePhotoFragment.TAG)
         }
     }
 
@@ -114,4 +135,44 @@ class EditProfileFragment : Fragment() {
     private fun setBackButton() {
         binding.header.iconBack.setOnClickListener { findNavController().popBackStack() }
     }
+
+    private fun updateUserView() {
+        val user = EntourageApplication.me(activity) ?: return
+        binding.firstname.content.setText(user.firstName)
+        binding.lastname.content.setText(user.lastName)
+        binding.description.content.setText(user.about)
+        binding.birthday.content.setText(user.birthday)
+        binding.phone.content.setText(user.phone)
+        binding.phone.content.setText(user.phone)
+        binding.email.content.setText(user.email)
+        binding.cityAction.content.text = user.address?.displayAddress
+        binding.seekBarLayout.seekbar.progress = user.travelDistance ?: 0
+        binding.seekBarLayout.tvTrickleIndicator.text = user.travelDistance.toString()
+        user.avatarURL?.let { avatarURL ->
+            Glide.with(this)
+                .load(Uri.parse(avatarURL))
+                .placeholder(R.drawable.ic_user_photo_small)
+                .circleCrop()
+                .into(binding.imageProfile)
+        } ?: run {
+            binding.imageProfile.setImageResource(R.drawable.ic_user_photo_small)
+        }
+    }
+
+    override fun updateUserPhoto(imageUri: Uri?) {
+        imageUri?.path?.let { path ->
+            Glide.with(this)
+                .load(path)
+                .placeholder(R.drawable.ic_user_photo_small)
+                .circleCrop()
+                .into(binding.imageProfile)
+            //Upload the photo to Amazon S3
+            avatarUploadPresenter.uploadPhoto(File(path))
+        }
+
+    }
+}
+
+interface EditProfileCallback {
+    fun updateUserPhoto(imageUri: Uri?)
 }
