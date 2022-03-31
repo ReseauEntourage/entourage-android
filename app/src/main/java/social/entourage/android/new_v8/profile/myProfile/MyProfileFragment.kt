@@ -10,23 +10,20 @@ import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import kotlinx.android.synthetic.main.layout_mainprofile.*
 import kotlinx.android.synthetic.main.new_fragment_my_profile.view.*
 import social.entourage.android.EntourageApplication
-import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
-import social.entourage.android.api.model.InterestKeyValue
+import social.entourage.android.api.model.Tags
+import social.entourage.android.api.model.User
 import social.entourage.android.databinding.NewFragmentMyProfileBinding
-import timber.log.Timber
 
 
 class MyProfileFragment : Fragment() {
     private var _binding: NewFragmentMyProfileBinding? = null
     val binding: NewFragmentMyProfileBinding get() = _binding!!
+    private lateinit var user: User
 
-    private var interestsList = listOf(
-        "sport", "menuiserie", "jeux de société", "musique", "foot", "musique"
-    )
+    private var interestsList: ArrayList<String> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,23 +36,22 @@ class MyProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        user = EntourageApplication.me(activity) ?: return
+        MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         updateUserView()
         initializeView()
         initializeInterests()
-        val allInterests = MetaDataRepository.metaData.value?.interests
-        val values: ArrayList<InterestKeyValue> = ArrayList()
-        values.add(InterestKeyValue("activites", allInterests?.activities))
-        values.add(InterestKeyValue("animaux", allInterests?.animals))
-        values.add(InterestKeyValue("bien-etre", allInterests?.wellBeing))
-        values.add(InterestKeyValue("cuisine", allInterests?.cooking))
-        values.add(InterestKeyValue("culture", allInterests?.culture))
-        values.add(InterestKeyValue("jeux", allInterests?.games))
-        values.add(InterestKeyValue("nature", allInterests?.nature))
-        values.add(InterestKeyValue("sport", allInterests?.sport))
-
-        Timber.e(values.toString())
-
         binding.seekBarLayout.seekbar.setOnTouchListener { _, _ -> true }
+    }
+
+
+    private fun handleMetaData(tags: Tags?) {
+        interestsList.clear()
+        val userInterests = user.interests
+        tags?.interests?.forEach { interest ->
+            if (userInterests.contains(interest.id)) interest.name?.let { it -> interestsList.add(it) }
+        }
+        binding.interests.adapter?.notifyDataSetChanged()
     }
 
 
@@ -74,7 +70,6 @@ class MyProfileFragment : Fragment() {
     }
 
     private fun updateUserView() {
-        val user = EntourageApplication.me(activity) ?: return
         binding.name.text = user.displayName
         binding.description.text = user.about
         binding.phone.content.text = user.phone
@@ -84,7 +79,7 @@ class MyProfileFragment : Fragment() {
         binding.seekBarLayout.seekbar.progress = user.travelDistance ?: 0
         binding.seekBarLayout.tvTrickleIndicator.text = user.travelDistance.toString()
         binding.description.text = user.about
-        interestsList = user.myInterest
+        //interestsList = user.myInterest
 
         user.stats?.let {
             binding.contribution.content.text = it.contribCreationCount.toString()

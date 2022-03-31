@@ -49,5 +49,5 @@
 
     <fragment
         android:id="@+id/edit_action_zone_fragment"
-        android:name="social.entourage.android.user.edit.place.UserActionPlaceFragment" />
+        android:name="social.entourage.android.user.edit.place.UserEditActionZoneFragment" />
 </navigation>

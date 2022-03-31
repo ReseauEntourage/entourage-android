@@ -1,10 +1,13 @@
 package social.entourage.android.new_v8.profile
 
+import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -15,9 +18,12 @@ import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
+import social.entourage.android.api.model.Tags
 import social.entourage.android.api.request.MetaDataResponse
 import social.entourage.android.api.request.UserResponse
 import social.entourage.android.databinding.NewFragmentProfileBinding
+import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
+import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
 
@@ -30,7 +36,6 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = NewFragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -43,7 +48,6 @@ class ProfileFragment : Fragment() {
             .load(R.drawable.new_profile).circleCrop()
             .into(binding.imageProfile)
         getUser()
-        MetaDataRepository.metaData.toString()
     }
 
     private fun initializeTab() {

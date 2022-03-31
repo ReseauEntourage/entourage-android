@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import androidx.collection.ArrayMap
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -19,10 +20,12 @@ import social.entourage.android.new_v8.profile.ProfileActivity
 import social.entourage.android.user.*
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import social.entourage.android.user.edit.photo.PhotoChooseInterface
+import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import java.io.File
 
 
-class EditProfileFragment : Fragment(), EditProfileCallback {
+class EditProfileFragment : Fragment(), EditProfileCallback,
+    UserEditActionZoneFragment.FragmentListener {
 
     private var _binding: NewFragmentEditProfileBinding? = null
     val binding: NewFragmentEditProfileBinding get() = _binding!!
@@ -32,6 +35,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback {
     private val progressLimit = 96
 
     private lateinit var avatarUploadPresenter: AvatarUploadPresenter
+    private val editProfilePresenter: EditProfilePresenter by lazy { EditProfilePresenter() }
 
 
     override fun onCreateView(
@@ -42,15 +46,22 @@ class EditProfileFragment : Fragment(), EditProfileCallback {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        updateUserView()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        updateUserView()
+        //updateUserView()
         initializeSeekBar()
         onEditInterests()
         onEditImage()
         onEditActionZone()
         initializeDescriptionCounter()
         setBackButton()
+        editProfilePresenter.isUserUpdated.observe(requireActivity(), ::handleUpdateResponse)
+
         avatarUploadPresenter = AvatarUploadPresenter(
             (activity as AvatarUploadView),
             PrepareAvatarUploadRepository(
@@ -62,6 +73,10 @@ class EditProfileFragment : Fragment(), EditProfileCallback {
         if (context is PhotoChooseInterface) {
             mListener = requireContext() as PhotoChooseInterface
         }
+    }
+
+    private fun handleUpdateResponse(success: Boolean) {
+        if (success) findNavController().popBackStack()
     }
 
     private fun setProgressThumb(progress: Int) {
@@ -148,6 +163,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback {
         binding.cityAction.content.text = user.address?.displayAddress
         binding.seekBarLayout.seekbar.progress = user.travelDistance ?: 0
         binding.seekBarLayout.tvTrickleIndicator.text = user.travelDistance.toString()
+        binding.validate.button.setOnClickListener { onSaveProfile() }
         user.avatarURL?.let { avatarURL ->
             Glide.with(this)
                 .load(Uri.parse(avatarURL))
@@ -169,7 +185,36 @@ class EditProfileFragment : Fragment(), EditProfileCallback {
             //Upload the photo to Amazon S3
             avatarUploadPresenter.uploadPhoto(File(path))
         }
+    }
 
+    private fun onSaveProfile() {
+        val editedUser: ArrayMap<String, Any> = ArrayMap()
+        val firstname = binding.firstname.content.text.trim { it <= ' ' }.toString()
+        val lastname = binding.lastname.content.text.trim { it <= ' ' }.toString()
+        val about = binding.description.content.text?.trim { it <= ' ' }.toString()
+        val email = binding.email.content.text.trim { it <= ' ' }.toString()
+        val birthday = binding.birthday.content.text.trim { it <= ' ' }.toString()
+        val travelDistance = binding.seekBarLayout.seekbar.progress
+        editedUser["first_name"] = firstname
+        editedUser["last_name"] = lastname
+        editedUser["about"] = about
+        editedUser["email"] = email
+        editedUser["birthday"] = birthday
+        editedUser["travel_distance"] = travelDistance
+        editProfilePresenter.updateUser(editedUser)
+    }
+
+
+    override fun onUserEditActionZoneFragmentDismiss() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onUserEditActionZoneFragmentAddressSaved() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onUserEditActionZoneFragmentIgnore() {
+        TODO("Not yet implemented")
     }
 }
 

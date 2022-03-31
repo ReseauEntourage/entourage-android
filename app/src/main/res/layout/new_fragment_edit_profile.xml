@@ -88,7 +88,7 @@
 
                     <include
                         android:id="@+id/phone"
-                        layout="@layout/new_profile_edit_item"
+                        layout="@layout/new_profile_edit_item_clickable"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:icon="@{@drawable/new_phone}"
@@ -142,13 +142,13 @@
         </LinearLayout>
 
         <include
-            android:id="@+id/import_picture"
+            android:id="@+id/validate"
             layout="@layout/new_rounded_button_orange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="65dp"
             android:layout_marginBottom="30dp"
-            app:content="@{@string/import_picture}"
+            app:content="@{@string/apply_modifications}"
             app:drawable="@{@drawable/new_rounded_button_orange}"
             app:layout_constraintBottom_toBottomOf="parent" />
 
