@@ -7,11 +7,11 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.UserResponse
+import timber.log.Timber
 
 class EditProfilePresenter {
 
     var isUserUpdated = MutableLiveData<Boolean>()
-
 
     fun updateUser(userEdited: ArrayMap<String, Any>) {
         EntourageApplication.get().components.userRequest.updateUser(userEdited)

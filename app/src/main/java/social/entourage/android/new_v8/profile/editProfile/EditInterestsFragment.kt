@@ -43,6 +43,12 @@ class EditInterestsFragment : Fragment() {
         initializeInterests()
         setBackButton()
         setValidateButton()
+        editProfilePresenter.isUserUpdated.observe(requireActivity(), ::handleUpdateResponse)
+
+    }
+
+    private fun handleUpdateResponse(success: Boolean) {
+        if (success) findNavController().popBackStack()
     }
 
 
@@ -81,13 +87,18 @@ class EditInterestsFragment : Fragment() {
                     userInterests.contains(interest.id)
                 )
             )
+            if (userInterests.contains(interest.id)) interest.id?.let {
+                selectedInterestIdList.add(it)
+            }
         }
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 
     private fun onSaveInterests() {
         val editedUser: ArrayMap<String, Any> = ArrayMap()
+        val user: ArrayMap<String, Any> = ArrayMap()
         editedUser["interests"] = selectedInterestIdList
-        editProfilePresenter.updateUser(editedUser)
+        user["user"] = editedUser
+        editProfilePresenter.updateUser(user)
     }
 }
