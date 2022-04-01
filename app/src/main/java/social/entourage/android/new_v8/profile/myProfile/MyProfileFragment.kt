@@ -89,9 +89,9 @@ class MyProfileFragment : Fragment() {
             if (it.contains("ambassador")) binding.ambassador.visibility = View.VISIBLE
             else binding.ambassador.visibility = View.GONE
         }
-        user.organization?.let {
+        user.partner?.let {
             binding.association.association_name.text = it.name
-            it.largeLogoUrl.let { logo ->
+            it.smallLogoUrl.let { logo ->
                 Glide.with(this)
                     .load(Uri.parse(logo))
                     .circleCrop()
