@@ -92,6 +92,7 @@
 
     <!-- New -->
     <string name="my_activity">Mon activité</string>
+    <string name="his_activity">Son activité</string>
     <string name="test">5</string>
     <string name="events">Évènements</string>
     <string name="contributions">Contributions</string>
@@ -118,9 +119,9 @@
     <string name="share_app">Bonjour ! Grâce au réseau Entourage, je participe à des actions solidaires entre voisins avec et sans domicile. Rejoins-moi : https://bit.ly/applientourage</string>
     <string name="edit_profile">Modifier mes informations</string>
     <string name="description">Description  (200 caractères max)</string>
-    <string name="interests">Mes centres d’intêrets</string>
-
-
+    <string name="my_interests">Mes centres d’intêrets</string>
+    <string name="interests">Centres d’intêrets</string>
+    <string name="write_message">Ecrire un message</string>
     <string name="ethics">Charte éthique</string>
     <string name="ambassador_program">Postuler au programme ambassadeur</string>
     <string name="donation">Faire un don</string>
@@ -157,6 +158,11 @@
     <string name="description_counter">%s /200</string>
     <string name="apply_modifications">Appliquer les modifications</string>
     <string name="edit_interests">Modifier mes centres d’interêts</string>
+
+    <string name="web_site">Site web</string>
+    <string name="address">Adresse postale</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

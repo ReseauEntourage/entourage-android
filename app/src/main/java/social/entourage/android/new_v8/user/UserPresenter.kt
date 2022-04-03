@@ -1,0 +1,37 @@
+package social.entourage.android.new_v8.user
+
+import androidx.lifecycle.MutableLiveData
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import social.entourage.android.EntourageApplication
+import social.entourage.android.api.model.User
+import social.entourage.android.api.request.UserResponse
+
+class UserPresenter {
+
+    var isGetUserSuccess = MutableLiveData<Boolean>()
+    var user = MutableLiveData<User>()
+
+
+    fun getUser(userId: Int) {
+        EntourageApplication.get().components.userRequest.getUser(userId)
+            .enqueue(object : Callback<UserResponse> {
+                override fun onResponse(
+                    call: Call<UserResponse>,
+                    response: Response<UserResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        response.body()?.user?.let { user.value = it }
+                        isGetUserSuccess.value = true
+                    } else {
+                        isGetUserSuccess.value = false
+                    }
+                }
+
+                override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                    isGetUserSuccess.value = false
+                }
+            })
+    }
+}
