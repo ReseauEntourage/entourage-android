@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentMyProfileBinding
 
 
@@ -32,6 +34,7 @@ class MyProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initializeView()
         initializeInterests()
+        initializeAssociationButton()
         binding.seekBarLayout.seekbar.setOnTouchListener { _, _ -> true }
     }
 
@@ -49,5 +52,12 @@ class MyProfileFragment : Fragment() {
     private fun initializeView() {
         binding.city.divider.visibility = View.INVISIBLE
     }
+
+    private fun initializeAssociationButton() {
+        binding.association.setOnClickListener {
+            findNavController().navigate(R.id.action_profile_fragment_to_association_fragment)
+        }
+    }
+
 
 }

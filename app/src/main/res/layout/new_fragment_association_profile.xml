@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -11,14 +12,15 @@
         tools:context="social.entourage.android.new_v8.profile.ProfileFragment">
 
         <ImageView
-            android:id="@+id/image_profile"
+            android:id="@+id/image_association"
             android:layout_width="110dp"
             android:layout_height="110dp"
+            android:background="@drawable/new_shadow"
             android:elevation="1dp"
-            app:layout_constraintBottom_toTopOf="@id/tab"
+            app:layout_constraintBottom_toTopOf="@id/scrollView"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tab" />
+            app:layout_constraintTop_toTopOf="@id/scrollView" />
 
 
         <ImageView
@@ -33,101 +35,110 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/new_back_white" />
 
-        <LinearLayout
-            android:id="@+id/tab"
+        <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="7dp"
             android:layout_marginTop="90dp"
             android:background="@drawable/new_bg_profile"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingHorizontal="30dp"
-            android:paddingTop="25dp">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-
-            <TextView
-                android:id="@+id/name"
-                style="@style/profile_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                tools:text="John Doe" />
-
-            <TextView
-                android:id="@+id/description"
-                style="@style/profile_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                tools:text="Bonjour je m'appelle Salim" />
-
-            <include
-                android:id="@+id/subscribe"
-                layout="@layout/new_rounded_button_orange"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                app:content="@{@string/import_picture}"
-                app:drawable="@{@drawable/new_rounded_button_orange}"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/scrollView" />
-
-            <TextView
-                android:id="@+id/information"
-                style="@style/h2"
+            <LinearLayout
+                android:id="@+id/tab"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="18dp"
-                android:text="@string/my_activity" />
-
-            <include
-                android:id="@+id/phone"
-                layout="@layout/new_association_information_item"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:content="@{@string/test}"
-                app:icon="@{@drawable/new_phone}"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/birthday"
-                app:title="@{@string/phone}" />
-
-            <include
-                android:id="@+id/web"
-                layout="@layout/new_association_information_item"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:content="@{@string/test}"
-                app:icon="@{@drawable/new_phone}"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/birthday"
-                app:title="@{@string/web_site}" />
-
-            <include
-                android:id="@+id/address"
-                layout="@layout/new_association_information_item"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:content="@{@string/test}"
-                app:icon="@{@drawable/new_phone}"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/birthday"
-                app:title="@{@string/phone}" />
+                android:layout_marginHorizontal="7dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingHorizontal="30dp"
+                android:paddingTop="25dp">
 
 
-            <include
-                android:id="@+id/email"
-                layout="@layout/new_association_information_item"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:content="@{@string/test}"
-                app:icon="@{@drawable/new_email}"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/phone"
-                app:title="@{@string/email}" />
+                <TextView
+                    android:id="@+id/name"
+                    style="@style/profile_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    tools:text="John Doe" />
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/description"
+                    style="@style/profile_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    tools:text="Bonjour je m'appelle Salim" />
+
+                <include
+                    android:id="@+id/subscribe"
+                    layout="@layout/new_rounded_button_orange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    app:content="@{@string/import_picture}"
+                    app:drawable="@{@drawable/new_rounded_button_orange}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/scrollView" />
+
+                <TextView
+                    android:id="@+id/information"
+                    style="@style/h2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginBottom="18dp"
+                    android:text="@string/my_activity" />
+
+                <include
+                    android:id="@+id/phone"
+                    layout="@layout/new_association_information_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:content="@{@string/test}"
+                    app:icon="@{@drawable/new_phone}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/birthday"
+                    app:title="@{@string/phone}" />
+
+                <include
+                    android:id="@+id/web"
+                    layout="@layout/new_association_information_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:content="@{@string/test}"
+                    app:icon="@{@drawable/new_phone}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/birthday"
+                    app:title="@{@string/web_site}" />
+
+                <include
+                    android:id="@+id/address"
+                    layout="@layout/new_association_information_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:content="@{@string/test}"
+                    app:icon="@{@drawable/new_phone}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/birthday"
+                    app:title="@{@string/phone}" />
+
+
+                <include
+                    android:id="@+id/email"
+                    layout="@layout/new_association_information_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:content="@{@string/test}"
+                    app:icon="@{@drawable/new_email}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/phone"
+                    app:title="@{@string/email}" />
+
+            </LinearLayout>
+        </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
