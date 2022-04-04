@@ -1,11 +1,15 @@
 package social.entourage.android.api.model
 
 import android.content.Context
+import android.util.Log
 import androidx.collection.ArrayMap
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import social.entourage.android.R
 import social.entourage.android.R.string
+import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.feed.FeedItemAuthor
+import social.entourage.android.new_v8.profile.models.Interest
 import timber.log.Timber
 import java.io.*
 import kotlin.collections.ArrayList
@@ -22,6 +26,9 @@ class User : Serializable {
 
     @SerializedName("last_name")
     var lastName: String? = null
+
+    @SerializedName("birthday")
+    var birthday: String? = null
 
     @SerializedName("display_name")
     val displayName: String?
@@ -58,7 +65,7 @@ class User : Serializable {
     private var permissions: UserPermissions? = null
 
     @SerializedName("travel_distance")
-    private var travelDistance: Int? = null
+    var travelDistance: Int? = null
 
     // ----------------------------------
     // ATTRIBUTES (Not Serialized)

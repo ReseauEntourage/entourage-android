@@ -157,6 +157,7 @@
     <string name="description_counter">%s /200</string>
     <string name="apply_modifications">Appliquer les modifications</string>
     <string name="edit_interests">Modifier mes centres d’interêts</string>
+    <string name="ambassador">Ambassadeur</string>
 
 
 </resources>

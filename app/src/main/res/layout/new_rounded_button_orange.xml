@@ -14,7 +14,7 @@
     </data>
 
     <Button
-        android:id="@+id/no"
+        android:id="@+id/button"
         style="@style/h2_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

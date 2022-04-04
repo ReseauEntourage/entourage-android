@@ -13,10 +13,6 @@
             name="title"
             type="java.lang.String" />
 
-        <variable
-            name="content"
-            type="java.lang.String" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -64,7 +60,6 @@
                 android:layout_marginTop="10dp"
                 android:backgroundTint="@color/light_orange_opacity_50"
                 android:inputType="none"
-                android:text="@{content}"
                 tools:text="content" />
 
             <View

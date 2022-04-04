@@ -7,9 +7,16 @@ import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.databinding.NewProfileEditInterestItemBinding
 import social.entourage.android.new_v8.profile.models.Interest
 
+interface OnItemCheckListener {
+    fun onItemCheck(item: Interest)
+    fun onItemUncheck(item: Interest)
+}
+
 class InterestsListAdapter(
     var interestsList: List<Interest>,
+    var onItemClick: OnItemCheckListener
 ) : RecyclerView.Adapter<InterestsListAdapter.ViewHolder>() {
+
 
     inner class ViewHolder(val binding: NewProfileEditInterestItemBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -27,13 +34,18 @@ class InterestsListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
             with(interestsList[position]) {
-                if (this.isSelected == true) binding.title.setTypeface(
+                if (this.isSelected) binding.title.setTypeface(
                     binding.title.typeface,
                     Typeface.BOLD
                 )
                 binding.title.text = this.title
                 binding.checkBox.isChecked = this.isSelected == true
-                this.icon?.let { binding.icon.setImageResource(it) }
+                this.icon.let { binding.icon.setImageResource(it) }
+                binding.checkBox.setOnClickListener {
+                    if (this.isSelected) onItemClick.onItemUncheck(this)
+                    else onItemClick.onItemCheck(this)
+                    this.isSelected = !(this.isSelected)
+                }
             }
         }
     }

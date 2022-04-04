@@ -1,6 +1,7 @@
 package social.entourage.android.new_v8.profile.editProfile
 
 import android.graphics.Rect
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,20 +9,34 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import androidx.collection.ArrayMap
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentEditProfileBinding
+import social.entourage.android.new_v8.profile.ProfileActivity
+import social.entourage.android.new_v8.utils.trimEnd
+import social.entourage.android.user.*
+import social.entourage.android.user.edit.photo.ChoosePhotoFragment
+import social.entourage.android.user.edit.photo.PhotoChooseInterface
+import social.entourage.android.user.edit.place.UserEditActionZoneFragment
+import java.io.File
 
 
-class EditProfileFragment : Fragment() {
+class EditProfileFragment : Fragment(), EditProfileCallback,
+    UserEditActionZoneFragment.FragmentListener {
 
     private var _binding: NewFragmentEditProfileBinding? = null
     val binding: NewFragmentEditProfileBinding get() = _binding!!
+    private var mListener: PhotoChooseInterface? = null
     private val paddingRight = 20
     private val paddingRightLimit = 60
     private val progressLimit = 96
+
+    private lateinit var avatarUploadPresenter: AvatarUploadPresenter
+    private val editProfilePresenter: EditProfilePresenter by lazy { EditProfilePresenter() }
 
 
     override fun onCreateView(
@@ -32,6 +47,11 @@ class EditProfileFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        updateUserView()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeSeekBar()
@@ -39,10 +59,21 @@ class EditProfileFragment : Fragment() {
         onEditImage()
         onEditActionZone()
         initializeDescriptionCounter()
-        Glide.with(requireContext())
-            .load(R.drawable.new_profile).circleCrop()
-            .into(binding.imageProfile)
         setBackButton()
+        editProfilePresenter.isUserUpdated.observe(requireActivity(), ::handleUpdateResponse)
+
+        avatarUploadPresenter = AvatarUploadPresenter(
+            (activity as AvatarUploadView),
+            PrepareAvatarUploadRepository(
+                EntourageApplication.get().components.userRequest
+            ), AvatarUploadRepository(EntourageApplication.get().components.okHttpClient),
+            (activity as ProfileActivity).profilePresenter as AvatarUpdatePresenter
+        )
+        (context as? PhotoChooseInterface)?.let { mListener = it }
+    }
+
+    private fun handleUpdateResponse(success: Boolean) {
+        if (success) findNavController().popBackStack()
     }
 
     private fun setProgressThumb(progress: Int) {
@@ -101,7 +132,9 @@ class EditProfileFragment : Fragment() {
 
     private fun onEditImage() {
         binding.editImage.setOnClickListener {
-            findNavController().navigate(R.id.action_edit_profile_fragment_to_edit_profile_image_fragment)
+            val photoFragment = ChoosePhotoFragment.newInstance()
+            photoFragment.editProfileCallback = this
+            photoFragment.show(parentFragmentManager, ChoosePhotoFragment.TAG)
         }
     }
 
@@ -114,4 +147,77 @@ class EditProfileFragment : Fragment() {
     private fun setBackButton() {
         binding.header.iconBack.setOnClickListener { findNavController().popBackStack() }
     }
+
+    private fun updateUserView() {
+        val user = EntourageApplication.me(activity) ?: return
+        with(binding) {
+            firstname.content.setText(user.firstName)
+            lastname.content.setText(user.lastName)
+            description.content.setText(user.about)
+            birthday.content.setText(user.birthday)
+            phone.content.setText(user.phone)
+            phone.content.setText(user.phone)
+            email.content.setText(user.email)
+            cityAction.content.text = user.address?.displayAddress
+            seekBarLayout.seekbar.progress = user.travelDistance ?: 0
+            seekBarLayout.tvTrickleIndicator.text = user.travelDistance.toString()
+            validate.button.setOnClickListener { onSaveProfile() }
+            user.avatarURL?.let { avatarURL ->
+                Glide.with(requireActivity())
+                    .load(Uri.parse(avatarURL))
+                    .placeholder(R.drawable.ic_user_photo_small)
+                    .circleCrop()
+                    .into(imageProfile)
+            } ?: run {
+                imageProfile.setImageResource(R.drawable.ic_user_photo_small)
+            }
+        }
+    }
+
+    override fun updateUserPhoto(imageUri: Uri?) {
+        imageUri?.path?.let { path ->
+            Glide.with(this)
+                .load(path)
+                .placeholder(R.drawable.ic_user_photo_small)
+                .circleCrop()
+                .into(binding.imageProfile)
+            //Upload the photo to Amazon S3
+            avatarUploadPresenter.uploadPhoto(File(path))
+        }
+    }
+
+    private fun onSaveProfile() {
+        val editedUser: ArrayMap<String, Any> = ArrayMap()
+        val firstname = binding.firstname.content.text.trimEnd()
+        val lastname = binding.lastname.content.text.trimEnd()
+        val about = binding.description.content.text?.trimEnd()
+        val email = binding.email.content.text.trimEnd()
+        val birthday = binding.birthday.content.text.trimEnd()
+        val travelDistance = binding.seekBarLayout.seekbar.progress
+        editedUser["first_name"] = firstname
+        editedUser["last_name"] = lastname
+        editedUser["about"] = about
+        editedUser["email"] = email
+        editedUser["birthday"] = birthday
+        editedUser["travel_distance"] = travelDistance
+        editProfilePresenter.updateUser(editedUser)
+    }
+
+
+    override fun onUserEditActionZoneFragmentDismiss() {
+    }
+
+    override fun onUserEditActionZoneFragmentAddressSaved() {
+        editProfilePresenter.storeActionZone(false)
+        findNavController().popBackStack()
+    }
+
+    override fun onUserEditActionZoneFragmentIgnore() {
+        editProfilePresenter.storeActionZone(true)
+        findNavController().popBackStack()
+    }
+}
+
+interface EditProfileCallback {
+    fun updateUserPhoto(imageUri: Uri?)
 }
