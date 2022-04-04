@@ -6,17 +6,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.fragment_partner_v2.*
+import social.entourage.android.R
+import social.entourage.android.api.model.Partner
 import social.entourage.android.databinding.NewFragmentAssociationProfileBinding
+import social.entourage.android.new_v8.utils.Utils
 
 
 class AssociationProfile : Fragment() {
 
     private var _binding: NewFragmentAssociationProfileBinding? = null
     val binding: NewFragmentAssociationProfileBinding get() = _binding!!
-    private val settingsPresenter: AssociationPresenter by lazy { AssociationPresenter() }
-
+    private val associationPresenter: AssociationPresenter by lazy { AssociationPresenter() }
+    var partner: Partner? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,17 +35,25 @@ class AssociationProfile : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBackButton()
-        settingsPresenter.getPartnerInfos(1)
-        settingsPresenter.getPartnerSuccess.observe(requireActivity(), ::handleResponse)
+        associationPresenter.getPartnerInfos(1)
+        associationPresenter.getPartnerSuccess.observe(requireActivity(), ::handleResponse)
+        associationPresenter.followSuccess.observe(requireActivity(), ::handleFollowResponse)
+        handleFollowButton()
+    }
+
+    private fun handleFollowResponse(success: Boolean) {
+        if (success) updateButtonFollow()
     }
 
     private fun handleResponse(success: Boolean) {
-        if (success) updateView()
+        if (success) {
+            partner = associationPresenter.partner.value
+            updateView()
+        }
         //TODO display error
     }
 
     private fun updateView() {
-        val partner = settingsPresenter.partner.value
         with(binding) {
             name.text = partner?.name
             description.text = partner?.description
@@ -55,10 +69,75 @@ class AssociationProfile : Fragment() {
                     .into(imageAssociation)
             }
         }
+        updateButtonFollow()
+    }
+
+
+    private fun updateButtonFollow() {
+        partner?.let {
+            val label =
+                if (it.isFollowing) getString(R.string.following) else getString(R.string.follow)
+
+            val textColor =
+                if (it.isFollowing) ContextCompat.getColor(
+                    requireContext(),
+                    R.color.orange
+                ) else ContextCompat.getColor(
+                    requireContext(),
+                    R.color.white
+                )
+
+            val background = if (it.isFollowing) ResourcesCompat.getDrawable(
+                resources,
+                R.drawable.new_bg_unsubscribe_button,
+                null
+            ) else ResourcesCompat.getDrawable(
+                resources,
+                R.drawable.new_bg_subscribe_button,
+                null
+            )
+            val rightDrawable = if (it.isFollowing) ResourcesCompat.getDrawable(
+                resources,
+                R.drawable.new_check,
+                null
+            )
+            else ResourcesCompat.getDrawable(
+                resources,
+                R.drawable.new_plus,
+                null
+            )
+            binding.subscribe.button.text = label
+            binding.subscribe.button.setTextColor(textColor)
+            binding.subscribe.button.background = background
+            binding.subscribe.button.setCompoundDrawablesWithIntrinsicBounds(
+                null,
+                null,
+                rightDrawable,
+                null
+            )
+        }
     }
 
     private fun setBackButton() {
         binding.iconBack.setOnClickListener { findNavController().popBackStack() }
     }
 
+    private fun handleFollowButton() {
+        binding.subscribe.button.setOnClickListener {
+            partner?.let {
+                if (it.isFollowing) Utils.showAlertDialogButtonClicked(
+                    requireView(),
+                    getString(R.string.unsubscribe_title),
+                    getString(R.string.unsubscribe_content),
+                    getString(R.string.yes)
+                ) {
+                    associationPresenter.updatePartnerFollow(
+                        !it.isFollowing,
+                        it.id
+                    )
+                } else associationPresenter.updatePartnerFollow(!it.isFollowing, it.id)
+                it.isFollowing != it.isFollowing
+            }
+        }
+    }
 }

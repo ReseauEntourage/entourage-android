@@ -27,8 +27,12 @@ class Utils {
             customDialog.findViewById<TextView>(R.id.title).text = title
             customDialog.findViewById<TextView>(R.id.content).text = content
             customDialog.findViewById<TextView>(R.id.yes).text = action
-            customDialog.findViewById<Button>(R.id.yes).setOnClickListener { onYes }
-            customDialog.findViewById<Button>(R.id.no).setOnClickListener { alertDialog.dismiss(); }
+            customDialog.findViewById<Button>(R.id.yes).setOnClickListener {
+                onYes()
+                alertDialog.dismiss()
+            }
+            customDialog.findViewById<Button>(R.id.button)
+                .setOnClickListener { alertDialog.dismiss(); }
             alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             alertDialog.show()
         }
