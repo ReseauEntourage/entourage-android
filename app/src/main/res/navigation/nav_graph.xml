@@ -56,6 +56,5 @@
 
     <fragment
         android:id="@+id/user_fragment"
-        android:name="social.entourage.android.new_v8.user.UserProfileFragment" />
-
+        android:name="social.entourage.android.new_v8.user.UserProfileFragment"></fragment>
 </navigation>

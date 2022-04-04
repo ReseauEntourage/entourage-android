@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -27,12 +28,6 @@ class UserProfileFragment : Fragment() {
     private var interestsList: ArrayList<String> = ArrayList()
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        userPresenter.getUser(2889)
-        userPresenter.isGetUserSuccess.observe(requireActivity(), ::handleResponse)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,12 +36,33 @@ class UserProfileFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        userPresenter.getUser(2889)
+        userPresenter.isGetUserSuccess.observe(requireActivity(), ::handleResponse)
+        reportUser()
+
+    }
+
 
     private fun handleResponse(success: Boolean) {
         if (success) updateView()
         else Toast.makeText(requireActivity(), R.string.user_retrieval_error, Toast.LENGTH_SHORT)
             .show()
 
+    }
+
+    private fun reportUser() {
+        binding.report.setOnClickListener {
+            ReportUserModalFragment().apply {
+                activity?.supportFragmentManager?.let { it1 ->
+                    show(
+                        it1,
+                        ReportUserModalFragment.TAG
+                    )
+                }
+            }
+        }
     }
 
     private fun initializeInterests() {
