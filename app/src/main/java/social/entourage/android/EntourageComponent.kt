@@ -27,6 +27,7 @@ interface EntourageComponent {
     val authenticationController: AuthenticationController
     val encounterTapeTaskQueue: EncounterTapeTaskQueue
     val applicationInfoRequest: ApplicationInfoRequest
+
     //val encounterRequest: EncounterRequest?
     val loginRequest: LoginRequest
     val poiRequest: PoiRequest
@@ -39,7 +40,8 @@ interface EntourageComponent {
     val sharingRequest: SharingRequest
     val okHttpClient: OkHttpClient
     val complexPreferences: ComplexPreferences?
-    val tourAreaRequest:TourAreaRequest
-    val photoGalleryRequest:PhotoGalleryRequest
+    val tourAreaRequest: TourAreaRequest
+    val photoGalleryRequest: PhotoGalleryRequest
     val conversationsRequest: ConversationsRequest
+    val metaDataRequest: MetaDataRequest
 }

@@ -10,10 +10,6 @@
             type="android.graphics.drawable.Drawable" />
 
         <variable
-            name="statistic"
-            type="java.lang.String" />
-
-        <variable
             name="label"
             type="java.lang.String" />
     </data>
@@ -47,7 +43,6 @@
             style="@style/profile_activity_statistics"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{statistic}"
             app:layout_constraintBottom_toTopOf="@id/title"
             app:layout_constraintLeft_toRightOf="@id/icon"
             app:layout_constraintRight_toRightOf="parent"
