@@ -77,33 +77,18 @@ class AssociationProfile : Fragment() {
         partner?.let {
             val label =
                 if (it.isFollowing) getString(R.string.following) else getString(R.string.follow)
-
-            val textColor =
-                if (it.isFollowing) ContextCompat.getColor(
-                    requireContext(),
-                    R.color.orange
-                ) else ContextCompat.getColor(
-                    requireContext(),
-                    R.color.white
-                )
-
-            val background = if (it.isFollowing) ResourcesCompat.getDrawable(
+            val textColor = ContextCompat.getColor(
+                requireContext(),
+                if (it.isFollowing) R.color.orange else R.color.white
+            )
+            val background = ResourcesCompat.getDrawable(
                 resources,
-                R.drawable.new_bg_unsubscribe_button,
-                null
-            ) else ResourcesCompat.getDrawable(
-                resources,
-                R.drawable.new_bg_subscribe_button,
+                if (it.isFollowing) R.drawable.new_bg_unsubscribe_button else R.drawable.new_bg_subscribe_button,
                 null
             )
-            val rightDrawable = if (it.isFollowing) ResourcesCompat.getDrawable(
+            val rightDrawable = ResourcesCompat.getDrawable(
                 resources,
-                R.drawable.new_check,
-                null
-            )
-            else ResourcesCompat.getDrawable(
-                resources,
-                R.drawable.new_plus,
+                if (it.isFollowing) R.drawable.new_check else R.drawable.new_plus,
                 null
             )
             binding.subscribe.button.text = label

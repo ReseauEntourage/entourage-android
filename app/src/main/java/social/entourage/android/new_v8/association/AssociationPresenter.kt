@@ -33,7 +33,6 @@ class AssociationPresenter {
 
                 override fun onFailure(call: Call<PartnerResponse>, t: Throwable) {
                     getPartnerSuccess.value = false
-                    return
                 }
             })
     }
@@ -42,7 +41,7 @@ class AssociationPresenter {
         val params = ArrayMap<String, Any>()
         val isFollowParam = ArrayMap<String, Any>()
         isFollowParam["partner_id"] = partnerId.toString()
-        isFollowParam["active"] = if (isFollow) "true" else "false"
+        isFollowParam["active"] = isFollow.toString()
         params["following"] = isFollowParam
 
         EntourageApplication.get().components.userRequest.updateUserPartner(params)
@@ -55,7 +54,6 @@ class AssociationPresenter {
                         partner.let {
                             it.value?.isFollowing = isFollow
                             followSuccess.value = true
-                            //updateButtonFollow()
                         }
                     } else {
                         followSuccess.value = false
