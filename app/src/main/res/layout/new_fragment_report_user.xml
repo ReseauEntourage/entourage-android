@@ -26,19 +26,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="20dp"
-            android:paddingHorizontal="31dp"
+            android:paddingHorizontal="@dimen/padding_horizental"
             android:text="@string/modify_interests_subtitle"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/header" />
 
         <TextView
             android:id="@+id/mandatory"
-            style="@style/h4"
+            style="@style/profile_activity_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="20dp"
-            android:paddingHorizontal="31dp"
-            android:text="@string/modify_interests_subtitle"
+            android:layout_marginBottom="20dp"
+            android:paddingHorizontal="@dimen/padding_horizental"
+            android:text="Obligatoire"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title" />
 
@@ -49,6 +49,7 @@
             android:layout_height="1px"
             android:layout_marginTop="20dp"
             android:background="@color/light_orange"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/mandatory" />
@@ -57,12 +58,29 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:paddingHorizontal="@dimen/padding_horizental"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider"
             app:layout_constraintVertical_weight="0.7"
             tools:itemCount="4"
             tools:listitem="@layout/new_report_user_item" />
+
+
+        <view
+            android:id="@+id/content"
+            style="@style/profile_activity_label"
+            class="social.entourage.android.new_v8.profile.LinedEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-4dp"
+            android:backgroundTint="@color/light_orange_opacity_50"
+            android:paddingHorizontal="@dimen/padding_horizental"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            tools:text="content" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

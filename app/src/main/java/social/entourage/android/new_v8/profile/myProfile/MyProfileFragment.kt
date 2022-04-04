@@ -24,7 +24,6 @@ class MyProfileFragment : Fragment() {
     private var _binding: NewFragmentMyProfileBinding? = null
     val binding: NewFragmentMyProfileBinding get() = _binding!!
     private lateinit var user: User
-
     private var interestsList: ArrayList<String> = ArrayList()
 
     override fun onCreateView(
