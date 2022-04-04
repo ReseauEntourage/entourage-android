@@ -33,7 +33,7 @@
             android:id="@+id/action_edit_profile_fragment_to_edit_profile_interest_fragment"
             app:destination="@id/edit_profile_interest_fragment" />
         <action
-            android:id="@+id/action_edit_profile_fragment_to_edit_profile_image_fragment"
+            android:id="@+id/action_edit_profile_fragment_to_choose_photo_fragment"
             app:destination="@id/edit_profile_image_fragment" />
         <action
             android:id="@+id/action_edit_profile_fragment_to_edit_action_zone_fragment"
@@ -47,7 +47,8 @@
 
     <fragment
         android:id="@+id/edit_profile_image_fragment"
-        android:name="social.entourage.android.new_v8.profile.editProfile.EditImageFragment" />
+        android:name="social.entourage.android.user.edit.photo.ChoosePhotoFragment" />
+
 
     <fragment
         android:id="@+id/edit_action_zone_fragment"
@@ -56,5 +57,6 @@
 
     <fragment
         android:id="@+id/user_fragment"
-        android:name="social.entourage.android.new_v8.user.UserProfileFragment"></fragment>
+        android:name="social.entourage.android.new_v8.user.UserProfileFragment" />
+
 </navigation>

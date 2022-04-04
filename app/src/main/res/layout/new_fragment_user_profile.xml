@@ -112,8 +112,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
                         app:icon="@{@drawable/new_contribution}"
-                        app:label="@{@string/contributions}"
-                        app:statistic="@{@string/test}" />
+                        app:label="@{@string/contributions}" />
 
                     <include
                         android:id="@+id/contribution"
@@ -121,8 +120,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:icon="@{@drawable/new_event}"
-                        app:label="@{@string/events}"
-                        app:statistic="@{@string/test}" />
+                        app:label="@{@string/events}" />
                 </LinearLayout>
 
 

@@ -38,35 +38,35 @@
                 <include
                     android:id="@+id/ethic"
                     layout="@layout/new_about_item"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:label="@{@string/ethics}" />
 
                 <include
                     android:id="@+id/ambassador_program"
                     layout="@layout/new_about_item"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:label="@{@string/ambassador_program}" />
 
                 <include
                     android:id="@+id/donation"
                     layout="@layout/new_about_item"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:label="@{@string/donation}" />
 
                 <include
                     android:id="@+id/faq"
                     layout="@layout/new_about_item"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:label="@{@string/faq}" />
 
                 <include
                     android:id="@+id/feedback"
                     layout="@layout/new_about_item"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:label="@{@string/feedback}" />
 
@@ -74,7 +74,7 @@
                 <include
                     android:id="@+id/cgu"
                     layout="@layout/new_about_item"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:label="@{@string/cgu}" />
 
@@ -82,7 +82,7 @@
                 <include
                     android:id="@+id/confidentiality"
                     layout="@layout/new_about_item"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:label="@{@string/confidentiality}" />
 
@@ -90,7 +90,7 @@
                 <include
                     android:id="@+id/licence"
                     layout="@layout/new_about_item"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:label="@{@string/licence}" />
 

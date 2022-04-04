@@ -171,12 +171,8 @@ open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate,
     //**********//**********//**********
 
     open fun setupViews() {
-        user_edit_title_layout?.visibility = View.GONE
-        ui_onboard_photo_tv_title?.text =
-            String.format(getString(R.string.onboard_photo_title), firstname)
-        ui_onboard_photo_tv_description?.text = getString(R.string.onboard_photo_description)
 
-        ui_bt_pick?.setOnClickListener {
+        import_picture?.setOnClickListener {
             // write permission is used to store the cropped image before upload
             if (PermissionChecker.checkSelfPermission(
                     requireActivity(),
@@ -192,7 +188,7 @@ open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate,
             }
         }
 
-        ui_bt_take?.setOnClickListener {
+        take_picture?.setOnClickListener {
             if (PermissionChecker.checkSelfPermission(
                     requireContext(),
                     Manifest.permission.CAMERA
@@ -349,7 +345,7 @@ open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate,
     override fun onPhotoEdited(photoURI: Uri?, photoSource: Int) {
         pickedImageEditedUri = photoURI
 
-        ui_onboard_photo_image?.let {
+        image_profile?.let {
             if (pickedImageEditedUri != null) {
                 Glide.with(this)
                     .load(pickedImageEditedUri)
