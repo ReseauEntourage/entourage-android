@@ -17,6 +17,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentEditProfileBinding
 import social.entourage.android.new_v8.profile.ProfileActivity
+import social.entourage.android.new_v8.utils.trimEnd
 import social.entourage.android.user.*
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import social.entourage.android.user.edit.photo.PhotoChooseInterface
@@ -53,7 +54,6 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //updateUserView()
         initializeSeekBar()
         onEditInterests()
         onEditImage()
@@ -69,10 +69,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
             ), AvatarUploadRepository(EntourageApplication.get().components.okHttpClient),
             (activity as ProfileActivity).profilePresenter as AvatarUpdatePresenter
         )
-
-        if (context is PhotoChooseInterface) {
-            mListener = requireContext() as PhotoChooseInterface
-        }
+        (context as? PhotoChooseInterface)?.let { mListener = it }
     }
 
     private fun handleUpdateResponse(success: Boolean) {
@@ -153,25 +150,27 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
 
     private fun updateUserView() {
         val user = EntourageApplication.me(activity) ?: return
-        binding.firstname.content.setText(user.firstName)
-        binding.lastname.content.setText(user.lastName)
-        binding.description.content.setText(user.about)
-        binding.birthday.content.setText(user.birthday)
-        binding.phone.content.setText(user.phone)
-        binding.phone.content.setText(user.phone)
-        binding.email.content.setText(user.email)
-        binding.cityAction.content.text = user.address?.displayAddress
-        binding.seekBarLayout.seekbar.progress = user.travelDistance ?: 0
-        binding.seekBarLayout.tvTrickleIndicator.text = user.travelDistance.toString()
-        binding.validate.button.setOnClickListener { onSaveProfile() }
-        user.avatarURL?.let { avatarURL ->
-            Glide.with(this)
-                .load(Uri.parse(avatarURL))
-                .placeholder(R.drawable.ic_user_photo_small)
-                .circleCrop()
-                .into(binding.imageProfile)
-        } ?: run {
-            binding.imageProfile.setImageResource(R.drawable.ic_user_photo_small)
+        with(binding) {
+            firstname.content.setText(user.firstName)
+            lastname.content.setText(user.lastName)
+            description.content.setText(user.about)
+            birthday.content.setText(user.birthday)
+            phone.content.setText(user.phone)
+            phone.content.setText(user.phone)
+            email.content.setText(user.email)
+            cityAction.content.text = user.address?.displayAddress
+            seekBarLayout.seekbar.progress = user.travelDistance ?: 0
+            seekBarLayout.tvTrickleIndicator.text = user.travelDistance.toString()
+            validate.button.setOnClickListener { onSaveProfile() }
+            user.avatarURL?.let { avatarURL ->
+                Glide.with(requireActivity())
+                    .load(Uri.parse(avatarURL))
+                    .placeholder(R.drawable.ic_user_photo_small)
+                    .circleCrop()
+                    .into(imageProfile)
+            } ?: run {
+                imageProfile.setImageResource(R.drawable.ic_user_photo_small)
+            }
         }
     }
 
@@ -189,11 +188,11 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
 
     private fun onSaveProfile() {
         val editedUser: ArrayMap<String, Any> = ArrayMap()
-        val firstname = binding.firstname.content.text.trim { it <= ' ' }.toString()
-        val lastname = binding.lastname.content.text.trim { it <= ' ' }.toString()
-        val about = binding.description.content.text?.trim { it <= ' ' }.toString()
-        val email = binding.email.content.text.trim { it <= ' ' }.toString()
-        val birthday = binding.birthday.content.text.trim { it <= ' ' }.toString()
+        val firstname = binding.firstname.content.text.trimEnd()
+        val lastname = binding.lastname.content.text.trimEnd()
+        val about = binding.description.content.text?.trimEnd()
+        val email = binding.email.content.text.trimEnd()
+        val birthday = binding.birthday.content.text.trimEnd()
         val travelDistance = binding.seekBarLayout.seekbar.progress
         editedUser["first_name"] = firstname
         editedUser["last_name"] = lastname
@@ -206,15 +205,16 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
 
 
     override fun onUserEditActionZoneFragmentDismiss() {
-        TODO("Not yet implemented")
     }
 
     override fun onUserEditActionZoneFragmentAddressSaved() {
-        TODO("Not yet implemented")
+        editProfilePresenter.storeActionZone(false)
+        findNavController().popBackStack()
     }
 
     override fun onUserEditActionZoneFragmentIgnore() {
-        TODO("Not yet implemented")
+        editProfilePresenter.storeActionZone(true)
+        findNavController().popBackStack()
     }
 }
 

@@ -70,35 +70,35 @@ class MyProfileFragment : Fragment() {
     }
 
     private fun updateUserView() {
-        binding.name.text = user.displayName
-        binding.description.text = user.about
-        binding.phone.content.text = user.phone
-        binding.birthday.content.text = user.birthday
-        binding.email.content.text = user.email
-        binding.city.content.text = user.address?.displayAddress
-        binding.seekBarLayout.seekbar.progress = user.travelDistance ?: 0
-        binding.seekBarLayout.tvTrickleIndicator.text = user.travelDistance.toString()
-        binding.description.text = user.about
-        //interestsList = user.myInterest
-
-        user.stats?.let {
-            binding.contribution.content.text = it.contribCreationCount.toString()
-            binding.events.content.text = it.eventsCount.toString()
-        }
-        user.roles?.let {
-            if (it.contains("ambassador")) binding.ambassador.visibility = View.VISIBLE
-            else binding.ambassador.visibility = View.GONE
-        }
-        user.partner?.let {
-            binding.association.association_name.text = it.name
-            it.smallLogoUrl.let { logo ->
-                Glide.with(this)
-                    .load(Uri.parse(logo))
-                    .circleCrop()
-                    .into(binding.associationAvatar)
+        with(binding) {
+            name.text = user.displayName
+            description.text = user.about
+            phone.content.text = user.phone
+            birthday.content.text = user.birthday
+            email.content.text = user.email
+            city.content.text = user.address?.displayAddress
+            seekBarLayout.seekbar.progress = user.travelDistance ?: 0
+            seekBarLayout.tvTrickleIndicator.text = user.travelDistance.toString()
+            description.text = user.about
+            user.stats?.let {
+                contribution.content.text = it.contribCreationCount.toString()
+                events.content.text = it.eventsCount.toString()
             }
-        } ?: run {
-            binding.association.visibility = View.GONE
+            user.roles?.let {
+                if (it.contains("ambassador")) ambassador.visibility = View.VISIBLE
+                else ambassador.visibility = View.GONE
+            }
+            user.partner?.let {
+                association.association_name.text = it.name
+                it.smallLogoUrl.let { logo ->
+                    Glide.with(requireActivity())
+                        .load(Uri.parse(logo))
+                        .circleCrop()
+                        .into(associationAvatar)
+                }
+            } ?: run {
+                association.visibility = View.GONE
+            }
         }
     }
 }

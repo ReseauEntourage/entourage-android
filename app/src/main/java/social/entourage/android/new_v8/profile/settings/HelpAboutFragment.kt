@@ -50,14 +50,16 @@ class HelpAboutFragment : Fragment() {
     }
 
     private fun populate() {
-        binding.cgu.layout.setOnClickListener { onTermsClicked() }
-        binding.confidentiality.layout.setOnClickListener { onPrivacyClicked() }
-        binding.licence.layout.setOnClickListener { onOSSLicensesClicked() }
-        binding.feedback.layout.setOnClickListener { onRateUsClicked() }
-        binding.faq.layout.setOnClickListener { onFAQClicked() }
-        binding.donation.layout.setOnClickListener { onDonate() }
-        binding.ambassadorProgram.layout.setOnClickListener { onAmbassadorClicked() }
-        binding.ethic.layout.setOnClickListener { onEthicChartClicked() }
+        with(binding) {
+            cgu.layout.setOnClickListener { onTermsClicked() }
+            confidentiality.layout.setOnClickListener { onPrivacyClicked() }
+            licence.layout.setOnClickListener { onOSSLicensesClicked() }
+            feedback.layout.setOnClickListener { onRateUsClicked() }
+            faq.layout.setOnClickListener { onFAQClicked() }
+            donation.layout.setOnClickListener { onDonate() }
+            ambassadorProgram.layout.setOnClickListener { onAmbassadorClicked() }
+            ethic.layout.setOnClickListener { onEthicChartClicked() }
+        }
     }
 
 
@@ -116,11 +118,7 @@ class HelpAboutFragment : Fragment() {
             Intent.ACTION_VIEW,
             Uri.parse((activity as? ProfileActivity)?.getLink(Constants.DONATE_LINK_ID))
         )
-        try {
-            activity?.startActivity(donationIntent)
-        } catch (ex: Exception) {
-            Toast.makeText(activity, R.string.no_browser_error, Toast.LENGTH_SHORT).show()
-        }
+        launchActivity(donationIntent)
     }
 
 
@@ -134,18 +132,19 @@ class HelpAboutFragment : Fragment() {
                 Intent.ACTION_VIEW,
                 Uri.parse((activity as? ProfileActivity)?.getLink(Constants.AMBASSADOR_ID))
             )
-        try {
-            activity?.startActivity(ambassadorIntent)
-        } catch (ex: Exception) {
-            Toast.makeText(activity, R.string.no_browser_error, Toast.LENGTH_SHORT).show()
-        }
+        launchActivity(ambassadorIntent)
+
     }
 
     private fun onEthicChartClicked() {
         val chartUrl = activity?.getString(R.string.disclaimer_link_public)
         val chartIntent = Intent(Intent.ACTION_VIEW, Uri.parse(chartUrl))
+        launchActivity(chartIntent)
+    }
+
+    private fun launchActivity(intent: Intent) {
         try {
-            activity?.startActivity(chartIntent)
+            activity?.startActivity(intent)
         } catch (ex: Exception) {
             Toast.makeText(activity, R.string.no_browser_error, Toast.LENGTH_SHORT).show()
         }

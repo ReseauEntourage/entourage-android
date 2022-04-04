@@ -7,6 +7,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.UserResponse
+import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import timber.log.Timber
 
 class EditProfilePresenter {
@@ -30,6 +31,8 @@ class EditProfilePresenter {
                                 it.smsCode
                             )
                             isUserUpdated.value = true
+                        } ?: run {
+                            isUserUpdated.value = false
                         }
                     } else {
                         isUserUpdated.value = false
@@ -40,5 +43,10 @@ class EditProfilePresenter {
                     isUserUpdated.value = false
                 }
             })
+    }
+
+    fun storeActionZone(ignoreActionZone: Boolean) {
+        EntourageApplication.get().components.authenticationController.isIgnoringActionZone =
+            ignoreActionZone
     }
 }

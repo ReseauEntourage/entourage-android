@@ -7,18 +7,26 @@ class Interest(
     val title: String?,
     var isSelected: Boolean
 ) {
+    private val animals = "animaux"
+    private val wellBeing = "bien-etre"
+    private val cooking = "cuisine"
+    private val culture = "culture"
+    private val games = "jeux"
+    private val nature = "nature"
+    private val sport = "sport"
+    private val activities = "activites"
 
     val icon: Int
         get() {
             return when (id) {
-                "animaux" -> R.drawable.new_animals
-                "bien-etre" -> R.drawable.new_wellbeing
-                "cuisine" -> R.drawable.new_cooking
-                "culture" -> R.drawable.new_art
-                "jeux" -> R.drawable.new_games
-                "nature" -> R.drawable.new_nature
-                "sport" -> R.drawable.new_sport
-                "activites" -> R.drawable.new_drawing
+                animals -> R.drawable.new_animals
+                wellBeing -> R.drawable.new_wellbeing
+                cooking -> R.drawable.new_cooking
+                culture -> R.drawable.new_art
+                games -> R.drawable.new_games
+                nature -> R.drawable.new_nature
+                sport -> R.drawable.new_sport
+                activities -> R.drawable.new_drawing
                 else -> R.drawable.new_others
             }
         }

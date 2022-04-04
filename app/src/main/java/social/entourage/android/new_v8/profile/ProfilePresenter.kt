@@ -24,16 +24,12 @@ class ProfilePresenter : AvatarUpdatePresenter {
 
                 val authenticationController =
                     EntourageApplication.get().components.authenticationController
-                // activity.dismissProgressDialog()
-                if (response.isSuccessful) {
-                    if (authenticationController.isAuthenticated) {
-                        response.body()
-                            ?.let { responseBody -> authenticationController.saveUser(responseBody.user) }
+                if (response.isSuccessful && authenticationController.isAuthenticated) {
+                    response.body()?.let { responseBody ->
+                        authenticationController.saveUser(responseBody.user)
                     }
-                    isPhotoSuccess.value = true
-                } else {
-                    isPhotoSuccess.value = false
                 }
+                isPhotoSuccess.value = response.isSuccessful
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {

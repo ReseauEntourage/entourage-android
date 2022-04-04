@@ -81,10 +81,14 @@ class SettingsFragment : Fragment() {
         startActivity(shareIntent)
     }
 
-    private fun logout() {
-        settingsPresenter.logOut(requireContext())
+    private fun startPreOnboardingStartActivity() {
         startActivity(Intent(activity, PreOnboardingStartActivity::class.java))
         activity?.finish()
+    }
+
+    private fun logout() {
+        settingsPresenter.logOut(requireContext())
+        startPreOnboardingStartActivity()
     }
 
     private fun deleteAccount() {

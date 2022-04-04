@@ -7,7 +7,6 @@ import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.Tags
 import social.entourage.android.api.request.MetaDataResponse
-import timber.log.Timber
 
 object MetaDataRepository {
     var metaData: MutableLiveData<Tags> = MutableLiveData()
@@ -21,7 +20,6 @@ object MetaDataRepository {
             ) {
                 if (response.isSuccessful) {
                     metaData.value = response.body()?.tags
-                    //Timber.e(response.body()?.tags.toString())
                 }
             }
 

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.collection.ArrayMap
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,8 +26,8 @@ class EditInterestsFragment : Fragment() {
     private lateinit var user: User
     private val editProfilePresenter: EditProfilePresenter by lazy { EditProfilePresenter() }
 
-    private var interestsList: ArrayList<Interest> = ArrayList()
-    private var selectedInterestIdList: ArrayList<String> = ArrayList()
+    private var interestsList: MutableList<Interest> = mutableListOf()
+    private var selectedInterestIdList: MutableList<String> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +50,11 @@ class EditInterestsFragment : Fragment() {
 
     private fun handleUpdateResponse(success: Boolean) {
         if (success) findNavController().popBackStack()
+        else Toast.makeText(
+            requireActivity(),
+            R.string.user_text_update_ko,
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
 
@@ -95,7 +101,7 @@ class EditInterestsFragment : Fragment() {
     }
 
     private fun onSaveInterests() {
-        val editedUser: ArrayMap<String, Any> = ArrayMap()
+        val editedUser: MutableMap<String, Any> = mutableMapOf()
         val user: ArrayMap<String, Any> = ArrayMap()
         editedUser["interests"] = selectedInterestIdList
         user["user"] = editedUser
