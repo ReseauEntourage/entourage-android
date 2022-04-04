@@ -92,13 +92,13 @@ android {
                         serverURL        : "https://api.entourage.social/api/v1/",
                         deepLinksHostName: "www.entourage.social",
                         deepLinksScheme  : "entourage",
-                        appLinksHostName: "app.entourage.social"
+                        appLinksHostName : "app.entourage.social"
                 ]
                 staging = [
                         serverURL        : "https://api-preprod.entourage.social/api/v1/",
                         deepLinksHostName: "entourage-landingpages-preprod.herokuapp.com",
                         deepLinksScheme  : "entourage-staging",
-                        appLinksHostName: "entourage-webapp-preprod.herokuapp.com"
+                        appLinksHostName : "entourage-webapp-preprod.herokuapp.com"
                 ]
             }
         }
@@ -153,7 +153,7 @@ android {
 
         variant.mergedFlavor.manifestPlaceholders = [
                 deepLinksHostName       : "${app[environment.name]['deepLinksHostName']}",
-                appLinksHostName       : "${app[environment.name]['appLinksHostName']}",
+                appLinksHostName        : "${app[environment.name]['appLinksHostName']}",
                 deepLinksEntourageScheme: "${app[environment.name]['deepLinksScheme']}"
         ]
 
@@ -218,7 +218,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-maps:18.0.2"
     implementation "com.google.android.gms:play-services-location:18.0.0" //v19 needs refactoring
     implementation "com.google.android.libraries.places:places-compat:2.5.0"
-            //https://developers.google.com/android/guides/opensource
+    //https://developers.google.com/android/guides/opensource
     implementation "com.google.android.gms:play-services-oss-licenses:17.0.0"
 
     //implementation networkDependencies.values()

@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_profile_fragment_to_edit_profile_fragment"
             app:destination="@id/edit_profile_fragment" />
+        <action
+            android:id="@+id/action_profile_fragment_to_user_fragment"
+            app:destination="@id/user_fragment" />
     </fragment>
 
     <fragment
