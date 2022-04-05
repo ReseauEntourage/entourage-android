@@ -18,6 +18,7 @@ import social.entourage.android.api.model.Tags
 import social.entourage.android.api.model.User
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentMyProfileBinding
+import social.entourage.android.new_v8.profile.ProfileFragmentDirections
 
 
 class MyProfileFragment : Fragment() {
@@ -104,11 +105,16 @@ class MyProfileFragment : Fragment() {
             }
         }
     }
+
     private fun initializeAssociationButton() {
         binding.association.setOnClickListener {
-            findNavController().navigate(R.id.action_profile_fragment_to_association_fragment)
+            user.partner?.id?.toInt()
+                ?.let {
+                    val direction =
+                        ProfileFragmentDirections.actionProfileFragmentToAssociationFragment(it)
+                    findNavController().navigate(direction)
+                }
         }
+
     }
-
-
 }

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_partner_v2.*
 import social.entourage.android.R
@@ -23,6 +24,7 @@ class AssociationProfile : Fragment() {
     val binding: NewFragmentAssociationProfileBinding get() = _binding!!
     private val associationPresenter: AssociationPresenter by lazy { AssociationPresenter() }
     var partner: Partner? = null
+    private val args: AssociationProfileArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +37,7 @@ class AssociationProfile : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBackButton()
-        associationPresenter.getPartnerInfos(1)
+        associationPresenter.getPartnerInfos(args.partnerId)
         associationPresenter.getPartnerSuccess.observe(requireActivity(), ::handleResponse)
         associationPresenter.followSuccess.observe(requireActivity(), ::handleFollowResponse)
         handleFollowButton()

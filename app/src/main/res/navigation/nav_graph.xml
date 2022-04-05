@@ -56,6 +56,10 @@
 
     <fragment
         android:id="@+id/association_fragment"
-        android:name="social.entourage.android.new_v8.association.AssociationProfile" />
+        android:name="social.entourage.android.new_v8.association.AssociationProfile">
+        <argument
+            android:name="partner_id"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>
