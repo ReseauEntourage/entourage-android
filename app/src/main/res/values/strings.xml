@@ -161,8 +161,6 @@
     <string name="description_counter">%s /200</string>
     <string name="apply_modifications">Appliquer les modifications</string>
     <string name="edit_interests">Modifier mes centres d’interêts</string>
-    <string name="web_site">Site web</string>
-    <string name="address">Adresse postale</string>
     <string name="follow">S\'abonner</string>
     <string name="following">Abonné</string>
     <string name="ambassador">Ambassadeur</string>
