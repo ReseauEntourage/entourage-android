@@ -138,6 +138,9 @@
     <string name="delete_account_dialog_title">Suppression du compte</string>
     <string name="delete_account_dialog_content">Souhaitez-vous supprimer votre compte ?</string>
 
+    <string name="unsubscribe_title">Voulez-vous vous désabonner ?</string>
+    <string name="unsubscribe_content">En vous désabonnant, vous ne recevrez plus les notifications, nouvelles, et les nouveaux évènements de cette association </string>
+
     <string name="sign_out_dialog_title">Déconnexion</string>
     <string name="sign_out_dialog_content">Voulez-vous vous déconnecter ?</string>
     <string name="progress_km">%s km</string>
@@ -158,6 +161,10 @@
     <string name="description_counter">%s /200</string>
     <string name="apply_modifications">Appliquer les modifications</string>
     <string name="edit_interests">Modifier mes centres d’interêts</string>
+    <string name="web_site">Site web</string>
+    <string name="address">Adresse postale</string>
+    <string name="follow">S\'abonner</string>
+    <string name="following">Abonné</string>
     <string name="ambassador">Ambassadeur</string>
 
     <string name="web_site">Site web</string>
