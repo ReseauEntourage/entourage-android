@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_profile_fragment_to_edit_profile_fragment"
             app:destination="@id/edit_profile_fragment" />
+        <action
+            android:id="@+id/action_profile_fragment_to_association_fragment"
+            app:destination="@id/association_fragment" />
     </fragment>
 
     <fragment
@@ -50,4 +53,13 @@
     <fragment
         android:id="@+id/edit_action_zone_fragment"
         android:name="social.entourage.android.user.edit.place.UserEditActionZoneFragment" />
+
+    <fragment
+        android:id="@+id/association_fragment"
+        android:name="social.entourage.android.new_v8.association.AssociationProfile">
+        <argument
+            android:name="partner_id"
+            app:argType="integer" />
+    </fragment>
+
 </navigation>

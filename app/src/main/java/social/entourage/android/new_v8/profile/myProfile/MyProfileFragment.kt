@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import androidx.navigation.fragment.findNavController
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -15,7 +16,9 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.api.model.User
+import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentMyProfileBinding
+import social.entourage.android.new_v8.profile.ProfileFragmentDirections
 
 
 class MyProfileFragment : Fragment() {
@@ -41,6 +44,7 @@ class MyProfileFragment : Fragment() {
         updateUserView()
         initializeView()
         initializeInterests()
+        initializeAssociationButton()
         binding.seekBarLayout.seekbar.setOnTouchListener { _, _ -> true }
     }
 
@@ -100,5 +104,17 @@ class MyProfileFragment : Fragment() {
                 association.visibility = View.GONE
             }
         }
+    }
+
+    private fun initializeAssociationButton() {
+        binding.association.setOnClickListener {
+            user.partner?.id?.toInt()
+                ?.let {
+                    val direction =
+                        ProfileFragmentDirections.actionProfileFragmentToAssociationFragment(it)
+                    findNavController().navigate(direction)
+                }
+        }
+
     }
 }
