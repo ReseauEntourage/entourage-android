@@ -29,6 +29,8 @@ trigger_map:
   workflow: dev_entourage
 - push_branch: '*EN-*'
   workflow: dev_entourage
+- push_branch: develop_v2
+  workflow: dev_entourage
 workflows:
   dev_entourage:
     before_run:
