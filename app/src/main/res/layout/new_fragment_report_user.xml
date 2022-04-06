@@ -6,8 +6,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/light_beige"
+        android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -18,7 +17,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/title"
             app:layout_constraintTop_toTopOf="parent"
-            app:title="@{@string/edit_interests}" />
+            app:title="@{@string/report_member}" />
 
         <TextView
             android:id="@+id/title"
@@ -27,18 +26,18 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="20dp"
             android:paddingHorizontal="@dimen/padding_horizental"
-            android:text="@string/modify_interests_subtitle"
+            android:text="@string/why_reporting"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/header" />
 
         <TextView
             android:id="@+id/mandatory"
-            style="@style/profile_activity_label"
+            style="@style/left_legend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:paddingHorizontal="@dimen/padding_horizental"
-            android:text="Obligatoire"
+            android:text="@string/mandatory"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title" />
 
@@ -49,7 +48,6 @@
             android:layout_height="1px"
             android:layout_marginTop="20dp"
             android:background="@color/light_orange"
-            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/mandatory" />
@@ -57,31 +55,79 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:paddingHorizontal="@dimen/padding_horizental"
-            android:visibility="gone"
+            android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider"
-            app:layout_constraintVertical_weight="0.7"
             tools:itemCount="4"
             tools:listitem="@layout/new_report_user_item" />
 
+        <Button
+            android:id="@+id/next"
+            style="@style/h2_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/new_bg_rounded_button_light_orange"
+            android:drawablePadding="10dp"
+            android:text="@string/next_report"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view" />
 
         <view
-            android:id="@+id/content"
+            android:id="@+id/message"
             style="@style/profile_activity_label"
             class="social.entourage.android.new_v8.profile.LinedEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/padding_horizental"
             android:layout_marginStart="-4dp"
             android:backgroundTint="@color/light_orange_opacity_50"
-            android:paddingHorizontal="@dimen/padding_horizental"
+            android:visibility="gone"
+            app:layout_constraintHorizontal_weight="0.8"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider"
             tools:text="content" />
 
+
+        <Button
+            android:id="@+id/back"
+            style="@style/h2_orange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/padding_horizental"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/new_bg_rounded_button_orange_stroke"
+            android:drawablePadding="10dp"
+            android:text="@string/back"
+            android:textAllCaps="false"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/message" />
+
+        <Button
+            android:id="@+id/send"
+            style="@style/h2_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/padding_horizental"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/new_bg_rounded_button_orange_fill"
+            android:drawablePadding="10dp"
+            android:text="@string/send"
+            android:textAllCaps="false"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/message" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

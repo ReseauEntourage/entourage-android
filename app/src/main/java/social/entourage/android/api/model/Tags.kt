@@ -5,10 +5,10 @@ import java.io.Serializable
 
 class Tags : Serializable {
     @SerializedName("interests")
-    var interests: ArrayList<Interests>? = null
+    var interests: ArrayList<MetaData>? = null
 
     @SerializedName("signals")
-    var signals: ArrayList<Interests>? = null
+    var signals: ArrayList<MetaData>? = null
     override fun toString(): String {
         return "Tags(interests=$interests, signals=$signals)"
     }

@@ -168,6 +168,14 @@
     <string name="web_site">Site web</string>
     <string name="address">Adresse postale</string>
     <string name="report_user">Signaler l\'utilisateur</string>
+    <string name="report_member">Signaler le membre</string>
+    <string name="mandatory">- Obligatoire</string>
+    <string name="optional">- Optionnel</string>
+    <string name="why_reporting">Dites-nous la raison de votre signalement</string>
+    <string name="next_report">Suivant</string>
+    <string name="back">Retour</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

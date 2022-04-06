@@ -71,7 +71,7 @@ class MyProfileFragment : Fragment() {
 
     private fun initializeView() {
         binding.city.divider.visibility = View.INVISIBLE
-        binding.ambassador.setOnClickListener {
+        binding.events.content.setOnClickListener {
             findNavController().navigate(R.id.action_profile_fragment_to_user_fragment)
         }
     }

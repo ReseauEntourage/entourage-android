@@ -1,16 +1,20 @@
 package social.entourage.android.new_v8.user
 
 import androidx.lifecycle.MutableLiveData
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.User
+import social.entourage.android.api.model.UserReport
+import social.entourage.android.api.model.UserReportWrapper
 import social.entourage.android.api.request.UserResponse
 
 class UserPresenter {
 
     var isGetUserSuccess = MutableLiveData<Boolean>()
+    var isUserReported = MutableLiveData<Boolean>()
     var user = MutableLiveData<User>()
 
 
@@ -33,5 +37,25 @@ class UserPresenter {
                     isGetUserSuccess.value = false
                 }
             })
+    }
+
+    fun sendReport(
+        entourageId: Int,
+        reason: String,
+        selectedSignalsIdList: MutableList<String>
+    ) {
+        val userRequest = EntourageApplication.get().components.userRequest
+        val call = userRequest.reportUser(
+            entourageId, UserReportWrapper(UserReport(reason, selectedSignalsIdList))
+        )
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                isUserReported.value = false
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                isUserReported.value = response.isSuccessful
+            }
+        })
     }
 }

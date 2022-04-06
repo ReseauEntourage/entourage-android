@@ -2,17 +2,19 @@ package social.entourage.android.new_v8.user
 
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import kotlinx.android.synthetic.main.new_fragment_my_profile.view.*
 import social.entourage.android.R
+import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.NewFragmentUserProfileBinding
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
@@ -24,7 +26,6 @@ class UserProfileFragment : Fragment() {
     val binding: NewFragmentUserProfileBinding get() = _binding!!
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
     private lateinit var user: User
-
     private var interestsList: ArrayList<String> = ArrayList()
 
 
@@ -38,10 +39,12 @@ class UserProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //TODO add user id to the call
         userPresenter.getUser(2889)
+        initializeInterests()
+        setBackButton()
         userPresenter.isGetUserSuccess.observe(requireActivity(), ::handleResponse)
-        reportUser()
-
+        onReportUser()
     }
 
 
@@ -52,16 +55,10 @@ class UserProfileFragment : Fragment() {
 
     }
 
-    private fun reportUser() {
+    private fun onReportUser() {
+        val reportUserBottomDialogFragment = ReportUserModalFragment.newInstance()
         binding.report.setOnClickListener {
-            ReportUserModalFragment().apply {
-                activity?.supportFragmentManager?.let { it1 ->
-                    show(
-                        it1,
-                        ReportUserModalFragment.TAG
-                    )
-                }
-            }
+            reportUserBottomDialogFragment.show(parentFragmentManager, ReportUserModalFragment.TAG)
         }
     }
 
@@ -74,25 +71,42 @@ class UserProfileFragment : Fragment() {
             adapter = InterestsAdapter(interestsList)
         }
     }
-/*
-    private fun handleMetaData(tags: Tags?) {
+
+    private fun handleMetaData() {
         interestsList.clear()
         val userInterests = user.interests
-        tags?.interests?.forEach { interest ->
+        MetaDataRepository.metaData.value?.interests?.forEach { interest ->
             if (userInterests.contains(interest.id)) interest.name?.let { it -> interestsList.add(it) }
         }
         binding.interests.adapter?.notifyDataSetChanged()
     }
- */
 
 
     private fun updateView() {
         userPresenter.user.value?.let { user = it }
+        handleMetaData()
         with(binding) {
             name.text = user.displayName
             description.text = user.about
-            events.content.text = user.stats?.eventsCount.toString()
-            contribution.content.text = user.stats?.contribCreationCount.toString()
+            user.stats?.let {
+                contribution.content.text = it.contribCreationCount.toString()
+                events.content.text = it.eventsCount.toString()
+            }
+            user.roles?.let {
+                if (it.contains("ambassador")) pins.ambassador.visibility = View.VISIBLE
+                else pins.ambassador.visibility = View.GONE
+            }
+            user.partner?.let {
+                pins.association.association_name.text = it.name
+                it.smallLogoUrl.let { logo ->
+                    Glide.with(requireActivity())
+                        .load(Uri.parse(logo))
+                        .circleCrop()
+                        .into(pins.associationAvatar)
+                }
+            } ?: run {
+                pins.association.visibility = View.GONE
+            }
             user.avatarURL.let {
                 Glide.with(requireActivity())
                     .load(Uri.parse(it))
@@ -100,6 +114,10 @@ class UserProfileFragment : Fragment() {
                     .into(imageUser)
             }
         }
+    }
+
+    private fun setBackButton() {
+        binding.iconBack.setOnClickListener { findNavController().popBackStack() }
     }
 
 }
