@@ -11,7 +11,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.fragment_partner_v2.*
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
 import social.entourage.android.databinding.NewFragmentAssociationProfileBinding
@@ -85,7 +84,7 @@ class AssociationProfile : Fragment() {
             )
             val background = ResourcesCompat.getDrawable(
                 resources,
-                if (it.isFollowing) R.drawable.new_bg_unsubscribe_button else R.drawable.new_bg_subscribe_button,
+                if (it.isFollowing) R.drawable.new_bg_rounded_button_orange_stroke else R.drawable.new_bg_rounded_button_orange_fill,
                 null
             )
             val rightDrawable = ResourcesCompat.getDrawable(

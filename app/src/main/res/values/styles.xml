@@ -10,6 +10,7 @@
         <item name="colorError">@color/my_app_error_color</item-->
         <!-- New MaterialComponents attributes. -->
         <item name="colorPrimaryVariant">@color/light_grey</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
         <item name="colorSecondaryVariant">@color/light_grey</item>
         <item name="colorSurface">@color/primary</item>
         <item name="colorOnPrimary">@color/primary</item>
@@ -309,7 +310,7 @@
     <style name="profile_pins">
         <item name="android:textSize">@dimen/profile_labels</item>
         <item name="android:fontFamily">@font/nunitosans_regular</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/orange</item>
     </style>
 
     <style name="profile_description">
@@ -412,4 +413,24 @@
         <item name="android:textColor">@color/orange</item>
     </style>
 
+
+    <style name="report">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:textColor">@color/light_orange</item>
+    </style>
+
+    <style name="left_legend">
+        <item name="android:textSize">@dimen/profile_labels</item>
+        <item name="android:fontFamily">@font/nunitosans_light</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="AppBottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
+    </style>
+
+    <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/new_bg_bottomsheet</item>
+    </style>
 </resources>

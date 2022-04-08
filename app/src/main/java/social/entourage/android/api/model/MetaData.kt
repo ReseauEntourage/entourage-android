@@ -3,7 +3,7 @@ package social.entourage.android.api.model
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-class Interests : Serializable {
+class MetaData : Serializable {
     @SerializedName("id")
     var id: String? = null
 

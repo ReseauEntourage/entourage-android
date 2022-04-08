@@ -41,8 +41,8 @@
     <dimen name="role_margin">6dp</dimen>
 
     <declare-styleable name="RoundedCornersView">
-        <attr name="radius" format="dimension"/>
-        <attr name="cornersColor" format="color"/>
+        <attr name="radius" format="dimension" />
+        <attr name="cornersColor" format="color" />
     </declare-styleable>
 
     <!-- Override design_bottom_navigation_active_text_size to prevent bottom bar text grow when selected -->
@@ -57,5 +57,7 @@
     <dimen name="header_title">24sp</dimen>
     <dimen name="padding_top">25dp</dimen>
     <dimen name="padding_horizental">30dp</dimen>
+    <dimen name="list_item_spacing">16dp</dimen>
+    <dimen name="list_item_spacing_half">8dp</dimen>
 
 </resources>
