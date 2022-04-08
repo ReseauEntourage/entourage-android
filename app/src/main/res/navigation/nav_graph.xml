@@ -14,6 +14,9 @@
             android:id="@+id/action_profile_fragment_to_edit_profile_fragment"
             app:destination="@id/edit_profile_fragment" />
         <action
+            android:id="@+id/action_profile_fragment_to_user_fragment"
+            app:destination="@id/user_fragment" />
+        <action
             android:id="@+id/action_profile_fragment_to_association_fragment"
             app:destination="@id/association_fragment" />
         <action
@@ -71,4 +74,16 @@
     <fragment
         android:id="@+id/create_group_fragment"
         android:name="social.entourage.android.new_v8.group.CreateGroupFragment" />
+    <fragment
+        android:id="@+id/user_fragment"
+        android:name="social.entourage.android.new_v8.user.UserProfileFragment" >
+        <action
+            android:id="@+id/action_user_fragment_to_report_user_fragment"
+            app:destination="@id/report_user_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/report_user_fragment"
+        android:name="social.entourage.android.new_v8.user.ReportUserModalFragment" />
+
 </navigation>

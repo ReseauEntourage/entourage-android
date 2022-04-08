@@ -6,11 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide
 import androidx.navigation.fragment.findNavController
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.new_fragment_my_profile.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.MetaDataRepository
