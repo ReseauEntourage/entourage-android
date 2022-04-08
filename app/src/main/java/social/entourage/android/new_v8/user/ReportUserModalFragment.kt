@@ -52,6 +52,7 @@ class ReportUserModalFragment : BottomSheetDialogFragment() {
             if (success) getString(R.string.user_report_success)
             else getString(R.string.user_report_error_send_failed)
         )
+        dismiss()
     }
 
     private fun handleMetaData(tags: Tags?) {

@@ -63,7 +63,7 @@ class UserProfileFragment : Fragment() {
     }
 
     private fun initializeInterests() {
-        binding.interests.apply {
+        with(binding.interests) {
             val layoutManagerFlex = FlexboxLayoutManager(context)
             layoutManagerFlex.flexDirection = FlexDirection.ROW
             layoutManagerFlex.justifyContent = JustifyContent.CENTER

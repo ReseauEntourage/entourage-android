@@ -35,8 +35,8 @@ class ReportUserListAdapter(
             with(reportSignalList[position]) {
                 binding.title.text = this.name
                 binding.checkBox.setOnClickListener {
-                    if (!binding.checkBox.isChecked) onItemClick.onItemUncheck(this)
-                    else onItemClick.onItemCheck(this)
+                    if (binding.checkBox.isChecked) onItemClick.onItemCheck(this)
+                    else onItemClick.onItemUncheck(this)
                 }
             }
         }
