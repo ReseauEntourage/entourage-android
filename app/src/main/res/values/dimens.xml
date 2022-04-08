@@ -57,5 +57,6 @@
     <dimen name="header_title">24sp</dimen>
     <dimen name="padding_top">25dp</dimen>
     <dimen name="padding_horizental">30dp</dimen>
+    <dimen name="error_msg">11sp</dimen>
 
 </resources>

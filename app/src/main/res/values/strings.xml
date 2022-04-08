@@ -151,7 +151,7 @@
     <string name="edit_action_zone">Où souhaitez-vous agir ?</string>
     <string name="edit_action_zone_subtitle">Entourage est un réseau local!
         Découvrez les initiatives solidaires de votre quartier et tissez des liens avec vos voisins.</string>
-    <string name="add_location">Ajouter un lieu *</string>
+    <string name="add_location_mandatory">Ajouter un lieu *</string>
     <string name="city_or_department">Ville ou département</string>
     <string name="dont_communicate">* Entourage ne communique pas cette adresse.</string>
     <string name="validate">Valider</string>
@@ -165,6 +165,17 @@
     <string name="follow">S\'abonner</string>
     <string name="following">Abonné</string>
     <string name="ambassador">Ambassadeur</string>
+
+    <string name="group_name">Nom du groupe</string>
+    <string name="group_name_hint">Donnez un nom explicite au groupe</string>
+    <string name="write_description">Rédiger un descriptif</string>
+    <string name="write_description_hint">Décrivez rapidement l’objectif de discussion principal de ce groupe</string>
+    <string name="add_location">Ajouter un lieu</string>
+    <string name="add_location_hint">Adresse, ville ou département</string>
+    <string name="mandatory">- obligatoire</string>
+    <string name="optional">- facultatif</string>
+    <string name="step">Étape</string>
+    <string name="stepOne">01.</string>
 
 
 </resources>

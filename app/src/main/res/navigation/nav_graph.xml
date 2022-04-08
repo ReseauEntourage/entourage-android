@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_profile_fragment_to_association_fragment"
             app:destination="@id/association_fragment" />
+        <action
+            android:id="@+id/action_profile_fragment_to_create_group_fragment"
+            app:destination="@id/create_group_fragment" />
     </fragment>
 
     <fragment
@@ -62,4 +65,10 @@
             app:argType="integer" />
     </fragment>
 
+
+
+
+    <fragment
+        android:id="@+id/create_group_fragment"
+        android:name="social.entourage.android.new_v8.group.CreateGroupFragment" />
 </navigation>
