@@ -23,9 +23,6 @@ class InvitePresenter @Inject constructor(
     fun inviteBySMS(feedItemUUID: String, feedItemType: Int, invitations: MultipleInvitations) {
         if (feedItemType == TimestampedObject.ENTOURAGE_CARD) {
             inviteBySMSEntourage(feedItemUUID, invitations)
-        } else if (feedItemType == TimestampedObject.TOUR_CARD) {
-            // TODO Tour InviteBySMS
-            fragment?.onInviteSent(false)
         }
     }
 

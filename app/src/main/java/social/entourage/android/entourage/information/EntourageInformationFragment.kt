@@ -141,10 +141,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         //we received a chat notification
         //check if it is referring to this feed item
         val content = message.content ?: return false
-        if (content.isTourRelated ) {
-            return false
-        }
-        else if (content.joinableId != entourage.id) {
+        if (content.joinableId != entourage.id) {
             return false
         }
         //retrieve the last messages from server

@@ -18,7 +18,6 @@ import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
-import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.tools.EntBus
@@ -165,18 +164,14 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView) {
                         itemView.tour_card_button_act?.setText(R.string.tour_cell_button_pending)
                     }
                     FeedItem.JOIN_STATUS_ACCEPTED -> {
-                        if (feedItem.type == TimestampedObject.TOUR_CARD && feedItem.isOngoing()) {
-                            itemView.tour_card_button_act?.setText(R.string.tour_cell_button_ongoing)
-                        } else {
-                            EntourageApplication.get().me()?.let { currentUser ->
-                                if (author?.userID == currentUser.id) {
-                                    itemView.tour_card_button_act?.setText(R.string.tour_cell_button_accepted)
-                                } else {
-                                    itemView.tour_card_button_act?.setText(R.string.tour_cell_button_accepted_other)
-                                }
-                            } ?: run {
+                        EntourageApplication.get().me()?.let { currentUser ->
+                            if (author?.userID == currentUser.id) {
                                 itemView.tour_card_button_act?.setText(R.string.tour_cell_button_accepted)
+                            } else {
+                                itemView.tour_card_button_act?.setText(R.string.tour_cell_button_accepted_other)
                             }
+                        } ?: run {
+                            itemView.tour_card_button_act?.setText(R.string.tour_cell_button_accepted)
                         }
                     }
                     FeedItem.JOIN_STATUS_REJECTED -> {
@@ -251,11 +246,7 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView) {
             }
             FeedItem.JOIN_STATUS_ACCEPTED -> {
                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_ACTIVE_OVERLAY)
-                if (feedItem is Tour && feedItem.type == TimestampedObject.TOUR_CARD && feedItem.isOngoing()) {
-                    (itemView.context as? MainActivity)?.showStopTourFragment(feedItem as Tour)
-                } else {
-                    EntBus.post(OnFeedItemCloseRequestEvent(feedItem))
-                }
+                EntBus.post(OnFeedItemCloseRequestEvent(feedItem))
             }
             FeedItem.JOIN_STATUS_REJECTED -> {
                 //TODO: What to do on rejected status ?

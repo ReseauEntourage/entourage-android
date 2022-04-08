@@ -59,10 +59,6 @@ class EntourageJoinRequestReceivedActivity : BaseSecuredActivity() {
                     message?.content?.let {
                         requestsCount++
                         when {
-                            it.isTourRelated -> {
-                                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_JOIN_REQUEST_ACCEPT)
-                                presenter.acceptTourJoinRequest(it.joinableUUID, it.userId)
-                            }
                             it.isEntourageRelated -> {
                                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_JOIN_REQUEST_ACCEPT)
                                 presenter.acceptEntourageJoinRequest(it.joinableUUID, it.userId)
@@ -77,10 +73,6 @@ class EntourageJoinRequestReceivedActivity : BaseSecuredActivity() {
                     message?.content?.let {
                         requestsCount++
                         when {
-                            it.isTourRelated -> {
-                                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_JOIN_REQUEST_REJECT)
-                                presenter.rejectTourJoinRequest(it.joinableUUID, it.userId)
-                            }
                             it.isEntourageRelated -> {
                                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_JOIN_REQUEST_REJECT)
                                 presenter.rejectEntourageJoinRequest(it.joinableUUID, it.userId)

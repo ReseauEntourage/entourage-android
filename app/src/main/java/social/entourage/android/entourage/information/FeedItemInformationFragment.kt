@@ -37,7 +37,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_encounter_create.*
 import kotlinx.android.synthetic.main.fragment_entourage_information.*
 import kotlinx.android.synthetic.main.layout_entourage_information_top_buttons.*
 import kotlinx.android.synthetic.main.layout_entourage_options.*
@@ -66,7 +65,6 @@ import social.entourage.android.tools.EntError
 import social.entourage.android.tools.ShareMessageFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
-import social.entourage.android.tour.TourInformationFragment
 import timber.log.Timber
 import java.util.*
 import kotlin.math.abs
@@ -121,7 +119,6 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
                         }
                         it.setSelection(it.text.length)
                     }
-                    AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_OK)
                 }
             }
         }
@@ -404,7 +401,6 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
                     Snackbar.LENGTH_SHORT
                 ).show()
             }
-            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_NOT_SUPPORTED)
         }
     }
 
@@ -1641,8 +1637,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
             feedRank: Int,
             isFromActions: Boolean
         ): FeedItemInformationFragment {
-            val fragment =
-                if (feedItem.type == TimestampedObject.TOUR_CARD) TourInformationFragment() else EntourageInformationFragment()
+            val fragment = EntourageInformationFragment()
             val args = Bundle()
             args.putSerializable(FeedItem.KEY_FEEDITEM, feedItem)
             args.putLong(KEY_INVITATION_ID, invitationId)

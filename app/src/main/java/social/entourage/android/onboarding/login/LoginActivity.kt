@@ -211,7 +211,6 @@ class LoginActivity : BaseActivity() {
                     authenticationController.saveUser(loginResponse.user)
                 }
                 authenticationController.saveUserPhoneAndCode(phone, codePwd)
-                authenticationController.saveUserToursOnly(false)
 
                 //set the tutorial as done
                 val sharedPreferences = EntourageApplication.get().sharedPreferences

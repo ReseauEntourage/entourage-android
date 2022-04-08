@@ -1,11 +1,9 @@
 package social.entourage.android.api
 
-import android.app.Application
 import com.google.gson.ExclusionStrategy
 import com.google.gson.FieldAttributes
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.Expose
-import com.squareup.tape.FileObjectQueue
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -13,19 +11,12 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import social.entourage.android.BuildConfig
-import social.entourage.android.Constants
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.BaseEntourage.BaseEntourageJsonAdapter
 import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.api.model.feed.NewsfeedItem.NewsfeedItemJsonAdapter
 import social.entourage.android.api.request.*
-import social.entourage.android.api.tape.EncounterTapeTaskQueue
 import social.entourage.android.authentication.AuthenticationInterceptor
-import social.entourage.android.tools.GsonConverter
-import social.entourage.android.tour.encounter.CreateEncounterPresenter.EncounterUploadTask
-import timber.log.Timber
-import java.io.File
-import java.io.IOException
 import javax.inject.Singleton
 
 /**
@@ -95,18 +86,6 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun providesEncounterService(restAdapter: Retrofit): EncounterRequest {
-        return restAdapter.create(EncounterRequest::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun providesTourRequest(restAdapter: Retrofit): TourRequest {
-        return restAdapter.create(TourRequest::class.java)
-    }
-
-    @Provides
-    @Singleton
     fun providesUserRequest(restAdapter: Retrofit): UserRequest {
         return restAdapter.create(UserRequest::class.java)
     }
@@ -143,30 +122,8 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun providesEncounterTapeTaskQueue(application: Application): EncounterTapeTaskQueue {
-        val gson = GsonBuilder().create()
-        val converter: FileObjectQueue.Converter<EncounterUploadTask> =
-            GsonConverter(gson, EncounterUploadTask::class.java)
-        val queueFile = File(application.applicationContext.filesDir, Constants.FILENAME_TAPE_QUEUE)
-        var delegate: FileObjectQueue<EncounterUploadTask>? = null
-        try {
-            delegate = FileObjectQueue(queueFile, converter)
-        } catch (e: IOException) {
-            Timber.e(e)
-        }
-        return EncounterTapeTaskQueue(delegate, application.applicationContext)
-    }
-
-    @Provides
-    @Singleton
     fun providesSharingEntourageRequest(restAdapter: Retrofit): SharingRequest {
         return restAdapter.create(SharingRequest::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun providesTourAreaService(restAdapter: Retrofit): TourAreaRequest {
-        return restAdapter.create(TourAreaRequest::class.java)
     }
 
     @Provides

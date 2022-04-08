@@ -4,7 +4,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
@@ -19,7 +18,6 @@ import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.guide.Poi
-import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BackPressable
 import social.entourage.android.base.BaseSecuredActivity
@@ -42,11 +40,6 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.log.AnalyticsEvents.logEvent
 import social.entourage.android.tools.log.AnalyticsEvents.onLocationPermissionGranted
 import social.entourage.android.tools.log.AnalyticsEvents.updateUserInfo
-import social.entourage.android.tour.TourInformationFragment.OnTourInformationFragmentFinish
-import social.entourage.android.tour.ToursFragment
-import social.entourage.android.tour.choice.ChoiceFragment
-import social.entourage.android.tour.confirmation.TourEndConfirmationFragment
-import social.entourage.android.tour.encounter.EncounterDisclaimerFragment
 import social.entourage.android.user.AvatarUploadPresenter
 import social.entourage.android.user.AvatarUploadView
 import social.entourage.android.user.UserFragment
@@ -54,16 +47,12 @@ import social.entourage.android.user.edit.UserEditFragment
 import social.entourage.android.user.edit.photo.PhotoChooseInterface
 import social.entourage.android.user.edit.photo.PhotoEditFragment
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
-import social.entourage.android.user.edit.place.UserEditActionZoneFragmentCompat
 import timber.log.Timber
 import java.io.File
-import java.util.*
 import javax.inject.Inject
 
 class MainActivity : BaseSecuredActivity(),
-    OnTourInformationFragmentFinish,
     EntourageDisclaimerFragment.OnFragmentInteractionListener,
-    EncounterDisclaimerFragment.OnFragmentInteractionListener,
     PhotoChooseInterface,
     UserEditActionZoneFragment.FragmentListener,
     AvatarUploadView {
@@ -83,9 +72,6 @@ class MainActivity : BaseSecuredActivity(),
 
     private val homeFragment: HomeExpertFragment?
         get() = supportFragmentManager.findFragmentByTag(HomeExpertFragment.TAG) as? HomeExpertFragment
-
-    private val tourFragment: ToursFragment?
-        get() = supportFragmentManager.findFragmentByTag(ToursFragment.TAG) as? ToursFragment
 
     // ----------------------------------
     // LIFECYCLE
@@ -324,7 +310,6 @@ class MainActivity : BaseSecuredActivity(),
     }
 
     public override fun logout() {
-        homeFragment?.saveOngoingTour()
         //remove user phone
         val sharedPreferences = EntourageApplication.get().sharedPreferences
         val editor = sharedPreferences.edit()
@@ -362,7 +347,7 @@ class MainActivity : BaseSecuredActivity(),
             event.extras?.getSerializable(PushNotificationManager.PUSH_MESSAGE) as Message?
         if (message != null) {
             message.content?.let { content ->
-                if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE == event.action && !content.isTourRelated && !content.isEntourageRelated) {
+                if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE == event.action && !content.isEntourageRelated) {
                     showMyEntourages()
                 }
             }
@@ -422,18 +407,6 @@ class MainActivity : BaseSecuredActivity(),
         }
     }
 
-    override fun showStopTourFragment(tour: Tour) {
-        homeFragment?.pauseTour(tour)
-        TourEndConfirmationFragment
-            .newInstance(tour)
-            .show(supportFragmentManager, TourEndConfirmationFragment.TAG)
-    }
-
-    fun closeChoiceFragment(fragment: ChoiceFragment, tour: Tour) {
-        supportFragmentManager.beginTransaction().remove(fragment).commit()
-        tourFragment?.displayChosenFeedItem(tour, 0)
-    }
-
     override fun onEntourageDisclaimerAccepted(fragment: EntourageDisclaimerFragment?) {
         // Save the entourage disclaimer shown flag
         try {
@@ -446,15 +419,6 @@ class MainActivity : BaseSecuredActivity(),
         } catch (e: IllegalStateException) {
             Timber.w(e)
         }
-    }
-
-    override fun onEncounterDisclaimerAccepted(fragment: EncounterDisclaimerFragment) {
-        // Save the entourage disclaimer shown flag
-        authenticationController.encounterDisclaimerShown = true
-
-        // Dismiss the disclaimer fragment
-        fragment.dismiss()
-        addEncounter()
     }
 
     override fun onPhotoBack() {
@@ -493,11 +457,6 @@ class MainActivity : BaseSecuredActivity(),
         homeFragment?.displayEntourageDisclaimer()
     }
 
-    fun addEncounter() {
-        showFeed()
-        homeFragment?.onAddEncounter()
-    }
-
     // ----------------------------------
     // PUSH NOTIFICATION HANDLING
     // ----------------------------------
@@ -532,14 +491,7 @@ class MainActivity : BaseSecuredActivity(),
     }
 
     private fun removePushNotification(content: PushNotificationContent, contentType: String) {
-        if (content.isTourRelated) {
-            EntourageApplication.get().removePushNotification(
-                content.joinableId,
-                TimestampedObject.TOUR_CARD,
-                content.userId,
-                contentType
-            )
-        } else if (content.isEntourageRelated) {
+        if (content.isEntourageRelated) {
             EntourageApplication.get().removePushNotification(
                 content.joinableId,
                 TimestampedObject.ENTOURAGE_CARD,

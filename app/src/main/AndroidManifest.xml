@@ -231,23 +231,12 @@
             android:name=".service.EntService"
             android:exported="false" />
         <service
-            android:name=".api.tape.EncounterTapeService"
-            android:exported="false" />
-        <service
             android:name=".message.push.EntourageFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-        <!-- Receivers -->
-        <!--@TODO reactivate this
-        <receiver android:name=".api.tape.EncounterTapeService$ConnectionChangeReceiver">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
-            </intent-filter>
-        </receiver-->
 
         <provider
             android:name="androidx.core.content.FileProvider"

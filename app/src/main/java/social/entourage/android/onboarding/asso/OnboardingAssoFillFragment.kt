@@ -16,7 +16,6 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.activity_encounter_create.*
 import kotlinx.android.synthetic.main.fragment_onboarding_asso_fill.*
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner

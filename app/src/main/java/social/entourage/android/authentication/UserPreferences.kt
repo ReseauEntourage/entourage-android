@@ -1,7 +1,6 @@
 package social.entourage.android.authentication
 
 import com.google.gson.annotations.Expose
-import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.entourage.my.filter.MyEntouragesFilter
 import social.entourage.android.base.map.filter.MapFilter
 import java.io.Serializable
@@ -12,12 +11,9 @@ import java.io.Serializable
  */
 class UserPreferences : Serializable {
 
-    var isUserToursOnly = false
     var isShowInfoPOIsPopup = true
-    var isShowEncounterDisclaimer = false
     var mapFilter: MapFilter? = null
     var myEntouragesFilter: MyEntouragesFilter? = null
-    var ongoingTour: Tour? = null
 
     @Expose(serialize = false)
     var isShowNoEntouragesPopup = true
@@ -27,8 +23,6 @@ class UserPreferences : Serializable {
     var isIgnoringActionZone = false
     @Expose(serialize = false)
     var isEntourageDisclaimerShown = false
-    @Expose(serialize = false)
-    var isEncounterDisclaimerShown = false
     @Expose(serialize = false)
     var isOnboardingUser = false
     @Expose(serialize = false)

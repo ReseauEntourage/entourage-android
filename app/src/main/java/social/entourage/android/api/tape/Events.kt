@@ -5,7 +5,6 @@ import android.os.Bundle
 import com.google.android.gms.maps.model.LatLng
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.feed.FeedItem
-import social.entourage.android.api.model.tour.Encounter
 
 open class Events {
     /**
@@ -217,17 +216,4 @@ open class Events {
     class OnJoinRequestAccepted(val content: PushNotificationContent)
 
     class OnAddPushNotification(val message: Message)
-
-    open class TourEvents {
-        /**
-         * Event signaling that an encounter was created (or not)
-         */
-        class OnEncounterCreated(val encounter: Encounter?)
-
-        /**
-         * Event signaling that an encounter was updated
-         */
-        class OnEncounterUpdated(val encounter: Encounter)
-
-    }
 }

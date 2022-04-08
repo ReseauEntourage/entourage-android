@@ -17,7 +17,7 @@ import java.util.*
  */
 object AnalyticsEvents {
     // Analytics events
-    const val EVENT_OPEN_ENCOUNTER_FROM_MAP = "Open_Encounter_From_Map"
+    //const val EVENT_OPEN_ENCOUNTER_FROM_MAP = "Open_Encounter_From_Map"
     const val EVENT_OPEN_POI_FROM_MAP = "Open_POI_From_Map"
 
     //----------------------------//
@@ -250,7 +250,6 @@ object AnalyticsEvents {
     const val EVENT_FEED_FILTERSCLICK = "FeedFiltersPress"
     const val EVENT_FEED_REFRESH_LIST = "RefreshListPage"
     const val EVENT_FEED_SCROLL_LIST = "ScrollListPage"
-    const val EVENT_FEED_TOUR_CREATE_CLICK = "TourCreateClick"
     const val EVENT_FEED_ACTION_CREATE_CLICK = "CreateActionClick"
     const val EVENT_FEED_PENDING_OVERLAY = "PendingRequestOverlay"
     const val EVENT_FEED_CANCEL_JOIN_REQUEST = "CancelJoinRequest"
@@ -309,8 +308,8 @@ object AnalyticsEvents {
     const val ACTION_PLUS_CREATE_ASKFORHELP = "Action__Plus__CreateAskForHelp"
     const val ACTION_PLUS_CREATE_CONTRIBUTE = "Action__Plus__CreateContribute"
     const val ACTION_PLUS_CREATE_OUTING = "Action__Plus__CreateOuting"
-    const val ACTION_PLUS_START_TOUR = "Action__Plus__StartTour"
-    const val ACTION_PLUS_ADD_ENCOUNTER = "Action__Plus__AddEncounter"
+    //const val ACTION_PLUS_START_TOUR = "Action__Plus__StartTour"
+    //const val ACTION_PLUS_ADD_ENCOUNTER = "Action__Plus__AddEncounter"
     const val ACTION_PLUS_BACK = "Action__Plus__BackPressed"
 
     //MY ENTOURAGES FILTER Events
@@ -323,32 +322,11 @@ object AnalyticsEvents {
     const val EVENT_MYENTOURAGES_FILTER_PAST = "ExcludeClosedEntouragesFilter"
     const val EVENT_MYENTOURAGES_FILTER_ASK = "AskMessagesFilter"
     const val EVENT_MYENTOURAGES_FILTER_OFFER = "OfferMessagesFilter"
-    const val EVENT_MYENTOURAGES_FILTER_TOUR = "TourMessagesFilter"
 
     //ENTOURAGE DISCLAIMER Events
     const val EVENT_ENTOURAGE_DISCLAIMER_CLOSE = "CloseEthicsPopupClick"
     const val EVENT_ENTOURAGE_DISCLAIMER_ACCEPT = "AcceptEthicsChartClick"
     const val EVENT_ENTOURAGE_DISCLAIMER_LINK = "LinkToEthicsChartClick"
-
-    //TOUR Events
-    const val EVENT_START_TOUR = "StartTourClick"
-    const val EVENT_STOP_TOUR = "TourStop"
-    const val EVENT_RESTART_TOUR = "TourRestart"
-    const val EVENT_OPEN_TOUR_LAUNCHER_FROM_MAP = "Open_Tour_Launcher_From_Map"
-    const val EVENT_TOUR_MEDICAL = "MedicalTourChoose"
-    const val EVENT_TOUR_SOCIAL = "SocialTourChoose"
-    const val EVENT_TOUR_DISTRIBUTION = "DistributionTourChoose"
-    const val EVENT_TOUR_SUSPEND = "SuspendTourClick"
-    const val EVENT_TOUR_PLUS_CLICK = "PlusOnTourClick"
-
-    //TOUR ENCOUNTER Events
-    const val EVENT_CREATE_ENCOUNTER_CLICK = "CreateEncounterClick"
-    const val EVENT_CREATE_ENCOUNTER_START = "Open_Create_Encounter_From_Tour"
-    const val EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_OK = "Encounter_Voice_Message_Recorded_OK"
-    const val EVENT_CREATE_ENCOUNTER_OK = "Encounter_Created"
-    const val EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_STARTED = "Encounter_VoiceMsgRecord_Started"
-    const val EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_NOT_SUPPORTED = "Encounter_VoiceMsgRecord_Not_Supported"
-    const val EVENT_CREATE_ENCOUNTER_FAILED = "Encounter_Create_Failed"
 
     //MAP Filter Events
     const val EVENT_MAP_FILTER_FILTER1 = "ClickFilter1Value"
@@ -358,9 +336,6 @@ object AnalyticsEvents {
     const val EVENT_MAP_FILTER_ONLY_TOURS = "ShowToursOnlyFilterClick"
     const val EVENT_MAP_FILTER_ONLY_OFFERS = "ShowOnlyOffersClick"
     const val EVENT_MAP_FILTER_ONLY_ASK = "ShowOnlyAsksClick"
-    const val EVENT_MAP_FILTER_ONLY_MEDICAL_TOURS = "ShowOnlyMedicalToursClick"
-    const val EVENT_MAP_FILTER_ONLY_SOCIAL_TOURS = "ShowOnlySocialToursClick"
-    const val EVENT_MAP_FILTER_ONLY_DISTRIBUTION_TOURS = "ShowOnlyDistributionToursClick"
     const val EVENT_MAP_FILTER_ACTION_CATEGORY = "FilterActionSubtypeClick"
     const val EVENT_MAP_FILTER_SUBMIT = "SubmitFilterPreferences"
     const val EVENT_MAP_FILTER_CLOSE = "CloseFilter"
@@ -389,11 +364,6 @@ object AnalyticsEvents {
     const val EVENT_ABOUT_FEEDBACK = "OpenFeedbackFromAbout"
     const val EVENT_ABOUT_OSS = "OpenOpenSourceLibrariesFromAbout"
     const val EVENT_ABOUT_EMAIL = "OpenEmailFromAbout"
-
-    // Encounter Popup While Tour Events
-    const val EVENT_ENCOUNTER_POPUP_SHOW = "SwitchToEncounterPopupView"
-    const val EVENT_ENCOUNTER_POPUP_ENCOUNTER = "SwitchToCreateEncounter"
-    const val EVENT_ENCOUNTER_POPUP_ENTOURAGE = "ContinueCreatePublicEntourage"
 
     //Notifications
     const val EVENT_NOTIFICATION_RECEIVED = "NotificationReceived"
@@ -475,7 +445,6 @@ object AnalyticsEvents {
      * New home feed Expert
      */
     const val VIEW_START_EXPERTFEED = "View__Start__ExpertFeed"
-    const val ACTION_EXPERTFEED_Tour = "Action__ExpertFeed__Tour"
     //Feed Expert Headline
     const val ACTION_EXPERTFEED_News_Announce = "Action__ExpertFeed__News_Announce"
     const val ACTION_EXPERTFEED_News_Event = "Action__ExpertFeed__News_Event"
@@ -554,7 +523,7 @@ object AnalyticsEvents {
 
         val mFirebaseAnalytics = get().firebase
         mFirebaseAnalytics.setUserId(user.id.toString())
-        mFirebaseAnalytics.setUserProperty("EntourageUserType", if (user.isPro) "Pro" else "Public")
+        mFirebaseAnalytics.setUserProperty("EntourageUserType", "Public")
         mFirebaseAnalytics.setUserProperty("Language", Locale.getDefault().language)
         user.partner?.let {
             mFirebaseAnalytics.setUserProperty("EntouragePartner", it.name)

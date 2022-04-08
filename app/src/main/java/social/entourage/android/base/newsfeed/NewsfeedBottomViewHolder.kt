@@ -46,17 +46,10 @@ class NewsfeedBottomViewHolder(view: View) : BaseCardViewHolder(view) {
                         }
                     }
                     itemView.newsfeed_tab_all_content?.visibility = View.VISIBLE
-                    itemView.newsfeed_tab_tours_content?.visibility = View.GONE
-                    itemView.newsfeed_tab_events_content?.visibility = View.GONE
-                }
-                NewsfeedTabItem.TOUR_TAB -> {
-                    itemView.newsfeed_tab_all_content?.visibility = View.GONE
-                    itemView.newsfeed_tab_tours_content?.visibility = if(contentType!= CONTENT_TYPE_NO_MORE_ITEMS) View.VISIBLE else View.GONE
                     itemView.newsfeed_tab_events_content?.visibility = View.GONE
                 }
                 NewsfeedTabItem.EVENTS_TAB -> {
                     itemView.newsfeed_tab_all_content?.visibility = View.GONE
-                    itemView.newsfeed_tab_tours_content?.visibility = View.GONE
                     itemView.newsfeed_tab_events_content?.visibility = if(contentType!= CONTENT_TYPE_NO_MORE_ITEMS) View.VISIBLE else View.GONE
                 }
             }

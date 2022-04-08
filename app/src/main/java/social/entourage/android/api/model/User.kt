@@ -37,9 +37,6 @@ class User : Serializable {
     @SerializedName("avatar_url")
     var avatarURL: String?
 
-    @SerializedName("user_type")
-    private val type: String = TYPE_PUBLIC
-
     @SerializedName("firebase_properties")
     val firebaseProperties: UserFirebaseProperties? = null
     var about: String? = ""
@@ -129,21 +126,6 @@ class User : Serializable {
     fun isCreateEventActive(): Boolean {
         return permissions?.isEventCreationActive() ?: false
     }
-
-    fun incrementTours() {
-        stats?.let { stat ->
-            stat.tourCount += 1
-        }
-    }
-
-    fun incrementEncouters() {
-        stats?.let { stat ->
-            stat.encounterCount += 1
-        }
-    }
-
-    val isPro: Boolean
-        get() = TYPE_PRO == type
 
     fun asTourAuthor(): FeedItemAuthor {
         return FeedItemAuthor(avatarURL, id, displayName, partner)
@@ -270,8 +252,7 @@ class User : Serializable {
         const val KEY_USER_ID = "social.entourage.android.KEY_USER_ID"
 
         //const val KEY_USER = "social.entourage.android.KEY_USER"
-        const val TYPE_PUBLIC = "public"
-        const val TYPE_PRO = "pro"
+        //const val TYPE_PUBLIC = "public"
         private const val USER_ROLE_ETHICS_CHARTER_SIGNED = "ethics_charter_signed"
         const val USER_GOAL_NEIGHBOUR = "offer_help"
         const val USER_GOAL_ALONE = "ask_for_help"

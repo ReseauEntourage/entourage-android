@@ -3,13 +3,10 @@ package social.entourage.android.authentication
 import com.google.gson.reflect.TypeToken
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.User
-import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
-import social.entourage.android.entourage.my.filter.MyEntouragesFilter
 import social.entourage.android.base.map.filter.MapFilter
+import social.entourage.android.entourage.my.filter.MyEntouragesFilter
 import social.entourage.android.tools.EntBus
-import java.util.*
-import kotlin.collections.HashMap
 
 /**
  * Controller that managed the authenticated user and persist it on the phone
@@ -56,20 +53,6 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
         user?.let { user ->
             user.phone = phone
             user.smsCode = smsCode
-            saveCurrentUser()
-        }
-    }
-
-    fun incrementUserToursCount() {
-        user?.let { user ->
-            user.incrementTours()
-            saveCurrentUser()
-        }
-    }
-
-    fun incrementUserEncountersCount() {
-        user?.let { user ->
-            user.incrementEncouters()
             saveCurrentUser()
         }
     }
@@ -126,22 +109,10 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
 
     ///////////////////////////////
     // userPreferences
-    fun saveUserToursOnly(choice: Boolean) {
-        userPreferences.isUserToursOnly = choice
-        saveUserPreferences()
-    }
-
     var entourageDisclaimerShown: Boolean
         get() = userPreferences.isEntourageDisclaimerShown
         set(isEntourageDisclaimerShown) {
             userPreferences.isEntourageDisclaimerShown = isEntourageDisclaimerShown
-            saveUserPreferences()
-        }
-
-    var encounterDisclaimerShown: Boolean
-        get() = userPreferences.isEncounterDisclaimerShown
-        set(isEncounterDisclaimerShown) {
-            userPreferences.isEncounterDisclaimerShown = isEncounterDisclaimerShown
             saveUserPreferences()
         }
 
@@ -158,9 +129,6 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
             userPreferences.isEditActionZoneShown = isEditActionZoneShown
             saveUserPreferences()
         }
-
-    val isUserToursOnly: Boolean
-        get() = userPreferences.isUserToursOnly
 
     var isShowNoEntouragesPopup: Boolean
         get() = userPreferences.isShowNoEntouragesPopup
@@ -180,13 +148,6 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
         get() = userPreferences.isShowInfoPOIsPopup
         set(showInfoPOIsPopup) {
             userPreferences.isShowInfoPOIsPopup = showInfoPOIsPopup
-            saveUserPreferences()
-        }
-
-    var isShowEncounterDisclaimer: Boolean
-        get() = userPreferences.isShowEncounterDisclaimer
-        set(showEncounterDisclaimer) {
-            userPreferences.isShowEncounterDisclaimer = showEncounterDisclaimer
             saveUserPreferences()
         }
 
@@ -218,16 +179,6 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
 
     fun saveMyEntouragesFilter() {
         saveUserPreferences()
-    }
-
-    val savedTour: Tour?
-        get() = userPreferences.ongoingTour
-
-    fun saveTour(tour: Tour?) {
-        if (user != null) {
-            userPreferences.ongoingTour = tour
-            saveUserPreferences()
-        }
     }
 
     private fun saveCurrentUser() {

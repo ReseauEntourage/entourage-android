@@ -84,11 +84,6 @@ class EntBottomNavigationView : BottomNavigationView {
                 // Show directly the create entourage disclaimer
                 activity.createEntourage()
                 return true
-            } else if (activity.authenticationController.savedTour != null) {
-                // Show directly the create encounter
-                //TODO should be bound to service
-                activity.addEncounter()
-                return true
             }
         }
         return false

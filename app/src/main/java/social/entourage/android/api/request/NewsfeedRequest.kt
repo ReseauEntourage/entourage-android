@@ -51,7 +51,6 @@ interface NewsfeedRequest {
             @Query("page") page: Int,
             @Query("per") per: Int,
             @Query("entourage_types") entourageTypes: String?,
-            @Query("tour_types") tourTypes: String?,
             @Query("status") status: String?,
             @Query("created_by_me") createdByMe: Boolean,
             @Query("show_my_partner_only") showMyPartnerOnly: Boolean,

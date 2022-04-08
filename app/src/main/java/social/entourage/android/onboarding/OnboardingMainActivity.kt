@@ -196,7 +196,6 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                     authenticationController.saveUser(loginResponse.user)
                 }
                 authenticationController.saveUserPhoneAndCode(phoneNumber, temporaryPasscode)
-                authenticationController.saveUserToursOnly(false)
 
                 //set the tutorial as done
                 val sharedPreferences = EntourageApplication.get().sharedPreferences

@@ -79,7 +79,6 @@ class OnboardingAPI {
                     response.body()?.user?.let {
                         authenticationController.saveUser(it)
                         authenticationController.saveUserPhoneAndCode(phoneNumber, smsCode)
-                        authenticationController.saveUserToursOnly(false)
                     }
 
                     listener(true,response.body(),null)

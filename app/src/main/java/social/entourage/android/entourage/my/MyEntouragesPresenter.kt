@@ -32,7 +32,6 @@ class MyEntouragesPresenter @Inject constructor(
                 page,
                 per,
                 filter.actionGroupTypes,
-                filter.tourTypes,
                 filter.status,
                 filter.showOwnEntouragesOnly,
                 filter.showPartnerEntourages,

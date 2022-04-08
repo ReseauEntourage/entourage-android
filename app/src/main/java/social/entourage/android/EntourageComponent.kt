@@ -6,8 +6,6 @@ import okhttp3.OkHttpClient
 import social.entourage.android.api.ApiModule
 import social.entourage.android.api.PhotoGalleryRequest
 import social.entourage.android.api.request.*
-import social.entourage.android.api.tape.EncounterTapeService
-import social.entourage.android.api.tape.EncounterTapeTaskQueue
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.authentication.AuthenticationModule
 import social.entourage.android.authentication.ComplexPreferences
@@ -23,15 +21,10 @@ import javax.inject.Singleton
 interface EntourageComponent {
     fun inject(application: Application?)
     fun inject(service: EntService?)
-    fun inject(service: EncounterTapeService?)
     val authenticationController: AuthenticationController
-    val encounterTapeTaskQueue: EncounterTapeTaskQueue
     val applicationInfoRequest: ApplicationInfoRequest
-
-    //val encounterRequest: EncounterRequest?
     val loginRequest: LoginRequest
     val poiRequest: PoiRequest
-    val tourRequest: TourRequest
     val userRequest: UserRequest
     val entourageRequest: EntourageRequest
     val newsfeedRequest: NewsfeedRequest
@@ -40,7 +33,6 @@ interface EntourageComponent {
     val sharingRequest: SharingRequest
     val okHttpClient: OkHttpClient
     val complexPreferences: ComplexPreferences?
-    val tourAreaRequest: TourAreaRequest
     val photoGalleryRequest: PhotoGalleryRequest
     val conversationsRequest: ConversationsRequest
     val metaDataRequest: MetaDataRequest

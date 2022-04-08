@@ -47,7 +47,7 @@ abstract class TimestampedObject {
         const val TOUR_USER_JOIN = 3
         const val TOUR_STATUS = 4
         const val ENCOUNTER = 5
-        const val TOUR_CARD = 6
+        //const val TOUR_CARD = 6
         const val ENTOURAGE_CARD = 7
         const val FEED_MEMBER_CARD = 8
         const val INVITATION_CARD = 9

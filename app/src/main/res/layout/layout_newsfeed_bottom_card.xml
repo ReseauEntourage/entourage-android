@@ -63,23 +63,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/newsfeed_tab_tours_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone"
-            tools:visibility="visible">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="@string/newsfeed_no_tours"
-                android:textColor="@color/greyish_brown"
-                android:textSize="@dimen/entourage_font_medium" />
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/newsfeed_tab_events_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

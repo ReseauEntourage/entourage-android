@@ -23,7 +23,6 @@ class HomeExpertPresenter @Inject constructor(
     private val fragment: HomeExpertFragment?,
     internal val authenticationController: AuthenticationController,
     private val entourageRequest: EntourageRequest,
-    private val tourRequest: TourRequest,
     private val invitationRequest: InvitationRequest) {
 
     private val isOnboardingUser: Boolean
@@ -36,17 +35,15 @@ class HomeExpertPresenter @Inject constructor(
         when (action) {
             PushNotificationContent.TYPE_NEW_CHAT_MESSAGE,
             PushNotificationContent.TYPE_NEW_JOIN_REQUEST,
-            PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED -> if (content.isTourRelated) {
-                openFeedItemFromUUID(content.joinableUUID, TimestampedObject.TOUR_CARD)
-            } else if (content.isEntourageRelated) {
+            PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED -> if (content.isEntourageRelated) {
                 openFeedItemFromUUID(content.joinableUUID, TimestampedObject.ENTOURAGE_CARD)
             }
             PushNotificationContent.TYPE_ENTOURAGE_INVITATION -> content.extra?.let { extra ->
                 openFeedItemFromUUID(extra.entourageId.toString(), TimestampedObject.ENTOURAGE_CARD, extra.invitationId.toLong())
             }
             PushNotificationContent.TYPE_INVITATION_STATUS -> content.extra?.let {
-                if (content.isEntourageRelated || content.isTourRelated) {
-                    openFeedItemFromUUID(content.joinableUUID, if (content.isTourRelated) TimestampedObject.TOUR_CARD else TimestampedObject.ENTOURAGE_CARD)
+                if (content.isEntourageRelated) {
+                    openFeedItemFromUUID(content.joinableUUID, TimestampedObject.ENTOURAGE_CARD)
                 }
             }
         }
@@ -67,20 +64,6 @@ class HomeExpertPresenter @Inject constructor(
                         }
                     }
                     override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
-                    }
-                })
-            }
-            TimestampedObject.TOUR_CARD -> {
-                val call = tourRequest.retrieveTourById(feedItemUUID)
-                call.enqueue(object : Callback<TourResponse> {
-                    override fun onResponse(call: Call<TourResponse>, response: Response<TourResponse>) {
-                        response.body()?.tour?.let {
-                            if (response.isSuccessful) {
-                                fragment?.openFeedItem(it, invitationId)
-                            }
-                        }
-                    }
-                    override fun onFailure(call: Call<TourResponse>, t: Throwable) {
                     }
                 })
             }

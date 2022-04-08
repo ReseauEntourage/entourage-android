@@ -1,9 +1,7 @@
 package social.entourage.android.entourage.my.filter
 
 import android.content.Context
-import com.google.gson.annotations.Expose
 import social.entourage.android.EntourageApplication
-import social.entourage.android.api.model.tour.TourType
 import social.entourage.android.api.model.BaseEntourage
 import java.io.Serializable
 
@@ -20,10 +18,6 @@ class MyEntouragesFilter  : Serializable {
         get() = false // in 5.0+ we ignore this setting
     var isEntourageTypeDemand = true
     var isEntourageTypeContribution = true
-    var isShowTours = true
-
-    @Expose(serialize = false, deserialize = false)
-    private var allTourTypes: String? = null// in 5.0+ force to show all entourages
 
     // in 5.0+ we ignore this setting
     val showOwnEntouragesOnly
@@ -56,23 +50,6 @@ class MyEntouragesFilter  : Serializable {
         get() {
             isClosedEntourages = true // in 5.0+ force to show closed entourages
             return if (isClosedEntourages) "all" else "active"
-        }
-
-    // in 5.0+ force to show all the tours
-    val tourTypes: String
-        get() {
-            isShowTours = true // in 5.0+ force to show all the tours
-            if (isShowTours) {
-                if (allTourTypes == null) {
-                    allTourTypes = (TourType.MEDICAL.typeName
-                            + ','
-                            + TourType.BARE_HANDS.typeName
-                            + ','
-                            + TourType.ALIMENTARY.typeName)
-                }
-                return allTourTypes ?: ""
-            }
-            return ""
         }
 
     companion object {

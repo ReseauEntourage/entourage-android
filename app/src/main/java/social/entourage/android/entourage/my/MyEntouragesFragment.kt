@@ -204,7 +204,7 @@ class MyEntouragesFragment  : BaseDialogFragment(), BaseViewHolderListener, Load
 
     private fun onPushNotificationReceived(message: Message) {
         val content = message.content ?: return
-        val cardType: Int = if (content.isTourRelated) TimestampedObject.TOUR_CARD else if (content.isEntourageRelated) TimestampedObject.ENTOURAGE_CARD else return
+        val cardType: Int = if (content.isEntourageRelated) TimestampedObject.ENTOURAGE_CARD else return
         val card = entouragesAdapter.findCard(cardType, content.joinableId)
         if (card is FeedItem) {
             card.increaseBadgeCount(PushNotificationContent.TYPE_NEW_CHAT_MESSAGE == content.type)

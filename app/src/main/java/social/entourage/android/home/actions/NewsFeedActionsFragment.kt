@@ -14,13 +14,11 @@ import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_home_news.*
 import kotlinx.android.synthetic.main.fragment_map.fragment_map_filter_button
 import kotlinx.android.synthetic.main.fragment_map.fragment_map_main_layout
-import kotlinx.android.synthetic.main.fragment_map.tour_stop_button
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.feed.NewsfeedItem
-import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BackPressable
 import social.entourage.android.base.map.filter.MapFilterFactory
@@ -31,7 +29,6 @@ import social.entourage.android.service.EntService
 import social.entourage.android.service.EntService.LocalBinder
 import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.tools.view.EntSnackbar
-import social.entourage.android.tour.join.TourJoinRequestFragment
 import timber.log.Timber
 
 open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListener, BackPressable {
@@ -171,8 +168,6 @@ open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListene
         //for public user, start the create entourage funnel directly
         // save the tap coordinates
         longTapCoordinates = latLng
-        //hide the FAB menu
-        tour_stop_button?.visibility = View.GONE
         displayEntourageDisclaimer()
     }
 
@@ -228,11 +223,6 @@ open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListene
             if (activity.isFinishing) return
             try {
                 updatedFeedItem.joinStatus = user.status ?: ""
-                if (user.status == FeedItem.JOIN_STATUS_PENDING) {
-                    if (updatedFeedItem is Tour) {
-                        TourJoinRequestFragment.newInstance(updatedFeedItem).show(activity.supportFragmentManager, TourJoinRequestFragment.TAG)
-                    }
-                }
             } catch (e: IllegalStateException) {
                 Timber.w(e)
             }
@@ -246,15 +236,8 @@ open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListene
         val newList = ArrayList<NewsfeedItem>()
         try {
             for (newsfeed in tempList) {
-                (newsfeed.data as? Tour)?.let {card ->
-                    //TODO verify if we can write !=true instead of !()==true when not a tour
-                    if (!((newsfeedAdapter?.findCard(card) as? Tour)?.isSame(card)==true)) {
-                        newList.add(newsfeed)
-                    }
-                } ?: run {
-                    if(newsfeed.data != null) {
-                        newList.add(newsfeed)
-                    }
+                if(newsfeed.data != null) {
+                    newList.add(newsfeed)
                 }
             }
         } catch (e: IllegalStateException) {

@@ -12,7 +12,6 @@ import retrofit2.Response
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
-import social.entourage.android.api.model.tour.Encounter
 import social.entourage.android.api.request.*
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.entourage.EntourageDisclaimerFragment
@@ -20,8 +19,6 @@ import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.create.BaseCreateEntourageFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.base.map.MapClusterEntourageItem
-import social.entourage.android.base.map.MapClusterTourItem
-import social.entourage.android.tour.ToursFragment
 import social.entourage.android.onboarding.InputNamesFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
@@ -37,7 +34,6 @@ class NewsfeedPresenter @Inject constructor(
     private val fragment: NewsfeedFragment?,
     internal val authenticationController: AuthenticationController,
     private val entourageRequest: EntourageRequest,
-    private val tourRequest: TourRequest,
     private val invitationRequest: InvitationRequest) {
 
     val isOnboardingUser: Boolean
@@ -54,10 +50,6 @@ class NewsfeedPresenter @Inject constructor(
     fun start() {
         onClickListener = OnEntourageMarkerClickListener()
         onGroundOverlayClickListener = OnEntourageGroundOverlayClickListener()
-    }
-
-    fun incrementUserToursCount() {
-        authenticationController.incrementUserToursCount()
     }
 
     var isShowNoEntouragesPopup: Boolean
@@ -89,20 +81,6 @@ class NewsfeedPresenter @Inject constructor(
                         }
                     }
                     override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
-                    }
-                })
-            }
-            TimestampedObject.TOUR_CARD -> {
-                val call = tourRequest.retrieveTourById(feedItemUUID)
-                call.enqueue(object : Callback<TourResponse> {
-                    override fun onResponse(call: Call<TourResponse>, response: Response<TourResponse>) {
-                        response.body()?.tour?.let {
-                            if (response.isSuccessful) {
-                                openFeedItem(it, invitationId, 0)
-                            }
-                        }
-                    }
-                    override fun onFailure(call: Call<TourResponse>, t: Throwable) {
                     }
                 })
             }
@@ -167,52 +145,13 @@ class NewsfeedPresenter @Inject constructor(
     }
 
     // ----------------------------------
-    // PRIVATE METHODS
-    // ----------------------------------
-    private fun openEncounter(encounter: Encounter) {
-        fragment?.saveCameraPosition()
-        fragment?.context?.let { it -> ToursFragment.viewEncounter(it, encounter) }
-    }
-
-    // ----------------------------------
     // INNER CLASS
     // ----------------------------------
     inner class OnEntourageMarkerClickListener : OnClusterItemClickListener<ClusterItem> {
-        private val encounterMarkerHashMap: MutableMap<ClusterItem, Encounter?> = HashMap()
-        fun addEncounterMapClusterItem(mapClusterItem: ClusterItem, encounter: Encounter?) {
-            encounterMarkerHashMap[mapClusterItem] = encounter
-        }
-
-        fun getEncounterMapClusterItem(encounterId: Long): ClusterItem? {
-            for (mapClusterItem in encounterMarkerHashMap.keys) {
-                if (encounterMarkerHashMap[mapClusterItem]?.id == encounterId) {
-                    return mapClusterItem
-                }
-            }
-            return null
-        }
-
-        fun removeEncounterMapClusterItem(encounterId: Long): ClusterItem? {
-            val mapClusterItem = getEncounterMapClusterItem(encounterId) ?: return null
-            encounterMarkerHashMap.remove(mapClusterItem)
-            return mapClusterItem
-        }
-
-        fun clear() {
-            encounterMarkerHashMap.clear()
-        }
 
         override fun onClusterItemClick(mapClusterItem: ClusterItem): Boolean {
-            when {
-                encounterMarkerHashMap[mapClusterItem] != null -> {
-                    encounterMarkerHashMap[mapClusterItem]?.let { openEncounter(it) }
-                }
-                mapClusterItem is MapClusterEntourageItem -> {
-                    fragment?.handleHeatzoneClick(mapClusterItem.position)
-                }
-                mapClusterItem is MapClusterTourItem -> {
-                    openFeedItem(mapClusterItem.tour, 0, 0)
-                }
+            if (mapClusterItem is MapClusterEntourageItem) {
+                fragment?.handleHeatzoneClick(mapClusterItem.position)
             }
             return true
         }

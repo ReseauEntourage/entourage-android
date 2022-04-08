@@ -8,7 +8,6 @@ import social.entourage.android.base.ViewHolderFactory.ViewHolderType
 import social.entourage.android.entourage.EntourageViewHolder
 import social.entourage.android.entourage.my.invitations.InvitationListViewHolder
 import social.entourage.android.tools.LoaderCardViewHolder
-import social.entourage.android.tour.TourViewHolder
 
 /**
  * Created by mihaiionescu on 09/08/16.
@@ -100,10 +99,6 @@ class MyEntouragesAdapter : BaseAdapter() {
         viewHolderFactory.registerViewHolder(
                 TimestampedObject.TOP_VIEW,
                 ViewHolderType(InvitationListViewHolder::class.java, InvitationListViewHolder.layoutResource)
-        )
-        viewHolderFactory.registerViewHolder(
-                TimestampedObject.TOUR_CARD,
-                ViewHolderType(TourViewHolder::class.java, R.layout.layout_myentourages_card)
         )
         viewHolderFactory.registerViewHolder(
                 TimestampedObject.ENTOURAGE_CARD,

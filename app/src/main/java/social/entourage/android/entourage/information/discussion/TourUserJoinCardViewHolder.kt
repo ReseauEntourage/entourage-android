@@ -106,7 +106,7 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
                 partnerLogoView.setImageDrawable(null)
             }
         }
-        itemView.tic_join_description?.text = getJoinStatus(user.status ?: "", user.feedItem?.type == TimestampedObject.TOUR_CARD)
+        itemView.tic_join_description?.text = getJoinStatus(user.status ?: "")
         itemView.tic_join_message?.text = user.message
 
         // If we are not the creators of the entourage, hide the Accept and Refuse buttons
@@ -149,7 +149,7 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
             }
         }
 
-        val joinStatus = getJoinStatus(user.status ?: "", user.feedItem?.type == TimestampedObject.TOUR_CARD)
+        val joinStatus = getJoinStatus(user.status ?: "")
         itemView.tic_join_status?.setText(Utils.fromHtml(itemView.context.getString(R.string.tour_info_text_join_html, user.displayName, joinStatus)), TextView.BufferType.SPANNABLE)
         when(user.status) {
             FeedItem.JOIN_STATUS_ACCEPTED, FeedItem.JOIN_STATUS_CANCELLED -> {
@@ -168,18 +168,13 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
         }
     }
 
-    private fun getJoinStatus(joinStatus: String, isTour: Boolean): String {
+    private fun getJoinStatus(joinStatus: String): String {
         return when (joinStatus) {
-            FeedItem.JOIN_STATUS_ACCEPTED -> {
-                if (isTour)
-                    itemView.context.getString(R.string.tour_info_text_join_accepted) + (feedItem?.author?.userName ?: "")
-                else
-                    itemView.context.getString(R.string.entourage_info_text_join_accepted)
-            }
+            FeedItem.JOIN_STATUS_ACCEPTED -> itemView.context.getString(R.string.entourage_info_text_join_accepted)
             FeedItem.JOIN_STATUS_REJECTED -> itemView.context.getString(R.string.tour_info_text_join_rejected)
-            FeedItem.JOIN_STATUS_PENDING -> itemView.context.getString(if (isTour) R.string.tour_join_request_received_message_short else R.string.entourage_join_request_received_message_short)
-            FeedItem.JOIN_STATUS_CANCELLED -> itemView.context.getString(if (isTour) R.string.tour_info_text_join_cancelled_tour else R.string.tour_info_text_join_cancelled_entourage)
-            FeedItem.JOIN_STATUS_QUITED -> itemView.context.getString(if (isTour) R.string.tour_info_text_join_quited_tour else R.string.tour_info_text_join_quited_entourage)
+            FeedItem.JOIN_STATUS_PENDING -> itemView.context.getString(R.string.entourage_join_request_received_message_short)
+            FeedItem.JOIN_STATUS_CANCELLED -> itemView.context.getString(R.string.tour_info_text_join_cancelled_entourage)
+            FeedItem.JOIN_STATUS_QUITED -> itemView.context.getString(R.string.tour_info_text_join_quited_entourage)
             else -> ""
         }
     }

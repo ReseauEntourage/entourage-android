@@ -31,7 +31,6 @@ import kotlinx.android.synthetic.main.layout_map_longclick.*
 import social.entourage.android.*
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.feed.*
-import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.base.location.EntLocation
@@ -174,8 +173,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
             fragment_map_longclick?.visibility = View.GONE
             return true
         }
-        //before closing the fragment, send the cached tour points to server (if applicable)
-        entService?.updateOngoingTour()
         return false
     }
 
@@ -216,9 +213,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_CONTACT)
             isRequestingToJoin++
             when (timestampedObject.type) {
-                TimestampedObject.TOUR_CARD -> {
-                    entService?.requestToJoinTour(timestampedObject as Tour)
-                }
                 TimestampedObject.ENTOURAGE_CARD -> {
                     entService?.requestToJoinEntourage(timestampedObject as BaseEntourage)
                 }
@@ -310,8 +304,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
 
     open fun onNewsfeedLoadMoreRequested(event: OnNewsfeedLoadMoreEvent) {
         when (selectedTab) {
-            NewsfeedTabItem.ALL_TAB,
-            NewsfeedTabItem.TOUR_TAB -> {
+            NewsfeedTabItem.ALL_TAB -> {
                 ensureMapVisible()
                 pagination.setNextDistance()
                 refreshFeed()
@@ -346,12 +339,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
     // ----------------------------------
     // SERVICE INTERFACE METHODS
     // ----------------------------------
-    override fun onLocationUpdated(location: LatLng) {
-        if (entService?.isRunning == true) {
-            centerMap(location)
-        }
-    }
-
     override fun onNetworkException() {
         activity?.window?.decorView?.rootView?.let {
             EntSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()
@@ -536,12 +523,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         if (!feedItem.isClosed()) {
             // close
             stopFeedItem(feedItem, event.isSuccess,event.comment)
-        } else {
-            (feedItem as? Tour)?.let { tour ->
-                if (!tour.isFreezed()) {
-                    freezeTour(tour)
-                }
-            }
         }
     }
 
@@ -659,27 +640,15 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
     fun stopFeedItem(feedItem: FeedItem?, success: Boolean, comment:String?) {
         activity?.let { activity ->
             entService?.let { service ->
-                if (feedItem != null
-                        && (!service.isRunning
-                                || feedItem.type != TimestampedObject.TOUR_CARD
-                                || service.currentTourId.equals(feedItem.uuid, ignoreCase = true))) {
+                if (feedItem != null) {
                     // Not ongoing tour, just stop the feed item
                     loaderStop = ProgressDialog.show(activity, activity.getString(feedItem.getClosingLoaderMessage()), activity.getString(R.string.button_loading), true)
                     loaderStop?.setCancelable(true)
                     //TODO: proper event: AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_STOP_TOUR)
                     service.stopFeedItem(feedItem, success,comment)
-                } else if (service.isRunning) {
-                    loaderStop = ProgressDialog.show(activity, activity.getString(R.string.loader_title_tour_finish), activity.getString(R.string.button_loading), true)
-                    loaderStop?.setCancelable(true)
-                    service.endTreatment()
-                    AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_STOP_TOUR)
                 }
             }
         }
-    }
-
-    private fun freezeTour(tour: Tour) {
-        entService?.freezeTour(tour)
     }
 
     open fun onJoinRequestAccepted(content: PushNotificationContent) {
@@ -786,7 +755,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         map?.clear()
         mapClusterManager?.clearItems()
         markersMap.clear()
-        presenter.onClickListener?.clear()
         presenter.onGroundOverlayClickListener?.clear()
         resetFeed()
     }
@@ -863,8 +831,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
             return
         }
         when (selectedTab) {
-            NewsfeedTabItem.ALL_TAB,
-            NewsfeedTabItem.TOUR_TAB -> {
+            NewsfeedTabItem.ALL_TAB -> {
                 var newestUpdatedDate: Date? = null
                 var oldestUpdateDate: Date? = null
                 for (newsfeed in newsfeedItemList) {
@@ -914,12 +881,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         }
         val joinableId = content.joinableId
         val isChatMessage = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE == content.type
-        if (content.isTourRelated) {
-            val tour = newsfeedAdapter?.findCard(TimestampedObject.TOUR_CARD, joinableId) as? Tour
-                    ?: return
-            tour.increaseBadgeCount(isChatMessage)
-            newsfeedAdapter?.updateCard(tour)
-        } else if (content.isEntourageRelated) {
+        if (content.isEntourageRelated) {
             val entourage = newsfeedAdapter?.findCard(TimestampedObject.ENTOURAGE_CARD, joinableId) as? BaseEntourage
                     ?: return
             entourage.increaseBadgeCount(isChatMessage)

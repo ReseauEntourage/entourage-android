@@ -13,26 +13,6 @@ import social.entourage.android.base.BackPressable
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class PlusFragment : Fragment(), BackPressable {
-    override fun onResume() {
-        super.onResume()
-        EntourageApplication.get().components.authenticationController.savedTour?.let {
-            layout_line_add_tour_encounter?.visibility = View.VISIBLE
-        } ?: run {
-            layout_line_add_tour_encounter?.visibility = View.GONE
-        }
-        if (EntourageApplication.me(activity)?.isPro == true) {
-            layout_line_start_tour_launcher?.visibility = View.VISIBLE
-            (ui_image_plus?.tag as String?)?.let { tag ->
-                if (tag == "normal") {
-                    ui_image_plus?.visibility = View.GONE
-                    plus_image_subtitle?.visibility = View.GONE
-                }
-            }
-        }
-        else {
-            layout_line_start_tour_launcher?.visibility = View.GONE
-        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -53,12 +33,6 @@ class PlusFragment : Fragment(), BackPressable {
         }
         layout_line_create_outing?.setOnClickListener {
             onAction(KEY_CREATE_OUTING, AnalyticsEvents.ACTION_PLUS_CREATE_OUTING)
-        }
-        layout_line_start_tour_launcher?.setOnClickListener {
-            onAction(KEY_START_TOUR, AnalyticsEvents.ACTION_PLUS_START_TOUR)
-        }
-        layout_line_add_tour_encounter?.setOnClickListener {
-            onAction(KEY_ADD_ENCOUNTER,AnalyticsEvents.ACTION_PLUS_ADD_ENCOUNTER)
         }
         fragment_plus_overlay?.setOnClickListener {onBackPressed()}
         layout_line_create_good_waves?.setOnClickListener { onShowGoodWaves() }
@@ -119,8 +93,8 @@ class PlusFragment : Fragment(), BackPressable {
 
     companion object {
         const val TAG = "social.entourage.android.fragment_plus"
-        const val KEY_START_TOUR = "social.entourage.android.KEY_START_TOUR"
-        const val KEY_ADD_ENCOUNTER = "social.entourage.android.KEY_ADD_ENCOUNTER"
+        //const val KEY_START_TOUR = "social.entourage.android.KEY_START_TOUR"
+        //const val KEY_ADD_ENCOUNTER = "social.entourage.android.KEY_ADD_ENCOUNTER"
         const val KEY_CREATE_DEMAND = "social.entourage.android.KEY_CREATE_DEMAND"
         const val KEY_CREATE_CONTRIBUTION = "social.entourage.android.KEY_CREATE_CONTRIBUTION"
         const val KEY_CREATE_OUTING = "social.entourage.android.KEY_CREATE_OUTING"

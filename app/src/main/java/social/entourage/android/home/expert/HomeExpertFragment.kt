@@ -23,7 +23,6 @@ import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.feed.Announcement
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.feed.NewsfeedItem
-import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events
 import social.entourage.android.base.BackPressable
 import social.entourage.android.base.BaseFragment
@@ -49,8 +48,6 @@ import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
-import social.entourage.android.tour.ToursFragment
-import social.entourage.android.tour.confirmation.TourEndConfirmationFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import timber.log.Timber
@@ -81,7 +78,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
     private val connection = ServiceConnection()
     private var arrayEmpty = ArrayList<HomeCard>()
 
-    private var isTourPostSend = false
+    //private var isTourPostSend = false
     private var feedItemTemporary:FeedItem? = null
     private var countDownTimer:CountDownTimer? = null
     private var popInfoCreateEntourageFragment:PopInfoCreateEntourageFragment? = null
@@ -105,8 +102,6 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
     }
 
     override fun onBackPressed(): Boolean {
-        //before closing the fragment, send the cached tour points to server (if applicable)
-        entService?.updateOngoingTour()
         if (childFragmentManager.fragments.size == 1) return false
         childFragmentManager.popBackStackImmediate()
         return true
@@ -391,13 +386,6 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
 
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_START_EXPERTFEED)
 
-        ui_bt_tour?.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_EXPERTFEED_Tour)
-            showTour()
-        }
-
-        ui_bt_tour?.visibility = if(EntourageApplication.get().me()?.isPro == false) View.INVISIBLE else View.VISIBLE
-
         setupRecyclerView()
     }
 
@@ -570,9 +558,6 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
                 "event" -> {
                     showActions(false)
                 }
-                "tour" -> {
-                    showTour()
-                }
                 else -> {}
             }
         }
@@ -595,31 +580,6 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             PlusFragment.KEY_CREATE_CONTRIBUTION -> createAction(BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)
             PlusFragment.KEY_CREATE_DEMAND -> createAction(BaseEntourage.GROUPTYPE_ACTION_DEMAND)
             PlusFragment.KEY_CREATE_OUTING -> createOuting()
-            EntService.KEY_NOTIFICATION_PAUSE_TOUR,
-            EntService.KEY_NOTIFICATION_STOP_TOUR,
-            TourEndConfirmationFragment.KEY_RESUME_TOUR,
-            TourEndConfirmationFragment.KEY_END_TOUR,
-            PlusFragment.KEY_START_TOUR,
-            PlusFragment.KEY_ADD_ENCOUNTER -> {
-                //Use for Tour
-                if (isTourPostSend) return
-
-                val frag = ToursFragment.newInstance()
-                requireActivity().supportFragmentManager.commit {
-                    add(R.id.main_fragment, frag,ToursFragment.TAG)
-                    addToBackStack(ToursFragment.TAG)
-                    presenter.saveInfo(true,"tour")
-
-                    isTourPostSend = true
-                    val handler = Handler(Looper.getMainLooper())
-                    handler.postDelayed({
-                        EntBus.post(Events.OnCheckIntentActionEvent(action, null))
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            isTourPostSend = false
-                        }, 2000)
-                    }, 1000)
-                }
-            }
             else -> {}
         }
     }
@@ -659,14 +619,6 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
         }
     }
 
-    private fun showTour() {
-        requireActivity().supportFragmentManager.commit {
-            add(R.id.main_fragment, ToursFragment(),ToursFragment.TAG)
-            addToBackStack(ToursFragment.TAG)
-            presenter.saveInfo(true,"tour")
-        }
-    }
-
     //To Handle deeplink for Event
     fun onShowEvents() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEED_SHOWEVENTS)
@@ -676,11 +628,6 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
     fun onShowAll() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEED_SHOWALL)
         showActions(true, HomeCardType.NONE)
-    }
-
-    fun onAddEncounter() {
-        showTour()
-        (activity?.supportFragmentManager?.findFragmentByTag(ToursFragment.TAG) as? ToursFragment)?.onAddEncounter()
     }
 
     /*****
@@ -700,45 +647,17 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
         if (!feedItem.isClosed()) {
             // close
             stopFeedItem(feedItem, event.isSuccess,event.comment)
-        } else {
-            (feedItem as? Tour)?.let { tour ->
-                if (!tour.isFreezed()) {
-                    freezeTour(tour)
-                }
-            }
         }
     }
 
     private fun stopFeedItem(feedItem: FeedItem?, success: Boolean, comment:String?) {
         activity?.let { _ ->
             entService?.let { service ->
-                if (feedItem != null
-                    && (!service.isRunning
-                            || feedItem.type != TimestampedObject.TOUR_CARD
-                            || service.currentTourId.equals(feedItem.uuid, ignoreCase = true))) {
+                if (feedItem != null) {
                     service.stopFeedItem(feedItem, success,comment)
-                } else if (service.isRunning) {
-                    service.endTreatment()
-                    AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_STOP_TOUR)
                 }
             }
         }
-    }
-
-    private fun freezeTour(tour: Tour) {
-        entService?.freezeTour(tour)
-    }
-
-    fun pauseTour(tour: Tour) {
-        if (entService?.isRunning == true) {
-            if (entService?.currentTourId.equals(tour.uuid, ignoreCase = true)) {
-                entService?.pauseTreatment()
-            }
-        }
-    }
-
-    fun saveOngoingTour() {
-        entService?.updateOngoingTour()
     }
 
     private inner class ServiceConnection : android.content.ServiceConnection {
