@@ -24,7 +24,7 @@ class EntourageJoinRequestReceivedActivity : BaseSecuredActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_tour_join_request_received)
+        setContentView(R.layout.activity_entourage_join_request_received)
         message = intent.extras?.getSerializable(PushNotificationManager.PUSH_MESSAGE) as Message?
         if (message != null) {
             displayMessage()
@@ -41,14 +41,14 @@ class EntourageJoinRequestReceivedActivity : BaseSecuredActivity() {
 
     private fun displayMessage() {
         val builder = AlertDialog.Builder(this)
-        val view = layoutInflater.inflate(R.layout.layout_tour_join_request_received_dialog, null)
-        val htmlTextView: HtmlTextView = view.findViewById(R.id.tour_join_request_received_text)
+        val view = layoutInflater.inflate(R.layout.layout_entourage_join_request_received_dialog, null)
+        val htmlTextView: HtmlTextView = view.findViewById(R.id.entourage_join_request_received_text)
         var alertMessage = ""
         message?.content?.let {
             alertMessage = if (it.isEntourageRelated) {
                 getString(R.string.entourage_join_request_received_message_html, message?.author)
             } else {
-                getString(R.string.tour_join_request_received_message_html, message?.author)
+                getString(R.string.entourage_join_request_received_message_html, message?.author)
             }
         }
         htmlTextView.setHtmlString(alertMessage)
@@ -95,13 +95,13 @@ class EntourageJoinRequestReceivedActivity : BaseSecuredActivity() {
         }
     }
 
-    fun onUserTourStatusChanged(status: String, statusChanged: Boolean) {
+    fun onUserActionStatusChanged(status: String, statusChanged: Boolean) {
         if (isFinishing) return
         if (!statusChanged) {
-            Toast.makeText(this, R.string.tour_join_request_error, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.entourage_join_request_error, Toast.LENGTH_SHORT).show()
             displayMessage()
         } else {
-            val messageId = if (FeedItem.JOIN_STATUS_REJECTED == status) R.string.tour_join_request_rejected else R.string.tour_join_request_success
+            val messageId = if (FeedItem.JOIN_STATUS_REJECTED == status) R.string.entourage_join_request_rejected else R.string.entourage_join_request_success
             val toast = Toast.makeText(this, messageId, Toast.LENGTH_SHORT)
             val duration = toast.duration
             toast.show()

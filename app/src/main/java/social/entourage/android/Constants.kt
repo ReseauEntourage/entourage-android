@@ -4,19 +4,11 @@ object Constants {
     // Announcements version
     const val ANNOUNCEMENTS_VERSION = "v1"
 
-    // Filenames
-    const val FILENAME_TAPE_QUEUE = "encounters_queue"
-
-    // Request and result codes
-    const val REQUEST_CREATE_ENCOUNTER = 1
-    const val RESULT_CREATE_ENCOUNTER_OK = 2
-
     // Link IDs
     const val SCB_LINK_ID = "pedagogic-content"
     const val AGIR_FAQ_ID = "action_faq"
     const val GOAL_LINK_ID = "action-examples"
     const val DONATE_LINK_ID = "donation"
-    const val ATD_LINK_ID = "atd-partnership"
     const val CHARTE_LINK_ID = "ethics-charter"
     const val FAQ_LINK_ID = "faq"
     const val SUGGESTION_ID = "suggestion"
@@ -31,12 +23,6 @@ object Constants {
     const val BLOG_LINK_ID = "how-to-present"
 
     const val ASSO_AGIR_LINK_ID = "partner_action_faq"
-
-    // Geolocation
-    const val UPDATE_TIMER_MILLIS_OFF_TOUR: Long = 20000
-    const val UPDATE_TIMER_MILLIS_ON_TOUR: Long = 5000
-    const val DISTANCE_BETWEEN_UPDATES_METERS_OFF_TOUR = 0f //30;
-    const val DISTANCE_BETWEEN_UPDATES_METERS_ON_TOUR = 0f //5;
 
     //Time constants
     const val MILLIS_HOUR: Long = 3600000 //1000 * 60 * 60

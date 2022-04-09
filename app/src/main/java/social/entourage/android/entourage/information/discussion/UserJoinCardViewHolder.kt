@@ -19,9 +19,9 @@ import social.entourage.android.tools.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
 
 /**
- * User Card View in tour information screen
+ * User Card View in entourage information screen
  */
-class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
+class UserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
     private var userId = 0
     private var feedItem: FeedItem? = null
 
@@ -150,7 +150,7 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
         }
 
         val joinStatus = getJoinStatus(user.status ?: "")
-        itemView.tic_join_status?.setText(Utils.fromHtml(itemView.context.getString(R.string.tour_info_text_join_html, user.displayName, joinStatus)), TextView.BufferType.SPANNABLE)
+        itemView.tic_join_status?.setText(Utils.fromHtml(itemView.context.getString(R.string.entourage_info_text_join_html, user.displayName, joinStatus)), TextView.BufferType.SPANNABLE)
         when(user.status) {
             FeedItem.JOIN_STATUS_ACCEPTED, FeedItem.JOIN_STATUS_CANCELLED -> {
                 val joinMessage = user.message
@@ -171,10 +171,10 @@ class TourUserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
     private fun getJoinStatus(joinStatus: String): String {
         return when (joinStatus) {
             FeedItem.JOIN_STATUS_ACCEPTED -> itemView.context.getString(R.string.entourage_info_text_join_accepted)
-            FeedItem.JOIN_STATUS_REJECTED -> itemView.context.getString(R.string.tour_info_text_join_rejected)
+            FeedItem.JOIN_STATUS_REJECTED -> itemView.context.getString(R.string.entourage_info_text_join_rejected)
             FeedItem.JOIN_STATUS_PENDING -> itemView.context.getString(R.string.entourage_join_request_received_message_short)
-            FeedItem.JOIN_STATUS_CANCELLED -> itemView.context.getString(R.string.tour_info_text_join_cancelled_entourage)
-            FeedItem.JOIN_STATUS_QUITED -> itemView.context.getString(R.string.tour_info_text_join_quited_entourage)
+            FeedItem.JOIN_STATUS_CANCELLED -> itemView.context.getString(R.string.entourage_info_text_join_cancelled_entourage)
+            FeedItem.JOIN_STATUS_QUITED -> itemView.context.getString(R.string.entourage_info_text_join_quited_entourage)
             else -> ""
         }
     }

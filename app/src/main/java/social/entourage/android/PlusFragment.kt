@@ -93,8 +93,6 @@ class PlusFragment : Fragment(), BackPressable {
 
     companion object {
         const val TAG = "social.entourage.android.fragment_plus"
-        //const val KEY_START_TOUR = "social.entourage.android.KEY_START_TOUR"
-        //const val KEY_ADD_ENCOUNTER = "social.entourage.android.KEY_ADD_ENCOUNTER"
         const val KEY_CREATE_DEMAND = "social.entourage.android.KEY_CREATE_DEMAND"
         const val KEY_CREATE_CONTRIBUTION = "social.entourage.android.KEY_CREATE_CONTRIBUTION"
         const val KEY_CREATE_OUTING = "social.entourage.android.KEY_CREATE_OUTING"

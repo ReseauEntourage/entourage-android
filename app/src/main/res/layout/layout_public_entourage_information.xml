@@ -147,7 +147,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-medium"
-                            android:text="@string/tour_info_metadata_organised_by"
+                            android:text="@string/entourage_info_metadata_organised_by"
                             android:textColor="@color/greyish_brown"
                             android:textSize="15sp" />
 
@@ -282,7 +282,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:text="@string/tour_info_members_add"
+                        android:text="@string/entourage_info_members_add"
                         android:textColor="@color/accent"
                         android:textSize="@dimen/entourage_font_large"
                         android:textStyle="bold" />
@@ -369,7 +369,7 @@
                 android:layout_marginEnd="@dimen/act_button_right_padding"
                 app:drawableStartCompat="@drawable/button_act_join"
                 android:enabled="true"
-                android:text="@string/tour_cell_button_join" />
+                android:text="@string/entourage_cell_button_join" />
 
             <ImageView
                 android:id="@+id/entourage_info_act_divider_right"
@@ -406,7 +406,7 @@
                 android:id="@+id/entourage_info_request_join_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tour_info_request_join_title_entourage"
+                android:text="@string/entourage_info_request_join_title_entourage"
                 android:textColor="@color/accent"
                 android:textSize="@dimen/entourage_font_medium" />
 
@@ -424,7 +424,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="4dp"
                     android:background="@drawable/bg_button_accent_rounded"
-                    android:text="@string/tour_info_request_join_button_event"
+                    android:text="@string/entourage_info_request_join_button_event"
                     android:textAllCaps="true"
                     android:textSize="@dimen/entourage_font_medium"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -508,7 +508,7 @@
                     android:background="@drawable/bg_button_accent_rounded"
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
-                    android:text="@string/tour_info_request_join_button_entourage"
+                    android:text="@string/entourage_info_request_join_button_entourage"
                     android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:textSize="@dimen/entourage_font_medium" />

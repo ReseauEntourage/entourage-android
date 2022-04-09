@@ -87,7 +87,7 @@ android {
         }
         entourage {
             dimension 'app'
-            buildConfigField 'String', 'API_KEY', '"145afedd05482e1e91ed2990"'
+            buildConfigField 'String', 'API_KEY', '"50968038037d1df181e8372d"'
             ext {
                 prod = [
                         serverURL        : "https://api.entourage.social/api/v1/",

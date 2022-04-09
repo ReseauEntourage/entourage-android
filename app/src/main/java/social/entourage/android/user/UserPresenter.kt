@@ -45,13 +45,6 @@ class UserPresenter @Inject constructor(
         })
     }
 
-    /*val isUserToursOnly: Boolean
-        get() = authenticationController.isUserToursOnly
-
-    fun saveUserToursOnly(choice: Boolean) {
-        authenticationController.saveUserToursOnly(choice)
-    }*/
-
     fun updateUser(user: User) {
         userRequest.updateUser(user.arrayMapForUpdate).enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {

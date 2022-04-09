@@ -78,7 +78,7 @@ class EntourageSearchVH(view: View) : RecyclerView.ViewHolder(view) {
             val res = itemView.resources
 
             itemView.ui_action_title?.let { titleView ->
-                titleView.text = String.format(res.getString(R.string.tour_cell_title), feedItem.getTitle())
+                titleView.text = String.format(res.getString(R.string.entourage_cell_title), feedItem.getTitle())
             }
 
             //Icon
@@ -159,7 +159,7 @@ class EntourageSearchVH(view: View) : RecyclerView.ViewHolder(view) {
             //Location
             val distanceAsString = feedItem.getStartPoint()?.distanceToCurrentLocation(Constants.DISTANCE_MAX_DISPLAY)
                     ?: ""
-            var distStr = if (distanceAsString.equals("", ignoreCase = true)) "" else String.format(res.getString(R.string.tour_cell_location), distanceAsString)
+            var distStr = if (distanceAsString.equals("", ignoreCase = true)) "" else String.format(res.getString(R.string.entourage_cell_location), distanceAsString)
 
             feedItem.postal_code?.let { postalCode ->
                 if (distStr.isNotEmpty() && postalCode.isNotEmpty()) {

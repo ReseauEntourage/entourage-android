@@ -14,7 +14,7 @@ class EntourageOptionsFragment : FeedItemOptionsFragment() {
         get() = feedItem as BaseEntourage
 
     override fun initializeView() {
-        entourage_option_stop?.setText(R.string.tour_info_options_freeze_tour)
+        entourage_option_stop?.setText(R.string.entourage_info_options_stop)
         if (entourage.isOpen()) {
             entourage_option_edit?.visibility = View.VISIBLE
         }

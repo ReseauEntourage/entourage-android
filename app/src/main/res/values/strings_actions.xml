@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="entourage_info_discussion">DISCUSSION</string>
+    <string name="entourage_info_text_join_rejected">\u0020 rejeté</string>
+    <string name="entourage_info_text_join_cancelled_entourage">a annulé sa demande de rejoindre le groupe</string>
+    <string name="entourage_info_text_join_quited_entourage">a quitté le groupe</string>
+    <string name="entourage_info_text_join_html"><![CDATA[<font color=\"#F55F24\">%1$s </font>%2$s]]></string>
+    <string name="entourage_info_error_chat_message">Message non envoyé</string>
+    <string name="entourage_info_options_stop">Clôturer</string>
+    <string name="entourage_info_options_cancel_event">Annuler l\'événement</string>
+    <string name="entourage_info_options_quit">Quitter</string>
+    <string name="entourage_info_options_report">Signaler un problème</string>
+    <string name="entourage_info_options_share">Partager</string>
+    <string name="entourage_info_options_join">Participer</string>
+    <string name="entourage_info_options_close">Annuler</string>
+    <string name="entourage_info_options_contact">Contacter</string>
+    <string name="entourage_info_options_cancel_request">Retirer ma demande</string>
+    <string name="entourage_info_options_promote">Promouvoir la sortie</string>
+    <string name="entourage_info_options_reopen_entourage">Rouvrir</string>
+    <string name="entourage_info_quit_action_error">Echec d\'envoi de la requête</string>
+    <string name="entourage_info_members_count">Membres (%1$d)</string>
+    <string name="entourage_info_members_add">Inviter un ami</string>
+    <string name="entourage_info_members_add_not_allowed">Invitation impossible</string>
+    <string name="entourage_info_request_join_title_entourage">Participez à la discussion</string>
+    <string name="entourage_info_request_join_title_entourage_new">Répondez présent !</string>
+    <string name="entourage_info_request_join_button_event">Participer</string>
+    <string name="entourage_info_request_join_button_entourage">Rejoindre</string>
+    <string name="entourage_info_error_retrieve_entourage">Entourage indisponible</string>
+    <string name="entourage_info_metadata_organised_by">Organisé\u0020</string>
+    <string name="entourage_info_metadata_organiser_format">par %1$s</string>
+    <string name="entourage_info_metadata_date_format">Rendez-vous %1$s %2$s</string>
+    <string name="entourage_info_metadata_dateStart_hours_format">Rendez-vous le %1$s %2$s</string>
+    <string name="entourage_info_metadata_dateStart_End_hours_format">Rendez-vous du %1$s %2$s au %3$s %4$s</string>
+    <string name="entourage_info_metadata_dateStart_hours_format_new">%1$s %2$s</string>
+    <string name="entourage_info_metadata_dateStart_End_hours_format_new">Du %1$s %2$s au %3$s %4$s</string>
+
+    <string name="loader_title_outing_finish">Suppression de l\'événement</string>
+    <string name="loader_title_action_finish">Suppression de l\'action</string>
+
+    <!-- Entourage Cell -->
+    <string name="entourage_cell_title">%1$s</string>
+    <string name="entourage_cell_author">%1$s</string>
+    <string name="entourage_cell_location">à %1$s</string>
+    <string name="entourage_cell_numberOfPeople">%1$d</string>
+    <string name="entourage_cell_button_join">Je rejoins</string>
+    <string name="entourage_cell_button_accepted">Actif</string>
+    <string name="entourage_cell_button_accepted_other">✔︎ Je participe</string>
+    <string name="entourage_cell_button_pending">En attente</string>
+    <string name="entourage_cell_button_rejected">Refusé</string>
+    <string name="entourage_cell_button_freezed">Clôturé</string>
+    <string name="entourage_cell_button_freezed_success">Succès</string>
+    <string name="entourage_cell_button_view">Voir plus</string>
+    <string name="entourage_cell_button_freezed_success_cancel">Annulé</string>
+    <string name="entourage_cell_title_event">Événement %1$s</string>
+
+    <!-- Promote Entourage Email -->
+    <string name="promote_entourage_email_title">Veuillez envoyer une notification pour la sortie %1$s</string>
+    <string name="promote_entourage_email_body">Bonjour,\nVeuillez promouvoir la sortie "%1$s" grâce à une notification envoyée aux téléphones des personnes membres des voisinages suivants :\n\nMerci</string>
+
+    <!-- Newsfeed -->
+    <string name="newsfeed_load_more_description">C\'est tout pour les actions dans ce rayon !</string>
+    <string name="newsfeed_no_more_items">Aucun autre entourage près de cette position</string>
+
+    <!-- Map Filter -->
+    <string name="map_filter_outing_title">Événements</string>
+    <string name="map_filter_entourage_outing_text">Événements</string>
+    <string name="map_filter_past_events_text">Inclure passés</string>
+
+
+    <!-- New detail action/event -->
+    <string name="detail_button_action_join">Participer</string>
+    <string name="detail_button_action_share">Partager</string>
+    <string name="detail_action_event_online">En ligne</string>
+    <string name="detail_action_event_info_rdv">vous donne rendez-vous</string>
+    <string name="detail_action_event_info_gift">propose cette aide</string>
+    <string name="detail_action_event_info_demand">fait appel à la solidarité du réseau</string>
+    <string name="detail_event_full">événement complet</string>
+
+    <string name="confirm_cancel_demand">Confirmez-vous vouloir retirer votre demande ?</string>
+    <string name="validate_cancel_demand">Confirmer</string>
+
+    <string name="info_event_online_feed">En ligne</string>
+
+    <string name="info_action_private">Action privée</string>
+    <string name="info_event_private">Événement privé</string>
+    <string name="info_pop_message_private">Votre demande de participation est en attente de validation.</string>
+    <string name="info_pop_private_message_action">Pour participer à cette action privée, le créateur de cette action doit valider votre participation.\n\nUne fois votre demande acceptée, vous pourrez accéder à la conversation de groupe.</string>
+    <string name="info_pop_private_message_event">Pour participer à cet événement privé, le créateur de cet événement doit valider votre participation.\n\nUne fois votre demande acceptée, vous pourrez accéder à la conversation de groupe.</string>
+    <string name="info_pop_private_title">Demande de participation</string>
+    <string name="info_pop_private_bt_ok">Confirmer</string>
+    <string name="info_pop_private_bt_cancel">Annuler</string>
+    <string name="info_asso_abo">• S\'abonner ></string>
+    <string name="info_asso_joined">• Abonné</string>
+    <string name="by_author_search">Par %1$s</string>
+
+    <string name="action_leave_voice_message">Enregistrez un message vocal</string>
+    <string name="action_voice_message_button">Lancer la reconnaissance vocale</string>
+    <string name="action_voice_message_not_supported">La reconnaissance vocale n\'est pas supportée sur votre téléphone.</string>
+
+</resources>

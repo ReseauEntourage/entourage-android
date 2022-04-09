@@ -224,10 +224,6 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
                     messagedId = R.string.map_error_geolocation_disabled_recenter
                     AnalyticsEvents.EVENT_GUIDE_ACTIVATE_GEOLOC_RECENTER
                 }
-                GEOLOCATION_POPUP_TOUR -> {
-                    messagedId = R.string.map_error_geolocation_disabled_create_tour
-                    AnalyticsEvents.EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR
-                }
                 GEOLOCATION_POPUP_GUIDE_BANNER -> AnalyticsEvents.EVENT_GUIDE_ACTIVATE_GEOLOC_FROM_BANNER
                 GEOLOCATION_POPUP_BANNER -> AnalyticsEvents.EVENT_FEED_ACTIVATE_GEOLOC_FROM_BANNER
                 else -> AnalyticsEvents.EVENT_FEED_ACTIVATE_GEOLOC_FROM_BANNER
@@ -299,7 +295,6 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
 
     companion object {
         // Constants used to track the source call of the geolocation popup
-        const val GEOLOCATION_POPUP_TOUR = 0
         private const val GEOLOCATION_POPUP_RECENTER = 1
         private const val GEOLOCATION_POPUP_BANNER = 2
         private const val GEOLOCATION_POPUP_GUIDE_RECENTER = 3

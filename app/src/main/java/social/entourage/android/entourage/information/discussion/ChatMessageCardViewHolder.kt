@@ -18,7 +18,7 @@ import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.tools.EntBus
 
 /**
- * Chat Message Card for Tour Information Screen
+ * Chat Message Card for Entourage Information Screen
  */
 open class ChatMessageCardViewHolder(val view: View) : BaseCardViewHolder(view) {
     private var userId = 0

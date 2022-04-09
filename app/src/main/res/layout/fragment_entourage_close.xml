@@ -162,7 +162,7 @@
             android:layout_marginBottom="20dp"
             android:background="@drawable/bg_button_accent_rounded"
             android:fontFamily="sans-serif-medium"
-            android:text="Clôturer"
+            android:text="@string/entourage_info_options_stop"
             android:textAllCaps="true"
             android:textColor="@color/white"
             android:textSize="16sp" />

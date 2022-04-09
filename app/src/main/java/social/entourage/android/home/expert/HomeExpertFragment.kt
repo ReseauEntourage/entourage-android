@@ -78,7 +78,6 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
     private val connection = ServiceConnection()
     private var arrayEmpty = ArrayList<HomeCard>()
 
-    //private var isTourPostSend = false
     private var feedItemTemporary:FeedItem? = null
     private var countDownTimer:CountDownTimer? = null
     private var popInfoCreateEntourageFragment:PopInfoCreateEntourageFragment? = null
@@ -160,10 +159,10 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
         if (context == null || isStateSaved) return
         // decrease the badge count
         EntourageApplication.get(context).removePushNotificationsForFeedItem(feedItem)
-        //check if we are not already displaying the tour
+        //check if we are not already displaying the item
         (activity?.supportFragmentManager?.findFragmentByTag(FeedItemInformationFragment.TAG) as? FeedItemInformationFragment)?.let {
             if (it.getItemType() == feedItem.type && it.feedItemId != null && it.feedItemId.equals(feedItem.uuid, ignoreCase = true)) {
-                //TODO refresh the tour info screen
+                //TODO refresh the entourage info screen
                 return
             }
         }
@@ -631,13 +630,13 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
     }
 
     /*****
-     ** Method from NewsFeedFragment for handling closing action/event/tour
+     ** Method from NewsFeedFragment for handling closing action/event
      *****/
     @Subscribe
     fun feedItemCloseRequested(event: Events.OnFeedItemCloseRequestEvent) {
         val feedItem = event.feedItem
 
-        // Only the author can close entourages/tours
+        // Only the author can close actions
         val myId = EntourageApplication.me(context)?.id
             ?: return
         val author = feedItem.author ?: return

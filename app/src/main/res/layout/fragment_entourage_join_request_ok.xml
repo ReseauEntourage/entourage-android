@@ -22,7 +22,7 @@
         android:paddingStart="5dp">
 
         <ImageButton
-            android:id="@+id/tour_join_request_ok_x_button"
+            android:id="@+id/entourage_join_request_ok_x_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
@@ -48,13 +48,13 @@
             android:layout_marginRight="5dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:text="@string/tour_join_request_ok_title"
+            android:text="@string/entourage_join_request_ok_title"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/white"
             android:textSize="@dimen/entourage_font_xtra_large"/>
 
         <TextView
-            android:id="@+id/tour_join_request_ok_description"
+            android:id="@+id/entourage_join_request_ok_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
@@ -62,20 +62,20 @@
             android:layout_marginRight="5dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:text="@string/tour_join_request_ok_description_entourage"
+            android:text="@string/entourage_join_request_ok_description_entourage"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/white"
             android:textSize="@dimen/entourage_font_medium"/>
 
         <EditText
-            android:id="@+id/tour_join_request_ok_message"
+            android:id="@+id/entourage_join_request_ok_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:background="@color/white"
             android:ems="10"
             android:gravity="top"
-            android:hint="@string/tour_join_request_ok_message_hint"
+            android:hint="@string/entourage_join_request_ok_message_hint"
             android:imeOptions="actionSend"
             android:inputType="textMultiLine"
             android:maxLines="4"
@@ -85,7 +85,7 @@
             android:textSize="@dimen/entourage_font_medium"/>
 
         <Button
-            android:id="@+id/tour_join_request_ok_message_button"
+            android:id="@+id/entourage_join_request_ok_message_button"
             style="@style/AccentButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

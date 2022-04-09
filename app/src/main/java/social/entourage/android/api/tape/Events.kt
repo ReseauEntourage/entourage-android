@@ -13,7 +13,7 @@ open class Events {
     class OnCheckIntentActionEvent(val action: String, val extras: Bundle?)
 
     /**
-     * Event bearing connection state for the offline encounters queue
+     * Event bearing connection state
      */
     class OnConnectionChangedEvent(val isConnected: Boolean)
 
@@ -28,11 +28,6 @@ open class Events {
     class OnBetterLocationEvent(val location: LatLng)
 
     /**
-     * Event bearing the user's choice regarding the displaying of his past tours
-     */
-    class OnUserChoiceEvent(val isUserHistory: Boolean)
-
-    /**
      * Event signaling that current user is unauthorized
      */
     class OnUnauthorizedEvent
@@ -43,7 +38,7 @@ open class Events {
     class OnUserInfoUpdatedEvent(val user: User)
 
     /**
-     * Event signaling that user wants to act on a tour
+     * Event signaling that user wants to act on an entourage
      */
     class OnUserActEvent(val act: String, val feedItem: FeedItem) {
 
@@ -55,7 +50,7 @@ open class Events {
     }
 
     /**
-     * Event signaling that the user wants to update a tour join request
+     * Event signaling that the user wants to update a join request
      */
     class OnUserJoinRequestUpdateEvent(val userId: Int, val update: String, val feedItem: FeedItem)
 
@@ -65,7 +60,7 @@ open class Events {
     class OnUserViewRequestedEvent(val userId: Int)
 
     /**
-     * Event signaling that tour info view is requested
+     * Event signaling that entourage info view is requested
      */
     class OnFeedItemInfoViewRequestedEvent {
         var feedItem: FeedItem? = null
@@ -115,7 +110,7 @@ open class Events {
     }
 
     /**
-     * Event signaling that the tour needs to be closed/freezed
+     * Event signaling that the entourage needs to be closed/freezed
      */
     class OnFeedItemCloseRequestEvent {
         var feedItem: FeedItem
@@ -140,7 +135,7 @@ open class Events {
     }
 
     /**
-     * Event triggering the tours service location listener when the permission has been granted
+     * Event triggering the service location listener when the permission has been granted
      */
     class OnLocationPermissionGranted(val isPermissionGranted: Boolean)
 

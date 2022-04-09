@@ -17,7 +17,7 @@
         android:gravity="center"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:text="@string/tour_info_discussion"
+        android:text="@string/entourage_info_discussion"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/greyish_brown"
         android:textSize="@dimen/entourage_font_small"
@@ -145,7 +145,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:background="?attr/selectableItemBackground"
-            android:contentDescription="@string/encounter_voice_message_button"
+            android:contentDescription="@string/action_voice_message_button"
             app:srcCompat="@drawable/ic_action_record_sound"/>
 
         <Button
@@ -169,14 +169,5 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:background="@color/background" />
-
-    <FrameLayout
-        android:id="@+id/tour_info_hidden_map_layout"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginLeft="1000dp"
-        android:layout_marginStart="1000dp"
-        android:background="@color/accent">
-    </FrameLayout>
 
 </RelativeLayout>

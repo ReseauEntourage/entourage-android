@@ -470,7 +470,7 @@ class MainActivity : BaseSecuredActivity(),
         val handler = Handler(Looper.getMainLooper())
         handler.post {
             when (content.type) {
-                PushNotificationContent.TYPE_NEW_CHAT_MESSAGE -> if (displayMessageOnCurrentTourInfoFragment(
+                PushNotificationContent.TYPE_NEW_CHAT_MESSAGE -> if (displayMessageOnCurrentEntourageInfoFragment(
                         message
                     )
                 ) {
@@ -479,7 +479,7 @@ class MainActivity : BaseSecuredActivity(),
                 } else {
                     addPushNotification(message)
                 }
-                PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED ->                     //@TODO should we update current tour info fragment ?
+                PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED ->                     //@TODO should we update current entourage info fragment ?
                     removePushNotification(content, PushNotificationContent.TYPE_NEW_JOIN_REQUEST)
                 PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED -> {
                     addPushNotification(message)
@@ -501,7 +501,7 @@ class MainActivity : BaseSecuredActivity(),
         }
     }
 
-    private fun displayMessageOnCurrentTourInfoFragment(message: Message): Boolean {
+    private fun displayMessageOnCurrentEntourageInfoFragment(message: Message): Boolean {
         val fragment =
             supportFragmentManager.findFragmentByTag(FeedItemInformationFragment.TAG) as FeedItemInformationFragment?
         return fragment != null && fragment.onPushNotificationChatMessageReceived(message)

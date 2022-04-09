@@ -127,7 +127,7 @@ class User : Serializable {
         return permissions?.isEventCreationActive() ?: false
     }
 
-    fun asTourAuthor(): FeedItemAuthor {
+    fun asAuthor(): FeedItemAuthor {
         return FeedItemAuthor(avatarURL, id, displayName, partner)
     }
 

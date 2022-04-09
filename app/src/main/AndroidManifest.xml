@@ -178,18 +178,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".tour.encounter.ReadEncounterActivity"
-            android:label="@string/activity_read_encounter_title"
-            android:noHistory="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".tour.encounter.CreateEncounterActivity"
-            android:label="@string/activity_create_encounter_title"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
             android:name="social.entourage.android.entourage.join.received.EntourageJoinRequestReceivedActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".user.edit.photo.TakePhotoActivity" />

@@ -129,12 +129,9 @@ open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListene
     // BUS LISTENERS
     // ----------------------------------
     @Subscribe
-    open fun onUserChoiceChanged(event: OnUserChoiceEvent) {}
-
-    @Subscribe
     open fun onUserInfoUpdated(event: OnUserInfoUpdatedEvent) {
         if (newsfeedAdapter == null) return
-        val meAsAuthor = EntourageApplication.me(context)?.asTourAuthor() ?: return
+        val meAsAuthor = EntourageApplication.me(context)?.asAuthor() ?: return
         val dirtyList: MutableList<TimestampedObject> = ArrayList()
         // See which cards needs updating
         newsfeedAdapter?.items?.filterIsInstance<FeedItem>()?.forEach { feedItem ->
@@ -144,7 +141,7 @@ open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListene
             if (author.userID != meAsAuthor.userID) return@forEach
             // Skip if nothing changed
             if (!author.isSame(meAsAuthor)) {
-                // Update the tour author
+                // Update the author
                 meAsAuthor.userName = author.userName
                 feedItem.author = meAsAuthor
                 // Mark as dirty
@@ -164,8 +161,7 @@ open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListene
     // Long clicks on map handler
     // ----------------------------------
     override fun showLongClickOnMapOptions(latLng: LatLng) {
-      //  if(this is NewsFeedWithTourFragment) return super.showLongClickOnMapOptions(latLng)
-        //for public user, start the create entourage funnel directly
+      //for public user, start the create entourage funnel directly
         // save the tap coordinates
         longTapCoordinates = latLng
         displayEntourageDisclaimer()

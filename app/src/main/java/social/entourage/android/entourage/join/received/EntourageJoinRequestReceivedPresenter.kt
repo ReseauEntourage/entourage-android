@@ -25,11 +25,11 @@ class EntourageJoinRequestReceivedPresenter @Inject constructor(
         entourageRequest.updateUserEntourageStatus(entourageUUID, userId, user)
                 .enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                activity?.onUserTourStatusChanged(FeedItem.JOIN_STATUS_ACCEPTED, response.isSuccessful)
+                activity?.onUserActionStatusChanged(FeedItem.JOIN_STATUS_ACCEPTED, response.isSuccessful)
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                activity?.onUserTourStatusChanged(FeedItem.JOIN_STATUS_ACCEPTED, false)
+                activity?.onUserActionStatusChanged(FeedItem.JOIN_STATUS_ACCEPTED, false)
             }
         })
     }
@@ -38,11 +38,11 @@ class EntourageJoinRequestReceivedPresenter @Inject constructor(
         entourageRequest.removeUserFromEntourage(entourageUUID, userId)
                 .enqueue(object : Callback<EntourageUserResponse> {
             override fun onResponse(call: Call<EntourageUserResponse>, response: Response<EntourageUserResponse>) {
-                activity?.onUserTourStatusChanged(FeedItem.JOIN_STATUS_REJECTED, response.isSuccessful)
+                activity?.onUserActionStatusChanged(FeedItem.JOIN_STATUS_REJECTED, response.isSuccessful)
             }
 
             override fun onFailure(call: Call<EntourageUserResponse>, t: Throwable) {
-                activity?.onUserTourStatusChanged(FeedItem.JOIN_STATUS_REJECTED, false)
+                activity?.onUserActionStatusChanged(FeedItem.JOIN_STATUS_REJECTED, false)
             }
         })
     }

@@ -76,8 +76,8 @@ class DiscussionAdapter : BaseAdapter() {
                 ViewHolderType(ChatMessageMeCardViewHolder::class.java, ChatMessageMeCardViewHolder.layoutResource)
         )
         viewHolderFactory.registerViewHolder(
-                TimestampedObject.TOUR_USER_JOIN,
-                ViewHolderType(TourUserJoinCardViewHolder::class.java, TourUserJoinCardViewHolder.layoutResource)
+                TimestampedObject.USER_JOIN,
+                ViewHolderType(UserJoinCardViewHolder::class.java, UserJoinCardViewHolder.layoutResource)
         )
         viewHolderFactory.registerViewHolder(
                 TimestampedObject.CHAT_MESSAGE_OUTING,

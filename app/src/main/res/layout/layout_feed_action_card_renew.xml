@@ -23,13 +23,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tour_card_title"
+            android:id="@+id/action_card_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_toEndOf="@+id/tour_card_icon"
+            android:layout_toEndOf="@+id/action_card_icon"
             android:gravity="center_vertical"
             android:paddingEnd="8dp"
             android:textColor="@color/black"
@@ -47,7 +47,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tour_card_icon"
+            app:layout_constraintTop_toBottomOf="@+id/action_card_icon"
             app:srcCompat="@drawable/ic_location_gds_detail" />
 
         <TextView
@@ -65,7 +65,7 @@
             app:layout_constraintTop_toTopOf="@+id/ui_action_picto_location2" />
 
         <ImageView
-            android:id="@+id/tour_card_icon"
+            android:id="@+id/action_card_icon"
             android:layout_width="24dp"
             android:layout_height="20dp"
             android:layout_marginStart="16dp"
@@ -73,11 +73,11 @@
             android:contentDescription="@string/empty_description"
             android:scaleType="centerInside"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tour_card_title"
+            app:layout_constraintTop_toBottomOf="@+id/action_card_title"
             tools:srcCompat="@drawable/ic_entourage_category_friendly_time" />
 
         <ImageView
-            android:id="@+id/tour_card_photo"
+            android:id="@+id/action_card_photo"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_alignParentEnd="true"
@@ -91,17 +91,17 @@
             app:srcCompat="@drawable/ic_user_photo_small" />
 
         <social.entourage.android.tools.view.PartnerLogoImageView
-            android:id="@+id/tour_card_partner_logo"
+            android:id="@+id/action_card_partner_logo"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_alignEnd="@+id/tour_card_photo"
-            android:layout_alignBottom="@+id/tour_card_photo"
-            app:layout_constraintBottom_toBottomOf="@+id/tour_card_photo"
-            app:layout_constraintEnd_toEndOf="@+id/tour_card_photo"
+            android:layout_alignEnd="@+id/action_card_photo"
+            android:layout_alignBottom="@+id/action_card_photo"
+            app:layout_constraintBottom_toBottomOf="@+id/action_card_photo"
+            app:layout_constraintEnd_toEndOf="@+id/action_card_photo"
             app:srcCompat="@drawable/ic_entourage_logo_two_colors" />
 
         <TextView
-            android:id="@+id/tour_card_author"
+            android:id="@+id/action_card_author"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -112,24 +112,24 @@
             android:textAlignment="textEnd"
             android:textColor="@color/black"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tour_card_photo"
-            app:layout_constraintEnd_toStartOf="@+id/tour_card_photo"
+            app:layout_constraintBottom_toBottomOf="@+id/action_card_photo"
+            app:layout_constraintEnd_toStartOf="@+id/action_card_photo"
             app:layout_constraintStart_toEndOf="@+id/ui_action_tv_location"
-            app:layout_constraintTop_toTopOf="@+id/tour_card_photo"
+            app:layout_constraintTop_toTopOf="@+id/action_card_photo"
             app:layout_constraintVertical_bias="0.437"
             tools:text="Utilisateur E." />
 
         <TextView
-            android:id="@+id/tour_card_type"
+            android:id="@+id/action_card_type"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/black"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tour_card_icon"
-            app:layout_constraintStart_toEndOf="@+id/tour_card_icon"
-            app:layout_constraintTop_toTopOf="@+id/tour_card_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/action_card_icon"
+            app:layout_constraintStart_toEndOf="@+id/action_card_icon"
+            app:layout_constraintTop_toTopOf="@+id/action_card_icon"
             tools:text="Demande par " />
 
         <androidx.constraintlayout.widget.ConstraintLayout

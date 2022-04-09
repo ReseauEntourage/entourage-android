@@ -17,7 +17,6 @@ import java.util.*
  */
 object AnalyticsEvents {
     // Analytics events
-    //const val EVENT_OPEN_ENCOUNTER_FROM_MAP = "Open_Encounter_From_Map"
     const val EVENT_OPEN_POI_FROM_MAP = "Open_POI_From_Map"
 
     //----------------------------//
@@ -243,7 +242,6 @@ object AnalyticsEvents {
     const val EVENT_FEED_ACTIVE_CLOSE_OVERLAY = "OpenActiveCloseOverlay"
     const val EVENT_FEED_MAPCLICK = "MapClick"
     const val EVENT_FEED_HEATZONECLICK = "HeatzoneMapClick"
-    const val EVENT_FEED_TOURLINECLICK = "TourMapClick" //Not possible
     const val EVENT_FEED_OPEN_ENTOURAGE = "OpenEntouragePublicPage"
     const val EVENT_FEED_OPEN_CONTACT = "OpenEnterInContact"
     const val EVENT_FEED_RECENTERCLICK = "RecenterMapClick"
@@ -255,7 +253,6 @@ object AnalyticsEvents {
     const val EVENT_FEED_CANCEL_JOIN_REQUEST = "CancelJoinRequest"
     const val EVENT_FEED_OPEN_ACTIVE_OVERLAY = "OpenActiveOverlay"
     const val EVENT_FEED_QUIT_ENTOURAGE = "QuitFromFeed"
-    const val EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR = "ActivateGeolocFromCreateTourPopup"
     const val EVENT_FEED_ACTIVATE_GEOLOC_RECENTER = "ActivateGeolocFromRecenterPopup"
     const val EVENT_GUIDE_ACTIVATE_GEOLOC_RECENTER = "ActivateGeolocFromGuideRecenterPopup"
     const val EVENT_FEED_ACTIVATE_GEOLOC_FROM_BANNER = "ActivateGeolocFromBanner"
@@ -308,8 +305,6 @@ object AnalyticsEvents {
     const val ACTION_PLUS_CREATE_ASKFORHELP = "Action__Plus__CreateAskForHelp"
     const val ACTION_PLUS_CREATE_CONTRIBUTE = "Action__Plus__CreateContribute"
     const val ACTION_PLUS_CREATE_OUTING = "Action__Plus__CreateOuting"
-    //const val ACTION_PLUS_START_TOUR = "Action__Plus__StartTour"
-    //const val ACTION_PLUS_ADD_ENCOUNTER = "Action__Plus__AddEncounter"
     const val ACTION_PLUS_BACK = "Action__Plus__BackPressed"
 
     //MY ENTOURAGES FILTER Events
@@ -333,7 +328,6 @@ object AnalyticsEvents {
     const val EVENT_MAP_FILTER_FILTER2 = "ClickFilter2Value"
     const val EVENT_MAP_FILTER_FILTER3 = "ClickFilter3Value"
     const val EVENT_MAP_FILTER_ONLY_MINE = "ShowOnlyMineFilter"
-    const val EVENT_MAP_FILTER_ONLY_TOURS = "ShowToursOnlyFilterClick"
     const val EVENT_MAP_FILTER_ONLY_OFFERS = "ShowOnlyOffersClick"
     const val EVENT_MAP_FILTER_ONLY_ASK = "ShowOnlyAsksClick"
     const val EVENT_MAP_FILTER_ACTION_CATEGORY = "FilterActionSubtypeClick"
@@ -388,7 +382,6 @@ object AnalyticsEvents {
     //Feeds
     const val ACTION_FEED_SHOWALL = "Action__Feed__ShowAll"
     const val ACTION_FEED_SHOWEVENTS = "Action__Feed__ShowEvents"
-    const val ACTION_FEED_SHOWTOURS = "Action__Feed__ShowTours"
     const val ACTION_FEED_SHOWMAP = "Action__Feed__ShowMap"
     const val ACTION_FEED_SHOWLIST = "Action__Feed__ShowList"
     const val ACTION_FEED_SHOWFILTERS = "Action__Feed__ShowFilters"

@@ -47,16 +47,16 @@ class EntourageJoinRequestFragment  : DialogFragment() {
             return
         }
         entourage = newFeedItem
-        val descriptionTextId = if (entourage.isEvent()) R.string.tour_join_request_ok_description_outing
-                else R.string.tour_join_request_ok_description_entourage
-        tour_join_request_ok_description?.setText(descriptionTextId)
+        val descriptionTextId = if (entourage.isEvent()) R.string.entourage_join_request_ok_description_outing
+                else R.string.entourage_join_request_ok_description_entourage
+        entourage_join_request_ok_description?.setText(descriptionTextId)
         view.setOnClickListener {
             val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager? ?:return@setOnClickListener
-            tour_join_request_ok_message?.windowToken?.let { token: IBinder ->
+            entourage_join_request_ok_message?.windowToken?.let { token: IBinder ->
                 imm.hideSoftInputFromWindow(token, 0)
             }
         }
-        tour_join_request_ok_message?.addTextChangedListener(object : TextWatcher {
+        entourage_join_request_ok_message?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable) {
@@ -66,21 +66,21 @@ class EntourageJoinRequestFragment  : DialogFragment() {
                 }
             }
         })
-        tour_join_request_ok_message_button?.setOnClickListener {onMessageSend()}
-        tour_join_request_ok_x_button?.setOnClickListener { dismiss() }
+        entourage_join_request_ok_message_button?.setOnClickListener {onMessageSend()}
+        entourage_join_request_ok_x_button?.setOnClickListener { dismiss() }
         viewModel.requestResult.observe(viewLifecycleOwner) {
             when (it) {
                 EntourageJoinRequestViewModel.REQUEST_ERROR -> {
                     Toast.makeText(
                         context,
-                        R.string.tour_join_request_message_error,
+                        R.string.entourage_join_request_message_error,
                         Toast.LENGTH_SHORT
                     ).show()
                 }
                 EntourageJoinRequestViewModel.REQUEST_OK -> {
                     Toast.makeText(
                         context,
-                        R.string.tour_join_request_message_sent,
+                        R.string.entourage_join_request_message_sent,
                         Toast.LENGTH_SHORT
                     ).show()
                     dismiss()
@@ -91,7 +91,7 @@ class EntourageJoinRequestFragment  : DialogFragment() {
 
     private fun onMessageSend() {
         entourage.uuid?.let { uuid ->
-            tour_join_request_ok_message?.text?.let {
+            entourage_join_request_ok_message?.text?.let {
                 if (it.isNotBlank()) {
                     AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_JOIN_REQUEST_SUBMIT)
                     viewModel.sendMessage(it.toString(), uuid)

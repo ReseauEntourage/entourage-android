@@ -44,10 +44,7 @@ abstract class TimestampedObject {
         const val SEPARATOR = 0
         const val CHAT_MESSAGE_ME = 1
         const val CHAT_MESSAGE_OTHER = 2
-        const val TOUR_USER_JOIN = 3
-        const val TOUR_STATUS = 4
-        const val ENCOUNTER = 5
-        //const val TOUR_CARD = 6
+        const val USER_JOIN = 3
         const val ENTOURAGE_CARD = 7
         const val FEED_MEMBER_CARD = 8
         const val INVITATION_CARD = 9

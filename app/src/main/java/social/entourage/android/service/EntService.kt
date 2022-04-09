@@ -28,8 +28,7 @@ import social.entourage.android.tools.log.LoggerNewsFeedLogger
 import javax.inject.Inject
 
 /**
- * Background service handling location updates
- * and tours request
+ * Background service handling location updates request
  */
 class EntService : Service() {
     // ----------------------------------

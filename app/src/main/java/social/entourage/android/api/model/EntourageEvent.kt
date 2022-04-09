@@ -72,10 +72,6 @@ class EntourageEvent : BaseEntourage, Serializable {
         return R.string.loader_title_outing_finish
     }
 
-    override fun getClosedToastMessage(): Int {
-        return R.string.outing_info_text_close
-    }
-
     override fun isEvent() : Boolean {
         return true
     }

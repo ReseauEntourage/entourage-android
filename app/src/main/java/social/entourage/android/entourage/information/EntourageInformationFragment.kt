@@ -96,7 +96,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
     // ----------------------------------
     // Button Handling
     // ----------------------------------
-    override fun onStopTourButton() {
+    override fun onStopEntourageButton() {
         if (entourage.isOpen()) {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_VIEW_OPTIONS_CLOSE)
             //hide the options
@@ -114,7 +114,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN)
             it.requestToJoinEntourage(entourage)
             entourage_info_options?.visibility = View.GONE
-        } ?: run {entourage_information_coordinator_layout?.let {EntSnackbar.make(it,  R.string.tour_join_request_message_error, Snackbar.LENGTH_SHORT).show()}}
+        } ?: run {entourage_information_coordinator_layout?.let {EntSnackbar.make(it,  R.string.entourage_join_request_message_error, Snackbar.LENGTH_SHORT).show()}}
     }
 
     override fun showInviteSource(isShareOnly:Boolean) {
@@ -173,16 +173,16 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         if (author.userID != myId) {
             if ((FeedItem.JOIN_STATUS_PENDING == entourage.joinStatus || FeedItem.JOIN_STATUS_ACCEPTED == entourage.joinStatus) && !entourage.isClosed()) {
                 entourage_option_quit?.visibility = View.VISIBLE
-                entourage_option_quit?.setText(if (FeedItem.JOIN_STATUS_PENDING == entourage.joinStatus) R.string.tour_info_options_cancel_request else R.string.tour_info_options_quit_tour)
+                entourage_option_quit?.setText(if (FeedItem.JOIN_STATUS_PENDING == entourage.joinStatus) R.string.entourage_info_options_cancel_request else R.string.entourage_info_options_quit)
             }
             entourage_option_report?.visibility = View.VISIBLE
         } else {
             ui_layout_button_close?.visibility = if (entourage.isClosed() || !entourage.canBeClosed()) View.GONE else View.VISIBLE
             entourage_option_stop?.visibility = if (entourage.isClosed() || !entourage.canBeClosed()) View.GONE else View.VISIBLE
-            entourage_option_stop?.setText( R.string.tour_info_options_freeze_tour)
+            entourage_option_stop?.setText( R.string.entourage_info_options_stop)
 
             if (entourage.isEvent()) {
-                entourage_option_stop?.setText(R.string.tour_info_options_cancel_event)
+                entourage_option_stop?.setText(R.string.entourage_info_options_cancel_event)
             }
 
             if ((entourage.isOpen())  || (entourage.isSuspended())){
@@ -324,7 +324,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
 
         // populate the data
         entourage.author?.userName?.let {
-            entourage_info_metadata_organiser?.text = getString(R.string.tour_info_metadata_organiser_format, it)
+            entourage_info_metadata_organiser?.text = getString(R.string.entourage_info_metadata_organiser_format, it)
         }
         if (metadata == null) return
         if (entourage.isEvent()) {
@@ -334,19 +334,19 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             val endCalendar = Calendar.getInstance()
             endCalendar.time = metadata.endDate ?: Date()
             if (startCalendar[Calendar.DAY_OF_YEAR] == endCalendar[Calendar.DAY_OF_YEAR]) {
-                entourage_info_metadata_datetime?.text = getString(R.string.tour_info_metadata_dateStart_hours_format,
+                entourage_info_metadata_datetime?.text = getString(R.string.entourage_info_metadata_dateStart_hours_format,
                         metadata.getStartDateFullAsString(requireContext()),
                         metadata.getStartEndTimesAsString(requireContext()))
             } else {
                 //du xx à hh au yy à hh
-                entourage_info_metadata_datetime?.text = getString(R.string.tour_info_metadata_dateStart_End_hours_format,
+                entourage_info_metadata_datetime?.text = getString(R.string.entourage_info_metadata_dateStart_End_hours_format,
                         metadata.getStartDateFullAsString(requireContext()),
                         metadata.getStartTimeAsString(requireContext()),
                         metadata.getEndDateFullAsString(requireContext()),
                         metadata.getEndTimeAsString(requireContext()))
             }
         } else {
-            entourage_info_metadata_datetime?.text = getString(R.string.tour_info_metadata_date_format,
+            entourage_info_metadata_datetime?.text = getString(R.string.entourage_info_metadata_date_format,
                     metadata.getStartDateAsString(requireContext()),
                     metadata.getStartTimeAsString(requireContext()))
         }
@@ -365,19 +365,19 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         }
     }
 
-    override fun addDiscussionTourEndCard(now: Date) {
+    override fun addDiscussionEntourageEndCard(now: Date) {
         // Retrieve the latest chat messages, which should contain the close feed message
         presenter.getFeedItemMessages(entourage, oldestChatMessageDate)
     }
 
     override fun updateFeedItemActionEvent() {
         if (entourage.isEvent()) {
-            entourage_info_request_join_title?.text = getString(R.string.tour_info_request_join_title_entourage_new)
+            entourage_info_request_join_title?.text = getString(R.string.entourage_info_request_join_title_entourage_new)
         } else {
-            entourage_info_request_join_title?.text = getString(R.string.tour_info_request_join_title_entourage)
+            entourage_info_request_join_title?.text = getString(R.string.entourage_info_request_join_title_entourage)
         }
 
-        changeViewsVisibility(false)
+        changeViewsVisibility()
 
         //Top view
         if (entourage.isEvent()) {
@@ -416,24 +416,24 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         ui_layout_private?.visibility = View.GONE
         when(entourage.joinStatus) {
             FeedItem.JOIN_STATUS_ACCEPTED -> {
-                title = R.string.tour_cell_button_accepted_other
+                title = R.string.entourage_cell_button_accepted_other
                 showIcon = View.GONE
                 ui_layout_event_action_top_action?.setBackgroundResource(R.drawable.bg_button_rounded_pre_onboard_orange_plain)
                 ui_tv_button_action_top?.setTextColor(ResourcesCompat.getColor(resources,R.color.white,null))
             }
             FeedItem.JOIN_STATUS_PENDING -> {
                 showIcon = View.VISIBLE
-                title = R.string.tour_cell_button_pending
+                title = R.string.entourage_cell_button_pending
                 ui_layout_event_action_top_action?.setBackgroundResource(R.drawable.bg_button_rounded_orange_stroke_fill_light_pink)
                 ui_iv_button_action_top?.setImageResource(R.drawable.ic_picto_wait)
                 ui_layout_private?.visibility = View.VISIBLE
             }
             else -> {
-                title = R.string.tour_info_request_join_button_entourage
+                title = R.string.entourage_info_request_join_button_entourage
                 ui_iv_button_action_top?.setImageResource(R.drawable.ic_detail_action_plus)
                 ui_layout_event_action_top_action?.setBackgroundResource(R.drawable.bg_button_rounded_pre_onboard_orange_stroke)
                 if (entourage.isEvent()) {
-                    title = R.string.tour_info_request_join_button_event
+                    title = R.string.entourage_info_request_join_button_event
                 }
             }
         }
@@ -452,7 +452,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
                 val alertDialog = AlertDialog.Builder(requireContext())
                 alertDialog.setTitle("Attention")
                 alertDialog.setMessage(R.string.confirm_cancel_demand)
-                alertDialog.setNegativeButton(R.string.tour_info_options_close) { dialog,_ ->
+                alertDialog.setNegativeButton(R.string.entourage_info_options_close) { dialog,_ ->
                     dialog.dismiss()
                 }
                 alertDialog.setPositiveButton(R.string.validate_cancel_demand) { dialog,_ ->
