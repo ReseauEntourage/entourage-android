@@ -61,25 +61,14 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-    @Inject lateinit var presenter: EntourageInformationPresenter
-    @Inject lateinit var entourageRequest: EntourageRequest
+    var presenter: EntourageInformationPresenter = EntourageInformationPresenter(this)
     override fun presenter(): FeedItemInformationPresenter { return presenter}
 
     val entourage:BaseEntourage
         get() = feedItem as BaseEntourage
 
     override fun getItemType(): Int {
-        return TimestampedObject.ENTOURAGE_CARD
-
-    }
-
-    override fun setupComponent(entourageComponent: EntourageComponent?) {
-        DaggerEntourageInformationComponent.builder()
-                .entourageComponent(entourageComponent)
-                .entourageInformationModule(EntourageInformationModule(this))
-                .build()
-                .inject(this)
-    }
+        return TimestampedObject.ENTOURAGE_CARD }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -234,7 +223,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
 
         ui_bt_report_cancel?.setOnClickListener {
             feedItem.uuid?.let { uuid ->
-                sendDeleteReport(uuid)
+                presenter.sendDeleteReport(uuid)
             }
         }
 
@@ -686,17 +675,5 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
     // API callbacks
     // ----------------------------------
     override fun setReadOnly() {
-    }
-
-    private fun sendDeleteReport(entourageUUID: String) {
-        val call = entourageRequest.removeUserReportPrompt(entourageUUID)
-        call.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                validateReport()
-            }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-            }
-        })
     }
 }

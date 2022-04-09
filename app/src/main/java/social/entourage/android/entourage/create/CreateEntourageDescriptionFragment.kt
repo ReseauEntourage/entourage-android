@@ -33,7 +33,7 @@ class CreateEntourageDescriptionFragment  : BaseDialogFragment() {
         arguments?.let { args ->
             entourageDescription = args.getString(ENTOURAGE_DESCRIPTION)
             entourageCategory = args.getSerializable(EntourageCategoryFragment.KEY_ENTOURAGE_CATEGORY) as EntourageCategory?
-            entourageGroupType = args.getString(BaseCreateEntourageFragment.KEY_ENTOURAGE_GROUP_TYPE)
+            entourageGroupType = args.getString(CreateEntourageFragment.KEY_ENTOURAGE_GROUP_TYPE)
         }
     }
 
@@ -107,7 +107,7 @@ class CreateEntourageDescriptionFragment  : BaseDialogFragment() {
             val args = Bundle()
             args.putString(ENTOURAGE_DESCRIPTION, description)
             args.putSerializable(EntourageCategoryFragment.KEY_ENTOURAGE_CATEGORY, entourageCategory)
-            args.putString(BaseCreateEntourageFragment.KEY_ENTOURAGE_GROUP_TYPE, groupType)
+            args.putString(CreateEntourageFragment.KEY_ENTOURAGE_GROUP_TYPE, groupType)
             fragment.arguments = args
             return fragment
         }

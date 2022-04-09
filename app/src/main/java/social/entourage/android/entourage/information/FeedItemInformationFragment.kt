@@ -53,7 +53,7 @@ import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.configuration.Configuration
-import social.entourage.android.entourage.create.BaseCreateEntourageFragment
+import social.entourage.android.entourage.create.CreateEntourageFragment
 import social.entourage.android.entourage.information.discussion.DiscussionAdapter
 import social.entourage.android.entourage.information.members.MembersAdapter
 import social.entourage.android.entourage.invite.InviteFriendsListener
@@ -136,7 +136,6 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupComponent(EntourageApplication.get().components)
         arguments?.let { isFromActions = it.getBoolean(KEY_ISFROMACTIONS) }
         invitationId = arguments?.getLong(KEY_INVITATION_ID) ?: 0
         (arguments?.getSerializable(FeedItem.KEY_FEEDITEM) as? FeedItem)?.let { newFeedItem ->
@@ -233,8 +232,6 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
 
         ui_iv_button_faq?.setOnClickListener { onShowFaq() }
     }
-
-    protected abstract fun setupComponent(entourageComponent: EntourageComponent?)
 
     abstract fun getItemType(): Int
 
@@ -483,8 +480,8 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
     private fun onEditEntourageButton() {
         if (activity == null) return
         entourage_info_options?.visibility = View.GONE
-        BaseCreateEntourageFragment.newInstance(feedItem as BaseEntourage)
-            .show(parentFragmentManager, BaseCreateEntourageFragment.TAG)
+        CreateEntourageFragment.newInstance(feedItem as BaseEntourage)
+            .show(parentFragmentManager, CreateEntourageFragment.TAG)
         //hide the options
         AnalyticsEvents.logEvent(AnalyticsEvents.SHOW_MODIFY_ENTOURAGE)
     }

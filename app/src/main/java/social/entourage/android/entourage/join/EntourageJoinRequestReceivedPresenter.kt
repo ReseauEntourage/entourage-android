@@ -1,19 +1,19 @@
-package social.entourage.android.entourage.join.received
+package social.entourage.android.entourage.join
 
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.EntourageRequest
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.request.EntourageUserResponse
+import social.entourage.android.entourage.join.EntourageJoinRequestReceivedActivity
 import java.util.*
-import javax.inject.Inject
 
-class EntourageJoinRequestReceivedPresenter @Inject constructor(
-        private val activity: EntourageJoinRequestReceivedActivity?,
-        private val entourageRequest: EntourageRequest) {
-
+class EntourageJoinRequestReceivedPresenter(private val activity: EntourageJoinRequestReceivedActivity?) {
+    private val entourageRequest: EntourageRequest
+        get() = EntourageApplication.get().components.entourageRequest
     // ----------------------------------
     // API CALLS
     // ----------------------------------

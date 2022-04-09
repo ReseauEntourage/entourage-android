@@ -178,7 +178,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="social.entourage.android.entourage.join.received.EntourageJoinRequestReceivedActivity"
+            android:name="social.entourage.android.entourage.join.EntourageJoinRequestReceivedActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".user.edit.photo.TakePhotoActivity" />
         <activity

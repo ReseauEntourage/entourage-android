@@ -19,11 +19,12 @@ import javax.inject.Inject
  * Presenter controlling the EntourageInformationFragment
  * @see EntourageInformationFragment
  */
-class EntourageInformationPresenter @Inject constructor(
-        private val fragment: EntourageInformationFragment,
-        private val entourageRequest: EntourageRequest,
-        private val invitationRequest: InvitationRequest)  : FeedItemInformationPresenter() {
+class EntourageInformationPresenter (private val fragment: EntourageInformationFragment)  : FeedItemInformationPresenter() {
 
+    private val entourageRequest: EntourageRequest
+        get() = EntourageApplication.get().components.entourageRequest
+    private val invitationRequest: InvitationRequest
+        get() = EntourageApplication.get().components.invitationRequest
     // ----------------------------------
     // Api calls
     // ----------------------------------
@@ -284,4 +285,15 @@ class EntourageInformationPresenter @Inject constructor(
         })
     }
 
+    fun sendDeleteReport(entourageUUID: String) {
+        val call = entourageRequest.removeUserReportPrompt(entourageUUID)
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                fragment.validateReport()
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            }
+        })
+    }
 }

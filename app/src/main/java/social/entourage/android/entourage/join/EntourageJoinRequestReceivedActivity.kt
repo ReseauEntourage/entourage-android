@@ -1,4 +1,4 @@
-package social.entourage.android.entourage.join.received
+package social.entourage.android.entourage.join
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,13 +14,12 @@ import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.UserFragment
 import social.entourage.android.tools.view.HtmlTextView
-import javax.inject.Inject
 
 class EntourageJoinRequestReceivedActivity : BaseSecuredActivity() {
     private var message: Message? = null
     private var requestsCount = 0
 
-    @Inject lateinit var presenter: EntourageJoinRequestReceivedPresenter
+    var presenter: EntourageJoinRequestReceivedPresenter = EntourageJoinRequestReceivedPresenter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,14 +28,6 @@ class EntourageJoinRequestReceivedActivity : BaseSecuredActivity() {
         if (message != null) {
             displayMessage()
         }
-    }
-
-    override fun setupComponent(entourageComponent: EntourageComponent?) {
-        DaggerEntourageJoinRequestReceivedComponent.builder()
-                .entourageComponent(entourageComponent)
-                .entourageJoinRequestReceivedModule(EntourageJoinRequestReceivedModule(this))
-                .build()
-                .inject(this)
     }
 
     private fun displayMessage() {

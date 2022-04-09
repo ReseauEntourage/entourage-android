@@ -4,7 +4,7 @@ import android.view.View
 import kotlinx.android.synthetic.main.layout_entourage_options.*
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
-import social.entourage.android.entourage.create.BaseCreateEntourageFragment
+import social.entourage.android.entourage.create.CreateEntourageFragment
 
 class EntourageOptionsFragment : FeedItemOptionsFragment() {
     // ----------------------------------
@@ -32,7 +32,7 @@ class EntourageOptionsFragment : FeedItemOptionsFragment() {
     }
 
     override fun onEditClicked() {
-        BaseCreateEntourageFragment.newInstance(entourage).show(parentFragmentManager, BaseCreateEntourageFragment.TAG)
+        CreateEntourageFragment.newInstance(entourage).show(parentFragmentManager, CreateEntourageFragment.TAG)
         dismiss()
     }
 }

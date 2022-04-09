@@ -35,7 +35,7 @@ import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.entourage.EntourageDisclaimerFragment
 import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryManager
-import social.entourage.android.entourage.create.BaseCreateEntourageFragment
+import social.entourage.android.entourage.create.CreateEntourageFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.home.HomeCard
 import social.entourage.android.home.HomeCardType
@@ -187,7 +187,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
         }
         if (!isStateSaved) {
             activity?.supportFragmentManager?.let { fragmentManager->
-                BaseCreateEntourageFragment.newExpertInstance(location, groupType, entourageCategory).show(fragmentManager, BaseCreateEntourageFragment.TAG)
+                CreateEntourageFragment.newExpertInstance(location, groupType, entourageCategory).show(fragmentManager, CreateEntourageFragment.TAG)
             }
         }
     }

@@ -16,7 +16,7 @@ import social.entourage.android.api.request.*
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.entourage.EntourageDisclaimerFragment
 import social.entourage.android.entourage.category.EntourageCategory
-import social.entourage.android.entourage.create.BaseCreateEntourageFragment
+import social.entourage.android.entourage.create.CreateEntourageFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.base.map.MapClusterEntourageItem
 import social.entourage.android.onboarding.InputNamesFragment
@@ -90,7 +90,7 @@ class NewsfeedPresenter @Inject constructor(
     fun createEntourage(location: LatLng?, groupType: String, category: EntourageCategory?) {
         if (fragment != null && !fragment.isStateSaved) {
             val fragmentManager = fragment.activity?.supportFragmentManager ?: return
-            BaseCreateEntourageFragment.newExpertInstance(location, groupType, category).show(fragmentManager, BaseCreateEntourageFragment.TAG)
+            CreateEntourageFragment.newExpertInstance(location, groupType, category).show(fragmentManager, CreateEntourageFragment.TAG)
         }
     }
 
