@@ -27,10 +27,6 @@ import social.entourage.android.user.partner.PartnerFragment
 import timber.log.Timber
 
 
-private const val ARG_LAT = "latitude"
-private const val ARG_LONG = "longitude"
-private const val ARG_DIST = "distance"
-
 class GDSSearchFragment : BaseDialogFragment() {
     private val MIN_CHARS_SEARCH = 3
     private var latitude: Double = 0.0
@@ -159,6 +155,10 @@ class GDSSearchFragment : BaseDialogFragment() {
     }
 
     companion object {
+        private const val ARG_LAT = "latitude"
+        private const val ARG_LONG = "longitude"
+        private const val ARG_DIST = "distance"
+
         val TAG: String? = GDSSearchFragment::class.java.simpleName
         fun newInstance(latitude: Double, longitude: Double, distance: Double): GDSSearchFragment {
             val fragment = GDSSearchFragment()

@@ -7,6 +7,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.Constants
+import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.api.request.PoiRequest
 import social.entourage.android.api.request.PoiResponse
@@ -22,10 +23,11 @@ import javax.inject.Inject
  * Presenter controlling the GuideMapFragment
  * @see GuideMapFragment
  */
-class GuideMapPresenter @Inject constructor(
-        private val fragment: GuideMapFragment,
-        private val authenticationController: AuthenticationController,
-        private val poiRequest: PoiRequest) {
+class GuideMapPresenter (private val fragment: GuideMapFragment) {
+    private val authenticationController: AuthenticationController
+        get() = EntourageApplication.get().components.authenticationController
+    private val poiRequest: PoiRequest
+        get() = EntourageApplication.get().components.poiRequest
 
 
     private var previousEmptyListPopupLocation: Location? = null

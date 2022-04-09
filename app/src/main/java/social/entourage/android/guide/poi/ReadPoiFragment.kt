@@ -35,7 +35,11 @@ class ReadPoiFragment : BaseDialogFragment() {
     // ----------------------------------
     private lateinit var poi: Poi
     private var filtersSelectedFromMap:String? = null
-    @Inject lateinit var presenter: ReadPoiPresenter
+    var presenter: ReadPoiPresenter
+
+    init {
+        presenter = ReadPoiPresenter(this)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -47,7 +51,6 @@ class ReadPoiFragment : BaseDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         poi = arguments?.getSerializable(BUNDLE_KEY_POI) as Poi
         filtersSelectedFromMap = arguments?.getString(BUNDLE_KEY_SEARCH,"")
-        setupComponent(EntourageApplication.get(activity).components)
 
         //Actually WS return id and not uuid for entourage poi
         presenter.getPoiDetail(poi.uuid)
@@ -103,16 +106,6 @@ class ReadPoiFragment : BaseDialogFragment() {
         guide_filter_list?.setOnItemClickListener { parent, view, position, id ->
             ui_layout_full_help_info?.visibility = View.GONE
         }
-    }
-
-    private fun setupComponent(entourageComponent: EntourageComponent?) {
-        entourageComponent?.let {
-            DaggerReadPoiComponent.builder()
-                    .entourageComponent(entourageComponent)
-                    .readPoiModule(ReadPoiModule(this,entourageComponent.poiRequest))
-                    .build()
-                    .inject(this)
-        } ?: kotlin.run { dismiss() }
     }
 
     fun noData() {

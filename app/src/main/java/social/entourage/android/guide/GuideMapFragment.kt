@@ -45,7 +45,7 @@ import social.entourage.android.user.partner.PartnerFragment
 import timber.log.Timber
 import javax.inject.Inject
 
-open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiConnectionListener,
+class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiConnectionListener,
         GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
 
     // ----------------------------------
@@ -54,7 +54,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     private var isAlertTextVisible: Boolean = false
     private val connection = ServiceConnection()
 
-    @Inject lateinit var presenter: GuideMapPresenter
+    private var presenter: GuideMapPresenter = GuideMapPresenter(this)
 
     private var onMapReadyCallback: OnMapReadyCallback? = null
     private val poisAdapter: PoisAdapter = PoisAdapter()
@@ -65,23 +65,12 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     // ----------------------------------
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupComponent(EntourageApplication.get(activity).components)
         initializeMap()
         initializeAlertBanner()
         initializePopups()
         initializePOIList()
         initializeFloatingButtons()
         initializeFilterButton()
-
-
-    }
-
-    fun setupComponent(entourageComponent: EntourageComponent?) {
-        DaggerGuideMapComponent.builder()
-                .entourageComponent(entourageComponent)
-                .guideMapModule(GuideMapModule(this))
-                .build()
-                .inject(this)
     }
 
     override fun onStart() {
