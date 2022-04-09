@@ -51,16 +51,13 @@ import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import timber.log.Timber
-import javax.inject.Inject
 
 class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener, UserEditActionZoneFragment.FragmentListener {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-    @Inject
-    lateinit var presenter: HomeExpertPresenter
+    var presenter: HomeExpertPresenter
     private var entService: EntService? = null
-    private var isStopped = false
 
     private var adapterHome: HomeFeedAdapter? = null
     //pagination
@@ -81,8 +78,6 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
     private var feedItemTemporary:FeedItem? = null
     private var countDownTimer:CountDownTimer? = null
     private var popInfoCreateEntourageFragment:PopInfoCreateEntourageFragment? = null
-    val countDown = 5000L
-
 
     // ----------------------------------
     // LIFECYCLE
@@ -92,12 +87,6 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
         if (!LocationUtils.isLocationEnabled() && !LocationUtils.isLocationPermissionGranted()) {
             (activity as? MainActivity)?.showEditActionZoneFragment(this,false)
         }
-        isStopped = false
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        isStopped = true
     }
 
     override fun onBackPressed(): Boolean {
@@ -144,7 +133,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
         popInfoCreateEntourageFragment?.homeFragment = this
         popInfoCreateEntourageFragment?.show(requireActivity().supportFragmentManager,PopInfoCreateEntourageFragment.TAG)
 
-        countDownTimer = object : CountDownTimer(countDown, 1000) {
+        countDownTimer = object : CountDownTimer(Companion.countDown, 1000) {
             override fun onTick(millisUntilFinished: Long) {
             }
 
@@ -345,11 +334,6 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
         connection.doBindService()
     }
 
-    override fun onAttach(context: Context) {
-        setupComponent(EntourageApplication.get(activity).components)
-        super.onAttach(context)
-    }
-
     override fun onResume() {
         super.onResume()
         EntBus.post(Events.OnLocationPermissionGranted(LocationUtils.isLocationPermissionGranted()))
@@ -390,14 +374,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
 
     init {
         createEmptyArray()
-    }
-
-    private fun setupComponent(entourageComponent: EntourageComponent?) {
-        DaggerHomeExpertComponent.builder()
-            .entourageComponent(entourageComponent)
-            .homeExpertModule(HomeExpertModule(this))
-            .build()
-            .inject(this)
+        presenter = HomeExpertPresenter(this)
     }
 
     @Subscribe
@@ -714,5 +691,6 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
 
     companion object{
         const val TAG: String = "social.entourage.android.fragment.home.expert"
+        const val countDown = 5000L
     }
 }

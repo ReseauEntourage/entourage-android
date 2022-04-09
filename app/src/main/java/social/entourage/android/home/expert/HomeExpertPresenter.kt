@@ -1,5 +1,6 @@
 package social.entourage.android.home.expert
 
+import android.content.SharedPreferences
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -12,18 +13,21 @@ import social.entourage.android.api.request.*
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
-import javax.inject.Inject
 
 /**
  * Presenter controlling the HomeExpertFragment
  *
  * @see HomeExpertFragment
  */
-class HomeExpertPresenter @Inject constructor(
-    private val fragment: HomeExpertFragment?,
-    internal val authenticationController: AuthenticationController,
-    private val entourageRequest: EntourageRequest,
-    private val invitationRequest: InvitationRequest) {
+class HomeExpertPresenter(private val fragment: HomeExpertFragment) {
+    internal val authenticationController: AuthenticationController
+        get() = EntourageApplication.get().components.authenticationController
+    private val entourageRequest: EntourageRequest
+        get() = EntourageApplication.get().components.entourageRequest
+    private val invitationRequest: InvitationRequest
+        get() = EntourageApplication.get().components.invitationRequest
+    private val sharedPreferences : SharedPreferences
+        get() = EntourageApplication.get().sharedPreferences
 
     private val isOnboardingUser: Boolean
         get() = authenticationController.isOnboardingUser
@@ -59,7 +63,7 @@ class HomeExpertPresenter @Inject constructor(
                     override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
                         response.body()?.entourage?.let {
                             if (response.isSuccessful) {
-                                fragment?.openFeedItem(it, invitationId)
+                                fragment.openFeedItem(it, invitationId)
                             }
                         }
                     }
@@ -78,7 +82,7 @@ class HomeExpertPresenter @Inject constructor(
                     override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
                         response.body()?.entourage?.let {
                             if (response.isSuccessful) {
-                                fragment?.openFeedItem(it)
+                                fragment.openFeedItem(it)
                             }
                         }
                     }
@@ -100,17 +104,15 @@ class HomeExpertPresenter @Inject constructor(
     }
 
     fun isNavigation(): Boolean {
-        return EntourageApplication.get().sharedPreferences
-            .getBoolean("isNavNews", false)
+        return sharedPreferences.getBoolean("isNavNews", false)
     }
 
     fun navType(): String? {
-        return EntourageApplication.get().sharedPreferences
-            .getString("navType", null)
+        return sharedPreferences.getString("navType", null)
     }
 
     fun saveInfo(isNav:Boolean, type:String?) {
-        val editor = EntourageApplication.get().sharedPreferences.edit()
+        val editor = sharedPreferences.edit()
         editor.putBoolean("isNavNews",isNav)
         editor.putString("navType",type)
         editor.apply()
