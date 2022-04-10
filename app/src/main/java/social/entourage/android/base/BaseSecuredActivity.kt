@@ -8,13 +8,13 @@ import social.entourage.android.R
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
 import social.entourage.android.tools.log.AnalyticsEvents
-import javax.inject.Inject
 
 /**
  * Base Activity that only runs if the user is currently logged in
  */
 abstract class BaseSecuredActivity : BaseActivity() {
-    @Inject lateinit var authenticationController: AuthenticationController
+    protected val authenticationController: AuthenticationController
+        get() = EntourageApplication.get().components.authenticationController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

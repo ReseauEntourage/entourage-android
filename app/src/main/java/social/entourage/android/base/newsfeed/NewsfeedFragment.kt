@@ -4,10 +4,8 @@ import android.Manifest.permission
 import android.animation.ValueAnimator
 import android.app.ProgressDialog
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Color
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
@@ -51,13 +49,12 @@ import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import timber.log.Timber
 import java.util.*
-import javax.inject.Inject
 
 abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedListener, UserEditActionZoneFragment.FragmentListener {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-    @Inject lateinit var presenter: NewsfeedPresenter
+    protected var presenter: NewsfeedPresenter = NewsfeedPresenter(this)
     private var onMapReadyCallback: OnMapReadyCallback? = null
     protected var longTapCoordinates: LatLng? = null
     private var previousEmptyListPopupLocation: Location? = null
@@ -99,11 +96,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         markersMap.clear()
     }
 
-    override fun onAttach(context: Context) {
-        setupComponent(EntourageApplication.get(activity).components)
-        super.onAttach(context)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         groupType = BaseEntourage.GROUPTYPE_ACTION
@@ -127,14 +119,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         fragment_map_gps?.setOnClickListener {displayGeolocationPreferences()}
 
         presenter.checkUserNamesInfos()
-    }
-
-    protected fun setupComponent(entourageComponent: EntourageComponent?) {
-        DaggerNewsfeedComponent.builder()
-                .entourageComponent(entourageComponent)
-                .newsfeedModule(NewsfeedModule(this))
-                .build()
-                .inject(this)
     }
 
     override fun onStart() {
@@ -1062,18 +1046,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
 
         // Zoom in level when taping a heatzone
         private const val ZOOM_HEATZONE = 15.7f
-
-        fun getTransparentColor(color: Int): Int {
-            return Color.argb(200, Color.red(color), Color.green(color), Color.blue(color))
-        }
-
-        fun isToday(date: Date): Boolean {
-            val calToday = Calendar.getInstance()
-            calToday.time =  Date()
-            val calDate = Calendar.getInstance()
-            calDate.time = date
-            return calToday[Calendar.ERA] == calDate[Calendar.ERA] && calToday[Calendar.DAY_OF_YEAR] == calDate[Calendar.DAY_OF_YEAR] && calToday[Calendar.YEAR] == calDate[Calendar.YEAR]
-        }
     }
 
     init {

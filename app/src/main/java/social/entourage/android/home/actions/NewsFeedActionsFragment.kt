@@ -31,7 +31,7 @@ import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.tools.view.EntSnackbar
 import timber.log.Timber
 
-open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListener, BackPressable {
+class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListener, BackPressable {
 
     var isActionSelected = true
     private val connection = ServiceConnection()

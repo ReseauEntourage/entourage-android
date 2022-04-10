@@ -9,6 +9,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
@@ -23,19 +24,21 @@ import social.entourage.android.onboarding.InputNamesFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 import java.util.*
-import javax.inject.Inject
 
 /**
  * Presenter controlling the NewsfeedFragment
  *
  * @see NewsfeedFragment
  */
-class NewsfeedPresenter @Inject constructor(
-    private val fragment: NewsfeedFragment?,
-    internal val authenticationController: AuthenticationController,
-    private val entourageRequest: EntourageRequest,
-    private val invitationRequest: InvitationRequest) {
+class NewsfeedPresenter(private val fragment: NewsfeedFragment) {
 
+    internal val authenticationController: AuthenticationController
+        get() = EntourageApplication.get().components.authenticationController
+    private val entourageRequest: EntourageRequest
+        get() = EntourageApplication.get().components.entourageRequest
+    private val invitationRequest: InvitationRequest
+        get() = EntourageApplication.get().components.invitationRequest
+                
     val isOnboardingUser: Boolean
       get() = authenticationController.isOnboardingUser
 
@@ -60,7 +63,7 @@ class NewsfeedPresenter @Inject constructor(
 
     fun openFeedItem(feedItem: FeedItem, invitationId: Long, feedRank: Int) {
         try {
-            val fragmentManager = fragment?.activity?.supportFragmentManager ?: return
+            val fragmentManager = fragment.activity?.supportFragmentManager ?: return
             FeedItemInformationFragment.newInstance(feedItem, invitationId, feedRank,false).show(fragmentManager, FeedItemInformationFragment.TAG)
         } catch (e: IllegalStateException) {
             Timber.w(e)
@@ -88,14 +91,14 @@ class NewsfeedPresenter @Inject constructor(
     }
 
     fun createEntourage(location: LatLng?, groupType: String, category: EntourageCategory?) {
-        if (fragment != null && !fragment.isStateSaved) {
+        if (!fragment.isStateSaved) {
             val fragmentManager = fragment.activity?.supportFragmentManager ?: return
             CreateEntourageFragment.newExpertInstance(location, groupType, category).show(fragmentManager, CreateEntourageFragment.TAG)
         }
     }
 
     fun displayEntourageDisclaimer(groupType: String) {
-        if (fragment != null && !fragment.isStateSaved) {
+        if (!fragment.isStateSaved) {
             val fragmentManager = fragment.activity?.supportFragmentManager ?:return
             EntourageDisclaimerFragment.newInstance(groupType).show(fragmentManager, EntourageDisclaimerFragment.TAG)
         }
@@ -107,15 +110,15 @@ class NewsfeedPresenter @Inject constructor(
             override fun onResponse(call: Call<InvitationListResponse>, response: Response<InvitationListResponse>) {
                 response.body()?.invitations?.let {
                     if (response.isSuccessful) {
-                        fragment?.onInvitationsReceived(it)
+                        fragment.onInvitationsReceived(it)
                         return
                     }
                 }
-                fragment?.onNoInvitationReceived()
+                fragment.onNoInvitationReceived()
             }
 
             override fun onFailure(call: Call<InvitationListResponse>, t: Throwable) {
-                fragment?.onNoInvitationReceived()
+                fragment.onNoInvitationReceived()
             }
         })
     }
@@ -139,7 +142,7 @@ class NewsfeedPresenter @Inject constructor(
     fun checkUserNamesInfos() {
         authenticationController.me?.let { user ->
             if (user.firstName.isNullOrEmpty() && user.lastName.isNullOrEmpty()) {
-                fragment?.let { InputNamesFragment().show(it.parentFragmentManager,"InputFGTag") }
+                fragment.let { InputNamesFragment().show(it.parentFragmentManager,"InputFGTag") }
             }
         }
     }
@@ -151,7 +154,7 @@ class NewsfeedPresenter @Inject constructor(
 
         override fun onClusterItemClick(mapClusterItem: ClusterItem): Boolean {
             if (mapClusterItem is MapClusterEntourageItem) {
-                fragment?.handleHeatzoneClick(mapClusterItem.position)
+                fragment.handleHeatzoneClick(mapClusterItem.position)
             }
             return true
         }
@@ -171,7 +174,7 @@ class NewsfeedPresenter @Inject constructor(
             val markerPosition = groundOverlay.position
             if (entourageMarkerHashMap[markerPosition] != null) {
                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_HEATZONECLICK)
-                fragment?.handleHeatzoneClick(markerPosition)
+                fragment.handleHeatzoneClick(markerPosition)
             }
         }
     }
