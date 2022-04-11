@@ -43,7 +43,7 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-    private var presenter: UserEditPresenter = UserEditPresenter(this)
+    internal var presenter: UserEditPresenter = UserEditPresenter(this)
 
     private var scrollViewY = 0
 
