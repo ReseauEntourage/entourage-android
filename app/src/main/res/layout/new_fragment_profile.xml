@@ -12,41 +12,54 @@
 
         <Button
             android:id="@+id/edit_profile"
-            style="@style/profile_titles"
+            style="@style/orange_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="25dp"
+            android:layout_marginEnd="20dp"
             android:background="@drawable/new_rounded_button"
             android:drawableEnd="@drawable/new_edit_profile"
-            android:drawablePadding="10dp"
-            android:padding="14dp"
-            android:text="@string/modify"
+            android:drawablePadding="5dp"
+            android:paddingHorizontal="12dp"
+            android:text="@string/edit"
             android:textAllCaps="false"
             app:layout_constraintBottom_toTopOf="@id/tab"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
 
+        <TextView
+            android:id="@+id/name"
+            style="@style/h2_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            app:layout_constraintBottom_toTopOf="@id/tab"
+            app:layout_constraintLeft_toRightOf="@id/image_profile"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="John" />
+
+
         <ImageView
             android:id="@+id/image_profile"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="15dp"
             android:elevation="1dp"
             android:src="@drawable/new_edit_profile"
             app:layout_constraintBottom_toTopOf="@id/tab"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tab" />
+            app:layout_constraintLeft_toRightOf="@id/icon_back"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            style="@style/header_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:text="@string/profile"
+        <ImageView
+            android:id="@+id/icon_back"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/new_back_white"
             app:layout_constraintBottom_toTopOf="@id/tab"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/new_back_white" />
 
         <LinearLayout
             android:id="@+id/tab"
@@ -57,14 +70,13 @@
             android:background="@drawable/new_bg_profile"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:paddingTop="25dp">
+            android:paddingTop="20dp">
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="25dp"
-                android:layout_marginTop="50dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

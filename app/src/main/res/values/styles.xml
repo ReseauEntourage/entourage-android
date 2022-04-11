@@ -326,8 +326,8 @@
         <item name="android:textColor">@color/orange</item>
     </style>
 
-    <style name="profile_titles">
-        <item name="android:textSize">@dimen/profile_titles</item>
+    <style name="orange_button">
+        <item name="android:textSize">@dimen/profile_description</item>
         <item name="android:fontFamily">@font/nunitosans_bold</item>
         <item name="android:textColor">@color/orange</item>
     </style>
@@ -398,6 +398,12 @@
         <item name="android:progressBackgroundTint">#f4511e</item>
         <item name="android:progressTint">#388e3c</item>
         <item name="android:colorControlActivated">#c51162</item>
+    </style>
+
+    <style name="h2_seek_bar_progression">
+        <item name="android:textSize">@dimen/profile_labels</item>
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:textColor">@color/orange</item>
     </style>
 
 

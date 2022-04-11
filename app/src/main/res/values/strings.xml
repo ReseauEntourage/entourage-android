@@ -102,10 +102,9 @@
     <string name="phone">Téléphone</string>
     <string name="email">E-mail</string>
     <string name="profile">Profil</string>
-    <string name="modify">Editer</string>
     <string name="city">Ville</string>
     <string name="city_action_zone">Ville et zone d’action *</string>
-    <string name="within">Dans un rayon de *</string>
+    <string name="within">Dans un rayon de </string>
     <string name="settings">Paramètres</string>
     <string name="my_profile">Mon profil</string>
     <string name="min_progressbar">1 km</string>
