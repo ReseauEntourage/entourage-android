@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-private const val NB_TABS = 3
+private const val NB_TABS = 1
 
 class CreateGroupAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
@@ -15,10 +15,6 @@ class CreateGroupAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle)
     }
 
     override fun createFragment(position: Int): Fragment {
-        return when (position) {
-            0 -> CreateGroupStepOneFragment()
-            1 -> CreateGroupStepOneFragment()
-            else -> CreateGroupStepOneFragment()
-        }
+        return CreateGroupStepOneFragment()
     }
 }

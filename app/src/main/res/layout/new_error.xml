@@ -22,11 +22,11 @@
             style="@style/error_msg"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:text="@string/error_mandatory_fields"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/error_icon"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="ceci est une erreur" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

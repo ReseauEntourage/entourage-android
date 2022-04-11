@@ -70,7 +70,7 @@
             android:layout_marginBottom="30dp"
             android:background="@drawable/new_bg_rounded_button_light_orange"
             android:drawablePadding="10dp"
-            android:text="@string/next_report"
+            android:text="@string/new_next"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -79,7 +79,7 @@
 
         <view
             android:id="@+id/message"
-            style="@style/profile_activity_label"
+            style="@style/input"
             class="social.entourage.android.new_v8.profile.LinedEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
