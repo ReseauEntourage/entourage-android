@@ -92,6 +92,7 @@
 
     <!-- New -->
     <string name="my_activity">Mon activité</string>
+    <string name="my_information">Mes informations</string>
     <string name="his_activity">Son activité</string>
     <string name="test">5</string>
     <string name="events">Évènements</string>
@@ -186,7 +187,8 @@
     <string name="add_location_subtitle">Entourage ne communique pas cette adresse aux utilisateurs.</string>
     <string name="new_group">Nouveau groupe</string>
     <string name="error_mandatory_fields">Veuillez remplir tous les champs obligatoires</string>
-
+    <string name="error_lastname">Le nom doit comporter au moins 2 lettres.</string>
+    <string name="error_email">e-mail invalide</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

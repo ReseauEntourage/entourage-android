@@ -61,6 +61,14 @@
                 android:backgroundTint="@color/light_orange_opacity_50"
                 tools:text="content" />
 
+            <include
+                android:id="@+id/error"
+                layout="@layout/new_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/group_location" />
+
         </LinearLayout>
 
 
