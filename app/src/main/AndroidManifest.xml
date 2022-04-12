@@ -189,7 +189,9 @@
             android:theme="@style/EntourageOSSLicenses.Theme" />
         <activity android:name=".involvement.ShareActivity" />
         <activity android:name=".involvement.RateActivity" />
-        <activity android:name=".new_v8.profile.ProfileActivity" />
+        <activity
+            android:name=".new_v8.profile.ProfileActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".onboarding.pre_onboarding.PreOnboardingChoiceActivity"
             android:screenOrientation="portrait" />

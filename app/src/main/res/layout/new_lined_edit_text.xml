@@ -58,7 +58,7 @@
 
             <view
                 android:id="@+id/content"
-                style="@style/profile_activity_label"
+                style="@style/input"
                 class="social.entourage.android.new_v8.profile.LinedEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
