@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/light_beige"
         android:orientation="vertical">
-
 
         <include
             android:id="@+id/header"
-            layout="@layout/new_header"
+            layout="@layout/new_header_bottom_sheet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            app:layout_constraintBottom_toTopOf="@id/scrollView"
+            app:layout_constraintBottom_toTopOf="@id/title"
             app:layout_constraintTop_toTopOf="parent"
             app:title="@{@string/help_about}" />
+
 
         <ScrollView
             android:id="@+id/scrollView"
@@ -32,8 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingHorizontal="@dimen/padding_horizental"
-                android:paddingTop="@dimen/padding_top">
+                android:paddingHorizontal="@dimen/padding_horizental">
 
                 <include
                     android:id="@+id/ethic"

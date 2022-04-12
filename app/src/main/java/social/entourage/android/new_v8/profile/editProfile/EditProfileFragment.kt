@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.collection.ArrayMap
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -155,8 +156,14 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
             lastname.content.setText(user.lastName)
             description.content.setText(user.about)
             birthday.content.setText(user.birthday)
-            phone.content.setText(user.phone)
-            phone.content.setText(user.phone)
+            phone.content.text = user.phone
+            phone.content.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.dark_ger_opacity_40
+                )
+            )
+            phone.divider.visibility = View.GONE
             email.content.setText(user.email)
             cityAction.content.text = user.address?.displayAddress
             seekBarLayout.seekbar.progress = user.travelDistance ?: 0

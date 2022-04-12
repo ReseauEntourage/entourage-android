@@ -59,12 +59,16 @@ class MyProfileFragment : Fragment() {
 
 
     private fun initializeInterests() {
-        binding.interests.apply {
-            val layoutManagerFlex = FlexboxLayoutManager(context)
-            layoutManagerFlex.flexDirection = FlexDirection.ROW
-            layoutManagerFlex.justifyContent = JustifyContent.CENTER
-            layoutManager = layoutManagerFlex
-            adapter = InterestsAdapter(interestsList)
+        if (interestsList.isEmpty()) binding.interests.visibility = View.GONE
+        else {
+            binding.interests.visibility = View.VISIBLE
+            binding.interests.apply {
+                val layoutManagerFlex = FlexboxLayoutManager(context)
+                layoutManagerFlex.flexDirection = FlexDirection.ROW
+                layoutManagerFlex.justifyContent = JustifyContent.CENTER
+                layoutManager = layoutManagerFlex
+                adapter = InterestsAdapter(interestsList)
+            }
         }
     }
 

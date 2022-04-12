@@ -426,6 +426,12 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
 
+    <style name="version_number">
+        <item name="android:textSize">@dimen/version_number</item>
+        <item name="android:fontFamily">@font/nunitosans_light</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
     <style name="AppBottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
     </style>

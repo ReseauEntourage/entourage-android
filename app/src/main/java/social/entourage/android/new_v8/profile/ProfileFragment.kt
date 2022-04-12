@@ -39,6 +39,9 @@ class ProfileFragment : Fragment() {
             .load(R.drawable.new_profile).circleCrop()
             .into(binding.imageProfile)
         getUser()
+        binding.imageProfile.setOnClickListener {
+            findNavController().navigate(R.id.action_profile_fragment_to_user_fragment)
+        }
     }
 
     private fun initializeTab() {
