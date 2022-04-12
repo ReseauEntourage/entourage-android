@@ -1,6 +1,5 @@
 package social.entourage.android.service
 
-
 import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -25,7 +24,6 @@ import social.entourage.android.base.newsfeed.NewsfeedPagination
 import social.entourage.android.base.newsfeed.NewsfeedTabItem
 import social.entourage.android.tools.log.CrashlyticsNewsFeedLogger
 import social.entourage.android.tools.log.LoggerNewsFeedLogger
-import javax.inject.Inject
 
 /**
  * Background service handling location updates request
@@ -36,9 +34,12 @@ class EntService : Service() {
     // ----------------------------------
     private val binder: IBinder = LocalBinder()
 
-    @Inject lateinit var authenticationController: AuthenticationController
-    @Inject lateinit var newsfeedRequest: NewsfeedRequest
-    @Inject lateinit var entourageRequest: EntourageRequest
+     private val authenticationController: AuthenticationController
+        get() = EntourageApplication.get().components.authenticationController
+     private val newsfeedRequest: NewsfeedRequest
+         get() = EntourageApplication.get().components.newsfeedRequest
+     private val entourageRequest: EntourageRequest
+         get() = EntourageApplication.get().components.entourageRequest
 
     private lateinit var entServiceManager: EntServiceManager
 

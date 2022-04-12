@@ -40,9 +40,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.log.AnalyticsEvents.logEvent
 import social.entourage.android.tools.log.AnalyticsEvents.onLocationPermissionGranted
 import social.entourage.android.tools.log.AnalyticsEvents.updateUserInfo
-import social.entourage.android.user.AvatarUploadPresenter
-import social.entourage.android.user.AvatarUploadView
-import social.entourage.android.user.UserFragment
+import social.entourage.android.user.*
 import social.entourage.android.user.edit.UserEditFragment
 import social.entourage.android.user.edit.photo.PhotoChooseInterface
 import social.entourage.android.user.edit.photo.PhotoEditFragment
@@ -59,11 +57,15 @@ class MainActivity : BaseSecuredActivity(),
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-    @Inject
-    lateinit var presenter: MainPresenter
+    
+    private val presenter: MainPresenter = MainPresenter(this)
+    private val avatarUploadPresenter: AvatarUploadPresenter
 
-    @Inject
-    lateinit var avatarUploadPresenter: AvatarUploadPresenter
+    init {
+        avatarUploadPresenter = AvatarUploadPresenter(this,
+            AvatarUploadRepository(),
+            presenter)
+    }
 
     private val bottomBar
         get() = (bottom_navigation as? EntBottomNavigationView)
@@ -149,14 +151,6 @@ class MainActivity : BaseSecuredActivity(),
 
     private fun showEditProfileAction() {
         UserEditFragment.newInstance(true).show(supportFragmentManager, UserEditFragment.TAG)
-    }
-
-    override fun setupComponent(entourageComponent: EntourageComponent?) {
-        DaggerMainComponent.builder()
-            .entourageComponent(entourageComponent)
-            .mainModule(MainModule(this))
-            .build()
-            .inject(this)
     }
 
     override fun onNewIntent(intent: Intent) {

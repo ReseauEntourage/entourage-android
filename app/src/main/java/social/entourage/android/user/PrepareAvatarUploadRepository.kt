@@ -3,14 +3,12 @@ package social.entourage.android.user
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Callback
+import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.UserRequest
-import javax.inject.Inject
 
-class PrepareAvatarUploadRepository @Inject constructor(private val userRequest: UserRequest) : Callback<PrepareAvatarUploadRepository.Response> {
-    private var callback: Callback? = null
-    fun setCallback(callback: Callback?) {
-        this.callback = callback
-    }
+class PrepareAvatarUploadRepository (private var callback: Callback?) : Callback<PrepareAvatarUploadRepository.Response> {
+    private val userRequest: UserRequest
+        get() = EntourageApplication.get().components.userRequest
 
     fun prepareUpload() {
         val request = Request("image/jpeg")

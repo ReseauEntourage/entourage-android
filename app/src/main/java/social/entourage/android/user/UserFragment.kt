@@ -33,7 +33,6 @@ import social.entourage.android.user.edit.photo.ChoosePhotoFragment.Companion.ne
 import social.entourage.android.user.partner.PartnerFragment
 import social.entourage.android.user.report.UserReportFragment
 import timber.log.Timber
-import javax.inject.Inject
 
 class UserFragment : BaseDialogFragment() {
     // ----------------------------------
@@ -41,7 +40,7 @@ class UserFragment : BaseDialogFragment() {
     // ----------------------------------
     private var toReturn: View? = null
 
-    @Inject lateinit var presenter: UserPresenter
+    private val presenter: UserPresenter = UserPresenter(this)
 
     private var user: User? = null
     private var isMyProfile = false
@@ -57,7 +56,6 @@ class UserFragment : BaseDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupComponent(EntourageApplication.get(activity).components)
         val requestedUserId = arguments?.getInt(User.KEY_USER_ID) ?: return
         val authenticatedUser = presenter.authenticatedUser
         if (authenticatedUser != null && requestedUserId == authenticatedUser.id) {
@@ -79,14 +77,6 @@ class UserFragment : BaseDialogFragment() {
         user_message_button?.setOnClickListener { onMessageUserClicked() }
         user_photo_button?.setOnClickListener { onPhotoEditClicked() }
         user_about_edit_button?.setOnClickListener { onAboutEditClicked() }
-    }
-
-    private fun setupComponent(entourageComponent: EntourageComponent?) {
-        DaggerUserComponent.builder()
-                .entourageComponent(entourageComponent)
-                .userModule(UserModule(this))
-                .build()
-                .inject(this)
     }
 
     override fun onStart() {

@@ -64,9 +64,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
 
         avatarUploadPresenter = AvatarUploadPresenter(
             (activity as AvatarUploadView),
-            PrepareAvatarUploadRepository(
-                EntourageApplication.get().components.userRequest
-            ), AvatarUploadRepository(EntourageApplication.get().components.okHttpClient),
+            AvatarUploadRepository(),
             (activity as ProfileActivity).profilePresenter as AvatarUpdatePresenter
         )
         (context as? PhotoChooseInterface)?.let { mListener = it }
