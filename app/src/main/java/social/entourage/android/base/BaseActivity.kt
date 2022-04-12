@@ -7,7 +7,6 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
-import social.entourage.android.EntourageComponent
 import social.entourage.android.R
 import social.entourage.android.tools.view.WebViewFragment
 
@@ -53,7 +52,6 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    protected open fun setupComponent(entourageComponent: EntourageComponent?) {}
     protected fun showKeyboard(view: View) {
         view.requestFocus()
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?

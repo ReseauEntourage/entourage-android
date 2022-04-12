@@ -17,12 +17,14 @@ import javax.inject.Inject
 /**
  * Created by mihaiionescu on 03/08/16.
  */
-class MyEntouragesPresenter @Inject constructor(
-        private val fragment: MyEntouragesFragment,
-        private val newsfeedRequest: NewsfeedRequest,
-        private val entourageRequest: EntourageRequest,
-        private val invitationRequest: InvitationRequest) {
+class MyEntouragesPresenter(private val fragment: MyEntouragesFragment) {
 
+    private val newsfeedRequest: NewsfeedRequest
+        get() = EntourageApplication.get().components.newsfeedRequest
+    private val entourageRequest: EntourageRequest
+        get() = EntourageApplication.get().components.entourageRequest
+    private val invitationRequest: InvitationRequest
+        get() = EntourageApplication.get().components.invitationRequest
     // ----------------------------------
     // Methods
     // ----------------------------------

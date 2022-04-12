@@ -28,17 +28,18 @@ import social.entourage.android.user.edit.UserEditFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import social.entourage.android.user.edit.photo.PhotoEditFragment
 import timber.log.Timber
-import javax.inject.Inject
 
 /**
  * Created by Mihai Ionescu on 27/04/2018.
  */
-class MainPresenter @Inject internal constructor(
-    private val activity: MainActivity,
-    private val applicationInfoRequest: ApplicationInfoRequest,
-    private val authenticationController: AuthenticationController,
+class MainPresenter(private val activity: MainActivity) : AvatarUpdatePresenter {
+    private val applicationInfoRequest: ApplicationInfoRequest
+        get() = EntourageApplication.get().components.applicationInfoRequest
+    private val authenticationController: AuthenticationController
+        get() = EntourageApplication.get().components.authenticationController
     private val userRequest: UserRequest
-) : AvatarUpdatePresenter {
+        get() = EntourageApplication.get().components.userRequest
+
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------

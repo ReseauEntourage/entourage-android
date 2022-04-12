@@ -45,7 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="80dp"
-                    android:text="@string/add_location" />
+                    android:text="@string/add_location_mandatory" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

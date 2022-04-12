@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/new_bg_create_group">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="25dp"
+                android:paddingVertical="30dp">
+
+                <ImageView
+                    android:id="@+id/header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/new_round_group"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/step"
+                    style="@style/header_create_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/step"
+                    app:layout_constraintBottom_toBottomOf="@id/header"
+                    app:layout_constraintLeft_toRightOf="@id/header"
+                    app:layout_constraintRight_toRightOf="@id/header"
+                    app:layout_constraintTop_toTopOf="@id/header" />
+
+                <TextView
+                    style="@style/header_create_group_orange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/stepOne"
+                    app:layout_constraintBottom_toBottomOf="@id/header"
+                    app:layout_constraintLeft_toRightOf="@id/step"
+                    app:layout_constraintTop_toTopOf="@id/header" />
+
+                <include
+                    android:id="@+id/group_name_title"
+                    layout="@layout/new_create_groupe_title_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintTop_toBottomOf="@id/header"
+                    app:mandatory="@{@string/mandatory}"
+                    app:title="@{@string/group_name}" />
+
+                <EditText
+                    android:id="@+id/group_name"
+                    style="@style/input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-4dp"
+                    android:layout_marginTop="5dp"
+                    android:backgroundTint="@color/light_orange_opacity_50"
+                    android:hint="@string/group_name_hint"
+                    android:maxLines="1"
+                    app:layout_constraintTop_toBottomOf="@id/group_name_title"
+                    tools:text="content" />
+
+
+                <include
+                    android:id="@+id/group_description_title"
+                    layout="@layout/new_create_groupe_title_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="45dp"
+                    app:layout_constraintTop_toBottomOf="@id/group_name"
+                    app:mandatory="@{@string/optional}"
+                    app:title="@{@string/write_description}" />
+
+                <view
+                    android:id="@+id/group_description"
+                    style="@style/input"
+                    class="social.entourage.android.new_v8.profile.LinedEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-4dp"
+                    android:backgroundTint="@color/light_orange_opacity_50"
+                    android:hint="@string/write_description_hint"
+                    android:maxLength="200"
+                    android:maxLines="4"
+                    app:layout_constraintTop_toBottomOf="@id/group_description_title"
+                    tools:text="content" />
+
+                <include
+                    android:id="@+id/group_location_layout"
+                    layout="@layout/new_create_groupe_title_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="45dp"
+                    app:layout_constraintTop_toBottomOf="@id/group_description"
+                    app:mandatory="@{@string/mandatory}"
+                    app:title="@{@string/add_location}" />
+
+
+                <TextView
+                    android:id="@+id/subtitle"
+                    style="@style/left_legend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/add_location_subtitle"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/group_location_layout"
+                    tools:text="@string/add_location_subtitle" />
+
+
+                <LinearLayout
+                    android:id="@+id/group_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/subtitle">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/new_location"
+                        tools:text="Title" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/input"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/add_location_hint"
+                            tools:text="content" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/light_orange_opacity_50"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <include
+                    android:id="@+id/error"
+                    layout="@layout/new_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="45dp"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/group_location" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

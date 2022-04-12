@@ -58,6 +58,7 @@
     <dimen name="header_title">24sp</dimen>
     <dimen name="padding_top">25dp</dimen>
     <dimen name="padding_horizental">30dp</dimen>
+    <dimen name="error_msg">11sp</dimen>
     <dimen name="list_item_spacing">16dp</dimen>
     <dimen name="list_item_spacing_half">8dp</dimen>
 

@@ -18,7 +18,6 @@ abstract class BaseSecuredActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupComponent(EntourageApplication.get(this).components)
         if (authenticationController.isAuthenticated && authenticationController.isTutorialDone()) {
             entApp?.finishLoginActivity()
         } else {
