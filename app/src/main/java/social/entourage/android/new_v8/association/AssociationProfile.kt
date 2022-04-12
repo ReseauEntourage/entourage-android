@@ -56,13 +56,38 @@ class AssociationProfile : Fragment() {
 
     private fun updateView() {
         with(binding) {
-            name.text = partner?.name
-            description.text = partner?.description
-            phone.content.text = partner?.phone
-            web.content.text = partner?.websiteUrl
-            address.content.text = partner?.address
-            email.content.text = partner?.email
-            imageAssociation
+            partner?.name?.let {
+                name.visibility = View.VISIBLE
+                name.text = it
+            }
+            partner?.description?.let {
+                description.visibility = View.VISIBLE
+                description.text = it
+            }
+            partner?.phone?.let {
+                phone.root.visibility = View.VISIBLE
+                phone.content.text = it
+            }
+            partner?.websiteUrl?.let {
+                web.root.visibility = View.VISIBLE
+                web.content.text = it
+            }
+            partner?.address?.let {
+                address.root.visibility = View.VISIBLE
+                address.content.text = it
+            }
+            partner?.email?.let {
+                email.root.visibility = View.VISIBLE
+                email.content.text = it
+            }
+            partner?.donationsNeeds?.let {
+                donation.root.visibility = View.VISIBLE
+                donation.content.text = it
+            }
+            partner?.volunteersNeeds?.let {
+                volunteers.root.visibility = View.VISIBLE
+                volunteers.content.text = it
+            }
             partner?.largeLogoUrl.let {
                 Glide.with(requireActivity())
                     .load(Uri.parse(it))
