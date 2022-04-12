@@ -42,18 +42,18 @@ class CreateGroupFragment : Fragment() {
         TabLayoutMediator(binding.tabLayout, viewPager) { tab: TabLayout.Tab, _: Int ->
             tab.view.isClickable = false
         }.attach()
-        onNextClick()
-        onPreviousClick()
+        setNextClickListener()
+        setPreviousClickListener()
     }
 
-    private fun onNextClick() {
+    private fun setNextClickListener() {
         binding.next.setOnClickListener {
             viewModel.onClickNext.value = true
             viewModel.isTextOk.observe(viewLifecycleOwner, ::handleIsTextOk)
         }
     }
 
-    private fun onPreviousClick() {
+    private fun setPreviousClickListener() {
         binding.previous.setOnClickListener {
             viewPager.previousPage(true)
             if (viewPager.currentItem == 0) binding.previous.visibility = View.GONE
