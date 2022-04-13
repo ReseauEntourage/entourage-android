@@ -187,6 +187,11 @@
     <string name="add_location_subtitle">Entourage ne communique pas cette adresse aux utilisateurs.</string>
     <string name="new_group">Nouveau groupe</string>
     <string name="error_mandatory_fields">Veuillez remplir tous les champs obligatoires</string>
+    <string name="contact">Contact</string>
+    <string name="needs">Besoins</string>
+    <string name="accept_donations">Accepte des dons</string>
+    <string name="volunteers">Recherche des bénévoles</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
