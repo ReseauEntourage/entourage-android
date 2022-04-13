@@ -39,7 +39,7 @@
 
                 <TextView
                     android:id="@+id/ambassador"
-                    style="@style/profile_pins"
+                    style="@style/association_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
@@ -59,7 +59,7 @@
 
                     <TextView
                         android:id="@+id/association_name"
-                        style="@style/profile_pins"
+                        style="@style/association_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/new_rounded_background_pins"

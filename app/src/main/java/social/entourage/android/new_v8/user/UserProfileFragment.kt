@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -17,6 +18,7 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.NewFragmentUserProfileBinding
+import social.entourage.android.new_v8.association.AssociationProfileArgs
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 
 class UserProfileFragment : Fragment() {
@@ -27,6 +29,7 @@ class UserProfileFragment : Fragment() {
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
     private lateinit var user: User
     private var interestsList: ArrayList<String> = ArrayList()
+    private val args: UserProfileFragmentArgs by navArgs()
 
 
     override fun onCreateView(
@@ -39,8 +42,7 @@ class UserProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //TODO add user id to the call
-        userPresenter.getUser(2889)
+        userPresenter.getUser(args.userId)
         initializeInterests()
         setBackButton()
         userPresenter.isGetUserSuccess.observe(requireActivity(), ::handleResponse)
@@ -87,7 +89,10 @@ class UserProfileFragment : Fragment() {
         handleMetaData()
         with(binding) {
             name.text = user.displayName
-            description.text = user.about
+            if (!user.about.isNullOrEmpty()) {
+                description.visibility = View.VISIBLE
+                description.text = user.about
+            }
             user.stats?.let {
                 contribution.content.text = it.contribCreationCount.toString()
                 events.content.text = it.eventsCount.toString()
@@ -97,7 +102,7 @@ class UserProfileFragment : Fragment() {
                 else pins.ambassador.visibility = View.GONE
             }
             user.partner?.let {
-                pins.association.association_name.text = it.name
+                pins.associationName.text = it.name
                 it.smallLogoUrl.let { logo ->
                     Glide.with(requireActivity())
                         .load(Uri.parse(logo))

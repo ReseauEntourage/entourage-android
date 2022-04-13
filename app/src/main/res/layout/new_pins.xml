@@ -11,7 +11,6 @@
             android:id="@+id/pins"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
@@ -19,13 +18,14 @@
 
             <TextView
                 android:id="@+id/ambassador"
-                style="@style/profile_pins"
+                style="@style/association_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/new_rounded_background_pins"
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="5dp"
+                android:text="@string/ambassador"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/association"
                 app:layout_constraintTop_toBottomOf="@id/name"
@@ -38,7 +38,8 @@
                 android:gravity="center">
 
                 <TextView
-                    style="@style/profile_pins"
+                    android:id="@+id/association_name"
+                    style="@style/association_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/new_rounded_background_pins"

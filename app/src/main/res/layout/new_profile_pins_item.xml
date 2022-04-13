@@ -18,7 +18,7 @@
 
         <TextView
             android:id="@+id/content"
-            style="@style/profile_pins"
+            style="@style/association_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="7dp"
