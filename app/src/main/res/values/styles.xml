@@ -363,6 +363,12 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="h1_black">
+        <item name="android:textSize">@dimen/header_title</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
     <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
         <item name="android:fontFamily">@font/nunitosans_bold</item>
         <item name="android:textSize">@dimen/profile_titles</item>
