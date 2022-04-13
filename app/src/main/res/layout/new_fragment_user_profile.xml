@@ -52,7 +52,7 @@
                 android:layout_marginHorizontal="7dp"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
-                android:paddingHorizontal="30dp"
+                android:paddingHorizontal="20dp"
                 android:paddingTop="25dp">
 
 
@@ -68,14 +68,16 @@
                     android:id="@+id/pins"
                     layout="@layout/new_pins"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp" />
 
                 <TextView
                     android:id="@+id/description"
                     style="@style/profile_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:paddingVertical="20dp"
+                    android:visibility="gone"
                     tools:text="Bonjour je m'appelle Salim" />
 
                 <include
@@ -83,7 +85,7 @@
                     layout="@layout/new_rounded_button_orange"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="30dp"
                     app:content="@{@string/write_message}"
                     app:drawable="@{@drawable/new_rounded_button_orange}"
                     app:layout_constraintLeft_toLeftOf="parent"
