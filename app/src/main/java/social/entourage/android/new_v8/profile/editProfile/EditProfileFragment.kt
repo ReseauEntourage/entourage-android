@@ -18,7 +18,10 @@ import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentEditProfileBinding
 import social.entourage.android.new_v8.profile.ProfileActivity
 import social.entourage.android.new_v8.utils.trimEnd
-import social.entourage.android.user.*
+import social.entourage.android.user.AvatarUpdatePresenter
+import social.entourage.android.user.AvatarUploadPresenter
+import social.entourage.android.user.AvatarUploadRepository
+import social.entourage.android.user.AvatarUploadView
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import social.entourage.android.user.edit.photo.PhotoChooseInterface
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
@@ -158,8 +161,10 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
             email.content.setText(user.email)
             cityAction.content.text = user.address?.displayAddress
             seekBarLayout.seekbar.progress = user.travelDistance ?: 0
-            seekBarLayout.tvTrickleIndicator.text = user.travelDistance.toString()
             validate.button.setOnClickListener { onSaveProfile() }
+            seekBarLayout.seekbar.post {
+                user.travelDistance?.let { setProgressThumb(it) }
+            }
             user.avatarURL?.let { avatarURL ->
                 Glide.with(requireActivity())
                     .load(Uri.parse(avatarURL))

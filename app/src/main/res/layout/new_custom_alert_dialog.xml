@@ -2,11 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/new_rounded_button"
     android:paddingHorizontal="20dp"
-    android:paddingVertical="30dp">
+    android:paddingVertical="28dp">
 
     <TextView
         android:id="@+id/title"
@@ -22,37 +22,47 @@
         style="@style/h4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title"
         tools:text="content" />
 
-    <Button
-        android:id="@+id/yes"
-        style="@style/h2_white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
-        android:background="@drawable/new_alert_dialog_button_yes"
-        android:padding="10dp"
-        android:textAllCaps="false"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/button"
-        app:layout_constraintTop_toBottomOf="@id/content" />
 
-    <Button
-        android:id="@+id/button"
-        style="@style/h2_white"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
-        android:background="@drawable/new_alert_dialog_button_no"
-        android:padding="10dp"
-        android:text="@string/cancel"
-        android:textAllCaps="false"
-        app:layout_constraintLeft_toRightOf="@id/yes"
+        android:layout_marginTop="12dp"
+        android:gravity="center_horizontal"
+        android:paddingBottom="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/content" />
+        app:layout_constraintTop_toBottomOf="@id/content">
+
+        <Button
+            android:id="@+id/yes"
+            style="@style/h2_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/new_alert_dialog_button_yes"
+            android:padding="10dp"
+            android:textAllCaps="false"
+
+            />
+
+        <Button
+            android:id="@+id/button"
+            style="@style/h2_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/new_alert_dialog_button_no"
+            android:padding="10dp"
+            android:text="@string/cancel"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

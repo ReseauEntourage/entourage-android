@@ -42,6 +42,7 @@
             android:layout_marginHorizontal="7dp"
             android:layout_marginTop="90dp"
             android:background="@drawable/new_bg_profile"
+            android:paddingTop="60dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -61,7 +62,6 @@
                     style="@style/h1_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
                     android:visibility="gone" />
 
                 <TextView
@@ -91,7 +91,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
                     android:layout_marginBottom="10dp"
-                    android:text="@string/needs" />
+                    android:text="@string/needs"
+                    android:visibility="gone" />
 
                 <include
                     android:id="@+id/donation"

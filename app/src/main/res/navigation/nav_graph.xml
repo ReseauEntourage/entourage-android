@@ -9,27 +9,38 @@
         android:name="social.entourage.android.new_v8.profile.ProfileFragment">
         <action
             android:id="@+id/action_profile_fragment_to_help_about_fragment"
-            app:destination="@id/help_about_fragment" />
+            app:destination="@id/help_about_fragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
         <action
             android:id="@+id/action_profile_fragment_to_edit_profile_fragment"
-            app:destination="@id/edit_profile_fragment" />
+            app:destination="@id/edit_profile_fragment"
+            app:popExitAnim="@anim/slide_out_to_right" />
         <action
             android:id="@+id/action_profile_fragment_to_association_fragment"
-            app:destination="@id/association_fragment" />
+            app:destination="@id/association_fragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
         <action
             android:id="@+id/action_profile_fragment_to_create_group_fragment"
-            app:destination="@id/create_group_fragment" />
+            app:destination="@id/create_group_fragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
         <action
             android:id="@+id/action_profile_fragment_to_test_fragment"
-            app:destination="@id/test_fragment" />
+            app:destination="@id/test_fragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
     </fragment>
 
     <fragment
         android:id="@+id/test_fragment"
-        android:name="social.entourage.android.new_v8.TestFragment" >
+        android:name="social.entourage.android.new_v8.TestFragment">
         <action
             android:id="@+id/action_test_fragment_to_user_fragment"
-            app:destination="@id/user_fragment" />
+            app:destination="@id/user_fragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
     </fragment>
 
 
@@ -46,13 +57,19 @@
         android:name="social.entourage.android.new_v8.profile.editProfile.EditProfileFragment">
         <action
             android:id="@+id/action_edit_profile_fragment_to_edit_profile_interest_fragment"
-            app:destination="@id/edit_profile_interest_fragment" />
+            app:destination="@id/edit_profile_interest_fragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
         <action
             android:id="@+id/action_edit_profile_fragment_to_choose_photo_fragment"
-            app:destination="@id/edit_profile_image_fragment" />
+            app:destination="@id/edit_profile_image_fragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
         <action
             android:id="@+id/action_edit_profile_fragment_to_edit_action_zone_fragment"
-            app:destination="@id/edit_action_zone_fragment" />
+            app:destination="@id/edit_action_zone_fragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
     </fragment>
 
     <fragment
@@ -90,7 +107,9 @@
             app:argType="integer" />
         <action
             android:id="@+id/action_user_fragment_to_report_user_fragment"
-            app:destination="@id/report_user_fragment" />
+            app:destination="@id/report_user_fragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
     </fragment>
 
     <fragment

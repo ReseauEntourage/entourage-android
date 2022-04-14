@@ -82,10 +82,12 @@ class AssociationProfile : Fragment() {
             }
             partner?.donationsNeeds?.let {
                 donation.root.visibility = View.VISIBLE
+                needs.visibility = View.VISIBLE
                 donation.content.text = it
             }
             partner?.volunteersNeeds?.let {
                 volunteers.root.visibility = View.VISIBLE
+                needs.visibility = View.VISIBLE
                 volunteers.content.text = it
             }
             partner?.largeLogoUrl.let {

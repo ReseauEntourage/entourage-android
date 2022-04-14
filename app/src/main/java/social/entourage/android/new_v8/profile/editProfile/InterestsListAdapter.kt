@@ -31,6 +31,7 @@ class InterestsListAdapter(
         return ViewHolder(binding)
     }
 
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
             with(interestsList[position]) {
@@ -41,10 +42,20 @@ class InterestsListAdapter(
                 binding.title.text = this.title
                 binding.checkBox.isChecked = this.isSelected == true
                 this.icon.let { binding.icon.setImageResource(it) }
-                binding.checkBox.setOnClickListener {
-                    if (this.isSelected) onItemClick.onItemUncheck(this)
-                    else onItemClick.onItemCheck(this)
+                binding.layout.setOnClickListener {
+                    if (this.isSelected) {
+                        onItemClick.onItemUncheck(this)
+                        binding.title.typeface =
+                            Typeface.create(binding.title.typeface, Typeface.NORMAL)
+                    } else {
+                        onItemClick.onItemCheck(this)
+                        binding.title.setTypeface(
+                            binding.title.typeface,
+                            Typeface.BOLD
+                        )
+                    }
                     this.isSelected = !(this.isSelected)
+                    binding.checkBox.isChecked = !binding.checkBox.isChecked
                 }
             }
         }

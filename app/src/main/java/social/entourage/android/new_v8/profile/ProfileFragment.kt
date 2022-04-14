@@ -35,9 +35,6 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initializeTab()
         initializeEditButton()
-        Glide.with(requireContext())
-            .load(R.drawable.new_profile).circleCrop()
-            .into(binding.imageProfile)
         getUser()
 
         binding.imageProfile.setOnClickListener {
