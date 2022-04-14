@@ -6,11 +6,12 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="vertical"
             android:paddingHorizontal="25dp"
             android:paddingVertical="20dp">
@@ -60,7 +61,23 @@
                 app:icon="@{@drawable/new_delete}"
                 app:label="@{@string/delete_account}" />
 
-        </LinearLayout>
 
+            <TextView
+                android:id="@+id/app_version"
+                style="@style/version_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                tools:text="V8.1" />
+
+            <TextView
+                android:id="@+id/app_debug_info"
+                style="@style/version_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                tools:text="V8.1" />
+
+        </LinearLayout>
     </ScrollView>
 </layout>

@@ -8,8 +8,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import kotlinx.android.synthetic.main.layout_mainprofile_appversion.*
+import social.entourage.android.BuildConfig
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentSettingsBinding
+import social.entourage.android.new_v8.user.ReportUserModalFragment
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
 
@@ -40,6 +44,20 @@ class SettingsFragment : Fragment() {
         binding.deleteAccount.divider.visibility = View.GONE
         binding.deleteAccount.arrow.visibility = View.GONE
         binding.signOut.arrow.visibility = View.GONE
+        binding.appVersion.text =
+            getString(R.string.about_version_format, BuildConfig.VERSION_FULL_NAME)
+        if (!BuildConfig.DEBUG) {
+            binding.appDebugInfo.visibility = View.INVISIBLE
+        } else {
+            binding.appDebugInfo.visibility = View.VISIBLE
+            binding.appDebugInfo.text = getString(
+                R.string.about_debug_info_format, BuildConfig.VERSION_DISPLAY_BRANCH_NAME,
+                EntourageApplication.get().sharedPreferences.getString(
+                    EntourageApplication.KEY_REGISTRATION_ID,
+                    null
+                )
+            )
+        }
     }
 
     private fun addOnClickListeners() {
@@ -63,10 +81,10 @@ class SettingsFragment : Fragment() {
             ) { logout() }
         }
         binding.helpAbout.layout.setOnClickListener {
-            findNavController()
-                .navigate(R.id.action_profile_fragment_to_help_about_fragment)
+            HelpAboutFragment.newInstance().show(parentFragmentManager, HelpAboutFragment.TAG)
         }
     }
+
 
     private fun shareApplication() {
         val intent = Intent(Intent.ACTION_SEND)

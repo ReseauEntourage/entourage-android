@@ -36,7 +36,6 @@ class ProfileFragment : Fragment() {
         initializeTab()
         initializeEditButton()
         getUser()
-
         binding.imageProfile.setOnClickListener {
             findNavController().navigate(R.id.action_profile_fragment_to_test_fragment)
         }
@@ -85,15 +84,18 @@ class ProfileFragment : Fragment() {
 
     private fun updateUserView() {
         val user = EntourageApplication.me(activity) ?: return
-        binding.imageProfile.let { photoView ->
-            user.avatarURL?.let { avatarURL ->
-                Glide.with(this)
-                    .load(Uri.parse(avatarURL))
-                    .placeholder(R.drawable.ic_user_photo_small)
-                    .circleCrop()
-                    .into(photoView)
-            } ?: run {
-                photoView.setImageResource(R.drawable.ic_user_photo_small)
+        with(binding) {
+            name.text = user.displayName
+            imageProfile.let { photoView ->
+                user.avatarURL?.let { avatarURL ->
+                    Glide.with(requireActivity())
+                        .load(Uri.parse(avatarURL))
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .circleCrop()
+                        .into(photoView)
+                } ?: run {
+                    photoView.setImageResource(R.drawable.ic_user_photo_small)
+                }
             }
         }
     }
