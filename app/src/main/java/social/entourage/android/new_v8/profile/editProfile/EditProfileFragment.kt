@@ -157,7 +157,10 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
             firstname.content.setText(user.firstName)
             lastname.content.setText(user.lastName)
             description.content.setText(user.about)
-            birthday.content.transformIntoDatePicker(requireContext(), "dd-MM")
+            birthday.content.transformIntoDatePicker(
+                requireContext(),
+                getString(R.string.date_format)
+            )
             birthday.content.setText(user.birthday)
             phone.content.text = user.phone
             phone.content.setTextColor(
