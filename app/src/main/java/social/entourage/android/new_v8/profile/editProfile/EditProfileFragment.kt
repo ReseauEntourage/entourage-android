@@ -15,7 +15,6 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.layout_filter_item.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentEditProfileBinding
@@ -23,7 +22,6 @@ import social.entourage.android.new_v8.profile.ProfileActivity
 import social.entourage.android.new_v8.utils.transformIntoDatePicker
 import social.entourage.android.new_v8.utils.trimEnd
 import social.entourage.android.tools.isValidEmail
-import social.entourage.android.user.*
 import social.entourage.android.user.AvatarUpdatePresenter
 import social.entourage.android.user.AvatarUploadPresenter
 import social.entourage.android.user.AvatarUploadRepository
@@ -163,7 +161,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
             description.content.setText(user.about)
             birthday.content.transformIntoDatePicker(
                 requireContext(),
-                getString(R.string.date_format)
+                getString(R.string.date_format_profile)
             )
             birthday.content.setText(user.birthday)
             phone.content.text = user.phone

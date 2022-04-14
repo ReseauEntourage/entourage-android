@@ -193,7 +193,7 @@
     <string name="needs">Besoins</string>
     <string name="accept_donations">Accepte des dons</string>
     <string name="volunteers">Recherche des bénévoles</string>
-    <string name="date_format">dd-MM</string>
+    <string name="date_format_profile">dd-MM</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
