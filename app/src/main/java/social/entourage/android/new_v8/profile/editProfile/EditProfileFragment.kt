@@ -10,14 +10,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.collection.ArrayMap
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.layout_filter_item.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentEditProfileBinding
 import social.entourage.android.new_v8.profile.ProfileActivity
+import social.entourage.android.new_v8.utils.transformIntoDatePicker
 import social.entourage.android.new_v8.utils.trimEnd
+import social.entourage.android.tools.isValidEmail
 import social.entourage.android.user.*
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import social.entourage.android.user.edit.photo.PhotoChooseInterface
@@ -152,9 +157,19 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
             firstname.content.setText(user.firstName)
             lastname.content.setText(user.lastName)
             description.content.setText(user.about)
+            birthday.content.transformIntoDatePicker(
+                requireContext(),
+                getString(R.string.date_format)
+            )
             birthday.content.setText(user.birthday)
-            phone.content.setText(user.phone)
-            phone.content.setText(user.phone)
+            phone.content.text = user.phone
+            phone.content.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.dark_grey_opacity_40
+                )
+            )
+            phone.divider.visibility = View.GONE
             email.content.setText(user.email)
             cityAction.content.text = user.address?.displayAddress
             seekBarLayout.seekbar.progress = user.travelDistance ?: 0
@@ -185,22 +200,54 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
     }
 
     private fun onSaveProfile() {
-        val editedUser: ArrayMap<String, Any> = ArrayMap()
         val firstname = binding.firstname.content.text.trimEnd()
         val lastname = binding.lastname.content.text.trimEnd()
         val about = binding.description.content.text?.trimEnd()
         val email = binding.email.content.text.trimEnd()
         val birthday = binding.birthday.content.text.trimEnd()
         val travelDistance = binding.seekBarLayout.seekbar.progress
-        editedUser["first_name"] = firstname
-        editedUser["last_name"] = lastname
-        editedUser["about"] = about
-        editedUser["email"] = email
-        editedUser["birthday"] = birthday
-        editedUser["travel_distance"] = travelDistance
-        editProfilePresenter.updateUser(editedUser)
+        if (checkError()) {
+            val editedUser: ArrayMap<String, Any> = ArrayMap()
+            editedUser["first_name"] = firstname
+            editedUser["last_name"] = lastname
+            editedUser["about"] = about
+            editedUser["email"] = email
+            editedUser["birthday"] = birthday
+            editedUser["travel_distance"] = travelDistance
+            editProfilePresenter.updateUser(editedUser)
+        }
     }
 
+
+    private fun checkError(): Boolean {
+        val isLastnameCorrect = binding.lastname.content.text.trimEnd().length > 2
+        val isEmailCorrect = binding.email.content.text.trimEnd().isValidEmail()
+
+        with(binding.lastname) {
+            error.root.visibility = if (isLastnameCorrect) View.GONE else View.VISIBLE
+            error.errorMessage.text = getString(R.string.error_lastname)
+            DrawableCompat.setTint(
+                content.background,
+                ContextCompat.getColor(
+                    requireContext(),
+                    if (isLastnameCorrect) R.color.light_orange_opacity_50 else R.color.red
+                )
+            )
+        }
+
+        with(binding.email) {
+            error.root.visibility = if (isEmailCorrect) View.GONE else View.VISIBLE
+            error.errorMessage.text = getString(R.string.error_email)
+            DrawableCompat.setTint(
+                content.background,
+                ContextCompat.getColor(
+                    requireContext(),
+                    if (isEmailCorrect) R.color.light_orange_opacity_50 else R.color.red
+                )
+            )
+        }
+        return isLastnameCorrect && isEmailCorrect
+    }
 
     override fun onUserEditActionZoneFragmentDismiss() {
     }

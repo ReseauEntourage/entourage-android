@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateGroupStepOneBinding
 
 
@@ -27,6 +28,7 @@ class CreateGroupStepOneFragment : Fragment() {
         if (onClick) {
             if (binding.groupName.text.isEmpty()) {
                 binding.error.root.visibility = View.VISIBLE
+                binding.error.errorMessage.text = getString(R.string.error_mandatory_fields)
             } else {
                 binding.error.root.visibility = View.GONE
                 viewModel.isTextOk.value = true

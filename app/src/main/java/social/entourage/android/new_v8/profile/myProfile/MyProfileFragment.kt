@@ -45,7 +45,6 @@ class MyProfileFragment : Fragment() {
         initializeView()
         initializeInterests()
         initializeAssociationButton()
-        binding.seekBarLayout.seekbar.setOnTouchListener { _, _ -> true }
     }
 
 
@@ -60,12 +59,16 @@ class MyProfileFragment : Fragment() {
 
 
     private fun initializeInterests() {
-        binding.interests.apply {
-            val layoutManagerFlex = FlexboxLayoutManager(context)
-            layoutManagerFlex.flexDirection = FlexDirection.ROW
-            layoutManagerFlex.justifyContent = JustifyContent.CENTER
-            layoutManager = layoutManagerFlex
-            adapter = InterestsAdapter(interestsList)
+        if (interestsList.isEmpty()) binding.interests.visibility = View.GONE
+        else {
+            binding.interests.visibility = View.VISIBLE
+            binding.interests.apply {
+                val layoutManagerFlex = FlexboxLayoutManager(context)
+                layoutManagerFlex.flexDirection = FlexDirection.ROW
+                layoutManagerFlex.justifyContent = JustifyContent.CENTER
+                layoutManager = layoutManagerFlex
+                adapter = InterestsAdapter(interestsList)
+            }
         }
     }
 
@@ -75,24 +78,48 @@ class MyProfileFragment : Fragment() {
 
     private fun updateUserView() {
         with(binding) {
-            name.text = user.displayName
-            description.text = user.about
-            phone.content.text = user.phone
-            birthday.content.text = user.birthday
-            email.content.text = user.email
-            city.content.text = user.address?.displayAddress
-            seekBarLayout.seekbar.progress = user.travelDistance ?: 0
-            seekBarLayout.tvTrickleIndicator.text = user.travelDistance.toString()
-            description.text = user.about
+            user.about?.let {
+                if (it.isNotEmpty()) {
+                    description.visibility = View.VISIBLE
+                    description.text = it
+                }
+            }
+            user.phone?.let {
+                if (it.isNotEmpty()) {
+                    phone.root.visibility = View.VISIBLE
+                    phone.content.text = it
+                }
+            }
+            user.birthday?.let {
+                if (it.isNotEmpty()) {
+                    birthday.root.visibility = View.VISIBLE
+                    birthday.content.text = it
+                }
+            }
+            user.email?.let {
+                if (it.isNotEmpty()) {
+                    email.root.visibility = View.VISIBLE
+                    email.content.text = it
+                }
+            }
+            user.address?.displayAddress?.let {
+                if (it.isNotEmpty()) {
+                    city.root.visibility = View.VISIBLE
+                    city.content.text = it
+                }
+            }
+            user.travelDistance?.let {
+                city.within.text = String.format(getString(R.string.progress_km), it)
+            }
             user.stats?.let {
                 contribution.content.text = it.contribCreationCount.toString()
                 events.content.text = it.eventsCount.toString()
             }
             user.roles?.let {
                 if (it.contains("ambassador")) ambassador.visibility = View.VISIBLE
-                else ambassador.visibility = View.GONE
             }
             user.partner?.let {
+                association.visibility = View.VISIBLE
                 association.association_name.text = it.name
                 it.smallLogoUrl.let { logo ->
                     Glide.with(requireActivity())
@@ -100,8 +127,6 @@ class MyProfileFragment : Fragment() {
                         .circleCrop()
                         .into(associationAvatar)
                 }
-            } ?: run {
-                association.visibility = View.GONE
             }
         }
     }

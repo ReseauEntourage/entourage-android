@@ -8,9 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_about.*
 import social.entourage.android.Constants
@@ -20,7 +20,7 @@ import social.entourage.android.new_v8.profile.ProfileActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 
-class HelpAboutFragment : Fragment() {
+class HelpAboutFragment : BottomSheetDialogFragment() {
 
     private var _binding: NewFragmentHelpAboutBinding? = null
     val binding: NewFragmentHelpAboutBinding get() = _binding!!
@@ -39,6 +39,7 @@ class HelpAboutFragment : Fragment() {
         initializeView()
         setBackButton()
         populate()
+        handleCloseButton()
     }
 
     private fun initializeView() {
@@ -147,6 +148,19 @@ class HelpAboutFragment : Fragment() {
             activity?.startActivity(intent)
         } catch (ex: Exception) {
             Toast.makeText(activity, R.string.no_browser_error, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun handleCloseButton() {
+        binding.header.iconBack.setOnClickListener {
+            dismiss()
+        }
+    }
+
+    companion object {
+        const val TAG = "HelpAboutFragment"
+        fun newInstance(): HelpAboutFragment {
+            return HelpAboutFragment()
         }
     }
 
