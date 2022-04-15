@@ -363,7 +363,7 @@ class HomeExpertTest {
         //Test go to ChoosePhotoFragment
         val editProfilePictureButton = onView(allOf(withId(R.id.user_photo_button), isDisplayed()))
         editProfilePictureButton.perform(click())
-        val takePhotoButton = onView(allOf(withId(R.id.ui_bt_take), isDisplayed()))
+        val takePhotoButton = onView(allOf(withId(R.id.take_picture), isDisplayed()))
         takePhotoButton.check(matches(withText(R.string.onboard_photo_bt_take_photo)))
 
         clickTitleCloseButton()

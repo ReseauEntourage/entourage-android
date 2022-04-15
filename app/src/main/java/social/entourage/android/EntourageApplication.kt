@@ -40,8 +40,8 @@ class EntourageApplication : MultiDexApplication() {
         super.onCreate()
         activities.clear()
         instance = this
-        authenticationController = AuthenticationController()
         complexPreferences = ComplexPreferences(this, "userPref", Context.MODE_PRIVATE)
+        authenticationController = AuthenticationController()
         apiModule = ApiModule()
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         librariesSupport = LibrariesSupport()

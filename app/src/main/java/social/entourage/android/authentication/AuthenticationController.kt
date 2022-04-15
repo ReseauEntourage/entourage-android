@@ -18,7 +18,7 @@ class AuthenticationController() {
     private val appSharedPref: ComplexPreferences
         get() = EntourageApplication.get().complexPreferences
 
-    fun init(): AuthenticationController {
+    init {
         user = appSharedPref.getObject(PREF_KEY_USER, User::class.java)
         if (user?.token == null) {
             user = null
@@ -28,8 +28,6 @@ class AuthenticationController() {
 
         //To reset show pop up empty POI on GDS
         userPreferences.isShowNoPOIsPopup = true
-
-        return this
     }
 
     val me: User?
