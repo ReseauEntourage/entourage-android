@@ -31,7 +31,7 @@ class GuideMapTest {
     fun setUp() {
         //Logout
         activityRule.scenario.onActivity { activity ->
-            EntourageApplication[activity].components.authenticationController.logOutUser()
+            EntourageApplication[activity].authenticationController.logOutUser()
         }
 
         //Login

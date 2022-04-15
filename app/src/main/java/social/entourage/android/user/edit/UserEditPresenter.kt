@@ -19,9 +19,9 @@ import social.entourage.android.user.edit.place.UserEditActionZoneFragment
  */
 class UserEditPresenter(private val fragment: UserEditFragment) {
     private val userRequest: UserRequest
-        get() = EntourageApplication.get().components.userRequest
+        get() = EntourageApplication.get().apiModule.userRequest
     private val authenticationController: AuthenticationController
-        get() = EntourageApplication.get().components.authenticationController
+        get() = EntourageApplication.get().authenticationController
 
     var editedUser: User? = null
         get() = field ?: authenticationController.me?.clone().also { field = it}

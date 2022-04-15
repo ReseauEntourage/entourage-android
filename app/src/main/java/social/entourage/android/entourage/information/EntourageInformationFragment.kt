@@ -34,11 +34,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.EntourageComponent
 import social.entourage.android.R
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.feed.FeedItem
-import social.entourage.android.api.request.EntourageRequest
 import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.OnUserJoinRequestUpdateEvent
 import social.entourage.android.deeplinks.DeepLinksManager

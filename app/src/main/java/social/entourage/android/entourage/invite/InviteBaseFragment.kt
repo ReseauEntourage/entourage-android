@@ -1,12 +1,8 @@
 package social.entourage.android.entourage.invite
 
 import android.os.Bundle
-import android.view.View
-import social.entourage.android.EntourageApplication.Companion.get
-import social.entourage.android.EntourageComponent
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.base.BaseDialogFragment
-import javax.inject.Inject
 
 /**
  * A simple [BaseDialogFragment] subclass.

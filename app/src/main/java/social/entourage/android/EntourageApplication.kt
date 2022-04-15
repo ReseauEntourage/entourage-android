@@ -9,7 +9,8 @@ import social.entourage.android.api.ApiModule
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.feed.FeedItem
-import social.entourage.android.authentication.AuthenticationModule
+import social.entourage.android.authentication.AuthenticationController
+import social.entourage.android.authentication.ComplexPreferences
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.navigation.EntBottomNavigationView
@@ -23,11 +24,14 @@ import java.util.*
  * Application setup for Analytics, JodaTime and Dagger
  */
 class EntourageApplication : MultiDexApplication() {
-    lateinit var components: EntourageComponent
     private val activities: ArrayList<BaseActivity>  = ArrayList()
     private lateinit var userFeedItemListCache: UserFeedItemListCache
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var librariesSupport: LibrariesSupport
+    lateinit var authenticationController: AuthenticationController
+    lateinit var complexPreferences: ComplexPreferences
+    lateinit var apiModule : ApiModule
+
 
     // ----------------------------------
     // LIFECYCLE
@@ -36,21 +40,14 @@ class EntourageApplication : MultiDexApplication() {
         super.onCreate()
         activities.clear()
         instance = this
+        authenticationController = AuthenticationController()
+        complexPreferences = ComplexPreferences(this, "userPref", Context.MODE_PRIVATE)
+        apiModule = ApiModule()
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         librariesSupport = LibrariesSupport()
         librariesSupport.setupLibraries(this)
-        setupDagger()
         setupFeedItemsStorage()
         setupSharedPreferences()
-    }
-
-    private fun setupDagger() {
-        components = DaggerEntourageComponent.builder()
-                .entourageApplicationModule(EntourageApplicationModule(this))
-                .apiModule(ApiModule())
-                .authenticationModule(AuthenticationModule())
-                .build()
-        components.inject(this)
     }
 
     private fun setupSharedPreferences() {
@@ -61,7 +58,7 @@ class EntourageApplication : MultiDexApplication() {
         get() = librariesSupport.firebaseAnalytics
 
     fun me(): User? {
-        return components.authenticationController.me
+        return authenticationController.me
     }
 
     fun onActivityCreated(activity: BaseActivity) {
@@ -141,28 +138,28 @@ class EntourageApplication : MultiDexApplication() {
     // FeedItemsStorage
     // ----------------------------------
     private fun setupFeedItemsStorage() {
-        userFeedItemListCache = components.complexPreferences?.getObject(UserFeedItemListCache.KEY, UserFeedItemListCache::class.java) ?: UserFeedItemListCache()
+        userFeedItemListCache = complexPreferences?.getObject(UserFeedItemListCache.KEY, UserFeedItemListCache::class.java) ?: UserFeedItemListCache()
     }
 
     private fun saveFeedItemsStorage() {
-        components.complexPreferences?.apply {
+        complexPreferences?.apply {
             this.putObject(UserFeedItemListCache.KEY, userFeedItemListCache)
             this.commit()
         }
     }
 
     fun storeNewPushNotification(message: Message, isAdded: Boolean): Int {
-        val me = components.authenticationController.me ?: return -1
+        val me = authenticationController.me ?: return -1
         return userFeedItemListCache.saveFeedItemFromNotification(me.id, message, isAdded)
     }
 
     private fun updateStorageFeedItem(feedItem: FeedItem) {
-        val me = components.authenticationController.me ?: return
+        val me = authenticationController.me ?: return
         userFeedItemListCache.updateFeedItem(me.id, feedItem)
     }
 
     fun clearFeedStorage(): Boolean {
-        val me = components.authenticationController.me ?: return false
+        val me = authenticationController.me ?: return false
         return userFeedItemListCache.clear(me.id)
     }
 

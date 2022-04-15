@@ -110,7 +110,7 @@ class UserEditPartnerFragment  : BaseDialogFragment() {
     // Network
     // ----------------------------------
     private fun getAllPartners() {
-        get(context).components.partnerRequest.allPartners.enqueue(object : Callback<PartnersResponse> {
+        get(context).apiModule.partnerRequest.allPartners.enqueue(object : Callback<PartnersResponse> {
             override fun onResponse(call: Call<PartnersResponse>, response: Response<PartnersResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.partners?.let { partnerList ->
@@ -132,12 +132,12 @@ class UserEditPartnerFragment  : BaseDialogFragment() {
     private fun addPartner(partner: Partner) {
         val userID = user?.id ?: return
         user_edit_partner_progressBar?.visibility = View.VISIBLE
-        get(context).components.userRequest.addPartner(userID, PartnerWrapper(partner))
+        get(context).apiModule.userRequest.addPartner(userID, PartnerWrapper(partner))
                 .enqueue(object : Callback<PartnerResponse> {
             override fun onResponse(call: Call<PartnerResponse>, response: Response<PartnerResponse>) {
                 user_edit_partner_progressBar?.visibility = View.GONE
                 if (response.isSuccessful) {
-                    val authenticationController = get(context).components.authenticationController
+                    val authenticationController = get(context).authenticationController
                     authenticationController.me?.let { me ->
                         response.body()?.partner?.let {
                             me.partner = it
@@ -161,7 +161,7 @@ class UserEditPartnerFragment  : BaseDialogFragment() {
     private fun removePartner(oldPartner: Partner, currentPartner: Partner?) {
         user_edit_partner_progressBar?.visibility = View.VISIBLE
         val userId = user?.id ?: return
-        get(context).components.userRequest.removePartnerFromUser(userId, oldPartner.id)
+        get(context).apiModule.userRequest.removePartnerFromUser(userId, oldPartner.id)
                 .enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 user_edit_partner_progressBar?.visibility = View.GONE
@@ -169,9 +169,9 @@ class UserEditPartnerFragment  : BaseDialogFragment() {
                     currentPartner?.let {
                         addPartner(currentPartner)
                     } ?: run {
-                        get(context).components.authenticationController.me?.let { me ->
+                        get(context).authenticationController.me?.let { me ->
                             me.partner = null
-                            get(context).components.authenticationController.saveUser(me)
+                            get(context).authenticationController.saveUser(me)
                         }
                         Toast.makeText(activity, R.string.partner_remove_ok, Toast.LENGTH_SHORT).show()
                         dismiss()

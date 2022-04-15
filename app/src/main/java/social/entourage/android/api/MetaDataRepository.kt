@@ -12,7 +12,7 @@ object MetaDataRepository {
     var metaData: MutableLiveData<Tags> = MutableLiveData()
 
     fun getMetaData() {
-        val metaDataRequest = EntourageApplication.get().components.metaDataRequest
+        val metaDataRequest = EntourageApplication.get().apiModule.metaDataRequest
         metaDataRequest.getMetaData().enqueue(object : Callback<MetaDataResponse> {
             override fun onResponse(
                 call: Call<MetaDataResponse>,

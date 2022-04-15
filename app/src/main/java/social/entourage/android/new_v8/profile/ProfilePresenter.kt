@@ -18,12 +18,12 @@ class ProfilePresenter : AvatarUpdatePresenter {
         user["avatar_key"] = amazonFile
         val request = ArrayMap<String, Any>()
         request["user"] = user
-        val call = EntourageApplication.get().components.userRequest.updateUser(request)
+        val call = EntourageApplication.get().apiModule.userRequest.updateUser(request)
         call.enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
 
                 val authenticationController =
-                    EntourageApplication.get().components.authenticationController
+                    EntourageApplication.get().authenticationController
                 if (response.isSuccessful && authenticationController.isAuthenticated) {
                     response.body()?.let { responseBody ->
                         authenticationController.saveUser(responseBody.user)

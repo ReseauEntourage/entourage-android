@@ -94,7 +94,7 @@ class HomeExpertTest {
         //Logout
         activityRule.scenario.onActivity { activity ->
             context = activity
-            EntourageApplication[activity].components.authenticationController.logOutUser()
+            EntourageApplication[activity].authenticationController.logOutUser()
             jsonResponse = getJsonDataFromAsset(activity, "home_response_success.json") ?: ""
         }
 

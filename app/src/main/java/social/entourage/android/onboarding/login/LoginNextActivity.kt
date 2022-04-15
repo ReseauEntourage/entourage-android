@@ -29,7 +29,7 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
 
         alertDialog = CustomProgressDialog(this)
 
-        currentUser = EntourageApplication.get().components.authenticationController.me
+        currentUser = EntourageApplication.get().authenticationController.me
 
         if (savedInstanceState == null) {
             changeFragment()
@@ -61,7 +61,7 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
         temporaryPlaceAddress?.let {
             OnboardingAPI.getInstance().updateAddress(it, false) { isOK, userResponse ->
                 if (isOK) {
-                    val authenticationController = EntourageApplication.get().components.authenticationController
+                    val authenticationController = EntourageApplication.get().authenticationController
                     val me = authenticationController.me
                     if (me != null && userResponse != null) {
                         userResponse.user.phone = me.phone

@@ -18,7 +18,6 @@ import kotlinx.android.synthetic.main.fragment_guide_map.*
 import kotlinx.android.synthetic.main.layout_guide_longclick.*
 import social.entourage.android.Constants
 import social.entourage.android.EntourageApplication
-import social.entourage.android.EntourageComponent
 import social.entourage.android.R
 import social.entourage.android.api.ApiConnectionListener
 import social.entourage.android.api.model.guide.Poi

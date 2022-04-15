@@ -119,7 +119,7 @@ class MyActionsFragment : BaseDialogFragment() {
     }
 
     fun getMyActions() {
-        val request = EntourageApplication.get().components.entourageRequest
+        val request = EntourageApplication.get().apiModule.entourageRequest
         val call = request.getMyActions()
         ui_progress?.visibility = View.VISIBLE
         call.enqueue(object : Callback<EntouragesResponse> {

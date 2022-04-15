@@ -4,8 +4,6 @@ import com.google.gson.ExclusionStrategy
 import com.google.gson.FieldAttributes
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.Expose
-import dagger.Module
-import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -23,10 +21,38 @@ import javax.inject.Singleton
  * Module related to Application
  * Providing API related dependencies
  */
-@Module
 class ApiModule {
-    @Provides
-    @Singleton
+    val okHttpClient : OkHttpClient
+    val applicationInfoRequest: ApplicationInfoRequest
+    val loginRequest: LoginRequest
+    val poiRequest: PoiRequest
+    val userRequest: UserRequest
+    val entourageRequest: EntourageRequest
+    val newsfeedRequest: NewsfeedRequest
+    val invitationRequest: InvitationRequest
+    val partnerRequest: PartnerRequest
+    val sharingRequest: SharingRequest
+    val photoGalleryRequest: PhotoGalleryRequest
+    val conversationsRequest: ConversationsRequest
+    val metaDataRequest: MetaDataRequest
+
+    init {
+        okHttpClient = providesOkHttpClient()
+        val restAdapter = providesRestAdapter(okHttpClient)
+        applicationInfoRequest = providesApplicationInfoRequest(restAdapter)
+        loginRequest = providesLoginRequest(restAdapter)
+        poiRequest= providesPoiRequest(restAdapter)
+        userRequest= providesUserRequest(restAdapter)
+        entourageRequest= providesEntourageRequest(restAdapter)
+        newsfeedRequest= providesNewsfeedRequest(restAdapter)
+        invitationRequest= providesInvitationRequest(restAdapter)
+        partnerRequest= providesPartnerRequest(restAdapter)
+        sharingRequest= providesSharingRequest(restAdapter)
+        photoGalleryRequest= providesPhotoGalleryRequest(restAdapter)
+        conversationsRequest= providesConversationsRequest(restAdapter)
+        metaDataRequest = providesMetaDataRequest(restAdapter)
+    }
+
     fun providesOkHttpClient(): OkHttpClient {
         val builder = OkHttpClient.Builder()
         builder.addInterceptor(AuthenticationInterceptor)
@@ -38,8 +64,6 @@ class ApiModule {
         return builder.build()
     }
 
-    @Provides
-    @Singleton
     fun providesRestAdapter(client: OkHttpClient): Retrofit {
         val gson = GsonBuilder()
             .addSerializationExclusionStrategy(object : ExclusionStrategy {
@@ -72,74 +96,50 @@ class ApiModule {
             .build()
     }
 
-    @Provides
-    @Singleton
-    fun providesLoginService(restAdapter: Retrofit): LoginRequest {
+    fun providesLoginRequest(restAdapter: Retrofit): LoginRequest {
         return restAdapter.create(LoginRequest::class.java)
     }
 
-    @Provides
-    @Singleton
     fun providesApplicationInfoRequest(restAdapter: Retrofit): ApplicationInfoRequest {
         return restAdapter.create(ApplicationInfoRequest::class.java)
     }
 
-    @Provides
-    @Singleton
     fun providesUserRequest(restAdapter: Retrofit): UserRequest {
         return restAdapter.create(UserRequest::class.java)
     }
 
-    @Provides
-    @Singleton
     fun providesEntourageRequest(restAdapter: Retrofit): EntourageRequest {
         return restAdapter.create(EntourageRequest::class.java)
     }
 
-    @Provides
-    @Singleton
     fun providesNewsfeedRequest(restAdapter: Retrofit): NewsfeedRequest {
         return restAdapter.create(NewsfeedRequest::class.java)
     }
 
-    @Provides
-    @Singleton
-    fun providesMapService(restAdapter: Retrofit): PoiRequest {
+    fun providesPoiRequest(restAdapter: Retrofit): PoiRequest {
         return restAdapter.create(PoiRequest::class.java)
     }
 
-    @Provides
-    @Singleton
     fun providesInvitationRequest(restAdapter: Retrofit): InvitationRequest {
         return restAdapter.create(InvitationRequest::class.java)
     }
 
-    @Provides
-    @Singleton
     fun providesPartnerRequest(restAdapter: Retrofit): PartnerRequest {
         return restAdapter.create(PartnerRequest::class.java)
     }
 
-    @Provides
-    @Singleton
-    fun providesSharingEntourageRequest(restAdapter: Retrofit): SharingRequest {
+    fun providesSharingRequest(restAdapter: Retrofit): SharingRequest {
         return restAdapter.create(SharingRequest::class.java)
     }
 
-    @Provides
-    @Singleton
-    fun providesPhotoGalleryService(restAdapter: Retrofit): PhotoGalleryRequest {
+    fun providesPhotoGalleryRequest(restAdapter: Retrofit): PhotoGalleryRequest {
         return restAdapter.create(PhotoGalleryRequest::class.java)
     }
 
-    @Provides
-    @Singleton
     fun providesConversationsRequest(restAdapter: Retrofit): ConversationsRequest {
         return restAdapter.create(ConversationsRequest::class.java)
     }
 
-    @Provides
-    @Singleton
     fun providesMetaDataRequest(restAdapter: Retrofit): MetaDataRequest {
         return restAdapter.create(MetaDataRequest::class.java)
     }

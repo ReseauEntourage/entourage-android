@@ -57,11 +57,11 @@ class MyEntouragesFilter  : Serializable {
 
         //MyEntouragesFilterFactory
         fun get(context: Context?): MyEntouragesFilter {
-            return EntourageApplication.get(context).components.authenticationController.myEntouragesFilter ?: MyEntouragesFilter()
+            return EntourageApplication.get(context).authenticationController.myEntouragesFilter ?: MyEntouragesFilter()
         }
 
         fun save(myEntouragesFilter: MyEntouragesFilter?, context: Context?) {
-            EntourageApplication.get(context).components.authenticationController.saveMyEntouragesFilter()
+            EntourageApplication.get(context).authenticationController.saveMyEntouragesFilter()
         }
     }
 }

@@ -21,11 +21,11 @@ import timber.log.Timber
  */
 class HomeExpertPresenter(private val fragment: HomeExpertFragment) {
     internal val authenticationController: AuthenticationController
-        get() = EntourageApplication.get().components.authenticationController
+        get() = EntourageApplication.get().authenticationController
     private val entourageRequest: EntourageRequest
-        get() = EntourageApplication.get().components.entourageRequest
+        get() = EntourageApplication.get().apiModule.entourageRequest
     private val invitationRequest: InvitationRequest
-        get() = EntourageApplication.get().components.invitationRequest
+        get() = EntourageApplication.get().apiModule.invitationRequest
     private val sharedPreferences : SharedPreferences
         get() = EntourageApplication.get().sharedPreferences
 

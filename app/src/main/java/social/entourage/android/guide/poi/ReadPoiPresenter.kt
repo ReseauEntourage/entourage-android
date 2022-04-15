@@ -21,7 +21,7 @@ import javax.inject.Inject
  */
 class ReadPoiPresenter(private val fragment: ReadPoiFragment) {
     private val poiRequest: PoiRequest
-        get() = EntourageApplication.get().components.poiRequest
+        get() = EntourageApplication.get().apiModule.poiRequest
 
     fun getPoiDetail(poiUuid: String) {
         val call = poiRequest.getPoiDetail(poiUuid)

@@ -20,11 +20,11 @@ import javax.inject.Inject
 class MyEntouragesPresenter(private val fragment: MyEntouragesFragment) {
 
     private val newsfeedRequest: NewsfeedRequest
-        get() = EntourageApplication.get().components.newsfeedRequest
+        get() = EntourageApplication.get().apiModule.newsfeedRequest
     private val entourageRequest: EntourageRequest
-        get() = EntourageApplication.get().components.entourageRequest
+        get() = EntourageApplication.get().apiModule.entourageRequest
     private val invitationRequest: InvitationRequest
-        get() = EntourageApplication.get().components.invitationRequest
+        get() = EntourageApplication.get().apiModule.invitationRequest
     // ----------------------------------
     // Methods
     // ----------------------------------

@@ -118,7 +118,7 @@ class GDSSearchFragment : BaseDialogFragment() {
         ui_et_search?.clearFocus()
 
         ui_progress?.visibility = View.VISIBLE
-        val poiRequest = EntourageApplication.get().components.poiRequest
+        val poiRequest = EntourageApplication.get().apiModule.poiRequest
         val call = poiRequest.retrievePoisSearch(latitude, longitude, distance, ui_et_search.text.toString(), "2")
         call.enqueue(object : Callback<PoiResponse> {
             override fun onResponse(call: Call<PoiResponse>, response: Response<PoiResponse>) {

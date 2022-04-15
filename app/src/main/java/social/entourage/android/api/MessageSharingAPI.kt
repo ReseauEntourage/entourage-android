@@ -15,10 +15,10 @@ import social.entourage.android.api.request.*
 class MessageSharingAPI(val application: EntourageApplication) {
 
     private val sharingRequest : SharingRequest
-        get() = application.components.sharingRequest
+        get() = application.apiModule.sharingRequest
 
     private val entourageRequest : EntourageRequest
-        get() = application.components.entourageRequest
+        get() = application.apiModule.entourageRequest
 
     fun getSharing(listener:(isOK:Boolean, sharingList: SharingResponse?, error:String?) -> Unit) {
         val call: Call<SharingResponse> = sharingRequest.retrieveSharing()

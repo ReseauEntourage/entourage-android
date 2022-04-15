@@ -15,7 +15,7 @@ class EditProfilePresenter {
     var isUserUpdated = MutableLiveData<Boolean>()
 
     fun updateUser(userEdited: ArrayMap<String, Any>) {
-        EntourageApplication.get().components.userRequest.updateUser(userEdited)
+        EntourageApplication.get().apiModule.userRequest.updateUser(userEdited)
             .enqueue(object : Callback<UserResponse> {
                 override fun onResponse(
                     call: Call<UserResponse>,
@@ -23,10 +23,10 @@ class EditProfilePresenter {
                 ) {
                     if (response.isSuccessful) {
                         response.body()?.user?.let {
-                            EntourageApplication.get().components.authenticationController.saveUser(
+                            EntourageApplication.get().authenticationController.saveUser(
                                 it
                             )
-                            EntourageApplication.get().components.authenticationController.saveUserPhoneAndCode(
+                            EntourageApplication.get().authenticationController.saveUserPhoneAndCode(
                                 it.phone,
                                 it.smsCode
                             )
@@ -46,7 +46,7 @@ class EditProfilePresenter {
     }
 
     fun storeActionZone(ignoreActionZone: Boolean) {
-        EntourageApplication.get().components.authenticationController.isIgnoringActionZone =
+        EntourageApplication.get().authenticationController.isIgnoringActionZone =
             ignoreActionZone
     }
 }

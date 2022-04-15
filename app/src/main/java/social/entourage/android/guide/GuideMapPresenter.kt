@@ -25,9 +25,9 @@ import javax.inject.Inject
  */
 class GuideMapPresenter (private val fragment: GuideMapFragment) {
     private val authenticationController: AuthenticationController
-        get() = EntourageApplication.get().components.authenticationController
+        get() = EntourageApplication.get().authenticationController
     private val poiRequest: PoiRequest
-        get() = EntourageApplication.get().components.poiRequest
+        get() = EntourageApplication.get().apiModule.poiRequest
 
 
     private var previousEmptyListPopupLocation: Location? = null

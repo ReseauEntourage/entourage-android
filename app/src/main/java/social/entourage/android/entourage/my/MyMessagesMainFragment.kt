@@ -78,7 +78,7 @@ class MyMessagesMainFragment : BaseDialogFragment(), MyMessagesRecyclerViewAdapt
     }
 
     private fun retrieveCounts() {
-        ConversationsAPI(EntourageApplication.get()).getMessagesMetadatas { conversations, error ->
+        ConversationsAPI(EntourageApplication.get()).getMessagesMetadata { conversations, error ->
 
             conversations?.let {
                 val unread_private:Int = it.conversations.unread ?: 0

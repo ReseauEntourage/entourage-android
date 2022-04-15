@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class AvatarUploadRepository : Callback {
     private val client: OkHttpClient
-        get() = EntourageApplication.get().components.okHttpClient
+        get() = EntourageApplication.get().apiModule.okHttpClient
     private var callback: Callback? = null
     fun setCallback(callback: Callback) {
         this.callback = callback

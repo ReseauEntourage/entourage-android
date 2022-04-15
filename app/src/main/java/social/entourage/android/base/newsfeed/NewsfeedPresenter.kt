@@ -33,11 +33,11 @@ import java.util.*
 class NewsfeedPresenter(private val fragment: NewsfeedFragment) {
 
     internal val authenticationController: AuthenticationController
-        get() = EntourageApplication.get().components.authenticationController
+        get() = EntourageApplication.get().authenticationController
     private val entourageRequest: EntourageRequest
-        get() = EntourageApplication.get().components.entourageRequest
+        get() = EntourageApplication.get().apiModule.entourageRequest
     private val invitationRequest: InvitationRequest
-        get() = EntourageApplication.get().components.invitationRequest
+        get() = EntourageApplication.get().apiModule.invitationRequest
                 
     val isOnboardingUser: Boolean
       get() = authenticationController.isOnboardingUser

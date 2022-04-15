@@ -22,9 +22,9 @@ import javax.inject.Inject
 class EntourageInformationPresenter (private val fragment: EntourageInformationFragment)  : FeedItemInformationPresenter() {
 
     private val entourageRequest: EntourageRequest
-        get() = EntourageApplication.get().components.entourageRequest
+        get() = EntourageApplication.get().apiModule.entourageRequest
     private val invitationRequest: InvitationRequest
-        get() = EntourageApplication.get().components.invitationRequest
+        get() = EntourageApplication.get().apiModule.invitationRequest
     // ----------------------------------
     // Api calls
     // ----------------------------------
@@ -58,7 +58,7 @@ class EntourageInformationPresenter (private val fragment: EntourageInformationF
 
     override fun getUserInfo(userId: Int?) {
         if(userId == null) return
-       val userRequest = EntourageApplication.get().components.userRequest
+       val userRequest = EntourageApplication.get().apiModule.userRequest
         userRequest.getUser(userId).enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {

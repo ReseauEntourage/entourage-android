@@ -21,7 +21,7 @@ import javax.inject.Inject
 class CreateEntouragePresenter(private val fragment: CreateEntourageFragment) {
 
     private val entourageRequest: EntourageRequest
-        get() = EntourageApplication.get().components.entourageRequest
+        get() = EntourageApplication.get().apiModule.entourageRequest
     // ----------------------------------
     // Methods
     // ----------------------------------

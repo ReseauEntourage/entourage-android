@@ -8,7 +8,7 @@ import java.lang.reflect.Type
 /**
  * Source : https://github.com/fsilvestremorais/android-complex-preferences/blob/master/ComplexPreferences/src/br/com/kots/mob/complex/preferences/ComplexPreferences.java
  */
-class ComplexPreferences private constructor(context: Context, namePreferences: String, mode: Int) {
+class ComplexPreferences constructor(context: Context, namePreferences: String, mode: Int) {
     private val preferences: SharedPreferences
     private val editor: SharedPreferences.Editor
     fun putObject(key: String, `object`: Any?) {
@@ -39,14 +39,7 @@ class ComplexPreferences private constructor(context: Context, namePreferences: 
     }
 
     companion object {
-        private var complexPreferences: ComplexPreferences? = null
         private val GSON = Gson()
-
-        fun getComplexPreferences(context: Context, namePreferences: String, mode: Int): ComplexPreferences {
-            return complexPreferences ?: ComplexPreferences(context, namePreferences, mode).also {
-                complexPreferences = it
-            }
-        }
     }
 
     init {
