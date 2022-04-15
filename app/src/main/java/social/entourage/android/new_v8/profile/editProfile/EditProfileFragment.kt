@@ -161,7 +161,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
             description.content.setText(user.about)
             birthday.content.transformIntoDatePicker(
                 requireContext(),
-                getString(R.string.date_format_profile)
+                getString(R.string.birthday_date_format)
             )
             birthday.content.setText(user.birthday)
             phone.content.text = user.phone

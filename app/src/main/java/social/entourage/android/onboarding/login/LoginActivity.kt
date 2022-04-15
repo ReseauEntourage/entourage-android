@@ -36,7 +36,7 @@ class LoginActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        authenticationController = EntourageApplication.get().components.authenticationController
+        authenticationController = EntourageApplication.get().authenticationController
         setContentView(R.layout.activity_login)
 
         alertDialog = CustomProgressDialog(this)

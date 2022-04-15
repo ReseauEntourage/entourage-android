@@ -92,7 +92,7 @@ class UserReportFragment : BaseDialogFragment() {
     private fun sendReport() {
         sending = true
         val reason = user_report_reason_edittext?.text.toString()
-        val call = get().components.userRequest.reportUser(
+        val call = get().apiModule.userRequest.reportUser(
             userId,
             UserReportWrapper(UserReport(reason, arrayListOf()))
         )

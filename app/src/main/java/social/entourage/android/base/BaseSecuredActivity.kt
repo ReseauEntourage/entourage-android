@@ -14,7 +14,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
  */
 abstract class BaseSecuredActivity : BaseActivity() {
     protected val authenticationController: AuthenticationController
-        get() = EntourageApplication.get().components.authenticationController
+        get() = EntourageApplication.get().authenticationController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

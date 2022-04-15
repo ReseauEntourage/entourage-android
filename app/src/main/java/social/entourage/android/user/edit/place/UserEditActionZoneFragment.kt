@@ -76,7 +76,7 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
                     if (isOK) {
                         userResponse?.user?.let { newUser ->
                             val authenticationController =
-                                EntourageApplication.get().components.authenticationController
+                                EntourageApplication.get().authenticationController
                             authenticationController.me?.phone?.let { phone ->
                                 newUser.phone = phone
                                 authenticationController.saveUser(newUser)

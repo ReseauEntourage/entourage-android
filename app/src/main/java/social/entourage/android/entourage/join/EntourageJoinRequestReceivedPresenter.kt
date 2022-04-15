@@ -13,7 +13,7 @@ import java.util.*
 
 class EntourageJoinRequestReceivedPresenter(private val activity: EntourageJoinRequestReceivedActivity?) {
     private val entourageRequest: EntourageRequest
-        get() = EntourageApplication.get().components.entourageRequest
+        get() = EntourageApplication.get().apiModule.entourageRequest
     // ----------------------------------
     // API CALLS
     // ----------------------------------

@@ -70,17 +70,17 @@ class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListener, Ba
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         when {
             isExpertContrib -> {
-                EntourageApplication.get().components.authenticationController.mapFilter.setAllCategorySelected(true,false)
+                EntourageApplication.get().authenticationController.mapFilter.setAllCategorySelected(true,false)
             }
             isExpertAsk -> {
-                EntourageApplication.get().components.authenticationController.mapFilter.setAllCategorySelected(false,true)
+                EntourageApplication.get().authenticationController.mapFilter.setAllCategorySelected(false,true)
             }
             else -> {
-                EntourageApplication.get().components.authenticationController.mapFilter.setDefaultValues()
+                EntourageApplication.get().authenticationController.mapFilter.setDefaultValues()
             }
         }
 
-        EntourageApplication.get().components.authenticationController.saveMapFilter()
+        EntourageApplication.get().authenticationController.saveMapFilter()
         return inflater.inflate(R.layout.fragment_home_news, container, false)
     }
 

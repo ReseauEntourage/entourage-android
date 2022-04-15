@@ -34,11 +34,11 @@ import timber.log.Timber
  */
 class MainPresenter(private val activity: MainActivity) : AvatarUpdatePresenter {
     private val applicationInfoRequest: ApplicationInfoRequest
-        get() = EntourageApplication.get().components.applicationInfoRequest
+        get() = EntourageApplication.get().apiModule.applicationInfoRequest
     private val authenticationController: AuthenticationController
-        get() = EntourageApplication.get().components.authenticationController
+        get() = EntourageApplication.get().authenticationController
     private val userRequest: UserRequest
-        get() = EntourageApplication.get().components.userRequest
+        get() = EntourageApplication.get().apiModule.userRequest
 
     // ----------------------------------
     // ATTRIBUTES

@@ -19,7 +19,7 @@ class UserPresenter {
 
 
     fun getUser(userId: Int) {
-        EntourageApplication.get().components.userRequest.getUser(userId)
+        EntourageApplication.get().apiModule.userRequest.getUser(userId)
             .enqueue(object : Callback<UserResponse> {
                 override fun onResponse(
                     call: Call<UserResponse>,
@@ -44,7 +44,7 @@ class UserPresenter {
         reason: String,
         selectedSignalsIdList: MutableList<String>
     ) {
-        val userRequest = EntourageApplication.get().components.userRequest
+        val userRequest = EntourageApplication.get().apiModule.userRequest
         val call = userRequest.reportUser(
             entourageId, UserReportWrapper(UserReport(reason, selectedSignalsIdList))
         )

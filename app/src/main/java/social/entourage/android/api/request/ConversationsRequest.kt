@@ -21,12 +21,12 @@ interface ConversationsRequest {
                               @Query("per") per: Int): Call<ConversationsResponse>
 
     @GET("conversations/metadata")
-    fun retrieveMessagesMetadatas(): Call<MessagesMetadatasResponse>
+    fun retrieveMessagesMetadata(): Call<MessagesMetadataResponse>
 }
 class MetadataCount {
     var count: Int? = null
     var unread:Int? = null
 }
-class MessagesMetadatasResponse(@field:SerializedName("conversations")val conversations: MetadataCount,
-                                @field:SerializedName("actions")val actions: MetadataCount,
-                                @field:SerializedName("outings")val outings: MetadataCount)
+class MessagesMetadataResponse(@field:SerializedName("conversations")val conversations: MetadataCount,
+                               @field:SerializedName("actions")val actions: MetadataCount,
+                               @field:SerializedName("outings")val outings: MetadataCount)

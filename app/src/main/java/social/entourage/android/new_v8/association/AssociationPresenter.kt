@@ -16,7 +16,7 @@ class AssociationPresenter {
     var partner = MutableLiveData<Partner>()
 
     fun getPartnerInfos(partnerId: Int) {
-        EntourageApplication.get().components.userRequest
+        EntourageApplication.get().apiModule.userRequest
             .getPartnerDetail(partnerId)
             .enqueue(object : Callback<PartnerResponse> {
                 override fun onResponse(
@@ -44,7 +44,7 @@ class AssociationPresenter {
         isFollowParam["active"] = isFollow.toString()
         params["following"] = isFollowParam
 
-        EntourageApplication.get().components.userRequest.updateUserPartner(params)
+        EntourageApplication.get().apiModule.userRequest.updateUserPartner(params)
             .enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(
                     call: Call<ResponseBody>,

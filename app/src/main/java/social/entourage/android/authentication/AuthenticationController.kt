@@ -11,10 +11,12 @@ import social.entourage.android.tools.EntBus
 /**
  * Controller that managed the authenticated user and persist it on the phone
  */
-class AuthenticationController(private val appSharedPref: ComplexPreferences) {
+class AuthenticationController() {
     private var user: User? = null
     private var userPreferences: UserPreferences = UserPreferences()
     private var userPreferencesHashMap: MutableMap<Int, UserPreferences?> = HashMap()
+    private val appSharedPref: ComplexPreferences
+        get() = EntourageApplication.get().complexPreferences
 
     fun init(): AuthenticationController {
         user = appSharedPref.getObject(PREF_KEY_USER, User::class.java)

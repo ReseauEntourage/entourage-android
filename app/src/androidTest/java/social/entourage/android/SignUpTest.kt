@@ -638,7 +638,7 @@ class SignUpTest {
     }
 
     private fun login(phoneNumber: String, codePwd: String) {
-        val authenticationController = EntourageApplication.get().components.authenticationController
+        val authenticationController = EntourageApplication.get().authenticationController
         OnboardingAPI.getInstance().login(phoneNumber, codePwd) { isOK, loginResponse, _ ->
             if (isOK) {
                 loginResponse?.let {

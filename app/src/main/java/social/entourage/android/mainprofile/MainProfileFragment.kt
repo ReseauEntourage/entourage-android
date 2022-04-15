@@ -214,11 +214,11 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
 
     fun getUser() {
         val user = EntourageApplication.me(activity) ?: return
-        val userRequest = EntourageApplication.get().components.userRequest
+        val userRequest = EntourageApplication.get().apiModule.userRequest
         userRequest.getUser(user.id).enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
-                    response.body()?.user?.let { EntourageApplication.get().components.authenticationController.saveUser(it) }
+                    response.body()?.user?.let { EntourageApplication.get().authenticationController.saveUser(it) }
                 }
                 updateUserView()
             }

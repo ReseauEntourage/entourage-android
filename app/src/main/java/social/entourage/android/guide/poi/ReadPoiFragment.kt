@@ -13,8 +13,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.fragment_guide_poi_read.*
 import kotlinx.android.synthetic.main.fragment_guide_poi_read.guide_filter_list
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.EntourageApplication
-import social.entourage.android.EntourageComponent
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi

@@ -35,11 +35,11 @@ class EntService : Service() {
     private val binder: IBinder = LocalBinder()
 
      private val authenticationController: AuthenticationController
-        get() = EntourageApplication.get().components.authenticationController
+        get() = EntourageApplication.get().authenticationController
      private val newsfeedRequest: NewsfeedRequest
-         get() = EntourageApplication.get().components.newsfeedRequest
+         get() = EntourageApplication.get().apiModule.newsfeedRequest
      private val entourageRequest: EntourageRequest
-         get() = EntourageApplication.get().components.entourageRequest
+         get() = EntourageApplication.get().apiModule.entourageRequest
 
     private lateinit var entServiceManager: EntServiceManager
 
@@ -78,7 +78,6 @@ class EntService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        EntourageApplication.get(this).components.inject(this)
         entServiceManager = EntServiceManager.newInstance(
                 this,
                 authenticationController,

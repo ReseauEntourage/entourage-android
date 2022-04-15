@@ -1278,7 +1278,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         if (activity == null || !isAdded) return
         if (chatMessageList.isNotEmpty()) {
             //check who sent the message
-            EntourageApplication.get(activity).components.authenticationController.me?.id?.let { me ->
+            EntourageApplication.get(activity).authenticationController.me?.id?.let { me ->
                 for (chatMessage in chatMessageList) {
                     chatMessage.isMe = chatMessage.userId == me
                 }

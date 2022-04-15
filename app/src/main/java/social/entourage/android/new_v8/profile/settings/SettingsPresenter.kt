@@ -14,7 +14,7 @@ class SettingsPresenter {
     var accountDeleted: MutableLiveData<Boolean> = MutableLiveData()
 
     fun logOut(context: Context) {
-        val controller = EntourageApplication.get().components.authenticationController
+        val controller = EntourageApplication.get().authenticationController
         val sharedPreferences = EntourageApplication.get().sharedPreferences
         val editor = sharedPreferences.edit()
         controller.me?.let { me ->
@@ -37,7 +37,7 @@ class SettingsPresenter {
     }
 
     fun deleteAccount() {
-        EntourageApplication.get().components.userRequest.deleteUser()
+        EntourageApplication.get().apiModule.userRequest.deleteUser()
             .enqueue(object : Callback<UserResponse> {
                 override fun onResponse(
                     call: Call<UserResponse>,

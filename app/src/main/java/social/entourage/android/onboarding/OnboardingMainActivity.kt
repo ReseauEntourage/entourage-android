@@ -80,7 +80,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
         setContentView(R.layout.activity_onboarding_main)
 
-        authenticationController = EntourageApplication.get().components.authenticationController
+        authenticationController = EntourageApplication.get().authenticationController
         alertDialog = CustomProgressDialog(this)
         temporaryUser = User()
 
@@ -336,7 +336,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         activitiesSelection.setupForSdf(isSdf)
         OnboardingAPI.getInstance().updateUserInterests(activitiesSelection.getArrayForWs()) { isOK, userResponse ->
             if (isOK && userResponse != null) {
-                val authenticationController = EntourageApplication.get().components.authenticationController
+                val authenticationController = EntourageApplication.get().authenticationController
                 authenticationController.saveUser(userResponse.user)
             }
         }

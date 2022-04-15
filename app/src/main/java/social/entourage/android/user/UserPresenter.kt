@@ -21,11 +21,11 @@ import javax.inject.Inject
 class UserPresenter(private val fragment: UserFragment) {
 
     private val userRequest: UserRequest
-        get() = EntourageApplication.get().components.userRequest
+        get() = EntourageApplication.get().apiModule.userRequest
     private val entourageRequest: EntourageRequest
-        get() = EntourageApplication.get().components.entourageRequest
+        get() = EntourageApplication.get().apiModule.entourageRequest
     private val authenticationController: AuthenticationController
-        get() = EntourageApplication.get().components.authenticationController
+        get() = EntourageApplication.get().authenticationController
 
     // ----------------------------------
     // PUBLIC METHODS

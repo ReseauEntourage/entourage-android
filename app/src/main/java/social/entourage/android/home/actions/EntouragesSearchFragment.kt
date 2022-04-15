@@ -148,7 +148,7 @@ class EntouragesSearchFragment : BaseDialogFragment() {
         ui_et_search?.clearFocus()
 
         ui_progress?.visibility = View.VISIBLE
-        val request = EntourageApplication.get().components.entourageRequest
+        val request = EntourageApplication.get().apiModule.entourageRequest
 
         val userAddress = EntourageApplication.me(requireContext())?.address
 

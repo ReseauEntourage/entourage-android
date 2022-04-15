@@ -13,8 +13,6 @@ import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.android.synthetic.main.fragment_user.user_photo
 import kotlinx.android.synthetic.main.fragment_user_edit.*
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.EntourageApplication
-import social.entourage.android.EntourageComponent
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageConversation
 import social.entourage.android.api.model.User

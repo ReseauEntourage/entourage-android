@@ -16,7 +16,7 @@ import java.io.Serializable
 class EventPhotoGalleryApi {
 
     private val photoGalleryService : PhotoGalleryRequest
-        get() =  EntourageApplication.get().components.photoGalleryRequest
+        get() =  EntourageApplication.get().apiModule.photoGalleryRequest
 
     fun getPhotoGallery(listener:(photoGallery:List<PhotoGallery>?, error:String?) -> Unit) {
         val call = photoGalleryService.getPhotoGallery()
