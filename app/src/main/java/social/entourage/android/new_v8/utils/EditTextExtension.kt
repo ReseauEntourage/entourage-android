@@ -16,7 +16,7 @@ fun EditText.transformIntoDatePicker(context: Context, format: String, maxDate: 
         DatePickerDialog.OnDateSetListener { _, _, monthOfYear, dayOfMonth ->
             myCalendar.set(Calendar.MONTH, monthOfYear)
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            val sdf = SimpleDateFormat(format, Locale.UK)
+            val sdf = SimpleDateFormat(format, Locale.FRANCE)
             setText(sdf.format(myCalendar.time))
         }
 

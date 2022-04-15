@@ -15,6 +15,7 @@
         <action
             android:id="@+id/action_profile_fragment_to_edit_profile_fragment"
             app:destination="@id/edit_profile_fragment"
+            app:enterAnim="@anim/slide_in_from_right"
             app:popExitAnim="@anim/slide_out_to_right" />
         <action
             android:id="@+id/action_profile_fragment_to_association_fragment"
