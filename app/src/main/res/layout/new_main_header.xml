@@ -22,8 +22,9 @@
 
         <ImageView
             android:id="@+id/icon_back"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="10dp"
             android:src="@drawable/new_back_white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

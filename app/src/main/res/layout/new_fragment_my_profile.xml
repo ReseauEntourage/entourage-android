@@ -86,14 +86,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
                 android:gravity="center"
+                android:layout_marginBottom="20dp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@id/interests"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/pins"
-                tools:text="Bonjour je m'appelle Salim" />
+                app:layout_constraintTop_toBottomOf="@id/pins" />
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -127,11 +126,11 @@
                 layout="@layout/new_profile_statistics_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="20dp"
                 app:icon="@{@drawable/new_contribution}"
                 app:label="@{@string/contributions}"
                 app:layout_constraintLeft_toRightOf="@id/contribution"
-                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/my_activity" />
 
             <include

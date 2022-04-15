@@ -59,6 +59,7 @@
                         layout="@layout/new_profile_edit_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:hint="@{@string/firstname}"
                         app:icon="@{@drawable/new_description}"
                         app:title="@{@string/firstname}" />
 
@@ -67,6 +68,7 @@
                         layout="@layout/new_profile_edit_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:hint="@{@string/lastname}"
                         app:icon="@{@drawable/new_description}"
                         app:title="@{@string/lastname}" />
 
@@ -83,6 +85,7 @@
                         layout="@layout/new_profile_edit_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:hint="@{@string/date_format_profile_fr}"
                         app:icon="@{@drawable/new_birth}"
                         app:title="@{@string/birthday}" />
 
@@ -100,6 +103,7 @@
                         layout="@layout/new_profile_edit_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:hint="@{@string/email}"
                         app:icon="@{@drawable/new_mail}"
                         app:title="@{@string/email}" />
 
@@ -147,7 +151,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="65dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="38dp"
             app:content="@{@string/apply_modifications}"
             app:drawable="@{@drawable/new_rounded_button_orange}"
             app:layout_constraintBottom_toBottomOf="parent" />

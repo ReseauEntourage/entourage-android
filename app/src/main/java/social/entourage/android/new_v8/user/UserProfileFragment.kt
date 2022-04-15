@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -118,6 +119,12 @@ class UserProfileFragment : Fragment() {
                     .circleCrop()
                     .into(imageUser)
             }
+            message.button.setCompoundDrawablesWithIntrinsicBounds(
+                null,
+                null,
+                ResourcesCompat.getDrawable(resources, R.drawable.new_message, null),
+                null
+            )
         }
     }
 

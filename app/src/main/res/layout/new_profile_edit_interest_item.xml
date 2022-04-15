@@ -3,6 +3,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -36,6 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/padding_horizental"
             android:buttonTint="@color/orange"
+            android:clickable="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/title"
             app:layout_constraintRight_toRightOf="parent"
