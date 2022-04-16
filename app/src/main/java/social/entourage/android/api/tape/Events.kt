@@ -160,11 +160,6 @@ open class Events {
     class OnMapFilterChanged
 
     /**
-     * Event signaling that the solidarity guide filter was changed
-     */
-    class OnSolidarityGuideFilterChanged
-
-    /**
      * Event signaling that the map filter was changed (all if feedItem is null)
      */
     class OnMyEntouragesForceRefresh(val feedItem: FeedItem?)

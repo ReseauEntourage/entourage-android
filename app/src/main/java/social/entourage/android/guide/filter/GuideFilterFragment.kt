@@ -8,10 +8,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_guide_filter.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.R
-import social.entourage.android.api.tape.Events.OnSolidarityGuideFilterChanged
 import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.guide.GuideMapFragment
 import social.entourage.android.guide.poi.PoiRenderer
-import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.log.AnalyticsEvents.ACTION_GUIDE_SUBMITFILTERS
 
@@ -68,7 +67,7 @@ class GuideFilterFragment : BaseDialogFragment() {
         GuideFilter.instance.setValueForCategoryId(PoiRenderer.CategoryType.PARTNERS.categoryId, GuideFilter.instance.isPartnersSelected)
 
         // Apply the filter
-        EntBus.post(OnSolidarityGuideFilterChanged())
+        (parentFragmentManager.findFragmentByTag(GuideMapFragment.TAG) as? GuideMapFragment)?.onSolidarityGuideFilterChanged()
         // Dismiss the fragment
         dismiss()
     }

@@ -19,6 +19,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.api.request.PoiResponse
 import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.guide.poi.PoiListFragment
 import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -27,7 +28,7 @@ import social.entourage.android.user.partner.PartnerFragment
 import timber.log.Timber
 
 
-class GDSSearchFragment : BaseDialogFragment() {
+class GDSSearchFragment : BaseDialogFragment(), PoiListFragment {
     private val MIN_CHARS_SEARCH = 3
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
@@ -99,10 +100,7 @@ class GDSSearchFragment : BaseDialogFragment() {
     }
 
     fun setupRecyclerView(){
-        rvAdapter = GDSSearchAdapter(arrayPois) { position ->
-            val poi = arrayPois[position]
-            showPoiDetails(poi)
-        }
+        rvAdapter = GDSSearchAdapter(arrayPois)
         ui_recyclerView?.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
@@ -141,7 +139,7 @@ class GDSSearchFragment : BaseDialogFragment() {
         })
     }
 
-    private fun showPoiDetails(poi: Poi) {
+    override fun showPoiDetails(poi: Poi, isTxtSearch: Boolean) {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_POI)
         try {
             poi.partner_id?.let { partner_id ->
