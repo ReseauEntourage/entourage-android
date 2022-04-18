@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_my_actions.*
 import kotlinx.android.synthetic.main.fragment_my_actions.ui_progress
 import kotlinx.android.synthetic.main.fragment_my_actions.ui_recyclerView
@@ -21,7 +20,6 @@ import social.entourage.android.api.model.EntourageContribution
 import social.entourage.android.api.model.EntourageDemand
 import social.entourage.android.api.model.EntourageEvent
 import social.entourage.android.api.request.EntouragesResponse
-import social.entourage.android.api.tape.Events
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.tools.EntBus
@@ -72,8 +70,7 @@ class MyActionsFragment : BaseDialogFragment() {
         EntBus.unregister(this)
     }
 
-    @Subscribe
-    fun onRefreshActions(event: Events.OnRefreshActionsInfos) {
+    fun onRefreshActions() {
         isAlreadyShow = false
         getMyActions()
     }

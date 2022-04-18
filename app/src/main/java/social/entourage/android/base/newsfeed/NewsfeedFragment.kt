@@ -285,7 +285,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         fragment_map_filter_button?.setText(if (activefilters) R.string.map_no_filter else R.string.map_filters_activated)
     }
 
-    open fun onNewsfeedLoadMoreRequested(event: OnNewsfeedLoadMoreEvent) {
+    fun onNewsfeedLoadMoreRequested() {
         when (selectedTab) {
             NewsfeedTabItem.ALL_TAB -> {
                 ensureMapVisible()

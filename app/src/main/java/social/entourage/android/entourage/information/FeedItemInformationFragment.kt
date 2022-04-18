@@ -37,6 +37,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_entourage_information.*
 import kotlinx.android.synthetic.main.layout_entourage_information_top_buttons.*
 import kotlinx.android.synthetic.main.layout_entourage_options.*
@@ -49,6 +50,7 @@ import org.joda.time.LocalDate
 import social.entourage.android.*
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.base.location.EntLocation
@@ -58,6 +60,8 @@ import social.entourage.android.entourage.information.discussion.DiscussionAdapt
 import social.entourage.android.entourage.information.members.MembersAdapter
 import social.entourage.android.entourage.invite.InviteFriendsListener
 import social.entourage.android.entourage.invite.contacts.InviteContactsFragment
+import social.entourage.android.guide.poi.ReadPoiFragment
+import social.entourage.android.mainprofile.MyActionsFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.tools.EntBus
@@ -268,9 +272,13 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         entourage_info_discussion_view?.addOnScrollListener(discussionScrollListener)
     }
 
+    private fun refreshParentInfo() {
+        (parentFragmentManager.findFragmentByTag(MyActionsFragment.TAG) as? MyActionsFragment)?.onRefreshActions()
+    }
+
     override fun onStop() {
         entourage_info_discussion_view?.removeOnScrollListener(discussionScrollListener)
-        EntBus.post(OnRefreshActionsInfos())
+        refreshParentInfo()
 
         try {
             super.onStop()
@@ -313,7 +321,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
     }
 
     override fun onDestroy() {
-        EntBus.post(OnRefreshActionsInfos())
+        refreshParentInfo()
         super.onDestroy()
     }
 
@@ -1143,13 +1151,13 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         }
     }
 
+    fun onUserJoinRequestUpdateEvent(userId: Int, update: String, feedItem: FeedItem) {
+        presenter().updateUserJoinRequest(userId, update, feedItem)
+    }
+
     // ----------------------------------
     // Bus handling
     // ----------------------------------
-    open fun onUserJoinRequestUpdateEvent(event: OnUserJoinRequestUpdateEvent) {
-        presenter().updateUserJoinRequest(event.userId, event.update, event.feedItem)
-    }
-
     open fun onEntourageUpdated(event: OnEntourageUpdated) {
         val updatedEntourage = event.entourage
         // Check if it is our displayed entourage
@@ -1485,6 +1493,20 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
                     Snackbar.LENGTH_SHORT
                 ).show()
             }
+        }
+    }
+
+    fun onPoiViewDetail(uuid: String) {
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_USERPROFILE)
+        try {
+            val poi = Poi()
+            poi.uuid = uuid
+            activity?.let {
+                ReadPoiFragment.newInstance(poi, "")
+                    .show(it.supportFragmentManager, ReadPoiFragment.TAG)
+            }
+        } catch (e: IllegalStateException) {
+            Timber.w(e)
         }
     }
 

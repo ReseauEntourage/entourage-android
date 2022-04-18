@@ -186,11 +186,6 @@ class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListener, Ba
     }
 
     @Subscribe
-    override fun onNewsfeedLoadMoreRequested(event: OnNewsfeedLoadMoreEvent) {
-        super.onNewsfeedLoadMoreRequested(event)
-    }
-
-    @Subscribe
     override fun onMapFilterChanged(event: OnMapFilterChanged) {
         super.onMapFilterChanged(event)
     }

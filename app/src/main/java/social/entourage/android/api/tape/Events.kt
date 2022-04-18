@@ -8,29 +8,9 @@ import social.entourage.android.api.model.feed.FeedItem
 
 open class Events {
     /**
-     * Event triggering the checking of the intent action
-     */
-    class OnCheckIntentActionEvent(val action: String, val extras: Bundle?)
-
-    /**
-     * Event bearing connection state
-     */
-    class OnConnectionChangedEvent(val isConnected: Boolean)
-
-    /**
-     * Event bearing the registration id when obtained from Google Cloud Messaging (for push notifications)
-     */
-    class OnGCMTokenObtainedEvent(val registrationId: String)
-
-    /**
      * Event bearing the new location on which to center the map
      */
     class OnBetterLocationEvent(val location: LatLng)
-
-    /**
-     * Event signaling that current user is unauthorized
-     */
-    class OnUnauthorizedEvent
 
     /**
      * Event signaling that user info is updated
@@ -48,11 +28,6 @@ open class Events {
         }
 
     }
-
-    /**
-     * Event signaling that the user wants to update a join request
-     */
-    class OnUserJoinRequestUpdateEvent(val userId: Int, val update: String, val feedItem: FeedItem)
 
     /**
      * Event signaling that user view is requested
@@ -140,11 +115,6 @@ open class Events {
     class OnLocationPermissionGranted(val isPermissionGranted: Boolean)
 
     /**
-     * Event signaling a push notification has been received
-     */
-    class OnPushNotificationReceived(val message: Message)
-
-    /**
      * Event signaling that an entourage was created
      */
     class OnEntourageCreated(val entourage: BaseEntourage)
@@ -179,31 +149,7 @@ open class Events {
      */
     class OnPartnerViewRequestedEvent(val partner: Partner)
 
-    /**
-     * Event signaling that loading more newsfeed is requested
-     */
-    class OnNewsfeedLoadMoreEvent
-
-    /**
-     * Event signaling that showing an url is requested
-     */
-    class OnShowURLEvent(val url: String)
-
     class OnUnreadCountUpdate(val unreadCount: Int?)
 
-    /**
-     * Event to show poi detail fragment from feediteminformation (chat message)
-     */
-    class OnPoiViewDetail(val poiId: String)
-
-    class OnShowEventDeeplink
-
-    class OnShowDetailAssociation(val id:Int)
-
     class OnRefreshEntourageInformation
-    class OnRefreshActionsInfos
-
-    class OnJoinRequestAccepted(val content: PushNotificationContent)
-
-    class OnAddPushNotification(val message: Message)
 }

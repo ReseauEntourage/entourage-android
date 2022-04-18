@@ -4,6 +4,7 @@ import android.net.Uri
 import android.text.format.DateFormat
 import android.view.View
 import android.widget.TextView
+import androidx.fragment.app.findFragment
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.layout_entourage_information_user_join_card_view.view.*
 import social.entourage.android.EntourageApplication
@@ -11,9 +12,9 @@ import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
-import social.entourage.android.api.tape.Events.OnUserJoinRequestUpdateEvent
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
+import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -34,24 +35,20 @@ class UserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
             if (userId == 0) return@OnClickListener
             feedItem?.let {
                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_JOIN_REQUEST_ACCEPT)
-                EntBus.post(
-                        OnUserJoinRequestUpdateEvent(
-                                userId,
-                                FeedItem.JOIN_STATUS_ACCEPTED,
-                                it)
-                )
+                (itemView.findFragment() as? FeedItemInformationFragment)?.onUserJoinRequestUpdateEvent(
+                    userId,
+                    FeedItem.JOIN_STATUS_ACCEPTED,
+                    it)
             }
         })
         itemView.tic_refuse_button?.setOnClickListener(View.OnClickListener {
             if (userId == 0) return@OnClickListener
             feedItem?.let {
                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_JOIN_REQUEST_REJECT)
-                EntBus.post(
-                        OnUserJoinRequestUpdateEvent(
-                                userId,
-                                FeedItem.JOIN_STATUS_REJECTED,
-                                it)
-                )
+                (itemView.findFragment() as? FeedItemInformationFragment)?.onUserJoinRequestUpdateEvent(
+                    userId,
+                    FeedItem.JOIN_STATUS_REJECTED,
+                    it)
             }
         })
     }

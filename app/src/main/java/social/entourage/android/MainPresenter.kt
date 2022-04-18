@@ -372,12 +372,10 @@ class MainPresenter(private val activity: MainActivity) : AvatarUpdatePresenter 
         val applicationInfo = ApplicationInfo(pushNotificationToken)
         val applicationWrapper = ApplicationWrapper(applicationInfo)
         applicationWrapper.setNotificationStatus(ApplicationInfo.NOTIF_PERMISSION_AUTHORIZED)
-        val call = applicationInfoRequest.updateApplicationInfo(applicationWrapper)
-        call.enqueue(object : Callback<ResponseBody> {
+        applicationInfoRequest.updateApplicationInfo(applicationWrapper)
+            .enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.isSuccessful) {
-                    Timber.d("updating application info with success")
-                } else {
+                if (!response.isSuccessful) {
                     Timber.e("updating application info error")
                 }
             }

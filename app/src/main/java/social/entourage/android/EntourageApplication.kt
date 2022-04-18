@@ -2,13 +2,18 @@ package social.entourage.android
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDexApplication
 import com.google.firebase.analytics.FirebaseAnalytics
 import social.entourage.android.api.ApiModule
 import social.entourage.android.api.model.Message
+import social.entourage.android.api.model.PushNotificationContent
+import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.api.tape.Events
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.authentication.ComplexPreferences
 import social.entourage.android.base.BaseActivity
@@ -78,14 +83,46 @@ class EntourageApplication : MultiDexApplication() {
             return null
         }
 
+    private val mainActivity: MainActivity?
+        get() {
+            activities.filterIsInstance<MainActivity>().forEach {
+                return it
+            }
+            return null
+        }
+
     fun finishLoginActivity() {
         Timber.d("Finishing login activity")
         loginActivity?.finish()
     }
 
+    fun logOut() {
+        mainActivity?.logout()
+    }
+
     // ----------------------------------
     // Push notifications and badge handling
     // ----------------------------------
+    fun onPushNotificationReceived(message: Message) {
+        val content = message.content ?: return
+        if (content.joinableId == 0L) {
+            return
+        }
+        Handler(Looper.getMainLooper())
+            .post {
+            when (content.type) {
+                PushNotificationContent.TYPE_NEW_CHAT_MESSAGE -> {
+                    if (mainActivity?.displayMessageOnCurrentEntourageInfoFragment(message)==true) {
+                        //already displayed
+                        removePushNotification(content, content.type)
+                    }
+                }
+                PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED ->                     //@TODO should we update current entourage info fragment ?
+                    removePushNotification(content, PushNotificationContent.TYPE_NEW_JOIN_REQUEST)
+            }
+        }
+    }
+
     fun addPushNotification(message: Message) {
         PushNotificationManager.addPushNotification(message)
         if (storeNewPushNotification(message, true) > 1) {
@@ -117,6 +154,17 @@ class EntourageApplication : MultiDexApplication() {
         removePushNotification(feedItem.id, feedItem.type, userId, pushType)
     }
 
+    fun removePushNotification(content: PushNotificationContent, contentType: String) {
+        if (content.isEntourageRelated) {
+            removePushNotification(
+                content.joinableId,
+                TimestampedObject.ENTOURAGE_CARD,
+                content.userId,
+                contentType
+            )
+        }
+    }
+
     fun removePushNotification(feedId: Long, feedType: Int, userId: Int, pushType: String?) {
         val count = PushNotificationManager.removePushNotification(feedId, feedType, userId, pushType)
         if (count > 0) {
@@ -138,11 +186,12 @@ class EntourageApplication : MultiDexApplication() {
     // FeedItemsStorage
     // ----------------------------------
     private fun setupFeedItemsStorage() {
-        userFeedItemListCache = complexPreferences?.getObject(UserFeedItemListCache.KEY, UserFeedItemListCache::class.java) ?: UserFeedItemListCache()
+        userFeedItemListCache = complexPreferences.getObject(UserFeedItemListCache.KEY, UserFeedItemListCache::class.java)
+            ?: UserFeedItemListCache()
     }
 
     private fun saveFeedItemsStorage() {
-        complexPreferences?.apply {
+        complexPreferences.apply {
             this.putObject(UserFeedItemListCache.KEY, userFeedItemListCache)
             this.commit()
         }

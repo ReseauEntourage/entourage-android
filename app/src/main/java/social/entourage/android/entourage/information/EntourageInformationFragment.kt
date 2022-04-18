@@ -28,17 +28,12 @@ import kotlinx.android.synthetic.main.layout_invite_source.view.*
 import kotlinx.android.synthetic.main.layout_pop_info_private.*
 import kotlinx.android.synthetic.main.layout_private_entourage_information.*
 import kotlinx.android.synthetic.main.layout_public_entourage_information.*
-import okhttp3.ResponseBody
 import org.joda.time.LocalDate
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events
-import social.entourage.android.api.tape.Events.OnUserJoinRequestUpdateEvent
 import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.entourage.EntourageCloseFragment
 import social.entourage.android.entourage.information.report.EntourageReportFragment
@@ -53,7 +48,6 @@ import social.entourage.android.user.partner.PartnerFragment
 import social.entourage.android.user.role.UserRolesFactory
 import java.lang.Exception
 import java.util.*
-import javax.inject.Inject
 
 class EntourageInformationFragment : FeedItemInformationFragment() {
     // ----------------------------------
@@ -587,9 +581,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             val assoSpanner = Utils.formatTextWithBoldSpanAndColor(colorId,true,assoStr, infoAbo)
             ui_action_event_creator_bt_asso.text = assoSpanner
             ui_action_event_creator_bt_asso?.setOnClickListener {
-                partner.id.toInt().let { partnerId ->
-                    EntBus.post(Events.OnShowDetailAssociation(partnerId))
-                }
+                partner.id.toInt().let { partnerId -> onShowDetailAssociation(partnerId)}
             }
 
             if (authorUser != null && authorUser?.roles?.size ?: 0 > 0) {
@@ -639,28 +631,17 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         }
     }
 
+    //Use inside detail Event / action when click on asso name inside member section.
+    fun onShowDetailAssociation(id: Int) {
+        PartnerFragment.newInstance(id).show(parentFragmentManager, PartnerFragment.TAG)
+    }
+
     // ----------------------------------
     // Bus handling
     // ----------------------------------
     @Subscribe
-    override fun onUserJoinRequestUpdateEvent(event: OnUserJoinRequestUpdateEvent) {
-        super.onUserJoinRequestUpdateEvent(event)
-    }
-
-    @Subscribe
     override fun onEntourageUpdated(event: Events.OnEntourageUpdated) {
         super.onEntourageUpdated(event)
-    }
-
-    @Subscribe
-    fun onShowEventDeeplink(event: Events.OnShowEventDeeplink) {
-        dismiss()
-    }
-
-    //Use inside detail Event / action when click on asso name inside member section.
-    @Subscribe
-    fun onShowDetailAssociation(event: Events.OnShowDetailAssociation) {
-        PartnerFragment.newInstance(event.id).show(parentFragmentManager, PartnerFragment.TAG)
     }
 
     @Subscribe

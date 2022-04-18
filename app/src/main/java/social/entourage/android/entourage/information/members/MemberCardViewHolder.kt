@@ -4,6 +4,7 @@ import android.net.Uri
 import android.view.Gravity
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.findFragment
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.layout_entourage_information_member_card.view.*
 import social.entourage.android.R
@@ -12,6 +13,7 @@ import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
+import social.entourage.android.entourage.information.EntourageInformationFragment
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.Utils
 import social.entourage.android.user.role.UserRoleView
@@ -108,7 +110,7 @@ class MemberCardViewHolder(view: View) : BaseCardViewHolder(view) {
             itemView.ui_tv_bt_asso?.text = assoSpanner
             itemView.ui_tv_bt_asso?.setOnClickListener {
                 entourageUser.partner?.id?.toInt()?.let { partnerId ->
-                    EntBus.post(Events.OnShowDetailAssociation(partnerId))
+                    (it.findFragment() as? EntourageInformationFragment)?.onShowDetailAssociation(partnerId)
                 }
             }
         }

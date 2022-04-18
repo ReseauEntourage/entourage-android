@@ -538,16 +538,14 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             }
         }
     }
-
-    @Subscribe
-    fun checkIntentAction(event: Events.OnCheckIntentActionEvent) {
+    fun checkIntentAction(action: String, extras: Bundle?) {
         if (activity == null) {
             Timber.w("No activity found")
             return
         }
-        checkAction(event.action)
-        (event.extras?.getSerializable(PushNotificationManager.PUSH_MESSAGE) as? Message)?.content?.let { content ->
-            presenter.checkIntentAction(content, event.action)
+        checkAction(action)
+        (extras?.getSerializable(PushNotificationManager.PUSH_MESSAGE) as? Message)?.content?.let { content ->
+            presenter.checkIntentAction(content, action)
         }
     }
 

@@ -5,8 +5,6 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
-import social.entourage.android.api.tape.Events.OnUnauthorizedEvent
-import social.entourage.android.tools.EntBus
 import java.io.IOException
 
 /**
@@ -34,7 +32,7 @@ object AuthenticationInterceptor : Interceptor {
         val response = chain.proceed(request)
         if (response.code == 401) {
             if (response.message.equals("Unauthorized", ignoreCase = true)) {
-                EntBus.post(OnUnauthorizedEvent())
+                EntourageApplication.get().logOut()
             }
         }
         return response

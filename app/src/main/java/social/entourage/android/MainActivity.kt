@@ -27,6 +27,7 @@ import social.entourage.android.base.location.LocationUtils.isLocationPermission
 import social.entourage.android.deeplinks.DeepLinksManager.handleCurrentDeepLink
 import social.entourage.android.deeplinks.DeepLinksManager.storeIntent
 import social.entourage.android.entourage.EntourageDisclaimerFragment
+import social.entourage.android.entourage.information.EntourageInformationFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.guide.poi.ReadPoiFragment
@@ -74,6 +75,9 @@ class MainActivity : BaseSecuredActivity(),
 
     private val homeFragment: HomeExpertFragment?
         get() = supportFragmentManager.findFragmentByTag(HomeExpertFragment.TAG) as? HomeExpertFragment
+
+    private val infoFragment: EntourageInformationFragment?
+        get() = supportFragmentManager.findFragmentByTag(FeedItemInformationFragment.TAG) as? EntourageInformationFragment
 
     // ----------------------------------
     // LIFECYCLE
@@ -191,7 +195,8 @@ class MainActivity : BaseSecuredActivity(),
         }
         bottomBar?.refreshBadgeCount()
         intent?.action?.let { action ->
-            EntBus.post(OnCheckIntentActionEvent(action, intent.extras))
+            checkIntentAction(action, intent?.extras)
+            homeFragment?.checkIntentAction(action, intent?.extras)
         }
     }
 
@@ -250,7 +255,7 @@ class MainActivity : BaseSecuredActivity(),
     }
 
     fun showEvents() {
-        EntBus.post(OnShowEventDeeplink())
+        infoFragment?.dismiss()
         bottomBar?.showEvents()
         homeFragment?.onShowEvents()
     }
@@ -265,7 +270,7 @@ class MainActivity : BaseSecuredActivity(),
     }
 
     fun showActionsTab() {
-        EntBus.post(OnShowEventDeeplink())
+        infoFragment?.dismiss()
         bottomBar?.showActionsTab()
     }
 
@@ -284,9 +289,7 @@ class MainActivity : BaseSecuredActivity(),
         )
         if (notificationsEnabled) {
             FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
-                presenter.updateApplicationInfo(
-                    token
-                )
+                presenter.updateApplicationInfo(token)
             }
         } else {
             presenter.deleteApplicationInfo()
@@ -326,22 +329,13 @@ class MainActivity : BaseSecuredActivity(),
         super.logout()
     }
 
-    // ----------------------------------
-    // BUS LISTENERS
-    // ----------------------------------
-    @Subscribe
-    fun onGCMTokenObtained(event: OnGCMTokenObtainedEvent) {
-        presenter.updateApplicationInfo(event.registrationId)
-    }
-
-    @Subscribe
-    fun checkIntentAction(event: OnCheckIntentActionEvent) {
+    fun checkIntentAction(action: String, extras: Bundle?) {
         //if (!isSafeToCommit()) return;
         val message =
-            event.extras?.getSerializable(PushNotificationManager.PUSH_MESSAGE) as Message?
+            extras?.getSerializable(PushNotificationManager.PUSH_MESSAGE) as Message?
         if (message != null) {
             message.content?.let { content ->
-                if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE == event.action && !content.isEntourageRelated) {
+                if (PushNotificationContent.TYPE_NEW_CHAT_MESSAGE == action && !content.isEntourageRelated) {
                     showMyEntourages()
                 }
             }
@@ -353,6 +347,9 @@ class MainActivity : BaseSecuredActivity(),
         intent = null
     }
 
+    // ----------------------------------
+    // BUS LISTENERS
+    // ----------------------------------
     @Subscribe
     fun userViewRequested(event: OnUserViewRequestedEvent) {
         logEvent(AnalyticsEvents.EVENT_FEED_USERPROFILE)
@@ -365,19 +362,9 @@ class MainActivity : BaseSecuredActivity(),
     }
 
     @Subscribe
-    fun onUnauthorized(event: OnUnauthorizedEvent) {
-        logout()
-    }
-
-    @Subscribe
     fun onLocationPermissionGranted(event: OnLocationPermissionGranted?) {
         if (event == null) return
         onLocationPermissionGranted(event.isPermissionGranted)
-    }
-
-    @Subscribe
-    fun onShowURLRequested(event: OnShowURLEvent) {
-        showWebView(event.url)
     }
 
     @Subscribe
@@ -385,19 +372,6 @@ class MainActivity : BaseSecuredActivity(),
         updateAnalyticsInfo()
         event.user.unreadCount?.let {
             bottomBar?.updateBadgeCountForUser(it)
-        }
-    }
-
-    @Subscribe
-    fun onPoiViewDetail(event: OnPoiViewDetail) {
-        logEvent(AnalyticsEvents.EVENT_FEED_USERPROFILE)
-        try {
-            val poi = Poi()
-            poi.uuid = event.poiId
-            val fragment = ReadPoiFragment.newInstance(poi, "")
-            fragment.show(supportFragmentManager, ReadPoiFragment.TAG)
-        } catch (e: IllegalStateException) {
-            Timber.w(e)
         }
     }
 
@@ -454,55 +428,10 @@ class MainActivity : BaseSecuredActivity(),
     // ----------------------------------
     // PUSH NOTIFICATION HANDLING
     // ----------------------------------
-    @Subscribe
-    fun onPushNotificationReceived(event: OnPushNotificationReceived) {
-        val message = event.message
-        val content = message.content ?: return
-        if (content.joinableId == 0L) {
-            return
-        }
-        val handler = Handler(Looper.getMainLooper())
-        handler.post {
-            when (content.type) {
-                PushNotificationContent.TYPE_NEW_CHAT_MESSAGE -> if (displayMessageOnCurrentEntourageInfoFragment(
-                        message
-                    )
-                ) {
-                    //already displayed
-                    removePushNotification(content, content.type)
-                } else {
-                    addPushNotification(message)
-                }
-                PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED ->                     //@TODO should we update current entourage info fragment ?
-                    removePushNotification(content, PushNotificationContent.TYPE_NEW_JOIN_REQUEST)
-                PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED -> {
-                    addPushNotification(message)
-                    EntBus.post(OnJoinRequestAccepted(content))
-                }
-                else -> addPushNotification(message)                    /*TYPE_NEW_JOIN_REQUEST,TYPE_ENTOURAGE_INVITATION,TYPE_INVITATION_STATUS*/
-            }
-        }
-    }
-
-    private fun removePushNotification(content: PushNotificationContent, contentType: String) {
-        if (content.isEntourageRelated) {
-            EntourageApplication.get().removePushNotification(
-                content.joinableId,
-                TimestampedObject.ENTOURAGE_CARD,
-                content.userId,
-                contentType
-            )
-        }
-    }
-
-    private fun displayMessageOnCurrentEntourageInfoFragment(message: Message): Boolean {
+    fun displayMessageOnCurrentEntourageInfoFragment(message: Message): Boolean {
         val fragment =
             supportFragmentManager.findFragmentByTag(FeedItemInformationFragment.TAG) as FeedItemInformationFragment?
         return fragment != null && fragment.onPushNotificationChatMessageReceived(message)
-    }
-
-    private fun addPushNotification(message: Message) {
-        EntBus.post(OnAddPushNotification(message))
     }
 
     // ----------------------------------
