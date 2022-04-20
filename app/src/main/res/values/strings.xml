@@ -175,6 +175,9 @@
     <string name="optional">- facultatif</string>
     <string name="step">Étape</string>
     <string name="stepOne">01.</string>
+    <string name="stepTwo">02.</string>
+    <string name="choose_categories_group">Sélectionnez la ou les catégories qui décrivent le mieux le sujet de discussion du groupe.</string>
+
 
     <string name="web_site">Site web</string>
     <string name="address">Adresse postale</string>
@@ -187,6 +190,7 @@
     <string name="add_location_subtitle">Entourage ne communique pas cette adresse aux utilisateurs.</string>
     <string name="new_group">Nouveau groupe</string>
     <string name="error_mandatory_fields">Veuillez remplir tous les champs obligatoires</string>
+    <string name="error_categories_create_group">Une catégorie doit être sélectionnée.</string>
     <string name="error_lastname">Le nom doit comporter au moins 2 lettres.</string>
     <string name="error_email">e-mail invalide</string>
     <string name="contact">Contact</string>
@@ -195,10 +199,8 @@
     <string name="volunteers">Recherche des bénévoles</string>
     <string name="date_format_profile">dd-MM</string>
     <string name="date_format_profile_fr">Jour-Mois</string>
-
-
-
-
+    <string name="other">Autre</string>
+    <string name="category_name_label">Décrivez en un mot la catégorie de votre groupe</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
