@@ -106,9 +106,9 @@ class ReportUserModalFragment : BottomSheetDialogFragment() {
             setupViewStep1()
         }
         binding.send.setOnClickListener {
-            userReportedId?.let { it1 ->
+            userReportedId?.let { id ->
                 userPresenter.sendReport(
-                    it1,
+                    id,
                     binding.message.text.toString(),
                     selectedSignalsIdList
                 )

@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.new_profile_edit_interest_item.view.title
 import kotlinx.android.synthetic.main.new_profile_edit_interests_edittext_item.view.*
 import social.entourage.android.R
 import social.entourage.android.new_v8.profile.models.Interest
+import social.entourage.android.new_v8.utils.Const
 
 interface OnItemCheckListener {
     fun onItemCheck(item: Interest)
@@ -32,8 +33,8 @@ class InterestsListAdapter(
                 android.graphics.Typeface.BOLD
             )
             binding.title.text = interest.title
-            binding.checkBox.isChecked = interest.isSelected == true
-            interest.icon.let { binding.icon.setImageResource(it) }
+            binding.checkBox.isChecked = interest.isSelected
+            binding.icon.setImageResource(interest.icon)
             binding.layout.setOnClickListener {
                 if (interest.isSelected) {
                     onItemClick.onItemUncheck(interest)
@@ -42,7 +43,7 @@ class InterestsListAdapter(
                             binding.title.typeface,
                             android.graphics.Typeface.NORMAL
                         )
-                    if (interest.id == "other") {
+                    if (interest.id == Const.OTHER_INTEREST) {
                         binding.category_name.visibility = View.GONE
                         binding.category_name_label.visibility = View.GONE
                     }
@@ -52,7 +53,7 @@ class InterestsListAdapter(
                         binding.title.typeface,
                         android.graphics.Typeface.BOLD
                     )
-                    if (interest.id == "other") {
+                    if (interest.id == Const.OTHER_INTEREST) {
                         binding.category_name.visibility = View.VISIBLE
                         binding.category_name_label.visibility = View.VISIBLE
                     }
@@ -87,7 +88,7 @@ class InterestsListAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when (interestsList[position].id) {
-            "other" -> TYPE_OTHER
+            Const.OTHER_INTEREST -> TYPE_OTHER
             else -> TYPE_INTEREST
         }
     }

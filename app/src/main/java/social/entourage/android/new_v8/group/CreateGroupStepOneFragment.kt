@@ -8,8 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import social.entourage.android.Constants
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateGroupStepOneBinding
+import social.entourage.android.new_v8.utils.Const
 
 
 class CreateGroupStepOneFragment : Fragment() {
@@ -37,7 +39,7 @@ class CreateGroupStepOneFragment : Fragment() {
 
     private fun handleOnClickNext(onClick: Boolean) {
         if (onClick) {
-            if (binding.groupName.text.length < 2) {
+            if (binding.groupName.text.length < Const.GROUP_NAME_MIN_LENGTH) {
                 binding.error.root.visibility = View.VISIBLE
                 binding.error.errorMessage.text = getString(R.string.error_mandatory_fields)
             } else {
@@ -53,7 +55,7 @@ class CreateGroupStepOneFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                viewModel.isButtonClickable.value = s.length >= 2
+                viewModel.isButtonClickable.value = s.length >= Const.GROUP_NAME_MIN_LENGTH
             }
 
             override fun afterTextChanged(s: Editable) {}

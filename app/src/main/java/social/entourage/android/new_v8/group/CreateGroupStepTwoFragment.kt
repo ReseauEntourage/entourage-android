@@ -14,6 +14,7 @@ import social.entourage.android.databinding.NewFragmentCreateGroupStepTwoBinding
 import social.entourage.android.new_v8.profile.editProfile.InterestsListAdapter
 import social.entourage.android.new_v8.profile.editProfile.OnItemCheckListener
 import social.entourage.android.new_v8.profile.models.Interest
+import social.entourage.android.new_v8.utils.Const
 
 
 class CreateGroupStepTwoFragment : Fragment() {
@@ -62,13 +63,17 @@ class CreateGroupStepTwoFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = InterestsListAdapter(interestsList, object : OnItemCheckListener {
                 override fun onItemCheck(item: Interest) {
-                    item.id?.let { selectedInterestIdList.add(it) }
-                    viewModel.isButtonClickable.value = true
+                    item.id?.let {
+                        selectedInterestIdList.add(it)
+                        viewModel.isButtonClickable.value =
+                            !selectedInterestIdList.contains(Const.OTHER_INTEREST)
+                    }
                 }
 
                 override fun onItemUncheck(item: Interest) {
                     selectedInterestIdList.remove(item.id)
-                    if (selectedInterestIdList.isEmpty()) viewModel.isButtonClickable.value = false
+                    viewModel.isButtonClickable.value =
+                        !(selectedInterestIdList.isEmpty() || selectedInterestIdList.contains(Const.OTHER_INTEREST))
                 }
             })
         }
