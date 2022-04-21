@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -46,19 +47,32 @@ class CreateGroupFragment : Fragment() {
         }.attach()
         setNextClickListener()
         setPreviousClickListener()
+        handleNextButtonState()
     }
 
     private fun setNextClickListener() {
         binding.next.setOnClickListener {
-            viewModel.onClickNext.value = true
-            viewModel.isTextOk.observe(viewLifecycleOwner, ::handleIsTextOk)
+            viewModel.clickNext.value = true
+            viewModel.isCondition.observe(viewLifecycleOwner, ::handleIsTextOk)
         }
+    }
+
+    private fun handleNextButtonState() {
+        viewModel.isButtonClickable.observe(viewLifecycleOwner, ::handleButtonState)
+    }
+
+    private fun handleButtonState(isButtonActive: Boolean) {
+        val background = ContextCompat.getDrawable(
+            requireContext(),
+            if (isButtonActive) R.drawable.new_rounded_button_light_orange else R.drawable.new_bg_rounded_inactive_button_light_orange
+        )
+        binding.next.background = background
     }
 
     private fun setPreviousClickListener() {
         binding.previous.setOnClickListener {
             viewPager.previousPage(true)
-            if (viewPager.currentItem == 0) binding.previous.visibility = View.GONE
+            if (viewPager.currentItem == 0) binding.previous.visibility = View.INVISIBLE
         }
     }
 
@@ -66,7 +80,7 @@ class CreateGroupFragment : Fragment() {
         if (isTextOk) {
             viewPager.nextPage(true)
             if (viewPager.currentItem > 0) binding.previous.visibility = View.VISIBLE
-            viewModel.isTextOk.value = false
+            viewModel.isCondition.value = false
         }
     }
 
@@ -83,6 +97,8 @@ class CreateGroupFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.onClickNext.value = false
+        viewModel.isCondition.value = false
+        viewModel.isButtonClickable.value = false
+        viewModel.clickNext.value = false
     }
 }

@@ -14,6 +14,7 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.MetaData
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentReportUserBinding
+import social.entourage.android.new_v8.utils.Const
 
 
 class ReportUserModalFragment : BottomSheetDialogFragment() {
@@ -23,6 +24,7 @@ class ReportUserModalFragment : BottomSheetDialogFragment() {
     val binding: NewFragmentReportUserBinding get() = _binding!!
     private var selectedSignalsIdList: MutableList<String> = mutableListOf()
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
+    private var userReportedId: Int? = Const.DEFAULT_USER_ID
 
 
     override fun onCreateView(
@@ -36,6 +38,7 @@ class ReportUserModalFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeInterests()
+        getUserReportedId()
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         userPresenter.isUserReported.observe(requireActivity(), ::handleReportResponse)
         setupViewStep1()
@@ -59,6 +62,10 @@ class ReportUserModalFragment : BottomSheetDialogFragment() {
         signalList.clear()
         tags?.signals?.let { signalList.addAll(it) }
         binding.recyclerView.adapter?.notifyDataSetChanged()
+    }
+
+    private fun getUserReportedId() {
+        userReportedId = arguments?.getInt(Const.USER_REPORTED_ID)
     }
 
     private fun initializeInterests() {
@@ -99,8 +106,13 @@ class ReportUserModalFragment : BottomSheetDialogFragment() {
             setupViewStep1()
         }
         binding.send.setOnClickListener {
-            //TODO pass user id to the call
-            userPresenter.sendReport(1, binding.message.text.toString(), selectedSignalsIdList)
+            userReportedId?.let { id ->
+                userPresenter.sendReport(
+                    id,
+                    binding.message.text.toString(),
+                    selectedSignalsIdList
+                )
+            }
         }
         binding.divider.visibility = View.GONE
         binding.recyclerView.visibility = View.GONE
@@ -125,8 +137,12 @@ class ReportUserModalFragment : BottomSheetDialogFragment() {
 
     companion object {
         const val TAG = "ReportUserModalFragment"
-        fun newInstance(): ReportUserModalFragment {
-            return ReportUserModalFragment()
+        fun newInstance(id: Int): ReportUserModalFragment {
+            val fragment = ReportUserModalFragment()
+            val args = Bundle()
+            args.putInt(Const.USER_REPORTED_ID, id)
+            fragment.arguments = args
+            return fragment
         }
     }
 }

@@ -136,7 +136,7 @@
                         layout="@layout/new_profile_settings_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="100dp"
+                        android:layout_marginBottom="70dp"
                         app:color="@{@android:color/black}"
                         app:icon="@{@drawable/new_description}"
                         app:label="@{@string/my_interests}" />
@@ -151,7 +151,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="65dp"
-            android:layout_marginBottom="38dp"
+            android:layout_marginBottom="20dp"
             app:content="@{@string/apply_modifications}"
             app:drawable="@{@drawable/new_rounded_button_orange}"
             app:layout_constraintBottom_toBottomOf="parent" />

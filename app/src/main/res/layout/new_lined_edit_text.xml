@@ -56,10 +56,9 @@
                 tools:text="Title" />
 
 
-            <view
+            <EditText
                 android:id="@+id/content"
                 style="@style/input"
-                class="social.entourage.android.new_v8.profile.LinedEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="-4dp"

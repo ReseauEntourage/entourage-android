@@ -5,10 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/new_profile_header_group"
+        android:orientation="vertical"
         tools:context="social.entourage.android.new_v8.profile.ProfileFragment">
 
         <include
@@ -16,63 +17,55 @@
             layout="@layout/new_main_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_weight="0"
             app:title="@{@string/new_group}" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/tab_layout"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/header"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.9"
             app:userInputEnabled="@{false}" />
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_pager"
-            app:tabBackground="@drawable/new_tab_selector"
-            app:tabGravity="center"
-            app:tabIndicatorHeight="0dp" />
+            android:layout_marginHorizontal="32dp"
+            android:gravity="clip_horizontal"
+            android:paddingTop="10dp">
 
-        <Button
-            android:id="@+id/next"
-            style="@style/h2_white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="25dp"
-            android:background="@drawable/new_rounded_button_light_orange"
-            android:text="@string/new_next"
-            android:textAllCaps="false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tab_layout" />
+            <Button
+                android:id="@+id/previous"
+                style="@style/h2_orange"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:background="@drawable/new_bg_rounded_button_orange_stroke_transparent"
+                android:text="@string/previous"
+                android:textAllCaps="false"
+                android:visibility="invisible" />
 
-        <Button
-            android:id="@+id/previous"
-            style="@style/h2_orange"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="25dp"
-            android:background="@drawable/new_bg_rounded_button_orange_stroke_transparent"
-            android:text="@string/previous"
-            android:textAllCaps="false"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tab_layout" />
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                app:tabBackground="@drawable/new_tab_selector"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp" />
 
+            <Button
+                android:id="@+id/next"
+                style="@style/h2_white"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="0.3"
+                android:background="@drawable/new_bg_rounded_inactive_button_light_orange"
+                android:text="@string/new_next"
+                android:textAllCaps="false" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+    </LinearLayout>
 </layout>
