@@ -12,6 +12,7 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentCreateGroupStepTwoBinding
 import social.entourage.android.new_v8.profile.editProfile.InterestsListAdapter
+import social.entourage.android.new_v8.profile.editProfile.InterestsTypes
 import social.entourage.android.new_v8.profile.editProfile.OnItemCheckListener
 import social.entourage.android.new_v8.profile.models.Interest
 import social.entourage.android.new_v8.utils.Const
@@ -66,14 +67,16 @@ class CreateGroupStepTwoFragment : Fragment() {
                     item.id?.let {
                         selectedInterestIdList.add(it)
                         viewModel.isButtonClickable.value =
-                            !selectedInterestIdList.contains(Const.OTHER_INTEREST)
+                            !selectedInterestIdList.contains(InterestsTypes.TYPE_OTHER.label)
                     }
                 }
 
                 override fun onItemUncheck(item: Interest) {
                     selectedInterestIdList.remove(item.id)
                     viewModel.isButtonClickable.value =
-                        !(selectedInterestIdList.isEmpty() || selectedInterestIdList.contains(Const.OTHER_INTEREST))
+                        !(selectedInterestIdList.isEmpty() || selectedInterestIdList.contains(
+                            InterestsTypes.TYPE_OTHER.label
+                        ))
                 }
             })
         }

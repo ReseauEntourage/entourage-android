@@ -24,7 +24,7 @@ class ReportUserModalFragment : BottomSheetDialogFragment() {
     val binding: NewFragmentReportUserBinding get() = _binding!!
     private var selectedSignalsIdList: MutableList<String> = mutableListOf()
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
-    private var userReportedId: Int? = -1
+    private var userReportedId: Int? = Const.DEFAULT_USER_ID
 
 
     override fun onCreateView(

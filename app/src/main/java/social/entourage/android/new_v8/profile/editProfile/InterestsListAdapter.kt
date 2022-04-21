@@ -19,6 +19,11 @@ interface OnItemCheckListener {
     fun onItemUncheck(item: Interest)
 }
 
+enum class InterestsTypes(val label: String, val code: Int) {
+    TYPE_OTHER("other", 0),
+    TYPE_INTEREST("interest", 1),
+}
+
 class InterestsListAdapter(
     var interestsList: List<Interest>,
     var onItemClick: OnItemCheckListener
@@ -43,7 +48,7 @@ class InterestsListAdapter(
                             binding.title.typeface,
                             android.graphics.Typeface.NORMAL
                         )
-                    if (interest.id == Const.OTHER_INTEREST) {
+                    if (interest.id == InterestsTypes.TYPE_OTHER.label) {
                         binding.category_name.visibility = View.GONE
                         binding.category_name_label.visibility = View.GONE
                     }
@@ -53,7 +58,7 @@ class InterestsListAdapter(
                         binding.title.typeface,
                         android.graphics.Typeface.BOLD
                     )
-                    if (interest.id == Const.OTHER_INTEREST) {
+                    if (interest.id == InterestsTypes.TYPE_OTHER.label) {
                         binding.category_name.visibility = View.VISIBLE
                         binding.category_name_label.visibility = View.VISIBLE
                     }
@@ -67,7 +72,7 @@ class InterestsListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layout = when (viewType) {
-            TYPE_OTHER -> R.layout.new_profile_edit_interests_edittext_item
+            InterestsTypes.TYPE_OTHER.code -> R.layout.new_profile_edit_interests_edittext_item
             else -> R.layout.new_profile_edit_interest_item
         }
         val view = LayoutInflater
@@ -88,13 +93,8 @@ class InterestsListAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when (interestsList[position].id) {
-            Const.OTHER_INTEREST -> TYPE_OTHER
-            else -> TYPE_INTEREST
+            InterestsTypes.TYPE_OTHER.label -> InterestsTypes.TYPE_OTHER.code
+            else -> InterestsTypes.TYPE_INTEREST.code
         }
-    }
-
-    companion object {
-        private const val TYPE_OTHER = 0
-        private const val TYPE_INTEREST = 1
     }
 }
