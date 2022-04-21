@@ -31,7 +31,7 @@
                 style="@style/h4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="20dp"
+                android:layout_marginTop="20dp"
                 android:paddingHorizontal="@dimen/padding_horizental"
                 android:text="@string/why_reporting"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -72,10 +72,9 @@
                 tools:itemCount="4"
                 tools:listitem="@layout/new_report_user_item" />
 
-            <view
+            <EditText
                 android:id="@+id/message"
                 style="@style/input"
-                class="social.entourage.android.new_v8.profile.LinedEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/padding_horizental"

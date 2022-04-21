@@ -17,44 +17,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="25dp"
-                android:paddingVertical="30dp">
+                android:paddingBottom="20dp">
 
-                <ImageView
-                    android:id="@+id/header"
-                    android:layout_width="wrap_content"
+                <include
+                    android:id="@+id/header_step"
+                    layout="@layout/new_create_group_header"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/new_round_group"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/step"
-                    style="@style/header_create_group"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/step"
-                    app:layout_constraintBottom_toBottomOf="@id/header"
-                    app:layout_constraintLeft_toRightOf="@id/header"
-                    app:layout_constraintRight_toRightOf="@id/header"
-                    app:layout_constraintTop_toTopOf="@id/header" />
-
-                <TextView
-                    style="@style/header_create_group_orange"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="@string/stepOne"
-                    app:layout_constraintBottom_toBottomOf="@id/header"
-                    app:layout_constraintLeft_toRightOf="@id/step"
-                    app:layout_constraintTop_toTopOf="@id/header" />
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:step="@{@string/stepOne}" />
 
                 <include
                     android:id="@+id/group_name_title"
                     layout="@layout/new_create_groupe_title_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    app:layout_constraintTop_toBottomOf="@id/header"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/header_step"
                     app:mandatory="@{@string/mandatory}"
                     app:title="@{@string/group_name}" />
 
@@ -77,15 +57,14 @@
                     layout="@layout/new_create_groupe_title_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="45dp"
+                    android:layout_marginTop="20dp"
                     app:layout_constraintTop_toBottomOf="@id/group_name"
                     app:mandatory="@{@string/optional}"
                     app:title="@{@string/write_description}" />
 
-                <view
+                <EditText
                     android:id="@+id/group_description"
                     style="@style/input"
-                    class="social.entourage.android.new_v8.profile.LinedEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="-4dp"
@@ -96,13 +75,23 @@
                     app:layout_constraintTop_toBottomOf="@id/group_description_title"
                     tools:text="content" />
 
+                <TextView
+                    android:id="@+id/counter"
+                    style="@style/profile_information_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/group_description"
+                    tools:text="Title" />
+
                 <include
                     android:id="@+id/group_location_layout"
                     layout="@layout/new_create_groupe_title_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="45dp"
-                    app:layout_constraintTop_toBottomOf="@id/group_description"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintTop_toBottomOf="@id/counter"
                     app:mandatory="@{@string/mandatory}"
                     app:title="@{@string/add_location}" />
 
@@ -164,7 +153,7 @@
                     layout="@layout/new_error"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="45dp"
+                    android:layout_marginTop="20dp"
                     android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@id/group_location" />
 

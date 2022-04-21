@@ -23,11 +23,6 @@
             app:enterAnim="@anim/slide_in_from_right"
             app:popExitAnim="@anim/slide_out_to_right" />
         <action
-            android:id="@+id/action_profile_fragment_to_create_group_fragment"
-            app:destination="@id/create_group_fragment"
-            app:enterAnim="@anim/slide_in_from_right"
-            app:popExitAnim="@anim/slide_out_to_right" />
-        <action
             android:id="@+id/action_profile_fragment_to_test_fragment"
             app:destination="@id/test_fragment"
             app:enterAnim="@anim/slide_in_from_right"
@@ -40,6 +35,12 @@
         <action
             android:id="@+id/action_test_fragment_to_user_fragment"
             app:destination="@id/user_fragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
+
+        <action
+            android:id="@+id/action_test_fragment_to_create_group_fragment"
+            app:destination="@id/create_group_fragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:popExitAnim="@anim/slide_out_to_right" />
     </fragment>

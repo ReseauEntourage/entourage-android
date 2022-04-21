@@ -15,12 +15,14 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import kotlinx.android.synthetic.main.new_fragment_my_profile.view.*
+import social.entourage.android.Constants
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.NewFragmentUserProfileBinding
 import social.entourage.android.new_v8.association.AssociationProfileArgs
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
+import social.entourage.android.new_v8.utils.Const
 
 class UserProfileFragment : Fragment() {
 
@@ -59,7 +61,7 @@ class UserProfileFragment : Fragment() {
     }
 
     private fun onReportUser() {
-        val reportUserBottomDialogFragment = ReportUserModalFragment.newInstance()
+        val reportUserBottomDialogFragment = ReportUserModalFragment.newInstance(args.userId)
         binding.report.setOnClickListener {
             reportUserBottomDialogFragment.show(parentFragmentManager, ReportUserModalFragment.TAG)
         }
