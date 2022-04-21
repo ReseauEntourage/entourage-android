@@ -35,6 +35,10 @@
             android:layout_height="wrap_content"
             android:text="Utilisateur quasi complet" />
 
-
+        <Button
+            android:id="@+id/create_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Créer un groupe" />
     </LinearLayout>
 </layout>

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentTestBinding
 import social.entourage.android.new_v8.profile.ProfileFragmentDirections
 
@@ -50,5 +51,10 @@ class TestFragment : Fragment() {
         binding.userNoPartner.setOnClickListener {
             directions(3802)
         }
+
+        binding.createGroup.setOnClickListener {
+            findNavController().navigate(R.id.action_test_fragment_to_create_group_fragment)
+        }
+
     }
 }

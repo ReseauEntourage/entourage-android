@@ -175,7 +175,7 @@
     <string name="optional">- facultatif</string>
     <string name="step">Étape</string>
     <string name="stepOne">01.</string>
-
+    <string name="stepThree">03.</string>
     <string name="web_site">Site web</string>
     <string name="address">Adresse postale</string>
     <string name="report_user">Signaler l\'utilisateur</string>
@@ -195,13 +195,14 @@
     <string name="volunteers">Recherche des bénévoles</string>
     <string name="date_format_profile">dd-MM</string>
     <string name="date_format_profile_fr">Jour-Mois</string>
-
-
-
-
-
+    <string name="group_welcome_message">Écrire un message de bienvenue</string>
+    <string name="group_welcome_message_hint">Souhaitez la bienvenue aux nouveaux membres !
+Ils liront ce message dès qu’ils rejoindront le groupe.</string>
+    <string name="group_photo_label">Vous pourrez la changer plus tard</string>
+    <string name="group_choose_photo">Ajouter une photo</string>
+    <string name="back_create_group_title">Attention</string>
+    <string name="exit">Quitter</string>
+    <string name="back_create_group_content">Si vous quittez le formulaire de création d’un groupe, toutes les informations saisies seront perdues.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
-
 </resources>

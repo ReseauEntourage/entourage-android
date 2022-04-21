@@ -10,7 +10,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateGroupBinding
+import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.nextPage
 import social.entourage.android.new_v8.utils.previousPage
 
@@ -70,7 +72,12 @@ class CreateGroupFragment : Fragment() {
 
     private fun handleBackButton() {
         binding.header.iconBack.setOnClickListener {
-            findNavController().popBackStack()
+            Utils.showAlertDialogButtonClicked(
+                requireView(),
+                getString(R.string.back_create_group_title),
+                getString(R.string.back_create_group_content),
+                getString(R.string.exit)
+            ) { findNavController().popBackStack() }
         }
     }
 

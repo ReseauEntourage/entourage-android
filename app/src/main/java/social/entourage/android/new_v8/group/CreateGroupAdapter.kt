@@ -15,6 +15,6 @@ class CreateGroupAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle)
     }
 
     override fun createFragment(position: Int): Fragment {
-        return CreateGroupStepOneFragment()
+        return CreateGroupStepThreeFragment()
     }
 }
