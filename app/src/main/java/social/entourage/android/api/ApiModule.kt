@@ -22,7 +22,7 @@ import javax.inject.Singleton
  * Providing API related dependencies
  */
 class ApiModule {
-    val okHttpClient : OkHttpClient
+    val okHttpClient: OkHttpClient
     val applicationInfoRequest: ApplicationInfoRequest
     val loginRequest: LoginRequest
     val poiRequest: PoiRequest
@@ -35,22 +35,24 @@ class ApiModule {
     val photoGalleryRequest: PhotoGalleryRequest
     val conversationsRequest: ConversationsRequest
     val metaDataRequest: MetaDataRequest
+    val groupRequest: GroupRequest
 
     init {
         okHttpClient = providesOkHttpClient()
         val restAdapter = providesRestAdapter(okHttpClient)
         applicationInfoRequest = providesApplicationInfoRequest(restAdapter)
         loginRequest = providesLoginRequest(restAdapter)
-        poiRequest= providesPoiRequest(restAdapter)
-        userRequest= providesUserRequest(restAdapter)
-        entourageRequest= providesEntourageRequest(restAdapter)
-        newsfeedRequest= providesNewsfeedRequest(restAdapter)
-        invitationRequest= providesInvitationRequest(restAdapter)
-        partnerRequest= providesPartnerRequest(restAdapter)
-        sharingRequest= providesSharingRequest(restAdapter)
-        photoGalleryRequest= providesPhotoGalleryRequest(restAdapter)
-        conversationsRequest= providesConversationsRequest(restAdapter)
+        poiRequest = providesPoiRequest(restAdapter)
+        userRequest = providesUserRequest(restAdapter)
+        entourageRequest = providesEntourageRequest(restAdapter)
+        newsfeedRequest = providesNewsfeedRequest(restAdapter)
+        invitationRequest = providesInvitationRequest(restAdapter)
+        partnerRequest = providesPartnerRequest(restAdapter)
+        sharingRequest = providesSharingRequest(restAdapter)
+        photoGalleryRequest = providesPhotoGalleryRequest(restAdapter)
+        conversationsRequest = providesConversationsRequest(restAdapter)
         metaDataRequest = providesMetaDataRequest(restAdapter)
+        groupRequest = providesGroupRequest(restAdapter)
     }
 
     fun providesOkHttpClient(): OkHttpClient {
@@ -142,5 +144,9 @@ class ApiModule {
 
     fun providesMetaDataRequest(restAdapter: Retrofit): MetaDataRequest {
         return restAdapter.create(MetaDataRequest::class.java)
+    }
+
+    fun providesGroupRequest(restAdapter: Retrofit): GroupRequest {
+        return restAdapter.create(GroupRequest::class.java)
     }
 }

@@ -4,15 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.new_profile_edit_interest_item.view.*
 import kotlinx.android.synthetic.main.new_profile_edit_interest_item.view.checkBox
 import kotlinx.android.synthetic.main.new_profile_edit_interest_item.view.icon
 import kotlinx.android.synthetic.main.new_profile_edit_interest_item.view.layout
 import kotlinx.android.synthetic.main.new_profile_edit_interest_item.view.title
 import kotlinx.android.synthetic.main.new_profile_edit_interests_edittext_item.view.*
 import social.entourage.android.R
-import social.entourage.android.new_v8.profile.models.Interest
-import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.new_v8.models.Interest
 
 interface OnItemCheckListener {
     fun onItemCheck(item: Interest)

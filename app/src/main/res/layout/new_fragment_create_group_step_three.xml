@@ -16,44 +16,23 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="25dp"
-                android:paddingVertical="30dp">
+                android:paddingHorizontal="25dp">
 
-                <ImageView
+                <include
                     android:id="@+id/header"
-                    android:layout_width="wrap_content"
+                    layout="@layout/new_create_group_header"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/new_round_group"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/step"
-                    style="@style/header_create_group"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/step"
-                    app:layout_constraintBottom_toBottomOf="@id/header"
-                    app:layout_constraintLeft_toRightOf="@id/header"
-                    app:layout_constraintRight_toRightOf="@id/header"
-                    app:layout_constraintTop_toTopOf="@id/header" />
-
-                <TextView
-                    style="@style/header_create_group_orange"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="@string/stepThree"
-                    app:layout_constraintBottom_toBottomOf="@id/header"
-                    app:layout_constraintLeft_toRightOf="@id/step"
-                    app:layout_constraintTop_toTopOf="@id/header" />
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:step="@{@string/stepThree}" />
 
                 <include
                     android:id="@+id/group_message_welcome_title"
                     layout="@layout/new_create_groupe_title_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     app:layout_constraintTop_toBottomOf="@id/header"
                     app:mandatory="@{@string/optional}"
                     app:title="@{@string/group_welcome_message}" />
@@ -95,18 +74,18 @@
                     tools:text="@string/group_photo_label" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/add_photo"
+                    android:id="@+id/add_photo_layout"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_marginTop="12dp"
                     android:background="@drawable/new_bg_choose_photo_group"
                     android:gravity="center"
-                    android:orientation="vertical"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/group_photo_label">
 
                     <ImageView
+                        android:id="@+id/image"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/new_choose_group_photo"
@@ -125,6 +104,17 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ImageView
+                    android:id="@+id/add_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/group_photo_label" />
 
                 <include
                     android:id="@+id/error"

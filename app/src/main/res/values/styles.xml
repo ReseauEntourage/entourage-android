@@ -394,6 +394,14 @@
     </style>
 
 
+
+    <style name="button_create_group">
+        <item name="android:textSize">@dimen/button_create_group</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+
     <style name="h2_white">
         <item name="android:textSize">@dimen/profile_description</item>
         <item name="android:fontFamily">@font/nunitosans_bold</item>
