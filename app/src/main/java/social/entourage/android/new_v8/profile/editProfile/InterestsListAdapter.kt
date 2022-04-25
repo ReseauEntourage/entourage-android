@@ -1,18 +1,18 @@
 package social.entourage.android.new_v8.profile.editProfile
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.new_profile_edit_interest_item.view.*
 import kotlinx.android.synthetic.main.new_profile_edit_interest_item.view.checkBox
 import kotlinx.android.synthetic.main.new_profile_edit_interest_item.view.icon
 import kotlinx.android.synthetic.main.new_profile_edit_interest_item.view.layout
 import kotlinx.android.synthetic.main.new_profile_edit_interest_item.view.title
 import kotlinx.android.synthetic.main.new_profile_edit_interests_edittext_item.view.*
 import social.entourage.android.R
-import social.entourage.android.new_v8.profile.models.Interest
-import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.new_v8.models.Interest
 
 interface OnItemCheckListener {
     fun onItemCheck(item: Interest)
@@ -29,6 +29,11 @@ class InterestsListAdapter(
     var onItemClick: OnItemCheckListener
 ) : RecyclerView.Adapter<InterestsListAdapter.ViewHolder>() {
 
+    private var otherInterest: String? = null
+
+    fun getOtherInterestCategory(): String? {
+        return otherInterest
+    }
 
     inner class ViewHolder(val binding: View) :
         RecyclerView.ViewHolder(binding) {
@@ -61,6 +66,28 @@ class InterestsListAdapter(
                     if (interest.id == InterestsTypes.TYPE_OTHER.label) {
                         binding.category_name.visibility = View.VISIBLE
                         binding.category_name_label.visibility = View.VISIBLE
+                        binding.category_name.addTextChangedListener(object : TextWatcher {
+                            override fun beforeTextChanged(
+                                s: CharSequence,
+                                start: Int,
+                                count: Int,
+                                after: Int
+                            ) {
+
+                            }
+
+                            override fun onTextChanged(
+                                s: CharSequence,
+                                start: Int,
+                                before: Int,
+                                count: Int
+                            ) {
+                                otherInterest = s.toString()
+                            }
+
+                            override fun afterTextChanged(s: Editable) {
+                            }
+                        })
                     }
                 }
                 interest.isSelected = !(interest.isSelected)
@@ -97,4 +124,5 @@ class InterestsListAdapter(
             else -> InterestsTypes.TYPE_INTEREST.code
         }
     }
+
 }

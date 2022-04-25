@@ -52,6 +52,7 @@ class ProfileActivity : AppCompatActivity(), AvatarUploadView {
 
     private fun initializeMetaData() {
         if (MetaDataRepository.metaData.value == null) MetaDataRepository.getMetaData()
+        if (MetaDataRepository.groupImages.value == null) MetaDataRepository.getGroupImages()
     }
 
     override fun onUploadError() {

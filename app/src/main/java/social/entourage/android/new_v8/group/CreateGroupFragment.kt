@@ -12,16 +12,21 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.R
+import social.entourage.android.api.request.GroupWrapper
 import social.entourage.android.databinding.NewFragmentCreateGroupBinding
+import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.nextPage
 import social.entourage.android.new_v8.utils.previousPage
+import timber.log.Timber
 
 class CreateGroupFragment : Fragment() {
 
     private var _binding: NewFragmentCreateGroupBinding? = null
     val binding: NewFragmentCreateGroupBinding get() = _binding!!
-    private val viewModel: ErrorHandlerViewModel by activityViewModels()
+    private val viewModel: CommunicationHandlerViewModel by activityViewModels()
     private lateinit var viewPager: ViewPager2
+    private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +40,16 @@ class CreateGroupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initializeViewPager()
         handleBackButton()
+        handleValidate()
+        groupPresenter.isGroupCreated.observe(viewLifecycleOwner, ::handleCreateGroupResponse)
+    }
+
+    private fun handleCreateGroupResponse(isGroupCreated: Boolean) {
+        if (isGroupCreated) {
+            findNavController().navigate(R.id.action_create_group_fragment_to_create_group_success_fragment)
+        } else {
+            Utils.showToast(requireContext(), getString(R.string.error_create_group))
+        }
     }
 
     private fun initializeViewPager() {
@@ -52,13 +67,27 @@ class CreateGroupFragment : Fragment() {
     private fun setNextClickListener() {
         binding.next.setOnClickListener {
             viewModel.clickNext.value = true
-            viewModel.isCondition.observe(viewLifecycleOwner, ::handleIsTextOk)
         }
+        viewModel.isCondition.observe(
+            viewLifecycleOwner,
+            ::handleIsCondition
+        )
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                binding.next.text =
+                    getString(if (position == NB_TABS - 1) R.string.create else R.string.new_next)
+            }
+        })
     }
 
     private fun handleNextButtonState() {
-        viewModel.isButtonClickable.observe(viewLifecycleOwner, ::handleButtonState)
+        viewModel.isButtonClickable.observe(
+            viewLifecycleOwner,
+            ::handleButtonState
+        )
     }
+
 
     private fun handleButtonState(isButtonActive: Boolean) {
         val background = ContextCompat.getDrawable(
@@ -75,24 +104,42 @@ class CreateGroupFragment : Fragment() {
         }
     }
 
-    private fun handleIsTextOk(isTextOk: Boolean) {
-        if (isTextOk) {
-            viewPager.nextPage(true)
-            if (viewPager.currentItem > 0) binding.previous.visibility = View.VISIBLE
-            viewModel.isCondition.value = false
+    private fun handleIsCondition(isCondition: Boolean) {
+        if (isCondition) {
+            if (viewPager.currentItem == NB_TABS - 1) {
+                // TODO Change this two lines
+                viewModel.group.latitude(2.5)
+                viewModel.group.longitude(2.5)
+                groupPresenter.createGroup(viewModel.group)
+            } else {
+                viewPager.nextPage(true)
+                if (viewPager.currentItem > 0) binding.previous.visibility = View.VISIBLE
+            }
         }
     }
 
+
     private fun handleBackButton() {
         binding.header.iconBack.setOnClickListener {
-            findNavController().popBackStack()
+            Utils.showAlertDialogButtonClicked(
+                requireView(),
+                getString(R.string.back_create_group_title),
+                getString(R.string.back_create_group_content),
+                getString(R.string.exit)
+            ) { findNavController().popBackStack() }
         }
+    }
+
+
+    private fun handleValidate() {
+        if (binding.viewPager.currentItem == NB_TABS - 1)
+            binding.next.setOnClickListener {
+                findNavController().navigate(R.id.action_create_group_fragment_to_create_group_success_fragment)
+            }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.isCondition.value = false
-        viewModel.isButtonClickable.value = false
-        viewModel.clickNext.value = false
+        viewModel.resetStepOne()
     }
 }

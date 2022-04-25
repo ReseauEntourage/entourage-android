@@ -11,11 +11,10 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentCreateGroupStepTwoBinding
+import social.entourage.android.new_v8.models.Interest
 import social.entourage.android.new_v8.profile.editProfile.InterestsListAdapter
 import social.entourage.android.new_v8.profile.editProfile.InterestsTypes
 import social.entourage.android.new_v8.profile.editProfile.OnItemCheckListener
-import social.entourage.android.new_v8.profile.models.Interest
-import social.entourage.android.new_v8.utils.Const
 
 
 class CreateGroupStepTwoFragment : Fragment() {
@@ -25,16 +24,16 @@ class CreateGroupStepTwoFragment : Fragment() {
 
     private var interestsList: MutableList<Interest> = mutableListOf()
     private var selectedInterestIdList: MutableList<String> = mutableListOf()
-    private val viewModel: ErrorHandlerViewModel by activityViewModels()
+    private val viewModel: CommunicationHandlerViewModel by activityViewModels()
+
+    private lateinit var interestsListAdapter: InterestsListAdapter
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.resetStepOne()
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         initializeInterests()
-        viewModel.clickNext.value = false
-        viewModel.isButtonClickable.value = false
-        viewModel.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
     }
 
     override fun onCreateView(
@@ -60,46 +59,68 @@ class CreateGroupStepTwoFragment : Fragment() {
     }
 
     private fun initializeInterests() {
+        interestsListAdapter = InterestsListAdapter(interestsList, object : OnItemCheckListener {
+            override fun onItemCheck(item: Interest) {
+                item.id?.let {
+                    selectedInterestIdList.add(it)
+                    viewModel.isButtonClickable.value = interestHaveBeenSelected()
+                }
+            }
+
+            override fun onItemUncheck(item: Interest) {
+                selectedInterestIdList.remove(item.id)
+                viewModel.isButtonClickable.value = interestHaveBeenSelected()
+            }
+        })
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = InterestsListAdapter(interestsList, object : OnItemCheckListener {
-                override fun onItemCheck(item: Interest) {
-                    item.id?.let {
-                        selectedInterestIdList.add(it)
-                        viewModel.isButtonClickable.value =
-                            !selectedInterestIdList.contains(InterestsTypes.TYPE_OTHER.label)
-                    }
-                }
-
-                override fun onItemUncheck(item: Interest) {
-                    selectedInterestIdList.remove(item.id)
-                    viewModel.isButtonClickable.value =
-                        !(selectedInterestIdList.isEmpty() || selectedInterestIdList.contains(
-                            InterestsTypes.TYPE_OTHER.label
-                        ))
-                }
-            })
+            adapter = interestsListAdapter
         }
     }
 
 
     private fun handleOnClickNext(onClick: Boolean) {
         if (onClick) {
-            if (selectedInterestIdList.isEmpty()) {
-                binding.error.root.visibility = View.VISIBLE
-                binding.error.errorMessage.text = getString(R.string.error_categories_create_group)
-            } else {
-                binding.error.root.visibility = View.GONE
-                viewModel.isCondition.value = true
+            when {
+                selectedInterestIdList.isEmpty() -> {
+                    binding.error.root.visibility = View.VISIBLE
+                    binding.error.errorMessage.text =
+                        getString(R.string.error_categories_create_group)
+                    viewModel.isCondition.value = false
+                }
+                selectedInterestIdList.contains(InterestsTypes.TYPE_OTHER.label)
+                        && interestsListAdapter.getOtherInterestCategory() == null -> {
+                    binding.error.root.visibility = View.VISIBLE
+                    binding.error.errorMessage.text =
+                        getString(R.string.error_empty_other_category_create_group)
+                    viewModel.isCondition.value = false
+                }
+                else -> {
+                    binding.error.root.visibility = View.GONE
+                    viewModel.isCondition.value = true
+                    viewModel.group.interests(selectedInterestIdList)
+                    interestsListAdapter.getOtherInterestCategory()
+                        ?.let { viewModel.group.otherInterest(it) }
+                    viewModel.clickNext.removeObservers(viewLifecycleOwner)
+                }
             }
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.resetStepOne()
+        viewModel.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
+        viewModel.isButtonClickable.value = interestHaveBeenSelected()
+    }
+
+
+    fun interestHaveBeenSelected(): Boolean {
+        return selectedInterestIdList.isNotEmpty()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.isCondition.value = false
-        viewModel.isButtonClickable.value = false
-        viewModel.clickNext.value = false
         binding.error.root.visibility = View.GONE
     }
 }

@@ -15,8 +15,7 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.NewFragmentEditInterestsBinding
-import social.entourage.android.new_v8.profile.models.Interest
-import timber.log.Timber
+import social.entourage.android.new_v8.models.Interest
 
 class EditInterestsFragment : Fragment() {
 

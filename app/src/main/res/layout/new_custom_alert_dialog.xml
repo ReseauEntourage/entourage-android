@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:background="@drawable/new_rounded_button"
     android:paddingHorizontal="20dp"
-    android:paddingVertical="28dp">
+    android:paddingTop="28dp"
+    android:paddingBottom="18dp">
 
     <TextView
         android:id="@+id/title"

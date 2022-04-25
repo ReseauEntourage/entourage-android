@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.profile.models
+package social.entourage.android.new_v8.models
 
 import social.entourage.android.R
 

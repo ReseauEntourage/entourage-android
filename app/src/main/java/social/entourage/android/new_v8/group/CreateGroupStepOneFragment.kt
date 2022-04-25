@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import social.entourage.android.Constants
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateGroupStepOneBinding
 import social.entourage.android.new_v8.utils.Const
@@ -20,7 +19,7 @@ class CreateGroupStepOneFragment : Fragment() {
     private var _binding: NewFragmentCreateGroupStepOneBinding? = null
     val binding: NewFragmentCreateGroupStepOneBinding get() = _binding!!
 
-    private val viewModel: ErrorHandlerViewModel by activityViewModels()
+    private val viewModel: CommunicationHandlerViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,19 +31,22 @@ class CreateGroupStepOneFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
         handleNextButtonState()
         initializeDescriptionCounter()
     }
 
     private fun handleOnClickNext(onClick: Boolean) {
         if (onClick) {
-            if (binding.groupName.text.length < Const.GROUP_NAME_MIN_LENGTH) {
-                binding.error.root.visibility = View.VISIBLE
-                binding.error.errorMessage.text = getString(R.string.error_mandatory_fields)
-            } else {
+            if (isGroupNameValid()) {
                 binding.error.root.visibility = View.GONE
                 viewModel.isCondition.value = true
+                viewModel.group.name(binding.groupName.text.toString())
+                viewModel.group.description(binding.groupDescription.text.toString())
+                viewModel.clickNext.removeObservers(viewLifecycleOwner)
+            } else {
+                binding.error.root.visibility = View.VISIBLE
+                binding.error.errorMessage.text = getString(R.string.error_mandatory_fields)
+                viewModel.isCondition.value = false
             }
         }
     }
@@ -55,7 +57,7 @@ class CreateGroupStepOneFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                viewModel.isButtonClickable.value = s.length >= Const.GROUP_NAME_MIN_LENGTH
+                viewModel.isButtonClickable.value = isGroupNameValid()
             }
 
             override fun afterTextChanged(s: Editable) {}
@@ -83,13 +85,19 @@ class CreateGroupStepOneFragment : Fragment() {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.resetStepOne()
+        viewModel.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
+        viewModel.isButtonClickable.value = isGroupNameValid()
+    }
+
+    fun isGroupNameValid(): Boolean {
+        return binding.groupName.text.length >= Const.GROUP_NAME_MIN_LENGTH
+    }
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.isCondition.value = false
-        viewModel.isButtonClickable.value = false
-        viewModel.clickNext.value = false
         binding.error.root.visibility = View.GONE
     }
-
 }
