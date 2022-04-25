@@ -14,6 +14,9 @@ class GroupImage() : Parcelable {
     @SerializedName("image_url")
     var imageUrl: String? = null
 
+    var isSelected: Boolean? = false
+
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readValue(Int::class.java.classLoader) as? Int
         title = parcel.readString()

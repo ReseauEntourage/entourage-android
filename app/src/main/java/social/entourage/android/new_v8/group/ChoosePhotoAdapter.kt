@@ -8,15 +8,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import social.entourage.android.R
 import social.entourage.android.api.model.GroupImage
 import social.entourage.android.api.model.MetaData
 import social.entourage.android.databinding.NewChoosePhotoItemBinding
 import social.entourage.android.new_v8.utils.px
-
-interface OnItemCheckListener {
-    fun onItemCheck(item: MetaData)
-    fun onItemUncheck(item: MetaData)
-}
+import timber.log.Timber
 
 class ChoosePhotoAdapter(
     var photosList: List<GroupImage>,
@@ -45,11 +42,22 @@ class ChoosePhotoAdapter(
                     .apply(RequestOptions().override(90.px, 90.px))
                     .transform(CenterCrop(), RoundedCorners(14.px))
                     .into(binding.image)
+
+                if (photosList[position].isSelected == true) {
+                    checkedPosition = position
+                    binding.image.setBackgroundResource(R.drawable.new_bg_choose_photo_selected)
+
+                } else
+                    binding.image.setBackgroundResource(0)
+
                 binding.image.setOnClickListener {
-                    if (checkedPosition != position) {
+                    if (checkedPosition != -1) {
+                        photosList[checkedPosition].isSelected = false
                         notifyItemChanged(checkedPosition)
-                        checkedPosition = position
                     }
+                    photosList[position].isSelected = true
+                    checkedPosition = position
+                    notifyItemChanged(position)
                 }
             }
         }
