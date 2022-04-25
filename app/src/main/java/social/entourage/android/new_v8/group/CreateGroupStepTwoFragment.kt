@@ -63,13 +63,13 @@ class CreateGroupStepTwoFragment : Fragment() {
             override fun onItemCheck(item: Interest) {
                 item.id?.let {
                     selectedInterestIdList.add(it)
-                    viewModel.isButtonClickable.value = isCondition()
+                    viewModel.isButtonClickable.value = interestHaveBeenSelected()
                 }
             }
 
             override fun onItemUncheck(item: Interest) {
                 selectedInterestIdList.remove(item.id)
-                viewModel.isButtonClickable.value = isCondition()
+                viewModel.isButtonClickable.value = interestHaveBeenSelected()
             }
         })
         binding.recyclerView.apply {
@@ -111,11 +111,11 @@ class CreateGroupStepTwoFragment : Fragment() {
         super.onResume()
         viewModel.resetStepOne()
         viewModel.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
-        viewModel.isButtonClickable.value = isCondition()
+        viewModel.isButtonClickable.value = interestHaveBeenSelected()
     }
 
 
-    fun isCondition(): Boolean {
+    fun interestHaveBeenSelected(): Boolean {
         return selectedInterestIdList.isNotEmpty()
     }
 

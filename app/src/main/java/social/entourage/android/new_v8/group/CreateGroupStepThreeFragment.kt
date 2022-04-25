@@ -15,11 +15,9 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
 import social.entourage.android.api.model.GroupImage
-import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.databinding.NewFragmentCreateGroupStepThreeBinding
 import social.entourage.android.new_v8.user.ReportUserModalFragment
 import social.entourage.android.new_v8.utils.Const
-import timber.log.Timber
 
 
 class CreateGroupStepThreeFragment : Fragment() {
@@ -71,11 +69,11 @@ class CreateGroupStepThreeFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                viewModel.group.welcomeMessage(s.toString())
 
             }
 
             override fun afterTextChanged(s: Editable) {
+                viewModel.group.welcomeMessage(s.toString())
             }
         })
     }
@@ -98,7 +96,7 @@ class CreateGroupStepThreeFragment : Fragment() {
     private fun onFragmentResult() {
         setFragmentResultListener(Const.REQUEST_KEY_CHOOSE_PHOTO) { _, bundle ->
             selectedImage = bundle.getParcelable(Const.CHOOSE_PHOTO)
-            viewModel.isButtonClickable.value = isCondition()
+            viewModel.isButtonClickable.value = imageHasBeenSelected()
             viewModel.group.neighborhoodImageId(selectedImage?.id)
             selectedImage?.imageUrl.let { imageUrl ->
                 binding.addPhotoLayout.visibility = View.GONE
@@ -111,7 +109,7 @@ class CreateGroupStepThreeFragment : Fragment() {
         }
     }
 
-    private fun isCondition(): Boolean {
+    private fun imageHasBeenSelected(): Boolean {
         return selectedImage != null
     }
 
@@ -119,6 +117,6 @@ class CreateGroupStepThreeFragment : Fragment() {
         super.onResume()
         viewModel.resetStepOne()
         viewModel.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
-        viewModel.isButtonClickable.value = isCondition()
+        viewModel.isButtonClickable.value = imageHasBeenSelected()
     }
 }

@@ -75,15 +75,8 @@ class CreateGroupFragment : Fragment() {
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                if (position == 0) {
-                    binding.next.text = getString(R.string.new_next)
-                }
-                if (position == 1) {
-                    binding.next.text = getString(R.string.new_next)
-                }
-                if (position == 2) {
-                    binding.next.text = getString(R.string.create)
-                }
+                binding.next.text =
+                    getString(if (position == NB_TABS - 1) R.string.create else R.string.new_next)
             }
         })
     }
@@ -113,10 +106,10 @@ class CreateGroupFragment : Fragment() {
 
     private fun handleIsCondition(isCondition: Boolean) {
         if (isCondition) {
-            if (viewPager.currentItem == 2) {
+            if (viewPager.currentItem == NB_TABS - 1) {
+                // TODO Change this two lines
                 viewModel.group.latitude(2.5)
                 viewModel.group.longitude(2.5)
-                Timber.e(viewModel.group.toString())
                 groupPresenter.createGroup(viewModel.group)
             } else {
                 viewPager.nextPage(true)
@@ -139,7 +132,7 @@ class CreateGroupFragment : Fragment() {
 
 
     private fun handleValidate() {
-        if (binding.viewPager.currentItem == 2)
+        if (binding.viewPager.currentItem == NB_TABS - 1)
             binding.next.setOnClickListener {
                 findNavController().navigate(R.id.action_create_group_fragment_to_create_group_success_fragment)
             }

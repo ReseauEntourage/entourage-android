@@ -11,7 +11,6 @@ import androidx.fragment.app.activityViewModels
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateGroupStepOneBinding
 import social.entourage.android.new_v8.utils.Const
-import timber.log.Timber
 
 
 class CreateGroupStepOneFragment : Fragment() {
@@ -38,17 +37,16 @@ class CreateGroupStepOneFragment : Fragment() {
 
     private fun handleOnClickNext(onClick: Boolean) {
         if (onClick) {
-            if (!isCondition()) {
-                binding.error.root.visibility = View.VISIBLE
-                binding.error.errorMessage.text = getString(R.string.error_mandatory_fields)
-                viewModel.isCondition.value = false
-
-            } else {
+            if (isGroupNameValid()) {
                 binding.error.root.visibility = View.GONE
                 viewModel.isCondition.value = true
                 viewModel.group.name(binding.groupName.text.toString())
                 viewModel.group.description(binding.groupDescription.text.toString())
                 viewModel.clickNext.removeObservers(viewLifecycleOwner)
+            } else {
+                binding.error.root.visibility = View.VISIBLE
+                binding.error.errorMessage.text = getString(R.string.error_mandatory_fields)
+                viewModel.isCondition.value = false
             }
         }
     }
@@ -59,7 +57,7 @@ class CreateGroupStepOneFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                viewModel.isButtonClickable.value = isCondition()
+                viewModel.isButtonClickable.value = isGroupNameValid()
             }
 
             override fun afterTextChanged(s: Editable) {}
@@ -91,10 +89,10 @@ class CreateGroupStepOneFragment : Fragment() {
         super.onResume()
         viewModel.resetStepOne()
         viewModel.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
-        viewModel.isButtonClickable.value = isCondition()
+        viewModel.isButtonClickable.value = isGroupNameValid()
     }
 
-    fun isCondition(): Boolean {
+    fun isGroupNameValid(): Boolean {
         return binding.groupName.text.length >= Const.GROUP_NAME_MIN_LENGTH
     }
 

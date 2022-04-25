@@ -13,6 +13,8 @@ import social.entourage.android.api.model.GroupImage
 import social.entourage.android.databinding.NewFragmentCreateGroupChoosePhotoModalBinding
 import social.entourage.android.new_v8.utils.Const
 
+private const val SPAN_COUNT = 3
+
 class CreateGroupChoosePhotoModalFragment : BottomSheetDialogFragment() {
 
     private var _binding: NewFragmentCreateGroupChoosePhotoModalBinding? = null
@@ -52,7 +54,7 @@ class CreateGroupChoosePhotoModalFragment : BottomSheetDialogFragment() {
     private fun initializeInterests() {
         choosePhotoAdapter = ChoosePhotoAdapter(photosList)
         binding.recyclerView.apply {
-            layoutManager = GridLayoutManager(context, 3)
+            layoutManager = GridLayoutManager(context, SPAN_COUNT)
             adapter = choosePhotoAdapter
         }
     }
