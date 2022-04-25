@@ -11,10 +11,10 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentCreateGroupStepTwoBinding
+import social.entourage.android.new_v8.models.Interest
 import social.entourage.android.new_v8.profile.editProfile.InterestsListAdapter
 import social.entourage.android.new_v8.profile.editProfile.InterestsTypes
 import social.entourage.android.new_v8.profile.editProfile.OnItemCheckListener
-import social.entourage.android.new_v8.models.Interest
 
 
 class CreateGroupStepTwoFragment : Fragment() {
@@ -29,10 +29,9 @@ class CreateGroupStepTwoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.resetStepTwo()
+        viewModel.resetStepOne()
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         initializeInterests()
-        viewModel.clickNextStepTwo.observe(viewLifecycleOwner, ::handleOnClickNext)
     }
 
     override fun onCreateView(
@@ -64,17 +63,13 @@ class CreateGroupStepTwoFragment : Fragment() {
                 override fun onItemCheck(item: Interest) {
                     item.id?.let {
                         selectedInterestIdList.add(it)
-                        viewModel.isButtonClickableStepTwo.value =
-                            !selectedInterestIdList.contains(InterestsTypes.TYPE_OTHER.label)
+                        viewModel.isButtonClickable.value = isCondition()
                     }
                 }
 
                 override fun onItemUncheck(item: Interest) {
                     selectedInterestIdList.remove(item.id)
-                    viewModel.isButtonClickableStepTwo.value =
-                        !(selectedInterestIdList.isEmpty() || selectedInterestIdList.contains(
-                            InterestsTypes.TYPE_OTHER.label
-                        ))
+                    viewModel.isButtonClickable.value = isCondition()
                 }
             })
         }
@@ -83,20 +78,45 @@ class CreateGroupStepTwoFragment : Fragment() {
 
     private fun handleOnClickNext(onClick: Boolean) {
         if (onClick) {
-            if (selectedInterestIdList.isEmpty()) {
-                binding.error.root.visibility = View.VISIBLE
-                binding.error.errorMessage.text = getString(R.string.error_categories_create_group)
-                viewModel.isConditionStepTwo.value = false
-            } else {
-                binding.error.root.visibility = View.GONE
-                viewModel.isConditionStepTwo.value = true
+            when {
+                selectedInterestIdList.isEmpty() -> {
+                    binding.error.root.visibility = View.VISIBLE
+                    binding.error.errorMessage.text =
+                        getString(R.string.error_categories_create_group)
+                    viewModel.isCondition.value = false
+                }
+                selectedInterestIdList.contains(InterestsTypes.TYPE_OTHER.label) -> {
+                    binding.error.root.visibility = View.VISIBLE
+                    binding.error.errorMessage.text =
+                        getString(R.string.error_empty_other_category_create_group)
+                    viewModel.isCondition.value = false
+                }
+                else -> {
+                    binding.error.root.visibility = View.GONE
+                    viewModel.isCondition.value = true
+                    viewModel.group.interests(selectedInterestIdList)
+                    viewModel.clickNext.removeObservers(viewLifecycleOwner)
+                }
             }
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.resetStepOne()
+        viewModel.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
+        viewModel.isButtonClickable.value = isCondition()
+    }
+
+
+    fun isCondition(): Boolean {
+        return !(selectedInterestIdList.isEmpty() || selectedInterestIdList.contains(
+            InterestsTypes.TYPE_OTHER.label
+        ))
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.resetStepTwo()
         binding.error.root.visibility = View.GONE
     }
 }

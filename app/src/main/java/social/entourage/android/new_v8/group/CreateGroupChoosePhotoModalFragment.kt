@@ -62,7 +62,7 @@ class CreateGroupChoosePhotoModalFragment : BottomSheetDialogFragment() {
             val image = choosePhotoAdapter.getSelected()
             setFragmentResult(
                 Const.REQUEST_KEY_CHOOSE_PHOTO,
-                bundleOf(Const.CHOOSE_PHOTO to image?.imageUrl)
+                bundleOf(Const.CHOOSE_PHOTO to image)
             )
             dismiss()
         }

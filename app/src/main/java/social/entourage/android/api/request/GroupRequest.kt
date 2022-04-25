@@ -11,4 +11,8 @@ class GroupImagesResponse(@field:SerializedName("neighborhood_images") val group
 interface GroupRequest {
     @GET("neighborhood_images")
     fun getGroupImages(): Call<GroupImagesResponse>
+
+    @GET("neighborhood_images")
+    fun createGroup(): Call<GroupImagesResponse>
+
 }

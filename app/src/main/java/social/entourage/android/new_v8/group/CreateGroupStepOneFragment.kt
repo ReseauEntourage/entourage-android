@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateGroupStepOneBinding
 import social.entourage.android.new_v8.utils.Const
+import timber.log.Timber
 
 
 class CreateGroupStepOneFragment : Fragment() {
@@ -31,22 +32,23 @@ class CreateGroupStepOneFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.resetStepOne()
-        viewModel.clickNextStepOne.observe(viewLifecycleOwner, ::handleOnClickNext)
         handleNextButtonState()
         initializeDescriptionCounter()
     }
 
     private fun handleOnClickNext(onClick: Boolean) {
         if (onClick) {
-            if (binding.groupName.text.length < Const.GROUP_NAME_MIN_LENGTH) {
+            if (!isCondition()) {
                 binding.error.root.visibility = View.VISIBLE
                 binding.error.errorMessage.text = getString(R.string.error_mandatory_fields)
-                viewModel.isConditionStepOne.value = false
+                viewModel.isCondition.value = false
 
             } else {
                 binding.error.root.visibility = View.GONE
-                viewModel.isConditionStepOne.value = true
+                viewModel.isCondition.value = true
+                viewModel.group.name(binding.groupName.text.toString())
+                viewModel.group.description(binding.groupDescription.text.toString())
+                viewModel.clickNext.removeObservers(viewLifecycleOwner)
             }
         }
     }
@@ -57,7 +59,7 @@ class CreateGroupStepOneFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                viewModel.isButtonClickableStepOne.value = s.length >= Const.GROUP_NAME_MIN_LENGTH
+                viewModel.isButtonClickable.value = isCondition()
             }
 
             override fun afterTextChanged(s: Editable) {}
@@ -85,10 +87,19 @@ class CreateGroupStepOneFragment : Fragment() {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.resetStepOne()
+        viewModel.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
+        viewModel.isButtonClickable.value = isCondition()
+    }
+
+    fun isCondition(): Boolean {
+        return binding.groupName.text.length >= Const.GROUP_NAME_MIN_LENGTH
+    }
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.resetStepOne()
         binding.error.root.visibility = View.GONE
     }
 }

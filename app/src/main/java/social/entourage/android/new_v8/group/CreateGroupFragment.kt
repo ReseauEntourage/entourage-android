@@ -53,49 +53,34 @@ class CreateGroupFragment : Fragment() {
     }
 
     private fun setNextClickListener() {
+        binding.next.setOnClickListener {
+            viewModel.clickNext.value = true
+        }
+        viewModel.isCondition.observe(
+            viewLifecycleOwner,
+            ::handleIsCondition
+        )
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 if (position == 0) {
-                    binding.next.setOnClickListener {
-                        viewModel.clickNextStepOne.value = true
-                        viewModel.isConditionStepOne.observe(
-                            viewLifecycleOwner,
-                            ::handleIsCondition
-                        )
-                    }
+                    binding.next.text = getString(R.string.new_next)
                 }
                 if (position == 1) {
-                    binding.next.setOnClickListener {
-                        viewModel.clickNextStepTwo.value = true
-                        viewModel.isConditionStepTwo.observe(
-                            viewLifecycleOwner,
-                            ::handleIsCondition
-                        )
-                    }
+                    binding.next.text = getString(R.string.new_next)
+                }
+                if (position == 2) {
+                    binding.next.text = getString(R.string.create)
                 }
             }
         })
     }
 
     private fun handleNextButtonState() {
-        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                if (position == 0) {
-                    viewModel.isButtonClickableStepOne.observe(
-                        viewLifecycleOwner,
-                        ::handleButtonState
-                    )
-                }
-                if (position == 1) {
-                    viewModel.isButtonClickableStepTwo.observe(
-                        viewLifecycleOwner,
-                        ::handleButtonState
-                    )
-                }
-            }
-        })
+        viewModel.isButtonClickable.observe(
+            viewLifecycleOwner,
+            ::handleButtonState
+        )
     }
 
     private fun handleButtonState(isButtonActive: Boolean) {
@@ -110,17 +95,20 @@ class CreateGroupFragment : Fragment() {
         binding.previous.setOnClickListener {
             viewPager.previousPage(true)
             if (viewPager.currentItem == 0) binding.previous.visibility = View.INVISIBLE
-            viewModel.isConditionStepOne.removeObservers(viewLifecycleOwner)
-
         }
     }
 
     private fun handleIsCondition(isCondition: Boolean) {
         if (isCondition) {
-            viewPager.nextPage(true)
-            if (viewPager.currentItem > 0) binding.previous.visibility = View.VISIBLE
+            if (viewPager.currentItem == 2) {
+                Timber.e(viewModel.group.toString())
+            } else {
+                viewPager.nextPage(true)
+                if (viewPager.currentItem > 0) binding.previous.visibility = View.VISIBLE
+            }
         }
     }
+
 
     private fun handleBackButton() {
         binding.header.iconBack.setOnClickListener {
@@ -144,6 +132,5 @@ class CreateGroupFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         viewModel.resetStepOne()
-        viewModel.resetStepTwo()
     }
 }
