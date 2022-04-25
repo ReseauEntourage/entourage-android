@@ -190,6 +190,7 @@
     <string name="new_group">Nouveau groupe</string>
     <string name="error_mandatory_fields">Veuillez remplir tous les champs obligatoires</string>
     <string name="error_categories_create_group">Une catégorie doit être sélectionnée.</string>
+    <string name="error_categories_create_group_image">Veuillez sélectionnez une image</string>
     <string name="error_empty_other_category_create_group">Veuillez préciser la catégorie divers</string>
     <string name="error_lastname">Le nom doit comporter au moins 2 lettres.</string>
     <string name="error_email">e-mail invalide</string>
@@ -215,4 +216,5 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="group_success_subtitle">Félicitation, vous venez de créer un \nnouveau groupe. Pour le rendre plus actif \nn’hésitez pas à créer un premier post :p</string>
     <string name="select_photo">Sélectionner une photo</string>
     <string name="create">Créer</string>
+    <string name="error_create_group">Erreur lors de la création du groupe</string>
 </resources>

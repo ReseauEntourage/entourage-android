@@ -47,7 +47,7 @@ class CreateGroupStepThreeFragment : Fragment() {
                 viewModel.isCondition.value = false
                 binding.error.root.visibility = View.VISIBLE
                 binding.error.errorMessage.text =
-                    getString(R.string.error_categories_create_group)
+                    getString(R.string.error_categories_create_group_image)
             } else {
                 viewModel.isCondition.value = true
                 binding.error.root.visibility = View.GONE
@@ -64,7 +64,7 @@ class CreateGroupStepThreeFragment : Fragment() {
         return binding.root
     }
 
-    fun setWelcomeMessage() {
+    private fun setWelcomeMessage() {
         binding.groupMessageWelcome.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 

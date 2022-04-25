@@ -26,6 +26,8 @@ class CreateGroupStepTwoFragment : Fragment() {
     private var selectedInterestIdList: MutableList<String> = mutableListOf()
     private val viewModel: CommunicationHandlerViewModel by activityViewModels()
 
+    private lateinit var interestsListAdapter: InterestsListAdapter
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -57,21 +59,22 @@ class CreateGroupStepTwoFragment : Fragment() {
     }
 
     private fun initializeInterests() {
-        binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = InterestsListAdapter(interestsList, object : OnItemCheckListener {
-                override fun onItemCheck(item: Interest) {
-                    item.id?.let {
-                        selectedInterestIdList.add(it)
-                        viewModel.isButtonClickable.value = isCondition()
-                    }
-                }
-
-                override fun onItemUncheck(item: Interest) {
-                    selectedInterestIdList.remove(item.id)
+        interestsListAdapter = InterestsListAdapter(interestsList, object : OnItemCheckListener {
+            override fun onItemCheck(item: Interest) {
+                item.id?.let {
+                    selectedInterestIdList.add(it)
                     viewModel.isButtonClickable.value = isCondition()
                 }
-            })
+            }
+
+            override fun onItemUncheck(item: Interest) {
+                selectedInterestIdList.remove(item.id)
+                viewModel.isButtonClickable.value = isCondition()
+            }
+        })
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = interestsListAdapter
         }
     }
 
@@ -85,7 +88,8 @@ class CreateGroupStepTwoFragment : Fragment() {
                         getString(R.string.error_categories_create_group)
                     viewModel.isCondition.value = false
                 }
-                selectedInterestIdList.contains(InterestsTypes.TYPE_OTHER.label) -> {
+                selectedInterestIdList.contains(InterestsTypes.TYPE_OTHER.label)
+                        && interestsListAdapter.getOtherInterestCategory() == null -> {
                     binding.error.root.visibility = View.VISIBLE
                     binding.error.errorMessage.text =
                         getString(R.string.error_empty_other_category_create_group)
@@ -95,6 +99,8 @@ class CreateGroupStepTwoFragment : Fragment() {
                     binding.error.root.visibility = View.GONE
                     viewModel.isCondition.value = true
                     viewModel.group.interests(selectedInterestIdList)
+                    interestsListAdapter.getOtherInterestCategory()
+                        ?.let { viewModel.group.otherInterest(it) }
                     viewModel.clickNext.removeObservers(viewLifecycleOwner)
                 }
             }
@@ -110,9 +116,7 @@ class CreateGroupStepTwoFragment : Fragment() {
 
 
     fun isCondition(): Boolean {
-        return !(selectedInterestIdList.isEmpty() || selectedInterestIdList.contains(
-            InterestsTypes.TYPE_OTHER.label
-        ))
+        return selectedInterestIdList.isNotEmpty()
     }
 
     override fun onDestroy() {

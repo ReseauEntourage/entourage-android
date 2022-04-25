@@ -1,41 +1,40 @@
 package social.entourage.android.new_v8.group
 
-import androidx.collection.ArrayMap
+import androidx.lifecycle.MutableLiveData
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.api.request.UserResponse
+import social.entourage.android.api.request.GroupWrapper
+import social.entourage.android.new_v8.models.Group
+import timber.log.Timber
 
 class GroupPresenter {
 
-    fun updateUser(userEdited: ArrayMap<String, Any>) {
-        EntourageApplication.get().apiModule.groupRequest.updateUser(userEdited)
-            .enqueue(object : Callback<UserResponse> {
+    var isGroupCreated = MutableLiveData<Boolean>()
+
+
+    fun createGroup(group: Group) {
+        EntourageApplication.get().apiModule.groupRequest.createGroup(GroupWrapper(group))
+            .enqueue(object : Callback<Group> {
                 override fun onResponse(
-                    call: Call<UserResponse>,
-                    response: Response<UserResponse>
+                    call: Call<Group>,
+                    response: Response<Group>
                 ) {
                     if (response.isSuccessful) {
-                        response.body()?.user?.let {
-                            EntourageApplication.get().authenticationController.saveUser(
-                                it
-                            )
-                            EntourageApplication.get().authenticationController.saveUserPhoneAndCode(
-                                it.phone,
-                                it.smsCode
-                            )
-                            isUserUpdated.value = true
+                        response.body()?.let {
+                            isGroupCreated.value = true
+                            Timber.e(it.toString())
                         } ?: run {
-                            isUserUpdated.value = false
+                            isGroupCreated.value = false
                         }
                     } else {
-                        isUserUpdated.value = false
+                        isGroupCreated.value = false
                     }
                 }
 
-                override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                    isUserUpdated.value = false
+                override fun onFailure(call: Call<Group>, t: Throwable) {
+                    isGroupCreated.value = false
                 }
             })
     }

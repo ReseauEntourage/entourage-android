@@ -15,6 +15,7 @@ class CreateGroupSuccessFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        handlePassButton()
     }
 
     override fun onCreateView(
@@ -25,4 +26,9 @@ class CreateGroupSuccessFragment : Fragment() {
         return binding.root
     }
 
+    private fun handlePassButton() {
+        binding.previous.setOnClickListener {
+            activity?.finish()
+        }
+    }
 }

@@ -12,6 +12,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.R
+import social.entourage.android.api.request.GroupWrapper
 import social.entourage.android.databinding.NewFragmentCreateGroupBinding
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.nextPage
@@ -24,6 +25,8 @@ class CreateGroupFragment : Fragment() {
     val binding: NewFragmentCreateGroupBinding get() = _binding!!
     private val viewModel: CommunicationHandlerViewModel by activityViewModels()
     private lateinit var viewPager: ViewPager2
+    private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +41,15 @@ class CreateGroupFragment : Fragment() {
         initializeViewPager()
         handleBackButton()
         handleValidate()
+        groupPresenter.isGroupCreated.observe(viewLifecycleOwner, ::handleCreateGroupResponse)
+    }
+
+    private fun handleCreateGroupResponse(isGroupCreated: Boolean) {
+        if (isGroupCreated) {
+            findNavController().navigate(R.id.action_create_group_fragment_to_create_group_success_fragment)
+        } else {
+            Utils.showToast(requireContext(), getString(R.string.error_create_group))
+        }
     }
 
     private fun initializeViewPager() {
@@ -83,6 +95,7 @@ class CreateGroupFragment : Fragment() {
         )
     }
 
+
     private fun handleButtonState(isButtonActive: Boolean) {
         val background = ContextCompat.getDrawable(
             requireContext(),
@@ -101,7 +114,10 @@ class CreateGroupFragment : Fragment() {
     private fun handleIsCondition(isCondition: Boolean) {
         if (isCondition) {
             if (viewPager.currentItem == 2) {
+                viewModel.group.latitude(2.5)
+                viewModel.group.longitude(2.5)
                 Timber.e(viewModel.group.toString())
+                groupPresenter.createGroup(viewModel.group)
             } else {
                 viewPager.nextPage(true)
                 if (viewPager.currentItem > 0) binding.previous.visibility = View.VISIBLE

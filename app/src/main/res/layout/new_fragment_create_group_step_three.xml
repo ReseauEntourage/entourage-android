@@ -82,7 +82,7 @@
                     android:gravity="center"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/group_photo_label">
+                    app:layout_constraintTop_toBottomOf="@+id/error">
 
                     <ImageView
                         android:id="@+id/image"
@@ -114,14 +114,14 @@
                     android:visibility="gone"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/group_photo_label" />
+                    app:layout_constraintTop_toBottomOf="@+id/error" />
 
                 <include
                     android:id="@+id/error"
                     layout="@layout/new_error"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="45dp"
+                    android:layout_marginTop="20dp"
                     android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@id/group_photo_label" />
 

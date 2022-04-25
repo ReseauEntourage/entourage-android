@@ -1,12 +1,14 @@
 package social.entourage.android.new_v8.utils
 
 import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import social.entourage.android.R
 
 
@@ -35,6 +37,10 @@ class Utils {
                 .setOnClickListener { alertDialog.dismiss(); }
             alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             alertDialog.show()
+        }
+
+        fun showToast(context: Context, message: String) {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         }
     }
 }

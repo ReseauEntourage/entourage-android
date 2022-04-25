@@ -1,5 +1,7 @@
 package social.entourage.android.new_v8.profile.editProfile
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +29,11 @@ class InterestsListAdapter(
     var onItemClick: OnItemCheckListener
 ) : RecyclerView.Adapter<InterestsListAdapter.ViewHolder>() {
 
+    private var otherInterest: String? = null
+
+    fun getOtherInterestCategory(): String? {
+        return otherInterest
+    }
 
     inner class ViewHolder(val binding: View) :
         RecyclerView.ViewHolder(binding) {
@@ -59,6 +66,28 @@ class InterestsListAdapter(
                     if (interest.id == InterestsTypes.TYPE_OTHER.label) {
                         binding.category_name.visibility = View.VISIBLE
                         binding.category_name_label.visibility = View.VISIBLE
+                        binding.category_name.addTextChangedListener(object : TextWatcher {
+                            override fun beforeTextChanged(
+                                s: CharSequence,
+                                start: Int,
+                                count: Int,
+                                after: Int
+                            ) {
+
+                            }
+
+                            override fun onTextChanged(
+                                s: CharSequence,
+                                start: Int,
+                                before: Int,
+                                count: Int
+                            ) {
+                                otherInterest = s.toString()
+                            }
+
+                            override fun afterTextChanged(s: Editable) {
+                            }
+                        })
                     }
                 }
                 interest.isSelected = !(interest.isSelected)
@@ -95,4 +124,5 @@ class InterestsListAdapter(
             else -> InterestsTypes.TYPE_INTEREST.code
         }
     }
+
 }
