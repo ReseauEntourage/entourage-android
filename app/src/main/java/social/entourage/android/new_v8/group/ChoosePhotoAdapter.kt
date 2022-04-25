@@ -11,6 +11,7 @@ import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.api.model.GroupImage
 import social.entourage.android.api.model.MetaData
 import social.entourage.android.databinding.NewChoosePhotoItemBinding
+import social.entourage.android.new_v8.utils.px
 
 interface OnItemCheckListener {
     fun onItemCheck(item: MetaData)
@@ -41,8 +42,8 @@ class ChoosePhotoAdapter(
             with(photosList[position]) {
                 Glide.with(binding.image.context)
                     .load(Uri.parse(this.imageUrl))
-                    .apply(RequestOptions().override(200, 200))
-                    .transform(CenterCrop(), RoundedCorners(14))
+                    .apply(RequestOptions().override(90.px, 90.px))
+                    .transform(CenterCrop(), RoundedCorners(14.px))
                     .into(binding.image)
                 binding.image.setOnClickListener {
                     if (checkedPosition != position) {
