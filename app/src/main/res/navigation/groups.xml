@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/groups"
+    app:startDestination="@+id/create_group_fragment">
+
+    <fragment
+        android:id="@+id/create_group_fragment"
+        android:name="social.entourage.android.new_v8.groups.CreateGroupFragment">
+        <action
+            android:id="@+id/action_create_group_fragment_to_create_group_success_fragment"
+            app:destination="@id/create_group_success_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/create_group_success_fragment"
+        android:name="social.entourage.android.new_v8.groups.CreateGroupSuccessFragment" />
+
+</navigation>

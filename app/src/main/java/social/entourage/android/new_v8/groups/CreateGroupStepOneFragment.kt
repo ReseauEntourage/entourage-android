@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.group
+package social.entourage.android.new_v8.groups
 
 import android.os.Bundle
 import android.text.Editable

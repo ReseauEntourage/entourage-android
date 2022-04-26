@@ -6,6 +6,5 @@
 
     <include app:graph="@navigation/profile" />
     <include app:graph="@navigation/user" />
-    <include app:graph="@navigation/group" />
 
 </navigation>
