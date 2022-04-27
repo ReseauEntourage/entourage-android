@@ -5,7 +5,6 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 import social.entourage.android.api.model.BaseEntourage
-import social.entourage.android.api.model.SharingEntourage
 
 /**
  * Created by Jr on 22/12/2021.

@@ -17,7 +17,6 @@ import android.view.WindowManager
 import android.widget.RelativeLayout
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.OnGroundOverlayClickListener
@@ -26,11 +25,10 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.layout_map_longclick.*
-import social.entourage.android.base.BackPressable
 import social.entourage.android.EntourageApplication
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted
+import social.entourage.android.base.BackPressable
 import social.entourage.android.base.BaseFragment
 import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.base.location.EntLocation
@@ -38,6 +36,7 @@ import social.entourage.android.base.location.LocationUpdateListener
 import social.entourage.android.base.location.LocationUtils.isLocationEnabled
 import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
 import social.entourage.android.tools.EntBus
+import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
 abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), BackPressable, LocationUpdateListener {

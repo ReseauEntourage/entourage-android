@@ -391,6 +391,7 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/ui_layout_goodwaves"
                         android:layout_width="match_parent"
+                        android:visibility="gone"
                         android:layout_height="45dp">
 
                         <TextView

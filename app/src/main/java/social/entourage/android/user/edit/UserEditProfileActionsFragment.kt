@@ -307,47 +307,46 @@ class UserEditProfileActionsFragment : BaseDialogFragment() {
                 val authenticationController = EntourageApplication.get().components.authenticationController
                 authenticationController.saveUser(userResponse.user)
             }
-           try {
-               updateActivities()
-           } catch (e: IllegalStateException) {
-               Timber.e(e)
-           }
-
+           updateActivities()
         }
     }
 
     fun updateActivities() {
-        if (isAsso) {
-            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_PRO_MOSAIC)
-            activitiesAssoSelection?.let {
-                OnboardingAPI.getInstance().updateUserInterests(it.getArrayForWs()) { isOK, userResponse ->
-                    if (isOK && userResponse != null) {
-                        val authenticationController = EntourageApplication.get().components.authenticationController
-                        authenticationController.saveUser(userResponse.user)
-                    }
+        try {
+            if (isAsso) {
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_PRO_MOSAIC)
+                activitiesAssoSelection?.let {
+                    OnboardingAPI.getInstance().updateUserInterests(it.getArrayForWs()) { isOK, userResponse ->
+                        if (isOK && userResponse != null) {
+                            val authenticationController = EntourageApplication.get().components.authenticationController
+                            authenticationController.saveUser(userResponse.user)
+                        }
 
-                    alertDialog.dismiss()
-                    dismiss()
-                    callback?.validateActions()
+                        alertDialog.dismiss()
+                        dismiss()
+                        callback?.validateActions()
+                    }
                 }
             }
-        }
-        else {
-            if (isSdf) { AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_INNEED_MOSAIC) }
-            else { AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_NEIGHBOR_MOSAIC) }
+            else {
+                if (isSdf) { AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_INNEED_MOSAIC) }
+                else { AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_NEIGHBOR_MOSAIC) }
 
-            activitiesSelection?.let {
-                OnboardingAPI.getInstance().updateUserInterests(it.getArrayForWs()) { isOK, userResponse ->
-                    if (isOK && userResponse != null) {
-                        val authenticationController = EntourageApplication.get().components.authenticationController
-                        authenticationController.saveUser(userResponse.user)
+                activitiesSelection?.let {
+                    OnboardingAPI.getInstance().updateUserInterests(it.getArrayForWs()) { isOK, userResponse ->
+                        if (isOK && userResponse != null) {
+                            val authenticationController = EntourageApplication.get().components.authenticationController
+                            authenticationController.saveUser(userResponse.user)
+                        }
+
+                        alertDialog.dismiss()
+                        dismiss()
+                        callback?.validateActions()
                     }
-
-                    alertDialog.dismiss()
-                    dismiss()
-                    callback?.validateActions()
                 }
             }
+        } catch (e: IllegalStateException) {
+            Timber.e(e)
         }
     }
 

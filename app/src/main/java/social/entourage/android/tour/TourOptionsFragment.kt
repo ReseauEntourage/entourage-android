@@ -1,6 +1,5 @@
 package social.entourage.android.tour
 
-import android.app.Activity
 import kotlinx.android.synthetic.main.layout_entourage_options.*
 import social.entourage.android.MainActivity
 import social.entourage.android.R

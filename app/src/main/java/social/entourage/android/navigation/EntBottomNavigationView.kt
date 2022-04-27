@@ -11,7 +11,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_main.*
 import me.leolin.shortcutbadger.ShortcutBadger
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity

@@ -2,8 +2,6 @@ package social.entourage.android.tools
 
 import android.content.Context
 
-import com.facebook.FacebookSdk
-import com.facebook.LoggingBehavior
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import social.entourage.android.BuildConfig
@@ -28,7 +26,6 @@ class LibrariesSupport {
     fun setupLibraries(context: Context) {
         setupFirebase(context)
         setupTimberTree()
-        setupFacebookSDK()
     }
 
     private fun setupFirebase(context: Context) {
@@ -42,14 +39,6 @@ class LibrariesSupport {
             Timber.plant(Timber.DebugTree())
         } else {
             Timber.plant(CrashlyticsLog())
-        }
-    }
-
-    private fun setupFacebookSDK() {
-        if (BuildConfig.DEBUG) {
-            Timber.d("Facebook version %s", FacebookSdk.getSdkVersion())
-            FacebookSdk.setIsDebugEnabled(true)
-            FacebookSdk.addLoggingBehavior(LoggingBehavior.APP_EVENTS)
         }
     }
 }

@@ -128,8 +128,10 @@ class PhotoEditFragment : BaseDialogFragment() {
 
     private fun rotateImage() {
         currentAngle += ROTATE_DEGREES_STEP
-        photoUri?.let {
-            saveBitmap(Utils.getBitmapFromUri(it, activity?.contentResolver).rotate(currentAngle))
+        photoUri?.let { photoUri ->
+            activity?.contentResolver?.let { contentResolver ->
+                saveBitmap(Utils.getBitmapFromUri(photoUri, contentResolver).rotate(currentAngle))
+            }
         }
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_USER_ROTATE_PHOTO)
     }

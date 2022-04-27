@@ -175,7 +175,7 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
             ui_layout_goodwaves?.visibility = View.GONE
         }
         else {
-            ui_layout_goodwaves?.visibility = View.VISIBLE
+            ui_layout_goodwaves?.visibility = View.GONE//disabled right now VISIBLE
         }
 
         ui_tv_nb_events?.text = user.stats?.contribCreationCount?.let { "$it" } ?: "0"

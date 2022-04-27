@@ -191,8 +191,8 @@ object Utils {
         return builder
     }
 
-    fun getBitmapFromUri(uri: Uri, contentResolver: ContentResolver?): Bitmap {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && contentResolver != null)
+    fun getBitmapFromUri(uri: Uri, contentResolver: ContentResolver): Bitmap {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
             ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, uri))
         else
             MediaStore.Images.Media.getBitmap(contentResolver, uri)

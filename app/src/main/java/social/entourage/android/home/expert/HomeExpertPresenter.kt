@@ -6,13 +6,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.Invitation
-import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.request.*
-import social.entourage.android.api.tape.Events
 import social.entourage.android.authentication.AuthenticationController
-import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 import javax.inject.Inject

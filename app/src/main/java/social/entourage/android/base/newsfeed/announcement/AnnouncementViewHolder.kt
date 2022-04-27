@@ -10,7 +10,6 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.layout_card_announcement.view.*
-import kotlinx.android.synthetic.main.layout_feed_action_card.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.Announcement
