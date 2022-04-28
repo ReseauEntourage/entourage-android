@@ -220,7 +220,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="error_create_group">Erreur lors de la création du groupe</string>
     <string name="edit_photo">Modifier la photo</string>
     <string name="group_updated">La modification a bien été prise en compte</string>
-    <string name="group_error_updated">La modification a bien été prise en compte</string>
+    <string name="group_error_updated">Erreur lors de la modification du groupe</string>
 
 
 

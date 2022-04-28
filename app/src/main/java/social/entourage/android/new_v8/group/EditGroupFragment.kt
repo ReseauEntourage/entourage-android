@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.collection.ArrayMap
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
@@ -121,6 +122,22 @@ class EditGroupFragment : Fragment() {
 
                 override fun afterTextChanged(s: Editable) {}
             })
+            stepOne.groupName.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+
+                }
+
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    handleSaveButtonState()
+                }
+
+                override fun afterTextChanged(s: Editable) {}
+            })
             stepThree.groupPhotoTitle.title.text = getString(R.string.edit_photo)
             stepThree.groupPhotoTitle.mandatory.visibility = View.GONE
             stepThree.groupPhotoLabel.visibility = View.GONE
@@ -142,10 +159,12 @@ class EditGroupFragment : Fragment() {
             adapter = InterestsListAdapter(interestsList, object : OnItemCheckListener {
                 override fun onItemCheck(item: Interest) {
                     item.id?.let { selectedInterestIdList.add(it) }
+                    handleSaveButtonState()
                 }
 
                 override fun onItemUncheck(item: Interest) {
                     selectedInterestIdList.remove(item.id)
+                    handleSaveButtonState()
                 }
             }, false)
         }
@@ -185,28 +204,45 @@ class EditGroupFragment : Fragment() {
 
     private fun checkName(): Boolean {
         with(binding) {
-            return if (stepOne.groupName.text.trimEnd().isEmpty()) {
+            return if (isGroupNameValid()) {
+                stepOne.error.root.visibility = View.GONE
+                true
+            } else {
                 stepOne.error.root.visibility = View.VISIBLE
                 stepOne.error.errorMessage.text = getString(R.string.error_mandatory_fields)
                 false
-            } else {
-                stepOne.error.root.visibility = View.GONE
-                true
             }
         }
     }
 
     private fun checkInterestsList(): Boolean {
         with(binding) {
-            return if (selectedInterestIdList.isEmpty()) {
+            return if (isInterestsListValid()) {
+                stepTwo.error.root.visibility = View.GONE
+                true
+            } else {
                 stepTwo.error.root.visibility = View.VISIBLE
                 stepTwo.error.errorMessage.text = getString(R.string.error_categories_create_group)
                 false
-            } else {
-                stepTwo.error.root.visibility = View.GONE
-                true
             }
         }
+    }
+
+    private fun handleSaveButtonState() {
+        val isActive = isInterestsListValid() && isGroupNameValid()
+        val background = ContextCompat.getDrawable(
+            requireContext(),
+            if (isActive) R.drawable.new_rounded_button_orange else R.drawable.new_rounded_button_light_orange
+        )
+        binding.validate.button.background = background
+    }
+
+    private fun isGroupNameValid(): Boolean {
+        return binding.stepOne.groupName.text.length >= Const.GROUP_NAME_MIN_LENGTH
+    }
+
+    private fun isInterestsListValid(): Boolean {
+        return selectedInterestIdList.isNotEmpty()
     }
 
     private fun handleSaveButton() {
