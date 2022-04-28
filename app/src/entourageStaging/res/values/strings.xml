@@ -1,6 +1,7 @@
 <resources>
 
     <string name="facebook_app_id">276507866203529</string>
+    <string name="facebook_client_token">d78bdee06c1847a804f6c8d1a306aecc</string>
 
     <string name="app_name">EntourStage</string>
 
