@@ -1,5 +1,6 @@
 package social.entourage.android.new_v8.group
 
+import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import retrofit2.Call
 import retrofit2.Callback
@@ -12,6 +13,8 @@ import timber.log.Timber
 class GroupPresenter {
 
     var isGroupCreated = MutableLiveData<Boolean>()
+    var getGroup = MutableLiveData<Group>()
+    var isGroupUpdated = MutableLiveData<Boolean>()
 
 
     fun createGroup(group: Group) {
@@ -35,6 +38,50 @@ class GroupPresenter {
 
                 override fun onFailure(call: Call<Group>, t: Throwable) {
                     isGroupCreated.value = false
+                }
+            })
+    }
+
+    fun getGroup(id: Int) {
+        EntourageApplication.get().apiModule.groupRequest.getGroup(id)
+            .enqueue(object : Callback<GroupWrapper> {
+                override fun onResponse(
+                    call: Call<GroupWrapper>,
+                    response: Response<GroupWrapper>
+                ) {
+                    Timber.e(response.body().toString())
+                    if (response.isSuccessful) {
+                        response.body()?.let { groupWrapper ->
+                            getGroup.value = groupWrapper.group
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<GroupWrapper>, t: Throwable) {
+                }
+            })
+    }
+
+    fun updateGroup(id: Int, userEdited: ArrayMap<String, Any>) {
+        EntourageApplication.get().apiModule.groupRequest.updateGroup(id, userEdited)
+            .enqueue(object : Callback<GroupWrapper> {
+                override fun onResponse(
+                    call: Call<GroupWrapper>,
+                    response: Response<GroupWrapper>
+                ) {
+                    if (response.isSuccessful) {
+                        response.body()?.group?.let {
+                            isGroupUpdated.value = true
+                        } ?: run {
+                            isGroupUpdated.value = false
+                        }
+                    } else {
+                        isGroupUpdated.value = false
+                    }
+                }
+
+                override fun onFailure(call: Call<GroupWrapper>, t: Throwable) {
+                    isGroupUpdated.value = false
                 }
             })
     }

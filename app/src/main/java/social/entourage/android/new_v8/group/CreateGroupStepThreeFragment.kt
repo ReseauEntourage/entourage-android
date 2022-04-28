@@ -18,6 +18,7 @@ import social.entourage.android.api.model.GroupImage
 import social.entourage.android.databinding.NewFragmentCreateGroupStepThreeBinding
 import social.entourage.android.new_v8.user.ReportUserModalFragment
 import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.new_v8.utils.px
 
 
 class CreateGroupStepThreeFragment : Fragment() {
@@ -43,12 +44,12 @@ class CreateGroupStepThreeFragment : Fragment() {
         if (onClick) {
             if (selectedImage == null) {
                 viewModel.isCondition.value = false
-                binding.error.root.visibility = View.VISIBLE
-                binding.error.errorMessage.text =
+                binding.layout.error.root.visibility = View.VISIBLE
+                binding.layout.error.errorMessage.text =
                     getString(R.string.error_categories_create_group_image)
             } else {
                 viewModel.isCondition.value = true
-                binding.error.root.visibility = View.GONE
+                binding.layout.error.root.visibility = View.GONE
                 viewModel.clickNext.removeObservers(viewLifecycleOwner)
             }
         }
@@ -63,7 +64,7 @@ class CreateGroupStepThreeFragment : Fragment() {
     }
 
     private fun setWelcomeMessage() {
-        binding.groupMessageWelcome.addTextChangedListener(object : TextWatcher {
+        binding.layout.groupMessageWelcome.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
             }
@@ -80,17 +81,17 @@ class CreateGroupStepThreeFragment : Fragment() {
 
     private fun handleChoosePhoto() {
         val choosePhotoModalFragment = CreateGroupChoosePhotoModalFragment.newInstance()
-        binding.addPhotoLayout.setOnClickListener {
+        binding.layout.addPhotoLayout.setOnClickListener {
             choosePhotoModalFragment.show(parentFragmentManager, ReportUserModalFragment.TAG)
         }
-        binding.addPhoto.setOnClickListener {
+        binding.layout.addPhoto.setOnClickListener {
             choosePhotoModalFragment.show(parentFragmentManager, ReportUserModalFragment.TAG)
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        binding.error.root.visibility = View.GONE
+        binding.layout.error.root.visibility = View.GONE
     }
 
     private fun onFragmentResult() {
@@ -99,12 +100,12 @@ class CreateGroupStepThreeFragment : Fragment() {
             viewModel.isButtonClickable.value = imageHasBeenSelected()
             viewModel.group.neighborhoodImageId(selectedImage?.id)
             selectedImage?.imageUrl.let { imageUrl ->
-                binding.addPhotoLayout.visibility = View.GONE
-                binding.addPhoto.visibility = View.VISIBLE
+                binding.layout.addPhotoLayout.visibility = View.GONE
+                binding.layout.addPhoto.visibility = View.VISIBLE
                 Glide.with(requireActivity())
                     .load(Uri.parse(imageUrl))
-                    .transform(CenterCrop(), RoundedCorners(14))
-                    .into(binding.addPhoto)
+                    .transform(CenterCrop(), RoundedCorners(14.px))
+                    .into(binding.layout.addPhoto)
             }
         }
     }

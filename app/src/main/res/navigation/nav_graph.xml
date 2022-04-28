@@ -43,6 +43,11 @@
             app:destination="@id/create_group_fragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:popExitAnim="@anim/slide_out_to_right" />
+        <action
+            android:id="@+id/action_test_fragment_to_edit_fragment"
+            app:destination="@id/edit_fragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
     </fragment>
 
 
@@ -99,10 +104,12 @@
 
     <fragment
         android:id="@+id/create_group_fragment"
-        android:name="social.entourage.android.new_v8.group.CreateGroupFragment" >
+        android:name="social.entourage.android.new_v8.group.CreateGroupFragment">
         <action
             android:id="@+id/action_create_group_fragment_to_create_group_success_fragment"
-            app:destination="@id/create_group_success_fragment" />
+            app:destination="@id/create_group_success_fragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
     </fragment>
 
     <fragment
@@ -127,5 +134,9 @@
         android:id="@+id/create_group_success_fragment"
         android:name="social.entourage.android.new_v8.group.CreateGroupSuccessFragment" />
 
+
+    <fragment
+        android:id="@+id/edit_fragment"
+        android:name="social.entourage.android.new_v8.group.EditGroupFragment" />
 
 </navigation>

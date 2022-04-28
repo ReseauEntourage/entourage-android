@@ -68,7 +68,7 @@ class EditInterestsFragment : Fragment() {
                 override fun onItemUncheck(item: Interest) {
                     selectedInterestIdList.remove(item.id)
                 }
-            })
+            }, false)
         }
     }
 
