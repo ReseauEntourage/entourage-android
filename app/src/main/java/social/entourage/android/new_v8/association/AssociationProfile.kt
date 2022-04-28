@@ -116,7 +116,7 @@ class AssociationProfile : Fragment() {
             )
             val rightDrawable = ResourcesCompat.getDrawable(
                 resources,
-                if (it.isFollowing) R.drawable.new_check else R.drawable.new_plus,
+                if (it.isFollowing) R.drawable.new_check else R.drawable.new_plus_white,
                 null
             )
             binding.subscribe.button.text = label
