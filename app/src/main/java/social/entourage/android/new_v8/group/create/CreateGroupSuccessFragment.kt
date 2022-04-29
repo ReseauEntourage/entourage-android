@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateGroupSuccessBinding
 
 

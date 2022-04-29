@@ -69,15 +69,7 @@ class GroupPresenter {
                     call: Call<GroupWrapper>,
                     response: Response<GroupWrapper>
                 ) {
-                    if (response.isSuccessful) {
-                        response.body()?.group?.let {
-                            isGroupUpdated.value = true
-                        } ?: run {
-                            isGroupUpdated.value = false
-                        }
-                    } else {
-                        isGroupUpdated.value = false
-                    }
+                    isGroupUpdated.value = response.isSuccessful && response.body()?.group != null
                 }
 
                 override fun onFailure(call: Call<GroupWrapper>, t: Throwable) {
