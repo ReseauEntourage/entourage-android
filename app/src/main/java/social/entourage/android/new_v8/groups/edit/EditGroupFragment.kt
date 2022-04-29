@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.group.edit
+package social.entourage.android.new_v8.groups.edit
 
 import android.net.Uri
 import android.os.Bundle
@@ -21,8 +21,8 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.GroupImage
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentEditGroupBinding
-import social.entourage.android.new_v8.group.CreateGroupChoosePhotoModalFragment
-import social.entourage.android.new_v8.group.GroupPresenter
+import social.entourage.android.new_v8.groups.ChoosePhotoModalFragment
+import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.models.Interest
 import social.entourage.android.new_v8.profile.editProfile.InterestsListAdapter
@@ -144,7 +144,7 @@ class EditGroupFragment : Fragment() {
             stepThree.groupPhotoTitle.mandatory.visibility = View.GONE
             stepThree.groupPhotoLabel.visibility = View.GONE
             stepThree.addPhoto.setOnClickListener {
-                CreateGroupChoosePhotoModalFragment.newInstance()
+                ChoosePhotoModalFragment.newInstance()
                     .show(parentFragmentManager, ReportUserModalFragment.TAG)
             }
             header.iconBack.setOnClickListener {

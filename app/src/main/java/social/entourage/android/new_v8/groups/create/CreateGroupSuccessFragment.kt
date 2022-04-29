@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.group.create
+package social.entourage.android.new_v8.groups.create
 
 import android.os.Bundle
 import android.view.LayoutInflater

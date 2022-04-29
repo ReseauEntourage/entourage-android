@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/user"
+    app:startDestination="@+id/test_fragment">
+    <fragment
+        android:id="@+id/user_fragment"
+        android:name="social.entourage.android.new_v8.user.UserProfileFragment">
+        <argument
+            android:name="user_id"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_user_fragment_to_report_user_fragment"
+            app:destination="@id/report_user_fragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/test_fragment"
+        android:name="social.entourage.android.new_v8.TestFragment">
+        <action
+            android:id="@+id/action_test_fragment_to_user_fragment"
+            app:destination="@id/user_fragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
+
+        <action
+            android:id="@+id/action_test_fragment_to_create_group_fragment"
+            app:destination="@id/create_group_fragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/report_user_fragment"
+        android:name="social.entourage.android.new_v8.user.ReportUserModalFragment" />
+</navigation>

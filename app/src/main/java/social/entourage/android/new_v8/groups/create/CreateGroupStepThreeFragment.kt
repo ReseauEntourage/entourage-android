@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.group.create
+package social.entourage.android.new_v8.groups.create
 
 import android.net.Uri
 import android.os.Bundle
@@ -16,7 +16,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
 import social.entourage.android.api.model.GroupImage
 import social.entourage.android.databinding.NewFragmentCreateGroupStepThreeBinding
-import social.entourage.android.new_v8.group.CreateGroupChoosePhotoModalFragment
+import social.entourage.android.new_v8.groups.ChoosePhotoModalFragment
 import social.entourage.android.new_v8.user.ReportUserModalFragment
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
@@ -81,7 +81,7 @@ class CreateGroupStepThreeFragment : Fragment() {
     }
 
     private fun handleChoosePhoto() {
-        val choosePhotoModalFragment = CreateGroupChoosePhotoModalFragment.newInstance()
+        val choosePhotoModalFragment = ChoosePhotoModalFragment.newInstance()
         binding.layout.addPhotoLayout.setOnClickListener {
             choosePhotoModalFragment.show(parentFragmentManager, ReportUserModalFragment.TAG)
         }

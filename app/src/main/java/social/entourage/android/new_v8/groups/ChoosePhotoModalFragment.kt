@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.group
+package social.entourage.android.new_v8.groups
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +15,7 @@ import social.entourage.android.new_v8.utils.Const
 
 private const val SPAN_COUNT = 3
 
-class CreateGroupChoosePhotoModalFragment : BottomSheetDialogFragment() {
+class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
 
     private var _binding: NewFragmentCreateGroupChoosePhotoModalBinding? = null
     val binding: NewFragmentCreateGroupChoosePhotoModalBinding get() = _binding!!
@@ -72,9 +72,9 @@ class CreateGroupChoosePhotoModalFragment : BottomSheetDialogFragment() {
 
 
     companion object {
-        const val TAG = "CreateGroupChoosePhotoModalFragment"
-        fun newInstance(): CreateGroupChoosePhotoModalFragment {
-            return CreateGroupChoosePhotoModalFragment()
+        const val TAG = "ChoosePhotoModalFragment"
+        fun newInstance(): ChoosePhotoModalFragment {
+            return ChoosePhotoModalFragment()
         }
     }
 }
