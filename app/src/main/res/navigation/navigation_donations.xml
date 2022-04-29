@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_donations"
+    app:startDestination="@+id/donations_fragment">
+
+    <fragment
+        android:id="@+id/donations_fragment"
+        android:name="social.entourage.android.new_v8.donations.DonationsFragment" />
+
+</navigation>

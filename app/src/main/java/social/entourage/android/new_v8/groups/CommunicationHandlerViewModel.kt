@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.group
+package social.entourage.android.new_v8.groups
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

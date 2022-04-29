@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.group
+package social.entourage.android.new_v8.groups
 
 import android.net.Uri
 import android.view.LayoutInflater
@@ -10,10 +10,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.R
 import social.entourage.android.api.model.GroupImage
-import social.entourage.android.api.model.MetaData
 import social.entourage.android.databinding.NewChoosePhotoItemBinding
 import social.entourage.android.new_v8.utils.px
-import timber.log.Timber
 
 class ChoosePhotoAdapter(
     var photosList: List<GroupImage>,

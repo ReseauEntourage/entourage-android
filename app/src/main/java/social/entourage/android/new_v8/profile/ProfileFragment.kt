@@ -36,9 +36,6 @@ class ProfileFragment : Fragment() {
         initializeTab()
         initializeEditButton()
         getUser()
-        binding.imageProfile.setOnClickListener {
-            findNavController().navigate(R.id.action_profile_fragment_to_test_fragment)
-        }
     }
 
     private fun initializeTab() {
