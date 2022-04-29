@@ -104,7 +104,7 @@
 
     <fragment
         android:id="@+id/create_group_fragment"
-        android:name="social.entourage.android.new_v8.group.CreateGroupFragment">
+        android:name="social.entourage.android.new_v8.group.create.CreateGroupFragment">
         <action
             android:id="@+id/action_create_group_fragment_to_create_group_success_fragment"
             app:destination="@id/create_group_success_fragment"
@@ -132,11 +132,11 @@
 
     <fragment
         android:id="@+id/create_group_success_fragment"
-        android:name="social.entourage.android.new_v8.group.CreateGroupSuccessFragment" />
+        android:name="social.entourage.android.new_v8.group.create.CreateGroupSuccessFragment" />
 
 
     <fragment
         android:id="@+id/edit_fragment"
-        android:name="social.entourage.android.new_v8.group.EditGroupFragment" />
+        android:name="social.entourage.android.new_v8.group.edit.EditGroupFragment" />
 
 </navigation>

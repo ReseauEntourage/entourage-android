@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.group
+package social.entourage.android.new_v8.group.edit
 
 import android.net.Uri
 import android.os.Bundle
@@ -21,6 +21,8 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.GroupImage
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentEditGroupBinding
+import social.entourage.android.new_v8.group.CreateGroupChoosePhotoModalFragment
+import social.entourage.android.new_v8.group.GroupPresenter
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.models.Interest
 import social.entourage.android.new_v8.profile.editProfile.InterestsListAdapter

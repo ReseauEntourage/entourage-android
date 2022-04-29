@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.group
+package social.entourage.android.new_v8.group.create
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
