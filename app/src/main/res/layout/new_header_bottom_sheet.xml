@@ -16,7 +16,7 @@
         android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/padding_horizental"
+        android:paddingHorizontal="@dimen/padding_horizontal"
         android:paddingTop="30dp">
 
 

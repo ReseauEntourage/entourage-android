@@ -6,7 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.material.tabs.TabLayoutMediator
+import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentGroupsBinding
+import social.entourage.android.new_v8.groups.create.CreateGroupActivity
 
 
 class GroupsFragment : Fragment() {
@@ -25,6 +28,21 @@ class GroupsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         createGroup()
+        initializeTab()
+    }
+
+    private fun initializeTab() {
+        val viewPager = binding.viewPager
+        val adapter = GroupsViewPagerAdapter(childFragmentManager, lifecycle)
+        viewPager.adapter = adapter
+        val tabLayout = binding.tabLayout
+        val tabs = arrayOf(
+            requireContext().getString(R.string.my_groups),
+            requireContext().getString(R.string.discover_groups)
+        )
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = tabs[position]
+        }.attach()
     }
 
 
@@ -34,6 +52,5 @@ class GroupsFragment : Fragment() {
                 Intent(context, CreateGroupActivity::class.java)
             )
         }
-
     }
 }

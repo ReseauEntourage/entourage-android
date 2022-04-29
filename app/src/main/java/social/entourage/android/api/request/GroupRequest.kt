@@ -10,6 +10,7 @@ import social.entourage.android.new_v8.models.Group
 
 class GroupImagesResponse(@field:SerializedName("neighborhood_images") val groupImages: ArrayList<GroupImage>)
 class GroupWrapper(@field:SerializedName("neighborhood") val group: Group)
+class GroupsListWrapper(@field:SerializedName("neighborhoods") val allGroups: MutableList<Group>)
 
 interface GroupRequest {
     @GET("neighborhood_images")
@@ -22,6 +23,11 @@ interface GroupRequest {
     fun getGroup(@Path("id") groupId: Int): Call<GroupWrapper>
 
     @PATCH("neighborhoods/{id}")
-    fun updateGroup(@Path("id") groupId: Int,
-                    @Body user: ArrayMap<String, Any>): Call<GroupWrapper>
+    fun updateGroup(
+        @Path("id") groupId: Int,
+        @Body user: ArrayMap<String, Any>
+    ): Call<GroupWrapper>
+
+    @GET("neighborhoods")
+    fun getAllGroups(): Call<GroupsListWrapper>
 }

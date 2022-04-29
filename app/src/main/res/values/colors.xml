@@ -128,4 +128,7 @@
     <color name="dark_grey">#343C58</color>
     <color name="dark_grey_opacity_40">#66343C58</color>
     <color name="red">#FF0000</color>
+    <color name="grey">#707070</color>
+
+
 </resources>

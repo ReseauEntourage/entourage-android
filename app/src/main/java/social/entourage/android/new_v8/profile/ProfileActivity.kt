@@ -18,7 +18,6 @@ class ProfileActivity : AppCompatActivity(), AvatarUploadView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_activity_profile)
-        initializeMetaData()
         profilePresenter.isPhotoSuccess.observe(this, ::handlePhotoResponse)
     }
 
@@ -50,10 +49,6 @@ class ProfileActivity : AppCompatActivity(), AvatarUploadView {
         return getString(R.string.redirect_link_no_token_format, BuildConfig.ENTOURAGE_URL, linkId)
     }
 
-    private fun initializeMetaData() {
-        if (MetaDataRepository.metaData.value == null) MetaDataRepository.getMetaData()
-        if (MetaDataRepository.groupImages.value == null) MetaDataRepository.getGroupImages()
-    }
 
     override fun onUploadError() {
         showErrorToast()

@@ -7,6 +7,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.GroupWrapper
+import social.entourage.android.api.request.GroupsListWrapper
 import social.entourage.android.new_v8.models.Group
 import timber.log.Timber
 
@@ -14,6 +15,7 @@ class GroupPresenter {
 
     var isGroupCreated = MutableLiveData<Boolean>()
     var getGroup = MutableLiveData<Group>()
+    var getAllGroups = MutableLiveData<MutableList<Group>>()
     var isGroupUpdated = MutableLiveData<Boolean>()
 
 
@@ -73,6 +75,24 @@ class GroupPresenter {
                 }
 
                 override fun onFailure(call: Call<GroupWrapper>, t: Throwable) {
+                    isGroupUpdated.value = false
+                }
+            })
+    }
+
+    fun getAllGroups() {
+        EntourageApplication.get().apiModule.groupRequest.getAllGroups()
+            .enqueue(object : Callback<GroupsListWrapper> {
+                override fun onResponse(
+                    call: Call<GroupsListWrapper>,
+                    response: Response<GroupsListWrapper>
+                ) {
+                    response.body()?.let { allGroupsWrapper ->
+                        getAllGroups.value = allGroupsWrapper.allGroups
+                    }
+                }
+
+                override fun onFailure(call: Call<GroupsListWrapper>, t: Throwable) {
                     isGroupUpdated.value = false
                 }
             })

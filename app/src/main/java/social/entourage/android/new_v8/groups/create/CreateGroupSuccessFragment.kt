@@ -28,7 +28,7 @@ class CreateGroupSuccessFragment : Fragment() {
 
     private fun handlePassButton() {
         binding.previous.setOnClickListener {
-            activity?.finish()
+            requireActivity().finish()
         }
     }
 }

@@ -31,7 +31,7 @@
             style="@style/h2_white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/padding_horizental"
+            android:layout_marginHorizontal="@dimen/padding_horizontal"
             android:layout_marginBottom="30dp"
             android:background="@drawable/new_bg_rounded_button_orange_fill"
             android:drawablePadding="10dp"

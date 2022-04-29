@@ -40,7 +40,7 @@ class ProfileFragment : Fragment() {
 
     private fun initializeTab() {
         val viewPager = binding.viewPager
-        val adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
+        val adapter = ProfileViewPagerAdapter(childFragmentManager, lifecycle)
         viewPager.adapter = adapter
         val tabLayout = binding.tabLayout
         val tabs = arrayOf(
