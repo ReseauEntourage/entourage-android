@@ -47,7 +47,7 @@
                     android:layout_marginTop="5dp"
                     android:backgroundTint="@color/light_orange_opacity_50"
                     android:hint="@string/group_name_hint"
-                    android:maxLines="1"
+                    android:maxLines="4"
                     app:layout_constraintTop_toBottomOf="@id/group_name_title"
                     tools:text="content" />
 
