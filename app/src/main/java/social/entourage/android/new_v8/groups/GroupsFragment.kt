@@ -2,14 +2,11 @@ package social.entourage.android.new_v8.groups
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import social.entourage.android.R
-import social.entourage.android.databinding.NewFragmentDonationsBinding
+import androidx.fragment.app.Fragment
 import social.entourage.android.databinding.NewFragmentGroupsBinding
-import social.entourage.android.new_v8.profile.ProfileActivity
 
 
 class GroupsFragment : Fragment() {

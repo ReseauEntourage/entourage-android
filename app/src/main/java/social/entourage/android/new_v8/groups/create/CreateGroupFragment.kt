@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.groups
+package social.entourage.android.new_v8.groups.create
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +13,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateGroupBinding
+import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.nextPage
 import social.entourage.android.new_v8.utils.previousPage

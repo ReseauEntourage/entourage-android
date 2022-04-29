@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.groups
+package social.entourage.android.new_v8.groups.create
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -55,7 +55,7 @@ class CreateGroupStepTwoFragment : Fragment() {
                 )
             )
         }
-        binding.recyclerView.adapter?.notifyDataSetChanged()
+        binding.layout.recyclerView.adapter?.notifyDataSetChanged()
     }
 
     private fun initializeInterests() {
@@ -71,8 +71,8 @@ class CreateGroupStepTwoFragment : Fragment() {
                 selectedInterestIdList.remove(item.id)
                 viewModel.isButtonClickable.value = interestHaveBeenSelected()
             }
-        })
-        binding.recyclerView.apply {
+        }, true)
+        binding.layout.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = interestsListAdapter
         }
@@ -83,20 +83,20 @@ class CreateGroupStepTwoFragment : Fragment() {
         if (onClick) {
             when {
                 selectedInterestIdList.isEmpty() -> {
-                    binding.error.root.visibility = View.VISIBLE
-                    binding.error.errorMessage.text =
+                    binding.layout.error.root.visibility = View.VISIBLE
+                    binding.layout.error.errorMessage.text =
                         getString(R.string.error_categories_create_group)
                     viewModel.isCondition.value = false
                 }
                 selectedInterestIdList.contains(InterestsTypes.TYPE_OTHER.label)
                         && interestsListAdapter.getOtherInterestCategory() == null -> {
-                    binding.error.root.visibility = View.VISIBLE
-                    binding.error.errorMessage.text =
+                    binding.layout.error.root.visibility = View.VISIBLE
+                    binding.layout.error.errorMessage.text =
                         getString(R.string.error_empty_other_category_create_group)
                     viewModel.isCondition.value = false
                 }
                 else -> {
-                    binding.error.root.visibility = View.GONE
+                    binding.layout.error.root.visibility = View.GONE
                     viewModel.isCondition.value = true
                     viewModel.group.interests(selectedInterestIdList)
                     interestsListAdapter.getOtherInterestCategory()
@@ -121,6 +121,6 @@ class CreateGroupStepTwoFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        binding.error.root.visibility = View.GONE
+        binding.layout.error.root.visibility = View.GONE
     }
 }

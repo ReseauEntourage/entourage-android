@@ -1,7 +1,7 @@
 package social.entourage.android.new_v8.groups
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import social.entourage.android.R
 
 class CreateGroupActivity : AppCompatActivity() {

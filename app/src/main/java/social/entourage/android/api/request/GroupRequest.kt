@@ -1,10 +1,9 @@
 package social.entourage.android.api.request
 
+import androidx.collection.ArrayMap
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 import social.entourage.android.api.model.GroupImage
 import social.entourage.android.new_v8.models.Group
 
@@ -18,4 +17,11 @@ interface GroupRequest {
 
     @POST("neighborhoods")
     fun createGroup(@Body groupInfo: GroupWrapper): Call<Group>
+
+    @GET("neighborhoods/{id}")
+    fun getGroup(@Path("id") groupId: Int): Call<GroupWrapper>
+
+    @PATCH("neighborhoods/{id}")
+    fun updateGroup(@Path("id") groupId: Int,
+                    @Body user: ArrayMap<String, Any>): Call<GroupWrapper>
 }

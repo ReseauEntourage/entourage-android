@@ -55,5 +55,6 @@ class TestFragment : Fragment() {
         binding.createGroup.setOnClickListener {
             findNavController().navigate(R.id.action_test_fragment_to_create_group_fragment)
         }
+
     }
 }

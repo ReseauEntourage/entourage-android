@@ -26,7 +26,8 @@ enum class InterestsTypes(val label: String, val code: Int) {
 
 class InterestsListAdapter(
     var interestsList: List<Interest>,
-    var onItemClick: OnItemCheckListener
+    var onItemClick: OnItemCheckListener,
+    var isOtherInterestEnabled: Boolean
 ) : RecyclerView.Adapter<InterestsListAdapter.ViewHolder>() {
 
     private var otherInterest: String? = null
@@ -53,7 +54,7 @@ class InterestsListAdapter(
                             binding.title.typeface,
                             android.graphics.Typeface.NORMAL
                         )
-                    if (interest.id == InterestsTypes.TYPE_OTHER.label) {
+                    if (interest.id == InterestsTypes.TYPE_OTHER.label && isOtherInterestEnabled) {
                         binding.category_name.visibility = View.GONE
                         binding.category_name_label.visibility = View.GONE
                     }
@@ -63,7 +64,7 @@ class InterestsListAdapter(
                         binding.title.typeface,
                         android.graphics.Typeface.BOLD
                     )
-                    if (interest.id == InterestsTypes.TYPE_OTHER.label) {
+                    if (interest.id == InterestsTypes.TYPE_OTHER.label && isOtherInterestEnabled) {
                         binding.category_name.visibility = View.VISIBLE
                         binding.category_name_label.visibility = View.VISIBLE
                         binding.category_name.addTextChangedListener(object : TextWatcher {

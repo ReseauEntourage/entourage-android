@@ -188,6 +188,7 @@
     <string name="previous">Précedent</string>
     <string name="add_location_subtitle">Entourage ne communique pas cette adresse aux utilisateurs.</string>
     <string name="new_group">Nouveau groupe</string>
+    <string name="edit_group">Modifier le groupe</string>
     <string name="error_mandatory_fields">Veuillez remplir tous les champs obligatoires</string>
     <string name="error_categories_create_group">Une catégorie doit être sélectionnée.</string>
     <string name="error_categories_create_group_image">Veuillez sélectionnez une image</string>
@@ -217,6 +218,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="select_photo">Sélectionner une photo</string>
     <string name="create">Créer</string>
     <string name="error_create_group">Erreur lors de la création du groupe</string>
+    <string name="edit_photo">Modifier la photo</string>
+    <string name="group_updated">La modification a bien été prise en compte</string>
+    <string name="group_error_updated">Erreur lors de la modification du groupe</string>
     <string name="title_activity_main">ActivityMain</string>
     <string name="title_home">Accueil</string>
     <string name="title_donations">Dons</string>

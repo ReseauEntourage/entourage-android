@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.groups
+package social.entourage.android.new_v8.groups.create
 
 import android.os.Bundle
 import android.text.Editable
@@ -38,21 +38,21 @@ class CreateGroupStepOneFragment : Fragment() {
     private fun handleOnClickNext(onClick: Boolean) {
         if (onClick) {
             if (isGroupNameValid()) {
-                binding.error.root.visibility = View.GONE
+                binding.layout.error.root.visibility = View.GONE
                 viewModel.isCondition.value = true
-                viewModel.group.name(binding.groupName.text.toString())
-                viewModel.group.description(binding.groupDescription.text.toString())
+                viewModel.group.name(binding.layout.groupName.text.toString())
+                viewModel.group.description(binding.layout.groupDescription.text.toString())
                 viewModel.clickNext.removeObservers(viewLifecycleOwner)
             } else {
-                binding.error.root.visibility = View.VISIBLE
-                binding.error.errorMessage.text = getString(R.string.error_mandatory_fields)
+                binding.layout.error.root.visibility = View.VISIBLE
+                binding.layout.error.errorMessage.text = getString(R.string.error_mandatory_fields)
                 viewModel.isCondition.value = false
             }
         }
     }
 
     private fun handleNextButtonState() {
-        binding.groupName.addTextChangedListener(object : TextWatcher {
+        binding.layout.groupName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
             }
 
@@ -65,17 +65,17 @@ class CreateGroupStepOneFragment : Fragment() {
     }
 
     private fun initializeDescriptionCounter() {
-        binding.counter.text = String.format(
+        binding.layout.counter.text = String.format(
             getString(R.string.description_counter),
-            binding.groupDescription.text?.length.toString()
+            binding.layout.groupDescription.text?.length.toString()
         )
-        binding.groupDescription.addTextChangedListener(object : TextWatcher {
+        binding.layout.groupDescription.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                binding.counter.text = String.format(
+                binding.layout.counter.text = String.format(
                     getString(R.string.description_counter),
                     s.length.toString()
                 )
@@ -93,11 +93,11 @@ class CreateGroupStepOneFragment : Fragment() {
     }
 
     fun isGroupNameValid(): Boolean {
-        return binding.groupName.text.length >= Const.GROUP_NAME_MIN_LENGTH
+        return binding.layout.groupName.text.length >= Const.GROUP_NAME_MIN_LENGTH
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        binding.error.root.visibility = View.GONE
+        binding.layout.error.root.visibility = View.GONE
     }
 }

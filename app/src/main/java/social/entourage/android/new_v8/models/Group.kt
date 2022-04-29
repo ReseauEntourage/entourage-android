@@ -3,6 +3,8 @@ package social.entourage.android.new_v8.models
 import com.google.gson.annotations.SerializedName
 
 data class Group(
+    @SerializedName("id")
+    var id: Int? = null,
     @SerializedName("name")
     var name: String? = null,
     @SerializedName("description")
@@ -20,9 +22,10 @@ data class Group(
     @SerializedName("other_interest")
     var otherInterest: String? = null,
     @SerializedName("interests")
-    var interests: MutableList<String>? = null,
-
-    ) {
+    var interests: MutableList<String> = mutableListOf(),
+    @SerializedName("image_url")
+    var imageUrl: String? = null,
+) {
 
     fun name(value: String) = apply {
         name = value
@@ -61,7 +64,7 @@ data class Group(
     }
 
     override fun toString(): String {
-        return "Group(name=$name, description=$description, welcomeMessage=$welcomeMessage, ethics=$ethics, latitude=$latitude, longitude=$longitude, neighborhoodImageId=$neighborhoodImageId, otherInterest=$otherInterest, interests=$interests)"
+        return "Group(id=$id, name=$name, description=$description, welcomeMessage=$welcomeMessage, ethics=$ethics, latitude=$latitude, longitude=$longitude, neighborhoodImageId=$neighborhoodImageId, otherInterest=$otherInterest, interests=$interests, imageUrl=$imageUrl)"
     }
 
 }

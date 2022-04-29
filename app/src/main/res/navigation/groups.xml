@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/create_group_fragment"
-        android:name="social.entourage.android.new_v8.groups.CreateGroupFragment">
+        android:name="social.entourage.android.new_v8.groups.create.CreateGroupFragment">
         <action
             android:id="@+id/action_create_group_fragment_to_create_group_success_fragment"
             app:destination="@id/create_group_success_fragment" />
@@ -14,6 +14,6 @@
 
     <fragment
         android:id="@+id/create_group_success_fragment"
-        android:name="social.entourage.android.new_v8.groups.CreateGroupSuccessFragment" />
+        android:name="social.entourage.android.new_v8.groups.create.CreateGroupSuccessFragment" />
 
 </navigation>
