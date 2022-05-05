@@ -43,6 +43,10 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".new_v8.groups.edit.EditGroupActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
             android:name=".new_v8.groups.CreateGroupActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />

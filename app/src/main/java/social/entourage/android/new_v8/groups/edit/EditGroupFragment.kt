@@ -63,7 +63,7 @@ class EditGroupFragment : Fragment() {
     }
 
     private fun back() {
-        findNavController().popBackStack()
+        requireActivity().finish()
     }
 
 
