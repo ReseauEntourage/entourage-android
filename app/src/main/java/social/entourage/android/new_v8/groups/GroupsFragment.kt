@@ -63,14 +63,4 @@ class GroupsFragment : Fragment() {
             )
         }
     }
-
-
-    private fun editGroup() {
-        binding.editGroup.setOnClickListener {
-            startActivity(
-                Intent(context, EditGroupActivity::class.java)
-            )
-        }
-
-    }
 }
