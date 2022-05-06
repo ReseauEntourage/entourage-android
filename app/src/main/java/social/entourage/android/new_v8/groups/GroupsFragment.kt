@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentGroupsBinding
 import social.entourage.android.new_v8.groups.create.CreateGroupActivity
+import kotlin.math.abs
 
 
 class GroupsFragment : Fragment() {
@@ -29,6 +31,7 @@ class GroupsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         createGroup()
         initializeTab()
+        handleImageViewAnimation()
     }
 
     private fun initializeTab() {
@@ -45,6 +48,13 @@ class GroupsFragment : Fragment() {
         }.attach()
     }
 
+    private fun handleImageViewAnimation() {
+        binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            val res: Float =
+                abs(verticalOffset).toFloat() / appBarLayout.totalScrollRange
+            binding.img.alpha = 1f - res
+        })
+    }
 
     private fun createGroup() {
         binding.createGroup.setOnClickListener {

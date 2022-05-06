@@ -363,6 +363,12 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="h1_collapsed">
+        <item name="android:textSize">@dimen/button_create_group</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
     <style name="h1_black">
         <item name="android:textSize">@dimen/header_title</item>
         <item name="android:fontFamily">@font/quicksand_bold</item>
