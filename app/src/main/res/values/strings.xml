@@ -232,5 +232,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="my_groups">Mes groupes</string>
     <string name="members_number">%s membres</string>
     <string name="future_outgoing_events_number">%s évènements prévus</string>
+    <string name="search_group_hint">Rechercher un groupe</string>
 
 </resources>

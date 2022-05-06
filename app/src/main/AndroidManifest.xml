@@ -52,7 +52,8 @@
         <activity
             android:name=".new_v8.MainActivity"
             android:exported="false"
-            android:label="@string/title_activity_main" /> <!-- use for accessing Storage Android 10+ -->
+            android:label="@string/title_activity_main"
+            android:windowSoftInputMode="adjustPan" /> <!-- use for accessing Storage Android 10+ -->
         <activity
             android:name=".onboarding.login.LoginChangePhoneActivity"
             android:screenOrientation="portrait" />

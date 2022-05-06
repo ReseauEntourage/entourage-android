@@ -6,9 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.databinding.NewFragmentGroupsListBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.models.Group
+
+
+const val groupPerPage = 10
 
 class GroupsListFragment : Fragment() {
 
@@ -16,16 +20,18 @@ class GroupsListFragment : Fragment() {
     val binding: NewFragmentGroupsListBinding get() = _binding!!
     private var groupsList: MutableList<Group> = ArrayList()
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
+    private var page: Int = 0
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        groupPresenter.getAllGroups()
+        loadGroups()
         groupPresenter.getAllGroups.observe(viewLifecycleOwner, ::handleResponseGetGroups)
         initializeGroups()
     }
 
     private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
-        groupsList.clear()
+        //groupsList.clear()
         allGroups?.let { groupsList.addAll(it) }
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
@@ -40,6 +46,8 @@ class GroupsListFragment : Fragment() {
 
     private fun initializeGroups() {
         binding.recyclerView.apply {
+            // Pagination
+            addOnScrollListener(recyclerViewOnScrollListener)
             layoutManager = LinearLayoutManager(context)
             adapter = GroupsListAdapter(groupsList, object : OnItemCheckListener {
                 override fun onItemCheck(item: Group) {
@@ -50,5 +58,29 @@ class GroupsListFragment : Fragment() {
             })
         }
     }
+
+    private fun loadGroups() {
+        page += 1
+        groupPresenter.getAllGroups(page, groupPerPage)
+    }
+
+    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener =
+        object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
+                layoutManager?.let {
+                    val visibleItemCount: Int = layoutManager.childCount
+                    val totalItemCount: Int = layoutManager.itemCount
+                    val firstVisibleItemPosition: Int =
+                        layoutManager.findFirstVisibleItemPosition()
+                    if (!groupPresenter.isLoading && !groupPresenter.isLastPage) {
+                        if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= groupPerPage) {
+                            loadGroups()
+                        }
+                    }
+                }
+            }
+        }
 
 }

@@ -8,6 +8,7 @@ import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.GroupWrapper
 import social.entourage.android.api.request.GroupsListWrapper
+import social.entourage.android.new_v8.groups.list.groupPerPage
 import social.entourage.android.new_v8.models.Group
 import timber.log.Timber
 
@@ -17,6 +18,9 @@ class GroupPresenter {
     var getGroup = MutableLiveData<Group>()
     var getAllGroups = MutableLiveData<MutableList<Group>>()
     var isGroupUpdated = MutableLiveData<Boolean>()
+
+    var isLoading: Boolean = false
+    var isLastPage: Boolean = false
 
 
     fun createGroup(group: Group) {
@@ -80,20 +84,20 @@ class GroupPresenter {
             })
     }
 
-    fun getAllGroups() {
-        EntourageApplication.get().apiModule.groupRequest.getAllGroups()
+    fun getAllGroups(page: Int, per: Int) {
+        EntourageApplication.get().apiModule.groupRequest.getAllGroups(page, per)
             .enqueue(object : Callback<GroupsListWrapper> {
                 override fun onResponse(
                     call: Call<GroupsListWrapper>,
                     response: Response<GroupsListWrapper>
                 ) {
                     response.body()?.let { allGroupsWrapper ->
+                        if (allGroupsWrapper.allGroups.size < groupPerPage) isLastPage = true
                         getAllGroups.value = allGroupsWrapper.allGroups
                     }
                 }
 
                 override fun onFailure(call: Call<GroupsListWrapper>, t: Throwable) {
-                    isGroupUpdated.value = false
                 }
             })
     }

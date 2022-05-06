@@ -5,7 +5,23 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/user_edit_partner_search"
+            style="@style/input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="26dp"
+            android:layout_marginEnd="35dp"
+            android:background="@drawable/new_bg_rounded_search_orange_stroke_transparent"
+            android:drawablePadding="8dp"
+            android:hint="@string/search_group_hint"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="11dp"
+            app:drawableStartCompat="@drawable/new_search" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"

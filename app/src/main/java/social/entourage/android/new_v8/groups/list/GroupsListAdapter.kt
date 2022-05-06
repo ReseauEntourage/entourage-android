@@ -3,6 +3,7 @@ package social.entourage.android.new_v8.groups.list
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -57,6 +58,12 @@ class GroupsListAdapter(
                     .placeholder(R.drawable.new_illu_header_group)
                     .transform(CenterCrop(), RoundedCorners(20.px))
                     .into(binding.image)
+                val listAdapter = GroupsInterestsListAdapter(this.interests)
+                binding.recyclerView.apply {
+                    layoutManager =
+                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                    adapter = listAdapter
+                }
             }
         }
     }
