@@ -39,6 +39,7 @@ class GroupsListFragment : Fragment() {
     private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
         //groupsList.clear()
         allGroups?.let { groupsList.addAll(it) }
+        binding.progressBar.visibility = View.GONE
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 
