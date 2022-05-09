@@ -11,7 +11,7 @@ class CommunicationHandlerViewModel : ViewModel() {
 
     var group: Group = Group()
 
-    fun resetStepOne() {
+    fun resetValues() {
         isCondition.value = false
         isButtonClickable.value = false
         clickNext.value = false

@@ -36,7 +36,7 @@ class CreateGroupStepThreeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.resetStepOne()
+        viewModel.resetValues()
         handleChoosePhoto()
         setWelcomeMessage()
     }
@@ -117,7 +117,7 @@ class CreateGroupStepThreeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.resetStepOne()
+        viewModel.resetValues()
         viewModel.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
         viewModel.isButtonClickable.value = imageHasBeenSelected()
     }

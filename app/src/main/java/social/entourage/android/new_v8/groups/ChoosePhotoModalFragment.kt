@@ -62,11 +62,13 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
     private fun handleValidateButton() {
         binding.validate.setOnClickListener {
             val image = choosePhotoAdapter.getSelected()
-            setFragmentResult(
-                Const.REQUEST_KEY_CHOOSE_PHOTO,
-                bundleOf(Const.CHOOSE_PHOTO to image)
-            )
-            dismiss()
+            if (image != null) {
+                setFragmentResult(
+                    Const.REQUEST_KEY_CHOOSE_PHOTO,
+                    bundleOf(Const.CHOOSE_PHOTO to image)
+                )
+                dismiss()
+            }
         }
     }
 

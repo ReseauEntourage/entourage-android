@@ -100,6 +100,7 @@ class CreateGroupFragment : Fragment() {
 
     private fun setPreviousClickListener() {
         binding.previous.setOnClickListener {
+            viewModel.resetValues()
             viewPager.previousPage(true)
             if (viewPager.currentItem == 0) binding.previous.visibility = View.INVISIBLE
         }
@@ -115,6 +116,7 @@ class CreateGroupFragment : Fragment() {
             } else {
                 viewPager.nextPage(true)
                 if (viewPager.currentItem > 0) binding.previous.visibility = View.VISIBLE
+                viewModel.resetValues()
             }
         }
     }
@@ -143,6 +145,6 @@ class CreateGroupFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.resetStepOne()
+        viewModel.resetValues()
     }
 }

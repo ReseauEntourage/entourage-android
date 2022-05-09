@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -124,22 +125,8 @@ class EditGroupFragment : Fragment() {
 
                 override fun afterTextChanged(s: Editable) {}
             })
-            stepOne.groupName.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-
-                }
-
-                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                    handleSaveButtonState()
-                }
-
-                override fun afterTextChanged(s: Editable) {}
-            })
+            handleEditTextChangedTextListener(stepOne.groupName)
+            handleEditTextChangedTextListener(stepOne.groupDescription)
             stepThree.groupPhotoTitle.title.text = getString(R.string.edit_photo)
             stepThree.groupPhotoTitle.mandatory.visibility = View.GONE
             stepThree.groupPhotoLabel.visibility = View.GONE
@@ -154,6 +141,18 @@ class EditGroupFragment : Fragment() {
         handleSaveButton()
     }
 
+    private fun handleEditTextChangedTextListener(editText: EditText) {
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                handleSaveButtonState()
+            }
+
+            override fun afterTextChanged(s: Editable) {}
+        })
+    }
 
     private fun initializeInterests() {
         binding.stepTwo.recyclerView.apply {
@@ -206,7 +205,7 @@ class EditGroupFragment : Fragment() {
 
     private fun checkName(): Boolean {
         with(binding) {
-            return if (isGroupNameValid()) {
+            return if (isGroupNameValid() && isGroupDescriptionValid()) {
                 stepOne.error.root.visibility = View.GONE
                 true
             } else {
@@ -231,16 +230,20 @@ class EditGroupFragment : Fragment() {
     }
 
     private fun handleSaveButtonState() {
-        val isActive = isInterestsListValid() && isGroupNameValid()
+        val isActive = isInterestsListValid() && isGroupNameValid() && isGroupDescriptionValid()
         val background = ContextCompat.getDrawable(
             requireContext(),
-            if (isActive) R.drawable.new_rounded_button_orange else R.drawable.new_rounded_button_light_orange
+            if (isActive) R.drawable.new_rounded_button_orange else R.drawable.new_bg_rounded_inactive_button_light_orange
         )
         binding.validate.button.background = background
     }
 
     private fun isGroupNameValid(): Boolean {
-        return binding.stepOne.groupName.text.length >= Const.GROUP_NAME_MIN_LENGTH
+        return binding.stepOne.groupName.text.length >= Const.GROUP_NAME_MIN_LENGTH && binding.stepOne.groupName.text.isNotBlank()
+    }
+
+    private fun isGroupDescriptionValid(): Boolean {
+        return binding.stepOne.groupDescription.text.length >= Const.GROUP_DESCRIPTION_MIN_LENGTH && binding.stepOne.groupDescription.text.isNotBlank()
     }
 
     private fun isInterestsListValid(): Boolean {

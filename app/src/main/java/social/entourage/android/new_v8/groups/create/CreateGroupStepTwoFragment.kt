@@ -15,6 +15,7 @@ import social.entourage.android.new_v8.models.Interest
 import social.entourage.android.new_v8.profile.editProfile.InterestsListAdapter
 import social.entourage.android.new_v8.profile.editProfile.InterestsTypes
 import social.entourage.android.new_v8.profile.editProfile.OnItemCheckListener
+import timber.log.Timber
 
 
 class CreateGroupStepTwoFragment : Fragment() {
@@ -31,7 +32,7 @@ class CreateGroupStepTwoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.resetStepOne()
+        viewModel.resetValues()
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         initializeInterests()
     }
@@ -88,19 +89,12 @@ class CreateGroupStepTwoFragment : Fragment() {
                         getString(R.string.error_categories_create_group)
                     viewModel.isCondition.value = false
                 }
-                selectedInterestIdList.contains(InterestsTypes.TYPE_OTHER.label)
-                        && interestsListAdapter.getOtherInterestCategory() == null -> {
-                    binding.layout.error.root.visibility = View.VISIBLE
-                    binding.layout.error.errorMessage.text =
-                        getString(R.string.error_empty_other_category_create_group)
-                    viewModel.isCondition.value = false
-                }
                 else -> {
                     binding.layout.error.root.visibility = View.GONE
                     viewModel.isCondition.value = true
                     viewModel.group.interests(selectedInterestIdList)
                     interestsListAdapter.getOtherInterestCategory()
-                        ?.let { viewModel.group.otherInterest(it) }
+                        ?.let { if (it.isNotEmpty()) viewModel.group.otherInterest(it) }
                     viewModel.clickNext.removeObservers(viewLifecycleOwner)
                 }
             }
@@ -109,7 +103,7 @@ class CreateGroupStepTwoFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.resetStepOne()
+        viewModel.resetValues()
         viewModel.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
         viewModel.isButtonClickable.value = interestHaveBeenSelected()
     }
