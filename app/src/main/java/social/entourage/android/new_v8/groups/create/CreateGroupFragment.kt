@@ -53,7 +53,7 @@ class CreateGroupFragment : Fragment() {
 
     private fun initializeViewPager() {
         viewPager = binding.viewPager
-        val adapter = CreateGroupAdapter(childFragmentManager, lifecycle)
+        val adapter = CreateGroupViewPagerAdapter(childFragmentManager, lifecycle)
         viewPager.adapter = adapter
         TabLayoutMediator(binding.tabLayout, viewPager) { tab: TabLayout.Tab, _: Int ->
             tab.view.isClickable = false
@@ -125,7 +125,7 @@ class CreateGroupFragment : Fragment() {
                 getString(R.string.back_create_group_title),
                 getString(R.string.back_create_group_content),
                 getString(R.string.exit)
-            ) { findNavController().popBackStack() }
+            ) { requireActivity().finish() }
         }
     }
 

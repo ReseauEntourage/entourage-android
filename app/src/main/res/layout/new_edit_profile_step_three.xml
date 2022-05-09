@@ -32,7 +32,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="-4dp"
-            android:layout_marginTop="5dp"
             android:backgroundTint="@color/light_orange_opacity_50"
             android:hint="@string/group_welcome_message_hint"
             android:maxLines="1"
