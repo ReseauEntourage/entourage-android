@@ -233,5 +233,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="members_number">%s membres</string>
     <string name="future_outgoing_events_number">%s évènements prévus</string>
     <string name="search_group_hint">Rechercher un groupe</string>
+    <string name="group_list_empty_state_title">Oups, il n\'y a pas encore \nd\'autres groupes autour de \nvous.</string>
+    <string name="group_list_empty_state_subtitle">N\'hésitez pas à créer de \nnouveaux groupes de voisins !</string>
+
 
 </resources>
