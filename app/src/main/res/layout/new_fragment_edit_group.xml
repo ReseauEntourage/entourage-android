@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             app:title="@{@string/edit_group}" />
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="7dp"
@@ -56,7 +56,7 @@
                     android:layout_marginTop="40dp"
                     app:layout_constraintTop_toTopOf="parent" />
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
         <include
             android:id="@+id/validate"

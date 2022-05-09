@@ -57,7 +57,7 @@
                 style="@style/input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:backgroundTint="@color/light_orange_opacity_50"
                 android:inputType="none"
                 tools:text="content" />

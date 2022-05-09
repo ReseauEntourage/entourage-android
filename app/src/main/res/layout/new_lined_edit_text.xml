@@ -64,6 +64,8 @@
                 android:layout_marginStart="-4dp"
                 android:backgroundTint="@color/light_orange_opacity_50"
                 android:maxLength="200"
+                android:layout_marginTop="5dp"
+                android:paddingTop="0dp"
                 tools:text="content" />
 
 

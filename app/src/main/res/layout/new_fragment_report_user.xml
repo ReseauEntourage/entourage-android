@@ -80,6 +80,8 @@
                 android:layout_marginHorizontal="@dimen/padding_horizental"
                 android:layout_marginStart="-4dp"
                 android:backgroundTint="@color/light_orange_opacity_50"
+                android:paddingTop="0dp"
+                android:layout_marginTop="5dp"
                 android:visibility="gone"
                 app:layout_constraintHorizontal_weight="0.8"
                 app:layout_constraintLeft_toLeftOf="parent"
