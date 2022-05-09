@@ -69,7 +69,9 @@ class CreateGroupStepOneFragment : Fragment() {
                 viewModel.isButtonClickable.value = isGroupNameValid() && isGroupDescriptionValid()
             }
 
-            override fun afterTextChanged(s: Editable) {}
+            override fun afterTextChanged(s: Editable) {
+                viewModel.canExitGroupCreation = canExitGroupCreation()
+            }
         })
     }
 
@@ -107,6 +109,10 @@ class CreateGroupStepOneFragment : Fragment() {
 
     fun isGroupDescriptionValid(): Boolean {
         return binding.layout.groupDescription.text.length >= Const.GROUP_DESCRIPTION_MIN_LENGTH && binding.layout.groupDescription.text.isNotBlank()
+    }
+
+    fun canExitGroupCreation(): Boolean {
+        return binding.layout.groupName.text.toString() == "" && binding.layout.groupDescription.text.toString() == ""
     }
 
     override fun onDestroy() {

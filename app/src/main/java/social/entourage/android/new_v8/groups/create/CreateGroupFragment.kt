@@ -25,7 +25,6 @@ class CreateGroupFragment : Fragment() {
     private val viewModel: CommunicationHandlerViewModel by activityViewModels()
     private lateinit var viewPager: ViewPager2
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
-    private var showExitModal: Boolean = false
 
 
     override fun onCreateView(
@@ -95,7 +94,6 @@ class CreateGroupFragment : Fragment() {
             if (isButtonActive) R.drawable.new_rounded_button_light_orange else R.drawable.new_bg_rounded_inactive_button_light_orange
         )
         binding.next.background = background
-        showExitModal = isButtonActive
     }
 
     private fun setPreviousClickListener() {
@@ -124,14 +122,14 @@ class CreateGroupFragment : Fragment() {
 
     private fun handleBackButton() {
         binding.header.iconBack.setOnClickListener {
-            if (showExitModal)
-                Utils.showAlertDialogButtonClicked(
-                    requireView(),
-                    getString(R.string.back_create_group_title),
-                    getString(R.string.back_create_group_content),
-                    getString(R.string.exit)
-                ) { requireActivity().finish() }
-            else requireActivity().finish()
+            if (viewModel.canExitGroupCreation)
+                requireActivity().finish()
+            else Utils.showAlertDialogButtonClicked(
+                requireView(),
+                getString(R.string.back_create_group_title),
+                getString(R.string.back_create_group_content),
+                getString(R.string.exit)
+            ) { requireActivity().finish() }
         }
     }
 

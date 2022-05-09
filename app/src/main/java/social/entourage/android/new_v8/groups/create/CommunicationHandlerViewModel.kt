@@ -8,6 +8,7 @@ class CommunicationHandlerViewModel : ViewModel() {
     var clickNext = MutableLiveData<Boolean>()
     var isCondition = MutableLiveData<Boolean>()
     var isButtonClickable = MutableLiveData<Boolean>()
+    var canExitGroupCreation: Boolean = true
 
     var group: Group = Group()
 
