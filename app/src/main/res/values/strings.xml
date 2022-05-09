@@ -227,4 +227,11 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="title_messages">Messages</string>
     <string name="title_groups">Groupes</string>
     <string name="title_events">Evénements</string>
+    <string name="communities">Communautés</string>
+    <string name="discover_groups">Découvrir</string>
+    <string name="my_groups">Mes groupes</string>
+    <string name="members_number">%s membres</string>
+    <string name="future_outgoing_events_number">%s évènements prévus</string>
+    <string name="search_group_hint">Rechercher un groupe</string>
+
 </resources>

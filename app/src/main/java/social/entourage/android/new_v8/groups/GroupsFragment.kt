@@ -6,8 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentGroupsBinding
-import social.entourage.android.new_v8.groups.edit.EditGroupActivity
+import social.entourage.android.new_v8.groups.create.CreateGroupActivity
+import kotlin.math.abs
 
 
 class GroupsFragment : Fragment() {
@@ -26,9 +30,31 @@ class GroupsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         createGroup()
-        editGroup()
+        initializeTab()
+        handleImageViewAnimation()
     }
 
+    private fun initializeTab() {
+        val viewPager = binding.viewPager
+        val adapter = GroupsViewPagerAdapter(childFragmentManager, lifecycle)
+        viewPager.adapter = adapter
+        val tabLayout = binding.tabLayout
+        val tabs = arrayOf(
+            requireContext().getString(R.string.my_groups),
+            requireContext().getString(R.string.discover_groups)
+        )
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = tabs[position]
+        }.attach()
+    }
+
+    private fun handleImageViewAnimation() {
+        binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            val res: Float =
+                abs(verticalOffset).toFloat() / appBarLayout.totalScrollRange
+            binding.img.alpha = 1f - res
+        })
+    }
 
     private fun createGroup() {
         binding.createGroup.setOnClickListener {
@@ -36,15 +62,5 @@ class GroupsFragment : Fragment() {
                 Intent(context, CreateGroupActivity::class.java)
             )
         }
-    }
-
-
-    private fun editGroup() {
-        binding.editGroup.setOnClickListener {
-            startActivity(
-                Intent(context, EditGroupActivity::class.java)
-            )
-        }
-
     }
 }

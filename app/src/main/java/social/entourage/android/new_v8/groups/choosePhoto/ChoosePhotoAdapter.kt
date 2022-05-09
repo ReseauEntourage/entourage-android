@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.groups
+package social.entourage.android.new_v8.groups.choosePhoto
 
 import android.net.Uri
 import android.view.LayoutInflater

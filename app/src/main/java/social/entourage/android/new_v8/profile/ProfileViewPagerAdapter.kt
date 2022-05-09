@@ -9,7 +9,7 @@ import social.entourage.android.new_v8.profile.settings.SettingsFragment
 
 private const val NB_TABS = 2
 
-class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
+class ProfileViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
 
     override fun getItemCount(): Int {

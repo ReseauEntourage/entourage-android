@@ -54,7 +54,7 @@ class CreateGroupFragment : Fragment() {
 
     private fun initializeViewPager() {
         viewPager = binding.viewPager
-        val adapter = CreateGroupAdapter(childFragmentManager, lifecycle)
+        val adapter = CreateGroupViewPagerAdapter(childFragmentManager, lifecycle)
         viewPager.adapter = adapter
         TabLayoutMediator(binding.tabLayout, viewPager) { tab: TabLayout.Tab, _: Int ->
             tab.view.isClickable = false

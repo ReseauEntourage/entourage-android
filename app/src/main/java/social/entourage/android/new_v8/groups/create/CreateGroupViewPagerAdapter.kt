@@ -7,7 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 
 const val NB_TABS = 3
 
-class CreateGroupAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
+class CreateGroupViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
 
     override fun getItemCount(): Int {

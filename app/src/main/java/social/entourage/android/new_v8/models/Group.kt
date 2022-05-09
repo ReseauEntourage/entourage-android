@@ -25,6 +25,10 @@ data class Group(
     var interests: MutableList<String> = mutableListOf(),
     @SerializedName("image_url")
     var imageUrl: String? = null,
+    @SerializedName("members")
+    var members: MutableList<GroupMember>? = mutableListOf(),
+    @SerializedName("future_outings_count")
+    var futureOutingsCount: Int? = null
 ) {
 
     fun name(value: String) = apply {

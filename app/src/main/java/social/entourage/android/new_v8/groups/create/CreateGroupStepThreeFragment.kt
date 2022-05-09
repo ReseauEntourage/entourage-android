@@ -16,7 +16,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
 import social.entourage.android.api.model.GroupImage
 import social.entourage.android.databinding.NewFragmentCreateGroupStepThreeBinding
-import social.entourage.android.new_v8.groups.ChoosePhotoModalFragment
+import social.entourage.android.new_v8.groups.choosePhoto.ChoosePhotoModalFragment
 import social.entourage.android.new_v8.user.ReportUserModalFragment
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
