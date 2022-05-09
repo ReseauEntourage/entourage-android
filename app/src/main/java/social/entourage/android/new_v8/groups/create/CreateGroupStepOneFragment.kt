@@ -112,7 +112,7 @@ class CreateGroupStepOneFragment : Fragment() {
     }
 
     fun canExitGroupCreation(): Boolean {
-        return binding.layout.groupName.text.toString() == "" && binding.layout.groupDescription.text.toString() == ""
+        return binding.layout.groupName.text.isEmpty() && binding.layout.groupDescription.text.isEmpty()
     }
 
     override fun onDestroy() {
