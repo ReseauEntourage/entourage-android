@@ -65,7 +65,7 @@ class MyGroupsListFragment : Fragment() {
 
                 override fun onItemUncheck(item: Group) {
                 }
-            })
+            }, myId)
         }
     }
 

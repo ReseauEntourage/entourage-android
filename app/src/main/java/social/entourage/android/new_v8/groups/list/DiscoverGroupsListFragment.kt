@@ -69,7 +69,7 @@ class DiscoverGroupsListFragment : Fragment() {
 
                 override fun onItemUncheck(item: Group) {
                 }
-            })
+            }, null)
         }
     }
 
