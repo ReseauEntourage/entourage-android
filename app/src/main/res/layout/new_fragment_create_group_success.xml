@@ -60,7 +60,7 @@
             android:layout_weight="0.3"
             android:background="@drawable/new_rounded_button_orange"
             android:paddingHorizontal="15dp"
-            android:text="@string/post_message"
+            android:text="@string/create_post"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent" />

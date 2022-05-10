@@ -212,9 +212,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="other">Autre</string>
     <string name="category_name_label">Décrivez en un mot la catégorie de votre groupe</string>
     <string name="pass">Passer</string>
-    <string name="post_message">Poster un message</string>
+    <string name="create_post">Créer une publication</string>
     <string name="group_success_title">Votre groupe a \nbien été créé !</string>
-    <string name="group_success_subtitle">Félicitation, vous venez de créer un \nnouveau groupe. Pour le rendre plus actif \nn’hésitez pas à créer un premier post :p</string>
+    <string name="group_success_subtitle">Félicitations, vous venez de créer un \nnouveau groupe. Pour le rendre plus actif \nn’hésitez pas à créer un premier post :p</string>
     <string name="select_photo">Sélectionner une photo</string>
     <string name="create">Créer</string>
     <string name="error_create_group">Erreur lors de la création du groupe</string>

@@ -122,7 +122,7 @@
     <color name="light_orange">#ff9c5d</color>
     <color name="light_orange_opacity_50">#80ff9c5d</color>
     <color name="light_orange_opacity_15">#26ff9c5d</color>
-    <color name="light_orange_opacity_40">#66ff9c5d</color>
+    <color name="light_orange_inactive_button">#FBBFA7</color>
     <color name="light_orange_opacity_25">#40ff9c5d</color>
     <color name="green">#2BBA7A</color>
     <color name="dark_grey">#343C58</color>
