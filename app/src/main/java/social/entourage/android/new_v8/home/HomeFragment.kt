@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import social.entourage.android.databinding.NewFragmentHomeBinding
+import social.entourage.android.new_v8.groups.edit.EditGroupActivity
 import social.entourage.android.new_v8.profile.ProfileActivity
 
 class HomeFragment : Fragment() {
@@ -25,6 +26,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setProfile()
+        editGroup()
     }
 
     private fun setProfile() {
@@ -33,5 +35,15 @@ class HomeFragment : Fragment() {
                 Intent(context, ProfileActivity::class.java)
             )
         }
+    }
+
+
+    private fun editGroup() {
+        binding.editGroup.setOnClickListener {
+            startActivity(
+                Intent(context, EditGroupActivity::class.java)
+            )
+        }
+
     }
 }
