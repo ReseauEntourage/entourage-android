@@ -1,18 +1,21 @@
 package social.entourage.android.new_v8.groups.list
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.Transformation
-import android.widget.LinearLayout
+import android.view.inputmethod.EditorInfo
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentGroupsListBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.models.Group
+import timber.log.Timber
 
 
 const val groupPerPage = 10
@@ -22,10 +25,9 @@ class GroupsListFragment : Fragment() {
     private var _binding: NewFragmentGroupsListBinding? = null
     val binding: NewFragmentGroupsListBinding get() = _binding!!
     private var groupsList: MutableList<Group> = ArrayList()
+    private var groupsListSearch: MutableList<Group> = ArrayList()
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
     private var page: Int = 0
-    private var collapsed = false
-    private var animation = 250L
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,7 +35,9 @@ class GroupsListFragment : Fragment() {
         loadGroups()
         groupPresenter.getAllGroups.observe(viewLifecycleOwner, ::handleResponseGetGroups)
         initializeGroups()
-
+        initializeSearchGroups()
+        handleEnterButton()
+        handleSearchOnFocus()
     }
 
     override fun onCreateView(
@@ -55,7 +59,7 @@ class GroupsListFragment : Fragment() {
 
     private fun updateView(isListEmpty: Boolean) {
         if (isListEmpty) binding.emptyStateLayout.visibility = View.VISIBLE
-        else binding.recyclerView.visibility = View.VISIBLE
+        else binding.list.visibility = View.VISIBLE
     }
 
 
@@ -74,6 +78,21 @@ class GroupsListFragment : Fragment() {
         }
     }
 
+    private fun initializeSearchGroups() {
+        binding.searchRecyclerView.apply {
+            // Pagination
+            addOnScrollListener(recyclerViewOnScrollListener)
+            layoutManager = LinearLayoutManager(context)
+            adapter = GroupsListAdapter(groupsListSearch, object : OnItemCheckListener {
+                override fun onItemCheck(item: Group) {
+                }
+
+                override fun onItemUncheck(item: Group) {
+                }
+            })
+        }
+    }
+
     private fun loadGroups() {
         page += 1
         groupPresenter.getAllGroups(page, groupPerPage)
@@ -83,22 +102,10 @@ class GroupsListFragment : Fragment() {
         object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                handleSearchBarVisibility(recyclerView)
                 handlePagination(recyclerView)
             }
         }
 
-    fun handleSearchBarVisibility(recyclerView: RecyclerView) {
-        val offset = recyclerView.computeVerticalScrollOffset()
-        val extent = recyclerView.computeVerticalScrollExtent()
-        val range = recyclerView.computeVerticalScrollRange()
-        val percentage = 100.0f * offset / (range - extent).toFloat()
-        if (percentage < 1F) {
-            if (collapsed) expand(binding.search)
-        } else if (percentage > 5F) {
-            if (!collapsed) collapse(binding.search)
-        }
-    }
 
     fun handlePagination(recyclerView: RecyclerView) {
         val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
@@ -115,51 +122,34 @@ class GroupsListFragment : Fragment() {
         }
     }
 
-    private fun expand(v: View) {
-        val matchParentMeasureSpec =
-            View.MeasureSpec.makeMeasureSpec((v.parent as View).width, View.MeasureSpec.EXACTLY)
-        val wrapContentMeasureSpec =
-            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-        v.measure(matchParentMeasureSpec, wrapContentMeasureSpec)
-        val targetHeight = v.measuredHeight
-
-        v.layoutParams.height = 1
-        v.visibility = View.VISIBLE
-        val a: Animation = object : Animation() {
-            override fun applyTransformation(interpolatedTime: Float, t: Transformation?) {
-                v.layoutParams.height =
-                    if (interpolatedTime == 2f) LinearLayout.LayoutParams.WRAP_CONTENT else (targetHeight * interpolatedTime).toInt()
-                v.requestLayout()
+    private fun handleEnterButton() {
+        binding.searchBar.setOnEditorActionListener { _, actionId, _ ->
+            var handled = false
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                Timber.e("button handle")
+                handled = true
             }
-
-            override fun willChangeBounds(): Boolean {
-                return true
-            }
+            handled
         }
-        a.duration = animation
-        v.startAnimation(a)
-        collapsed = false
     }
 
-    private fun collapse(v: View) {
-        val initialHeight = v.measuredHeight
-        val a: Animation = object : Animation() {
-            override fun applyTransformation(interpolatedTime: Float, t: Transformation) {
-                if (interpolatedTime == 2f) {
-                    v.visibility = View.GONE
-                } else {
-                    v.layoutParams.height =
-                        initialHeight - (initialHeight * interpolatedTime).toInt()
-                    v.requestLayout()
-                }
+    private fun handleSearchOnFocus() {
+        binding.searchBar.setOnFocusChangeListener { _, _ ->
+            binding.recyclerView.visibility = View.GONE
+            binding.searchRecyclerView.visibility = View.VISIBLE
+        }
+    }
+
+    private fun handleSearchOnTextListener() {
+        binding.searchBar.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
             }
 
-            override fun willChangeBounds(): Boolean {
-                return true
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
             }
-        }
-        a.duration = animation
-        v.startAnimation(a)
-        collapsed = true
+
+            override fun afterTextChanged(s: Editable) {}
+        })
     }
 }
