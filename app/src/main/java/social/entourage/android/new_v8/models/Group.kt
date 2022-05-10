@@ -28,7 +28,9 @@ data class Group(
     @SerializedName("members")
     var members: MutableList<GroupMember>? = mutableListOf(),
     @SerializedName("future_outings_count")
-    var futureOutingsCount: Int? = null
+    var futureOutingsCount: Int? = null,
+    @SerializedName("user")
+    var admin: GroupMember? = null
 ) {
 
     fun name(value: String) = apply {
@@ -68,7 +70,7 @@ data class Group(
     }
 
     override fun toString(): String {
-        return "Group(id=$id, name=$name, description=$description, welcomeMessage=$welcomeMessage, ethics=$ethics, latitude=$latitude, longitude=$longitude, neighborhoodImageId=$neighborhoodImageId, otherInterest=$otherInterest, interests=$interests, imageUrl=$imageUrl)"
+        return "Group(id=$id, name=$name, description=$description, welcomeMessage=$welcomeMessage, ethics=$ethics, latitude=$latitude, longitude=$longitude, neighborhoodImageId=$neighborhoodImageId, otherInterest=$otherInterest, interests=$interests, imageUrl=$imageUrl, members=$members, futureOutingsCount=$futureOutingsCount, admin=$admin)"
     }
 
 }

@@ -235,6 +235,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="search_group_hint">Rechercher un groupe</string>
     <string name="group_list_empty_state_title">Oups, il n\'y a pas encore d\'autres groupes autour de vous.</string>
     <string name="group_list_empty_state_subtitle">N\'hésitez pas à créer de \nnouveaux groupes de voisins !</string>
+    <string name="my_group_list_empty_state_title">Vous n’avez rejoint encore aucun groupe.</string>
+    <string name="my_group_list_empty_state_button">Découvrir les groupes</string>
+    <string name="admin">Admin</string>
 
 
 </resources>

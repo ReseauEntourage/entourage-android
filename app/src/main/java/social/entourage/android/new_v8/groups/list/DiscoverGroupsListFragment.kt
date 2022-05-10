@@ -17,7 +17,7 @@ import social.entourage.android.new_v8.models.Group
 
 const val groupPerPage = 10
 
-class GroupsListFragment : Fragment() {
+class DiscoverGroupsListFragment : Fragment() {
 
     private var _binding: NewFragmentGroupsListBinding? = null
     val binding: NewFragmentGroupsListBinding get() = _binding!!
@@ -33,7 +33,6 @@ class GroupsListFragment : Fragment() {
         loadGroups()
         groupPresenter.getAllGroups.observe(viewLifecycleOwner, ::handleResponseGetGroups)
         initializeGroups()
-
     }
 
     override fun onCreateView(
