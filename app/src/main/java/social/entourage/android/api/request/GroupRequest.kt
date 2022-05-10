@@ -33,4 +33,9 @@ interface GroupRequest {
         @Query("page") page: Int,
         @Query("per") per: Int
     ): Call<GroupsListWrapper>
+
+    @GET("neighborhoods")
+    fun getGroupsSearch(
+        @Query("q") searchTxt: String,
+    ): Call<GroupsListWrapper>
 }

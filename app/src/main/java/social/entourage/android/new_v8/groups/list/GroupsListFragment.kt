@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +14,7 @@ import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentGroupsListBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.models.Group
-import timber.log.Timber
+import social.entourage.android.new_v8.utils.Utils
 
 
 const val groupPerPage = 10
@@ -34,10 +33,12 @@ class GroupsListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         loadGroups()
         groupPresenter.getAllGroups.observe(viewLifecycleOwner, ::handleResponseGetGroups)
+        groupPresenter.getGroupsSearch.observe(viewLifecycleOwner, ::handleResponseGetGroupsSearch)
         initializeGroups()
         initializeSearchGroups()
         handleEnterButton()
         handleSearchOnFocus()
+        handleCross()
     }
 
     override fun onCreateView(
@@ -56,10 +57,40 @@ class GroupsListFragment : Fragment() {
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 
+    private fun handleResponseGetGroupsSearch(allGroupsSearch: MutableList<Group>?) {
+        groupsListSearch.clear()
+        allGroupsSearch?.let { groupsListSearch.addAll(it) }
+        binding.progressBar.visibility = View.GONE
+        allGroupsSearch?.isEmpty()?.let { updateViewSearch(it) }
+        binding.searchRecyclerView.adapter?.notifyDataSetChanged()
+    }
+
 
     private fun updateView(isListEmpty: Boolean) {
-        if (isListEmpty) binding.emptyStateLayout.visibility = View.VISIBLE
-        else binding.list.visibility = View.VISIBLE
+        if (isListEmpty) {
+            binding.emptyStateLayout.visibility = View.VISIBLE
+            binding.title.text = getString(R.string.group_list_empty_state_title)
+            binding.subtitle.text = getString(R.string.group_list_empty_state_subtitle)
+            binding.arrow.visibility = View.VISIBLE
+        } else {
+            binding.list.visibility = View.VISIBLE
+            binding.recyclerView.visibility = View.VISIBLE
+        }
+    }
+
+    private fun updateViewSearch(isListEmpty: Boolean) {
+        if (isListEmpty) {
+            binding.emptyStateLayout.visibility = View.VISIBLE
+            binding.title.text = getString(R.string.group_list_search_empty_state_title)
+            binding.subtitle.text = getString(R.string.group_list_search_empty_state_subtitle)
+            binding.arrow.visibility = View.GONE
+            binding.recyclerView.visibility = View.GONE
+
+        } else {
+            binding.emptyStateLayout.visibility = View.GONE
+            binding.list.visibility = View.VISIBLE
+            binding.searchRecyclerView.visibility = View.VISIBLE
+        }
     }
 
 
@@ -126,7 +157,13 @@ class GroupsListFragment : Fragment() {
         binding.searchBar.setOnEditorActionListener { _, actionId, _ ->
             var handled = false
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                Timber.e("button handle")
+                Utils.hideKeyboard(requireActivity())
+                binding.searchRecyclerView.visibility = View.GONE
+                binding.recyclerView.visibility = View.GONE
+                binding.emptyStateLayout.visibility = View.GONE
+                binding.progressBar.visibility = View.VISIBLE
+                Utils.hideKeyboard(requireActivity())
+                groupPresenter.getGroupsSearch(binding.searchBar.text.toString())
                 handled = true
             }
             handled
@@ -140,16 +177,13 @@ class GroupsListFragment : Fragment() {
         }
     }
 
-    private fun handleSearchOnTextListener() {
-        binding.searchBar.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
-            }
-
-            override fun afterTextChanged(s: Editable) {}
-        })
+    private fun handleCross() {
+        binding.searchBarLayout.setEndIconOnClickListener {
+            binding.searchBar.text?.clear()
+            binding.searchRecyclerView.visibility = View.GONE
+            binding.emptyStateLayout.visibility = View.GONE
+            updateView(groupsList.isEmpty())
+            Utils.hideKeyboard(requireActivity())
+        }
     }
 }
