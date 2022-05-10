@@ -36,13 +36,6 @@ class GroupsListFragment : Fragment() {
 
     }
 
-    private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
-        //groupsList.clear()
-        allGroups?.let { groupsList.addAll(it) }
-        binding.progressBar.visibility = View.GONE
-        binding.recyclerView.adapter?.notifyDataSetChanged()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,6 +43,21 @@ class GroupsListFragment : Fragment() {
         _binding = NewFragmentGroupsListBinding.inflate(inflater, container, false)
         return binding.root
     }
+
+    private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
+        //groupsList.clear()
+        allGroups?.let { groupsList.addAll(it) }
+        binding.progressBar.visibility = View.GONE
+        allGroups?.isEmpty()?.let { updateView(it) }
+        binding.recyclerView.adapter?.notifyDataSetChanged()
+    }
+
+
+    private fun updateView(isListEmpty: Boolean) {
+        if (isListEmpty) binding.emptyStateLayout.visibility = View.VISIBLE
+        else binding.recyclerView.visibility = View.VISIBLE
+    }
+
 
     private fun initializeGroups() {
         binding.recyclerView.apply {

@@ -57,6 +57,7 @@
     <dimen name="settings_titles">14sp</dimen>
     <dimen name="profile_activity_statistics">16sp</dimen>
     <dimen name="header_title">24sp</dimen>
+    <dimen name="mini_header_title">18sp</dimen>
     <dimen name="padding_top">25dp</dimen>
     <dimen name="padding_horizontal">35dp</dimen>
     <dimen name="error_msg">11sp</dimen>

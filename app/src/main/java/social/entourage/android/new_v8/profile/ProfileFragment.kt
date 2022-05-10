@@ -36,6 +36,7 @@ class ProfileFragment : Fragment() {
         initializeTab()
         initializeEditButton()
         getUser()
+        handleBackButton()
     }
 
     private fun initializeTab() {
@@ -55,6 +56,12 @@ class ProfileFragment : Fragment() {
     private fun initializeEditButton() {
         binding.editProfile.setOnClickListener {
             findNavController().navigate(R.id.action_profile_fragment_to_edit_profile_fragment)
+        }
+    }
+
+    private fun handleBackButton() {
+        binding.iconBack.setOnClickListener {
+            requireActivity().finish()
         }
     }
 
