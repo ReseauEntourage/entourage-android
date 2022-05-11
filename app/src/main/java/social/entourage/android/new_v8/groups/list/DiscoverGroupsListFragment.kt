@@ -1,8 +1,6 @@
 package social.entourage.android.new_v8.groups.list
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +17,7 @@ import social.entourage.android.new_v8.utils.Utils
 
 const val groupPerPage = 10
 
-class GroupsListFragment : Fragment() {
+class DiscoverGroupsListFragment : Fragment() {
 
     private var _binding: NewFragmentGroupsListBinding? = null
     val binding: NewFragmentGroupsListBinding get() = _binding!!
@@ -105,7 +103,7 @@ class GroupsListFragment : Fragment() {
 
                 override fun onItemUncheck(item: Group) {
                 }
-            })
+            }, null)
         }
     }
 
@@ -120,7 +118,7 @@ class GroupsListFragment : Fragment() {
 
                 override fun onItemUncheck(item: Group) {
                 }
-            })
+            }, null)
         }
     }
 

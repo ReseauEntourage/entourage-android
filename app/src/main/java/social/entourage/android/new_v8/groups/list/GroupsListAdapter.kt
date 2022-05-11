@@ -2,6 +2,7 @@ package social.entourage.android.new_v8.groups.list
 
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +24,8 @@ interface OnItemCheckListener {
 
 class GroupsListAdapter(
     var groupsList: List<Group>,
-    var onItemClick: social.entourage.android.new_v8.groups.list.OnItemCheckListener
+    var onItemClick: social.entourage.android.new_v8.groups.list.OnItemCheckListener,
+    var userId: Int?
 ) : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
 
 
@@ -61,6 +63,10 @@ class GroupsListAdapter(
                     .transform(CenterCrop(), RoundedCorners(20.px))
                     .into(binding.image)
                 val listAdapter = GroupsInterestsListAdapter(this.interests)
+                if (userId == groupsList[position].admin?.id) {
+                    binding.admin.visibility = View.VISIBLE
+                    binding.star.visibility = View.VISIBLE
+                }
                 binding.recyclerView.apply {
                     layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
