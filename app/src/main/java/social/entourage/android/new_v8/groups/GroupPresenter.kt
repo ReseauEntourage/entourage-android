@@ -18,6 +18,7 @@ class GroupPresenter {
     var getGroup = MutableLiveData<Group>()
     var getAllGroups = MutableLiveData<MutableList<Group>>()
     var getGroupsSearch = MutableLiveData<MutableList<Group>>()
+    var getAllMyGroups = MutableLiveData<MutableList<Group>>()
     var isGroupUpdated = MutableLiveData<Boolean>()
 
     var isLoading: Boolean = false
@@ -112,6 +113,24 @@ class GroupPresenter {
                 ) {
                     response.body()?.let { allGroupsWrapper ->
                         getGroupsSearch.value = allGroupsWrapper.allGroups
+                    }
+                }
+
+                override fun onFailure(call: Call<GroupsListWrapper>, t: Throwable) {
+                }
+            })
+    }
+
+    fun getMyGroups(page: Int, per: Int, userId: Int) {
+        EntourageApplication.get().apiModule.groupRequest.getMyGroups(userId, page, per)
+            .enqueue(object : Callback<GroupsListWrapper> {
+                override fun onResponse(
+                    call: Call<GroupsListWrapper>,
+                    response: Response<GroupsListWrapper>
+                ) {
+                    response.body()?.let { allGroupsWrapper ->
+                        if (allGroupsWrapper.allGroups.size < groupPerPage) isLastPage = true
+                        getAllMyGroups.value = allGroupsWrapper.allGroups
                     }
                 }
 
