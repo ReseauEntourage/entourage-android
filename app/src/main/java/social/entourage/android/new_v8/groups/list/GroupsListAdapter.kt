@@ -44,10 +44,12 @@ class GroupsListAdapter(
         with(holder) {
             with(groupsList[position]) {
                 binding.groupName.text = this.name
-                binding.members.text = String.format(
-                    holder.itemView.context.getString(R.string.progress_km),
-                    this.members?.size
-                )
+                this.members?.size?.let {
+                    binding.members.text = String.format(
+                        holder.itemView.context.getString(if (it > 1) R.string.members_number else R.string.member_number),
+                        it
+                    )
+                }
                 binding.futureOutgoingEvents.text = String.format(
                     holder.itemView.context.getString(R.string.future_outgoing_events_number),
                     this.futureOutingsCount

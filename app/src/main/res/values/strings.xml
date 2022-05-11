@@ -231,10 +231,13 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="discover_groups">Découvrir</string>
     <string name="my_groups">Mes groupes</string>
     <string name="members_number">%s membres</string>
+    <string name="member_number">%s membre</string>
     <string name="future_outgoing_events_number">%s évènements prévus</string>
     <string name="search_group_hint">Rechercher un groupe</string>
     <string name="group_list_empty_state_title">Oups, il n\'y a pas encore d\'autres groupes autour de vous.</string>
     <string name="group_list_empty_state_subtitle">N\'hésitez pas à créer de \nnouveaux groupes de voisins !</string>
+    <string name="group_list_search_empty_state_title">Oups, aucun résultat ne correspond à votre recherche ! </string>
+    <string name="group_list_search_empty_state_subtitle">Si aucun groupe n’existe sur ce sujet, \nvous pouvez en créer un !</string>
 
 
 </resources>
