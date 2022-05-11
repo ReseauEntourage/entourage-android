@@ -70,7 +70,7 @@ class MyGroupsListFragment : Fragment() {
     }
 
     private fun loadGroups() {
-        page += 1
+        page++
         myId?.let { groupPresenter.getMyGroups(page, groupPerPage, it) } ?: run {
             binding.progressBar.visibility = View.GONE
             binding.emptyStateLayout.visibility = View.VISIBLE

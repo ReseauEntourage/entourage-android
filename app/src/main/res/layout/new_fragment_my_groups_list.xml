@@ -31,59 +31,52 @@
             android:layout_marginTop="15dp" />
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:id="@+id/emptyStateLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/new_choose_group_photo"
+                app:layout_constraintBottom_toTopOf="@+id/title"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:id="@+id/image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/new_choose_group_photo"
-                    app:layout_constraintBottom_toTopOf="@+id/title"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/subtitle"
+                style="@style/h4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="20dp"
+                android:gravity="start"
+                android:text="@string/my_group_list_empty_state_title"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
 
-                <TextView
-                    android:id="@+id/subtitle"
-                    style="@style/h4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="32dp"
-                    android:layout_marginTop="20dp"
-                    android:gravity="start"
-                    android:text="@string/my_group_list_empty_state_title"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/title" />
-
-                <include
-                    android:id="@+id/discover"
-                    layout="@layout/new_rounded_button_orange"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="75dp"
-                    android:layout_marginTop="30dp"
-                    app:content="@{@string/my_group_list_empty_state_button}"
-                    app:drawable="@{@drawable/new_rounded_button_orange}"
-                    app:layout_constraintBottom_toBottomOf="parent" />
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <include
+                android:id="@+id/discover"
+                layout="@layout/new_rounded_button_orange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="75dp"
+                android:layout_marginTop="30dp"
+                app:content="@{@string/my_group_list_empty_state_button}"
+                app:drawable="@{@drawable/new_rounded_button_orange}"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </LinearLayout>
 
     </LinearLayout>
 </layout>
