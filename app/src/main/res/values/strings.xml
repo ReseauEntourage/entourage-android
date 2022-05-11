@@ -238,6 +238,12 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="group_list_empty_state_subtitle">N\'hésitez pas à créer de \nnouveaux groupes de voisins !</string>
     <string name="group_list_search_empty_state_title">Oups, aucun résultat ne correspond à votre recherche ! </string>
     <string name="group_list_search_empty_state_subtitle">Si aucun groupe n’existe sur ce sujet, \nvous pouvez en créer un !</string>
+    <string name="my_group_list_empty_state_title">Vous n’avez rejoint encore aucun groupe.</string>
+    <string name="my_group_list_empty_state_button">Découvrir les groupes</string>
+    <string name="admin">Admin</string>
+    <string name="to_know">À savoir</string>
+    <string name="join">Rejoindre</string>
+    <string name="member">Membre</string>
 
 
 </resources>

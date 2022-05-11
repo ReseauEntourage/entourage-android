@@ -19,7 +19,7 @@ import social.entourage.android.new_v8.utils.Utils
 
 const val groupPerPage = 10
 
-class GroupsListFragment : Fragment() {
+class DiscoverGroupsListFragment : Fragment() {
 
     private var _binding: NewFragmentGroupsListBinding? = null
     val binding: NewFragmentGroupsListBinding get() = _binding!!
@@ -99,13 +99,7 @@ class GroupsListFragment : Fragment() {
             // Pagination
             addOnScrollListener(recyclerViewOnScrollListener)
             layoutManager = LinearLayoutManager(context)
-            adapter = GroupsListAdapter(groupsList, object : OnItemCheckListener {
-                override fun onItemCheck(item: Group) {
-                }
-
-                override fun onItemUncheck(item: Group) {
-                }
-            })
+            adapter = GroupsListAdapter(groupsList, null)
         }
     }
 
@@ -114,13 +108,7 @@ class GroupsListFragment : Fragment() {
             // Pagination
             addOnScrollListener(recyclerViewOnScrollListener)
             layoutManager = LinearLayoutManager(context)
-            adapter = GroupsListAdapter(groupsListSearch, object : OnItemCheckListener {
-                override fun onItemCheck(item: Group) {
-                }
-
-                override fun onItemUncheck(item: Group) {
-                }
-            })
+            adapter = GroupsListAdapter(groupsListSearch, null)
         }
     }
 
