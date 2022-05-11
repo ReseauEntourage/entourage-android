@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.Transformation
-import android.widget.LinearLayout
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentGroupsListBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.models.Group
+import social.entourage.android.new_v8.utils.Utils
 
 
 const val groupPerPage = 10
@@ -22,17 +22,21 @@ class DiscoverGroupsListFragment : Fragment() {
     private var _binding: NewFragmentGroupsListBinding? = null
     val binding: NewFragmentGroupsListBinding get() = _binding!!
     private var groupsList: MutableList<Group> = ArrayList()
+    private var groupsListSearch: MutableList<Group> = ArrayList()
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
     private var page: Int = 0
-    private var collapsed = false
-    private var animation = 250L
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadGroups()
         groupPresenter.getAllGroups.observe(viewLifecycleOwner, ::handleResponseGetGroups)
+        groupPresenter.getGroupsSearch.observe(viewLifecycleOwner, ::handleResponseGetGroupsSearch)
         initializeGroups()
+        initializeSearchGroups()
+        handleEnterButton()
+        handleSearchOnFocus()
+        handleCross()
     }
 
     override fun onCreateView(
@@ -51,10 +55,40 @@ class DiscoverGroupsListFragment : Fragment() {
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 
+    private fun handleResponseGetGroupsSearch(allGroupsSearch: MutableList<Group>?) {
+        groupsListSearch.clear()
+        allGroupsSearch?.let { groupsListSearch.addAll(it) }
+        binding.progressBar.visibility = View.GONE
+        allGroupsSearch?.isEmpty()?.let { updateViewSearch(it) }
+        binding.searchRecyclerView.adapter?.notifyDataSetChanged()
+    }
+
 
     private fun updateView(isListEmpty: Boolean) {
-        if (isListEmpty) binding.emptyStateLayout.visibility = View.VISIBLE
-        else binding.recyclerView.visibility = View.VISIBLE
+        if (isListEmpty) {
+            binding.emptyStateLayout.visibility = View.VISIBLE
+            binding.title.text = getString(R.string.group_list_empty_state_title)
+            binding.subtitle.text = getString(R.string.group_list_empty_state_subtitle)
+            binding.arrow.visibility = View.VISIBLE
+        } else {
+            binding.list.visibility = View.VISIBLE
+            binding.recyclerView.visibility = View.VISIBLE
+        }
+    }
+
+    private fun updateViewSearch(isListEmpty: Boolean) {
+        if (isListEmpty) {
+            binding.emptyStateLayout.visibility = View.VISIBLE
+            binding.title.text = getString(R.string.group_list_search_empty_state_title)
+            binding.subtitle.text = getString(R.string.group_list_search_empty_state_subtitle)
+            binding.arrow.visibility = View.GONE
+            binding.recyclerView.visibility = View.GONE
+
+        } else {
+            binding.emptyStateLayout.visibility = View.GONE
+            binding.list.visibility = View.VISIBLE
+            binding.searchRecyclerView.visibility = View.VISIBLE
+        }
     }
 
 
@@ -73,6 +107,21 @@ class DiscoverGroupsListFragment : Fragment() {
         }
     }
 
+    private fun initializeSearchGroups() {
+        binding.searchRecyclerView.apply {
+            // Pagination
+            addOnScrollListener(recyclerViewOnScrollListener)
+            layoutManager = LinearLayoutManager(context)
+            adapter = GroupsListAdapter(groupsListSearch, object : OnItemCheckListener {
+                override fun onItemCheck(item: Group) {
+                }
+
+                override fun onItemUncheck(item: Group) {
+                }
+            })
+        }
+    }
+
     private fun loadGroups() {
         page += 1
         groupPresenter.getAllGroups(page, groupPerPage)
@@ -82,22 +131,10 @@ class DiscoverGroupsListFragment : Fragment() {
         object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                handleSearchBarVisibility(recyclerView)
                 handlePagination(recyclerView)
             }
         }
 
-    fun handleSearchBarVisibility(recyclerView: RecyclerView) {
-        val offset = recyclerView.computeVerticalScrollOffset()
-        val extent = recyclerView.computeVerticalScrollExtent()
-        val range = recyclerView.computeVerticalScrollRange()
-        val percentage = 100.0f * offset / (range - extent).toFloat()
-        if (percentage < 1F) {
-            if (collapsed) expand(binding.search)
-        } else if (percentage > 5F) {
-            if (!collapsed) collapse(binding.search)
-        }
-    }
 
     fun handlePagination(recyclerView: RecyclerView) {
         val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
@@ -114,51 +151,37 @@ class DiscoverGroupsListFragment : Fragment() {
         }
     }
 
-    private fun expand(v: View) {
-        val matchParentMeasureSpec =
-            View.MeasureSpec.makeMeasureSpec((v.parent as View).width, View.MeasureSpec.EXACTLY)
-        val wrapContentMeasureSpec =
-            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-        v.measure(matchParentMeasureSpec, wrapContentMeasureSpec)
-        val targetHeight = v.measuredHeight
-
-        v.layoutParams.height = 1
-        v.visibility = View.VISIBLE
-        val a: Animation = object : Animation() {
-            override fun applyTransformation(interpolatedTime: Float, t: Transformation?) {
-                v.layoutParams.height =
-                    if (interpolatedTime == 2f) LinearLayout.LayoutParams.WRAP_CONTENT else (targetHeight * interpolatedTime).toInt()
-                v.requestLayout()
+    private fun handleEnterButton() {
+        binding.searchBar.setOnEditorActionListener { _, actionId, _ ->
+            var handled = false
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                Utils.hideKeyboard(requireActivity())
+                binding.searchRecyclerView.visibility = View.GONE
+                binding.recyclerView.visibility = View.GONE
+                binding.emptyStateLayout.visibility = View.GONE
+                binding.progressBar.visibility = View.VISIBLE
+                Utils.hideKeyboard(requireActivity())
+                groupPresenter.getGroupsSearch(binding.searchBar.text.toString())
+                handled = true
             }
-
-            override fun willChangeBounds(): Boolean {
-                return true
-            }
+            handled
         }
-        a.duration = animation
-        v.startAnimation(a)
-        collapsed = false
     }
 
-    private fun collapse(v: View) {
-        val initialHeight = v.measuredHeight
-        val a: Animation = object : Animation() {
-            override fun applyTransformation(interpolatedTime: Float, t: Transformation) {
-                if (interpolatedTime == 2f) {
-                    v.visibility = View.GONE
-                } else {
-                    v.layoutParams.height =
-                        initialHeight - (initialHeight * interpolatedTime).toInt()
-                    v.requestLayout()
-                }
-            }
-
-            override fun willChangeBounds(): Boolean {
-                return true
-            }
+    private fun handleSearchOnFocus() {
+        binding.searchBar.setOnFocusChangeListener { _, _ ->
+            binding.recyclerView.visibility = View.GONE
+            binding.searchRecyclerView.visibility = View.VISIBLE
         }
-        a.duration = animation
-        v.startAnimation(a)
-        collapsed = true
+    }
+
+    private fun handleCross() {
+        binding.searchBarLayout.setEndIconOnClickListener {
+            binding.searchBar.text?.clear()
+            binding.searchRecyclerView.visibility = View.GONE
+            binding.emptyStateLayout.visibility = View.GONE
+            updateView(groupsList.isEmpty())
+            Utils.hideKeyboard(requireActivity())
+        }
     }
 }

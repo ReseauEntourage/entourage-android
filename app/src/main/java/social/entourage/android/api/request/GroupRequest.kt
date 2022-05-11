@@ -34,6 +34,11 @@ interface GroupRequest {
         @Query("per") per: Int
     ): Call<GroupsListWrapper>
 
+    @GET("neighborhoods")
+    fun getGroupsSearch(
+        @Query("q") searchTxt: String,
+    ): Call<GroupsListWrapper>
+
     @GET("users/{user_id}/neighborhoods")
     fun getMyGroups(
         @Path("user_id") userId: Int,
