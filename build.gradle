@@ -8,7 +8,7 @@ buildscript {
         targetCompatibilityVersion = JavaVersion.VERSION_11
         // SDK versions
         compileSdkVersion = 31
-        buildToolsVersion = "32.0.0"
+        buildToolsVersion = "31.0.0"
         minSdkVersion = 21 /*November 2014: Android 5.0, Lollipop*/
         targetSdkVersion = 31
     }
