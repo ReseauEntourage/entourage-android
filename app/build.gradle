@@ -232,6 +232,10 @@ dependencies {
     implementation "me.leolin:ShortcutBadger:1.1.22@aar"
     implementation "net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:3.0.0-RC3"
 
+    //entourageImplementation facebookDependencies.values()
+    entourageImplementation "com.facebook.android:facebook-android-sdk:12.2.0"
+    entourageImplementation "com.facebook.android:facebook-core:12.2.0"
+
     compileOnly "org.glassfish:javax.annotation:10.0-b28"
 
     kapt "com.google.dagger:dagger-compiler:2.41"

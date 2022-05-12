@@ -8,7 +8,7 @@ buildscript {
         targetCompatibilityVersion = JavaVersion.VERSION_11
         // SDK versions
         compileSdkVersion = 31
-        buildToolsVersion = "32.0.0"
+        buildToolsVersion = "31.0.0"
         minSdkVersion = 21 /*November 2014: Android 5.0, Lollipop*/
         targetSdkVersion = 31
     }
@@ -28,7 +28,7 @@ buildscript {
 }
 
 plugins {
-    id "com.github.ben-manes.versions" version "0.42.0"
+    id "com.github.ben-manes.versions" version "0.39.0"
     //gradlew dependencyUpdates -Drevision=release
     //https://github.com/ben-manes/gradle-versions-plugin/releases
 }
