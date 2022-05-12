@@ -116,7 +116,7 @@ class ReadPoiFragment : BaseDialogFragment() {
     }
 
     fun noData() {
-        dismiss()
+        dismissAllowingStateLoss()
     }
 
     fun onDisplayedPoi(poi: Poi, onAddressClickListener: OnAddressClickListener?, onPhoneClickListener: OnPhoneClickListener?) {
