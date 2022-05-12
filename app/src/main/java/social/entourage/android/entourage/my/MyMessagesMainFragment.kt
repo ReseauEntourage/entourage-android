@@ -62,7 +62,9 @@ class MyMessagesMainFragment : BaseDialogFragment(), MyMessagesRecyclerViewAdapt
     fun setupRecyclerView() {
         ui_mymessages_recyclerview?.layoutManager = LinearLayoutManager(context)
         entouragesAdapter = MyMessagesRecyclerViewAdapter { position ->
-            messagesList[position].numberOfUnreadMessages = 0
+            if(position<messagesList.size){
+                messagesList[position].numberOfUnreadMessages = 0
+            }
             entouragesAdapter?.updateItemAtPositon(position)
         }
         entouragesAdapter?.setLoaderCallback(this)
