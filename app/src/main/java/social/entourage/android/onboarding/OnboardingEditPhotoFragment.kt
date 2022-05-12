@@ -90,7 +90,12 @@ class OnboardingEditPhotoFragment : DialogFragment() {
         }
 
         photoUri?.let {
-            crop_view?.setUri(it)
+            try {
+                crop_view?.setUri(it)
+
+            } catch(e: IOException) {
+                Timber.e(e)
+            }
         }
 
         crop_view?.addOnCropListener(object : OnCropListener {
