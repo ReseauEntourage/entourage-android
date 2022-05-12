@@ -244,6 +244,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="to_know">À savoir</string>
     <string name="join">Rejoindre</string>
     <string name="member">Membre</string>
+    <string name="members_location">%s membres. %s</string>
+    <string name="more"><u>En savoir plus</u></string>
 
 
 </resources>

@@ -10,7 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.R
 import social.entourage.android.api.model.GroupImage
-import social.entourage.android.databinding.NewChoosePhotoItemBinding
+import social.entourage.android.databinding.NewPhotoItemBinding
 import social.entourage.android.new_v8.utils.px
 
 class ChoosePhotoAdapter(
@@ -19,11 +19,11 @@ class ChoosePhotoAdapter(
 
     private var checkedPosition = -1
 
-    inner class ViewHolder(val binding: NewChoosePhotoItemBinding) :
+    inner class ViewHolder(val binding: NewPhotoItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = NewChoosePhotoItemBinding.inflate(
+        val binding = NewPhotoItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false

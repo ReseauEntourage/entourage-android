@@ -14,6 +14,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateGroupBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
+import social.entourage.android.new_v8.models.Address
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.nextPage
 import social.entourage.android.new_v8.utils.previousPage
@@ -108,8 +109,8 @@ class CreateGroupFragment : Fragment() {
         if (isCondition) {
             if (viewPager.currentItem == NB_TABS - 1) {
                 // TODO Change this two lines
-                viewModel.group.latitude(2.5)
-                viewModel.group.longitude(2.5)
+                val address = Address(48.856614, 2.3522219, "Paris 75XXX")
+                viewModel.group.address = address
                 groupPresenter.createGroup(viewModel.group)
             } else {
                 viewPager.nextPage(true)

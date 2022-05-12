@@ -5,7 +5,6 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -16,6 +15,7 @@ import social.entourage.android.R
 import social.entourage.android.databinding.NewGroupItemBinding
 import social.entourage.android.new_v8.groups.details.FeedActivity
 import social.entourage.android.new_v8.models.Group
+import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
 
 class GroupsListAdapter(
@@ -43,7 +43,10 @@ class GroupsListAdapter(
                 binding.layout.setOnClickListener {
                     with(binding.layout.context) {
                         startActivity(
-                            Intent(this, FeedActivity::class.java)
+                            Intent(this, FeedActivity::class.java).putExtra(
+                                Const.GROUP_ID,
+                                groupsList[position].id
+                            )
                         )
                     }
 
