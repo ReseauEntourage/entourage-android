@@ -133,7 +133,7 @@ class OnboardingEditPhotoFragment : DialogFragment() {
                 activity?.contentResolver?.let { contentResolver ->
                     saveBitmap(Utils.getBitmapFromUri(photoUri, contentResolver).rotate(currentAngle))
                 }
-            } catch(e: FileNotFoundException) {
+            } catch(e: IOException) {
                 Timber.e(e)
             }
         }
