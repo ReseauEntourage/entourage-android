@@ -93,7 +93,7 @@ class FeedFragment : Fragment() {
 
     private fun updateButtonJoin() {
         val label =
-            if (group.member) getString(R.string.member) else getString(R.string.join)
+            getString(if (group.member) R.string.member else R.string.join)
         val textColor = ContextCompat.getColor(
             requireContext(),
             if (group.member) R.color.orange else R.color.white

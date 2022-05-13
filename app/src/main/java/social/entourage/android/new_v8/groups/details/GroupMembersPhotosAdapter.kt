@@ -9,6 +9,7 @@ import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.databinding.NewPhotoItemBinding
 import social.entourage.android.new_v8.groups.list.groupPerPage
 import social.entourage.android.new_v8.models.GroupMember
+import social.entourage.android.new_v8.utils.Const.LIMIT_PHOTOS_MEMBERS
 import social.entourage.android.new_v8.utils.px
 
 class GroupMembersPhotosAdapter(
@@ -42,7 +43,6 @@ class GroupMembersPhotosAdapter(
     }
 
     override fun getItemCount(): Int {
-        val limit = 3
-        return membersList.size.coerceAtMost(limit)
+        return membersList.size.coerceAtMost(LIMIT_PHOTOS_MEMBERS)
     }
 }
