@@ -1,5 +1,6 @@
 package social.entourage.android.new_v8.groups.list
 
+import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -11,20 +12,14 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.R
-import social.entourage.android.api.model.MetaData
 import social.entourage.android.databinding.NewGroupItemBinding
+import social.entourage.android.new_v8.groups.details.feed.FeedActivity
 import social.entourage.android.new_v8.models.Group
-import social.entourage.android.new_v8.user.OnItemCheckListener
+import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
-
-interface OnItemCheckListener {
-    fun onItemCheck(item: Group)
-    fun onItemUncheck(item: Group)
-}
 
 class GroupsListAdapter(
     var groupsList: List<Group>,
-    var onItemClick: social.entourage.android.new_v8.groups.list.OnItemCheckListener,
     var userId: Int?
 ) : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
 
@@ -45,6 +40,17 @@ class GroupsListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
             with(groupsList[position]) {
+                binding.layout.setOnClickListener {
+                    with(binding.layout.context) {
+                        startActivity(
+                            Intent(this, FeedActivity::class.java).putExtra(
+                                Const.GROUP_ID,
+                                groupsList[position].id
+                            )
+                        )
+                    }
+
+                }
                 binding.groupName.text = this.name
                 this.members?.size?.let {
                     binding.members.text = String.format(

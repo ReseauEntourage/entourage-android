@@ -241,6 +241,13 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="my_group_list_empty_state_title">Vous n’avez rejoint encore aucun groupe.</string>
     <string name="my_group_list_empty_state_button">Découvrir les groupes</string>
     <string name="admin">Admin</string>
-
+    <string name="to_know">À savoir</string>
+    <string name="join">Rejoindre</string>
+    <string name="member">Membre</string>
+    <string name="members_location">%s membres. %s</string>
+    <string name="more"><u>En savoir plus</u></string>
+    <string name="group_settings">Paramètres du groupe</string>
+    <string name="report_group">Signaler le groupe</string>
+    <string name="settlement_group">Règlement du groupe</string>
 
 </resources>
