@@ -97,13 +97,7 @@ class DiscoverGroupsListFragment : Fragment() {
             // Pagination
             addOnScrollListener(recyclerViewOnScrollListener)
             layoutManager = LinearLayoutManager(context)
-            adapter = GroupsListAdapter(groupsList, object : OnItemCheckListener {
-                override fun onItemCheck(item: Group) {
-                }
-
-                override fun onItemUncheck(item: Group) {
-                }
-            }, null)
+            adapter = GroupsListAdapter(groupsList, null)
         }
     }
 
@@ -112,13 +106,7 @@ class DiscoverGroupsListFragment : Fragment() {
             // Pagination
             addOnScrollListener(recyclerViewOnScrollListener)
             layoutManager = LinearLayoutManager(context)
-            adapter = GroupsListAdapter(groupsListSearch, object : OnItemCheckListener {
-                override fun onItemCheck(item: Group) {
-                }
-
-                override fun onItemUncheck(item: Group) {
-                }
-            }, null)
+            adapter = GroupsListAdapter(groupsListSearch, null)
         }
     }
 

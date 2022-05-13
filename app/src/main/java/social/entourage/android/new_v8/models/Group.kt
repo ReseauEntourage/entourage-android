@@ -13,10 +13,8 @@ data class Group(
     var welcomeMessage: String? = null,
     @SerializedName("ethics")
     var ethics: String? = null,
-    @SerializedName("latitude")
-    var latitude: Double? = null,
-    @SerializedName("longitude")
-    var longitude: Double? = null,
+    @SerializedName("address")
+    var address: Address? = null,
     @SerializedName("neighborhood_image_id")
     var neighborhoodImageId: Int? = null,
     @SerializedName("other_interest")
@@ -30,7 +28,12 @@ data class Group(
     @SerializedName("future_outings_count")
     var futureOutingsCount: Int? = null,
     @SerializedName("user")
-    var admin: GroupMember? = null
+    var admin: GroupMember? = null,
+    @SerializedName("members_count")
+    var members_count: Int? = null,
+    @SerializedName("member")
+    var member: Boolean = false
+
 ) {
 
     fun name(value: String) = apply {
@@ -49,12 +52,8 @@ data class Group(
         ethics = value
     }
 
-    fun latitude(value: Double) = apply {
-        latitude = value
-    }
-
-    fun longitude(value: Double) = apply {
-        longitude = value
+    fun address(value: Address) = apply {
+        address = value
     }
 
     fun neighborhoodImageId(value: Int?) = apply {
@@ -70,7 +69,6 @@ data class Group(
     }
 
     override fun toString(): String {
-        return "Group(id=$id, name=$name, description=$description, welcomeMessage=$welcomeMessage, ethics=$ethics, latitude=$latitude, longitude=$longitude, neighborhoodImageId=$neighborhoodImageId, otherInterest=$otherInterest, interests=$interests, imageUrl=$imageUrl, members=$members, futureOutingsCount=$futureOutingsCount, admin=$admin)"
+        return "Group(id=$id, name=$name, description=$description, welcomeMessage=$welcomeMessage, ethics=$ethics, address=$address, neighborhoodImageId=$neighborhoodImageId, otherInterest=$otherInterest, interests=$interests, imageUrl=$imageUrl, members=$members, futureOutingsCount=$futureOutingsCount, admin=$admin, members_count=$members_count)"
     }
-
 }

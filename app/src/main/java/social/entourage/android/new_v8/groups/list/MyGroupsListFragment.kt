@@ -59,13 +59,7 @@ class MyGroupsListFragment : Fragment() {
             // Pagination
             addOnScrollListener(recyclerViewOnScrollListener)
             layoutManager = LinearLayoutManager(context)
-            adapter = GroupsListAdapter(groupsList, object : OnItemCheckListener {
-                override fun onItemCheck(item: Group) {
-                }
-
-                override fun onItemUncheck(item: Group) {
-                }
-            }, myId)
+            adapter = GroupsListAdapter(groupsList, myId)
         }
     }
 
