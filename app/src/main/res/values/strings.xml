@@ -249,6 +249,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="group_settings">Paramètres du groupe</string>
     <string name="report_group">Signaler le groupe</string>
     <string name="settlement_group">Règlement du groupe</string>
+    <string name="settlement">Le règlement</string>
+    <string name="settlement_group_read">Règlement du groupe, à lire attentivement.</string>
 
 
 </resources>

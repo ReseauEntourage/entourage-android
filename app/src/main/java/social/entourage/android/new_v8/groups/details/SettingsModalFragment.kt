@@ -1,5 +1,6 @@
 package social.entourage.android.new_v8.groups.details
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,11 +13,10 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentSettingsModalBinding
-import social.entourage.android.new_v8.models.Group
+import social.entourage.android.new_v8.groups.details.settlement.GroupSettlementActivity
+import social.entourage.android.new_v8.groups.details.settlement.GroupUiModel
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
-import social.entourage.android.new_v8.user.ReportUserModalFragment
 import social.entourage.android.new_v8.utils.Const
-import timber.log.Timber
 
 class SettingsModalFragment : BottomSheetDialogFragment() {
 
@@ -37,6 +37,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         getGroupInformation()
         handleCloseButton()
+        handleSettlementButton()
         updateView()
     }
 
@@ -58,6 +59,12 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     private fun handleCloseButton() {
         binding.header.iconBack.setOnClickListener {
             dismiss()
+        }
+    }
+
+    private fun handleSettlementButton() {
+        binding.settlement.layout.setOnClickListener {
+            startActivity(Intent(context, GroupSettlementActivity::class.java))
         }
     }
 
