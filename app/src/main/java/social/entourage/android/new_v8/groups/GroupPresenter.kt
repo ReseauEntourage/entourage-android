@@ -6,6 +6,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
+import social.entourage.android.api.request.EntourageUserResponse
 import social.entourage.android.api.request.GroupWrapper
 import social.entourage.android.api.request.GroupsListWrapper
 import social.entourage.android.new_v8.groups.list.groupPerPage
@@ -20,6 +21,8 @@ class GroupPresenter {
     var getGroupsSearch = MutableLiveData<MutableList<Group>>()
     var getAllMyGroups = MutableLiveData<MutableList<Group>>()
     var isGroupUpdated = MutableLiveData<Boolean>()
+    var hasUserJoinedGroup = MutableLiveData<Boolean>()
+    var hasUserLeftGroup = MutableLiveData<Boolean>()
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
@@ -135,6 +138,43 @@ class GroupPresenter {
                 }
 
                 override fun onFailure(call: Call<GroupsListWrapper>, t: Throwable) {
+                }
+            })
+    }
+
+    fun joinGroup(groupId: Int) {
+        EntourageApplication.get().apiModule.groupRequest.joinGroup(groupId)
+            .enqueue(object : Callback<EntourageUserResponse> {
+                override fun onResponse(
+                    call: Call<EntourageUserResponse>,
+                    response: Response<EntourageUserResponse>
+                ) {
+                    hasUserJoinedGroup.value =
+                        response.isSuccessful && response.body()?.user != null
+
+                }
+
+                override fun onFailure(call: Call<EntourageUserResponse>, t: Throwable) {
+                    hasUserJoinedGroup.value = false
+                }
+            })
+    }
+
+
+    fun leaveGroup(groupId: Int) {
+        EntourageApplication.get().apiModule.groupRequest.leaveGroup(groupId)
+            .enqueue(object : Callback<EntourageUserResponse> {
+                override fun onResponse(
+                    call: Call<EntourageUserResponse>,
+                    response: Response<EntourageUserResponse>
+                ) {
+                    hasUserLeftGroup.value =
+                        response.isSuccessful && response.body()?.user != null
+
+                }
+
+                override fun onFailure(call: Call<EntourageUserResponse>, t: Throwable) {
+                    hasUserLeftGroup.value = false
                 }
             })
     }
