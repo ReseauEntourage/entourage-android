@@ -20,7 +20,7 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentFeedBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
-import social.entourage.android.new_v8.groups.details.settlement.GroupUiModel
+import social.entourage.android.new_v8.groups.details.rules.GroupUiModel
 import social.entourage.android.new_v8.groups.details.SettingsModalFragment
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter

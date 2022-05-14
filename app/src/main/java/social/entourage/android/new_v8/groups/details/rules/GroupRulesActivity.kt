@@ -1,23 +1,22 @@
-package social.entourage.android.new_v8.groups.details.settlement
+package social.entourage.android.new_v8.groups.details.rules
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.new_activity_group_settlement.*
 import social.entourage.android.R
-import social.entourage.android.databinding.NewActivityGroupSettlementBinding
-import social.entourage.android.new_v8.models.Settlement
+import social.entourage.android.databinding.NewActivityGroupRulesBinding
+import social.entourage.android.new_v8.models.Rules
 
-class GroupSettlementActivity : AppCompatActivity() {
-    private var settlementList: MutableList<Settlement> = ArrayList()
-    lateinit var binding: NewActivityGroupSettlementBinding
+class GroupRulesActivity : AppCompatActivity() {
+    private var rulesList: MutableList<Rules> = ArrayList()
+    lateinit var binding: NewActivityGroupRulesBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(
             this,
-            R.layout.new_activity_group_settlement
+            R.layout.new_activity_group_rules
         )
         populateList()
         initializeGroups()
@@ -28,7 +27,7 @@ class GroupSettlementActivity : AppCompatActivity() {
     private fun initializeGroups() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = SettlementListAdapter(settlementList)
+            adapter = RulesListAdapter(rulesList)
         }
     }
 
@@ -39,11 +38,11 @@ class GroupSettlementActivity : AppCompatActivity() {
     }
 
     private fun populateList() {
-        val value = Settlement(
+        val value = Rules(
             "Titre de la règle",
             "Je n’insulterai pas , pas d’incitation à la haine ni de harcèlement.Je n’insulterai pas , pas d’incitation à la haine ni de harcèlement. "
         )
-        settlementList =
+        rulesList =
             mutableListOf(
                 value,
                 value,

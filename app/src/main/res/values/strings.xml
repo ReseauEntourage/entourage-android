@@ -248,9 +248,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="more"><u>En savoir plus</u></string>
     <string name="group_settings">Paramètres du groupe</string>
     <string name="report_group">Signaler le groupe</string>
-    <string name="settlement_group">Règlement du groupe</string>
-    <string name="settlement">Le règlement</string>
-    <string name="settlement_group_read">Règlement du groupe, à lire attentivement.</string>
+    <string name="rules_group">Règlement du groupe</string>
+    <string name="rules">Le règlement</string>
+    <string name="rules_group_read">Règlement du groupe, à lire attentivement.</string>
 
 
 </resources>

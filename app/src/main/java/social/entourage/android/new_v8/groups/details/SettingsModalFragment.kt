@@ -13,8 +13,8 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentSettingsModalBinding
-import social.entourage.android.new_v8.groups.details.settlement.GroupSettlementActivity
-import social.entourage.android.new_v8.groups.details.settlement.GroupUiModel
+import social.entourage.android.new_v8.groups.details.rules.GroupRulesActivity
+import social.entourage.android.new_v8.groups.details.rules.GroupUiModel
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.utils.Const
 
@@ -37,14 +37,14 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         getGroupInformation()
         handleCloseButton()
-        handleSettlementButton()
+        handleRulesButton()
         updateView()
     }
 
 
     private fun updateView() {
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
-        binding.settlement.divider.visibility = View.GONE
+        binding.rules.divider.visibility = View.GONE
         group?.let {
             binding.groupName.text = it.name
             binding.groupMembersNumberLocation.text = String.format(
@@ -62,9 +62,9 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun handleSettlementButton() {
-        binding.settlement.layout.setOnClickListener {
-            startActivity(Intent(context, GroupSettlementActivity::class.java))
+    private fun handleRulesButton() {
+        binding.rules.layout.setOnClickListener {
+            startActivity(Intent(context, GroupRulesActivity::class.java))
         }
     }
 

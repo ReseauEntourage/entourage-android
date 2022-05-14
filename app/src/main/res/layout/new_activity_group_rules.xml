@@ -22,7 +22,7 @@
                 layout="@layout/new_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:title="@{@string/settlement}" />
+                app:title="@{@string/rules}" />
 
             <TextView
                 android:id="@+id/group_members_number_location"
@@ -31,8 +31,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="35dp"
                 android:layout_marginTop="20dp"
-                android:text="@string/settlement_group_read"
-                tools:text="@string/settlement_group_read" />
+                android:text="@string/rules_group_read"
+                tools:text="@string/rules_group_read" />
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="35dp"
                 android:layout_marginTop="5dp"
-                tools:listitem="@layout/new_settlement_item" />
+                tools:listitem="@layout/new_rules_item" />
 
 
         </LinearLayout>

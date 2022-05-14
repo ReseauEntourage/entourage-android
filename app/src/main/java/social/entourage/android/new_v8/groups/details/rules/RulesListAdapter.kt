@@ -1,22 +1,22 @@
-package social.entourage.android.new_v8.groups.details.settlement
+package social.entourage.android.new_v8.groups.details.rules
 
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import social.entourage.android.databinding.NewSettlementItemBinding
-import social.entourage.android.new_v8.models.Settlement
+import social.entourage.android.databinding.NewRulesItemBinding
+import social.entourage.android.new_v8.models.Rules
 
-class SettlementListAdapter(
-    var settlementList: List<Settlement>
-) : RecyclerView.Adapter<SettlementListAdapter.ViewHolder>() {
+class RulesListAdapter(
+    var rulesList: List<Rules>
+) : RecyclerView.Adapter<RulesListAdapter.ViewHolder>() {
 
 
-    inner class ViewHolder(val binding: NewSettlementItemBinding) :
+    inner class ViewHolder(val binding: NewRulesItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = NewSettlementItemBinding.inflate(
+        val binding = NewRulesItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -27,7 +27,7 @@ class SettlementListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
-            with(settlementList[position]) {
+            with(rulesList[position]) {
                 binding.title.text = this.title
                 binding.content.text = this.content
                 binding.position.text = String.format("%02d", (position + 1)).plus(".")
@@ -36,6 +36,6 @@ class SettlementListAdapter(
     }
 
     override fun getItemCount(): Int {
-        return settlementList.size
+        return rulesList.size
     }
 }

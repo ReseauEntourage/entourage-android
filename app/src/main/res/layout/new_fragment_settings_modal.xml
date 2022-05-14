@@ -64,14 +64,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <include
-            android:id="@+id/settlement"
+            android:id="@+id/rules"
             layout="@layout/new_profile_settings_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="25dp"
             app:color="@{@android:color/black}"
             app:icon="@{@drawable/new_notification}"
-            app:label="@{@string/settlement_group}" />
+            app:label="@{@string/rules_group}" />
 
         <View
             android:layout_width="match_parent"

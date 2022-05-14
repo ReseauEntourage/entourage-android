@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.groups.details.settlement
+package social.entourage.android.new_v8.groups.details.rules
 
 import android.os.Parcel
 import android.os.Parcelable
