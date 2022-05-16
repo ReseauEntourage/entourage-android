@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.groups.details
+package social.entourage.android.new_v8.groups.details.feed
 
 import android.net.Uri
 import android.os.Bundle
@@ -20,6 +20,8 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentFeedBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
+import social.entourage.android.new_v8.groups.details.rules.GroupUiModel
+import social.entourage.android.new_v8.groups.details.SettingsModalFragment
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 
@@ -44,6 +46,7 @@ class FeedFragment : Fragment() {
         groupPresenter.hasUserJoinedGroup.observe(requireActivity(), ::handleJoinResponse)
         handleFollowButton()
         handleBackButton()
+        handleSettingsButton()
     }
 
 
@@ -161,11 +164,26 @@ class FeedFragment : Fragment() {
         }
     }
 
+    private fun handleSettingsButton() {
+        binding.iconSettings.setOnClickListener {
+            SettingsModalFragment.newInstance(
+                GroupUiModel(
+                    groupId,
+                    group.name,
+                    group.members_count,
+                    group.address,
+                    group.interests
+                )
+            )
+                .show(parentFragmentManager, SettingsModalFragment.TAG)
+        }
+    }
+
     private fun handleMetaData(tags: Tags?) {
         interestsList.clear()
-        val userInterests = group.interests
+        val groupInterests = group.interests
         tags?.interests?.forEach { interest ->
-            if (userInterests.contains(interest.id)) interest.name?.let { it -> interestsList.add(it) }
+            if (groupInterests.contains(interest.id)) interest.name?.let { it -> interestsList.add(it) }
         }
         binding.interests.adapter?.notifyDataSetChanged()
     }

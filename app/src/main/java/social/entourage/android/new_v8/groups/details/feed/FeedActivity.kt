@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.groups.details
+package social.entourage.android.new_v8.groups.details.feed
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
