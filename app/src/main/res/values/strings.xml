@@ -251,6 +251,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="rules_group">Règlement du groupe</string>
     <string name="rules">Le règlement</string>
     <string name="rules_group_read">Règlement du groupe, à lire attentivement.</string>
+    <string name="see_members">Voir les membres</string>
 
 
 </resources>

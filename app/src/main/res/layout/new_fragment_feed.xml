@@ -49,7 +49,7 @@
             android:layout_marginTop="40dp"
             android:background="@drawable/new_bg_rounded_beige"
             android:orientation="vertical"
-            android:padding="28dp"
+            android:paddingTop="28dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/icon_back">
@@ -59,17 +59,19 @@
                 style="@style/h1_black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingHorizontal="28dp"
                 tools:text="Dansons ensemble" />
 
 
             <LinearLayout
+                android:id="@+id/members"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-
-                >
+                android:paddingHorizontal="28dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="16dp">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view"
@@ -101,8 +103,9 @@
                 android:id="@+id/more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
                 android:orientation="horizontal"
+                android:paddingHorizontal="28dp"
+                android:paddingBottom="28dp"
                 android:visibility="gone">
 
                 <TextView
@@ -122,7 +125,7 @@
                 layout="@layout/new_rounded_button_orange"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginHorizontal="18dp"
                 android:padding="10dp"
                 android:visibility="gone"
                 app:content="@{@string/join}"
@@ -133,6 +136,7 @@
                 style="@style/h2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="28dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/to_know"
                 android:visibility="gone" />
@@ -142,8 +146,10 @@
                 style="@style/left_courant_black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="28dp"
                 android:layout_marginTop="5dp"
                 android:visibility="gone"
+
                 tools:text="Description du groupe à écrire ici Lorem ipsum
 Praesent pharetra ac nisi quis finibus. Curabitur
 purus dui, aliquet cursus tellus a, dictum hen." />
@@ -154,6 +160,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
+                android:paddingBottom="28dp"
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

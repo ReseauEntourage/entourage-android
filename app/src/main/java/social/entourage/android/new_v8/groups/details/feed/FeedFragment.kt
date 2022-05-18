@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
@@ -22,8 +23,10 @@ import social.entourage.android.databinding.NewFragmentFeedBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.details.rules.GroupUiModel
 import social.entourage.android.new_v8.groups.details.SettingsModalFragment
+import social.entourage.android.new_v8.groups.details.members.MembersModalFragment
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
+import social.entourage.android.new_v8.utils.px
 
 class FeedFragment : Fragment() {
 
@@ -47,6 +50,7 @@ class FeedFragment : Fragment() {
         handleFollowButton()
         handleBackButton()
         handleSettingsButton()
+        handleMembersButton()
     }
 
 
@@ -179,11 +183,24 @@ class FeedFragment : Fragment() {
         }
     }
 
+    private fun handleMembersButton() {
+        binding.members.setOnClickListener {
+            val bottomSheet = MembersModalFragment.newInstance(
+                groupId
+            )
+            bottomSheet.show(parentFragmentManager, SettingsModalFragment.TAG)
+        }
+    }
+
     private fun handleMetaData(tags: Tags?) {
         interestsList.clear()
         val groupInterests = group.interests
         tags?.interests?.forEach { interest ->
-            if (groupInterests.contains(interest.id)) interest.name?.let { it -> interestsList.add(it) }
+            if (groupInterests.contains(interest.id)) interest.name?.let { it ->
+                interestsList.add(
+                    it
+                )
+            }
         }
         binding.interests.adapter?.notifyDataSetChanged()
     }
