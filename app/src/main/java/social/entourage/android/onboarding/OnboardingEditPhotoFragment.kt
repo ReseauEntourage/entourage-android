@@ -110,9 +110,13 @@ class OnboardingEditPhotoFragment : DialogFragment() {
             }
 
             override fun onFailure(e: Exception) {
-                Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
-                ui_photo_edit_progressBar?.visibility = View.GONE
-                ui_edit_photo_validate?.isEnabled = true
+                try {
+                    Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
+                    ui_photo_edit_progressBar?.visibility = View.GONE
+                    ui_edit_photo_validate?.isEnabled = true
+                } catch (e2: IOException) {
+                    Timber.w(e2)
+                }
             }
         })
 
