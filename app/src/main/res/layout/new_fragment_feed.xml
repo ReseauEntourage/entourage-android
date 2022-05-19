@@ -1,167 +1,354 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/beige">
 
-        <ImageView
-            android:id="@+id/icon_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="28dp"
-            android:elevation="1dp"
-            android:padding="10dp"
-            android:src="@drawable/new_back"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/icon_settings"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="28dp"
-            android:layout_marginEnd="24dp"
-            android:elevation="1dp"
-            android:padding="10dp"
-            android:src="@drawable/new_settings"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/group_image"
-            android:layout_width="match_parent"
-            android:layout_height="230dp"
-            android:src="@drawable/new_illu_header_group"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <LinearLayout
-            android:id="@+id/layout"
+            android:id="@+id/icon_back"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="4dp"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/new_bg_rounded_beige"
-            android:orientation="vertical"
-            android:padding="28dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/icon_back">
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/group_name"
-                style="@style/h1_black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Dansons ensemble" />
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:orientation="horizontal"
-
-                >
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="5dp" />
-
-                <TextView
-                    style="@style/h1_black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="..." />
-
-                <TextView
-                    android:id="@+id/group_members_number_location"
-                    style="@style/left_courant_black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="132 membres. Paris 13." />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/more"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <TextView
-                    style="@style/h2_orange"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/more" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/new_arrow_orange" />
-            </LinearLayout>
-
-            <include
-                android:id="@+id/join"
-                layout="@layout/new_rounded_button_orange"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:elevation="1dp"
                 android:padding="10dp"
-                android:visibility="gone"
-                app:content="@{@string/join}"
-                app:drawable="@{@drawable/new_rounded_button_orange}" />
+                android:src="@drawable/new_back"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/group_image_toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="15dp"
+                android:src="@drawable/new_group_illu_toolbar" />
 
             <TextView
-                android:id="@+id/to_know"
+                android:id="@+id/group_name_toolbar"
                 style="@style/h2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/to_know"
-                android:visibility="gone" />
+                android:layout_weight="1"
+                tools:text="Dansons ensemble" />
 
-            <TextView
-                android:id="@+id/group_description"
-                style="@style/left_courant_black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:visibility="gone"
-                tools:text="Description du groupe à écrire ici Lorem ipsum
-Praesent pharetra ac nisi quis finibus. Curabitur
-purus dui, aliquet cursus tellus a, dictum hen." />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/interests"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:visibility="gone"
-                app:layout_constraintLeft_toLeftOf="parent"
+            <ImageView
+                android:id="@+id/icon_settings"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="10dp"
+                android:src="@drawable/new_settings"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/description"
-                tools:itemCount="5"
-                tools:listitem="@layout/new_profile_interest_item" />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            app:elevation="0dp">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/toolbar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:fitsSystemWindows="true"
+                app:collapsedTitleTextAppearance="@style/h1_collapsed"
+                app:expandedTitleTextAppearance="@style/h1"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/group_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/new_group_illu"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:background="@color/transparent"
+                    app:layout_collapseMode="pin"
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    app:liftOnScroll="false">
+
+                </androidx.appcompat.widget.Toolbar>
+
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:background="@drawable/new_bg_rounded_beige"
+                    android:orientation="vertical"
+                    android:padding="28dp">
+
+                    <TextView
+                        android:id="@+id/group_name"
+                        style="@style/h1_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="Dansons ensemble" />
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="5dp" />
+
+                        <TextView
+                            style="@style/h1_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="5dp"
+                            android:layout_marginBottom="8dp"
+                            android:text="..." />
+
+                        <TextView
+                            android:id="@+id/group_members_number_location"
+                            style="@style/left_courant_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="132 membres. Paris 13." />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            style="@style/h2_orange"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/more" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/new_arrow_orange" />
+                    </LinearLayout>
+
+                    <include
+                        android:id="@+id/join"
+                        layout="@layout/new_rounded_button_orange"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:padding="10dp"
+                        android:visibility="gone"
+                        app:content="@{@string/join}"
+                        app:drawable="@{@drawable/new_rounded_button_orange}" />
+
+                    <TextView
+                        android:id="@+id/to_know"
+                        style="@style/h2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/to_know"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/group_description"
+                        style="@style/left_courant_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:visibility="gone"
+                        tools:text="Description du groupe à écrire ici Lorem ipsum
+Praesent pharetra ac nisi quis finibus. Curabitur
+purus dui, aliquet cursus tellus a, dictum hen." />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/interests"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="20dp"
+                        android:visibility="gone"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/description"
+                        tools:itemCount="5"
+                        tools:listitem="@layout/new_profile_interest_item" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/events"
+                    style="@style/left_courant_bold_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/group_event"
+                    app:layout_constraintBottom_toTopOf="@id/events"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout" />
+
+                <LinearLayout
+                    android:id="@+id/events_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/new_bg_rounded_beige"
+                    android:orientation="horizontal"
+                    android:padding="28dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/events">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/new_illu_header_group" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="28dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/h2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/group_event_empty_state_title" />
+
+                        <TextView
+                            style="@style/left_courant_orange"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/group_event_empty_state_subtitle" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/posts"
+                    style="@style/left_courant_bold_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/posts"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/events_layout" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/new_bg_rounded_beige"
+                    android:orientation="vertical"
+                    android:padding="28dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/posts">
+
+                    <ImageView
+                        android:id="@+id/image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/new_illu_header_group"
+                        app:layout_constraintBottom_toTopOf="@+id/title"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginBottom="-15dp"
+                        android:src="@drawable/new_group_stars"
+                        app:layout_constraintBottom_toTopOf="@id/title"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                    <TextView
+                        android:id="@+id/title"
+                        style="@style/mini_header_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="32dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/group_posts_empty_state_title"
+                        app:layout_constraintBottom_toTopOf="@id/title"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/image" />
+
+                    <TextView
+                        android:id="@+id/subtitle"
+                        style="@style/h4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="32dp"
+                        android:layout_marginTop="10dp"
+                        android:gravity="start"
+                        android:text="@string/group_posts_empty_state_subtitle"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/title" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

@@ -251,6 +251,10 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="rules_group">Règlement du groupe</string>
     <string name="rules">Le règlement</string>
     <string name="rules_group_read">Règlement du groupe, à lire attentivement.</string>
-
-
+    <string name="group_event">  Évènements du groupe</string>
+    <string name="group_event_empty_state_title">Pas encore d’évènements prévus dans ce groupe</string>
+    <string name="group_event_empty_state_subtitle"><![CDATA[Cliquez sur « + » pour en créer un]]></string>
+    <string name="group_posts_empty_state_title">Pas encore de publication sur ce groupe</string>
+    <string name="group_posts_empty_state_subtitle">C’est l’occasion pour vous de partager la première nouvelle pour lancer la discussion !</string>
+    <string name="posts">Fil d’actualité</string>
 </resources>
