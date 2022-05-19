@@ -11,7 +11,22 @@
         <argument
             android:name="groupID"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_group_feed_to_group_members"
+            app:destination="@id/group_members"
+            app:enterAnim="@anim/bottom_up"
+            app:exitAnim="@anim/bottom_down"
+            app:popExitAnim="@anim/bottom_down" />
     </fragment>
+
+
+    <dialog
+        android:id="@+id/group_members"
+        android:name="social.entourage.android.new_v8.groups.details.members.MembersModalFragment">
+        <argument
+            android:name="groupID"
+            app:argType="integer" />
+    </dialog>
 
 
 </navigation>

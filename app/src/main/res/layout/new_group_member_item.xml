@@ -8,6 +8,7 @@
         android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="20dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="100">
@@ -22,31 +23,33 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
             android:layout_weight="95"
+            android:gravity="center_vertical"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/name"
                 style="@style/left_courant_bold_black"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="25dp"
                 android:maxLines="2"
                 tools:text="Name" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp">
 
                 <TextView
                     android:id="@+id/ambassador"
                     style="@style/group_member_subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginBottom="25dp"
-                    android:text="Ambassadeur"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/ambassador"
+                    android:visibility="gone"
                     tools:text="Ambassadeur" />
 
                 <TextView
@@ -54,9 +57,7 @@
                     style="@style/group_member_subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginBottom="25dp"
-                    android:text="Entourage"
+                    android:visibility="gone"
                     tools:text="Entourage" />
 
             </LinearLayout>

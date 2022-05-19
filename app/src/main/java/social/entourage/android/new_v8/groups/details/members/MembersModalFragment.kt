@@ -1,14 +1,16 @@
 package social.entourage.android.new_v8.groups.details.members
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.databinding.NewFragmentMembersModalBinding
@@ -18,7 +20,7 @@ import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 
 
-open class MembersModalFragment : BottomSheetDialogFragment() {
+open class MembersModalFragment : DialogFragment() {
 
     private var _binding: NewFragmentMembersModalBinding? = null
     val binding: NewFragmentMembersModalBinding get() = _binding!!
@@ -26,6 +28,21 @@ open class MembersModalFragment : BottomSheetDialogFragment() {
     private var membersListSearch: MutableList<EntourageUser> = ArrayList()
     private var groupId: Int? = Const.DEFAULT_VALUE
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
+
+    private val navArgs: MembersModalFragmentArgs by navArgs()
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NO_FRAME, R.style.FullScreenDialog)
+    }
+
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState)
+        dialog.window?.attributes?.windowAnimations = R.style.MyDialogAnimation
+        return dialog
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,6 +70,7 @@ open class MembersModalFragment : BottomSheetDialogFragment() {
         handleEnterButton()
         handleSearchOnFocus()
         handleCross()
+        hideView()
     }
 
     private fun handleResponseGetMembers(allMembers: MutableList<EntourageUser>?) {
@@ -73,7 +91,8 @@ open class MembersModalFragment : BottomSheetDialogFragment() {
 
     private fun handleCloseButton() {
         binding.header.iconBack.setOnClickListener {
-            dismiss()
+            // findNavController().popBackStack()
+            requireActivity().onBackPressed()
         }
     }
 
@@ -122,9 +141,12 @@ open class MembersModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun getGroupId() {
-        groupId = arguments?.getInt(Const.GROUP_ID)
+        groupId = navArgs.groupID
     }
 
+    private fun hideView() {
+        binding.header.view.visibility = View.GONE
+    }
 
     private fun handleEnterButton() {
         binding.searchBar.setOnEditorActionListener { _, actionId, _ ->
@@ -161,17 +183,6 @@ open class MembersModalFragment : BottomSheetDialogFragment() {
             binding.emptyStateLayout.visibility = View.GONE
             updateView(membersList.isEmpty())
             Utils.hideKeyboard(requireActivity())
-        }
-    }
-
-    companion object {
-        const val TAG = "MembersModalFragment"
-        fun newInstance(groupId: Int): MembersModalFragment {
-            val fragment = MembersModalFragment()
-            val args = Bundle()
-            args.putInt(Const.GROUP_ID, groupId)
-            fragment.arguments = args
-            return fragment
         }
     }
 }

@@ -3,9 +3,11 @@ package social.entourage.android.new_v8.groups.details.rules
 
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.new_fragment_my_profile.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.databinding.NewGroupMemberItemBinding
@@ -31,6 +33,13 @@ class MembersListAdapter(
         with(holder) {
             with(membersList[position]) {
                 binding.name.text = displayName
+                communityRoles?.let {
+                    if (it.contains("ambassador")) binding.ambassador.visibility = View.VISIBLE
+                }
+                partner?.let {
+                    binding.partner.visibility = View.VISIBLE
+                    binding.partner.text = it.name
+                }
                 avatarURLAsString.let { avatarURL ->
                     Glide.with(holder.itemView.context)
                         .load(Uri.parse(avatarURL))
