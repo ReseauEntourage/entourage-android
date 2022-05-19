@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.google.android.material.appbar.AppBarLayout
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
@@ -24,6 +25,8 @@ import social.entourage.android.new_v8.groups.details.rules.GroupUiModel
 import social.entourage.android.new_v8.groups.details.SettingsModalFragment
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
+import timber.log.Timber
+import kotlin.math.abs
 
 class FeedFragment : Fragment() {
 
@@ -47,6 +50,7 @@ class FeedFragment : Fragment() {
         handleFollowButton()
         handleBackButton()
         handleSettingsButton()
+        handleImageViewAnimation()
     }
 
 
@@ -67,10 +71,22 @@ class FeedFragment : Fragment() {
 
     }
 
+    private fun handleImageViewAnimation() {
+        binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            val res: Float =
+                abs(verticalOffset).toFloat() / appBarLayout.totalScrollRange
+            binding.toolbarLayout.alpha = 1f - res
+            Timber.e(res.toString())
+            binding.groupImageToolbar.alpha = res
+            binding.groupNameToolbar.alpha = res
+        })
+    }
+
     private fun updateView() {
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         with(binding) {
             groupName.text = group.name
+            groupNameToolbar.text = group.name
             groupMembersNumberLocation.text = String.format(
                 getString(R.string.members_location),
                 group.members_count,
@@ -86,10 +102,12 @@ class FeedFragment : Fragment() {
                 groupDescription.text = group.description
                 initializeInterests()
             }
+            /*
             Glide.with(requireActivity())
                 .load(Uri.parse(group.imageUrl))
                 .centerCrop()
                 .into(groupImage)
+             */
         }
         updateButtonJoin()
     }
@@ -183,7 +201,11 @@ class FeedFragment : Fragment() {
         interestsList.clear()
         val groupInterests = group.interests
         tags?.interests?.forEach { interest ->
-            if (groupInterests.contains(interest.id)) interest.name?.let { it -> interestsList.add(it) }
+            if (groupInterests.contains(interest.id)) interest.name?.let { it ->
+                interestsList.add(
+                    it
+                )
+            }
         }
         binding.interests.adapter?.notifyDataSetChanged()
     }
