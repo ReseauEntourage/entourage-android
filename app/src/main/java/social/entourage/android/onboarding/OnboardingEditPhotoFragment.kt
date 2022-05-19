@@ -90,7 +90,12 @@ class OnboardingEditPhotoFragment : DialogFragment() {
         }
 
         photoUri?.let {
-            crop_view?.setUri(it)
+            try {
+                crop_view?.setUri(it)
+
+            } catch(e: IOException) {
+                Timber.e(e)
+            }
         }
 
         crop_view?.addOnCropListener(object : OnCropListener {
@@ -105,9 +110,13 @@ class OnboardingEditPhotoFragment : DialogFragment() {
             }
 
             override fun onFailure(e: Exception) {
-                Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
-                ui_photo_edit_progressBar?.visibility = View.GONE
-                ui_edit_photo_validate?.isEnabled = true
+                try {
+                    Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
+                    ui_photo_edit_progressBar?.visibility = View.GONE
+                    ui_edit_photo_validate?.isEnabled = true
+                } catch (e2: IOException) {
+                    Timber.w(e2)
+                }
             }
         })
 
@@ -133,7 +142,7 @@ class OnboardingEditPhotoFragment : DialogFragment() {
                 activity?.contentResolver?.let { contentResolver ->
                     saveBitmap(Utils.getBitmapFromUri(photoUri, contentResolver).rotate(currentAngle))
                 }
-            } catch(e: FileNotFoundException) {
+            } catch(e: IOException) {
                 Timber.e(e)
             }
         }
