@@ -257,4 +257,5 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="group_posts_empty_state_title">Pas encore de publication sur ce groupe</string>
     <string name="group_posts_empty_state_subtitle">C’est l’occasion pour vous de partager la première nouvelle pour lancer la discussion !</string>
     <string name="posts">Fil d’actualité</string>
+    <string name="write_your_message">Écrire votre message</string>
 </resources>

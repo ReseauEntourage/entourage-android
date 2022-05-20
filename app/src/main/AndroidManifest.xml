@@ -56,6 +56,11 @@
             android:name=".new_v8.groups.create.CreateGroupActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".new_v8.groups.details.posts.CreatePostActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".new_v8.MainActivity"
             android:exported="false"
