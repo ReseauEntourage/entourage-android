@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +16,6 @@ import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.databinding.NewFragmentMembersModalBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
-import social.entourage.android.new_v8.groups.details.rules.MembersListAdapter
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 
@@ -91,8 +91,7 @@ open class MembersModalFragment : DialogFragment() {
 
     private fun handleCloseButton() {
         binding.header.iconBack.setOnClickListener {
-            // findNavController().popBackStack()
-            requireActivity().onBackPressed()
+            findNavController().popBackStack()
         }
     }
 

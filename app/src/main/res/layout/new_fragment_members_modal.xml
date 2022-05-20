@@ -28,9 +28,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/padding_horizontal"
-
-                >
+                android:layout_marginHorizontal="@dimen/padding_horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/search_bar_layout"
