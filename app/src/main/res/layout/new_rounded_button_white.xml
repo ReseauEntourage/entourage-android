@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:background="@{drawable}"
         android:drawablePadding="10dp"
+        android:paddingHorizontal="20dp"
         android:text="@{content}"
         android:textAllCaps="false" />
 </layout>
