@@ -10,4 +10,5 @@ object Const {
     const val CHOOSE_PHOTO = "choose_photo"
     const val GROUP_ID = "groupID"
     const val GROUP_UI = "groupUI"
+    const val AMBASSADOR = "ambassador"
 }

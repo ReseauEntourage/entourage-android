@@ -13,6 +13,7 @@ import social.entourage.android.new_v8.models.Group
 class GroupImagesResponse(@field:SerializedName("neighborhood_images") val groupImages: ArrayList<GroupImage>)
 class GroupWrapper(@field:SerializedName("neighborhood") val group: Group)
 class GroupsListWrapper(@field:SerializedName("neighborhoods") val allGroups: MutableList<Group>)
+class GroupsMembersWrapper(@field:SerializedName("users") val users: MutableList<EntourageUser>)
 
 interface GroupRequest {
     @GET("neighborhood_images")
@@ -58,5 +59,16 @@ interface GroupRequest {
     fun leaveGroup(
         @Path("neighborhood_id") groupId: Int
     ): Call<EntourageUserResponse>
+
+    @GET("neighborhoods/{neighborhood_id}/users")
+    fun getMembers(
+        @Path("neighborhood_id") groupId: Int
+    ): Call<GroupsMembersWrapper>
+
+    @GET("neighborhoods/{neighborhood_id}/users")
+    fun getMembersSearch(
+        @Path("neighborhood_id") groupId: Int,
+        @Query("q") searchTxt: String,
+    ): Call<GroupsMembersWrapper>
 
 }

@@ -6,9 +6,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.api.request.EntourageUserResponse
-import social.entourage.android.api.request.GroupWrapper
-import social.entourage.android.api.request.GroupsListWrapper
+import social.entourage.android.api.model.EntourageUser
+import social.entourage.android.api.model.User
+import social.entourage.android.api.request.*
 import social.entourage.android.new_v8.groups.list.groupPerPage
 import social.entourage.android.new_v8.models.Group
 import timber.log.Timber
@@ -20,6 +20,8 @@ class GroupPresenter {
     var getAllGroups = MutableLiveData<MutableList<Group>>()
     var getGroupsSearch = MutableLiveData<MutableList<Group>>()
     var getAllMyGroups = MutableLiveData<MutableList<Group>>()
+    var getMembers = MutableLiveData<MutableList<EntourageUser>>()
+    var getMembersSearch = MutableLiveData<MutableList<EntourageUser>>()
     var isGroupUpdated = MutableLiveData<Boolean>()
     var hasUserJoinedGroup = MutableLiveData<Boolean>()
     var hasUserLeftGroup = MutableLiveData<Boolean>()
@@ -177,5 +179,34 @@ class GroupPresenter {
                     hasUserLeftGroup.value = false
                 }
             })
+    }
+
+    fun getGroupMembers(groupId: Int) {
+        EntourageApplication.get().apiModule.groupRequest.getMembers(groupId)
+            .enqueue(object : Callback<GroupsMembersWrapper> {
+                override fun onResponse(
+                    call: Call<GroupsMembersWrapper>,
+                    response: Response<GroupsMembersWrapper>
+                ) {
+                    response.body()?.let { allMembersWrapper ->
+                        getMembers.value = allMembersWrapper.users
+                    }
+
+                }
+
+                override fun onFailure(call: Call<GroupsMembersWrapper>, t: Throwable) {
+                }
+            })
+    }
+
+
+    fun getGroupMembersSearch(searchTxt: String) {
+        val listTmp: MutableList<EntourageUser> = mutableListOf()
+        getMembers.value?.forEach {
+            if (it.displayName?.lowercase()?.contains(searchTxt.lowercase()) == true) {
+                listTmp.add(it)
+            }
+        }
+        getMembersSearch.value = listTmp
     }
 }

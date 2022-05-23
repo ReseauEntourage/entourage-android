@@ -1,6 +1,5 @@
 package social.entourage.android.new_v8.groups.details.feed
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +7,9 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -21,8 +20,8 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentFeedBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
-import social.entourage.android.new_v8.groups.details.rules.GroupUiModel
 import social.entourage.android.new_v8.groups.details.SettingsModalFragment
+import social.entourage.android.new_v8.groups.details.rules.GroupUiModel
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import timber.log.Timber
@@ -51,6 +50,7 @@ class FeedFragment : Fragment() {
         handleBackButton()
         handleSettingsButton()
         handleImageViewAnimation()
+        handleMembersButton()
     }
 
 
@@ -194,6 +194,13 @@ class FeedFragment : Fragment() {
                 )
             )
                 .show(parentFragmentManager, SettingsModalFragment.TAG)
+        }
+    }
+
+    private fun handleMembersButton() {
+        binding.members.setOnClickListener {
+            val action = FeedFragmentDirections.actionGroupFeedToGroupMembers(groupId)
+            findNavController().navigate(action)
         }
     }
 
