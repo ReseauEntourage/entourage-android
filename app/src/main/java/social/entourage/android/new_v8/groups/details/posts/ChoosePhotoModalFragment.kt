@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -14,10 +15,18 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.core.content.PermissionChecker
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.takusemba.cropme.OnCropListener
+import kotlinx.android.synthetic.main.fragment_onboarding_edit_photo.*
+import kotlinx.android.synthetic.main.fragment_photo_edit.*
+import kotlinx.android.synthetic.main.fragment_photo_edit.crop_view
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentChoosePhotoModalBinding
+import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.onboarding.OnboardingPhotoFragment
+import social.entourage.android.tools.Utils
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
@@ -32,6 +41,7 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
 
     var photoFileUri: Uri? = null
     var mCurrentPhotoPath: String? = null
+    private var photoFile: File? = null
 
 
     val getContent =
@@ -50,6 +60,7 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
                     )
                 } else {
                     Timber.d("Return Image REQUEST LA")
+                    photoFileUri = urii
                     loadPickedImage(urii)
                 }
                 return@let
@@ -71,6 +82,7 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
         if (success) {
             if (photoFileUri != null) {
                 loadPickedImage(photoFileUri)
+                Timber.e("In Success")
                 return@registerForActivityResult
             }
             mCurrentPhotoPath?.let { loadPickedImage(Uri.fromFile(File(it))) }
@@ -91,9 +103,10 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
         handleTakePictureButton()
         handleImportPictureButton()
         handleBackButton()
+        handleValidateButton()
     }
 
-    private fun handleTakePictureButton() {
+    private fun handleImportPictureButton() {
         binding.importPicture.root.setOnClickListener {
             // write permission is used to store the cropped image before upload
             if (PermissionChecker.checkSelfPermission(
@@ -111,7 +124,7 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun handleImportPictureButton() {
+    private fun handleTakePictureButton() {
         binding.takePicture.root.setOnClickListener {
             if (PermissionChecker.checkSelfPermission(
                     requireContext(),
@@ -158,6 +171,11 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
         }
     }
 
+    private fun saveBitmap(bitmap: Bitmap) {
+        crop_view?.setBitmap(bitmap)
+        photoFile = Utils.saveBitmapToFile(bitmap, photoFile)
+    }
+
     @Throws(IOException::class)
     fun createImageFile(): Uri? {
         // Create an image file name
@@ -200,6 +218,19 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
             binding.image.visibility = View.VISIBLE
             binding.addPhoto.visibility = View.VISIBLE
             binding.deletePhotoLayout.visibility = View.GONE
+        }
+    }
+
+    private fun handleValidateButton() {
+        binding.validatePicture.root.setOnClickListener {
+            binding.cropView.crop()
+            Timber.e("photoFileUri ${photoFileUri?.path}")
+            Timber.e("mCurrentPhotoPath $mCurrentPhotoPath")
+            setFragmentResult(
+                Const.REQUEST_KEY_CHOOSE_PHOTO,
+                bundleOf(Const.CHOOSE_PHOTO to photoFileUri.toString())
+            )
+            dismiss()
         }
     }
 

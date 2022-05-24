@@ -53,7 +53,7 @@
                         android:text="@string/write_your_message" />
 
                     <EditText
-                        android:id="@+id/group_message_welcome"
+                        android:id="@+id/message"
                         style="@style/input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -110,6 +110,7 @@
                         android:id="@+id/add_photo"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
+                        android:layout_marginTop="12dp"
                         android:gravity="center"
                         android:visibility="gone"
                         app:layout_constraintLeft_toLeftOf="parent"

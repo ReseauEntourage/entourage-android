@@ -2,16 +2,20 @@ package social.entourage.android.new_v8.groups
 
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.api.request.EntourageUserResponse
-import social.entourage.android.api.request.GroupWrapper
-import social.entourage.android.api.request.GroupsListWrapper
+import social.entourage.android.api.request.*
 import social.entourage.android.new_v8.groups.list.groupPerPage
 import social.entourage.android.new_v8.models.Group
 import timber.log.Timber
+import java.io.File
+import java.io.IOException
 
 class GroupPresenter {
 
@@ -177,5 +181,47 @@ class GroupPresenter {
                     hasUserLeftGroup.value = false
                 }
             })
+    }
+
+    fun addPost(file: File, groupId: Int) {
+        val request = RequestContent("image/jpeg")
+        EntourageApplication.get().apiModule.groupRequest.prepareAddPost(groupId, request)
+            .enqueue(object : Callback<PrepareAddPostResponse> {
+                override fun onResponse(
+                    call: Call<PrepareAddPostResponse>,
+                    response: Response<PrepareAddPostResponse>
+                ) {
+                    Timber.e(response.body().toString())
+                    if (response.isSuccessful) {
+                        val presignedUrl = response.body()?.presignedUrl
+                        var uploadKey = response.body()?.uploadKey
+                        presignedUrl?.let {
+                            uploadFile(file, presignedUrl)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<PrepareAddPostResponse>, t: Throwable) {
+                    hasUserLeftGroup.value = false
+                }
+            })
+    }
+
+    fun uploadFile(file: File, presignedUrl: String) {
+        val client: OkHttpClient = EntourageApplication.get().apiModule.okHttpClient
+        val requestBody = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+        val request = Request.Builder()
+            .url(presignedUrl)
+            .put(requestBody)
+            .build()
+        client.newCall(request).enqueue(object : okhttp3.Callback {
+            override fun onFailure(call: okhttp3.Call, e: IOException) {
+                Timber.e("response ${e.message}")
+            }
+
+            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                Timber.e("response ${response.body}")
+            }
+        })
     }
 }

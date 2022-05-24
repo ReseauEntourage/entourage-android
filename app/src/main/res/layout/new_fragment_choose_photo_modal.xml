@@ -131,7 +131,6 @@
                 app:content="@{@string/validate}"
                 app:drawable="@{@drawable/new_rounded_button_orange}" />
 
-
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
