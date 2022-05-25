@@ -21,7 +21,7 @@ import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentFeedBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.details.SettingsModalFragment
-import social.entourage.android.new_v8.groups.details.rules.GroupUiModel
+import social.entourage.android.new_v8.models.GroupUiModel
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import timber.log.Timber
@@ -35,6 +35,7 @@ class FeedFragment : Fragment() {
     private var interestsList: ArrayList<String> = ArrayList()
     private var groupId = -1
     private lateinit var group: Group
+    private lateinit var groupUI: GroupUiModel
     private var myId: Int? = null
     private val args: FeedFragmentArgs by navArgs()
 
@@ -51,6 +52,7 @@ class FeedFragment : Fragment() {
         handleSettingsButton()
         handleImageViewAnimation()
         handleMembersButton()
+        handleAboutButton()
     }
 
 
@@ -96,7 +98,7 @@ class FeedFragment : Fragment() {
             if (group.member) {
                 more.visibility = View.VISIBLE
             } else {
-                join.root.visibility = View.VISIBLE
+                join.visibility = View.VISIBLE
                 toKnow.visibility = View.VISIBLE
                 groupDescription.visibility = View.VISIBLE
                 groupDescription.text = group.description
@@ -129,10 +131,10 @@ class FeedFragment : Fragment() {
             if (group.member) R.drawable.new_check else R.drawable.new_plus_white,
             null
         )
-        binding.join.button.text = label
-        binding.join.button.setTextColor(textColor)
-        binding.join.button.background = background
-        binding.join.button.setCompoundDrawablesWithIntrinsicBounds(
+        binding.join.text = label
+        binding.join.setTextColor(textColor)
+        binding.join.background = background
+        binding.join.setCompoundDrawablesWithIntrinsicBounds(
             null,
             null,
             rightDrawable,
@@ -142,7 +144,7 @@ class FeedFragment : Fragment() {
     }
 
     private fun handleFollowButton() {
-        binding.join.button.setOnClickListener {
+        binding.join.setOnClickListener {
             if (!group.member) groupPresenter.joinGroup(groupId)
         }
     }
@@ -184,15 +186,18 @@ class FeedFragment : Fragment() {
 
     private fun handleSettingsButton() {
         binding.iconSettings.setOnClickListener {
-            SettingsModalFragment.newInstance(
-                GroupUiModel(
-                    groupId,
-                    group.name,
-                    group.members_count,
-                    group.address,
-                    group.interests
-                )
+            groupUI = GroupUiModel(
+                groupId,
+                group.name,
+                group.members_count,
+                group.address,
+                group.interests,
+                group.description,
+                group.members,
+                group.member,
+                EntourageApplication.me(activity)?.id == group.admin?.id
             )
+            SettingsModalFragment.newInstance(groupUI)
                 .show(parentFragmentManager, SettingsModalFragment.TAG)
         }
     }
@@ -200,6 +205,24 @@ class FeedFragment : Fragment() {
     private fun handleMembersButton() {
         binding.members.setOnClickListener {
             val action = FeedFragmentDirections.actionGroupFeedToGroupMembers(groupId)
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun handleAboutButton() {
+        binding.more.setOnClickListener {
+            groupUI = GroupUiModel(
+                groupId,
+                group.name,
+                group.members_count,
+                group.address,
+                group.interests,
+                group.description,
+                group.members,
+                group.member,
+                EntourageApplication.me(activity)?.id == group.admin?.id
+            )
+            val action = FeedFragmentDirections.actionGroupFeedToGroupAbout(groupUI)
             findNavController().navigate(action)
         }
     }

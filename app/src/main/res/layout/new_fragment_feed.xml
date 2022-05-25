@@ -182,16 +182,16 @@
                             android:src="@drawable/new_arrow_orange" />
                     </LinearLayout>
 
-                    <include
+                    <Button
                         android:id="@+id/join"
-                        layout="@layout/new_rounded_button_orange"
+                        style="@style/h2_white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
+                        android:drawablePadding="10dp"
                         android:padding="10dp"
-                        android:visibility="gone"
-                        app:content="@{@string/join}"
-                        app:drawable="@{@drawable/new_rounded_button_orange}" />
+                        android:textAllCaps="false"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/to_know"
@@ -348,6 +348,16 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         android:text="@string/group_posts_empty_state_subtitle"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/title" />
+
+                    <ImageView
+                        android:id="@+id/arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="220dp"
+                        android:layout_marginTop="17dp"
+                        android:src="@drawable/new_arrow_create_group"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

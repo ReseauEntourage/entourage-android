@@ -17,6 +17,20 @@
             app:enterAnim="@anim/bottom_up"
             app:exitAnim="@anim/bottom_down"
             app:popExitAnim="@anim/bottom_down" />
+        <action
+            android:id="@+id/action_group_feed_to_group_about"
+            app:destination="@id/group_about"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/group_about"
+        android:name="social.entourage.android.new_v8.groups.details.feed.AboutGroupFragment">
+        <argument
+            android:name="group"
+            app:argType="social.entourage.android.new_v8.models.GroupUiModel" />
     </fragment>
 
 

@@ -523,6 +523,12 @@
         <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
     </style>
 
+    <style name="notifications_items">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
     <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/new_bg_bottomsheet</item>
     </style>
@@ -542,4 +548,11 @@
         <item name="android:windowEnterAnimation">@anim/bottom_up</item>
         <item name="android:windowExitAnimation">@anim/bottom_down</item>
     </style>
+
+    <style name="ColorSwitchStyle">
+        <item name="thumbTint">@color/white</item>
+        <item name="android:shadowColor">@color/transparent</item>
+        <item name="trackTint">@color/new_track_selector</item>
+    </style>
+
 </resources>

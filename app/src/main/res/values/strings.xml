@@ -258,6 +258,17 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="group_posts_empty_state_subtitle">C’est l’occasion pour vous de partager la première nouvelle pour lancer la discussion !</string>
     <string name="posts">Fil d’actualité</string>
     <string name="see_members">Voir les membres</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="leave_group">Quitter le groupe</string>
+    <string name="edit_group_information">Modifier les informations du groupe</string>
+    <string name="notification_new_event">Les nouveaux événements</string>
+    <string name="notification_new_messages">Les nouveaux messages</string>
+    <string name="notification_new_members">L\'arrivée de nouveaux membres</string>
+    <string name="notification_all">Toute l\'activité du groupe</string>
+    <string name="notify_me">Me notifier de</string>
+    <string name="about_group">À propos du groupe</string>
+    <string name="leave_group_dialog_content">Souhaitez-vous quitter le groupe ?</string>
 
 
 </resources>
