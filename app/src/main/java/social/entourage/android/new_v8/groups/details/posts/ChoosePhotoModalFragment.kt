@@ -179,7 +179,7 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
     @Throws(IOException::class)
     fun createImageFile(): Uri? {
         // Create an image file name
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.FRANCE).format(Date())
+        val timeStamp = SimpleDateFormat(Const.DATE_FORMAT_FILE_NAME, Locale.FRANCE).format(Date())
         val imageFileName = "ENTOURAGE_" + timeStamp + "_"
         val storageDir = File(requireContext().filesDir, "images")
         if (!storageDir.exists()) {

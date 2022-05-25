@@ -37,6 +37,7 @@ import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
 import uk.co.markormesher.android_fab.SpeedDialMenuItem
 import kotlin.math.abs
 
+const val rotationDegree = 135F
 class FeedFragment : Fragment() {
 
     private var _binding: NewFragmentFeedBinding? = null
@@ -63,8 +64,7 @@ class FeedFragment : Fragment() {
                     R.drawable.new_create_event,
                     getString(R.string.create_event)
                 )
-                else
-                -> SpeedDialMenuItem(
+                else -> SpeedDialMenuItem(
                     context,
                     R.drawable.new_create_event,
                     getString(R.string.create_event)
@@ -94,7 +94,7 @@ class FeedFragment : Fragment() {
             )
         }
 
-        override fun fabRotationDegrees(): Float = 135F
+        override fun fabRotationDegrees(): Float = rotationDegree
     }
 
 
