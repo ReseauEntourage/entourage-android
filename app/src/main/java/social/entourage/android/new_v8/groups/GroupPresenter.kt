@@ -7,10 +7,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.EntourageUser
-import social.entourage.android.api.model.User
 import social.entourage.android.api.request.*
 import social.entourage.android.new_v8.groups.list.groupPerPage
 import social.entourage.android.new_v8.models.Group
+import social.entourage.android.new_v8.models.Post
 import timber.log.Timber
 
 class GroupPresenter {
@@ -25,6 +25,7 @@ class GroupPresenter {
     var isGroupUpdated = MutableLiveData<Boolean>()
     var hasUserJoinedGroup = MutableLiveData<Boolean>()
     var hasUserLeftGroup = MutableLiveData<Boolean>()
+    var getAllPosts = MutableLiveData<MutableList<Post>>()
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
@@ -199,6 +200,23 @@ class GroupPresenter {
             })
     }
 
+    fun getGroupPosts(groupId: Int) {
+        EntourageApplication.get().apiModule.groupRequest.getGroupPosts(groupId)
+            .enqueue(object : Callback<GroupsPostsWrapper> {
+                override fun onResponse(
+                    call: Call<GroupsPostsWrapper>,
+                    response: Response<GroupsPostsWrapper>
+                ) {
+                    response.body()?.let { allPostsWrapper ->
+                        getAllPosts.value = allPostsWrapper.posts
+                    }
+
+                }
+
+                override fun onFailure(call: Call<GroupsPostsWrapper>, t: Throwable) {
+                }
+            })
+    }
 
     fun getGroupMembersSearch(searchTxt: String) {
         val listTmp: MutableList<EntourageUser> = mutableListOf()

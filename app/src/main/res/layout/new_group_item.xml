@@ -55,7 +55,7 @@
 
                 <TextView
                     android:id="@+id/admin"
-                    style="@style/left_courant_orange"
+                    style="@style/left_courant_light_orange"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="10"

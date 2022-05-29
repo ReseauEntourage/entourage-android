@@ -241,7 +241,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                     app:layout_constraintTop_toBottomOf="@id/layout" />
 
                 <LinearLayout
-                    android:id="@+id/events_layout"
+                    android:id="@+id/events_layout_empty_state"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="4dp"
@@ -271,7 +271,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                             android:text="@string/group_event_empty_state_title" />
 
                         <TextView
-                            style="@style/left_courant_orange"
+                            style="@style/left_courant_light_orange"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/group_event_empty_state_subtitle" />
@@ -289,10 +289,11 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                     android:layout_marginTop="15dp"
                     android:text="@string/posts"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/events_layout" />
+                    app:layout_constraintTop_toBottomOf="@id/events_layout_empty_state" />
 
 
                 <LinearLayout
+                    android:id="@+id/posts_layout_empty_state"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="4dp"
@@ -301,6 +302,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                     android:background="@drawable/new_bg_rounded_beige"
                     android:orientation="vertical"
                     android:padding="28dp"
+                    android:visibility="gone"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/posts">
@@ -359,6 +361,17 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintRight_toRightOf="parent" />
                 </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/posts_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/posts"
+                    tools:listitem="@layout/new_layout_post" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -23,6 +23,7 @@ import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.details.SettingsModalFragment
 import social.entourage.android.new_v8.models.GroupUiModel
 import social.entourage.android.new_v8.models.Group
+import social.entourage.android.new_v8.models.Post
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import timber.log.Timber
 import kotlin.math.abs
@@ -38,6 +39,7 @@ class FeedFragment : Fragment() {
     private lateinit var groupUI: GroupUiModel
     private var myId: Int? = null
     private val args: FeedFragmentArgs by navArgs()
+    private var postsList: MutableList<Post> = ArrayList()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,7 +47,9 @@ class FeedFragment : Fragment() {
         groupId = args.groupID
         myId = EntourageApplication.me(activity)?.id
         groupPresenter.getGroup(groupId)
+        groupPresenter.getGroupPosts(groupId)
         groupPresenter.getGroup.observe(viewLifecycleOwner, ::handleResponseGetGroup)
+        groupPresenter.getAllPosts.observe(viewLifecycleOwner, ::handleResponseGetGroupPosts)
         groupPresenter.hasUserJoinedGroup.observe(requireActivity(), ::handleJoinResponse)
         handleFollowButton()
         handleBackButton()
@@ -53,6 +57,19 @@ class FeedFragment : Fragment() {
         handleImageViewAnimation()
         handleMembersButton()
         handleAboutButton()
+        initializePosts()
+    }
+
+    private fun handleResponseGetGroupPosts(allPosts: MutableList<Post>?) {
+        postsList.clear()
+        allPosts?.let { postsList.addAll(it) }
+        allPosts?.isEmpty()?.let {
+            if (it) binding.postsLayoutEmptyState.visibility = View.VISIBLE
+            else {
+                binding.postsRecyclerview.visibility = View.VISIBLE
+                binding.recyclerView.adapter?.notifyDataSetChanged()
+            }
+        }
     }
 
 
@@ -161,6 +178,13 @@ class FeedFragment : Fragment() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = group.members?.let { GroupMembersPhotosAdapter(it) }
+        }
+    }
+
+    private fun initializePosts() {
+        binding.postsRecyclerview.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = GroupPostsAdapter(postsList)
         }
     }
 
