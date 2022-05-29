@@ -5,18 +5,14 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.setFragmentResultListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import kotlinx.android.synthetic.main.new_rules_item.*
-import kotlinx.android.synthetic.main.rounded_button_icon.view.*
 import social.entourage.android.R
 import social.entourage.android.databinding.NewActivityCreatePostBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
@@ -95,11 +91,18 @@ class CreatePostActivity : AppCompatActivity() {
 
     private fun validatePost() {
         binding.validate.button.setOnClickListener {
-            if (isMessageValid() || !imagePath.isNullOrBlank())
-                imagePath?.let {
-                    val file = File(it)
-                    //groupPresenter.addPost(file, groupId)
-                }
+            val messageChat = ArrayMap<String, Any>()
+            if (isMessageValid()) messageChat["content"] = binding.message.text
+            val request = ArrayMap<String, Any>()
+            request["chat_message"] = messageChat
+            Timber.e(messageChat.toString())
+            groupPresenter.addPost(groupId, request)
+/*
+            imagePath?.let {
+                val file = File(it)
+                groupPresenter.addPost(file, groupId)
+            }
+ */
         }
     }
 

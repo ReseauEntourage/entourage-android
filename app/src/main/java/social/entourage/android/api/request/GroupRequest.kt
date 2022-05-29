@@ -78,9 +78,10 @@ interface GroupRequest {
     ): Call<PrepareAddPostResponse>
 
 
-    @POST("neighborhoods/{neighborhood_id}/chat_messages/")
+    @POST("neighborhoods/{neighborhood_id}/chat_messages")
     fun addPost(
-        @Path("neighborhood_id") groupId: Int
+        @Path("neighborhood_id") groupId: Int,
+        @Body params: ArrayMap<String, Any>
     ): Call<PrepareAddPostResponse>
 
 }

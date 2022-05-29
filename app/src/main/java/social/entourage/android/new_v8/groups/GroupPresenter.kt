@@ -207,6 +207,27 @@ class GroupPresenter {
             })
     }
 
+    fun addPost(groupId: Int, params: ArrayMap<String, Any>) {
+        Timber.e("in ADD post")
+        EntourageApplication.get().apiModule.groupRequest.addPost(groupId, params)
+            .enqueue(object : Callback<PrepareAddPostResponse> {
+                override fun onResponse(
+                    call: Call<PrepareAddPostResponse>,
+                    response: Response<PrepareAddPostResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        Timber.e(response.body().toString())
+                    } else {
+                        Timber.e(response.message())
+                    }
+                }
+
+                override fun onFailure(call: Call<PrepareAddPostResponse>, t: Throwable) {
+
+                }
+            })
+    }
+
     fun uploadFile(file: File, presignedUrl: String) {
         val client: OkHttpClient = EntourageApplication.get().apiModule.okHttpClient
         val requestBody = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
