@@ -27,6 +27,7 @@ class GroupPresenter {
     var isGroupUpdated = MutableLiveData<Boolean>()
     var hasUserJoinedGroup = MutableLiveData<Boolean>()
     var hasUserLeftGroup = MutableLiveData<Boolean>()
+    var hasPost = MutableLiveData<Boolean>()
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
@@ -208,22 +209,17 @@ class GroupPresenter {
     }
 
     fun addPost(groupId: Int, params: ArrayMap<String, Any>) {
-        Timber.e("in ADD post")
         EntourageApplication.get().apiModule.groupRequest.addPost(groupId, params)
-            .enqueue(object : Callback<PrepareAddPostResponse> {
+            .enqueue(object : Callback<ChatMessageResponse> {
                 override fun onResponse(
-                    call: Call<PrepareAddPostResponse>,
-                    response: Response<PrepareAddPostResponse>
+                    call: Call<ChatMessageResponse>,
+                    response: Response<ChatMessageResponse>
                 ) {
-                    if (response.isSuccessful) {
-                        Timber.e(response.body().toString())
-                    } else {
-                        Timber.e(response.message())
-                    }
+                    hasPost.value = response.isSuccessful
                 }
 
-                override fun onFailure(call: Call<PrepareAddPostResponse>, t: Throwable) {
-
+                override fun onFailure(call: Call<ChatMessageResponse>, t: Throwable) {
+                    hasPost.value = false
                 }
             })
     }

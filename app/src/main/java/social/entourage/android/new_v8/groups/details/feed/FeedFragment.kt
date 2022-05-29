@@ -2,12 +2,10 @@ package social.entourage.android.new_v8.groups.details.feed
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -27,7 +25,6 @@ import social.entourage.android.databinding.NewFragmentFeedBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.details.SettingsModalFragment
 import social.entourage.android.new_v8.groups.details.posts.CreatePostActivity
-import social.entourage.android.new_v8.groups.details.rules.GroupRulesActivity
 import social.entourage.android.new_v8.groups.details.rules.GroupUiModel
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
@@ -118,7 +115,6 @@ class FeedFragment : Fragment() {
             )
         )
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

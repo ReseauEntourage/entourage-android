@@ -37,12 +37,19 @@ class CreatePostActivity : AppCompatActivity() {
             R.layout.new_activity_create_post
         )
         groupId = intent.getIntExtra(Const.GROUP_ID, Const.DEFAULT_VALUE)
+        groupPresenter.hasPost.observe(this, ::handlePost)
         setView()
         handleAddPhotoButton()
         getResult()
         validatePost()
         handleBackButton()
         handleMessageChangedTextListener()
+    }
+
+    private fun handlePost(hasPost: Boolean) {
+        if (hasPost) {
+            finish()
+        }
     }
 
     private fun handleAddPhotoButton() {
@@ -92,7 +99,7 @@ class CreatePostActivity : AppCompatActivity() {
     private fun validatePost() {
         binding.validate.button.setOnClickListener {
             val messageChat = ArrayMap<String, Any>()
-            if (isMessageValid()) messageChat["content"] = binding.message.text
+            if (isMessageValid()) messageChat["content"] = binding.message.text.toString()
             val request = ArrayMap<String, Any>()
             request["chat_message"] = messageChat
             Timber.e(messageChat.toString())

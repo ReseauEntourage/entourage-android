@@ -82,6 +82,6 @@ interface GroupRequest {
     fun addPost(
         @Path("neighborhood_id") groupId: Int,
         @Body params: ArrayMap<String, Any>
-    ): Call<PrepareAddPostResponse>
+    ): Call<ChatMessageResponse>
 
 }
