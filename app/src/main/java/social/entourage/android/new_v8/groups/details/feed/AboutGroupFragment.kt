@@ -1,13 +1,13 @@
 package social.entourage.android.new_v8.groups.details.feed
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexDirection
@@ -17,11 +17,11 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentAboutGroupBinding
-import social.entourage.android.databinding.NewFragmentFeedBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.details.SettingsModalFragment
 import social.entourage.android.new_v8.models.GroupUiModel
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
+import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 
 class AboutGroupFragment : Fragment() {
@@ -49,6 +49,7 @@ class AboutGroupFragment : Fragment() {
         handleSettingsButton()
         handleJoinButton()
         handleBackButton()
+        onFragmentResult()
         groupPresenter.hasUserJoinedGroup.observe(requireActivity(), ::handleJoinResponse)
         groupPresenter.hasUserLeftGroup.observe(requireActivity(), ::handleJoinResponse)
     }
@@ -158,7 +159,7 @@ class AboutGroupFragment : Fragment() {
 
     private fun handleBackButton() {
         binding.header.iconBack.setOnClickListener {
-            findNavController().popBackStack()
+            // findNavController().popBackStack(R.id.group_feed, true)
         }
     }
 
@@ -178,6 +179,19 @@ class AboutGroupFragment : Fragment() {
             } else {
                 group?.let {
                     it.id?.let { id -> groupPresenter.joinGroup(id) }
+                }
+            }
+        }
+    }
+
+
+    private fun onFragmentResult() {
+        setFragmentResultListener(Const.REQUEST_KEY_SHOULD_REFRESH) { _, bundle ->
+            val shouldRefresh = bundle.getBoolean(Const.SHOULD_REFRESH)
+            if (shouldRefresh) {
+                group?.let {
+                    it.member = !it.member
+                    setView()
                 }
             }
         }

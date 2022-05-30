@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.widget.TextViewCompat
+import androidx.fragment.app.setFragmentResult
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -48,7 +50,9 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         updateView()
         viewWithRole()
         handleLeaveGroup()
+        groupPresenter.hasUserLeftGroup.observe(requireActivity(), ::hasUserLeftGroup)
     }
+
 
     private fun viewWithRole() {
         if (group?.admin == true) {
@@ -138,6 +142,17 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
             val intent = Intent(context, EditGroupActivity::class.java)
             intent.putExtra(Const.GROUP_ID, group?.id)
             startActivity(intent)
+            dismiss()
+        }
+    }
+
+    private fun hasUserLeftGroup(hasLeft: Boolean) {
+        if (hasLeft) {
+            setFragmentResult(
+                Const.REQUEST_KEY_SHOULD_REFRESH,
+                bundleOf(Const.SHOULD_REFRESH to true)
+            )
+            dismiss()
         }
     }
 

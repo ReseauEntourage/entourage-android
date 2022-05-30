@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -21,12 +23,15 @@ import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentFeedBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.details.SettingsModalFragment
-import social.entourage.android.new_v8.models.GroupUiModel
 import social.entourage.android.new_v8.models.Group
+import social.entourage.android.new_v8.models.GroupUiModel
 import social.entourage.android.new_v8.models.Post
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
+import social.entourage.android.new_v8.utils.Const
 import timber.log.Timber
 import kotlin.math.abs
+
+const val postPerPage = 10
 
 class FeedFragment : Fragment() {
 
@@ -40,17 +45,17 @@ class FeedFragment : Fragment() {
     private var myId: Int? = null
     private val args: FeedFragmentArgs by navArgs()
     private var postsList: MutableList<Post> = ArrayList()
-
+    private var page: Int = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         groupId = args.groupID
         myId = EntourageApplication.me(activity)?.id
+        loadPosts()
         groupPresenter.getGroup(groupId)
-        groupPresenter.getGroupPosts(groupId)
         groupPresenter.getGroup.observe(viewLifecycleOwner, ::handleResponseGetGroup)
         groupPresenter.getAllPosts.observe(viewLifecycleOwner, ::handleResponseGetGroupPosts)
-        groupPresenter.hasUserJoinedGroup.observe(requireActivity(), ::handleJoinResponse)
+        groupPresenter.hasUserJoinedGroup.observe(viewLifecycleOwner, ::handleJoinResponse)
         handleFollowButton()
         handleBackButton()
         handleSettingsButton()
@@ -58,18 +63,8 @@ class FeedFragment : Fragment() {
         handleMembersButton()
         handleAboutButton()
         initializePosts()
-    }
-
-    private fun handleResponseGetGroupPosts(allPosts: MutableList<Post>?) {
-        postsList.clear()
-        allPosts?.let { postsList.addAll(it) }
-        allPosts?.isEmpty()?.let {
-            if (it) binding.postsLayoutEmptyState.visibility = View.VISIBLE
-            else {
-                binding.postsRecyclerview.visibility = View.VISIBLE
-                binding.recyclerView.adapter?.notifyDataSetChanged()
-            }
-        }
+        handleSwipeRefresh()
+        onFragmentResult()
     }
 
 
@@ -81,6 +76,25 @@ class FeedFragment : Fragment() {
         return binding.root
     }
 
+    private fun handleResponseGetGroupPosts(allPosts: MutableList<Post>?) {
+        binding.swipeRefresh.isRefreshing = false
+        postsList.clear()
+        allPosts?.let { postsList.addAll(it) }
+        allPosts?.isEmpty()?.let {
+            if (it) binding.postsLayoutEmptyState.visibility = View.VISIBLE
+            else {
+                binding.postsRecyclerview.visibility = View.VISIBLE
+                binding.recyclerView.adapter?.notifyDataSetChanged()
+            }
+        }
+    }
+
+    private fun handleSwipeRefresh() {
+        binding.swipeRefresh.setOnRefreshListener {
+            page = 0
+            loadPosts()
+        }
+    }
 
     private fun handleResponseGetGroup(getGroup: Group?) {
         getGroup?.let {
@@ -114,12 +128,22 @@ class FeedFragment : Fragment() {
             initializeMembersPhotos()
             if (group.member) {
                 more.visibility = View.VISIBLE
+                join.visibility = View.GONE
+                toKnow.visibility = View.GONE
+                groupDescription.visibility = View.GONE
             } else {
                 join.visibility = View.VISIBLE
                 toKnow.visibility = View.VISIBLE
                 groupDescription.visibility = View.VISIBLE
                 groupDescription.text = group.description
+                more.visibility = View.GONE
                 initializeInterests()
+            }
+            if (group.futureEvents?.isEmpty() == true) {
+                binding.eventsLayoutEmptyState.visibility = View.VISIBLE
+            } else {
+                binding.eventsRecyclerview.visibility = View.VISIBLE
+                initializeEvents()
             }
             /*
             Glide.with(requireActivity())
@@ -181,8 +205,16 @@ class FeedFragment : Fragment() {
         }
     }
 
+    private fun initializeEvents() {
+        binding.eventsRecyclerview.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = group.futureEvents?.let { GroupEventsAdapter(it) }
+        }
+    }
+
     private fun initializePosts() {
         binding.postsRecyclerview.apply {
+            // addOnScrollListener(recyclerViewOnScrollListener)
             layoutManager = LinearLayoutManager(requireContext())
             adapter = GroupPostsAdapter(postsList)
         }
@@ -200,6 +232,10 @@ class FeedFragment : Fragment() {
                 adapter = InterestsAdapter(interestsList)
             }
         }
+    }
+
+    private fun loadPosts() {
+        groupPresenter.getGroupPosts(groupId)
     }
 
     private fun handleBackButton() {
@@ -262,5 +298,12 @@ class FeedFragment : Fragment() {
             }
         }
         binding.interests.adapter?.notifyDataSetChanged()
+    }
+
+    private fun onFragmentResult() {
+        setFragmentResultListener(Const.REQUEST_KEY_SHOULD_REFRESH) { _, bundle ->
+            val shouldRefresh = bundle.getBoolean(Const.SHOULD_REFRESH)
+            if (shouldRefresh) groupPresenter.getGroup(groupId)
+        }
     }
 }

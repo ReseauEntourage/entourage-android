@@ -32,7 +32,9 @@ data class Group(
     @SerializedName("members_count")
     var members_count: Int? = null,
     @SerializedName("member")
-    var member: Boolean = false
+    var member: Boolean = false,
+    @SerializedName("future_outings")
+    var futureEvents: MutableList<Events>? = mutableListOf()
 
 ) {
 

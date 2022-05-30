@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="150dp"
+    android:layout_height="match_parent"
     android:layout_marginRight="8dp"
-    android:background="@drawable/new_bg_rounded_beige"
-    android:orientation="vertical">
+    android:background="@drawable/new_bg_event_rounded"
+    android:orientation="vertical"
+    android:paddingBottom="8dp">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -13,6 +14,7 @@
         android:src="@drawable/new_illu_header_group" />
 
     <TextView
+        android:id="@+id/name"
         style="@style/h2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,6 +24,7 @@
         tools:text="Bal d’été sur les quais " />
 
     <TextView
+        android:id="@+id/date"
         style="@style/left_courant_light_orange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,6 +34,7 @@
         tools:text="12/07/2022 " />
 
     <TextView
+        android:id="@+id/address"
         style="@style/left_courant_light_orange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
