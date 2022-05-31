@@ -27,7 +27,6 @@ import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.details.SettingsModalFragment
 import social.entourage.android.new_v8.groups.details.posts.CreatePostActivity
 import social.entourage.android.new_v8.groups.details.rules.GroupUiModel
-import social.entourage.android.new_v8.groups.details.rules.GroupUiModel
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.utils.Const
@@ -37,6 +36,7 @@ import uk.co.markormesher.android_fab.SpeedDialMenuItem
 import kotlin.math.abs
 
 const val rotationDegree = 135F
+
 class FeedFragment : Fragment() {
 
     private var _binding: NewFragmentFeedBinding? = null
@@ -109,7 +109,6 @@ class FeedFragment : Fragment() {
         handleSettingsButton()
         handleImageViewAnimation()
         handleMembersButton()
-        handleCreatePostButton()
         binding.createPost.speedDialMenuAdapter = speedDialMenuAdapter
         binding.createPost.setContentCoverColour(
             ContextCompat.getColor(
@@ -280,12 +279,5 @@ class FeedFragment : Fragment() {
             }
         }
         binding.interests.adapter?.notifyDataSetChanged()
-    }
-
-
-    private fun handleCreatePostButton() {
-        binding.createPost.setOnClickListener {
-
-        }
     }
 }
