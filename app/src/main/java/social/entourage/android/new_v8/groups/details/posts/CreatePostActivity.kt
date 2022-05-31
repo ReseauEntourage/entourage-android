@@ -1,12 +1,12 @@
 package social.entourage.android.new_v8.groups.details.posts
 
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.browser.browseractions.BrowserServiceFileProvider.saveBitmap
 import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -21,10 +21,10 @@ import social.entourage.android.new_v8.user.ReportUserModalFragment
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
 import social.entourage.android.tools.Utils
-import social.entourage.android.tools.rotate
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
+import java.net.URI
 
 
 class CreatePostActivity : AppCompatActivity() {
@@ -33,6 +33,8 @@ class CreatePostActivity : AppCompatActivity() {
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
     private var groupId = Const.DEFAULT_VALUE
     var imageURI: String? = null
+    private var photoFile: File? = null
+    private var bitmap: Bitmap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,6 +97,14 @@ class CreatePostActivity : AppCompatActivity() {
                     .transform(CenterCrop(), RoundedCorners(14.px))
                     .into(binding.addPhoto)
                 handleSaveButtonState(true)
+                try {
+                    contentResolver?.let { contentResolver ->
+                        bitmap =
+                            Utils.getBitmapFromUri(Uri.parse(it), contentResolver)
+                    }
+                } catch (e: IOException) {
+                    Timber.e(e)
+                }
             }
         }
     }
@@ -109,23 +119,18 @@ class CreatePostActivity : AppCompatActivity() {
                 Timber.e(messageChat.toString())
                 groupPresenter.addPost(groupId, request)
             }
-            if (!imageURI.isNullOrEmpty())
-                imageURI?.let { photoUri ->
-                    try {
-                        contentResolver?.let { contentResolver ->
-                            val bitmap =
-                                Utils.getBitmapFromUri(Uri.parse(photoUri), contentResolver)
-                            val photoFile = Utils.saveBitmapToFile(bitmap, null)
-                            groupPresenter.addPost(
-                                binding.message.text.toString(),
-                                photoFile,
-                                groupId
-                            )
-                        }
-                    } catch (e: IOException) {
-                        Timber.e(e)
-                    }
+            if (!imageURI.isNullOrEmpty()) {
+                photoFile = bitmap?.let { it1 ->
+                    Utils.saveBitmapToFile(it1, null)
                 }
+                photoFile?.let { photoFile ->
+                    groupPresenter.addPost(
+                        binding.message.text.toString(),
+                        photoFile,
+                        groupId
+                    )
+                }
+            }
         }
     }
 
