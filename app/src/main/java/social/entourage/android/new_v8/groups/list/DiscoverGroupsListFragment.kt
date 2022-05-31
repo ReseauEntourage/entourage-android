@@ -104,7 +104,6 @@ class DiscoverGroupsListFragment : Fragment() {
     private fun initializeSearchGroups() {
         binding.searchRecyclerView.apply {
             // Pagination
-            addOnScrollListener(recyclerViewOnScrollListener)
             layoutManager = LinearLayoutManager(context)
             adapter = GroupsListAdapter(groupsListSearch, null)
         }

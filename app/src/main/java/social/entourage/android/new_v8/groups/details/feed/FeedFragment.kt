@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexDirection
@@ -25,6 +26,7 @@ import social.entourage.android.databinding.NewFragmentFeedBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.details.SettingsModalFragment
 import social.entourage.android.new_v8.groups.details.posts.CreatePostActivity
+import social.entourage.android.new_v8.groups.details.rules.GroupUiModel
 import social.entourage.android.new_v8.groups.details.rules.GroupUiModel
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
@@ -106,6 +108,7 @@ class FeedFragment : Fragment() {
         handleBackButton()
         handleSettingsButton()
         handleImageViewAnimation()
+        handleMembersButton()
         handleCreatePostButton()
         binding.createPost.speedDialMenuAdapter = speedDialMenuAdapter
         binding.createPost.setContentCoverColour(
@@ -256,6 +259,13 @@ class FeedFragment : Fragment() {
                 )
             )
                 .show(parentFragmentManager, SettingsModalFragment.TAG)
+        }
+    }
+
+    private fun handleMembersButton() {
+        binding.members.setOnClickListener {
+            val action = FeedFragmentDirections.actionGroupFeedToGroupMembers(groupId)
+            findNavController().navigate(action)
         }
     }
 

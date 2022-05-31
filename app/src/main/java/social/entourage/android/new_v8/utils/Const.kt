@@ -12,4 +12,5 @@ object Const {
     const val GROUP_ID = "groupID"
     const val GROUP_UI = "groupUI"
     const val DATE_FORMAT_FILE_NAME = "yyyyMMdd_HHmmss"
+    const val AMBASSADOR = "ambassador"
 }

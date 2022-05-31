@@ -63,6 +63,7 @@
     <dimen name="error_msg">11sp</dimen>
     <dimen name="list_item_spacing">16dp</dimen>
     <dimen name="list_item_spacing_half">8dp</dimen>
+    <dimen name="group_member_subtitle">11sp</dimen>
     <dimen name="tabs_height">60dp</dimen>
     <dimen name="design_bottom_navigation_height" tools:override="true">@dimen/tabs_height</dimen>
 
