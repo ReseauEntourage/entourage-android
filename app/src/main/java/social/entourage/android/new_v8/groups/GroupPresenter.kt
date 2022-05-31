@@ -184,7 +184,7 @@ class GroupPresenter {
             })
     }
 
-    fun addPost(file: File, groupId: Int) {
+    fun addPost(message: String?, file: File, groupId: Int) {
         val request = RequestContent("image/jpeg")
         EntourageApplication.get().apiModule.groupRequest.prepareAddPost(groupId, request)
             .enqueue(object : Callback<PrepareAddPostResponse> {
@@ -195,9 +195,9 @@ class GroupPresenter {
                     Timber.e(response.body().toString())
                     if (response.isSuccessful) {
                         val presignedUrl = response.body()?.presignedUrl
-                        var uploadKey = response.body()?.uploadKey
+                        val uploadKey = response.body()?.uploadKey
                         presignedUrl?.let {
-                            uploadFile(file, presignedUrl)
+                            uploadFile(groupId, file, presignedUrl, uploadKey, message)
                         }
                     }
                 }
@@ -206,6 +206,37 @@ class GroupPresenter {
                     hasUserLeftGroup.value = false
                 }
             })
+    }
+
+
+    fun uploadFile(
+        groupId: Int,
+        file: File,
+        presignedUrl: String,
+        uploadKey: String?,
+        message: String?
+    ) {
+        val client: OkHttpClient = EntourageApplication.get().apiModule.okHttpClient
+        val requestBody = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+        val request = Request.Builder()
+            .url(presignedUrl)
+            .put(requestBody)
+            .build()
+        client.newCall(request).enqueue(object : okhttp3.Callback {
+            override fun onFailure(call: okhttp3.Call, e: IOException) {
+                Timber.e("response ${e.message}")
+            }
+
+            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                val messageChat = ArrayMap<String, Any>()
+                messageChat["image_url"] = uploadKey
+                if (!message.isNullOrBlank() && !message.isNullOrEmpty())
+                    messageChat["content"] = message
+                val chatMessage = ArrayMap<String, Any>()
+                chatMessage["chat_message"] = messageChat
+                addPost(groupId, chatMessage)
+            }
+        })
     }
 
     fun addPost(groupId: Int, params: ArrayMap<String, Any>) {
@@ -222,23 +253,5 @@ class GroupPresenter {
                     hasPost.value = false
                 }
             })
-    }
-
-    fun uploadFile(file: File, presignedUrl: String) {
-        val client: OkHttpClient = EntourageApplication.get().apiModule.okHttpClient
-        val requestBody = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-        val request = Request.Builder()
-            .url(presignedUrl)
-            .put(requestBody)
-            .build()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: okhttp3.Call, e: IOException) {
-                Timber.e("response ${e.message}")
-            }
-
-            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
-                Timber.e("response ${response.body}")
-            }
-        })
     }
 }

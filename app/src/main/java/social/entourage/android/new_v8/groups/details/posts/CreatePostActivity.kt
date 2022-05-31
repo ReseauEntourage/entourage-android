@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.browseractions.BrowserServiceFileProvider.saveBitmap
 import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -19,8 +20,11 @@ import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.user.ReportUserModalFragment
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
+import social.entourage.android.tools.Utils
+import social.entourage.android.tools.rotate
 import timber.log.Timber
 import java.io.File
+import java.io.IOException
 
 
 class CreatePostActivity : AppCompatActivity() {
@@ -28,7 +32,7 @@ class CreatePostActivity : AppCompatActivity() {
     lateinit var binding: NewActivityCreatePostBinding
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
     private var groupId = Const.DEFAULT_VALUE
-    var imagePath: String? = null
+    var imageURI: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,9 +86,8 @@ class CreatePostActivity : AppCompatActivity() {
             Const.REQUEST_KEY_CHOOSE_PHOTO,
             this
         ) { _, bundle ->
-            Timber.e("dans get result")
-            imagePath = bundle.getString(Const.CHOOSE_PHOTO)
-            imagePath?.let {
+            imageURI = bundle.getString(Const.CHOOSE_PHOTO)
+            imageURI?.let {
                 binding.addPhotoLayout.visibility = View.GONE
                 binding.addPhoto.visibility = View.VISIBLE
                 Glide.with(this)
@@ -98,18 +101,31 @@ class CreatePostActivity : AppCompatActivity() {
 
     private fun validatePost() {
         binding.validate.button.setOnClickListener {
-            val messageChat = ArrayMap<String, Any>()
-            if (isMessageValid()) messageChat["content"] = binding.message.text.toString()
-            val request = ArrayMap<String, Any>()
-            request["chat_message"] = messageChat
-            Timber.e(messageChat.toString())
-            groupPresenter.addPost(groupId, request)
-/*
-            imagePath?.let {
-                val file = File(it)
-                groupPresenter.addPost(file, groupId)
+            if (imageURI.isNullOrEmpty() && isMessageValid()) {
+                val messageChat = ArrayMap<String, Any>()
+                messageChat["content"] = binding.message.text.toString()
+                val request = ArrayMap<String, Any>()
+                request["chat_message"] = messageChat
+                Timber.e(messageChat.toString())
+                groupPresenter.addPost(groupId, request)
             }
- */
+            if (!imageURI.isNullOrEmpty())
+                imageURI?.let { photoUri ->
+                    try {
+                        contentResolver?.let { contentResolver ->
+                            val bitmap =
+                                Utils.getBitmapFromUri(Uri.parse(photoUri), contentResolver)
+                            val photoFile = Utils.saveBitmapToFile(bitmap, null)
+                            groupPresenter.addPost(
+                                binding.message.text.toString(),
+                                photoFile,
+                                groupId
+                            )
+                        }
+                    } catch (e: IOException) {
+                        Timber.e(e)
+                    }
+                }
         }
     }
 
@@ -125,7 +141,7 @@ class CreatePostActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                handleSaveButtonState(isMessageValid() || !imagePath.isNullOrBlank())
+                handleSaveButtonState(isMessageValid() || !imageURI.isNullOrEmpty())
             }
 
             override fun afterTextChanged(s: Editable) {

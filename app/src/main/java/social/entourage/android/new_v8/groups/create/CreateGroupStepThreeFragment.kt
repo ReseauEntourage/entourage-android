@@ -97,7 +97,7 @@ class CreateGroupStepThreeFragment : Fragment() {
 
     private fun onFragmentResult() {
         setFragmentResultListener(Const.REQUEST_KEY_CHOOSE_PHOTO) { _, bundle ->
-            selectedImage = bundle.getParcelable(Const.CHOOSE_PHOTO)
+            selectedImage = bundle.getParcelable(Const.CHOOSE_PHOTO_PATH)
             viewModel.isButtonClickable.value = imageHasBeenSelected()
             viewModel.group.neighborhoodImageId(selectedImage?.id)
             selectedImage?.imageUrl.let { imageUrl ->
