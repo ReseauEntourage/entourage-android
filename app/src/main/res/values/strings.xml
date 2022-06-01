@@ -258,6 +258,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="group_posts_empty_state_subtitle">C’est l’occasion pour vous de partager la première nouvelle pour lancer la discussion !</string>
     <string name="posts">Fil d’actualité</string>
     <string name="see_members">Voir les membres</string>
+    <string name="comments">Commentaires de la publication</string>
+    <string name="comments_date">dd.MM.yy à HH:mm</string>
 
 
 </resources>

@@ -9,6 +9,8 @@ object Const {
     const val REQUEST_KEY_CHOOSE_PHOTO = "request_key_choose_photo"
     const val CHOOSE_PHOTO = "choose_photo"
     const val GROUP_ID = "groupID"
+    const val POST_ID = "postID"
+    const val POST_AUTHOR_ID = "postAuthorID"
     const val GROUP_UI = "groupUI"
     const val AMBASSADOR = "ambassador"
 }

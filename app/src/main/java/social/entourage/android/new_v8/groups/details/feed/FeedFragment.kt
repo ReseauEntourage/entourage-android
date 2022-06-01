@@ -1,5 +1,6 @@
 package social.entourage.android.new_v8.groups.details.feed
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,7 @@ import social.entourage.android.new_v8.groups.details.SettingsModalFragment
 import social.entourage.android.new_v8.groups.details.rules.GroupUiModel
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
+import social.entourage.android.new_v8.utils.Const
 import timber.log.Timber
 import kotlin.math.abs
 
@@ -51,6 +53,7 @@ class FeedFragment : Fragment() {
         handleSettingsButton()
         handleImageViewAnimation()
         handleMembersButton()
+        handleCommentsButton()
     }
 
 
@@ -215,5 +218,16 @@ class FeedFragment : Fragment() {
             }
         }
         binding.interests.adapter?.notifyDataSetChanged()
+    }
+
+    private fun handleCommentsButton() {
+        binding.posts.setOnClickListener {
+            startActivity(
+                Intent(requireContext(), CommentsActivity::class.java).putExtra(
+                    Const.GROUP_ID,
+                    135
+                ).putExtra(Const.POST_ID, 13401).putExtra(Const.POST_AUTHOR_ID, group.admin?.id)
+            )
+        }
     }
 }

@@ -11,6 +11,7 @@ import social.entourage.android.api.model.User
 import social.entourage.android.api.request.*
 import social.entourage.android.new_v8.groups.list.groupPerPage
 import social.entourage.android.new_v8.models.Group
+import social.entourage.android.new_v8.models.Post
 import timber.log.Timber
 
 class GroupPresenter {
@@ -20,6 +21,7 @@ class GroupPresenter {
     var getAllGroups = MutableLiveData<MutableList<Group>>()
     var getGroupsSearch = MutableLiveData<MutableList<Group>>()
     var getAllMyGroups = MutableLiveData<MutableList<Group>>()
+    var getAllComments = MutableLiveData<MutableList<Post>>()
     var getMembers = MutableLiveData<MutableList<EntourageUser>>()
     var getMembersSearch = MutableLiveData<MutableList<EntourageUser>>()
     var isGroupUpdated = MutableLiveData<Boolean>()
@@ -195,6 +197,23 @@ class GroupPresenter {
                 }
 
                 override fun onFailure(call: Call<GroupsMembersWrapper>, t: Throwable) {
+                }
+            })
+    }
+
+    fun getPostComments(groupId: Int, postId: Int) {
+        EntourageApplication.get().apiModule.groupRequest.getPostComments(groupId, postId)
+            .enqueue(object : Callback<GroupsPostsWrapper> {
+                override fun onResponse(
+                    call: Call<GroupsPostsWrapper>,
+                    response: Response<GroupsPostsWrapper>
+                ) {
+                    response.body()?.let { allCommentsWrapper ->
+                        getAllComments.value = allCommentsWrapper.posts
+                    }
+                }
+
+                override fun onFailure(call: Call<GroupsPostsWrapper>, t: Throwable) {
                 }
             })
     }
