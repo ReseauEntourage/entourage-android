@@ -1,6 +1,8 @@
 package social.entourage.android.new_v8.groups.list
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +10,8 @@ import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textfield.TextInputLayout.END_ICON_CUSTOM
+import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentGroupsListBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
@@ -37,6 +41,8 @@ class DiscoverGroupsListFragment : Fragment() {
         handleEnterButton()
         handleSearchOnFocus()
         handleCross()
+        handleCrossButton()
+        binding.searchBarLayout.endIconMode = END_ICON_NONE
     }
 
     override fun onCreateView(
@@ -153,6 +159,28 @@ class DiscoverGroupsListFragment : Fragment() {
             }
             handled
         }
+    }
+
+    private fun handleCrossButton() {
+        binding.searchBar.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s.isNullOrEmpty()) {
+                    binding.searchBarLayout.endIconMode = END_ICON_NONE
+
+                } else {
+                    binding.searchBarLayout.endIconMode = END_ICON_CUSTOM
+                    handleCross()
+                }
+            }
+
+        })
     }
 
     private fun handleSearchOnFocus() {
