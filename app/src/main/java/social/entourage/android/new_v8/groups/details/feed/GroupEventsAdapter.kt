@@ -3,6 +3,7 @@ package social.entourage.android.new_v8.groups.details.feed
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import social.entourage.android.R
 import social.entourage.android.databinding.NewEventItemLayoutBinding
 import social.entourage.android.new_v8.models.Events
 import java.text.SimpleDateFormat
@@ -32,7 +33,10 @@ class GroupEventsAdapter(
                 binding.name.text = title
                 binding.address.text = metadata?.placeName
                 metadata?.startDate?.let {
-                    binding.date.text = SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).format(
+                    binding.date.text = SimpleDateFormat(
+                        holder.itemView.context.getString(R.string.event_date),
+                        Locale.FRANCE
+                    ).format(
                         it
                     )
                 }

@@ -11,7 +11,6 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -30,8 +29,6 @@ import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.utils.Const
 import timber.log.Timber
 import kotlin.math.abs
-
-const val postPerPage = 10
 
 class FeedFragment : Fragment() {
 
@@ -214,7 +211,6 @@ class FeedFragment : Fragment() {
 
     private fun initializePosts() {
         binding.postsRecyclerview.apply {
-            // addOnScrollListener(recyclerViewOnScrollListener)
             layoutManager = LinearLayoutManager(requireContext())
             adapter = GroupPostsAdapter(postsList)
         }
@@ -246,17 +242,18 @@ class FeedFragment : Fragment() {
 
     private fun handleSettingsButton() {
         binding.iconSettings.setOnClickListener {
-            groupUI = GroupUiModel(
-                groupId,
-                group.name,
-                group.members_count,
-                group.address,
-                group.interests,
-                group.description,
-                group.members,
-                group.member,
-                EntourageApplication.me(activity)?.id == group.admin?.id
-            )
+            with(group) {
+                groupUI = GroupUiModel(
+                    groupId, name,
+                    members_count,
+                    address,
+                    interests,
+                    description,
+                    members,
+                    member,
+                    EntourageApplication.me(activity)?.id == admin?.id
+                )
+            }
             SettingsModalFragment.newInstance(groupUI)
                 .show(parentFragmentManager, SettingsModalFragment.TAG)
         }

@@ -11,6 +11,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
 import social.entourage.android.databinding.NewLayoutPostBinding
 import social.entourage.android.new_v8.models.Post
+import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
 import java.text.SimpleDateFormat
 import java.util.*
@@ -50,13 +51,16 @@ class GroupPostsAdapter(
                         commentsCount
                     )
                 }
-                binding.date.text = SimpleDateFormat("dd.MM.yyyy", Locale.FRANCE).format(
+                binding.date.text = SimpleDateFormat(
+                    itemView.context.getString(R.string.post_date),
+                    Locale.FRANCE
+                ).format(
                     createdTime
                 )
                 this.imageUrl?.let { avatarURL ->
                     Glide.with(holder.itemView.context)
                         .load(Uri.parse(avatarURL))
-                        .transform(CenterCrop(), RoundedCorners(14.px))
+                        .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
                         .into(binding.photoPost)
                 } ?: run {
                     binding.photoPost.visibility = View.GONE

@@ -97,7 +97,7 @@ class EditGroupFragment : Fragment() {
             stepThree.addPhoto.visibility = View.VISIBLE
             Glide.with(requireActivity())
                 .load(Uri.parse(group.imageUrl))
-                .transform(CenterCrop(), RoundedCorners(14.px))
+                .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
                 .into(stepThree.addPhoto)
         }
     }
@@ -199,7 +199,7 @@ class EditGroupFragment : Fragment() {
                 binding.stepThree.addPhoto.visibility = View.VISIBLE
                 Glide.with(requireActivity())
                     .load(Uri.parse(imageUrl))
-                    .transform(CenterCrop(), RoundedCorners(14.px))
+                    .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
                     .into(binding.stepThree.addPhoto)
             }
         }

@@ -12,5 +12,6 @@ object Const {
     const val GROUP_UI = "groupUI"
     const val AMBASSADOR = "ambassador"
     const val SHOULD_REFRESH = "should_refresh"
-    const val REQUEST_KEY_SHOULD_REFRESH = "should_refresh"
+    const val REQUEST_KEY_SHOULD_REFRESH = "request_key_should_refresh"
+    const val ROUNDED_CORNERS_IMAGES = 14
 }
