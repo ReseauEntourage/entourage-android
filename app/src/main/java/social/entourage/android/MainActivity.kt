@@ -58,14 +58,16 @@ class MainActivity : BaseSecuredActivity(),
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-    
+
     private val presenter: MainPresenter = MainPresenter(this)
     private val avatarUploadPresenter: AvatarUploadPresenter
 
     init {
-        avatarUploadPresenter = AvatarUploadPresenter(this,
+        avatarUploadPresenter = AvatarUploadPresenter(
+            this,
             AvatarUploadRepository(),
-            presenter)
+            presenter
+        )
     }
 
     private val bottomBar

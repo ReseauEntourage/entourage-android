@@ -12,7 +12,6 @@ import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -192,7 +191,7 @@ class EditGroupFragment : Fragment() {
 
     private fun onFragmentResult() {
         setFragmentResultListener(Const.REQUEST_KEY_CHOOSE_PHOTO) { _, bundle ->
-            selectedImage = bundle.getParcelable(Const.CHOOSE_PHOTO)
+            selectedImage = bundle.getParcelable(Const.CHOOSE_PHOTO_PATH)
             selectedImage?.imageUrl.let { imageUrl ->
                 binding.stepThree.addPhoto.visibility = View.VISIBLE
                 Glide.with(requireActivity())

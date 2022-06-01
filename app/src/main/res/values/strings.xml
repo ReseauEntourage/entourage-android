@@ -213,6 +213,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="category_name_label">Décrivez en un mot la catégorie de votre groupe</string>
     <string name="pass">Passer</string>
     <string name="create_post">Créer une publication</string>
+    <string name="create_event">Créer un évènement sur le groupe</string>
     <string name="group_success_title">Votre groupe a \nbien été créé !</string>
     <string name="group_success_subtitle">Félicitations, vous venez de créer un \nnouveau groupe. Pour le rendre plus actif \nn’hésitez pas à créer un premier post :p</string>
     <string name="select_photo">Sélectionner une photo</string>
@@ -260,4 +261,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="see_members">Voir les membres</string>
 
 
+    <string name="write_your_message">Écrire votre message</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="share_post">Partager</string>
+    <string name="zoom_photo">Déplacer et zoomer pour ajuster la photo.</string>
 </resources>

@@ -1,11 +1,15 @@
 package social.entourage.android.new_v8.groups.details.feed
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -21,11 +25,17 @@ import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentFeedBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.details.SettingsModalFragment
+import social.entourage.android.new_v8.groups.details.posts.CreatePostActivity
 import social.entourage.android.new_v8.groups.details.rules.GroupUiModel
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
+import social.entourage.android.new_v8.utils.Const
 import timber.log.Timber
+import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
+import uk.co.markormesher.android_fab.SpeedDialMenuItem
 import kotlin.math.abs
+
+const val rotationDegree = 135F
 
 class FeedFragment : Fragment() {
 
@@ -37,6 +47,54 @@ class FeedFragment : Fragment() {
     private lateinit var group: Group
     private var myId: Int? = null
     private val args: FeedFragmentArgs by navArgs()
+
+    private val speedDialMenuAdapter = object : SpeedDialMenuAdapter() {
+        override fun getCount(): Int = 2
+
+        override fun getMenuItem(context: Context, position: Int): SpeedDialMenuItem =
+            when (position) {
+                0 -> SpeedDialMenuItem(
+                    context,
+                    R.drawable.new_create_post,
+                    getString(R.string.create_post)
+                )
+                1 -> SpeedDialMenuItem(
+                    context,
+                    R.drawable.new_create_event,
+                    getString(R.string.create_event)
+                )
+                else -> SpeedDialMenuItem(
+                    context,
+                    R.drawable.new_create_event,
+                    getString(R.string.create_event)
+                )
+            }
+
+        override fun onMenuItemClick(position: Int): Boolean {
+            when (position) {
+                0 -> {
+                    val intent = Intent(context, CreatePostActivity::class.java)
+                    intent.putExtra(Const.GROUP_ID, groupId)
+                    startActivity(intent)
+                }
+                else -> {}
+            }
+            return true
+        }
+
+        override fun onPrepareItemLabel(context: Context, position: Int, label: TextView) {
+            TextViewCompat.setTextAppearance(label, R.style.left_courant_bold_black)
+        }
+
+        override fun onPrepareItemCard(context: Context, position: Int, card: View) {
+            card.background = ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.new_bg_circle_orange
+            )
+        }
+
+        override fun fabRotationDegrees(): Float = rotationDegree
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,8 +109,14 @@ class FeedFragment : Fragment() {
         handleSettingsButton()
         handleImageViewAnimation()
         handleMembersButton()
+        binding.createPost.speedDialMenuAdapter = speedDialMenuAdapter
+        binding.createPost.setContentCoverColour(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.light_beige_96
+            )
+        )
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

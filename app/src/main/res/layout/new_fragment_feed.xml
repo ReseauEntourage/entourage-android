@@ -184,7 +184,7 @@
 
                     <include
                         android:id="@+id/join"
-                        layout="@layout/new_rounded_button_orange"
+                        layout="@layout/new_rounded_button_white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
@@ -348,8 +348,29 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         android:text="@string/group_posts_empty_state_subtitle"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/title" />
+
+                    <ImageView
+                        android:id="@+id/arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="29dp"
+                        android:layout_marginStart="250dp"
+                        android:layout_marginEnd="115dp"
+                        android:layout_marginBottom="90dp"
+                        android:src="@drawable/new_arrow_create_group"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <uk.co.markormesher.android_fab.FloatingActionButton
+            android:id="@+id/create_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            app:buttonBackgroundColour="@color/orange"
+            app:buttonIcon="@drawable/new_fab_plus"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
