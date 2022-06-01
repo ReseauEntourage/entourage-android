@@ -7,9 +7,11 @@ object Const {
     const val DEFAULT_VALUE = -1
     const val LIMIT_PHOTOS_MEMBERS = 3
     const val REQUEST_KEY_CHOOSE_PHOTO = "request_key_choose_photo"
+    const val CHOOSE_PHOTO_PATH = "choose_photo_path"
     const val CHOOSE_PHOTO = "choose_photo"
     const val GROUP_ID = "groupID"
     const val GROUP_UI = "groupUI"
+    const val DATE_FORMAT_FILE_NAME = "yyyyMMdd_HHmmss"
     const val AMBASSADOR = "ambassador"
     const val SHOULD_REFRESH = "should_refresh"
     const val REQUEST_KEY_SHOULD_REFRESH = "request_key_should_refresh"

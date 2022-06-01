@@ -76,7 +76,7 @@
 
                 <include
                     android:id="@+id/subscribe"
-                    layout="@layout/new_rounded_button_orange"
+                    layout="@layout/new_rounded_button_white"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
