@@ -12,10 +12,10 @@ import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.*
 import social.entourage.android.api.model.EntourageUser
-import social.entourage.android.api.model.User
 import social.entourage.android.api.request.*
 import social.entourage.android.new_v8.groups.list.groupPerPage
 import social.entourage.android.new_v8.models.Group
+import social.entourage.android.new_v8.models.Post
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
@@ -30,8 +30,10 @@ class GroupPresenter {
     var getMembers = MutableLiveData<MutableList<EntourageUser>>()
     var getMembersSearch = MutableLiveData<MutableList<EntourageUser>>()
     var isGroupUpdated = MutableLiveData<Boolean>()
+    var newGroupCreated = MutableLiveData<Group>()
     var hasUserJoinedGroup = MutableLiveData<Boolean>()
     var hasUserLeftGroup = MutableLiveData<Boolean>()
+    var getAllPosts = MutableLiveData<MutableList<Post>>()
     var hasPost = MutableLiveData<Boolean>()
 
     var isLoading: Boolean = false
@@ -40,15 +42,15 @@ class GroupPresenter {
 
     fun createGroup(group: Group) {
         EntourageApplication.get().apiModule.groupRequest.createGroup(GroupWrapper(group))
-            .enqueue(object : Callback<Group> {
+            .enqueue(object : Callback<GroupWrapper> {
                 override fun onResponse(
-                    call: Call<Group>,
-                    response: Response<Group>
+                    call: Call<GroupWrapper>,
+                    response: Response<GroupWrapper>
                 ) {
                     if (response.isSuccessful) {
                         response.body()?.let {
                             isGroupCreated.value = true
-                            Timber.e(it.toString())
+                            newGroupCreated.value = it.group
                         } ?: run {
                             isGroupCreated.value = false
                         }
@@ -57,7 +59,7 @@ class GroupPresenter {
                     }
                 }
 
-                override fun onFailure(call: Call<Group>, t: Throwable) {
+                override fun onFailure(call: Call<GroupWrapper>, t: Throwable) {
                     isGroupCreated.value = false
                 }
             })
@@ -207,6 +209,23 @@ class GroupPresenter {
             })
     }
 
+    fun getGroupPosts(groupId: Int) {
+        EntourageApplication.get().apiModule.groupRequest.getGroupPosts(groupId)
+            .enqueue(object : Callback<GroupsPostsWrapper> {
+                override fun onResponse(
+                    call: Call<GroupsPostsWrapper>,
+                    response: Response<GroupsPostsWrapper>
+                ) {
+                    response.body()?.let { allPostsWrapper ->
+                        getAllPosts.value = allPostsWrapper.posts
+                    }
+
+                }
+
+                override fun onFailure(call: Call<GroupsPostsWrapper>, t: Throwable) {
+                }
+            })
+    }
 
     fun getGroupMembersSearch(searchTxt: String) {
         val listTmp: MutableList<EntourageUser> = mutableListOf()

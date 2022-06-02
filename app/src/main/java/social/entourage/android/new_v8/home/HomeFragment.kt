@@ -44,6 +44,5 @@ class HomeFragment : Fragment() {
                 Intent(context, EditGroupActivity::class.java)
             )
         }
-
     }
 }

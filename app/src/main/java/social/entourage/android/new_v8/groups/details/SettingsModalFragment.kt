@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.core.widget.TextViewCompat
+import androidx.fragment.app.setFragmentResult
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -13,10 +16,13 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentSettingsModalBinding
+import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.details.rules.GroupRulesActivity
-import social.entourage.android.new_v8.groups.details.rules.GroupUiModel
+import social.entourage.android.new_v8.groups.edit.EditGroupActivity
+import social.entourage.android.new_v8.models.GroupUiModel
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.new_v8.utils.Utils
 
 class SettingsModalFragment : BottomSheetDialogFragment() {
 
@@ -24,6 +30,8 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     val binding: NewFragmentSettingsModalBinding get() = _binding!!
     private var group: GroupUiModel? = null
     private var interestsList: ArrayList<String> = ArrayList()
+    private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,13 +46,41 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         getGroupInformation()
         handleCloseButton()
         handleRulesButton()
+        handleEditGroup()
         updateView()
+        viewWithRole()
+        handleLeaveGroup()
+        groupPresenter.hasUserLeftGroup.observe(requireActivity(), ::hasUserLeftGroup)
+    }
+
+
+    private fun viewWithRole() {
+        if (group?.admin == true) {
+            binding.editGroup.root.visibility = View.VISIBLE
+            binding.editGroupDivider.visibility = View.VISIBLE
+            binding.leaveGroup.visibility = View.GONE
+        }
+        if (group?.member == true) {
+            binding.leaveGroup.visibility = View.VISIBLE
+            binding.notificationAll.root.visibility = View.VISIBLE
+            binding.notificationNewMembers.root.visibility = View.VISIBLE
+            binding.notificationNewEvent.root.visibility = View.VISIBLE
+            binding.notificationNewMessages.root.visibility = View.VISIBLE
+            binding.notifyMe.visibility = View.VISIBLE
+            binding.notifyDivider.visibility = View.VISIBLE
+        }
     }
 
 
     private fun updateView() {
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         binding.rules.divider.visibility = View.GONE
+        binding.editGroup.divider.visibility = View.GONE
+        binding.notificationNewMembers.divider.visibility = View.GONE
+        TextViewCompat.setTextAppearance(
+            binding.notificationAll.label,
+            R.style.left_courant_bold_black
+        )
         group?.let {
             binding.groupName.text = it.name
             binding.groupMembersNumberLocation.text = String.format(
@@ -99,7 +135,40 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     private fun getGroupInformation() {
         group = arguments?.getParcelable(Const.GROUP_UI)
+    }
 
+    private fun handleEditGroup() {
+        binding.editGroup.root.setOnClickListener {
+            val intent = Intent(context, EditGroupActivity::class.java)
+            intent.putExtra(Const.GROUP_ID, group?.id)
+            startActivity(intent)
+            dismiss()
+        }
+    }
+
+    private fun hasUserLeftGroup(hasLeft: Boolean) {
+        if (hasLeft) {
+            setFragmentResult(
+                Const.REQUEST_KEY_SHOULD_REFRESH,
+                bundleOf(Const.SHOULD_REFRESH to true)
+            )
+            dismiss()
+        }
+    }
+
+    private fun handleLeaveGroup() {
+        binding.leaveGroup.setOnClickListener {
+            Utils.showAlertDialogButtonClicked(
+                requireView(),
+                getString(R.string.leave_group),
+                getString(R.string.leave_group_dialog_content),
+                getString(R.string.exit)
+            ) {
+                group?.let {
+                    it.id?.let { id -> groupPresenter.leaveGroup(id) }
+                }
+            }
+        }
     }
 
     companion object {

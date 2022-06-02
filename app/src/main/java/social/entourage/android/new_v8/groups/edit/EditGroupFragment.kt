@@ -12,6 +12,7 @@ import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -21,8 +22,9 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.GroupImage
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentEditGroupBinding
-import social.entourage.android.new_v8.groups.choosePhoto.ChoosePhotoModalFragment
 import social.entourage.android.new_v8.groups.GroupPresenter
+import social.entourage.android.new_v8.groups.choosePhoto.ChoosePhotoModalFragment
+import social.entourage.android.new_v8.groups.details.feed.FeedFragmentArgs
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.models.Interest
 import social.entourage.android.new_v8.profile.editProfile.InterestsListAdapter
@@ -42,11 +44,11 @@ class EditGroupFragment : Fragment() {
     private var interestsList: MutableList<Interest> = mutableListOf()
     private var selectedInterestIdList: MutableList<String> = mutableListOf()
     private var selectedImage: GroupImage? = null
-
+    private val args: FeedFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        groupPresenter.getGroup(81)
+        groupPresenter.getGroup(args.groupID)
         groupPresenter.getGroup.observe(viewLifecycleOwner, ::handleResponseGetGroup)
         groupPresenter.isGroupUpdated.observe(viewLifecycleOwner, ::handleResponseUpdateGroup)
         initializeView()
@@ -94,7 +96,7 @@ class EditGroupFragment : Fragment() {
             stepThree.addPhoto.visibility = View.VISIBLE
             Glide.with(requireActivity())
                 .load(Uri.parse(group.imageUrl))
-                .transform(CenterCrop(), RoundedCorners(14.px))
+                .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
                 .into(stepThree.addPhoto)
         }
     }
@@ -196,7 +198,7 @@ class EditGroupFragment : Fragment() {
                 binding.stepThree.addPhoto.visibility = View.VISIBLE
                 Glide.with(requireActivity())
                     .load(Uri.parse(imageUrl))
-                    .transform(CenterCrop(), RoundedCorners(14.px))
+                    .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
                     .into(binding.stepThree.addPhoto)
             }
         }
@@ -264,7 +266,7 @@ class EditGroupFragment : Fragment() {
                     editedGroup["interests"] = selectedInterestIdList
                 }
                 group["neighborhood"] = editedGroup
-                groupPresenter.updateGroup(81, group)
+                groupPresenter.updateGroup(args.groupID, group)
             }
         }
     }

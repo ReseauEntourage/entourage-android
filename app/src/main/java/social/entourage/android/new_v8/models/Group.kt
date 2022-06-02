@@ -32,8 +32,13 @@ data class Group(
     @SerializedName("members_count")
     var members_count: Int? = null,
     @SerializedName("member")
-    var member: Boolean = false
-
+    var member: Boolean = false,
+    @SerializedName("future_outings")
+    var futureEvents: MutableList<Events>? = mutableListOf(),
+    @SerializedName("latitude")
+    var latitude: Double = 0.0,
+    @SerializedName("longitude")
+    var longitude: Double = 0.0
 ) {
 
     fun name(value: String) = apply {
@@ -66,6 +71,14 @@ data class Group(
 
     fun interests(value: MutableList<String>) = apply {
         interests = value
+    }
+
+    fun latitude(value: Double) = apply {
+        latitude = value
+    }
+
+    fun longitude(value: Double) = apply {
+        longitude = value
     }
 
     override fun toString(): String {

@@ -105,7 +105,7 @@ class CreateGroupStepThreeFragment : Fragment() {
                 binding.layout.addPhoto.visibility = View.VISIBLE
                 Glide.with(requireActivity())
                     .load(Uri.parse(imageUrl))
-                    .transform(CenterCrop(), RoundedCorners(14.px))
+                    .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
                     .into(binding.layout.addPhoto)
             }
         }
