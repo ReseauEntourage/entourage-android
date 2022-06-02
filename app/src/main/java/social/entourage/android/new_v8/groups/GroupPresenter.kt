@@ -30,6 +30,7 @@ class GroupPresenter {
     var getMembers = MutableLiveData<MutableList<EntourageUser>>()
     var getMembersSearch = MutableLiveData<MutableList<EntourageUser>>()
     var isGroupUpdated = MutableLiveData<Boolean>()
+    var newGroupCreated = MutableLiveData<Group>()
     var hasUserJoinedGroup = MutableLiveData<Boolean>()
     var hasUserLeftGroup = MutableLiveData<Boolean>()
     var getAllPosts = MutableLiveData<MutableList<Post>>()
@@ -41,15 +42,15 @@ class GroupPresenter {
 
     fun createGroup(group: Group) {
         EntourageApplication.get().apiModule.groupRequest.createGroup(GroupWrapper(group))
-            .enqueue(object : Callback<Group> {
+            .enqueue(object : Callback<GroupWrapper> {
                 override fun onResponse(
-                    call: Call<Group>,
-                    response: Response<Group>
+                    call: Call<GroupWrapper>,
+                    response: Response<GroupWrapper>
                 ) {
                     if (response.isSuccessful) {
                         response.body()?.let {
                             isGroupCreated.value = true
-                            Timber.e(it.toString())
+                            newGroupCreated.value = it.group
                         } ?: run {
                             isGroupCreated.value = false
                         }
@@ -58,7 +59,7 @@ class GroupPresenter {
                     }
                 }
 
-                override fun onFailure(call: Call<Group>, t: Throwable) {
+                override fun onFailure(call: Call<GroupWrapper>, t: Throwable) {
                     isGroupCreated.value = false
                 }
             })

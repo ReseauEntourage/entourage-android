@@ -61,6 +61,7 @@ class GroupPostsAdapter(
                     Glide.with(holder.itemView.context)
                         .load(Uri.parse(avatarURL))
                         .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
+                        .placeholder(R.drawable.new_group_illu)
                         .into(binding.photoPost)
                 } ?: run {
                     binding.photoPost.visibility = View.GONE

@@ -27,7 +27,6 @@ import social.entourage.android.databinding.NewFragmentFeedBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.details.SettingsModalFragment
 import social.entourage.android.new_v8.groups.details.posts.CreatePostActivity
-import social.entourage.android.new_v8.groups.details.rules.GroupUiModel
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.models.GroupUiModel
 import social.entourage.android.new_v8.models.Post
@@ -100,14 +99,14 @@ class FeedFragment : Fragment() {
         override fun fabRotationDegrees(): Float = rotationDegree
     }
 
-    private var postsList: MutableList<Post> = ArrayList()
+    private var newPostsList: MutableList<Post> = ArrayList()
+    private var oldPostsList: MutableList<Post> = ArrayList()
     private var page: Int = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         groupId = args.groupID
         myId = EntourageApplication.me(activity)?.id
-        loadPosts()
         groupPresenter.getGroup(groupId)
         groupPresenter.getGroup.observe(viewLifecycleOwner, ::handleResponseGetGroup)
         groupPresenter.getAllPosts.observe(viewLifecycleOwner, ::handleResponseGetGroupPosts)
@@ -130,6 +129,11 @@ class FeedFragment : Fragment() {
         )
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadPosts()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -140,14 +144,33 @@ class FeedFragment : Fragment() {
 
     private fun handleResponseGetGroupPosts(allPosts: MutableList<Post>?) {
         binding.swipeRefresh.isRefreshing = false
-        postsList.clear()
-        allPosts?.let { postsList.addAll(it) }
-        allPosts?.isEmpty()?.let {
-            if (it) binding.postsLayoutEmptyState.visibility = View.VISIBLE
-            else {
-                binding.postsRecyclerview.visibility = View.VISIBLE
-                binding.recyclerView.adapter?.notifyDataSetChanged()
+        newPostsList.clear()
+        oldPostsList.clear()
+        allPosts?.let {
+            it.forEach { post ->
+                if (post.read == true || post.read == null) oldPostsList.add(post)
+                else newPostsList.add(post)
             }
+        }
+        //allPosts?.let { newPostsList.addAll(it) }
+        if (newPostsList.isEmpty() && oldPostsList.isEmpty()) {
+            binding.postsLayoutEmptyState.visibility = View.VISIBLE
+            binding.postsNewRecyclerview.visibility = View.GONE
+            binding.postsOldRecyclerview.visibility = View.GONE
+        }
+        if (newPostsList.isNotEmpty()) {
+            binding.postsNew.root.visibility = View.VISIBLE
+            binding.postsNewRecyclerview.visibility = View.VISIBLE
+            binding.postsLayoutEmptyState.visibility = View.GONE
+            binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
+        }
+        if (oldPostsList.isNotEmpty()) {
+            if (newPostsList.isNotEmpty()) binding.postsOld.root.visibility = View.VISIBLE
+            else binding.postsOld.root.visibility = View.GONE
+            binding.postsOldRecyclerview.visibility = View.VISIBLE
+            binding.postsLayoutEmptyState.visibility = View.GONE
+            binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
+
         }
     }
 
@@ -275,9 +298,13 @@ class FeedFragment : Fragment() {
     }
 
     private fun initializePosts() {
-        binding.postsRecyclerview.apply {
+        binding.postsNewRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = GroupPostsAdapter(postsList)
+            adapter = GroupPostsAdapter(newPostsList)
+        }
+        binding.postsOldRecyclerview.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = GroupPostsAdapter(oldPostsList)
         }
     }
 

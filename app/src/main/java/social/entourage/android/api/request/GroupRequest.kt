@@ -34,7 +34,7 @@ interface GroupRequest {
     fun getGroupImages(): Call<GroupImagesResponse>
 
     @POST("neighborhoods")
-    fun createGroup(@Body groupInfo: GroupWrapper): Call<Group>
+    fun createGroup(@Body groupInfo: GroupWrapper): Call<GroupWrapper>
 
     @GET("neighborhoods/{id}")
     fun getGroup(@Path("id") groupId: Int): Call<GroupWrapper>

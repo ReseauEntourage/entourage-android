@@ -19,6 +19,10 @@
 
     <fragment
         android:id="@+id/create_group_success_fragment"
-        android:name="social.entourage.android.new_v8.groups.create.CreateGroupSuccessFragment" />
+        android:name="social.entourage.android.new_v8.groups.create.CreateGroupSuccessFragment">
+        <argument
+            android:name="groupID"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>

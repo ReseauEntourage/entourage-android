@@ -292,6 +292,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         android:clipToPadding="false"
                         android:orientation="horizontal"
                         android:paddingLeft="18dp"
+                        android:visibility="gone"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/events"
@@ -379,16 +380,41 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                             app:layout_constraintRight_toRightOf="parent" />
                     </LinearLayout>
 
+                    <include
+                        android:id="@+id/posts_new"
+                        layout="@layout/new_posts_separator"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="33dp"
+                        android:visibility="gone"
+                        app:content="@{@string/new_publications}" />
+
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/posts_recyclerview"
+                        android:id="@+id/posts_new_recyclerview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="4dp"
                         android:visibility="gone"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/posts"
                         tools:listitem="@layout/new_layout_post" />
+
+
+                    <include
+                        android:id="@+id/posts_old"
+                        layout="@layout/new_posts_separator"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="33dp"
+                        android:visibility="gone"
+                        app:content="@{@string/old_publications}" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/posts_old_recyclerview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="4dp"
+                        android:visibility="gone"
+                        tools:listitem="@layout/new_layout_post" />
+
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

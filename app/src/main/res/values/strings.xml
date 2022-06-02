@@ -280,4 +280,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="share_post">Partager</string>
     <string name="zoom_photo">Déplacer et zoomer pour ajuster la photo.</string>
+    <string name="old_publications">Anciennes publications</string>
+    <string name="new_publications">Nouvelles publications</string>
 </resources>
