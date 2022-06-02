@@ -97,7 +97,7 @@ class CreateGroupStepThreeFragment : Fragment() {
 
     private fun onFragmentResult() {
         setFragmentResultListener(Const.REQUEST_KEY_CHOOSE_PHOTO) { _, bundle ->
-            selectedImage = bundle.getParcelable(Const.CHOOSE_PHOTO)
+            selectedImage = bundle.getParcelable(Const.CHOOSE_PHOTO_PATH)
             viewModel.isButtonClickable.value = imageHasBeenSelected()
             viewModel.group.neighborhoodImageId(selectedImage?.id)
             selectedImage?.imageUrl.let { imageUrl ->
@@ -105,7 +105,7 @@ class CreateGroupStepThreeFragment : Fragment() {
                 binding.layout.addPhoto.visibility = View.VISIBLE
                 Glide.with(requireActivity())
                     .load(Uri.parse(imageUrl))
-                    .transform(CenterCrop(), RoundedCorners(14.px))
+                    .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
                     .into(binding.layout.addPhoto)
             }
         }

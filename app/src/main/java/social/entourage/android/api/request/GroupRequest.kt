@@ -6,7 +6,6 @@ import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.GroupImage
-import social.entourage.android.api.model.User
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.models.Post
 
@@ -14,6 +13,17 @@ import social.entourage.android.new_v8.models.Post
 class GroupImagesResponse(@field:SerializedName("neighborhood_images") val groupImages: ArrayList<GroupImage>)
 class GroupWrapper(@field:SerializedName("neighborhood") val group: Group)
 class GroupsListWrapper(@field:SerializedName("neighborhoods") val allGroups: MutableList<Group>)
+class RequestContent internal constructor(private val content_type: String)
+
+class PrepareAddPostResponse(
+    @field:SerializedName("upload_key") var uploadKey: String,
+    @field:SerializedName("presigned_url") val presignedUrl: String
+) {
+    override fun toString(): String {
+        return "PrepareAddPostResponse(avatarKey='$uploadKey', presignedUrl='$presignedUrl')"
+    }
+}
+
 class GroupsMembersWrapper(@field:SerializedName("users") val users: MutableList<EntourageUser>)
 class GroupsPostsWrapper(@field:SerializedName("chat_messages") val posts: MutableList<Post>)
 
@@ -22,7 +32,7 @@ interface GroupRequest {
     fun getGroupImages(): Call<GroupImagesResponse>
 
     @POST("neighborhoods")
-    fun createGroup(@Body groupInfo: GroupWrapper): Call<Group>
+    fun createGroup(@Body groupInfo: GroupWrapper): Call<GroupWrapper>
 
     @GET("neighborhoods/{id}")
     fun getGroup(@Path("id") groupId: Int): Call<GroupWrapper>
@@ -67,11 +77,24 @@ interface GroupRequest {
         @Path("neighborhood_id") groupId: Int
     ): Call<GroupsMembersWrapper>
 
-    @GET("neighborhoods/{neighborhood_id}/users")
-    fun getMembersSearch(
+    @GET("neighborhoods/{neighborhood_id}/chat_messages")
+    fun getGroupPosts(
+        @Path("neighborhood_id") groupId: Int
+    ): Call<GroupsPostsWrapper>
+
+
+    @POST("neighborhoods/{neighborhood_id}/chat_messages/presigned_upload")
+    fun prepareAddPost(
         @Path("neighborhood_id") groupId: Int,
-        @Query("q") searchTxt: String,
-    ): Call<GroupsMembersWrapper>
+        @Body params: RequestContent
+    ): Call<PrepareAddPostResponse>
+
+
+    @POST("neighborhoods/{neighborhood_id}/chat_messages")
+    fun addPost(
+        @Path("neighborhood_id") groupId: Int,
+        @Body params: ArrayMap<String, Any>
+    ): Call<ChatMessageResponse>
 
     @GET("neighborhoods/{neighborhood_id}/chat_messages/{post_id}/comments")
     fun getPostComments(

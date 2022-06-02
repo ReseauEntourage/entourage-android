@@ -8,5 +8,5 @@
       android:strokeWidth="2"
       android:fillColor="#00000000"
       android:fillType="evenOdd"
-      android:strokeColor="#F55F24"/>
+      android:strokeColor="@color/orange"/>
 </vector>

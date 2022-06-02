@@ -5,7 +5,7 @@
     <color name="primary">#ffffff</color>
     <color name="primary_dark">#717171</color>
     <color name="primary_light">#efeff4</color>
-    <color name="accent">#F55F24</color>
+    <color name="accent">@color/orange</color>
     <color name="toolbar">@color/primary</color>
     <color name="warm_grey">#999999</color>
     <color name="greyish_brown">#4a4a4a</color>
@@ -117,6 +117,7 @@
 
     <!-- New -->
     <color name="light_beige">#fffcfa</color>
+    <color name="light_beige_96">#F5fffcfa</color>
     <color name="beige">#ffeadc</color>
     <color name="orange">#f55f24</color>
     <color name="light_orange">#ff9c5d</color>

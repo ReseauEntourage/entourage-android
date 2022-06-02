@@ -29,6 +29,7 @@ import social.entourage.android.user.AvatarUploadView
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import social.entourage.android.user.edit.photo.PhotoChooseInterface
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
+import timber.log.Timber
 import java.io.File
 
 
@@ -192,6 +193,8 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
     }
 
     override fun updateUserPhoto(imageUri: Uri?) {
+        Timber.e("imageUri $imageUri")
+        Timber.e("path ${imageUri?.path}")
         imageUri?.path?.let { path ->
             Glide.with(this)
                 .load(path)

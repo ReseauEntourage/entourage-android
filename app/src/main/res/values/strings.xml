@@ -213,6 +213,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="category_name_label">Décrivez en un mot la catégorie de votre groupe</string>
     <string name="pass">Passer</string>
     <string name="create_post">Créer une publication</string>
+    <string name="create_event">Créer un évènement sur le groupe</string>
     <string name="group_success_title">Votre groupe a \nbien été créé !</string>
     <string name="group_success_subtitle">Félicitations, vous venez de créer un \nnouveau groupe. Pour le rendre plus actif \nn’hésitez pas à créer un premier post :p</string>
     <string name="select_photo">Sélectionner une photo</string>
@@ -258,8 +259,29 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="group_posts_empty_state_subtitle">C’est l’occasion pour vous de partager la première nouvelle pour lancer la discussion !</string>
     <string name="posts">Fil d’actualité</string>
     <string name="see_members">Voir les membres</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="leave_group">Quitter le groupe</string>
+    <string name="edit_group_information">Modifier les informations du groupe</string>
+    <string name="notification_new_event">Les nouveaux événements</string>
+    <string name="notification_new_messages">Les nouveaux messages</string>
+    <string name="notification_new_members">L\'arrivée de nouveaux membres</string>
+    <string name="notification_all">Toute l\'activité du groupe</string>
+    <string name="notify_me">Me notifier de</string>
+    <string name="about_group">À propos du groupe</string>
+    <string name="leave_group_dialog_content">Souhaitez-vous quitter le groupe ?</string>
+    <string name="discuss">Discuter…</string>
+    <string name="no_comments">Pas de commentaires</string>
+    <string name="posts_comment_number"><u>%s commentaires</u></string>
+    <string name="event_date">"dd/MM/yyyy"</string>
+    <string name="post_date">"dd.MM.yyyy"</string>
     <string name="comments">Commentaires de la publication</string>
     <string name="comments_date">dd.MM.yy à HH:mm</string>
 
-
+    <string name="write_your_message">Écrire votre message</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="share_post">Partager</string>
+    <string name="zoom_photo">Déplacer et zoomer pour ajuster la photo.</string>
+    <string name="old_publications">Anciennes publications</string>
+    <string name="new_publications">Nouvelles publications</string>
 </resources>

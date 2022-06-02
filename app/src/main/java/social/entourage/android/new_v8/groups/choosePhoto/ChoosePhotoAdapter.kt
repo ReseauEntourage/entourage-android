@@ -11,6 +11,7 @@ import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.R
 import social.entourage.android.api.model.GroupImage
 import social.entourage.android.databinding.NewPhotoItemBinding
+import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
 
 class ChoosePhotoAdapter(
@@ -38,7 +39,7 @@ class ChoosePhotoAdapter(
                 Glide.with(binding.image.context)
                     .load(Uri.parse(this.imageUrl))
                     .apply(RequestOptions().override(90.px, 90.px))
-                    .transform(CenterCrop(), RoundedCorners(14.px))
+                    .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
                     .into(binding.image)
 
                 if (photosList[position].isSelected == true) {

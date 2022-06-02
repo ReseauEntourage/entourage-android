@@ -65,7 +65,7 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
             image?.let {
                 setFragmentResult(
                     Const.REQUEST_KEY_CHOOSE_PHOTO,
-                    bundleOf(Const.CHOOSE_PHOTO to it)
+                    bundleOf(Const.CHOOSE_PHOTO_PATH to it)
                 )
                 dismiss()
             }

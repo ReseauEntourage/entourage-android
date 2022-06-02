@@ -51,7 +51,7 @@
 
         <include
             android:id="@+id/import_picture"
-            layout="@layout/new_rounded_button_orange"
+            layout="@layout/new_rounded_button_white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="65dp"
@@ -64,7 +64,7 @@
 
         <include
             android:id="@+id/take_picture"
-            layout="@layout/new_rounded_button_orange"
+            layout="@layout/new_rounded_button_white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="65dp"

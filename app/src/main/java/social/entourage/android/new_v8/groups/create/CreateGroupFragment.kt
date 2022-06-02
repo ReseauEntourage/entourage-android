@@ -14,7 +14,9 @@ import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateGroupBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
+import social.entourage.android.new_v8.groups.details.feed.FeedFragmentDirections
 import social.entourage.android.new_v8.models.Address
+import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.nextPage
 import social.entourage.android.new_v8.utils.previousPage
@@ -41,14 +43,20 @@ class CreateGroupFragment : Fragment() {
         initializeViewPager()
         handleBackButton()
         handleValidate()
-        groupPresenter.isGroupCreated.observe(viewLifecycleOwner, ::handleCreateGroupResponse)
+        groupPresenter.newGroupCreated.observe(viewLifecycleOwner, ::handleCreateGroupResponse)
     }
 
-    private fun handleCreateGroupResponse(isGroupCreated: Boolean) {
-        if (isGroupCreated) {
-            findNavController().navigate(R.id.action_create_group_fragment_to_create_group_success_fragment)
-        } else {
+    private fun handleCreateGroupResponse(groupCreated: Group?) {
+        if (groupCreated == null) {
             Utils.showToast(requireContext(), getString(R.string.error_create_group))
+        } else {
+            groupPresenter.newGroupCreated.value?.id?.let {
+                val action =
+                    CreateGroupFragmentDirections.actionCreateGroupFragmentToCreateGroupSuccessFragment(
+                        it
+                    )
+                findNavController().navigate(action)
+            }
         }
     }
 
@@ -109,8 +117,8 @@ class CreateGroupFragment : Fragment() {
         if (isCondition) {
             if (viewPager.currentItem == NB_TABS - 1) {
                 // TODO Change this two lines
-                val address = Address(48.856614, 2.3522219, "Paris 75XXX")
-                viewModel.group.address = address
+                viewModel.group.latitude = 48.856614
+                viewModel.group.longitude = 2.3522219
                 groupPresenter.createGroup(viewModel.group)
             } else {
                 viewPager.nextPage(true)

@@ -1,9 +1,8 @@
-package social.entourage.android.new_v8.groups.details.rules
+package social.entourage.android.new_v8.models
 
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import social.entourage.android.new_v8.models.Address
 
 
 data class GroupUiModel(
@@ -17,26 +16,30 @@ data class GroupUiModel(
     var address: Address? = null,
     @SerializedName("interests")
     var interests: MutableList<String> = mutableListOf(),
+    @SerializedName("description")
+    var description: String? = null,
+    @SerializedName("members")
+    var members: MutableList<GroupMember>? = mutableListOf(),
+    @SerializedName("member")
+    var member: Boolean = false,
+    var admin: Boolean = false
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString(),
-        parcel.readValue(Int::class.java.classLoader) as? Int,
-
-        )
+        parcel.readValue(Int::class.java.classLoader) as? Int
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeValue(id)
         parcel.writeString(name)
         parcel.writeValue(members_count)
+        parcel.writeString(description)
+        parcel.writeByte(if (member) 1 else 0)
     }
 
     override fun describeContents(): Int {
         return 0
-    }
-
-    override fun toString(): String {
-        return "GroupUiModel(id=$id, name=$name, members_count=$members_count, address=$address, interests=$interests)"
     }
 
     companion object CREATOR : Parcelable.Creator<GroupUiModel> {
@@ -48,4 +51,5 @@ data class GroupUiModel(
             return arrayOfNulls(size)
         }
     }
+
 }
