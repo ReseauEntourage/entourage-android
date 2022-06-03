@@ -42,7 +42,10 @@ open class BaseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         } else items[position - positionOffset].type
     }
 
+    protected val mDaySections = HashMap<Date, Int>() //Move from discussionAdapter . use here to clear array before refresh - To fix date separator
+    // visibily error
     open fun addItems(addItems: List<TimestampedObject>) {
+        mDaySections.clear()
         val positionStart = (if (items.size == 0) 0 else items.size - 1) + positionOffset
         for (to in addItems) {
             addCardInfo(to, false)
