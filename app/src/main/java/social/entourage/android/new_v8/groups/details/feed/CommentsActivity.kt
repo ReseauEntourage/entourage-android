@@ -5,21 +5,17 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.collection.ArrayMap
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.new_layout_post.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.databinding.NewActivityCommentsBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
-import social.entourage.android.new_v8.models.Interest
 import social.entourage.android.new_v8.models.Post
-import social.entourage.android.new_v8.profile.editProfile.OnItemCheckListener
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
+import social.entourage.android.new_v8.utils.focusAndShowKeyboard
 import timber.log.Timber
 import java.util.*
 
@@ -29,6 +25,7 @@ class CommentsActivity : AppCompatActivity() {
     private var groupId = Const.DEFAULT_VALUE
     private var postId = Const.DEFAULT_VALUE
     private var postAuthorID = Const.DEFAULT_VALUE
+    private var isMember = false
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
     private var commentsList: MutableList<Post> = mutableListOf()
     private var shouldOpenKeyboard = false
@@ -45,6 +42,7 @@ class CommentsActivity : AppCompatActivity() {
         groupId = intent.getIntExtra(Const.GROUP_ID, Const.DEFAULT_VALUE)
         postId = intent.getIntExtra(Const.POST_ID, Const.DEFAULT_VALUE)
         postAuthorID = intent.getIntExtra(Const.POST_AUTHOR_ID, Const.DEFAULT_VALUE)
+        isMember = intent.getBooleanExtra(Const.IS_MEMBER, false)
         shouldOpenKeyboard = intent.getBooleanExtra(Const.SHOULD_OPEN_KEYBOARD, false)
         groupPresenter.getPostComments(groupId, postId)
         groupPresenter.getAllComments.observe(this, ::handleGetPostComments)
@@ -70,6 +68,13 @@ class CommentsActivity : AppCompatActivity() {
             binding.emptyState.visibility = View.GONE
             binding.comments.visibility = View.VISIBLE
             binding.comments.adapter?.notifyDataSetChanged()
+        }
+        if (isMember) {
+            binding.shouldBeMember.visibility = View.GONE
+            binding.postComment.visibility = View.VISIBLE
+        } else {
+            binding.shouldBeMember.visibility = View.VISIBLE
+            binding.postComment.visibility = View.GONE
         }
     }
 
@@ -123,11 +128,10 @@ class CommentsActivity : AppCompatActivity() {
     }
 
     private fun openEditTextKeyboard() {
+        Timber.e("should open")
+        Timber.e(shouldOpenKeyboard.toString())
         if (shouldOpenKeyboard) {
-            binding.commentMessage.requestFocus()
-            val imm: InputMethodManager =
-                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(binding.commentMessage, InputMethodManager.SHOW_IMPLICIT)
+            binding.commentMessage.focusAndShowKeyboard()
         }
     }
 }

@@ -83,6 +83,18 @@
             </LinearLayout>
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/should_be_member"
+            style="@style/left_legend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/light_beige"
+            android:paddingHorizontal="35dp"
+            android:paddingVertical="15dp"
+            android:text="@string/join_group_to_comment"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
         <LinearLayout
             android:id="@+id/post_comment"
             android:layout_width="match_parent"
@@ -92,6 +104,7 @@
             android:orientation="horizontal"
             android:paddingHorizontal="28dp"
             android:paddingBottom="20dp"
+            android:visibility="gone"
             android:weightSum="1"
             app:layout_constraintBottom_toBottomOf="parent">
 

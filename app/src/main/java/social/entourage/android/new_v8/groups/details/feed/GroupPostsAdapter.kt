@@ -21,7 +21,8 @@ import java.util.*
 
 class GroupPostsAdapter(
     var postsList: List<Post>,
-    var groupId: Int
+    var groupId: Int,
+    var isMember: Boolean
 ) : RecyclerView.Adapter<GroupPostsAdapter.ViewHolder>() {
 
 
@@ -109,6 +110,7 @@ class GroupPostsAdapter(
                 .putExtra(Const.POST_ID, postId)
                 .putExtra(Const.POST_AUTHOR_ID, userId?.toInt())
                 .putExtra(Const.SHOULD_OPEN_KEYBOARD, shouldOpenKeyboard)
+                .putExtra(Const.IS_MEMBER, isMember)
         )
     }
 }

@@ -286,4 +286,5 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="new_publications">Nouvelles publications</string>
     <string name="empty_state_comments">Pas encore de commentaires</string>
     <string name="retry_comment">Erreur de publication, réessayez</string>
+    <string name="join_group_to_comment"><![CDATA[* Pour commenter cette publication, rejoingnez le groupe « Dansons ensemble » !]]></string>
 </resources>
