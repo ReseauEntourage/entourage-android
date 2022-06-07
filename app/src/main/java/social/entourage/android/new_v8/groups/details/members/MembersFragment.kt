@@ -1,54 +1,43 @@
 package social.entourage.android.new_v8.groups.details.members
 
-import android.app.Dialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.textfield.TextInputLayout
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
-import social.entourage.android.databinding.NewFragmentMembersModalBinding
+import social.entourage.android.databinding.NewFragmentMembersBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 
 
-open class MembersModalFragment : DialogFragment() {
+open class MembersFragment : Fragment() {
 
-    private var _binding: NewFragmentMembersModalBinding? = null
-    val binding: NewFragmentMembersModalBinding get() = _binding!!
+    private var _binding: NewFragmentMembersBinding? = null
+    val binding: NewFragmentMembersBinding get() = _binding!!
     private var membersList: MutableList<EntourageUser> = mutableListOf()
     private var membersListSearch: MutableList<EntourageUser> = ArrayList()
     private var groupId: Int? = Const.DEFAULT_VALUE
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
 
-    private val navArgs: MembersModalFragmentArgs by navArgs()
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(STYLE_NO_FRAME, R.style.FullScreenDialog)
-    }
-
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = super.onCreateDialog(savedInstanceState)
-        dialog.window?.attributes?.windowAnimations = R.style.MyDialogAnimation
-        return dialog
-    }
+    private val navArgs: MembersFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentMembersModalBinding.inflate(inflater, container, false)
+        _binding = NewFragmentMembersBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -70,7 +59,8 @@ open class MembersModalFragment : DialogFragment() {
         handleEnterButton()
         handleSearchOnFocus()
         handleCross()
-        hideView()
+        handleCrossButton()
+        binding.searchBarLayout.endIconMode = TextInputLayout.END_ICON_NONE
     }
 
     private fun handleResponseGetMembers(allMembers: MutableList<EntourageUser>?) {
@@ -143,9 +133,6 @@ open class MembersModalFragment : DialogFragment() {
         groupId = navArgs.groupID
     }
 
-    private fun hideView() {
-        binding.header.view.visibility = View.GONE
-    }
 
     private fun handleEnterButton() {
         binding.searchBar.setOnEditorActionListener { _, actionId, _ ->
@@ -173,6 +160,28 @@ open class MembersModalFragment : DialogFragment() {
             binding.recyclerView.visibility = View.GONE
             binding.searchRecyclerView.visibility = View.VISIBLE
         }
+    }
+
+    private fun handleCrossButton() {
+        binding.searchBar.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s.isNullOrEmpty()) {
+                    binding.searchBarLayout.endIconMode = TextInputLayout.END_ICON_NONE
+
+                } else {
+                    binding.searchBarLayout.endIconMode = TextInputLayout.END_ICON_CUSTOM
+                    handleCross()
+                }
+            }
+
+        })
     }
 
     private fun handleCross() {

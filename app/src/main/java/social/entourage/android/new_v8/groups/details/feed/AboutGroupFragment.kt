@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexDirection
@@ -50,6 +51,7 @@ class AboutGroupFragment : Fragment() {
         handleJoinButton()
         handleBackButton()
         onFragmentResult()
+        handleMembersButton()
         groupPresenter.hasUserJoinedGroup.observe(requireActivity(), ::handleJoinResponse)
         groupPresenter.hasUserLeftGroup.observe(requireActivity(), ::handleJoinResponse)
     }
@@ -180,6 +182,17 @@ class AboutGroupFragment : Fragment() {
                 group?.let {
                     it.id?.let { id -> groupPresenter.joinGroup(id) }
                 }
+            }
+        }
+    }
+
+    private fun handleMembersButton() {
+        binding.members.setOnClickListener {
+            group?.id?.let { id ->
+                val action = AboutGroupFragmentDirections.actionGroupAboutToGroupMembers(
+                    id
+                )
+                findNavController().navigate(action)
             }
         }
     }
