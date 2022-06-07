@@ -2,7 +2,6 @@ package social.entourage.android.new_v8.groups.details.feed
 
 import android.content.Context
 import android.content.Intent
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -117,7 +116,6 @@ class FeedFragment : Fragment() {
         handleSettingsButton()
         handleImageViewAnimation()
         handleMembersButton()
-        handleCommentsButton()
         handleAboutButton()
         initializePosts()
         handleSwipeRefresh()
@@ -302,11 +300,11 @@ class FeedFragment : Fragment() {
     private fun initializePosts() {
         binding.postsNewRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = GroupPostsAdapter(newPostsList)
+            adapter = GroupPostsAdapter(newPostsList, groupId)
         }
         binding.postsOldRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = GroupPostsAdapter(oldPostsList)
+            adapter = GroupPostsAdapter(oldPostsList, groupId)
         }
     }
 
@@ -395,17 +393,6 @@ class FeedFragment : Fragment() {
         setFragmentResultListener(Const.REQUEST_KEY_SHOULD_REFRESH) { _, bundle ->
             val shouldRefresh = bundle.getBoolean(Const.SHOULD_REFRESH)
             if (shouldRefresh) groupPresenter.getGroup(groupId)
-        }
-    }
-
-    private fun handleCommentsButton() {
-        binding.posts.setOnClickListener {
-            startActivity(
-                Intent(requireContext(), CommentsActivity::class.java).putExtra(
-                    Const.GROUP_ID,
-                    135
-                ).putExtra(Const.POST_ID, 13401).putExtra(Const.POST_AUTHOR_ID, group.admin?.id)
-            )
         }
     }
 }

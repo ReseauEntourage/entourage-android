@@ -26,6 +26,7 @@ class PrepareAddPostResponse(
 
 class GroupsMembersWrapper(@field:SerializedName("users") val users: MutableList<EntourageUser>)
 class GroupsPostsWrapper(@field:SerializedName("chat_messages") val posts: MutableList<Post>)
+class GroupsPostWrapper(@field:SerializedName("chat_message") val post: Post)
 
 interface GroupRequest {
     @GET("neighborhood_images")
@@ -94,7 +95,7 @@ interface GroupRequest {
     fun addPost(
         @Path("neighborhood_id") groupId: Int,
         @Body params: ArrayMap<String, Any>
-    ): Call<ChatMessageResponse>
+    ): Call<GroupsPostWrapper>
 
     @GET("neighborhoods/{neighborhood_id}/chat_messages/{post_id}/comments")
     fun getPostComments(

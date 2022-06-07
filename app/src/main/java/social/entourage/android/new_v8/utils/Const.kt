@@ -18,4 +18,5 @@ object Const {
     const val SHOULD_REFRESH = "should_refresh"
     const val REQUEST_KEY_SHOULD_REFRESH = "request_key_should_refresh"
     const val ROUNDED_CORNERS_IMAGES = 14
+    const val SHOULD_OPEN_KEYBOARD = "should_open_keyboard"
 }

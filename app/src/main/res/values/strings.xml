@@ -284,4 +284,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="zoom_photo">Déplacer et zoomer pour ajuster la photo.</string>
     <string name="old_publications">Anciennes publications</string>
     <string name="new_publications">Nouvelles publications</string>
+    <string name="empty_state_comments">Pas encore de commentaires</string>
+    <string name="retry_comment">Erreur de publication, réessayez</string>
 </resources>
