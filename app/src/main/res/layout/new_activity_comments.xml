@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/light_beige"
+            android:orientation="vertical"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include
+                android:id="@+id/header"
+                layout="@layout/new_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/scrollView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:title="@{@string/comments}" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/comments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingHorizontal="28dp"
+                android:paddingTop="21dp"
+                android:paddingBottom="70dp"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/empty_state"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="70dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom">
+
+                    <ImageView
+                        android:id="@+id/emptyStateLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="13dp"
+                        android:src="@drawable/new_empty_state_comments_left" />
+
+                    <ImageView
+                        android:id="@+id/emptyStateRight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="23dp"
+                        android:src="@drawable/new_empty_state_comments_right" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/left_courant_bold_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="26dp"
+                    android:text="@string/empty_state_comments" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/should_be_member"
+            style="@style/left_legend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/light_beige"
+            android:paddingHorizontal="35dp"
+            android:paddingVertical="15dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/post_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="28dp"
+            android:paddingBottom="20dp"
+            android:visibility="gone"
+            android:weightSum="1"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <EditText
+                android:id="@+id/comment_message"
+                style="@style/left_courant_orange"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/new_bg_rounded_button_orange_beige_stroke"
+                android:hint="@string/discuss"
+                android:padding="13dp"
+                android:textColorHint="@color/orange" />
+
+
+            <ImageButton
+                android:id="@+id/comment"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="7dp"
+                android:background="@drawable/new_circle_orange_button_fill"
+                android:gravity="end"
+                android:paddingVertical="10dp"
+                android:src="@drawable/new_contact_white"
+                app:shapeAppearanceOverlay="@drawable/new_circle_orange_button_fill" />
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

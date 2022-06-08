@@ -10,8 +10,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
+import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.request.*
 import social.entourage.android.api.model.EntourageUser
+import social.entourage.android.api.model.Message
 import social.entourage.android.api.request.*
 import social.entourage.android.new_v8.groups.list.groupPerPage
 import social.entourage.android.new_v8.models.Group
@@ -27,6 +29,7 @@ class GroupPresenter {
     var getAllGroups = MutableLiveData<MutableList<Group>>()
     var getGroupsSearch = MutableLiveData<MutableList<Group>>()
     var getAllMyGroups = MutableLiveData<MutableList<Group>>()
+    var getAllComments = MutableLiveData<MutableList<Post>>()
     var getMembers = MutableLiveData<MutableList<EntourageUser>>()
     var getMembersSearch = MutableLiveData<MutableList<EntourageUser>>()
     var isGroupUpdated = MutableLiveData<Boolean>()
@@ -35,6 +38,7 @@ class GroupPresenter {
     var hasUserLeftGroup = MutableLiveData<Boolean>()
     var getAllPosts = MutableLiveData<MutableList<Post>>()
     var hasPost = MutableLiveData<Boolean>()
+    var commentPosted = MutableLiveData<Post?>()
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
@@ -227,6 +231,24 @@ class GroupPresenter {
             })
     }
 
+    fun getPostComments(groupId: Int, postId: Int) {
+        EntourageApplication.get().apiModule.groupRequest.getPostComments(groupId, postId)
+            .enqueue(object : Callback<GroupsPostsWrapper> {
+                override fun onResponse(
+                    call: Call<GroupsPostsWrapper>,
+                    response: Response<GroupsPostsWrapper>
+                ) {
+                    response.body()?.let { allCommentsWrapper ->
+                        getAllComments.value = allCommentsWrapper.posts
+                    }
+                }
+
+                override fun onFailure(call: Call<GroupsPostsWrapper>, t: Throwable) {
+                }
+            })
+    }
+
+
     fun getGroupMembersSearch(searchTxt: String) {
         val listTmp: MutableList<EntourageUser> = mutableListOf()
         getMembers.value?.forEach {
@@ -294,16 +316,37 @@ class GroupPresenter {
 
     fun addPost(groupId: Int, params: ArrayMap<String, Any>) {
         EntourageApplication.get().apiModule.groupRequest.addPost(groupId, params)
-            .enqueue(object : Callback<ChatMessageResponse> {
+            .enqueue(object : Callback<GroupsPostWrapper> {
                 override fun onResponse(
-                    call: Call<ChatMessageResponse>,
-                    response: Response<ChatMessageResponse>
+                    call: Call<GroupsPostWrapper>,
+                    response: Response<GroupsPostWrapper>
                 ) {
                     hasPost.value = response.isSuccessful
                 }
 
-                override fun onFailure(call: Call<ChatMessageResponse>, t: Throwable) {
+                override fun onFailure(call: Call<GroupsPostWrapper>, t: Throwable) {
                     hasPost.value = false
+                }
+            })
+    }
+
+    fun addComment(groupId: Int, comment: Post?) {
+        val messageChat = ArrayMap<String, Any>()
+        messageChat["content"] = comment?.content
+        messageChat["parent_id"] = comment?.postId.toString()
+        val chatMessage = ArrayMap<String, Any>()
+        chatMessage["chat_message"] = messageChat
+        EntourageApplication.get().apiModule.groupRequest.addPost(groupId, chatMessage)
+            .enqueue(object : Callback<GroupsPostWrapper> {
+                override fun onResponse(
+                    call: Call<GroupsPostWrapper>,
+                    response: Response<GroupsPostWrapper>
+                ) {
+                    commentPosted.value = response.body()?.post
+                }
+
+                override fun onFailure(call: Call<GroupsPostWrapper>, t: Throwable) {
+                    commentPosted.value = null
                 }
             })
     }

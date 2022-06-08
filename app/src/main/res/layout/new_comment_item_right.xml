@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingBottom="12dp"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/comment"
+            style="@style/left_courant_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="7dp"
+            android:background="@drawable/new_comment_background_light_orange"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="14dp"
+            tools:text="m:m" />
+
+        <LinearLayout
+            android:id="@+id/information_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginRight="7dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/author_name"
+                style="@style/group_member_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="3dp"
+                tools:text="John Doe" />
+
+            <TextView
+                android:id="@+id/publication_date"
+                style="@style/group_member_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="le 15.01.21" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="3dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                style="@style/group_member_subtitle_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="3dp"
+                android:src="@drawable/new_retry" />
+
+            <TextView
+                style="@style/error_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/retry_comment" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        tools:src="@drawable/new_illu_header_group" />
+</LinearLayout>

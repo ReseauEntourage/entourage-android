@@ -6,9 +6,7 @@ import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.GroupImage
-import social.entourage.android.api.model.User
 import social.entourage.android.new_v8.models.Group
-import social.entourage.android.user.PrepareAvatarUploadRepository
 import social.entourage.android.new_v8.models.Post
 
 
@@ -28,6 +26,7 @@ class PrepareAddPostResponse(
 
 class GroupsMembersWrapper(@field:SerializedName("users") val users: MutableList<EntourageUser>)
 class GroupsPostsWrapper(@field:SerializedName("chat_messages") val posts: MutableList<Post>)
+class GroupsPostWrapper(@field:SerializedName("chat_message") val post: Post)
 
 interface GroupRequest {
     @GET("neighborhood_images")
@@ -96,6 +95,12 @@ interface GroupRequest {
     fun addPost(
         @Path("neighborhood_id") groupId: Int,
         @Body params: ArrayMap<String, Any>
-    ): Call<ChatMessageResponse>
+    ): Call<GroupsPostWrapper>
+
+    @GET("neighborhoods/{neighborhood_id}/chat_messages/{post_id}/comments")
+    fun getPostComments(
+        @Path("neighborhood_id") groupId: Int,
+        @Path("post_id") postId: Int,
+    ): Call<GroupsPostsWrapper>
 
 }

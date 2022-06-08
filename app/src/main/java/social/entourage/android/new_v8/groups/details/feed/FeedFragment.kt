@@ -117,7 +117,6 @@ class FeedFragment : Fragment() {
         handleImageViewAnimation()
         handleMembersButton()
         handleAboutButton()
-        initializePosts()
         handleSwipeRefresh()
         onFragmentResult()
         binding.createPost.speedDialMenuAdapter = speedDialMenuAdapter
@@ -186,7 +185,6 @@ class FeedFragment : Fragment() {
             group = it
             updateView()
         }
-
     }
 
     private fun handleImageViewAnimation() {
@@ -238,6 +236,7 @@ class FeedFragment : Fragment() {
              */
         }
         updateButtonJoin()
+        initializePosts()
     }
 
     private fun updateButtonJoin() {
@@ -300,11 +299,11 @@ class FeedFragment : Fragment() {
     private fun initializePosts() {
         binding.postsNewRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = GroupPostsAdapter(newPostsList)
+            adapter = GroupPostsAdapter(newPostsList, groupId, group.member, group.name)
         }
         binding.postsOldRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = GroupPostsAdapter(oldPostsList)
+            adapter = GroupPostsAdapter(oldPostsList, groupId, group.member, group.name)
         }
     }
 
