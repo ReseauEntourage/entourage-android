@@ -14,9 +14,8 @@
         <action
             android:id="@+id/action_group_feed_to_group_members"
             app:destination="@id/group_members"
-            app:enterAnim="@anim/bottom_up"
-            app:exitAnim="@anim/bottom_down"
-            app:popExitAnim="@anim/bottom_down" />
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
         <action
             android:id="@+id/action_group_feed_to_group_about"
             app:destination="@id/group_about"
@@ -31,16 +30,22 @@
         <argument
             android:name="group"
             app:argType="social.entourage.android.new_v8.models.GroupUiModel" />
+        <action
+            android:id="@+id/action_group_about_to_group_members"
+            app:destination="@id/group_members"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
+
     </fragment>
 
 
-    <dialog
+    <fragment
         android:id="@+id/group_members"
-        android:name="social.entourage.android.new_v8.groups.details.members.MembersModalFragment">
+        android:name="social.entourage.android.new_v8.groups.details.members.MembersFragment">
         <argument
             android:name="groupID"
             app:argType="integer" />
-    </dialog>
+    </fragment>
 
 
 </navigation>
