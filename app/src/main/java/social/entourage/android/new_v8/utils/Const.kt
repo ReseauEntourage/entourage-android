@@ -19,5 +19,6 @@ object Const {
     const val REQUEST_KEY_SHOULD_REFRESH = "request_key_should_refresh"
     const val ROUNDED_CORNERS_IMAGES = 14
     const val SHOULD_OPEN_KEYBOARD = "should_open_keyboard"
-    const val IS_MEMBER = "is_memebr"
+    const val IS_MEMBER = "is_member"
+    const val GROUP_NAME = "group_name"
 }

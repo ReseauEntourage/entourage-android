@@ -91,7 +91,6 @@
             android:background="@color/light_beige"
             android:paddingHorizontal="35dp"
             android:paddingVertical="15dp"
-            android:text="@string/join_group_to_comment"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent" />
 

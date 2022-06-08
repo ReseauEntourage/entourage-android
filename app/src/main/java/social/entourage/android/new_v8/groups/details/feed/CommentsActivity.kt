@@ -1,9 +1,7 @@
 package social.entourage.android.new_v8.groups.details.feed
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +14,6 @@ import social.entourage.android.new_v8.models.Post
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.focusAndShowKeyboard
-import timber.log.Timber
 import java.util.*
 
 class CommentsActivity : AppCompatActivity() {
@@ -26,6 +23,7 @@ class CommentsActivity : AppCompatActivity() {
     private var postId = Const.DEFAULT_VALUE
     private var postAuthorID = Const.DEFAULT_VALUE
     private var isMember = false
+    private var groupName = ""
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
     private var commentsList: MutableList<Post> = mutableListOf()
     private var shouldOpenKeyboard = false
@@ -43,6 +41,7 @@ class CommentsActivity : AppCompatActivity() {
         postId = intent.getIntExtra(Const.POST_ID, Const.DEFAULT_VALUE)
         postAuthorID = intent.getIntExtra(Const.POST_AUTHOR_ID, Const.DEFAULT_VALUE)
         isMember = intent.getBooleanExtra(Const.IS_MEMBER, false)
+        groupName = intent.getStringExtra(Const.GROUP_NAME).toString()
         shouldOpenKeyboard = intent.getBooleanExtra(Const.SHOULD_OPEN_KEYBOARD, false)
         groupPresenter.getPostComments(groupId, postId)
         groupPresenter.getAllComments.observe(this, ::handleGetPostComments)
@@ -74,6 +73,10 @@ class CommentsActivity : AppCompatActivity() {
             binding.postComment.visibility = View.VISIBLE
         } else {
             binding.shouldBeMember.visibility = View.VISIBLE
+            binding.shouldBeMember.text = String.format(
+                getString(R.string.join_group_to_comment),
+                groupName
+            )
             binding.postComment.visibility = View.GONE
         }
     }
@@ -128,8 +131,6 @@ class CommentsActivity : AppCompatActivity() {
     }
 
     private fun openEditTextKeyboard() {
-        Timber.e("should open")
-        Timber.e(shouldOpenKeyboard.toString())
         if (shouldOpenKeyboard) {
             binding.commentMessage.focusAndShowKeyboard()
         }

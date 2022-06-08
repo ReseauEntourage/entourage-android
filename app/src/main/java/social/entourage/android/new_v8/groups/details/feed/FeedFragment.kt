@@ -299,11 +299,11 @@ class FeedFragment : Fragment() {
     private fun initializePosts() {
         binding.postsNewRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = GroupPostsAdapter(newPostsList, groupId, group.member)
+            adapter = GroupPostsAdapter(newPostsList, groupId, group.member, group.name)
         }
         binding.postsOldRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = GroupPostsAdapter(oldPostsList, groupId, group.member)
+            adapter = GroupPostsAdapter(oldPostsList, groupId, group.member, group.name)
         }
     }
 
