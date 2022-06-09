@@ -21,4 +21,5 @@ object Const {
     const val SHOULD_OPEN_KEYBOARD = "should_open_keyboard"
     const val IS_MEMBER = "is_member"
     const val GROUP_NAME = "group_name"
+    const val FROM_CREATE_GROUP = "from_create_group"
 }

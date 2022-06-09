@@ -1,5 +1,6 @@
 package social.entourage.android.new_v8.groups.details.posts
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
@@ -17,6 +18,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
 import social.entourage.android.databinding.NewActivityCreatePostBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
+import social.entourage.android.new_v8.groups.details.feed.FeedActivity
 import social.entourage.android.new_v8.user.ReportUserModalFragment
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
@@ -24,7 +26,6 @@ import social.entourage.android.tools.Utils
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
-import java.net.URI
 
 
 class CreatePostActivity : AppCompatActivity() {
@@ -32,6 +33,7 @@ class CreatePostActivity : AppCompatActivity() {
     lateinit var binding: NewActivityCreatePostBinding
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
     private var groupId = Const.DEFAULT_VALUE
+    private var shouldClose = false
     var imageURI: String? = null
     private var photoFile: File? = null
     private var bitmap: Bitmap? = null
@@ -43,8 +45,10 @@ class CreatePostActivity : AppCompatActivity() {
             R.layout.new_activity_create_post
         )
         groupId = intent.getIntExtra(Const.GROUP_ID, Const.DEFAULT_VALUE)
+        shouldClose = intent.getBooleanExtra(Const.FROM_CREATE_GROUP, false)
         groupPresenter.hasPost.observe(this, ::handlePost)
         setView()
+        handleDeleteImageButton()
         handleAddPhotoButton()
         getResult()
         validatePost()
@@ -54,6 +58,14 @@ class CreatePostActivity : AppCompatActivity() {
 
     private fun handlePost(hasPost: Boolean) {
         if (hasPost) {
+            if (shouldClose) {
+                startActivity(
+                    Intent(this, FeedActivity::class.java).putExtra(
+                        Const.GROUP_ID,
+                        groupId
+                    )
+                )
+            }
             finish()
         }
     }
@@ -62,7 +74,7 @@ class CreatePostActivity : AppCompatActivity() {
         binding.addPhotoLayout.setOnClickListener {
             choosePhoto()
         }
-        binding.addPhoto.setOnClickListener {
+        binding.photoLayout.setOnClickListener {
             choosePhoto()
         }
     }
@@ -83,6 +95,14 @@ class CreatePostActivity : AppCompatActivity() {
         )
     }
 
+    private fun handleDeleteImageButton() {
+        binding.deleteImage.setOnClickListener {
+            binding.addPhotoLayout.visibility = View.VISIBLE
+            binding.photoLayout.visibility = View.GONE
+            imageURI = null
+        }
+    }
+
     private fun getResult() {
         supportFragmentManager.setFragmentResultListener(
             Const.REQUEST_KEY_CHOOSE_PHOTO,
@@ -91,7 +111,7 @@ class CreatePostActivity : AppCompatActivity() {
             imageURI = bundle.getString(Const.CHOOSE_PHOTO)
             imageURI?.let {
                 binding.addPhotoLayout.visibility = View.GONE
-                binding.addPhoto.visibility = View.VISIBLE
+                binding.photoLayout.visibility = View.VISIBLE
                 Glide.with(this)
                     .load(Uri.parse(it))
                     .transform(CenterCrop(), RoundedCorners(14.px))

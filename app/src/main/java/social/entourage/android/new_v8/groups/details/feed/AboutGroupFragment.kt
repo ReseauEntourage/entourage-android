@@ -161,7 +161,7 @@ class AboutGroupFragment : Fragment() {
 
     private fun handleBackButton() {
         binding.header.iconBack.setOnClickListener {
-            // findNavController().popBackStack(R.id.group_feed, true)
+            findNavController().popBackStack()
         }
     }
 
@@ -196,7 +196,6 @@ class AboutGroupFragment : Fragment() {
             }
         }
     }
-
 
     private fun onFragmentResult() {
         setFragmentResultListener(Const.REQUEST_KEY_SHOULD_REFRESH) { _, bundle ->
