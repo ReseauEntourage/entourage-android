@@ -45,6 +45,7 @@ class CreatePostActivity : AppCompatActivity() {
         groupId = intent.getIntExtra(Const.GROUP_ID, Const.DEFAULT_VALUE)
         groupPresenter.hasPost.observe(this, ::handlePost)
         setView()
+        handleDeleteImageButton()
         handleAddPhotoButton()
         getResult()
         validatePost()
@@ -62,7 +63,7 @@ class CreatePostActivity : AppCompatActivity() {
         binding.addPhotoLayout.setOnClickListener {
             choosePhoto()
         }
-        binding.addPhoto.setOnClickListener {
+        binding.photoLayout.setOnClickListener {
             choosePhoto()
         }
     }
@@ -83,6 +84,14 @@ class CreatePostActivity : AppCompatActivity() {
         )
     }
 
+    private fun handleDeleteImageButton() {
+        binding.deleteImage.setOnClickListener {
+            binding.addPhotoLayout.visibility = View.VISIBLE
+            binding.photoLayout.visibility = View.GONE
+            imageURI = null
+        }
+    }
+
     private fun getResult() {
         supportFragmentManager.setFragmentResultListener(
             Const.REQUEST_KEY_CHOOSE_PHOTO,
@@ -91,7 +100,7 @@ class CreatePostActivity : AppCompatActivity() {
             imageURI = bundle.getString(Const.CHOOSE_PHOTO)
             imageURI?.let {
                 binding.addPhotoLayout.visibility = View.GONE
-                binding.addPhoto.visibility = View.VISIBLE
+                binding.photoLayout.visibility = View.VISIBLE
                 Glide.with(this)
                     .load(Uri.parse(it))
                     .transform(CenterCrop(), RoundedCorners(14.px))

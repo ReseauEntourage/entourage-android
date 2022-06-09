@@ -105,17 +105,38 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-                    <ImageView
-                        android:id="@+id/add_photo"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/photo_layout"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:layout_marginTop="12dp"
+                        android:background="@drawable/new_bg_choose_photo_group"
                         android:gravity="center"
                         android:visibility="gone"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/error" />
+                        app:layout_constraintTop_toBottomOf="@+id/error">
+
+                        <ImageView
+                            android:id="@+id/add_photo"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/delete_image"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="17dp"
+                            android:layout_marginEnd="17dp"
+                            android:src="@drawable/new_delete_image"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <include
                         android:id="@+id/error"

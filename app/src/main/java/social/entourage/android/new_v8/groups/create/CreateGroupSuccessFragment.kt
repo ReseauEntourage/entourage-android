@@ -43,6 +43,7 @@ class CreateGroupSuccessFragment : Fragment() {
                     args.groupID
                 )
             )
+            requireActivity().finish()
         }
     }
 
