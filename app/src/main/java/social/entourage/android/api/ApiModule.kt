@@ -36,6 +36,7 @@ class ApiModule {
     val conversationsRequest: ConversationsRequest
     val metaDataRequest: MetaDataRequest
     val groupRequest: GroupRequest
+    val summaryRequest: SummaryRequest
 
     init {
         okHttpClient = providesOkHttpClient()
@@ -53,6 +54,7 @@ class ApiModule {
         conversationsRequest = providesConversationsRequest(restAdapter)
         metaDataRequest = providesMetaDataRequest(restAdapter)
         groupRequest = providesGroupRequest(restAdapter)
+        summaryRequest = providesSummaryRequest(restAdapter)
     }
 
     fun providesOkHttpClient(): OkHttpClient {
@@ -148,5 +150,9 @@ class ApiModule {
 
     fun providesGroupRequest(restAdapter: Retrofit): GroupRequest {
         return restAdapter.create(GroupRequest::class.java)
+    }
+
+    fun providesSummaryRequest(restAdapter: Retrofit): SummaryRequest {
+        return restAdapter.create(SummaryRequest::class.java)
     }
 }

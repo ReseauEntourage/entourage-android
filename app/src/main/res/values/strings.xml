@@ -282,4 +282,15 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="zoom_photo">Déplacer et zoomer pour ajuster la photo.</string>
     <string name="old_publications">Anciennes publications</string>
     <string name="new_publications">Nouvelles publications</string>
+    <string name="welcome_user">Bienvenue %s !</string>
+    <string name="contributions_title">Vos contributions au réseau Entourage :</string>
+    <string name="contributions_meeting">Belles rencontres Entourage</string>
+    <string name="contributions_meeting_empty">Pas encore de rencontres Entourage</string>
+    <string name="contributions_message">Messages envoyés</string>
+    <string name="contributions_message_empty">Pas encore de messages envoyés</string>
+    <string name="contributions_event">Participations à des évènements</string>
+    <string name="contributions_event_empty">Pas d\'évènements auquels vous avez participé</string>
+    <string name="contributions_group">Groupes rejoints</string>
+    <string name="contributions_group_empty">Vous n\'avez pas encore rejoint de groupe de voisins</string>
+
 </resources>
