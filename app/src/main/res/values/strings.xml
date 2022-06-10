@@ -275,6 +275,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="posts_comment_number"><u>%s commentaires</u></string>
     <string name="event_date">"dd/MM/yyyy"</string>
     <string name="post_date">"dd.MM.yyyy"</string>
+    <string name="comments">Commentaires de la publication</string>
+    <string name="comments_date">dd.MM.yy à HH:mm</string>
 
     <string name="write_your_message">Écrire votre message</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -282,6 +284,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="zoom_photo">Déplacer et zoomer pour ajuster la photo.</string>
     <string name="old_publications">Anciennes publications</string>
     <string name="new_publications">Nouvelles publications</string>
+    <string name="empty_state_comments">Pas encore de commentaires</string>
+    <string name="retry_comment">Erreur de publication, réessayez</string>
+    <string name="join_group_to_comment"><![CDATA[* Pour commenter cette publication, rejoingnez le groupe « %s » !]]></string>
     <string name="welcome_user">Bienvenue %s !</string>
     <string name="contributions_title">Vos contributions au réseau Entourage :</string>
     <string name="contributions_meeting">Belles rencontres Entourage</string>

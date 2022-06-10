@@ -19,6 +19,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.android.material.appbar.AppBarLayout
+import kotlinx.android.synthetic.main.new_fragment_feed.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
@@ -117,7 +118,6 @@ class FeedFragment : Fragment() {
         handleImageViewAnimation()
         handleMembersButton()
         handleAboutButton()
-        initializePosts()
         handleSwipeRefresh()
         onFragmentResult()
         binding.createPost.speedDialMenuAdapter = speedDialMenuAdapter
@@ -186,7 +186,20 @@ class FeedFragment : Fragment() {
             group = it
             updateView()
         }
+    }
 
+    private fun handleCreatePostButton() {
+        if (group.member) {
+            binding.createPost.show()
+            binding.eventsLayoutEmptyState.empty_state_events_subtitle.visibility = View.VISIBLE
+            binding.postsLayoutEmptyState.subtitle.visibility = View.VISIBLE
+            binding.postsLayoutEmptyState.arrow.visibility = View.VISIBLE
+        } else {
+            binding.createPost.hide(true)
+            binding.eventsLayoutEmptyState.empty_state_events_subtitle.visibility = View.GONE
+            binding.postsLayoutEmptyState.subtitle.visibility = View.GONE
+            binding.postsLayoutEmptyState.arrow.visibility = View.GONE
+        }
     }
 
     private fun handleImageViewAnimation() {
@@ -238,6 +251,8 @@ class FeedFragment : Fragment() {
              */
         }
         updateButtonJoin()
+        initializePosts()
+        handleCreatePostButton()
     }
 
     private fun updateButtonJoin() {
@@ -280,8 +295,10 @@ class FeedFragment : Fragment() {
         if (hasJoined) {
             group.member = !group.member
             updateButtonJoin()
+            handleCreatePostButton()
         }
     }
+
 
     private fun initializeMembersPhotos() {
         binding.recyclerView.apply {
@@ -300,11 +317,11 @@ class FeedFragment : Fragment() {
     private fun initializePosts() {
         binding.postsNewRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = GroupPostsAdapter(newPostsList)
+            adapter = GroupPostsAdapter(newPostsList, groupId, group.member, group.name)
         }
         binding.postsOldRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = GroupPostsAdapter(oldPostsList)
+            adapter = GroupPostsAdapter(oldPostsList, groupId, group.member, group.name)
         }
     }
 

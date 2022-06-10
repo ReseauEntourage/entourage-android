@@ -10,7 +10,6 @@ import androidx.navigation.fragment.navArgs
 import social.entourage.android.databinding.NewFragmentCreateGroupSuccessBinding
 import social.entourage.android.new_v8.groups.details.feed.FeedActivity
 import social.entourage.android.new_v8.groups.details.posts.CreatePostActivity
-import social.entourage.android.new_v8.user.UserProfileFragmentArgs
 import social.entourage.android.new_v8.utils.Const
 
 
@@ -43,6 +42,7 @@ class CreateGroupSuccessFragment : Fragment() {
                     args.groupID
                 )
             )
+            requireActivity().finish()
         }
     }
 
@@ -50,7 +50,9 @@ class CreateGroupSuccessFragment : Fragment() {
         binding.post.setOnClickListener {
             val intent = Intent(context, CreatePostActivity::class.java)
             intent.putExtra(Const.GROUP_ID, args.groupID)
+            intent.putExtra(Const.FROM_CREATE_GROUP, true)
             startActivity(intent)
+            requireActivity().finish()
         }
     }
 }

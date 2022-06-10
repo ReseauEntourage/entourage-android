@@ -49,7 +49,6 @@ class GroupsListAdapter(
                             )
                         )
                     }
-
                 }
                 binding.groupName.text = this.name
                 this.members?.size?.let {
