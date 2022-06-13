@@ -24,8 +24,6 @@ class HomeFragment : Fragment() {
     private val homePresenter: HomePresenter by lazy { HomePresenter() }
 
     private var user: User? = null
-    private var summary: Summary? = null
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
