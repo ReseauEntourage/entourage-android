@@ -2,21 +2,19 @@ package social.entourage.android.new_v8.home
 
 import android.content.Intent
 import android.net.Uri
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.NewFragmentHomeBinding
-import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.models.Summary
 import social.entourage.android.new_v8.profile.ProfileActivity
-import timber.log.Timber
 
 class HomeFragment : Fragment() {
     private var _binding: NewFragmentHomeBinding? = null
@@ -43,30 +41,32 @@ class HomeFragment : Fragment() {
     }
 
     private fun updateContributionsView(summary: Summary) {
-        summary.meetingsCount?.let {
-            binding.meetingLabel.text =
-                if (it <= 0) getString(R.string.contributions_meeting_empty) else getString(R.string.contributions_meeting)
-            binding.meetingValue.text = it.toString()
-            binding.heartIcon.visibility = if (it <= 0) View.GONE else View.VISIBLE
-            binding.heartIconEmpty.visibility = if (it <= 0) View.VISIBLE else View.GONE
-        }
+        with(binding) {
+            summary.meetingsCount?.let {
+                meetingLabel.text =
+                    if (it <= 0) getString(R.string.contributions_meeting_empty) else getString(R.string.contributions_meeting)
+                meetingValue.text = it.toString()
+                heartIcon.isVisible = it > 0
+                heartIconEmpty.isVisible = it <= 0
+            }
 
-        summary.chatMessagesCount?.let {
-            binding.messageCard.value.text = it.toString()
-            binding.messageCard.isEmpty.visibility = if (it <= 0) View.VISIBLE else View.GONE
-            binding.messageCard.isNotEmpty.visibility = if (it <= 0) View.GONE else View.VISIBLE
-        }
+            summary.chatMessagesCount?.let {
+                messageCard.value.text = it.toString()
+                messageCard.isEmpty.visibility = if (it <= 0) View.VISIBLE else View.GONE
+                messageCard.isNotEmpty.visibility = if (it <= 0) View.GONE else View.VISIBLE
+            }
 
-        summary.outingParticipationsCount?.let {
-            binding.eventCard.value.text = it.toString()
-            binding.eventCard.isEmpty.visibility = if (it <= 0) View.VISIBLE else View.GONE
-            binding.eventCard.isNotEmpty.visibility = if (it <= 0) View.GONE else View.VISIBLE
-        }
+            summary.outingParticipationsCount?.let {
+                eventCard.value.text = it.toString()
+                eventCard.isEmpty.visibility = if (it <= 0) View.VISIBLE else View.GONE
+                eventCard.isNotEmpty.visibility = if (it <= 0) View.GONE else View.VISIBLE
+            }
 
-        summary.neighborhoodParticipationsCount?.let {
-            binding.groupCard.value.text = it.toString()
-            binding.groupCard.isEmpty.visibility = if (it <= 0) View.VISIBLE else View.GONE
-            binding.groupCard.isNotEmpty.visibility = if (it <= 0) View.GONE else View.VISIBLE
+            summary.neighborhoodParticipationsCount?.let {
+                groupCard.value.text = it.toString()
+                groupCard.isEmpty.visibility = if (it <= 0) View.VISIBLE else View.GONE
+                groupCard.isNotEmpty.visibility = if (it <= 0) View.GONE else View.VISIBLE
+            }
         }
     }
 

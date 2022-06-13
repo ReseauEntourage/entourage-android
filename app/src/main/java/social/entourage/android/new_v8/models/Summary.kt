@@ -5,7 +5,7 @@ import java.io.Serializable
 
 class Summary : Serializable {
     @SerializedName("id")
-    var id: Long? = null
+    var id: Int? = null
 
     @SerializedName("display_name")
     var displayName: String? = null
