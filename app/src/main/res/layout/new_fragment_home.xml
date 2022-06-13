@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:maxLines="2"
                 android:paddingBottom="12dp"
-                android:text="@{@string/contributions_title}"
+                android:text="@string/contributions_title"
                 tools:text="Vos contributions au réseau entourage :" />
 
             <Space
@@ -121,7 +121,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text=""
+                            android:text="@string/zero"
                             android:paddingLeft="6dp"
                             tools:text="45" />
 

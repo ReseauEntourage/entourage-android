@@ -10,7 +10,7 @@ import social.entourage.android.api.request.SummaryResponse
 import social.entourage.android.new_v8.models.Summary
 
 class HomePresenter {
-    var getSummarySucces = MutableLiveData<Boolean>()
+    var getSummarySuccess = MutableLiveData<Boolean>()
     var summary = MutableLiveData<Summary>()
 
     fun getSummary() {
@@ -23,14 +23,12 @@ class HomePresenter {
                 ) {
                     if (response.isSuccessful) {
                         summary.value = response.body()?.summary
-                        getSummarySucces.value = true
-                    } else {
-                        getSummarySucces.value = false
                     }
+                    getSummarySuccess.value = response.isSuccessful
                 }
 
                 override fun onFailure(call: Call<SummaryResponse>, t: Throwable) {
-                    getSummarySucces.value = false
+                    getSummarySuccess.value = false
                 }
             })
     }

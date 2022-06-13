@@ -14,16 +14,16 @@ class Summary : Serializable {
     var avatarURL: String? = null
 
     @SerializedName("meetings_count")
-    var meetingsCount: Long? = null
+    var meetingsCount: Int? = null
 
     @SerializedName("chat_messages_count")
-    var chatMessagesCount: Long? = null
+    var chatMessagesCount: Int? = null
 
     @SerializedName("outing_participations_count")
-    var outingParticipationsCount: Long? = null
+    var outingParticipationsCount: Int? = null
 
     @SerializedName("neighborhood_participations_count")
-    var neighborhoodParticipationsCount: Long? = null
+    var neighborhoodParticipationsCount: Int? = null
 
     @SerializedName("recommandations")
     var recommandations: List<Recommandation>? = null

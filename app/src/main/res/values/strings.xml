@@ -297,5 +297,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="contributions_event_empty">Pas d\'évènements auquels vous avez participé</string>
     <string name="contributions_group">Groupes rejoints</string>
     <string name="contributions_group_empty">Vous n\'avez pas encore rejoint de groupe de voisins</string>
+    <string name="zero">0</string>
 
 </resources>

@@ -39,46 +39,37 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         user = EntourageApplication.me(activity) ?: return
         homePresenter.getSummary()
-        homePresenter.summary.observe(requireActivity(),::updateContributionsView)
+        homePresenter.summary.observe(requireActivity(), ::updateContributionsView)
         updateView()
         handleProfileButton()
     }
 
     private fun updateContributionsView(summary: Summary) {
-        val meetingsCount: Long? = if (summary == null ) 0 else summary.meetingsCount;
-        val messagesCount: Long? = if (summary == null) 0 else summary.chatMessagesCount;
-        val eventsCount: Long? = if (summary == null) 0 else summary.outingParticipationsCount;
-        val groupsCount: Long? = if (summary == null) 0 else summary.neighborhoodParticipationsCount;
-        val isMeetingsEmpty: Boolean = (meetingsCount != null && meetingsCount <= 0)
-        val isMessagesEmpty: Boolean = (messagesCount != null && messagesCount <= 0)
-        val isEventsEmpty: Boolean = (eventsCount != null && eventsCount <= 0)
-        val isGroupsEmpty: Boolean = (groupsCount != null && groupsCount <= 0)
+        summary.meetingsCount?.let {
+            binding.meetingLabel.text =
+                if (it <= 0) getString(R.string.contributions_meeting_empty) else getString(R.string.contributions_meeting)
+            binding.meetingValue.text = it.toString()
+            binding.heartIcon.visibility = if (it <= 0) View.GONE else View.VISIBLE
+            binding.heartIconEmpty.visibility = if (it <= 0) View.VISIBLE else View.GONE
+        }
 
-        binding.meetingValue.text = meetingsCount.toString()
-        binding.meetingLabel.text = if (isMeetingsEmpty) getString(R.string.contributions_meeting_empty) else getString(R.string.contributions_meeting)
-        binding.heartIcon.visibility = if (isMeetingsEmpty) View.GONE else View.VISIBLE
-        binding.heartIconEmpty.visibility = if (isMeetingsEmpty) View.VISIBLE else View.GONE
+        summary.chatMessagesCount?.let {
+            binding.messageCard.value.text = it.toString()
+            binding.messageCard.isEmpty.visibility = if (it <= 0) View.VISIBLE else View.GONE
+            binding.messageCard.isNotEmpty.visibility = if (it <= 0) View.GONE else View.VISIBLE
+        }
 
+        summary.outingParticipationsCount?.let {
+            binding.eventCard.value.text = it.toString()
+            binding.eventCard.isEmpty.visibility = if (it <= 0) View.VISIBLE else View.GONE
+            binding.eventCard.isNotEmpty.visibility = if (it <= 0) View.GONE else View.VISIBLE
+        }
 
-
-        binding.messageCard.value.text = messagesCount.toString()
-        binding.messageCard.value.visibility = if (isMessagesEmpty) View.GONE else View.VISIBLE
-        binding.messageCard.icon.visibility = if (isMessagesEmpty) View.VISIBLE else View.GONE
-        binding.messageCard.label.visibility = if (isMessagesEmpty) View.GONE else View.VISIBLE
-        binding.messageCard.labelEmpty.visibility = if (isMessagesEmpty) View.VISIBLE else View.GONE
-
-        binding.eventCard.value.text = eventsCount.toString()
-        binding.eventCard.value.visibility = if (isEventsEmpty) View.GONE else View.VISIBLE
-        binding.eventCard.icon.visibility = if (isEventsEmpty) View.VISIBLE else View.GONE
-        binding.eventCard.label.visibility = if (isEventsEmpty) View.GONE else View.VISIBLE
-        binding.eventCard.labelEmpty.visibility = if (isEventsEmpty) View.VISIBLE else View.GONE
-
-        binding.groupCard.value.text=groupsCount.toString()
-        binding.groupCard.value.visibility = if (isGroupsEmpty) View.GONE else View.VISIBLE
-        binding.groupCard.icon.visibility = if (isGroupsEmpty) View.VISIBLE else View.GONE
-        binding.groupCard.label.visibility = if (isGroupsEmpty) View.GONE else View.VISIBLE
-        binding.groupCard.labelEmpty.visibility = if (isGroupsEmpty) View.VISIBLE else View.GONE
-
+        summary.neighborhoodParticipationsCount?.let {
+            binding.groupCard.value.text = it.toString()
+            binding.groupCard.isEmpty.visibility = if (it <= 0) View.VISIBLE else View.GONE
+            binding.groupCard.isNotEmpty.visibility = if (it <= 0) View.GONE else View.VISIBLE
+        }
     }
 
     private fun updateView() {
@@ -99,7 +90,6 @@ class HomeFragment : Fragment() {
                 getString(R.string.welcome_user),
                 user?.displayName
             )
-
 
 
         }
