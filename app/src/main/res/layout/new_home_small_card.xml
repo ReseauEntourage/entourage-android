@@ -50,9 +50,11 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/zero"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/label"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             tools:text="259" />
 
         <ImageView
@@ -74,9 +76,11 @@
             android:gravity="center"
             android:maxLines="3"
             android:text="@{label}"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/value"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/value"
+            app:layout_constraintLeft_toLeftOf="parent"
             tools:text="Participation à des événements" />
 
         <TextView
