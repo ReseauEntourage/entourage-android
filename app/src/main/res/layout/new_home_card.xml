@@ -23,7 +23,9 @@
             android:layout_height="wrap_content"
             android:background="@drawable/new_bg_rounded_white"
             android:orientation="horizontal"
-            android:paddingBottom="4dp">
+            android:paddingVertical="12dp"
+            android:paddingLeft="19dp"
+            android:paddingRight="24dp">
 
             <ImageView
                 android:id="@+id/image_moderator"
@@ -31,29 +33,32 @@
                 android:layout_height="44dp"
                 android:background="@drawable/new_shadow"
                 android:layout_gravity="center"
-                android:elevation="1dp" />
+                android:elevation="1dp"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingHorizontal="12dp">
 
                 <TextView
                     android:id="@+id/title"
-                    style="@style/left_courant_black"
+                    style="@style/left_courant_bold_black"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{title}" />
+
+                    android:text="@{title}"
+                    tools:text="Barbara, modératrice" />
 
                 <TextView
                     android:id="@+id/description"
                     style="@style/left_courant_black"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:maxLines="3"
+                    android:maxLines="2"
                     android:text="@{description}"
-                    tools:text="Participation à des événements" />
+                    tools:text="Votre guide dans l'app" />
             </LinearLayout>
 
             <ImageView
@@ -63,7 +68,6 @@
                 android:layout_gravity="center"
                 android:background="@drawable/new_shadow"
                 android:elevation="1dp"
-                android:src=""
                 app:srcCompat="@drawable/ic_forward" />
 
         </LinearLayout>
