@@ -23,6 +23,7 @@ import social.entourage.android.api.model.GroupImage
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentEditGroupBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
+import social.entourage.android.new_v8.groups.RefreshController
 import social.entourage.android.new_v8.groups.choosePhoto.ChoosePhotoModalFragment
 import social.entourage.android.new_v8.groups.details.feed.FeedFragmentArgs
 import social.entourage.android.new_v8.models.Group
@@ -59,6 +60,7 @@ class EditGroupFragment : Fragment() {
         if (isGroupUpdated) {
             Utils.showToast(requireContext(), getString(R.string.group_updated))
             back()
+            RefreshController.shouldRefreshFragment = true
         } else {
             Utils.showToast(requireContext(), getString(R.string.group_error_updated))
         }

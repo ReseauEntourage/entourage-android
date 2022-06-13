@@ -48,6 +48,14 @@ class GroupsFragment : Fragment() {
         }.attach()
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (RefreshController.shouldRefreshFragment) {
+            initializeTab()
+            RefreshController.shouldRefreshFragment = false
+        }
+    }
+
     private fun handleImageViewAnimation() {
         binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             val res: Float =
