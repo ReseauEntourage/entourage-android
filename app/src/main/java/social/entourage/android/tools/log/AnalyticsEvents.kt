@@ -494,6 +494,103 @@ object AnalyticsEvents {
     const val ACTION_POP_CLOSE_SUCCESS = "Action__Pop_Close_Entourage__Success"
     const val ACTION_POP_CLOSE_FAILED = "Action__Pop_Close_Entourage__Fail"
 
+    //NEW_V8
+
+    //GROUPES
+
+    const val VIEW_GROUP_SHOW = "View__Group__Show"
+    const val VIEW_GROUP_SHOW_DISCOVER = "View__Group__ShowDiscover"
+    const val ACTION_GROUP_MY_GROUP = "Action__Group__MyGroup"
+    const val ACTION_GROUP_DISCOVER = "Action__Group__Discover"
+    const val ACTION_GROUP_MY_GROUP_CARD = "Action__Group__MyGroup_Card"
+    const val ACTION_GROUP_DISCOVER_CARD = "Action__Group__Discover_Card"
+    const val ACTION_GROUP_SEARCH_START = "Action__Group__Search_Start"
+    const val ACTION_GROUP_SEARCH_VALIDATE = "Action__Group__Search_Validate"
+    const val ACTION_GROUP_SEARCH_DELETE = "Action__Group__Search_Delete"
+    const val ACTION_GROUP_SEARCH_SEE_RESULT = "Action__Group__Search_SeeResult"
+
+    //GROUPE - NOUVEAU GROUPE
+
+    const val ACTION_GROUP_PLUS = "Action__Group__Plus"
+
+    const val ACTION_NEW_GROUP_BACK_ARROW = "Action__NewGroup__BackArrow"
+    const val ACTION_NEW_GROUP_PREVIOUS = "Action__NewGroup__Previous"
+    const val ACTION_NEW_GROUP_NEXT = "Action__NewGroup__Next"
+
+    const val VIEW_NEW_GROUP_STEP1 = "View__NewGroup__Step1"
+    const val ACTION_NEW_GROUP_ADD_LOCATION = "Action__NewGroup__AddLocation"
+    const val VIEW_NEW_GROUP_ADD_LOCATION_SCREEN = "View__NewGroup__AddLocation_Screen"
+    const val ACTION_NEW_GROUP_ADD_LOCATION_CITY = "Action__NewGroup__AddLocation_City"
+    const val ACTION_NEW_GROUP_ADD_LOCATION_GEOLOC = "Action__NewGroup__AddLocation_Geoloc"
+    const val ACTION_NEW_GROUP_ADD_LOCATION_VALIDATE = "Action__NewGroup__AddLocation_Validate"
+    const val ACTION_NEW_GROUP_ADD_LOCATION_CLOSE = "Action__NewGroup__AddLocation_Close"
+
+    const val VIEW_NEW_GROUP_STEP2 = "View__NewGroup__Step2"
+
+    const val VIEW_NEW_GROUP_STEP3 = "View__NewGroup__Step3"
+    const val ACTION_NEW_GROUP_STEP3_ADD_PICTURE = "Action__NewGroup__Step3_AddPicture"
+    const val ACTION_NEW_GROUP_STEP3_PIC_GALLERY = "View__NewGroup__Step3_PicGallery"
+    const val ACTION_NEW_GROUP_STEP3_PIC_GALLERY_VALIDATE = "Action__NewGroup__Step3_PicGallery_Validate"
+    const val ACTION_NEW_GROUP_STEP3_PIC_GALLERY_CLOSE = "Action__NewGroup__Step3_PicGallery_Close"
+
+    const val VIEW_NEW_GROUP_CONFIRMATION = "View__NewGroup__Confirmation"
+    const val ACTION_NEW_GROUP_CONFIRMATION_NEW_POST = "Action__NewGroup__Confirmation_NewPost"
+    const val ACTION_NEW_GROUP_CONFIRMATION_SKIP = "Action__NewGroup__Confirmation_Skip"
+
+    const val VIEW_NEW_GROUP_CANCEL_POP = "View__NewGroup__CancelPop"
+    const val ACTION_NEW_GROUP_CANCEL_POP_CANCEL = "Action__NewGroup__CancelPop_Cancel"
+    const val ACTION_NEW_GROUP_CANCEL_POP_LEAVE = "Action__NewGroup__CancelPop_Leave"
+
+    //GROUPE - FEED
+
+    const val VIEW_GROUP_FEED_SHOW = "View__GroupFeed__Show"
+    const val ACTION_GROUP_FEED_MORE_MEMBERS = "Action__GroupFeed__MoreMembers"
+    const val ACTION_GROUP_FEED_JOIN = "Action__GroupFeed__Join"
+    const val ACTION_GROUP_FEED_MORE_EVENTS = "Action__GroupFeed__MoreEvents"
+    const val ACTION_GROUP_FEED_MORE_DESCRIPTION = "Action__GroupFeed__MoreDescription"
+    const val ACTION_GROUP_FEED_ONE_EVENT = "Action__GroupFeed__OneEvent"
+    const val ACTION_GROUP_FEED_DESCRIPTION_PAGE = "Action__GroupFeed__DescriptionPage"
+    const val ACTION_GROUP_FEED_OPTION = "Action__GroupFeed__Option"
+    const val ACTION_GROUP_FEED_BACK_ARROW = "Action__GroupFeed__BackArrow"
+    const val VIEW_GROUP_FEED_FULL_DESCRIPTION = "View__GroupFeed__FullDescription"
+
+    //GROUPE - LISTE DES MEMBRES
+
+    const val VIEW_GROUP_MEMBER_SHOW_LIST = "View__GroupMember__ShowList"
+    const val ACTION_GROUP_MEMBER_SEE_1_MEMBER = "Action__GroupMember__See1Member"
+    const val ACTION_GROUP_MEMBER_WRITE_TO_1_MEMBER = "Action__GroupMember__WriteTo1Member"
+    const val ACTION_GROUP_MEMBER_SEARCH_START = "Action__GroupMember__Search_Start"
+    const val ACTION_GROUP_MEMBER_SEARCH_VALIDATE = "Action__GroupMember__Search_Validate"
+    const val ACTION_GROUP_MEMBER_SEARCH_DELETE = "Action__GroupMember__Search_Delete"
+    const val ACTION_GROUP_MEMBER_SEARCH_SEE_RESULT = "Action__GroupMember__Search_SeeResult"
+
+    //GROUPE - PLUS
+
+    const val ACTION_GROUP_FEED_PLUS = "Action__GroupFeed__Plus"
+    const val ACTION_GROUP_FEED_NEW_EVENT = "Action__GroupFeed__NewEvent"
+    const val ACTION_GROUP_FEED_NEW_POST = "Action__GroupFeed__NewPost"
+    const val ACTION_GROUP_FEED_PLUS_CLOSE = "Action__GroupFeed__Plus_Close"
+    const val VIEW_GROUP_FEED_NEW_POST_SCREEN = "View__GroupFeed__NewPost_Screen"
+    const val ACTION_GROUP_FEED_NEW_POST_ADD_PIC = "Action__GroupFeed__NewPost_AddPic"
+    const val ACTION_GROUP_FEED_NEW_POST_VALIDATE_PIC = "Action__GroupFeed__NewPost_ValidatePic"
+    const val ACTION_GROUP_FEED_NEW_POST_VALIDATE = "Action__GroupFeed__NewPost_Validate"
+
+    //GROUPES - OPTIONS
+
+    const val VIEW_GROUP_OPTION_SHOW = "View__GroupOption__Show"
+    const val ACTION_GROUP_OPTION_EDIT_GROUP = "Action__GroupOption__EditGroup"
+    const val VIEW_GROUP_OPTION_EDITION = "View__GroupOption__Edition"
+    const val ACTION_GROUP_OPTION_RULES = "Action__GroupOption__Rules"
+    const val VIEW_GROUP_OPTION_RULES = "View__GroupOption__Rules"
+    const val ACTION_GROUP_OPTION_QUIT = "Action__GroupOption__Quitt"
+    const val ACTION_GROUP_OPTION_REPORT = "Action__GroupOption__Report"
+
+    const val ACTION_GROUP_OPTION_NOTIF_ALL = "Action__GroupOption__Notif_All"
+    const val ACTION_GROUP_OPTION_NOTIF_EVENT = "Action__GroupOption__Notif_Event"
+    const val ACTION_GROUP_OPTION_NOTIF_MESSAGE = "Action__GroupOption__Notif_Message"
+    const val ACTION_GROUP_OPTION_NOTIF_MEMBER = "Action__GroupOption__Notif_Member"
+
+
     val TAG: String? = AnalyticsEvents::class.java.simpleName
 
     fun logEvent(event: String) {
