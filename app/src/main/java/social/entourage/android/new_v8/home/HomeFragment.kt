@@ -52,20 +52,20 @@ class HomeFragment : Fragment() {
 
             summary.chatMessagesCount?.let {
                 messageCard.value.text = it.toString()
-                messageCard.isEmpty.visibility = if (it <= 0) View.VISIBLE else View.GONE
-                messageCard.isNotEmpty.visibility = if (it <= 0) View.GONE else View.VISIBLE
+                messageCard.isEmpty.isVisible = it <= 0
+                messageCard.isNotEmpty.isVisible = it > 0
             }
 
             summary.outingParticipationsCount?.let {
                 eventCard.value.text = it.toString()
-                eventCard.isEmpty.visibility = if (it <= 0) View.VISIBLE else View.GONE
-                eventCard.isNotEmpty.visibility = if (it <= 0) View.GONE else View.VISIBLE
+                eventCard.isEmpty.isVisible = it <= 0
+                eventCard.isNotEmpty.isVisible = it > 0
             }
 
             summary.neighborhoodParticipationsCount?.let {
                 groupCard.value.text = it.toString()
-                groupCard.isEmpty.visibility = if (it <= 0) View.VISIBLE else View.GONE
-                groupCard.isNotEmpty.visibility = if (it <= 0) View.GONE else View.VISIBLE
+                groupCard.isEmpty.isVisible = it <= 0
+                groupCard.isNotEmpty.isVisible = it > 0
             }
         }
     }
