@@ -65,6 +65,8 @@
     <dimen name="list_item_spacing_half">8dp</dimen>
     <dimen name="group_member_subtitle">11sp</dimen>
     <dimen name="tabs_height">60dp</dimen>
+    <dimen name="contributions_value">30sp</dimen>
+    <dimen name="contributions_empty_label">10sp</dimen>
     <dimen name="design_bottom_navigation_height" tools:override="true">@dimen/tabs_height</dimen>
 
 </resources>
