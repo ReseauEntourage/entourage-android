@@ -1,8 +1,11 @@
 package social.entourage.android.new_v8.groups.details.feed
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.EntourageApplication
@@ -14,6 +17,8 @@ import social.entourage.android.new_v8.models.Post
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.focusAndShowKeyboard
+import social.entourage.android.new_v8.utils.scrollToPositionSmooth
+import social.entourage.android.tools.log.AnalyticsEvents
 import java.util.*
 
 class CommentsActivity : AppCompatActivity() {
@@ -50,6 +55,7 @@ class CommentsActivity : AppCompatActivity() {
         handleCommentAction()
         openEditTextKeyboard()
         handleBackButton()
+        handleSendButtonState()
     }
 
     private fun handleGetPostComments(allComments: MutableList<Post>?) {
@@ -88,6 +94,7 @@ class CommentsActivity : AppCompatActivity() {
             messagesFailed.add(comment)
             comment?.let { commentsList.add(0, it) }
         }
+        binding.comments.scrollToPositionSmooth(0)
         updateView(false)
     }
 
@@ -128,6 +135,21 @@ class CommentsActivity : AppCompatActivity() {
         binding.header.iconBack.setOnClickListener {
             finish()
         }
+    }
+
+    private fun handleSendButtonState() {
+        binding.commentMessage.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable) {
+                binding.comment.background = ResourcesCompat.getDrawable(
+                    resources,
+                    if (s.isEmpty() || s.isBlank()) R.drawable.new_bg_rounded_inactive_button_light_orange
+                    else R.drawable.new_circle_orange_button_fill,
+                    null
+                )
+            }
+        })
     }
 
     private fun openEditTextKeyboard() {
