@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:paddingBottom="12dp"
-    android:weightSum="1">
+    android:gravity="end|center_vertical">
 
     <LinearLayout
+        android:id="@+id/comment_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="right"
-        android:orientation="vertical">
+        android:gravity="end"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@id/image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:src="@drawable/new_report_comment" />
 
         <TextView
             android:id="@+id/comment"
@@ -25,7 +32,7 @@
             android:background="@drawable/new_comment_background_light_orange"
             android:paddingHorizontal="12dp"
             android:paddingVertical="14dp"
-            tools:text="m:m" />
+            tools:text="salim " />
 
         <LinearLayout
             android:id="@+id/information_layout"
@@ -34,7 +41,9 @@
             android:layout_marginTop="3dp"
             android:layout_marginRight="7dp"
             android:orientation="horizontal"
-            android:visibility="gone">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/comment"
+            app:layout_constraintTop_toBottomOf="@id/comment">
 
             <TextView
                 android:id="@+id/author_name"
@@ -60,7 +69,10 @@
             android:layout_marginTop="3dp"
             android:gravity="center"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/comment">
 
             <ImageView
                 style="@style/group_member_subtitle_black"
@@ -82,5 +94,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/new_illu_header_group" />
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

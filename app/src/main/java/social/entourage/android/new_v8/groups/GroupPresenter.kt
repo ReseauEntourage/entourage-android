@@ -6,14 +6,13 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.api.model.ChatMessage
+import social.entourage.android.api.model.*
 import social.entourage.android.api.request.*
-import social.entourage.android.api.model.EntourageUser
-import social.entourage.android.api.model.Message
 import social.entourage.android.api.request.*
 import social.entourage.android.new_v8.groups.list.groupPerPage
 import social.entourage.android.new_v8.models.Group
@@ -39,6 +38,8 @@ class GroupPresenter {
     var getAllPosts = MutableLiveData<MutableList<Post>>()
     var hasPost = MutableLiveData<Boolean>()
     var commentPosted = MutableLiveData<Post?>()
+    var isGroupReported = MutableLiveData<Boolean>()
+    var isPostReported = MutableLiveData<Boolean>()
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
@@ -349,5 +350,54 @@ class GroupPresenter {
                     commentPosted.value = null
                 }
             })
+    }
+
+
+    fun sendReport(
+        groupId: Int,
+        reason: String,
+        selectedSignalsIdList: MutableList<String>
+    ) {
+        EntourageApplication.get().apiModule.groupRequest.reportGroup(
+            groupId,
+            ReportWrapper(Report(reason, selectedSignalsIdList))
+        ).enqueue(object :
+            Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                isGroupReported.value = false
+            }
+
+            override fun onResponse(
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
+                isGroupReported.value = response.isSuccessful
+            }
+        })
+    }
+
+    fun sendReportPost(
+        groupId: Int,
+        postId: Int,
+        reason: String,
+        selectedSignalsIdList: MutableList<String>
+    ) {
+        EntourageApplication.get().apiModule.groupRequest.reportPost(
+            groupId,
+            postId,
+            ReportWrapper(Report(reason, selectedSignalsIdList))
+        ).enqueue(object :
+            Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                isPostReported.value = false
+            }
+
+            override fun onResponse(
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
+                isPostReported.value = response.isSuccessful
+            }
+        })
     }
 }

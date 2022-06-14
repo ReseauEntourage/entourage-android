@@ -21,6 +21,8 @@ import social.entourage.android.new_v8.groups.details.rules.GroupRulesActivity
 import social.entourage.android.new_v8.groups.edit.EditGroupActivity
 import social.entourage.android.new_v8.models.GroupUiModel
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
+import social.entourage.android.new_v8.report.ReportModalFragment
+import social.entourage.android.new_v8.report.ReportTypes
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 
@@ -50,6 +52,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         updateView()
         viewWithRole()
         handleLeaveGroup()
+        handleReportGroup()
         groupPresenter.hasUserLeftGroup.observe(requireActivity(), ::hasUserLeftGroup)
     }
 
@@ -168,6 +171,15 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
                     it.id?.let { id -> groupPresenter.leaveGroup(id) }
                 }
             }
+        }
+    }
+
+    private fun handleReportGroup() {
+        val reportGroupBottomDialogFragment =
+            group?.id?.let { ReportModalFragment.newInstance(it,
+                Const.DEFAULT_VALUE ,ReportTypes.REPORT_GROUP) }
+        binding.reportGroup.setOnClickListener {
+            reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)
         }
     }
 

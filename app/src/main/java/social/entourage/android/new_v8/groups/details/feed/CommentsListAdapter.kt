@@ -22,6 +22,7 @@ enum class CommentsTypes(val code: Int) {
 
 interface OnItemClickListener {
     fun onItemClick(comment: Post)
+    fun onCommentReport(commentId: Int?)
 }
 
 
@@ -35,6 +36,9 @@ class CommentsListAdapter(
         RecyclerView.ViewHolder(binding) {
         fun bind(comment: Post) {
             binding.comment.text = comment.content
+            binding.report.setOnClickListener {
+                onItemClick.onCommentReport(comment.id)
+            }
             comment.createdTime?.let {
                 binding.information_layout.visibility = View.VISIBLE
                 binding.error.visibility = View.GONE

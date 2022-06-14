@@ -19,7 +19,6 @@ import social.entourage.android.R
 import social.entourage.android.databinding.NewActivityCreatePostBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.details.feed.FeedActivity
-import social.entourage.android.new_v8.user.ReportUserModalFragment
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
 import social.entourage.android.tools.Utils
@@ -81,7 +80,7 @@ class CreatePostActivity : AppCompatActivity() {
 
     private fun choosePhoto() {
         val choosePhotoModalFragment = ChoosePhotoModalFragment.newInstance()
-        choosePhotoModalFragment.show(supportFragmentManager, ReportUserModalFragment.TAG)
+        choosePhotoModalFragment.show(supportFragmentManager, ChoosePhotoModalFragment.TAG)
     }
 
     private fun setView() {
