@@ -38,6 +38,7 @@ class HomeFragment : Fragment() {
         homePresenter.summary.observe(requireActivity(), ::updateContributionsView)
         updateView()
         handleProfileButton()
+        handlePedagoContentButton()
     }
 
     private fun updateContributionsView(summary: Summary) {
@@ -90,6 +91,12 @@ class HomeFragment : Fragment() {
             )
 
 
+        }
+    }
+
+    private fun handlePedagoContentButton() {
+        binding.pedago.setOnClickListener {
+            startActivity(Intent(context, PedagoListActivity::class.java))
         }
     }
 
