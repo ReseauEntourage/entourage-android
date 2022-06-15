@@ -52,6 +52,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         handleEditGroup()
         updateView()
         viewWithRole()
+        handleReportGroup()
         handleLeaveGroup()
         groupPresenter.hasUserLeftGroup.observe(requireActivity(), ::hasUserLeftGroup)
     }
@@ -162,6 +163,14 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
             dismiss()
         }
     }
+
+    private fun handleReportGroup() {
+        binding.reportGroup.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_OPTION_REPORT)
+        }
+    }
+
 
     private fun handleLeaveGroup() {
         binding.leaveGroup.setOnClickListener {
