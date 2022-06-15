@@ -33,6 +33,7 @@ import social.entourage.android.new_v8.models.GroupUiModel
 import social.entourage.android.new_v8.models.Post
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
 import uk.co.markormesher.android_fab.SpeedDialMenuItem
@@ -77,11 +78,23 @@ class FeedFragment : Fragment() {
         override fun onMenuItemClick(position: Int): Boolean {
             when (position) {
                 0 -> {
+                    AnalyticsEvents.logEvent(
+                        AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST
+                    )
                     val intent = Intent(context, CreatePostActivity::class.java)
                     intent.putExtra(Const.GROUP_ID, groupId)
                     startActivity(intent)
                 }
-                else -> {}
+                1 -> {
+                    AnalyticsEvents.logEvent(
+                        AnalyticsEvents.ACTION_GROUP_FEED_NEW_EVENT
+                    )
+                }
+                else -> {
+                    AnalyticsEvents.logEvent(
+                        AnalyticsEvents.ACTION_GROUP_FEED_PLUS_CLOSE
+                    )
+                }
             }
             return true
         }
@@ -121,6 +134,9 @@ class FeedFragment : Fragment() {
         handleSwipeRefresh()
         onFragmentResult()
         binding.createPost.speedDialMenuAdapter = speedDialMenuAdapter
+        binding.createPost.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_PLUS)
+        }
         binding.createPost.setContentCoverColour(
             ContextCompat.getColor(
                 requireContext(),
@@ -139,6 +155,9 @@ class FeedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = NewFragmentFeedBinding.inflate(inflater, container, false)
+        AnalyticsEvents.logEvent(
+            AnalyticsEvents.VIEW_GROUP_FEED_SHOW
+        )
         return binding.root
     }
 
@@ -286,6 +305,9 @@ class FeedFragment : Fragment() {
 
     private fun handleFollowButton() {
         binding.join.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_FEED_JOIN
+            )
             if (!group.member) groupPresenter.joinGroup(groupId)
         }
     }
@@ -345,12 +367,18 @@ class FeedFragment : Fragment() {
 
     private fun handleBackButton() {
         binding.iconBack.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_FEED_BACK_ARROW
+            )
             requireActivity().finish()
         }
     }
 
     private fun handleSettingsButton() {
         binding.iconSettings.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_FEED_OPTION
+            )
             with(group) {
                 groupUI = GroupUiModel(
                     groupId, name,
@@ -370,6 +398,9 @@ class FeedFragment : Fragment() {
 
     private fun handleMembersButton() {
         binding.members.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_FEED_MORE_MEMBERS
+            )
             val action = FeedFragmentDirections.actionGroupFeedToGroupMembers(groupId)
             findNavController().navigate(action)
         }
@@ -377,6 +408,9 @@ class FeedFragment : Fragment() {
 
     private fun handleAboutButton() {
         binding.more.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_FEED_MORE_DESCRIPTION
+            )
             groupUI = GroupUiModel(
                 groupId,
                 group.name,

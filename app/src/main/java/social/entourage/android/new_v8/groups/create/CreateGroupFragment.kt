@@ -20,6 +20,7 @@ import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.nextPage
 import social.entourage.android.new_v8.utils.previousPage
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class CreateGroupFragment : Fragment() {
 
@@ -102,6 +103,8 @@ class CreateGroupFragment : Fragment() {
             requireContext(),
             if (isButtonActive) R.drawable.new_rounded_button_light_orange else R.drawable.new_bg_rounded_inactive_button_light_orange
         )
+        AnalyticsEvents.logEvent(
+            AnalyticsEvents.ACTION_NEW_GROUP_NEXT)
         binding.next.background = background
     }
 
@@ -109,7 +112,13 @@ class CreateGroupFragment : Fragment() {
         binding.previous.setOnClickListener {
             viewModel.resetValues()
             viewPager.previousPage(true)
-            if (viewPager.currentItem == 0) binding.previous.visibility = View.INVISIBLE
+            if (viewPager.currentItem == 0) {
+                binding.previous.visibility = View.INVISIBLE
+            }
+            else {
+                AnalyticsEvents.logEvent(
+                    AnalyticsEvents.ACTION_NEW_GROUP_PREVIOUS)
+            }
         }
     }
 
@@ -131,14 +140,29 @@ class CreateGroupFragment : Fragment() {
 
     private fun handleBackButton() {
         binding.header.iconBack.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_NEW_GROUP_BACK_ARROW)
             if (viewModel.canExitGroupCreation)
                 requireActivity().finish()
-            else Utils.showAlertDialogButtonClicked(
-                requireView(),
-                getString(R.string.back_create_group_title),
-                getString(R.string.back_create_group_content),
-                getString(R.string.exit)
-            ) { requireActivity().finish() }
+            else {
+                AnalyticsEvents.logEvent(
+                    AnalyticsEvents.VIEW_NEW_GROUP_CANCEL_POP)
+                Utils.showAlertDialogButtonClicked(
+                    requireView(),
+                    getString(R.string.back_create_group_title),
+                    getString(R.string.back_create_group_content),
+                    getString(R.string.exit),
+                    {
+                        AnalyticsEvents.logEvent(
+                            AnalyticsEvents.ACTION_NEW_GROUP_CANCEL_POP_CANCEL)
+                    }
+                    ) {
+                    AnalyticsEvents.logEvent(
+                        AnalyticsEvents.ACTION_NEW_GROUP_CANCEL_POP_LEAVE)
+                    requireActivity().finish()
+                }
+            }
+
         }
     }
 

@@ -142,7 +142,8 @@ class AssociationProfile : Fragment() {
                     requireView(),
                     getString(R.string.unsubscribe_title),
                     getString(R.string.unsubscribe_content),
-                    getString(R.string.yes)
+                    getString(R.string.yes),
+                    {}
                 ) {
                     associationPresenter.updatePartnerFollow(
                         !it.isFollowing,

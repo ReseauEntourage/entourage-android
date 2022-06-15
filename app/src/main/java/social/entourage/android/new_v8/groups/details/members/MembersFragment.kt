@@ -20,6 +20,7 @@ import social.entourage.android.databinding.NewFragmentMembersBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
+import social.entourage.android.tools.log.AnalyticsEvents
 
 
 open class MembersFragment : Fragment() {
@@ -38,6 +39,8 @@ open class MembersFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = NewFragmentMembersBinding.inflate(inflater, container, false)
+        AnalyticsEvents.logEvent(
+            AnalyticsEvents.VIEW_GROUP_MEMBER_SHOW_LIST)
         return binding.root
     }
 
@@ -137,6 +140,8 @@ open class MembersFragment : Fragment() {
     private fun handleEnterButton() {
         binding.searchBar.setOnEditorActionListener { _, actionId, _ ->
             var handled = false
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_VALIDATE)
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 Utils.hideKeyboard(requireActivity())
                 binding.searchRecyclerView.visibility = View.GONE
@@ -157,6 +162,8 @@ open class MembersFragment : Fragment() {
 
     private fun handleSearchOnFocus() {
         binding.searchBar.setOnFocusChangeListener { _, _ ->
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_START)
             binding.recyclerView.visibility = View.GONE
             binding.searchRecyclerView.visibility = View.VISIBLE
         }
@@ -186,6 +193,8 @@ open class MembersFragment : Fragment() {
 
     private fun handleCross() {
         binding.searchBarLayout.setEndIconOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_DELETE)
             binding.searchBar.text?.clear()
             binding.searchRecyclerView.visibility = View.GONE
             binding.emptyStateLayout.visibility = View.GONE

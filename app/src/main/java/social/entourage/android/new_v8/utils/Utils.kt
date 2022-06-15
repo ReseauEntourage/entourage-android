@@ -21,7 +21,8 @@ class Utils {
             title: String,
             content: String,
             action: String,
-            onYes: () -> (Unit)
+            onNo: () -> (Unit),
+            onYes: () -> (Unit),
         ) {
             val layoutInflater = LayoutInflater.from(view?.context)
             val customDialog: View = layoutInflater.inflate(R.layout.new_custom_alert_dialog, null)
@@ -35,8 +36,10 @@ class Utils {
                 onYes()
                 alertDialog.dismiss()
             }
-            customDialog.findViewById<Button>(R.id.button)
-                .setOnClickListener { alertDialog.dismiss(); }
+            customDialog.findViewById<Button>(R.id.button).setOnClickListener {
+                onNo()
+                alertDialog.dismiss()
+            }
             alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             alertDialog.show()
         }

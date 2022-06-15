@@ -529,7 +529,7 @@ object AnalyticsEvents {
 
     const val VIEW_NEW_GROUP_STEP3 = "View__NewGroup__Step3"
     const val ACTION_NEW_GROUP_STEP3_ADD_PICTURE = "Action__NewGroup__Step3_AddPicture"
-    const val ACTION_NEW_GROUP_STEP3_PIC_GALLERY = "View__NewGroup__Step3_PicGallery"
+    const val VIEW_NEW_GROUP_STEP3_PIC_GALLERY = "View__NewGroup__Step3_PicGallery"
     const val ACTION_NEW_GROUP_STEP3_PIC_GALLERY_VALIDATE = "Action__NewGroup__Step3_PicGallery_Validate"
     const val ACTION_NEW_GROUP_STEP3_PIC_GALLERY_CLOSE = "Action__NewGroup__Step3_PicGallery_Close"
 

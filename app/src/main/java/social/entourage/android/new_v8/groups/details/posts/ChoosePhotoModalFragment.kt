@@ -24,6 +24,7 @@ import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentChoosePhotoModalBinding
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.tools.Utils
+import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
@@ -173,6 +174,8 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
 
     private fun handleValidateButton() {
         binding.validatePicture.root.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST_VALIDATE_PIC)
             binding.cropView.crop()
             Timber.e(photoFileUri.toString())
             setFragmentResult(

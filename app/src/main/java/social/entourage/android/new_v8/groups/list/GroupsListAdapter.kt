@@ -17,10 +17,12 @@ import social.entourage.android.new_v8.groups.details.feed.FeedActivity
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class GroupsListAdapter(
     var groupsList: List<Group>,
-    var userId: Int?
+    var userId: Int?,
+    var from: String?
 ) : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
 
 
@@ -41,6 +43,7 @@ class GroupsListAdapter(
         with(holder) {
             with(groupsList[position]) {
                 binding.layout.setOnClickListener {
+                    handleAnalytics()
                     with(binding.layout.context) {
                         startActivity(
                             Intent(this, FeedActivity::class.java).putExtra(
@@ -83,5 +86,20 @@ class GroupsListAdapter(
 
     override fun getItemCount(): Int {
         return groupsList.size
+    }
+
+    private fun handleAnalytics() {
+        if (from == "discover") {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_DISCOVER_CARD)
+        }
+        if (from == "discover_search") {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_SEARCH_SEE_RESULT)
+        }
+        if (from == "my_groups") {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_MY_GROUP_CARD)
+        }
     }
 }

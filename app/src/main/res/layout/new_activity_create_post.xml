@@ -112,7 +112,7 @@
                         android:layout_marginTop="12dp"
                         android:background="@drawable/new_bg_choose_photo_group"
                         android:gravity="center"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/error">

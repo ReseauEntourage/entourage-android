@@ -35,6 +35,7 @@ import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.px
 import social.entourage.android.new_v8.utils.trimEnd
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class EditGroupFragment : Fragment() {
 
@@ -76,6 +77,8 @@ class EditGroupFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = NewFragmentEditGroupBinding.inflate(inflater, container, false)
+        AnalyticsEvents.logEvent(
+            AnalyticsEvents.VIEW_GROUP_OPTION_EDITION)
         return binding.root
     }
 

@@ -1,5 +1,6 @@
 package social.entourage.android.new_v8.groups.choosePhoto
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.GroupImage
 import social.entourage.android.databinding.NewFragmentCreateGroupChoosePhotoModalBinding
 import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.tools.log.AnalyticsEvents
 
 private const val SPAN_COUNT = 3
 
@@ -28,6 +30,8 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = NewFragmentCreateGroupChoosePhotoModalBinding.inflate(inflater, container, false)
+        AnalyticsEvents.logEvent(
+            AnalyticsEvents.VIEW_NEW_GROUP_STEP3_PIC_GALLERY)
         return binding.root
     }
 
@@ -46,6 +50,8 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleCloseButton() {
+        AnalyticsEvents.logEvent(
+            AnalyticsEvents.ACTION_NEW_GROUP_STEP3_PIC_GALLERY_CLOSE)
         binding.header.iconBack.setOnClickListener {
             dismiss()
         }
@@ -59,8 +65,15 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
         }
     }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        AnalyticsEvents.logEvent(
+            AnalyticsEvents.ACTION_NEW_GROUP_STEP3_PIC_GALLERY_CLOSE)
+        super.onDismiss(dialog)
+    }
     private fun handleValidateButton() {
         binding.validate.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_NEW_GROUP_STEP3_PIC_GALLERY_VALIDATE)
             val image = choosePhotoAdapter.getSelected()
             image?.let {
                 setFragmentResult(
