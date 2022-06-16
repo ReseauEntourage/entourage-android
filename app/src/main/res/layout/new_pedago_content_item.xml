@@ -1,28 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/new_bg_rounded_button_light_orange_stroke"
-    android:gravity="center_vertical"
-    android:paddingHorizontal="19dp"
-    android:paddingVertical="13dp">
+    android:background="@drawable/new_bg_pedagogical_item"
+    android:orientation="horizontal"
+    android:paddingHorizontal="22dp">
 
-    <ImageView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/root_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="12dp"
-        android:src="@drawable/new_illu_header_group" />
+        android:layout_marginVertical="4dp"
+        android:background="@drawable/new_bg_rounded_button_light_orange_stroke"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="19dp"
+        android:paddingVertical="13dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:maxLines="2"
-        tools:text="Rejoignez le groupe «Dansons ensemble»" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="12dp"
+            android:src="@drawable/new_illu_header_group" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/new_rounded_check" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="2"
+            tools:text="Rejoignez le groupe «Dansons ensemble»" />
+
+        <LinearLayout
+            android:id="@+id/read"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/new_rounded_check" />
+
+            <TextView
+                style="@style/left_courant_bold_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/read" />
+        </LinearLayout>
+
+    </LinearLayout>
 </LinearLayout>
+

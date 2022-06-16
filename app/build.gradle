@@ -264,6 +264,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:2.4.2"
     implementation "com.github.bumptech.glide:glide:4.13.1"
     implementation 'uk.co.markormesher:android-fab:2.5.0'
+    implementation 'com.github.IntruderShanky:Sectioned-RecyclerView:2.1.1'
 }
 
 apply plugin: "com.google.gms.google-services"

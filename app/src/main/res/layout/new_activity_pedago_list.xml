@@ -25,11 +25,21 @@
                 app:title="@{@string/all_pedago_content}" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
+                android:id="@+id/filters"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="35dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                tools:listitem="@layout/new_filter_item" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:clipToPadding="false"
+                android:paddingBottom="70dp"
                 tools:listitem="@layout/new_pedago_content_item" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
