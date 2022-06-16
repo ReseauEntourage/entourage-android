@@ -51,11 +51,13 @@ class CommentsListAdapter(
             }
             comment.user?.let {
                 binding.author_name.text = comment.user?.displayName
-                Glide.with(binding.context)
-                    .load(Uri.parse(comment.user?.avatarURLAsString))
-                    .placeholder(R.drawable.ic_user_photo_small)
-                    .circleCrop()
-                    .into(binding.image)
+                comment.user?.avatarURLAsString?.let {
+                    Glide.with(binding.context)
+                        .load(Uri.parse(it))
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .circleCrop()
+                        .into(binding.image)
+                }
             }
         }
     }
