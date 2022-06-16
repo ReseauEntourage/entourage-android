@@ -176,7 +176,6 @@ class AboutGroupFragment : Fragment() {
                     getString(R.string.leave_group),
                     getString(R.string.leave_group_dialog_content),
                     getString(R.string.exit),
-                    {}
                 ) {
                     group?.let {
                         it.id?.let { id -> groupPresenter.leaveGroup(id) }

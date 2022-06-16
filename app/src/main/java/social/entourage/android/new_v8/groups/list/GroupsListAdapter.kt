@@ -22,7 +22,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 class GroupsListAdapter(
     var groupsList: List<Group>,
     var userId: Int?,
-    var from: String?
+    var from: FromScreen?
 ) : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
 
 
@@ -89,17 +89,20 @@ class GroupsListAdapter(
     }
 
     private fun handleAnalytics() {
-        if (from == "discover") {
-            AnalyticsEvents.logEvent(
+        when (from) {
+            FromScreen.DISCOVER -> AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_DISCOVER_CARD)
-        }
-        if (from == "discover_search") {
-            AnalyticsEvents.logEvent(
+            FromScreen.DISCOVER_SEARCH -> AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_SEARCH_SEE_RESULT)
-        }
-        if (from == "my_groups") {
-            AnalyticsEvents.logEvent(
+            FromScreen.MY_GROUPS -> AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_MY_GROUP_CARD)
         }
     }
+}
+
+
+enum class FromScreen{
+    MY_GROUPS,
+    DISCOVER_SEARCH,
+    DISCOVER
 }

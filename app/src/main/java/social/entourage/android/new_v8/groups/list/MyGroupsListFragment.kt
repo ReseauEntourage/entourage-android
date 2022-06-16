@@ -59,7 +59,7 @@ class MyGroupsListFragment : Fragment() {
             // Pagination
             addOnScrollListener(recyclerViewOnScrollListener)
             layoutManager = LinearLayoutManager(context)
-            adapter = GroupsListAdapter(groupsList, myId, "my_groups")
+            adapter = GroupsListAdapter(groupsList, myId, FromScreen.MY_GROUPS)
         }
     }
 

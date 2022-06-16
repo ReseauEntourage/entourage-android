@@ -53,12 +53,11 @@ class GroupsFragment : Fragment() {
             object : ViewPager2.OnPageChangeCallback() {
 
             override fun onPageSelected(position: Int) {
-                if(position == 0){
-                    AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_MY_GROUP)
-                }
-                else {
-                    AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_DISCOVER)
-                }
+                AnalyticsEvents.logEvent(
+                    if (position == 0)
+                        AnalyticsEvents.ACTION_GROUP_MY_GROUP
+                    else
+                        AnalyticsEvents.ACTION_GROUP_DISCOVER)
             }}
         )
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->

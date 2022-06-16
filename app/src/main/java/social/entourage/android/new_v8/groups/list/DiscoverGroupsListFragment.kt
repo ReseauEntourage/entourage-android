@@ -106,7 +106,7 @@ class DiscoverGroupsListFragment : Fragment() {
             // Pagination
             addOnScrollListener(recyclerViewOnScrollListener)
             layoutManager = LinearLayoutManager(context)
-            adapter = GroupsListAdapter(groupsList, null, "discover")
+            adapter = GroupsListAdapter(groupsList, null, FromScreen.DISCOVER)
         }
     }
 
@@ -114,7 +114,7 @@ class DiscoverGroupsListFragment : Fragment() {
         binding.searchRecyclerView.apply {
             // Pagination
             layoutManager = LinearLayoutManager(context)
-            adapter = GroupsListAdapter(groupsListSearch, null, "discover_search")
+            adapter = GroupsListAdapter(groupsListSearch, null, FromScreen.DISCOVER_SEARCH)
         }
     }
 

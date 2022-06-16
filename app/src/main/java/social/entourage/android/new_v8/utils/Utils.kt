@@ -21,7 +21,7 @@ class Utils {
             title: String,
             content: String,
             action: String,
-            onNo: () -> (Unit),
+            onNo: () -> (Unit) = {},
             onYes: () -> (Unit),
         ) {
             val layoutInflater = LayoutInflater.from(view?.context)
