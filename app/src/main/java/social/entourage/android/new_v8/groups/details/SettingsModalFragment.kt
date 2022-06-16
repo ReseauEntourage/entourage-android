@@ -23,6 +23,7 @@ import social.entourage.android.new_v8.models.GroupUiModel
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class SettingsModalFragment : BottomSheetDialogFragment() {
 
@@ -38,6 +39,8 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = NewFragmentSettingsModalBinding.inflate(inflater, container, false)
+        AnalyticsEvents.logEvent(
+            AnalyticsEvents.VIEW_GROUP_OPTION_SHOW)
         return binding.root
     }
 
@@ -49,6 +52,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         handleEditGroup()
         updateView()
         viewWithRole()
+        handleReportGroup()
         handleLeaveGroup()
         groupPresenter.hasUserLeftGroup.observe(requireActivity(), ::hasUserLeftGroup)
     }
@@ -100,6 +104,8 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     private fun handleRulesButton() {
         binding.rules.layout.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_OPTION_RULES)
             startActivity(Intent(context, GroupRulesActivity::class.java))
         }
     }
@@ -139,6 +145,8 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     private fun handleEditGroup() {
         binding.editGroup.root.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_OPTION_EDIT_GROUP)
             val intent = Intent(context, EditGroupActivity::class.java)
             intent.putExtra(Const.GROUP_ID, group?.id)
             startActivity(intent)
@@ -156,13 +164,23 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         }
     }
 
+    private fun handleReportGroup() {
+        binding.reportGroup.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_OPTION_REPORT)
+        }
+    }
+
+
     private fun handleLeaveGroup() {
         binding.leaveGroup.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_OPTION_QUIT)
             Utils.showAlertDialogButtonClicked(
                 requireView(),
                 getString(R.string.leave_group),
                 getString(R.string.leave_group_dialog_content),
-                getString(R.string.exit)
+                getString(R.string.exit),
             ) {
                 group?.let {
                     it.id?.let { id -> groupPresenter.leaveGroup(id) }

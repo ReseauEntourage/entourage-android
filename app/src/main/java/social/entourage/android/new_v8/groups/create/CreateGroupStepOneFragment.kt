@@ -13,6 +13,7 @@ import androidx.lifecycle.MutableLiveData
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateGroupStepOneBinding
 import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
 
@@ -29,6 +30,7 @@ class CreateGroupStepOneFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = NewFragmentCreateGroupStepOneBinding.inflate(inflater, container, false)
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_NEW_GROUP_STEP1)
         return binding.root
     }
 

@@ -69,7 +69,7 @@ class SettingsFragment : Fragment() {
                 requireView(),
                 getString(R.string.delete_account_dialog_title),
                 getString(R.string.delete_account_dialog_content),
-                getString(R.string.delete)
+                getString(R.string.delete),
             ) { deleteAccount() }
         }
         binding.signOut.layout.setOnClickListener {
@@ -77,7 +77,7 @@ class SettingsFragment : Fragment() {
                 requireView(),
                 getString(R.string.sign_out_dialog_title),
                 getString(R.string.sign_out_dialog_content),
-                getString(R.string.signing_out)
+                getString(R.string.signing_out),
             ) { logout() }
         }
         binding.helpAbout.layout.setOnClickListener {

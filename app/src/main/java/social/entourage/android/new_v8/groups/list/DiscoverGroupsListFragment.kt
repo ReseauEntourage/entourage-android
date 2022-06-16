@@ -17,6 +17,7 @@ import social.entourage.android.databinding.NewFragmentGroupsListBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.utils.Utils
+import social.entourage.android.tools.log.AnalyticsEvents
 
 
 const val groupPerPage = 10
@@ -50,6 +51,8 @@ class DiscoverGroupsListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = NewFragmentGroupsListBinding.inflate(inflater, container, false)
+        AnalyticsEvents.logEvent(
+            AnalyticsEvents.VIEW_GROUP_SHOW_DISCOVER)
         return binding.root
     }
 
@@ -103,7 +106,7 @@ class DiscoverGroupsListFragment : Fragment() {
             // Pagination
             addOnScrollListener(recyclerViewOnScrollListener)
             layoutManager = LinearLayoutManager(context)
-            adapter = GroupsListAdapter(groupsList, null)
+            adapter = GroupsListAdapter(groupsList, null, FromScreen.DISCOVER)
         }
     }
 
@@ -111,7 +114,7 @@ class DiscoverGroupsListFragment : Fragment() {
         binding.searchRecyclerView.apply {
             // Pagination
             layoutManager = LinearLayoutManager(context)
-            adapter = GroupsListAdapter(groupsListSearch, null)
+            adapter = GroupsListAdapter(groupsListSearch, null, FromScreen.DISCOVER_SEARCH)
         }
     }
 
@@ -156,6 +159,8 @@ class DiscoverGroupsListFragment : Fragment() {
                 Utils.hideKeyboard(requireActivity())
                 groupPresenter.getGroupsSearch(binding.searchBar.text.toString())
                 handled = true
+                AnalyticsEvents.logEvent(
+                    AnalyticsEvents.ACTION_GROUP_SEARCH_VALIDATE)
             }
             handled
         }
@@ -187,6 +192,8 @@ class DiscoverGroupsListFragment : Fragment() {
         binding.searchBar.setOnFocusChangeListener { _, _ ->
             binding.recyclerView.visibility = View.GONE
             binding.searchRecyclerView.visibility = View.VISIBLE
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_SEARCH_START)
         }
     }
 
@@ -197,6 +204,8 @@ class DiscoverGroupsListFragment : Fragment() {
             binding.emptyStateLayout.visibility = View.GONE
             updateView(groupsList.isEmpty())
             Utils.hideKeyboard(requireActivity())
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_SEARCH_DELETE)
         }
     }
 }

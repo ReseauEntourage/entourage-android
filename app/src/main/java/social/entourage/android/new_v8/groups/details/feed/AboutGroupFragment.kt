@@ -24,6 +24,7 @@ import social.entourage.android.new_v8.models.GroupUiModel
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class AboutGroupFragment : Fragment() {
 
@@ -40,6 +41,8 @@ class AboutGroupFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = NewFragmentAboutGroupBinding.inflate(inflater, container, false)
+        AnalyticsEvents.logEvent(
+            AnalyticsEvents.VIEW_GROUP_FEED_FULL_DESCRIPTION)
         return binding.root
     }
 
@@ -172,7 +175,7 @@ class AboutGroupFragment : Fragment() {
                     requireView(),
                     getString(R.string.leave_group),
                     getString(R.string.leave_group_dialog_content),
-                    getString(R.string.exit)
+                    getString(R.string.exit),
                 ) {
                     group?.let {
                         it.id?.let { id -> groupPresenter.leaveGroup(id) }
