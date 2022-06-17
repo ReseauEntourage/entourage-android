@@ -41,6 +41,7 @@ class ChoosePhotoAdapter(
                         .load(Uri.parse(it))
                         .apply(RequestOptions().override(90.px, 90.px))
                         .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
+                        .placeholder(R.drawable.ic_user_photo_small)
                         .into(binding.image)
                 }
                 if (photosList[position].isSelected == true) {
