@@ -4,100 +4,99 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="end|center_vertical">
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingBottom="12dp">
 
-    <LinearLayout
-        android:id="@+id/comment_layout"
+    <ImageView
+        android:id="@+id/report"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:src="@drawable/new_report_comment"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/comment"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/comment"
+        style="@style/left_courant_black"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="end"
-        android:orientation="vertical"
+        android:layout_marginRight="7dp"
+        android:background="@drawable/new_comment_background_light_orange"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/image"
+        app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="wrap"
+        app:layout_constraintWidth_percent="0.7"
+        tools:text="m:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:m" />
 
-        <ImageView
-            android:id="@+id/report"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:src="@drawable/new_report_comment" />
+    <LinearLayout
+        android:id="@+id/information_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="7dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/comment"
+        app:layout_constraintTop_toBottomOf="@id/comment"
+        tools:visibility="visible">
 
         <TextView
-            android:id="@+id/comment"
-            style="@style/left_courant_black"
+            android:id="@+id/author_name"
+            style="@style/group_member_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="7dp"
-            android:background="@drawable/new_comment_background_light_orange"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="14dp"
-            tools:text="salim " />
+            android:layout_marginRight="3dp"
+            tools:text="John Doe" />
 
-        <LinearLayout
-            android:id="@+id/information_layout"
+        <TextView
+            android:id="@+id/publication_date"
+            style="@style/group_member_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:layout_marginRight="7dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/comment"
-            app:layout_constraintTop_toBottomOf="@id/comment">
+            tools:text="le 15.01.21" />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/author_name"
-                style="@style/group_member_subtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="3dp"
-                tools:text="John Doe" />
+    <LinearLayout
+        android:id="@+id/error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="3dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/comment"
+        app:layout_constraintTop_toBottomOf="@id/comment"
+        tools:visibility="gone">
 
-            <TextView
-                android:id="@+id/publication_date"
-                style="@style/group_member_subtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="le 15.01.21" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/error"
+        <ImageView
+            style="@style/group_member_subtitle_black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
-            android:layout_marginTop="3dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/comment">
+            android:layout_marginRight="3dp"
+            android:src="@drawable/new_retry" />
 
-            <ImageView
-                style="@style/group_member_subtitle_black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="3dp"
-                android:src="@drawable/new_retry" />
-
-            <TextView
-                style="@style/error_msg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/retry_comment" />
-        </LinearLayout>
+        <TextView
+            style="@style/error_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/retry_comment" />
     </LinearLayout>
 
     <ImageView
         android:id="@+id/image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/new_illu_header_group" />
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-

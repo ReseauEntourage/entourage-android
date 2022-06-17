@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.new_comment_item_left.view.*
 import social.entourage.android.R
 import social.entourage.android.new_v8.models.Interest
 import social.entourage.android.new_v8.models.Post
 import social.entourage.android.new_v8.profile.editProfile.OnItemCheckListener
+import social.entourage.android.new_v8.utils.px
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -58,6 +60,7 @@ class CommentsListAdapter(
                 Glide.with(binding.context)
                     .load(Uri.parse(comment.user?.avatarURLAsString))
                     .placeholder(R.drawable.ic_user_photo_small)
+                    .apply(RequestOptions().override(25.px, 25.px))
                     .circleCrop()
                     .into(binding.image)
             }

@@ -17,7 +17,7 @@ class GroupWrapper(@field:SerializedName("neighborhood") val group: Group)
 class GroupsListWrapper(@field:SerializedName("neighborhoods") val allGroups: MutableList<Group>)
 class RequestContent internal constructor(private val content_type: String)
 
-class Report(var message: String, var category: MutableList<String>)
+class Report(var message: String, var signals: MutableList<String>)
 class ReportWrapper(
     @field:SerializedName("report") var Report: Report
 )
