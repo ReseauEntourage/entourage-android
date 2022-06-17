@@ -84,7 +84,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
             requireView(),
             title,
             getString(R.string.report_sent),
-            getString(R.string.exit), null
+            getString(R.string.exit), onYes = null
         )
         else showToast(getString(R.string.user_report_error_send_failed))
         dismiss()

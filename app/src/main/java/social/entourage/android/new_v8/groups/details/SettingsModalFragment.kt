@@ -42,7 +42,8 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     ): View {
         _binding = NewFragmentSettingsModalBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(
-            AnalyticsEvents.VIEW_GROUP_OPTION_SHOW)
+            AnalyticsEvents.VIEW_GROUP_OPTION_SHOW
+        )
         return binding.root
     }
 
@@ -56,7 +57,6 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         viewWithRole()
         handleReportGroup()
         handleLeaveGroup()
-        handleReportGroup()
         groupPresenter.hasUserLeftGroup.observe(requireActivity(), ::hasUserLeftGroup)
     }
 
@@ -108,7 +108,8 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     private fun handleRulesButton() {
         binding.rules.layout.setOnClickListener {
             AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_GROUP_OPTION_RULES)
+                AnalyticsEvents.ACTION_GROUP_OPTION_RULES
+            )
             startActivity(Intent(context, GroupRulesActivity::class.java))
         }
     }
@@ -149,7 +150,8 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     private fun handleEditGroup() {
         binding.editGroup.root.setOnClickListener {
             AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_GROUP_OPTION_EDIT_GROUP)
+                AnalyticsEvents.ACTION_GROUP_OPTION_EDIT_GROUP
+            )
             val intent = Intent(context, EditGroupActivity::class.java)
             intent.putExtra(Const.GROUP_ID, group?.id)
             startActivity(intent)
@@ -167,18 +169,12 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun handleReportGroup() {
-        binding.reportGroup.setOnClickListener {
-            AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_GROUP_OPTION_REPORT)
-        }
-    }
-
 
     private fun handleLeaveGroup() {
         binding.leaveGroup.setOnClickListener {
             AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_GROUP_OPTION_QUIT)
+                AnalyticsEvents.ACTION_GROUP_OPTION_QUIT
+            )
             Utils.showAlertDialogButtonClicked(
                 requireView(),
                 getString(R.string.leave_group),
@@ -194,11 +190,18 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     private fun handleReportGroup() {
         val reportGroupBottomDialogFragment =
-            group?.id?.let { ReportModalFragment.newInstance(it,
-                Const.DEFAULT_VALUE ,ReportTypes.REPORT_GROUP) }
+            group?.id?.let {
+                ReportModalFragment.newInstance(
+                    it,
+                    Const.DEFAULT_VALUE, ReportTypes.REPORT_GROUP
+                )
+            }
         binding.reportGroup.setOnClickListener {
             reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)
         }
+        AnalyticsEvents.logEvent(
+            AnalyticsEvents.ACTION_GROUP_OPTION_REPORT
+        )
     }
 
     companion object {

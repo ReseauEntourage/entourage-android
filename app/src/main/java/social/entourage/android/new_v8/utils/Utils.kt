@@ -22,7 +22,7 @@ class Utils {
             content: String,
             action: String,
             onNo: () -> (Unit) = {},
-            onYes: () -> (() -> Unit)?,
+            onYes: (() -> Unit)?,
         ) {
             val layoutInflater = LayoutInflater.from(view?.context)
             val customDialog: View = layoutInflater.inflate(R.layout.new_custom_alert_dialog, null)
@@ -42,12 +42,10 @@ class Utils {
                 customDialog.findViewById<TextView>(R.id.no).text =
                     view?.context?.getString(R.string.button_OK)
             }
-            customDialog.findViewById<Button>(R.id.button).setOnClickListener {
+            customDialog.findViewById<Button>(R.id.no).setOnClickListener {
                 onNo()
                 alertDialog.dismiss()
             }
-            customDialog.findViewById<Button>(R.id.no)
-                .setOnClickListener { alertDialog.dismiss(); }
             alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             alertDialog.show()
         }
