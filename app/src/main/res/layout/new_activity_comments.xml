@@ -103,7 +103,6 @@
             android:orientation="horizontal"
             android:paddingHorizontal="28dp"
             android:paddingBottom="20dp"
-            android:visibility="gone"
             android:weightSum="1"
             app:layout_constraintBottom_toBottomOf="parent">
 
@@ -121,14 +120,13 @@
 
             <ImageButton
                 android:id="@+id/comment"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
                 android:layout_marginStart="7dp"
-                android:background="@drawable/new_circle_orange_button_fill"
+                android:background="@drawable/new_bg_rounded_inactive_button_light_orange"
                 android:gravity="end"
                 android:paddingVertical="10dp"
-                android:src="@drawable/new_contact_white"
-                app:shapeAppearanceOverlay="@drawable/new_circle_orange_button_fill" />
+                android:src="@drawable/new_contact_white" />
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,6 +15,7 @@ import social.entourage.android.new_v8.models.Interest
 import social.entourage.android.new_v8.profile.editProfile.InterestsListAdapter
 import social.entourage.android.new_v8.profile.editProfile.InterestsTypes
 import social.entourage.android.new_v8.profile.editProfile.OnItemCheckListener
+import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
 
@@ -42,6 +43,7 @@ class CreateGroupStepTwoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = NewFragmentCreateGroupStepTwoBinding.inflate(inflater, container, false)
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_NEW_GROUP_STEP2)
         return binding.root
     }
 

@@ -168,7 +168,8 @@ class GroupPresenter {
                 ) {
                     hasUserJoinedGroup.value =
                         response.isSuccessful && response.body()?.user != null
-
+                    RefreshController.shouldRefreshFragment =
+                        response.isSuccessful && response.body()?.user != null
                 }
 
                 override fun onFailure(call: Call<EntourageUserResponse>, t: Throwable) {
@@ -186,6 +187,8 @@ class GroupPresenter {
                     response: Response<EntourageUserResponse>
                 ) {
                     hasUserLeftGroup.value =
+                        response.isSuccessful && response.body()?.user != null
+                    RefreshController.shouldRefreshFragment =
                         response.isSuccessful && response.body()?.user != null
 
                 }

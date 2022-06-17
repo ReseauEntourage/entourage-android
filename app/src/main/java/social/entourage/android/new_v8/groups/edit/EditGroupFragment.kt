@@ -23,6 +23,7 @@ import social.entourage.android.api.model.GroupImage
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentEditGroupBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
+import social.entourage.android.new_v8.groups.RefreshController
 import social.entourage.android.new_v8.groups.choosePhoto.ChoosePhotoModalFragment
 import social.entourage.android.new_v8.groups.details.feed.FeedFragmentArgs
 import social.entourage.android.new_v8.models.Group
@@ -33,6 +34,7 @@ import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.px
 import social.entourage.android.new_v8.utils.trimEnd
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class EditGroupFragment : Fragment() {
 
@@ -58,6 +60,7 @@ class EditGroupFragment : Fragment() {
         if (isGroupUpdated) {
             Utils.showToast(requireContext(), getString(R.string.group_updated))
             back()
+            RefreshController.shouldRefreshFragment = true
         } else {
             Utils.showToast(requireContext(), getString(R.string.group_error_updated))
         }
@@ -73,6 +76,8 @@ class EditGroupFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = NewFragmentEditGroupBinding.inflate(inflater, container, false)
+        AnalyticsEvents.logEvent(
+            AnalyticsEvents.VIEW_GROUP_OPTION_EDITION)
         return binding.root
     }
 

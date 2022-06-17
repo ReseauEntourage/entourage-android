@@ -22,6 +22,7 @@ import social.entourage.android.new_v8.groups.details.feed.FeedActivity
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
 import social.entourage.android.tools.Utils
+import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
@@ -39,6 +40,8 @@ class CreatePostActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AnalyticsEvents.logEvent(
+            AnalyticsEvents.VIEW_GROUP_FEED_NEW_POST_SCREEN)
         binding = DataBindingUtil.setContentView(
             this,
             R.layout.new_activity_create_post
@@ -71,9 +74,13 @@ class CreatePostActivity : AppCompatActivity() {
 
     private fun handleAddPhotoButton() {
         binding.addPhotoLayout.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST_ADD_PIC)
             choosePhoto()
         }
         binding.photoLayout.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST_ADD_PIC)
             choosePhoto()
         }
     }
@@ -130,6 +137,8 @@ class CreatePostActivity : AppCompatActivity() {
 
     private fun validatePost() {
         binding.validate.button.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST_VALIDATE)
             if (imageURI.isNullOrEmpty() && isMessageValid()) {
                 val messageChat = ArrayMap<String, Any>()
                 messageChat["content"] = binding.message.text.toString()

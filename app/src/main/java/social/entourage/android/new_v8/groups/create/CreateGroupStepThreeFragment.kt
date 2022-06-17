@@ -19,6 +19,7 @@ import social.entourage.android.databinding.NewFragmentCreateGroupStepThreeBindi
 import social.entourage.android.new_v8.groups.choosePhoto.ChoosePhotoModalFragment
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
+import social.entourage.android.tools.log.AnalyticsEvents
 
 
 class CreateGroupStepThreeFragment : Fragment() {
@@ -60,6 +61,7 @@ class CreateGroupStepThreeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = NewFragmentCreateGroupStepThreeBinding.inflate(inflater, container, false)
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_NEW_GROUP_STEP3)
         return binding.root
     }
 
@@ -82,6 +84,8 @@ class CreateGroupStepThreeFragment : Fragment() {
     private fun handleChoosePhoto() {
         val choosePhotoModalFragment = ChoosePhotoModalFragment.newInstance()
         binding.layout.addPhotoLayout.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_NEW_GROUP_STEP3_ADD_PICTURE)
             choosePhotoModalFragment.show(parentFragmentManager, ChoosePhotoModalFragment.TAG)
         }
         binding.layout.addPhoto.setOnClickListener {

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.R
 import social.entourage.android.databinding.NewActivityGroupRulesBinding
 import social.entourage.android.new_v8.models.Rules
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class GroupRulesActivity : AppCompatActivity() {
     private var rulesList: MutableList<Rules> = ArrayList()
@@ -14,6 +15,8 @@ class GroupRulesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AnalyticsEvents.logEvent(
+            AnalyticsEvents.VIEW_GROUP_OPTION_RULES)
         binding = DataBindingUtil.setContentView(
             this,
             R.layout.new_activity_group_rules
