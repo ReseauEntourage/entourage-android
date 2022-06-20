@@ -10,6 +10,19 @@
         <action
             android:id="@+id/action_create_group_fragment_to_create_group_success_fragment"
             app:destination="@id/create_group_success_fragment" />
+        <action
+            android:id="@+id/action_create_group_fragment_to_edit_action_zone_fragment"
+            app:destination="@id/edit_action_zone_fragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/edit_action_zone_fragment"
+        android:name="social.entourage.android.user.edit.place.UserEditActionZoneFragment">
+        <argument
+            android:name="setGroupLocation"
+            app:argType="boolean" />
     </fragment>
 
     <fragment

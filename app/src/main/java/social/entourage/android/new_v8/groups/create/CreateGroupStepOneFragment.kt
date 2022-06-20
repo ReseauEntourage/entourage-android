@@ -9,15 +9,17 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.MutableLiveData
+import androidx.navigation.fragment.findNavController
+import kotlinx.android.synthetic.main.new_edit_profile_step_one.view.*
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateGroupStepOneBinding
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import timber.log.Timber
 
 
-class CreateGroupStepOneFragment : Fragment() {
+class CreateGroupStepOneFragment : Fragment(), UserEditActionZoneFragment.FragmentListener {
 
 
     private var _binding: NewFragmentCreateGroupStepOneBinding? = null
@@ -39,6 +41,7 @@ class CreateGroupStepOneFragment : Fragment() {
         viewModel.resetValues()
         handleNextButtonState()
         initializeDescriptionCounter()
+        handleChooseLocationGroup()
     }
 
     private fun handleOnClickNext(onClick: Boolean) {
@@ -103,6 +106,7 @@ class CreateGroupStepOneFragment : Fragment() {
         viewModel.resetValues()
         viewModel.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
         viewModel.isButtonClickable.value = isGroupNameValid() && isGroupDescriptionValid()
+        binding.layout.groupLocation.location.text = viewModel.group.address?.displayAddress
     }
 
     fun isGroupNameValid(): Boolean {
@@ -117,8 +121,27 @@ class CreateGroupStepOneFragment : Fragment() {
         return binding.layout.groupName.text.isEmpty() && binding.layout.groupDescription.text.isEmpty()
     }
 
+    private fun handleChooseLocationGroup() {
+        binding.layout.groupLocation.setOnClickListener {
+            val action =
+                CreateGroupFragmentDirections.actionCreateGroupFragmentToEditActionZoneFragment(true)
+            findNavController().navigate(action)
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         binding.layout.error.root.visibility = View.GONE
+    }
+
+    override fun onUserEditActionZoneFragmentDismiss() {
+    }
+
+    override fun onUserEditActionZoneFragmentAddressSaved() {
+        findNavController().popBackStack()
+    }
+
+    override fun onUserEditActionZoneFragmentIgnore() {
+        findNavController().popBackStack()
     }
 }

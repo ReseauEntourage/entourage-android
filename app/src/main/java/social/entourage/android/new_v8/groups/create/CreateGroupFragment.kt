@@ -104,7 +104,8 @@ class CreateGroupFragment : Fragment() {
             if (isButtonActive) R.drawable.new_rounded_button_light_orange else R.drawable.new_bg_rounded_inactive_button_light_orange
         )
         AnalyticsEvents.logEvent(
-            AnalyticsEvents.ACTION_NEW_GROUP_NEXT)
+            AnalyticsEvents.ACTION_NEW_GROUP_NEXT
+        )
         binding.next.background = background
     }
 
@@ -114,10 +115,10 @@ class CreateGroupFragment : Fragment() {
             viewPager.previousPage(true)
             if (viewPager.currentItem == 0) {
                 binding.previous.visibility = View.INVISIBLE
-            }
-            else {
+            } else {
                 AnalyticsEvents.logEvent(
-                    AnalyticsEvents.ACTION_NEW_GROUP_PREVIOUS)
+                    AnalyticsEvents.ACTION_NEW_GROUP_PREVIOUS
+                )
             }
         }
     }
@@ -125,9 +126,6 @@ class CreateGroupFragment : Fragment() {
     private fun handleIsCondition(isCondition: Boolean) {
         if (isCondition) {
             if (viewPager.currentItem == NB_TABS - 1) {
-                // TODO Change this two lines
-                viewModel.group.latitude = 48.856614
-                viewModel.group.longitude = 2.3522219
                 groupPresenter.createGroup(viewModel.group)
             } else {
                 viewPager.nextPage(true)
@@ -141,12 +139,14 @@ class CreateGroupFragment : Fragment() {
     private fun handleBackButton() {
         binding.header.iconBack.setOnClickListener {
             AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_NEW_GROUP_BACK_ARROW)
+                AnalyticsEvents.ACTION_NEW_GROUP_BACK_ARROW
+            )
             if (viewModel.canExitGroupCreation)
                 requireActivity().finish()
             else {
                 AnalyticsEvents.logEvent(
-                    AnalyticsEvents.VIEW_NEW_GROUP_CANCEL_POP)
+                    AnalyticsEvents.VIEW_NEW_GROUP_CANCEL_POP
+                )
                 Utils.showAlertDialogButtonClicked(
                     requireView(),
                     getString(R.string.back_create_group_title),
@@ -154,11 +154,13 @@ class CreateGroupFragment : Fragment() {
                     getString(R.string.exit),
                     {
                         AnalyticsEvents.logEvent(
-                            AnalyticsEvents.ACTION_NEW_GROUP_CANCEL_POP_CANCEL)
+                            AnalyticsEvents.ACTION_NEW_GROUP_CANCEL_POP_CANCEL
+                        )
                     }
-                    ) {
+                ) {
                     AnalyticsEvents.logEvent(
-                        AnalyticsEvents.ACTION_NEW_GROUP_CANCEL_POP_LEAVE)
+                        AnalyticsEvents.ACTION_NEW_GROUP_CANCEL_POP_LEAVE
+                    )
                     requireActivity().finish()
                 }
             }
