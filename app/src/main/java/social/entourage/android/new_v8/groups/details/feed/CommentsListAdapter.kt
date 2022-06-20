@@ -6,12 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.new_comment_item_left.view.*
 import social.entourage.android.R
-import social.entourage.android.new_v8.models.Interest
 import social.entourage.android.new_v8.models.Post
-import social.entourage.android.new_v8.profile.editProfile.OnItemCheckListener
-import timber.log.Timber
+import social.entourage.android.new_v8.utils.px
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -22,6 +21,7 @@ enum class CommentsTypes(val code: Int) {
 
 interface OnItemClickListener {
     fun onItemClick(comment: Post)
+    fun onCommentReport(commentId: Int?)
 }
 
 
@@ -35,6 +35,9 @@ class CommentsListAdapter(
         RecyclerView.ViewHolder(binding) {
         fun bind(comment: Post) {
             binding.comment.text = comment.content
+            binding.report.setOnClickListener {
+                onItemClick.onCommentReport(comment.id)
+            }
             comment.createdTime?.let {
                 binding.information_layout.visibility = View.VISIBLE
                 binding.error.visibility = View.GONE
@@ -55,6 +58,7 @@ class CommentsListAdapter(
                     Glide.with(binding.context)
                         .load(Uri.parse(it))
                         .placeholder(R.drawable.ic_user_photo_small)
+                        .apply(RequestOptions().override(25.px, 25.px))
                         .circleCrop()
                         .into(binding.image)
                 }

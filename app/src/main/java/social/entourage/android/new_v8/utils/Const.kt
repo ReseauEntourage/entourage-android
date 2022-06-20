@@ -1,7 +1,7 @@
 package social.entourage.android.new_v8.utils
 
 object Const {
-    const val USER_REPORTED_ID = "user_reported_id"
+    const val REPORTED_ID = "reported_id"
     const val GROUP_NAME_MIN_LENGTH = 2
     const val GROUP_DESCRIPTION_MIN_LENGTH = 1
     const val DEFAULT_VALUE = -1
@@ -22,4 +22,5 @@ object Const {
     const val IS_MEMBER = "is_member"
     const val GROUP_NAME = "group_name"
     const val FROM_CREATE_GROUP = "from_create_group"
+    const val REPORT_TYPE = "report_type"
 }

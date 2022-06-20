@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.EntourageApplication
@@ -14,11 +15,12 @@ import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.databinding.NewActivityCommentsBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.models.Post
+import social.entourage.android.new_v8.report.ReportModalFragment
+import social.entourage.android.new_v8.report.ReportTypes
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.focusAndShowKeyboard
 import social.entourage.android.new_v8.utils.scrollToPositionSmooth
-import social.entourage.android.tools.log.AnalyticsEvents
 import java.util.*
 
 class CommentsActivity : AppCompatActivity() {
@@ -55,6 +57,8 @@ class CommentsActivity : AppCompatActivity() {
         handleCommentAction()
         openEditTextKeyboard()
         handleBackButton()
+        setSettingsIcon()
+        handleReportPost(postId)
         handleSendButtonState()
     }
 
@@ -106,9 +110,14 @@ class CommentsActivity : AppCompatActivity() {
                     groupPresenter.addComment(groupId, comment)
                     commentsList.remove(comment)
                 }
+
+                override fun onCommentReport(commentId: Int?) {
+                    commentId?.let { handleReport(it, ReportTypes.REPORT_COMMENT) }
+                }
             })
         }
     }
+
 
     private fun handleCommentAction() {
         binding.comment.setOnClickListener {
@@ -151,6 +160,27 @@ class CommentsActivity : AppCompatActivity() {
             }
         })
     }
+
+    private fun setSettingsIcon() {
+        binding.header.iconSettings.isVisible = true
+        binding.header.iconSettings.setImageResource(R.drawable.new_report_group)
+    }
+
+    private fun handleReport(id: Int, type: ReportTypes) {
+        val reportGroupBottomDialogFragment =
+            ReportModalFragment.newInstance(id, groupId, type)
+        reportGroupBottomDialogFragment.show(
+            supportFragmentManager,
+            ReportModalFragment.TAG
+        )
+    }
+
+    private fun handleReportPost(id: Int) {
+        binding.header.iconSettings.setOnClickListener {
+            handleReport(id, ReportTypes.REPORT_POST)
+        }
+    }
+
 
     private fun openEditTextKeyboard() {
         if (shouldOpenKeyboard) {

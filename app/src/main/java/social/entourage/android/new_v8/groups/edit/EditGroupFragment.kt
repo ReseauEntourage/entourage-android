@@ -30,7 +30,6 @@ import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.models.Interest
 import social.entourage.android.new_v8.profile.editProfile.InterestsListAdapter
 import social.entourage.android.new_v8.profile.editProfile.OnItemCheckListener
-import social.entourage.android.new_v8.user.ReportUserModalFragment
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.px
@@ -142,7 +141,7 @@ class EditGroupFragment : Fragment() {
             stepThree.groupPhotoLabel.visibility = View.GONE
             stepThree.addPhoto.setOnClickListener {
                 ChoosePhotoModalFragment.newInstance()
-                    .show(parentFragmentManager, ReportUserModalFragment.TAG)
+                    .show(parentFragmentManager, ChoosePhotoModalFragment.TAG)
             }
             header.iconBack.setOnClickListener {
                 back()
