@@ -152,15 +152,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                         binding.message.text.toString(),
                         selectedSignalsIdList
                     )
-                    ReportTypes.REPORT_POST.code -> groupId?.let { it ->
-                        groupPresenter.sendReportPost(
-                            it,
-                            id,
-                            binding.message.text.toString(),
-                            selectedSignalsIdList
-                        )
-                    }
-                    ReportTypes.REPORT_COMMENT.code -> groupId?.let { it ->
+                    ReportTypes.REPORT_POST.code, ReportTypes.REPORT_COMMENT.code -> groupId?.let { it ->
                         groupPresenter.sendReportPost(
                             it,
                             id,
