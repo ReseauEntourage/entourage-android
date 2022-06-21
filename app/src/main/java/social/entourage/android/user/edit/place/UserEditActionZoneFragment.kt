@@ -46,6 +46,7 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
         }
         edit_place_title_layout?.title_close_button?.setOnClickListener {
             dismiss()
+            findNavController().popBackStack()
         }
     }
 
@@ -78,14 +79,18 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
     private fun sendNetwork() {
         if (args.setGroupLocation) {
             val geocoder = Geocoder(requireContext())
-            val addresses: MutableList<Address> =
-                geocoder.getFromLocationName(userAddress?.displayAddress, 1);
-            if (addresses.size > 0) {
-                viewModel.group.latitude = addresses.first().latitude
-                viewModel.group.longitude = addresses.first().longitude
-                viewModel.group.displayAddress = userAddress?.displayAddress.toString()
-                mListener?.onUserEditActionZoneFragmentAddressSaved()
-                findNavController().popBackStack()
+            userAddress?.displayAddress?.let {
+                val addresses: MutableList<Address> =
+                    geocoder.getFromLocationName(userAddress?.displayAddress, 1);
+                if (addresses.size > 0) {
+                    with(viewModel.group) {
+                        latitude = addresses.first().latitude
+                        longitude = addresses.first().longitude
+                        displayAddress = userAddress?.displayAddress.toString()
+                    }
+                    mListener?.onUserEditActionZoneFragmentAddressSaved()
+                    findNavController().popBackStack()
+                }
             }
         } else {
             userAddress?.let { userAddress ->
