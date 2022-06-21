@@ -33,9 +33,9 @@
                 android:layout_gravity="bottom"
                 android:layout_weight="1"
                 android:maxLines="2"
-                android:paddingHorizontal="16dp"
                 android:paddingBottom="3dp"
-                tools:text="Bienvenue !" />
+                android:paddingHorizontal="16dp"
+                tools:text="Bienvenue !"/>
 
 
             <ImageButton
@@ -72,7 +72,7 @@
                 android:id="@+id/meeting_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/new_bg_rounded_white"
+                android:background="@drawable/new_bg_rounded_shadow"
                 android:orientation="horizontal"
                 android:paddingBottom="4dp"
                 android:weightSum="2">
