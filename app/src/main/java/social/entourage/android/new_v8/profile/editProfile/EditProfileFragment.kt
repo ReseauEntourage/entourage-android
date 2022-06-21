@@ -146,7 +146,11 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
 
     private fun onEditActionZone() {
         binding.cityAction.layout.setOnClickListener {
-            findNavController().navigate(R.id.action_edit_profile_fragment_to_edit_action_zone_fragment)
+            val action =
+                EditProfileFragmentDirections.actionEditProfileFragmentToEditActionZoneFragment(
+                    false
+                )
+            findNavController().navigate(action)
         }
     }
 

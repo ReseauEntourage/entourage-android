@@ -38,7 +38,9 @@ data class Group(
     @SerializedName("latitude")
     var latitude: Double = 0.0,
     @SerializedName("longitude")
-    var longitude: Double = 0.0
+    var longitude: Double = 0.0,
+    @SerializedName("display_address")
+    var displayAddress: String = ""
 ) {
 
     fun name(value: String) = apply {
