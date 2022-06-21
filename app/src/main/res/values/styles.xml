@@ -610,4 +610,9 @@
         <item name="android:textColor">@color/orange</item>
     </style>
 
+    <style name="watched_pedagogical">
+        <item name="android:textSize">@dimen/group_member_subtitle</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
 </resources>

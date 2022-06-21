@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.core.view.marginBottom
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.intrusoft.sectionedrecyclerview.SectionRecyclerViewAdapter
 import social.entourage.android.R
@@ -87,9 +88,9 @@ class PedagoListAdapter(context: Context, var sectionItemList: List<SectionHeade
         )
         childViewHolder.binding.root.background = backgroundShadow
         if (sectionItemList?.get(sectionPosition)?.childList?.size?.minus(1) == childPosition) {
-            childViewHolder.binding.root.setPadding(22.px, 0.px, 22.px, 15.px)
+            childViewHolder.binding.root.updatePadding(bottom = 15.px)
         } else {
-            childViewHolder.binding.root.setPadding(22.px, 0.px, 22.px, 0.px)
+            childViewHolder.binding.root.updatePadding(bottom = 0.px)
         }
     }
 

@@ -38,6 +38,7 @@
             android:id="@+id/read"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:orientation="vertical">
 
             <ImageView
@@ -46,8 +47,9 @@
                 android:src="@drawable/new_rounded_check" />
 
             <TextView
-                style="@style/left_courant_bold_black"
-                android:layout_width="wrap_content"
+                style="@style/watched_pedagogical"
+                android:layout_width="match_parent"
+                android:gravity="center"
                 android:layout_height="wrap_content"
                 android:text="@string/read" />
         </LinearLayout>
