@@ -29,13 +29,13 @@ import java.util.*
  * Application setup for Analytics, JodaTime and Dagger
  */
 class EntourageApplication : MultiDexApplication() {
-    private val activities: ArrayList<BaseActivity>  = ArrayList()
+    private val activities: ArrayList<BaseActivity> = ArrayList()
     private lateinit var userFeedItemListCache: UserFeedItemListCache
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var librariesSupport: LibrariesSupport
     lateinit var authenticationController: AuthenticationController
     lateinit var complexPreferences: ComplexPreferences
-    lateinit var apiModule : ApiModule
+    lateinit var apiModule: ApiModule
 
 
     // ----------------------------------
@@ -56,7 +56,8 @@ class EntourageApplication : MultiDexApplication() {
     }
 
     private fun setupSharedPreferences() {
-        sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+        sharedPreferences =
+            getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
     }
 
     val firebase: FirebaseAnalytics
@@ -91,13 +92,21 @@ class EntourageApplication : MultiDexApplication() {
             return null
         }
 
+    private val newMainActivity: social.entourage.android.new_v8.MainActivity?
+        get() {
+            activities.filterIsInstance<social.entourage.android.new_v8.MainActivity>().forEach {
+                return it
+            }
+            return null
+        }
+
     fun finishLoginActivity() {
         Timber.d("Finishing login activity")
         loginActivity?.finish()
     }
 
     fun logOut() {
-        mainActivity?.logout()
+        newMainActivity?.logout()
     }
 
     // ----------------------------------
@@ -110,17 +119,20 @@ class EntourageApplication : MultiDexApplication() {
         }
         Handler(Looper.getMainLooper())
             .post {
-            when (content.type) {
-                PushNotificationContent.TYPE_NEW_CHAT_MESSAGE -> {
-                    if (mainActivity?.displayMessageOnCurrentEntourageInfoFragment(message)==true) {
-                        //already displayed
-                        removePushNotification(content, content.type)
+                when (content.type) {
+                    PushNotificationContent.TYPE_NEW_CHAT_MESSAGE -> {
+                        if (mainActivity?.displayMessageOnCurrentEntourageInfoFragment(message) == true) {
+                            //already displayed
+                            removePushNotification(content, content.type)
+                        }
                     }
+                    PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED ->                     //@TODO should we update current entourage info fragment ?
+                        removePushNotification(
+                            content,
+                            PushNotificationContent.TYPE_NEW_JOIN_REQUEST
+                        )
                 }
-                PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED ->                     //@TODO should we update current entourage info fragment ?
-                    removePushNotification(content, PushNotificationContent.TYPE_NEW_JOIN_REQUEST)
             }
-        }
     }
 
     fun addPushNotification(message: Message) {
@@ -166,7 +178,8 @@ class EntourageApplication : MultiDexApplication() {
     }
 
     fun removePushNotification(feedId: Long, feedType: Int, userId: Int, pushType: String?) {
-        val count = PushNotificationManager.removePushNotification(feedId, feedType, userId, pushType)
+        val count =
+            PushNotificationManager.removePushNotification(feedId, feedType, userId, pushType)
         if (count > 0) {
             EntBottomNavigationView.decreaseBadgeCount()
         }
@@ -186,7 +199,10 @@ class EntourageApplication : MultiDexApplication() {
     // FeedItemsStorage
     // ----------------------------------
     private fun setupFeedItemsStorage() {
-        userFeedItemListCache = complexPreferences.getObject(UserFeedItemListCache.KEY, UserFeedItemListCache::class.java)
+        userFeedItemListCache = complexPreferences.getObject(
+            UserFeedItemListCache.KEY,
+            UserFeedItemListCache::class.java
+        )
             ?: UserFeedItemListCache()
     }
 

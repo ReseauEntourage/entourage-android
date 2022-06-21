@@ -35,6 +35,13 @@ abstract class BaseSecuredActivity : BaseActivity() {
     }
 
     override fun getLink(linkId: String): String {
-        return authenticationController.me?.token?.let { getString(R.string.redirect_link_format, BuildConfig.ENTOURAGE_URL, linkId, it) } ?: super.getLink(linkId)
+        return authenticationController.me?.token?.let {
+            getString(
+                R.string.redirect_link_format,
+                BuildConfig.ENTOURAGE_URL,
+                linkId,
+                it
+            )
+        } ?: super.getLink(linkId)
     }
 }
