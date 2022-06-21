@@ -182,6 +182,8 @@
     <string name="address">Adresse postale</string>
     <string name="report_user">Signaler l\'utilisateur</string>
     <string name="report_member">Signaler le membre</string>
+    <string name="report_post">Signaler la publication</string>
+    <string name="report_comment">Signaler le commentaire</string>
     <string name="why_reporting">Dites-nous la raison de votre signalement</string>
     <string name="new_next">Suivant</string>
     <string name="back">Retour</string>
@@ -259,8 +261,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="group_posts_empty_state_subtitle">C’est l’occasion pour vous de partager la première nouvelle pour lancer la discussion !</string>
     <string name="posts">Fil d’actualité</string>
     <string name="see_members">Voir les membres</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="leave_group">Quitter le groupe</string>
     <string name="edit_group_information">Modifier les informations du groupe</string>
     <string name="notification_new_event">Les nouveaux événements</string>
@@ -277,9 +277,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="post_date">"dd.MM.yyyy"</string>
     <string name="comments">Commentaires de la publication</string>
     <string name="comments_date">dd.MM.yy à HH:mm</string>
-
     <string name="write_your_message">Écrire votre message</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="share_post">Partager</string>
     <string name="zoom_photo">Déplacer et zoomer pour ajuster la photo.</string>
     <string name="old_publications">Anciennes publications</string>
@@ -287,6 +285,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="empty_state_comments">Pas encore de commentaires</string>
     <string name="retry_comment">Erreur de publication, réessayez</string>
     <string name="join_group_to_comment"><![CDATA[* Pour commenter cette publication, rejoingnez le groupe « %s » !]]></string>
+    <string name="report_sent">Votre demande a bien été envoyée. Elle sera traitée au plus vite par notre équipe.</string>
     <string name="welcome_user">Bienvenue %s !</string>
     <string name="contributions_title">Vos contributions au réseau Entourage :</string>
     <string name="contributions_meeting">Belles rencontres Entourage</string>
@@ -298,5 +297,11 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="contributions_group">Groupes rejoints</string>
     <string name="contributions_group_empty">Vous n\'avez pas encore rejoint de groupe de voisins</string>
     <string name="zero">0</string>
+    <string name="all_pedago_content">Tout le contenu pédagogique</string>
+    <string name="read">Lu !</string>
+    <string name="act">Agir</string>
+    <string name="inspire">S\'inspirer</string>
+    <string name="understand">Comprendre</string>
+    <string name="all">Tout</string>
 
 </resources>

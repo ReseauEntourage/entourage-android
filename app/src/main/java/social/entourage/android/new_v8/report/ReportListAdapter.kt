@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.user
+package social.entourage.android.new_v8.report
 
 import android.graphics.Typeface
 import android.view.LayoutInflater
@@ -12,10 +12,10 @@ interface OnItemCheckListener {
     fun onItemUncheck(item: MetaData)
 }
 
-class ReportUserListAdapter(
+class ReportListAdapter(
     var reportSignalList: List<MetaData>,
     var onItemClick: OnItemCheckListener
-) : RecyclerView.Adapter<ReportUserListAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<ReportListAdapter.ViewHolder>() {
 
 
     inner class ViewHolder(val binding: NewReportUserItemBinding) :

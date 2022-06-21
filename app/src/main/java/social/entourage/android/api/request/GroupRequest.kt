@@ -2,10 +2,12 @@ package social.entourage.android.api.request
 
 import androidx.collection.ArrayMap
 import com.google.gson.annotations.SerializedName
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.GroupImage
+import social.entourage.android.api.model.UserReportWrapper
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.models.Post
 
@@ -14,6 +16,11 @@ class GroupImagesResponse(@field:SerializedName("neighborhood_images") val group
 class GroupWrapper(@field:SerializedName("neighborhood") val group: Group)
 class GroupsListWrapper(@field:SerializedName("neighborhoods") val allGroups: MutableList<Group>)
 class RequestContent internal constructor(private val content_type: String)
+
+class Report(var message: String, var signals: MutableList<String>)
+class ReportWrapper(
+    @field:SerializedName("report") var Report: Report
+)
 
 class PrepareAddPostResponse(
     @field:SerializedName("upload_key") var uploadKey: String,
@@ -103,4 +110,17 @@ interface GroupRequest {
         @Path("post_id") postId: Int,
     ): Call<GroupsPostsWrapper>
 
+    @POST("neighborhoods/{group_id}/report")
+    fun reportGroup(
+        @Path("group_id") groupId: Int,
+        @Body reportWrapper: ReportWrapper
+    ): Call<ResponseBody>
+
+
+    @POST("neighborhoods/{group_id}/chat_messages/{post_id}/report")
+    fun reportPost(
+        @Path("group_id") groupId: Int,
+        @Path("post_id") postId: Int,
+        @Body reportWrapper: ReportWrapper
+    ): Call<ResponseBody>
 }

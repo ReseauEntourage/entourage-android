@@ -30,7 +30,6 @@ import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.models.Interest
 import social.entourage.android.new_v8.profile.editProfile.InterestsListAdapter
 import social.entourage.android.new_v8.profile.editProfile.OnItemCheckListener
-import social.entourage.android.new_v8.user.ReportUserModalFragment
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.px
@@ -78,7 +77,8 @@ class EditGroupFragment : Fragment() {
     ): View {
         _binding = NewFragmentEditGroupBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(
-            AnalyticsEvents.VIEW_GROUP_OPTION_EDITION)
+            AnalyticsEvents.VIEW_GROUP_OPTION_EDITION
+        )
         return binding.root
     }
 
@@ -99,10 +99,13 @@ class EditGroupFragment : Fragment() {
             stepThree.groupMessageWelcome.setText(group.welcomeMessage)
             stepThree.addPhotoLayout.visibility = View.GONE
             stepThree.addPhoto.visibility = View.VISIBLE
-            Glide.with(requireActivity())
-                .load(Uri.parse(group.imageUrl))
-                .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
-                .into(stepThree.addPhoto)
+            group.imageUrl?.let {
+                Glide.with(requireActivity())
+                    .load(Uri.parse(it))
+                    .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
+                    .placeholder(R.drawable.ic_user_photo_small)
+                    .into(stepThree.addPhoto)
+            }
         }
     }
 
@@ -138,7 +141,7 @@ class EditGroupFragment : Fragment() {
             stepThree.groupPhotoLabel.visibility = View.GONE
             stepThree.addPhoto.setOnClickListener {
                 ChoosePhotoModalFragment.newInstance()
-                    .show(parentFragmentManager, ReportUserModalFragment.TAG)
+                    .show(parentFragmentManager, ChoosePhotoModalFragment.TAG)
             }
             header.iconBack.setOnClickListener {
                 back()

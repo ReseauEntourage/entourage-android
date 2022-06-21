@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.user
+package social.entourage.android.new_v8.report
 
 import android.content.DialogInterface
 import android.os.Bundle
@@ -13,36 +13,52 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.MetaData
 import social.entourage.android.api.model.Tags
-import social.entourage.android.databinding.NewFragmentReportUserBinding
+import social.entourage.android.databinding.NewFragmentReportBinding
+import social.entourage.android.new_v8.groups.GroupPresenter
+import social.entourage.android.new_v8.user.UserPresenter
 import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.new_v8.utils.Utils
 
+enum class ReportTypes(val code: Int) {
+    REPORT_USER(0),
+    REPORT_GROUP(1),
+    REPORT_POST(2),
+    REPORT_COMMENT(3),
+}
 
-class ReportUserModalFragment : BottomSheetDialogFragment() {
+class ReportModalFragment : BottomSheetDialogFragment() {
 
     private var signalList: MutableList<MetaData> = ArrayList()
-    private var _binding: NewFragmentReportUserBinding? = null
-    val binding: NewFragmentReportUserBinding get() = _binding!!
+    private var _binding: NewFragmentReportBinding? = null
+    val binding: NewFragmentReportBinding get() = _binding!!
     private var selectedSignalsIdList: MutableList<String> = mutableListOf()
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
-    private var userReportedId: Int? = Const.DEFAULT_VALUE
+    private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
+    private var reportedId: Int? = Const.DEFAULT_VALUE
+    private var groupId: Int? = Const.DEFAULT_VALUE
+    private var reportType: Int? = Const.DEFAULT_VALUE
+    private var title: String = ""
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentReportUserBinding.inflate(inflater, container, false)
+        _binding = NewFragmentReportBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeInterests()
-        getUserReportedId()
+        getReportedIdAndType()
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         userPresenter.isUserReported.observe(requireActivity(), ::handleReportResponse)
+        groupPresenter.isGroupReported.observe(requireActivity(), ::handleReportResponse)
+        groupPresenter.isPostReported.observe(requireActivity(), ::handleReportResponse)
         setupViewStep1()
         handleCloseButton()
+        setView()
     }
 
     override fun onCancel(dialog: DialogInterface) {
@@ -50,11 +66,27 @@ class ReportUserModalFragment : BottomSheetDialogFragment() {
         onClose()
     }
 
-    private fun handleReportResponse(success: Boolean) {
-        showToast(
-            if (success) getString(R.string.user_report_success)
-            else getString(R.string.user_report_error_send_failed)
+    private fun setView() {
+        title = getString(
+            when (reportType) {
+                ReportTypes.REPORT_USER.code -> R.string.report_member
+                ReportTypes.REPORT_GROUP.code -> R.string.report_group
+                ReportTypes.REPORT_POST.code -> R.string.report_post
+                ReportTypes.REPORT_COMMENT.code -> R.string.report_comment
+                else -> R.string.report_member
+            }
         )
+        binding.header.title = title
+    }
+
+    private fun handleReportResponse(success: Boolean) {
+        if (success) Utils.showAlertDialogButtonClicked(
+            requireView(),
+            title,
+            getString(R.string.report_sent),
+            getString(R.string.exit), onYes = null
+        )
+        else showToast(getString(R.string.user_report_error_send_failed))
         dismiss()
     }
 
@@ -64,14 +96,16 @@ class ReportUserModalFragment : BottomSheetDialogFragment() {
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 
-    private fun getUserReportedId() {
-        userReportedId = arguments?.getInt(Const.USER_REPORTED_ID)
+    private fun getReportedIdAndType() {
+        reportedId = arguments?.getInt(Const.REPORTED_ID)
+        groupId = arguments?.getInt(Const.GROUP_ID)
+        reportType = arguments?.getInt(Const.REPORT_TYPE)
     }
 
     private fun initializeInterests() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = ReportUserListAdapter(signalList, object : OnItemCheckListener {
+            adapter = ReportListAdapter(signalList, object : OnItemCheckListener {
                 override fun onItemCheck(item: MetaData) {
                     item.id?.let { selectedSignalsIdList.add(it) }
                 }
@@ -106,12 +140,28 @@ class ReportUserModalFragment : BottomSheetDialogFragment() {
             setupViewStep1()
         }
         binding.send.setOnClickListener {
-            userReportedId?.let { id ->
-                userPresenter.sendReport(
-                    id,
-                    binding.message.text.toString(),
-                    selectedSignalsIdList
-                )
+            reportedId?.let { id ->
+                when (reportType) {
+                    ReportTypes.REPORT_USER.code -> userPresenter.sendReport(
+                        id,
+                        binding.message.text.toString(),
+                        selectedSignalsIdList
+                    )
+                    ReportTypes.REPORT_GROUP.code -> groupPresenter.sendReport(
+                        id,
+                        binding.message.text.toString(),
+                        selectedSignalsIdList
+                    )
+                    ReportTypes.REPORT_POST.code, ReportTypes.REPORT_COMMENT.code -> groupId?.let { it ->
+                        groupPresenter.sendReportPost(
+                            it,
+                            id,
+                            binding.message.text.toString(),
+                            selectedSignalsIdList
+                        )
+                    }
+                    else -> R.string.report_member
+                }
             }
         }
         binding.divider.visibility = View.GONE
@@ -126,6 +176,7 @@ class ReportUserModalFragment : BottomSheetDialogFragment() {
     private fun onClose() {
         selectedSignalsIdList.clear()
         userPresenter.isUserReported = MutableLiveData()
+        groupPresenter.isGroupReported = MutableLiveData()
     }
 
     private fun handleCloseButton() {
@@ -136,11 +187,13 @@ class ReportUserModalFragment : BottomSheetDialogFragment() {
     }
 
     companion object {
-        const val TAG = "ReportUserModalFragment"
-        fun newInstance(id: Int): ReportUserModalFragment {
-            val fragment = ReportUserModalFragment()
+        const val TAG = "ReportModalFragment"
+        fun newInstance(id: Int, groupId: Int, reportType: ReportTypes): ReportModalFragment {
+            val fragment = ReportModalFragment()
             val args = Bundle()
-            args.putInt(Const.USER_REPORTED_ID, id)
+            args.putInt(Const.REPORTED_ID, id)
+            args.putInt(Const.GROUP_ID, groupId)
+            args.putInt(Const.REPORT_TYPE, reportType.code)
             fragment.arguments = args
             return fragment
         }

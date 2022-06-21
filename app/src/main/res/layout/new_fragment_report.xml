@@ -22,8 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@id/title"
-                app:layout_constraintTop_toTopOf="parent"
-                app:title="@{@string/report_member}" />
+                app:layout_constraintTop_toTopOf="parent" />
 
 
             <TextView
@@ -63,6 +62,7 @@
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
                 android:clipToPadding="false"
                 android:paddingBottom="80dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -78,10 +78,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/padding_horizontal"
-                android:layout_marginStart="-4dp"
+                android:layout_marginTop="5dp"
                 android:backgroundTint="@color/light_orange_opacity_50"
                 android:paddingTop="0dp"
-                android:layout_marginTop="5dp"
                 android:visibility="gone"
                 app:layout_constraintHorizontal_weight="0.8"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -93,7 +92,7 @@
 
         <Button
             android:id="@+id/next"
-            style="@style/h2_white"
+            style="@style/h2_orange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"

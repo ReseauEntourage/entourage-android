@@ -43,6 +43,9 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".new_v8.home.pedago.PedagoListActivity"
+            android:exported="false" />
+        <activity
             android:name=".new_v8.groups.details.feed.CommentsActivity"
             android:exported="false" />
         <activity
@@ -59,7 +62,6 @@
             android:name=".new_v8.groups.create.CreateGroupActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".new_v8.groups.details.posts.CreatePostActivity"
             android:exported="false"

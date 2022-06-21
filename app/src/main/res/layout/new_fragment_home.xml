@@ -33,9 +33,9 @@
                 android:layout_gravity="bottom"
                 android:layout_weight="1"
                 android:maxLines="2"
-                android:paddingHorizontal="16dp"
                 android:paddingBottom="3dp"
-                tools:text="Bienvenue !" />
+                android:paddingHorizontal="16dp"
+                tools:text="Bienvenue !"/>
 
 
             <ImageButton
@@ -81,7 +81,6 @@
                     android:id="@+id/meeting_informations"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
                     android:orientation="vertical"
                     android:paddingHorizontal="22dp"
                     android:paddingVertical="16dp">
@@ -186,6 +185,13 @@
 
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/pedago"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Contenu pégadogique" />
 
     </LinearLayout>
 </layout>

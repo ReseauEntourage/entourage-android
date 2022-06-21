@@ -13,6 +13,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.NewFragmentHomeBinding
+import social.entourage.android.new_v8.home.pedago.PedagoListActivity
 import social.entourage.android.new_v8.models.Summary
 import social.entourage.android.new_v8.profile.ProfileActivity
 
@@ -38,6 +39,7 @@ class HomeFragment : Fragment() {
         homePresenter.summary.observe(requireActivity(), ::updateContributionsView)
         updateView()
         handleProfileButton()
+        handlePedagoContentButton()
     }
 
     private fun updateContributionsView(summary: Summary) {
@@ -90,6 +92,12 @@ class HomeFragment : Fragment() {
             )
 
 
+        }
+    }
+
+    private fun handlePedagoContentButton() {
+        binding.pedago.setOnClickListener {
+            startActivity(Intent(context, PedagoListActivity::class.java))
         }
     }
 

@@ -36,12 +36,14 @@ class ChoosePhotoAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
             with(photosList[position]) {
-                Glide.with(binding.image.context)
-                    .load(Uri.parse(this.imageUrl))
-                    .apply(RequestOptions().override(90.px, 90.px))
-                    .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
-                    .into(binding.image)
-
+                this.imageUrl?.let {
+                    Glide.with(binding.image.context)
+                        .load(Uri.parse(it))
+                        .apply(RequestOptions().override(90.px, 90.px))
+                        .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .into(binding.image)
+                }
                 if (photosList[position].isSelected == true) {
                     checkedPosition = position
                     binding.image.setBackgroundResource(R.drawable.new_bg_choose_photo_selected)

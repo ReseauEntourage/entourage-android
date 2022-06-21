@@ -33,5 +33,5 @@
 
     <fragment
         android:id="@+id/report_user_fragment"
-        android:name="social.entourage.android.new_v8.user.ReportUserModalFragment" />
+        android:name="social.entourage.android.new_v8.report.ReportModalFragment" />
 </navigation>
