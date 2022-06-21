@@ -83,7 +83,7 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
             if (addresses.size > 0) {
                 viewModel.group.latitude = addresses.first().latitude
                 viewModel.group.longitude = addresses.first().longitude
-                viewModel.group.address?.displayAddress = userAddress?.displayAddress.toString()
+                viewModel.group.displayAddress = userAddress?.displayAddress.toString()
                 mListener?.onUserEditActionZoneFragmentAddressSaved()
                 findNavController().popBackStack()
             }
@@ -103,6 +103,7 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
                                     newUser.phone = phone
                                     authenticationController.saveUser(newUser)
                                     mListener?.onUserEditActionZoneFragmentAddressSaved()
+                                    findNavController().popBackStack()
                                     dismissAllowingStateLoss()
                                 }
                             }

@@ -106,7 +106,7 @@ class CreateGroupStepOneFragment : Fragment(), UserEditActionZoneFragment.Fragme
         viewModel.resetValues()
         viewModel.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
         viewModel.isButtonClickable.value = isGroupNameValid() && isGroupDescriptionValid()
-        binding.layout.groupLocation.location.text = viewModel.group.address?.displayAddress
+        binding.layout.groupLocation.location.text = viewModel.group.displayAddress
     }
 
     fun isGroupNameValid(): Boolean {

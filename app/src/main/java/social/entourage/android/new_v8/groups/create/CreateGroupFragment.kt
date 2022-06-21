@@ -21,6 +21,7 @@ import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.nextPage
 import social.entourage.android.new_v8.utils.previousPage
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 
 class CreateGroupFragment : Fragment() {
 
