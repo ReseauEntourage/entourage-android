@@ -81,6 +81,7 @@
                     android:id="@+id/meeting_informations"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
                     android:orientation="vertical"
                     android:paddingHorizontal="22dp"
                     android:paddingVertical="16dp">
