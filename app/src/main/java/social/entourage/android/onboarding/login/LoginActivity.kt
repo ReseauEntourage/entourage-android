@@ -8,7 +8,6 @@ import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.activity_login.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageApplication.Companion.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN
-import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.authentication.AuthenticationController
@@ -18,7 +17,6 @@ import social.entourage.android.tools.Utils
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CustomProgressDialog
-import java.util.*
 
 
 class LoginActivity : BaseActivity() {
@@ -71,7 +69,7 @@ class LoginActivity : BaseActivity() {
         }
 
         ui_login_button_change_phone?.setOnClickListener {
-            val intent = Intent(this,LoginChangePhoneActivity::class.java)
+            val intent = Intent(this, LoginChangePhoneActivity::class.java)
             startActivity(intent)
         }
     }
@@ -83,7 +81,7 @@ class LoginActivity : BaseActivity() {
     fun activateTimer() {
         cancelTimer()
         timeOut = TIME_BEFORE_CALL
-        countDownTimer = object  : CountDownTimer(600000 ,1000L) {
+        countDownTimer = object : CountDownTimer(600000, 1000L) {
             override fun onFinish() {
                 cancelTimer()
             }
@@ -112,8 +110,7 @@ class LoginActivity : BaseActivity() {
 
         if (authenticationController.me?.address == null) {
             goLoginNext()
-        }
-        else {
+        } else {
             goRealMain()
         }
     }
@@ -124,7 +121,7 @@ class LoginActivity : BaseActivity() {
     }
 
     fun goRealMain() {
-        startActivity(Intent(this, MainActivity::class.java))
+        startActivity(Intent(this, social.entourage.android.new_v8.MainActivity::class.java))
         finish()
     }
 
@@ -146,7 +143,8 @@ class LoginActivity : BaseActivity() {
         var message = ""
         if (phoneNumber.length < minimumPhoneCharacters) {
             isValidate = false
-            message = String.format(getString(R.string.error_login_phone_length),minimumPhoneCharacters)
+            message =
+                String.format(getString(R.string.error_login_phone_length), minimumPhoneCharacters)
         }
 
         if (isValidate && codePwd.length != 6) {
@@ -155,7 +153,7 @@ class LoginActivity : BaseActivity() {
         }
 
         if (!isValidate) {
-            showError(R.string.attention_pop_title,message,R.string.close)
+            showError(R.string.attention_pop_title, message, R.string.close)
             return
         }
 
@@ -166,9 +164,12 @@ class LoginActivity : BaseActivity() {
                 isLoading = true
                 login(phoneWithCode, codePwd)
             }
-        }
-        else {
-            showError(R.string.attention_pop_title,getString(R.string.login_error_invalid_phone_format),R.string.close)
+        } else {
+            showError(
+                R.string.attention_pop_title,
+                getString(R.string.login_error_invalid_phone_format),
+                R.string.close
+            )
         }
     }
 
@@ -177,19 +178,23 @@ class LoginActivity : BaseActivity() {
         val phoneNumber = ui_login_phone_et_phone?.text.toString()
 
         if (phoneNumber.length <= minimumPhoneCharacters) {
-            val message = String.format(getString(R.string.error_login_phone_length),minimumPhoneCharacters)
-            showError(R.string.attention_pop_title,message,R.string.close)
+            val message =
+                String.format(getString(R.string.error_login_phone_length), minimumPhoneCharacters)
+            showError(R.string.attention_pop_title, message, R.string.close)
             return
         }
 
         if (timeOut > 0 && timeOut != TIME_BEFORE_CALL) {
-            val message = String.format(getString(R.string.onboard_sms_pop_alert),timeOut)
-            showError(R.string.attention_pop_title,message,R.string.close)
-        }
-        else {
+            val message = String.format(getString(R.string.onboard_sms_pop_alert), timeOut)
+            showError(R.string.attention_pop_title, message, R.string.close)
+        } else {
             val phoneWithCode = Utils.checkPhoneNumberFormat(countryCode, phoneNumber)
             if (phoneWithCode == null) {
-                showError(R.string.attention_pop_title,getString(R.string.login_error_invalid_phone_format),R.string.close)
+                showError(
+                    R.string.attention_pop_title,
+                    getString(R.string.login_error_invalid_phone_format),
+                    R.string.close
+                )
                 return
             }
             resendCode(phoneWithCode)
@@ -200,10 +205,10 @@ class LoginActivity : BaseActivity() {
      * Network
      ********************************/
 
-    fun login(phone:String,codePwd:String) {
+    fun login(phone: String, codePwd: String) {
         alertDialog.show(R.string.onboard_waiting_dialog)
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_SUBMIT)
-        OnboardingAPI.getInstance().login(phone,codePwd) { isOK, loginResponse, error ->
+        OnboardingAPI.getInstance().login(phone, codePwd) { isOK, loginResponse, error ->
             isLoading = false
             if (isOK) {
                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_SUCCESS)
@@ -214,14 +219,17 @@ class LoginActivity : BaseActivity() {
 
                 //set the tutorial as done
                 val sharedPreferences = EntourageApplication.get().sharedPreferences
-                (sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, HashSet()) as HashSet<String>?)?.let { loggedNumbers ->
+                (sharedPreferences.getStringSet(
+                    EntourageApplication.KEY_TUTORIAL_DONE,
+                    HashSet()
+                ) as HashSet<String>?)?.let { loggedNumbers ->
                     loggedNumbers.add(phone)
-                    sharedPreferences.edit().putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers).apply()
+                    sharedPreferences.edit()
+                        .putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers).apply()
                 }
                 alertDialog.dismiss()
                 goMain()
-            }
-            else {
+            } else {
                 alertDialog.dismiss()
                 var errorId = R.string.login_error_network
                 if (error != null) {
@@ -241,24 +249,26 @@ class LoginActivity : BaseActivity() {
                     }
                 }
                 if (!isFinishing) {
-                    showError(R.string.login_error_title, getString(errorId), R.string.login_retry_label)
+                    showError(
+                        R.string.login_error_title,
+                        getString(errorId),
+                        R.string.login_retry_label
+                    )
                 }
             }
         }
     }
 
-    fun resendCode(phone:String) {
+    fun resendCode(phone: String) {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_SMS)
         OnboardingAPI.getInstance().requestNewCode(phone) { isOK, loginResponse, error ->
             if (isOK) {
                 Toast.makeText(this, R.string.login_smscode_sent, Toast.LENGTH_LONG).show()
                 activateTimer()
-            }
-            else {
+            } else {
                 if (error != null && error.contains("USER_NOT_FOUND")) {
                     Toast.makeText(this, R.string.login_text_lost_code_ko, Toast.LENGTH_LONG).show()
-                }
-                else {
+                } else {
                     Toast.makeText(this, R.string.login_error_network, Toast.LENGTH_LONG).show()
                 }
             }
@@ -269,12 +279,12 @@ class LoginActivity : BaseActivity() {
      * Helpers
      ********************************/
 
-    fun showError(titleId:Int, message:String,buttonTextId:Int) {
+    fun showError(titleId: Int, message: String, buttonTextId: Int) {
         AlertDialog.Builder(this)
-                .setTitle(titleId)
-                .setMessage(message)
-                .setPositiveButton(buttonTextId) { dialog, which -> }
-                .create()
-                .show()
+            .setTitle(titleId)
+            .setMessage(message)
+            .setPositiveButton(buttonTextId) { dialog, which -> }
+            .create()
+            .show()
     }
 }
