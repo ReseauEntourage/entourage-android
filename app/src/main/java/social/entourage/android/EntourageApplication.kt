@@ -121,7 +121,7 @@ class EntourageApplication : MultiDexApplication() {
             .post {
                 when (content.type) {
                     PushNotificationContent.TYPE_NEW_CHAT_MESSAGE -> {
-                        if (mainActivity?.displayMessageOnCurrentEntourageInfoFragment(message) == true) {
+                        if (newMainActivity?.displayMessageOnCurrentEntourageInfoFragment(message) == true) {
                             //already displayed
                             removePushNotification(content, content.type)
                         }

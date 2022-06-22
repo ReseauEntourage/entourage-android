@@ -6,21 +6,58 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.messaging.FirebaseMessaging
 import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
 import social.entourage.android.MainPresenter
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
+import social.entourage.android.api.model.Message
 import social.entourage.android.base.BaseSecuredActivity
+import social.entourage.android.base.location.EntLocation
+import social.entourage.android.entourage.information.FeedItemInformationFragment
 
 class MainActivity : BaseSecuredActivity() {
 
     private lateinit var navController: NavController
+    private val presenter: MainPresenter = MainPresenter(MainActivity())
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_activity_main)
         initializeNavBar()
         initializeMetaData()
+        if (authenticationController.isAuthenticated) {
+            //refresh the user info from the server
+            presenter.updateUserLocation(EntLocation.currentLocation)
+            //initialize the push notifications
+            initializePushNotifications()
+        }
+    }
+
+    private fun initializePushNotifications() {
+        val notificationsEnabled = EntourageApplication.get().sharedPreferences.getBoolean(
+            EntourageApplication.KEY_NOTIFICATIONS_ENABLED,
+            true
+        )
+        if (notificationsEnabled) {
+            FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+                presenter.updateApplicationInfo(token)
+            }
+        } else {
+            presenter.deleteApplicationInfo()
+        }
+    }
+
+
+    // ----------------------------------
+    // PUSH NOTIFICATION HANDLING
+    // ----------------------------------
+    fun displayMessageOnCurrentEntourageInfoFragment(message: Message): Boolean {
+        val fragment =
+            supportFragmentManager.findFragmentByTag(FeedItemInformationFragment.TAG) as FeedItemInformationFragment?
+        return fragment != null && fragment.onPushNotificationChatMessageReceived(message)
     }
 
     private fun initializeMetaData() {
@@ -61,4 +98,5 @@ class MainActivity : BaseSecuredActivity() {
         editor.apply()
         super.logout()
     }
+
 }
