@@ -33,9 +33,9 @@
                 android:layout_gravity="bottom"
                 android:layout_weight="1"
                 android:maxLines="2"
-                android:paddingBottom="3dp"
                 android:paddingHorizontal="16dp"
-                tools:text="Bienvenue !"/>
+                android:paddingBottom="3dp"
+                tools:text="Bienvenue !" />
 
 
             <ImageButton
@@ -73,7 +73,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/new_bg_rounded_shadow"
+                android:elevation="3dp"
                 android:orientation="horizontal"
+                android:outlineAmbientShadowColor="@color/orange"
+                android:outlineSpotShadowColor="@color/orange"
                 android:paddingBottom="4dp"
                 android:weightSum="2">
 

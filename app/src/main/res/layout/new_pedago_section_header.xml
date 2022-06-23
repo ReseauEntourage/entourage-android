@@ -8,7 +8,11 @@
     android:layout_marginTop="12dp"
     android:layout_weight="1"
     android:background="@drawable/new_bg_header_pedagogical"
-    android:paddingTop="30dp">
+    android:elevation="4dp"
+    android:outlineAmbientShadowColor="@color/orange"
+    android:outlineSpotShadowColor="@color/orange"
+    android:paddingTop="30dp"
+    android:paddingBottom="4dp">
 
     <TextView
         android:id="@+id/section_name"
