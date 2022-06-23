@@ -2,6 +2,7 @@ package social.entourage.android.new_v8.home.pedago
 
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -80,6 +81,13 @@ class PedagoListAdapter(context: Context, var sectionItemList: List<SectionHeade
             if (child.watched == true) R.drawable.new_bg_rounded_button_light_orange_stroke else R.drawable.new_bg_rounded_beige_unread_pedago
         )
         childViewHolder.binding.rootLayout.background = background
+
+        if (sectionItemList?.get(sectionPosition)?.childList?.size?.minus(1) == childPosition) {
+            childViewHolder.binding.root.updatePadding(bottom = 15.px)
+        } else {
+            childViewHolder.binding.root.updatePadding(bottom = 0.px)
+
+        }
         val backgroundShadow = AppCompatResources.getDrawable(
             context,
             if (sectionItemList?.get(sectionPosition)?.childList?.size?.minus(1) == childPosition)
@@ -87,11 +95,6 @@ class PedagoListAdapter(context: Context, var sectionItemList: List<SectionHeade
             else R.drawable.new_bg_pedagogical_item
         )
         childViewHolder.binding.root.background = backgroundShadow
-        if (sectionItemList?.get(sectionPosition)?.childList?.size?.minus(1) == childPosition) {
-            childViewHolder.binding.root.updatePadding(bottom = 15.px)
-        } else {
-            childViewHolder.binding.root.updatePadding(bottom = 0.px)
-        }
     }
 
     init {

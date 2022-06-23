@@ -5,8 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/new_bg_pedagogical_item"
+    android:elevation="4dp"
     android:orientation="horizontal"
-    android:paddingHorizontal="22dp">
+    android:outlineAmbientShadowColor="@color/orange"
+    android:outlineSpotShadowColor="@color/orange"
+    android:paddingHorizontal="22dp"
+    android:paddingBottom="4dp">
 
     <LinearLayout
         android:id="@+id/root_layout"
@@ -49,8 +53,8 @@
             <TextView
                 style="@style/watched_pedagogical"
                 android:layout_width="match_parent"
-                android:gravity="center"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="@string/read" />
         </LinearLayout>
 
