@@ -81,13 +81,10 @@ class PedagoListAdapter(context: Context, var sectionItemList: List<SectionHeade
             if (child.watched == true) R.drawable.new_bg_rounded_button_light_orange_stroke else R.drawable.new_bg_rounded_beige_unread_pedago
         )
         childViewHolder.binding.rootLayout.background = background
-
-        if (sectionItemList?.get(sectionPosition)?.childList?.size?.minus(1) == childPosition) {
-            childViewHolder.binding.root.updatePadding(bottom = 15.px)
-        } else {
-            childViewHolder.binding.root.updatePadding(bottom = 0.px)
-
-        }
+        childViewHolder.binding.root.updatePadding(
+            bottom =
+            if (sectionItemList?.get(sectionPosition)?.childList?.size?.minus(1) == childPosition) 15.px else 0.px
+        )
         val backgroundShadow = AppCompatResources.getDrawable(
             context,
             if (sectionItemList?.get(sectionPosition)?.childList?.size?.minus(1) == childPosition)
