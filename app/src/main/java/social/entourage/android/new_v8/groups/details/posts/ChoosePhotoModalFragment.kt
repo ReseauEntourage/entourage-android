@@ -121,9 +121,7 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun saveBitmap(bitmap: Bitmap) {
-        photoFile = Utils.saveBitmapToFile(bitmap, photoFile)
-    }
+
 
 
     @Throws(IOException::class)
@@ -181,7 +179,7 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
             setFragmentResult(
                 Const.REQUEST_KEY_CHOOSE_PHOTO,
                 bundleOf(
-                    Const.CHOOSE_PHOTO to photoFileUri.toString()
+                    Const.CHOOSE_PHOTO to photoFileUri
                 )
             )
             dismiss()
