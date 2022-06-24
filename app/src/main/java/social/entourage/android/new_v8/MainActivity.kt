@@ -25,6 +25,7 @@ class MainActivity : BaseSecuredActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_activity_main)
         initializeNavBar()
+        initializeMetaData()
         if (authenticationController.isAuthenticated) {
             //refresh the user info from the server
             presenter.updateUserLocation(EntLocation.currentLocation)
