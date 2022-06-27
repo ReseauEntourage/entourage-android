@@ -116,7 +116,7 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
 
     open fun setupViews() {
         ui_onboard_bt_location?.setOnClickListener {
-            onCurrentLocationClicked()
+            //onCurrentLocationClicked()
         }
 
         ui_onboard_place_tv_location?.setOnClickListener {
