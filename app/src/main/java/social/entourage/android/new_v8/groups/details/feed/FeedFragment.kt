@@ -182,14 +182,19 @@ class FeedFragment : Fragment() {
             binding.postsNewRecyclerview.visibility = View.VISIBLE
             binding.postsLayoutEmptyState.visibility = View.GONE
             binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
+        } else {
+            binding.postsNew.root.visibility = View.GONE
+            binding.postsNewRecyclerview.visibility = View.GONE
         }
+
         if (oldPostsList.isNotEmpty()) {
             if (newPostsList.isNotEmpty()) binding.postsOld.root.visibility = View.VISIBLE
             else binding.postsOld.root.visibility = View.GONE
             binding.postsOldRecyclerview.visibility = View.VISIBLE
             binding.postsLayoutEmptyState.visibility = View.GONE
             binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
-
+        } else {
+            binding.postsOldRecyclerview.visibility = View.GONE
         }
     }
 
