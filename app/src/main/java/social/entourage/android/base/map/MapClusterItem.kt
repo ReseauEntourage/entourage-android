@@ -9,8 +9,6 @@ import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.ui.IconGenerator
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
-import social.entourage.android.api.model.tour.Encounter
-import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.tools.Utils
 
 /**
@@ -36,34 +34,5 @@ class MapClusterEntourageItem(mapEntourage: BaseEntourage) : MapClusterItem() {
         val drawable = AppCompatResources.getDrawable(context, entourage.getHeatmapResourceId()) ?: return
         val icon = Utils.getBitmapDescriptorFromDrawable(drawable, BaseEntourage.getMarkerSize(context), BaseEntourage.getMarkerSize(context))
         markerOptions.icon(icon)
-    }
-}
-
-class MapClusterTourItem(mapTour: Tour) : MapClusterItem() {
-    var tour: Tour = mapTour
-
-    override fun getPosition(): LatLng {
-        val lastPoint = tour.tourPoints[tour.tourPoints.size - 1]
-        return LatLng(lastPoint.latitude, lastPoint.longitude)
-    }
-
-    override fun applyMarkerOptions(context: Context, markerOptions: MarkerOptions) {
-        val iconGenerator = IconGenerator(context)
-        iconGenerator.setTextAppearance(R.style.OngoingTourMarker)
-        val icon = BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon(tour.organizationName))
-        markerOptions.icon(icon)
-        markerOptions.anchor(0.5f, 1.0f)
-    }
-}
-
-class MapClusterEncounterItem(mapEncounter: Encounter) : MapClusterItem() {
-    private var encounter: Encounter = mapEncounter
-
-    override fun getPosition(): LatLng {
-        return LatLng(encounter.latitude, encounter.longitude)
-    }
-
-    override fun applyMarkerOptions(context: Context, markerOptions: MarkerOptions) {
-        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_encounter))
     }
 }

@@ -3,6 +3,7 @@ package social.entourage.android.entourage.create
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.EntourageRequest
 import social.entourage.android.api.request.EntourageResponse
 import social.entourage.android.api.request.EntourageWrapper
@@ -17,10 +18,10 @@ import javax.inject.Inject
 /**
  * Created by mihaiionescu on 28/04/16.
  */
-class CreateEntouragePresenter @Inject constructor(
-        private val fragment: CreateEntourageFragment?,
-        private val entourageRequest: EntourageRequest) {
+class CreateEntouragePresenter(private val fragment: CreateEntourageFragment) {
 
+    private val entourageRequest: EntourageRequest
+        get() = EntourageApplication.get().apiModule.entourageRequest
     // ----------------------------------
     // Methods
     // ----------------------------------
@@ -41,25 +42,25 @@ class CreateEntouragePresenter @Inject constructor(
                 if (response.isSuccessful) {
                     response.body()?.entourage?.let { receivedEntourage ->
                         receivedEntourage.isNewlyCreated = true
-                        fragment?.onEntourageCreated(receivedEntourage)
+                        fragment.onEntourageCreated(receivedEntourage)
                         EntBus.post(OnEntourageCreated(receivedEntourage))
                     } ?: run {
-                        fragment?.onEntourageCreationFailed()
+                        fragment.onEntourageCreationFailed()
                     }
                 } else {
-                    fragment?.onEntourageCreationFailed()
+                    fragment.onEntourageCreationFailed()
                 }
             }
 
             override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
-                fragment?.onEntourageCreationFailed()
+                fragment.onEntourageCreationFailed()
             }
         })
     }
 
     fun editEntourage(entourage: BaseEntourage) {
         val uuid = entourage.uuid ?: run {
-            fragment?.onEntourageEditionFailed()
+            fragment.onEntourageEditionFailed()
             return
         }
         val entourageWrapper = EntourageWrapper(entourage)
@@ -67,18 +68,18 @@ class CreateEntouragePresenter @Inject constructor(
             override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.entourage?.let { receivedEntourage ->
-                        fragment?.onEntourageEdited(receivedEntourage)
+                        fragment.onEntourageEdited()
                         EntBus.post(OnEntourageUpdated(receivedEntourage))
                     } ?: run {
-                        fragment?.onEntourageEditionFailed()
+                        fragment.onEntourageEditionFailed()
                     }
                 } else {
-                    fragment?.onEntourageEditionFailed()
+                    fragment.onEntourageEditionFailed()
                 }
             }
 
             override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
-                fragment?.onEntourageEditionFailed()
+                fragment.onEntourageEditionFailed()
             }
         })
     }

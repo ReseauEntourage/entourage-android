@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="15dp">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/new_arrow"
+            app:layout_constraintBottom_toTopOf="@id/category_name_label"
+            app:layout_constraintRight_toLeftOf="@id/title"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:layout_constraintWidth_percent="0.2"
+            tools:src="@drawable/new_edit_profile" />
+
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/h4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:layout_constraintBottom_toTopOf="@id/category_name_label"
+            app:layout_constraintStart_toEndOf="@+id/icon"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:layout_constraintWidth_percent="0.7"
+            tools:text="Animaux" />
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:buttonTint="@color/orange"
+            android:clickable="false"
+            app:layout_constraintBottom_toTopOf="@id/category_name_label"
+            app:layout_constraintLeft_toRightOf="@id/title"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:layout_constraintWidth_percent="0.1" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_orange_opacity_25"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/category_name_label"
+            style="@style/left_legend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/category_name_label"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/checkBox" />
+
+        <EditText
+            android:id="@+id/category_name"
+            style="@style/input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-4dp"
+            android:layout_marginBottom="15dp"
+            android:paddingTop="0dp"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="@color/light_orange_opacity_50"
+            android:maxLines="1"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/category_name_label"
+            tools:text="content" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

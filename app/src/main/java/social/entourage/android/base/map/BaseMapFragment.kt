@@ -1,6 +1,7 @@
 package social.entourage.android.base.map
 
 import android.Manifest.permission
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
@@ -15,8 +16,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.RelativeLayout
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.OnGroundOverlayClickListener
@@ -39,7 +42,8 @@ import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
-abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), BackPressable, LocationUpdateListener {
+abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), BackPressable,
+    LocationUpdateListener {
     protected lateinit var eventLongClick: String
     var isFollowing = true
     protected var isFullMapShown = true
@@ -52,6 +56,16 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
     private var toReturn: View? = null
 
     override fun onBackPressed(): Boolean = false
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                EntBus.post(OnLocationPermissionGranted(isGranted))
+            }
+        }
+
 
     protected open fun initializeMap() {}
 
@@ -82,7 +96,7 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
     protected open fun saveCameraPosition() {}
 
     fun initializeMapZoom() {
-        EntourageApplication.get().components.authenticationController.me?.address?.let {
+        EntourageApplication.get().authenticationController.me?.address?.let {
             centerMap(LatLng(it.latitude, it.longitude))
             isFollowing = false
         } ?: run {
@@ -90,31 +104,36 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
-            for (index in permissions.indices) {
-                if (permissions[index].equals(permission.ACCESS_FINE_LOCATION, ignoreCase = true)) {
-                    EntBus.post(OnLocationPermissionGranted(grantResults[index] == PackageManager.PERMISSION_GRANTED))
-                }
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
-    @SuppressLint("MissingPermission")
-    protected fun onMapReady(googleMap: GoogleMap, onGroundOverlayClickListener: OnGroundOverlayClickListener?) {
+    protected fun onMapReady(
+        googleMap: GoogleMap,
+        onGroundOverlayClickListener: OnGroundOverlayClickListener?
+    ) {
         map = googleMap
         //we forced the setting of the map anyway
         if (activity == null) {
             Timber.e("No activity found")
             return
         }
-        googleMap.isMyLocationEnabled = isLocationPermissionGranted()
+
+        val isLocationPermissionGranted = ActivityCompat.checkSelfPermission(
+            requireContext(),
+            ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
+            requireContext(),
+            permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+        googleMap.isMyLocationEnabled = isLocationPermissionGranted
 
         //mylocation is handled in MapViewHolder
         googleMap.uiSettings.isMyLocationButtonEnabled = false
         googleMap.uiSettings.isMapToolbarEnabled = false
-        googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.map_styles_json))
+        googleMap.setMapStyle(
+            MapStyleOptions.loadRawResourceStyle(
+                requireContext(),
+                R.raw.map_styles_json
+            )
+        )
         if (onGroundOverlayClickListener != null) {
             googleMap.setOnGroundOverlayClickListener(onGroundOverlayClickListener)
         }
@@ -133,7 +152,11 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         if (toReturn == null) {
             toReturn = inflater.inflate(layout, container, false)
         }
@@ -142,7 +165,8 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        previousCameraLocation = EntLocation.cameraPositionToLocation(null, EntLocation.lastCameraPosition)
+        previousCameraLocation =
+            EntLocation.cameraPositionToLocation(null, EntLocation.lastCameraPosition)
         fragment_map_longclick?.setOnClickListener { hideLongClickView() }
     }
 
@@ -153,13 +177,17 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
         //get the click point
         map?.let {
             map_longclick_buttons?.let { buttons ->
-                buttons.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+                buttons.measure(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+                )
                 val bW = buttons.measuredWidth
                 val bH = buttons.measuredHeight
                 val lp = buttons.layoutParams as RelativeLayout.LayoutParams
                 val clickPoint = it.projection.toScreenLocation(latLng)
                 //adjust the buttons holder layout
-                val display = (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+                val display =
+                    (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
                 val screenSize = Point()
                 display.getSize(screenSize)
 
@@ -196,32 +224,31 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
                     messagedId = R.string.map_error_geolocation_disabled_recenter
                     AnalyticsEvents.EVENT_GUIDE_ACTIVATE_GEOLOC_RECENTER
                 }
-                GEOLOCATION_POPUP_TOUR -> {
-                    messagedId = R.string.map_error_geolocation_disabled_create_tour
-                    AnalyticsEvents.EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR
-                }
                 GEOLOCATION_POPUP_GUIDE_BANNER -> AnalyticsEvents.EVENT_GUIDE_ACTIVATE_GEOLOC_FROM_BANNER
                 GEOLOCATION_POPUP_BANNER -> AnalyticsEvents.EVENT_FEED_ACTIVATE_GEOLOC_FROM_BANNER
                 else -> AnalyticsEvents.EVENT_FEED_ACTIVATE_GEOLOC_FROM_BANNER
             }
 
             AlertDialog.Builder(it)
-               .setMessage(messagedId)
-               .setPositiveButton(R.string.activate) { _: DialogInterface?, _: Int ->
-                   AnalyticsEvents.logEvent(eventName)
-                   try {
-                       if (isLocationEnabled() || shouldShowRequestPermissionRationale(permission.ACCESS_FINE_LOCATION)) {
-                           requestPermissions(arrayOf(permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_LOCATION)
-                       } else {
-                           // User selected "Never ask again", so show the settings page
-                           displayGeolocationPreferences(true)
-                       }
-                   } catch (e: IllegalStateException) {
-                       Timber.w(e)
-                   }
-               }
-               .setNegativeButton(R.string.map_permission_refuse, null)
-               .show()
+                .setMessage(messagedId)
+                .setPositiveButton(R.string.activate) { _: DialogInterface?, _: Int ->
+                    AnalyticsEvents.logEvent(eventName)
+                    try {
+                        if (isLocationEnabled() || shouldShowRequestPermissionRationale(
+                                ACCESS_FINE_LOCATION
+                            )
+                        ) {
+                            requestPermissionLauncher.launch(ACCESS_FINE_LOCATION)
+                        } else {
+                            // User selected "Never ask again", so show the settings page
+                            displayGeolocationPreferences(true)
+                        }
+                    } catch (e: IllegalStateException) {
+                        Timber.w(e)
+                    }
+                }
+                .setNegativeButton(R.string.map_permission_refuse, null)
+                .show()
         }
     }
 
@@ -235,7 +262,8 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
         }
     }
 
-    open fun onLocationPermissionGranted(event: OnLocationPermissionGranted) = updateGeolocBanner(event.isPermissionGranted)
+    open fun onLocationPermissionGranted(event: OnLocationPermissionGranted) =
+        updateGeolocBanner(event.isPermissionGranted)
 
     protected open fun updateGeolocBanner(active: Boolean) {
         adapter?.setGeolocStatusIcon(isLocationEnabled() && isLocationPermissionGranted())
@@ -267,7 +295,6 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
 
     companion object {
         // Constants used to track the source call of the geolocation popup
-        const val GEOLOCATION_POPUP_TOUR = 0
         private const val GEOLOCATION_POPUP_RECENTER = 1
         private const val GEOLOCATION_POPUP_BANNER = 2
         private const val GEOLOCATION_POPUP_GUIDE_RECENTER = 3

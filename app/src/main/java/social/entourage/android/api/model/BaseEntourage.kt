@@ -187,8 +187,8 @@ open class BaseEntourage : FeedItem, Serializable {
 
     @StringRes
     override fun getClosedCTAText(): Int {
-        if (isEvent()) return R.string.tour_cell_button_freezed_success_cancel
-        return if (outcome?.success==true) R.string.tour_cell_button_freezed_success else super.getClosedCTAText()
+        if (isEvent()) return R.string.entourage_cell_button_freezed_success_cancel
+        return if (outcome?.success==true) R.string.entourage_cell_button_freezed_success else super.getClosedCTAText()
     }
 
     @ColorRes
@@ -198,10 +198,6 @@ open class BaseEntourage : FeedItem, Serializable {
 
     override fun getClosingLoaderMessage(): Int {
         return R.string.loader_title_action_finish
-    }
-
-    override fun getClosedToastMessage(): Int {
-        return R.string.entourage_info_text_close
     }
 
     // ----------------------------------

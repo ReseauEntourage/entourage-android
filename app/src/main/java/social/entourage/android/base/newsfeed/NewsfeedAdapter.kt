@@ -6,7 +6,6 @@ import social.entourage.android.base.HeaderFooterBaseAdapter
 import social.entourage.android.base.ViewHolderFactory.ViewHolderType
 import social.entourage.android.base.map.MapViewHolder
 import social.entourage.android.base.newsfeed.announcement.AnnouncementViewHolder
-import social.entourage.android.tour.TourViewHolder
 
 /**
  * Created by mihaiionescu on 05/05/16.
@@ -32,10 +31,6 @@ class NewsfeedAdapter : HeaderFooterBaseAdapter() {
     }
 
     init {
-        viewHolderFactory.registerViewHolder(
-                TimestampedObject.TOUR_CARD,
-                ViewHolderType(TourViewHolder::class.java, FeedItemViewHolder.layoutResource)
-        )
         viewHolderFactory.registerViewHolder(
                 TimestampedObject.ENTOURAGE_CARD,
                 ViewHolderType(FeedItemViewHolderRenew::class.java, FeedItemViewHolderRenew.layoutResource)

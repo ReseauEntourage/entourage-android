@@ -7,6 +7,7 @@ import android.view.View
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.api.request.PoiDetailResponse
 import social.entourage.android.api.request.PoiRequest
@@ -18,7 +19,9 @@ import javax.inject.Inject
  * Presenter controlling the ReadPoiFragment
  * @see ReadPoiFragment
  */
-class ReadPoiPresenter @Inject constructor(private val fragment: ReadPoiFragment, private val poiRequest: PoiRequest) {
+class ReadPoiPresenter(private val fragment: ReadPoiFragment) {
+    private val poiRequest: PoiRequest
+        get() = EntourageApplication.get().apiModule.poiRequest
 
     fun getPoiDetail(poiUuid: String) {
         val call = poiRequest.getPoiDetail(poiUuid)

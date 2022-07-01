@@ -34,11 +34,4 @@ class GDSMainActivity : BaseSecuredActivity() {
             }
         }
     }
-
-    override fun setupComponent(entourageComponent: EntourageComponent?) {
-        DaggerGDSMainComponent.builder()
-                .entourageComponent(entourageComponent)
-                .build()
-                .inject(this)
-    }
 }

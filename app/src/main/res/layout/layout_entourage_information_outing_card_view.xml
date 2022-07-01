@@ -16,7 +16,7 @@
         android:layout_height="50dp"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/bg_tour_information_outing_icon"
+        android:background="@drawable/bg_entourage_information_outing_icon"
         android:contentDescription="@string/empty_description"
         android:padding="10dp"
         android:scaleType="fitCenter"

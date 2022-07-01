@@ -58,9 +58,7 @@ object PushNotificationManager {
         val application = EntourageApplication.get()
         if (PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED == content.type) {
             // Remove the related join request push notification
-            if (content.isTourRelated) {
-                application.removePushNotification(content.joinableId, TimestampedObject.TOUR_CARD, content.userId, PushNotificationContent.TYPE_NEW_JOIN_REQUEST)
-            } else if (content.isEntourageRelated) {
+            if (content.isEntourageRelated) {
                 application.removePushNotification(content.joinableId, TimestampedObject.ENTOURAGE_CARD, content.userId, PushNotificationContent.TYPE_NEW_JOIN_REQUEST)
             }
         } else {
@@ -99,8 +97,7 @@ object PushNotificationManager {
                 for(message in messageList) {
                     val content = message.content
                     if (content != null && content.joinableId == feedItemId) {
-                        if((TimestampedObject.TOUR_CARD == feedType && content.isTourRelated)
-                                || (TimestampedObject.ENTOURAGE_CARD == feedType && content.isEntourageRelated)){
+                        if((TimestampedObject.ENTOURAGE_CARD == feedType && content.isEntourageRelated)){
                             nbNotifsFound++
                             messageListChanged = true
                             if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST == content.type) {
@@ -188,8 +185,7 @@ object PushNotificationManager {
                 for (message in oldMessageList) {
                     val content = message.content
                     if (content != null && content.joinableId == feedId && content.type == pushType) {
-                        if (TimestampedObject.TOUR_CARD == feedType && content.isTourRelated
-                                || TimestampedObject.ENTOURAGE_CARD == feedType && content.isEntourageRelated) {
+                        if (TimestampedObject.ENTOURAGE_CARD == feedType && content.isEntourageRelated) {
                             messageListChanged = true
                             if (message.isVisible) {
                                 application.storeNewPushNotification(message, false)

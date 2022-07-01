@@ -17,7 +17,6 @@ import java.util.*
  */
 object AnalyticsEvents {
     // Analytics events
-    const val EVENT_OPEN_ENCOUNTER_FROM_MAP = "Open_Encounter_From_Map"
     const val EVENT_OPEN_POI_FROM_MAP = "Open_POI_From_Map"
 
     //----------------------------//
@@ -243,20 +242,17 @@ object AnalyticsEvents {
     const val EVENT_FEED_ACTIVE_CLOSE_OVERLAY = "OpenActiveCloseOverlay"
     const val EVENT_FEED_MAPCLICK = "MapClick"
     const val EVENT_FEED_HEATZONECLICK = "HeatzoneMapClick"
-    const val EVENT_FEED_TOURLINECLICK = "TourMapClick" //Not possible
     const val EVENT_FEED_OPEN_ENTOURAGE = "OpenEntouragePublicPage"
     const val EVENT_FEED_OPEN_CONTACT = "OpenEnterInContact"
     const val EVENT_FEED_RECENTERCLICK = "RecenterMapClick"
     const val EVENT_FEED_FILTERSCLICK = "FeedFiltersPress"
     const val EVENT_FEED_REFRESH_LIST = "RefreshListPage"
     const val EVENT_FEED_SCROLL_LIST = "ScrollListPage"
-    const val EVENT_FEED_TOUR_CREATE_CLICK = "TourCreateClick"
     const val EVENT_FEED_ACTION_CREATE_CLICK = "CreateActionClick"
     const val EVENT_FEED_PENDING_OVERLAY = "PendingRequestOverlay"
     const val EVENT_FEED_CANCEL_JOIN_REQUEST = "CancelJoinRequest"
     const val EVENT_FEED_OPEN_ACTIVE_OVERLAY = "OpenActiveOverlay"
     const val EVENT_FEED_QUIT_ENTOURAGE = "QuitFromFeed"
-    const val EVENT_FEED_ACTIVATE_GEOLOC_CREATE_TOUR = "ActivateGeolocFromCreateTourPopup"
     const val EVENT_FEED_ACTIVATE_GEOLOC_RECENTER = "ActivateGeolocFromRecenterPopup"
     const val EVENT_GUIDE_ACTIVATE_GEOLOC_RECENTER = "ActivateGeolocFromGuideRecenterPopup"
     const val EVENT_FEED_ACTIVATE_GEOLOC_FROM_BANNER = "ActivateGeolocFromBanner"
@@ -309,8 +305,6 @@ object AnalyticsEvents {
     const val ACTION_PLUS_CREATE_ASKFORHELP = "Action__Plus__CreateAskForHelp"
     const val ACTION_PLUS_CREATE_CONTRIBUTE = "Action__Plus__CreateContribute"
     const val ACTION_PLUS_CREATE_OUTING = "Action__Plus__CreateOuting"
-    const val ACTION_PLUS_START_TOUR = "Action__Plus__StartTour"
-    const val ACTION_PLUS_ADD_ENCOUNTER = "Action__Plus__AddEncounter"
     const val ACTION_PLUS_BACK = "Action__Plus__BackPressed"
 
     //MY ENTOURAGES FILTER Events
@@ -323,44 +317,19 @@ object AnalyticsEvents {
     const val EVENT_MYENTOURAGES_FILTER_PAST = "ExcludeClosedEntouragesFilter"
     const val EVENT_MYENTOURAGES_FILTER_ASK = "AskMessagesFilter"
     const val EVENT_MYENTOURAGES_FILTER_OFFER = "OfferMessagesFilter"
-    const val EVENT_MYENTOURAGES_FILTER_TOUR = "TourMessagesFilter"
 
     //ENTOURAGE DISCLAIMER Events
     const val EVENT_ENTOURAGE_DISCLAIMER_CLOSE = "CloseEthicsPopupClick"
     const val EVENT_ENTOURAGE_DISCLAIMER_ACCEPT = "AcceptEthicsChartClick"
     const val EVENT_ENTOURAGE_DISCLAIMER_LINK = "LinkToEthicsChartClick"
 
-    //TOUR Events
-    const val EVENT_START_TOUR = "StartTourClick"
-    const val EVENT_STOP_TOUR = "TourStop"
-    const val EVENT_RESTART_TOUR = "TourRestart"
-    const val EVENT_OPEN_TOUR_LAUNCHER_FROM_MAP = "Open_Tour_Launcher_From_Map"
-    const val EVENT_TOUR_MEDICAL = "MedicalTourChoose"
-    const val EVENT_TOUR_SOCIAL = "SocialTourChoose"
-    const val EVENT_TOUR_DISTRIBUTION = "DistributionTourChoose"
-    const val EVENT_TOUR_SUSPEND = "SuspendTourClick"
-    const val EVENT_TOUR_PLUS_CLICK = "PlusOnTourClick"
-
-    //TOUR ENCOUNTER Events
-    const val EVENT_CREATE_ENCOUNTER_CLICK = "CreateEncounterClick"
-    const val EVENT_CREATE_ENCOUNTER_START = "Open_Create_Encounter_From_Tour"
-    const val EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_OK = "Encounter_Voice_Message_Recorded_OK"
-    const val EVENT_CREATE_ENCOUNTER_OK = "Encounter_Created"
-    const val EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_STARTED = "Encounter_VoiceMsgRecord_Started"
-    const val EVENT_CREATE_ENCOUNTER_VOICE_MESSAGE_NOT_SUPPORTED = "Encounter_VoiceMsgRecord_Not_Supported"
-    const val EVENT_CREATE_ENCOUNTER_FAILED = "Encounter_Create_Failed"
-
     //MAP Filter Events
     const val EVENT_MAP_FILTER_FILTER1 = "ClickFilter1Value"
     const val EVENT_MAP_FILTER_FILTER2 = "ClickFilter2Value"
     const val EVENT_MAP_FILTER_FILTER3 = "ClickFilter3Value"
     const val EVENT_MAP_FILTER_ONLY_MINE = "ShowOnlyMineFilter"
-    const val EVENT_MAP_FILTER_ONLY_TOURS = "ShowToursOnlyFilterClick"
     const val EVENT_MAP_FILTER_ONLY_OFFERS = "ShowOnlyOffersClick"
     const val EVENT_MAP_FILTER_ONLY_ASK = "ShowOnlyAsksClick"
-    const val EVENT_MAP_FILTER_ONLY_MEDICAL_TOURS = "ShowOnlyMedicalToursClick"
-    const val EVENT_MAP_FILTER_ONLY_SOCIAL_TOURS = "ShowOnlySocialToursClick"
-    const val EVENT_MAP_FILTER_ONLY_DISTRIBUTION_TOURS = "ShowOnlyDistributionToursClick"
     const val EVENT_MAP_FILTER_ACTION_CATEGORY = "FilterActionSubtypeClick"
     const val EVENT_MAP_FILTER_SUBMIT = "SubmitFilterPreferences"
     const val EVENT_MAP_FILTER_CLOSE = "CloseFilter"
@@ -390,11 +359,6 @@ object AnalyticsEvents {
     const val EVENT_ABOUT_OSS = "OpenOpenSourceLibrariesFromAbout"
     const val EVENT_ABOUT_EMAIL = "OpenEmailFromAbout"
 
-    // Encounter Popup While Tour Events
-    const val EVENT_ENCOUNTER_POPUP_SHOW = "SwitchToEncounterPopupView"
-    const val EVENT_ENCOUNTER_POPUP_ENCOUNTER = "SwitchToCreateEncounter"
-    const val EVENT_ENCOUNTER_POPUP_ENTOURAGE = "ContinueCreatePublicEntourage"
-
     //Notifications
     const val EVENT_NOTIFICATION_RECEIVED = "NotificationReceived"
     const val EVENT_NOTIFICATION_FCM_RECEIVED = "NotificationReceivedFromFCM"
@@ -418,7 +382,6 @@ object AnalyticsEvents {
     //Feeds
     const val ACTION_FEED_SHOWALL = "Action__Feed__ShowAll"
     const val ACTION_FEED_SHOWEVENTS = "Action__Feed__ShowEvents"
-    const val ACTION_FEED_SHOWTOURS = "Action__Feed__ShowTours"
     const val ACTION_FEED_SHOWMAP = "Action__Feed__ShowMap"
     const val ACTION_FEED_SHOWLIST = "Action__Feed__ShowList"
     const val ACTION_FEED_SHOWFILTERS = "Action__Feed__ShowFilters"
@@ -475,7 +438,6 @@ object AnalyticsEvents {
      * New home feed Expert
      */
     const val VIEW_START_EXPERTFEED = "View__Start__ExpertFeed"
-    const val ACTION_EXPERTFEED_Tour = "Action__ExpertFeed__Tour"
     //Feed Expert Headline
     const val ACTION_EXPERTFEED_News_Announce = "Action__ExpertFeed__News_Announce"
     const val ACTION_EXPERTFEED_News_Event = "Action__ExpertFeed__News_Event"
@@ -532,6 +494,103 @@ object AnalyticsEvents {
     const val ACTION_POP_CLOSE_SUCCESS = "Action__Pop_Close_Entourage__Success"
     const val ACTION_POP_CLOSE_FAILED = "Action__Pop_Close_Entourage__Fail"
 
+    //NEW_V8
+
+    //GROUPES
+
+    const val VIEW_GROUP_SHOW = "View__Group__Show"
+    const val VIEW_GROUP_SHOW_DISCOVER = "View__Group__ShowDiscover"
+    const val ACTION_GROUP_MY_GROUP = "Action__Group__MyGroup"
+    const val ACTION_GROUP_DISCOVER = "Action__Group__Discover"
+    const val ACTION_GROUP_MY_GROUP_CARD = "Action__Group__MyGroup_Card"
+    const val ACTION_GROUP_DISCOVER_CARD = "Action__Group__Discover_Card"
+    const val ACTION_GROUP_SEARCH_START = "Action__Group__Search_Start"
+    const val ACTION_GROUP_SEARCH_VALIDATE = "Action__Group__Search_Validate"
+    const val ACTION_GROUP_SEARCH_DELETE = "Action__Group__Search_Delete"
+    const val ACTION_GROUP_SEARCH_SEE_RESULT = "Action__Group__Search_SeeResult"
+
+    //GROUPE - NOUVEAU GROUPE
+
+    const val ACTION_GROUP_PLUS = "Action__Group__Plus"
+
+    const val ACTION_NEW_GROUP_BACK_ARROW = "Action__NewGroup__BackArrow"
+    const val ACTION_NEW_GROUP_PREVIOUS = "Action__NewGroup__Previous"
+    const val ACTION_NEW_GROUP_NEXT = "Action__NewGroup__Next"
+
+    const val VIEW_NEW_GROUP_STEP1 = "View__NewGroup__Step1"
+    const val ACTION_NEW_GROUP_ADD_LOCATION = "Action__NewGroup__AddLocation"
+    const val VIEW_NEW_GROUP_ADD_LOCATION_SCREEN = "View__NewGroup__AddLocation_Screen"
+    const val ACTION_NEW_GROUP_ADD_LOCATION_CITY = "Action__NewGroup__AddLocation_City"
+    const val ACTION_NEW_GROUP_ADD_LOCATION_GEOLOC = "Action__NewGroup__AddLocation_Geoloc"
+    const val ACTION_NEW_GROUP_ADD_LOCATION_VALIDATE = "Action__NewGroup__AddLocation_Validate"
+    const val ACTION_NEW_GROUP_ADD_LOCATION_CLOSE = "Action__NewGroup__AddLocation_Close"
+
+    const val VIEW_NEW_GROUP_STEP2 = "View__NewGroup__Step2"
+
+    const val VIEW_NEW_GROUP_STEP3 = "View__NewGroup__Step3"
+    const val ACTION_NEW_GROUP_STEP3_ADD_PICTURE = "Action__NewGroup__Step3_AddPicture"
+    const val VIEW_NEW_GROUP_STEP3_PIC_GALLERY = "View__NewGroup__Step3_PicGallery"
+    const val ACTION_NEW_GROUP_STEP3_PIC_GALLERY_VALIDATE = "Action__NewGroup__Step3_PicGallery_Validate"
+    const val ACTION_NEW_GROUP_STEP3_PIC_GALLERY_CLOSE = "Action__NewGroup__Step3_PicGallery_Close"
+
+    const val VIEW_NEW_GROUP_CONFIRMATION = "View__NewGroup__Confirmation"
+    const val ACTION_NEW_GROUP_CONFIRMATION_NEW_POST = "Action__NewGroup__Confirmation_NewPost"
+    const val ACTION_NEW_GROUP_CONFIRMATION_SKIP = "Action__NewGroup__Confirmation_Skip"
+
+    const val VIEW_NEW_GROUP_CANCEL_POP = "View__NewGroup__CancelPop"
+    const val ACTION_NEW_GROUP_CANCEL_POP_CANCEL = "Action__NewGroup__CancelPop_Cancel"
+    const val ACTION_NEW_GROUP_CANCEL_POP_LEAVE = "Action__NewGroup__CancelPop_Leave"
+
+    //GROUPE - FEED
+
+    const val VIEW_GROUP_FEED_SHOW = "View__GroupFeed__Show"
+    const val ACTION_GROUP_FEED_MORE_MEMBERS = "Action__GroupFeed__MoreMembers"
+    const val ACTION_GROUP_FEED_JOIN = "Action__GroupFeed__Join"
+    const val ACTION_GROUP_FEED_MORE_EVENTS = "Action__GroupFeed__MoreEvents"
+    const val ACTION_GROUP_FEED_MORE_DESCRIPTION = "Action__GroupFeed__MoreDescription"
+    const val ACTION_GROUP_FEED_ONE_EVENT = "Action__GroupFeed__OneEvent"
+    const val ACTION_GROUP_FEED_DESCRIPTION_PAGE = "Action__GroupFeed__DescriptionPage"
+    const val ACTION_GROUP_FEED_OPTION = "Action__GroupFeed__Option"
+    const val ACTION_GROUP_FEED_BACK_ARROW = "Action__GroupFeed__BackArrow"
+    const val VIEW_GROUP_FEED_FULL_DESCRIPTION = "View__GroupFeed__FullDescription"
+
+    //GROUPE - LISTE DES MEMBRES
+
+    const val VIEW_GROUP_MEMBER_SHOW_LIST = "View__GroupMember__ShowList"
+    const val ACTION_GROUP_MEMBER_SEE_1_MEMBER = "Action__GroupMember__See1Member"
+    const val ACTION_GROUP_MEMBER_WRITE_TO_1_MEMBER = "Action__GroupMember__WriteTo1Member"
+    const val ACTION_GROUP_MEMBER_SEARCH_START = "Action__GroupMember__Search_Start"
+    const val ACTION_GROUP_MEMBER_SEARCH_VALIDATE = "Action__GroupMember__Search_Validate"
+    const val ACTION_GROUP_MEMBER_SEARCH_DELETE = "Action__GroupMember__Search_Delete"
+    const val ACTION_GROUP_MEMBER_SEARCH_SEE_RESULT = "Action__GroupMember__Search_SeeResult"
+
+    //GROUPE - PLUS
+
+    const val ACTION_GROUP_FEED_PLUS = "Action__GroupFeed__Plus"
+    const val ACTION_GROUP_FEED_NEW_EVENT = "Action__GroupFeed__NewEvent"
+    const val ACTION_GROUP_FEED_NEW_POST = "Action__GroupFeed__NewPost"
+    const val ACTION_GROUP_FEED_PLUS_CLOSE = "Action__GroupFeed__Plus_Close"
+    const val VIEW_GROUP_FEED_NEW_POST_SCREEN = "View__GroupFeed__NewPost_Screen"
+    const val ACTION_GROUP_FEED_NEW_POST_ADD_PIC = "Action__GroupFeed__NewPost_AddPic"
+    const val ACTION_GROUP_FEED_NEW_POST_VALIDATE_PIC = "Action__GroupFeed__NewPost_ValidatePic"
+    const val ACTION_GROUP_FEED_NEW_POST_VALIDATE = "Action__GroupFeed__NewPost_Validate"
+
+    //GROUPES - OPTIONS
+
+    const val VIEW_GROUP_OPTION_SHOW = "View__GroupOption__Show"
+    const val ACTION_GROUP_OPTION_EDIT_GROUP = "Action__GroupOption__EditGroup"
+    const val VIEW_GROUP_OPTION_EDITION = "View__GroupOption__Edition"
+    const val ACTION_GROUP_OPTION_RULES = "Action__GroupOption__Rules"
+    const val VIEW_GROUP_OPTION_RULES = "View__GroupOption__Rules"
+    const val ACTION_GROUP_OPTION_QUIT = "Action__GroupOption__Quitt"
+    const val ACTION_GROUP_OPTION_REPORT = "Action__GroupOption__Report"
+
+    const val ACTION_GROUP_OPTION_NOTIF_ALL = "Action__GroupOption__Notif_All"
+    const val ACTION_GROUP_OPTION_NOTIF_EVENT = "Action__GroupOption__Notif_Event"
+    const val ACTION_GROUP_OPTION_NOTIF_MESSAGE = "Action__GroupOption__Notif_Message"
+    const val ACTION_GROUP_OPTION_NOTIF_MEMBER = "Action__GroupOption__Notif_Member"
+
+
     val TAG: String? = AnalyticsEvents::class.java.simpleName
 
     fun logEvent(event: String) {
@@ -554,7 +613,7 @@ object AnalyticsEvents {
 
         val mFirebaseAnalytics = get().firebase
         mFirebaseAnalytics.setUserId(user.id.toString())
-        mFirebaseAnalytics.setUserProperty("EntourageUserType", if (user.isPro) "Pro" else "Public")
+        mFirebaseAnalytics.setUserProperty("EntourageUserType", "Public")
         mFirebaseAnalytics.setUserProperty("Language", Locale.getDefault().language)
         user.partner?.let {
             mFirebaseAnalytics.setUserProperty("EntouragePartner", it.name)

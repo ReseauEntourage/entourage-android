@@ -18,19 +18,17 @@ import kotlinx.android.synthetic.main.fragment_guide_map.*
 import kotlinx.android.synthetic.main.layout_guide_longclick.*
 import social.entourage.android.Constants
 import social.entourage.android.EntourageApplication
-import social.entourage.android.EntourageComponent
 import social.entourage.android.R
 import social.entourage.android.api.ApiConnectionListener
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted
-import social.entourage.android.api.tape.Events.OnSolidarityGuideFilterChanged
-import social.entourage.android.api.tape.PoiRequestEvents.OnPoiViewRequestedEvent
 import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
 import social.entourage.android.base.map.BaseMapFragment
 import social.entourage.android.guide.filter.GuideFilter.Companion.instance
 import social.entourage.android.guide.filter.GuideFilterFragment
+import social.entourage.android.guide.poi.PoiListFragment
 import social.entourage.android.guide.poi.PoiRenderer
 import social.entourage.android.guide.poi.PoisAdapter
 import social.entourage.android.guide.poi.ReadPoiFragment
@@ -43,9 +41,8 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.partner.PartnerFragment
 import timber.log.Timber
-import javax.inject.Inject
 
-open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiConnectionListener,
+class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFragment, ApiConnectionListener,
         GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
 
     // ----------------------------------
@@ -54,7 +51,7 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     private var isAlertTextVisible: Boolean = false
     private val connection = ServiceConnection()
 
-    @Inject lateinit var presenter: GuideMapPresenter
+    private var presenter: GuideMapPresenter = GuideMapPresenter(this)
 
     private var onMapReadyCallback: OnMapReadyCallback? = null
     private val poisAdapter: PoisAdapter = PoisAdapter()
@@ -65,23 +62,12 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
     // ----------------------------------
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupComponent(EntourageApplication.get(activity).components)
         initializeMap()
         initializeAlertBanner()
         initializePopups()
         initializePOIList()
         initializeFloatingButtons()
         initializeFilterButton()
-
-
-    }
-
-    fun setupComponent(entourageComponent: EntourageComponent?) {
-        DaggerGuideMapComponent.builder()
-                .entourageComponent(entourageComponent)
-                .guideMapModule(GuideMapModule(this))
-                .build()
-                .inject(this)
     }
 
     override fun onStart() {
@@ -131,21 +117,12 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         togglePOIList()
     }
 
-    // ----------------------------------
-    // BUS EVENTS
-    // ----------------------------------
-    @Subscribe
-    fun onSolidarityGuideFilterChanged(event: OnSolidarityGuideFilterChanged?) {
+    fun onSolidarityGuideFilterChanged() {
         initializeFilterButton()
         map?.clear()
         presenter.clear()
         poisAdapter.removeAll()
         presenter.updatePoisNearby(map)
-    }
-
-    @Subscribe
-    fun onPoiViewRequested(event: OnPoiViewRequestedEvent?) {
-        event?.poi?.let { showPoiDetails(it,true) }
     }
 
     // ----------------------------------
@@ -244,21 +221,17 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
         presenter.updatePoisNearby(map)
     }
 
-    private fun showPoiDetails(poi: Poi, isTxtSearch:Boolean) {
+    override fun showPoiDetails(poi: Poi, isTxtSearch:Boolean) {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_POI)
         try {
             poi.partner_id?.let { partner_id ->
                 PartnerFragment.newInstance(partner_id).show(parentFragmentManager, PartnerFragment.TAG)
             } ?: run {
 
-                var stringFilters = "ALL"
-
-                if (instance.hasFilteredCategories()) {
-                    stringFilters = instance.getFiltersSelected()
-                }
-
-                if (isTxtSearch) {
-                    stringFilters = "TXT"
+                val stringFilters = when {
+                    isTxtSearch -> "TXT"
+                    instance.hasFilteredCategories() -> instance.getFiltersSelected()
+                    else -> "ALL"
                 }
 
                 newInstance(poi,stringFilters).show(parentFragmentManager, ReadPoiFragment.TAG)

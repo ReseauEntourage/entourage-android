@@ -5,38 +5,12 @@ import android.os.Bundle
 import com.google.android.gms.maps.model.LatLng
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.feed.FeedItem
-import social.entourage.android.api.model.tour.Encounter
 
 open class Events {
-    /**
-     * Event triggering the checking of the intent action
-     */
-    class OnCheckIntentActionEvent(val action: String, val extras: Bundle?)
-
-    /**
-     * Event bearing connection state for the offline encounters queue
-     */
-    class OnConnectionChangedEvent(val isConnected: Boolean)
-
-    /**
-     * Event bearing the registration id when obtained from Google Cloud Messaging (for push notifications)
-     */
-    class OnGCMTokenObtainedEvent(val registrationId: String)
-
     /**
      * Event bearing the new location on which to center the map
      */
     class OnBetterLocationEvent(val location: LatLng)
-
-    /**
-     * Event bearing the user's choice regarding the displaying of his past tours
-     */
-    class OnUserChoiceEvent(val isUserHistory: Boolean)
-
-    /**
-     * Event signaling that current user is unauthorized
-     */
-    class OnUnauthorizedEvent
 
     /**
      * Event signaling that user info is updated
@@ -44,7 +18,7 @@ open class Events {
     class OnUserInfoUpdatedEvent(val user: User)
 
     /**
-     * Event signaling that user wants to act on a tour
+     * Event signaling that user wants to act on an entourage
      */
     class OnUserActEvent(val act: String, val feedItem: FeedItem) {
 
@@ -56,17 +30,12 @@ open class Events {
     }
 
     /**
-     * Event signaling that the user wants to update a tour join request
-     */
-    class OnUserJoinRequestUpdateEvent(val userId: Int, val update: String, val feedItem: FeedItem)
-
-    /**
      * Event signaling that user view is requested
      */
     class OnUserViewRequestedEvent(val userId: Int)
 
     /**
-     * Event signaling that tour info view is requested
+     * Event signaling that entourage info view is requested
      */
     class OnFeedItemInfoViewRequestedEvent {
         var feedItem: FeedItem? = null
@@ -116,7 +85,7 @@ open class Events {
     }
 
     /**
-     * Event signaling that the tour needs to be closed/freezed
+     * Event signaling that the entourage needs to be closed/freezed
      */
     class OnFeedItemCloseRequestEvent {
         var feedItem: FeedItem
@@ -141,14 +110,9 @@ open class Events {
     }
 
     /**
-     * Event triggering the tours service location listener when the permission has been granted
+     * Event triggering the service location listener when the permission has been granted
      */
     class OnLocationPermissionGranted(val isPermissionGranted: Boolean)
-
-    /**
-     * Event signaling a push notification has been received
-     */
-    class OnPushNotificationReceived(val message: Message)
 
     /**
      * Event signaling that an entourage was created
@@ -164,11 +128,6 @@ open class Events {
      * Event signaling that the map filter was changed
      */
     class OnMapFilterChanged
-
-    /**
-     * Event signaling that the solidarity guide filter was changed
-     */
-    class OnSolidarityGuideFilterChanged
 
     /**
      * Event signaling that the map filter was changed (all if feedItem is null)
@@ -190,44 +149,7 @@ open class Events {
      */
     class OnPartnerViewRequestedEvent(val partner: Partner)
 
-    /**
-     * Event signaling that loading more newsfeed is requested
-     */
-    class OnNewsfeedLoadMoreEvent
-
-    /**
-     * Event signaling that showing an url is requested
-     */
-    class OnShowURLEvent(val url: String)
-
     class OnUnreadCountUpdate(val unreadCount: Int?)
 
-    /**
-     * Event to show poi detail fragment from feediteminformation (chat message)
-     */
-    class OnPoiViewDetail(val poiId: String)
-
-    class OnShowEventDeeplink
-
-    class OnShowDetailAssociation(val id:Int)
-
     class OnRefreshEntourageInformation
-    class OnRefreshActionsInfos
-
-    class OnJoinRequestAccepted(val content: PushNotificationContent)
-
-    class OnAddPushNotification(val message: Message)
-
-    open class TourEvents {
-        /**
-         * Event signaling that an encounter was created (or not)
-         */
-        class OnEncounterCreated(val encounter: Encounter?)
-
-        /**
-         * Event signaling that an encounter was updated
-         */
-        class OnEncounterUpdated(val encounter: Encounter)
-
-    }
 }

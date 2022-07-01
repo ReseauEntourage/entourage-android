@@ -19,6 +19,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.api.request.PoiResponse
 import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.guide.poi.PoiListFragment
 import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -27,11 +28,7 @@ import social.entourage.android.user.partner.PartnerFragment
 import timber.log.Timber
 
 
-private const val ARG_LAT = "latitude"
-private const val ARG_LONG = "longitude"
-private const val ARG_DIST = "distance"
-
-class GDSSearchFragment : BaseDialogFragment() {
+class GDSSearchFragment : BaseDialogFragment(), PoiListFragment {
     private val MIN_CHARS_SEARCH = 3
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
@@ -103,10 +100,7 @@ class GDSSearchFragment : BaseDialogFragment() {
     }
 
     fun setupRecyclerView(){
-        rvAdapter = GDSSearchAdapter(arrayPois) { position ->
-            val poi = arrayPois[position]
-            showPoiDetails(poi)
-        }
+        rvAdapter = GDSSearchAdapter(arrayPois)
         ui_recyclerView?.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
@@ -122,7 +116,7 @@ class GDSSearchFragment : BaseDialogFragment() {
         ui_et_search?.clearFocus()
 
         ui_progress?.visibility = View.VISIBLE
-        val poiRequest = EntourageApplication.get().components.poiRequest
+        val poiRequest = EntourageApplication.get().apiModule.poiRequest
         val call = poiRequest.retrievePoisSearch(latitude, longitude, distance, ui_et_search.text.toString(), "2")
         call.enqueue(object : Callback<PoiResponse> {
             override fun onResponse(call: Call<PoiResponse>, response: Response<PoiResponse>) {
@@ -145,7 +139,7 @@ class GDSSearchFragment : BaseDialogFragment() {
         })
     }
 
-    private fun showPoiDetails(poi: Poi) {
+    override fun showPoiDetails(poi: Poi, isTxtSearch: Boolean) {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_POI)
         try {
             poi.partner_id?.let { partner_id ->
@@ -159,6 +153,10 @@ class GDSSearchFragment : BaseDialogFragment() {
     }
 
     companion object {
+        private const val ARG_LAT = "latitude"
+        private const val ARG_LONG = "longitude"
+        private const val ARG_DIST = "distance"
+
         val TAG: String? = GDSSearchFragment::class.java.simpleName
         fun newInstance(latitude: Double, longitude: Double, distance: Double): GDSSearchFragment {
             val fragment = GDSSearchFragment()

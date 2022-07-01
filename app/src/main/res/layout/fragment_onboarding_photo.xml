@@ -1,94 +1,80 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/white"
-android:clickable="true"
-android:focusable="true"
-android:focusableInTouchMode="true"
-tools:context="social.entourage.android.onboarding.OnboardingPhotoFragment">
+<?xml version="1.0" encoding="utf-8"?>
 
-    <social.entourage.android.tools.view.CustomTitleView
-        android:id="@+id/user_edit_title_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:entourageTitle=""
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<TextView
-    android:id="@+id/ui_onboard_photo_tv_title"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:text="--"
-    android:textColor="@color/onboard_black_36"
-    android:textSize="22sp"
-    android:textStyle="bold"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_beige">
 
-    <TextView
-        android:id="@+id/ui_onboard_photo_tv_description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:fontFamily="sans-serif-light"
-        android:text="@string/onboard_photo_description"
-        android:textColor="@color/onboard_black_36"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/ui_onboard_photo_tv_title"
-        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_photo_tv_title" />
+        <include
+            android:id="@+id/header"
+            layout="@layout/new_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/scrollView"
+            app:title="@{@string/add_image}" />
 
-    <Button
-        android:id="@+id/ui_bt_pick"
-        style="@style/TransparentButton"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="45dp"
-        android:layout_marginEnd="45dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/bg_rounded_onboard_grey_plain"
-        android:text="@string/onboard_photo_bt_take_gallery"
-        android:textAllCaps="true"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/ui_bt_take"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_photo_image"
-        app:layout_constraintVertical_bias="1.0" />
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/header">
 
-    <Button
-        android:id="@+id/ui_bt_take"
-        style="@style/TransparentButton"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="45dp"
-        android:layout_marginEnd="45dp"
-        android:background="@drawable/bg_rounded_onboard_orange_stroke"
-        android:text="@string/onboard_photo_bt_take_photo"
-        android:textAllCaps="true"
-        android:textColor="@color/pre_onboard_orange"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/padding_horizontal"
+                android:paddingTop="@dimen/padding_top">
 
-    <ImageView
-        android:id="@+id/ui_onboard_photo_image"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="75dp"
-        app:srcCompat="@drawable/ic_user_photo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_photo_tv_description" />
+                <TextView
+                    android:id="@+id/title"
+                    style="@style/h4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="@string/add_image_subtitle"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/image_profile"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:layout_marginTop="50dp"
+                    android:src="@drawable/new_cross" />
+            </LinearLayout>
+        </ScrollView>
+
+        <include
+            android:id="@+id/import_picture"
+            layout="@layout/new_rounded_button_white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="65dp"
+            android:layout_marginTop="100dp"
+            app:content="@{@string/import_picture}"
+            app:drawable="@{@drawable/new_rounded_button_orange}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/scrollView" />
+
+        <include
+            android:id="@+id/take_picture"
+            layout="@layout/new_rounded_button_white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="65dp"
+            android:layout_marginTop="20dp"
+            app:content="@{@string/take_picture}"
+            app:drawable="@{@drawable/new_rounded_button_light_orange}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/import_picture" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

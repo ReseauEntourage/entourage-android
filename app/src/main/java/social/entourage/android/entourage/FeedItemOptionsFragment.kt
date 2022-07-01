@@ -9,12 +9,10 @@ import kotlinx.android.synthetic.main.layout_entourage_options.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
-import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events.OnUserActEvent
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.tools.EntBus
-import social.entourage.android.tour.TourOptionsFragment
 
 abstract class FeedItemOptionsFragment : BaseDialogFragment() {
     // ----------------------------------
@@ -45,7 +43,7 @@ abstract class FeedItemOptionsFragment : BaseDialogFragment() {
         val author = feedItem.author ?: return
         if (author.userID != me.id) {
             entourage_option_quit?.visibility = View.VISIBLE
-            entourage_option_quit?.setText(if (FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus) R.string.tour_info_options_cancel_request else R.string.tour_info_options_quit_tour)
+            entourage_option_quit?.setText(if (FeedItem.JOIN_STATUS_PENDING == feedItem.joinStatus) R.string.entourage_info_options_cancel_request else R.string.entourage_info_options_quit)
         } else {
             entourage_option_stop?.visibility = if (feedItem.isClosed() || !feedItem.canBeClosed()) View.GONE else View.VISIBLE
             initializeView()
@@ -80,7 +78,7 @@ abstract class FeedItemOptionsFragment : BaseDialogFragment() {
         // ----------------------------------
         const val TAG = "social.entourage.android.FeedItemOptions"
         fun show(feedItem: FeedItem, manager: FragmentManager) {
-            val fragment = if(feedItem.type == TimestampedObject.TOUR_CARD) TourOptionsFragment() else EntourageOptionsFragment()
+            val fragment = EntourageOptionsFragment()
             val args = Bundle()
             args.putSerializable(FeedItem.KEY_FEEDITEM, feedItem)
             fragment.arguments = args

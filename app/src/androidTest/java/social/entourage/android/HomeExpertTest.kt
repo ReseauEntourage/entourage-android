@@ -94,7 +94,7 @@ class HomeExpertTest {
         //Logout
         activityRule.scenario.onActivity { activity ->
             context = activity
-            EntourageApplication[activity].components.authenticationController.logOutUser()
+            EntourageApplication[activity].authenticationController.logOutUser()
             jsonResponse = getJsonDataFromAsset(activity, "home_response_success.json") ?: ""
         }
 
@@ -121,7 +121,7 @@ class HomeExpertTest {
         //Click on an Action item type demand
         headlineRv.perform(actionOnItemAtPosition<ViewHolder>(0, click()))
         val joinButton = onView(allOf(withId(R.id.entourage_info_request_join_button), isDisplayed()))
-        joinButton.check(matches(withText(context.getString(R.string.tour_info_request_join_button_entourage)
+        joinButton.check(matches(withText(context.getString(R.string.entourage_info_request_join_button_entourage)
             .uppercase(Locale.getDefault()))))
 
         clickCloseButton()
@@ -135,7 +135,7 @@ class HomeExpertTest {
 
         //Click on an Action item type outing
         headlineRv.perform(actionOnItemAtPosition<ViewHolder>(2, click()))
-        joinButton.check(matches(withText(context.getString(R.string.tour_info_request_join_button_event)
+        joinButton.check(matches(withText(context.getString(R.string.entourage_info_request_join_button_event)
             .uppercase(Locale.getDefault()))))
 
         clickCloseButton()
@@ -157,7 +157,7 @@ class HomeExpertTest {
 
         val eventsRv = onView(allOf(withId(R.id.ui_recyclerview_event), isDisplayed()))
         eventsRv.perform(actionOnItemAtPosition<ViewHolder>(0, click()))
-        joinButton.check(matches(withText(context.getString(R.string.tour_info_request_join_button_event)
+        joinButton.check(matches(withText(context.getString(R.string.entourage_info_request_join_button_event)
             .uppercase(Locale.getDefault()))))
 
         clickCloseButton()
@@ -172,7 +172,7 @@ class HomeExpertTest {
 
         val actionsRv = onView(allOf(withId(R.id.ui_recyclerview_action), isDisplayed()))
         actionsRv.perform(actionOnItemAtPosition<ViewHolder>(0, click()))
-        joinButton.check(matches(withText(context.getString(R.string.tour_info_request_join_button_entourage)
+        joinButton.check(matches(withText(context.getString(R.string.entourage_info_request_join_button_entourage)
             .uppercase(Locale.getDefault()))))
 
         clickCloseButton()
@@ -266,7 +266,7 @@ class HomeExpertTest {
         //Test go to FeedItemOptionsFragment
         showOptionsButton.perform(click())
         val cancelButton = onView(allOf(withId(R.id.entourage_option_cancel), isDisplayed()))
-        cancelButton.check(matches(withText(R.string.tour_info_options_close)))
+        cancelButton.check(matches(withText(R.string.entourage_info_options_close)))
     }
 
 
@@ -363,7 +363,7 @@ class HomeExpertTest {
         //Test go to ChoosePhotoFragment
         val editProfilePictureButton = onView(allOf(withId(R.id.user_photo_button), isDisplayed()))
         editProfilePictureButton.perform(click())
-        val takePhotoButton = onView(allOf(withId(R.id.ui_bt_take), isDisplayed()))
+        val takePhotoButton = onView(allOf(withId(R.id.take_picture), isDisplayed()))
         takePhotoButton.check(matches(withText(R.string.onboard_photo_bt_take_photo)))
 
         clickTitleCloseButton()

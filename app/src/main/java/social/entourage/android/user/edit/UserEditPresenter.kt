@@ -5,6 +5,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.UserRequest
 import social.entourage.android.api.request.UserResponse
 import social.entourage.android.api.model.User
@@ -12,15 +13,15 @@ import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.UserFragment
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
-import javax.inject.Inject
 
 /**
  * Created by mihaiionescu on 01/11/16.
  */
-class UserEditPresenter @Inject constructor(
-        private val fragment: UserEditFragment?,
-        private val userRequest: UserRequest,
-        private val authenticationController: AuthenticationController) {
+class UserEditPresenter(private val fragment: UserEditFragment) {
+    private val userRequest: UserRequest
+        get() = EntourageApplication.get().apiModule.userRequest
+    private val authenticationController: AuthenticationController
+        get() = EntourageApplication.get().authenticationController
 
     var editedUser: User? = null
         get() = field ?: authenticationController.me?.clone().also { field = it}

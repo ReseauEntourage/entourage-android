@@ -6,6 +6,7 @@ import android.text.format.DateFormat
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
+import androidx.fragment.app.findFragment
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.layout_entourage_information_chat_message_others_card_view.view.*
 import social.entourage.android.R
@@ -15,10 +16,11 @@ import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.deeplinks.DeepLinksManager
+import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.tools.EntBus
 
 /**
- * Chat Message Card for Tour Information Screen
+ * Chat Message Card for Entourage Information Screen
  */
 open class ChatMessageCardViewHolder(val view: View) : BaseCardViewHolder(view) {
     private var userId = 0
@@ -90,15 +92,10 @@ open class ChatMessageCardViewHolder(val view: View) : BaseCardViewHolder(view) 
 
         if (isPoi) {
             setBubbleLink(isMine)
-
-            itemView.layout_bubble?.setOnClickListener {
-                chatMessage.metadata?.uuid?.let {showPoiDetail(it)}
-            }
-            itemView.tic_chat_deeplink?.setOnClickListener {
-                chatMessage.metadata?.uuid?.let {showPoiDetail(it)}
-            }
-            itemView.tic_chat_message?.setOnClickListener {
-                chatMessage.metadata?.uuid?.let {showPoiDetail(it)}
+            chatMessage.metadata?.uuid?.let { uuid ->
+                itemView.layout_bubble?.setOnClickListener { showPoiDetail(uuid, itemView) }
+                itemView.tic_chat_deeplink?.setOnClickListener { showPoiDetail(uuid, itemView) }
+                itemView.tic_chat_message?.setOnClickListener { showPoiDetail(uuid, itemView) }
             }
         }
         if (isEntourage) {
@@ -133,8 +130,8 @@ open class ChatMessageCardViewHolder(val view: View) : BaseCardViewHolder(view) 
         startActivity(v.context, intent, null)
     }
 
-    fun showPoiDetail(poiId:String) {
-        EntBus.post(Events.OnPoiViewDetail(poiId))
+    fun showPoiDetail(poiId:String, itemView: View) {
+        (itemView.findFragment() as? FeedItemInformationFragment)?.onPoiViewDetail(poiId)
     }
 
     companion object {

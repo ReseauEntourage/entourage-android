@@ -304,7 +304,7 @@ class UserEditProfileActionsFragment : BaseDialogFragment() {
 
         OnboardingAPI.getInstance().updateUserGoal(_currentGoal) { isOK, userResponse ->
             if (isOK && userResponse != null) {
-                val authenticationController = EntourageApplication.get().components.authenticationController
+                val authenticationController = EntourageApplication.get().authenticationController
                 authenticationController.saveUser(userResponse.user)
             }
            updateActivities()
@@ -318,7 +318,7 @@ class UserEditProfileActionsFragment : BaseDialogFragment() {
                 activitiesAssoSelection?.let {
                     OnboardingAPI.getInstance().updateUserInterests(it.getArrayForWs()) { isOK, userResponse ->
                         if (isOK && userResponse != null) {
-                            val authenticationController = EntourageApplication.get().components.authenticationController
+                            val authenticationController = EntourageApplication.get().authenticationController
                             authenticationController.saveUser(userResponse.user)
                         }
 
@@ -335,7 +335,7 @@ class UserEditProfileActionsFragment : BaseDialogFragment() {
                 activitiesSelection?.let {
                     OnboardingAPI.getInstance().updateUserInterests(it.getArrayForWs()) { isOK, userResponse ->
                         if (isOK && userResponse != null) {
-                            val authenticationController = EntourageApplication.get().components.authenticationController
+                            val authenticationController = EntourageApplication.get().authenticationController
                             authenticationController.saveUser(userResponse.user)
                         }
 

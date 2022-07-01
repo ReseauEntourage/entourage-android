@@ -20,13 +20,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/user_edit_partner_title_layout"
         android:layout_margin="10dp"
-        app:drawableStartCompat="@android:drawable/ic_menu_search"
         android:ems="10"
         android:gravity="center"
         android:hint="@string/user_edit_asso_search_hint"
         android:imeOptions="actionSearch"
         android:inputType="text"
-        android:textSize="@dimen/entourage_font_large"/>
+        android:textSize="@dimen/entourage_font_large"
+        app:drawableStartCompat="@android:drawable/ic_menu_search" />
 
     <ListView
         android:layout_width="match_parent"

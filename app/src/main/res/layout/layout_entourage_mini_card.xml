@@ -18,7 +18,7 @@
     android:paddingTop="8dp">
 
     <ImageView
-        android:id="@+id/tour_card_icon"
+        android:id="@+id/action_card_icon"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:contentDescription="@string/empty_description"
@@ -26,14 +26,14 @@
         />
 
     <TextView
-        android:id="@+id/tour_card_title"
+        android:id="@+id/action_card_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="3dp"
         android:layout_marginStart="3dp"
-        android:layout_toEndOf="@+id/tour_card_icon"
-        android:layout_toRightOf="@+id/tour_card_icon"
+        android:layout_toEndOf="@+id/action_card_icon"
+        android:layout_toRightOf="@+id/action_card_icon"
         android:drawablePadding="@dimen/entourage_category_icon_padding"
         android:ellipsize="end"
         android:gravity="center_vertical"
@@ -44,17 +44,17 @@
         android:textStyle="bold"/>
 
     <LinearLayout
-        android:id="@+id/tour_card_type_layout"
+        android:id="@+id/action_card_type_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/tour_card_title"
+        android:layout_below="@+id/action_card_title"
         android:layout_marginTop="5dp"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tour_card_type"
+            android:id="@+id/action_card_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -62,7 +62,7 @@
             android:textSize="@dimen/entourage_font_medium"/>
 
         <TextView
-            android:id="@+id/tour_card_author"
+            android:id="@+id/action_card_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -75,18 +75,18 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/tour_card_people_layout"
+        android:id="@+id/action_card_people_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/tour_card_type_layout"
+        android:layout_below="@+id/action_card_type_layout"
         android:layout_gravity="end"
         android:layout_marginTop="5dp"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tour_card_badge_count"
+            android:id="@+id/action_card_badge_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -107,7 +107,7 @@
             app:srcCompat="@drawable/ic_users"/>
 
         <TextView
-            android:id="@+id/tour_card_people_count"
+            android:id="@+id/action_card_people_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -122,15 +122,15 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/tour_card_location"
+        android:id="@+id/action_card_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/tour_card_type_layout"
+        android:layout_below="@+id/action_card_type_layout"
         android:layout_marginTop="5dp"
-        android:layout_toLeftOf="@+id/tour_card_people_layout"
-        android:layout_toStartOf="@+id/tour_card_people_layout"
+        android:layout_toLeftOf="@+id/action_card_people_layout"
+        android:layout_toStartOf="@+id/action_card_people_layout"
         android:lines="1"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/greyish"

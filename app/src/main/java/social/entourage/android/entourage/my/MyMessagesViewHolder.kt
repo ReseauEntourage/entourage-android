@@ -36,13 +36,13 @@ class MyMessagesViewHolder(view: View) : RecyclerView.ViewHolder(view){
         }
 
         //title
-        itemView.tour_card_title?.let { titleView ->
-            titleView.text = String.format(res.getString(R.string.tour_cell_title), this.message.getTitle())
+        itemView.action_card_title?.let { titleView ->
+            titleView.text = String.format(res.getString(R.string.entourage_cell_title), this.message.getTitle())
             titleView.setTypeface(null, if (this.message.getUnreadMsgNb() == 0) Typeface.NORMAL else Typeface.BOLD)
         }
 
         //icon
-        itemView.tour_card_icon?.let { iconView ->
+        itemView.action_card_icon?.let { iconView ->
             Glide.with(iconView.context).clear(iconView)
             this.message.getIconURL()?.let { iconURL ->
                 iconView.setImageDrawable(null)
@@ -63,18 +63,18 @@ class MyMessagesViewHolder(view: View) : RecyclerView.ViewHolder(view){
 
         //last message
         EntourageApplication.get().me()?.let { currentUser ->
-            itemView.tour_card_last_message?.text = this.message.lastMessage?.getText(currentUser.id)
+            itemView.action_card_last_message?.text = this.message.lastMessage?.getText(currentUser.id)
                     ?: ""
-        } ?: kotlin.run { itemView.tour_card_last_message?.text = "" }
+        } ?: kotlin.run { itemView.action_card_last_message?.text = "" }
 
-        itemView.tour_card_last_message?.visibility = if (itemView.tour_card_last_message?.text.isNullOrBlank()) View.GONE else View.VISIBLE
-        itemView.tour_card_last_message?.setTypeface(null, if (this.message.getUnreadMsgNb() == 0) Typeface.NORMAL else Typeface.BOLD)
-        itemView.tour_card_last_message?.setTextColor(if (this.message.getUnreadMsgNb() == 0) ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_normal) else ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_bold))
+        itemView.action_card_last_message?.visibility = if (itemView.action_card_last_message?.text.isNullOrBlank()) View.GONE else View.VISIBLE
+        itemView.action_card_last_message?.setTypeface(null, if (this.message.getUnreadMsgNb() == 0) Typeface.NORMAL else Typeface.BOLD)
+        itemView.action_card_last_message?.setTextColor(if (this.message.getUnreadMsgNb() == 0) ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_normal) else ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_bold))
 
         //last update date
-        itemView.tour_card_last_update_date?.text = Utils.formatLastUpdateDate(this.message.updatedTime, itemView.context)
-        itemView.tour_card_last_update_date?.setTypeface(null, if (this.message.getUnreadMsgNb() == 0) Typeface.NORMAL else Typeface.BOLD)
-        itemView.tour_card_last_update_date?.setTextColor(if (this.message.getUnreadMsgNb() == 0) ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_normal) else ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_bold))
+        itemView.action_card_last_update_date?.text = Utils.formatLastUpdateDate(this.message.updatedTime, itemView.context)
+        itemView.action_card_last_update_date?.setTypeface(null, if (this.message.getUnreadMsgNb() == 0) Typeface.NORMAL else Typeface.BOLD)
+        itemView.action_card_last_update_date?.setTextColor(if (this.message.getUnreadMsgNb() == 0) ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_normal) else ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_bold))
     }
 
     //--------------------------

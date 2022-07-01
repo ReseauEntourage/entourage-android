@@ -82,7 +82,7 @@ class InputNamesFragment : BaseDialogFragment() {
             isAllreadySend = false
             dialog.dismiss()
             if (isOK && userResponse != null) {
-                EntourageApplication.get().components.authenticationController.saveUser(userResponse.user)
+                EntourageApplication.get().authenticationController.saveUser(userResponse.user)
             }
             dismiss()
         }

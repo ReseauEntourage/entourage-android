@@ -113,8 +113,6 @@ abstract class FeedItem : TimestampedObject(), Serializable {
 
     open fun isOpen(): Boolean { return STATUS_OPEN == status}
 
-    //TODO only for tours ???
-    open fun isOngoing(): Boolean { return false}
     fun isSuspended(): Boolean { return STATUS_SUSPENDED == status}
     //end TODO
 
@@ -147,7 +145,7 @@ abstract class FeedItem : TimestampedObject(), Serializable {
 
     @StringRes
     open fun getClosedCTAText():  Int {
-        return R.string.tour_cell_button_freezed
+        return R.string.entourage_cell_button_freezed
     }
 
     @ColorRes
@@ -159,7 +157,7 @@ abstract class FeedItem : TimestampedObject(), Serializable {
     open fun getClosingLoaderMessage(): Int {return R.string.entourage_info_text_close}
 
     @StringRes
-    open fun getClosedToastMessage(): Int {return if (isClosed()) R.string.tour_freezed else R.string.tour_stopped}
+    fun getClosedToastMessage(): Int {return R.string.entourage_info_text_close}
 
     @StringRes
     open fun getInviteSourceDescription():Int {

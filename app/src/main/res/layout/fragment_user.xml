@@ -385,7 +385,7 @@
                     android:textSize="@dimen/entourage_font_medium" />
 
                 <TextView
-                    android:id="@+id/user_tours_count"
+                    android:id="@+id/user_actions_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/user_number_entourages_title"

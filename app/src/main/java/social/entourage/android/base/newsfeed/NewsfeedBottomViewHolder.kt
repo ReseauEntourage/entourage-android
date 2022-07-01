@@ -1,11 +1,12 @@
 package social.entourage.android.base.newsfeed
 
 import android.view.View
+import androidx.fragment.app.findFragment
 import kotlinx.android.synthetic.main.layout_newsfeed_bottom_card.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.tape.Events.OnNewsfeedLoadMoreEvent
 import social.entourage.android.base.BaseCardViewHolder
+import social.entourage.android.home.actions.NewsFeedActionsFragment
 import social.entourage.android.tools.EntBus
 
 /**
@@ -13,8 +14,12 @@ import social.entourage.android.tools.EntBus
  */
 class NewsfeedBottomViewHolder(view: View) : BaseCardViewHolder(view) {
     override fun bindFields() {
-        itemView.newsfeed_load_more?.setOnClickListener { EntBus.post(OnNewsfeedLoadMoreEvent()) }
-        itemView.newsfeed_tab_events_load_more?.setOnClickListener { EntBus.post(OnNewsfeedLoadMoreEvent()) }
+        itemView.newsfeed_load_more?.setOnClickListener { onNewsfeedLoadMoreEvent(itemView) }
+        itemView.newsfeed_tab_events_load_more?.setOnClickListener { onNewsfeedLoadMoreEvent(itemView) }
+    }
+
+    private fun onNewsfeedLoadMoreEvent(itemView: View) {
+        (itemView.findFragment() as? NewsFeedActionsFragment)?.onNewsfeedLoadMoreRequested()
     }
 
     override fun populate(data: TimestampedObject) {
@@ -46,17 +51,10 @@ class NewsfeedBottomViewHolder(view: View) : BaseCardViewHolder(view) {
                         }
                     }
                     itemView.newsfeed_tab_all_content?.visibility = View.VISIBLE
-                    itemView.newsfeed_tab_tours_content?.visibility = View.GONE
-                    itemView.newsfeed_tab_events_content?.visibility = View.GONE
-                }
-                NewsfeedTabItem.TOUR_TAB -> {
-                    itemView.newsfeed_tab_all_content?.visibility = View.GONE
-                    itemView.newsfeed_tab_tours_content?.visibility = if(contentType!= CONTENT_TYPE_NO_MORE_ITEMS) View.VISIBLE else View.GONE
                     itemView.newsfeed_tab_events_content?.visibility = View.GONE
                 }
                 NewsfeedTabItem.EVENTS_TAB -> {
                     itemView.newsfeed_tab_all_content?.visibility = View.GONE
-                    itemView.newsfeed_tab_tours_content?.visibility = View.GONE
                     itemView.newsfeed_tab_events_content?.visibility = if(contentType!= CONTENT_TYPE_NO_MORE_ITEMS) View.VISIBLE else View.GONE
                 }
             }

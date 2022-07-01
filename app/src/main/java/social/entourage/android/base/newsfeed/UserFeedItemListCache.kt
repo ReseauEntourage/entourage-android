@@ -41,8 +41,7 @@ class UserFeedItemListCache : Serializable {
             if (feedItemStorage.feedId != content.joinableId) {
                 continue
             }
-            if (feedItemStorage.type == TimestampedObject.ENTOURAGE_CARD && content.isEntourageRelated
-                    || feedItemStorage.type == TimestampedObject.TOUR_CARD && content.isTourRelated) {
+            if (feedItemStorage.type == TimestampedObject.ENTOURAGE_CARD && content.isEntourageRelated) {
                     if(isAdded) {
                         feedItemStorage.badgeCount++
                         EntBottomNavigationView.increaseBadgeCount()
@@ -103,7 +102,7 @@ class UserFeedItemListCache : Serializable {
         }
 
         constructor(pushNotificationContent: PushNotificationContent) {
-            type = if (pushNotificationContent.isEntourageRelated) TimestampedObject.ENTOURAGE_CARD else TimestampedObject.TOUR_CARD
+            type = TimestampedObject.ENTOURAGE_CARD
             feedId = pushNotificationContent.joinableId
             badgeCount = 1
         }

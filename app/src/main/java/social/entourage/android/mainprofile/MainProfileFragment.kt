@@ -1,5 +1,6 @@
 package social.entourage.android.mainprofile
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -7,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Subscribe
+import social.entourage.android.new_v8.profile.ProfileActivity
 import kotlinx.android.synthetic.main.layout_mainprofile.*
 import kotlinx.android.synthetic.main.layout_mainprofile_appversion.*
 import retrofit2.Call
@@ -25,7 +27,7 @@ import social.entourage.android.tools.view.EntSnackbar
 /**
  * Side menu fragment
  */
-class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
+class MainProfileFragment : Fragment(R.layout.layout_mainprofile) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +48,7 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
 
     override fun onResume() {
         super.onResume()
-        AnalyticsEvents.logEvent (AnalyticsEvents.VIEW_PROFILE_MENU)
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_PROFILE_MENU)
     }
 
     // ----------------------------------
@@ -61,20 +63,30 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
     // PRIVATE METHODS
     // ----------------------------------
     private fun initialiseView() {
-        mainprofile_app_version?.text = getString(R.string.about_version_format, BuildConfig.VERSION_FULL_NAME)
+        mainprofile_app_version?.text =
+            getString(R.string.about_version_format, BuildConfig.VERSION_FULL_NAME)
         mainprofile_app_version?.setOnLongClickListener { handleLongPress() }
         if (!BuildConfig.DEBUG) {
-            mainprofile_app_debug_info?.visibility=View.INVISIBLE
+            mainprofile_app_debug_info?.visibility = View.INVISIBLE
         } else {
-            mainprofile_app_debug_info?.visibility=View.VISIBLE
-            mainprofile_app_debug_info?.text = getString(R.string.about_debug_info_format, BuildConfig.VERSION_DISPLAY_BRANCH_NAME,
-                EntourageApplication.get().sharedPreferences.getString(EntourageApplication.KEY_REGISTRATION_ID, null))
+            mainprofile_app_debug_info?.visibility = View.VISIBLE
+            mainprofile_app_debug_info?.text = getString(
+                R.string.about_debug_info_format, BuildConfig.VERSION_DISPLAY_BRANCH_NAME,
+                EntourageApplication.get().sharedPreferences.getString(
+                    EntourageApplication.KEY_REGISTRATION_ID,
+                    null
+                )
+            )
             mainprofile_app_debug_info?.setOnLongClickListener { handleLongPress() }
         }
         //add listener to user photo and name, that opens the user profile screen
         drawer_header_user_photo?.setOnClickListener { selectMenuProfile("user") }
-        drawer_header_user_name?.setOnClickListener { selectMenuProfile("user") }
-        //add listener to modify profile text view
+        //drawer_header_user_name?.setOnClickListener { selectMenuProfile("user") }
+        drawer_header_user_name?.setOnClickListener {
+            startActivity(
+                Intent(context, social.entourage.android.new_v8.MainActivity::class.java)
+            )
+        }        //add listener to modify profile text view
         action_edit_profile?.setOnClickListener { selectMenuProfile("editProfile") }
 
         //add listeners to side menu items
@@ -88,7 +100,7 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
             fragment.show(requireActivity().supportFragmentManager, MyActionsFragment.TAG)
         }
 
-        ui_layout_actions?.setOnClickListener{
+        ui_layout_actions?.setOnClickListener {
             val fragment = MyActionsFragment()
             fragment.show(requireActivity().supportFragmentManager, MyActionsFragment.TAG)
         }
@@ -144,24 +156,24 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
         drawer_header_user_name?.text = user.displayName
 
         drawer_header_user_photo?.let { photoView ->
-            user.avatarURL?.let {avatarURL ->
+            user.avatarURL?.let { avatarURL ->
                 Glide.with(this)
-                        .load(Uri.parse(avatarURL))
-                        .placeholder(R.drawable.ic_user_photo_small)
-                        .circleCrop()
-                        .into(photoView)
+                    .load(Uri.parse(avatarURL))
+                    .placeholder(R.drawable.ic_user_photo_small)
+                    .circleCrop()
+                    .into(photoView)
             } ?: run {
                 photoView.setImageResource(R.drawable.ic_user_photo_small)
             }
         }
         // Show partner logo
-        drawer_header_user_partner_logo?.let {logoView->
+        drawer_header_user_partner_logo?.let { logoView ->
             user.partner?.smallLogoUrl?.let { partnerURL ->
                 Glide.with(this)
-                        .load(Uri.parse(partnerURL))
-                        .placeholder(R.drawable.partner_placeholder)
-                        .circleCrop()
-                        .into(logoView)
+                    .load(Uri.parse(partnerURL))
+                    .placeholder(R.drawable.partner_placeholder)
+                    .circleCrop()
+                    .into(logoView)
             } ?: run {
                 logoView.setImageDrawable(null)
             }
@@ -173,8 +185,7 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
         //Show hide join Good waves
         if (user.stats?.isGoodWavesValidated == true) {
             ui_layout_goodwaves?.visibility = View.GONE
-        }
-        else {
+        } else {
             ui_layout_goodwaves?.visibility = View.GONE//disabled right now VISIBLE
         }
 
@@ -187,19 +198,20 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
     }
 
     private fun showEvents() {
-       (activity as? MainActivity)?.showEvents()
+        (activity as? MainActivity)?.showEvents()
     }
+
     private fun showActions() {
         (activity as? MainActivity)?.showAllActions()
     }
 
     private fun handleLongPress(): Boolean {
         selectMenuProfile("appVersion")
-        if(mainProfileCoordinatorLayout != null) {
+        if (mainProfileCoordinatorLayout != null) {
             EntSnackbar.make(
-                    mainProfileCoordinatorLayout,
-                    R.string.debug_info_clipboard,
-                    Snackbar.LENGTH_SHORT
+                mainProfileCoordinatorLayout,
+                R.string.debug_info_clipboard,
+                Snackbar.LENGTH_SHORT
             ).show()
         }
         return true
@@ -208,11 +220,15 @@ class MainProfileFragment  : Fragment(R.layout.layout_mainprofile) {
 
     fun getUser() {
         val user = EntourageApplication.me(activity) ?: return
-        val userRequest = EntourageApplication.get().components.userRequest
+        val userRequest = EntourageApplication.get().apiModule.userRequest
         userRequest.getUser(user.id).enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
-                    response.body()?.user?.let { EntourageApplication.get().components.authenticationController.saveUser(it) }
+                    response.body()?.user?.let {
+                        EntourageApplication.get().authenticationController.saveUser(
+                            it
+                        )
+                    }
                 }
                 updateUserView()
             }

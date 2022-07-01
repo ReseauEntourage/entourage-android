@@ -44,7 +44,7 @@ class BottomNavigationDataSource {
         return when (menuId) {
             R.id.bottom_bar_newsfeed -> HomeExpertFragment()
             R.id.bottom_bar_guide -> GuideHubFragment()
-            R.id.bottom_bar_plus ->  PlusFragment()
+            R.id.bottom_bar_plus -> PlusFragment()
             R.id.bottom_bar_mymessages -> MyMessagesMainFragment()
             R.id.bottom_bar_profile -> MainProfileFragment()
             else -> null
@@ -55,13 +55,13 @@ class BottomNavigationDataSource {
         add(R.id.bottom_bar_newsfeed, HomeExpertFragment.TAG)
         add(R.id.bottom_bar_guide, GuideHubFragment.TAG)
         add(R.id.bottom_bar_plus, PlusFragment.TAG)
-        add(R.id.bottom_bar_mymessages, MyMessagesMainFragment.TAG )
+        add(R.id.bottom_bar_mymessages, MyMessagesMainFragment.TAG)
         add(R.id.bottom_bar_profile, MainProfileFragment.TAG)
 
         //Use to reset navigation stack home tab
         val editor = EntourageApplication.get().sharedPreferences.edit()
-        editor.putBoolean("isNavNews",false)
-        editor.putString("navType",null)
+        editor.putBoolean("isNavNews", false)
+        editor.putString("navType", null)
         editor.apply()
     }
 }

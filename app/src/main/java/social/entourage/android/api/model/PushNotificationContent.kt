@@ -22,9 +22,6 @@ class PushNotificationContent : Serializable {
     val joinableUUID: String
         get() = extra?.joinableId?.toString() ?: ""
 
-    val isTourRelated: Boolean
-        get() = Extra.JOINABLE_TYPE_TOUR == extra?.joinableType
-
     val isEntourageRelated: Boolean
         get() = Extra.JOINABLE_TYPE_ENTOURAGE == extra?.joinableType
 
@@ -42,9 +39,7 @@ class PushNotificationContent : Serializable {
     val notificationTag: String?
         get() {
             if (TYPE_NEW_JOIN_REQUEST == type || TYPE_NEW_CHAT_MESSAGE == type) {
-                if (isTourRelated) {
-                    return TAG_TOUR + joinableId
-                } else if (isEntourageRelated) {
+                if (isEntourageRelated) {
                     return TAG_ENTOURAGE + joinableId
                 }
             }
@@ -76,7 +71,6 @@ class PushNotificationContent : Serializable {
 
         companion object {
             private const val serialVersionUID = 9200479161789347105L
-            const val JOINABLE_TYPE_TOUR = "Tour"
             const val JOINABLE_TYPE_ENTOURAGE = "Entourage"
         }
     }
@@ -89,7 +83,6 @@ class PushNotificationContent : Serializable {
         const val TYPE_NEW_JOIN_REQUEST = "NEW_JOIN_REQUEST"
         const val TYPE_ENTOURAGE_INVITATION = "ENTOURAGE_INVITATION"
         const val TYPE_INVITATION_STATUS = "INVITATION_STATUS"
-        private const val TAG_TOUR = "tour-"
         private const val TAG_ENTOURAGE = "entourage-"
     }
 }

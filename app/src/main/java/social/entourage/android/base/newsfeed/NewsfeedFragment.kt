@@ -4,10 +4,8 @@ import android.Manifest.permission
 import android.animation.ValueAnimator
 import android.app.ProgressDialog
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Color
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
@@ -31,7 +29,6 @@ import kotlinx.android.synthetic.main.layout_map_longclick.*
 import social.entourage.android.*
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.feed.*
-import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.base.location.EntLocation
@@ -41,7 +38,6 @@ import social.entourage.android.base.map.*
 import social.entourage.android.base.map.filter.MapFilterFactory
 import social.entourage.android.base.map.filter.MapFilterFragment
 import social.entourage.android.base.map.permissions.NoLocationPermissionFragment
-import social.entourage.android.base.newsfeed.*
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryManager
@@ -53,13 +49,12 @@ import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import timber.log.Timber
 import java.util.*
-import javax.inject.Inject
 
 abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFeedListener, UserEditActionZoneFragment.FragmentListener {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-    @Inject lateinit var presenter: NewsfeedPresenter
+    protected var presenter: NewsfeedPresenter = NewsfeedPresenter(this)
     private var onMapReadyCallback: OnMapReadyCallback? = null
     protected var longTapCoordinates: LatLng? = null
     private var previousEmptyListPopupLocation: Location? = null
@@ -101,11 +96,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         markersMap.clear()
     }
 
-    override fun onAttach(context: Context) {
-        setupComponent(EntourageApplication.get(activity).components)
-        super.onAttach(context)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         groupType = BaseEntourage.GROUPTYPE_ACTION
@@ -129,14 +119,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         fragment_map_gps?.setOnClickListener {displayGeolocationPreferences()}
 
         presenter.checkUserNamesInfos()
-    }
-
-    protected fun setupComponent(entourageComponent: EntourageComponent?) {
-        DaggerNewsfeedComponent.builder()
-                .entourageComponent(entourageComponent)
-                .newsfeedModule(NewsfeedModule(this))
-                .build()
-                .inject(this)
     }
 
     override fun onStart() {
@@ -174,8 +156,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
             fragment_map_longclick?.visibility = View.GONE
             return true
         }
-        //before closing the fragment, send the cached tour points to server (if applicable)
-        entService?.updateOngoingTour()
         return false
     }
 
@@ -200,10 +180,10 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         if (context == null || isStateSaved) return
         // decrease the badge count
         EntourageApplication.get(context).removePushNotificationsForFeedItem(feedItem)
-        //check if we are not already displaying the tour
+        //check if we are not already displaying the item
         (activity?.supportFragmentManager?.findFragmentByTag(FeedItemInformationFragment.TAG) as? FeedItemInformationFragment)?.let {
             if (it.getItemType() == feedItem.type && it.feedItemId != null && it.feedItemId.equals(feedItem.uuid, ignoreCase = true)) {
-                //TODO refresh the tour info screen
+                //TODO refresh the entourage info screen
                 return
             }
         }
@@ -216,9 +196,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_OPEN_CONTACT)
             isRequestingToJoin++
             when (timestampedObject.type) {
-                TimestampedObject.TOUR_CARD -> {
-                    entService?.requestToJoinTour(timestampedObject as Tour)
-                }
                 TimestampedObject.ENTOURAGE_CARD -> {
                     entService?.requestToJoinEntourage(timestampedObject as BaseEntourage)
                 }
@@ -227,7 +204,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
                 }
             }
         } else if (fragment_map_main_layout != null) {
-            fragment_map_main_layout?.let {EntSnackbar.make(it, R.string.tour_join_request_error, Snackbar.LENGTH_SHORT).show()}
+            fragment_map_main_layout?.let {EntSnackbar.make(it, R.string.entourage_join_request_error, Snackbar.LENGTH_SHORT).show()}
         }
     }
 
@@ -308,10 +285,9 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         fragment_map_filter_button?.setText(if (activefilters) R.string.map_no_filter else R.string.map_filters_activated)
     }
 
-    open fun onNewsfeedLoadMoreRequested(event: OnNewsfeedLoadMoreEvent) {
+    fun onNewsfeedLoadMoreRequested() {
         when (selectedTab) {
-            NewsfeedTabItem.ALL_TAB,
-            NewsfeedTabItem.TOUR_TAB -> {
+            NewsfeedTabItem.ALL_TAB -> {
                 ensureMapVisible()
                 pagination.setNextDistance()
                 refreshFeed()
@@ -331,9 +307,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         if (OnUserActEvent.ACT_JOIN == event.act) {
             act(event.feedItem)
         } else if (OnUserActEvent.ACT_QUIT == event.act) {
-            if (EntourageApplication.me(context) == null) {
-                fragment_map_main_layout?.let {EntSnackbar.make(it, R.string.tour_info_quit_tour_error, Snackbar.LENGTH_SHORT).show() }
-            } else {
+            if (EntourageApplication.me(context) != null) {
                 val item = event.feedItem
                 if (FeedItem.JOIN_STATUS_PENDING == item.joinStatus) {
                     AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_CANCEL_JOIN_REQUEST)
@@ -346,12 +320,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
     // ----------------------------------
     // SERVICE INTERFACE METHODS
     // ----------------------------------
-    override fun onLocationUpdated(location: LatLng) {
-        if (entService?.isRunning == true) {
-            centerMap(location)
-        }
-    }
-
     override fun onNetworkException() {
         activity?.window?.decorView?.rootView?.let {
             EntSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()
@@ -474,7 +442,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         } else {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEED_SHOWLIST)
         }
-        toggleToursList()
+        toggleActionsList()
     }
 
     fun createAction(newGroupType: String, newActionGroupType: String) {
@@ -526,7 +494,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
             displayFeedItemOptions(feedItem)
             return
         }
-        // Only the author can close entourages/tours
+        // Only the author can close actions
         val myId = EntourageApplication.me(context)?.id
                 ?: return
         val author = feedItem.author ?: return
@@ -536,12 +504,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         if (!feedItem.isClosed()) {
             // close
             stopFeedItem(feedItem, event.isSuccess,event.comment)
-        } else {
-            (feedItem as? Tour)?.let { tour ->
-                if (!tour.isFreezed()) {
-                    freezeTour(tour)
-                }
-            }
         }
     }
 
@@ -626,14 +588,13 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         map?.setOnMapClickListener {
             if (activity != null) {
                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_MAPCLICK)
-                hideTourLauncher()
                 if (isFullMapShown) {
                     // Hide the minicards if visible
                     if (fragment_map_entourage_mini_cards?.visibility == View.VISIBLE) {
                         fragment_map_entourage_mini_cards?.visibility = View.INVISIBLE
                     }
                 } else {
-                    toggleToursList()
+                    toggleActionsList()
                 }
             }
         }
@@ -652,34 +613,18 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
     }
 
     // ----------------------------------
-    // PRIVATE METHODS (tours events)
+    // PRIVATE METHODS (action events)
     // ----------------------------------
-    protected open fun hideTourLauncher() {}
-
     fun stopFeedItem(feedItem: FeedItem?, success: Boolean, comment:String?) {
         activity?.let { activity ->
             entService?.let { service ->
-                if (feedItem != null
-                        && (!service.isRunning
-                                || feedItem.type != TimestampedObject.TOUR_CARD
-                                || service.currentTourId.equals(feedItem.uuid, ignoreCase = true))) {
-                    // Not ongoing tour, just stop the feed item
+                if (feedItem != null) {
                     loaderStop = ProgressDialog.show(activity, activity.getString(feedItem.getClosingLoaderMessage()), activity.getString(R.string.button_loading), true)
                     loaderStop?.setCancelable(true)
-                    //TODO: proper event: AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_STOP_TOUR)
                     service.stopFeedItem(feedItem, success,comment)
-                } else if (service.isRunning) {
-                    loaderStop = ProgressDialog.show(activity, activity.getString(R.string.loader_title_tour_finish), activity.getString(R.string.button_loading), true)
-                    loaderStop?.setCancelable(true)
-                    service.endTreatment()
-                    AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_STOP_TOUR)
                 }
             }
         }
-    }
-
-    private fun freezeTour(tour: Tour) {
-        entService?.freezeTour(tour)
     }
 
     open fun onJoinRequestAccepted(content: PushNotificationContent) {
@@ -786,7 +731,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         map?.clear()
         mapClusterManager?.clearItems()
         markersMap.clear()
-        presenter.onClickListener?.clear()
         presenter.onGroundOverlayClickListener?.clear()
         resetFeed()
     }
@@ -840,7 +784,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         anim.start()
     }
 
-    private fun toggleToursList() {
+    private fun toggleActionsList() {
         if (!isFullMapShown) {
             displayFullMap()
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SCREEN_06_2)
@@ -850,7 +794,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         }
     }
 
-    private val isToursListVisible: Boolean
+    private val isActionsListVisible: Boolean
         get() = !isFullMapShown
 
     private fun ensureMapVisible() {
@@ -863,8 +807,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
             return
         }
         when (selectedTab) {
-            NewsfeedTabItem.ALL_TAB,
-            NewsfeedTabItem.TOUR_TAB -> {
+            NewsfeedTabItem.ALL_TAB -> {
                 var newestUpdatedDate: Date? = null
                 var oldestUpdateDate: Date? = null
                 for (newsfeed in newsfeedItemList) {
@@ -907,19 +850,14 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
             pagination.isRefreshing = true
             entService?.updateNewsfeed(pagination, selectedTab)
         }
-        //update the badge count on tour card
+        //update the badge count on entourage card
         val content = message.content ?: return
         if (newsfeedAdapter == null) {
             return
         }
         val joinableId = content.joinableId
         val isChatMessage = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE == content.type
-        if (content.isTourRelated) {
-            val tour = newsfeedAdapter?.findCard(TimestampedObject.TOUR_CARD, joinableId) as? Tour
-                    ?: return
-            tour.increaseBadgeCount(isChatMessage)
-            newsfeedAdapter?.updateCard(tour)
-        } else if (content.isEntourageRelated) {
+        if (content.isEntourageRelated) {
             val entourage = newsfeedAdapter?.findCard(TimestampedObject.ENTOURAGE_CARD, joinableId) as? BaseEntourage
                     ?: return
             entourage.increaseBadgeCount(isChatMessage)
@@ -1010,10 +948,9 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
     // Heatzone Tap Handling
     // ----------------------------------
     fun handleHeatzoneClick(location: LatLng) {
-        hideTourLauncher()
-        if (isToursListVisible) {
+        if (isActionsListVisible) {
             centerMapAndZoom(location, ZOOM_HEATZONE, true)
-            toggleToursList()
+            toggleActionsList()
         } else {
             showHeatzoneMiniCardsAtLocation(location)
         }
@@ -1064,8 +1001,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         }
     }
 
-    //open fun onAddEncounter() {}
-    //open fun addEncounter() {}
     private fun onAnimationUpdate(valueAnimator: ValueAnimator) {
         if (newsfeedAdapter == null) {
             return
@@ -1111,18 +1046,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
 
         // Zoom in level when taping a heatzone
         private const val ZOOM_HEATZONE = 15.7f
-
-        fun getTransparentColor(color: Int): Int {
-            return Color.argb(200, Color.red(color), Color.green(color), Color.blue(color))
-        }
-
-        fun isToday(date: Date): Boolean {
-            val calToday = Calendar.getInstance()
-            calToday.time =  Date()
-            val calDate = Calendar.getInstance()
-            calDate.time = date
-            return calToday[Calendar.ERA] == calDate[Calendar.ERA] && calToday[Calendar.DAY_OF_YEAR] == calDate[Calendar.DAY_OF_YEAR] && calToday[Calendar.YEAR] == calDate[Calendar.YEAR]
-        }
     }
 
     init {

@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:text="@string/tour_info_options_join"
+        android:text="@string/entourage_info_options_join"
         android:textAllCaps="true"
         android:visibility="gone"
         tools:visibility="visible" />
@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:text="@string/tour_info_options_contact"
+        android:text="@string/entourage_info_options_contact"
         android:textAllCaps="true"
         android:visibility="gone"
         tools:visibility="visible" />
@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:text="@string/tour_info_options_promote"
+        android:text="@string/entourage_info_options_promote"
         android:textAllCaps="true"
         android:visibility="gone"
         tools:visibility="visible" />
@@ -49,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:text="@string/tour_info_options_share"
+        android:text="@string/entourage_info_options_share"
         android:textAllCaps="true"
         android:visibility="gone"
         tools:visibility="visible" />
@@ -60,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:text="@string/tour_info_options_report"
+        android:text="@string/entourage_info_options_report"
         android:textAllCaps="true"
         android:visibility="gone"
         tools:visibility="visible" />
@@ -71,7 +71,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:text="@string/tour_info_options_freeze_tour"
+        android:text="@string/entourage_info_options_stop"
         android:textAllCaps="true"
         android:visibility="gone"
         tools:visibility="visible" />
@@ -93,7 +93,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:text="@string/tour_info_options_reopen_entourage"
+        android:text="@string/entourage_info_options_reopen_entourage"
         android:textAllCaps="true"
         android:visibility="gone"
         tools:visibility="visible" />
@@ -104,7 +104,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:text="@string/tour_info_options_quit_tour"
+        android:text="@string/entourage_info_options_quit"
         android:textAllCaps="true"
         android:visibility="gone"
         tools:visibility="visible" />
@@ -116,7 +116,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:alpha="1"
-        android:text="@string/tour_info_options_close"
+        android:text="@string/entourage_info_options_close"
         android:textAllCaps="true"
         tools:visibility="visible" />
 </LinearLayout>

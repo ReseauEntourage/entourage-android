@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -11,6 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_onboarding_asso_fill.*
@@ -28,6 +31,17 @@ class OnboardingAssoFillFragment : Fragment() {
 
     private var callback: OnboardingCallback? = null
 
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+        { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.let {
+                    val _assoInfo = result.data?.getSerializableExtra("partner") as? Partner
+                    processionUpdate(_assoInfo)
+                }
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -35,8 +49,10 @@ class OnboardingAssoFillFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_onboarding_asso_fill, container, false)
     }
 
@@ -58,17 +74,17 @@ class OnboardingAssoFillFragment : Fragment() {
         }
 
         ui_layout_asso_fill_location?.setOnClickListener {
-            val intent = Intent(requireContext(),OnboardingAssoSearchActivity::class.java)
-            startActivityForResult(intent,10)
+            val intent = Intent(requireContext(), OnboardingAssoSearchActivity::class.java)
+            startForResult.launch(intent)
         }
 
         ui_onboard_asso_fill_function?.setOnFocusChangeListener { v, hasFocus ->
-            processEditText(ui_onboard_asso_fill_function,true)
+            processEditText(ui_onboard_asso_fill_function, true)
         }
 
         ui_onboard_asso_fill_function?.setOnEditorActionListener { _, event, _ ->
             if (event == EditorInfo.IME_ACTION_DONE) {
-                processEditText(ui_onboard_asso_fill_function,true)
+                processEditText(ui_onboard_asso_fill_function, true)
             }
             false
         }
@@ -79,12 +95,12 @@ class OnboardingAssoFillFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
-                processEditText(ui_onboard_asso_fill_function,true)
+                processEditText(ui_onboard_asso_fill_function, true)
             }
         })
 
         ui_onboard_asso_fill_postal_code?.setOnFocusChangeListener { v, hasFocus ->
-           processEditText(ui_onboard_asso_fill_postal_code,false)
+            processEditText(ui_onboard_asso_fill_postal_code, false)
         }
 
         ui_onboard_asso_fill_postal_code?.addTextChangedListener(object : TextWatcher {
@@ -93,7 +109,7 @@ class OnboardingAssoFillFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
-                processEditText(ui_onboard_asso_fill_postal_code,true)
+                processEditText(ui_onboard_asso_fill_postal_code, true)
             }
         })
 
@@ -104,15 +120,14 @@ class OnboardingAssoFillFragment : Fragment() {
         updateDelegateButtonNext()
     }
 
-    fun processEditText(editText: EditText?,isFunction:Boolean) {
+    fun processEditText(editText: EditText?, isFunction: Boolean) {
         if (currentAssoInfo == null) {
             currentAssoInfo = Partner()
         }
 
         if (isFunction) {
             currentAssoInfo?.userRoleTitle = editText?.text.toString()
-        }
-        else {
+        } else {
             currentAssoInfo?.postalCode = editText?.text.toString()
         }
 
@@ -123,18 +138,30 @@ class OnboardingAssoFillFragment : Fragment() {
     fun updateAssoNameLabel() {
         currentAssoInfo?.name?.let { name ->
             ui_onboard_asso_fill_asso_name?.text = name
-            ui_onboard_asso_fill_asso_name?.setTextColor(ResourcesCompat.getColor(resources,R.color.onboard_black_36,null))
+            ui_onboard_asso_fill_asso_name?.setTextColor(
+                ResourcesCompat.getColor(
+                    resources,
+                    R.color.onboard_black_36,
+                    null
+                )
+            )
         } ?: run {
-            ui_onboard_asso_fill_asso_name?.text = getString(R.string.onboard_asso_fill_name_placeholder)
-            ui_onboard_asso_fill_asso_name?.setTextColor(ResourcesCompat.getColor(resources,R.color.quantum_grey,null))
+            ui_onboard_asso_fill_asso_name?.text =
+                getString(R.string.onboard_asso_fill_name_placeholder)
+            ui_onboard_asso_fill_asso_name?.setTextColor(
+                ResourcesCompat.getColor(
+                    resources,
+                    R.color.quantum_grey,
+                    null
+                )
+            )
         }
     }
 
     fun updateDelegateButtonNext() {
-        if (currentAssoInfo?.name?.length ?:0 > 0) {
+        if (currentAssoInfo?.name?.length ?: 0 > 0) {
             callback?.updateButtonNext(true)
-        }
-        else {
+        } else {
             callback?.updateButtonNext(false)
         }
     }
@@ -145,31 +172,20 @@ class OnboardingAssoFillFragment : Fragment() {
 
         updateDelegateButtonNext()
 
-        currentAssoInfo?.let { callback?.updateAssoInfos(it) } ?: callback?.updateAssoInfos(Partner())
+        currentAssoInfo?.let { callback?.updateAssoInfos(it) }
+            ?: callback?.updateAssoInfos(Partner())
     }
 
     /********************************
      * Activity return
      ********************************/
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (resultCode == Activity.RESULT_OK) {
-            data?.let {
-                val _assoInfo = data.getSerializableExtra("partner") as? Partner
-                processionUpdate(_assoInfo)
-            }
-        }
-    }
-
-    fun processionUpdate(newAsso:Partner?) {
+    fun processionUpdate(newAsso: Partner?) {
         if (newAsso != null) {
             if (currentAssoInfo == null) {
                 currentAssoInfo = newAsso
-            }
-            else {
-                currentAssoInfo?.name= newAsso.name
+            } else {
+                currentAssoInfo?.name = newAsso.name
                 currentAssoInfo?.postalCode = newAsso.postalCode
                 currentAssoInfo?.id = newAsso.id
                 currentAssoInfo?.isCreation = newAsso.isCreation
@@ -201,10 +217,10 @@ class OnboardingAssoFillFragment : Fragment() {
      ********************************/
     companion object {
         fun newInstance(assoInfos: Partner?) =
-                OnboardingAssoFillFragment().apply {
-                    arguments = Bundle().apply {
-                        putSerializable(ARG_PARAM1,assoInfos)
-                    }
+            OnboardingAssoFillFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable(ARG_PARAM1, assoInfos)
                 }
+            }
     }
 }

@@ -3,6 +3,7 @@ package social.entourage.android.user
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.EntourageConversation
 import social.entourage.android.api.request.EntourageRequest
 import social.entourage.android.api.request.EntourageResponse
@@ -17,11 +18,14 @@ import javax.inject.Inject
  * Presenter controlling the UserFragment
  * @see UserFragment
  */
-class UserPresenter @Inject constructor(
-        private val fragment: UserFragment?,
-        private val userRequest: UserRequest,
-        private val entourageRequest: EntourageRequest,
-        private val authenticationController: AuthenticationController) {
+class UserPresenter(private val fragment: UserFragment) {
+
+    private val userRequest: UserRequest
+        get() = EntourageApplication.get().apiModule.userRequest
+    private val entourageRequest: EntourageRequest
+        get() = EntourageApplication.get().apiModule.entourageRequest
+    private val authenticationController: AuthenticationController
+        get() = EntourageApplication.get().authenticationController
 
     // ----------------------------------
     // PUBLIC METHODS
@@ -33,24 +37,17 @@ class UserPresenter @Inject constructor(
         userRequest.getUser(userId).enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
-                    response.body()?.user?.let {fragment?.onUserReceived(it)}
+                    response.body()?.user?.let {fragment.onUserReceived(it)}
                 } else {
-                    fragment?.onUserReceivedError()
+                    fragment.onUserReceivedError()
                 }
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                fragment?.onUserReceivedError()
+                fragment.onUserReceivedError()
             }
         })
     }
-
-    /*val isUserToursOnly: Boolean
-        get() = authenticationController.isUserToursOnly
-
-    fun saveUserToursOnly(choice: Boolean) {
-        authenticationController.saveUserToursOnly(choice)
-    }*/
 
     fun updateUser(user: User) {
         userRequest.updateUser(user.arrayMapForUpdate).enqueue(object : Callback<UserResponse> {
@@ -61,15 +58,15 @@ class UserPresenter @Inject constructor(
                         authenticationController.saveUser(it)
                         authenticationController.saveUserPhoneAndCode(user.phone, user.smsCode)
                         //inform the fragment
-                        fragment?.onUserUpdated(it)
+                        fragment.onUserUpdated(it)
                     }
                 } else {
-                    fragment?.onUserUpdatedError()
+                    fragment.onUserUpdatedError()
                 }
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                fragment?.onUserUpdatedError()
+                fragment.onUserUpdatedError()
             }
         })
     }
@@ -82,19 +79,19 @@ class UserPresenter @Inject constructor(
                 if (response.isSuccessful) {
                     //show the entourage information
                     (response.body()?.entourage as? EntourageConversation)?.let {
-                        fragment?.onConversationFound(it)
+                        fragment.onConversationFound(it)
                     }
                 } else {
-                    fragment?.onConversationNotFound()
+                    fragment.onConversationNotFound()
                 }
             }
 
             override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
-                fragment?.onConversationNotFound()
+                fragment.onConversationNotFound()
             }
         })
     } ?: run {
-            fragment?.onConversationNotFound()
+            fragment.onConversationNotFound()
         }
     }
 }

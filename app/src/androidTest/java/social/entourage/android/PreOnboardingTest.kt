@@ -68,7 +68,7 @@ class PreOnboardingTest {
     private fun checkNoUserIsLoggedIn() {
         try {
             activityRule.scenario.onActivity { activity ->
-                EntourageApplication[activity].components.authenticationController.logOutUser()
+                EntourageApplication[activity].authenticationController.logOutUser()
             }
         } catch (e: RuntimeException) {
             e.printStackTrace()

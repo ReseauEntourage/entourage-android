@@ -1,5 +1,6 @@
 package social.entourage.android.home.expert
 
+import android.content.SharedPreferences
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -12,19 +13,21 @@ import social.entourage.android.api.request.*
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
-import javax.inject.Inject
 
 /**
  * Presenter controlling the HomeExpertFragment
  *
  * @see HomeExpertFragment
  */
-class HomeExpertPresenter @Inject constructor(
-    private val fragment: HomeExpertFragment?,
-    internal val authenticationController: AuthenticationController,
-    private val entourageRequest: EntourageRequest,
-    private val tourRequest: TourRequest,
-    private val invitationRequest: InvitationRequest) {
+class HomeExpertPresenter(private val fragment: HomeExpertFragment) {
+    internal val authenticationController: AuthenticationController
+        get() = EntourageApplication.get().authenticationController
+    private val entourageRequest: EntourageRequest
+        get() = EntourageApplication.get().apiModule.entourageRequest
+    private val invitationRequest: InvitationRequest
+        get() = EntourageApplication.get().apiModule.invitationRequest
+    private val sharedPreferences : SharedPreferences
+        get() = EntourageApplication.get().sharedPreferences
 
     private val isOnboardingUser: Boolean
         get() = authenticationController.isOnboardingUser
@@ -36,17 +39,15 @@ class HomeExpertPresenter @Inject constructor(
         when (action) {
             PushNotificationContent.TYPE_NEW_CHAT_MESSAGE,
             PushNotificationContent.TYPE_NEW_JOIN_REQUEST,
-            PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED -> if (content.isTourRelated) {
-                openFeedItemFromUUID(content.joinableUUID, TimestampedObject.TOUR_CARD)
-            } else if (content.isEntourageRelated) {
+            PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED -> if (content.isEntourageRelated) {
                 openFeedItemFromUUID(content.joinableUUID, TimestampedObject.ENTOURAGE_CARD)
             }
             PushNotificationContent.TYPE_ENTOURAGE_INVITATION -> content.extra?.let { extra ->
                 openFeedItemFromUUID(extra.entourageId.toString(), TimestampedObject.ENTOURAGE_CARD, extra.invitationId.toLong())
             }
             PushNotificationContent.TYPE_INVITATION_STATUS -> content.extra?.let {
-                if (content.isEntourageRelated || content.isTourRelated) {
-                    openFeedItemFromUUID(content.joinableUUID, if (content.isTourRelated) TimestampedObject.TOUR_CARD else TimestampedObject.ENTOURAGE_CARD)
+                if (content.isEntourageRelated) {
+                    openFeedItemFromUUID(content.joinableUUID, TimestampedObject.ENTOURAGE_CARD)
                 }
             }
         }
@@ -62,25 +63,11 @@ class HomeExpertPresenter @Inject constructor(
                     override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
                         response.body()?.entourage?.let {
                             if (response.isSuccessful) {
-                                fragment?.openFeedItem(it, invitationId)
+                                fragment.openFeedItem(it, invitationId)
                             }
                         }
                     }
                     override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
-                    }
-                })
-            }
-            TimestampedObject.TOUR_CARD -> {
-                val call = tourRequest.retrieveTourById(feedItemUUID)
-                call.enqueue(object : Callback<TourResponse> {
-                    override fun onResponse(call: Call<TourResponse>, response: Response<TourResponse>) {
-                        response.body()?.tour?.let {
-                            if (response.isSuccessful) {
-                                fragment?.openFeedItem(it, invitationId)
-                            }
-                        }
-                    }
-                    override fun onFailure(call: Call<TourResponse>, t: Throwable) {
                     }
                 })
             }
@@ -95,7 +82,7 @@ class HomeExpertPresenter @Inject constructor(
                     override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
                         response.body()?.entourage?.let {
                             if (response.isSuccessful) {
-                                fragment?.openFeedItem(it)
+                                fragment.openFeedItem(it)
                             }
                         }
                     }
@@ -117,17 +104,15 @@ class HomeExpertPresenter @Inject constructor(
     }
 
     fun isNavigation(): Boolean {
-        return EntourageApplication.get().sharedPreferences
-            .getBoolean("isNavNews", false)
+        return sharedPreferences.getBoolean("isNavNews", false)
     }
 
     fun navType(): String? {
-        return EntourageApplication.get().sharedPreferences
-            .getString("navType", null)
+        return sharedPreferences.getString("navType", null)
     }
 
     fun saveInfo(isNav:Boolean, type:String?) {
-        val editor = EntourageApplication.get().sharedPreferences.edit()
+        val editor = sharedPreferences.edit()
         editor.putBoolean("isNavNews",isNav)
         editor.putString("navType",type)
         editor.apply()

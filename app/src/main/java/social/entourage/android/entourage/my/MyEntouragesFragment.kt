@@ -43,7 +43,7 @@ class MyEntouragesFragment  : BaseDialogFragment(), BaseViewHolderListener, Load
     // ----------------------------------
     // Attributes
     // ----------------------------------
-    @Inject lateinit var presenter: MyEntouragesPresenter
+    private val presenter: MyEntouragesPresenter = MyEntouragesPresenter(this)
 
     private val connection = ServiceConnection()
 
@@ -77,19 +77,10 @@ class MyEntouragesFragment  : BaseDialogFragment(), BaseViewHolderListener, Load
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupComponent(EntourageApplication.get(activity).components)
         initializeView()
         refreshInvitations()
         refreshMyFeeds()
         (activity as? MainActivity)?.showEditActionZoneFragment()
-    }
-
-    private fun setupComponent(entourageComponent: EntourageComponent?) {
-        DaggerMyEntouragesComponent.builder()
-                .entourageComponent(entourageComponent)
-                .myEntouragesModule(MyEntouragesModule(this))
-                .build()
-                .inject(this)
     }
 
     // ----------------------------------
@@ -204,7 +195,7 @@ class MyEntouragesFragment  : BaseDialogFragment(), BaseViewHolderListener, Load
 
     private fun onPushNotificationReceived(message: Message) {
         val content = message.content ?: return
-        val cardType: Int = if (content.isTourRelated) TimestampedObject.TOUR_CARD else if (content.isEntourageRelated) TimestampedObject.ENTOURAGE_CARD else return
+        val cardType: Int = if (content.isEntourageRelated) TimestampedObject.ENTOURAGE_CARD else return
         val card = entouragesAdapter.findCard(cardType, content.joinableId)
         if (card is FeedItem) {
             card.increaseBadgeCount(PushNotificationContent.TYPE_NEW_CHAT_MESSAGE == content.type)

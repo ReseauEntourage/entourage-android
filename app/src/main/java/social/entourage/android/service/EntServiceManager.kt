@@ -136,9 +136,8 @@ open class EntServiceManager(
       //  val _currNewsFeedCall = newsfeedRequest.getHomeFeed(currentCameraPosition.target.longitude,currentCameraPosition.target.latitude)
         val userAddress = EntourageApplication.me(this.entService)?.address
 
-        val _currNewsFeedCall = newsfeedRequest.getHomeFeed(userAddress?.longitude,userAddress?.latitude,true)
-
-        _currNewsFeedCall.enqueue(HomeFeedCallback(this,entService))
+        newsfeedRequest.getHomeFeed(userAddress?.longitude,userAddress?.latitude,true)
+            .enqueue(HomeFeedCallback(this,entService))
     }
 
     fun cancelNewsFeedRetrieval() {
@@ -383,21 +382,11 @@ open class EntServiceManager(
         // CONSTANTS
         // ----------------------------------
         fun newInstance(entService: EntService,
-                        tourRequest: TourRequest,
                         authenticationController: AuthenticationController,
-                        encounterRequest: EncounterRequest,
                         newsfeedRequest: NewsfeedRequest,
                         entourageRequest: EntourageRequest): EntServiceManager {
-            val provider = LocationProvider(entService, if (authenticationController.me?.isPro == true) UserType.PRO else UserType.PUBLIC)
-            val mgr = if (authenticationController.me?.isPro == true) TourServiceManager(
-                        entService,
-                        authenticationController,
-                        tourRequest,
-                        encounterRequest,
-                        newsfeedRequest,
-                        entourageRequest,
-                        provider)
-                else EntServiceManager(
+            val provider = LocationProvider(entService, UserType.PUBLIC)
+            val mgr = EntServiceManager(
                     entService,
                     authenticationController,
                     newsfeedRequest,

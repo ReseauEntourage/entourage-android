@@ -14,12 +14,7 @@
         <item quantity="other">Vous avez %1$d nouveaux messages</item>
     </plurals>
 
-    <string name="notification_text_join_request_tour_single">@string/tour_join_request_received_message</string>
     <string name="notification_text_join_request_entourage_single_nomsg">@string/entourage_join_request_received_nomsg</string>
-    <plurals name="notification_text_join_request_tour_multiple">
-        <item quantity="one">%1$d personne souhaite rejoindre votre maraude.</item>
-        <item quantity="other">%1$d personnes souhaitent rejoindre votre maraude.</item>
-    </plurals>
     <plurals name="notification_text_join_request_entourage_multiple">
         <item quantity="one">%1$d personne souhaite rejoindre votre action.</item>
         <item quantity="other">%1$d personnes souhaitent rejoindre votre action.</item>

@@ -29,7 +29,7 @@ open class FeedItemViewHolderRenew(itemView: View) : BaseCardViewHolder(itemView
 
     override fun bindFields() {
         itemView.setOnClickListener { onClickMainView() }
-        itemView.tour_card_photo?.setOnClickListener { onClickCardPhoto() }
+        itemView.action_card_photo?.setOnClickListener { onClickCardPhoto() }
     }
 
     override fun populate(data: TimestampedObject) {
@@ -39,12 +39,12 @@ open class FeedItemViewHolderRenew(itemView: View) : BaseCardViewHolder(itemView
         val res = itemView.resources
 
         //title
-        itemView.tour_card_title?.text = String.format(res.getString(R.string.tour_cell_title), feedItem.getTitle())
+        itemView.action_card_title?.text = String.format(res.getString(R.string.entourage_cell_title), feedItem.getTitle())
 
         //icon
         if (showCategoryIcon()) {
             // add the icon for entourages
-            itemView.tour_card_icon?.let { iconView ->
+            itemView.action_card_icon?.let { iconView ->
                 Glide.with(iconView.context).clear(iconView)
                 feedItem.getIconURL()?.let { iconURL ->
                     iconView.setImageDrawable(null)
@@ -63,11 +63,11 @@ open class FeedItemViewHolderRenew(itemView: View) : BaseCardViewHolder(itemView
         val author = feedItem.author
         if (author == null) {
             //author
-            itemView.tour_card_author?.text = "--"
-            itemView.tour_card_photo?.setImageResource(R.drawable.ic_user_photo_small)
+            itemView.action_card_author?.text = "--"
+            itemView.action_card_photo?.setImageResource(R.drawable.ic_user_photo_small)
         } else {
             //author photo
-            itemView.tour_card_photo?.let {
+            itemView.action_card_photo?.let {
                 author.avatarURLAsString?.let { avatarURLAsString ->
                     Glide.with(it.context)
                             .load(Uri.parse(avatarURLAsString))
@@ -80,7 +80,7 @@ open class FeedItemViewHolderRenew(itemView: View) : BaseCardViewHolder(itemView
                 }
             }
             // Partner logo
-            itemView.tour_card_partner_logo?.let { logoView ->
+            itemView.action_card_partner_logo?.let { logoView ->
                 author.partner?.smallLogoUrl?.let { smallLogoUrl ->
                     Glide.with(logoView.context)
                             .load(Uri.parse(smallLogoUrl))
@@ -93,19 +93,19 @@ open class FeedItemViewHolderRenew(itemView: View) : BaseCardViewHolder(itemView
                 }
             }
             //author
-            itemView.tour_card_author?.text = String.format(res.getString(R.string.tour_cell_author), author.userName)
+            itemView.action_card_author?.text = String.format(res.getString(R.string.entourage_cell_author), author.userName)
         }
 
         //Feed Item type
         if (feedItem is BaseEntourage) {
             if((feedItem as BaseEntourage).isEvent() ){
                 if (feedItem is EntourageEvent) {
-                    itemView.tour_card_type?.text = String.format(res.getString(R.string.tour_cell_title_event), (feedItem as EntourageEvent).getEventDateFormated(itemView.context))
+                    itemView.action_card_type?.text = String.format(res.getString(R.string.entourage_cell_title_event), (feedItem as EntourageEvent).getEventDateFormated(itemView.context))
                 }
             }
             else {
                 val cat = EntourageCategoryManager.findCategory(feedItem as BaseEntourage)
-                itemView.tour_card_type?.text = cat.title_list
+                itemView.action_card_type?.text = cat.title_list
             }
         }
 
@@ -114,7 +114,7 @@ open class FeedItemViewHolderRenew(itemView: View) : BaseCardViewHolder(itemView
         } else {
             val distanceAsString = feedItem.getStartPoint()?.distanceToCurrentLocation(Constants.DISTANCE_MAX_DISPLAY)
                     ?: ""
-            var distStr = if (distanceAsString.equals("", ignoreCase = true)) "" else String.format(res.getString(R.string.tour_cell_location), distanceAsString)
+            var distStr = if (distanceAsString.equals("", ignoreCase = true)) "" else String.format(res.getString(R.string.entourage_cell_location), distanceAsString)
 
             feedItem.postal_code?.let { postalCode ->
                 if (distStr.isNotEmpty() && postalCode.isNotEmpty()) {

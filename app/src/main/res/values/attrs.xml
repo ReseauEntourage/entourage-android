@@ -5,7 +5,6 @@
         <attr name="htmlText" format="string" />
     </declare-styleable>
     <declare-styleable name="MainProfileItemView">
-        <attr name="showDivider" format="boolean"/>
         <attr name="showRightArrow" format="boolean"/>
         <attr name="centerText" format="boolean" />
         <attr name="android:icon" />

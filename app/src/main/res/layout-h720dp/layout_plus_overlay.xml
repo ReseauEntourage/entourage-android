@@ -199,54 +199,5 @@
                 android:contentDescription="@string/outing_create_menu" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_line_start_tour_launcher"
-            style="@style/MapActionLine"
-            android:layout_below="@id/layout_line_create_outing"
-            android:visibility="gone"
-            tools:visibility="visible">
-
-            <TextView
-                android:id="@+id/textView6"
-                style="@style/MapActionMenu"
-                android:text="@string/tour_create"
-                app:layout_constraintBottom_toBottomOf="@+id/button_start_tour_launcher"
-                app:layout_constraintEnd_toStartOf="@+id/button_start_tour_launcher"
-                app:layout_constraintTop_toTopOf="@+id/button_start_tour_launcher" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/button_start_tour_launcher"
-                style="@style/MapActionButtonStyle"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_start_maraude"
-                android:contentDescription="@string/tour_create" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_line_add_tour_encounter"
-            style="@style/MapActionLine"
-            android:layout_below="@id/layout_line_start_tour_launcher"
-            android:visibility="gone"
-            tools:visibility="gone">
-
-            <TextView
-                android:id="@+id/textView8"
-                style="@style/MapActionMenu"
-                android:text="@string/tour_create_encounter_button"
-                app:layout_constraintEnd_toStartOf="@+id/button_add_tour_encounter"
-                app:layout_constraintTop_toTopOf="@+id/button_add_tour_encounter" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/button_add_tour_encounter"
-                style="@style/MapActionButtonStyle"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_encounter"
-                android:contentDescription="@string/tour_create_encounter_button" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
     </RelativeLayout>
 </RelativeLayout>

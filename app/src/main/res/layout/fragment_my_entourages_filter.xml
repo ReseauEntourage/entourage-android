@@ -35,51 +35,6 @@
                     android:textSize="@dimen/entourage_font_medium"/>
 
                 <RelativeLayout
-                    android:id="@+id/myentourages_filter_tours_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/background"
-                    >
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_toLeftOf="@+id/myentourages_filter_tours_switch"
-                        android:layout_toStartOf="@+id/myentourages_filter_tours_switch"
-                        android:paddingEnd="@dimen/entourage_padding_10"
-                        android:paddingLeft="@dimen/entourage_padding_10"
-                        android:paddingRight="@dimen/entourage_padding_10"
-                        android:paddingStart="@dimen/entourage_padding_10"
-                        android:text="@string/myentourages_filter_tours"
-                        android:textColor="@color/greyish_brown"
-                        android:textSize="@dimen/entourage_font_medium"/>
-
-                    <Switch
-                        android:id="@+id/myentourages_filter_tours_switch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerInParent="true"
-                        android:layout_marginEnd="@dimen/entourage_padding_10"
-                        android:layout_marginRight="@dimen/entourage_padding_10"/>
-
-                    <View
-                        style="@style/SeparatorAlpha"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginLeft="@dimen/entourage_padding_10"
-                        android:layout_marginStart="@dimen/entourage_padding_10"/>
-
-                </RelativeLayout>
-
-                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/background"

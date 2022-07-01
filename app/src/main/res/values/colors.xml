@@ -5,7 +5,7 @@
     <color name="primary">#ffffff</color>
     <color name="primary_dark">#717171</color>
     <color name="primary_light">#efeff4</color>
-    <color name="accent">#F55F24</color>
+    <color name="accent">@color/orange</color>
     <color name="toolbar">@color/primary</color>
     <color name="warm_grey">#999999</color>
     <color name="greyish_brown">#4a4a4a</color>
@@ -62,14 +62,9 @@
     <!-- Main profile -->
     <color name="mainprofile_background">@color/background_light</color>
     <color name="mainprofile_divider">@color/greyish</color>
-    
+
     <!-- Notifications -->
     <color name="battleship_grey">#797a7c</color>
-
-    <!-- Tour Types -->
-    <color name="tour_type_medical">#ff9999</color>
-    <color name="tour_type_social">#97d791</color>
-    <color name="tour_type_distributive">#ffc57f</color>
 
     <!-- Action types -->
     <color name="action_type_outing">@color/greyish_brown</color>
@@ -86,7 +81,7 @@
     <color name="feeditem_details_topbar_background">@color/accent</color>
     <color name="feeditem_icon_background_solid">@color/white</color>
     <color name="feeditem_icon_background_stroke">@color/white</color>
-    
+
     <!-- FeedItem card -->
     <color name="feeditem_card_details_normal">@color/greyish</color>
     <color name="feeditem_card_details_bold">@color/black</color>
@@ -118,4 +113,26 @@
     <color name="login_orange_light">#60F55F24</color>
     <color name="login_grey_light">#E1E4E8</color>
     <color name="white_f5_f5_f6">#F5F5F6</color>
+
+
+    <!-- New -->
+    <color name="light_beige">#fffcfa</color>
+    <color name="light_beige_96">#F5fffcfa</color>
+    <color name="beige">#ffeadc</color>
+    <color name="orange">#f55f24</color>
+    <color name="light_orange">#ff9c5d</color>
+    <color name="light_orange_opacity_50">#80ff9c5d</color>
+    <color name="light_orange_opacity_15">#26ff9c5d</color>
+    <color name="light_orange_inactive_button">#FBBFA7</color>
+    <color name="light_orange_opacity_25">#40ff9c5d</color>
+    <color name="light_orange_opacity_35">#59ff9c5d</color>
+    <color name="green">#2BBA7A</color>
+    <color name="dark_grey">#343C58</color>
+    <color name="dark_grey_opacity_40">#66343C58</color>
+    <color name="red">#FF0000</color>
+    <color name="grey">#707070</color>
+    <color name="new_light_grey">#cdcdcd</color>
+    <color name="bottom_sheet_background">#B5545454</color>
+
+
 </resources>

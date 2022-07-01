@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/header"
+            layout="@layout/new_header_bottom_sheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:title="@{@string/select_photo}" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginVertical="22dp" />
+
+        <Button
+            android:id="@+id/validate"
+            style="@style/h2_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/padding_horizontal"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/new_bg_rounded_button_orange_fill"
+            android:drawablePadding="10dp"
+            android:text="@string/validate"
+            android:textAllCaps="false" />
+    </LinearLayout>
+</layout>

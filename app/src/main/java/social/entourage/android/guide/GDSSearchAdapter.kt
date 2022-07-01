@@ -12,7 +12,7 @@ import java.util.ArrayList
 /**
  * Created by Jr (MJ-DEVS) on 24/11/2020.
  */
-class GDSSearchAdapter(var items: ArrayList<Poi>,val listenerClick: (position:Int) -> Unit): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class GDSSearchAdapter(var items: ArrayList<Poi>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var isAlreadySend = false
     fun updateAdapter(items: ArrayList<Poi>) {
@@ -42,20 +42,6 @@ class GDSSearchAdapter(var items: ArrayList<Poi>,val listenerClick: (position:In
         if (items.size == 0 && isAlreadySend) return 1
         return items.size
     }
-
-    /*inner class VHPoi(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(position: Int) {
-            val poi = items[position]
-            itemView.poi_card_title?.text = poi.name ?: ""
-            itemView.poi_card_address?.text = poi.address ?: ""
-            itemView.poi_card_distance?.text = LocationPoint(poi.latitude, poi.longitude).distanceToCurrentLocation(Constants.DISTANCE_MAX_DISPLAY)
-            itemView.poi_card_call_button?.visibility =  View.GONE
-
-            itemView.setOnClickListener {
-                listenerClick(position)
-            }
-        }
-    }*/
 
     inner class VHEmpty(view: View) : RecyclerView.ViewHolder(view)
     companion object {

@@ -7,7 +7,7 @@ import retrofit2.http.Query
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.ConversationsRequest
 import social.entourage.android.api.request.ConversationsResponse
-import social.entourage.android.api.request.MessagesMetadatasResponse
+import social.entourage.android.api.request.MessagesMetadataResponse
 
 /**
  * Created by Jerome on 22/12/2021.
@@ -15,7 +15,7 @@ import social.entourage.android.api.request.MessagesMetadatasResponse
 class ConversationsAPI(val application: EntourageApplication) {
 
     private val conversationsRequest : ConversationsRequest
-        get() = application.components.conversationsRequest
+        get() = application.apiModule.conversationsRequest
 
     fun getMessagesOne2One(@Query("page") page: Int,
                            @Query("per") per: Int,
@@ -57,10 +57,10 @@ class ConversationsAPI(val application: EntourageApplication) {
         })
     }
 
-    fun getMessagesMetadatas(listener:(conversations: MessagesMetadatasResponse?, error:String?) -> Unit) {
-        val call: Call<MessagesMetadatasResponse> = conversationsRequest.retrieveMessagesMetadatas()
-        call.enqueue(object : Callback<MessagesMetadatasResponse> {
-            override fun onResponse(call: Call<MessagesMetadatasResponse>, response: Response<MessagesMetadatasResponse>) {
+    fun getMessagesMetadata(listener:(conversations: MessagesMetadataResponse?, error:String?) -> Unit) {
+        val call: Call<MessagesMetadataResponse> = conversationsRequest.retrieveMessagesMetadata()
+        call.enqueue(object : Callback<MessagesMetadataResponse> {
+            override fun onResponse(call: Call<MessagesMetadataResponse>, response: Response<MessagesMetadataResponse>) {
                 if (response.isSuccessful) {
                     listener(response.body(),null)
                 } else {
@@ -69,7 +69,7 @@ class ConversationsAPI(val application: EntourageApplication) {
                 }
             }
 
-            override fun onFailure(call: Call<MessagesMetadatasResponse>, t: Throwable) {
+            override fun onFailure(call: Call<MessagesMetadataResponse>, t: Throwable) {
                 listener(null,null)
             }
         })

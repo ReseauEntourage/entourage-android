@@ -14,13 +14,11 @@ import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_home_news.*
 import kotlinx.android.synthetic.main.fragment_map.fragment_map_filter_button
 import kotlinx.android.synthetic.main.fragment_map.fragment_map_main_layout
-import kotlinx.android.synthetic.main.fragment_map.tour_stop_button
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.feed.NewsfeedItem
-import social.entourage.android.api.model.tour.Tour
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BackPressable
 import social.entourage.android.base.map.filter.MapFilterFactory
@@ -31,10 +29,9 @@ import social.entourage.android.service.EntService
 import social.entourage.android.service.EntService.LocalBinder
 import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.tools.view.EntSnackbar
-import social.entourage.android.tour.join.TourJoinRequestFragment
 import timber.log.Timber
 
-open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListener, BackPressable {
+class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListener, BackPressable {
 
     var isActionSelected = true
     private val connection = ServiceConnection()
@@ -73,17 +70,17 @@ open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListene
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         when {
             isExpertContrib -> {
-                EntourageApplication.get().components.authenticationController.mapFilter.setAllCategorySelected(true,false)
+                EntourageApplication.get().authenticationController.mapFilter.setAllCategorySelected(true,false)
             }
             isExpertAsk -> {
-                EntourageApplication.get().components.authenticationController.mapFilter.setAllCategorySelected(false,true)
+                EntourageApplication.get().authenticationController.mapFilter.setAllCategorySelected(false,true)
             }
             else -> {
-                EntourageApplication.get().components.authenticationController.mapFilter.setDefaultValues()
+                EntourageApplication.get().authenticationController.mapFilter.setDefaultValues()
             }
         }
 
-        EntourageApplication.get().components.authenticationController.saveMapFilter()
+        EntourageApplication.get().authenticationController.saveMapFilter()
         return inflater.inflate(R.layout.fragment_home_news, container, false)
     }
 
@@ -132,12 +129,9 @@ open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListene
     // BUS LISTENERS
     // ----------------------------------
     @Subscribe
-    open fun onUserChoiceChanged(event: OnUserChoiceEvent) {}
-
-    @Subscribe
     open fun onUserInfoUpdated(event: OnUserInfoUpdatedEvent) {
         if (newsfeedAdapter == null) return
-        val meAsAuthor = EntourageApplication.me(context)?.asTourAuthor() ?: return
+        val meAsAuthor = EntourageApplication.me(context)?.asAuthor() ?: return
         val dirtyList: MutableList<TimestampedObject> = ArrayList()
         // See which cards needs updating
         newsfeedAdapter?.items?.filterIsInstance<FeedItem>()?.forEach { feedItem ->
@@ -147,7 +141,7 @@ open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListene
             if (author.userID != meAsAuthor.userID) return@forEach
             // Skip if nothing changed
             if (!author.isSame(meAsAuthor)) {
-                // Update the tour author
+                // Update the author
                 meAsAuthor.userName = author.userName
                 feedItem.author = meAsAuthor
                 // Mark as dirty
@@ -167,12 +161,9 @@ open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListene
     // Long clicks on map handler
     // ----------------------------------
     override fun showLongClickOnMapOptions(latLng: LatLng) {
-      //  if(this is NewsFeedWithTourFragment) return super.showLongClickOnMapOptions(latLng)
-        //for public user, start the create entourage funnel directly
+      //for public user, start the create entourage funnel directly
         // save the tap coordinates
         longTapCoordinates = latLng
-        //hide the FAB menu
-        tour_stop_button?.visibility = View.GONE
         displayEntourageDisclaimer()
     }
 
@@ -192,11 +183,6 @@ open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListene
     @Subscribe
     override fun onEntourageUpdated(event: OnEntourageUpdated) {
         super.onEntourageUpdated(event)
-    }
-
-    @Subscribe
-    override fun onNewsfeedLoadMoreRequested(event: OnNewsfeedLoadMoreEvent) {
-        super.onNewsfeedLoadMoreRequested(event)
     }
 
     @Subscribe
@@ -228,11 +214,6 @@ open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListene
             if (activity.isFinishing) return
             try {
                 updatedFeedItem.joinStatus = user.status ?: ""
-                if (user.status == FeedItem.JOIN_STATUS_PENDING) {
-                    if (updatedFeedItem is Tour) {
-                        TourJoinRequestFragment.newInstance(updatedFeedItem).show(activity.supportFragmentManager, TourJoinRequestFragment.TAG)
-                    }
-                }
             } catch (e: IllegalStateException) {
                 Timber.w(e)
             }
@@ -246,15 +227,8 @@ open class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListene
         val newList = ArrayList<NewsfeedItem>()
         try {
             for (newsfeed in tempList) {
-                (newsfeed.data as? Tour)?.let {card ->
-                    //TODO verify if we can write !=true instead of !()==true when not a tour
-                    if (!((newsfeedAdapter?.findCard(card) as? Tour)?.isSame(card)==true)) {
-                        newList.add(newsfeed)
-                    }
-                } ?: run {
-                    if(newsfeed.data != null) {
-                        newList.add(newsfeed)
-                    }
+                if(newsfeed.data != null) {
+                    newList.add(newsfeed)
                 }
             }
         } catch (e: IllegalStateException) {

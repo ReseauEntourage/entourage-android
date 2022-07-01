@@ -52,17 +52,9 @@ class Message(var author: String, var msgObject: String?, content: String, pushN
                 }
                 PushNotificationContent.TYPE_NEW_JOIN_REQUEST -> {
                     return if (count > 1) {
-                        if (content.isEntourageRelated) {
-                            context.resources.getQuantityString(R.plurals.notification_text_join_request_entourage_multiple, count, count)
-                        } else {
-                            context.resources.getQuantityString(R.plurals.notification_text_join_request_tour_multiple, count, count)
-                        }
+                        context.resources.getQuantityString(R.plurals.notification_text_join_request_entourage_multiple, count, count)
                     } else {
-                        if (content.isEntourageRelated) {
-                            context.getString(R.string.notification_text_join_request_entourage_single_nomsg, author)
-                        } else {
-                            context.getString(R.string.notification_text_join_request_tour_single, author)
-                        }
+                        context.getString(R.string.notification_text_join_request_entourage_single_nomsg, author)
                     }
                 }
             }

@@ -1,12 +1,8 @@
 package social.entourage.android.entourage.invite
 
 import android.os.Bundle
-import android.view.View
-import social.entourage.android.EntourageApplication.Companion.get
-import social.entourage.android.EntourageComponent
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.base.BaseDialogFragment
-import javax.inject.Inject
 
 /**
  * A simple [BaseDialogFragment] subclass.
@@ -18,7 +14,7 @@ open class InviteBaseFragment  : BaseDialogFragment() {
     protected var feedItemUUID: String? = null
     protected var feedItemType = 0
 
-    @Inject lateinit var presenter: InvitePresenter
+    val presenter: InvitePresenter = InvitePresenter(this)
     var inviteFriendsListener: InviteFriendsListener? = null
 
     protected fun setFeedData(feedUUID: String?, feedItemType: Int) {
@@ -42,19 +38,6 @@ open class InviteBaseFragment  : BaseDialogFragment() {
     override fun onDetach() {
         super.onDetach()
         inviteFriendsListener = null
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupComponent(get(activity).components)
-    }
-
-    protected fun setupComponent(entourageComponent: EntourageComponent?) {
-        DaggerInviteComponent.builder()
-                .entourageComponent(entourageComponent)
-                .inviteModule(InviteModule(this))
-                .build()
-                .inject(this)
     }
 
     // ----------------------------------

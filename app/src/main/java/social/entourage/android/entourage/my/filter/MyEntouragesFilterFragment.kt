@@ -35,7 +35,6 @@ class MyEntouragesFilterFragment  : BaseDialogFragment() {
         myentourages_filter_closed_switch?.setOnClickListener {onClosedSwitch()}
         myentourages_filter_demand_switch?.setOnClickListener {onDemandSwitch()}
         myentourages_filter_contribution_switch?.setOnClickListener {onContributionSwitch()}
-        myentourages_filter_tours_switch?.setOnClickListener {onToursSwitch()}
     }
 
     // ----------------------------------
@@ -51,7 +50,6 @@ class MyEntouragesFilterFragment  : BaseDialogFragment() {
         val filter = MyEntouragesFilter.get(context)
         myentourages_filter_demand_switch?.let {filter.isEntourageTypeDemand = it.isChecked}
         myentourages_filter_contribution_switch?.let {filter.isEntourageTypeContribution = it.isChecked}
-        myentourages_filter_tours_switch?.let {filter.isShowTours = it.isChecked}
         myentourages_filter_unread_switch?.let {filter.isShowUnreadOnly = it.isChecked}
         //myentourages_filter_created_by_me_switch?.let {filter.showOwnEntouragesOnly = it.isChecked}
         //myentourages_filter_partner_switch?.let {filter.showPartnerEntourages = it.isChecked}
@@ -82,10 +80,6 @@ class MyEntouragesFilterFragment  : BaseDialogFragment() {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_MYENTOURAGES_FILTER_OFFER)
     }
 
-    fun onToursSwitch() {
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_MYENTOURAGES_FILTER_TOUR)
-    }
-
     // ----------------------------------
     // Private Methods
     // ----------------------------------
@@ -93,14 +87,11 @@ class MyEntouragesFilterFragment  : BaseDialogFragment() {
         val filter = MyEntouragesFilter.get(this.context)
         myentourages_filter_demand_switch?.isChecked = filter.isEntourageTypeDemand
         myentourages_filter_contribution_switch?.isChecked = filter.isEntourageTypeContribution
-        myentourages_filter_tours_switch?.isChecked = filter.isShowTours
         myentourages_filter_unread_switch?.isChecked = filter.isShowUnreadOnly
         myentourages_filter_created_by_me_switch?.isChecked = filter.showOwnEntouragesOnly
         myentourages_filter_partner_switch?.isChecked = filter.showPartnerEntourages
         myentourages_filter_closed_switch?.isChecked = filter.isClosedEntourages
         val me = EntourageApplication.me(activity)
-        // Tours switch is displayed only for pro users
-        myentourages_filter_tours_layout?.visibility = if (me?.isPro == true) View.VISIBLE else View.GONE
         // Partner switch is displayed only if the user has a partner organisation
         myentourages_filter_partner_layout?.visibility = if (me?.partner != null) View.VISIBLE else View.GONE
     }

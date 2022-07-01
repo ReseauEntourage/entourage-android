@@ -8,17 +8,16 @@ import social.entourage.android.R
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
 import social.entourage.android.tools.log.AnalyticsEvents
-import javax.inject.Inject
 
 /**
  * Base Activity that only runs if the user is currently logged in
  */
 abstract class BaseSecuredActivity : BaseActivity() {
-    @Inject lateinit var authenticationController: AuthenticationController
+    protected val authenticationController: AuthenticationController
+        get() = EntourageApplication.get().authenticationController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupComponent(EntourageApplication.get(this).components)
         if (authenticationController.isAuthenticated && authenticationController.isTutorialDone()) {
             entApp?.finishLoginActivity()
         } else {
@@ -36,6 +35,13 @@ abstract class BaseSecuredActivity : BaseActivity() {
     }
 
     override fun getLink(linkId: String): String {
-        return authenticationController.me?.token?.let { getString(R.string.redirect_link_format, BuildConfig.ENTOURAGE_URL, linkId, it) } ?: super.getLink(linkId)
+        return authenticationController.me?.token?.let {
+            getString(
+                R.string.redirect_link_format,
+                BuildConfig.ENTOURAGE_URL,
+                linkId,
+                it
+            )
+        } ?: super.getLink(linkId)
     }
 }

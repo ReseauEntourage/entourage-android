@@ -6,12 +6,12 @@ import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
-class AvatarUploadPresenter @Inject constructor(private val activity: AvatarUploadView,
-                                                private val prepareAvatarUploadRepository: PrepareAvatarUploadRepository,
+class AvatarUploadPresenter constructor(private val activity: AvatarUploadView,
                                                 avatarUploadRepository: AvatarUploadRepository,
                                                 presenter: AvatarUpdatePresenter) : PrepareAvatarUploadRepository.Callback, AvatarUploadRepository.Callback {
     private val presenter: AvatarUpdatePresenter
     private val avatarUploadRepository: AvatarUploadRepository
+    private val prepareAvatarUploadRepository: PrepareAvatarUploadRepository = PrepareAvatarUploadRepository(this)
     private var file: File? = null
     private var avatarKey: String? = null
 
@@ -39,7 +39,6 @@ class AvatarUploadPresenter @Inject constructor(private val activity: AvatarUplo
     }
 
     init {
-        prepareAvatarUploadRepository.setCallback(this)
         this.avatarUploadRepository = avatarUploadRepository
         this.avatarUploadRepository.setCallback(this)
         this.presenter = presenter

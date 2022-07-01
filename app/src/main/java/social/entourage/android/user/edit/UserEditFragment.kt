@@ -17,8 +17,6 @@ import com.bumptech.glide.Glide
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_user_edit.*
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.EntourageApplication
-import social.entourage.android.EntourageComponent
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseOrganization
@@ -43,7 +41,7 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-    @Inject lateinit var presenter: UserEditPresenter
+    internal var presenter: UserEditPresenter = UserEditPresenter(this)
 
     private var scrollViewY = 0
 
@@ -68,7 +66,6 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupComponent(EntourageApplication.get(activity).components)
         title_close_button?.setOnClickListener { onCloseButtonClicked() }
         user_firstname_layout?.setOnClickListener { onEditFirstname() }
         user_lastname_layout?.setOnClickListener { onEditFirstname() }
@@ -109,14 +106,6 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
         if (isShowAction) {
             onActionSelectType()
         }
-    }
-
-    protected fun setupComponent(entourageComponent: EntourageComponent?) {
-        DaggerUserEditComponent.builder()
-                .entourageComponent(entourageComponent)
-                .userEditModule(UserEditModule(this))
-                .build()
-                .inject(this)
     }
 
     override fun onStart() {

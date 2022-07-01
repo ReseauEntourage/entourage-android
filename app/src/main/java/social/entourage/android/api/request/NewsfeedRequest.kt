@@ -33,25 +33,11 @@ interface NewsfeedRequest {
             @Query("partners_only") isPartnersOnly: Boolean
     ): Call<NewsfeedItemResponse>
 
-    @GET("feeds")
-    fun retrieveFeedByPage(
-            @Query("page") page: Int,
-            @Query("per") per: Int,
-            @Query("longitude") longitude: Double,
-            @Query("latitude") latitude: Double,
-            @Query("tour_types") tourTypes: String?,
-            @Query("show_tours") showTours: Boolean,
-            @Query("show_my_entourages_only") onlyMyEntourages: Boolean,
-            @Query("entourage_types") entourageTypes: String?,
-            @Query("time_range") timeFrame: Int
-    ): Call<NewsfeedItemResponse>
-
     @GET("myfeeds")
     fun retrieveMyFeeds(
             @Query("page") page: Int,
             @Query("per") per: Int,
             @Query("entourage_types") entourageTypes: String?,
-            @Query("tour_types") tourTypes: String?,
             @Query("status") status: String?,
             @Query("created_by_me") createdByMe: Boolean,
             @Query("show_my_partner_only") showMyPartnerOnly: Boolean,

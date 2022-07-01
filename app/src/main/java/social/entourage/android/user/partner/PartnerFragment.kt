@@ -69,7 +69,7 @@ class PartnerFragment : BaseDialogFragment() {
 
     fun getPartnerInfos() {
         partnerId?.let { partnerId ->
-            EntourageApplication.get().components.userRequest
+            EntourageApplication.get().apiModule.userRequest
                     .getPartnerDetail(partnerId)
                     .enqueue(object : Callback<PartnerResponse> {
                         override fun onResponse(call: Call<PartnerResponse>, response: Response<PartnerResponse>) {
@@ -96,7 +96,7 @@ class PartnerFragment : BaseDialogFragment() {
         isFollowParam["active"] = if (isFollow) "true" else "false"
         params["following"] = isFollowParam
 
-        EntourageApplication.get().components.userRequest.updateUserPartner(params).enqueue(object : Callback<ResponseBody>{
+        EntourageApplication.get().apiModule.userRequest.updateUserPartner(params).enqueue(object : Callback<ResponseBody>{
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     partner?.let {

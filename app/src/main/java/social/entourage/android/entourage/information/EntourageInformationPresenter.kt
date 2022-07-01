@@ -19,11 +19,12 @@ import javax.inject.Inject
  * Presenter controlling the EntourageInformationFragment
  * @see EntourageInformationFragment
  */
-class EntourageInformationPresenter @Inject constructor(
-        private val fragment: EntourageInformationFragment,
-        private val entourageRequest: EntourageRequest,
-        private val invitationRequest: InvitationRequest)  : FeedItemInformationPresenter() {
+class EntourageInformationPresenter (private val fragment: EntourageInformationFragment)  : FeedItemInformationPresenter() {
 
+    private val entourageRequest: EntourageRequest
+        get() = EntourageApplication.get().apiModule.entourageRequest
+    private val invitationRequest: InvitationRequest
+        get() = EntourageApplication.get().apiModule.invitationRequest
     // ----------------------------------
     // Api calls
     // ----------------------------------
@@ -57,7 +58,7 @@ class EntourageInformationPresenter @Inject constructor(
 
     override fun getUserInfo(userId: Int?) {
         if(userId == null) return
-       val userRequest = EntourageApplication.get().components.userRequest
+       val userRequest = EntourageApplication.get().apiModule.userRequest
         userRequest.getUser(userId).enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
@@ -284,4 +285,15 @@ class EntourageInformationPresenter @Inject constructor(
         })
     }
 
+    fun sendDeleteReport(entourageUUID: String) {
+        val call = entourageRequest.removeUserReportPrompt(entourageUUID)
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                fragment.validateReport()
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            }
+        })
+    }
 }

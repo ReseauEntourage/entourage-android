@@ -20,12 +20,13 @@ import social.entourage.android.base.BaseDialogFragment
 /**
  * User Report Fragment
  */
-class UserReportFragment  : BaseDialogFragment() {
+class UserReportFragment : BaseDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
     private var userId = 0
     private var sending = false
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -36,8 +37,10 @@ class UserReportFragment  : BaseDialogFragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_user_report, container, false)
@@ -46,8 +49,8 @@ class UserReportFragment  : BaseDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         showKeyboard()
-        user_report_close_button.setOnClickListener  {onCloseClicked()}
-        user_report_send_button.setOnClickListener {onSendClicked() }
+        user_report_close_button.setOnClickListener { onCloseClicked() }
+        user_report_send_button.setOnClickListener { onSendClicked() }
     }
 
     override val slideStyle: Int
@@ -75,7 +78,11 @@ class UserReportFragment  : BaseDialogFragment() {
             user_report_reason_edittext?.text?.toString()?.let { reason ->
                 if (reason.isBlank()) {
                     // The reason cannot be empty
-                    Toast.makeText(context, R.string.user_report_error_reason_empty, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        R.string.user_report_error_reason_empty,
+                        Toast.LENGTH_SHORT
+                    ).show()
                     return false
                 }
             }
@@ -85,22 +92,31 @@ class UserReportFragment  : BaseDialogFragment() {
     private fun sendReport() {
         sending = true
         val reason = user_report_reason_edittext?.text.toString()
-        val call = get().components.userRequest.reportUser(userId, UserReportWrapper(UserReport(reason)))
+        val call = get().apiModule.userRequest.reportUser(
+            userId,
+            UserReportWrapper(UserReport(reason, arrayListOf()))
+        )
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    Toast.makeText(activity, R.string.user_report_success, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, R.string.user_report_success, Toast.LENGTH_SHORT)
+                        .show()
                     if (!isStopped) {
                         dismiss()
                     }
                 } else {
-                    Toast.makeText(activity, R.string.user_report_error_send_failed, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        activity,
+                        R.string.user_report_error_send_failed,
+                        Toast.LENGTH_SHORT
+                    ).show()
                     sending = false
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Toast.makeText(activity, R.string.user_report_error_send_failed, Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, R.string.user_report_error_send_failed, Toast.LENGTH_SHORT)
+                    .show()
                 sending = false
             }
         })

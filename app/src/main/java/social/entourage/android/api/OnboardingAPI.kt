@@ -24,13 +24,13 @@ import kotlin.collections.set
  */
 class OnboardingAPI {
 
-    private val authenticationController:AuthenticationController = EntourageApplication.get().components.authenticationController
+    private val authenticationController:AuthenticationController = EntourageApplication.get().authenticationController
 
     private val onboardingService : UserRequest
-        get() =  EntourageApplication.get().components.userRequest //service ?: retrofit!!.create(UserRequest::class.java)
+        get() =  EntourageApplication.get().apiModule.userRequest //service ?: retrofit!!.create(UserRequest::class.java)
 
     private val loginService : LoginRequest
-        get() = EntourageApplication.get().components.loginRequest //retrofit!!.create(LoginRequest::class.java)
+        get() = EntourageApplication.get().apiModule.loginRequest //retrofit!!.create(LoginRequest::class.java)
 
     /**********************
      * Create user
@@ -79,7 +79,6 @@ class OnboardingAPI {
                     response.body()?.user?.let {
                         authenticationController.saveUser(it)
                         authenticationController.saveUserPhoneAndCode(phoneNumber, smsCode)
-                        authenticationController.saveUserToursOnly(false)
                     }
 
                     listener(true,response.body(),null)
@@ -293,7 +292,7 @@ class OnboardingAPI {
                 .put(requestBody)
                 .build()
 
-        EntourageApplication.get().components.okHttpClient.newCall(request).enqueue(object : okhttp3.Callback {
+        EntourageApplication.get().apiModule.okHttpClient.newCall(request).enqueue(object : okhttp3.Callback {
             override fun onFailure(call: okhttp3.Call, e: IOException) {
                 listener(false)
             }
@@ -408,7 +407,7 @@ class OnboardingAPI {
     }
 
     fun getAssociationsList(listener:(arrayAssociations:ArrayList<Partner>?) -> Unit) {
-        val request = EntourageApplication.get().components.partnerRequest
+        val request = EntourageApplication.get().apiModule.partnerRequest
         request.allPartners.enqueue(object : Callback<PartnersResponse> {
             override fun onResponse(call: Call<PartnersResponse>, response: Response<PartnersResponse>) {
                 if (response.isSuccessful) {

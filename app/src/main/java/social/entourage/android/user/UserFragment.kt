@@ -13,8 +13,6 @@ import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.android.synthetic.main.fragment_user.user_photo
 import kotlinx.android.synthetic.main.fragment_user_edit.*
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.EntourageApplication
-import social.entourage.android.EntourageComponent
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageConversation
 import social.entourage.android.api.model.User
@@ -33,7 +31,6 @@ import social.entourage.android.user.edit.photo.ChoosePhotoFragment.Companion.ne
 import social.entourage.android.user.partner.PartnerFragment
 import social.entourage.android.user.report.UserReportFragment
 import timber.log.Timber
-import javax.inject.Inject
 
 class UserFragment : BaseDialogFragment() {
     // ----------------------------------
@@ -41,7 +38,7 @@ class UserFragment : BaseDialogFragment() {
     // ----------------------------------
     private var toReturn: View? = null
 
-    @Inject lateinit var presenter: UserPresenter
+    private val presenter: UserPresenter = UserPresenter(this)
 
     private var user: User? = null
     private var isMyProfile = false
@@ -57,7 +54,6 @@ class UserFragment : BaseDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupComponent(EntourageApplication.get(activity).components)
         val requestedUserId = arguments?.getInt(User.KEY_USER_ID) ?: return
         val authenticatedUser = presenter.authenticatedUser
         if (authenticatedUser != null && requestedUserId == authenticatedUser.id) {
@@ -79,14 +75,6 @@ class UserFragment : BaseDialogFragment() {
         user_message_button?.setOnClickListener { onMessageUserClicked() }
         user_photo_button?.setOnClickListener { onPhotoEditClicked() }
         user_about_edit_button?.setOnClickListener { onAboutEditClicked() }
-    }
-
-    private fun setupComponent(entourageComponent: EntourageComponent?) {
-        DaggerUserComponent.builder()
-                .entourageComponent(entourageComponent)
-                .userModule(UserModule(this))
-                .build()
-                .inject(this)
     }
 
     override fun onStart() {
@@ -140,7 +128,7 @@ class UserFragment : BaseDialogFragment() {
         user?.let { u ->
             user_name?.setText(u.displayName)
             user_name?.setRoles(u.roles)
-            user_tours_count?.text = getString(R.string.user_entourage_count_format, u.stats?.getActionCount() ?: 0)
+            user_actions_count?.text = getString(R.string.user_entourage_count_format, u.stats?.getActionCount() ?: 0)
             val userAbout = u.about ?: ""
             user_profile_about_layout?.visibility = if (userAbout.isNotBlank()) View.VISIBLE else View.GONE
             ui_tv_user_description?.text = userAbout

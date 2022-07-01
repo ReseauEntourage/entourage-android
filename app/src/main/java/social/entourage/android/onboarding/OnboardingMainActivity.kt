@@ -16,6 +16,7 @@ import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.Partner
 import social.entourage.android.api.model.User
 import social.entourage.android.authentication.AuthenticationController
+import social.entourage.android.new_v8.MainActivity
 import social.entourage.android.onboarding.asso.AssoActivities
 import social.entourage.android.onboarding.asso.OnboardingAssoActivitiesFragment
 import social.entourage.android.onboarding.asso.OnboardingAssoFillFragment
@@ -35,7 +36,7 @@ import java.util.*
  * Created by Jr on 04/05/2020.
  */
 
-class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
+class OnboardingMainActivity : AppCompatActivity(), OnboardingCallback {
 
     lateinit var authenticationController: AuthenticationController
 
@@ -54,7 +55,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     private var temporaryEmail: String? = null
     private var temporaryImageUri: Uri? = null
 
-    private var userTypeSelected:UserTypeSelection = UserTypeSelection.NONE
+    private var userTypeSelected: UserTypeSelection = UserTypeSelection.NONE
     private var currentPositionAsso = 0
     private var currentPositionAlone = 0
     private var currentPositionNeighbour = 0
@@ -80,7 +81,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
         setContentView(R.layout.activity_onboarding_main)
 
-        authenticationController = EntourageApplication.get().components.authenticationController
+        authenticationController = EntourageApplication.get().authenticationController
         alertDialog = CustomProgressDialog(this)
         temporaryUser = User()
 
@@ -134,8 +135,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             if (isOK) {
                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_PHONE_SUBMIT_SUCCESS)
                 showSmsAndGo(R.string.login_smscode_sent)
-            }
-            else {
+            } else {
                 if (error != null) {
                     when {
                         error.contains("PHONE_ALREADY_EXIST") -> {
@@ -161,18 +161,18 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     private fun showPopAlreadySigned() {
         AlertDialog.Builder(this)
-                .setTitle("")
-                .setMessage(R.string.login_already_registered_go_back)
-                .setPositiveButton(R.string.button_OK) { dialog, _ ->
-                    dialog.dismiss()
+            .setTitle("")
+            .setMessage(R.string.login_already_registered_go_back)
+            .setPositiveButton(R.string.button_OK) { dialog, _ ->
+                dialog.dismiss()
 
-                    val intent = Intent(this, PreOnboardingChoiceActivity::class.java)
-                    intent.putExtra("isFromOnboarding",true)
-                    startActivity(intent)
-                    finish()
-                }
-                .create()
-                .show()
+                val intent = Intent(this, PreOnboardingChoiceActivity::class.java)
+                intent.putExtra("isFromOnboarding", true)
+                startActivity(intent)
+                finish()
+            }
+            .create()
+            .show()
     }
 
     private fun showSmsAndGo(textId: Int) {
@@ -184,47 +184,51 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     fun sendPasscode() {
         alertDialog.show(R.string.onboard_waiting_dialog)
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_SIGNUP_SUBMIT)
-        val phoneNumber = checkPhoneNumberFormat(temporaryCountrycode, temporaryUser.phone ?:"") ?: run {
-            showLoginFail(LOGIN_ERROR_INVALID_PHONE_FORMAT)
-            return
-        }
-        OnboardingAPI.getInstance().login(phoneNumber,temporaryPasscode ?: "") { isOK, loginResponse, error ->
-            if (isOK) {
-                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_SIGNUP_SUCCESS)
-                Timber.d("Inside login, auth controller : $authenticationController")
-                loginResponse?.let {
-                    authenticationController.saveUser(loginResponse.user)
-                }
-                authenticationController.saveUserPhoneAndCode(phoneNumber, temporaryPasscode)
-                authenticationController.saveUserToursOnly(false)
+        val phoneNumber =
+            checkPhoneNumberFormat(temporaryCountrycode, temporaryUser.phone ?: "") ?: run {
+                showLoginFail(LOGIN_ERROR_INVALID_PHONE_FORMAT)
+                return
+            }
+        OnboardingAPI.getInstance()
+            .login(phoneNumber, temporaryPasscode ?: "") { isOK, loginResponse, error ->
+                if (isOK) {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_SIGNUP_SUCCESS)
+                    Timber.d("Inside login, auth controller : $authenticationController")
+                    loginResponse?.let {
+                        authenticationController.saveUser(loginResponse.user)
+                    }
+                    authenticationController.saveUserPhoneAndCode(phoneNumber, temporaryPasscode)
 
-                //set the tutorial as done
-                val sharedPreferences = EntourageApplication.get().sharedPreferences
-                (sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, HashSet()) as HashSet<String>?)?.let {loggedNumbers ->
-                    loggedNumbers.add(phoneNumber)
-                    sharedPreferences.edit().putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers).apply()
-                }
-                alertDialog.dismiss()
-                goNextStep()
-            }
-            else {
-                alertDialog.dismiss()
-                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ERROR_ONBOARDING_SINGUP_FAIL)
-                if (error != null) {
-                    if (error.contains("INVALID_PHONE_FORMAT")) {
-                        showLoginFail(LOGIN_ERROR_INVALID_PHONE_FORMAT)
+                    //set the tutorial as done
+                    val sharedPreferences = EntourageApplication.get().sharedPreferences
+                    (sharedPreferences.getStringSet(
+                        EntourageApplication.KEY_TUTORIAL_DONE,
+                        HashSet()
+                    ) as HashSet<String>?)?.let { loggedNumbers ->
+                        loggedNumbers.add(phoneNumber)
+                        sharedPreferences.edit()
+                            .putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers)
+                            .apply()
+                    }
+                    alertDialog.dismiss()
+                    goNextStep()
+                } else {
+                    alertDialog.dismiss()
+                    AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ERROR_ONBOARDING_SINGUP_FAIL)
+                    if (error != null) {
+                        if (error.contains("INVALID_PHONE_FORMAT")) {
+                            showLoginFail(LOGIN_ERROR_INVALID_PHONE_FORMAT)
+                            return@login
+                        } else if (error.contains("UNAUTHORIZED")) {
+                            showLoginFail(LOGIN_ERROR_UNAUTHORIZED)
+                            return@login
+                        }
+                        showLoginFail(LOGIN_ERROR_UNKNOWN)
                         return@login
                     }
-                    else if (error.contains("UNAUTHORIZED")) {
-                        showLoginFail(LOGIN_ERROR_UNAUTHORIZED)
-                        return@login
-                    }
-                    showLoginFail(LOGIN_ERROR_UNKNOWN)
-                    return@login
+                    showLoginFail(LOGIN_ERROR_NETWORK)
                 }
-                showLoginFail(LOGIN_ERROR_NETWORK)
             }
-        }
     }
 
     private fun showLoginFail(errorCode: Int) {
@@ -244,11 +248,11 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         }
         if (!isFinishing) {
             AlertDialog.Builder(this)
-                    .setTitle(R.string.login_error_title)
-                    .setMessage(errorMessage)
-                    .setPositiveButton(R.string.login_retry_label) { _, _ -> }
-                    .create()
-                    .show()
+                .setTitle(R.string.login_error_title)
+                .setMessage(errorMessage)
+                .setPositiveButton(R.string.login_retry_label) { _, _ -> }
+                .create()
+                .show()
         }
     }
 
@@ -294,8 +298,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             Timber.d("Return update useremail ?")
             if (isOK && userResponse != null) {
                 authenticationController.saveUser(userResponse.user)
-            }
-            else {
+            } else {
                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ERROR_ONBOARDING_EMAIL_SUBMIT_ERROR)
             }
             alertDialog.dismiss()
@@ -309,8 +312,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
         if (userTypeSelected == UserTypeSelection.NONE) {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_CHOOSE_PROFILE_SKIP)
-        }
-        else {
+        } else {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_CHOOSE_PROFILE_SIGNUP)
         }
 
@@ -322,8 +324,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
             if (isAsso) {
                 currentPositionAsso += 1
                 moveToTunnelAsso()
-            }
-            else {
+            } else {
                 updateActivities()
                 goNextStep()
             }
@@ -335,40 +336,40 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         val isSdf = userTypeSelected == UserTypeSelection.ALONE
 
         activitiesSelection.setupForSdf(isSdf)
-        OnboardingAPI.getInstance().updateUserInterests(activitiesSelection.getArrayForWs()) { isOK, userResponse ->
-            if (isOK && userResponse != null) {
-                val authenticationController = EntourageApplication.get().components.authenticationController
-                authenticationController.saveUser(userResponse.user)
+        OnboardingAPI.getInstance()
+            .updateUserInterests(activitiesSelection.getArrayForWs()) { isOK, userResponse ->
+                if (isOK && userResponse != null) {
+                    val authenticationController =
+                        EntourageApplication.get().authenticationController
+                    authenticationController.saveUser(userResponse.user)
+                }
             }
-        }
     }
 
     //**********
     // Network Asso
 
     fun updateAssoInfos() {
-        if (temporaryAssoInfo?.name?.length ?:0 > 0 && temporaryAssoInfo?.postalCode?.length ?:0 > 0 && temporaryAssoInfo?.userRoleTitle?.length ?:0 > 0) {
+        if (temporaryAssoInfo?.name?.length ?: 0 > 0 && temporaryAssoInfo?.postalCode?.length ?: 0 > 0 && temporaryAssoInfo?.userRoleTitle?.length ?: 0 > 0) {
             alertDialog.show(R.string.onboard_waiting_dialog)
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_PRO_SIGNUP_SUBMIT)
             OnboardingAPI.getInstance().updateAssoInfos(temporaryAssoInfo) { isOK, _ ->
                 alertDialog.dismiss()
                 if (!isOK) {
                     AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ERROR_ONBOARDING_PRO_SIGNUP_ERROR)
-                }
-                else {
+                } else {
                     AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_PRO_SIGNUP_SUCCESS)
                 }
                 currentPositionAsso += 1
                 moveToTunnelAsso()
             }
-        }
-        else {
+        } else {
             AlertDialog.Builder(this)
-                    .setTitle(R.string.attention_pop_title)
-                    .setMessage(R.string.onboard_asso_fill_error)
-                    .setPositiveButton("OK") { _, _ -> }
-                    .create()
-                    .show()
+                .setTitle(R.string.attention_pop_title)
+                .setMessage(R.string.onboard_asso_fill_error)
+                .setPositiveButton("OK") { _, _ -> }
+                .create()
+                .show()
         }
     }
 
@@ -381,14 +382,13 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                     changeFragment()
                 }
             }
-        }
-        else {
+        } else {
             AlertDialog.Builder(this)
-                    .setTitle(R.string.attention_pop_title)
-                    .setMessage(R.string.onboard_asso_activity_error)
-                    .setPositiveButton("OK") { _, _ -> }
-                    .create()
-                    .show()
+                .setTitle(R.string.attention_pop_title)
+                .setMessage(R.string.onboard_asso_activity_error)
+                .setPositiveButton("OK") { _, _ -> }
+                .create()
+                .show()
         }
     }
 
@@ -398,9 +398,16 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     private fun changeFragment() {
         ui_bt_next?.disable()
-        val fragment = when(currentFragmentPosition) {
-            1 -> OnboardingNamesFragment.newInstance(temporaryUser.firstName, temporaryUser.lastName)
-            2 -> OnboardingPhoneFragment.newInstance(temporaryUser.firstName, temporaryCountrycode, temporaryPhone)
+        val fragment = when (currentFragmentPosition) {
+            1 -> OnboardingNamesFragment.newInstance(
+                temporaryUser.firstName,
+                temporaryUser.lastName
+            )
+            2 -> OnboardingPhoneFragment.newInstance(
+                temporaryUser.firstName,
+                temporaryCountrycode,
+                temporaryPhone
+            )
             3 -> OnboardingPasscodeFragment.newInstance(temporaryCountrycode, temporaryPhone)
             4 -> OnboardingTypeFragment.newInstance(temporaryUser.firstName, userTypeSelected)
             5 -> {
@@ -413,15 +420,14 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
         if (currentFragmentPosition == PositionType.Passcode.pos || currentFragmentPosition >= PositionType.Type.pos) {
             ui_onboard_main_iv_back?.visibility = View.INVISIBLE
-        }
-        else {
+        } else {
             ui_onboard_main_iv_back?.visibility = View.VISIBLE
         }
         try {
             supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.ui_container, fragment)
-                    .commit()
+                .beginTransaction()
+                .replace(R.id.ui_container, fragment)
+                .commit()
         } catch (e: IllegalStateException) {
             Timber.e(e)
         }
@@ -438,14 +444,17 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     private fun moveToTunnelAsso() {
         ui_bt_next?.enable(R.drawable.ic_onboard_bt_next)
 
-        val fragment: Fragment = when(currentPositionAsso) {
+        val fragment: Fragment = when (currentPositionAsso) {
             1 -> OnboardingAssoStartFragment.newInstance(true)
             2 -> OnboardingAssoStartFragment.newInstance(false)
             3 -> {
                 OnboardingAssoFillFragment.newInstance(temporaryAssoInfo)
             }
             4 -> {
-                OnboardingAssoActivitiesFragment.newInstance(temporaryAssoActivities,temporaryUser.firstName)
+                OnboardingAssoActivitiesFragment.newInstance(
+                    temporaryAssoActivities,
+                    temporaryUser.firstName
+                )
             }
             else -> {
                 changeFragment()
@@ -454,24 +463,33 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         }
 
         supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.ui_container, fragment)
-                .commit()
+            .beginTransaction()
+            .replace(R.id.ui_container, fragment)
+            .commit()
 
         updateButtons()
 
-        val percent = (currentFragmentPosition.toFloat() + currentPositionAsso.toFloat() + 1.5f ) / (numberOfSteps.toFloat() + 4.5f) * 100
+        val percent =
+            (currentFragmentPosition.toFloat() + currentPositionAsso.toFloat() + 1.5f) / (numberOfSteps.toFloat() + 4.5f) * 100
         ui_view_progress?.updatePercent(percent)
     }
 
     private fun moveToTunnelAlone() {
         ui_bt_next?.enable(R.drawable.ic_onboard_bt_next)
 
-        val fragment: Fragment = when(currentPositionAlone) {
-            1 ->  {
-                OnboardingPlaceFragment.newInstance(temporary2ndPlaceAddress, is2ndAddress = true, isSdf = true)
+        val fragment: Fragment = when (currentPositionAlone) {
+            1 -> {
+                OnboardingPlaceFragment.newInstance(
+                    temporary2ndPlaceAddress,
+                    is2ndAddress = true,
+                    isSdf = true
+                )
             }
-            2 -> OnboardingSdfNeighbourActivitiesFragment.newInstance(temporarySdfActivities,temporaryUser.firstName,true)
+            2 -> OnboardingSdfNeighbourActivitiesFragment.newInstance(
+                temporarySdfActivities,
+                temporaryUser.firstName,
+                true
+            )
             else -> {
                 changeFragment()
                 return
@@ -479,24 +497,33 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         }
 
         supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.ui_container, fragment)
-                .commit()
+            .beginTransaction()
+            .replace(R.id.ui_container, fragment)
+            .commit()
 
         updateButtons()
 
-        val percent = (currentFragmentPosition.toFloat() + currentPositionAlone.toFloat() ) / (numberOfSteps.toFloat() + currentPositionAlone.toFloat()) * 100
+        val percent =
+            (currentFragmentPosition.toFloat() + currentPositionAlone.toFloat()) / (numberOfSteps.toFloat() + currentPositionAlone.toFloat()) * 100
         ui_view_progress?.updatePercent(percent)
     }
 
     fun moveToTunnelNeighbour() {
         ui_bt_next?.enable(R.drawable.ic_onboard_bt_next)
 
-        val fragment: Fragment = when(currentPositionNeighbour) {
-            1 ->  {
-                OnboardingPlaceFragment.newInstance(temporary2ndPlaceAddress, is2ndAddress = true, isSdf = false)
+        val fragment: Fragment = when (currentPositionNeighbour) {
+            1 -> {
+                OnboardingPlaceFragment.newInstance(
+                    temporary2ndPlaceAddress,
+                    is2ndAddress = true,
+                    isSdf = false
+                )
             }
-            2 -> OnboardingSdfNeighbourActivitiesFragment.newInstance(temporaryNeighbourActivities,temporaryUser.firstName,false)
+            2 -> OnboardingSdfNeighbourActivitiesFragment.newInstance(
+                temporaryNeighbourActivities,
+                temporaryUser.firstName,
+                false
+            )
             else -> {
                 changeFragment()
                 return
@@ -504,13 +531,14 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         }
 
         supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.ui_container, fragment)
-                .commit()
+            .beginTransaction()
+            .replace(R.id.ui_container, fragment)
+            .commit()
 
         updateButtons()
 
-        val percent = (currentFragmentPosition.toFloat() + currentPositionNeighbour.toFloat() ) / (numberOfSteps.toFloat() + currentPositionNeighbour.toFloat()) * 100
+        val percent =
+            (currentFragmentPosition.toFloat() + currentPositionNeighbour.toFloat()) / (numberOfSteps.toFloat() + currentPositionNeighbour.toFloat()) * 100
         ui_view_progress?.updatePercent(percent)
     }
 
@@ -518,7 +546,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     // Navigation Methods
 
     fun goNext() {
-        when(currentFragmentPosition) {
+        when (currentFragmentPosition) {
             PositionType.Phone.pos -> {
                 callSignup()
                 return
@@ -543,8 +571,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                     currentPositionAsso += 1
                     moveToTunnelAsso()
                     return
-                }
-                else {
+                } else {
                     updateGoal(false)
                     return
                 }
@@ -572,12 +599,13 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
                 sendAddress(); return
             }
-            PositionType.EmailPwd.pos -> {updateUserEmailPwd(); return}
+            PositionType.EmailPwd.pos -> {
+                updateUserEmailPwd(); return
+            }
             PositionType.Passcode.pos -> {
                 if (temporaryPasscode?.length ?: 0 == 6) {
                     sendPasscode()
-                }
-                else {
+                } else {
                     displayToast(R.string.onboard_sms_no_pwd)
                 }
                 return
@@ -634,9 +662,14 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
                     }
                 }
                 val sharedPreferences = EntourageApplication.get().sharedPreferences
-                sharedPreferences.edit().putInt(EntourageApplication.KEY_ONBOARDING_USER_TYPE, userTypeSelected.pos).apply()
-                sharedPreferences.edit().putBoolean(EntourageApplication.KEY_IS_FROM_ONBOARDING, true).apply()
-                sharedPreferences.edit().putBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN,false).apply()
+                sharedPreferences.edit()
+                    .putInt(EntourageApplication.KEY_ONBOARDING_USER_TYPE, userTypeSelected.pos)
+                    .apply()
+                sharedPreferences.edit()
+                    .putBoolean(EntourageApplication.KEY_IS_FROM_ONBOARDING, true).apply()
+                sharedPreferences.edit()
+                    .putBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN, false)
+                    .apply()
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
@@ -645,12 +678,12 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 
     fun updateButtons() {
         ui_bt_pass?.visibility = View.INVISIBLE
-        when(currentFragmentPosition) {
+        when (currentFragmentPosition) {
             PositionType.Names.pos -> ui_bt_previous?.visibility = View.INVISIBLE
             PositionType.Type.pos -> {
                 if (currentPositionAsso == AssoPositionType.NONE.pos) {
                     ui_bt_previous?.visibility = View.INVISIBLE
-                  //  ui_bt_pass?.visibility = View.VISIBLE
+                    //  ui_bt_pass?.visibility = View.VISIBLE
                 } else {
                     ui_bt_previous?.visibility = View.VISIBLE
                 }
@@ -723,17 +756,15 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         temporary2ndPlaceAddress = null
     }
 
-    override fun updateAddress(placeAddress: User.Address?,is2ndAddress:Boolean) {
+    override fun updateAddress(placeAddress: User.Address?, is2ndAddress: Boolean) {
         if (is2ndAddress) {
-            temporary2ndPlaceAddress= placeAddress
+            temporary2ndPlaceAddress = placeAddress
             updateButtonNext(true)
-        }
-        else {
+        } else {
             temporaryPlaceAddress = placeAddress
             if (placeAddress != null) {
                 updateButtonNext(true)
-            }
-            else {
+            } else {
                 updateButtonNext(false)
             }
         }
@@ -748,8 +779,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         temporaryImageUri = imageUri
         if (temporaryImageUri != null) {
             updateButtonNext(true)
-        }
-        else {
+        } else {
             updateButtonNext(false)
         }
     }
@@ -757,8 +787,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
     override fun updateButtonNext(isValid: Boolean) {
         if (isValid) {
             ui_bt_next?.enable(R.drawable.ic_onboard_bt_next)
-        }
-        else {
+        } else {
             ui_bt_next?.disable()
         }
     }
@@ -783,12 +812,14 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
         this.temporaryAssoActivities = assoActivities
     }
 
-    override fun updateSdfNeighbourActivities(sdfNeighbourActivities: SdfNeighbourActivities,isSdf:Boolean) {
+    override fun updateSdfNeighbourActivities(
+        sdfNeighbourActivities: SdfNeighbourActivities,
+        isSdf: Boolean
+    ) {
         if (isSdf) {
             this.temporarySdfActivities = sdfNeighbourActivities
             this.temporarySdfActivities?.setupForSdf(true)
-        }
-        else {
+        } else {
             this.temporaryNeighbourActivities = sdfNeighbourActivities
             this.temporaryNeighbourActivities?.setupForSdf(false)
         }
@@ -799,7 +830,7 @@ class OnboardingMainActivity : AppCompatActivity(),OnboardingCallback {
 // Enums
 //**********//**********//**********
 
-enum class PositionType(val pos:Int) {
+enum class PositionType(val pos: Int) {
     Names(1),
     Phone(2),
     Passcode(3),
@@ -808,33 +839,35 @@ enum class PositionType(val pos:Int) {
     EmailPwd(6)
 }
 
-enum class AssoPositionType(val pos:Int) {
+enum class AssoPositionType(val pos: Int) {
     START(1),
     INFO(2),
     FILL(3),
     ACTIVITIES(4),
     NONE(0)
 }
-enum class AlonePositionType(val pos:Int) {
-    NONE(0)
-}
-enum class NeighbourPositionType(val pos:Int) {
+
+enum class AlonePositionType(val pos: Int) {
     NONE(0)
 }
 
-enum class UserTypeSelection(val pos:Int) {
+enum class NeighbourPositionType(val pos: Int) {
+    NONE(0)
+}
+
+enum class UserTypeSelection(val pos: Int) {
     NEIGHBOUR(1),
     ALONE(2),
     ASSOS(3),
     NONE(0);
 
-    fun getGoalString() : String {
-       return when(this) {
-           NEIGHBOUR -> User.USER_GOAL_NEIGHBOUR
-           ALONE -> User.USER_GOAL_ALONE
-           ASSOS -> User.USER_GOAL_ASSO
-           NONE -> User.USER_GOAL_NONE
-       }
+    fun getGoalString(): String {
+        return when (this) {
+            NEIGHBOUR -> User.USER_GOAL_NEIGHBOUR
+            ALONE -> User.USER_GOAL_ALONE
+            ASSOS -> User.USER_GOAL_ASSO
+            NONE -> User.USER_GOAL_NONE
+        }
     }
 }
 
@@ -845,20 +878,20 @@ enum class UserTypeSelection(val pos:Int) {
 interface OnboardingCallback {
     val errorMessage: MutableLiveData<String>
 
-    fun validateNames(firstname:String?,lastname:String?,isValidate:Boolean)
+    fun validateNames(firstname: String?, lastname: String?, isValidate: Boolean)
     fun validatePhoneNumber(prefix: String?, phoneNumber: String?)
-    fun validatePasscode(password:String)
+    fun validatePasscode(password: String)
     fun requestNewCode()
-    fun updateUsertype(userTypeSelected:UserTypeSelection)
-    fun updateAddress(placeAddress:User.Address?,is2ndAddress:Boolean)
-    fun updateEmailPwd(email:String?,pwd:String?,pwdConfirm:String?)
-    fun updateUserPhoto(imageUri:Uri?)
-    fun updateButtonNext(isValid:Boolean)
+    fun updateUsertype(userTypeSelected: UserTypeSelection)
+    fun updateAddress(placeAddress: User.Address?, is2ndAddress: Boolean)
+    fun updateEmailPwd(email: String?, pwd: String?, pwdConfirm: String?)
+    fun updateUserPhoto(imageUri: Uri?)
+    fun updateButtonNext(isValid: Boolean)
     fun goPreviousManually()
 
-    fun updateAssoInfos(asso:Partner?)
-    fun updateAssoActivities(assoActivities:AssoActivities)
-    fun updateSdfNeighbourActivities(sdfNeighbourActivities:SdfNeighbourActivities,isSdf: Boolean)
+    fun updateAssoInfos(asso: Partner?)
+    fun updateAssoActivities(assoActivities: AssoActivities)
+    fun updateSdfNeighbourActivities(sdfNeighbourActivities: SdfNeighbourActivities, isSdf: Boolean)
 
     fun goNextManually()
 }

@@ -7,12 +7,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.content.PermissionChecker
@@ -28,7 +30,13 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-@Deprecated(message="Migrate to class ChoosePhotoFragment", replaceWith = ReplaceWith("ChoosePhotoFragment", "social.entourage.android.user.edit.photo.ChoosePhotoFragment"))
+@Deprecated(
+    message = "Migrate to class ChoosePhotoFragment",
+    replaceWith = ReplaceWith(
+        "ChoosePhotoFragment",
+        "social.entourage.android.user.edit.photo.ChoosePhotoFragment"
+    )
+)
 class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
@@ -37,6 +45,51 @@ class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
     private var mCurrentPhotoPath: String? = null
     private var pickedImageUri: Uri? = null
     private var photoSource = 0
+
+    val getContent =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri.let { urii ->
+                photoSource = PICK_IMAGE_REQUEST
+                if (PermissionChecker.checkSelfPermission(
+                        requireActivity(),
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                    ) != PermissionChecker.PERMISSION_GRANTED
+                ) {
+                    pickedImageUri = urii
+                    requestPermissions(
+                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                        PICK_AND_CROP_IMAGE_PERMISSION_CODE
+                    )
+                } else {
+                    loadPickedImage(urii)
+                }
+            }
+        }
+
+    val photoFileUri = createImageFile()
+    private val resultLauncher = registerForActivityResult(
+        object : ActivityResultContracts.TakePicture() {
+            override fun createIntent(
+                context: Context,
+                input: Uri
+            ): Intent {
+                val takePictureIntent = super.createIntent(context, input)
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+                    takePictureIntent.putExtra(
+                        MediaStore.EXTRA_OUTPUT,
+                        photoFileUri
+                    )
+                    takePictureIntent.flags = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                }
+                return takePictureIntent
+            }
+        }) { success ->
+        if (success) {
+            photoSource = TAKE_PHOTO_REQUEST
+            showNextStep(photoFileUri)
+        }
+    }
+
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
@@ -48,8 +101,10 @@ class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SCREEN_09_6)
         // Inflate the layout for this fragment
@@ -59,9 +114,9 @@ class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         photo_choose_back_button.setOnClickListener { onBackClicked() }
-        photo_choose_ignore_button.setOnClickListener {onIgnoreClicked()}
-        photo_choose_photo_button.setOnClickListener { onChoosePhotoClicked()}
-        photo_choose_take_photo_button.setOnClickListener {onTakePhotoClicked()}
+        photo_choose_ignore_button.setOnClickListener { onIgnoreClicked() }
+        photo_choose_photo_button.setOnClickListener { onChoosePhotoClicked() }
+        photo_choose_take_photo_button.setOnClickListener { onTakePhotoClicked() }
 
     }
 
@@ -92,8 +147,15 @@ class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
         // i.e. the pickedImageUri is set
         if (pickedImageUri != null) {
             // Check if we have reading rights
-            if (PermissionChecker.checkSelfPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
-                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PICK_AND_CROP_IMAGE_PERMISSION_CODE)
+            if (PermissionChecker.checkSelfPermission(
+                    requireActivity(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ) != PermissionChecker.PERMISSION_GRANTED
+            ) {
+                requestPermissions(
+                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                    PICK_AND_CROP_IMAGE_PERMISSION_CODE
+                )
             } else {
                 // Proceed to next step
                 loadPickedImage(pickedImageUri)
@@ -101,47 +163,35 @@ class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-        super.onActivityResult(requestCode, resultCode, intent)
-        if(resultCode == Activity.RESULT_OK) {
-            when (requestCode) {
-                PICK_IMAGE_REQUEST-> {
-                    intent?.data?.let { uri ->
-                        photoSource = requestCode
-                        if (PermissionChecker.checkSelfPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
-                            pickedImageUri = uri
-                            requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PICK_AND_CROP_IMAGE_PERMISSION_CODE)
-                        } else {
-                            loadPickedImage(uri)
-                        }
-                    }
-                }
-                TAKE_PHOTO_REQUEST-> {
-                    photoSource = requestCode
-                    intent?.data?.let {
-                        showNextStep(it)
-                    } ?: run {
-                        mCurrentPhotoPath?.let { photoPath -> showNextStep(Uri.fromFile(File(photoPath))) }
-                    }
-                }
-            }
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         when (requestCode) {
             CAMERA_PERMISSION_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (PermissionChecker.checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
-                        requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), WRITE_STORAGE_PERMISSION_CODE)
+                    if (PermissionChecker.checkSelfPermission(
+                            requireActivity(),
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        ) != PermissionChecker.PERMISSION_GRANTED
+                    ) {
+                        requestPermissions(
+                            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                            WRITE_STORAGE_PERMISSION_CODE
+                        )
                     } else {
                         showTakePhotoActivity()
                     }
                 } else {
-                    Toast.makeText(activity, R.string.user_photo_error_camera_permission, Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        activity,
+                        R.string.user_photo_error_camera_permission,
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
-            PICK_AND_CROP_IMAGE_PERMISSION_CODE-> {
+            PICK_AND_CROP_IMAGE_PERMISSION_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (pickedImageUri != null) {
                         loadPickedImage(pickedImageUri)
@@ -149,14 +199,22 @@ class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
                         showChoosePhotoActivity()
                     }
                 } else {
-                    Toast.makeText(activity, R.string.user_photo_error_read_permission, Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        activity,
+                        R.string.user_photo_error_read_permission,
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
-            WRITE_STORAGE_PERMISSION_CODE-> {
+            WRITE_STORAGE_PERMISSION_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     showTakePhotoActivity()
                 } else {
-                    Toast.makeText(activity, R.string.user_photo_error_read_permission, Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        activity,
+                        R.string.user_photo_error_read_permission,
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }
@@ -178,8 +236,15 @@ class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
     fun onChoosePhotoClicked() {
         activity?.let {
             // write permission is used to store the cropped image before upload
-            if (PermissionChecker.checkSelfPermission(it, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
-                requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), PICK_AND_CROP_IMAGE_PERMISSION_CODE)
+            if (PermissionChecker.checkSelfPermission(
+                    it,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PermissionChecker.PERMISSION_GRANTED
+            ) {
+                requestPermissions(
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    PICK_AND_CROP_IMAGE_PERMISSION_CODE
+                )
             } else {
                 showChoosePhotoActivity()
             }
@@ -187,11 +252,22 @@ class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
     }
 
     private fun onTakePhotoClicked() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_DENIED
+        ) {
             requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE)
         } else {
-            if (PermissionChecker.checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
-                requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), WRITE_STORAGE_PERMISSION_CODE)
+            if (PermissionChecker.checkSelfPermission(
+                    requireActivity(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PermissionChecker.PERMISSION_GRANTED
+            ) {
+                requestPermissions(
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    WRITE_STORAGE_PERMISSION_CODE
+                )
             } else {
                 showTakePhotoActivity()
             }
@@ -212,7 +288,8 @@ class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
         // Show only images, no videos or anything else
         intent.type = "image/*"
         // Always show the chooser (if there are multiple options available)
-        startActivityForResult(Intent.createChooser(intent, null), PICK_IMAGE_REQUEST)
+
+        getContent.launch("image/*")
     }
 
     private fun showTakePhotoActivity() {
@@ -220,20 +297,20 @@ class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_PHOTO_TAKE_SUBMIT)
             // Ensure that there's a camera activity to handle the intent
             try {
-                val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 // Create the File where the photo should go
                 try {
-                    val photoFileUri = createImageFile()
-                    // Continue only if the File was successfully created
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFileUri)
-                    takePictureIntent.flags = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                    startActivityForResult(takePictureIntent, TAKE_PHOTO_REQUEST)
+                    resultLauncher.launch(photoFileUri)
                 } catch (ex: IOException) {
                     // Error occurred while creating the File
-                    Toast.makeText(activity, R.string.user_photo_error_photo_path, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        activity,
+                        R.string.user_photo_error_photo_path,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             } catch (e: ActivityNotFoundException) {
-                Toast.makeText(activity, R.string.user_photo_error_no_camera, Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, R.string.user_photo_error_no_camera, Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
@@ -252,21 +329,26 @@ class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
             // Save a file: path for use with ACTION_VIEW intents
             mCurrentPhotoPath = image.absolutePath
             // Return the URI
-            return FileProvider.getUriForFile(it, it.applicationContext.packageName + ".fileprovider", image)
+            return FileProvider.getUriForFile(
+                it,
+                it.applicationContext.packageName + ".fileprovider",
+                image
+            )
         } ?: run { throw IOException() }
     }
 
     private fun showNextStep(photoUri: Uri?) {
         photoUri?.let {
-            PhotoEditFragment.newInstance(it, photoSource).show(parentFragmentManager, PhotoEditFragment.TAG)
+            PhotoEditFragment.newInstance(it, photoSource)
+                .show(parentFragmentManager, PhotoEditFragment.TAG)
         } ?: run {
             Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
         }
     }
 
     // ----------------------------------
-    // Bus Listeners
-    // ----------------------------------
+// Bus Listeners
+// ----------------------------------
     @Subscribe
     fun onPhotoChosen(event: OnPhotoChosen) {
         pickedImageUri = event.photoUri
