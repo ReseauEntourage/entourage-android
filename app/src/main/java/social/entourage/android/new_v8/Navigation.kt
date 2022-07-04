@@ -15,6 +15,7 @@ import social.entourage.android.R
 import social.entourage.android.new_v8.groups.create.CreateGroupActivity
 import social.entourage.android.new_v8.groups.details.feed.FeedActivity
 import social.entourage.android.new_v8.groups.details.feed.FeedFragmentDirections
+import social.entourage.android.new_v8.home.pedago.PedagoListActivity
 import social.entourage.android.new_v8.models.Action
 import social.entourage.android.new_v8.models.Params
 import social.entourage.android.new_v8.models.Type
@@ -23,6 +24,7 @@ import social.entourage.android.new_v8.user.UserProfileActivity
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.tools.view.WebViewFragment
+import timber.log.Timber
 
 class Navigation {
     companion object {

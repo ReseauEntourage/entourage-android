@@ -6,9 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import social.entourage.android.EntourageApplication
@@ -17,8 +17,7 @@ import social.entourage.android.api.model.User
 import social.entourage.android.databinding.NewFragmentHomeBinding
 import social.entourage.android.new_v8.Navigation
 import social.entourage.android.new_v8.home.pedago.PedagoListActivity
-import social.entourage.android.new_v8.models.Recommandation
-import social.entourage.android.new_v8.models.Summary
+import social.entourage.android.new_v8.models.*
 import social.entourage.android.new_v8.profile.ProfileActivity
 
 class HomeFragment : Fragment() {
@@ -43,6 +42,7 @@ class HomeFragment : Fragment() {
         homePresenter.summary.observe(requireActivity(), ::updateContributionsView)
         updateView()
         handleProfileButton()
+        handlePedagogicalContentButton()
     }
 
     private fun updateContributionsView(summary: Summary) {
@@ -103,6 +103,24 @@ class HomeFragment : Fragment() {
         binding.imageUser.setOnClickListener {
             startActivity(
                 Intent(context, ProfileActivity::class.java)
+            )
+        }
+    }
+
+    private fun handlePedagogicalContentButton() {
+        binding.pedagogicalContent.title.text = getString(R.string.pedagogical_content)
+        binding.pedagogicalContent.root.elevation = 0F
+        binding.pedagogicalContent.root.background = AppCompatResources.getDrawable(
+            requireContext(),
+            R.drawable.new_bg_rounded_shadow_orange_opacity_50
+        )
+
+        binding.pedagogicalContent.root.setOnClickListener {
+            startActivity(
+                Intent(
+                    requireContext(),
+                    PedagoListActivity::class.java
+                )
             )
         }
     }

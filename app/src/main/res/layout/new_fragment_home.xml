@@ -217,6 +217,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
+                <include
+                    android:id="@+id/pedagogical_content"
+                    layout="@layout/new_recommendation_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp" />
+
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

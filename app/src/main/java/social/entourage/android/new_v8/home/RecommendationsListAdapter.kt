@@ -9,6 +9,7 @@ import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.R
 import social.entourage.android.databinding.NewRecommendationItemBinding
 import social.entourage.android.new_v8.models.Recommandation
+import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
 
 interface OnItemClickListener {
@@ -52,7 +53,6 @@ class RecommendationsListAdapter(
     }
 
     override fun getItemCount(): Int {
-        // return recommendationsList.size.coerceAtMost(Const.LIMIT_RECOMMENDATION)
-        return recommendationsList.size
+        return recommendationsList.size.coerceAtMost(Const.LIMIT_RECOMMENDATION)
     }
 }
