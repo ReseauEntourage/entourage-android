@@ -35,21 +35,21 @@ class Recommandation : Serializable {
     var name: String? = null
 
     @SerializedName("type")
-    var type: Type? = null
+    val type: Type? = null
 
     @SerializedName("action")
-    var action: Action? = null
+    val action: Action? = null
 
     @SerializedName("image_url")
-    var imageURL: String? = null
+    val imageURL: String? = null
 
     @SerializedName("params")
-    var params: Params? = null
+    val params: Params? = null
 }
 
 class Params : Serializable {
     @SerializedName("id")
-    val id: String? = null
+    val id: Int? = null
 
     @SerializedName("uuid")
     val uuid: String? = null

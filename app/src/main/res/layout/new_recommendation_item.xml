@@ -18,8 +18,8 @@
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="77dp"
+        android:layout_height="46dp"
         android:layout_marginRight="12dp"
         android:src="@drawable/new_illu_header_group" />
 

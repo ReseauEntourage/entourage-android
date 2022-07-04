@@ -9,11 +9,15 @@ import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.R
 import social.entourage.android.databinding.NewRecommendationItemBinding
 import social.entourage.android.new_v8.models.Recommandation
-import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
+
+interface OnItemClickListener {
+    fun onItemClick(recommendation: Recommandation)
+}
 
 class RecommendationsListAdapter(
     var recommendationsList: List<Recommandation>,
+    var onItemClick: OnItemClickListener
 ) : RecyclerView.Adapter<RecommendationsListAdapter.ViewHolder>() {
 
 
@@ -36,15 +40,19 @@ class RecommendationsListAdapter(
                 Glide.with(holder.itemView.context)
                     .load(this.imageURL)
                     .apply(RequestOptions().override(77.px, 46.px))
-                    .placeholder(R.drawable.ic_user_photo_small)
+                    .placeholder(R.drawable.new_group_illu)
                     .transform(RoundedCorners(5.px))
                     .into(binding.image)
                 binding.title.text = this.name
+                binding.root.setOnClickListener {
+                    onItemClick.onItemClick(this)
+                }
             }
         }
     }
 
     override fun getItemCount(): Int {
-        return recommendationsList.size.coerceAtMost(Const.LIMIT_RECOMMENDATION)
+        // return recommendationsList.size.coerceAtMost(Const.LIMIT_RECOMMENDATION)
+        return recommendationsList.size
     }
 }
