@@ -28,13 +28,7 @@ class ProfileActivity : AppCompatActivity(), AvatarUploadView {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val inflater = navHostFragment.navController.navInflater
         val graph = inflater.inflate(R.navigation.profile)
-
-        if (goToEditProfile) {
-            graph.setStartDestination(R.id.edit_profile_fragment)
-        } else {
-            graph.setStartDestination(R.id.profile_fragment)
-        }
-
+        graph.setStartDestination(if (goToEditProfile) R.id.edit_profile_fragment else R.id.profile_fragment)
         val navController = navHostFragment.navController
         navController.setGraph(graph, intent.extras)
         profilePresenter.isPhotoSuccess.observe(this, ::handlePhotoResponse)
