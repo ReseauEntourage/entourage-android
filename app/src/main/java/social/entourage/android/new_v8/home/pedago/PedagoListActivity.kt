@@ -43,6 +43,7 @@ class PedagoListActivity : AppCompatActivity() {
                 Category.ACT -> childListAct.add(it)
                 Category.UNDERSTAND -> childListUnderstand.add(it)
                 Category.INSPIRE -> childListInspire.add(it)
+                else -> {}
             }
         }
         sections.add(SectionHeader(childListUnderstand, getString(Category.UNDERSTAND.id)))

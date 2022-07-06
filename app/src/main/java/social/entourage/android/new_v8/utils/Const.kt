@@ -6,6 +6,7 @@ object Const {
     const val GROUP_DESCRIPTION_MIN_LENGTH = 1
     const val DEFAULT_VALUE = -1
     const val LIMIT_PHOTOS_MEMBERS = 3
+    const val LIMIT_RECOMMENDATION = 3
     const val REQUEST_KEY_CHOOSE_PHOTO = "request_key_choose_photo"
     const val CHOOSE_PHOTO_PATH = "choose_photo_path"
     const val CHOOSE_PHOTO = "choose_photo"
@@ -23,4 +24,6 @@ object Const {
     const val GROUP_NAME = "group_name"
     const val FROM_CREATE_GROUP = "from_create_group"
     const val REPORT_TYPE = "report_type"
+    const val USER_ID = "user_id"
+    const val GO_TO_EDIT_PROFILE = "go_to_edit_profile"
 }

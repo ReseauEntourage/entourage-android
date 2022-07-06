@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Subscribe
-import social.entourage.android.new_v8.profile.ProfileActivity
 import kotlinx.android.synthetic.main.layout_mainprofile.*
 import kotlinx.android.synthetic.main.layout_mainprofile_appversion.*
 import retrofit2.Call

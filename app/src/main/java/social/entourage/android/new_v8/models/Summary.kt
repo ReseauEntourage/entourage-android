@@ -1,6 +1,7 @@
 package social.entourage.android.new_v8.models
 
 import com.google.gson.annotations.SerializedName
+import social.entourage.android.R
 import java.io.Serializable
 
 class Summary : Serializable {
@@ -26,7 +27,7 @@ class Summary : Serializable {
     var neighborhoodParticipationsCount: Int? = null
 
     @SerializedName("recommandations")
-    var recommandations: List<Recommandation>? = null
+    var recommendations: MutableList<Recommandation>? = null
 }
 
 class Recommandation : Serializable {
@@ -34,25 +35,65 @@ class Recommandation : Serializable {
     var name: String? = null
 
     @SerializedName("type")
-    var type: String? = null
+    val type: Type? = null
 
     @SerializedName("action")
-    var action: String? = null
+    val action: Action? = null
 
     @SerializedName("image_url")
-    var imageURL: String? = null
+    val imageURL: String? = null
 
     @SerializedName("params")
-    var params: Params? = null
+    val params: Params? = null
 }
 
 class Params : Serializable {
     @SerializedName("id")
-    val id: String? = null
+    val id: Int? = null
 
     @SerializedName("uuid")
     val uuid: String? = null
 
     @SerializedName("url")
     val url: String? = null
+}
+
+enum class Type {
+    @SerializedName("conversation")
+    CONVERSATION,
+
+    @SerializedName("neighborhood")
+    NEIGHBORHOOD,
+
+    @SerializedName("profile")
+    PROFILE,
+
+    @SerializedName("poi")
+    POI,
+
+    @SerializedName("user")
+    USER,
+
+    @SerializedName("outing")
+    OUTING,
+
+    @SerializedName("webview")
+    WEBVIEW,
+
+    @SerializedName("contribution")
+    CONTRIBUTION,
+
+    @SerializedName("ask_for_help")
+    ASK_FOR_HELP;
+}
+
+enum class Action {
+    @SerializedName("show")
+    SHOW,
+
+    @SerializedName("index")
+    INDEX,
+
+    @SerializedName("new")
+    NEW;
 }

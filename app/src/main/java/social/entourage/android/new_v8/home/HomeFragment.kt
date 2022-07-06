@@ -6,15 +6,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.NewFragmentHomeBinding
+import social.entourage.android.new_v8.Navigation
 import social.entourage.android.new_v8.home.pedago.PedagoListActivity
-import social.entourage.android.new_v8.models.Summary
+import social.entourage.android.new_v8.models.*
 import social.entourage.android.new_v8.profile.ProfileActivity
 
 class HomeFragment : Fragment() {
@@ -39,7 +42,7 @@ class HomeFragment : Fragment() {
         homePresenter.summary.observe(requireActivity(), ::updateContributionsView)
         updateView()
         handleProfileButton()
-        handlePedagoContentButton()
+        handlePedagogicalContentButton()
     }
 
     private fun updateContributionsView(summary: Summary) {
@@ -70,6 +73,7 @@ class HomeFragment : Fragment() {
                 groupCard.isNotEmpty.isVisible = it > 0
             }
         }
+        summary.recommendations?.let { setRecommendationsList(it) }
     }
 
     private fun updateView() {
@@ -95,17 +99,48 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun handlePedagoContentButton() {
-        binding.pedago.setOnClickListener {
-            startActivity(Intent(context, PedagoListActivity::class.java))
-        }
-    }
-
     private fun handleProfileButton() {
         binding.imageUser.setOnClickListener {
             startActivity(
                 Intent(context, ProfileActivity::class.java)
             )
+        }
+    }
+
+    private fun handlePedagogicalContentButton() {
+        binding.pedagogicalContent.title.text = getString(R.string.pedagogical_content)
+        binding.pedagogicalContent.root.elevation = 0F
+        binding.pedagogicalContent.root.background = AppCompatResources.getDrawable(
+            requireContext(),
+            R.drawable.new_bg_rounded_shadow_orange_opacity_50
+        )
+
+        binding.pedagogicalContent.root.setOnClickListener {
+            startActivity(
+                Intent(
+                    requireContext(),
+                    PedagoListActivity::class.java
+                )
+            )
+        }
+    }
+
+    private fun setRecommendationsList(recommendationsList: MutableList<Recommandation>) {
+        binding.recommendations.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter =
+                RecommendationsListAdapter(recommendationsList, object : OnItemClickListener {
+                    override fun onItemClick(recommendation: Recommandation) {
+                        if (recommendation.type != null && recommendation.action != null && recommendation.params != null)
+                            Navigation.navigate(
+                                context,
+                                parentFragmentManager,
+                                recommendation.type,
+                                recommendation.action,
+                                recommendation.params
+                            )
+                    }
+                })
         }
     }
 }

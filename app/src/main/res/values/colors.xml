@@ -133,6 +133,7 @@
     <color name="grey">#707070</color>
     <color name="new_light_grey">#cdcdcd</color>
     <color name="bottom_sheet_background">#B5545454</color>
+    <color name="orange_opacity_50">#ffcbab</color>
 
 
 </resources>

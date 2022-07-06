@@ -76,6 +76,9 @@ class GroupsListAdapter(
                 if (userId == groupsList[position].admin?.id) {
                     binding.admin.visibility = View.VISIBLE
                     binding.star.visibility = View.VISIBLE
+                } else {
+                    binding.admin.visibility = View.GONE
+                    binding.star.visibility = View.GONE
                 }
                 binding.recyclerView.apply {
                     layoutManager =
@@ -101,6 +104,7 @@ class GroupsListAdapter(
             FromScreen.MY_GROUPS -> AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_MY_GROUP_CARD
             )
+            else -> {}
         }
     }
 }
