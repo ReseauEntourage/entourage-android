@@ -365,15 +365,16 @@ class LocationFragment : BaseDialogFragment() {
             try {
                 params[0]?.let { location ->
                     locationFragmentWeakReference?.get()?.activity?.let { activity ->
-                        val addresses = Geocoder(activity, Locale.getDefault())
-                            .getFromLocation(location.latitude, location.longitude, 1)
-                        if (addresses.size > 0) {
-                            addresses?.first()?.let { address ->
-                                if (address.maxAddressLineIndex >= 0) {
-                                    return address.getAddressLine(0)
+                        Geocoder(activity, Locale.getDefault())
+                            .getFromLocation(location.latitude, location.longitude, 1)?.let { addresses ->
+                                if (addresses.size > 0) {
+                                    addresses.first()?.let { address ->
+                                        if (address.maxAddressLineIndex >= 0) {
+                                            return address.getAddressLine(0)
+                                        }
+                                    }
                                 }
                             }
-                        }
                         return ""
                     }
                 }
