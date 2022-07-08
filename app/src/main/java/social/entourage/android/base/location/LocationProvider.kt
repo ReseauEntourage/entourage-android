@@ -7,23 +7,15 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
-import java.util.concurrent.TimeUnit.MINUTES
 import java.util.concurrent.TimeUnit.SECONDS
 
 class LocationProvider(
-    context: Context,
-    private var userType: UserType = UserType.PUBLIC
+    context: Context
 ) {
 
     companion object {
-        const val DURATION_INTERVAL_PUBLIC = 5L
-        const val DURATION_INTERVAL_PRO = 20L
+        const val DURATION_INTERVAL_PUBLIC = 30L
         const val DURATION_FAST_INTERVAL_PUBLIC = 1L
-        const val DURATION_FAST_INTERVAL_PRO = 10L
-    }
-
-    enum class UserType {
-        PUBLIC, PRO
     }
 
     private val context: Context = context.applicationContext
@@ -35,71 +27,25 @@ class LocationProvider(
             locationListener?.onLocationResult(LocationResult.create(listOf(value)))
         }
 
-    private val locationRequest: LocationRequest
-        get() = if (UserType.PRO == userType) {
-            createLocationRequestForProUsage()
-        } else {
-            createLocationRequestForPublicUsage()
-        }
+    val locationRequest: LocationRequest
+        get() = createLocationRequestForPublicUsage()
 
     init {
-        //googleApiClient = initializeGoogleApiClient(context.applicationContext)
         lastKnownLocation?.let { locationListener?.onLocationChanged(it) }
         requestLocationUpdates()
     }
 
-    /*
-        private fun initializeGoogleApiClient(context: Context): GoogleApiClient {
-            return GoogleApiClient.Builder(context)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build()
-        }
-     */
     fun start() {
         requestLocationUpdates()
-        /* if (!googleApiClient.isConnected) {
-                 googleApiClient.connect()
-             } else {
-                 requestLocationUpdates()
-             }
-             */
     }
 
     fun stop() {
         removeLocationUpdates()
-        /*if (googleApiClient.isConnected) {
-            googleApiClient.disconnect()
-            removeLocationUpdates()
-        }
-         */
     }
 
     fun setLocationListener(listener: LocationListener) {
         locationListener = listener
     }
-
-    fun setUserType(newUserType: UserType) {
-        if (userType != newUserType) {
-            userType = newUserType
-            requestLocationUpdates()
-        }
-    }
-/*
-    override fun onConnected(bundle: Bundle?) {
-        lastKnownLocation?.let { locationListener?.onLocationChanged(it) }
-        requestLocationUpdates()
-    }
-
-    override fun onConnectionSuspended(i: Int) {
-    }
-
-    override fun onConnectionFailed(connectionResult: ConnectionResult) {
-        Timber.e("Cannot connect to Google API Client $connectionResult")
-    }
-
- */
 
     @SuppressLint("MissingPermission")
     fun requestLastKnownLocation() {
@@ -112,7 +58,7 @@ class LocationProvider(
 
     @SuppressLint("MissingPermission")
     private fun requestLocationUpdates() {
-        if (isLocationPermissionGranted() /*&& googleApiClient.isConnected*/) {
+        if (isLocationPermissionGranted()) {
             //TODO add a looper here
             locationListener?.let {
                 LocationServices.getFusedLocationProviderClient(context)
@@ -122,7 +68,7 @@ class LocationProvider(
     }
 
     private fun removeLocationUpdates() {
-        if (isLocationPermissionGranted() /* && googleApiClient.isConnected */ && locationListener != null) {
+        if (isLocationPermissionGranted() && locationListener != null) {
             LocationServices.getFusedLocationProviderClient(context)
                 .removeLocationUpdates(locationListener!!)
         }
@@ -130,15 +76,8 @@ class LocationProvider(
 
     private fun createLocationRequestForPublicUsage(): LocationRequest {
         return LocationRequest.create()
-            .setInterval(MINUTES.toMillis(DURATION_INTERVAL_PUBLIC))
-            .setFastestInterval(MINUTES.toMillis(DURATION_FAST_INTERVAL_PUBLIC))
+            .setInterval(SECONDS.toMillis(DURATION_INTERVAL_PUBLIC))
+            .setFastestInterval(SECONDS.toMillis(DURATION_FAST_INTERVAL_PUBLIC))
             .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
-    }
-
-    private fun createLocationRequestForProUsage(): LocationRequest {
-        return LocationRequest.create()
-            .setInterval(SECONDS.toMillis(DURATION_INTERVAL_PRO))
-            .setFastestInterval(SECONDS.toMillis(DURATION_FAST_INTERVAL_PRO))
-            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
     }
 }

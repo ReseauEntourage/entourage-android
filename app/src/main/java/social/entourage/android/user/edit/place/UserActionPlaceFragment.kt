@@ -2,27 +2,23 @@ package social.entourage.android.user.edit.place
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.gms.location.*
 import com.google.android.libraries.places.compat.ui.PlaceAutocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import kotlinx.android.synthetic.main.fragment_onboarding_place.*
 import social.entourage.android.R
-import social.entourage.android.api.model.Partner
 import social.entourage.android.api.model.User
 import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.base.location.LocationProvider
 import social.entourage.android.base.location.LocationUtils
 import timber.log.Timber
 import java.io.IOException
@@ -116,7 +112,7 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
 
     open fun setupViews() {
         ui_onboard_bt_location?.setOnClickListener {
-            //onCurrentLocationClicked()
+            onCurrentLocationClicked()
         }
 
         ui_onboard_place_tv_location?.setOnClickListener {
@@ -134,15 +130,9 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
     }
 
     open fun updateCallback() {
-        userAddress = null
-        temporaryLocation?.let { tempLocation ->
-            userAddress =
+        userAddress = temporaryLocation?.let { tempLocation ->
                 User.Address(tempLocation.latitude, tempLocation.longitude, temporaryAddressName)
-        } ?: run {
-            temporaryAddressPlace?.let { tempAddressPlace ->
-                userAddress = tempAddressPlace
-            }
-        }
+            } ?: temporaryAddressPlace
     }
 
     //**********//**********//**********
@@ -165,11 +155,7 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
     @SuppressLint("MissingPermission")
     protected fun startRequestLocation() {
         if (LocationUtils.isLocationEnabled()) {
-            val locationRequest = LocationRequest()
-            locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            locationRequest.interval = 60000
-            locationRequest.fastestInterval = 60000
-            locationRequest.numUpdates = 1
+            val locationRequest = LocationProvider(context!!).locationRequest
 
             mFusedLocationClient =
                 LocationServices.getFusedLocationProviderClient(requireActivity())
@@ -178,12 +164,10 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
                 getString(R.string.onboard_place_getting_current_location)
             mFusedLocationClient?.requestLocationUpdates(
                 locationRequest, mLocationCallback,
-                Looper.myLooper()
+                null
             )
         } else {
             Toast.makeText(requireActivity(), "Activez la localisation", Toast.LENGTH_LONG).show()
-//            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-//            startActivity(intent)
         }
     }
 
@@ -191,22 +175,25 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
         ui_onboard_place_tv_location?.text = ""
         ui_onboard_place_tv_location?.hint = getString(R.string.onboard_place_placeholder)
         temporaryLocation?.let {
-            try {
-                val address = Geocoder(activity, Locale.getDefault()).getFromLocation(
-                    it.latitude,
-                    it.longitude,
-                    1
-                )
-                if (address != null && address.size > 0) {
-                    val street = address[0].thoroughfare
-                    val city = address[0].locality
-                    val cp = address[0].postalCode
+            activity?.let{ activity ->
+                try {
+                    Geocoder(activity, Locale.getDefault()).getFromLocation(
+                        it.latitude,
+                        it.longitude,
+                        1
+                    )?.let { address ->
+                        if (address.size > 0) {
+                            val street = address[0].thoroughfare
+                            val city = address[0].locality
+                            val cp = address[0].postalCode
 
-                    temporaryAddressName = "$street - $city - $cp"
-                    ui_onboard_place_tv_location?.text = temporaryAddressName
+                            temporaryAddressName = "$street - $city - $cp"
+                            ui_onboard_place_tv_location?.text = temporaryAddressName
+                        }
+                    }
+                } catch (e: IOException) {
+                    Timber.e(e)
                 }
-            } catch (e: IOException) {
-                Timber.e(e)
             }
         }
 

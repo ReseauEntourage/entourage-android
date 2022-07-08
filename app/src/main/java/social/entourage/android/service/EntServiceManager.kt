@@ -28,7 +28,6 @@ import social.entourage.android.base.location.EntLocation.currentLocation
 import social.entourage.android.base.location.EntLocation.latLng
 import social.entourage.android.base.location.LocationListener
 import social.entourage.android.base.location.LocationProvider
-import social.entourage.android.base.location.LocationProvider.UserType
 import social.entourage.android.base.map.filter.MapFilterFactory.mapFilter
 import social.entourage.android.base.newsfeed.NewsfeedPagination
 import social.entourage.android.base.newsfeed.NewsfeedTabItem
@@ -385,7 +384,7 @@ open class EntServiceManager(
                         authenticationController: AuthenticationController,
                         newsfeedRequest: NewsfeedRequest,
                         entourageRequest: EntourageRequest): EntServiceManager {
-            val provider = LocationProvider(entService, UserType.PUBLIC)
+            val provider = LocationProvider(entService)
             val mgr = EntServiceManager(
                     entService,
                     authenticationController,

@@ -111,10 +111,12 @@ class WebViewFragment : BaseDialogFragment() {
         webview?.loadUrl(requestedUrl)
 
         // add a gesture detector to the navigation bar
-        gestureDetectorCompat = GestureDetectorCompat(this.context, NavigationViewGestureListener())
-        webview_navigation_bar?.setOnTouchListener { _, event ->
-            if (gestureDetectorCompat?.onTouchEvent(event) == true || event.action != MotionEvent.ACTION_UP) true
-            else onUp(event)
+        this.context?.let { context ->
+            gestureDetectorCompat = GestureDetectorCompat(context, NavigationViewGestureListener())
+            webview_navigation_bar?.setOnTouchListener { _, event ->
+                if (gestureDetectorCompat?.onTouchEvent(event) == true || event.action != MotionEvent.ACTION_UP) true
+                else onUp(event)
+            }
         }
     }
 

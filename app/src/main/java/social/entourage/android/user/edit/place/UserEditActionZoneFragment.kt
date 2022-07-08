@@ -16,7 +16,7 @@ import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
 import social.entourage.android.new_v8.groups.create.CommunicationHandlerViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
+import java.io.IOException
 
 class UserEditActionZoneFragment : UserActionPlaceFragment() {
     private var mListener: FragmentListener? = null
@@ -78,18 +78,28 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
 
     private fun sendNetwork() {
         if (args.setGroupLocation) {
-            val geocoder = Geocoder(requireContext())
-            userAddress?.displayAddress?.let {
-                val addresses: MutableList<Address> =
-                    geocoder.getFromLocationName(userAddress?.displayAddress, 1);
-                if (addresses.size > 0) {
-                    with(viewModel.group) {
-                        latitude = addresses.first().latitude
-                        longitude = addresses.first().longitude
-                        displayAddress = userAddress?.displayAddress.toString()
+            try {
+                val geocoder = Geocoder(requireContext())
+                userAddress?.displayAddress?.let { userDisplayAddress->
+                    geocoder.getFromLocationName(userDisplayAddress, 1)?.let { addresses ->
+                        if (addresses.size > 0) {
+                            with(viewModel.group) {
+                                latitude = addresses.first().latitude
+                                longitude = addresses.first().longitude
+                                displayAddress = userDisplayAddress.toString()
+                            }
+                            mListener?.onUserEditActionZoneFragmentAddressSaved()
+                            findNavController().popBackStack()
+                        }
                     }
-                    mListener?.onUserEditActionZoneFragmentAddressSaved()
-                    findNavController().popBackStack()
+                }
+            } catch(e: IOException) {
+                activity?.let {
+                    Toast.makeText(
+                        it,
+                        R.string.user_action_zone_send_failed,
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         } else {
