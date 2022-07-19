@@ -427,6 +427,19 @@
         <item name="android:textColor">@color/orange</item>
     </style>
 
+    <style name="selected_filter">
+        <item name="android:textSize">@dimen/profile_labels</item>
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+
+    <style name="unselected_filter">
+        <item name="android:textSize">@dimen/profile_labels</item>
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
     <style name="MySeekBar" parent="Widget.AppCompat.SeekBar">
         <item name="android:progressBackgroundTint">#f4511e</item>
         <item name="android:progressTint">#388e3c</item>
@@ -464,7 +477,6 @@
         <item name="android:textColor">@color/red</item>
     </style>
 
-
     <style name="report">
         <item name="android:textSize">@dimen/profile_description</item>
         <item name="android:fontFamily">@font/nunitosans_bold</item>
@@ -479,6 +491,12 @@
 
     <style name="left_legend_grey">
         <item name="android:textSize">@dimen/profile_labels</item>
+        <item name="android:fontFamily">@font/nunitosans_light</item>
+        <item name="android:textColor">@color/grey</item>
+    </style>
+
+    <style name="center_legend_grey">
+        <item name="android:textSize">@dimen/contributions_empty_label</item>
         <item name="android:fontFamily">@font/nunitosans_light</item>
         <item name="android:textColor">@color/grey</item>
     </style>
@@ -501,6 +519,12 @@
         <item name="android:textColor">@color/light_orange</item>
     </style>
 
+    <style name="group_member_subtitle_black">
+        <item name="android:textSize">@dimen/group_member_subtitle</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
     <style name="left_courant_bold_orange">
         <item name="android:textSize">@dimen/profile_description</item>
         <item name="android:fontFamily">@font/quicksand_bold</item>
@@ -516,6 +540,12 @@
     <style name="left_courant_bold_black">
         <item name="android:textSize">@dimen/profile_description</item>
         <item name="android:fontFamily">@font/quicksand_bold</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="left_large_bold_black">
+        <item name="android:textSize">@dimen/contributions_value</item>
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
 
@@ -573,4 +603,16 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+
+    <style name="read_item">
+        <item name="android:textSize">@dimen/error_msg</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
+    <style name="watched_pedagogical">
+        <item name="android:textSize">@dimen/group_member_subtitle</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
 </resources>

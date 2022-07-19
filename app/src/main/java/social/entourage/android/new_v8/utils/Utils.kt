@@ -3,8 +3,11 @@ package social.entourage.android.new_v8.utils
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.database.Cursor
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
+import android.provider.OpenableColumns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -12,6 +15,11 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import social.entourage.android.R
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
+import java.nio.file.Files
 
 
 class Utils {
@@ -21,7 +29,8 @@ class Utils {
             title: String,
             content: String,
             action: String,
-            onYes: () -> (Unit)
+            onNo: () -> (Unit) = {},
+            onYes: (() -> Unit)?,
         ) {
             val layoutInflater = LayoutInflater.from(view?.context)
             val customDialog: View = layoutInflater.inflate(R.layout.new_custom_alert_dialog, null)
@@ -30,13 +39,21 @@ class Utils {
             val alertDialog = builder.create()
             customDialog.findViewById<TextView>(R.id.title).text = title
             customDialog.findViewById<TextView>(R.id.content).text = content
-            customDialog.findViewById<TextView>(R.id.yes).text = action
-            customDialog.findViewById<Button>(R.id.yes).setOnClickListener {
-                onYes()
+            if (onYes != null) {
+                customDialog.findViewById<TextView>(R.id.yes).text = action
+                customDialog.findViewById<Button>(R.id.yes).setOnClickListener {
+                    onYes()
+                    alertDialog.dismiss()
+                }
+            } else {
+                customDialog.findViewById<Button>(R.id.yes).visibility = View.GONE
+                customDialog.findViewById<TextView>(R.id.no).text =
+                    view?.context?.getString(R.string.button_OK)
+            }
+            customDialog.findViewById<Button>(R.id.no).setOnClickListener {
+                onNo()
                 alertDialog.dismiss()
             }
-            customDialog.findViewById<Button>(R.id.button)
-                .setOnClickListener { alertDialog.dismiss(); }
             alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             alertDialog.show()
         }
@@ -52,6 +69,48 @@ class Utils {
                     activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(view.windowToken, 0)
             }
+        }
+
+        @Throws(IOException::class)
+        fun getFile(context: Context, uri: Uri): File {
+            val destinationFilename =
+                File(context.filesDir.path + File.separatorChar + queryName(context, uri))
+            destinationFilename.deleteOnExit()
+            try {
+                context.contentResolver.openInputStream(uri)?.use { ins ->
+                    createFileFromStream(
+                        ins,
+                        destinationFilename
+                    )
+                }
+            } catch (ex: Exception) {
+                ex.printStackTrace()
+            }
+            return destinationFilename
+        }
+
+        private fun createFileFromStream(ins: InputStream, destination: File?) {
+            try {
+                FileOutputStream(destination).use { os ->
+                    val buffer = ByteArray(4096)
+                    var length: Int
+                    while (ins.read(buffer).also { length = it } > 0) {
+                        os.write(buffer, 0, length)
+                    }
+                    os.flush()
+                }
+            } catch (ex: java.lang.Exception) {
+                ex.printStackTrace()
+            }
+        }
+
+        private fun queryName(context: Context, uri: Uri): String {
+            val returnCursor: Cursor = context.contentResolver.query(uri, null, null, null, null)!!
+            val nameIndex: Int = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            returnCursor.moveToFirst()
+            val name: String = returnCursor.getString(nameIndex)
+            returnCursor.close()
+            return name
         }
     }
 }

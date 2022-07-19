@@ -69,7 +69,10 @@ class AuthenticationController() {
     fun isTutorialDone(): Boolean {
         user?.let { user ->
             val sharedPreferences = EntourageApplication.get().sharedPreferences
-            val loggedNumbers = sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, HashSet()) as HashSet<String>?
+            val loggedNumbers = sharedPreferences.getStringSet(
+                EntourageApplication.KEY_TUTORIAL_DONE,
+                HashSet()
+            ) as HashSet<String>?
             return loggedNumbers?.contains(user.phone) ?: false
         }
         return false
@@ -77,7 +80,11 @@ class AuthenticationController() {
 
     private fun loadUserPreferences() {
         val type = object : TypeToken<Map<Int?, UserPreferences?>?>() {}.type
-        userPreferencesHashMap = (appSharedPref.getObjectFromType<MutableMap<Int, UserPreferences?>>(PREF_KEY_USER_PREFERENCES, type) ?: HashMap()).toMutableMap()
+        userPreferencesHashMap =
+            (appSharedPref.getObjectFromType<MutableMap<Int, UserPreferences?>>(
+                PREF_KEY_USER_PREFERENCES,
+                type
+            ) ?: HashMap()).toMutableMap()
 
         // since we save the user preferences for all the users
         // we just need to check for an existing user preferences to see if it's a new user or not
@@ -86,7 +93,10 @@ class AuthenticationController() {
         } ?: UserPreferences()
         // Check if we have an old version of saving the map filter with hashmap
         val typeMapFilterHashMap = object : TypeToken<Map<Int?, MapFilter?>?>() {}.type
-        appSharedPref.getObjectFromType<Map<Int, MapFilter>>(PREF_KEY_MAP_FILTER_HASHMAP, typeMapFilterHashMap)?.let { mapFilterHashMap ->
+        appSharedPref.getObjectFromType<Map<Int, MapFilter>>(
+            PREF_KEY_MAP_FILTER_HASHMAP,
+            typeMapFilterHashMap
+        )?.let { mapFilterHashMap ->
             // save it to user preferences
             user?.let { user ->
                 userPreferences.mapFilter = mapFilterHashMap[user.id]
@@ -169,10 +179,10 @@ class AuthenticationController() {
         get() {
             if (user != null) {
                 return userPreferences.myEntouragesFilter
-                        ?: MyEntouragesFilter().also {
-                            userPreferences.myEntouragesFilter = it
-                            saveUserPreferences()
-                        }
+                    ?: MyEntouragesFilter().also {
+                        userPreferences.myEntouragesFilter = it
+                        saveUserPreferences()
+                    }
             }
             return null
         }

@@ -32,11 +32,13 @@ class GroupMembersPhotosAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
             with(membersList[position]) {
-                Glide.with(binding.image.context)
-                    .load(Uri.parse(this.avatarUrl))
-                    .apply(RequestOptions().override(25.px, 25.px))
-                    .circleCrop()
-                    .into(binding.image)
+                this.avatarUrl?.let {
+                    Glide.with(binding.image.context)
+                        .load(Uri.parse(it))
+                        .apply(RequestOptions().override(25.px, 25.px))
+                        .circleCrop()
+                        .into(binding.image)
+                }
             }
         }
     }

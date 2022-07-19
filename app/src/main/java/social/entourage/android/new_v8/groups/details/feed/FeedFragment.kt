@@ -19,6 +19,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.android.material.appbar.AppBarLayout
+import kotlinx.android.synthetic.main.new_fragment_feed.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
@@ -32,6 +33,7 @@ import social.entourage.android.new_v8.models.GroupUiModel
 import social.entourage.android.new_v8.models.Post
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
 import uk.co.markormesher.android_fab.SpeedDialMenuItem
@@ -76,11 +78,23 @@ class FeedFragment : Fragment() {
         override fun onMenuItemClick(position: Int): Boolean {
             when (position) {
                 0 -> {
+                    AnalyticsEvents.logEvent(
+                        AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST
+                    )
                     val intent = Intent(context, CreatePostActivity::class.java)
                     intent.putExtra(Const.GROUP_ID, groupId)
                     startActivity(intent)
                 }
-                else -> {}
+                1 -> {
+                    AnalyticsEvents.logEvent(
+                        AnalyticsEvents.ACTION_GROUP_FEED_NEW_EVENT
+                    )
+                }
+                else -> {
+                    AnalyticsEvents.logEvent(
+                        AnalyticsEvents.ACTION_GROUP_FEED_PLUS_CLOSE
+                    )
+                }
             }
             return true
         }
@@ -117,10 +131,12 @@ class FeedFragment : Fragment() {
         handleImageViewAnimation()
         handleMembersButton()
         handleAboutButton()
-        initializePosts()
         handleSwipeRefresh()
         onFragmentResult()
         binding.createPost.speedDialMenuAdapter = speedDialMenuAdapter
+        binding.createPost.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_PLUS)
+        }
         binding.createPost.setContentCoverColour(
             ContextCompat.getColor(
                 requireContext(),
@@ -139,6 +155,9 @@ class FeedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = NewFragmentFeedBinding.inflate(inflater, container, false)
+        AnalyticsEvents.logEvent(
+            AnalyticsEvents.VIEW_GROUP_FEED_SHOW
+        )
         return binding.root
     }
 
@@ -163,14 +182,19 @@ class FeedFragment : Fragment() {
             binding.postsNewRecyclerview.visibility = View.VISIBLE
             binding.postsLayoutEmptyState.visibility = View.GONE
             binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
+        } else {
+            binding.postsNew.root.visibility = View.GONE
+            binding.postsNewRecyclerview.visibility = View.GONE
         }
+
         if (oldPostsList.isNotEmpty()) {
             if (newPostsList.isNotEmpty()) binding.postsOld.root.visibility = View.VISIBLE
             else binding.postsOld.root.visibility = View.GONE
             binding.postsOldRecyclerview.visibility = View.VISIBLE
             binding.postsLayoutEmptyState.visibility = View.GONE
             binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
-
+        } else {
+            binding.postsOldRecyclerview.visibility = View.GONE
         }
     }
 
@@ -186,7 +210,20 @@ class FeedFragment : Fragment() {
             group = it
             updateView()
         }
+    }
 
+    private fun handleCreatePostButton() {
+        if (group.member) {
+            binding.createPost.show()
+            binding.eventsLayoutEmptyState.empty_state_events_subtitle.visibility = View.VISIBLE
+            binding.postsLayoutEmptyState.subtitle.visibility = View.VISIBLE
+            binding.postsLayoutEmptyState.arrow.visibility = View.VISIBLE
+        } else {
+            binding.createPost.hide(true)
+            binding.eventsLayoutEmptyState.empty_state_events_subtitle.visibility = View.GONE
+            binding.postsLayoutEmptyState.subtitle.visibility = View.GONE
+            binding.postsLayoutEmptyState.arrow.visibility = View.GONE
+        }
     }
 
     private fun handleImageViewAnimation() {
@@ -238,6 +275,8 @@ class FeedFragment : Fragment() {
              */
         }
         updateButtonJoin()
+        initializePosts()
+        handleCreatePostButton()
     }
 
     private fun updateButtonJoin() {
@@ -271,6 +310,9 @@ class FeedFragment : Fragment() {
 
     private fun handleFollowButton() {
         binding.join.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_FEED_JOIN
+            )
             if (!group.member) groupPresenter.joinGroup(groupId)
         }
     }
@@ -280,8 +322,10 @@ class FeedFragment : Fragment() {
         if (hasJoined) {
             group.member = !group.member
             updateButtonJoin()
+            handleCreatePostButton()
         }
     }
+
 
     private fun initializeMembersPhotos() {
         binding.recyclerView.apply {
@@ -300,11 +344,11 @@ class FeedFragment : Fragment() {
     private fun initializePosts() {
         binding.postsNewRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = GroupPostsAdapter(newPostsList)
+            adapter = GroupPostsAdapter(newPostsList, groupId, group.member, group.name)
         }
         binding.postsOldRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = GroupPostsAdapter(oldPostsList)
+            adapter = GroupPostsAdapter(oldPostsList, groupId, group.member, group.name)
         }
     }
 
@@ -328,12 +372,18 @@ class FeedFragment : Fragment() {
 
     private fun handleBackButton() {
         binding.iconBack.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_FEED_BACK_ARROW
+            )
             requireActivity().finish()
         }
     }
 
     private fun handleSettingsButton() {
         binding.iconSettings.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_FEED_OPTION
+            )
             with(group) {
                 groupUI = GroupUiModel(
                     groupId, name,
@@ -353,6 +403,9 @@ class FeedFragment : Fragment() {
 
     private fun handleMembersButton() {
         binding.members.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_FEED_MORE_MEMBERS
+            )
             val action = FeedFragmentDirections.actionGroupFeedToGroupMembers(groupId)
             findNavController().navigate(action)
         }
@@ -360,6 +413,9 @@ class FeedFragment : Fragment() {
 
     private fun handleAboutButton() {
         binding.more.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_FEED_MORE_DESCRIPTION
+            )
             groupUI = GroupUiModel(
                 groupId,
                 group.name,

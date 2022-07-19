@@ -1,8 +1,12 @@
 package social.entourage.android.new_v8.groups.details.posts
 
+import android.content.Context
+import android.content.Intent
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -17,14 +21,16 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
 import social.entourage.android.databinding.NewActivityCreatePostBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
-import social.entourage.android.new_v8.user.ReportUserModalFragment
+import social.entourage.android.new_v8.groups.details.feed.FeedActivity
 import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.px
-import social.entourage.android.tools.Utils
+import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
-import java.net.URI
+import java.io.InputStream
 
 
 class CreatePostActivity : AppCompatActivity() {
@@ -32,19 +38,23 @@ class CreatePostActivity : AppCompatActivity() {
     lateinit var binding: NewActivityCreatePostBinding
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
     private var groupId = Const.DEFAULT_VALUE
-    var imageURI: String? = null
-    private var photoFile: File? = null
-    private var bitmap: Bitmap? = null
+    private var shouldClose = false
+    var imageURI: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AnalyticsEvents.logEvent(
+            AnalyticsEvents.VIEW_GROUP_FEED_NEW_POST_SCREEN
+        )
         binding = DataBindingUtil.setContentView(
             this,
             R.layout.new_activity_create_post
         )
         groupId = intent.getIntExtra(Const.GROUP_ID, Const.DEFAULT_VALUE)
+        shouldClose = intent.getBooleanExtra(Const.FROM_CREATE_GROUP, false)
         groupPresenter.hasPost.observe(this, ::handlePost)
         setView()
+        handleDeleteImageButton()
         handleAddPhotoButton()
         getResult()
         validatePost()
@@ -54,22 +64,36 @@ class CreatePostActivity : AppCompatActivity() {
 
     private fun handlePost(hasPost: Boolean) {
         if (hasPost) {
+            if (shouldClose) {
+                startActivity(
+                    Intent(this, FeedActivity::class.java).putExtra(
+                        Const.GROUP_ID,
+                        groupId
+                    )
+                )
+            }
             finish()
         }
     }
 
     private fun handleAddPhotoButton() {
         binding.addPhotoLayout.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST_ADD_PIC
+            )
             choosePhoto()
         }
-        binding.addPhoto.setOnClickListener {
+        binding.photoLayout.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST_ADD_PIC
+            )
             choosePhoto()
         }
     }
 
     private fun choosePhoto() {
         val choosePhotoModalFragment = ChoosePhotoModalFragment.newInstance()
-        choosePhotoModalFragment.show(supportFragmentManager, ReportUserModalFragment.TAG)
+        choosePhotoModalFragment.show(supportFragmentManager, ChoosePhotoModalFragment.TAG)
     }
 
     private fun setView() {
@@ -83,35 +107,38 @@ class CreatePostActivity : AppCompatActivity() {
         )
     }
 
+    private fun handleDeleteImageButton() {
+        binding.deleteImage.setOnClickListener {
+            binding.addPhotoLayout.visibility = View.VISIBLE
+            binding.photoLayout.visibility = View.GONE
+            imageURI = null
+        }
+    }
+
     private fun getResult() {
         supportFragmentManager.setFragmentResultListener(
             Const.REQUEST_KEY_CHOOSE_PHOTO,
             this
         ) { _, bundle ->
-            imageURI = bundle.getString(Const.CHOOSE_PHOTO)
+            imageURI = bundle.getParcelable(Const.CHOOSE_PHOTO)
             imageURI?.let {
                 binding.addPhotoLayout.visibility = View.GONE
-                binding.addPhoto.visibility = View.VISIBLE
+                binding.photoLayout.visibility = View.VISIBLE
                 Glide.with(this)
-                    .load(Uri.parse(it))
+                    .load(it)
                     .transform(CenterCrop(), RoundedCorners(14.px))
                     .into(binding.addPhoto)
                 handleSaveButtonState(true)
-                try {
-                    contentResolver?.let { contentResolver ->
-                        bitmap =
-                            Utils.getBitmapFromUri(Uri.parse(it), contentResolver)
-                    }
-                } catch (e: IOException) {
-                    Timber.e(e)
-                }
             }
         }
     }
 
     private fun validatePost() {
         binding.validate.button.setOnClickListener {
-            if (imageURI.isNullOrEmpty() && isMessageValid()) {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST_VALIDATE
+            )
+            if (imageURI == null && isMessageValid()) {
                 val messageChat = ArrayMap<String, Any>()
                 messageChat["content"] = binding.message.text.toString()
                 val request = ArrayMap<String, Any>()
@@ -119,14 +146,12 @@ class CreatePostActivity : AppCompatActivity() {
                 Timber.e(messageChat.toString())
                 groupPresenter.addPost(groupId, request)
             }
-            if (!imageURI.isNullOrEmpty()) {
-                photoFile = bitmap?.let { it1 ->
-                    Utils.saveBitmapToFile(it1, null)
-                }
-                photoFile?.let { photoFile ->
+            if (imageURI != null) {
+                imageURI?.let { it1 ->
+                    val file = Utils.getFile(this, it1)
                     groupPresenter.addPost(
                         binding.message.text.toString(),
-                        photoFile,
+                        file,
                         groupId
                     )
                 }
@@ -146,7 +171,7 @@ class CreatePostActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                handleSaveButtonState(isMessageValid() || !imageURI.isNullOrEmpty())
+                handleSaveButtonState(isMessageValid() || imageURI != null)
             }
 
             override fun afterTextChanged(s: Editable) {
@@ -165,5 +190,4 @@ class CreatePostActivity : AppCompatActivity() {
     private fun isMessageValid(): Boolean {
         return binding.message.text.isNotEmpty() && binding.message.text.isNotBlank()
     }
-
 }

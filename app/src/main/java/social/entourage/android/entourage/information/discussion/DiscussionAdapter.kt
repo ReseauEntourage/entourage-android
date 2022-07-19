@@ -9,7 +9,6 @@ import java.util.*
  * Created by mihaiionescu on 02/03/16.
  */
 class DiscussionAdapter : BaseAdapter() {
-    private val mDaySections = HashMap<Date, Int>()
 
     private fun addDateSeparator(date: Date, notifyView: Boolean) {
         val separator = DateSeparator(date)

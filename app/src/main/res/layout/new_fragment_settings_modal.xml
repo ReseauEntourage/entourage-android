@@ -170,12 +170,13 @@
 
 
                 <TextView
+                    android:id="@+id/report_group"
                     style="@style/left_courant_bold_orange"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="35dp"
                     android:paddingTop="20dp"
-                    android:paddingBottom="10dp"
+                    android:paddingBottom="20dp"
                     android:text="@string/report_group" />
 
                 <TextView
@@ -184,7 +185,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="35dp"
-                    android:paddingTop="10dp"
                     android:paddingBottom="20dp"
                     android:text="@string/leave_group"
                     android:visibility="gone" />

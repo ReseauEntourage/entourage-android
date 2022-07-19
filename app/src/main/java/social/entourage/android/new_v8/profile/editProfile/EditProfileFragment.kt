@@ -19,6 +19,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentEditProfileBinding
 import social.entourage.android.new_v8.profile.ProfileActivity
+import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.transformIntoDatePicker
 import social.entourage.android.new_v8.utils.trimEnd
 import social.entourage.android.tools.isValidEmail
@@ -46,6 +47,8 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
     private lateinit var avatarUploadPresenter: AvatarUploadPresenter
     private val editProfilePresenter: EditProfilePresenter by lazy { EditProfilePresenter() }
 
+    var fromHomePage = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,6 +70,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
         onEditImage()
         onEditActionZone()
         initializeDescriptionCounter()
+        fromHomePage = activity?.intent?.extras?.getBoolean(Const.GO_TO_EDIT_PROFILE) == true
         setBackButton()
         editProfilePresenter.isUserUpdated.observe(requireActivity(), ::handleUpdateResponse)
 
@@ -146,12 +150,16 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
 
     private fun onEditActionZone() {
         binding.cityAction.layout.setOnClickListener {
-            findNavController().navigate(R.id.action_edit_profile_fragment_to_edit_action_zone_fragment)
+            val action =
+                EditProfileFragmentDirections.actionEditProfileFragmentToEditActionZoneFragment(
+                    false
+                )
+            findNavController().navigate(action)
         }
     }
 
     private fun setBackButton() {
-        binding.header.iconBack.setOnClickListener { findNavController().popBackStack() }
+        binding.header.iconBack.setOnClickListener { if (fromHomePage) activity?.finish() else findNavController().popBackStack() }
     }
 
     private fun updateUserView() {

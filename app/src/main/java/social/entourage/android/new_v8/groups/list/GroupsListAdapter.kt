@@ -17,10 +17,12 @@ import social.entourage.android.new_v8.groups.details.feed.FeedActivity
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class GroupsListAdapter(
     var groupsList: List<Group>,
-    var userId: Int?
+    var userId: Int?,
+    var from: FromScreen?
 ) : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
 
 
@@ -41,6 +43,7 @@ class GroupsListAdapter(
         with(holder) {
             with(groupsList[position]) {
                 binding.layout.setOnClickListener {
+                    handleAnalytics()
                     with(binding.layout.context) {
                         startActivity(
                             Intent(this, FeedActivity::class.java).putExtra(
@@ -49,7 +52,6 @@ class GroupsListAdapter(
                             )
                         )
                     }
-
                 }
                 binding.groupName.text = this.name
                 this.members?.size?.let {
@@ -62,16 +64,21 @@ class GroupsListAdapter(
                     holder.itemView.context.getString(R.string.future_outgoing_events_number),
                     this.futureOutingsCount
                 )
-                Glide.with(binding.image.context)
-                    .load(Uri.parse(this.imageUrl))
-                    .apply(RequestOptions().override(90.px, 90.px))
-                    .placeholder(R.drawable.new_illu_header_group)
-                    .transform(CenterCrop(), RoundedCorners(20.px))
-                    .into(binding.image)
+                this.imageUrl?.let {
+                    Glide.with(binding.image.context)
+                        .load(Uri.parse(it))
+                        .apply(RequestOptions().override(90.px, 90.px))
+                        .placeholder(R.drawable.new_illu_header_group)
+                        .transform(CenterCrop(), RoundedCorners(20.px))
+                        .into(binding.image)
+                }
                 val listAdapter = GroupsInterestsListAdapter(this.interests)
                 if (userId == groupsList[position].admin?.id) {
                     binding.admin.visibility = View.VISIBLE
                     binding.star.visibility = View.VISIBLE
+                } else {
+                    binding.admin.visibility = View.GONE
+                    binding.star.visibility = View.GONE
                 }
                 binding.recyclerView.apply {
                     layoutManager =
@@ -85,4 +92,26 @@ class GroupsListAdapter(
     override fun getItemCount(): Int {
         return groupsList.size
     }
+
+    private fun handleAnalytics() {
+        when (from) {
+            FromScreen.DISCOVER -> AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_DISCOVER_CARD
+            )
+            FromScreen.DISCOVER_SEARCH -> AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_SEARCH_SEE_RESULT
+            )
+            FromScreen.MY_GROUPS -> AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_MY_GROUP_CARD
+            )
+            else -> {}
+        }
+    }
+}
+
+
+enum class FromScreen {
+    MY_GROUPS,
+    DISCOVER_SEARCH,
+    DISCOVER
 }

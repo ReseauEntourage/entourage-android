@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_login_next.*
 import social.entourage.android.EntourageApplication
-import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
@@ -15,13 +14,13 @@ import social.entourage.android.tools.enable
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CustomProgressDialog
 
-class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
+class LoginNextActivity : AppCompatActivity(), LoginNextCallback {
 
-    private var temporaryPlaceAddress:User.Address? = null
+    private var temporaryPlaceAddress: User.Address? = null
     private var currentPosition = 0
     private var numberOfSteps = 1
     lateinit var alertDialog: CustomProgressDialog
-    private var currentUser:User? = null
+    private var currentUser: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +46,7 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
     }
 
     fun goMain() {
-        startActivity(Intent(this, MainActivity::class.java))
+        startActivity(Intent(this, social.entourage.android.new_v8.MainActivity::class.java))
         finish()
     }
 
@@ -61,18 +60,21 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
         temporaryPlaceAddress?.let {
             OnboardingAPI.getInstance().updateAddress(it, false) { isOK, userResponse ->
                 if (isOK) {
-                    val authenticationController = EntourageApplication.get().authenticationController
+                    val authenticationController =
+                        EntourageApplication.get().authenticationController
                     val me = authenticationController.me
                     if (me != null && userResponse != null) {
                         userResponse.user.phone = me.phone
                         authenticationController.saveUser(userResponse.user)
                     }
-                    Toast.makeText(this, R.string.user_action_zone_send_ok, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, R.string.user_action_zone_send_ok, Toast.LENGTH_SHORT)
+                        .show()
                     alertDialog.dismiss()
                     goMain()
                 } else {
                     alertDialog.dismiss()
-                    Toast.makeText(this, R.string.user_action_zone_send_failed, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, R.string.user_action_zone_send_failed, Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
@@ -86,17 +88,15 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
 
         if (placeAddress != null) {
             updateButtonNext(true)
-        }
-        else {
+        } else {
             updateButtonNext(false)
         }
     }
 
-    override fun updateButtonNext(isValid:Boolean) {
+    override fun updateButtonNext(isValid: Boolean) {
         if (isValid) {
             ui_bt_next?.enable(R.drawable.ic_onboard_bt_next)
-        }
-        else {
+        } else {
             ui_bt_next?.disable()
         }
     }
@@ -110,11 +110,11 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
         val fragment = LoginPlaceFragment.newInstance()
 
         supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.ui_container, fragment)
-                .commit()
+            .beginTransaction()
+            .replace(R.id.ui_container, fragment)
+            .commit()
 
-       updatePercent()
+        updatePercent()
     }
 
     fun updatePercent() {
@@ -129,5 +129,5 @@ class LoginNextActivity : AppCompatActivity(),LoginNextCallback {
 
 interface LoginNextCallback {
     fun updateAddress(placeAddress: User.Address?)
-    fun updateButtonNext(isValid:Boolean)
+    fun updateButtonNext(isValid: Boolean)
 }

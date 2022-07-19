@@ -2,13 +2,13 @@ package social.entourage.android.api.request
 
 import androidx.collection.ArrayMap
 import com.google.gson.annotations.SerializedName
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.GroupImage
-import social.entourage.android.api.model.User
+import social.entourage.android.api.model.UserReportWrapper
 import social.entourage.android.new_v8.models.Group
-import social.entourage.android.user.PrepareAvatarUploadRepository
 import social.entourage.android.new_v8.models.Post
 
 
@@ -16,6 +16,11 @@ class GroupImagesResponse(@field:SerializedName("neighborhood_images") val group
 class GroupWrapper(@field:SerializedName("neighborhood") val group: Group)
 class GroupsListWrapper(@field:SerializedName("neighborhoods") val allGroups: MutableList<Group>)
 class RequestContent internal constructor(private val content_type: String)
+
+class Report(var message: String, var signals: MutableList<String>)
+class ReportWrapper(
+    @field:SerializedName("report") var Report: Report
+)
 
 class PrepareAddPostResponse(
     @field:SerializedName("upload_key") var uploadKey: String,
@@ -28,6 +33,7 @@ class PrepareAddPostResponse(
 
 class GroupsMembersWrapper(@field:SerializedName("users") val users: MutableList<EntourageUser>)
 class GroupsPostsWrapper(@field:SerializedName("chat_messages") val posts: MutableList<Post>)
+class GroupsPostWrapper(@field:SerializedName("chat_message") val post: Post)
 
 interface GroupRequest {
     @GET("neighborhood_images")
@@ -96,6 +102,25 @@ interface GroupRequest {
     fun addPost(
         @Path("neighborhood_id") groupId: Int,
         @Body params: ArrayMap<String, Any>
-    ): Call<ChatMessageResponse>
+    ): Call<GroupsPostWrapper>
 
+    @GET("neighborhoods/{neighborhood_id}/chat_messages/{post_id}/comments")
+    fun getPostComments(
+        @Path("neighborhood_id") groupId: Int,
+        @Path("post_id") postId: Int,
+    ): Call<GroupsPostsWrapper>
+
+    @POST("neighborhoods/{group_id}/report")
+    fun reportGroup(
+        @Path("group_id") groupId: Int,
+        @Body reportWrapper: ReportWrapper
+    ): Call<ResponseBody>
+
+
+    @POST("neighborhoods/{group_id}/chat_messages/{post_id}/report")
+    fun reportPost(
+        @Path("group_id") groupId: Int,
+        @Path("post_id") postId: Int,
+        @Body reportWrapper: ReportWrapper
+    ): Call<ResponseBody>
 }

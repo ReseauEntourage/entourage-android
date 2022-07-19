@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexDirection
@@ -23,6 +24,7 @@ import social.entourage.android.new_v8.models.GroupUiModel
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class AboutGroupFragment : Fragment() {
 
@@ -39,6 +41,8 @@ class AboutGroupFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = NewFragmentAboutGroupBinding.inflate(inflater, container, false)
+        AnalyticsEvents.logEvent(
+            AnalyticsEvents.VIEW_GROUP_FEED_FULL_DESCRIPTION)
         return binding.root
     }
 
@@ -50,6 +54,7 @@ class AboutGroupFragment : Fragment() {
         handleJoinButton()
         handleBackButton()
         onFragmentResult()
+        handleMembersButton()
         groupPresenter.hasUserJoinedGroup.observe(requireActivity(), ::handleJoinResponse)
         groupPresenter.hasUserLeftGroup.observe(requireActivity(), ::handleJoinResponse)
     }
@@ -159,7 +164,7 @@ class AboutGroupFragment : Fragment() {
 
     private fun handleBackButton() {
         binding.header.iconBack.setOnClickListener {
-            // findNavController().popBackStack(R.id.group_feed, true)
+            findNavController().popBackStack()
         }
     }
 
@@ -170,7 +175,7 @@ class AboutGroupFragment : Fragment() {
                     requireView(),
                     getString(R.string.leave_group),
                     getString(R.string.leave_group_dialog_content),
-                    getString(R.string.exit)
+                    getString(R.string.exit),
                 ) {
                     group?.let {
                         it.id?.let { id -> groupPresenter.leaveGroup(id) }
@@ -184,6 +189,16 @@ class AboutGroupFragment : Fragment() {
         }
     }
 
+    private fun handleMembersButton() {
+        binding.members.setOnClickListener {
+            group?.id?.let { id ->
+                val action = AboutGroupFragmentDirections.actionGroupAboutToGroupMembers(
+                    id
+                )
+                findNavController().navigate(action)
+            }
+        }
+    }
 
     private fun onFragmentResult() {
         setFragmentResultListener(Const.REQUEST_KEY_SHOULD_REFRESH) { _, bundle ->

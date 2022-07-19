@@ -22,11 +22,6 @@
             app:destination="@id/association_fragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:popExitAnim="@anim/slide_out_to_right" />
-        <action
-            android:id="@+id/action_profile_fragment_to_test_fragment"
-            app:destination="@id/test_fragment"
-            app:enterAnim="@anim/slide_in_from_right"
-            app:popExitAnim="@anim/slide_out_to_right" />
     </fragment>
 
     <fragment
@@ -69,7 +64,11 @@
 
     <fragment
         android:id="@+id/edit_action_zone_fragment"
-        android:name="social.entourage.android.user.edit.place.UserEditActionZoneFragment" />
+        android:name="social.entourage.android.user.edit.place.UserEditActionZoneFragment">
+        <argument
+            android:name="setGroupLocation"
+            app:argType="boolean" />
+    </fragment>
 
     <fragment
         android:id="@+id/association_fragment"
@@ -78,5 +77,8 @@
             android:name="partner_id"
             app:argType="integer" />
     </fragment>
+    <action
+        android:id="@+id/action_global_edit_profile_fragment"
+        app:destination="@id/edit_profile_fragment" />
 
 </navigation>

@@ -43,6 +43,15 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".new_v8.user.UserProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".new_v8.home.pedago.PedagoListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".new_v8.groups.details.feed.CommentsActivity"
+            android:exported="false" />
+        <activity
             android:name=".new_v8.groups.details.rules.GroupRulesActivity"
             android:exported="false" />
         <activity
@@ -56,13 +65,12 @@
             android:name=".new_v8.groups.create.CreateGroupActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".new_v8.groups.details.posts.CreatePostActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".new_v8.MainActivity"
+            android:name=".MainActivity"
             android:exported="false"
             android:label="@string/title_activity_main"
             android:windowSoftInputMode="adjustPan" /> <!-- use for accessing Storage Android 10+ -->
@@ -78,7 +86,7 @@
             android:value="@string/google_api_key" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".new_v8.MainActivity"
             android:exported="true"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait">
