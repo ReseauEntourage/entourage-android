@@ -1,6 +1,7 @@
 package social.entourage.android.base.newsfeed
 
-import android.Manifest.permission
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.animation.ValueAnimator
 import android.app.ProgressDialog
 import android.content.ActivityNotFoundException
@@ -417,11 +418,13 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
             EntBus.post(OnLocationPermissionGranted(false))
             return
         }
-        if (shouldShowRequestPermissionRationale(permission.ACCESS_FINE_LOCATION)) {
+        if (shouldShowRequestPermissionRationale(ACCESS_COARSE_LOCATION)) {
             AlertDialog.Builder(requireActivity())
                     .setTitle(R.string.map_permission_title)
                     .setMessage(R.string.map_permission_description)
-                    .setPositiveButton(getString(R.string.activate)) { _: DialogInterface?, _: Int -> requestPermissions(arrayOf(permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_LOCATION) }
+                    .setPositiveButton(getString(R.string.activate)) { _: DialogInterface?, _: Int ->
+                        requestPermissionLauncher.launch(arrayOf(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION))
+                    }
                     .setNegativeButton(R.string.map_permission_refuse) { _: DialogInterface?, _: Int ->
                         val noLocationPermissionFragment = NoLocationPermissionFragment()
                         noLocationPermissionFragment.show(requireActivity().supportFragmentManager, NoLocationPermissionFragment.TAG)
@@ -429,7 +432,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
                     }
                     .show()
         } else {
-            requestPermissions(arrayOf(permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_LOCATION)
+            requestPermissionLauncher.launch(arrayOf(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION))
         }
     }
 

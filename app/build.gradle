@@ -214,7 +214,7 @@ dependencies {
 
     //implementation gmsDependencies.values()
     implementation "com.google.android.gms:play-services-maps:18.0.2"
-    implementation "com.google.android.gms:play-services-location:18.0.0" //v19 needs refactoring
+    implementation "com.google.android.gms:play-services-location:20.0.0" //v19 needs refactoring
     implementation "com.google.android.libraries.places:places-compat:2.6.0"
     //https://developers.google.com/android/guides/opensource
     implementation "com.google.android.gms:play-services-oss-licenses:17.0.0"
