@@ -274,6 +274,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="no_comments">Pas de commentaires</string>
     <string name="posts_comment_number"><u>%s commentaires</u></string>
     <string name="event_date">"dd/MM/yyyy"</string>
+    <string name="event_date_time">"dd/MM/yyyy à HH"</string>
     <string name="post_date">"dd.MM.yyyy"</string>
     <string name="comments">Commentaires</string>
     <string name="comments_date">dd.MM.yy à HH:mm</string>
@@ -307,8 +308,19 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="not_implemented">Not Implemented</string>
     <string name="pedagogical_content">Me former pour passer à l’action</string>
     <string name="show_more_lined"><u>Voir plus</u></string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="group_events">Évènements du groupe</string>
+    <string name="january">Janvier</string>
+    <string name="february">Février</string>
+    <string name="march">Mars</string>
+    <string name="april">Avril</string>
+    <string name="may">Mai</string>
+    <string name="june">Juin</string>
+    <string name="july">Juillet</string>
+    <string name="august">Août</string>
+    <string name="september">Septembre</string>
+    <string name="october">Octobre</string>
+    <string name="november">Novembre</string>
+    <string name="december">Décembre</string>
 
 
 </resources>

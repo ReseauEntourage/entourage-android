@@ -405,4 +405,22 @@ class GroupPresenter {
             }
         })
     }
+
+    fun getGroupEvents(groupId: Int) {
+        EntourageApplication.get().apiModule.groupRequest.getGroupEvents(groupId)
+            .enqueue(object : Callback<EventsListWrapper> {
+                override fun onResponse(
+                    call: Call<EventsListWrapper>,
+                    response: Response<EventsListWrapper>
+                ) {
+                    response.body()?.let { allEventsWrapper ->
+                        getAllEvents.value = allEventsWrapper.allEvents
+                    }
+
+                }
+
+                override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
+                }
+            })
+    }
 }

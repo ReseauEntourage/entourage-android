@@ -1,13 +1,24 @@
 package social.entourage.android.new_v8.events.list
 
 import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.intrusoft.sectionedrecyclerview.SectionRecyclerViewAdapter
+import social.entourage.android.R
 import social.entourage.android.databinding.NewEventItemBinding
 import social.entourage.android.databinding.NewEventsListHeaderBinding
 import social.entourage.android.new_v8.models.Events
+import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.new_v8.utils.px
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class GroupEventsListAdapter(context: Context, var sectionItemList: List<SectionHeader?>?) :
@@ -63,9 +74,28 @@ class GroupEventsListAdapter(context: Context, var sectionItemList: List<Section
         childPosition: Int,
         child: Events
     ) {
-        childViewHolder.binding.date.text = child.createdAt
+        childViewHolder.binding.eventName.text = child.title
+        child.metadata?.startsAt?.let {
+            childViewHolder.binding.date.text = SimpleDateFormat(
+                childViewHolder.itemView.context.getString(R.string.event_date_time),
+                Locale.FRANCE
+            ).format(
+                it
+            )
+        }
         childViewHolder.binding.location.text = child.metadata?.displayAddress
         childViewHolder.binding.participants.text = child.membersCount.toString()
+        Glide.with(context)
+            .load(Uri.parse(child.metadata?.landscapeThumbnailUrl))
+            .placeholder(R.drawable.ic_user_photo_small)
+            .override(90.px, 90.px)
+            .fitCenter()
+            .transform(RoundedCorners(20.px))
+            .into(childViewHolder.binding.image)
+
+        childViewHolder.binding.divider.isVisible =
+            sectionItemList?.get(sectionPosition)?.childList?.size?.minus(1) != childPosition
+
     }
 
     init {

@@ -19,12 +19,12 @@
 
             <include
                 android:id="@+id/header"
-                layout="@layout/new_header"
+                layout="@layout/new_header_with_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@id/scrollView"
                 app:layout_constraintTop_toTopOf="parent"
-                app:title="@{@string/about_group}" />
+                app:title="@{@string/group_events}" />
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -33,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
                 android:clipToPadding="false"
+                android:paddingHorizontal="@dimen/padding_horizontal"
                 android:paddingBottom="70dp"
                 tools:listitem="@layout/new_event_item" />
         </LinearLayout>
