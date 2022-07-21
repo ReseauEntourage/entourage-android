@@ -298,6 +298,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="contributions_group_empty">Vous n\'avez pas encore rejoint de groupe de voisins</string>
     <string name="zero">0</string>
     <string name="all_pedago_content">Tout le contenu pédagogique</string>
+    <string name="pedago_details">Contenu pédagogique</string>
     <string name="read">Lu !</string>
     <string name="act">Agir</string>
     <string name="inspire">S\'inspirer</string>
