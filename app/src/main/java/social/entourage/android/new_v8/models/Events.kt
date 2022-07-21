@@ -53,8 +53,11 @@ data class Events(
     @field:SerializedName("location")
     val location: Address? = null,
 
-    @field:SerializedName("id")
+    @field:SerializedName("members_count")
     val id: Int? = null,
+
+    @field:SerializedName("id")
+    val membersCount: Int? = null,
 
     @field:SerializedName("number_of_unread_messages")
     val numberOfUnreadMessages: Int? = null,

@@ -306,5 +306,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="want_to_act">Envie d’agir ?</string>
     <string name="not_implemented">Not Implemented</string>
     <string name="pedagogical_content">Me former pour passer à l’action</string>
+    <string name="show_more_lined"><u>Voir plus</u></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>

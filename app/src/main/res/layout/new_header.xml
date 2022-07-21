@@ -34,15 +34,28 @@
             tools:src="@drawable/new_back" />
 
         <TextView
+            android:id="@+id/title"
             style="@style/h2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginBottom="11dp"
             android:text="@{title}"
-            app:layout_constraintBottom_toTopOf="@id/divider"
             app:layout_constraintLeft_toRightOf="@id/icon_back"
             app:layout_constraintTop_toTopOf="parent"
+            tools:text="Notifications" />
+
+        <TextView
+            android:id="@+id/subtitle"
+            style="@style/h2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="11dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/divider"
+            app:layout_constraintLeft_toRightOf="@id/icon_back"
+            app:layout_constraintTop_toBottomOf="@id/title"
             tools:text="Notifications" />
 
 
