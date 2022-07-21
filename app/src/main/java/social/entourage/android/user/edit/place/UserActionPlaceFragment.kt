@@ -3,7 +3,6 @@ package social.entourage.android.user.edit.place
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
@@ -11,39 +10,54 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.google.android.gms.location.*
+import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 import com.google.android.libraries.places.compat.ui.PlaceAutocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import kotlinx.android.synthetic.main.fragment_onboarding_place.*
 import social.entourage.android.R
 import social.entourage.android.api.model.User
+import social.entourage.android.api.tape.Events
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.base.location.LocationProvider
 import social.entourage.android.base.location.LocationUtils
+import social.entourage.android.tools.EntBus
 import timber.log.Timber
 import java.io.IOException
 import java.util.*
 
 open class UserActionPlaceFragment : BaseDialogFragment() {
     //Location
-    protected var mFusedLocationClient: FusedLocationProviderClient? = null
-    protected val mLocationCallback = object : LocationCallback() {
+    private var mFusedLocationClient: FusedLocationProviderClient? = null
+    private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
-            temporaryLocation = locationResult.lastLocation
-            temporaryAddressPlace = null
-            updateLocationText()
+            updateLocationText(locationResult.lastLocation)
         }
     }
 
-    protected var temporaryLocation: Location? = null
-    protected var temporaryAddressName: String? = null
-    protected var temporaryAddressPlace: User.Address? = null
+    private var temporaryLocation: Location? = null
+    private var temporaryAddressName: String? = null
+    private var temporaryAddressPlace: User.Address? = null
 
     protected var userAddress: User.Address? = null
 
     protected var isSecondaryAddress = false
     protected var isSdf = false
 
+    private val requestPermissionsLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            if(permissions.entries.any {
+                    it.value == true
+                })  {
+                    EntBus.post(Events.OnLocationPermissionGranted(true))
+                    startRequestLocation()
+            }
+        }
 
     //**********//**********//**********
     // Lifecycle
@@ -57,7 +71,7 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
             isSecondaryAddress = it.getBoolean(ARG_2ND)
         }
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
     }
 
     override fun onCreateView(
@@ -78,6 +92,7 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
         mFusedLocationClient?.removeLocationUpdates(mLocationCallback)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
         if (requestCode == REQUEST_LOCATION_RETURN) {
@@ -113,11 +128,13 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
     open fun setupViews() {
         ui_onboard_bt_location?.setOnClickListener {
             onCurrentLocationClicked()
+            ui_onboard_bt_location?.visibility = View.GONE
         }
 
         ui_onboard_place_tv_location?.setOnClickListener {
             onSearchCalled()
             mFusedLocationClient?.removeLocationUpdates(mLocationCallback)
+            ui_onboard_bt_location?.visibility = View.VISIBLE
 
         }
 
@@ -144,9 +161,8 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
             if (LocationUtils.isLocationPermissionGranted()) {
                 startRequestLocation()
             } else {
-                requestPermissions(
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    PERMISSIONS_REQUEST_LOCATION
+                requestPermissionsLauncher.launch(
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
                 )
             }
         }
@@ -155,28 +171,36 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
     @SuppressLint("MissingPermission")
     protected fun startRequestLocation() {
         if (LocationUtils.isLocationEnabled()) {
-            val locationRequest = LocationProvider(context!!).locationRequest
-
-            mFusedLocationClient =
-                LocationServices.getFusedLocationProviderClient(requireActivity())
-            ui_onboard_place_tv_location?.text = ""
-            ui_onboard_place_tv_location?.hint =
-                getString(R.string.onboard_place_getting_current_location)
-            mFusedLocationClient?.requestLocationUpdates(
-                locationRequest, mLocationCallback,
-                null
-            )
+            if(mFusedLocationClient==null) {
+                ui_onboard_place_tv_location?.text = ""
+                ui_onboard_place_tv_location?.hint =
+                    getString(R.string.onboard_place_getting_current_location)
+                mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+                mFusedLocationClient?.requestLocationUpdates(
+                    LocationProvider.createLocationRequest(),
+                    mLocationCallback,
+                    null
+                )
+            } else {
+                if(mFusedLocationClient?.lastLocation?.isComplete == true) {
+                    updateLocationText(mFusedLocationClient?.lastLocation?.result)
+                } else {
+                    Toast.makeText(requireActivity(), "En attente de localisation", Toast.LENGTH_LONG).show()
+                }
+            }
         } else {
             Toast.makeText(requireActivity(), "Activez la localisation", Toast.LENGTH_LONG).show()
         }
     }
 
-    fun updateLocationText() {
+    fun updateLocationText(lastLocation: Location?) {
         ui_onboard_place_tv_location?.text = ""
         ui_onboard_place_tv_location?.hint = getString(R.string.onboard_place_placeholder)
-        temporaryLocation?.let {
+        lastLocation?.let {
             activity?.let{ activity ->
                 try {
+                    temporaryLocation = lastLocation
+                    temporaryAddressPlace = null
                     Geocoder(activity, Locale.getDefault()).getFromLocation(
                         it.latitude,
                         it.longitude,
@@ -210,7 +234,7 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
         startActivityForResult(intent, REQUEST_LOCATION_RETURN)
     }
 
-    fun updateFromPlace(placeId: String?, addressName: String?) {
+    private fun updateFromPlace(placeId: String?, addressName: String?) {
         temporaryLocation = null
         if (placeId != null && addressName != null) {
             temporaryAddressPlace = User.Address(placeId)
@@ -224,39 +248,11 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
         updateCallback()
     }
 
-    //**********//**********//**********
-    // Return methods
-    //**********//**********//**********
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
-            for (index in permissions.indices) {
-                if (permissions[index].equals(
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        ignoreCase = true
-                    )
-                ) {
-                    val isGranted = grantResults[index] == PackageManager.PERMISSION_GRANTED
-
-                    if (isGranted) {
-                        startRequestLocation()
-                    }
-                }
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
     companion object {
         const val ARG_PLACE = "place"
         const val ARG_SDF = "isSdf"
         const val ARG_2ND = "is2ndAddress"
 
-        const val PERMISSIONS_REQUEST_LOCATION = 1
         const val REQUEST_LOCATION_RETURN = 1010
     }
 }

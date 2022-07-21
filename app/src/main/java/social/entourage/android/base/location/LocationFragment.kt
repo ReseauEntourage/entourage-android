@@ -1,8 +1,6 @@
 package social.entourage.android.base.location
 
 import android.Manifest.permission
-import android.annotation.SuppressLint
-import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.AsyncTask
 import android.os.Bundle
@@ -15,7 +13,6 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -67,16 +64,16 @@ class LocationFragment : BaseDialogFragment() {
 
     private val requestPermissionLauncher =
         registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                EntBus.post(OnLocationPermissionGranted(isGranted))
-                try {
-                    map?.isMyLocationEnabled = isGranted
-                } catch (ex: SecurityException) {
-                    Timber.e(ex)
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            val isGranted = permissions.entries.any {
+                    it.value == true
                 }
-
+            EntBus.post(OnLocationPermissionGranted(isGranted))
+            try {
+                map?.isMyLocationEnabled = isGranted
+            } catch (ex: SecurityException) {
+                Timber.e(ex)
             }
         }
 
@@ -159,7 +156,7 @@ class LocationFragment : BaseDialogFragment() {
                     )
                 }
             } else {
-                requestPermissionLauncher.launch(permission.ACCESS_FINE_LOCATION)
+                requestPermissionLauncher.launch(arrayOf(permission.ACCESS_FINE_LOCATION, permission.ACCESS_COARSE_LOCATION))
             }
         }
     }
@@ -200,13 +197,7 @@ class LocationFragment : BaseDialogFragment() {
             childFragmentManager.beginTransaction()
                 .replace(R.id.entourage_location_map_layout, frag).commit()
             frag.getMapAsync { googleMap ->
-                val isLocationPermissionGranted = ActivityCompat.checkSelfPermission(
-                    requireContext(),
-                    permission.ACCESS_FINE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
-                    requireContext(),
-                    permission.ACCESS_COARSE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
+                val isLocationPermissionGranted = LocationUtils.isLocationPermissionGranted()
 
                 googleMap.isMyLocationEnabled = isLocationPermissionGranted
                 googleMap.setMapStyle(
@@ -408,7 +399,6 @@ class LocationFragment : BaseDialogFragment() {
             "social.entourage.android.KEY_USE_GOOGLE_PLACES_ONLY"
         private const val LOCATION_MOVE_DELTA = 50f //meters
         private const val LOCATION_SEARCH_RADIUS = 0.18f // 20 kilometers in lat/long degrees
-        private const val PERMISSIONS_REQUEST_LOCATION = 1
         private const val SEARCH_DELAY = 1000L
 
         /**

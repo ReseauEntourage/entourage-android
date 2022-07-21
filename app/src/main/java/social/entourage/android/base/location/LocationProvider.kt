@@ -6,6 +6,7 @@ import android.location.Location
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
 import java.util.concurrent.TimeUnit.SECONDS
 
@@ -15,7 +16,14 @@ class LocationProvider(
 
     companion object {
         const val DURATION_INTERVAL_PUBLIC = 30L
-        const val DURATION_FAST_INTERVAL_PUBLIC = 1L
+        const val DURATION_FAST_INTERVAL_PUBLIC = 5L
+
+        fun createLocationRequest(): LocationRequest {
+            return LocationRequest.create()
+                .setInterval(SECONDS.toMillis(DURATION_INTERVAL_PUBLIC))
+                .setFastestInterval(SECONDS.toMillis(DURATION_FAST_INTERVAL_PUBLIC))
+                .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
+        }
     }
 
     private val context: Context = context.applicationContext
@@ -26,9 +34,6 @@ class LocationProvider(
         set(value) {
             locationListener?.onLocationResult(LocationResult.create(listOf(value)))
         }
-
-    val locationRequest: LocationRequest
-        get() = createLocationRequestForPublicUsage()
 
     init {
         lastKnownLocation?.let { locationListener?.onLocationChanged(it) }
@@ -62,7 +67,7 @@ class LocationProvider(
             //TODO add a looper here
             locationListener?.let {
                 LocationServices.getFusedLocationProviderClient(context)
-                    .requestLocationUpdates(locationRequest, it, null)
+                    .requestLocationUpdates(createLocationRequest(), it, null)
             }
         }
     }
@@ -72,12 +77,5 @@ class LocationProvider(
             LocationServices.getFusedLocationProviderClient(context)
                 .removeLocationUpdates(locationListener!!)
         }
-    }
-
-    private fun createLocationRequestForPublicUsage(): LocationRequest {
-        return LocationRequest.create()
-            .setInterval(SECONDS.toMillis(DURATION_INTERVAL_PUBLIC))
-            .setFastestInterval(SECONDS.toMillis(DURATION_FAST_INTERVAL_PUBLIC))
-            .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
     }
 }

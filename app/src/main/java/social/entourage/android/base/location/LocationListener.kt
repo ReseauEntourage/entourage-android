@@ -29,6 +29,7 @@ class LocationListener(private val manager: EntServiceManager,
         manager.updateLocation(location)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onStatusChanged(s: String, i: Int, bundle: Bundle) {}
 
     override fun onProviderEnabled(s: String) {
@@ -41,7 +42,7 @@ class LocationListener(private val manager: EntServiceManager,
 
     override fun onLocationResult(result: LocationResult) {
         super.onLocationResult(result)
-        onUpdateLocation(result.lastLocation)
+        result.lastLocation?.let { onUpdateLocation(it) }
     }
 
     override fun onLocationAvailability(result: LocationAvailability) {

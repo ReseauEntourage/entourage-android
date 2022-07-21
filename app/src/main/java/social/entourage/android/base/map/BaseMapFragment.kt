@@ -1,6 +1,7 @@
 package social.entourage.android.base.map
 
 import android.Manifest.permission
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.content.Context
@@ -36,6 +37,7 @@ import social.entourage.android.base.BaseFragment
 import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.base.location.LocationUpdateListener
+import social.entourage.android.base.location.LocationUtils
 import social.entourage.android.base.location.LocationUtils.isLocationEnabled
 import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
 import social.entourage.android.tools.EntBus
@@ -57,12 +59,14 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
 
     override fun onBackPressed(): Boolean = false
 
-    private val requestPermissionLauncher =
+    protected val requestPermissionLauncher =
         registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                EntBus.post(OnLocationPermissionGranted(isGranted))
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            if(permissions.entries.any {
+                it.value == true
+            }) {
+                EntBus.post(OnLocationPermissionGranted(true))
             }
         }
 
@@ -115,13 +119,7 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
             return
         }
 
-        val isLocationPermissionGranted = ActivityCompat.checkSelfPermission(
-            requireContext(),
-            ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
-            requireContext(),
-            permission.ACCESS_COARSE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED
+        val isLocationPermissionGranted = LocationUtils.isLocationPermissionGranted()
 
         googleMap.isMyLocationEnabled = isLocationPermissionGranted
 
@@ -234,11 +232,10 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
                 .setPositiveButton(R.string.activate) { _: DialogInterface?, _: Int ->
                     AnalyticsEvents.logEvent(eventName)
                     try {
-                        if (isLocationEnabled() || shouldShowRequestPermissionRationale(
-                                ACCESS_FINE_LOCATION
-                            )
+                        if (isLocationEnabled()
+                            || shouldShowRequestPermissionRationale(ACCESS_COARSE_LOCATION)
                         ) {
-                            requestPermissionLauncher.launch(ACCESS_FINE_LOCATION)
+                            requestPermissionLauncher.launch(arrayOf(ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION))
                         } else {
                             // User selected "Never ask again", so show the settings page
                             displayGeolocationPreferences(true)
@@ -299,7 +296,6 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
         private const val GEOLOCATION_POPUP_BANNER = 2
         private const val GEOLOCATION_POPUP_GUIDE_RECENTER = 3
         private const val GEOLOCATION_POPUP_GUIDE_BANNER = 4
-        const val PERMISSIONS_REQUEST_LOCATION = 1
         const val ZOOM_REDRAW_LIMIT = 1.1f
         const val REDRAW_LIMIT = 300
     }
