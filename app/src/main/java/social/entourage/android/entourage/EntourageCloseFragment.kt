@@ -179,6 +179,7 @@ class EntourageCloseFragment : DialogFragment() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         dialog?.window?.attributes?.windowAnimations = R.style.CustomDialogFragmentSlide

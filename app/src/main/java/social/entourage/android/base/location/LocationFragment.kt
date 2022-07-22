@@ -352,6 +352,7 @@ class LocationFragment : BaseDialogFragment() {
         var locationFragmentWeakReference: WeakReference<LocationFragment>? =
             WeakReference(locationFragment)
 
+        @Deprecated("Deprecated in Java")
         override fun doInBackground(vararg params: LatLng?): String? {
             try {
                 params[0]?.let { location ->
@@ -374,6 +375,7 @@ class LocationFragment : BaseDialogFragment() {
             return null
         }
 
+        @Deprecated("Deprecated in Java")
         override fun onPostExecute(address: String?) {
             if (address == null) return
             locationFragmentWeakReference?.get()?.let { locationFragment ->

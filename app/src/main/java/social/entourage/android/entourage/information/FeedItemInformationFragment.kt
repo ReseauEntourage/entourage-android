@@ -239,6 +239,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
 
     abstract fun getItemType(): Int
 
+    @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,

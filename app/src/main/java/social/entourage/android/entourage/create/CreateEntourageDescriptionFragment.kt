@@ -51,6 +51,7 @@ class CreateEntourageDescriptionFragment  : BaseDialogFragment() {
         title_action_button?.setOnClickListener { onValidateClicked() }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         showKeyboard()

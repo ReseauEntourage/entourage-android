@@ -92,6 +92,7 @@ class OnboardingMainActivity : AppCompatActivity(), OnboardingCallback {
         setupViews()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (currentFragmentPosition == PositionType.Names.pos || (currentFragmentPosition == PositionType.Type.pos && userTypeSelected == UserTypeSelection.NONE)) {
             return

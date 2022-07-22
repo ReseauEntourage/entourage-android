@@ -57,6 +57,7 @@ class OnboardingEditPhotoFragment : DialogFragment() {
         setupViews()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         if (dialog == null) {
             showsDialog = false

@@ -176,6 +176,7 @@ class WebViewFragment : BaseDialogFragment() {
     // ----------------------------------
     private inner class MyBrowser : WebViewClient() {
         private var loadedUrl = ""
+        @Deprecated("Deprecated in Java")
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
             view.loadUrl(url)
             return true
@@ -216,6 +217,7 @@ class WebViewFragment : BaseDialogFragment() {
         }
 
         //@SuppressWarnings("deprecation")
+        @Deprecated("Deprecated in Java")
         override fun onReceivedError(view: WebView, errorCode: Int, description: String, failingUrl: String) {
             super.onReceivedError(view, errorCode, description, failingUrl)
             webview_progressbar?.visibility = View.GONE

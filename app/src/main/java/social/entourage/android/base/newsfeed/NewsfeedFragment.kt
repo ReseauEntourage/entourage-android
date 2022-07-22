@@ -437,7 +437,9 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
     }
 
     private fun displayGeolocationPreferences() {
-        displayGeolocationPreferences(false)
+        if (!isLocationPermissionGranted()) {
+            showAllowGeolocationDialog(GEOLOCATION_POPUP_BANNER)
+        }
     }
 
     private fun onDisplayToggle() {

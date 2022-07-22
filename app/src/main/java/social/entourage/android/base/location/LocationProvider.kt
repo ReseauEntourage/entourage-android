@@ -29,7 +29,10 @@ class LocationProvider(
     private val context: Context = context.applicationContext
 
     //private val googleApiClient: GoogleApiClient
-    private var locationListener: LocationListener? = null
+    var locationListener: LocationListener? = null
+        set(listener) {
+            field = listener
+        }
     private var lastKnownLocation: Location? = null
         set(value) {
             locationListener?.onLocationResult(LocationResult.create(listOf(value)))
@@ -48,24 +51,11 @@ class LocationProvider(
         removeLocationUpdates()
     }
 
-    fun setLocationListener(listener: LocationListener) {
-        locationListener = listener
-    }
-
-    @SuppressLint("MissingPermission")
-    fun requestLastKnownLocation() {
-        if (isLocationPermissionGranted()) {
-            LocationServices.getFusedLocationProviderClient(context).lastLocation.addOnSuccessListener {
-                lastKnownLocation = it
-            }
-        }
-    }
-
     @SuppressLint("MissingPermission")
     private fun requestLocationUpdates() {
+        locationListener?.let {
         if (isLocationPermissionGranted()) {
             //TODO add a looper here
-            locationListener?.let {
                 LocationServices.getFusedLocationProviderClient(context)
                     .requestLocationUpdates(createLocationRequest(), it, null)
             }

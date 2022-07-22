@@ -41,6 +41,7 @@ class LoginNextActivity : AppCompatActivity(), LoginNextCallback {
         ui_bt_next?.disable()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         return
     }
