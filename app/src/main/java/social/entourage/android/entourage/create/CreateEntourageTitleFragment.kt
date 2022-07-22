@@ -52,6 +52,7 @@ class CreateEntourageTitleFragment  : BaseDialogFragment() {
         initializeView()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         showKeyboard()

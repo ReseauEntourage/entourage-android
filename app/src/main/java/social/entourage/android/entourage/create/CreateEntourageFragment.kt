@@ -110,6 +110,7 @@ class CreateEntourageFragment : BaseDialogFragment(),
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
@@ -508,6 +509,7 @@ class CreateEntourageFragment : BaseDialogFragment(),
         }
 
     private inner class GeocoderTask : AsyncTask<LatLng?, Void?, String>() {
+        @Deprecated("Deprecated in Java")
         override fun doInBackground(vararg params: LatLng?): String? {
             try {
                 params[0]?.let { location ->
@@ -528,6 +530,7 @@ class CreateEntourageFragment : BaseDialogFragment(),
             return ""
         }
 
+        @Deprecated("Deprecated in Java")
         override fun onPostExecute(address: String) {
             create_entourage_position?.text = address
         }

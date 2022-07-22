@@ -163,6 +163,7 @@ class PhotoChooseSourceFragmentCompat : BaseDialogFragment() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,

@@ -165,6 +165,7 @@ class MainActivity : BaseSecuredActivity(),
         storeIntent(intent)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         val currentFragment =
             supportFragmentManager.findFragmentById(R.id.main_fragment) as? BackPressable

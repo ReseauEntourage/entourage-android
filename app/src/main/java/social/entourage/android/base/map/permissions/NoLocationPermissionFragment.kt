@@ -27,6 +27,7 @@ class NoLocationPermissionFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return object : Dialog(requireActivity(), theme) {
+            @Deprecated("Deprecated in Java")
             override fun onBackPressed() {
                 onBackButton()
             }

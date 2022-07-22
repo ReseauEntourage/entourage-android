@@ -37,7 +37,6 @@ import social.entourage.android.base.BaseFragment
 import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.base.location.LocationUpdateListener
-import social.entourage.android.base.location.LocationUtils
 import social.entourage.android.base.location.LocationUtils.isLocationEnabled
 import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
 import social.entourage.android.tools.EntBus
@@ -119,7 +118,7 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
             return
         }
 
-        val isLocationPermissionGranted = LocationUtils.isLocationPermissionGranted()
+        val isLocationPermissionGranted = isLocationPermissionGranted()
 
         googleMap.isMyLocationEnabled = isLocationPermissionGranted
 
@@ -238,7 +237,7 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
                             requestPermissionLauncher.launch(arrayOf(ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION))
                         } else {
                             // User selected "Never ask again", so show the settings page
-                            displayGeolocationPreferences(true)
+                            startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
                         }
                     } catch (e: IllegalStateException) {
                         Timber.w(e)
@@ -249,15 +248,15 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
         }
     }
 
-    fun displayGeolocationPreferences(forceDisplaySettings: Boolean) {
+    /*fun displayGeolocationPreferences(forceDisplaySettings: Boolean) {
         activity?.let {
-            if (forceDisplaySettings || !isLocationEnabled()) {
+            if (forceDisplaySettings) {
                 it.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
             } else if (!isLocationPermissionGranted()) {
                 showAllowGeolocationDialog(GEOLOCATION_POPUP_BANNER)
             }
         }
-    }
+    }*/
 
     open fun onLocationPermissionGranted(event: OnLocationPermissionGranted) =
         updateGeolocBanner(event.isPermissionGranted)
@@ -293,7 +292,7 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
     companion object {
         // Constants used to track the source call of the geolocation popup
         private const val GEOLOCATION_POPUP_RECENTER = 1
-        private const val GEOLOCATION_POPUP_BANNER = 2
+        const val GEOLOCATION_POPUP_BANNER = 2
         private const val GEOLOCATION_POPUP_GUIDE_RECENTER = 3
         private const val GEOLOCATION_POPUP_GUIDE_BANNER = 4
         const val ZOOM_REDRAW_LIMIT = 1.1f

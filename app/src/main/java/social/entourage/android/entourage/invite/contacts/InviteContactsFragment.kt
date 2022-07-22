@@ -62,6 +62,7 @@ class InviteContactsFragment  : InviteBaseFragment(), LoaderManager.LoaderCallba
         return inflater.inflate(R.layout.fragment_invite_contacts, container, false)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mContactsAdapter = InviteContactsAdapter(

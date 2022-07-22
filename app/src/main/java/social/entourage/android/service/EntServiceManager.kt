@@ -391,7 +391,7 @@ open class EntServiceManager(
                     newsfeedRequest,
                     entourageRequest,
                     provider)
-            provider.setLocationListener(LocationListener(mgr, entService))
+            provider.locationListener = LocationListener(mgr, entService)
             provider.start()
             EntBus.register(mgr)
             return mgr

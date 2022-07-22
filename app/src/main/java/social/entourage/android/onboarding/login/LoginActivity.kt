@@ -125,6 +125,7 @@ class LoginActivity : BaseActivity() {
         finish()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         super.onBackPressed()
         goBack()
