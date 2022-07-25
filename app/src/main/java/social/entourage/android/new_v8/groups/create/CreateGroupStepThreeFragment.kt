@@ -14,9 +14,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
-import social.entourage.android.api.model.GroupImage
+import social.entourage.android.api.model.Image
 import social.entourage.android.databinding.NewFragmentCreateGroupStepThreeBinding
 import social.entourage.android.new_v8.groups.choosePhoto.ChoosePhotoModalFragment
+import social.entourage.android.new_v8.groups.choosePhoto.ImagesType
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -27,7 +28,7 @@ class CreateGroupStepThreeFragment : Fragment() {
     private var _binding: NewFragmentCreateGroupStepThreeBinding? = null
     val binding: NewFragmentCreateGroupStepThreeBinding get() = _binding!!
     private val viewModel: CommunicationHandlerViewModel by activityViewModels()
-    private var selectedImage: GroupImage? = null
+    private var selectedImage: Image? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,7 +83,7 @@ class CreateGroupStepThreeFragment : Fragment() {
     }
 
     private fun handleChoosePhoto() {
-        val choosePhotoModalFragment = ChoosePhotoModalFragment.newInstance()
+        val choosePhotoModalFragment = ChoosePhotoModalFragment.newInstance(ImagesType.GROUPS)
         binding.layout.addPhotoLayout.setOnClickListener {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_NEW_GROUP_STEP3_ADD_PICTURE)

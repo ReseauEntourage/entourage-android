@@ -9,7 +9,7 @@
 
         <include
             android:id="@+id/header"
-            layout="@layout/new_create_group_header"
+            layout="@layout/new_create_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -58,7 +58,7 @@
 
         <include
             android:id="@+id/group_photo_title"
-            layout="@layout/new_create_groupe_title_item"
+            layout="@layout/new_create_title_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

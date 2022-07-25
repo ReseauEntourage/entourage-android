@@ -19,12 +19,13 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
-import social.entourage.android.api.model.GroupImage
+import social.entourage.android.api.model.Image
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentEditGroupBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.RefreshController
 import social.entourage.android.new_v8.groups.choosePhoto.ChoosePhotoModalFragment
+import social.entourage.android.new_v8.groups.choosePhoto.ImagesType
 import social.entourage.android.new_v8.groups.details.feed.FeedFragmentArgs
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.models.Interest
@@ -44,7 +45,7 @@ class EditGroupFragment : Fragment() {
     private lateinit var group: Group
     private var interestsList: MutableList<Interest> = mutableListOf()
     private var selectedInterestIdList: MutableList<String> = mutableListOf()
-    private var selectedImage: GroupImage? = null
+    private var selectedImage: Image? = null
     private val args: FeedFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -140,7 +141,7 @@ class EditGroupFragment : Fragment() {
             stepThree.groupPhotoTitle.mandatory.visibility = View.GONE
             stepThree.groupPhotoLabel.visibility = View.GONE
             stepThree.addPhoto.setOnClickListener {
-                ChoosePhotoModalFragment.newInstance()
+                ChoosePhotoModalFragment.newInstance(ImagesType.GROUPS)
                     .show(parentFragmentManager, ChoosePhotoModalFragment.TAG)
             }
             header.iconBack.setOnClickListener {

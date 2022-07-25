@@ -43,6 +43,10 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".new_v8.events.create.CreateEventActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
             android:name=".new_v8.user.UserProfileActivity"
             android:exported="false" />
         <activity

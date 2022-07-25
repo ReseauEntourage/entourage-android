@@ -61,6 +61,7 @@ class MainActivity : BaseSecuredActivity() {
     private fun initializeMetaData() {
         if (MetaDataRepository.metaData.value == null) MetaDataRepository.getMetaData()
         if (MetaDataRepository.groupImages.value == null) MetaDataRepository.getGroupImages()
+        if (MetaDataRepository.eventsImages.value == null) MetaDataRepository.getEventsImages()
     }
 
     private fun initializeNavBar() {
