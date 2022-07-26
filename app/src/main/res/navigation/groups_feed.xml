@@ -22,6 +22,12 @@
             app:enterAnim="@anim/slide_in_from_right"
             app:popExitAnim="@anim/slide_out_to_right" />
 
+        <action
+            android:id="@+id/action_group_feed_to_group_events_list"
+            app:destination="@id/group_events"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
+
     </fragment>
 
     <fragment
@@ -45,6 +51,18 @@
         <argument
             android:name="groupID"
             app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/group_events"
+        android:name="social.entourage.android.new_v8.events.list.GroupEventsListFragment">
+        <argument
+            android:name="groupID"
+            app:argType="integer" />
+
+        <argument
+            android:name="groupName"
+            app:argType="string" />
     </fragment>
 
 

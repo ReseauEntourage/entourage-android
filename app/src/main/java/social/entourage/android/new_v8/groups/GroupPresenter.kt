@@ -15,6 +15,7 @@ import social.entourage.android.api.model.*
 import social.entourage.android.api.request.*
 import social.entourage.android.api.request.*
 import social.entourage.android.new_v8.groups.list.groupPerPage
+import social.entourage.android.new_v8.models.Events
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.models.Post
 import timber.log.Timber
@@ -40,6 +41,7 @@ class GroupPresenter {
     var commentPosted = MutableLiveData<Post?>()
     var isGroupReported = MutableLiveData<Boolean>()
     var isPostReported = MutableLiveData<Boolean>()
+    var getAllEvents = MutableLiveData<MutableList<Events>>()
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
@@ -402,5 +404,23 @@ class GroupPresenter {
                 isPostReported.value = response.isSuccessful
             }
         })
+    }
+
+    fun getGroupEvents(groupId: Int) {
+        EntourageApplication.get().apiModule.groupRequest.getGroupEvents(groupId)
+            .enqueue(object : Callback<EventsListWrapper> {
+                override fun onResponse(
+                    call: Call<EventsListWrapper>,
+                    response: Response<EventsListWrapper>
+                ) {
+                    response.body()?.let { allEventsWrapper ->
+                        getAllEvents.value = allEventsWrapper.allEvents
+                    }
+
+                }
+
+                override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
+                }
+            })
     }
 }
