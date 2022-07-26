@@ -7,8 +7,6 @@ import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Image
-import social.entourage.android.api.model.GroupImage
-import social.entourage.android.api.model.UserReportWrapper
 import social.entourage.android.new_v8.models.Events
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.models.Post
