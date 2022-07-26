@@ -5,14 +5,16 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.api.model.GroupImage
+import social.entourage.android.api.model.Image
 import social.entourage.android.api.model.Tags
+import social.entourage.android.api.request.EventsImagesResponse
 import social.entourage.android.api.request.GroupImagesResponse
 import social.entourage.android.api.request.MetaDataResponse
 
 object MetaDataRepository {
     var metaData: MutableLiveData<Tags> = MutableLiveData()
-    var groupImages: MutableLiveData<List<GroupImage>> = MutableLiveData()
+    var groupImages: MutableLiveData<List<Image>> = MutableLiveData()
+    var eventsImages: MutableLiveData<List<Image>> = MutableLiveData()
 
 
     fun getMetaData() {
@@ -45,6 +47,23 @@ object MetaDataRepository {
             }
 
             override fun onFailure(call: Call<GroupImagesResponse>, t: Throwable) {
+            }
+        })
+    }
+
+    fun getEventsImages() {
+        val getImages = EntourageApplication.get().apiModule.eventsRequest
+        getImages.getEventsImages().enqueue(object : Callback<EventsImagesResponse> {
+            override fun onResponse(
+                call: Call<EventsImagesResponse>,
+                response: Response<EventsImagesResponse>
+            ) {
+                if (response.isSuccessful) {
+                    eventsImages.value = response.body()?.eventImages
+                }
+            }
+
+            override fun onFailure(call: Call<EventsImagesResponse>, t: Throwable) {
             }
         })
     }

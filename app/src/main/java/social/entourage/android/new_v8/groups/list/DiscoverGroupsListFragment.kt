@@ -42,6 +42,7 @@ class DiscoverGroupsListFragment : Fragment() {
         handleEnterButton()
         handleSearchOnFocus()
         handleCross()
+        handleSwipeRefresh()
         handleCrossButton()
         binding.searchBarLayout.endIconMode = END_ICON_NONE
     }
@@ -52,7 +53,8 @@ class DiscoverGroupsListFragment : Fragment() {
     ): View {
         _binding = NewFragmentGroupsListBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(
-            AnalyticsEvents.VIEW_GROUP_SHOW_DISCOVER)
+            AnalyticsEvents.VIEW_GROUP_SHOW_DISCOVER
+        )
         return binding.root
     }
 
@@ -119,6 +121,7 @@ class DiscoverGroupsListFragment : Fragment() {
     }
 
     private fun loadGroups() {
+        binding.swipeRefresh.isRefreshing = false
         page += 1
         groupPresenter.getAllGroups(page, groupPerPage)
     }
@@ -160,7 +163,8 @@ class DiscoverGroupsListFragment : Fragment() {
                 groupPresenter.getGroupsSearch(binding.searchBar.text.toString())
                 handled = true
                 AnalyticsEvents.logEvent(
-                    AnalyticsEvents.ACTION_GROUP_SEARCH_VALIDATE)
+                    AnalyticsEvents.ACTION_GROUP_SEARCH_VALIDATE
+                )
             }
             handled
         }
@@ -193,7 +197,15 @@ class DiscoverGroupsListFragment : Fragment() {
             binding.recyclerView.visibility = View.GONE
             binding.searchRecyclerView.visibility = View.VISIBLE
             AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_GROUP_SEARCH_START)
+                AnalyticsEvents.ACTION_GROUP_SEARCH_START
+            )
+        }
+    }
+
+    private fun handleSwipeRefresh() {
+        binding.swipeRefresh.setOnRefreshListener {
+            page += 1
+            loadGroups()
         }
     }
 
@@ -205,7 +217,8 @@ class DiscoverGroupsListFragment : Fragment() {
             updateView(groupsList.isEmpty())
             Utils.hideKeyboard(requireActivity())
             AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_GROUP_SEARCH_DELETE)
+                AnalyticsEvents.ACTION_GROUP_SEARCH_DELETE
+            )
         }
     }
 }

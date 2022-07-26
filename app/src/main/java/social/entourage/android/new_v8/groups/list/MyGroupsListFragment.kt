@@ -38,6 +38,7 @@ class MyGroupsListFragment : Fragment() {
         loadGroups()
         groupPresenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleResponseGetGroups)
         initializeGroups()
+        handleSwipeRefresh()
     }
 
     private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
@@ -64,10 +65,18 @@ class MyGroupsListFragment : Fragment() {
     }
 
     private fun loadGroups() {
+        binding.swipeRefresh.isRefreshing = false
         page++
         myId?.let { groupPresenter.getMyGroups(page, groupPerPage, it) } ?: run {
             binding.progressBar.visibility = View.GONE
             binding.emptyStateLayout.visibility = View.VISIBLE
+        }
+    }
+
+    private fun handleSwipeRefresh() {
+        binding.swipeRefresh.setOnRefreshListener {
+            page += 1
+            loadGroups()
         }
     }
 

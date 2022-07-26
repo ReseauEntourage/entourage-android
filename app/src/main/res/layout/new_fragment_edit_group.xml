@@ -14,6 +14,7 @@
             layout="@layout/new_main_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:icon="@{@drawable/new_illu_header_group}"
             app:title="@{@string/edit_group}" />
 
         <androidx.core.widget.NestedScrollView

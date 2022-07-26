@@ -9,13 +9,13 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.R
-import social.entourage.android.api.model.GroupImage
+import social.entourage.android.api.model.Image
 import social.entourage.android.databinding.NewPhotoItemBinding
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
 
 class ChoosePhotoAdapter(
-    var photosList: List<GroupImage>,
+    var photosList: List<Image>,
 ) : RecyclerView.Adapter<ChoosePhotoAdapter.ViewHolder>() {
 
     private var checkedPosition = -1
@@ -36,11 +36,15 @@ class ChoosePhotoAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
             with(photosList[position]) {
-                this.imageUrl?.let {
+                val imageUrl = if (this.imageUrl != null) this.imageUrl else this.landscapeSmallUrl
+                imageUrl?.let {
                     Glide.with(binding.image.context)
                         .load(Uri.parse(it))
                         .apply(RequestOptions().override(90.px, 90.px))
-                        .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
+                        .transform(
+                            CenterCrop(),
+                            RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px)
+                        )
                         .placeholder(R.drawable.ic_user_photo_small)
                         .into(binding.image)
                 }
@@ -64,7 +68,7 @@ class ChoosePhotoAdapter(
         }
     }
 
-    fun getSelected(): GroupImage? {
+    fun getSelected(): Image? {
         return if (checkedPosition != -1) {
             photosList[checkedPosition]
         } else null
