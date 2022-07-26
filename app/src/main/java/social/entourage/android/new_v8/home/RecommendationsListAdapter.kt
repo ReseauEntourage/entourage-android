@@ -53,6 +53,6 @@ class RecommendationsListAdapter(
     }
 
     override fun getItemCount(): Int {
-        return recommendationsList.size.coerceAtMost(Const.LIMIT_RECOMMENDATION)
+        return recommendationsList.size
     }
 }

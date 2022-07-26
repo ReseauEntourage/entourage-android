@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/create_event"
+    app:startDestination="@id/create_event_fragment">
+    <fragment
+        android:id="@+id/create_event_fragment"
+        android:name="social.entourage.android.new_v8.events.create.CreateEventFragment">
+
+    </fragment>
+</navigation>
