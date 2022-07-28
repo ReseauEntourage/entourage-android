@@ -7,21 +7,23 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import com.intrusoft.sectionedrecyclerview.SectionRecyclerViewAdapter
 import social.entourage.android.R
 import social.entourage.android.databinding.NewEventItemBinding
 import social.entourage.android.databinding.NewEventsListHeaderBinding
 import social.entourage.android.new_v8.models.Events
-import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.new_v8.models.Status
 import social.entourage.android.new_v8.utils.px
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class GroupEventsListAdapter(context: Context, var sectionItemList: List<SectionHeader?>?) :
+class GroupEventsListAdapter(
+    context: Context,
+    var sectionItemList: List<SectionHeader?>?,
+    var userId: Int?
+) :
     SectionRecyclerViewAdapter<SectionHeader, Events, GroupEventsListAdapter.SectionViewHolder, GroupEventsListAdapter.ChildViewHolder>(
         context,
         sectionItemList
@@ -93,9 +95,13 @@ class GroupEventsListAdapter(context: Context, var sectionItemList: List<Section
             .transform(RoundedCorners(20.px))
             .into(childViewHolder.binding.image)
 
+        childViewHolder.binding.star.isVisible = child.author?.userID == userId
+        childViewHolder.binding.admin.isVisible = child.author?.userID == userId
+
+        childViewHolder.binding.canceled.isVisible = child.status == Status.CLOSED
+
         childViewHolder.binding.divider.isVisible =
             sectionItemList?.get(sectionPosition)?.childList?.size?.minus(1) != childPosition
-
     }
 
     init {

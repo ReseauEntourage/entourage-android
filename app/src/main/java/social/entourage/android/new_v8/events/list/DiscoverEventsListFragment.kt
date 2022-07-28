@@ -4,23 +4,31 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.databinding.NewFragmentGroupEventsListBinding
-import social.entourage.android.new_v8.groups.GroupPresenter
+import social.entourage.android.databinding.NewFragmentDiscoverEventsListBinding
+import social.entourage.android.new_v8.events.EventsPresenter
 import social.entourage.android.new_v8.models.Events
 import java.util.*
 
-class GroupEventsListFragment : Fragment() {
-    private var _binding: NewFragmentGroupEventsListBinding? = null
-    val binding: NewFragmentGroupEventsListBinding get() = _binding!!
+const val eventPerPage = 10
 
+class DiscoverEventsListFragment : Fragment() {
+
+    private var _binding: NewFragmentDiscoverEventsListBinding? = null
+    val binding: NewFragmentDiscoverEventsListBinding get() = _binding!!
+
+
+    private val eventsPresenter: EventsPresenter by lazy { EventsPresenter() }
+    private var myId: Int? = null
     lateinit var eventsAdapter: GroupEventsListAdapter
+    private var page: Int = 0
+
     private val sections: MutableList<SectionHeader> = mutableListOf()
-    private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
     private val childListJanuary: MutableList<Events> = mutableListOf()
     private val childListFebruary: MutableList<Events> = mutableListOf()
     private val childListMarch: MutableList<Events> = mutableListOf()
@@ -34,43 +42,27 @@ class GroupEventsListFragment : Fragment() {
     private val childListNovember: MutableList<Events> = mutableListOf()
     private val childListDecember: MutableList<Events> = mutableListOf()
 
-    private val args: GroupEventsListFragmentArgs by navArgs()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentGroupEventsListBinding.inflate(inflater, container, false)
+        _binding = NewFragmentDiscoverEventsListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setView()
-        eventsAdapter = GroupEventsListAdapter(requireContext(), sections, null)
-        setEventsList()
-        groupPresenter.getGroupEvents(args.groupID)
-        groupPresenter.getAllEvents.observe(
-            viewLifecycleOwner,
-            ::handleGetEventsResponse
-        )
-        setBackButton()
-
+        myId = EntourageApplication.me(activity)?.id
+        eventsAdapter = GroupEventsListAdapter(requireContext(), sections, myId)
+        loadEvents()
+        eventsPresenter.getAllEvents.observe(viewLifecycleOwner, ::handleResponseGetEvents)
+        initializeEvents()
+        handleSwipeRefresh()
     }
 
-    private fun setView() {
-        binding.header.subtitle.text = args.groupName
-    }
-
-    private fun setBackButton() {
-        binding.header.iconBack.setOnClickListener {
-            findNavController().popBackStack()
-        }
-    }
-
-    private fun handleGetEventsResponse(events: MutableList<Events>) {
-        events.forEach {
+    private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
+        allEvents?.forEach {
             it.metadata?.startsAt?.let { date ->
                 val cal = Calendar.getInstance()
                 cal.time = date
@@ -90,6 +82,7 @@ class GroupEventsListFragment : Fragment() {
                 }
             }
         }
+        sections.clear()
         if (childListJanuary.isNotEmpty()) sections.add(
             SectionHeader(
                 childListJanuary,
@@ -162,13 +155,77 @@ class GroupEventsListFragment : Fragment() {
                 getString(R.string.december)
             )
         )
+        binding.progressBar.visibility = View.GONE
+        updateView(sections.isEmpty())
         eventsAdapter.notifyDataChanged(sections)
     }
 
-    private fun setEventsList() {
-        binding.events.apply {
+    private fun updateView(isListEmpty: Boolean) {
+        binding.emptyStateLayout.isVisible = isListEmpty
+        binding.recyclerView.isVisible = !isListEmpty
+    }
+
+    private fun initializeEvents() {
+        binding.recyclerView.apply {
+            // Pagination
+            addOnScrollListener(recyclerViewOnScrollListener)
             layoutManager = LinearLayoutManager(context)
             adapter = eventsAdapter
+        }
+    }
+
+    private fun loadEvents() {
+        binding.swipeRefresh.isRefreshing = false
+        page++
+        eventsPresenter.getAllEvents(page, eventPerPage)
+    }
+
+    private fun handleSwipeRefresh() {
+        binding.swipeRefresh.setOnRefreshListener {
+            binding.progressBar.visibility = View.VISIBLE
+            sections.clear()
+            childListJanuary.clear()
+            childListFebruary.clear()
+            childListMarch.clear()
+            childListApril.clear()
+            childListMai.clear()
+            childListJune.clear()
+            childListJuly.clear()
+            childListAugust.clear()
+            childListSeptember.clear()
+            childListOctober.clear()
+            childListNovember.clear()
+            childListDecember.clear()
+            eventsAdapter.notifyDataChanged(sections)
+            eventsPresenter.getAllEvents.value?.clear()
+            eventsPresenter.isLastPage = false
+            page = 0
+            loadEvents()
+        }
+    }
+
+
+    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener =
+        object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                handlePagination(recyclerView)
+            }
+        }
+
+
+    fun handlePagination(recyclerView: RecyclerView) {
+        val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
+        layoutManager?.let {
+            val visibleItemCount: Int = layoutManager.childCount
+            val totalItemCount: Int = layoutManager.itemCount
+            val firstVisibleItemPosition: Int =
+                layoutManager.findFirstVisibleItemPosition()
+            if (!eventsPresenter.isLoading && !eventsPresenter.isLastPage) {
+                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= eventPerPage) {
+                    loadEvents()
+                }
+            }
         }
     }
 }
