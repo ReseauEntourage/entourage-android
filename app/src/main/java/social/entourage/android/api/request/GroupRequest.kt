@@ -70,6 +70,11 @@ interface GroupRequest {
         @Query("per") per: Int,
     ): Call<GroupsListWrapper>
 
+    @GET("users/{user_id}/neighborhoods")
+    fun getMyGroups(
+        @Path("user_id") userId: Int
+    ): Call<GroupsListWrapper>
+
 
     @POST("neighborhoods/{neighborhood_id}/users")
     fun joinGroup(

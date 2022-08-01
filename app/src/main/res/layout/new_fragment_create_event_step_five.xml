@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -14,11 +13,9 @@
 
             <include
                 android:id="@+id/layout"
-                layout="@layout/new_edit_profile_step_two"
+                layout="@layout/new_edit_event_step_five"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:step="@{@string/stepTwo}"
-                app:title="@{@string/choose_categories_group}" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
     </LinearLayout>

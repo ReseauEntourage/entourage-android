@@ -11,6 +11,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateEventBinding
+import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.utils.nextPage
 import social.entourage.android.new_v8.utils.previousPage
 
@@ -19,6 +20,7 @@ class CreateEventFragment : Fragment() {
 
     private var _binding: NewFragmentCreateEventBinding? = null
     val binding: NewFragmentCreateEventBinding get() = _binding!!
+
 
     private lateinit var viewPager: ViewPager2
 

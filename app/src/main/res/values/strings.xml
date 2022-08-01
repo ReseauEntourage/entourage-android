@@ -180,6 +180,8 @@
     <string name="stepOne">01.</string>
     <string name="stepThree">03.</string>
     <string name="stepTwo">02.</string>
+    <string name="stepFour">04.</string>
+    <string name="stepFive">05.</string>
     <string name="choose_categories_group">Sélectionnez la ou les catégories qui décrivent le mieux le sujet de discussion du groupe.</string>
     <string name="web_site">Site web</string>
     <string name="address">Adresse postale</string>
@@ -312,7 +314,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="want_to_act">Envie d’agir ?</string>
     <string name="not_implemented">Not Implemented</string>
     <string name="pedagogical_content">Me former pour passer à l’action</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="picture">Photo</string>
     <string name="image_mandatory">La photo est obligatoire</string>
     <string name="show_more_lined"><u>Voir plus</u></string>
@@ -329,6 +330,16 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="october">Octobre</string>
     <string name="november">Novembre</string>
     <string name="december">Décembre</string>
+    <string name="choose_categories_event">Sélectionnez la ou les catégories qui décrivent le mieux le sujet de discussion de l\'événement.</string>
+    <string name="event_success_title">Votre événement a \nbien été créé !</string>
+    <string name="event_success_subtitle">Félicitations, vous venez de créer un nouvel \névènement. Pour le rendre plus visible \nparlez-en sur vos groupes ! </string>
+    <string name="see_event">Voir mon événement</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="share_event">Partager l\'événement dans vos groupes</string>
+    <string name="share_event_label">Vous ne pouvez partager l’évènement seulement aux groupes dont vous êtes membre. Votre événement sera alors visible dans le(s) groupe(s) sélectionné(s) et tous les membres d\'un groupe pourront y participer.</string>
+    <string name="dont_share">Ne partager dans aucun groupe</string>
+    <string name="share_in_groups">Partager dans un ou plusieurs groupes</string>
 
 
 </resources>

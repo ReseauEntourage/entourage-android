@@ -16,7 +16,7 @@ class CreateEventViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: L
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> CreateEventStepOneFragment()
+            0 -> CreateEventStepFiveFragment()
             else -> CreateEventStepOneFragment()
         }
     }
