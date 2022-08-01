@@ -1,6 +1,5 @@
 package social.entourage.android.new_v8.home
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,17 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavArgument
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.new_home_card.view.*
-import kotlinx.android.synthetic.main.new_home_card.view.title
-import kotlinx.android.synthetic.main.new_lined_edit_text.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.User
@@ -27,10 +21,10 @@ import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.new_v8.Navigation
 import social.entourage.android.new_v8.ViewPagerDefaultPageController
 import social.entourage.android.new_v8.home.pedago.PedagoListActivity
-import social.entourage.android.new_v8.models.*
+import social.entourage.android.new_v8.models.Recommandation
+import social.entourage.android.new_v8.models.Summary
 import social.entourage.android.new_v8.profile.ProfileActivity
 import social.entourage.android.new_v8.utils.Utils
-import timber.log.Timber
 
 class HomeFragment : Fragment() {
     private var _binding: NewFragmentHomeBinding? = null
