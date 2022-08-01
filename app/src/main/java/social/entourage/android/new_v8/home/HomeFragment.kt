@@ -11,6 +11,8 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavArgument
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -23,10 +25,12 @@ import social.entourage.android.api.model.User
 import social.entourage.android.databinding.NewFragmentHomeBinding
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.new_v8.Navigation
+import social.entourage.android.new_v8.ViewPagerDefaultPageController
 import social.entourage.android.new_v8.home.pedago.PedagoListActivity
 import social.entourage.android.new_v8.models.*
 import social.entourage.android.new_v8.profile.ProfileActivity
 import social.entourage.android.new_v8.utils.Utils
+import timber.log.Timber
 
 class HomeFragment : Fragment() {
     private var _binding: NewFragmentHomeBinding? = null
@@ -34,6 +38,7 @@ class HomeFragment : Fragment() {
     private val homePresenter: HomePresenter by lazy { HomePresenter() }
 
     private var user: User? = null
+    private var userSummary: Summary? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,6 +59,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun updateContributionsView(summary: Summary) {
+        userSummary = summary
         with(binding) {
             summary.meetingsCount?.let {
                 meetingLabel.text =
@@ -138,6 +144,10 @@ class HomeFragment : Fragment() {
                 )
             }
             groupCard.root.setOnClickListener {
+                userSummary?.let {
+                    if (it.neighborhoodParticipationsCount == 0)
+                        ViewPagerDefaultPageController.shouldSelectDiscoverGroups = true
+                }
                 val bottomNavigationView =
                     requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
                 bottomNavigationView.selectedItemId = R.id.navigation_groups

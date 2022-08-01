@@ -5,14 +5,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.android.synthetic.main.new_fragment_groups.*
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentGroupsBinding
+import social.entourage.android.new_v8.ViewPagerDefaultPageController
 import social.entourage.android.new_v8.groups.create.CreateGroupActivity
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 import kotlin.math.abs
 
 
@@ -35,6 +39,17 @@ class GroupsFragment : Fragment() {
         createGroup()
         initializeTab()
         handleImageViewAnimation()
+        setPage()
+    }
+
+    private fun setPage() {
+        binding.viewPager.doOnPreDraw {
+            binding.viewPager.setCurrentItem(
+                if (ViewPagerDefaultPageController.shouldSelectDiscoverGroups) 1 else 0,
+                true
+            )
+            ViewPagerDefaultPageController.shouldSelectDiscoverGroups = false
+        }
     }
 
     private fun initializeTab() {
@@ -50,13 +65,15 @@ class GroupsFragment : Fragment() {
         viewPager.registerOnPageChangeCallback(
             object : ViewPager2.OnPageChangeCallback() {
 
-            override fun onPageSelected(position: Int) {
-                AnalyticsEvents.logEvent(
-                    if (position == 0)
-                        AnalyticsEvents.ACTION_GROUP_MY_GROUP
-                    else
-                        AnalyticsEvents.ACTION_GROUP_DISCOVER)
-            }}
+                override fun onPageSelected(position: Int) {
+                    AnalyticsEvents.logEvent(
+                        if (position == 0)
+                            AnalyticsEvents.ACTION_GROUP_MY_GROUP
+                        else
+                            AnalyticsEvents.ACTION_GROUP_DISCOVER
+                    )
+                }
+            }
         )
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabs[position]
@@ -82,7 +99,8 @@ class GroupsFragment : Fragment() {
     private fun createGroup() {
         binding.createGroup.setOnClickListener {
             AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_GROUP_PLUS)
+                AnalyticsEvents.ACTION_GROUP_PLUS
+            )
             startActivity(
                 Intent(context, CreateGroupActivity::class.java)
             )
