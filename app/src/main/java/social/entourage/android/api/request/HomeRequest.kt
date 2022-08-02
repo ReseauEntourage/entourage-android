@@ -3,6 +3,8 @@ package social.entourage.android.api.request
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.models.Pedago
 import social.entourage.android.new_v8.models.Summary
@@ -17,4 +19,7 @@ interface HomeRequest {
 
     @GET("resources")
     fun getPedagogicalResources(): Call<PedagogicResponse>
+
+    @POST("resources/{id}/users")
+    fun setPedagogicalContentAsRead(@Path("id") groupId: Int): Call<Boolean>
 }

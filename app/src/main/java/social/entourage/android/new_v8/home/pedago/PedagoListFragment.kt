@@ -11,6 +11,7 @@ import social.entourage.android.databinding.NewFragmentPedagoListBinding
 import social.entourage.android.new_v8.home.HomePresenter
 import social.entourage.android.new_v8.models.Category
 import social.entourage.android.new_v8.models.Pedago
+import timber.log.Timber
 
 class PedagoListFragment : Fragment() {
 
@@ -38,10 +39,10 @@ class PedagoListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         pedagoAdapter = PedagoListAdapter(requireContext(), sections, object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {
-                pedagogicalContent.html?.let {
+                if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
                     val action =
                         PedagoListFragmentDirections.actionPedagogicalListFragmentToPedagogicalDetailsFragment(
-                            it
+                            pedagogicalContent.html, pedagogicalContent.id
                         )
                     findNavController().navigate(action)
                 }
