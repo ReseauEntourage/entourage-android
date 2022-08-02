@@ -1,15 +1,23 @@
 package social.entourage.android.new_v8.utils
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.TimePicker
+import java.sql.Time
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun EditText.transformIntoDatePicker(context: Context, format: String, maxDate: Date? = null) {
+fun EditText.transformIntoDatePicker(
+    context: Context,
+    format: String,
+    maxDate: Date? = null,
+    minDate: Date? = null
+) {
     isFocusableInTouchMode = false
     isClickable = true
     isFocusable = false
@@ -30,6 +38,33 @@ fun EditText.transformIntoDatePicker(context: Context, format: String, maxDate: 
             myCalendar.get(Calendar.DAY_OF_MONTH)
         ).run {
             maxDate?.time?.also { datePicker.maxDate = it }
+            minDate?.time?.also { datePicker.minDate = it }
+            show()
+        }
+    }
+}
+
+fun EditText.transformIntoTimePicker(context: Context, format: String) {
+    isFocusableInTouchMode = false
+    isClickable = true
+    isFocusable = false
+
+    val myCalendar = Calendar.getInstance()
+    val timePickerOnDataSetListener =
+        TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+            myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+            myCalendar.set(Calendar.MINUTE, minute)
+            val sdf = SimpleDateFormat(format, Locale.FRANCE)
+            setText(sdf.format(myCalendar.time))
+
+        }
+
+    setOnClickListener {
+        TimePickerDialog(
+            context, timePickerOnDataSetListener, myCalendar
+                .get(Calendar.HOUR_OF_DAY), myCalendar.get(Calendar.MINUTE),
+            true
+        ).run {
             show()
         }
     }
