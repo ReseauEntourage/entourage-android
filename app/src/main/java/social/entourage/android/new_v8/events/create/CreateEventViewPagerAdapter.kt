@@ -5,19 +5,20 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-const val NB_TABS = 1
+const val NB_TABS = 3
 
 class CreateEventViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
 
+    private val fragments: MutableList<Fragment> = mutableListOf(
+        CreateEventStepOneFragment(), CreateEventStepTwoFragment(), CreateEventStepThreeFragment()
+    )
+
     override fun getItemCount(): Int {
-        return NB_TABS
+        return fragments.size
     }
 
     override fun createFragment(position: Int): Fragment {
-        return when (position) {
-            0 -> CreateEventStepOneFragment()
-            else -> CreateEventStepOneFragment()
-        }
+        return fragments[position]
     }
 }

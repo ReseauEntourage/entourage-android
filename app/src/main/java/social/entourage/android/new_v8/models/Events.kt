@@ -82,7 +82,10 @@ data class Events(
     val displayCategory: String? = null,
 
     @field:SerializedName("status")
-    val status: Status? = null
+    val status: Status? = null,
+
+    @field:SerializedName("address")
+    var displayAddress: String? = null
 )
 
 
