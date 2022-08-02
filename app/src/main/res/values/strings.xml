@@ -312,7 +312,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="want_to_act">Envie d’agir ?</string>
     <string name="not_implemented">Not Implemented</string>
     <string name="pedagogical_content">Me former pour passer à l’action</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="picture">Photo</string>
     <string name="image_mandatory">La photo est obligatoire</string>
     <string name="show_more_lined"><u>Voir plus</u></string>
@@ -329,6 +328,25 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="october">Octobre</string>
     <string name="november">Novembre</string>
     <string name="december">Décembre</string>
+
+    <string name="date">Date</string>
+    <string name="start_time">Heure de début</string>
+    <string name="end_time">Heure de fin</string>
+    <string name="recurrence">Récurrence</string>
+    <string name="date_hint">jj/mm/aa</string>
+    <string name="time_hint">hh-mm</string>
+    <string name="juste_once">Juste une fois</string>
+    <string name="every_week">Toutes les semaines</string>
+    <string name="every_two_week">Une semaine sur deux</string>
+    <string name="once_a_month">Une fois par mois</string>
+    <string name="place">Lieu</string>
+    <string name="event_available_places">Nombre de places disponibles</string>
+    <string name="event_limited_places">L’événement a-t-il un nombre de places limité ?</string>
+    <string name="face_to_face">En présentiel</string>
+    <string name="online">En ligne</string>
+    <string name="add_url">Ajouter une url</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
