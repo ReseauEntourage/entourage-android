@@ -1,7 +1,6 @@
 package social.entourage.android.new_v8.models
 
 import com.google.gson.annotations.SerializedName
-import social.entourage.android.api.model.BaseEntourage.*
 import social.entourage.android.api.model.feed.FeedItemAuthor
 
 data class Events(
@@ -55,6 +54,9 @@ data class Events(
 
     @field:SerializedName("id")
     val id: Int? = null,
+
+    @field:SerializedName("members_count")
+    val membersCount: Int? = null,
 
     @field:SerializedName("number_of_unread_messages")
     val numberOfUnreadMessages: Int? = null,
