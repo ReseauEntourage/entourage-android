@@ -334,8 +334,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_success_title">Votre événement a \nbien été créé !</string>
     <string name="event_success_subtitle">Félicitations, vous venez de créer un nouvel \névènement. Pour le rendre plus visible \nparlez-en sur vos groupes ! </string>
     <string name="see_event">Voir mon événement</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="share_event">Partager l\'événement dans vos groupes</string>
     <string name="share_event_label">Vous ne pouvez partager l’évènement seulement aux groupes dont vous êtes membre. Votre événement sera alors visible dans le(s) groupe(s) sélectionné(s) et tous les membres d\'un groupe pourront y participer.</string>
     <string name="dont_share">Ne partager dans aucun groupe</string>
@@ -357,8 +355,5 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="face_to_face">En présentiel</string>
     <string name="online">En ligne</string>
     <string name="add_url">Ajouter une url</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
 
 </resources>
