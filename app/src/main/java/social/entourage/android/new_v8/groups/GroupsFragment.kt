@@ -19,6 +19,8 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 import kotlin.math.abs
 
+const val DISCOVER_GROUPS_TAB = 1
+const val MY_GROUPS_TAB = 0
 
 class GroupsFragment : Fragment() {
     private var _binding: NewFragmentGroupsBinding? = null
@@ -45,7 +47,7 @@ class GroupsFragment : Fragment() {
     private fun setPage() {
         binding.viewPager.doOnPreDraw {
             binding.viewPager.setCurrentItem(
-                if (ViewPagerDefaultPageController.shouldSelectDiscoverGroups) 1 else 0,
+                if (ViewPagerDefaultPageController.shouldSelectDiscoverGroups) DISCOVER_GROUPS_TAB else MY_GROUPS_TAB,
                 true
             )
             ViewPagerDefaultPageController.shouldSelectDiscoverGroups = false

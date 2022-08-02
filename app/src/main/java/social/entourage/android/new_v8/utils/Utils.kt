@@ -77,27 +77,27 @@ class Utils {
             val customDialog: View =
                 layoutInflater.inflate(R.layout.new_custom_dialog_no_actions, null)
 
-            val tvTitle = customDialog.findViewById<TextView>(R.id.title)
-            val tvSubtitle = customDialog.findViewById<TextView>(R.id.subtitle)
-            val ivClose = customDialog.findViewById<ImageView>(R.id.close)
-            val ivIllustration = customDialog.findViewById<ImageView>(R.id.illustration)
-
-            val builder = AlertDialog.Builder(view.context)
-            builder.setView(customDialog)
-            val alertDialog = builder.create()
-            tvTitle.text = title
-            tvSubtitle.text = subtitle
-            ivIllustration.setImageDrawable(
-                ResourcesCompat.getDrawable(
-                    view.resources,
-                    illustration,
-                    null
+            with(customDialog) {
+                val tvTitle = findViewById<TextView>(R.id.title)
+                val tvSubtitle = findViewById<TextView>(R.id.subtitle)
+                val ivClose = findViewById<ImageView>(R.id.close)
+                val ivIllustration = findViewById<ImageView>(R.id.illustration)
+                val builder = AlertDialog.Builder(view.context)
+                builder.setView(customDialog)
+                val alertDialog = builder.create()
+                tvTitle.text = title
+                tvSubtitle.text = subtitle
+                ivIllustration.setImageDrawable(
+                    ResourcesCompat.getDrawable(
+                        view.resources,
+                        illustration,
+                        null
+                    )
                 )
-            )
-            ivClose.setOnClickListener { alertDialog.dismiss() }
-
-            alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            alertDialog.show()
+                ivClose.setOnClickListener { alertDialog.dismiss() }
+                alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                alertDialog.show()
+            }
         }
 
         fun showToast(context: Context, message: String) {

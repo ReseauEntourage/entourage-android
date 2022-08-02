@@ -148,6 +148,10 @@ class HomeFragment : Fragment() {
             }
 
             eventCard.root.setOnClickListener {
+                userSummary?.let {
+                    if (it.outingParticipationsCount == 0)
+                        ViewPagerDefaultPageController.shouldSelectDiscoverEvents = true
+                }
                 val bottomNavigationView =
                     requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
                 bottomNavigationView.selectedItemId = R.id.navigation_events
