@@ -99,9 +99,11 @@ class GroupEventsListAdapter(
         childViewHolder.binding.admin.isVisible = child.author?.userID == userId
 
         childViewHolder.binding.canceled.isVisible = child.status == Status.CLOSED
-
+/*
         childViewHolder.binding.divider.isVisible =
             sectionItemList?.get(sectionPosition)?.childList?.size?.minus(1) != childPosition
+
+ */
     }
 
     init {
