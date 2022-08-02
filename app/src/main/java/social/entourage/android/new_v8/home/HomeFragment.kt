@@ -11,14 +11,20 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.new_home_card.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.NewFragmentHomeBinding
+import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.new_v8.Navigation
+import social.entourage.android.new_v8.ViewPagerDefaultPageController
 import social.entourage.android.new_v8.home.pedago.PedagoListActivity
-import social.entourage.android.new_v8.models.*
+import social.entourage.android.new_v8.models.Recommandation
+import social.entourage.android.new_v8.models.Summary
 import social.entourage.android.new_v8.profile.ProfileActivity
+import social.entourage.android.new_v8.utils.Utils
 
 class HomeFragment : Fragment() {
     private var _binding: NewFragmentHomeBinding? = null
@@ -26,6 +32,7 @@ class HomeFragment : Fragment() {
     private val homePresenter: HomePresenter by lazy { HomePresenter() }
 
     private var user: User? = null
+    private var userSummary: Summary? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +53,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun updateContributionsView(summary: Summary) {
+        userSummary = summary
         with(binding) {
             summary.meetingsCount?.let {
                 meetingLabel.text =
@@ -53,12 +61,6 @@ class HomeFragment : Fragment() {
                 meetingValue.text = it.toString()
                 heartIcon.isVisible = it > 0
                 heartIconEmpty.isVisible = it <= 0
-            }
-
-            summary.chatMessagesCount?.let {
-                messageCard.value.text = it.toString()
-                messageCard.isEmpty.isVisible = it <= 0
-                messageCard.isNotEmpty.isVisible = it > 0
             }
 
             summary.outingParticipationsCount?.let {
@@ -74,6 +76,8 @@ class HomeFragment : Fragment() {
             }
         }
         summary.recommendations?.let { setRecommendationsList(it) }
+        initializeHelpSection()
+        handleOnClickCounters()
     }
 
     private fun updateView() {
@@ -94,8 +98,6 @@ class HomeFragment : Fragment() {
                 getString(R.string.welcome_user),
                 user?.displayName
             )
-
-
         }
     }
 
@@ -122,6 +124,65 @@ class HomeFragment : Fragment() {
                     PedagoListActivity::class.java
                 )
             )
+        }
+    }
+
+    private fun handleOnClickCounters() {
+        with(binding) {
+            meetingCard.setOnClickListener {
+                Utils.showAlertDialogWithoutActions(
+                    requireView(),
+                    getString(R.string.create_encounters),
+                    getString(R.string.participate_to_events),
+                    R.drawable.new_illu_header_group
+                )
+            }
+            groupCard.root.setOnClickListener {
+                userSummary?.let {
+                    if (it.neighborhoodParticipationsCount == 0)
+                        ViewPagerDefaultPageController.shouldSelectDiscoverGroups = true
+                }
+                val bottomNavigationView =
+                    requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
+                bottomNavigationView.selectedItemId = R.id.navigation_groups
+            }
+
+            eventCard.root.setOnClickListener {
+                userSummary?.let {
+                    if (it.outingParticipationsCount == 0)
+                        ViewPagerDefaultPageController.shouldSelectDiscoverEvents = true
+                }
+                val bottomNavigationView =
+                    requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
+                bottomNavigationView.selectedItemId = R.id.navigation_events
+            }
+        }
+    }
+
+    private fun initializeHelpSection() {
+        with(binding) {
+            //To be deleted
+            moderator.root.title.text = "Barbara, modératrice"
+            moderator.root.description.text = getString(R.string.moderator_subtitle)
+            Glide.with(requireActivity())
+                //To be changed
+                .load("")
+                .placeholder(R.drawable.perso_violet)
+                .circleCrop()
+                .into(moderator.root.icon_card)
+            solidarityPlaces.root.title.text = getString(R.string.solidarity_places_map)
+            solidarityPlaces.root.description.visibility = View.GONE
+            Glide.with(requireActivity())
+                //To be changed
+                .load("")
+                .placeholder(R.drawable.new_solidarity_map)
+                .circleCrop()
+                .into(solidarityPlaces.root.icon_card)
+
+            solidarityPlaces.root.setOnClickListener {
+                val intent = Intent(requireContext(), GDSMainActivity::class.java)
+                requireActivity().startActivity(intent)
+            }
         }
     }
 

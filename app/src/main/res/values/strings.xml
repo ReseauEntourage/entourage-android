@@ -278,7 +278,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="no_comments">Pas de commentaires</string>
     <string name="posts_comment_number"><u>%s commentaires</u></string>
     <string name="event_date">"dd/MM/yyyy"</string>
-    <string name="event_date_time">"dd/MM/yyyy à HH"</string>
+    <string name="event_date_time">"dd/MM/yyyy à HH'h'mm"</string>
     <string name="post_date">"dd.MM.yyyy"</string>
     <string name="comments">Commentaires</string>
     <string name="comments_date">dd.MM.yy à HH:mm</string>
@@ -312,7 +312,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="want_to_act">Envie d’agir ?</string>
     <string name="not_implemented">Not Implemented</string>
     <string name="pedagogical_content">Me former pour passer à l’action</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="picture">Photo</string>
     <string name="image_mandatory">La photo est obligatoire</string>
     <string name="show_more_lined"><u>Voir plus</u></string>
@@ -329,6 +328,34 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="october">Octobre</string>
     <string name="november">Novembre</string>
     <string name="december">Décembre</string>
+
+    <string name="date">Date</string>
+    <string name="start_time">Heure de début</string>
+    <string name="end_time">Heure de fin</string>
+    <string name="recurrence">Récurrence</string>
+    <string name="date_hint">jj/mm/aa</string>
+    <string name="time_hint">hh-mm</string>
+    <string name="juste_once">Juste une fois</string>
+    <string name="every_week">Toutes les semaines</string>
+    <string name="every_two_week">Une semaine sur deux</string>
+    <string name="once_a_month">Une fois par mois</string>
+    <string name="place">Lieu</string>
+    <string name="event_available_places">Nombre de places disponibles</string>
+    <string name="event_limited_places">L’événement a-t-il un nombre de places limité ?</string>
+    <string name="face_to_face">En présentiel</string>
+    <string name="online">En ligne</string>
+    <string name="add_url">Ajouter une url</string>
+    <string name="my_events">Mes événements</string>
+    <string name="canceled">- Annulé</string>
+    <string name="event_list_empty_state_title">Vous n’avez pas encore rejoint d’évènement</string>
+    <string name="event_list_empty_state_subtitle">Allez sur l’onglet découvir, et si aucun ne vous convient c’est l’occasion de créer un nouvel évènement !</string>
+    <string name="discover_event_list_empty_state_title">Oups, aucun évènement autour de vous</string>
+    <string name="discover_event_list_empty_state_subtitle">Si aucun événement ne se trouve près de vous, vous pouvez élargir votre zone de recherche.</string>
+    <string name="need_help">Besoin d’aide ?</string>
+    <string name="solidarity_places_map">Carte des lieux solidaires</string>
+    <string name="moderator_subtitle">Votre guide dans l’app</string>
+    <string name="create_encounters">Créez des rencontres !</string>
+    <string name="participate_to_events">Participez à des événements et des actions solidaires pour augmenter votre compteur de rencontres Entourage</string>
 
 
 </resources>
