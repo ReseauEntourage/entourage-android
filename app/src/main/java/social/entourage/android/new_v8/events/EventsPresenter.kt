@@ -6,7 +6,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.EventsListWrapper
-import social.entourage.android.new_v8.events.list.eventPerPage
+import social.entourage.android.new_v8.events.list.EVENTS_PER_PAGE
 import social.entourage.android.new_v8.models.Events
 
 class EventsPresenter {
@@ -41,7 +41,7 @@ class EventsPresenter {
                     response: Response<EventsListWrapper>
                 ) {
                     response.body()?.let { allEventsWrapper ->
-                        if (allEventsWrapper.allEvents.size < eventPerPage) isLastPage = true
+                        if (allEventsWrapper.allEvents.size < EVENTS_PER_PAGE) isLastPage = true
                         getAllEvents.value = allEventsWrapper.allEvents
                     }
                 }

@@ -14,7 +14,7 @@ import social.entourage.android.new_v8.events.EventsPresenter
 import social.entourage.android.new_v8.models.Events
 import social.entourage.android.new_v8.utils.Utils
 
-const val eventPerPage = 10
+const val EVENTS_PER_PAGE = 10
 
 class DiscoverEventsListFragment : Fragment() {
 
@@ -72,7 +72,7 @@ class DiscoverEventsListFragment : Fragment() {
     private fun loadEvents() {
         binding.swipeRefresh.isRefreshing = false
         page++
-        eventsPresenter.getAllEvents(page, eventPerPage)
+        eventsPresenter.getAllEvents(page, EVENTS_PER_PAGE)
     }
 
     private fun handleSwipeRefresh() {
@@ -105,7 +105,7 @@ class DiscoverEventsListFragment : Fragment() {
             val firstVisibleItemPosition: Int =
                 layoutManager.findFirstVisibleItemPosition()
             if (!eventsPresenter.isLoading && !eventsPresenter.isLastPage) {
-                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= eventPerPage) {
+                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= EVENTS_PER_PAGE) {
                     loadEvents()
                 }
             }

@@ -104,7 +104,7 @@ class MyEventsListFragment : Fragment() {
             val firstVisibleItemPosition: Int =
                 layoutManager.findFirstVisibleItemPosition()
             if (!eventsPresenter.isLoading && !eventsPresenter.isLastPage) {
-                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= eventPerPage) {
+                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= EVENTS_PER_PAGE) {
                     loadEvents()
                 }
             }
