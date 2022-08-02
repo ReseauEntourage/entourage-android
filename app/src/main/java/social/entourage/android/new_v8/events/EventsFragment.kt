@@ -5,15 +5,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentEventsBinding
+import social.entourage.android.new_v8.ViewPagerDefaultPageController
 import social.entourage.android.new_v8.events.create.CreateEventActivity
 import social.entourage.android.new_v8.events.list.EventsViewPagerAdapter
 import kotlin.math.abs
 
+const val DISCOVER_EVENTS_TAB = 1
+const val MY_EVENTS_TAB = 0
 
 class EventsFragment : Fragment() {
     private var _binding: NewFragmentEventsBinding? = null
@@ -33,6 +37,7 @@ class EventsFragment : Fragment() {
         createEvent()
         initializeTab()
         handleImageViewAnimation()
+        setPage()
     }
 
     private fun initializeTab() {
@@ -48,6 +53,16 @@ class EventsFragment : Fragment() {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabs[position]
         }.attach()
+    }
+
+    private fun setPage() {
+        binding.viewPager.doOnPreDraw {
+            binding.viewPager.setCurrentItem(
+                if (ViewPagerDefaultPageController.shouldSelectDiscoverEvents) DISCOVER_EVENTS_TAB else MY_EVENTS_TAB,
+                true
+            )
+            ViewPagerDefaultPageController.shouldSelectDiscoverEvents = false
+        }
     }
 
     private fun handleImageViewAnimation() {

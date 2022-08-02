@@ -6,14 +6,17 @@ import android.content.Context
 import android.database.Cursor
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.provider.OpenableColumns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import social.entourage.android.R
 import social.entourage.android.new_v8.events.list.SectionHeader
 import social.entourage.android.new_v8.models.Events
@@ -62,6 +65,39 @@ class Utils {
             }
             alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             alertDialog.show()
+        }
+
+        fun showAlertDialogWithoutActions(
+            view: View,
+            title: String,
+            subtitle: String,
+            illustration: Int
+        ) {
+            val layoutInflater = LayoutInflater.from(view.context)
+            val customDialog: View =
+                layoutInflater.inflate(R.layout.new_custom_dialog_no_actions, null)
+
+            with(customDialog) {
+                val tvTitle = findViewById<TextView>(R.id.title)
+                val tvSubtitle = findViewById<TextView>(R.id.subtitle)
+                val ivClose = findViewById<ImageView>(R.id.close)
+                val ivIllustration = findViewById<ImageView>(R.id.illustration)
+                val builder = AlertDialog.Builder(view.context)
+                builder.setView(customDialog)
+                val alertDialog = builder.create()
+                tvTitle.text = title
+                tvSubtitle.text = subtitle
+                ivIllustration.setImageDrawable(
+                    ResourcesCompat.getDrawable(
+                        view.resources,
+                        illustration,
+                        null
+                    )
+                )
+                ivClose.setOnClickListener { alertDialog.dismiss() }
+                alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                alertDialog.show()
+            }
         }
 
         fun showToast(context: Context, message: String) {

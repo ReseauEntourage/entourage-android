@@ -312,7 +312,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="want_to_act">Envie d’agir ?</string>
     <string name="not_implemented">Not Implemented</string>
     <string name="pedagogical_content">Me former pour passer à l’action</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="picture">Photo</string>
     <string name="image_mandatory">La photo est obligatoire</string>
     <string name="show_more_lined"><u>Voir plus</u></string>
@@ -352,5 +351,11 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_list_empty_state_subtitle">Allez sur l’onglet découvir, et si aucun ne vous convient c’est l’occasion de créer un nouvel évènement !</string>
     <string name="discover_event_list_empty_state_title">Oups, aucun évènement autour de vous</string>
     <string name="discover_event_list_empty_state_subtitle">Si aucun événement ne se trouve près de vous, vous pouvez élargir votre zone de recherche.</string>
+    <string name="need_help">Besoin d’aide ?</string>
+    <string name="solidarity_places_map">Carte des lieux solidaires</string>
+    <string name="moderator_subtitle">Votre guide dans l’app</string>
+    <string name="create_encounters">Créez des rencontres !</string>
+    <string name="participate_to_events">Participez à des événements et des actions solidaires pour augmenter votre compteur de rencontres Entourage</string>
+
 
 </resources>

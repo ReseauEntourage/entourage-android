@@ -49,6 +49,7 @@ class Navigation {
                         )
                     )
                     Action.INDEX -> {
+                        ViewPagerDefaultPageController.shouldSelectDiscoverGroups = true
                         val bottomNavigationView =
                             (context as Activity).findViewById<BottomNavigationView>(R.id.nav_view)
                         bottomNavigationView.selectedItemId = R.id.navigation_groups
