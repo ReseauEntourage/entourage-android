@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.groups.list
+package social.entourage.android.new_v8.events.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,82 +9,84 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.EntourageApplication
-import social.entourage.android.databinding.NewFragmentMyGroupsListBinding
-import social.entourage.android.new_v8.groups.GroupPresenter
-import social.entourage.android.new_v8.models.Group
+import social.entourage.android.databinding.NewFragmentDiscoverEventsListBinding
+import social.entourage.android.new_v8.events.EventsPresenter
+import social.entourage.android.new_v8.models.Events
+import social.entourage.android.new_v8.utils.Utils
+
+const val EVENTS_PER_PAGE = 10
+
+class DiscoverEventsListFragment : Fragment() {
+
+    private var _binding: NewFragmentDiscoverEventsListBinding? = null
+    val binding: NewFragmentDiscoverEventsListBinding get() = _binding!!
 
 
-class MyGroupsListFragment : Fragment() {
-
-
-    private var _binding: NewFragmentMyGroupsListBinding? = null
-    val binding: NewFragmentMyGroupsListBinding get() = _binding!!
+    private val eventsPresenter: EventsPresenter by lazy { EventsPresenter() }
+    private var myId: Int? = null
+    lateinit var eventsAdapter: GroupEventsListAdapter
     private var page: Int = 0
 
-    private var groupsList: MutableList<Group> = ArrayList()
-    private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
-    private var myId: Int? = null
+    private var sections: MutableList<SectionHeader> = mutableListOf()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentMyGroupsListBinding.inflate(inflater, container, false)
+        _binding = NewFragmentDiscoverEventsListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         myId = EntourageApplication.me(activity)?.id
-        loadGroups()
-        groupPresenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleResponseGetGroups)
-        initializeGroups()
+        eventsAdapter = GroupEventsListAdapter(requireContext(), sections, myId)
+        loadEvents()
+        eventsPresenter.getAllEvents.observe(viewLifecycleOwner, ::handleResponseGetEvents)
+        initializeEvents()
         handleSwipeRefresh()
     }
 
-    private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
-        //groupsList.clear()
-        allGroups?.let { groupsList.addAll(it) }
+    private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
+        sections = Utils.getSectionHeaders(allEvents, sections)
         binding.progressBar.visibility = View.GONE
-        updateView(groupsList.isEmpty())
-        binding.recyclerView.adapter?.notifyDataSetChanged()
+        updateView(sections.isEmpty())
+        eventsAdapter.notifyDataChanged(sections)
     }
-
 
     private fun updateView(isListEmpty: Boolean) {
         binding.emptyStateLayout.isVisible = isListEmpty
         binding.recyclerView.isVisible = !isListEmpty
     }
 
-    private fun initializeGroups() {
+    private fun initializeEvents() {
         binding.recyclerView.apply {
             // Pagination
             addOnScrollListener(recyclerViewOnScrollListener)
             layoutManager = LinearLayoutManager(context)
-            adapter = GroupsListAdapter(groupsList, myId, FromScreen.MY_GROUPS)
+            adapter = eventsAdapter
         }
     }
 
-    private fun loadGroups() {
+    private fun loadEvents() {
         binding.swipeRefresh.isRefreshing = false
         page++
-        myId?.let { groupPresenter.getMyGroups(page, groupPerPage, it) } ?: run {
-            binding.progressBar.visibility = View.GONE
-            binding.emptyStateLayout.visibility = View.VISIBLE
-        }
+        eventsPresenter.getAllEvents(page, EVENTS_PER_PAGE)
     }
 
     private fun handleSwipeRefresh() {
         binding.swipeRefresh.setOnRefreshListener {
-            groupsList.clear()
-            binding.recyclerView.adapter?.notifyDataSetChanged()
             binding.progressBar.visibility = View.VISIBLE
-            groupPresenter.getAllMyGroups.value?.clear()
-            groupPresenter.isLastPage = false
+            sections.clear()
+            eventsAdapter.notifyDataChanged(sections)
+            eventsPresenter.getAllEvents.value?.clear()
+            eventsPresenter.isLastPage = false
             page = 0
-            loadGroups()
+            loadEvents()
         }
     }
+
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener =
         object : RecyclerView.OnScrollListener() {
@@ -94,6 +96,7 @@ class MyGroupsListFragment : Fragment() {
             }
         }
 
+
     fun handlePagination(recyclerView: RecyclerView) {
         val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
         layoutManager?.let {
@@ -101,9 +104,9 @@ class MyGroupsListFragment : Fragment() {
             val totalItemCount: Int = layoutManager.itemCount
             val firstVisibleItemPosition: Int =
                 layoutManager.findFirstVisibleItemPosition()
-            if (!groupPresenter.isLoading && !groupPresenter.isLastPage) {
-                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= groupPerPage) {
-                    loadGroups()
+            if (!eventsPresenter.isLoading && !eventsPresenter.isLastPage) {
+                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= EVENTS_PER_PAGE) {
+                    loadEvents()
                 }
             }
         }
