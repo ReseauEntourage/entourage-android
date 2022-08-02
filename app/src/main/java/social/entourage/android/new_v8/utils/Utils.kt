@@ -18,11 +18,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import social.entourage.android.R
+import social.entourage.android.new_v8.events.list.SectionHeader
+import social.entourage.android.new_v8.models.Events
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.nio.file.Files
+import java.time.YearMonth
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 
 class Utils {
@@ -147,6 +153,33 @@ class Utils {
             val name: String = returnCursor.getString(nameIndex)
             returnCursor.close()
             return name
+        }
+
+        fun getSectionHeaders(
+            allEvents: MutableList<Events>?,
+            sections: MutableList<SectionHeader>
+        ): MutableList<SectionHeader> {
+            val map = allEvents?.groupBy {
+                val i = ZonedDateTime.ofInstant(
+                    it.metadata?.startsAt?.toInstant(),
+                    ZoneId.systemDefault()
+                )
+                YearMonth.from(i)
+            }
+            val newSections = map?.map {
+                SectionHeader(it.value, it.key.format(DateTimeFormatter.ofPattern("LLLL yyyy")))
+            }?.toMutableList()
+
+            return newSections?.let {
+                val allSections = sections + newSections
+                val sectionsWithoutDuplicates =
+                    allSections.groupBy { header -> header.sectionText }.map { mapGrouped ->
+                        val events = mapGrouped.value.map { it.childList }.flatten()
+                        SectionHeader(events, mapGrouped.key)
+                    }.toMutableList()
+
+                sectionsWithoutDuplicates
+            } ?: sections
         }
     }
 }

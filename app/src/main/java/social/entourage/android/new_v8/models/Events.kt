@@ -1,8 +1,15 @@
 package social.entourage.android.new_v8.models
 
 import com.google.gson.annotations.SerializedName
-import social.entourage.android.api.model.BaseEntourage.*
 import social.entourage.android.api.model.feed.FeedItemAuthor
+
+enum class Status {
+    @SerializedName("open")
+    OPEN,
+
+    @SerializedName("closed")
+    CLOSED,
+}
 
 data class Events(
     @field:SerializedName("metadata")
@@ -56,6 +63,9 @@ data class Events(
     @field:SerializedName("id")
     val id: Int? = null,
 
+    @field:SerializedName("members_count")
+    val membersCount: Int? = null,
+
     @field:SerializedName("number_of_unread_messages")
     val numberOfUnreadMessages: Int? = null,
 
@@ -72,7 +82,10 @@ data class Events(
     val displayCategory: String? = null,
 
     @field:SerializedName("status")
-    val status: String? = null
+    val status: Status? = null,
+
+    @field:SerializedName("address")
+    var displayAddress: String? = null
 )
 
 

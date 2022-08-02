@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"
+            app:icon="@{@drawable/new_illu_header_group}"
             app:title="@{@string/new_group}" />
 
         <androidx.viewpager2.widget.ViewPager2

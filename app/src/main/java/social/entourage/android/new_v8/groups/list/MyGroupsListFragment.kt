@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -38,20 +39,21 @@ class MyGroupsListFragment : Fragment() {
         loadGroups()
         groupPresenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleResponseGetGroups)
         initializeGroups()
+        handleSwipeRefresh()
     }
 
     private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
         //groupsList.clear()
         allGroups?.let { groupsList.addAll(it) }
         binding.progressBar.visibility = View.GONE
-        allGroups?.isEmpty()?.let { updateView(it) }
+        updateView(groupsList.isEmpty())
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 
 
     private fun updateView(isListEmpty: Boolean) {
-        if (isListEmpty) binding.emptyStateLayout.visibility = View.VISIBLE
-        else binding.recyclerView.visibility = View.VISIBLE
+        binding.emptyStateLayout.isVisible = isListEmpty
+        binding.recyclerView.isVisible = !isListEmpty
     }
 
     private fun initializeGroups() {
@@ -64,10 +66,23 @@ class MyGroupsListFragment : Fragment() {
     }
 
     private fun loadGroups() {
+        binding.swipeRefresh.isRefreshing = false
         page++
         myId?.let { groupPresenter.getMyGroups(page, groupPerPage, it) } ?: run {
             binding.progressBar.visibility = View.GONE
             binding.emptyStateLayout.visibility = View.VISIBLE
+        }
+    }
+
+    private fun handleSwipeRefresh() {
+        binding.swipeRefresh.setOnRefreshListener {
+            groupsList.clear()
+            binding.recyclerView.adapter?.notifyDataSetChanged()
+            binding.progressBar.visibility = View.VISIBLE
+            groupPresenter.getAllMyGroups.value?.clear()
+            groupPresenter.isLastPage = false
+            page = 0
+            loadGroups()
         }
     }
 

@@ -3,19 +3,11 @@ package social.entourage.android.new_v8
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.view.ContextThemeWrapper
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import social.entourage.android.R
 import social.entourage.android.new_v8.groups.create.CreateGroupActivity
 import social.entourage.android.new_v8.groups.details.feed.FeedActivity
-import social.entourage.android.new_v8.groups.details.feed.FeedFragmentDirections
-import social.entourage.android.new_v8.home.pedago.PedagoListActivity
 import social.entourage.android.new_v8.models.Action
 import social.entourage.android.new_v8.models.Params
 import social.entourage.android.new_v8.models.Type
@@ -24,7 +16,6 @@ import social.entourage.android.new_v8.user.UserProfileActivity
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.tools.view.WebViewFragment
-import timber.log.Timber
 
 class Navigation {
     companion object {

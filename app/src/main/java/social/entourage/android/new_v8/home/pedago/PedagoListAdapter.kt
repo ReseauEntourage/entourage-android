@@ -1,18 +1,13 @@
 package social.entourage.android.new_v8.home.pedago
 
 import android.content.Context
-import android.graphics.drawable.GradientDrawable
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
-import androidx.core.view.marginBottom
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.intrusoft.sectionedrecyclerview.SectionRecyclerViewAdapter
@@ -21,10 +16,16 @@ import social.entourage.android.databinding.NewPedagoContentItemBinding
 import social.entourage.android.databinding.NewPedagoSectionHeaderBinding
 import social.entourage.android.new_v8.models.Pedago
 import social.entourage.android.new_v8.utils.px
-import timber.log.Timber
 
+interface OnItemClick {
+    fun onItemClick(pedagogicalContent: Pedago)
+}
 
-class PedagoListAdapter(context: Context, var sectionItemList: List<SectionHeader?>?) :
+class PedagoListAdapter(
+    context: Context,
+    var sectionItemList: List<SectionHeader?>?,
+    private var onItemClickListener: OnItemClick
+) :
     SectionRecyclerViewAdapter<SectionHeader, Pedago, PedagoListAdapter.SectionViewHolder, PedagoListAdapter.ChildViewHolder>(
         context,
         sectionItemList
@@ -79,6 +80,9 @@ class PedagoListAdapter(context: Context, var sectionItemList: List<SectionHeade
     ) {
         childViewHolder.binding.title.text = child.name
         childViewHolder.binding.read.isVisible = child.watched == true
+        childViewHolder.binding.root.setOnClickListener {
+            onItemClickListener.onItemClick(child)
+        }
 
         Glide.with(context)
             .load(child.imageUrl)

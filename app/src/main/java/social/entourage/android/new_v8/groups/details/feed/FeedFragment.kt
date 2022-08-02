@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -130,6 +131,7 @@ class FeedFragment : Fragment() {
         handleSettingsButton()
         handleImageViewAnimation()
         handleMembersButton()
+        handleGroupEventsButton()
         handleAboutButton()
         handleSwipeRefresh()
         onFragmentResult()
@@ -267,6 +269,8 @@ class FeedFragment : Fragment() {
                 binding.eventsRecyclerview.visibility = View.VISIBLE
                 initializeEvents()
             }
+            binding.seeMoreEvents.isVisible = group.futureEvents?.isNotEmpty() == true
+            binding.arrowEvents.isVisible = group.futureEvents?.isNotEmpty() == true
             /*
             Glide.with(requireActivity())
                 .load(Uri.parse(group.imageUrl))
@@ -408,6 +412,16 @@ class FeedFragment : Fragment() {
             )
             val action = FeedFragmentDirections.actionGroupFeedToGroupMembers(groupId)
             findNavController().navigate(action)
+        }
+    }
+
+    private fun handleGroupEventsButton() {
+        binding.seeMoreEvents.setOnClickListener {
+            group.name?.let { name ->
+                val action =
+                    FeedFragmentDirections.actionGroupFeedToGroupEventsList(groupId, name)
+                findNavController().navigate(action)
+            }
         }
     }
 

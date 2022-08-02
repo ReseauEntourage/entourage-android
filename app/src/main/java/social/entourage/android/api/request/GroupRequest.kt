@@ -6,13 +6,15 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.api.model.EntourageUser
-import social.entourage.android.api.model.GroupImage
-import social.entourage.android.api.model.UserReportWrapper
+import social.entourage.android.api.model.Image
+import social.entourage.android.new_v8.events.EventsPresenter
+import social.entourage.android.new_v8.events.EventsPresenter.*
+import social.entourage.android.new_v8.models.Events
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.models.Post
 
 
-class GroupImagesResponse(@field:SerializedName("neighborhood_images") val groupImages: ArrayList<GroupImage>)
+class GroupImagesResponse(@field:SerializedName("neighborhood_images") val groupImages: ArrayList<Image>)
 class GroupWrapper(@field:SerializedName("neighborhood") val group: Group)
 class GroupsListWrapper(@field:SerializedName("neighborhoods") val allGroups: MutableList<Group>)
 class RequestContent internal constructor(private val content_type: String)
@@ -123,4 +125,9 @@ interface GroupRequest {
         @Path("post_id") postId: Int,
         @Body reportWrapper: ReportWrapper
     ): Call<ResponseBody>
+
+    @GET("neighborhoods/{neighborhood_id}/outings")
+    fun getGroupEvents(
+        @Path("neighborhood_id") groupId: Int,
+    ): Call<EventsListWrapper>
 }
