@@ -10,16 +10,15 @@ const val NB_TABS = 3
 class CreateEventViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
 
+    private val fragments: MutableList<Fragment> = mutableListOf(
+        CreateEventStepOneFragment(), CreateEventStepTwoFragment(), CreateEventStepThreeFragment()
+    )
+
     override fun getItemCount(): Int {
-        return NB_TABS
+        return fragments.size
     }
 
     override fun createFragment(position: Int): Fragment {
-        return when (position) {
-            0 -> CreateEventStepOneFragment()
-            1 -> CreateEventStepTwoFragment()
-            2 -> CreateEventStepThreeFragment()
-            else -> CreateEventStepOneFragment()
-        }
+        return fragments[position]
     }
 }

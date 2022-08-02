@@ -45,14 +45,15 @@ class CreateEventStepThreeFragment : Fragment() {
 
     private fun setPlaceSelection() {
         binding.layout.eventType.setOnCheckedChangeListener { _, checkedId ->
-            binding.layout.location.isVisible = checkedId == R.id.face_to_face
-            binding.layout.eventUrl.isVisible = checkedId != R.id.face_to_face
+            val isEventFaceToFace = checkedId == R.id.face_to_face
+            binding.layout.location.isVisible = isEventFaceToFace
+            binding.layout.eventUrl.isVisible = isEventFaceToFace
             binding.layout.eventPlaceTitle.title.text =
-                getString(if (checkedId == R.id.face_to_face) R.string.add_location else R.string.add_url)
+                getString(if (isEventFaceToFace) R.string.add_location else R.string.add_url)
             binding.layout.image.setImageDrawable(
                 AppCompatResources.getDrawable(
                     requireContext(),
-                    if (checkedId == R.id.face_to_face) R.drawable.new_location_event else R.drawable.new_web
+                    if (isEventFaceToFace) R.drawable.new_location_event else R.drawable.new_web
                 )
             )
         }
