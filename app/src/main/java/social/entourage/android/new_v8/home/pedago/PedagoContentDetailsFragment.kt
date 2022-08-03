@@ -11,9 +11,10 @@ import android.view.ViewGroup
 import android.webkit.WebChromeClient
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import social.entourage.android.databinding.NewFragmentPedagoContentDetailsBinding
-import timber.log.Timber
+import social.entourage.android.new_v8.home.HomePresenter
 import java.lang.ref.WeakReference
 
 
@@ -21,6 +22,9 @@ class PedagoContentDetailsFragment : Fragment() {
 
     private var _binding: NewFragmentPedagoContentDetailsBinding? = null
     val binding: NewFragmentPedagoContentDetailsBinding get() = _binding!!
+
+    private val homePresenter: HomePresenter by lazy { HomePresenter() }
+
 
     private val args: PedagoContentDetailsFragmentArgs by navArgs()
 
@@ -35,6 +39,14 @@ class PedagoContentDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setView()
+        handleBackButton()
+        homePresenter.setPedagogicalContentAsRead(args.id)
+    }
+
+    private fun handleBackButton() {
+        binding.header.iconBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun setView() {

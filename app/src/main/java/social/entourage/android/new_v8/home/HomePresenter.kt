@@ -53,4 +53,19 @@ class HomePresenter {
                 }
             })
     }
+
+    fun setPedagogicalContentAsRead(id: Int) {
+        EntourageApplication.get().apiModule.homeRequest
+            .setPedagogicalContentAsRead(id)
+            .enqueue(object : Callback<Boolean> {
+                override fun onResponse(
+                    call: Call<Boolean>,
+                    response: Response<Boolean>
+                ) {
+                }
+
+                override fun onFailure(call: Call<Boolean>, t: Throwable) {
+                }
+            })
+    }
 }

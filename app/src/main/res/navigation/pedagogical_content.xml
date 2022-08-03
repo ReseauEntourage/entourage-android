@@ -18,5 +18,8 @@
         <argument
             android:name="htmlContent"
             app:argType="string" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
     </fragment>
 </navigation>

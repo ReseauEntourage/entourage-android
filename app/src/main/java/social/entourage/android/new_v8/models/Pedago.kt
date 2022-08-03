@@ -17,7 +17,7 @@ enum class Category(val id: Int) {
     UNDERSTAND(R.string.understand);
 
     override fun toString(): String {
-        return "Category(value='$id')"
+        return "Category(value='$name')"
     }
 }
 
