@@ -11,16 +11,17 @@ import social.entourage.android.databinding.NewFilterItemBinding
 import social.entourage.android.new_v8.models.Category
 
 interface OnItemClickListener {
-    fun onItemClick(filter: Category)
+    fun onItemClick(filter: Category, position: Int)
 }
 
 class FilterAdapter(
     private var filtersList: List<Category>,
-    private var onItemClickListener: OnItemClickListener
+    private var onItemClickListener: OnItemClickListener,
+    private var selectedFilterPosition: Int
 ) : RecyclerView.Adapter<FilterAdapter.ViewHolder>() {
 
-    private var selectedItemPos = 0
-    private var lastItemSelectedPos = 0
+    private var selectedItemPos = selectedFilterPosition
+    private var lastItemSelectedPos = selectedFilterPosition
 
 
     inner class ViewHolder(val binding: NewFilterItemBinding) :
@@ -70,7 +71,7 @@ class FilterAdapter(
                 selectedItemPos
             }
             notifyItemChanged(selectedItemPos)
-            onItemClickListener.onItemClick(filtersList[position])
+            onItemClickListener.onItemClick(filtersList[position], position)
         }
         if (position == selectedItemPos)
             holder.selectedBg()

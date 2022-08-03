@@ -18,7 +18,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class GroupEventsListAdapter(context: Context, var sectionItemList: List<SectionHeader?>?) :
+class GroupEventsListAdapter(
+    context: Context,
+    var sectionItemList: List<SectionHeader?>?,
+    var userId: Int?
+) :
     SectionRecyclerViewAdapter<SectionHeader, Events, GroupEventsListAdapter.SectionViewHolder, GroupEventsListAdapter.ChildViewHolder>(
         context,
         sectionItemList
@@ -90,9 +94,15 @@ class GroupEventsListAdapter(context: Context, var sectionItemList: List<Section
             .transform(RoundedCorners(20.px))
             .into(childViewHolder.binding.image)
 
+        childViewHolder.binding.star.isVisible = child.author?.userID == userId
+        childViewHolder.binding.admin.isVisible = child.author?.userID == userId
+
+        childViewHolder.binding.canceled.isVisible = child.status == Status.CLOSED
+/*
         childViewHolder.binding.divider.isVisible =
             sectionItemList?.get(sectionPosition)?.childList?.size?.minus(1) != childPosition
 
+ */
     }
 
     init {

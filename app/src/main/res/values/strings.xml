@@ -280,7 +280,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="no_comments">Pas de commentaires</string>
     <string name="posts_comment_number"><u>%s commentaires</u></string>
     <string name="event_date">"dd/MM/yyyy"</string>
-    <string name="event_date_time">"dd/MM/yyyy à HH"</string>
+    <string name="event_date_time">"dd/MM/yyyy à HH'h'mm"</string>
     <string name="post_date">"dd.MM.yyyy"</string>
     <string name="comments">Commentaires</string>
     <string name="comments_date">dd.MM.yy à HH:mm</string>
@@ -355,5 +355,17 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="face_to_face">En présentiel</string>
     <string name="online">En ligne</string>
     <string name="add_url">Ajouter une url</string>
+    <string name="my_events">Mes événements</string>
+    <string name="canceled">- Annulé</string>
+    <string name="event_list_empty_state_title">Vous n’avez pas encore rejoint d’évènement</string>
+    <string name="event_list_empty_state_subtitle">Allez sur l’onglet découvir, et si aucun ne vous convient c’est l’occasion de créer un nouvel évènement !</string>
+    <string name="discover_event_list_empty_state_title">Oups, aucun évènement autour de vous</string>
+    <string name="discover_event_list_empty_state_subtitle">Si aucun événement ne se trouve près de vous, vous pouvez élargir votre zone de recherche.</string>
+    <string name="need_help">Besoin d’aide ?</string>
+    <string name="solidarity_places_map">Carte des lieux solidaires</string>
+    <string name="moderator_subtitle">Votre guide dans l’app</string>
+    <string name="create_encounters">Créez des rencontres !</string>
+    <string name="participate_to_events">Participez à des événements et des actions solidaires pour augmenter votre compteur de rencontres Entourage</string>
+
 
 </resources>

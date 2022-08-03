@@ -25,7 +25,7 @@
                 android:id="@+id/logoEntourage"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:elevation="1dp"
+                android:layout_marginTop="3dp"
                 android:src="@drawable/ic_entourage_logo_orange" />
 
             <TextView
@@ -37,16 +37,22 @@
                 android:layout_weight="1"
                 android:maxLines="2"
                 android:paddingHorizontal="16dp"
-                android:paddingBottom="3dp"
+                android:paddingBottom="10dp"
                 tools:text="Bienvenue !" />
 
+            <LinearLayout
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:gravity="center">
 
-            <ImageButton
-                android:id="@+id/image_user"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@drawable/new_shadow"
-                android:elevation="1dp" />
+                <ImageView
+                    android:id="@+id/image_user"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/new_shadow"
+                    android:elevation="3dp" />
+            </LinearLayout>
+
         </LinearLayout>
 
 
@@ -64,16 +70,40 @@
                 android:id="@+id/contributions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
                 android:orientation="vertical"
                 android:paddingHorizontal="26dp"
                 android:paddingTop="32dp"
                 app:layout_constraintTop_toBottomOf="@id/header">
 
                 <TextView
+                    style="@style/left_courant_bold_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:paddingBottom="12dp"
+                    android:text="@string/want_to_act"
+                    tools:text="@string/want_to_act" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recommendations"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/pedagogical_content"
+                    layout="@layout/new_recommendation_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginTop="4dp" />
+
+                <TextView
                     android:id="@+id/contributions_title"
                     style="@style/left_courant_bold_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
                     android:maxLines="2"
                     android:paddingBottom="12dp"
                     android:text="@string/contributions_title"
@@ -166,60 +196,51 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="3">
-
-                    <include
-                        android:id="@+id/message_card"
-                        layout="@layout/new_home_small_card"
-                        android:layout_width="0dp"
-                        android:layout_height="92dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_weight="1"
-                        app:emptyLabel="@{@string/contributions_message_empty}"
-                        app:icon="@{@drawable/new_icon_home_empty_messages}"
-                        app:label="@{@string/contributions_message}" />
-
-                    <include
-                        android:id="@+id/event_card"
-                        layout="@layout/new_home_small_card"
-                        android:layout_width="0dp"
-                        android:layout_height="92dp"
-                        android:layout_marginHorizontal="8dp"
-                        android:layout_weight="1"
-                        app:emptyLabel="@{@string/contributions_event_empty}"
-                        app:icon="@{@drawable/new_icon_home_empty_event}"
-                        app:label="@{@string/contributions_event}" />
+                    android:weightSum="2">
 
                     <include
                         android:id="@+id/group_card"
                         layout="@layout/new_home_small_card"
                         android:layout_width="0dp"
                         android:layout_height="92dp"
-                        android:layout_marginLeft="8dp"
                         android:layout_weight="1"
                         app:emptyLabel="@{@string/contributions_group_empty}"
                         app:icon="@{@drawable/new_icon_home_empty_groupes}"
                         app:label="@{@string/contributions_group}" />
+
+                    <include
+                        android:id="@+id/event_card"
+                        layout="@layout/new_home_small_card"
+                        android:layout_width="0dp"
+                        android:layout_height="92dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_weight="1"
+                        app:emptyLabel="@{@string/contributions_event_empty}"
+                        app:icon="@{@drawable/new_icon_home_empty_event}"
+                        app:label="@{@string/contributions_event}" />
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/help_title"
                     style="@style/left_courant_bold_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:maxLines="2"
                     android:paddingBottom="12dp"
-                    android:text="@string/want_to_act"
-                    tools:text="@string/want_to_act" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recommendations"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:text="@string/need_help"
+                    tools:text="@string/need_help" />
 
                 <include
-                    android:id="@+id/pedagogical_content"
-                    layout="@layout/new_recommendation_item"
+                    android:id="@+id/moderator"
+                    layout="@layout/new_home_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+
+                <include
+                    android:id="@+id/solidarity_places"
+                    layout="@layout/new_home_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp" />

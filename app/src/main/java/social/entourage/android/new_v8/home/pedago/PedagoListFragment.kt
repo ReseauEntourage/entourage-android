@@ -25,6 +25,9 @@ class PedagoListFragment : Fragment() {
 
     private val sections: MutableList<SectionHeader> = mutableListOf()
 
+    private var selectedFilter: Category = Category.ALL
+    private var selectedFilterPosition: Int = 0
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,10 +41,10 @@ class PedagoListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         pedagoAdapter = PedagoListAdapter(requireContext(), sections, object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {
-                pedagogicalContent.html?.let {
+                if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
                     val action =
                         PedagoListFragmentDirections.actionPedagogicalListFragmentToPedagogicalDetailsFragment(
-                            it
+                            pedagogicalContent.html, pedagogicalContent.id
                         )
                     findNavController().navigate(action)
                 }
@@ -73,6 +76,50 @@ class PedagoListFragment : Fragment() {
         sections.add(SectionHeader(childListUnderstand, getString(Category.UNDERSTAND.id)))
         sections.add(SectionHeader(childListAct, getString(Category.ACT.id)))
         sections.add(SectionHeader(childListInspire, getString(Category.INSPIRE.id)))
+        applyFilter(selectedFilter)
+        pedagoAdapter.notifyDataChanged(sections)
+    }
+
+    private fun applyFilter(filter: Category) {
+        selectedFilter = filter
+        clearFilter()
+        when (filter) {
+            Category.ALL -> {
+                sections.add(
+                    SectionHeader(
+                        childListUnderstand,
+                        getString(Category.UNDERSTAND.id)
+                    )
+                )
+                sections.add(SectionHeader(childListAct, getString(Category.ACT.id)))
+                sections.add(
+                    SectionHeader(
+                        childListInspire,
+                        getString(Category.INSPIRE.id)
+                    )
+                )
+            }
+            Category.ACT -> {
+                sections.add(SectionHeader(childListAct, getString(Category.ACT.id)))
+            }
+            Category.UNDERSTAND -> {
+                sections.add(
+                    SectionHeader(
+                        childListUnderstand,
+                        getString(Category.UNDERSTAND.id)
+                    )
+                )
+            }
+            Category.INSPIRE -> {
+                sections.add(
+                    SectionHeader(
+                        childListInspire,
+                        getString(Category.INSPIRE.id)
+                    )
+                )
+
+            }
+        }
         pedagoAdapter.notifyDataChanged(sections)
     }
 
@@ -94,48 +141,11 @@ class PedagoListFragment : Fragment() {
             layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = FilterAdapter(filterList, object : OnItemClickListener {
-                override fun onItemClick(filter: Category) {
-                    clearFilter()
-                    when (filter) {
-                        Category.ALL -> {
-                            sections.add(
-                                SectionHeader(
-                                    childListUnderstand,
-                                    getString(Category.UNDERSTAND.id)
-                                )
-                            )
-                            sections.add(SectionHeader(childListAct, getString(Category.ACT.id)))
-                            sections.add(
-                                SectionHeader(
-                                    childListInspire,
-                                    getString(Category.INSPIRE.id)
-                                )
-                            )
-                        }
-                        Category.ACT -> {
-                            sections.add(SectionHeader(childListAct, getString(Category.ACT.id)))
-                        }
-                        Category.UNDERSTAND -> {
-                            sections.add(
-                                SectionHeader(
-                                    childListUnderstand,
-                                    getString(Category.UNDERSTAND.id)
-                                )
-                            )
-                        }
-                        Category.INSPIRE -> {
-                            sections.add(
-                                SectionHeader(
-                                    childListInspire,
-                                    getString(Category.INSPIRE.id)
-                                )
-                            )
-
-                        }
-                    }
-                    pedagoAdapter.notifyDataChanged(sections)
+                override fun onItemClick(filter: Category, position: Int) {
+                    applyFilter(filter)
+                    selectedFilterPosition = position
                 }
-            })
+            }, selectedFilterPosition)
         }
     }
 
