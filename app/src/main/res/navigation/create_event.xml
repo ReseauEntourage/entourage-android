@@ -9,10 +9,21 @@
         <action
             android:id="@+id/action_create_event_fragment_to_edit_action_zone_fragment"
             app:destination="@id/edit_action_zone_fragment" />
+        <action
+            android:id="@+id/action_create_event_fragment_to_create_event_success_fragment"
+            app:destination="@id/create_event_success_fragment" />
     </fragment>
 
     <fragment
         android:id="@+id/edit_action_zone_fragment"
         android:name="social.entourage.android.new_v8.events.create.CreateEventActionZoneFragment" />
+
+    <fragment
+        android:id="@+id/create_event_success_fragment"
+        android:name="social.entourage.android.new_v8.events.create.CreateEventSuccessFragment">
+        <argument
+            android:name="eventID"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>

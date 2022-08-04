@@ -54,6 +54,8 @@ class CreateEventStepFiveFragment : Fragment() {
             binding.layout.recyclerView.isVisible = checkedId == R.id.share_in_groups
             CommunicationHandler.isButtonClickable.value =
                 (checkedId == R.id.dont_share) || (checkedId == R.id.share_in_groups && selectedGroupsIdList.isNotEmpty())
+            if (checkedId == R.id.dont_share) CommunicationHandler.event.neighborhoodIds.clear()
+            else CommunicationHandler.event.neighborhoodIds.addAll(selectedGroupsIdList)
         }
     }
 
@@ -68,13 +70,15 @@ class CreateEventStepFiveFragment : Fragment() {
                 override fun onItemCheck(item: Group) {
                     item.id?.let {
                         selectedGroupsIdList.add(it)
-                        CommunicationHandler.isButtonClickable.value = interestHaveBeenSelected()
+                        CommunicationHandler.isButtonClickable.value = groupsHaveBeenSelected()
+                        CommunicationHandler.event.neighborhoodIds.add(it)
                     }
                 }
 
                 override fun onItemUncheck(item: Group) {
                     selectedGroupsIdList.remove(item.id)
-                    CommunicationHandler.isButtonClickable.value = interestHaveBeenSelected()
+                    CommunicationHandler.isButtonClickable.value = groupsHaveBeenSelected()
+                    CommunicationHandler.event.neighborhoodIds.remove(item.id)
                 }
             })
 
@@ -109,7 +113,30 @@ class CreateEventStepFiveFragment : Fragment() {
         }
     }
 
-    fun interestHaveBeenSelected(): Boolean {
+    private fun handleOnClickNext(onClick: Boolean) {
+        if (onClick) {
+            if (selectedGroupsIdList.isEmpty()) {
+                CommunicationHandler.isCondition.value = false
+                binding.layout.error.root.visibility = View.VISIBLE
+                binding.layout.error.errorMessage.text =
+                    getString(R.string.error_categories_create_group_image)
+            } else {
+                CommunicationHandler.isCondition.value = true
+                binding.layout.error.root.visibility = View.GONE
+                CommunicationHandler.clickNext.removeObservers(viewLifecycleOwner)
+            }
+        }
+    }
+
+    fun groupsHaveBeenSelected(): Boolean {
         return selectedGroupsIdList.isNotEmpty()
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        CommunicationHandler.resetValues()
+        CommunicationHandler.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
+        CommunicationHandler.isButtonClickable.value = groupsHaveBeenSelected()
     }
 }

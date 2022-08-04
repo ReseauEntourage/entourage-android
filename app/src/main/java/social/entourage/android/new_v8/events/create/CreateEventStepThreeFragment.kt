@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateEventStepThreeBinding
+import timber.log.Timber
 
 
 class CreateEventStepThreeFragment : Fragment() {
@@ -56,13 +57,21 @@ class CreateEventStepThreeFragment : Fragment() {
                     if (isEventFaceToFace) R.drawable.new_location_event else R.drawable.new_web
                 )
             )
+            CommunicationHandler.event.online(!isEventFaceToFace)
+            if (isEventFaceToFace) {
+                binding.layout.eventUrl.text.clear()
+            } else {
+                binding.layout.location.text.clear()
+            }
         }
     }
 
     private fun setLimitedPlacesSelection() {
         binding.layout.eventLimitedPlace.setOnCheckedChangeListener { _, checkedId ->
-            binding.layout.eventLimitedPlaceCountTitle.root.isVisible = checkedId == R.id.yes
-            binding.layout.eventLimitedPlaceCount.isVisible = checkedId == R.id.yes
+            val limitedPlaces = checkedId == R.id.yes
+            binding.layout.eventLimitedPlaceCountTitle.root.isVisible = limitedPlaces
+            binding.layout.eventLimitedPlaceCount.isVisible = limitedPlaces
+            if (!limitedPlaces) binding.layout.eventLimitedPlaceCount.text.clear()
         }
     }
 
@@ -71,6 +80,13 @@ class CreateEventStepThreeFragment : Fragment() {
             if (isPlaceValid() && isLimitedPlaceValid()) {
                 binding.layout.error.root.visibility = View.GONE
                 CommunicationHandler.isCondition.value = true
+                if (binding.layout.faceToFace.isChecked) CommunicationHandler.event.metadata?.streetAddress(
+                    binding.layout.location.text.toString()
+                )
+                if (binding.layout.online.isChecked) CommunicationHandler.event.eventUrl(binding.layout.eventUrl.text.toString())
+                if (binding.layout.yes.isChecked) CommunicationHandler.event.metadata?.placeLimit(
+                    binding.layout.eventLimitedPlaceCount.text.toString().toInt()
+                )
                 CommunicationHandler.clickNext.removeObservers(viewLifecycleOwner)
             } else {
                 binding.layout.error.root.visibility = View.VISIBLE
@@ -99,6 +115,7 @@ class CreateEventStepThreeFragment : Fragment() {
 
     private fun handleNextButtonState() {
         handleEditTextChangedTextListener(binding.layout.eventUrl)
+        handleEditTextChangedTextListener(binding.layout.location)
         handleEditTextChangedTextListener(binding.layout.eventLimitedPlaceCount)
     }
 
@@ -124,8 +141,8 @@ class CreateEventStepThreeFragment : Fragment() {
     }
 
     private fun isLimitedPlaceValid(): Boolean {
-        return if (binding.layout.eventLimitedPlaceCount.isVisible)
+        return if (binding.layout.yes.isChecked) {
             binding.layout.eventLimitedPlaceCount.text.isNotEmpty() && binding.layout.eventLimitedPlaceCount.text.isNotBlank()
-        else true
+        } else true
     }
 }

@@ -13,6 +13,7 @@ import social.entourage.android.databinding.NewFragmentCreateEventStepFourBindin
 import social.entourage.android.new_v8.models.Interest
 import social.entourage.android.new_v8.profile.editProfile.InterestsListAdapter
 import social.entourage.android.new_v8.profile.editProfile.OnItemCheckListener
+import timber.log.Timber
 
 class CreateEventStepFourFragment : Fragment() {
 
@@ -85,10 +86,12 @@ class CreateEventStepFourFragment : Fragment() {
                 else -> {
                     binding.layout.error.root.visibility = View.GONE
                     CommunicationHandler.isCondition.value = true
-                    //  viewModel.group.interests(selectedInterestIdList)
-                    //   interestsListAdapter.getOtherInterestCategory()
-                    //     ?.let { if (it.isNotEmpty()) viewModel.group.otherInterest(it) }
+                    CommunicationHandler.event.interests(selectedInterestIdList)
+                    interestsListAdapter.getOtherInterestCategory()
+                        ?.let { if (it.isNotEmpty()) CommunicationHandler.event.otherInterest(it) }
                     CommunicationHandler.clickNext.removeObservers(viewLifecycleOwner)
+                    Timber.e("Event ${CommunicationHandler.event}")
+
                 }
             }
         }

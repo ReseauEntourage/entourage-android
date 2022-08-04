@@ -68,7 +68,7 @@ class MyEventsListFragment : Fragment() {
     private fun loadEvents() {
         binding.swipeRefresh.isRefreshing = false
         page++
-        myId?.let { eventsPresenter.getMyEvents(it) } ?: run {
+        myId?.let { eventsPresenter.getMyEvents(it, page, EVENTS_PER_PAGE) } ?: run {
             binding.progressBar.visibility = View.GONE
             binding.emptyStateLayout.visibility = View.VISIBLE
         }

@@ -69,8 +69,8 @@ class CreateEventStepOneFragment : Fragment() {
     private fun onFragmentResult() {
         setFragmentResultListener(Const.REQUEST_KEY_CHOOSE_PHOTO) { _, bundle ->
             selectedImage = bundle.getParcelable(Const.CHOOSE_PHOTO_PATH)
-            // viewModel.isButtonClickable.value = imageHasBeenSelected()
-            // viewModel.group.neighborhoodImageId(selectedImage?.id)
+            CommunicationHandler.isButtonClickable.value = isImageValid()
+            CommunicationHandler.event.entourageImageId(selectedImage?.id)
             val imageUrl =
                 if (selectedImage?.imageUrl != null) selectedImage?.imageUrl else selectedImage?.landscapeSmallUrl
             imageUrl?.let { url ->
@@ -89,17 +89,13 @@ class CreateEventStepOneFragment : Fragment() {
 
     private fun handleOnClickNext(onClick: Boolean) {
         if (onClick) {
-            if (isGroupNameValid() && isGroupDescriptionValid()) {
-                if (isImageValid()) binding.layout.errorImage.root.visibility = View.GONE
+            if (isGroupNameValid() && isGroupDescriptionValid() && isImageValid()) {
                 binding.layout.error.root.visibility = View.GONE
                 CommunicationHandler.isCondition.value = true
+                CommunicationHandler.event.title(binding.layout.eventName.text.toString())
+                CommunicationHandler.event.description(binding.layout.eventDescription.text.toString())
                 CommunicationHandler.clickNext.removeObservers(viewLifecycleOwner)
             } else {
-                if (!isImageValid()) {
-                    binding.layout.errorImage.root.visibility = View.VISIBLE
-                    binding.layout.errorImage.errorMessage.text =
-                        getString(R.string.image_mandatory)
-                }
                 binding.layout.error.root.visibility = View.VISIBLE
                 binding.layout.error.errorMessage.text =
                     getString(R.string.error_mandatory_fields)

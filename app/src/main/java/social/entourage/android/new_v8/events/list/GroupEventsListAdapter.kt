@@ -13,6 +13,7 @@ import social.entourage.android.R
 import social.entourage.android.databinding.NewEventItemBinding
 import social.entourage.android.databinding.NewEventsListHeaderBinding
 import social.entourage.android.new_v8.models.Events
+import social.entourage.android.new_v8.models.Status
 import social.entourage.android.new_v8.utils.px
 import java.text.SimpleDateFormat
 import java.util.*

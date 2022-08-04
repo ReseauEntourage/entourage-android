@@ -6,12 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateEventBinding
-import social.entourage.android.new_v8.groups.GroupPresenter
+import social.entourage.android.new_v8.events.EventsPresenter
+import social.entourage.android.new_v8.groups.create.CreateGroupFragmentDirections
+import social.entourage.android.new_v8.models.Events
+import social.entourage.android.new_v8.models.Group
+import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.nextPage
 import social.entourage.android.new_v8.utils.previousPage
 
@@ -24,6 +29,9 @@ class CreateEventFragment : Fragment() {
 
     private lateinit var viewPager: ViewPager2
 
+    private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,6 +43,7 @@ class CreateEventFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeViewPager()
+        eventPresenter.newEventCreated.observe(viewLifecycleOwner, ::handleCreateEventResponse)
     }
 
 
@@ -72,10 +81,25 @@ class CreateEventFragment : Fragment() {
         if (isCondition) {
             if (viewPager.currentItem == NB_TABS - 1) {
                 // Create event here
+                eventPresenter.createEvent(CommunicationHandler.event)
             } else {
                 viewPager.nextPage(true)
                 if (viewPager.currentItem > 0) binding.previous.visibility = View.VISIBLE
                 CommunicationHandler.resetValues()
+            }
+        }
+    }
+
+    private fun handleCreateEventResponse(eventCreated: Events?) {
+        if (eventCreated == null) {
+            Utils.showToast(requireContext(), getString(R.string.error_create_group))
+        } else {
+            eventPresenter.newEventCreated.value?.id?.let {
+                val action =
+                    CreateEventFragmentDirections.actionCreateEventFragmentToCreateEventSuccessFragment(
+                        it
+                    )
+                findNavController().navigate(action)
             }
         }
     }
