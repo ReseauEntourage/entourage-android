@@ -45,11 +45,13 @@ class GroupEventsAdapter(
                         it
                     )
                 }
-                Glide.with(holder.itemView.context)
-                    .load(Uri.parse(this.metadata?.portraitUrl))
-                    .transform(GranularRoundedCorners(20F, 20F, 0F, 0F))
-                    .placeholder(R.drawable.ic_user_photo_small)
-                    .into(holder.binding.image)
+                this.metadata?.landscapeThumbnailUrl?.let {
+                    Glide.with(holder.itemView.context)
+                        .load(Uri.parse(it))
+                        .transform(GranularRoundedCorners(20F, 20F, 0F, 0F))
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .into(holder.binding.image)
+                }
             }
         }
     }
