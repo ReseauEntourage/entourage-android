@@ -1,10 +1,9 @@
 package social.entourage.android.api.request
 
 import com.google.gson.annotations.SerializedName
+import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 import social.entourage.android.api.model.Image
 import social.entourage.android.new_v8.models.Events
 
@@ -28,4 +27,10 @@ interface EventsRequest {
         @Query("page") page: Int,
         @Query("per") per: Int
     ): Call<EventsListWrapper>
+
+    @POST("outings/{event_id}/report")
+    fun reportEvent(
+        @Path("event_id") groupId: Int,
+        @Body reportWrapper: ReportWrapper
+    ): Call<ResponseBody>
 }

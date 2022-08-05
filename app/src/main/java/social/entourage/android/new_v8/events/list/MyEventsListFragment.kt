@@ -37,7 +37,8 @@ class MyEventsListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         myId = EntourageApplication.me(activity)?.id
-        eventsAdapter = GroupEventsListAdapter(requireContext(), sections, myId)
+        eventsAdapter =
+            GroupEventsListAdapter(requireContext(), sections, myId, parentFragmentManager)
         loadEvents()
         eventsPresenter.getAllMyEvents.observe(viewLifecycleOwner, ::handleResponseGetEvents)
         initializeEvents()

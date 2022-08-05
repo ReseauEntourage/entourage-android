@@ -5,7 +5,7 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 
-data class GroupUiModel(
+data class SettingUiModel(
     @SerializedName("id")
     var id: Int? = null,
     @SerializedName("name")
@@ -13,7 +13,7 @@ data class GroupUiModel(
     @SerializedName("members_count")
     var members_count: Int? = null,
     @SerializedName("address")
-    var address: Address? = null,
+    var address: String? = null,
     @SerializedName("interests")
     var interests: MutableList<String> = mutableListOf(),
     @SerializedName("description")
@@ -42,12 +42,12 @@ data class GroupUiModel(
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<GroupUiModel> {
-        override fun createFromParcel(parcel: Parcel): GroupUiModel {
-            return GroupUiModel(parcel)
+    companion object CREATOR : Parcelable.Creator<SettingUiModel> {
+        override fun createFromParcel(parcel: Parcel): SettingUiModel {
+            return SettingUiModel(parcel)
         }
 
-        override fun newArray(size: Int): Array<GroupUiModel?> {
+        override fun newArray(size: Int): Array<SettingUiModel?> {
             return arrayOfNulls(size)
         }
     }
