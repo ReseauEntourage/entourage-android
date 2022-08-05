@@ -356,6 +356,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="moderator_subtitle">Votre guide dans l’app</string>
     <string name="create_encounters">Créez des rencontres !</string>
     <string name="participate_to_events">Participez à des événements et des actions solidaires pour augmenter votre compteur de rencontres Entourage</string>
-
+    <string name="about_event">À propos de l\'événement</string>
+    <string name="categories">Catégories</string>
 
 </resources>
