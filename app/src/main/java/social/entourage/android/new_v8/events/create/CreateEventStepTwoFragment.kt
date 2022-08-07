@@ -105,8 +105,10 @@ class CreateEventStepTwoFragment : Fragment() {
                 binding.layout.error.root.visibility = View.GONE
                 CommunicationHandler.isCondition.value = true
                 CommunicationHandler.clickNext.removeObservers(viewLifecycleOwner)
-                val dateFormatterToDate = SimpleDateFormat("dd/MM/yyyy HH-mm")
-                val dateFormatterToString = SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z")
+                val dateFormatterToDate =
+                    SimpleDateFormat(getString(R.string.event_date_formatter_to_date))
+                val dateFormatterToString =
+                    SimpleDateFormat(getString(R.string.event_date_formatter_to_string))
                 val startDate =
                     dateFormatterToDate.parse(
                         binding.layout.eventDate.text.toString() + " " +

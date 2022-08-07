@@ -366,6 +366,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="moderator_subtitle">Votre guide dans l’app</string>
     <string name="create_encounters">Créez des rencontres !</string>
     <string name="participate_to_events">Participez à des événements et des actions solidaires pour augmenter votre compteur de rencontres Entourage</string>
+    <string name="event_date_formatter_to_date">dd/MM/yyyy HH-mm</string>
+    <string name="event_date_formatter_to_string">yyyy-MM-dd HH:mm:ss Z</string>
 
 
 </resources>

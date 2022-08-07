@@ -14,6 +14,8 @@ import social.entourage.android.databinding.NewFragmentCreateEventStepFiveBindin
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.list.groupPerPage
 import social.entourage.android.new_v8.models.Group
+import social.entourage.android.new_v8.utils.Const
+import timber.log.Timber
 
 
 class CreateEventStepFiveFragment : Fragment() {
@@ -24,6 +26,7 @@ class CreateEventStepFiveFragment : Fragment() {
     private var selectedGroupsIdList: MutableList<Int> = mutableListOf()
     private var myId: Int? = null
     private var page: Int = 0
+    private var groupID = Const.DEFAULT_VALUE
 
 
     override fun onCreateView(
@@ -37,19 +40,29 @@ class CreateEventStepFiveFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         myId = EntourageApplication.me(activity)?.id
+        groupID = activity?.intent?.getIntExtra(Const.GROUP_ID, Const.DEFAULT_VALUE)!!
         setShareSelection()
         initializeGroups()
         loadGroups()
         groupPresenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleResponseGetGroups)
+        selectedGroupsIdList.add(groupID)
     }
 
 
     private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
         allGroups?.let { groupsList.addAll(it) }
+        groupsList.forEach {
+            if (it.id == groupID) it.isSelected = true
+        }
         binding.layout.recyclerView.adapter?.notifyDataSetChanged()
     }
 
     private fun setShareSelection() {
+        if (groupID != Const.DEFAULT_VALUE) {
+            binding.layout.shareInGroups.isChecked = true
+            CommunicationHandler.isButtonClickable.value = true
+            binding.layout.recyclerView.isVisible = true
+        }
         binding.layout.rbShareInGroups.setOnCheckedChangeListener { _, checkedId ->
             binding.layout.recyclerView.isVisible = checkedId == R.id.share_in_groups
             CommunicationHandler.isButtonClickable.value =

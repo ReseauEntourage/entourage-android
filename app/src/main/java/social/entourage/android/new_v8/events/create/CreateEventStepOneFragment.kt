@@ -20,7 +20,6 @@ import social.entourage.android.new_v8.groups.choosePhoto.ChoosePhotoModalFragme
 import social.entourage.android.new_v8.groups.choosePhoto.ImagesType
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
-import timber.log.Timber
 
 
 class CreateEventStepOneFragment : Fragment() {

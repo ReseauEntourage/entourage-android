@@ -13,12 +13,14 @@ import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateEventBinding
 import social.entourage.android.new_v8.events.EventsPresenter
+import social.entourage.android.new_v8.events.create.CommunicationHandler.canExitEventCreation
 import social.entourage.android.new_v8.groups.create.CreateGroupFragmentDirections
 import social.entourage.android.new_v8.models.Events
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.nextPage
 import social.entourage.android.new_v8.utils.previousPage
+import social.entourage.android.tools.log.AnalyticsEvents
 
 
 class CreateEventFragment : Fragment() {
@@ -43,6 +45,7 @@ class CreateEventFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeViewPager()
+        handleBackButton()
         eventPresenter.newEventCreated.observe(viewLifecycleOwner, ::handleCreateEventResponse)
     }
 
@@ -86,6 +89,24 @@ class CreateEventFragment : Fragment() {
                 viewPager.nextPage(true)
                 if (viewPager.currentItem > 0) binding.previous.visibility = View.VISIBLE
                 CommunicationHandler.resetValues()
+            }
+        }
+    }
+
+
+    private fun handleBackButton() {
+        binding.header.iconBack.setOnClickListener {
+            if (canExitEventCreation)
+                requireActivity().finish()
+            else {
+                Utils.showAlertDialogButtonClicked(
+                    requireView(),
+                    getString(R.string.back_create_group_title),
+                    getString(R.string.back_create_group_content),
+                    getString(R.string.exit)
+                ) {
+                    requireActivity().finish()
+                }
             }
         }
     }
