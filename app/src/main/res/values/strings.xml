@@ -358,5 +358,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="participate_to_events">Participez à des événements et des actions solidaires pour augmenter votre compteur de rencontres Entourage</string>
     <string name="about_event">À propos de l\'événement</string>
     <string name="categories">Catégories</string>
+    <string name="associated_groups">Groupes associés :</string>
 
 </resources>
