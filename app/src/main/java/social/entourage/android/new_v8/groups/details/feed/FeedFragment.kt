@@ -26,6 +26,7 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentFeedBinding
+import social.entourage.android.new_v8.events.create.CreateEventActivity
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.details.SettingsModalFragment
 import social.entourage.android.new_v8.groups.details.posts.CreatePostActivity
@@ -90,6 +91,9 @@ class FeedFragment : Fragment() {
                     AnalyticsEvents.logEvent(
                         AnalyticsEvents.ACTION_GROUP_FEED_NEW_EVENT
                     )
+                    val intent = Intent(context, CreateEventActivity::class.java)
+                    intent.putExtra(Const.GROUP_ID, groupId)
+                    startActivity(intent)
                 }
                 else -> {
                     AnalyticsEvents.logEvent(
