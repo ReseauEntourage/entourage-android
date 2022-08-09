@@ -9,7 +9,6 @@ import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.R
 import social.entourage.android.databinding.NewRecommendationItemBinding
 import social.entourage.android.new_v8.models.Recommandation
-import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
 
 interface OnItemClickListener {

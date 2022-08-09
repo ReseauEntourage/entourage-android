@@ -1,12 +1,8 @@
 package social.entourage.android.new_v8.groups.details.posts
 
-import android.content.Context
 import android.content.Intent
-import android.database.Cursor
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.provider.OpenableColumns
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -27,10 +23,6 @@ import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.px
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStream
 
 
 class CreatePostActivity : AppCompatActivity() {

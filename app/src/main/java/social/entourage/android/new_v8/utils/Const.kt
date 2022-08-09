@@ -14,6 +14,7 @@ object Const {
     const val POST_ID = "postID"
     const val POST_AUTHOR_ID = "postAuthorID"
     const val GROUP_UI = "groupUI"
+    const val EVENT_UI = "eventUI"
     const val DATE_FORMAT_FILE_NAME = "yyyyMMdd_HHmmss"
     const val AMBASSADOR = "ambassador"
     const val SHOULD_REFRESH = "should_refresh"
@@ -29,5 +30,6 @@ object Const {
     const val IMAGES_TYPE = "imagesType"
     const val ADDRESS = "address"
     const val REQUEST_ADDRESS = "request_address"
+    const val EVENT_ID = "eventID"
 
 }

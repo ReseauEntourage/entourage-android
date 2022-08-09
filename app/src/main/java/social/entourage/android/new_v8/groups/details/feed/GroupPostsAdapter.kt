@@ -15,7 +15,6 @@ import social.entourage.android.databinding.NewLayoutPostBinding
 import social.entourage.android.new_v8.models.Post
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 

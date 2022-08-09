@@ -180,6 +180,8 @@
     <string name="stepOne">01.</string>
     <string name="stepThree">03.</string>
     <string name="stepTwo">02.</string>
+    <string name="stepFour">04.</string>
+    <string name="stepFive">05.</string>
     <string name="choose_categories_group">Sélectionnez la ou les catégories qui décrivent le mieux le sujet de discussion du groupe.</string>
     <string name="web_site">Site web</string>
     <string name="address">Adresse postale</string>
@@ -187,6 +189,7 @@
     <string name="report_member">Signaler le membre</string>
     <string name="report_post">Signaler la publication</string>
     <string name="report_comment">Signaler le commentaire</string>
+    <string name="report_eventt">Signaler l’événement</string>
     <string name="why_reporting">Dites-nous la raison de votre signalement</string>
     <string name="new_next">Suivant</string>
     <string name="back">Retour</string>
@@ -270,7 +273,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="notification_new_event">Les nouveaux événements</string>
     <string name="notification_new_messages">Les nouveaux messages</string>
     <string name="notification_new_members">L\'arrivée de nouveaux membres</string>
-    <string name="notification_all">Toute l\'activité du groupe</string>
+    <string name="group_notification_all">Toute l\'activité du groupe</string>
     <string name="notify_me">Me notifier de</string>
     <string name="about_group">À propos du groupe</string>
     <string name="leave_group_dialog_content">Souhaitez-vous quitter le groupe ?</string>
@@ -328,6 +331,14 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="october">Octobre</string>
     <string name="november">Novembre</string>
     <string name="december">Décembre</string>
+    <string name="choose_categories_event">Sélectionnez la ou les catégories qui décrivent le mieux le sujet de discussion de l\'événement.</string>
+    <string name="event_success_title">Votre événement a \nbien été créé !</string>
+    <string name="event_success_subtitle">Félicitations, vous venez de créer un nouvel \névènement. Pour le rendre plus visible \nparlez-en sur vos groupes ! </string>
+    <string name="see_event">Voir mon événement</string>
+    <string name="share_event">Partager l\'événement dans vos groupes</string>
+    <string name="share_event_label">Vous ne pouvez partager l’évènement seulement aux groupes dont vous êtes membre. Votre événement sera alors visible dans le(s) groupe(s) sélectionné(s) et tous les membres d\'un groupe pourront y participer.</string>
+    <string name="dont_share">Ne partager dans aucun groupe</string>
+    <string name="share_in_groups">Partager dans un ou plusieurs groupes</string>
 
     <string name="date">Date</string>
     <string name="start_time">Heure de début</string>
@@ -347,7 +358,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="add_url">Ajouter une url</string>
     <string name="my_events">Mes événements</string>
     <string name="canceled">- Annulé</string>
-    <string name="event_list_empty_state_title">Vous n’avez pas encore rejoint d’évènement</string>
+    <string name="event_list_empty_state_title">Vous n’avez pas encore rejoint d’événement</string>
     <string name="event_list_empty_state_subtitle">Allez sur l’onglet découvir, et si aucun ne vous convient c’est l’occasion de créer un nouvel évènement !</string>
     <string name="discover_event_list_empty_state_title">Oups, aucun évènement autour de vous</string>
     <string name="discover_event_list_empty_state_subtitle">Si aucun événement ne se trouve près de vous, vous pouvez élargir votre zone de recherche.</string>
@@ -356,6 +367,26 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="moderator_subtitle">Votre guide dans l’app</string>
     <string name="create_encounters">Créez des rencontres !</string>
     <string name="participate_to_events">Participez à des événements et des actions solidaires pour augmenter votre compteur de rencontres Entourage</string>
+    <string name="event_date_formatter_to_date">dd/MM/yyyy HH-mm</string>
+    <string name="event_date_formatter_to_string">yyyy-MM-dd HH:mm:ss Z</string>
+    <string name="places_numbers">%s places</string>
+    <string name="event_posts_empty_state_title">Pas encore de publication sur cet évènement</string>
+    <string name="event_posts_empty_state_subtitle">C’est l’occasion pour vous de partager la première nouvelle pour lancer la discussion !</string>
+    <string name="feed_event_date">"dd MMMM yyyy"</string>
+    <string name="feed_event_time">HH\'h\'mm</string>
+    <string name="participate">Participer</string>
+    <string name="participating">Participe</string>
+    <string name="geoUri">http://maps.google.com/maps?q=loc:%s</string>
+    <string name="event_settings">Paramètres de l\'événement</string>
+    <string name="event_notification_all">Toute l\'activité de l\'événement</string>
+    <string name="notification_new_publications">Les nouvelles publications</string>
+    <string name="notification_new_participants">L\'arrivée de nouveaux participants</string>
+    <string name="edit_event_information">Modifier l’événement</string>
+    <string name="rules_event">Charte éthique des événement</string>
+    <string name="report_event">Signaler l’événement</string>
+    <string name="cancel_event">Annuler l’événement</string>
+    <string name="modify_recurrence">Modifier la récurrence</string>
+
     <string name="about_event">À propos de l\'événement</string>
     <string name="categories">Catégories</string>
     <string name="associated_groups">Groupes associés :</string>

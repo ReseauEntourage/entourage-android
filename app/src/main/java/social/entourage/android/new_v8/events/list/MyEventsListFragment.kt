@@ -37,7 +37,8 @@ class MyEventsListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         myId = EntourageApplication.me(activity)?.id
-        eventsAdapter = GroupEventsListAdapter(requireContext(), sections, myId)
+        eventsAdapter =
+            GroupEventsListAdapter(requireContext(), sections, myId, parentFragmentManager)
         loadEvents()
         eventsPresenter.getAllMyEvents.observe(viewLifecycleOwner, ::handleResponseGetEvents)
         initializeEvents()
@@ -68,7 +69,7 @@ class MyEventsListFragment : Fragment() {
     private fun loadEvents() {
         binding.swipeRefresh.isRefreshing = false
         page++
-        myId?.let { eventsPresenter.getMyEvents(it) } ?: run {
+        myId?.let { eventsPresenter.getMyEvents(it, page, EVENTS_PER_PAGE) } ?: run {
             binding.progressBar.visibility = View.GONE
             binding.emptyStateLayout.visibility = View.VISIBLE
         }

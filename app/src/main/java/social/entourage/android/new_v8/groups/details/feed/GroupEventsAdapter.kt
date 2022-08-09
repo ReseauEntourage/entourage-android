@@ -6,11 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
 import social.entourage.android.databinding.NewEventItemLayoutBinding
 import social.entourage.android.new_v8.models.Events
-import social.entourage.android.new_v8.utils.px
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -45,11 +43,13 @@ class GroupEventsAdapter(
                         it
                     )
                 }
-                Glide.with(holder.itemView.context)
-                    .load(Uri.parse(this.metadata?.portraitUrl))
-                    .transform(GranularRoundedCorners(20F, 20F, 0F, 0F))
-                    .placeholder(R.drawable.ic_user_photo_small)
-                    .into(holder.binding.image)
+                this.metadata?.landscapeThumbnailUrl?.let {
+                    Glide.with(holder.itemView.context)
+                        .load(Uri.parse(it))
+                        .transform(GranularRoundedCorners(20F, 20F, 0F, 0F))
+                        .placeholder(R.drawable.ic_user_photo_small)
+                        .into(holder.binding.image)
+                }
             }
         }
     }

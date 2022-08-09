@@ -66,6 +66,15 @@ data class Events(
     @field:SerializedName("members_count")
     val membersCount: Int? = null,
 
+    @SerializedName("members")
+    var members: MutableList<GroupMember>? = mutableListOf(),
+
+    @SerializedName("member")
+    var member: Boolean = false,
+
+    @SerializedName("interests")
+    var interests: MutableList<String> = mutableListOf(),
+
     @field:SerializedName("number_of_unread_messages")
     val numberOfUnreadMessages: Int? = null,
 
@@ -85,7 +94,7 @@ data class Events(
     val status: Status? = null,
 
     @field:SerializedName("address")
-    var displayAddress: String? = null
+    var displayAddress: String? = null,
 )
 
 

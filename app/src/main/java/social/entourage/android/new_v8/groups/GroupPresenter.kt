@@ -11,8 +11,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.api.model.*
+import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.request.*
+import social.entourage.android.api.model.*
 import social.entourage.android.api.request.*
 import social.entourage.android.new_v8.groups.list.groupPerPage
 import social.entourage.android.new_v8.models.Events
@@ -203,10 +204,10 @@ class GroupPresenter {
 
     fun getGroupMembers(groupId: Int) {
         EntourageApplication.get().apiModule.groupRequest.getMembers(groupId)
-            .enqueue(object : Callback<GroupsMembersWrapper> {
+            .enqueue(object : Callback<MembersWrapper> {
                 override fun onResponse(
-                    call: Call<GroupsMembersWrapper>,
-                    response: Response<GroupsMembersWrapper>
+                    call: Call<MembersWrapper>,
+                    response: Response<MembersWrapper>
                 ) {
                     response.body()?.let { allMembersWrapper ->
                         getMembers.value = allMembersWrapper.users
@@ -214,7 +215,7 @@ class GroupPresenter {
 
                 }
 
-                override fun onFailure(call: Call<GroupsMembersWrapper>, t: Throwable) {
+                override fun onFailure(call: Call<MembersWrapper>, t: Throwable) {
                 }
             })
     }

@@ -35,7 +35,8 @@ class GroupEventsListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setView()
-        eventsAdapter = GroupEventsListAdapter(requireContext(), sections, null)
+        eventsAdapter =
+            GroupEventsListAdapter(requireContext(), sections, null, parentFragmentManager)
         setEventsList()
         groupPresenter.getGroupEvents(args.groupID)
         groupPresenter.getAllEvents.observe(

@@ -7,9 +7,6 @@ import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Image
-import social.entourage.android.new_v8.events.EventsPresenter
-import social.entourage.android.new_v8.events.EventsPresenter.*
-import social.entourage.android.new_v8.models.Events
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.models.Post
 
@@ -33,7 +30,7 @@ class PrepareAddPostResponse(
     }
 }
 
-class GroupsMembersWrapper(@field:SerializedName("users") val users: MutableList<EntourageUser>)
+class MembersWrapper(@field:SerializedName("users") val users: MutableList<EntourageUser>)
 class GroupsPostsWrapper(@field:SerializedName("chat_messages") val posts: MutableList<Post>)
 class GroupsPostWrapper(@field:SerializedName("chat_message") val post: Post)
 
@@ -71,6 +68,11 @@ interface GroupRequest {
         @Query("per") per: Int,
     ): Call<GroupsListWrapper>
 
+    @GET("users/{user_id}/neighborhoods")
+    fun getMyGroups(
+        @Path("user_id") userId: Int
+    ): Call<GroupsListWrapper>
+
 
     @POST("neighborhoods/{neighborhood_id}/users")
     fun joinGroup(
@@ -85,7 +87,7 @@ interface GroupRequest {
     @GET("neighborhoods/{neighborhood_id}/users")
     fun getMembers(
         @Path("neighborhood_id") groupId: Int
-    ): Call<GroupsMembersWrapper>
+    ): Call<MembersWrapper>
 
     @GET("neighborhoods/{neighborhood_id}/chat_messages")
     fun getGroupPosts(

@@ -14,6 +14,7 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.MetaData
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentReportBinding
+import social.entourage.android.new_v8.events.EventsPresenter
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.user.UserPresenter
 import social.entourage.android.new_v8.utils.Const
@@ -24,6 +25,7 @@ enum class ReportTypes(val code: Int) {
     REPORT_GROUP(1),
     REPORT_POST(2),
     REPORT_COMMENT(3),
+    REPORT_EVENT(4),
 }
 
 class ReportModalFragment : BottomSheetDialogFragment() {
@@ -34,6 +36,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
     private var selectedSignalsIdList: MutableList<String> = mutableListOf()
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
+    private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
     private var reportedId: Int? = Const.DEFAULT_VALUE
     private var groupId: Int? = Const.DEFAULT_VALUE
     private var reportType: Int? = Const.DEFAULT_VALUE
@@ -56,6 +59,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         userPresenter.isUserReported.observe(requireActivity(), ::handleReportResponse)
         groupPresenter.isGroupReported.observe(requireActivity(), ::handleReportResponse)
         groupPresenter.isPostReported.observe(requireActivity(), ::handleReportResponse)
+        eventPresenter.isEventReported.observe(requireActivity(), ::handleReportResponse)
         setupViewStep1()
         handleCloseButton()
         setView()
@@ -73,6 +77,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                 ReportTypes.REPORT_GROUP.code -> R.string.report_group
                 ReportTypes.REPORT_POST.code -> R.string.report_post
                 ReportTypes.REPORT_COMMENT.code -> R.string.report_comment
+                ReportTypes.REPORT_EVENT.code -> R.string.report_eventt
                 else -> R.string.report_member
             }
         )
@@ -160,6 +165,11 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                             selectedSignalsIdList
                         )
                     }
+                    ReportTypes.REPORT_EVENT.code -> eventPresenter.sendReport(
+                        id,
+                        binding.message.text.toString(),
+                        selectedSignalsIdList
+                    )
                     else -> R.string.report_member
                 }
             }
@@ -177,6 +187,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         selectedSignalsIdList.clear()
         userPresenter.isUserReported = MutableLiveData()
         groupPresenter.isGroupReported = MutableLiveData()
+        eventPresenter.isEventReported = MutableLiveData()
     }
 
     private fun handleCloseButton() {

@@ -12,6 +12,8 @@ import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateEventStepTwoBinding
 import social.entourage.android.new_v8.utils.transformIntoDatePicker
 import social.entourage.android.new_v8.utils.transformIntoTimePicker
+import timber.log.Timber
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -23,6 +25,7 @@ class CreateEventStepTwoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setView()
         handleNextButtonState()
+        setLimitedPlacesSelection()
     }
 
     override fun onCreateView(
@@ -56,6 +59,17 @@ class CreateEventStepTwoFragment : Fragment() {
         handleEditTextChangedTextListener(binding.layout.endTime)
     }
 
+    private fun setLimitedPlacesSelection() {
+        binding.layout.recurrence.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.once -> CommunicationHandler.event.recurrence = Recurrence.NO_RECURRENCE.value
+                R.id.every_week -> CommunicationHandler.event.recurrence =
+                    Recurrence.EVERY_WEEK.value
+                R.id.every_two_week -> CommunicationHandler.event.recurrence =
+                    Recurrence.EVERY_TWO_WEEKS.value
+            }
+        }
+    }
 
     private fun handleEditTextChangedTextListener(editText: EditText) {
         editText.addTextChangedListener(object : TextWatcher {
@@ -91,6 +105,27 @@ class CreateEventStepTwoFragment : Fragment() {
                 binding.layout.error.root.visibility = View.GONE
                 CommunicationHandler.isCondition.value = true
                 CommunicationHandler.clickNext.removeObservers(viewLifecycleOwner)
+                val dateFormatterToDate =
+                    SimpleDateFormat(getString(R.string.event_date_formatter_to_date))
+                val dateFormatterToString =
+                    SimpleDateFormat(getString(R.string.event_date_formatter_to_string))
+                val startDate =
+                    dateFormatterToDate.parse(
+                        binding.layout.eventDate.text.toString() + " " +
+                                binding.layout.startTime.text.toString()
+                    )
+                val endDate =
+                    dateFormatterToDate.parse(
+                        binding.layout.eventDate.text.toString() + " " +
+                                binding.layout.endTime.text.toString()
+                    )
+                val startDateString = dateFormatterToString.format(startDate)
+                val endDateString = dateFormatterToString.format(endDate)
+
+                CommunicationHandler.event.metadata?.startsAt(startDateString)
+                CommunicationHandler.event.metadata?.endsAt(endDateString)
+
+                Timber.e("Event ${CommunicationHandler.event}")
             } else {
                 binding.layout.error.root.visibility = View.VISIBLE
                 binding.layout.error.errorMessage.text =

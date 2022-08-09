@@ -15,8 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/title"
-            app:layout_constraintTop_toTopOf="parent"
-            app:title="@{@string/group_settings}" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -36,7 +35,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/group_name"
+                        android:id="@+id/name"
                         style="@style/left_courant_bold_orange"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -44,7 +43,7 @@
                         tools:text="Dansons ensemble" />
 
                     <TextView
-                        android:id="@+id/group_members_number_location"
+                        android:id="@+id/members_number_location"
                         style="@style/left_courant_black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -91,8 +90,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
-                    android:visibility="gone"
-                    app:label="@{@string/notification_all}" />
+                    android:visibility="gone" />
 
                 <include
                     android:id="@+id/notification_new_event"
@@ -100,8 +98,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
-                    android:visibility="gone"
-                    app:label="@{@string/notification_new_event}" />
+                    android:visibility="gone" />
 
                 <include
                     android:id="@+id/notification_new_messages"
@@ -109,8 +106,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
-                    android:visibility="gone"
-                    app:label="@{@string/notification_new_messages}" />
+                    android:visibility="gone" />
 
                 <include
                     android:id="@+id/notification_new_members"
@@ -118,8 +114,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
-                    android:visibility="gone"
-                    app:label="@{@string/notification_new_members}" />
+                    android:visibility="gone" />
 
                 <View
                     android:id="@+id/edit_group_divider"
@@ -132,20 +127,39 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <include
-                    android:id="@+id/edit_group"
+                    android:id="@+id/edit"
                     layout="@layout/new_profile_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
                     android:visibility="gone"
                     app:color="@{@android:color/black}"
-                    app:icon="@{@drawable/new_notification}"
-                    app:label="@{@string/edit_group_information}" />
+                    app:icon="@{@drawable/new_notification}" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/light_orange_opacity_25"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <include
+                    android:id="@+id/edit_recurrence"
+                    layout="@layout/new_profile_settings_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="25dp"
+                    android:visibility="gone"
+                    app:color="@{@android:color/black}"
+                    app:icon="@{@drawable/new_notification}" />
+
+                <View
+                    android:id="@+id/edit_recurrence_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_orange_opacity_25"
+                    android:visibility="gone"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -157,8 +171,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
                     app:color="@{@android:color/black}"
-                    app:icon="@{@drawable/new_notification}"
-                    app:label="@{@string/rules_group}" />
+                    app:icon="@{@drawable/new_notification}" />
 
                 <View
                     android:layout_width="match_parent"
@@ -170,23 +183,21 @@
 
 
                 <TextView
-                    android:id="@+id/report_group"
+                    android:id="@+id/report"
                     style="@style/left_courant_bold_orange"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="35dp"
                     android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
-                    android:text="@string/report_group" />
+                    android:paddingBottom="20dp" />
 
                 <TextView
-                    android:id="@+id/leave_group"
+                    android:id="@+id/leave"
                     style="@style/left_courant_bold_orange"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="35dp"
                     android:paddingBottom="20dp"
-                    android:text="@string/leave_group"
                     android:visibility="gone" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

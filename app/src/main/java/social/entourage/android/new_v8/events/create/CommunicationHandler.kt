@@ -1,7 +1,6 @@
 package social.entourage.android.new_v8.events.create
 
 import androidx.lifecycle.MutableLiveData
-import social.entourage.android.new_v8.models.Events
 
 object CommunicationHandler {
     var clickNext = MutableLiveData<Boolean>()
@@ -9,7 +8,7 @@ object CommunicationHandler {
     var isButtonClickable = MutableLiveData<Boolean>()
     var canExitEventCreation: Boolean = true
 
-    var event: Events = Events()
+    var event: CreateEvent = CreateEvent()
 
 
     fun resetValues() {

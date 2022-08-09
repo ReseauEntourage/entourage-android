@@ -26,12 +26,14 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentFeedBinding
+import social.entourage.android.new_v8.events.create.CreateEventActivity
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.details.SettingsModalFragment
+import social.entourage.android.new_v8.groups.details.members.MembersType
 import social.entourage.android.new_v8.groups.details.posts.CreatePostActivity
 import social.entourage.android.new_v8.models.Group
-import social.entourage.android.new_v8.models.GroupUiModel
 import social.entourage.android.new_v8.models.Post
+import social.entourage.android.new_v8.models.SettingUiModel
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -50,7 +52,7 @@ class FeedFragment : Fragment() {
     private var interestsList: ArrayList<String> = ArrayList()
     private var groupId = -1
     private lateinit var group: Group
-    private lateinit var groupUI: GroupUiModel
+    private lateinit var groupUI: SettingUiModel
     private var myId: Int? = null
     private val args: FeedFragmentArgs by navArgs()
 
@@ -90,6 +92,9 @@ class FeedFragment : Fragment() {
                     AnalyticsEvents.logEvent(
                         AnalyticsEvents.ACTION_GROUP_FEED_NEW_EVENT
                     )
+                    val intent = Intent(context, CreateEventActivity::class.java)
+                    intent.putExtra(Const.GROUP_ID, groupId)
+                    startActivity(intent)
                 }
                 else -> {
                     AnalyticsEvents.logEvent(
@@ -389,10 +394,10 @@ class FeedFragment : Fragment() {
                 AnalyticsEvents.ACTION_GROUP_FEED_OPTION
             )
             with(group) {
-                groupUI = GroupUiModel(
+                groupUI = SettingUiModel(
                     groupId, name,
                     members_count,
-                    address,
+                    address?.displayAddress,
                     interests,
                     description,
                     members,
@@ -410,7 +415,8 @@ class FeedFragment : Fragment() {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_FEED_MORE_MEMBERS
             )
-            val action = FeedFragmentDirections.actionGroupFeedToGroupMembers(groupId)
+            val action =
+                FeedFragmentDirections.actionGroupFeedToGroupMembers(groupId, MembersType.GROUP)
             findNavController().navigate(action)
         }
     }
@@ -430,11 +436,11 @@ class FeedFragment : Fragment() {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_FEED_MORE_DESCRIPTION
             )
-            groupUI = GroupUiModel(
+            groupUI = SettingUiModel(
                 groupId,
                 group.name,
                 group.members_count,
-                group.address,
+                group.displayAddress,
                 group.interests,
                 group.description,
                 group.members,

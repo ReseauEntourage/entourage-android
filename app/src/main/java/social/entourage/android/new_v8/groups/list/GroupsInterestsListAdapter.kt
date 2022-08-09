@@ -3,7 +3,6 @@ package social.entourage.android.new_v8.groups.list
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import social.entourage.android.R
 import social.entourage.android.databinding.NewGroupsInterestsImageItemBinding
 import social.entourage.android.new_v8.models.Interest
 
