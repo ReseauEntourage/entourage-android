@@ -1,6 +1,7 @@
 package social.entourage.android.new_v8.events.list
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,8 +13,10 @@ import com.intrusoft.sectionedrecyclerview.SectionRecyclerViewAdapter
 import social.entourage.android.R
 import social.entourage.android.databinding.NewEventItemBinding
 import social.entourage.android.databinding.NewEventsListHeaderBinding
+import social.entourage.android.new_v8.events.details.feed.FeedActivity
 import social.entourage.android.new_v8.models.Events
 import social.entourage.android.new_v8.models.Status
+import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
 import java.text.SimpleDateFormat
 import java.util.*
@@ -76,6 +79,17 @@ class GroupEventsListAdapter(
         childPosition: Int,
         child: Events
     ) {
+        childViewHolder.binding.layout.setOnClickListener {
+            context.startActivity(
+                Intent(
+                    context,
+                    FeedActivity::class.java
+                ).putExtra(
+                    Const.EVENT_ID,
+                    child.id
+                )
+            )
+        }
         childViewHolder.binding.eventName.text = child.title
         child.metadata?.startsAt?.let {
             childViewHolder.binding.date.text = SimpleDateFormat(

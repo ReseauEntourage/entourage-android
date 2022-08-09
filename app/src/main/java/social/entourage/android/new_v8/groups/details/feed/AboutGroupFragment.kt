@@ -20,6 +20,7 @@ import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentAboutGroupBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.details.SettingsModalFragment
+import social.entourage.android.new_v8.groups.details.members.MembersType
 import social.entourage.android.new_v8.models.GroupUiModel
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.utils.Const
@@ -42,7 +43,8 @@ class AboutGroupFragment : Fragment() {
     ): View {
         _binding = NewFragmentAboutGroupBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(
-            AnalyticsEvents.VIEW_GROUP_FEED_FULL_DESCRIPTION)
+            AnalyticsEvents.VIEW_GROUP_FEED_FULL_DESCRIPTION
+        )
         return binding.root
     }
 
@@ -193,7 +195,7 @@ class AboutGroupFragment : Fragment() {
         binding.members.setOnClickListener {
             group?.id?.let { id ->
                 val action = AboutGroupFragmentDirections.actionGroupAboutToGroupMembers(
-                    id
+                    id, MembersType.GROUP
                 )
                 findNavController().navigate(action)
             }

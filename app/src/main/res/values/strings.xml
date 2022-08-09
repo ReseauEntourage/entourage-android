@@ -368,6 +368,13 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="participate_to_events">Participez à des événements et des actions solidaires pour augmenter votre compteur de rencontres Entourage</string>
     <string name="event_date_formatter_to_date">dd/MM/yyyy HH-mm</string>
     <string name="event_date_formatter_to_string">yyyy-MM-dd HH:mm:ss Z</string>
-
+    <string name="places_numbers">%s places</string>
+    <string name="event_posts_empty_state_title">Pas encore de publication sur cet évènement</string>
+    <string name="event_posts_empty_state_subtitle">C’est l’occasion pour vous de partager la première nouvelle pour lancer la discussion !</string>
+    <string name="feed_event_date">"dd MMMM yyyy"</string>
+    <string name="feed_event_time">HH\'h\'mm</string>
+    <string name="participate">Participer</string>
+    <string name="participating">Participe</string>
+    <string name="underlined"><u>allo</u></string>
 
 </resources>

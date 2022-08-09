@@ -49,8 +49,12 @@
         android:id="@+id/group_members"
         android:name="social.entourage.android.new_v8.groups.details.members.MembersFragment">
         <argument
-            android:name="groupID"
+            android:name="id"
             app:argType="integer" />
+
+        <argument
+            android:name="type"
+            app:argType="social.entourage.android.new_v8.groups.details.members.MembersType" />
     </fragment>
 
     <fragment

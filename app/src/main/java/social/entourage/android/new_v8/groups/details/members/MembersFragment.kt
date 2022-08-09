@@ -17,11 +17,18 @@ import com.google.android.material.textfield.TextInputLayout
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.databinding.NewFragmentMembersBinding
+import social.entourage.android.new_v8.events.EventsPresenter
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 
+
+enum class MembersType(val code: Int) {
+    GROUP(0),
+    EVENT(1),
+}
 
 open class MembersFragment : Fragment() {
 
@@ -29,8 +36,10 @@ open class MembersFragment : Fragment() {
     val binding: NewFragmentMembersBinding get() = _binding!!
     private var membersList: MutableList<EntourageUser> = mutableListOf()
     private var membersListSearch: MutableList<EntourageUser> = ArrayList()
-    private var groupId: Int? = Const.DEFAULT_VALUE
+    private var id: Int? = Const.DEFAULT_VALUE
+    private var type: MembersType? = MembersType.GROUP
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
+    private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
 
     private val navArgs: MembersFragmentArgs by navArgs()
 
@@ -40,22 +49,16 @@ open class MembersFragment : Fragment() {
     ): View {
         _binding = NewFragmentMembersBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(
-            AnalyticsEvents.VIEW_GROUP_MEMBER_SHOW_LIST)
+            AnalyticsEvents.VIEW_GROUP_MEMBER_SHOW_LIST
+        )
         return binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getGroupId()
-        groupId?.let {
-            groupPresenter.getGroupMembers(it)
-        }
-        groupPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetMembers)
-        groupPresenter.getMembersSearch.observe(
-            viewLifecycleOwner,
-            ::handleResponseGetMembersSearch
-        )
+        getArgs()
+        getMembers()
         handleCloseButton()
         initializeMembers()
         initializeMembersSearch()
@@ -64,6 +67,28 @@ open class MembersFragment : Fragment() {
         handleCross()
         handleCrossButton()
         binding.searchBarLayout.endIconMode = TextInputLayout.END_ICON_NONE
+    }
+
+    private fun getMembers() {
+        if (type == MembersType.GROUP) {
+            id?.let {
+                groupPresenter.getGroupMembers(it)
+            }
+            groupPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetMembers)
+            groupPresenter.getMembersSearch.observe(
+                viewLifecycleOwner,
+                ::handleResponseGetMembersSearch
+            )
+        } else if (type == MembersType.EVENT) {
+            id?.let {
+                eventPresenter.getEventMembers(it)
+            }
+            eventPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetMembers)
+            eventPresenter.getMembersSearch.observe(
+                viewLifecycleOwner,
+                ::handleResponseGetMembersSearch
+            )
+        }
     }
 
     private fun handleResponseGetMembers(allMembers: MutableList<EntourageUser>?) {
@@ -132,8 +157,9 @@ open class MembersFragment : Fragment() {
         }
     }
 
-    private fun getGroupId() {
-        groupId = navArgs.groupID
+    private fun getArgs() {
+        id = navArgs.id
+        type = navArgs.type
     }
 
 
@@ -141,7 +167,8 @@ open class MembersFragment : Fragment() {
         binding.searchBar.setOnEditorActionListener { _, actionId, _ ->
             var handled = false
             AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_VALIDATE)
+                AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_VALIDATE
+            )
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 Utils.hideKeyboard(requireActivity())
                 binding.searchRecyclerView.visibility = View.GONE
@@ -149,10 +176,15 @@ open class MembersFragment : Fragment() {
                 binding.emptyStateLayout.visibility = View.GONE
                 binding.progressBar.visibility = View.VISIBLE
                 Utils.hideKeyboard(requireActivity())
-                groupId?.let {
-                    groupPresenter.getGroupMembersSearch(
-                        binding.searchBar.text.toString()
-                    )
+                id?.let {
+                    if (type == MembersType.GROUP)
+                        groupPresenter.getGroupMembersSearch(
+                            binding.searchBar.text.toString()
+                        )
+                    else if (type == MembersType.EVENT)
+                        eventPresenter.getEventMembersSearch(
+                            binding.searchBar.text.toString()
+                        )
                 }
                 handled = true
             }
@@ -163,7 +195,8 @@ open class MembersFragment : Fragment() {
     private fun handleSearchOnFocus() {
         binding.searchBar.setOnFocusChangeListener { _, _ ->
             AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_START)
+                AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_START
+            )
             binding.recyclerView.visibility = View.GONE
             binding.searchRecyclerView.visibility = View.VISIBLE
         }
@@ -194,7 +227,8 @@ open class MembersFragment : Fragment() {
     private fun handleCross() {
         binding.searchBarLayout.setEndIconOnClickListener {
             AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_DELETE)
+                AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_DELETE
+            )
             binding.searchBar.text?.clear()
             binding.searchRecyclerView.visibility = View.GONE
             binding.emptyStateLayout.visibility = View.GONE

@@ -85,7 +85,16 @@ data class Events(
     val status: Status? = null,
 
     @field:SerializedName("address")
-    var displayAddress: String? = null
+    var displayAddress: String? = null,
+
+    @SerializedName("interests")
+    var interests: MutableList<String> = mutableListOf(),
+
+    @SerializedName("member")
+    var member: Boolean = false,
+
+    @SerializedName("members")
+    var members: MutableList<GroupMember>? = mutableListOf()
 )
 
 
