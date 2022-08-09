@@ -43,4 +43,17 @@ interface EventsRequest {
         @Path("event_id") groupId: Int,
         @Body reportWrapper: ReportWrapper
     ): Call<ResponseBody>
+
+    @GET("outings/{id}")
+    fun getEvent(@Path("id") groupId: Int): Call<EventWrapper>
+
+    @POST("outings/{event_id}/users")
+    fun participate(
+        @Path("event_id") eventId: Int
+    ): Call<EntourageUserResponse>
+
+    @GET("outings/{event_id}/users")
+    fun getMembers(
+        @Path("event_id") eventId: Int
+    ): Call<MembersWrapper>
 }

@@ -30,5 +30,6 @@ object Const {
     const val IMAGES_TYPE = "imagesType"
     const val ADDRESS = "address"
     const val REQUEST_ADDRESS = "request_address"
+    const val EVENT_ID = "eventID"
 
 }

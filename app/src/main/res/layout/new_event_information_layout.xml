@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="icon"
+            type="android.graphics.drawable.Drawable" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:src="@{icon}"
+            tools:src="@drawable/new_event" />
+
+        <TextView
+            android:id="@+id/content"
+            style="@style/left_courant_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="21 juin 2022 • Toutes les semaines" />
+    </LinearLayout>
+</layout>

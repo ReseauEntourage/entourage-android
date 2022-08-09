@@ -29,6 +29,7 @@ import social.entourage.android.databinding.NewFragmentFeedBinding
 import social.entourage.android.new_v8.events.create.CreateEventActivity
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.details.SettingsModalFragment
+import social.entourage.android.new_v8.groups.details.members.MembersType
 import social.entourage.android.new_v8.groups.details.posts.CreatePostActivity
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.models.Post
@@ -414,7 +415,8 @@ class FeedFragment : Fragment() {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_FEED_MORE_MEMBERS
             )
-            val action = FeedFragmentDirections.actionGroupFeedToGroupMembers(groupId)
+            val action =
+                FeedFragmentDirections.actionGroupFeedToGroupMembers(groupId, MembersType.GROUP)
             findNavController().navigate(action)
         }
     }

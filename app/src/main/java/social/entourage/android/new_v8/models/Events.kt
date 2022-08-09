@@ -94,7 +94,7 @@ data class Events(
     val status: Status? = null,
 
     @field:SerializedName("address")
-    var displayAddress: String? = null
+    var displayAddress: String? = null,
 )
 
 

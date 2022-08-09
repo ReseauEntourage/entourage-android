@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/events_feed"
+    app:startDestination="@+id/event_feed">
+    <fragment
+        android:id="@+id/event_feed"
+        android:name="social.entourage.android.new_v8.events.details.feed.FeedFragment">
+
+        <argument
+            android:name="eventID"
+            app:argType="integer" />
+
+        <action
+            android:id="@+id/action_event_feed_to_members"
+            app:destination="@id/members"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/members"
+        android:name="social.entourage.android.new_v8.groups.details.members.MembersFragment">
+
+        <argument
+            android:name="id"
+            app:argType="integer" />
+
+        <argument
+            android:name="type"
+            app:argType="social.entourage.android.new_v8.groups.details.members.MembersType" />
+    </fragment>
+
+</navigation>

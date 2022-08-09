@@ -6,18 +6,25 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
+import social.entourage.android.api.model.EntourageUser
+import social.entourage.android.api.request.*
 import social.entourage.android.api.request.*
 import social.entourage.android.new_v8.events.create.CreateEvent
 import social.entourage.android.new_v8.events.list.EVENTS_PER_PAGE
 import social.entourage.android.new_v8.models.Events
+import timber.log.Timber
 
 class EventsPresenter {
     var getAllMyEvents = MutableLiveData<MutableList<Events>>()
     var getAllEvents = MutableLiveData<MutableList<Events>>()
+    var getEvent = MutableLiveData<Events>()
     var isEventReported = MutableLiveData<Boolean>()
 
     var newEventCreated = MutableLiveData<Events>()
     var isEventCreated = MutableLiveData<Boolean>()
+    var isUserParticipating = MutableLiveData<Boolean>()
+    var getMembers = MutableLiveData<MutableList<EntourageUser>>()
+    var getMembersSearch = MutableLiveData<MutableList<EntourageUser>>()
 
 
     var isLoading: Boolean = false
@@ -104,6 +111,74 @@ class EventsPresenter {
                 isEventReported.value = response.isSuccessful
             }
         })
+    }
+
+
+    fun getEvent(id: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.getEvent(id)
+            .enqueue(object : Callback<EventWrapper> {
+                override fun onResponse(
+                    call: Call<EventWrapper>,
+                    response: Response<EventWrapper>
+                ) {
+                    Timber.e(response.body().toString())
+                    if (response.isSuccessful) {
+                        response.body()?.let { groupWrapper ->
+                            getEvent.value = groupWrapper.event
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<EventWrapper>, t: Throwable) {
+                }
+            })
+    }
+
+
+    fun participate(groupId: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.participate(groupId)
+            .enqueue(object : Callback<EntourageUserResponse> {
+                override fun onResponse(
+                    call: Call<EntourageUserResponse>,
+                    response: Response<EntourageUserResponse>
+                ) {
+                    isUserParticipating.value =
+                        response.isSuccessful && response.body()?.user != null
+                }
+
+                override fun onFailure(call: Call<EntourageUserResponse>, t: Throwable) {
+                    isUserParticipating.value = false
+                }
+            })
+    }
+
+
+    fun getEventMembersSearch(searchTxt: String) {
+        val listTmp: MutableList<EntourageUser> = mutableListOf()
+        getMembers.value?.forEach {
+            if (it.displayName?.lowercase()?.contains(searchTxt.lowercase()) == true) {
+                listTmp.add(it)
+            }
+        }
+        getMembersSearch.value = listTmp
+    }
+
+    fun getEventMembers(eventId: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.getMembers(eventId)
+            .enqueue(object : Callback<MembersWrapper> {
+                override fun onResponse(
+                    call: Call<MembersWrapper>,
+                    response: Response<MembersWrapper>
+                ) {
+                    response.body()?.let { allMembersWrapper ->
+                        getMembers.value = allMembersWrapper.users
+                    }
+
+                }
+
+                override fun onFailure(call: Call<MembersWrapper>, t: Throwable) {
+                }
+            })
     }
 
 }

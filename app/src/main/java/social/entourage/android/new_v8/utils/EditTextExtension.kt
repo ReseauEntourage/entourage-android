@@ -3,9 +3,15 @@ package social.entourage.android.new_v8.utils
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
+import android.view.View
 import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.TextView
+import android.widget.TimePicker
+import java.sql.Time
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -101,4 +107,11 @@ fun EditText.focusAndShowKeyboard() {
                 }
             })
     }
+}
+
+fun TextView.underline(text: String) {
+    val spannableString = SpannableString(text).apply {
+        setSpan(UnderlineSpan(), 0, text.length, 0)
+    }
+    setText(spannableString)
 }
