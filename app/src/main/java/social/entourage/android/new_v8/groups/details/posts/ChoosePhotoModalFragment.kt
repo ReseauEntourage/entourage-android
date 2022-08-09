@@ -5,7 +5,6 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -23,7 +22,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentChoosePhotoModalBinding
 import social.entourage.android.new_v8.utils.Const
-import social.entourage.android.tools.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 import java.io.File

@@ -7,8 +7,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.UserResponse
-import social.entourage.android.user.edit.place.UserEditActionZoneFragment
-import timber.log.Timber
 
 class EditProfilePresenter {
 

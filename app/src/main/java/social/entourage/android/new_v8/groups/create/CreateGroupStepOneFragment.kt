@@ -16,7 +16,6 @@ import social.entourage.android.databinding.NewFragmentCreateGroupStepOneBinding
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
-import timber.log.Timber
 
 
 class CreateGroupStepOneFragment : Fragment(), UserEditActionZoneFragment.FragmentListener {

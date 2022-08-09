@@ -3,13 +3,9 @@ package social.entourage.android.new_v8.profile
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavOptions
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import kotlinx.android.synthetic.main.layout_pop_info_private.*
 import social.entourage.android.BuildConfig
 import social.entourage.android.R
-import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.AvatarUploadView

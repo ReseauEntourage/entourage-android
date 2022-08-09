@@ -1,6 +1,7 @@
 package social.entourage.android.new_v8.events
 
 import androidx.lifecycle.MutableLiveData
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -9,7 +10,6 @@ import social.entourage.android.api.request.*
 import social.entourage.android.new_v8.events.create.CreateEvent
 import social.entourage.android.new_v8.events.list.EVENTS_PER_PAGE
 import social.entourage.android.new_v8.models.Events
-import okhttp3.ResponseBody
 
 class EventsPresenter {
     var getAllMyEvents = MutableLiveData<MutableList<Events>>()
