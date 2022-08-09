@@ -14,14 +14,11 @@ import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateGroupBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
-import social.entourage.android.new_v8.groups.details.feed.FeedFragmentDirections
-import social.entourage.android.new_v8.models.Address
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.nextPage
 import social.entourage.android.new_v8.utils.previousPage
 import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
 
 class CreateGroupFragment : Fragment() {
 

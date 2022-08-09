@@ -15,7 +15,6 @@ import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.list.groupPerPage
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.utils.Const
-import timber.log.Timber
 
 
 class CreateEventStepFiveFragment : Fragment() {

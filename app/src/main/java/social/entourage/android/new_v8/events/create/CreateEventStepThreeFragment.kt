@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateEventStepThreeBinding
-import timber.log.Timber
 
 
 class CreateEventStepThreeFragment : Fragment() {

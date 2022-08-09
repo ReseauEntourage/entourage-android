@@ -11,6 +11,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
+import social.entourage.android.api.model.EntourageUser
+import social.entourage.android.api.request.*
 import social.entourage.android.api.model.*
 import social.entourage.android.api.request.*
 import social.entourage.android.new_v8.groups.list.groupPerPage
