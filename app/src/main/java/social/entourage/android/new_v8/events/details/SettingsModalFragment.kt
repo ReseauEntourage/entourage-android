@@ -55,16 +55,18 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
 
     private fun setView() {
-        binding.notificationNewMessages.root.visibility = View.GONE
-        binding.header.title = getString(R.string.event_settings)
-        binding.notificationAll.label = getString(R.string.event_notification_all)
-        binding.notificationNewEvent.label = getString(R.string.notification_new_publications)
-        binding.notificationNewMembers.label = getString(R.string.notification_new_members)
-        binding.edit.label = getString(R.string.edit_event_information)
-        binding.rules.label = getString(R.string.rules_event)
-        binding.report.text = getString(R.string.report_event)
-        binding.leave.text = getString(R.string.cancel_event)
-        binding.editRecurrence.label = getString(R.string.modify_recurrence)
+        with(binding) {
+            notificationNewMessages.root.visibility = View.GONE
+            header.title = getString(R.string.event_settings)
+            notificationAll.label = getString(R.string.event_notification_all)
+            notificationNewEvent.label = getString(R.string.notification_new_publications)
+            notificationNewMembers.label = getString(R.string.notification_new_members)
+            edit.label = getString(R.string.edit_event_information)
+            rules.label = getString(R.string.rules_event)
+            report.text = getString(R.string.report_event)
+            leave.text = getString(R.string.cancel_event)
+            editRecurrence.label = getString(R.string.modify_recurrence)
+        }
     }
 
 
@@ -94,34 +96,36 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     private fun updateView() {
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
-        binding.rules.divider.visibility = View.GONE
-        binding.edit.divider.visibility = View.GONE
-        binding.editRecurrence.divider.visibility = View.GONE
-        binding.notificationNewMembers.divider.visibility = View.GONE
-        TextViewCompat.setTextAppearance(
-            binding.notificationAll.tvLabel,
-            R.style.left_courant_bold_black
-        )
-        event?.let {
-            binding.name.text = it.name
-            binding.membersNumberLocation.text = String.format(
-                getString(R.string.members_location),
-                it.members_count,
-                it.address
+        with(binding) {
+           rules.divider.visibility = View.GONE
+           edit.divider.visibility = View.GONE
+           editRecurrence.divider.visibility = View.GONE
+           notificationNewMembers.divider.visibility = View.GONE
+            TextViewCompat.setTextAppearance(
+               notificationAll.tvLabel,
+                R.style.left_courant_bold_black
             )
-            initializeInterests()
+            event?.let {
+               name.text = it.name
+               membersNumberLocation.text = String.format(
+                    getString(R.string.members_location),
+                    it.members_count,
+                    it.address
+                )
+                initializeInterests()
+            }
         }
     }
 
     private fun initializeInterests() {
         if (interestsList.isEmpty()) binding.interests.visibility = View.GONE
         else {
-            binding.interests.visibility = View.VISIBLE
-            binding.interests.apply {
-                val layoutManagerFlex = FlexboxLayoutManager(context)
-                layoutManagerFlex.flexDirection = FlexDirection.ROW
-                layoutManagerFlex.justifyContent = JustifyContent.CENTER
-                layoutManager = layoutManagerFlex
+            with(binding.interests) {
+                visibility = View.VISIBLE
+                layoutManager = FlexboxLayoutManager(context).apply {
+                    flexDirection = FlexDirection.ROW
+                    justifyContent = JustifyContent.CENTER
+                }
                 adapter = InterestsAdapter(interestsList)
             }
         }
@@ -158,21 +162,23 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
 
     private fun viewWithRole() {
-        if (event?.admin == true) {
-            binding.edit.root.visibility = View.VISIBLE
-            binding.editGroupDivider.visibility = View.VISIBLE
-            binding.editRecurrence.root.visibility = View.VISIBLE
-            binding.editRecurrenceDivider.visibility = View.VISIBLE
-            binding.leave.visibility = View.GONE
-        }
-        if (event?.member == true) {
-            binding.leave.visibility = View.VISIBLE
-            binding.notificationAll.root.visibility = View.VISIBLE
-            binding.notificationNewMembers.root.visibility = View.VISIBLE
-            binding.notificationNewEvent.root.visibility = View.VISIBLE
-            binding.notificationNewMessages.root.visibility = View.VISIBLE
-            binding.notifyMe.visibility = View.VISIBLE
-            binding.notifyDivider.visibility = View.VISIBLE
+        with(binding) {
+            if (event?.admin == true) {
+                edit.root.visibility = View.VISIBLE
+                editGroupDivider.visibility = View.VISIBLE
+                editRecurrence.root.visibility = View.VISIBLE
+                editRecurrenceDivider.visibility = View.VISIBLE
+                leave.visibility = View.GONE
+            }
+            if (event?.member == true) {
+                leave.visibility = View.VISIBLE
+                notificationAll.root.visibility = View.VISIBLE
+                notificationNewMembers.root.visibility = View.VISIBLE
+                notificationNewEvent.root.visibility = View.VISIBLE
+                notificationNewMessages.root.visibility = View.VISIBLE
+                notifyMe.visibility = View.VISIBLE
+                notifyDivider.visibility = View.VISIBLE
+            }
         }
     }
 
