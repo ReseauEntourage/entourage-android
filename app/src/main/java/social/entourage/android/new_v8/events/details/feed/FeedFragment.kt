@@ -91,7 +91,8 @@ class FeedFragment : Fragment() {
     private fun openGoogleMaps() {
         if (event.online != true) {
             binding.location.root.setOnClickListener {
-                val geoUri = "http://maps.google.com/maps?q=loc:${event.metadata?.displayAddress}"
+                val geoUri =
+                    String.format(getString(R.string.geoUri), event.metadata?.displayAddress)
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
                 startActivity(intent)
             }
