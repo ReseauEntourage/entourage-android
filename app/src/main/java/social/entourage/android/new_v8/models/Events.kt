@@ -95,15 +95,6 @@ data class Events(
 
     @field:SerializedName("address")
     var displayAddress: String? = null,
-
-    @SerializedName("interests")
-    var interests: MutableList<String> = mutableListOf(),
-
-    @SerializedName("member")
-    var member: Boolean = false,
-
-    @SerializedName("members")
-    var members: MutableList<GroupMember>? = mutableListOf()
 )
 
 
