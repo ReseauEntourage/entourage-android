@@ -1,6 +1,7 @@
 package social.entourage.android.api.request
 
 import com.google.gson.annotations.SerializedName
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.api.model.Image
@@ -36,4 +37,10 @@ interface EventsRequest {
 
     @POST("outings")
     fun createEvent(@Body event: CreateEventWrapper): Call<EventWrapper>
+
+    @POST("outings/{event_id}/report")
+    fun reportEvent(
+        @Path("event_id") groupId: Int,
+        @Body reportWrapper: ReportWrapper
+    ): Call<ResponseBody>
 }

@@ -20,7 +20,7 @@ import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentAboutGroupBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.details.SettingsModalFragment
-import social.entourage.android.new_v8.models.GroupUiModel
+import social.entourage.android.new_v8.models.SettingUiModel
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
@@ -30,7 +30,7 @@ class AboutGroupFragment : Fragment() {
 
     private var _binding: NewFragmentAboutGroupBinding? = null
     val binding: NewFragmentAboutGroupBinding get() = _binding!!
-    var group: GroupUiModel? = null
+    var group: SettingUiModel? = null
     private var interestsList: ArrayList<String> = ArrayList()
     private val args: AboutGroupFragmentArgs by navArgs()
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
@@ -42,7 +42,8 @@ class AboutGroupFragment : Fragment() {
     ): View {
         _binding = NewFragmentAboutGroupBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(
-            AnalyticsEvents.VIEW_GROUP_FEED_FULL_DESCRIPTION)
+            AnalyticsEvents.VIEW_GROUP_FEED_FULL_DESCRIPTION
+        )
         return binding.root
     }
 
@@ -67,7 +68,7 @@ class AboutGroupFragment : Fragment() {
             groupMembersNumberLocation.text = String.format(
                 getString(R.string.members_location),
                 group?.members_count,
-                group?.address?.displayAddress
+                group?.address
             )
             initializeMembersPhotos()
             groupDescription.text = group?.description

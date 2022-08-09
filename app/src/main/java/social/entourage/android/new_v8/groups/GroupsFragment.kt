@@ -10,13 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.android.synthetic.main.new_fragment_groups.*
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentGroupsBinding
 import social.entourage.android.new_v8.ViewPagerDefaultPageController
 import social.entourage.android.new_v8.groups.create.CreateGroupActivity
 import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
 import kotlin.math.abs
 
 const val DISCOVER_GROUPS_TAB = 1

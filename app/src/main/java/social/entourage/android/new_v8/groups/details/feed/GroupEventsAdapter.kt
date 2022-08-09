@@ -6,11 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
 import social.entourage.android.databinding.NewEventItemLayoutBinding
 import social.entourage.android.new_v8.models.Events
-import social.entourage.android.new_v8.utils.px
 import java.text.SimpleDateFormat
 import java.util.*
 

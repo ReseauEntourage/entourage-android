@@ -19,7 +19,7 @@ import social.entourage.android.databinding.NewFragmentSettingsModalBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.details.rules.GroupRulesActivity
 import social.entourage.android.new_v8.groups.edit.EditGroupActivity
-import social.entourage.android.new_v8.models.GroupUiModel
+import social.entourage.android.new_v8.models.SettingUiModel
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.report.ReportModalFragment
 import social.entourage.android.new_v8.report.ReportTypes
@@ -31,7 +31,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     private var _binding: NewFragmentSettingsModalBinding? = null
     val binding: NewFragmentSettingsModalBinding get() = _binding!!
-    private var group: GroupUiModel? = null
+    private var group: SettingUiModel? = null
     private var interestsList: ArrayList<String> = ArrayList()
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
 
@@ -58,17 +58,29 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         handleReportGroup()
         handleLeaveGroup()
         groupPresenter.hasUserLeftGroup.observe(requireActivity(), ::hasUserLeftGroup)
+        setView()
     }
 
+    private fun setView() {
+        binding.header.title = getString(R.string.group_settings)
+        binding.notificationAll.label = getString(R.string.group_notification_all)
+        binding.notificationNewEvent.label = getString(R.string.notification_new_event)
+        binding.notificationNewMessages.label = getString(R.string.notification_new_messages)
+        binding.notificationNewMembers.label = getString(R.string.notification_new_members)
+        binding.edit.label = getString(R.string.edit_group_information)
+        binding.rules.label = getString(R.string.rules_group)
+        binding.report.text = getString(R.string.report_group)
+        binding.leave.text = getString(R.string.leave_group)
+    }
 
     private fun viewWithRole() {
         if (group?.admin == true) {
-            binding.editGroup.root.visibility = View.VISIBLE
+            binding.edit.root.visibility = View.VISIBLE
             binding.editGroupDivider.visibility = View.VISIBLE
-            binding.leaveGroup.visibility = View.GONE
+            binding.leave.visibility = View.GONE
         }
         if (group?.member == true) {
-            binding.leaveGroup.visibility = View.VISIBLE
+            binding.leave.visibility = View.VISIBLE
             binding.notificationAll.root.visibility = View.VISIBLE
             binding.notificationNewMembers.root.visibility = View.VISIBLE
             binding.notificationNewEvent.root.visibility = View.VISIBLE
@@ -82,18 +94,18 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     private fun updateView() {
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         binding.rules.divider.visibility = View.GONE
-        binding.editGroup.divider.visibility = View.GONE
+        binding.edit.divider.visibility = View.GONE
         binding.notificationNewMembers.divider.visibility = View.GONE
         TextViewCompat.setTextAppearance(
-            binding.notificationAll.label,
+            binding.notificationAll.tvLabel,
             R.style.left_courant_bold_black
         )
         group?.let {
-            binding.groupName.text = it.name
-            binding.groupMembersNumberLocation.text = String.format(
+            binding.name.text = it.name
+            binding.membersNumberLocation.text = String.format(
                 getString(R.string.members_location),
                 it.members_count,
-                it.address?.displayAddress
+                it.address
             )
             initializeInterests()
         }
@@ -148,7 +160,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleEditGroup() {
-        binding.editGroup.root.setOnClickListener {
+        binding.edit.root.setOnClickListener {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_OPTION_EDIT_GROUP
             )
@@ -171,7 +183,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
 
     private fun handleLeaveGroup() {
-        binding.leaveGroup.setOnClickListener {
+        binding.leave.setOnClickListener {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_OPTION_QUIT
             )
@@ -196,7 +208,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
                     Const.DEFAULT_VALUE, ReportTypes.REPORT_GROUP
                 )
             }
-        binding.reportGroup.setOnClickListener {
+        binding.report.setOnClickListener {
             reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)
         }
         AnalyticsEvents.logEvent(
@@ -206,7 +218,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     companion object {
         const val TAG = "SettingsModalFragment"
-        fun newInstance(group: GroupUiModel): SettingsModalFragment {
+        fun newInstance(group: SettingUiModel): SettingsModalFragment {
             val fragment = SettingsModalFragment()
             val args = Bundle()
             args.putParcelable(Const.GROUP_UI, group)
