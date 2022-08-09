@@ -6,7 +6,6 @@ import android.content.Context
 import android.database.Cursor
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.provider.OpenableColumns
 import android.view.LayoutInflater
@@ -24,7 +23,6 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
-import java.nio.file.Files
 import java.time.YearMonth
 import java.time.ZoneId
 import java.time.ZonedDateTime

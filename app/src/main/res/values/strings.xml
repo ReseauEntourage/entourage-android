@@ -180,6 +180,8 @@
     <string name="stepOne">01.</string>
     <string name="stepThree">03.</string>
     <string name="stepTwo">02.</string>
+    <string name="stepFour">04.</string>
+    <string name="stepFive">05.</string>
     <string name="choose_categories_group">Sélectionnez la ou les catégories qui décrivent le mieux le sujet de discussion du groupe.</string>
     <string name="web_site">Site web</string>
     <string name="address">Adresse postale</string>
@@ -329,6 +331,15 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="october">Octobre</string>
     <string name="november">Novembre</string>
     <string name="december">Décembre</string>
+    <string name="choose_categories_event">Sélectionnez la ou les catégories qui décrivent le mieux le sujet de discussion de l\'événement.</string>
+    <string name="event_success_title">Votre événement a \nbien été créé !</string>
+    <string name="event_success_subtitle">Félicitations, vous venez de créer un nouvel \névènement. Pour le rendre plus visible \nparlez-en sur vos groupes ! </string>
+    <string name="see_event">Voir mon événement</string>
+    <string name="share_event">Partager l\'événement dans vos groupes</string>
+    <string name="share_event_label">Vous ne pouvez partager l’évènement seulement aux groupes dont vous êtes membre. Votre événement sera alors visible dans le(s) groupe(s) sélectionné(s) et tous les membres d\'un groupe pourront y participer.</string>
+    <string name="dont_share">Ne partager dans aucun groupe</string>
+    <string name="share_in_groups">Partager dans un ou plusieurs groupes</string>
+
     <string name="date">Date</string>
     <string name="start_time">Heure de début</string>
     <string name="end_time">Heure de fin</string>
@@ -356,6 +367,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="moderator_subtitle">Votre guide dans l’app</string>
     <string name="create_encounters">Créez des rencontres !</string>
     <string name="participate_to_events">Participez à des événements et des actions solidaires pour augmenter votre compteur de rencontres Entourage</string>
+    <string name="event_date_formatter_to_date">dd/MM/yyyy HH-mm</string>
+    <string name="event_date_formatter_to_string">yyyy-MM-dd HH:mm:ss Z</string>
     <string name="event_settings">Paramètres de l\'événement</string>
     <string name="event_notification_all">Toute l\'activité de l\'événement</string>
     <string name="notification_new_publications">Les nouvelles publications</string>

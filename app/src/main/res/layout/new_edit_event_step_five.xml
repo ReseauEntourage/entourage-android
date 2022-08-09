@@ -3,18 +3,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
-        <variable
-            name="title"
-            type="java.lang.String" />
-
-        <variable
-            name="step"
-            type="java.lang.String" />
-
-    </data>
-
     <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            app:step="@{step}" />
+            app:step="@{@string/stepFive}" />
 
         <TextView
             android:id="@+id/title"
@@ -36,8 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="5dp"
-            android:text="@{title}"
-            tools:text="Title" />
+            android:text="@string/share_event"
+            tools:text="@string/share_event" />
 
         <TextView
             android:id="@+id/mandatory"
@@ -47,21 +35,52 @@
             android:text="@string/mandatory"
             tools:text="-obligatoire" />
 
+        <TextView
+            style="@style/left_legend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/share_event_label"
+            tools:text="@string/share_event_label" />
+
+        <RadioGroup
+            android:id="@+id/rb_share_in_groups"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+            <RadioButton
+                android:id="@+id/dont_share"
+                style="@style/left_courant_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dont_share" />
+
+            <RadioButton
+                android:id="@+id/share_in_groups"
+                style="@style/left_courant_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/share_in_groups" />
+        </RadioGroup>
+
         <include
             android:id="@+id/error"
             layout="@layout/new_error"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:visibility="gone" />
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/group_photo_label" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:visibility="gone"
             tools:itemCount="5"
-            tools:listitem="@layout/new_profile_edit_interest_item" />
-
+            tools:listitem="@layout/new_choose_group_event_item" />
     </LinearLayout>
 </layout>
