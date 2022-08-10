@@ -1,5 +1,6 @@
 package social.entourage.android.new_v8.models
 
+import android.location.Location
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.api.model.feed.FeedItemAuthor
 import java.util.*
@@ -109,7 +110,7 @@ data class Events(
     var recurrence: Int? = 0,
 
     @SerializedName("neighborhoods")
-    var neighborhoods: MutableList<GroupEvent>? = mutableListOf()
+    var neighborhoods: MutableList<GroupEvent>? = mutableListOf(),
 )
 
 

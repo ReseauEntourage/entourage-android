@@ -126,6 +126,16 @@
                             android:layout_marginTop="12dp"
                             app:icon="@{@drawable/new_location_event}" />
 
+                        <com.google.android.gms.maps.MapView xmlns:map="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/mapView"
+                            android:layout_width="match_parent"
+                            android:layout_height="190dp"
+                            android:layout_marginTop="15dp"
+                            android:background="#00000000"
+                            map:uiCompass="true"
+                            map:uiZoomControls="true"
+                            map:zOrderOnTop="true" />
+
                         <Button
                             android:id="@+id/join"
                             style="@style/h2_white"

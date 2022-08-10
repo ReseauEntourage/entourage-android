@@ -36,8 +36,10 @@ class EventUiModel(
     val createdAt: Date? = null,
     val updatedAt: Date? = null,
     val recurrence: Int? = null,
-    var neighborhoods: MutableList<GroupEvent>? = mutableListOf()
-) : Parcelable {
+    var neighborhoods: MutableList<GroupEvent>? = mutableListOf(),
+    val location: Address? = null,
+
+    ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readValue(Int::class.java.classLoader) as Int,
         parcel.readString(),

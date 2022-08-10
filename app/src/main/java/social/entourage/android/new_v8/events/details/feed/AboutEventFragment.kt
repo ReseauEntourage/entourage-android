@@ -17,6 +17,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
@@ -26,8 +33,6 @@ import social.entourage.android.new_v8.events.create.Recurrence
 import social.entourage.android.new_v8.events.details.feed.AboutEventFragmentDirections.actionEventAboutToEventMembers
 import social.entourage.android.new_v8.groups.details.feed.GroupMembersPhotosAdapter
 import social.entourage.android.new_v8.groups.details.members.MembersType
-import social.entourage.android.new_v8.groups.list.FromScreen
-import social.entourage.android.new_v8.groups.list.GroupsListAdapter
 import social.entourage.android.new_v8.models.EventUiModel
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.utils.Utils
@@ -35,13 +40,15 @@ import social.entourage.android.new_v8.utils.underline
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AboutEventFragment : Fragment() {
+
+class AboutEventFragment : Fragment(), OnMapReadyCallback {
 
     private var _binding: NewFragmentAboutEventBinding? = null
     val binding: NewFragmentAboutEventBinding get() = _binding!!
     var event: EventUiModel? = null
     private var interestsList: ArrayList<String> = ArrayList()
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
+    private var mMap: MapView? = null
 
 
     private val args: AboutEventFragmentArgs by navArgs()
@@ -52,6 +59,9 @@ class AboutEventFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = NewFragmentAboutEventBinding.inflate(inflater, container, false)
+        mMap = binding.mapView
+        mMap?.onCreate(savedInstanceState)
+        mMap?.getMapAsync(this)
         return binding.root
     }
 
@@ -89,6 +99,7 @@ class AboutEventFragment : Fragment() {
             binding.placesLimit.content.text =
                 String.format(getString(R.string.limited_places), event?.metadata?.placeLimit)
 
+            binding.mapView.isVisible = event?.online == false
             val recurrence = getString(
                 when (event?.recurrence) {
                     Recurrence.NO_RECURRENCE.value -> R.string.juste_once
@@ -309,5 +320,50 @@ class AboutEventFragment : Fragment() {
             }
         }
         binding.interests.adapter?.notifyDataSetChanged()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mMap?.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mMap?.onPause()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mMap?.onStart()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mMap?.onStop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mMap?.onDestroy()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        mMap?.onLowMemory()
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        val latitude = event?.location?.latitude ?: 0.0
+        val longitude = event?.location?.longitude ?: 0.0
+        val latLong = LatLng(latitude, longitude)
+        googleMap.addMarker(
+            MarkerOptions().position(latLong)
+        )
+        val cameraPosition = CameraPosition.Builder()
+            .target(LatLng(latitude, longitude)).zoom(15f).build()
+        googleMap.animateCamera(
+            CameraUpdateFactory
+                .newCameraPosition(cameraPosition)
+        )
     }
 }

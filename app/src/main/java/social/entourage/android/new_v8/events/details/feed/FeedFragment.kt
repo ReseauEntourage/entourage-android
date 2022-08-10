@@ -225,7 +225,8 @@ class FeedFragment : Fragment() {
                 event.createdAt,
                 event.updatedAt,
                 event.recurrence,
-                event.neighborhoods
+                event.neighborhoods,
+                event.location
             )
             val action =
                 FeedFragmentDirections.actionEventFeedToEventAbout(
