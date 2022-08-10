@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import kotlinx.android.synthetic.main.new_edit_event_step_two.*
 import kotlinx.android.synthetic.main.new_fragment_feed.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -24,12 +25,17 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentFeedEventBinding
 import social.entourage.android.new_v8.events.EventsPresenter
+import social.entourage.android.new_v8.events.create.Recurrence
+import social.entourage.android.new_v8.events.details.SettingsModalFragment
 import social.entourage.android.new_v8.groups.details.feed.GroupMembersPhotosAdapter
 import social.entourage.android.new_v8.groups.details.members.MembersType
+import social.entourage.android.new_v8.models.EventUiModel
 import social.entourage.android.new_v8.models.Events
+import social.entourage.android.new_v8.models.SettingUiModel
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.underline
+import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -43,6 +49,7 @@ class FeedFragment : Fragment() {
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
     private var interestsList: ArrayList<String> = ArrayList()
     private var eventId = Const.DEFAULT_VALUE
+    private lateinit var eventUI: SettingUiModel
     private lateinit var event: Events
     private var myId: Int? = null
     private val args: FeedFragmentArgs by navArgs()
@@ -67,6 +74,8 @@ class FeedFragment : Fragment() {
         handleMembersButton()
         handleParticipateButton()
         handleBackButton()
+        handleSettingsButton()
+        handleAboutButton()
     }
 
     private fun handleResponseGetEvent(getEvent: Events?) {
@@ -173,6 +182,59 @@ class FeedFragment : Fragment() {
             requireActivity().finish()
         }
     }
+
+    private fun handleSettingsButton() {
+        binding.iconSettings.setOnClickListener {
+            with(event) {
+                eventUI = SettingUiModel(
+                    id, title,
+                    membersCount,
+                    metadata?.displayAddress,
+                    interests,
+                    description,
+                    members,
+                    member,
+                    EntourageApplication.me(context)?.id == author?.userID,
+                    recurrence
+                )
+                SettingsModalFragment.newInstance(eventUI)
+                    .show(parentFragmentManager, SettingsModalFragment.TAG)
+            }
+        }
+    }
+
+
+    private fun handleAboutButton() {
+        binding.more.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_FEED_MORE_DESCRIPTION
+            )
+            val eventUI = EventUiModel(
+                eventId,
+                event.title,
+                event.membersCount,
+                event.displayAddress,
+                event.interests,
+                event.description,
+                event.members,
+                event.member,
+                EntourageApplication.me(activity)?.id == event.author?.userID,
+                event.online,
+                event.metadata,
+                event.eventUrl,
+                event.createdAt,
+                event.updatedAt,
+                event.recurrence,
+                event.neighborhoods
+            )
+            val action =
+                FeedFragmentDirections.actionEventFeedToEventAbout(
+                    eventUI
+                )
+            findNavController().navigate(action)
+        }
+    }
+
 
     private fun handleParticipateButton() {
         binding.join.setOnClickListener {
