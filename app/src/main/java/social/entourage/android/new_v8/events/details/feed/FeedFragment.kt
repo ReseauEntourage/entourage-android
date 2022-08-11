@@ -17,7 +17,6 @@ import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import kotlinx.android.synthetic.main.new_edit_event_step_two.*
 import kotlinx.android.synthetic.main.new_fragment_feed.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -25,13 +24,12 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentFeedEventBinding
 import social.entourage.android.new_v8.events.EventsPresenter
-import social.entourage.android.new_v8.events.create.Recurrence
 import social.entourage.android.new_v8.events.details.SettingsModalFragment
 import social.entourage.android.new_v8.groups.details.feed.GroupMembersPhotosAdapter
 import social.entourage.android.new_v8.groups.details.members.MembersType
-import social.entourage.android.new_v8.models.EventUiModel
 import social.entourage.android.new_v8.models.Events
 import social.entourage.android.new_v8.models.SettingUiModel
+import social.entourage.android.new_v8.models.toEventUi
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.underline
@@ -209,25 +207,7 @@ class FeedFragment : Fragment() {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_FEED_MORE_DESCRIPTION
             )
-            val eventUI = EventUiModel(
-                eventId,
-                event.title,
-                event.membersCount,
-                event.displayAddress,
-                event.interests,
-                event.description,
-                event.members,
-                event.member,
-                EntourageApplication.me(activity)?.id == event.author?.userID,
-                event.online,
-                event.metadata,
-                event.eventUrl,
-                event.createdAt,
-                event.updatedAt,
-                event.recurrence,
-                event.neighborhoods,
-                event.location
-            )
+            val eventUI = event.toEventUi(requireContext())
             val action =
                 FeedFragmentDirections.actionEventFeedToEventAbout(
                     eventUI

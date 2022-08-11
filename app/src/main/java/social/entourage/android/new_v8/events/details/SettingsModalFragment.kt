@@ -164,14 +164,15 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
 
     private fun viewWithRole() {
+        val eventWithNoRecurrence =
+            event?.recurrence != null && event?.recurrence != Recurrence.NO_RECURRENCE.value
+
         with(binding) {
             if (event?.admin == true) {
                 edit.root.visibility = View.VISIBLE
                 editGroupDivider.visibility = View.VISIBLE
-                editRecurrence.root.isVisible =
-                    event?.recurrence != null && event?.recurrence != Recurrence.NO_RECURRENCE.value
-                editRecurrenceDivider.isVisible =
-                    event?.recurrence != null && event?.recurrence != Recurrence.NO_RECURRENCE.value
+                editRecurrence.root.isVisible = eventWithNoRecurrence
+                editRecurrenceDivider.isVisible = eventWithNoRecurrence
                 leave.visibility = View.GONE
 
             }

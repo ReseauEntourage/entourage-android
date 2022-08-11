@@ -31,5 +31,7 @@ object Const {
     const val ADDRESS = "address"
     const val REQUEST_ADDRESS = "request_address"
     const val EVENT_ID = "eventID"
+    const val HTTP = "http://"
+    const val HTTPS = "https://"
 
 }

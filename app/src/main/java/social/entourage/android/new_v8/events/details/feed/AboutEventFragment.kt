@@ -1,6 +1,8 @@
 package social.entourage.android.new_v8.events.details.feed
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -35,11 +37,13 @@ import social.entourage.android.new_v8.groups.details.feed.GroupMembersPhotosAda
 import social.entourage.android.new_v8.groups.details.members.MembersType
 import social.entourage.android.new_v8.models.EventUiModel
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
+import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.underline
 import java.text.SimpleDateFormat
 import java.util.*
 
+const val ZOOM = 15f
 
 class AboutEventFragment : Fragment(), OnMapReadyCallback {
 
@@ -210,8 +214,8 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                 startActivity(intent)
             } else {
                 var url = event?.eventUrl
-                if ((url?.startsWith("http://"))?.not() == true && (url.startsWith("https://")).not())
-                    url = "http://$url"
+                if ((url?.startsWith(Const.HTTP))?.not() == true && (url.startsWith(Const.HTTPS)).not())
+                    url = Const.HTTP + url
                 val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 startActivity(browserIntent)
             }
@@ -234,44 +238,54 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                     getString(R.string.leave_event_dialog_content),
                     getString(R.string.exit),
                 ) {
-                    event?.let { event ->
-                        eventPresenter.leaveGroup(event.id)
+                    event?.id?.let { id ->
+                        eventPresenter.leaveGroup(id)
                     }
                 }
             } else {
-                event?.let { event ->
-                    eventPresenter.participate(event.id)
+                event?.id?.let { id ->
+                    eventPresenter.participate(id)
                 }
             }
         }
     }
 
     private fun updateButtonJoin() {
-        val label =
-            getString(if (event?.member == true) R.string.participating else R.string.participate)
-        val textColor = ContextCompat.getColor(
-            requireContext(),
-            if (event?.member == true) R.color.orange else R.color.white
-        )
-        val background = ResourcesCompat.getDrawable(
-            resources,
-            if (event?.member == true) R.drawable.new_bg_rounded_button_orange_stroke else R.drawable.new_bg_rounded_button_orange_fill,
-            null
-        )
-        val rightDrawable = ResourcesCompat.getDrawable(
-            resources,
-            if (event?.member == true) R.drawable.new_check else R.drawable.new_plus_white,
-            null
-        )
-        binding.join.text = label
-        binding.join.setTextColor(textColor)
-        binding.join.background = background
-        binding.join.setCompoundDrawablesWithIntrinsicBounds(
-            null,
-            null,
-            rightDrawable,
-            null
-        )
+        lateinit var label: String
+        val textColor: Int
+        val background: Drawable?
+        val rightDrawable: Drawable?
+
+        if (event?.member == true) {
+            label = getString(R.string.participating)
+            textColor = ContextCompat.getColor(requireContext(), R.color.orange)
+            background = ResourcesCompat.getDrawable(
+                resources,
+                R.drawable.new_bg_rounded_button_orange_stroke,
+                null
+            )
+            rightDrawable = ResourcesCompat.getDrawable(resources, R.drawable.new_check, null)
+        } else {
+            label = getString(R.string.participate)
+            textColor = ContextCompat.getColor(requireContext(), R.color.white)
+            background = ResourcesCompat.getDrawable(
+                resources,
+                R.drawable.new_bg_rounded_button_orange_fill,
+                null
+            )
+            rightDrawable = ResourcesCompat.getDrawable(resources, R.drawable.new_plus_white, null)
+        }
+        with(binding) {
+            join.text = label
+            join.setTextColor(textColor)
+            join.background = background
+            join.setCompoundDrawablesWithIntrinsicBounds(
+                null,
+                null,
+                rightDrawable,
+                null
+            )
+        }
     }
 
     private fun initializeInterests() {
@@ -360,7 +374,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
             MarkerOptions().position(latLong)
         )
         val cameraPosition = CameraPosition.Builder()
-            .target(LatLng(latitude, longitude)).zoom(15f).build()
+            .target(LatLng(latitude, longitude)).zoom(ZOOM).build()
         googleMap.animateCamera(
             CameraUpdateFactory
                 .newCameraPosition(cameraPosition)

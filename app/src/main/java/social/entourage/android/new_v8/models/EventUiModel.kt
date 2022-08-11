@@ -7,7 +7,7 @@ import java.util.*
 
 class EventUiModel(
     @SerializedName("id")
-    var id: Int,
+    var id: Int?,
 
     @SerializedName("name")
     var name: String? = null,
