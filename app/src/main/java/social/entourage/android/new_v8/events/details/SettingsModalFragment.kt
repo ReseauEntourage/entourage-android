@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -14,6 +15,7 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentSettingsModalBinding
 import social.entourage.android.new_v8.events.EventsPresenter
+import social.entourage.android.new_v8.events.create.Recurrence
 import social.entourage.android.new_v8.models.SettingUiModel
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.report.ReportModalFragment
@@ -97,17 +99,17 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     private fun updateView() {
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         with(binding) {
-           rules.divider.visibility = View.GONE
-           edit.divider.visibility = View.GONE
-           editRecurrence.divider.visibility = View.GONE
-           notificationNewMembers.divider.visibility = View.GONE
+            rules.divider.visibility = View.GONE
+            edit.divider.visibility = View.GONE
+            editRecurrence.divider.visibility = View.GONE
+            notificationNewMembers.divider.visibility = View.GONE
             TextViewCompat.setTextAppearance(
-               notificationAll.tvLabel,
+                notificationAll.tvLabel,
                 R.style.left_courant_bold_black
             )
             event?.let {
-               name.text = it.name
-               membersNumberLocation.text = String.format(
+                name.text = it.name
+                membersNumberLocation.text = String.format(
                     getString(R.string.members_location),
                     it.members_count,
                     it.address
@@ -162,13 +164,17 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
 
     private fun viewWithRole() {
+        val eventWithNoRecurrence =
+            event?.recurrence != null && event?.recurrence != Recurrence.NO_RECURRENCE.value
+
         with(binding) {
             if (event?.admin == true) {
                 edit.root.visibility = View.VISIBLE
                 editGroupDivider.visibility = View.VISIBLE
-                editRecurrence.root.visibility = View.VISIBLE
-                editRecurrenceDivider.visibility = View.VISIBLE
+                editRecurrence.root.isVisible = eventWithNoRecurrence
+                editRecurrenceDivider.isVisible = eventWithNoRecurrence
                 leave.visibility = View.GONE
+
             }
             if (event?.member == true) {
                 leave.visibility = View.VISIBLE

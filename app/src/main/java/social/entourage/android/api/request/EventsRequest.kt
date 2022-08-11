@@ -7,7 +7,6 @@ import retrofit2.http.*
 import social.entourage.android.api.model.Image
 import social.entourage.android.new_v8.events.create.CreateEvent
 import social.entourage.android.new_v8.models.Events
-import social.entourage.android.new_v8.models.Group
 
 
 class EventsImagesResponse(@field:SerializedName("entourage_images") val eventImages: ArrayList<Image>)
@@ -40,15 +39,20 @@ interface EventsRequest {
 
     @POST("outings/{event_id}/report")
     fun reportEvent(
-        @Path("event_id") groupId: Int,
+        @Path("event_id") eventId: Int,
         @Body reportWrapper: ReportWrapper
     ): Call<ResponseBody>
 
     @GET("outings/{id}")
-    fun getEvent(@Path("id") groupId: Int): Call<EventWrapper>
+    fun getEvent(@Path("id") eventId: Int): Call<EventWrapper>
 
     @POST("outings/{event_id}/users")
     fun participate(
+        @Path("event_id") eventId: Int
+    ): Call<EntourageUserResponse>
+
+    @DELETE("outings/{event_id}/users")
+    fun leaveEvent(
         @Path("event_id") eventId: Int
     ): Call<EntourageUserResponse>
 

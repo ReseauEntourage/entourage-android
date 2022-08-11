@@ -31,7 +31,7 @@ data class Metadata(
     val displayAddress: String? = null,
 
     @field:SerializedName("ends_at")
-    val endsAt: String? = null,
+    val endsAt: Date? = null,
 
     @field:SerializedName("google_place_id")
     val googlePlaceId: String? = null,

@@ -1,7 +1,11 @@
 package social.entourage.android.new_v8.models
 
+import android.content.Context
+import android.location.Location
 import com.google.gson.annotations.SerializedName
+import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.feed.FeedItemAuthor
+import java.util.*
 
 enum class Status {
     @SerializedName("open")
@@ -10,6 +14,14 @@ enum class Status {
     @SerializedName("closed")
     CLOSED,
 }
+
+data class GroupEvent(
+    @field:SerializedName("id")
+    val id: Int? = null,
+
+    @field:SerializedName("name")
+    val name: String? = null,
+)
 
 data class Events(
     @field:SerializedName("metadata")
@@ -25,7 +37,7 @@ data class Events(
     val author: FeedItemAuthor? = null,
 
     @field:SerializedName("created_at")
-    val createdAt: String? = null,
+    val createdAt: Date? = null,
 
     @field:SerializedName("description")
     val description: String? = null,
@@ -49,7 +61,7 @@ data class Events(
     val jsonMemberPublic: Boolean? = null,
 
     @field:SerializedName("updated_at")
-    val updatedAt: String? = null,
+    val updatedAt: Date? = null,
 
     @field:SerializedName("share_url")
     val shareUrl: String? = null,
@@ -95,6 +107,34 @@ data class Events(
 
     @field:SerializedName("address")
     var displayAddress: String? = null,
+
+    @SerializedName("recurrency")
+    var recurrence: Int? = 0,
+
+    @SerializedName("neighborhoods")
+    var neighborhoods: MutableList<GroupEvent>? = mutableListOf(),
 )
+
+fun Events.toEventUi(context: Context): EventUiModel {
+    return EventUiModel(
+        this.id,
+        this.title,
+        this.membersCount,
+        this.displayAddress,
+        this.interests,
+        this.description,
+        this.members,
+        this.member,
+        EntourageApplication.me(context)?.id == this.author?.userID,
+        this.online,
+        this.metadata,
+        this.eventUrl,
+        this.createdAt,
+        this.updatedAt,
+        this.recurrence,
+        this.neighborhoods,
+        this.location
+    )
+}
 
 

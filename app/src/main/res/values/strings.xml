@@ -386,6 +386,19 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="report_event">Signaler l’événement</string>
     <string name="cancel_event">Annuler l’événement</string>
     <string name="modify_recurrence">Modifier la récurrence</string>
+    <string name="about_event">À propos de l\'événement</string>
+    <string name="categories">Catégories</string>
+    <string name="category">Catégorie</string>
+    <string name="associated_groups">Groupes associés :</string>
+    <string name="associated_group">Groupe associé :</string>
+    <string name="date_recurrence_event">%s . %s</string>
+    <string name="start_and_end_time_event">De %s à %s</string>
+    <string name="limited_places">Nombre de places limitées : %s</string>
+    <string name="created_at">Créé le %s</string>
+    <string name="updated_at">Modifié le %s</string>
+    <string name="leave_event">Quitter l\'événement</string>
+    <string name="leave_event_dialog_content">Souhaitez-vous quitter l\'événement ?</string>
+    <string name="dot">•</string>
 
 
 </resources>

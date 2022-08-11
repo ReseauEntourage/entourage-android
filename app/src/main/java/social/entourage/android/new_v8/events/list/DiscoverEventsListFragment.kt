@@ -42,7 +42,7 @@ class DiscoverEventsListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         myId = EntourageApplication.me(activity)?.id
         eventsAdapter =
-            GroupEventsListAdapter(requireContext(), sections, myId, parentFragmentManager)
+            GroupEventsListAdapter(requireContext(), sections, myId)
         loadEvents()
         eventsPresenter.getAllEvents.observe(viewLifecycleOwner, ::handleResponseGetEvents)
         initializeEvents()

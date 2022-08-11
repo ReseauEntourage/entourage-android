@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include
+            android:id="@+id/header"
+            layout="@layout/new_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/scrollView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@{@string/about_event}" />
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/header">
+
+            <LinearLayout
+                android:id="@+id/layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:background="@drawable/new_bg_rounded_beige"
+                android:orientation="vertical"
+                android:padding="28dp">
+
+                <TextView
+                    android:id="@+id/event_name"
+                    style="@style/h1_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Dansons ensemble" />
+
+                <TextView
+                    android:id="@+id/updated_date"
+                    style="@style/left_legend_grey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Dansons ensemble" />
+
+                <LinearLayout
+                    android:id="@+id/members"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="5dp" />
+
+                    <TextView
+                        style="@style/h1_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="..." />
+
+                    <TextView
+                        android:id="@+id/event_members_number_location"
+                        style="@style/left_courant_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="132 membres. Paris 13." />
+
+                </LinearLayout>
+
+                <include
+                    android:id="@+id/date_starts_at"
+                    layout="@layout/new_event_information_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:icon="@{@drawable/new_calendar}" />
+
+                <include
+                    android:id="@+id/time"
+                    layout="@layout/new_event_information_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:icon="@{@drawable/new_time}" />
+
+
+                <include
+                    android:id="@+id/places_limit"
+                    layout="@layout/new_event_information_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:icon="@{@drawable/new_group_persons}" />
+
+                <include
+                    android:id="@+id/location"
+                    layout="@layout/new_event_information_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:icon="@{@drawable/new_location_event}" />
+
+                <com.google.android.gms.maps.MapView xmlns:map="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/mapView"
+                    android:layout_width="match_parent"
+                    android:layout_height="190dp"
+                    android:layout_marginTop="15dp"
+                    android:background="#00000000"
+                    map:uiCompass="true"
+                    map:uiZoomControls="true"
+                    map:zOrderOnTop="true" />
+
+                <Button
+                    android:id="@+id/join"
+                    style="@style/h2_white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:drawablePadding="10dp"
+                    android:padding="10dp"
+                    android:textAllCaps="false" />
+
+                <TextView
+                    android:id="@+id/to_know"
+                    style="@style/h2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/to_know" />
+
+                <TextView
+                    android:id="@+id/event_description"
+                    style="@style/left_courant_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    tools:text="Description de l'evenement à écrire ici Lorem ipsum
+Praesent pharetra ac nisi quis finibus. Curabitur
+purus dui, aliquet cursus tellus a, dictum hen." />
+
+                <TextView
+                    android:id="@+id/groups"
+                    style="@style/h2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/associated_groups" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_groups"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/description" />
+
+                <TextView
+                    android:id="@+id/categories"
+                    style="@style/h2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/categories" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/interests"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/description"
+                    tools:itemCount="5"
+                    tools:listitem="@layout/new_profile_interest_item" />
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

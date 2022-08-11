@@ -11,6 +11,7 @@ import social.entourage.android.api.request.*
 import social.entourage.android.api.request.*
 import social.entourage.android.new_v8.events.create.CreateEvent
 import social.entourage.android.new_v8.events.list.EVENTS_PER_PAGE
+import social.entourage.android.new_v8.groups.RefreshController
 import social.entourage.android.new_v8.models.Events
 import timber.log.Timber
 
@@ -25,6 +26,8 @@ class EventsPresenter {
     var isUserParticipating = MutableLiveData<Boolean>()
     var getMembers = MutableLiveData<MutableList<EntourageUser>>()
     var getMembersSearch = MutableLiveData<MutableList<EntourageUser>>()
+
+    var hasUserLeftEvent = MutableLiveData<Boolean>()
 
 
     var isLoading: Boolean = false
@@ -135,8 +138,8 @@ class EventsPresenter {
     }
 
 
-    fun participate(groupId: Int) {
-        EntourageApplication.get().apiModule.eventsRequest.participate(groupId)
+    fun participate(eventId: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.participate(eventId)
             .enqueue(object : Callback<EntourageUserResponse> {
                 override fun onResponse(
                     call: Call<EntourageUserResponse>,
@@ -152,6 +155,22 @@ class EventsPresenter {
             })
     }
 
+    fun leaveGroup(eventId: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.leaveEvent(eventId)
+            .enqueue(object : Callback<EntourageUserResponse> {
+                override fun onResponse(
+                    call: Call<EntourageUserResponse>,
+                    response: Response<EntourageUserResponse>
+                ) {
+                    hasUserLeftEvent.value =
+                        response.isSuccessful && response.body()?.user != null
+                }
+
+                override fun onFailure(call: Call<EntourageUserResponse>, t: Throwable) {
+                    hasUserLeftEvent.value = false
+                }
+            })
+    }
 
     fun getEventMembersSearch(searchTxt: String) {
         val listTmp: MutableList<EntourageUser> = mutableListOf()

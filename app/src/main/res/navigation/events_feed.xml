@@ -16,6 +16,13 @@
             app:destination="@id/members"
             app:enterAnim="@anim/slide_in_from_right"
             app:popExitAnim="@anim/slide_out_to_right" />
+
+        <action
+            android:id="@+id/action_event_feed_to_event_about"
+            app:destination="@id/event_about"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
+
     </fragment>
 
 
@@ -30,6 +37,20 @@
         <argument
             android:name="type"
             app:argType="social.entourage.android.new_v8.groups.details.members.MembersType" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/event_about"
+        android:name="social.entourage.android.new_v8.events.details.feed.AboutEventFragment">
+        <argument
+            android:name="group"
+            app:argType="social.entourage.android.new_v8.models.EventUiModel" />
+        <action
+            android:id="@+id/action_event_about_to_event_members"
+            app:destination="@id/members"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
     </fragment>
 
 </navigation>

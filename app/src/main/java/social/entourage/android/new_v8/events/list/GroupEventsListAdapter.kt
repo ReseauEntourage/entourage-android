@@ -6,19 +6,15 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.intrusoft.sectionedrecyclerview.SectionRecyclerViewAdapter
-import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.NewEventItemBinding
 import social.entourage.android.databinding.NewEventsListHeaderBinding
-import social.entourage.android.new_v8.events.details.SettingsModalFragment
 import social.entourage.android.new_v8.events.details.feed.FeedActivity
 import social.entourage.android.new_v8.models.Events
-import social.entourage.android.new_v8.models.SettingUiModel
 import social.entourage.android.new_v8.models.Status
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
@@ -29,8 +25,7 @@ import java.util.*
 class GroupEventsListAdapter(
     context: Context,
     var sectionItemList: List<SectionHeader?>?,
-    var userId: Int?,
-    var parentFragmentManager: FragmentManager
+    var userId: Int?
 ) :
     SectionRecyclerViewAdapter<SectionHeader, Events, GroupEventsListAdapter.SectionViewHolder, GroupEventsListAdapter.ChildViewHolder>(
         context,
@@ -84,25 +79,6 @@ class GroupEventsListAdapter(
         childPosition: Int,
         child: Events
     ) {
-        //To be changed
-
-        childViewHolder.binding.layout.setOnClickListener {
-            with(child) {
-                val eventUI = SettingUiModel(
-                    id, title,
-                    membersCount,
-                    metadata?.displayAddress,
-                    interests,
-                    description,
-                    members,
-                    member,
-                    EntourageApplication.me(context)?.id == author?.userID
-                )
-                SettingsModalFragment.newInstance(eventUI)
-                    .show(parentFragmentManager, SettingsModalFragment.TAG)
-            }
-        }
-
         childViewHolder.binding.layout.setOnClickListener {
             context.startActivity(
                 Intent(
