@@ -425,7 +425,11 @@ class FeedFragment : Fragment() {
         binding.seeMoreEvents.setOnClickListener {
             group.name?.let { name ->
                 val action =
-                    FeedFragmentDirections.actionGroupFeedToGroupEventsList(groupId, name)
+                    FeedFragmentDirections.actionGroupFeedToGroupEventsList(
+                        groupId,
+                        name,
+                        group.member
+                    )
                 findNavController().navigate(action)
             }
         }

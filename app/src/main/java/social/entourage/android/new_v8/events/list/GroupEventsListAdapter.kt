@@ -101,6 +101,17 @@ class GroupEventsListAdapter(
         }
         childViewHolder.binding.location.text = child.metadata?.displayAddress
         childViewHolder.binding.participants.text = child.membersCount.toString()
+
+        val participantsCount = child.membersCount ?: 0
+
+        childViewHolder.binding.participants.text =
+            String.format(
+                childViewHolder.itemView.context.getString(
+                    if (participantsCount > 1) R.string.cell_numberOfPeoples else R.string.cell_numberOfPeople,
+                    participantsCount
+                )
+            )
+
         Glide.with(context)
             .load(Uri.parse(child.metadata?.landscapeThumbnailUrl))
             .placeholder(R.drawable.ic_user_photo_small)

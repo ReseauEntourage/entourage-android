@@ -54,8 +54,6 @@
     <string name="cell_invit_from">Invité par</string>
     <string name="cell_contrib_from">Une contribution de</string>
 
-    <string name="cell_numberOfPeople">%1$d participant</string>
-    <string name="cell_numberOfPeoples">%1$d participants</string>
     <string name="show_more">Voir plus</string>
     <string name="show_more_event">Voir l\'événement</string>
     <string name="show_more_actions">Afficher plus\nde demandes et\nd’initiatives</string>
@@ -399,6 +397,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="leave_event">Quitter l\'événement</string>
     <string name="leave_event_dialog_content">Souhaitez-vous quitter l\'événement ?</string>
     <string name="dot">•</string>
-
+    <string name="cell_numberOfPeople">%1$d participant</string>
+    <string name="cell_numberOfPeoples">%1$d participants</string>
 
 </resources>
