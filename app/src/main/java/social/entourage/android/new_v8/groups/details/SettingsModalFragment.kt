@@ -188,7 +188,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
                 AnalyticsEvents.ACTION_GROUP_OPTION_QUIT
             )
             Utils.showAlertDialogButtonClicked(
-                requireView(),
+                requireContext(),
                 getString(R.string.leave_group),
                 getString(R.string.leave_group_dialog_content),
                 getString(R.string.exit),

@@ -40,6 +40,14 @@ class EventsFragment : Fragment() {
         setPage()
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (RefreshController.shouldRefreshFragment) {
+            initializeTab()
+            RefreshController.shouldRefreshFragment = false
+        }
+    }
+
     private fun initializeTab() {
         val viewPager = binding.viewPager
         val adapter = EventsViewPagerAdapter(childFragmentManager, lifecycle)

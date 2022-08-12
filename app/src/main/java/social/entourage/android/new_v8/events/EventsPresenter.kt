@@ -8,10 +8,8 @@ import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.request.*
-import social.entourage.android.api.request.*
 import social.entourage.android.new_v8.events.create.CreateEvent
 import social.entourage.android.new_v8.events.list.EVENTS_PER_PAGE
-import social.entourage.android.new_v8.groups.RefreshController
 import social.entourage.android.new_v8.models.Events
 import timber.log.Timber
 
@@ -147,6 +145,8 @@ class EventsPresenter {
                 ) {
                     isUserParticipating.value =
                         response.isSuccessful && response.body()?.user != null
+                    RefreshController.shouldRefreshFragment =
+                        response.isSuccessful && response.body()?.user != null
                 }
 
                 override fun onFailure(call: Call<EntourageUserResponse>, t: Throwable) {
@@ -155,7 +155,7 @@ class EventsPresenter {
             })
     }
 
-    fun leaveGroup(eventId: Int) {
+    fun leaveEvent(eventId: Int) {
         EntourageApplication.get().apiModule.eventsRequest.leaveEvent(eventId)
             .enqueue(object : Callback<EntourageUserResponse> {
                 override fun onResponse(
@@ -163,6 +163,8 @@ class EventsPresenter {
                     response: Response<EntourageUserResponse>
                 ) {
                     hasUserLeftEvent.value =
+                        response.isSuccessful && response.body()?.user != null
+                    RefreshController.shouldRefreshFragment =
                         response.isSuccessful && response.body()?.user != null
                 }
 

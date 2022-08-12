@@ -86,7 +86,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
 
     private fun handleReportResponse(success: Boolean) {
         if (success) Utils.showAlertDialogButtonClicked(
-            requireView(),
+            requireContext(),
             title,
             getString(R.string.report_sent),
             getString(R.string.exit), onYes = null
