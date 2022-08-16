@@ -105,11 +105,10 @@ class GroupEventsListAdapter(
         val participantsCount = child.membersCount ?: 0
 
         childViewHolder.binding.participants.text =
-            String.format(
-                childViewHolder.itemView.context.getString(
-                    if (participantsCount > 1) R.string.cell_numberOfPeoples else R.string.cell_numberOfPeople,
-                    participantsCount
-                )
+            context.resources.getQuantityString(
+                R.plurals.number_of_people,
+                participantsCount,
+                participantsCount
             )
 
         Glide.with(context)
