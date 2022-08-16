@@ -113,8 +113,7 @@
                     layout="@layout/new_event_information_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    app:icon="@{@drawable/new_location_event}" />
+                    android:layout_marginTop="12dp" />
 
                 <com.google.android.gms.maps.MapView xmlns:map="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/mapView"

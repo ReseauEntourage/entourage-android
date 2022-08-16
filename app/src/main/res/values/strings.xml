@@ -399,6 +399,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="leave_event">Quitter l\'événement</string>
     <string name="leave_event_dialog_content">Souhaitez-vous quitter l\'événement ?</string>
     <string name="dot">•</string>
+    <string name="event_places">Nombre de places</string>
 
 
 </resources>

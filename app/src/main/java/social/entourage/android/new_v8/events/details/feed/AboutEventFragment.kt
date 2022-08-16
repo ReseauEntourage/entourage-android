@@ -214,10 +214,11 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                 startActivity(intent)
             } else {
                 var url = event?.eventUrl
-                if ((url?.startsWith(Const.HTTP))?.not() == true && (url.startsWith(Const.HTTPS)).not())
-                    url = Const.HTTP + url
-                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                startActivity(browserIntent)
+                url?.let {
+                    url = Utils.checkUrlWithHttps(it)
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    startActivity(browserIntent)
+                }
             }
         }
     }

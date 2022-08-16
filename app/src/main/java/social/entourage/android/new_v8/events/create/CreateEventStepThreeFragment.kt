@@ -103,7 +103,7 @@ class CreateEventStepThreeFragment : Fragment() {
         CommunicationHandler.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
         CommunicationHandler.isButtonClickable.value =
             isPlaceValid() && isLimitedPlaceValid()
-        binding.layout.location.setText(CommunicationHandler.event.displayAddress)
+        binding.layout.location.setText(CommunicationHandler.event.metadata?.streetAddress)
     }
 
 
