@@ -215,8 +215,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
             } else {
                 var url = event?.eventUrl
                 url?.let {
-                    if ((it.startsWith(Const.HTTP)).not() && (it.startsWith(Const.HTTPS)).not())
-                        url = Const.HTTP + url
+                    url = Utils.checkUrlWithHttps(it)
                     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                     startActivity(browserIntent)
                 }

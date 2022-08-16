@@ -27,11 +27,13 @@ class CreateEventActionZoneFragment : UserActionPlaceFragment() {
     }
 
     private fun validate() {
-        CommunicationHandler.event.metadata?.streetAddress = userAddress?.displayAddress
-        CommunicationHandler.event.latitude = userAddress?.latitude
-        CommunicationHandler.event.longitude = userAddress?.longitude
-        CommunicationHandler.event.metadata?.googlePlaceId = userAddress?.googlePlaceId
-        CommunicationHandler.event.metadata?.placeName = userAddress?.googlePlaceId
+        with(CommunicationHandler.event) {
+            metadata?.streetAddress = userAddress?.displayAddress
+            latitude = userAddress?.latitude
+            longitude = userAddress?.longitude
+            metadata?.googlePlaceId = userAddress?.googlePlaceId
+            metadata?.placeName = userAddress?.googlePlaceId
+        }
         findNavController().popBackStack()
     }
 }
