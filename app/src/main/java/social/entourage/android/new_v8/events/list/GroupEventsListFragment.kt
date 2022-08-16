@@ -1,16 +1,21 @@
 package social.entourage.android.new_v8.events.list
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.new_fragment_events.view.*
 import social.entourage.android.databinding.NewFragmentGroupEventsListBinding
+import social.entourage.android.new_v8.events.create.CreateEventActivity
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.models.Events
+import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 
 class GroupEventsListFragment : Fragment() {
@@ -44,7 +49,7 @@ class GroupEventsListFragment : Fragment() {
             ::handleGetEventsResponse
         )
         setBackButton()
-
+        createEvent()
     }
 
     private fun setView() {
@@ -66,6 +71,15 @@ class GroupEventsListFragment : Fragment() {
         binding.events.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = eventsAdapter
+        }
+    }
+
+    private fun createEvent() {
+        binding.createEvent.isVisible = args.groupMember
+        binding.createEvent.setOnClickListener {
+            val intent = Intent(context, CreateEventActivity::class.java)
+            intent.putExtra(Const.GROUP_ID, args.groupID)
+            startActivity(intent)
         }
     }
 }

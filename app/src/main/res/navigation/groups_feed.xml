@@ -66,6 +66,10 @@
         <argument
             android:name="groupName"
             app:argType="string" />
+
+        <argument
+            android:name="groupMember"
+            app:argType="boolean" />
     </fragment>
 
 
