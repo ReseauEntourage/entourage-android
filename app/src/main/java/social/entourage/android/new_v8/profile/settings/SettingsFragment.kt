@@ -63,7 +63,7 @@ class SettingsFragment : Fragment() {
         }
         binding.deleteAccount.layout.setOnClickListener {
             Utils.showAlertDialogButtonClicked(
-                requireView(),
+                requireContext(),
                 getString(R.string.delete_account_dialog_title),
                 getString(R.string.delete_account_dialog_content),
                 getString(R.string.delete),
@@ -71,7 +71,7 @@ class SettingsFragment : Fragment() {
         }
         binding.signOut.layout.setOnClickListener {
             Utils.showAlertDialogButtonClicked(
-                requireView(),
+                requireContext(),
                 getString(R.string.sign_out_dialog_title),
                 getString(R.string.sign_out_dialog_content),
                 getString(R.string.signing_out),

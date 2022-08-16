@@ -3,10 +3,12 @@ package social.entourage.android.new_v8.utils
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.database.Cursor
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.provider.CalendarContract
 import android.provider.OpenableColumns
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +20,7 @@ import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import social.entourage.android.R
 import social.entourage.android.new_v8.events.list.SectionHeader
+import social.entourage.android.new_v8.models.EventUiModel
 import social.entourage.android.new_v8.models.Events
 import java.io.File
 import java.io.FileOutputStream
@@ -27,21 +30,22 @@ import java.time.YearMonth
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 class Utils {
     companion object {
         fun showAlertDialogButtonClicked(
-            view: View?,
+            context: Context,
             title: String,
             content: String,
             action: String,
             onNo: () -> (Unit) = {},
             onYes: (() -> Unit)?,
         ) {
-            val layoutInflater = LayoutInflater.from(view?.context)
+            val layoutInflater = LayoutInflater.from(context)
             val customDialog: View = layoutInflater.inflate(R.layout.new_custom_alert_dialog, null)
-            val builder = AlertDialog.Builder(view?.context)
+            val builder = AlertDialog.Builder(context)
             builder.setView(customDialog)
             val alertDialog = builder.create()
             customDialog.findViewById<TextView>(R.id.title).text = title
@@ -55,7 +59,7 @@ class Utils {
             } else {
                 customDialog.findViewById<Button>(R.id.yes).visibility = View.GONE
                 customDialog.findViewById<TextView>(R.id.no).text =
-                    view?.context?.getString(R.string.button_OK)
+                    context.getString(R.string.button_OK)
             }
             customDialog.findViewById<Button>(R.id.no).setOnClickListener {
                 onNo()
@@ -66,12 +70,12 @@ class Utils {
         }
 
         fun showAlertDialogWithoutActions(
-            view: View,
+            context: Context,
             title: String,
             subtitle: String,
             illustration: Int
         ) {
-            val layoutInflater = LayoutInflater.from(view.context)
+            val layoutInflater = LayoutInflater.from(context)
             val customDialog: View =
                 layoutInflater.inflate(R.layout.new_custom_dialog_no_actions, null)
 
@@ -80,14 +84,14 @@ class Utils {
                 val tvSubtitle = findViewById<TextView>(R.id.subtitle)
                 val ivClose = findViewById<ImageView>(R.id.close)
                 val ivIllustration = findViewById<ImageView>(R.id.illustration)
-                val builder = AlertDialog.Builder(view.context)
+                val builder = AlertDialog.Builder(context)
                 builder.setView(customDialog)
                 val alertDialog = builder.create()
                 tvTitle.text = title
                 tvSubtitle.text = subtitle
                 ivIllustration.setImageDrawable(
                     ResourcesCompat.getDrawable(
-                        view.resources,
+                        context.resources,
                         illustration,
                         null
                     )
@@ -178,6 +182,39 @@ class Utils {
 
                 sectionsWithoutDuplicates
             } ?: sections
+        }
+
+
+        fun showAddToCalendarPopUp(context: Context, event: EventUiModel) {
+            showAlertDialogButtonClicked(
+                context,
+                context.getString(R.string.event_add_to_calendar_title),
+                context.getString(R.string.event_add_to_calendar_subtitle),
+                context.getString(R.string.add),
+            ) {
+                val startMillis: Long = Calendar.getInstance().run {
+                    time = event.metadata?.startsAt
+                    timeInMillis
+                }
+                val endMillis: Long = Calendar.getInstance().run {
+                    time = event.metadata?.endsAt
+                    timeInMillis
+                }
+                val intent = Intent(Intent.ACTION_INSERT)
+                    .setData(CalendarContract.Events.CONTENT_URI)
+                    .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startMillis)
+                    .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endMillis)
+                    .putExtra(CalendarContract.Events.TITLE, event.name)
+                    .putExtra(
+                        CalendarContract.Events.EVENT_LOCATION,
+                        event.metadata?.displayAddress
+                    )
+                    .putExtra(
+                        CalendarContract.Events.AVAILABILITY,
+                        CalendarContract.Events.AVAILABILITY_BUSY
+                    )
+                context.startActivity(intent)
+            }
         }
 
         fun checkUrlWithHttps(url: String): String {

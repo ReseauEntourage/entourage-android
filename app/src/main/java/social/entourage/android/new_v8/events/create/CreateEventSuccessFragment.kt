@@ -8,11 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import social.entourage.android.databinding.NewFragmentCreateEventSuccessBinding
+import social.entourage.android.new_v8.RefreshController
 import social.entourage.android.new_v8.events.details.feed.FeedActivity
-import social.entourage.android.new_v8.groups.RefreshController
 import social.entourage.android.new_v8.utils.Const
-import social.entourage.android.tools.log.AnalyticsEvents
-
 
 class CreateEventSuccessFragment : Fragment() {
 
@@ -36,9 +34,6 @@ class CreateEventSuccessFragment : Fragment() {
 
     private fun handleSeeEventButton() {
         binding.seeEvent.setOnClickListener {
-            AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_NEW_GROUP_CONFIRMATION_SKIP
-            )
             startActivity(
                 Intent(requireContext(), FeedActivity::class.java).putExtra(
                     Const.EVENT_ID,
@@ -46,7 +41,7 @@ class CreateEventSuccessFragment : Fragment() {
                 )
             )
             requireActivity().finish()
-            RefreshController.shouldRefreshFragment = true
+            RefreshController.shouldRefreshEventFragment = true
         }
     }
 }

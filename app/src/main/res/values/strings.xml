@@ -399,6 +399,11 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="leave_event">Quitter l\'événement</string>
     <string name="leave_event_dialog_content">Souhaitez-vous quitter l\'événement ?</string>
     <string name="dot">•</string>
+    <string name="event_limited_places_title">Évènement à places limitées</string>
+    <string name="event_limited_places_subtitle">Attention, cet évènement est à places limitées, votre inscription n’est pas garantie. L’administrateur de l’évènement reviendra vers vous pour vous confirmer la réservation de votre place.</string>
+    <string name="event_add_to_calendar_title">Ajouter l’évènement à votre agenda personnel ? </string>
+    <string name="event_add_to_calendar_subtitle">Vous pouvez ajouter cet évènement à votre calendrier personnel avec l’ensemble des informations (lieu, heure…) Vous serez rappelé un jour avant.</string>
+    <string name="add">Ajouter</string>
     <string name="event_places">Nombre de places</string>
 
 

@@ -174,7 +174,7 @@ class AboutGroupFragment : Fragment() {
         binding.join.setOnClickListener {
             if (group?.member == true) {
                 Utils.showAlertDialogButtonClicked(
-                    requireView(),
+                    requireContext(),
                     getString(R.string.leave_group),
                     getString(R.string.leave_group_dialog_content),
                     getString(R.string.exit),

@@ -98,7 +98,7 @@ class CreateEventFragment : Fragment() {
                 requireActivity().finish()
             else {
                 Utils.showAlertDialogButtonClicked(
-                    requireView(),
+                    requireContext(),
                     getString(R.string.back_create_group_title),
                     getString(R.string.back_create_group_content),
                     getString(R.string.exit)
