@@ -8,6 +8,7 @@ import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.request.*
+import social.entourage.android.new_v8.RefreshController
 import social.entourage.android.new_v8.events.create.CreateEvent
 import social.entourage.android.new_v8.events.list.EVENTS_PER_PAGE
 import social.entourage.android.new_v8.models.Events
@@ -145,7 +146,7 @@ class EventsPresenter {
                 ) {
                     isUserParticipating.value =
                         response.isSuccessful && response.body()?.user != null
-                    RefreshController.shouldRefreshFragment =
+                    RefreshController.shouldRefreshEventFragment =
                         response.isSuccessful && response.body()?.user != null
                 }
 
@@ -164,7 +165,7 @@ class EventsPresenter {
                 ) {
                     hasUserLeftEvent.value =
                         response.isSuccessful && response.body()?.user != null
-                    RefreshController.shouldRefreshFragment =
+                    RefreshController.shouldRefreshEventFragment =
                         response.isSuccessful && response.body()?.user != null
                 }
 

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import social.entourage.android.databinding.NewFragmentCreateGroupSuccessBinding
-import social.entourage.android.new_v8.groups.RefreshController
+import social.entourage.android.new_v8.RefreshController
 import social.entourage.android.new_v8.groups.details.feed.FeedActivity
 import social.entourage.android.new_v8.groups.details.posts.CreatePostActivity
 import social.entourage.android.new_v8.utils.Const
