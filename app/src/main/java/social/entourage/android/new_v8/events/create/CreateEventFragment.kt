@@ -18,6 +18,7 @@ import social.entourage.android.new_v8.models.Events
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.nextPage
 import social.entourage.android.new_v8.utils.previousPage
+import java.net.CookieManager
 
 
 class CreateEventFragment : Fragment() {
@@ -146,5 +147,13 @@ class CreateEventFragment : Fragment() {
             if (isButtonActive) R.drawable.new_rounded_button_light_orange else R.drawable.new_bg_rounded_inactive_button_light_orange
         )
         binding.next.background = background
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        CommunicationHandler.resetValues()
+        CommunicationHandler.event = CreateEvent()
+        CommunicationHandler.canExitEventCreation = true
     }
 }

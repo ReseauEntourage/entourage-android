@@ -404,6 +404,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_add_to_calendar_title">Ajouter l’évènement à votre agenda personnel ? </string>
     <string name="event_add_to_calendar_subtitle">Vous pouvez ajouter cet évènement à votre calendrier personnel avec l’ensemble des informations (lieu, heure…) Vous serez rappelé un jour avant.</string>
     <string name="add">Ajouter</string>
+    <string name="event_places">Nombre de places</string>
 
 
 </resources>

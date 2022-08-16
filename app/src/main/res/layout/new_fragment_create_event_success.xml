@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/post"
+            android:id="@+id/see_event"
             style="@style/button_create_group"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

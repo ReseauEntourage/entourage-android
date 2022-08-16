@@ -216,5 +216,11 @@ class Utils {
                 context.startActivity(intent)
             }
         }
+
+        fun checkUrlWithHttps(url: String): String {
+            return if ((url.startsWith(Const.HTTP)).not() && (url.startsWith(Const.HTTPS)).not())
+                Const.HTTP + url
+            else url
+        }
     }
 }

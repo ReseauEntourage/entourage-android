@@ -107,15 +107,31 @@
 
         </LinearLayout>
 
-        <include
+        <LinearLayout
             android:id="@+id/event_limited_place_title"
-            layout="@layout/new_create_title_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@id/event_place"
-            app:mandatory="@{@string/mandatory}"
-            app:title="@{@string/event_available_places}" />
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/event_place">
+
+            <TextView
+                android:id="@+id/title"
+                style="@style/left_h2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="@string/event_limited_places" />
+
+            <TextView
+                android:id="@+id/mandatory"
+                style="@style/left_legend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mandatory" />
+
+        </LinearLayout>
 
         <RadioGroup
             android:id="@+id/event_limited_place"
@@ -160,7 +176,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="-4dp"
             android:backgroundTint="@color/light_orange_opacity_50"
-            android:hint="@string/write_description"
+            android:hint="@string/event_places"
             android:inputType="number"
             app:layout_constraintTop_toBottomOf="@id/event_limited_place_count_title"
             tools:text="content" />
