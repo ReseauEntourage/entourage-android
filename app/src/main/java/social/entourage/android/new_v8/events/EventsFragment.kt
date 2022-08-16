@@ -11,6 +11,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentEventsBinding
+import social.entourage.android.new_v8.RefreshController
 import social.entourage.android.new_v8.ViewPagerDefaultPageController
 import social.entourage.android.new_v8.events.create.CreateEventActivity
 import social.entourage.android.new_v8.events.list.EventsViewPagerAdapter
@@ -38,6 +39,14 @@ class EventsFragment : Fragment() {
         initializeTab()
         handleImageViewAnimation()
         setPage()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (RefreshController.shouldRefreshEventFragment) {
+            initializeTab()
+            RefreshController.shouldRefreshEventFragment = false
+        }
     }
 
     private fun initializeTab() {

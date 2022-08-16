@@ -139,7 +139,7 @@ class AssociationProfile : Fragment() {
         binding.subscribe.button.setOnClickListener {
             partner?.let {
                 if (it.isFollowing) Utils.showAlertDialogButtonClicked(
-                    requireView(),
+                    requireContext(),
                     getString(R.string.unsubscribe_title),
                     getString(R.string.unsubscribe_content),
                     getString(R.string.yes)

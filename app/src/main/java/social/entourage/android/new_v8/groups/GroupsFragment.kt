@@ -12,6 +12,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentGroupsBinding
+import social.entourage.android.new_v8.RefreshController
 import social.entourage.android.new_v8.ViewPagerDefaultPageController
 import social.entourage.android.new_v8.groups.create.CreateGroupActivity
 import social.entourage.android.tools.log.AnalyticsEvents

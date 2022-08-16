@@ -25,7 +25,7 @@ class CreateEventStepTwoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setView()
         handleNextButtonState()
-        setLimitedPlacesSelection()
+        setRecurrence()
     }
 
     override fun onCreateView(
@@ -59,10 +59,10 @@ class CreateEventStepTwoFragment : Fragment() {
         handleEditTextChangedTextListener(binding.layout.endTime)
     }
 
-    private fun setLimitedPlacesSelection() {
+    private fun setRecurrence() {
         binding.layout.recurrence.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
-                R.id.once -> CommunicationHandler.event.recurrence = Recurrence.NO_RECURRENCE.value
+                R.id.once -> CommunicationHandler.event.recurrence = null
                 R.id.every_week -> CommunicationHandler.event.recurrence =
                     Recurrence.EVERY_WEEK.value
                 R.id.every_two_week -> CommunicationHandler.event.recurrence =

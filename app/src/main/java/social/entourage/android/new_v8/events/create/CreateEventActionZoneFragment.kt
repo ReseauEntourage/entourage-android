@@ -27,7 +27,13 @@ class CreateEventActionZoneFragment : UserActionPlaceFragment() {
     }
 
     private fun validate() {
-        CommunicationHandler.event.displayAddress = userAddress?.displayAddress
+        with(CommunicationHandler.event) {
+            metadata?.streetAddress = userAddress?.displayAddress
+            latitude = userAddress?.latitude
+            longitude = userAddress?.longitude
+            metadata?.googlePlaceId = userAddress?.googlePlaceId
+            metadata?.placeName = userAddress?.googlePlaceId
+        }
         findNavController().popBackStack()
     }
 }

@@ -15,6 +15,9 @@ data class Metadata(
     @field:SerializedName("street_address")
     var streetAddress: String? = null,
 
+    @field:SerializedName("place_name")
+    var placeName: String? = null,
+
     @field:SerializedName("starts_at")
     var startsAt: String? = null,
 
@@ -28,7 +31,7 @@ data class Metadata(
     var endsAt: String? = null,
 
     @field:SerializedName("google_place_id")
-    val googlePlaceId: String? = null,
+    var googlePlaceId: String? = null,
 ) {
     fun endsAt(value: String) = apply {
         endsAt = value
@@ -88,7 +91,7 @@ data class CreateEvent(
     var neighborhoodIds: MutableList<Int> = mutableListOf(),
 
     @SerializedName("recurrency")
-    var recurrence: Int? = 0,
+    var recurrence: Int? = null,
 
     var displayAddress: String? = null,
 

@@ -115,7 +115,7 @@ class CreateEventStepOneFragment : Fragment() {
         return selectedImage != null
     }
 
-    fun canExitGroupCreation(): Boolean {
+    fun canExitEventCreation(): Boolean {
         return binding.layout.eventName.text.isEmpty() && binding.layout.eventDescription.text.isEmpty()
     }
 
@@ -140,7 +140,7 @@ class CreateEventStepOneFragment : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable) {
-                CommunicationHandler.canExitEventCreation = canExitGroupCreation()
+                CommunicationHandler.canExitEventCreation = canExitEventCreation()
             }
         })
     }

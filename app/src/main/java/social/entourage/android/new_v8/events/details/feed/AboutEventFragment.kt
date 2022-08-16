@@ -1,7 +1,6 @@
 package social.entourage.android.new_v8.events.details.feed
 
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
@@ -16,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.util.Util
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -76,6 +76,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
         handleMembersButton()
         openLink()
         handleJoinButton()
+        handleAddToCalendarButton()
         handleBackButton()
         eventPresenter.isUserParticipating.observe(requireActivity(), ::handleJoinResponse)
         eventPresenter.hasUserLeftEvent.observe(requireActivity(), ::handleJoinResponse)
@@ -104,6 +105,8 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                 String.format(getString(R.string.limited_places), event?.metadata?.placeLimit)
 
             binding.mapView.isVisible = event?.online == false
+            binding.cvMapView.isVisible = event?.online == false
+            
             val recurrence = getString(
                 when (event?.recurrence) {
                     Recurrence.NO_RECURRENCE.value -> R.string.juste_once
@@ -205,19 +208,24 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    private fun openMap() {
+        val geoUri =
+            String.format(getString(R.string.geoUri), event?.metadata?.displayAddress)
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
+        startActivity(intent)
+    }
+
     private fun openLink() {
         binding.location.root.setOnClickListener {
             if (event?.online != true) {
-                val geoUri =
-                    String.format(getString(R.string.geoUri), event?.metadata?.displayAddress)
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
-                startActivity(intent)
+                openMap()
             } else {
                 var url = event?.eventUrl
-                if ((url?.startsWith(Const.HTTP))?.not() == true && (url.startsWith(Const.HTTPS)).not())
-                    url = Const.HTTP + url
-                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                startActivity(browserIntent)
+                url?.let {
+                    url = Utils.checkUrlWithHttps(it)
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    startActivity(browserIntent)
+                }
             }
         }
     }
@@ -233,13 +241,13 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
         binding.join.setOnClickListener {
             if (event?.member == true) {
                 Utils.showAlertDialogButtonClicked(
-                    requireView(),
+                    requireContext(),
                     getString(R.string.leave_event),
                     getString(R.string.leave_event_dialog_content),
                     getString(R.string.exit),
                 ) {
                     event?.id?.let { id ->
-                        eventPresenter.leaveGroup(id)
+                        eventPresenter.leaveEvent(id)
                     }
                 }
             } else {
@@ -247,6 +255,12 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                     eventPresenter.participate(id)
                 }
             }
+        }
+    }
+
+    private fun handleAddToCalendarButton() {
+        binding.calendar.setOnClickListener {
+            event?.let { event -> Utils.showAddToCalendarPopUp(requireContext(), event) }
         }
     }
 
@@ -379,5 +393,8 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
             CameraUpdateFactory
                 .newCameraPosition(cameraPosition)
         )
+        googleMap.setOnMapClickListener {
+            openMap()
+        }
     }
 }

@@ -146,7 +146,7 @@ class CreateGroupFragment : Fragment() {
                     AnalyticsEvents.VIEW_NEW_GROUP_CANCEL_POP
                 )
                 Utils.showAlertDialogButtonClicked(
-                    requireView(),
+                    requireContext(),
                     getString(R.string.back_create_group_title),
                     getString(R.string.back_create_group_content),
                     getString(R.string.exit),

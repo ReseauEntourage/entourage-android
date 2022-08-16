@@ -131,7 +131,7 @@ class HomeFragment : Fragment() {
         with(binding) {
             meetingCard.setOnClickListener {
                 Utils.showAlertDialogWithoutActions(
-                    requireView(),
+                    requireContext(),
                     getString(R.string.create_encounters),
                     getString(R.string.participate_to_events),
                     R.drawable.new_illu_header_group

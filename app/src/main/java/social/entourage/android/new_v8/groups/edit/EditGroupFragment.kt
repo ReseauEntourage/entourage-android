@@ -23,7 +23,7 @@ import social.entourage.android.api.model.Image
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentEditGroupBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
-import social.entourage.android.new_v8.groups.RefreshController
+import social.entourage.android.new_v8.RefreshController
 import social.entourage.android.new_v8.groups.choosePhoto.ChoosePhotoModalFragment
 import social.entourage.android.new_v8.groups.choosePhoto.ImagesType
 import social.entourage.android.new_v8.groups.details.feed.FeedFragmentArgs

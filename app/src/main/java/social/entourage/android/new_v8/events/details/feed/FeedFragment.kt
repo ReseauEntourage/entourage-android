@@ -1,12 +1,20 @@
 package social.entourage.android.new_v8.events.details.feed
 
+import android.Manifest
+import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
@@ -32,12 +40,14 @@ import social.entourage.android.new_v8.models.SettingUiModel
 import social.entourage.android.new_v8.models.toEventUi
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.underline
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
+
 
 class FeedFragment : Fragment() {
 
@@ -51,7 +61,6 @@ class FeedFragment : Fragment() {
     private lateinit var event: Events
     private var myId: Int? = null
     private val args: FeedFragmentArgs by navArgs()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -236,7 +245,21 @@ class FeedFragment : Fragment() {
             event.member = !event.member
             updateButtonJoin()
             handleCreatePostButton()
+            if (event.metadata?.placeLimit != null) {
+                showLimitPlacePopUp()
+            } else {
+                Utils.showAddToCalendarPopUp(requireContext(), event.toEventUi(requireContext()))
+            }
         }
+    }
+
+    private fun showLimitPlacePopUp() {
+        Utils.showAlertDialogButtonClicked(
+            requireContext(),
+            getString(R.string.event_limited_places_title),
+            getString(R.string.event_limited_places_subtitle),
+            getString(R.string.button_OK), onYes = null
+        )
     }
 
     private fun handleCreatePostButton() {
