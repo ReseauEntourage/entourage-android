@@ -18,6 +18,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
+import org.w3c.dom.Text
 import social.entourage.android.R
 import social.entourage.android.new_v8.events.list.SectionHeader
 import social.entourage.android.new_v8.models.EventUiModel
@@ -100,6 +101,32 @@ class Utils {
                 alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 alertDialog.show()
             }
+        }
+
+        fun showAlertDialogButtonClickedInverse(
+            context: Context,
+            title: String,
+            content: String,
+            action: String,
+            onYes: () -> (Unit) = {},
+        ) {
+            val layoutInflater = LayoutInflater.from(context)
+            val customDialog: View = layoutInflater.inflate(R.layout.new_custom_alert_dialog, null)
+            val builder = AlertDialog.Builder(context)
+            builder.setView(customDialog)
+            val alertDialog = builder.create()
+            customDialog.findViewById<TextView>(R.id.title).text = title
+            customDialog.findViewById<TextView>(R.id.content).text = content
+            customDialog.findViewById<TextView>(R.id.yes).text = action
+            customDialog.findViewById<Button>(R.id.no).setOnClickListener {
+                onYes()
+                alertDialog.dismiss()
+            }
+            customDialog.findViewById<Button>(R.id.yes).setOnClickListener {
+                alertDialog.dismiss()
+            }
+            alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            alertDialog.show()
         }
 
         fun showToast(context: Context, message: String) {

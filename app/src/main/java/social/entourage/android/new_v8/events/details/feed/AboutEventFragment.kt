@@ -9,9 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getColor
+import androidx.core.content.ContextCompat.getDrawable
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,6 +39,7 @@ import social.entourage.android.new_v8.events.details.feed.AboutEventFragmentDir
 import social.entourage.android.new_v8.groups.details.feed.GroupMembersPhotosAdapter
 import social.entourage.android.new_v8.groups.details.members.MembersType
 import social.entourage.android.new_v8.models.EventUiModel
+import social.entourage.android.new_v8.models.Status
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
@@ -80,6 +84,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
         handleBackButton()
         eventPresenter.isUserParticipating.observe(requireActivity(), ::handleJoinResponse)
         eventPresenter.hasUserLeftEvent.observe(requireActivity(), ::handleJoinResponse)
+        onFragmentResult()
     }
 
     private fun setView() {
@@ -106,7 +111,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
 
             binding.mapView.isVisible = event?.online == false
             binding.cvMapView.isVisible = event?.online == false
-            
+
             val recurrence = getString(
                 when (event?.recurrence) {
                     Recurrence.NO_RECURRENCE.value -> R.string.juste_once
@@ -177,6 +182,46 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
             initializeGroups()
         }
         updateButtonJoin()
+    }
+
+    private fun handleEventCanceled() {
+        with(binding) {
+            updatedDate.text = String.format(
+                getString(R.string.canceled_at), event?.previousAt?.let {
+                    SimpleDateFormat(
+                        context?.getString(R.string.feed_event_date),
+                        Locale.FRANCE
+                    ).format(
+                        it
+                    )
+                }
+            )
+            eventName.setTextColor(getColor(requireContext(), R.color.grey))
+            dateStartsAt.content.setTextColor(getColor(requireContext(), R.color.grey))
+            dateStartsAt.icon = getDrawable(
+                requireContext(),
+                R.drawable.new_date_grey
+            )
+            time.content.setTextColor(getColor(requireContext(), R.color.grey))
+            placesLimit.content.setTextColor(getColor(requireContext(), R.color.grey))
+            location.content.setTextColor(getColor(requireContext(), R.color.grey))
+            toKnow.setTextColor(getColor(requireContext(), R.color.grey))
+            eventDescription.setTextColor(getColor(requireContext(), R.color.grey))
+            canceled.visibility = View.VISIBLE
+            actions.visibility = View.GONE
+        }
+    }
+
+    private fun onFragmentResult() {
+        setFragmentResultListener(Const.REQUEST_KEY_SHOULD_REFRESH) { _, bundle ->
+            val shouldRefresh = bundle.getBoolean(Const.SHOULD_REFRESH)
+            if (shouldRefresh) {
+                event?.let {
+                    it.member = !it.member
+                    setView()
+                }
+            }
+        }
     }
 
     private fun handleMembersButton() {

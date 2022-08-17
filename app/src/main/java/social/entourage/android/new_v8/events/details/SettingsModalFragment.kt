@@ -1,11 +1,21 @@
 package social.entourage.android.new_v8.events.details
 
+import android.app.AlertDialog
+import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.RadioButton
+import android.widget.TextView
+import androidx.collection.ArrayMap
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
+import androidx.fragment.app.setFragmentResult
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -14,17 +24,22 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentSettingsModalBinding
+import social.entourage.android.new_v8.RefreshController
 import social.entourage.android.new_v8.events.EventsPresenter
 import social.entourage.android.new_v8.events.create.Recurrence
 import social.entourage.android.new_v8.models.SettingUiModel
+import social.entourage.android.new_v8.models.Status
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.report.ReportModalFragment
 import social.entourage.android.new_v8.report.ReportTypes
 import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.new_v8.utils.Utils
+import social.entourage.android.new_v8.utils.trimEnd
+import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 
 
 class SettingsModalFragment : BottomSheetDialogFragment() {
-
 
     private var _binding: NewFragmentSettingsModalBinding? = null
     val binding: NewFragmentSettingsModalBinding get() = _binding!!
@@ -50,8 +65,9 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         updateView()
         viewWithRole()
         handleReportEvent()
-        handleLeaveEvent()
-        // eventPresenter.hasUserLeftEvent.observe(requireActivity(), ::hasUserLeftEvent)
+        handleCancelEvent()
+        eventPresenter.eventCanceled.observe(requireActivity(), ::hasEventBeenCanceled)
+        eventPresenter.isEventUpdated.observe(requireActivity(), ::hasEventBeenCanceled)
         setView()
     }
 
@@ -92,8 +108,15 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     }
 
-    private fun hasUserLeftEvent(hasLeft: Boolean) {
-
+    private fun hasEventBeenCanceled(canceled: Boolean) {
+        if (canceled) {
+            setFragmentResult(
+                Const.REQUEST_KEY_SHOULD_REFRESH,
+                bundleOf(Const.SHOULD_REFRESH to true)
+            )
+            RefreshController.shouldRefreshEventFragment = true
+            dismiss()
+        }
     }
 
     private fun updateView() {
@@ -169,15 +192,15 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
         with(binding) {
             if (event?.admin == true) {
-                edit.root.visibility = View.VISIBLE
+                if (event?.status == Status.OPEN) {
+                    edit.root.visibility = View.VISIBLE
+                    leave.visibility = View.VISIBLE
+                }
                 editGroupDivider.visibility = View.VISIBLE
                 editRecurrence.root.isVisible = eventWithNoRecurrence
                 editRecurrenceDivider.isVisible = eventWithNoRecurrence
-                leave.visibility = View.GONE
-
             }
             if (event?.member == true) {
-                leave.visibility = View.VISIBLE
                 notificationAll.root.visibility = View.VISIBLE
                 notificationNewMembers.root.visibility = View.VISIBLE
                 notificationNewEvent.root.visibility = View.VISIBLE
@@ -188,10 +211,66 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun handleLeaveEvent() {
+    private fun handleCancelEvent() {
         binding.leave.setOnClickListener {
-
+            event?.recurrence?.let { recurrence ->
+                if (recurrence == Recurrence.NO_RECURRENCE.value)
+                    Utils.showAlertDialogButtonClickedInverse(
+                        requireContext(),
+                        getString(R.string.cancel_event),
+                        getString(R.string.event_cancel_subtitle_pop),
+                        getString(R.string.back)
+                    ) {
+                        cancelEventWithoutRecurrence()
+                    }
+                else {
+                    showAlertDialogCancelEventWithRecurrence()
+                }
+            }
         }
+    }
+
+    private fun cancelEventWithoutRecurrence() {
+        event?.let {
+            it.id?.let { id -> eventPresenter.cancelEvent(id) }
+        }
+    }
+
+    private fun cancelEventWithRecurrence() {
+        event?.let {
+            val editedEvent: MutableMap<String, Any> = mutableMapOf()
+            val event: ArrayMap<String, Any> = ArrayMap()
+            editedEvent["status"] = Status.CLOSED.value
+            editedEvent["recurrency"] = Recurrence.NO_RECURRENCE.value
+            event["outing"] = editedEvent
+            it.id?.let { id -> eventPresenter.updateEvent(id, event) }
+        }
+    }
+
+    private fun showAlertDialogCancelEventWithRecurrence() {
+        val layoutInflater = LayoutInflater.from(requireContext())
+        val customDialog: View =
+            layoutInflater.inflate(R.layout.new_custom_alert_dialog_cancel_event, null)
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setView(customDialog)
+        val alertDialog = builder.create()
+        customDialog.findViewById<TextView>(R.id.title).text =
+            getString(R.string.event_cancel_recurrent_event)
+        customDialog.findViewById<TextView>(R.id.yes).text = getString(R.string.back)
+        val cancelOneEvent = customDialog.findViewById<RadioButton>(R.id.one_event)
+        val cancelAllEvents =
+            customDialog.findViewById<RadioButton>(R.id.all_events_recurrent)
+
+        customDialog.findViewById<Button>(R.id.no).setOnClickListener {
+            if (cancelOneEvent.isChecked) cancelEventWithoutRecurrence()
+            if (cancelAllEvents.isChecked) cancelEventWithRecurrence()
+            alertDialog.dismiss()
+        }
+        customDialog.findViewById<Button>(R.id.yes).setOnClickListener {
+            alertDialog.dismiss()
+        }
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog.show()
     }
 
     companion object {

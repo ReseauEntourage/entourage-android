@@ -3,6 +3,8 @@ package social.entourage.android.new_v8.utils
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.view.View
@@ -11,6 +13,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.TimePicker
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getColor
 import java.sql.Time
 import java.text.SimpleDateFormat
 import java.util.*
@@ -114,4 +118,13 @@ fun TextView.underline(text: String) {
         setSpan(UnderlineSpan(), 0, text.length, 0)
     }
     setText(spannableString)
+}
+
+fun TextView.setDrawableTintColor(colorRes: Int) {
+    compoundDrawablesRelative.filterNotNull().forEach {
+        it.colorFilter = PorterDuffColorFilter(
+            getColor(this.context, colorRes),
+            PorterDuff.Mode.SRC_IN
+        )
+    }
 }

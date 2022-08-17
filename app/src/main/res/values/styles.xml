@@ -628,4 +628,10 @@
         <item name="android:textColor">@color/light_orange</item>
     </style>
 
+    <style name="left_courant_bold_white">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
 </resources>

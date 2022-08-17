@@ -38,6 +38,8 @@ class EventUiModel(
     val recurrence: Int? = null,
     var neighborhoods: MutableList<GroupEvent>? = mutableListOf(),
     val location: Address? = null,
+    val status: Status? = null,
+    val previousAt: Date? = null,
 
     ) : Parcelable {
     constructor(parcel: Parcel) : this(
