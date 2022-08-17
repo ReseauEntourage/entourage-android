@@ -405,6 +405,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_add_to_calendar_subtitle">Vous pouvez ajouter cet évènement à votre calendrier personnel avec l’ensemble des informations (lieu, heure…) Vous serez rappelé un jour avant.</string>
     <string name="add">Ajouter</string>
     <string name="event_places">Nombre de places</string>
+    <string name="member_since">Membre Entourage depuis</string>
+    <string name="profile_date_format">MM/yyyy</string>
     <plurals name="number_of_people">
         <item quantity="one">%1$d participant</item>
         <item quantity="other">%1$d participants</item>

@@ -53,7 +53,7 @@ class CreateEventStepThreeFragment : Fragment() {
             binding.layout.image.setImageDrawable(
                 AppCompatResources.getDrawable(
                     requireContext(),
-                    if (isEventFaceToFace) R.drawable.new_location_event else R.drawable.new_web
+                    if (isEventFaceToFace) R.drawable.new_location else R.drawable.new_web
                 )
             )
             CommunicationHandler.event.online(!isEventFaceToFace)

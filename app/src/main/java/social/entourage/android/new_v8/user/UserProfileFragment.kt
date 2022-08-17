@@ -22,6 +22,9 @@ import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.report.ReportModalFragment
 import social.entourage.android.new_v8.report.ReportTypes
 import social.entourage.android.new_v8.utils.Const
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class UserProfileFragment : Fragment() {
 
@@ -101,8 +104,16 @@ class UserProfileFragment : Fragment() {
                 description.text = user.about
             }
             user.stats?.let {
-                contribution.content.text = it.contribCreationCount.toString()
-                events.content.text = it.eventsCount.toString()
+                contribution.content.text = it.neighborhoodsCount.toString()
+                events.content.text = it.outingsCount.toString()
+            }
+            user.createdAt?.let {
+                binding.joined.date.text = SimpleDateFormat(
+                    requireContext().getString(R.string.profile_date_format),
+                    Locale.FRANCE
+                ).format(
+                    it
+                )
             }
             user.roles?.let {
                 if (it.contains("ambassador")) pins.ambassador.visibility = View.VISIBLE
