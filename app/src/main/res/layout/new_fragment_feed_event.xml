@@ -404,5 +404,19 @@ purus dui, aliquet cursus tellus a, dictum hen." />
             app:buttonIcon="@drawable/new_fab_plus"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/participate"
+            style="@style/h2_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_margin="16dp"
+            android:drawableRight="@drawable/new_plus_white"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="12dp"
+            android:text="@string/participate"
+            app:backgroundTint="@color/pre_onboard_orange" />
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
