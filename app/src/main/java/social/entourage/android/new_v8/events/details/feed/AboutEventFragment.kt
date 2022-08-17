@@ -180,6 +180,8 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
             eventDescription.text = event?.description
             initializeInterests()
             initializeGroups()
+            if (event?.status == Status.CLOSED)
+                handleEventCanceled()
         }
         updateButtonJoin()
     }
@@ -198,13 +200,13 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
             )
             eventName.setTextColor(getColor(requireContext(), R.color.grey))
             dateStartsAt.content.setTextColor(getColor(requireContext(), R.color.grey))
-            dateStartsAt.icon = getDrawable(
-                requireContext(),
-                R.drawable.new_date_grey
-            )
+            dateStartsAt.ivIcon.setColorFilter(getColor(requireContext(), R.color.grey))
             time.content.setTextColor(getColor(requireContext(), R.color.grey))
+            time.ivIcon.setColorFilter(getColor(requireContext(), R.color.grey))
             placesLimit.content.setTextColor(getColor(requireContext(), R.color.grey))
+            placesLimit.ivIcon.setColorFilter(getColor(requireContext(), R.color.grey))
             location.content.setTextColor(getColor(requireContext(), R.color.grey))
+            location.ivIcon.setColorFilter(getColor(requireContext(), R.color.grey))
             toKnow.setTextColor(getColor(requireContext(), R.color.grey))
             eventDescription.setTextColor(getColor(requireContext(), R.color.grey))
             canceled.visibility = View.VISIBLE
