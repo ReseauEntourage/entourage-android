@@ -104,7 +104,9 @@ class CommentsActivity : AppCompatActivity() {
 
     private fun initializeComments() {
         binding.comments.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = LinearLayoutManager(context).apply {
+                reverseLayout = true
+            }
             adapter = CommentsListAdapter(commentsList, postAuthorID, object : OnItemClickListener {
                 override fun onItemClick(comment: Post) {
                     groupPresenter.addComment(groupId, comment)
