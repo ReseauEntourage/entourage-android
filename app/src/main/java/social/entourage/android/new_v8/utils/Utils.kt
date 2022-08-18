@@ -117,12 +117,14 @@ class Utils {
             val alertDialog = builder.create()
             customDialog.findViewById<TextView>(R.id.title).text = title
             customDialog.findViewById<TextView>(R.id.content).text = content
-            customDialog.findViewById<TextView>(R.id.yes).text = action
+            with(customDialog.findViewById<TextView>(R.id.yes)) {
+                text = action
+                setOnClickListener {
+                    alertDialog.dismiss()
+                }
+            }
             customDialog.findViewById<Button>(R.id.no).setOnClickListener {
                 onYes()
-                alertDialog.dismiss()
-            }
-            customDialog.findViewById<Button>(R.id.yes).setOnClickListener {
                 alertDialog.dismiss()
             }
             alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

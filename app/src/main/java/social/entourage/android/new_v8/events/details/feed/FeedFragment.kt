@@ -75,7 +75,7 @@ class FeedFragment : Fragment() {
         eventPresenter.getEvent.observe(viewLifecycleOwner, ::handleResponseGetEvent)
         eventPresenter.isUserParticipating.observe(viewLifecycleOwner, ::handleParticipateResponse)
         handleMembersButton()
-        onFragmentResult()
+        fragmentResult()
         handleParticipateButton()
         handleBackButton()
         handleSettingsButton()
@@ -201,7 +201,7 @@ class FeedFragment : Fragment() {
         }
     }
 
-    private fun onFragmentResult() {
+    private fun fragmentResult() {
         setFragmentResultListener(Const.REQUEST_KEY_SHOULD_REFRESH) { _, bundle ->
             val shouldRefresh = bundle.getBoolean(Const.SHOULD_REFRESH)
             if (shouldRefresh) eventPresenter.getEvent(eventId)

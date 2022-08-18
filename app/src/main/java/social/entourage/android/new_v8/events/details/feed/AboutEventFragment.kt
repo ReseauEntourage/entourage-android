@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
-import androidx.core.content.ContextCompat.getDrawable
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -18,7 +17,6 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.util.Util
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -84,7 +82,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
         handleBackButton()
         eventPresenter.isUserParticipating.observe(requireActivity(), ::handleJoinResponse)
         eventPresenter.hasUserLeftEvent.observe(requireActivity(), ::handleJoinResponse)
-        onFragmentResult()
+        fragmentResult()
     }
 
     private fun setView() {
@@ -199,14 +197,22 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                 }
             )
             eventName.setTextColor(getColor(requireContext(), R.color.grey))
-            dateStartsAt.content.setTextColor(getColor(requireContext(), R.color.grey))
-            dateStartsAt.ivIcon.setColorFilter(getColor(requireContext(), R.color.grey))
-            time.content.setTextColor(getColor(requireContext(), R.color.grey))
-            time.ivIcon.setColorFilter(getColor(requireContext(), R.color.grey))
-            placesLimit.content.setTextColor(getColor(requireContext(), R.color.grey))
-            placesLimit.ivIcon.setColorFilter(getColor(requireContext(), R.color.grey))
-            location.content.setTextColor(getColor(requireContext(), R.color.grey))
-            location.ivIcon.setColorFilter(getColor(requireContext(), R.color.grey))
+            with(dateStartsAt) {
+                content.setTextColor(getColor(requireContext(), R.color.grey))
+                ivIcon.setColorFilter(getColor(requireContext(), R.color.grey))
+            }
+            with(time) {
+                content.setTextColor(getColor(requireContext(), R.color.grey))
+                ivIcon.setColorFilter(getColor(requireContext(), R.color.grey))
+            }
+            with(placesLimit) {
+                content.setTextColor(getColor(requireContext(), R.color.grey))
+                ivIcon.setColorFilter(getColor(requireContext(), R.color.grey))
+            }
+            with(location) {
+                content.setTextColor(getColor(requireContext(), R.color.grey))
+                ivIcon.setColorFilter(getColor(requireContext(), R.color.grey))
+            }
             toKnow.setTextColor(getColor(requireContext(), R.color.grey))
             eventDescription.setTextColor(getColor(requireContext(), R.color.grey))
             canceled.visibility = View.VISIBLE
@@ -214,7 +220,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    private fun onFragmentResult() {
+    private fun fragmentResult() {
         setFragmentResultListener(Const.REQUEST_KEY_SHOULD_REFRESH) { _, bundle ->
             val shouldRefresh = bundle.getBoolean(Const.SHOULD_REFRESH)
             if (shouldRefresh) {
