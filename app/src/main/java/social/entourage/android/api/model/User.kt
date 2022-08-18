@@ -8,7 +8,7 @@ import social.entourage.android.R.string
 import social.entourage.android.api.model.feed.FeedItemAuthor
 import timber.log.Timber
 import java.io.*
-import kotlin.collections.ArrayList
+import java.util.*
 
 class User : Serializable {
     // ----------------------------------
@@ -59,6 +59,9 @@ class User : Serializable {
 
     @SerializedName("travel_distance")
     var travelDistance: Int? = null
+
+    @SerializedName("created_at")
+    var createdAt: Date? = null
 
     // ----------------------------------
     // ATTRIBUTES (Not Serialized)

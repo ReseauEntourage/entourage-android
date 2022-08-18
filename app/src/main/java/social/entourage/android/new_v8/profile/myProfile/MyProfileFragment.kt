@@ -19,6 +19,8 @@ import social.entourage.android.api.model.Tags
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.NewFragmentMyProfileBinding
 import social.entourage.android.new_v8.profile.ProfileFragmentDirections
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MyProfileFragment : Fragment() {
@@ -112,11 +114,19 @@ class MyProfileFragment : Fragment() {
                 city.within.text = String.format(getString(R.string.progress_km), it)
             }
             user.stats?.let {
-                contribution.content.text = it.contribCreationCount.toString()
-                events.content.text = it.eventsCount.toString()
+                contribution.content.text = it.neighborhoodsCount.toString()
+                events.content.text = it.outingsCount.toString()
             }
             user.roles?.let {
                 if (it.contains("ambassador")) ambassador.visibility = View.VISIBLE
+            }
+            user.createdAt?.let {
+                binding.joined.date.text = SimpleDateFormat(
+                    requireContext().getString(R.string.profile_date_format),
+                    Locale.FRANCE
+                ).format(
+                    it
+                )
             }
             user.partner?.let {
                 association.visibility = View.VISIBLE

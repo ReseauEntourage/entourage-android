@@ -163,7 +163,7 @@ class FeedFragment : Fragment() {
 
             binding.location.icon = AppCompatResources.getDrawable(
                 requireContext(),
-                if (event.online == true) R.drawable.new_web else R.drawable.new_location_event
+                if (event.online == true) R.drawable.new_web else R.drawable.new_location
             )
 
             (if (event.online == true) event.eventUrl else event.metadata?.displayAddress)?.let {

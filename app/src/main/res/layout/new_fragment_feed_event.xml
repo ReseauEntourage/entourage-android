@@ -235,7 +235,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            app:icon="@{@drawable/new_location_event}" />
+                            app:icon="@{@drawable/new_location}" />
 
                         <include
                             android:id="@+id/places_limit"

@@ -102,28 +102,42 @@
                     android:layout_marginBottom="18dp"
                     android:text="@string/his_activity" />
 
+                <include
+                    android:id="@+id/joined"
+                    layout="@layout/new_profile_joined_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="12dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/my_activity" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="2"
                     android:orientation="horizontal">
-
-                    <include
-                        android:id="@+id/events"
-                        layout="@layout/new_profile_statistics_item"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        app:icon="@{@drawable/new_contribution}"
-                        app:label="@{@string/contributions}" />
 
                     <include
                         android:id="@+id/contribution"
                         layout="@layout/new_profile_statistics_item"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:icon="@{@drawable/new_event}"
-                        app:label="@{@string/events}" />
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        app:icon="@{@drawable/new_bottom_navigation_groups}"
+                        app:label="@{@string/contributions_group}"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                    <include
+                        android:id="@+id/events"
+                        layout="@layout/new_profile_statistics_item"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        app:icon="@{@drawable/new_bottom_navigation_events}"
+                        app:label="@{@string/contributions_event}" />
                 </LinearLayout>
 
 
