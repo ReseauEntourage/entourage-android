@@ -23,7 +23,8 @@ data class SettingUiModel(
     @SerializedName("member")
     var member: Boolean = false,
     var admin: Boolean = false,
-    var recurrence: Int? = 0
+    var recurrence: Int? = 0,
+    val status: Status? = null,
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readValue(Int::class.java.classLoader) as? Int,

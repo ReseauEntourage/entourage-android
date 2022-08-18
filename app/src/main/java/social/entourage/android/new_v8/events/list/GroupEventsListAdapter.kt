@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -123,6 +124,9 @@ class GroupEventsListAdapter(
         childViewHolder.binding.admin.isVisible = child.author?.userID == userId
 
         childViewHolder.binding.canceled.isVisible = child.status == Status.CLOSED
+        childViewHolder.binding.ivCanceled.isVisible = child.status == Status.CLOSED
+        childViewHolder.binding.eventName.setTextColor(context.getColor(if (child.status == Status.CLOSED) R.color.grey else R.color.black))
+
 /*
         childViewHolder.binding.divider.isVisible =
             sectionItemList?.get(sectionPosition)?.childList?.size?.minus(1) != childPosition

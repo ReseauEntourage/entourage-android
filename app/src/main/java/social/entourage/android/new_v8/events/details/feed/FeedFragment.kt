@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,6 +32,7 @@ import social.entourage.android.new_v8.groups.details.feed.GroupMembersPhotosAda
 import social.entourage.android.new_v8.groups.details.members.MembersType
 import social.entourage.android.new_v8.models.Events
 import social.entourage.android.new_v8.models.SettingUiModel
+import social.entourage.android.new_v8.models.Status
 import social.entourage.android.new_v8.models.toEventUi
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.utils.Const
@@ -72,6 +75,7 @@ class FeedFragment : Fragment() {
         eventPresenter.getEvent.observe(viewLifecycleOwner, ::handleResponseGetEvent)
         eventPresenter.isUserParticipating.observe(viewLifecycleOwner, ::handleParticipateResponse)
         handleMembersButton()
+        fragmentResult()
         handleParticipateButton()
         handleBackButton()
         handleSettingsButton()
@@ -173,6 +177,20 @@ class FeedFragment : Fragment() {
                     .centerCrop()
                     .into(eventImage)
             }
+            canceled.isVisible = event.status == Status.CLOSED
+            if (event.status == Status.CLOSED) {
+                eventName.setTextColor(getColor(requireContext(), R.color.grey))
+                dateStartsAt.content.setTextColor(getColor(requireContext(), R.color.grey))
+                dateStartsAt.icon = ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.new_calendar_grey
+                )
+                time.content.setTextColor(getColor(requireContext(), R.color.grey))
+                time.icon = ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.new_time_grey
+                )
+            }
         }
         updateButtonJoin()
         handleCreatePostButton()
@@ -182,6 +200,13 @@ class FeedFragment : Fragment() {
     private fun handleBackButton() {
         binding.iconBack.setOnClickListener {
             requireActivity().finish()
+        }
+    }
+
+    private fun fragmentResult() {
+        setFragmentResultListener(Const.REQUEST_KEY_SHOULD_REFRESH) { _, bundle ->
+            val shouldRefresh = bundle.getBoolean(Const.SHOULD_REFRESH)
+            if (shouldRefresh) eventPresenter.getEvent(eventId)
         }
     }
 
@@ -197,7 +222,8 @@ class FeedFragment : Fragment() {
                     members,
                     member,
                     EntourageApplication.me(context)?.id == author?.userID,
-                    recurrence
+                    recurrence,
+                    status
                 )
                 SettingsModalFragment.newInstance(eventUI)
                     .show(parentFragmentManager, SettingsModalFragment.TAG)

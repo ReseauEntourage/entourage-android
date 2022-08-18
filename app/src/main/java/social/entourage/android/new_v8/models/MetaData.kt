@@ -7,7 +7,7 @@ import java.util.*
 data class Metadata(
 
     @field:SerializedName("previous_at")
-    val previousAt: Any? = null,
+    val previousAt: Date? = null,
 
     @field:SerializedName("place_name")
     val placeName: String? = null,

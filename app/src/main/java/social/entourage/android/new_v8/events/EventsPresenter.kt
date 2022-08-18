@@ -1,5 +1,6 @@
 package social.entourage.android.new_v8.events
 
+import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -27,7 +28,9 @@ class EventsPresenter {
     var getMembersSearch = MutableLiveData<MutableList<EntourageUser>>()
 
     var hasUserLeftEvent = MutableLiveData<Boolean>()
+    var eventCanceled = MutableLiveData<Boolean>()
 
+    var isEventUpdated = MutableLiveData<Boolean>()
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
@@ -203,4 +206,35 @@ class EventsPresenter {
             })
     }
 
+    fun cancelEvent(eventId: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.cancelEvent(eventId)
+            .enqueue(object : Callback<EventWrapper> {
+                override fun onResponse(
+                    call: Call<EventWrapper>,
+                    response: Response<EventWrapper>
+                ) {
+                    eventCanceled.value =
+                        response.isSuccessful && response.body()?.event != null
+                }
+
+                override fun onFailure(call: Call<EventWrapper>, t: Throwable) {
+                }
+            })
+    }
+
+    fun updateEvent(eventId: Int, eventEdited: ArrayMap<String, Any>) {
+        EntourageApplication.get().apiModule.eventsRequest.updateEvent(eventId, eventEdited)
+            .enqueue(object : Callback<EventWrapper> {
+                override fun onResponse(
+                    call: Call<EventWrapper>,
+                    response: Response<EventWrapper>
+                ) {
+                    isEventUpdated.value = response.isSuccessful && response.body()?.event != null
+                }
+
+                override fun onFailure(call: Call<EventWrapper>, t: Throwable) {
+                    isEventUpdated.value = false
+                }
+            })
+    }
 }
