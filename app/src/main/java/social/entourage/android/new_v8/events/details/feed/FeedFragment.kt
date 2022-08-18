@@ -1,23 +1,18 @@
 package social.entourage.android.new_v8.events.details.feed
 
-import android.Manifest
-import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
-import android.provider.CalendarContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,6 +32,7 @@ import social.entourage.android.new_v8.groups.details.feed.GroupMembersPhotosAda
 import social.entourage.android.new_v8.groups.details.members.MembersType
 import social.entourage.android.new_v8.models.Events
 import social.entourage.android.new_v8.models.SettingUiModel
+import social.entourage.android.new_v8.models.Status
 import social.entourage.android.new_v8.models.toEventUi
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.utils.Const
@@ -79,6 +75,7 @@ class FeedFragment : Fragment() {
         eventPresenter.getEvent.observe(viewLifecycleOwner, ::handleResponseGetEvent)
         eventPresenter.isUserParticipating.observe(viewLifecycleOwner, ::handleParticipateResponse)
         handleMembersButton()
+        fragmentResult()
         handleParticipateButton()
         handleBackButton()
         handleSettingsButton()
@@ -98,9 +95,9 @@ class FeedFragment : Fragment() {
             val res: Float =
                 abs(verticalOffset).toFloat() / appBarLayout.totalScrollRange
             binding.toolbarLayout.alpha = 1f - res
-            Timber.e(res.toString())
             binding.eventImageToolbar.alpha = res
             binding.eventNameToolbar.alpha = res
+            binding.participate.isVisible = res == 1F
         }
     }
 
@@ -151,10 +148,12 @@ class FeedFragment : Fragment() {
             if (event.member) {
                 more.visibility = View.VISIBLE
                 join.visibility = View.GONE
+                participate.visibility = View.GONE
                 toKnow.visibility = View.GONE
                 eventDescription.visibility = View.GONE
             } else {
                 join.visibility = View.VISIBLE
+                participate.visibility = View.VISIBLE
                 toKnow.visibility = View.VISIBLE
                 eventDescription.visibility = View.VISIBLE
                 eventDescription.text = event.description
@@ -178,6 +177,20 @@ class FeedFragment : Fragment() {
                     .centerCrop()
                     .into(eventImage)
             }
+            canceled.isVisible = event.status == Status.CLOSED
+            if (event.status == Status.CLOSED) {
+                eventName.setTextColor(getColor(requireContext(), R.color.grey))
+                dateStartsAt.content.setTextColor(getColor(requireContext(), R.color.grey))
+                dateStartsAt.icon = ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.new_calendar_grey
+                )
+                time.content.setTextColor(getColor(requireContext(), R.color.grey))
+                time.icon = ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.new_time_grey
+                )
+            }
         }
         updateButtonJoin()
         handleCreatePostButton()
@@ -187,6 +200,13 @@ class FeedFragment : Fragment() {
     private fun handleBackButton() {
         binding.iconBack.setOnClickListener {
             requireActivity().finish()
+        }
+    }
+
+    private fun fragmentResult() {
+        setFragmentResultListener(Const.REQUEST_KEY_SHOULD_REFRESH) { _, bundle ->
+            val shouldRefresh = bundle.getBoolean(Const.SHOULD_REFRESH)
+            if (shouldRefresh) eventPresenter.getEvent(eventId)
         }
     }
 
@@ -202,7 +222,8 @@ class FeedFragment : Fragment() {
                     members,
                     member,
                     EntourageApplication.me(context)?.id == author?.userID,
-                    recurrence
+                    recurrence,
+                    status
                 )
                 SettingsModalFragment.newInstance(eventUI)
                     .show(parentFragmentManager, SettingsModalFragment.TAG)
@@ -230,6 +251,9 @@ class FeedFragment : Fragment() {
         binding.join.setOnClickListener {
             if (!event.member) eventPresenter.participate(eventId)
         }
+        binding.participate.setOnClickListener {
+            if (!event.member) eventPresenter.participate(eventId)
+        }
     }
 
     private fun handleMembersButton() {
@@ -245,6 +269,7 @@ class FeedFragment : Fragment() {
             event.member = !event.member
             updateButtonJoin()
             handleCreatePostButton()
+            binding.participate.hide()
             if (event.metadata?.placeLimit != null) {
                 showLimitPlacePopUp()
             } else {

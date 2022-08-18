@@ -7,12 +7,12 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.feed.FeedItemAuthor
 import java.util.*
 
-enum class Status {
+enum class Status(val value: String) {
     @SerializedName("open")
-    OPEN,
+    OPEN("open"),
 
     @SerializedName("closed")
-    CLOSED,
+    CLOSED("closed"),
 }
 
 data class GroupEvent(
@@ -133,7 +133,9 @@ fun Events.toEventUi(context: Context): EventUiModel {
         this.updatedAt,
         this.recurrence,
         this.neighborhoods,
-        this.location
+        this.location,
+        this.status,
+        this.metadata?.previousAt
     )
 }
 

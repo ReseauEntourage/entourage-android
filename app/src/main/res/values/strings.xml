@@ -370,7 +370,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_date_formatter_to_date">dd/MM/yyyy HH-mm</string>
     <string name="event_date_formatter_to_string">yyyy-MM-dd HH:mm:ss Z</string>
     <string name="places_numbers">%s places</string>
-    <string name="event_posts_empty_state_title">Pas encore de publication sur cet évènement</string>
+    <string name="event_posts_empty_state_title">Pas encore de publication sur cet événement</string>
     <string name="event_posts_empty_state_subtitle">C’est l’occasion pour vous de partager la première nouvelle pour lancer la discussion !</string>
     <string name="feed_event_date">"dd MMMM yyyy"</string>
     <string name="feed_event_time">HH\'h\'mm</string>
@@ -396,20 +396,26 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="limited_places">Nombre de places limitées : %s</string>
     <string name="created_at">Créé le %s</string>
     <string name="updated_at">Modifié le %s</string>
+    <string name="canceled_at">Annulé le %s</string>
     <string name="leave_event">Quitter l\'événement</string>
     <string name="leave_event_dialog_content">Souhaitez-vous quitter l\'événement ?</string>
     <string name="dot">•</string>
     <string name="event_limited_places_title">Évènement à places limitées</string>
-    <string name="event_limited_places_subtitle">Attention, cet évènement est à places limitées, votre inscription n’est pas garantie. L’administrateur de l’évènement reviendra vers vous pour vous confirmer la réservation de votre place.</string>
+    <string name="event_limited_places_subtitle">Attention, cet événement est à places limitées, votre inscription n’est pas garantie. L’administrateur de l’évènement reviendra vers vous pour vous confirmer la réservation de votre place.</string>
     <string name="event_add_to_calendar_title">Ajouter l’évènement à votre agenda personnel ? </string>
-    <string name="event_add_to_calendar_subtitle">Vous pouvez ajouter cet évènement à votre calendrier personnel avec l’ensemble des informations (lieu, heure…) Vous serez rappelé un jour avant.</string>
+    <string name="event_add_to_calendar_subtitle">Vous pouvez ajouter cet événement à votre calendrier personnel avec l’ensemble des informations (lieu, heure…) Vous serez rappelé un jour avant.</string>
     <string name="add">Ajouter</string>
     <string name="event_places">Nombre de places</string>
+    <string name="event_canceled">Evénement annulé</string>
     <string name="member_since">Membre Entourage depuis</string>
     <string name="profile_date_format">MM/yyyy</string>
     <plurals name="number_of_people">
         <item quantity="one">%1$d participant</item>
         <item quantity="other">%1$d participants</item>
     </plurals>
+    <string name="event_cancel_subtitle_pop">Souhaitez-vous annuler l’évènement ? Tous les particpants seront prévenus de l’annulation.</string>
+    <string name="event_cancel_recurrent_event">Annuler un évènement récurrent</string>
+    <string name="this_event">Cet événement</string>
+    <string name="all_events_recurrent">Cet événement et tous les suivants</string>
 
 </resources>

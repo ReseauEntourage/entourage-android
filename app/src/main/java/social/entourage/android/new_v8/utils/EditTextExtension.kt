@@ -5,13 +5,10 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
-import android.view.View
 import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.TimePicker
-import java.sql.Time
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -115,3 +112,4 @@ fun TextView.underline(text: String) {
     }
     setText(spannableString)
 }
+

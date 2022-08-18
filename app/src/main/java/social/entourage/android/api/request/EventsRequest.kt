@@ -1,5 +1,6 @@
 package social.entourage.android.api.request
 
+import androidx.collection.ArrayMap
 import com.google.gson.annotations.SerializedName
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -60,4 +61,15 @@ interface EventsRequest {
     fun getMembers(
         @Path("event_id") eventId: Int
     ): Call<MembersWrapper>
+
+    @DELETE("outings/{event_id}")
+    fun cancelEvent(
+        @Path("event_id") eventId: Int
+    ): Call<EventWrapper>
+
+    @PUT("outings/{event_id}")
+    fun updateEvent(
+        @Path("event_id") eventId: Int,
+        @Body event: ArrayMap<String, Any>
+    ): Call<EventWrapper>
 }
