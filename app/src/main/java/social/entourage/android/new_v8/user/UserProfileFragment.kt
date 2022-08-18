@@ -24,7 +24,6 @@ import social.entourage.android.new_v8.report.ReportTypes
 import social.entourage.android.new_v8.utils.Const
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class UserProfileFragment : Fragment() {
 

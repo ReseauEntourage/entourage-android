@@ -21,7 +21,6 @@ import social.entourage.android.databinding.NewFragmentMyProfileBinding
 import social.entourage.android.new_v8.profile.ProfileFragmentDirections
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class MyProfileFragment : Fragment() {

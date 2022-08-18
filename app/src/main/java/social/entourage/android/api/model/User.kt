@@ -9,8 +9,6 @@ import social.entourage.android.api.model.feed.FeedItemAuthor
 import timber.log.Timber
 import java.io.*
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class User : Serializable {
     // ----------------------------------
