@@ -29,17 +29,14 @@ import social.entourage.android.databinding.NewFragmentFeedEventBinding
 import social.entourage.android.new_v8.events.EventsPresenter
 import social.entourage.android.new_v8.events.details.SettingsModalFragment
 import social.entourage.android.new_v8.groups.details.feed.GroupMembersPhotosAdapter
+import social.entourage.android.new_v8.groups.details.feed.GroupPostsAdapter
 import social.entourage.android.new_v8.groups.details.members.MembersType
-import social.entourage.android.new_v8.models.Events
-import social.entourage.android.new_v8.models.SettingUiModel
-import social.entourage.android.new_v8.models.Status
-import social.entourage.android.new_v8.models.toEventUi
+import social.entourage.android.new_v8.models.*
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.underline
 import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
@@ -58,6 +55,9 @@ class FeedFragment : Fragment() {
     private var myId: Int? = null
     private val args: FeedFragmentArgs by navArgs()
 
+    private var newPostsList: MutableList<Post> = mutableListOf()
+    private var oldPostsList: MutableList<Post> = mutableListOf()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -70,10 +70,11 @@ class FeedFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         eventId = args.eventID
         myId = EntourageApplication.me(activity)?.id
-        handleImageViewAnimation()
         eventPresenter.getEvent(eventId)
         eventPresenter.getEvent.observe(viewLifecycleOwner, ::handleResponseGetEvent)
         eventPresenter.isUserParticipating.observe(viewLifecycleOwner, ::handleParticipateResponse)
+        eventPresenter.getAllPosts.observe(viewLifecycleOwner, ::handleResponseGetEventPosts)
+        handleSwipeRefresh()
         handleMembersButton()
         fragmentResult()
         handleParticipateButton()
@@ -87,6 +88,7 @@ class FeedFragment : Fragment() {
             event = it
             updateView()
         }
+        handleImageViewAnimation()
     }
 
 
@@ -97,7 +99,55 @@ class FeedFragment : Fragment() {
             binding.toolbarLayout.alpha = 1f - res
             binding.eventImageToolbar.alpha = res
             binding.eventNameToolbar.alpha = res
-            binding.participate.isVisible = res == 1F
+            binding.participate.isVisible =
+                res == 1F && !event.member && event.status == Status.OPEN
+        }
+    }
+
+
+    private fun handleResponseGetEventPosts(allPosts: MutableList<Post>?) {
+        binding.swipeRefresh.isRefreshing = false
+        newPostsList.clear()
+        oldPostsList.clear()
+        allPosts?.let {
+            it.forEach { post ->
+                if (post.read == true || post.read == null) oldPostsList.add(post)
+                else newPostsList.add(post)
+            }
+        }
+
+        when {
+            newPostsList.isEmpty() && oldPostsList.isEmpty() -> {
+                binding.postsLayoutEmptyState.visibility = View.VISIBLE
+                binding.postsNewRecyclerview.visibility = View.GONE
+                binding.postsOldRecyclerview.visibility = View.GONE
+                binding.postsNew.root.visibility = View.GONE
+                binding.postsOld.root.visibility = View.GONE
+            }
+            newPostsList.isNotEmpty() && oldPostsList.isEmpty() -> {
+                binding.postsNew.root.visibility = View.VISIBLE
+                binding.postsNewRecyclerview.visibility = View.VISIBLE
+                binding.postsLayoutEmptyState.visibility = View.GONE
+                binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
+                binding.postsOldRecyclerview.visibility = View.GONE
+                binding.postsOld.root.visibility = View.GONE
+            }
+            oldPostsList.isNotEmpty() && newPostsList.isEmpty() -> {
+                binding.postsOld.root.visibility = View.GONE
+                binding.postsOldRecyclerview.visibility = View.VISIBLE
+                binding.postsLayoutEmptyState.visibility = View.GONE
+                binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
+                binding.postsNew.root.visibility = View.GONE
+                binding.postsNewRecyclerview.visibility = View.GONE
+            }
+            oldPostsList.isNotEmpty() && newPostsList.isNotEmpty() -> {
+                binding.postsOld.root.visibility = View.VISIBLE
+                binding.postsOldRecyclerview.visibility = View.VISIBLE
+                binding.postsLayoutEmptyState.visibility = View.GONE
+                binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
+                binding.postsNew.root.visibility = View.VISIBLE
+                binding.postsNewRecyclerview.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -195,11 +245,33 @@ class FeedFragment : Fragment() {
         updateButtonJoin()
         handleCreatePostButton()
         openGoogleMaps()
+        initializePosts()
     }
 
     private fun handleBackButton() {
         binding.iconBack.setOnClickListener {
             requireActivity().finish()
+        }
+    }
+
+    private fun handleSwipeRefresh() {
+        binding.swipeRefresh.setOnRefreshListener {
+            loadPosts()
+        }
+    }
+
+    private fun loadPosts() {
+        eventPresenter.getEventPosts(eventId)
+    }
+
+    private fun initializePosts() {
+        binding.postsNewRecyclerview.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = GroupPostsAdapter(newPostsList, eventId, event.member, event.title)
+        }
+        binding.postsOldRecyclerview.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = GroupPostsAdapter(oldPostsList, eventId, event.member, event.title)
         }
     }
 
@@ -231,6 +303,10 @@ class FeedFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadPosts()
+    }
 
     private fun handleAboutButton() {
         binding.more.setOnClickListener {
@@ -289,7 +365,7 @@ class FeedFragment : Fragment() {
 
     private fun handleCreatePostButton() {
         if (event.member) {
-            binding.createPost.show()
+            if (event.status == Status.OPEN) binding.createPost.show()
             binding.postsLayoutEmptyState.subtitle.visibility = View.VISIBLE
             binding.postsLayoutEmptyState.arrow.visibility = View.VISIBLE
         } else {

@@ -13,6 +13,7 @@ import social.entourage.android.new_v8.RefreshController
 import social.entourage.android.new_v8.events.create.CreateEvent
 import social.entourage.android.new_v8.events.list.EVENTS_PER_PAGE
 import social.entourage.android.new_v8.models.Events
+import social.entourage.android.new_v8.models.Post
 import timber.log.Timber
 
 class EventsPresenter {
@@ -26,6 +27,7 @@ class EventsPresenter {
     var isUserParticipating = MutableLiveData<Boolean>()
     var getMembers = MutableLiveData<MutableList<EntourageUser>>()
     var getMembersSearch = MutableLiveData<MutableList<EntourageUser>>()
+    var getAllPosts = MutableLiveData<MutableList<Post>>()
 
     var hasUserLeftEvent = MutableLiveData<Boolean>()
     var eventCanceled = MutableLiveData<Boolean>()
@@ -234,6 +236,24 @@ class EventsPresenter {
 
                 override fun onFailure(call: Call<EventWrapper>, t: Throwable) {
                     isEventUpdated.value = false
+                }
+            })
+    }
+
+    fun getEventPosts(groupId: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.getEventPosts(groupId)
+            .enqueue(object : Callback<GroupsPostsWrapper> {
+                override fun onResponse(
+                    call: Call<GroupsPostsWrapper>,
+                    response: Response<GroupsPostsWrapper>
+                ) {
+                    response.body()?.let { allPostsWrapper ->
+                        getAllPosts.value = allPostsWrapper.posts
+                    }
+
+                }
+
+                override fun onFailure(call: Call<GroupsPostsWrapper>, t: Throwable) {
                 }
             })
     }
