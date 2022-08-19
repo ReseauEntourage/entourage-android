@@ -55,8 +55,8 @@ class FeedFragment : Fragment() {
     private var myId: Int? = null
     private val args: FeedFragmentArgs by navArgs()
 
-    private var newPostsList: MutableList<Post> = ArrayList()
-    private var oldPostsList: MutableList<Post> = ArrayList()
+    private var newPostsList: MutableList<Post> = mutableListOf()
+    private var oldPostsList: MutableList<Post> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,7 +70,6 @@ class FeedFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         eventId = args.eventID
         myId = EntourageApplication.me(activity)?.id
-        handleImageViewAnimation()
         eventPresenter.getEvent(eventId)
         eventPresenter.getEvent.observe(viewLifecycleOwner, ::handleResponseGetEvent)
         eventPresenter.isUserParticipating.observe(viewLifecycleOwner, ::handleParticipateResponse)
@@ -89,6 +88,7 @@ class FeedFragment : Fragment() {
             event = it
             updateView()
         }
+        handleImageViewAnimation()
     }
 
 
@@ -115,30 +115,39 @@ class FeedFragment : Fragment() {
                 else newPostsList.add(post)
             }
         }
-        //allPosts?.let { newPostsList.addAll(it) }
-        if (newPostsList.isEmpty() && oldPostsList.isEmpty()) {
-            binding.postsLayoutEmptyState.visibility = View.VISIBLE
-            binding.postsNewRecyclerview.visibility = View.GONE
-            binding.postsOldRecyclerview.visibility = View.GONE
-        }
-        if (newPostsList.isNotEmpty()) {
-            binding.postsNew.root.visibility = View.VISIBLE
-            binding.postsNewRecyclerview.visibility = View.VISIBLE
-            binding.postsLayoutEmptyState.visibility = View.GONE
-            binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
-        } else {
-            binding.postsNew.root.visibility = View.GONE
-            binding.postsNewRecyclerview.visibility = View.GONE
-        }
 
-        if (oldPostsList.isNotEmpty()) {
-            if (newPostsList.isNotEmpty()) binding.postsOld.root.visibility = View.VISIBLE
-            else binding.postsOld.root.visibility = View.GONE
-            binding.postsOldRecyclerview.visibility = View.VISIBLE
-            binding.postsLayoutEmptyState.visibility = View.GONE
-            binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
-        } else {
-            binding.postsOldRecyclerview.visibility = View.GONE
+        when {
+            newPostsList.isEmpty() && oldPostsList.isEmpty() -> {
+                binding.postsLayoutEmptyState.visibility = View.VISIBLE
+                binding.postsNewRecyclerview.visibility = View.GONE
+                binding.postsOldRecyclerview.visibility = View.GONE
+                binding.postsNew.root.visibility = View.GONE
+                binding.postsOld.root.visibility = View.GONE
+            }
+            newPostsList.isNotEmpty() && oldPostsList.isEmpty() -> {
+                binding.postsNew.root.visibility = View.VISIBLE
+                binding.postsNewRecyclerview.visibility = View.VISIBLE
+                binding.postsLayoutEmptyState.visibility = View.GONE
+                binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
+                binding.postsOldRecyclerview.visibility = View.GONE
+                binding.postsOld.root.visibility = View.GONE
+            }
+            oldPostsList.isNotEmpty() && newPostsList.isEmpty() -> {
+                binding.postsOld.root.visibility = View.GONE
+                binding.postsOldRecyclerview.visibility = View.VISIBLE
+                binding.postsLayoutEmptyState.visibility = View.GONE
+                binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
+                binding.postsNew.root.visibility = View.GONE
+                binding.postsNewRecyclerview.visibility = View.GONE
+            }
+            oldPostsList.isNotEmpty() && newPostsList.isNotEmpty() -> {
+                binding.postsOld.root.visibility = View.VISIBLE
+                binding.postsOldRecyclerview.visibility = View.VISIBLE
+                binding.postsLayoutEmptyState.visibility = View.GONE
+                binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
+                binding.postsNew.root.visibility = View.VISIBLE
+                binding.postsNewRecyclerview.visibility = View.VISIBLE
+            }
         }
     }
 
