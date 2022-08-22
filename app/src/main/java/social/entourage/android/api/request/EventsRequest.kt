@@ -76,5 +76,18 @@ interface EventsRequest {
     @GET("outings/{event_id}/chat_messages")
     fun getEventPosts(
         @Path("event_id") eventId: Int
-    ): Call<GroupsPostsWrapper>
+    ): Call<PostsWrapper>
+
+
+    @POST("outings/{event_id}/chat_messages/presigned_upload")
+    fun prepareAddPost(
+        @Path("event_id") eventId: Int,
+        @Body params: RequestContent
+    ): Call<PrepareAddPostResponse>
+
+    @POST("outings/{event_id}/chat_messages")
+    fun addPost(
+        @Path("event_id") eventId: Int,
+        @Body params: ArrayMap<String, Any>
+    ): Call<PostWrapper>
 }

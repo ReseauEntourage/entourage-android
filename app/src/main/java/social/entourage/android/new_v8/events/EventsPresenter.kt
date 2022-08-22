@@ -2,6 +2,10 @@ package social.entourage.android.new_v8.events
 
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -15,6 +19,8 @@ import social.entourage.android.new_v8.events.list.EVENTS_PER_PAGE
 import social.entourage.android.new_v8.models.Events
 import social.entourage.android.new_v8.models.Post
 import timber.log.Timber
+import java.io.File
+import java.io.IOException
 
 class EventsPresenter {
     var getAllMyEvents = MutableLiveData<MutableList<Events>>()
@@ -33,6 +39,7 @@ class EventsPresenter {
     var eventCanceled = MutableLiveData<Boolean>()
 
     var isEventUpdated = MutableLiveData<Boolean>()
+    var hasPost = MutableLiveData<Boolean>()
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
@@ -130,8 +137,8 @@ class EventsPresenter {
                 ) {
                     Timber.e(response.body().toString())
                     if (response.isSuccessful) {
-                        response.body()?.let { groupWrapper ->
-                            getEvent.value = groupWrapper.event
+                        response.body()?.let { eventWrapper ->
+                            getEvent.value = eventWrapper.event
                         }
                     }
                 }
@@ -240,12 +247,12 @@ class EventsPresenter {
             })
     }
 
-    fun getEventPosts(groupId: Int) {
-        EntourageApplication.get().apiModule.eventsRequest.getEventPosts(groupId)
-            .enqueue(object : Callback<GroupsPostsWrapper> {
+    fun getEventPosts(eventId: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.getEventPosts(eventId)
+            .enqueue(object : Callback<PostsWrapper> {
                 override fun onResponse(
-                    call: Call<GroupsPostsWrapper>,
-                    response: Response<GroupsPostsWrapper>
+                    call: Call<PostsWrapper>,
+                    response: Response<PostsWrapper>
                 ) {
                     response.body()?.let { allPostsWrapper ->
                         getAllPosts.value = allPostsWrapper.posts
@@ -253,8 +260,77 @@ class EventsPresenter {
 
                 }
 
-                override fun onFailure(call: Call<GroupsPostsWrapper>, t: Throwable) {
+                override fun onFailure(call: Call<PostsWrapper>, t: Throwable) {
                 }
             })
+    }
+
+    fun addPost(message: String?, file: File, eventId: Int) {
+        val request = RequestContent("image/jpeg")
+        EntourageApplication.get().apiModule.eventsRequest.prepareAddPost(eventId, request)
+            .enqueue(object : Callback<PrepareAddPostResponse> {
+                override fun onResponse(
+                    call: Call<PrepareAddPostResponse>,
+                    response: Response<PrepareAddPostResponse>
+                ) {
+                    Timber.e(response.body().toString())
+                    if (response.isSuccessful) {
+                        val presignedUrl = response.body()?.presignedUrl
+                        val uploadKey = response.body()?.uploadKey
+                        presignedUrl?.let {
+                            uploadFile(eventId, file, presignedUrl, uploadKey, message)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<PrepareAddPostResponse>, t: Throwable) {
+                }
+            })
+    }
+
+    fun addPost(eventId: Int, params: ArrayMap<String, Any>) {
+        EntourageApplication.get().apiModule.eventsRequest.addPost(eventId, params)
+            .enqueue(object : Callback<PostWrapper> {
+                override fun onResponse(
+                    call: Call<PostWrapper>,
+                    response: Response<PostWrapper>
+                ) {
+                    hasPost.value = response.isSuccessful
+                }
+
+                override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
+                    hasPost.value = false
+                }
+            })
+    }
+
+    fun uploadFile(
+        eventId: Int,
+        file: File,
+        presignedUrl: String,
+        uploadKey: String?,
+        message: String?
+    ) {
+        val client: OkHttpClient = EntourageApplication.get().apiModule.okHttpClient
+        val requestBody = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+        val request = Request.Builder()
+            .url(presignedUrl)
+            .put(requestBody)
+            .build()
+        client.newCall(request).enqueue(object : okhttp3.Callback {
+            override fun onFailure(call: okhttp3.Call, e: IOException) {
+                Timber.e("response ${e.message}")
+            }
+
+            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                val messageChat = ArrayMap<String, Any>()
+                messageChat["image_url"] = uploadKey
+                if (!message.isNullOrBlank() && !message.isNullOrEmpty())
+                    messageChat["content"] = message
+                val chatMessage = ArrayMap<String, Any>()
+                chatMessage["chat_message"] = messageChat
+                addPost(eventId, chatMessage)
+            }
+        })
     }
 }

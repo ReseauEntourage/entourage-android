@@ -43,6 +43,9 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".new_v8.events.details.feed.CreatePostEventActivity"
+            android:exported="false" />
+        <activity
             android:name=".new_v8.events.details.feed.FeedActivity"
             android:exported="false" />
         <activity
@@ -73,7 +76,11 @@
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".new_v8.groups.details.posts.CreatePostActivity"
+            android:name="social.entourage.android.new_v8.posts.CreatePostActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".new_v8.groups.details.feed.CreatePostGroupActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
