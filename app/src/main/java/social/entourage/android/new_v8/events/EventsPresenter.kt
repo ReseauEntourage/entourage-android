@@ -21,7 +21,7 @@ class EventsPresenter {
     var getAllEvents = MutableLiveData<MutableList<Events>>()
     var getEvent = MutableLiveData<Events>()
     var isEventReported = MutableLiveData<Boolean>()
-
+    var getAllComments = MutableLiveData<MutableList<Post>>()
     var newEventCreated = MutableLiveData<Events>()
     var isEventCreated = MutableLiveData<Boolean>()
     var isUserParticipating = MutableLiveData<Boolean>()
@@ -33,6 +33,7 @@ class EventsPresenter {
     var eventCanceled = MutableLiveData<Boolean>()
 
     var isEventUpdated = MutableLiveData<Boolean>()
+    var commentPosted = MutableLiveData<Post?>()
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
@@ -254,6 +255,44 @@ class EventsPresenter {
                 }
 
                 override fun onFailure(call: Call<GroupsPostsWrapper>, t: Throwable) {
+                }
+            })
+    }
+
+    fun getPostComments(eventId: Int, postId: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.getPostComments(eventId, postId)
+            .enqueue(object : Callback<GroupsPostsWrapper> {
+                override fun onResponse(
+                    call: Call<GroupsPostsWrapper>,
+                    response: Response<GroupsPostsWrapper>
+                ) {
+                    response.body()?.let { allCommentsWrapper ->
+                        getAllComments.value = allCommentsWrapper.posts
+                    }
+                }
+
+                override fun onFailure(call: Call<GroupsPostsWrapper>, t: Throwable) {
+                }
+            })
+    }
+
+    fun addComment(groupId: Int, comment: Post?) {
+        val messageChat = ArrayMap<String, Any>()
+        messageChat["content"] = comment?.content
+        messageChat["parent_id"] = comment?.postId.toString()
+        val chatMessage = ArrayMap<String, Any>()
+        chatMessage["chat_message"] = messageChat
+        EntourageApplication.get().apiModule.eventsRequest.addPost(groupId, chatMessage)
+            .enqueue(object : Callback<GroupsPostWrapper> {
+                override fun onResponse(
+                    call: Call<GroupsPostWrapper>,
+                    response: Response<GroupsPostWrapper>
+                ) {
+                    commentPosted.value = response.body()?.post
+                }
+
+                override fun onFailure(call: Call<GroupsPostWrapper>, t: Throwable) {
+                    commentPosted.value = null
                 }
             })
     }

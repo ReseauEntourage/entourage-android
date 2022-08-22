@@ -10,6 +10,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -29,7 +30,7 @@ import social.entourage.android.databinding.NewFragmentFeedEventBinding
 import social.entourage.android.new_v8.events.EventsPresenter
 import social.entourage.android.new_v8.events.details.SettingsModalFragment
 import social.entourage.android.new_v8.groups.details.feed.GroupMembersPhotosAdapter
-import social.entourage.android.new_v8.groups.details.feed.GroupPostsAdapter
+import social.entourage.android.new_v8.comment.PostAdapter
 import social.entourage.android.new_v8.groups.details.members.MembersType
 import social.entourage.android.new_v8.models.*
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
@@ -267,12 +268,34 @@ class FeedFragment : Fragment() {
     private fun initializePosts() {
         binding.postsNewRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = GroupPostsAdapter(newPostsList, eventId, event.member, event.title)
+            adapter = PostAdapter(
+                newPostsList,
+                ::openCommentPage
+            )
         }
         binding.postsOldRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = GroupPostsAdapter(oldPostsList, eventId, event.member, event.title)
+            adapter = PostAdapter(
+                oldPostsList,
+                ::openCommentPage
+            )
         }
+    }
+
+    private fun openCommentPage(post: Post, shouldOpenKeyboard: Boolean) {
+        context?.startActivity(
+            Intent(context, EventCommentActivity::class.java)
+                .putExtras(
+                    bundleOf(
+                        Const.ID to eventId,
+                        Const.POST_ID to post.id,
+                        Const.POST_AUTHOR_ID to post.user?.userId,
+                        Const.SHOULD_OPEN_KEYBOARD to shouldOpenKeyboard,
+                        Const.IS_MEMBER to event.member,
+                        Const.NAME to event.title
+                    )
+                )
+        )
     }
 
     private fun fragmentResult() {
