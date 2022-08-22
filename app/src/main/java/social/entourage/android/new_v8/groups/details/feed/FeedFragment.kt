@@ -26,6 +26,7 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentFeedBinding
+import social.entourage.android.new_v8.comment.PostAdapter
 import social.entourage.android.new_v8.events.create.CreateEventActivity
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.details.SettingsModalFragment
@@ -353,12 +354,35 @@ class FeedFragment : Fragment() {
     private fun initializePosts() {
         binding.postsNewRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = GroupPostsAdapter(newPostsList, groupId, group.member, group.name)
+            adapter = PostAdapter(
+                newPostsList,
+                ::openCommentPage
+            )
         }
         binding.postsOldRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = GroupPostsAdapter(oldPostsList, groupId, group.member, group.name)
+            adapter = PostAdapter(
+                oldPostsList,
+                ::openCommentPage
+            )
         }
+    }
+
+
+    private fun openCommentPage(post: Post, shouldOpenKeyboard: Boolean) {
+
+        context?.startActivity(
+            Intent(context, GroupCommentActivity::class.java)
+                .putExtra(
+                    Const.ID,
+                    group.id
+                )
+                .putExtra(Const.POST_ID, post.id)
+                .putExtra(Const.POST_AUTHOR_ID, post.user?.userId)
+                .putExtra(Const.SHOULD_OPEN_KEYBOARD, shouldOpenKeyboard)
+                .putExtra(Const.IS_MEMBER, group.member)
+                .putExtra(Const.NAME, group.name)
+        )
     }
 
     private fun initializeInterests() {

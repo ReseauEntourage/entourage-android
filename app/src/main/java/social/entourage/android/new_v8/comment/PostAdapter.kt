@@ -1,7 +1,5 @@
-package social.entourage.android.new_v8.groups.details.feed
+package social.entourage.android.new_v8.comment
 
-import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -18,12 +16,10 @@ import social.entourage.android.new_v8.utils.px
 import java.text.SimpleDateFormat
 import java.util.*
 
-class GroupPostsAdapter(
+class PostAdapter(
     var postsList: List<Post>,
-    var groupId: Int,
-    var isMember: Boolean,
-    var groupName: String?
-) : RecyclerView.Adapter<GroupPostsAdapter.ViewHolder>() {
+    var onClick: (Post, Boolean) -> Unit
+) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
 
 
     inner class ViewHolder(val binding: NewLayoutPostBinding) :
@@ -43,10 +39,10 @@ class GroupPostsAdapter(
         with(holder) {
             with(postsList[position]) {
                 binding.postComment.setOnClickListener {
-                    openCommentPage(holder.itemView.context, true, this.id, this.user?.id)
+                    onClick(postsList[position], true)
                 }
                 binding.postCommentsNumberLayout.setOnClickListener {
-                    openCommentPage(holder.itemView.context, false, this.id, this.user?.id)
+                    onClick(postsList[position], false)
                 }
                 binding.name.text = user?.displayName
                 content?.let {
@@ -93,25 +89,5 @@ class GroupPostsAdapter(
 
     override fun getItemCount(): Int {
         return postsList.size
-    }
-
-    private fun openCommentPage(
-        context: Context,
-        shouldOpenKeyboard: Boolean,
-        postId: Int?,
-        userId: Long?
-    ) {
-        context.startActivity(
-            Intent(context, CommentsActivity::class.java)
-                .putExtra(
-                    Const.GROUP_ID,
-                    groupId
-                )
-                .putExtra(Const.POST_ID, postId)
-                .putExtra(Const.POST_AUTHOR_ID, userId?.toInt())
-                .putExtra(Const.SHOULD_OPEN_KEYBOARD, shouldOpenKeyboard)
-                .putExtra(Const.IS_MEMBER, isMember)
-                .putExtra(Const.GROUP_NAME, groupName)
-        )
     }
 }

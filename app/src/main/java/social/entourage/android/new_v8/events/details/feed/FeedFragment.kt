@@ -29,7 +29,7 @@ import social.entourage.android.databinding.NewFragmentFeedEventBinding
 import social.entourage.android.new_v8.events.EventsPresenter
 import social.entourage.android.new_v8.events.details.SettingsModalFragment
 import social.entourage.android.new_v8.groups.details.feed.GroupMembersPhotosAdapter
-import social.entourage.android.new_v8.groups.details.feed.GroupPostsAdapter
+import social.entourage.android.new_v8.comment.PostAdapter
 import social.entourage.android.new_v8.groups.details.members.MembersType
 import social.entourage.android.new_v8.models.*
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
@@ -267,12 +267,33 @@ class FeedFragment : Fragment() {
     private fun initializePosts() {
         binding.postsNewRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = GroupPostsAdapter(newPostsList, eventId, event.member, event.title)
+            adapter = PostAdapter(
+                newPostsList,
+                ::openCommentPage
+            )
         }
         binding.postsOldRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = GroupPostsAdapter(oldPostsList, eventId, event.member, event.title)
+            adapter = PostAdapter(
+                oldPostsList,
+                ::openCommentPage
+            )
         }
+    }
+
+    private fun openCommentPage(post: Post, shouldOpenKeyboard: Boolean) {
+        context?.startActivity(
+            Intent(context, EventCommentActivity::class.java)
+                .putExtra(
+                    Const.ID,
+                    eventId
+                )
+                .putExtra(Const.POST_ID, post.id)
+                .putExtra(Const.POST_AUTHOR_ID, post.user?.userId)
+                .putExtra(Const.SHOULD_OPEN_KEYBOARD, shouldOpenKeyboard)
+                .putExtra(Const.IS_MEMBER, event.member)
+                .putExtra(Const.NAME, event.title)
+        )
     }
 
     private fun fragmentResult() {
