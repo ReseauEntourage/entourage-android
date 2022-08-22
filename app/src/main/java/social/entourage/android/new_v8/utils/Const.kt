@@ -33,6 +33,9 @@ object Const {
     const val EVENT_ID = "eventID"
     const val HTTP = "http://"
     const val HTTPS = "https://"
-    const val ID = "ID"
+    const val ID = "id"
+    const val NAME = "group_name"
+
+
 
 }

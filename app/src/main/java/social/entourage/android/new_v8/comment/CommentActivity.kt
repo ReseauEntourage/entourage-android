@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.groups.details.feed
+package social.entourage.android.new_v8.comment
 
 import android.os.Bundle
 import android.text.Editable
@@ -13,7 +13,8 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.databinding.NewActivityCommentsBinding
-import social.entourage.android.new_v8.groups.GroupPresenter
+import social.entourage.android.new_v8.groups.details.feed.CommentsListAdapter
+import social.entourage.android.new_v8.groups.details.feed.OnItemClickListener
 import social.entourage.android.new_v8.models.Post
 import social.entourage.android.new_v8.report.ReportModalFragment
 import social.entourage.android.new_v8.report.ReportTypes
@@ -23,19 +24,18 @@ import social.entourage.android.new_v8.utils.focusAndShowKeyboard
 import social.entourage.android.new_v8.utils.scrollToPositionSmooth
 import java.util.*
 
-class CommentsActivity : AppCompatActivity() {
+abstract class CommentActivity : AppCompatActivity() {
     lateinit var binding: NewActivityCommentsBinding
 
-    private var groupId = Const.DEFAULT_VALUE
-    private var postId = Const.DEFAULT_VALUE
+    var id = Const.DEFAULT_VALUE
+    var postId = Const.DEFAULT_VALUE
     private var postAuthorID = Const.DEFAULT_VALUE
     private var isMember = false
-    private var groupName = ""
-    private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
-    private var commentsList: MutableList<Post> = mutableListOf()
+    private var name = ""
+    var commentsList: MutableList<Post> = mutableListOf()
     private var shouldOpenKeyboard = false
-    private var messagesFailed: MutableList<Post?> = mutableListOf()
-    private var comment: Post? = null
+    var messagesFailed: MutableList<Post?> = mutableListOf()
+    var comment: Post? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,15 +44,12 @@ class CommentsActivity : AppCompatActivity() {
             this,
             R.layout.new_activity_comments
         )
-        groupId = intent.getIntExtra(Const.GROUP_ID, Const.DEFAULT_VALUE)
+        id = intent.getIntExtra(Const.ID, Const.DEFAULT_VALUE)
         postId = intent.getIntExtra(Const.POST_ID, Const.DEFAULT_VALUE)
         postAuthorID = intent.getIntExtra(Const.POST_AUTHOR_ID, Const.DEFAULT_VALUE)
         isMember = intent.getBooleanExtra(Const.IS_MEMBER, false)
-        groupName = intent.getStringExtra(Const.GROUP_NAME).toString()
+        name = intent.getStringExtra(Const.NAME).toString()
         shouldOpenKeyboard = intent.getBooleanExtra(Const.SHOULD_OPEN_KEYBOARD, false)
-        groupPresenter.getPostComments(groupId, postId)
-        groupPresenter.getAllComments.observe(this, ::handleGetPostComments)
-        groupPresenter.commentPosted.observe(this, ::handleCommentPosted)
         initializeComments()
         handleCommentAction()
         openEditTextKeyboard()
@@ -62,14 +59,25 @@ class CommentsActivity : AppCompatActivity() {
         handleSendButtonState()
     }
 
-    private fun handleGetPostComments(allComments: MutableList<Post>?) {
+    protected fun handleGetPostComments(allComments: MutableList<Post>?) {
         commentsList.clear()
         allComments?.let { commentsList.addAll(it) }
         binding.progressBar.visibility = View.GONE
         allComments?.isEmpty()?.let { updateView(it) }
     }
 
-    private fun updateView(emptyState: Boolean) {
+    protected fun handleCommentPosted(post: Post?) {
+        post?.let {
+            commentsList.add(0, post)
+        } ?: run {
+            messagesFailed.add(comment)
+            comment?.let { commentsList.add(0, it) }
+        }
+        binding.comments.scrollToPositionSmooth(0)
+        updateView(false)
+    }
+
+    fun updateView(emptyState: Boolean) {
         if (emptyState) {
             binding.emptyState.visibility = View.VISIBLE
             binding.comments.visibility = View.GONE
@@ -85,21 +93,10 @@ class CommentsActivity : AppCompatActivity() {
             binding.shouldBeMember.visibility = View.VISIBLE
             binding.shouldBeMember.text = String.format(
                 getString(R.string.join_group_to_comment),
-                groupName
+                name
             )
             binding.postComment.visibility = View.GONE
         }
-    }
-
-    private fun handleCommentPosted(post: Post?) {
-        post?.let {
-            commentsList.add(0, post)
-        } ?: run {
-            messagesFailed.add(comment)
-            comment?.let { commentsList.add(0, it) }
-        }
-        binding.comments.scrollToPositionSmooth(0)
-        updateView(false)
     }
 
     private fun initializeComments() {
@@ -109,7 +106,7 @@ class CommentsActivity : AppCompatActivity() {
             }
             adapter = CommentsListAdapter(commentsList, postAuthorID, object : OnItemClickListener {
                 override fun onItemClick(comment: Post) {
-                    groupPresenter.addComment(groupId, comment)
+                    addComment()
                     commentsList.remove(comment)
                 }
 
@@ -135,7 +132,7 @@ class CommentsActivity : AppCompatActivity() {
                         postId = postId,
                         user = user
                     )
-                groupPresenter.addComment(groupId, comment)
+                addComment()
             }
             binding.commentMessage.text.clear()
             Utils.hideKeyboard(this)
@@ -170,7 +167,7 @@ class CommentsActivity : AppCompatActivity() {
 
     private fun handleReport(id: Int, type: ReportTypes) {
         val reportGroupBottomDialogFragment =
-            ReportModalFragment.newInstance(id, groupId, type)
+            ReportModalFragment.newInstance(id, this.id, type)
         reportGroupBottomDialogFragment.show(
             supportFragmentManager,
             ReportModalFragment.TAG
@@ -189,4 +186,6 @@ class CommentsActivity : AppCompatActivity() {
             binding.commentMessage.focusAndShowKeyboard()
         }
     }
+
+    abstract fun addComment()
 }

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
@@ -26,6 +27,7 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentFeedBinding
+import social.entourage.android.new_v8.comment.PostAdapter
 import social.entourage.android.new_v8.events.create.CreateEventActivity
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.details.SettingsModalFragment
@@ -352,12 +354,36 @@ class FeedFragment : Fragment() {
     private fun initializePosts() {
         binding.postsNewRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = GroupPostsAdapter(newPostsList, groupId, group.member, group.name)
+            adapter = PostAdapter(
+                newPostsList,
+                ::openCommentPage
+            )
         }
         binding.postsOldRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = GroupPostsAdapter(oldPostsList, groupId, group.member, group.name)
+            adapter = PostAdapter(
+                oldPostsList,
+                ::openCommentPage
+            )
         }
+    }
+
+
+    private fun openCommentPage(post: Post, shouldOpenKeyboard: Boolean) {
+
+        context?.startActivity(
+            Intent(context, GroupCommentActivity::class.java)
+                .putExtras(
+                    bundleOf(
+                        Const.ID to group.id,
+                        Const.POST_ID to post.id,
+                        Const.POST_AUTHOR_ID to post.user?.userId,
+                        Const.SHOULD_OPEN_KEYBOARD to shouldOpenKeyboard,
+                        Const.IS_MEMBER to group.member,
+                        Const.NAME to group.name
+                    )
+                )
+        )
     }
 
     private fun initializeInterests() {

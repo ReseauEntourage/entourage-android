@@ -46,6 +46,12 @@
             android:name=".new_v8.events.details.feed.CreatePostEventActivity"
             android:exported="false" />
         <activity
+            android:name=".new_v8.events.details.feed.EventCommentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".new_v8.groups.details.feed.GroupCommentActivity"
+            android:exported="false" />
+        <activity
             android:name=".new_v8.events.details.feed.FeedActivity"
             android:exported="false" />
         <activity
@@ -59,7 +65,7 @@
             android:name=".new_v8.home.pedago.PedagoListActivity"
             android:exported="false" />
         <activity
-            android:name=".new_v8.groups.details.feed.CommentsActivity"
+            android:name=".new_v8.comment.CommentActivity"
             android:exported="false" />
         <activity
             android:name=".new_v8.groups.details.rules.GroupRulesActivity"
