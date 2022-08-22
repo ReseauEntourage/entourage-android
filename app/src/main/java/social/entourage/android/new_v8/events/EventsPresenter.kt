@@ -249,10 +249,10 @@ class EventsPresenter {
 
     fun getEventPosts(eventId: Int) {
         EntourageApplication.get().apiModule.eventsRequest.getEventPosts(eventId)
-            .enqueue(object : Callback<PostsWrapper> {
+            .enqueue(object : Callback<PostListWrapper> {
                 override fun onResponse(
-                    call: Call<PostsWrapper>,
-                    response: Response<PostsWrapper>
+                    call: Call<PostListWrapper>,
+                    response: Response<PostListWrapper>
                 ) {
                     response.body()?.let { allPostsWrapper ->
                         getAllPosts.value = allPostsWrapper.posts
@@ -260,7 +260,7 @@ class EventsPresenter {
 
                 }
 
-                override fun onFailure(call: Call<PostsWrapper>, t: Throwable) {
+                override fun onFailure(call: Call<PostListWrapper>, t: Throwable) {
                 }
             })
     }

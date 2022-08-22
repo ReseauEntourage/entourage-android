@@ -76,7 +76,7 @@ interface EventsRequest {
     @GET("outings/{event_id}/chat_messages")
     fun getEventPosts(
         @Path("event_id") eventId: Int
-    ): Call<PostsWrapper>
+    ): Call<PostListWrapper>
 
 
     @POST("outings/{event_id}/chat_messages/presigned_upload")

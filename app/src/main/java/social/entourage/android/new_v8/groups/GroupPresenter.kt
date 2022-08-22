@@ -221,10 +221,10 @@ class GroupPresenter {
 
     fun getGroupPosts(groupId: Int) {
         EntourageApplication.get().apiModule.groupRequest.getGroupPosts(groupId)
-            .enqueue(object : Callback<PostsWrapper> {
+            .enqueue(object : Callback<PostListWrapper> {
                 override fun onResponse(
-                    call: Call<PostsWrapper>,
-                    response: Response<PostsWrapper>
+                    call: Call<PostListWrapper>,
+                    response: Response<PostListWrapper>
                 ) {
                     response.body()?.let { allPostsWrapper ->
                         getAllPosts.value = allPostsWrapper.posts
@@ -232,24 +232,24 @@ class GroupPresenter {
 
                 }
 
-                override fun onFailure(call: Call<PostsWrapper>, t: Throwable) {
+                override fun onFailure(call: Call<PostListWrapper>, t: Throwable) {
                 }
             })
     }
 
     fun getPostComments(groupId: Int, postId: Int) {
         EntourageApplication.get().apiModule.groupRequest.getPostComments(groupId, postId)
-            .enqueue(object : Callback<PostsWrapper> {
+            .enqueue(object : Callback<PostListWrapper> {
                 override fun onResponse(
-                    call: Call<PostsWrapper>,
-                    response: Response<PostsWrapper>
+                    call: Call<PostListWrapper>,
+                    response: Response<PostListWrapper>
                 ) {
                     response.body()?.let { allCommentsWrapper ->
                         getAllComments.value = allCommentsWrapper.posts
                     }
                 }
 
-                override fun onFailure(call: Call<PostsWrapper>, t: Throwable) {
+                override fun onFailure(call: Call<PostListWrapper>, t: Throwable) {
                 }
             })
     }
