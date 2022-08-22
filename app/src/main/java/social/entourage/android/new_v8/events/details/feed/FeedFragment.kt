@@ -29,6 +29,7 @@ import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentFeedEventBinding
 import social.entourage.android.new_v8.events.EventsPresenter
 import social.entourage.android.new_v8.events.details.SettingsModalFragment
+import social.entourage.android.new_v8.groups.details.feed.CreatePostGroupActivity
 import social.entourage.android.new_v8.groups.details.feed.GroupMembersPhotosAdapter
 import social.entourage.android.new_v8.comment.PostAdapter
 import social.entourage.android.new_v8.groups.details.members.MembersType
@@ -245,6 +246,7 @@ class FeedFragment : Fragment() {
         }
         updateButtonJoin()
         handleCreatePostButton()
+        handleCreatePostButtonClick()
         openGoogleMaps()
         initializePosts()
     }
@@ -264,6 +266,7 @@ class FeedFragment : Fragment() {
     private fun loadPosts() {
         eventPresenter.getEventPosts(eventId)
     }
+
 
     private fun initializePosts() {
         binding.postsNewRecyclerview.apply {
@@ -384,6 +387,14 @@ class FeedFragment : Fragment() {
             getString(R.string.event_limited_places_subtitle),
             getString(R.string.button_OK), onYes = null
         )
+    }
+
+    private fun handleCreatePostButtonClick() {
+        binding.createPost.setOnClickListener {
+            val intent = Intent(context, CreatePostEventActivity::class.java)
+            intent.putExtra(Const.ID, eventId)
+            startActivity(intent)
+        }
     }
 
     private fun handleCreatePostButton() {

@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.groups.details.posts
+package social.entourage.android.new_v8.posts
 
 import android.Manifest
 import android.content.ActivityNotFoundException

@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.groups.details.posts
+package social.entourage.android.new_v8.posts
 
 import android.content.Intent
 import android.net.Uri
@@ -16,20 +16,18 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
 import social.entourage.android.databinding.NewActivityCreatePostBinding
-import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.details.feed.FeedActivity
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.px
 import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
+import java.io.File
 
 
-class CreatePostActivity : AppCompatActivity() {
+abstract class CreatePostActivity : AppCompatActivity() {
 
     lateinit var binding: NewActivityCreatePostBinding
-    private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
-    private var groupId = Const.DEFAULT_VALUE
+    protected var groupId = Const.DEFAULT_VALUE
     private var shouldClose = false
     var imageURI: Uri? = null
 
@@ -42,9 +40,8 @@ class CreatePostActivity : AppCompatActivity() {
             this,
             R.layout.new_activity_create_post
         )
-        groupId = intent.getIntExtra(Const.GROUP_ID, Const.DEFAULT_VALUE)
+        groupId = intent.getIntExtra(Const.ID, Const.DEFAULT_VALUE)
         shouldClose = intent.getBooleanExtra(Const.FROM_CREATE_GROUP, false)
-        groupPresenter.hasPost.observe(this, ::handlePost)
         setView()
         handleDeleteImageButton()
         handleAddPhotoButton()
@@ -54,7 +51,7 @@ class CreatePostActivity : AppCompatActivity() {
         handleMessageChangedTextListener()
     }
 
-    private fun handlePost(hasPost: Boolean) {
+    protected fun handlePost(hasPost: Boolean) {
         if (hasPost) {
             if (shouldClose) {
                 startActivity(
@@ -135,17 +132,12 @@ class CreatePostActivity : AppCompatActivity() {
                 messageChat["content"] = binding.message.text.toString()
                 val request = ArrayMap<String, Any>()
                 request["chat_message"] = messageChat
-                Timber.e(messageChat.toString())
-                groupPresenter.addPost(groupId, request)
+                addPostWithoutImage(request)
             }
             if (imageURI != null) {
                 imageURI?.let { it1 ->
                     val file = Utils.getFile(this, it1)
-                    groupPresenter.addPost(
-                        binding.message.text.toString(),
-                        file,
-                        groupId
-                    )
+                    addPostWithImage(file)
                 }
             }
         }
@@ -182,4 +174,7 @@ class CreatePostActivity : AppCompatActivity() {
     private fun isMessageValid(): Boolean {
         return binding.message.text.isNotEmpty() && binding.message.text.isNotBlank()
     }
+
+    abstract fun addPostWithImage(file: File)
+    abstract fun addPostWithoutImage(request: ArrayMap<String, Any>)
 }
