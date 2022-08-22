@@ -10,6 +10,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -284,15 +285,16 @@ class FeedFragment : Fragment() {
     private fun openCommentPage(post: Post, shouldOpenKeyboard: Boolean) {
         context?.startActivity(
             Intent(context, EventCommentActivity::class.java)
-                .putExtra(
-                    Const.ID,
-                    eventId
+                .putExtras(
+                    bundleOf(
+                        Const.ID to eventId,
+                        Const.POST_ID to post.id,
+                        Const.POST_AUTHOR_ID to post.user?.userId,
+                        Const.SHOULD_OPEN_KEYBOARD to shouldOpenKeyboard,
+                        Const.IS_MEMBER to event.member,
+                        Const.NAME to event.title
+                    )
                 )
-                .putExtra(Const.POST_ID, post.id)
-                .putExtra(Const.POST_AUTHOR_ID, post.user?.userId)
-                .putExtra(Const.SHOULD_OPEN_KEYBOARD, shouldOpenKeyboard)
-                .putExtra(Const.IS_MEMBER, event.member)
-                .putExtra(Const.NAME, event.title)
         )
     }
 

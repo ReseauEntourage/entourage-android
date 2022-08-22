@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
@@ -373,15 +374,16 @@ class FeedFragment : Fragment() {
 
         context?.startActivity(
             Intent(context, GroupCommentActivity::class.java)
-                .putExtra(
-                    Const.ID,
-                    group.id
+                .putExtras(
+                    bundleOf(
+                        Const.ID to group.id,
+                        Const.POST_ID to post.id,
+                        Const.POST_AUTHOR_ID to post.user?.userId,
+                        Const.SHOULD_OPEN_KEYBOARD to shouldOpenKeyboard,
+                        Const.IS_MEMBER to group.member,
+                        Const.NAME to group.name
+                    )
                 )
-                .putExtra(Const.POST_ID, post.id)
-                .putExtra(Const.POST_AUTHOR_ID, post.user?.userId)
-                .putExtra(Const.SHOULD_OPEN_KEYBOARD, shouldOpenKeyboard)
-                .putExtra(Const.IS_MEMBER, group.member)
-                .putExtra(Const.NAME, group.name)
         )
     }
 
