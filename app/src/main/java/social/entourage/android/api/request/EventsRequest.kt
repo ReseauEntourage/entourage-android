@@ -96,5 +96,5 @@ interface EventsRequest {
     fun addPost(
         @Path("event_id") eventId: Int,
         @Body params: ArrayMap<String, Any>
-    ): Call<PostListWrapper>
+    ): Call<PostWrapper>
 }
