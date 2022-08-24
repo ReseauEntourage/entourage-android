@@ -22,6 +22,7 @@ import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.focusAndShowKeyboard
 import social.entourage.android.new_v8.utils.scrollToPositionSmooth
+import timber.log.Timber
 import java.util.*
 
 abstract class CommentActivity : AppCompatActivity() {
@@ -63,17 +64,18 @@ abstract class CommentActivity : AppCompatActivity() {
         commentsList.clear()
         allComments?.let { commentsList.addAll(it) }
         binding.progressBar.visibility = View.GONE
-        allComments?.isEmpty()?.let { updateView(it) }
+        binding.comments.scrollToPositionSmooth(commentsList.size)
+        allComments?.isEmpty()?.let { updateView(false) }
     }
 
     protected fun handleCommentPosted(post: Post?) {
         post?.let {
-            commentsList.add(0, post)
+            commentsList.add(post)
         } ?: run {
             messagesFailed.add(comment)
-            comment?.let { commentsList.add(0, it) }
+            comment?.let { commentsList.add(it) }
         }
-        binding.comments.scrollToPositionSmooth(0)
+        binding.comments.scrollToPositionSmooth(commentsList.size)
         updateView(false)
     }
 
@@ -101,9 +103,7 @@ abstract class CommentActivity : AppCompatActivity() {
 
     private fun initializeComments() {
         binding.comments.apply {
-            layoutManager = LinearLayoutManager(context).apply {
-                reverseLayout = true
-            }
+            layoutManager = LinearLayoutManager(context)
             adapter = CommentsListAdapter(commentsList, postAuthorID, object : OnItemClickListener {
                 override fun onItemClick(comment: Post) {
                     addComment()
