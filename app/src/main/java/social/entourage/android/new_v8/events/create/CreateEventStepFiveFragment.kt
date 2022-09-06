@@ -15,6 +15,7 @@ import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.list.groupPerPage
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.utils.Const
+import timber.log.Timber
 
 
 class CreateEventStepFiveFragment : Fragment() {
@@ -43,6 +44,7 @@ class CreateEventStepFiveFragment : Fragment() {
         setShareSelection()
         initializeGroups()
         loadGroups()
+        setView()
         groupPresenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleResponseGetGroups)
         selectedGroupsIdList.add(groupID)
     }
@@ -52,6 +54,8 @@ class CreateEventStepFiveFragment : Fragment() {
         allGroups?.let { groupsList.addAll(it) }
         groupsList.forEach {
             if (it.id == groupID) it.isSelected = true
+            if (CommunicationHandler.eventEdited?.neighborhoods?.map { group -> group.id }
+                    ?.contains(it.id) == true) it.isSelected = true
         }
         binding.layout.recyclerView.adapter?.notifyDataSetChanged()
     }
@@ -144,6 +148,14 @@ class CreateEventStepFiveFragment : Fragment() {
         return selectedGroupsIdList.isNotEmpty()
     }
 
+    private fun setView() {
+        with(CommunicationHandler.eventEdited) {
+            this?.let {
+                if (this.neighborhoods?.isEmpty() == true) binding.layout.dontShare.isChecked = true
+                else binding.layout.shareInGroups.isChecked = true
+            }
+        }
+    }
 
     override fun onResume() {
         super.onResume()

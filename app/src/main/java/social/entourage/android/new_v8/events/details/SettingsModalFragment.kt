@@ -1,7 +1,7 @@
 package social.entourage.android.new_v8.events.details
 
 import android.app.AlertDialog
-import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -20,23 +20,23 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentSettingsModalBinding
 import social.entourage.android.new_v8.RefreshController
+import social.entourage.android.new_v8.events.EditRecurrenceActivity
 import social.entourage.android.new_v8.events.EventsPresenter
+import social.entourage.android.new_v8.events.create.CreateEventActivity
 import social.entourage.android.new_v8.events.create.Recurrence
-import social.entourage.android.new_v8.models.SettingUiModel
+import social.entourage.android.new_v8.models.Events
 import social.entourage.android.new_v8.models.Status
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.report.ReportModalFragment
 import social.entourage.android.new_v8.report.ReportTypes
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
-import social.entourage.android.new_v8.utils.trimEnd
-import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
 
 
 class SettingsModalFragment : BottomSheetDialogFragment() {
@@ -44,7 +44,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     private var _binding: NewFragmentSettingsModalBinding? = null
     val binding: NewFragmentSettingsModalBinding get() = _binding!!
 
-    private var event: SettingUiModel? = null
+    private var event: Events? = null
     private var interestsList: ArrayList<String> = ArrayList()
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
 
@@ -66,6 +66,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         viewWithRole()
         handleReportEvent()
         handleCancelEvent()
+        handleEditRecurrenceEvent()
         eventPresenter.eventCanceled.observe(viewLifecycleOwner, ::hasEventBeenCanceled)
         eventPresenter.isEventUpdated.observe(viewLifecycleOwner, ::hasEventBeenCanceled)
         setView()
@@ -89,7 +90,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
 
     private fun getEventInformation() {
-        event = arguments?.getParcelable(Const.EVENT_UI)
+        event = arguments?.getSerializable(Const.EVENT_UI) as Events
     }
 
     private fun handleCloseButton() {
@@ -105,7 +106,24 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleEditEvent() {
+        binding.edit.root.setOnClickListener {
+            val intent = Intent(context, CreateEventActivity::class.java)
+            intent.putExtra(Const.EVENT_UI, event)
+            startActivity(intent)
+        }
+    }
 
+    private fun handleEditRecurrenceEvent() {
+        binding.editRecurrence.root.setOnClickListener {
+            val intent = Intent(context, EditRecurrenceActivity::class.java)
+            intent.putExtras(
+                bundleOf(
+                    Const.EVENT_ID to event?.id,
+                    Const.EVENT_DATE to event?.metadata?.startsAt
+                )
+            )
+            startActivity(intent)
+        }
     }
 
     private fun hasEventBeenCanceled(canceled: Boolean) {
@@ -131,11 +149,11 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
                 R.style.left_courant_bold_black
             )
             event?.let {
-                name.text = it.name
+                name.text = it.title
                 membersNumberLocation.text = String.format(
                     getString(R.string.members_location),
-                    it.members_count,
-                    it.address
+                    it.membersCount,
+                    it.metadata?.displayAddress
                 )
                 initializeInterests()
             }
@@ -191,7 +209,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
             event?.recurrence != null && event?.recurrence != Recurrence.NO_RECURRENCE.value
 
         with(binding) {
-            if (event?.admin == true) {
+            if (EntourageApplication.me(context)?.id == event?.author?.userID) {
                 if (event?.status == Status.OPEN) {
                     edit.root.visibility = View.VISIBLE
                     leave.visibility = View.VISIBLE
@@ -276,10 +294,10 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     companion object {
         const val TAG = "SettingsModalFragment"
-        fun newInstance(event: SettingUiModel): SettingsModalFragment {
+        fun newInstance(event: Events): SettingsModalFragment {
             val fragment = SettingsModalFragment()
             val args = Bundle()
-            args.putParcelable(Const.EVENT_UI, event)
+            args.putSerializable(Const.EVENT_UI, event)
             fragment.arguments = args
             return fragment
         }

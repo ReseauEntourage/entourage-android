@@ -42,14 +42,18 @@ class CreateEventStepFourFragment : Fragment() {
 
     private fun handleMetaData(tags: Tags?) {
         interestsList.clear()
+        val eventInterests = CommunicationHandler.eventEdited?.interests
         tags?.interests?.forEach { interest ->
             interestsList.add(
                 Interest(
                     interest.id,
                     interest.name,
-                    false
+                    eventInterests?.contains(interest.id) == true
                 )
             )
+            if (eventInterests?.contains(interest.id) == true) interest.id?.let {
+                selectedInterestIdList.add(it)
+            }
         }
         binding.layout.recyclerView.adapter?.notifyDataSetChanged()
     }

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateEventStepTwoBinding
@@ -23,6 +24,7 @@ class CreateEventStepTwoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initializeDateEditText()
         setView()
         handleNextButtonState()
         setRecurrence()
@@ -36,7 +38,7 @@ class CreateEventStepTwoFragment : Fragment() {
         return binding.root
     }
 
-    private fun setView() {
+    private fun initializeDateEditText() {
         binding.layout.eventDate.transformIntoDatePicker(
             requireContext(),
             getString(R.string.events_date),
@@ -124,8 +126,6 @@ class CreateEventStepTwoFragment : Fragment() {
 
                 CommunicationHandler.event.metadata?.startsAt(startDateString)
                 CommunicationHandler.event.metadata?.endsAt(endDateString)
-
-                Timber.e("Event ${CommunicationHandler.event}")
             } else {
                 binding.layout.error.root.visibility = View.VISIBLE
                 binding.layout.error.errorMessage.text =
@@ -145,5 +145,31 @@ class CreateEventStepTwoFragment : Fragment() {
 
     private fun isDateValid(): Boolean {
         return binding.layout.eventDate.text.isNotEmpty() && binding.layout.eventDate.text.isNotBlank()
+    }
+
+    private fun setView() {
+        with(CommunicationHandler.eventEdited) {
+            this?.let {
+                binding.layout.recurrenceTitle.root.isVisible = this.recurrence == null
+                binding.layout.recurrence.isVisible = this.recurrence == null
+                val sdfDate = SimpleDateFormat(getString(R.string.events_date), Locale.FRANCE)
+                val sdfTime = SimpleDateFormat(getString(R.string.events_time), Locale.FRANCE)
+                binding.layout.eventDate.setText(this.metadata?.startsAt?.let { it1 ->
+                    sdfDate.format(
+                        it1
+                    )
+                })
+                binding.layout.startTime.setText(this.metadata?.startsAt?.let { it1 ->
+                    sdfTime.format(
+                        it1
+                    )
+                })
+                binding.layout.endTime.setText(this.metadata?.endsAt?.let { it1 ->
+                    sdfTime.format(
+                        it1
+                    )
+                })
+            }
+        }
     }
 }

@@ -41,6 +41,7 @@ class CreateEventStepOneFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         CommunicationHandler.resetValues()
+        setView()
         initializeDescriptionCounter()
         handleChoosePhoto()
         onFragmentResult()
@@ -164,5 +165,24 @@ class CreateEventStepOneFragment : Fragment() {
 
             override fun afterTextChanged(s: Editable) {}
         })
+    }
+
+    private fun setView() {
+        with(CommunicationHandler.eventEdited) {
+            this?.let {
+                binding.layout.eventName.setText(this.title)
+                binding.layout.eventDescription.setText(this.description)
+                binding.layout.addPhotoLayout.visibility = View.GONE
+                binding.layout.addPhoto.visibility = View.VISIBLE
+                //TODO changer
+                selectedImage = Image()
+                this.metadata?.landscapeUrl?.let {
+                    Glide.with(requireActivity())
+                        .load(Uri.parse(it))
+                        .centerCrop()
+                        .into(binding.layout.addPhoto)
+                }
+            }
+        }
     }
 }

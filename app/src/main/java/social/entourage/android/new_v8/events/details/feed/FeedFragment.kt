@@ -52,7 +52,6 @@ class FeedFragment : Fragment() {
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
     private var interestsList: ArrayList<String> = ArrayList()
     private var eventId = Const.DEFAULT_VALUE
-    private lateinit var eventUI: SettingUiModel
     private lateinit var event: Events
     private var myId: Int? = null
     private val args: FeedFragmentArgs by navArgs()
@@ -310,22 +309,9 @@ class FeedFragment : Fragment() {
 
     private fun handleSettingsButton() {
         binding.iconSettings.setOnClickListener {
-            with(event) {
-                eventUI = SettingUiModel(
-                    id, title,
-                    membersCount,
-                    metadata?.displayAddress,
-                    interests,
-                    description,
-                    members,
-                    member,
-                    EntourageApplication.me(context)?.id == author?.userID,
-                    recurrence,
-                    status
-                )
-                SettingsModalFragment.newInstance(eventUI)
-                    .show(parentFragmentManager, SettingsModalFragment.TAG)
-            }
+            SettingsModalFragment.newInstance(event)
+                .show(parentFragmentManager, SettingsModalFragment.TAG)
+
         }
     }
 

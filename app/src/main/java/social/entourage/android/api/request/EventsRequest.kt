@@ -97,4 +97,16 @@ interface EventsRequest {
         @Path("event_id") eventId: Int,
         @Body params: ArrayMap<String, Any>
     ): Call<PostWrapper>
+
+    @PUT("outings/{event_id}")
+    fun updateEvent(
+        @Path("event_id") eventId: Int,
+        @Body event: CreateEvent
+    ): Call<EventWrapper>
+
+    @PUT("outings/{event_id}/batch_update")
+    fun updateEventSiblings(
+        @Path("event_id") eventId: Int,
+        @Body event: CreateEvent
+    ): Call<EventWrapper>
 }

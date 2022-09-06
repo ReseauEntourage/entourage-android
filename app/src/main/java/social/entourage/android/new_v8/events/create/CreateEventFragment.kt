@@ -1,9 +1,15 @@
 package social.entourage.android.new_v8.events.create
 
+import android.app.AlertDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.RadioButton
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -12,19 +18,21 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateEventBinding
+import social.entourage.android.new_v8.RefreshController
 import social.entourage.android.new_v8.events.EventsPresenter
 import social.entourage.android.new_v8.events.create.CommunicationHandler.canExitEventCreation
 import social.entourage.android.new_v8.models.Events
+import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.nextPage
 import social.entourage.android.new_v8.utils.previousPage
-import java.net.CookieManager
 
 
 class CreateEventFragment : Fragment() {
 
     private var _binding: NewFragmentCreateEventBinding? = null
     val binding: NewFragmentCreateEventBinding get() = _binding!!
+    private var event: Events? = null
 
 
     private lateinit var viewPager: ViewPager2
@@ -45,8 +53,21 @@ class CreateEventFragment : Fragment() {
         initializeViewPager()
         handleBackButton()
         eventPresenter.newEventCreated.observe(viewLifecycleOwner, ::handleCreateEventResponse)
+        eventPresenter.isEventUpdated.observe(viewLifecycleOwner, ::isEventUpdated)
+        event = activity?.intent?.getSerializableExtra(Const.EVENT_UI) as Events?
+        CommunicationHandler.eventEdited = event
+        setView()
     }
 
+    private fun isEventUpdated(updated: Boolean) {
+        if (updated) {
+            Utils.showToast(requireContext(), getString(R.string.group_updated))
+            activity?.finish()
+            RefreshController.shouldRefreshEventFragment = true
+        } else {
+            Utils.showToast(requireContext(), getString(R.string.group_error_updated))
+        }
+    }
 
     private fun initializeViewPager() {
         viewPager = binding.viewPager
@@ -72,7 +93,10 @@ class CreateEventFragment : Fragment() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 binding.next.text =
-                    getString(if (position == NB_TABS - 1) R.string.create else R.string.new_next)
+                    getString(
+                        if (position == NB_TABS - 1) if (CommunicationHandler.eventEdited != null)
+                            R.string.edit else R.string.create else R.string.new_next
+                    )
             }
         })
     }
@@ -82,7 +106,13 @@ class CreateEventFragment : Fragment() {
         if (isCondition) {
             if (viewPager.currentItem == NB_TABS - 1) {
                 // Create event here
-                eventPresenter.createEvent(CommunicationHandler.event)
+                if (CommunicationHandler.eventEdited != null)
+                    if (CommunicationHandler.eventEdited?.recurrence != null) {
+                        showAlertDialogUpdateEventWithRecurrence()
+                    } else {
+                        updateEventWithoutRecurrence()
+                    }
+                else eventPresenter.createEvent(CommunicationHandler.event)
             } else {
                 viewPager.nextPage(true)
                 if (viewPager.currentItem > 0) binding.previous.visibility = View.VISIBLE
@@ -91,6 +121,54 @@ class CreateEventFragment : Fragment() {
         }
     }
 
+    private fun updateEventWithRecurrence() {
+        CommunicationHandler.eventEdited?.id?.let {
+            eventPresenter.updateEventSiblings(
+                it,
+                CommunicationHandler.event
+            )
+        }
+    }
+
+    private fun updateEventWithoutRecurrence() {
+        CommunicationHandler.eventEdited?.id?.let {
+            eventPresenter.updateEvent(
+                it,
+                CommunicationHandler.event
+            )
+        }
+    }
+
+    private fun showAlertDialogUpdateEventWithRecurrence() {
+        val layoutInflater = LayoutInflater.from(requireContext())
+        val customDialog: View =
+            layoutInflater.inflate(R.layout.new_custom_alert_dialog_cancel_event, null)
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setView(customDialog)
+        val alertDialog = builder.create()
+        val cancelOneEvent = customDialog.findViewById<RadioButton>(R.id.one_event)
+        val cancelAllEvents =
+            customDialog.findViewById<RadioButton>(R.id.all_events_recurrent)
+        with(customDialog.findViewById<Button>(R.id.yes)) {
+            text = getString(R.string.yes)
+            setOnClickListener {
+                if (cancelOneEvent.isChecked) updateEventWithoutRecurrence()
+                if (cancelAllEvents.isChecked) updateEventWithRecurrence()
+                alertDialog.dismiss()
+                activity?.finish()
+            }
+        }
+        customDialog.findViewById<TextView>(R.id.title).text =
+            getString(R.string.event_edit_recurrent_event)
+        with(customDialog.findViewById<Button>(R.id.no)) {
+            text = getString(R.string.no)
+            setOnClickListener {
+                alertDialog.dismiss()
+            }
+        }
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog.show()
+    }
 
     private fun handleBackButton() {
         binding.header.iconBack.setOnClickListener {
@@ -107,6 +185,11 @@ class CreateEventFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun setView() {
+        binding.header.title =
+            getString(if (CommunicationHandler.eventEdited != null) R.string.edit_event else R.string.new_event)
     }
 
     private fun handleCreateEventResponse(eventCreated: Events?) {
