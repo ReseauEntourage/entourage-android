@@ -94,8 +94,11 @@ class CreateEventFragment : Fragment() {
                 super.onPageSelected(position)
                 binding.next.text =
                     getString(
-                        if (position == NB_TABS - 1) if (CommunicationHandler.eventEdited != null)
-                            R.string.edit else R.string.create else R.string.new_next
+                        if (position == NB_TABS - 1) {
+                            if (CommunicationHandler.eventEdited != null) {
+                                R.string.edit
+                            } else R.string.create
+                        } else R.string.new_next
                     )
             }
         })
