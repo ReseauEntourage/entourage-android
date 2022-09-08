@@ -26,7 +26,7 @@ class CreateEventStepFiveFragment : Fragment() {
     private var selectedGroupsIdList: MutableList<Int> = mutableListOf()
     private var myId: Int? = null
     private var page: Int = 0
-    private var groupID = Const.DEFAULT_VALUE
+    private var groupID: Int? = null
 
 
     override fun onCreateView(
@@ -40,13 +40,18 @@ class CreateEventStepFiveFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         myId = EntourageApplication.me(activity)?.id
-        groupID = activity?.intent?.getIntExtra(Const.GROUP_ID, Const.DEFAULT_VALUE)!!
+        groupID = activity?.intent?.getIntExtra(Const.GROUP_ID, Const.DEFAULT_VALUE)
         setShareSelection()
         initializeGroups()
         loadGroups()
         setView()
         groupPresenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleResponseGetGroups)
-        selectedGroupsIdList.add(groupID)
+        groupID?.let {
+            if (groupID != Const.DEFAULT_VALUE) {
+                selectedGroupsIdList.add(it)
+                CommunicationHandler.event.neighborhoodIds.add(it)
+            }
+        }
     }
 
 

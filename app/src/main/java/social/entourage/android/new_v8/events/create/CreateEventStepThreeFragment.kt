@@ -66,6 +66,8 @@ class CreateEventStepThreeFragment : Fragment() {
             } else {
                 binding.layout.location.text.clear()
             }
+            CommunicationHandler.isButtonClickable.value =
+                isPlaceValid() && isLimitedPlaceValid()
         }
     }
 
@@ -75,6 +77,8 @@ class CreateEventStepThreeFragment : Fragment() {
             binding.layout.eventLimitedPlaceCountTitle.root.isVisible = limitedPlaces
             binding.layout.eventLimitedPlaceCount.isVisible = limitedPlaces
             if (!limitedPlaces) binding.layout.eventLimitedPlaceCount.text.clear()
+            CommunicationHandler.isButtonClickable.value =
+                isPlaceValid() && isLimitedPlaceValid()
         }
     }
 
@@ -145,6 +149,7 @@ class CreateEventStepThreeFragment : Fragment() {
     }
 
     private fun isLimitedPlaceValid(): Boolean {
+        if (binding.layout.no.isChecked) return true
         return if (binding.layout.yes.isChecked) {
             binding.layout.eventLimitedPlaceCount.text.isNotEmpty() && binding.layout.eventLimitedPlaceCount.text.isNotBlank()
         } else true
