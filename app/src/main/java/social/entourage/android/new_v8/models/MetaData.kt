@@ -1,6 +1,7 @@
 package social.entourage.android.new_v8.models
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 import java.util.*
 
 
@@ -41,4 +42,4 @@ data class Metadata(
 
     @field:SerializedName("landscape_url")
     val landscapeUrl: String? = null
-)
+) : Serializable

@@ -1,10 +1,10 @@
 package social.entourage.android.new_v8.models
 
 import android.content.Context
-import android.location.Location
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.feed.FeedItemAuthor
+import java.io.Serializable
 import java.util.*
 
 enum class Status(val value: String) {
@@ -21,7 +21,7 @@ data class GroupEvent(
 
     @field:SerializedName("name")
     val name: String? = null,
-)
+) : Serializable
 
 data class Events(
     @field:SerializedName("metadata")
@@ -113,7 +113,7 @@ data class Events(
 
     @SerializedName("neighborhoods")
     var neighborhoods: MutableList<GroupEvent>? = mutableListOf(),
-)
+) : Serializable
 
 fun Events.toEventUi(context: Context): EventUiModel {
     return EventUiModel(

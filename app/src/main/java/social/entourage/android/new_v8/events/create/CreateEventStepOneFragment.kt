@@ -13,6 +13,7 @@ import androidx.fragment.app.setFragmentResultListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import kotlinx.android.synthetic.main.toolbar.*
 import social.entourage.android.R
 import social.entourage.android.api.model.Image
 import social.entourage.android.databinding.NewFragmentCreateEventStepOneBinding
@@ -41,6 +42,7 @@ class CreateEventStepOneFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         CommunicationHandler.resetValues()
+        setView()
         initializeDescriptionCounter()
         handleChoosePhoto()
         onFragmentResult()
@@ -164,5 +166,23 @@ class CreateEventStepOneFragment : Fragment() {
 
             override fun afterTextChanged(s: Editable) {}
         })
+    }
+
+    private fun setView() {
+        CommunicationHandler.eventEdited?.let { event ->
+            with(binding.layout) {
+                eventName.setText(event.title)
+                eventDescription.setText(event.description)
+                addPhotoLayout.visibility = View.GONE
+                addPhoto.visibility = View.VISIBLE
+                selectedImage = Image()
+                event.metadata?.landscapeUrl?.let {
+                    Glide.with(requireActivity())
+                        .load(Uri.parse(it))
+                        .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
+                        .into(binding.layout.addPhoto)
+                }
+            }
+        }
     }
 }

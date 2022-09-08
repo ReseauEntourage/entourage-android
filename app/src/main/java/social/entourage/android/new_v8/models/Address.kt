@@ -1,6 +1,7 @@
 package social.entourage.android.new_v8.models
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 
 data class Address(
@@ -10,7 +11,7 @@ data class Address(
     var longitude: Double = 0.0,
     @SerializedName("display_address")
     var displayAddress: String = ""
-) {
+) : Serializable {
     override fun toString(): String {
         return "Address(latitude=$latitude, longitude=$longitude, displayAddress='$displayAddress')"
     }

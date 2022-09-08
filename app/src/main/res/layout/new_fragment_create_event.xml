@@ -18,8 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            app:icon="@{@drawable/new_create_event_icon}"
-            app:title="@{@string/new_event}" />
+            app:icon="@{@drawable/new_create_event_icon}" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager"

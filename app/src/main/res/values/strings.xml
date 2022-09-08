@@ -417,5 +417,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_cancel_recurrent_event">Annuler un évènement récurrent</string>
     <string name="this_event">Cet événement</string>
     <string name="all_events_recurrent">Cet événement et tous les suivants</string>
+    <string name="date_of_event">Date de l’événement</string>
+    <string name="edit_event">Editer l\'événement</string>
+    <string name="event_edit_recurrent_event">Modifier un évènement récurrent</string>
 
 </resources>
