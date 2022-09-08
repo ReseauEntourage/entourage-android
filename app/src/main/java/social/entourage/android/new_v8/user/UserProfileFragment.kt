@@ -145,7 +145,6 @@ class UserProfileFragment : Fragment() {
     }
 
     private fun setBackButton() {
-        binding.iconBack.setOnClickListener { findNavController().popBackStack() }
+        binding.iconBack.setOnClickListener { activity?.finish() }
     }
-
 }

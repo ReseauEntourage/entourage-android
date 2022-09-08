@@ -291,24 +291,25 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun handleJoinButton() {
-        binding.join.setOnClickListener {
-            if (event?.member == true) {
-                Utils.showAlertDialogButtonClicked(
-                    requireContext(),
-                    getString(R.string.leave_event),
-                    getString(R.string.leave_event_dialog_content),
-                    getString(R.string.exit),
-                ) {
+        if (event?.admin == false)
+            binding.join.setOnClickListener {
+                if (event?.member == true) {
+                    Utils.showAlertDialogButtonClicked(
+                        requireContext(),
+                        getString(R.string.leave_event),
+                        getString(R.string.leave_event_dialog_content),
+                        getString(R.string.exit),
+                    ) {
+                        event?.id?.let { id ->
+                            eventPresenter.leaveEvent(id)
+                        }
+                    }
+                } else {
                     event?.id?.let { id ->
-                        eventPresenter.leaveEvent(id)
+                        eventPresenter.participate(id)
                     }
                 }
-            } else {
-                event?.id?.let { id ->
-                    eventPresenter.participate(id)
-                }
             }
-        }
     }
 
     private fun handleAddToCalendarButton() {

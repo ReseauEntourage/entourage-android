@@ -1,6 +1,7 @@
 package social.entourage.android.new_v8.events.details.feed
 
 import android.content.Intent
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +19,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -27,16 +30,16 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentFeedEventBinding
+import social.entourage.android.new_v8.comment.PostAdapter
 import social.entourage.android.new_v8.events.EventsPresenter
 import social.entourage.android.new_v8.events.details.SettingsModalFragment
-import social.entourage.android.new_v8.groups.details.feed.CreatePostGroupActivity
 import social.entourage.android.new_v8.groups.details.feed.GroupMembersPhotosAdapter
-import social.entourage.android.new_v8.comment.PostAdapter
 import social.entourage.android.new_v8.groups.details.members.MembersType
 import social.entourage.android.new_v8.models.*
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
+import social.entourage.android.new_v8.utils.px
 import social.entourage.android.new_v8.utils.underline
 import social.entourage.android.tools.log.AnalyticsEvents
 import java.text.SimpleDateFormat
@@ -83,6 +86,7 @@ class FeedFragment : Fragment() {
         handleBackButton()
         handleSettingsButton()
         handleAboutButton()
+        onFragmentResult()
     }
 
     private fun handleResponseGetEvent(getEvent: Events?) {
@@ -102,10 +106,9 @@ class FeedFragment : Fragment() {
             binding.eventImageToolbar.alpha = res
             binding.eventNameToolbar.alpha = res
             binding.participate.isVisible =
-                res == 1F && !event.member && event.status == Status.OPEN
+                !event.member && event.status == Status.OPEN && !isViewShown(binding.join)
         }
     }
-
 
     private fun handleResponseGetEventPosts(allPosts: MutableList<Post>?) {
         binding.swipeRefresh.isRefreshing = false
@@ -229,6 +232,12 @@ class FeedFragment : Fragment() {
                     .centerCrop()
                     .into(eventImage)
             }
+            event.metadata?.landscapeUrl?.let {
+                Glide.with(requireActivity())
+                    .load(Uri.parse(it))
+                    .transform(CenterCrop(), RoundedCorners(5.px))
+                    .into(eventImageToolbar)
+            }
             canceled.isVisible = event.status == Status.CLOSED
             if (event.status == Status.CLOSED) {
                 eventName.setTextColor(getColor(requireContext(), R.color.grey))
@@ -329,6 +338,14 @@ class FeedFragment : Fragment() {
         }
     }
 
+    private fun isViewShown(view: View): Boolean {
+        val scrollBounds = Rect()
+        binding.scrollView.getDrawingRect(scrollBounds);
+        var top = view.y;
+        var bottom = top + view.height;
+        return scrollBounds.top < top && scrollBounds.bottom > bottom
+    }
+
     override fun onResume() {
         super.onResume()
         loadPosts()
@@ -399,7 +416,7 @@ class FeedFragment : Fragment() {
 
     private fun handleCreatePostButton() {
         if (event.member) {
-            if (event.status == Status.OPEN) binding.createPost.show()
+            binding.createPost.show()
             binding.postsLayoutEmptyState.subtitle.visibility = View.VISIBLE
             binding.postsLayoutEmptyState.arrow.visibility = View.VISIBLE
         } else {
@@ -469,5 +486,12 @@ class FeedFragment : Fragment() {
             rightDrawable,
             null
         )
+    }
+
+    private fun onFragmentResult() {
+        setFragmentResultListener(Const.REQUEST_KEY_SHOULD_REFRESH) { _, bundle ->
+            val shouldRefresh = bundle.getBoolean(Const.SHOULD_REFRESH)
+            if (shouldRefresh) eventPresenter.getEvent(eventId)
+        }
     }
 }

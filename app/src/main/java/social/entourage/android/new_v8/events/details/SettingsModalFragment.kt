@@ -66,9 +66,21 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         viewWithRole()
         handleReportEvent()
         handleCancelEvent()
+        handleLeaveEvent()
         eventPresenter.eventCanceled.observe(viewLifecycleOwner, ::hasEventBeenCanceled)
         eventPresenter.isEventUpdated.observe(viewLifecycleOwner, ::hasEventBeenCanceled)
+        eventPresenter.hasUserLeftEvent.observe(viewLifecycleOwner, ::handleLeftResponse)
         setView()
+    }
+
+    private fun handleLeftResponse(left: Boolean) {
+        if (left) {
+            setFragmentResult(
+                Const.REQUEST_KEY_SHOULD_REFRESH,
+                bundleOf(Const.SHOULD_REFRESH to true)
+            )
+            dismiss()
+        }
     }
 
 
@@ -82,7 +94,8 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
             edit.label = getString(R.string.edit_event_information)
             rules.label = getString(R.string.rules_event)
             report.text = getString(R.string.report_event)
-            leave.text = getString(R.string.cancel_event)
+            cancel.text = getString(R.string.cancel_event)
+            leave.text = getString(R.string.leave_event)
             editRecurrence.label = getString(R.string.modify_recurrence)
         }
     }
@@ -194,7 +207,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
             if (event?.admin == true) {
                 if (event?.status == Status.OPEN) {
                     edit.root.visibility = View.VISIBLE
-                    leave.visibility = View.VISIBLE
+                    cancel.visibility = View.VISIBLE
                 }
                 editGroupDivider.visibility = View.VISIBLE
                 editRecurrence.root.isVisible = eventWithNoRecurrence
@@ -207,24 +220,41 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
                 notificationNewMessages.root.visibility = View.VISIBLE
                 notifyMe.visibility = View.VISIBLE
                 notifyDivider.visibility = View.VISIBLE
+                if (event?.status == Status.OPEN && event?.admin == false) {
+                    leave.visibility = View.VISIBLE
+                }
             }
         }
     }
 
     private fun handleCancelEvent() {
+        binding.cancel.setOnClickListener {
+            if (event?.recurrence == null) {
+                Utils.showAlertDialogButtonClickedInverse(
+                    requireContext(),
+                    getString(R.string.cancel_event),
+                    getString(R.string.event_cancel_subtitle_pop),
+                    getString(R.string.back)
+                ) {
+                    cancelEventWithoutRecurrence()
+                }
+            } else {
+                showAlertDialogCancelEventWithRecurrence()
+
+            }
+        }
+    }
+
+    private fun handleLeaveEvent() {
         binding.leave.setOnClickListener {
-            event?.recurrence?.let { recurrence ->
-                if (recurrence == Recurrence.NO_RECURRENCE.value)
-                    Utils.showAlertDialogButtonClickedInverse(
-                        requireContext(),
-                        getString(R.string.cancel_event),
-                        getString(R.string.event_cancel_subtitle_pop),
-                        getString(R.string.back)
-                    ) {
-                        cancelEventWithoutRecurrence()
-                    }
-                else {
-                    showAlertDialogCancelEventWithRecurrence()
+            Utils.showAlertDialogButtonClicked(
+                requireContext(),
+                getString(R.string.leave_event),
+                getString(R.string.leave_event_dialog_content),
+                getString(R.string.exit),
+            ) {
+                event?.id?.let { id ->
+                    eventPresenter.leaveEvent(id)
                 }
             }
         }
