@@ -129,25 +129,26 @@ class FeedFragment : Fragment() {
                 binding.postsNew.root.visibility = View.VISIBLE
                 binding.postsNewRecyclerview.visibility = View.VISIBLE
                 binding.postsLayoutEmptyState.visibility = View.GONE
-                binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
                 binding.postsOldRecyclerview.visibility = View.GONE
                 binding.postsOld.root.visibility = View.GONE
+                binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
             }
             oldPostsList.isNotEmpty() && newPostsList.isEmpty() -> {
                 binding.postsOld.root.visibility = View.GONE
                 binding.postsOldRecyclerview.visibility = View.VISIBLE
                 binding.postsLayoutEmptyState.visibility = View.GONE
-                binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
                 binding.postsNew.root.visibility = View.GONE
                 binding.postsNewRecyclerview.visibility = View.GONE
+                binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
             }
             oldPostsList.isNotEmpty() && newPostsList.isNotEmpty() -> {
                 binding.postsOld.root.visibility = View.VISIBLE
                 binding.postsOldRecyclerview.visibility = View.VISIBLE
-                binding.postsLayoutEmptyState.visibility = View.GONE
-                binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
                 binding.postsNew.root.visibility = View.VISIBLE
                 binding.postsNewRecyclerview.visibility = View.VISIBLE
+                binding.postsLayoutEmptyState.visibility = View.GONE
+                binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
+                binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
             }
         }
     }
