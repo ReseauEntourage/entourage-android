@@ -110,6 +110,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
             val intent = Intent(context, CreateEventActivity::class.java)
             intent.putExtra(Const.EVENT_UI, event)
             startActivity(intent)
+            dismiss()
         }
     }
 
@@ -119,10 +120,12 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
             intent.putExtras(
                 bundleOf(
                     Const.EVENT_ID to event?.id,
-                    Const.EVENT_DATE to event?.metadata?.startsAt
+                    Const.EVENT_DATE to event?.metadata?.startsAt,
+                    Const.RECURRENCE to event?.recurrence
                 )
             )
             startActivity(intent)
+            dismiss()
         }
     }
 

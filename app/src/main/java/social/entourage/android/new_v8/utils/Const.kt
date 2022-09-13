@@ -36,6 +36,5 @@ object Const {
     const val HTTPS = "https://"
     const val ID = "id"
     const val NAME = "group_name"
-
-
+    const val RECURRENCE = "recurrence"
 }
