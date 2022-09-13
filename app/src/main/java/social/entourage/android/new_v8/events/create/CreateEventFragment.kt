@@ -11,7 +11,9 @@ import android.widget.Button
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
@@ -153,7 +155,7 @@ class CreateEventFragment : Fragment() {
         val cancelAllEvents =
             customDialog.findViewById<RadioButton>(R.id.all_events_recurrent)
         with(customDialog.findViewById<Button>(R.id.yes)) {
-            text = getString(R.string.yes)
+            text = getString(R.string.validate)
             setOnClickListener {
                 if (cancelOneEvent.isChecked) updateEventWithoutRecurrence()
                 if (cancelAllEvents.isChecked) updateEventWithRecurrence()
@@ -163,12 +165,6 @@ class CreateEventFragment : Fragment() {
         }
         customDialog.findViewById<TextView>(R.id.title).text =
             getString(R.string.event_edit_recurrent_event)
-        with(customDialog.findViewById<Button>(R.id.no)) {
-            text = getString(R.string.no)
-            setOnClickListener {
-                alertDialog.dismiss()
-            }
-        }
         alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         alertDialog.show()
     }

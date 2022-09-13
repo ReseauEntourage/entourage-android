@@ -73,8 +73,10 @@ class CreateEventStepFiveFragment : Fragment() {
         }
         binding.layout.rbShareInGroups.setOnCheckedChangeListener { _, checkedId ->
             binding.layout.recyclerView.isVisible = checkedId == R.id.share_in_groups
+
             CommunicationHandler.isButtonClickable.value =
                 (checkedId == R.id.dont_share) || (checkedId == R.id.share_in_groups && selectedGroupsIdList.isNotEmpty())
+
             if (checkedId == R.id.dont_share) CommunicationHandler.event.neighborhoodIds.clear()
             else CommunicationHandler.event.neighborhoodIds.addAll(selectedGroupsIdList)
         }
@@ -140,7 +142,7 @@ class CreateEventStepFiveFragment : Fragment() {
                 CommunicationHandler.isCondition.value = false
                 binding.layout.error.root.visibility = View.VISIBLE
                 binding.layout.error.errorMessage.text =
-                    getString(R.string.error_categories_create_group_image)
+                    getString(R.string.error_mandatory_fields)
             } else {
                 CommunicationHandler.isCondition.value = true
                 binding.layout.error.root.visibility = View.GONE
@@ -157,7 +159,15 @@ class CreateEventStepFiveFragment : Fragment() {
         with(CommunicationHandler.eventEdited) {
             this?.let {
                 if (this.neighborhoods?.isEmpty() == true) binding.layout.dontShare.isChecked = true
-                else binding.layout.shareInGroups.isChecked = true
+                else {
+                    binding.layout.shareInGroups.isChecked = true
+                    CommunicationHandler.eventEdited?.neighborhoods?.map { group -> group.id }
+                        ?.toMutableList()?.forEach {
+                            if (it != null) {
+                                selectedGroupsIdList.add(it)
+                            }
+                        }
+                }
             }
         }
     }

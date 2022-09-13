@@ -27,6 +27,7 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentFeedEventBinding
+import social.entourage.android.new_v8.RefreshController
 import social.entourage.android.new_v8.events.EventsPresenter
 import social.entourage.android.new_v8.events.details.SettingsModalFragment
 import social.entourage.android.new_v8.groups.details.feed.CreatePostGroupActivity
@@ -318,6 +319,7 @@ class FeedFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        if (RefreshController.shouldRefreshEventFragment) eventPresenter.getEvent(eventId)
         loadPosts()
     }
 
