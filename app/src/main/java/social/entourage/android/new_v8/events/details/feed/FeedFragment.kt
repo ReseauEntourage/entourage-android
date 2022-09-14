@@ -31,6 +31,7 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentFeedEventBinding
 import social.entourage.android.new_v8.comment.PostAdapter
+import social.entourage.android.new_v8.RefreshController
 import social.entourage.android.new_v8.events.EventsPresenter
 import social.entourage.android.new_v8.events.details.SettingsModalFragment
 import social.entourage.android.new_v8.groups.details.feed.GroupMembersPhotosAdapter
@@ -55,7 +56,6 @@ class FeedFragment : Fragment() {
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
     private var interestsList: ArrayList<String> = ArrayList()
     private var eventId = Const.DEFAULT_VALUE
-    private lateinit var eventUI: SettingUiModel
     private lateinit var event: Events
     private var myId: Int? = null
     private val args: FeedFragmentArgs by navArgs()
@@ -133,25 +133,26 @@ class FeedFragment : Fragment() {
                 binding.postsNew.root.visibility = View.VISIBLE
                 binding.postsNewRecyclerview.visibility = View.VISIBLE
                 binding.postsLayoutEmptyState.visibility = View.GONE
-                binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
                 binding.postsOldRecyclerview.visibility = View.GONE
                 binding.postsOld.root.visibility = View.GONE
+                binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
             }
             oldPostsList.isNotEmpty() && newPostsList.isEmpty() -> {
                 binding.postsOld.root.visibility = View.GONE
                 binding.postsOldRecyclerview.visibility = View.VISIBLE
                 binding.postsLayoutEmptyState.visibility = View.GONE
-                binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
                 binding.postsNew.root.visibility = View.GONE
                 binding.postsNewRecyclerview.visibility = View.GONE
+                binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
             }
             oldPostsList.isNotEmpty() && newPostsList.isNotEmpty() -> {
                 binding.postsOld.root.visibility = View.VISIBLE
                 binding.postsOldRecyclerview.visibility = View.VISIBLE
-                binding.postsLayoutEmptyState.visibility = View.GONE
-                binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
                 binding.postsNew.root.visibility = View.VISIBLE
                 binding.postsNewRecyclerview.visibility = View.VISIBLE
+                binding.postsLayoutEmptyState.visibility = View.GONE
+                binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
+                binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
             }
         }
     }
@@ -319,22 +320,9 @@ class FeedFragment : Fragment() {
 
     private fun handleSettingsButton() {
         binding.iconSettings.setOnClickListener {
-            with(event) {
-                eventUI = SettingUiModel(
-                    id, title,
-                    membersCount,
-                    metadata?.displayAddress,
-                    interests,
-                    description,
-                    members,
-                    member,
-                    EntourageApplication.me(context)?.id == author?.userID,
-                    recurrence,
-                    status
-                )
-                SettingsModalFragment.newInstance(eventUI)
-                    .show(parentFragmentManager, SettingsModalFragment.TAG)
-            }
+            SettingsModalFragment.newInstance(event)
+                .show(parentFragmentManager, SettingsModalFragment.TAG)
+
         }
     }
 
@@ -348,6 +336,7 @@ class FeedFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        if (RefreshController.shouldRefreshEventFragment) eventPresenter.getEvent(eventId)
         loadPosts()
     }
 

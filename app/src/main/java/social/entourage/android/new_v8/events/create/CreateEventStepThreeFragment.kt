@@ -13,6 +13,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateEventStepThreeBinding
+import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class CreateEventStepThreeFragment : Fragment() {
@@ -31,14 +34,15 @@ class CreateEventStepThreeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setView()
+        setViewMultiSelect()
         handleNextButtonState()
         binding.layout.location.setOnClickListener {
             findNavController().navigate(R.id.action_create_event_fragment_to_edit_action_zone_fragment)
         }
+        setView()
     }
 
-    private fun setView() {
+    private fun setViewMultiSelect() {
         setPlaceSelection()
         setLimitedPlacesSelection()
     }
@@ -62,6 +66,8 @@ class CreateEventStepThreeFragment : Fragment() {
             } else {
                 binding.layout.location.text.clear()
             }
+            CommunicationHandler.isButtonClickable.value =
+                isPlaceValid() && isLimitedPlaceValid()
         }
     }
 
@@ -71,6 +77,8 @@ class CreateEventStepThreeFragment : Fragment() {
             binding.layout.eventLimitedPlaceCountTitle.root.isVisible = limitedPlaces
             binding.layout.eventLimitedPlaceCount.isVisible = limitedPlaces
             if (!limitedPlaces) binding.layout.eventLimitedPlaceCount.text.clear()
+            CommunicationHandler.isButtonClickable.value =
+                isPlaceValid() && isLimitedPlaceValid()
         }
     }
 
@@ -103,7 +111,8 @@ class CreateEventStepThreeFragment : Fragment() {
         CommunicationHandler.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
         CommunicationHandler.isButtonClickable.value =
             isPlaceValid() && isLimitedPlaceValid()
-        binding.layout.location.setText(CommunicationHandler.event.metadata?.streetAddress)
+        if (CommunicationHandler.event.metadata?.streetAddress?.isNotEmpty() == true)
+            binding.layout.location.setText(CommunicationHandler.event.metadata?.streetAddress)
     }
 
 
@@ -140,8 +149,32 @@ class CreateEventStepThreeFragment : Fragment() {
     }
 
     private fun isLimitedPlaceValid(): Boolean {
+        if (binding.layout.no.isChecked) return true
         return if (binding.layout.yes.isChecked) {
             binding.layout.eventLimitedPlaceCount.text.isNotEmpty() && binding.layout.eventLimitedPlaceCount.text.isNotBlank()
         } else true
+    }
+
+
+    private fun setView() {
+        with(CommunicationHandler.eventEdited) {
+            this?.let {
+                if (this.online == true) {
+                    binding.layout.online.isChecked = true
+                    binding.layout.eventUrl.setText(this.eventUrl)
+                } else {
+                    binding.layout.faceToFace.isChecked = true
+                    binding.layout.location.setText(this.metadata?.displayAddress)
+                }
+
+                if (this.metadata?.placeLimit != null && this.metadata.placeLimit != 0) {
+                    binding.layout.yes.isChecked = true
+                    binding.layout.eventLimitedPlaceCount.setText(this.metadata.placeLimit.toString())
+                } else {
+                    binding.layout.no.isChecked = true
+                    binding.layout.eventLimitedPlaceCount.visibility = View.GONE
+                }
+            }
+        }
     }
 }

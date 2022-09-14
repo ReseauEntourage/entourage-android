@@ -7,12 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.new_time_picker_start_end.view.*
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateEventStepTwoBinding
 import social.entourage.android.new_v8.utils.transformIntoDatePicker
-import social.entourage.android.new_v8.utils.transformIntoTimePicker
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,6 +23,7 @@ class CreateEventStepTwoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initializeDateEditText()
         setView()
         handleNextButtonState()
         setRecurrence()
@@ -36,27 +37,19 @@ class CreateEventStepTwoFragment : Fragment() {
         return binding.root
     }
 
-    private fun setView() {
+    private fun initializeDateEditText() {
         binding.layout.eventDate.transformIntoDatePicker(
             requireContext(),
             getString(R.string.events_date),
             minDate = Date()
-        )
-        binding.layout.startTime.transformIntoTimePicker(
-            requireContext(),
-            getString(R.string.events_time)
-        )
-        binding.layout.endTime.transformIntoTimePicker(
-            requireContext(),
-            getString(R.string.events_time)
         )
     }
 
 
     private fun handleNextButtonState() {
         handleEditTextChangedTextListener(binding.layout.eventDate)
-        handleEditTextChangedTextListener(binding.layout.startTime)
-        handleEditTextChangedTextListener(binding.layout.endTime)
+        handleEditTextChangedTextListener(binding.layout.eventTime.getStartEditText())
+        handleEditTextChangedTextListener(binding.layout.eventTime.getEndEditText())
     }
 
     private fun setRecurrence() {
@@ -78,7 +71,7 @@ class CreateEventStepTwoFragment : Fragment() {
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 CommunicationHandler.isButtonClickable.value =
-                    isEndTimeValid() && isStartTimeValid() && isDateValid()
+                    isEndTimeValid() && isStartTimeValid() && isDateValid() && binding.layout.eventTime.checkTimeValidity() == true
             }
 
             override fun afterTextChanged(s: Editable) {
@@ -91,7 +84,7 @@ class CreateEventStepTwoFragment : Fragment() {
         CommunicationHandler.resetValues()
         CommunicationHandler.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
         CommunicationHandler.isButtonClickable.value =
-            isDateValid() && isStartTimeValid() && isEndTimeValid()
+            isDateValid() && isStartTimeValid() && isEndTimeValid() && binding.layout.eventTime.checkTimeValidity() == true
     }
 
     override fun onDestroy() {
@@ -101,7 +94,7 @@ class CreateEventStepTwoFragment : Fragment() {
 
     private fun handleOnClickNext(onClick: Boolean) {
         if (onClick) {
-            if (isEndTimeValid() && isStartTimeValid() && isDateValid()) {
+            if (isEndTimeValid() && isStartTimeValid() && isDateValid() && binding.layout.eventTime.checkTimeValidity() == true) {
                 binding.layout.error.root.visibility = View.GONE
                 CommunicationHandler.isCondition.value = true
                 CommunicationHandler.clickNext.removeObservers(viewLifecycleOwner)
@@ -112,38 +105,65 @@ class CreateEventStepTwoFragment : Fragment() {
                 val startDate =
                     dateFormatterToDate.parse(
                         binding.layout.eventDate.text.toString() + " " +
-                                binding.layout.startTime.text.toString()
+                                binding.layout.eventTime.getStartTime()
+
                     )
                 val endDate =
                     dateFormatterToDate.parse(
                         binding.layout.eventDate.text.toString() + " " +
-                                binding.layout.endTime.text.toString()
+                                binding.layout.eventTime.getEndTime()
                     )
                 val startDateString = dateFormatterToString.format(startDate)
                 val endDateString = dateFormatterToString.format(endDate)
 
                 CommunicationHandler.event.metadata?.startsAt(startDateString)
                 CommunicationHandler.event.metadata?.endsAt(endDateString)
-
-                Timber.e("Event ${CommunicationHandler.event}")
             } else {
                 binding.layout.error.root.visibility = View.VISIBLE
                 binding.layout.error.errorMessage.text =
                     getString(R.string.error_mandatory_fields)
+                if (binding.layout.eventTime.checkTimeValidity() == false) binding.layout.error.errorMessage.text =
+                    getString(R.string.error_event_end_time)
                 CommunicationHandler.isCondition.value = false
             }
         }
     }
 
     private fun isEndTimeValid(): Boolean {
-        return binding.layout.endTime.text.isNotEmpty() && binding.layout.eventDate.text.isNotBlank()
+        return binding.layout.eventTime.isEndDateValid() && binding.layout.eventDate.text.isNotBlank()
     }
 
     private fun isStartTimeValid(): Boolean {
-        return binding.layout.startTime.text.isNotEmpty() && binding.layout.eventDate.text.isNotBlank()
+        return binding.layout.eventTime.isStartTimeValid() && binding.layout.eventDate.text.isNotBlank()
     }
 
     private fun isDateValid(): Boolean {
         return binding.layout.eventDate.text.isNotEmpty() && binding.layout.eventDate.text.isNotBlank()
+    }
+
+    private fun setView() {
+        with(CommunicationHandler.eventEdited) {
+            this?.let {
+                binding.layout.recurrenceTitle.root.isVisible = this.recurrence == null
+                binding.layout.recurrence.isVisible = this.recurrence == null
+                val sdfDate = SimpleDateFormat(getString(R.string.events_date), Locale.FRANCE)
+                val sdfTime = SimpleDateFormat(getString(R.string.events_time), Locale.FRANCE)
+                binding.layout.eventDate.setText(this.metadata?.startsAt?.let { it1 ->
+                    sdfDate.format(
+                        it1
+                    )
+                })
+                binding.layout.eventTime.setStartTime(this.metadata?.startsAt?.let { it1 ->
+                    sdfTime.format(
+                        it1
+                    )
+                })
+                binding.layout.eventTime.setEndTime(this.metadata?.endsAt?.let { it1 ->
+                    sdfTime.format(
+                        it1
+                    )
+                })
+            }
+        }
     }
 }

@@ -63,18 +63,6 @@
             android:padding="10dp"
             android:textAllCaps="false" />
 
-        <Button
-            android:id="@+id/no"
-            style="@style/h2_white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/new_alert_dialog_button_no"
-            android:padding="10dp"
-            android:text="@string/cancel"
-            android:textAllCaps="false" />
-
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -18,6 +18,7 @@ class Interest(
                 nature -> R.drawable.new_nature
                 sport -> R.drawable.new_sport
                 activities -> R.drawable.new_drawing
+                marauding -> R.drawable.new_encounters
                 else -> R.drawable.new_others
             }
         }
@@ -35,6 +36,7 @@ class Interest(
         private const val nature = "nature"
         private const val sport = "sport"
         private const val activities = "activites"
+        private const val marauding = "marauding"
 
         fun getIconFromId(id: String): Int = when (id) {
             animals -> R.drawable.new_interests_animal_item
@@ -45,6 +47,7 @@ class Interest(
             nature -> R.drawable.new_interests_nature_item
             sport -> R.drawable.new_interests_sport_item
             activities -> R.drawable.new_interests_drawing_item
+            marauding -> R.drawable.new_interests_encounters_item
             else -> R.drawable.new_interests_other_item
         }
     }

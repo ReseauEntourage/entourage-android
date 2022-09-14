@@ -15,6 +15,7 @@ import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.list.groupPerPage
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.utils.Const
+import timber.log.Timber
 
 
 class CreateEventStepFiveFragment : Fragment() {
@@ -25,7 +26,7 @@ class CreateEventStepFiveFragment : Fragment() {
     private var selectedGroupsIdList: MutableList<Int> = mutableListOf()
     private var myId: Int? = null
     private var page: Int = 0
-    private var groupID = Const.DEFAULT_VALUE
+    private var groupID: Int? = null
 
 
     override fun onCreateView(
@@ -39,12 +40,18 @@ class CreateEventStepFiveFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         myId = EntourageApplication.me(activity)?.id
-        groupID = activity?.intent?.getIntExtra(Const.GROUP_ID, Const.DEFAULT_VALUE)!!
+        groupID = activity?.intent?.getIntExtra(Const.GROUP_ID, Const.DEFAULT_VALUE)
         setShareSelection()
         initializeGroups()
         loadGroups()
+        setView()
         groupPresenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleResponseGetGroups)
-        selectedGroupsIdList.add(groupID)
+        groupID?.let {
+            if (groupID != Const.DEFAULT_VALUE) {
+                selectedGroupsIdList.add(it)
+                CommunicationHandler.event.neighborhoodIds.add(it)
+            }
+        }
     }
 
 
@@ -52,6 +59,8 @@ class CreateEventStepFiveFragment : Fragment() {
         allGroups?.let { groupsList.addAll(it) }
         groupsList.forEach {
             if (it.id == groupID) it.isSelected = true
+            if (CommunicationHandler.eventEdited?.neighborhoods?.map { group -> group.id }
+                    ?.contains(it.id) == true) it.isSelected = true
         }
         binding.layout.recyclerView.adapter?.notifyDataSetChanged()
     }
@@ -64,8 +73,10 @@ class CreateEventStepFiveFragment : Fragment() {
         }
         binding.layout.rbShareInGroups.setOnCheckedChangeListener { _, checkedId ->
             binding.layout.recyclerView.isVisible = checkedId == R.id.share_in_groups
+
             CommunicationHandler.isButtonClickable.value =
                 (checkedId == R.id.dont_share) || (checkedId == R.id.share_in_groups && selectedGroupsIdList.isNotEmpty())
+
             if (checkedId == R.id.dont_share) CommunicationHandler.event.neighborhoodIds.clear()
             else CommunicationHandler.event.neighborhoodIds.addAll(selectedGroupsIdList)
         }
@@ -131,7 +142,7 @@ class CreateEventStepFiveFragment : Fragment() {
                 CommunicationHandler.isCondition.value = false
                 binding.layout.error.root.visibility = View.VISIBLE
                 binding.layout.error.errorMessage.text =
-                    getString(R.string.error_categories_create_group_image)
+                    getString(R.string.error_mandatory_fields)
             } else {
                 CommunicationHandler.isCondition.value = true
                 binding.layout.error.root.visibility = View.GONE
@@ -144,6 +155,22 @@ class CreateEventStepFiveFragment : Fragment() {
         return selectedGroupsIdList.isNotEmpty()
     }
 
+    private fun setView() {
+        with(CommunicationHandler.eventEdited) {
+            this?.let {
+                if (this.neighborhoods?.isEmpty() == true) binding.layout.dontShare.isChecked = true
+                else {
+                    binding.layout.shareInGroups.isChecked = true
+                    CommunicationHandler.eventEdited?.neighborhoods?.map { group -> group.id }
+                        ?.toMutableList()?.forEach {
+                            if (it != null) {
+                                selectedGroupsIdList.add(it)
+                            }
+                        }
+                }
+            }
+        }
+    }
 
     override fun onResume() {
         super.onResume()
