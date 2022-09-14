@@ -1,6 +1,7 @@
 package social.entourage.android.new_v8.groups.details.members
 
 
+import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import com.bumptech.glide.Glide
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.databinding.NewGroupMemberItemBinding
+import social.entourage.android.new_v8.user.UserProfileActivity
 import social.entourage.android.new_v8.utils.Const
 
 class MembersListAdapter(
@@ -46,6 +48,14 @@ class MembersListAdapter(
                         .placeholder(R.drawable.ic_user_photo_small)
                         .circleCrop()
                         .into(binding.picture)
+                }
+                binding.layout.setOnClickListener {
+                    binding.picture.context.startActivity(
+                        Intent(binding.picture.context, UserProfileActivity::class.java).putExtra(
+                            Const.USER_ID,
+                            this.userId
+                        )
+                    )
                 }
             }
         }
