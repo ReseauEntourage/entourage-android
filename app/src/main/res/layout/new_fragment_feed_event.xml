@@ -32,8 +32,8 @@
 
             <ImageView
                 android:id="@+id/event_image_toolbar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="15dp"
                 android:src="@drawable/new_group_illu_toolbar" />
@@ -72,7 +72,7 @@
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/toolbar_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="154dp"
                 android:animateLayoutChanges="true"
                 android:elevation="1dp"
                 android:fitsSystemWindows="true"
