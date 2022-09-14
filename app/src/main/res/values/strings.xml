@@ -420,5 +420,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="date_of_event">Date de l’événement</string>
     <string name="edit_event">Editer l\'événement</string>
     <string name="event_edit_recurrent_event">Modifier un évènement récurrent</string>
+    <string name="error_event_end_time">L\'heure de fin ne peut pas dépasser minuit</string>
+
 
 </resources>
