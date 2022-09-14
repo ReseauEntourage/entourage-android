@@ -5,7 +5,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.EditText
-import android.widget.TimePicker
 import androidx.constraintlayout.widget.ConstraintLayout
 import social.entourage.android.R
 import social.entourage.android.databinding.NewTimePickerStartEndBinding
@@ -13,6 +12,8 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
+
+const val HOURS_START_END_INTERVAL = 3
 
 class TimePickerStartEnd @JvmOverloads constructor(
     context: Context,
@@ -66,26 +67,19 @@ class TimePickerStartEnd @JvmOverloads constructor(
     }
 
     private fun startTimeTransformIntoTimePicker(format: String) {
-        isFocusableInTouchMode = false
-        isClickable = true
-        isFocusable = false
         binding.startTime.setOnClickListener {
             val endTimeString = binding.endTime.text.toString()
             val sdf = SimpleDateFormat(format, Locale.FRANCE)
             val myCalendar = Calendar.getInstance()
 
-            val endTime = try {
-                sdf.parse(endTimeString)
-            } catch (e: ParseException) {
-                null
-            }
+            val endTime = parseTime(format, endTimeString)
 
             if (endTime != null) {
                 myCalendar.time = endTime
             }
 
             val startTime = if (endTime != null) (myCalendar
-                .get(Calendar.HOUR_OF_DAY) - 3) else myCalendar
+                .get(Calendar.HOUR_OF_DAY) - HOURS_START_END_INTERVAL) else myCalendar
                 .get(Calendar.HOUR_OF_DAY)
 
             val timePickerOnDataSetListener =
@@ -105,26 +99,19 @@ class TimePickerStartEnd @JvmOverloads constructor(
     }
 
     private fun endTimeTransformIntoTimePicker(format: String) {
-        isFocusableInTouchMode = false
-        isClickable = true
-        isFocusable = false
         binding.endTime.setOnClickListener {
             val startTimeString = binding.startTime.text.toString()
             val sdf = SimpleDateFormat(format, Locale.FRANCE)
             val myCalendar = Calendar.getInstance()
 
-            val startTime = try {
-                sdf.parse(startTimeString)
-            } catch (e: ParseException) {
-                null
-            }
+            val startTime = parseTime(format, startTimeString)
 
             if (startTime != null) {
                 myCalendar.time = startTime
             }
 
             val endTime = if (startTime != null) (myCalendar
-                .get(Calendar.HOUR_OF_DAY) + 3) else myCalendar
+                .get(Calendar.HOUR_OF_DAY) + HOURS_START_END_INTERVAL) else myCalendar
                 .get(Calendar.HOUR_OF_DAY)
 
             val timePickerOnDataSetListener =
@@ -138,24 +125,25 @@ class TimePickerStartEnd @JvmOverloads constructor(
                 context, timePickerOnDataSetListener, endTime, myCalendar.get(Calendar.MINUTE),
                 true
             ).run {
-                val timePicker: TimePicker
                 show()
             }
         }
     }
 
     fun checkTimeValidity(): Boolean? {
-        val sdf = SimpleDateFormat(context.getString(R.string.events_time), Locale.FRANCE)
-        val startTime = try {
-            sdf.parse(binding.startTime.text.toString())
-        } catch (e: ParseException) {
-            null
-        }
-        val endTime = try {
-            sdf.parse(binding.endTime.text.toString())
-        } catch (e: ParseException) {
-            null
-        }
+        val startTime =
+            parseTime(context.getString(R.string.events_time), binding.startTime.text.toString())
+        val endTime =
+            parseTime(context.getString(R.string.events_time), binding.endTime.text.toString())
         return endTime?.after(startTime)
+    }
+
+    private fun parseTime(format: String, time: String): Date? {
+        val sdf = SimpleDateFormat(format, Locale.FRANCE)
+        return try {
+            sdf.parse(time)
+        } catch (e: ParseException) {
+            null
+        }
     }
 }
