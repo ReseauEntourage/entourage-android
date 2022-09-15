@@ -43,6 +43,6 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
         android:layout_marginTop="4dp"
-        android:maxLines="2"
+        android:maxLines="1"
         tools:text="Paris 8" />
 </LinearLayout>
