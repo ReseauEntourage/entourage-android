@@ -138,7 +138,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:checkedButton="@+id/yes"
+            android:checkedButton="@+id/no"
             android:orientation="vertical"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/event_limited_place_title">
@@ -164,6 +164,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/event_limited_place"
             app:mandatory="@{@string/mandatory}"
             app:title="@{@string/event_available_places}" />
@@ -178,6 +179,7 @@
             android:backgroundTint="@color/light_orange_opacity_50"
             android:hint="@string/event_places"
             android:inputType="number"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/event_limited_place_count_title"
             tools:text="content" />
 

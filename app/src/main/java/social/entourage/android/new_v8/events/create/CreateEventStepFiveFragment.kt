@@ -138,7 +138,7 @@ class CreateEventStepFiveFragment : Fragment() {
 
     private fun handleOnClickNext(onClick: Boolean) {
         if (onClick) {
-            if (selectedGroupsIdList.isEmpty()) {
+            if (binding.layout.shareInGroups.isChecked && selectedGroupsIdList.isEmpty()) {
                 CommunicationHandler.isCondition.value = false
                 binding.layout.error.root.visibility = View.VISIBLE
                 binding.layout.error.errorMessage.text =
