@@ -16,14 +16,14 @@
         android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp">
+        android:paddingTop="5dp">
 
         <TextView
             android:id="@+id/tv_label"
             style="@style/notifications_items"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             android:text="@{label}"
             app:layout_constraintBottom_toTopOf="@id/divider"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -35,7 +35,7 @@
             style="@style/ColorSwitchStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             app:layout_constraintBottom_toTopOf="@id/divider"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

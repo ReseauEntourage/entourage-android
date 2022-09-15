@@ -200,6 +200,16 @@
                     android:layout_marginStart="35dp"
                     android:paddingBottom="20dp"
                     android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/cancel"
+                    style="@style/left_courant_bold_orange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="35dp"
+                    android:paddingBottom="20dp"
+                    android:visibility="gone" />
+
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
