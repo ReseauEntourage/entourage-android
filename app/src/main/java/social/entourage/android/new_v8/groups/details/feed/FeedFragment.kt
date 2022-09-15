@@ -208,6 +208,7 @@ class FeedFragment : Fragment() {
 
     private fun handleSwipeRefresh() {
         binding.swipeRefresh.setOnRefreshListener {
+            groupPresenter.getGroup(groupId)
             page = 0
             loadPosts()
         }
@@ -271,8 +272,10 @@ class FeedFragment : Fragment() {
             }
             if (group.futureEvents?.isEmpty() == true) {
                 binding.eventsLayoutEmptyState.visibility = View.VISIBLE
+                binding.eventsRecyclerview.visibility = View.GONE
             } else {
                 binding.eventsRecyclerview.visibility = View.VISIBLE
+                binding.eventsLayoutEmptyState.visibility = View.GONE
                 initializeEvents()
             }
             binding.seeMoreEvents.isVisible = group.futureEvents?.isNotEmpty() == true

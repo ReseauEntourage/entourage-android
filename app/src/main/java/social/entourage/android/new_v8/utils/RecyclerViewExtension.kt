@@ -1,6 +1,7 @@
 package social.entourage.android.new_v8.utils
 
 import android.content.Context
+import android.util.Log
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 
