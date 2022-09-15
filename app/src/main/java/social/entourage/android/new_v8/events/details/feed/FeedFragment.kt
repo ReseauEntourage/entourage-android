@@ -471,8 +471,7 @@ class FeedFragment : Fragment() {
 
     private fun onFragmentResult() {
         setFragmentResultListener(Const.REQUEST_KEY_SHOULD_REFRESH) { _, bundle ->
-            val shouldRefresh = bundle.getBoolean(Const.SHOULD_REFRESH)
-            if (shouldRefresh) eventPresenter.getEvent(eventId)
+            if (bundle.getBoolean(Const.SHOULD_REFRESH)) eventPresenter.getEvent(eventId)
         }
     }
 }
