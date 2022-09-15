@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
@@ -22,8 +23,8 @@ import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.focusAndShowKeyboard
 import social.entourage.android.new_v8.utils.scrollToPositionSmooth
-import timber.log.Timber
 import java.util.*
+
 
 abstract class CommentActivity : AppCompatActivity() {
     lateinit var binding: NewActivityCommentsBinding
@@ -64,8 +65,19 @@ abstract class CommentActivity : AppCompatActivity() {
         commentsList.clear()
         allComments?.let { commentsList.addAll(it) }
         binding.progressBar.visibility = View.GONE
-        binding.comments.scrollToPositionSmooth(commentsList.size)
-        allComments?.isEmpty()?.let { updateView(false) }
+        allComments?.isEmpty()?.let { updateView(it) }
+        scrollAfterLayout()
+    }
+
+    private fun scrollAfterLayout() {
+        binding.comments.viewTreeObserver
+            .addOnGlobalLayoutListener(
+                object : OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+                        binding.comments.scrollToPositionSmooth(commentsList.size)
+                        binding.comments.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    }
+                })
     }
 
     protected fun handleCommentPosted(post: Post?) {
