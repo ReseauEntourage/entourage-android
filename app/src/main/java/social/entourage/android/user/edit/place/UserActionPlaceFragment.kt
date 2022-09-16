@@ -170,8 +170,8 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
 
     @SuppressLint("MissingPermission")
     protected fun startRequestLocation() {
-        if (LocationUtils.isLocationEnabled()) {
-            if(mFusedLocationClient==null) {
+        if (LocationUtils.isLocationPermissionGranted()) {
+            //if(mFusedLocationClient==null) {
                 ui_onboard_place_tv_location?.text = ""
                 ui_onboard_place_tv_location?.hint =
                     getString(R.string.onboard_place_getting_current_location)
@@ -181,13 +181,17 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
                     mLocationCallback,
                     null
                 )
-            } else {
+            /* else {
+                if(mFusedLocationClient?.lastLocation?.isComplete == false) {
+                    Toast.makeText(requireActivity(), "...", Toast.LENGTH_LONG).show()
+                    Thread.sleep(15000)
+                }
                 if(mFusedLocationClient?.lastLocation?.isComplete == true) {
                     updateLocationText(mFusedLocationClient?.lastLocation?.result)
                 } else {
                     Toast.makeText(requireActivity(), "En attente de localisation", Toast.LENGTH_LONG).show()
                 }
-            }
+            //}*/
         } else {
             Toast.makeText(requireActivity(), "Activez la localisation", Toast.LENGTH_LONG).show()
         }

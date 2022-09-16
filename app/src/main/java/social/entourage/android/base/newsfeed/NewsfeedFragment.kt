@@ -33,7 +33,6 @@ import social.entourage.android.api.model.feed.*
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.base.location.EntLocation
-import social.entourage.android.base.location.LocationUtils.isLocationEnabled
 import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
 import social.entourage.android.base.map.*
 import social.entourage.android.base.map.filter.MapFilterFactory
@@ -124,7 +123,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
 
     override fun onStart() {
         super.onStart()
-        if (!isLocationEnabled() && !isLocationPermissionGranted()) {
+        if (!isLocationPermissionGranted()) {
             (activity as? MainActivity)?.showEditActionZoneFragment(this,false)
         }
         fragment_map_feeditems_view?.addOnScrollListener(scrollListener)
@@ -663,8 +662,8 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
     override fun updateGeolocBanner(active: Boolean) {
         if (fragment_map_gps != null) {
             //we force it because we don't need geoloc when Action zone is set
-            val visibility = (!isLocationEnabled() || !isLocationPermissionGranted()) && needForGeoloc()
-            fragment_map_gps?.text = if (isLocationEnabled()) getString(R.string.map_gps_no_permission) else getString(R.string.map_gps_unavailable)
+            val visibility = (!isLocationPermissionGranted()) && needForGeoloc()
+            fragment_map_gps?.text = if (isLocationPermissionGranted()) getString(R.string.map_gps_no_permission) else getString(R.string.map_gps_unavailable)
             fragment_map_gps?.visibility = if (visibility) View.VISIBLE else View.GONE
             if(!visibility && isFullMapShown) {
                 animFullMap()

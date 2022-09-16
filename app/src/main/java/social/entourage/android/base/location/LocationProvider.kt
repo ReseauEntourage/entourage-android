@@ -54,7 +54,7 @@ class LocationProvider(
     @SuppressLint("MissingPermission")
     private fun requestLocationUpdates() {
         locationListener?.let {
-        if (isLocationPermissionGranted()) {
+            if (isLocationPermissionGranted()) {
             //TODO add a looper here
                 LocationServices.getFusedLocationProviderClient(context)
                     .requestLocationUpdates(createLocationRequest(), it, null)
@@ -63,9 +63,11 @@ class LocationProvider(
     }
 
     private fun removeLocationUpdates() {
-        if (isLocationPermissionGranted() && locationListener != null) {
-            LocationServices.getFusedLocationProviderClient(context)
-                .removeLocationUpdates(locationListener!!)
+        locationListener?.let  { locationListener ->
+            if (isLocationPermissionGranted()) {
+                LocationServices.getFusedLocationProviderClient(context)
+                    .removeLocationUpdates(locationListener)
+            }
         }
     }
 }

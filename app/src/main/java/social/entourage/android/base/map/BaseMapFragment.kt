@@ -37,7 +37,6 @@ import social.entourage.android.base.BaseFragment
 import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.base.location.LocationUpdateListener
-import social.entourage.android.base.location.LocationUtils.isLocationEnabled
 import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -231,7 +230,7 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
                 .setPositiveButton(R.string.activate) { _: DialogInterface?, _: Int ->
                     AnalyticsEvents.logEvent(eventName)
                     try {
-                        if (isLocationEnabled()
+                        if (isLocationPermissionGranted()
                             || shouldShowRequestPermissionRationale(ACCESS_COARSE_LOCATION)
                         ) {
                             requestPermissionLauncher.launch(arrayOf(ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION))
@@ -262,7 +261,7 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
         updateGeolocBanner(event.isPermissionGranted)
 
     protected open fun updateGeolocBanner(active: Boolean) {
-        adapter?.setGeolocStatusIcon(isLocationEnabled() && isLocationPermissionGranted())
+        adapter?.setGeolocStatusIcon(isLocationPermissionGranted())
         try {
             map?.isMyLocationEnabled = isLocationPermissionGranted()
         } catch (ex: SecurityException) {
@@ -275,7 +274,7 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
     protected fun onFollowGeolocation() {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_RECENTERCLICK)
         // Check if geolocation is enabled
-        if (!isLocationEnabled() || !isLocationPermissionGranted()) {
+        if (!isLocationPermissionGranted()) {
             showAllowGeolocationDialog(GEOLOCATION_POPUP_RECENTER)
             return
         }

@@ -22,7 +22,6 @@ import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BackPressable
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.base.location.EntLocation.currentLocation
-import social.entourage.android.base.location.LocationUtils.isLocationEnabled
 import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
 import social.entourage.android.deeplinks.DeepLinksManager.handleCurrentDeepLink
 import social.entourage.android.deeplinks.DeepLinksManager.storeIntent
@@ -213,7 +212,7 @@ class MainActivity : BaseSecuredActivity(),
     }
 
     private fun displayLocationProviderDisabledAlert() {
-        if (isLocationEnabled() && isLocationPermissionGranted()) {
+        if (isLocationPermissionGranted()) {
             Timber.i("No need to ask for permission: false alert...")
             return
         }

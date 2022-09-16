@@ -84,7 +84,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
     // ----------------------------------
     override fun onStart() {
         super.onStart()
-        if (!LocationUtils.isLocationEnabled() && !LocationUtils.isLocationPermissionGranted()) {
+        if (!LocationUtils.isLocationPermissionGranted()) {
             (activity as? MainActivity)?.showEditActionZoneFragment(this,false)
         }
     }
