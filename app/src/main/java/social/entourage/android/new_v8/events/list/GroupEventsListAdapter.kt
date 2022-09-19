@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.intrusoft.sectionedrecyclerview.SectionRecyclerViewAdapter
 import social.entourage.android.R
 import social.entourage.android.databinding.NewEventItemBinding
@@ -19,6 +21,7 @@ import social.entourage.android.new_v8.models.Events
 import social.entourage.android.new_v8.models.Status
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -112,13 +115,21 @@ class GroupEventsListAdapter(
                 participantsCount
             )
 
-        Glide.with(context)
-            .load(Uri.parse(child.metadata?.landscapeThumbnailUrl))
-            .placeholder(R.drawable.ic_user_photo_small)
-            .override(90.px, 90.px)
-            .fitCenter()
-            .transform(RoundedCorners(20.px))
-            .into(childViewHolder.binding.image)
+        child.metadata?.landscapeThumbnailUrl?.let {
+            Glide.with(context)
+                .load(Uri.parse(child.metadata?.landscapeThumbnailUrl))
+                .placeholder(R.drawable.ic_event_placeholder)
+                .error(R.drawable.ic_event_placeholder)
+                .apply(RequestOptions().override(90.px, 90.px))
+                .transform(CenterCrop(), RoundedCorners(20.px))
+                .into(childViewHolder.binding.image)
+        } ?: run {
+            Glide.with(context)
+                .load(R.drawable.ic_event_placeholder)
+                .apply(RequestOptions().override(90.px, 90.px))
+                .transform(CenterCrop(), RoundedCorners(20.px))
+                .into(childViewHolder.binding.image)
+        }
 
         childViewHolder.binding.star.isVisible = child.author?.userID == userId
         childViewHolder.binding.admin.isVisible = child.author?.userID == userId

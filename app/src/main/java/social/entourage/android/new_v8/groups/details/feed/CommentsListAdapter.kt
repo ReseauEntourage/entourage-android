@@ -1,5 +1,6 @@
 package social.entourage.android.new_v8.groups.details.feed
 
+import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.new_comment_item_left.view.*
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.new_v8.models.Post
+import social.entourage.android.new_v8.user.UserProfileActivity
+import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
 import java.text.SimpleDateFormat
 import java.util.*
@@ -61,6 +65,19 @@ class CommentsListAdapter(
                         .apply(RequestOptions().override(25.px, 25.px))
                         .circleCrop()
                         .into(binding.image)
+                }
+            }
+
+            val isMe = comment.user?.userId == EntourageApplication.get().me()?.id
+            binding.report.visibility = if (isMe) View.GONE else View.VISIBLE
+            if (!isMe) {
+                binding.image.setOnClickListener {
+                    binding.image.context.startActivity(
+                        Intent(binding.image.context, UserProfileActivity::class.java).putExtra(
+                            Const.USER_ID,
+                            comment.user?.userId
+                        )
+                    )
                 }
             }
         }

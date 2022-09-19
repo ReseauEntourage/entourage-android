@@ -1,5 +1,7 @@
 package social.entourage.android.new_v8.comment
 
+import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
 import social.entourage.android.databinding.NewLayoutPostBinding
 import social.entourage.android.new_v8.models.Post
+import social.entourage.android.new_v8.user.UserProfileActivity
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
 import java.text.SimpleDateFormat
@@ -83,8 +86,25 @@ class PostAdapter(
                         .circleCrop()
                         .into(binding.image)
                 }
+
+                binding.name.setOnClickListener {
+                    showUserDetail(binding.name.context,this.user?.userId)
+                }
+
+                binding.image.setOnClickListener {
+                    showUserDetail(binding.image.context,this.user?.userId)
+                }
             }
         }
+    }
+
+    private fun showUserDetail(context:Context,userId:Int?) {
+        context.startActivity(
+            Intent(context, UserProfileActivity::class.java).putExtra(
+                Const.USER_ID,
+                userId
+            )
+        )
     }
 
     override fun getItemCount(): Int {

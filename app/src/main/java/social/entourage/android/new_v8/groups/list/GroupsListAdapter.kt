@@ -68,10 +68,19 @@ class GroupsListAdapter(
                     Glide.with(binding.image.context)
                         .load(Uri.parse(it))
                         .apply(RequestOptions().override(90.px, 90.px))
-                        .placeholder(R.drawable.new_illu_header_group)
+                        .placeholder(R.drawable.ic_group_placeholder)
+                        .error(R.drawable.ic_group_placeholder)
+                        .transform(CenterCrop(), RoundedCorners(20.px))
+                        .into(binding.image)
+                } ?: run {
+                    Glide.with(binding.image.context)
+                        .load(R.drawable.ic_group_placeholder)
+                        .apply(RequestOptions().override(90.px, 90.px))
                         .transform(CenterCrop(), RoundedCorners(20.px))
                         .into(binding.image)
                 }
+
+
                 val listAdapter = GroupsInterestsListAdapter(this.interests)
                 if (userId == groupsList[position].admin?.id) {
                     binding.admin.visibility = View.VISIBLE
