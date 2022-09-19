@@ -52,7 +52,7 @@ class FeedFragment : Fragment() {
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
     private var interestsList: ArrayList<String> = ArrayList()
     private var groupId = -1
-    private lateinit var group: Group
+    private var group: Group? = null
     private lateinit var groupUI: SettingUiModel
     private var myId: Int? = null
     private val args: FeedFragmentArgs by navArgs()
@@ -222,7 +222,7 @@ class FeedFragment : Fragment() {
     }
 
     private fun handleCreatePostButton() {
-        if (group.member) {
+        if (group?.member == true) {
             binding.createPost.show()
             binding.eventsLayoutEmptyState.empty_state_events_subtitle.visibility = View.VISIBLE
             binding.postsLayoutEmptyState.subtitle.visibility = View.VISIBLE
@@ -249,15 +249,15 @@ class FeedFragment : Fragment() {
     private fun updateView() {
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         with(binding) {
-            groupName.text = group.name
-            groupNameToolbar.text = group.name
+            groupName.text = group?.name
+            groupNameToolbar.text = group?.name
             groupMembersNumberLocation.text = String.format(
                 getString(R.string.members_location),
-                group.members_count,
-                group.address?.displayAddress
+                group?.members_count,
+                group?.address?.displayAddress
             )
             initializeMembersPhotos()
-            if (group.member) {
+            if (group?.member == true) {
                 more.visibility = View.VISIBLE
                 join.visibility = View.GONE
                 toKnow.visibility = View.GONE
@@ -266,11 +266,11 @@ class FeedFragment : Fragment() {
                 join.visibility = View.VISIBLE
                 toKnow.visibility = View.VISIBLE
                 groupDescription.visibility = View.VISIBLE
-                groupDescription.text = group.description
+                groupDescription.text = group?.description
                 more.visibility = View.GONE
                 initializeInterests()
             }
-            if (group.futureEvents?.isEmpty() == true) {
+            if (group?.futureEvents?.isEmpty() == true) {
                 binding.eventsLayoutEmptyState.visibility = View.VISIBLE
                 binding.eventsRecyclerview.visibility = View.GONE
             } else {
@@ -278,35 +278,37 @@ class FeedFragment : Fragment() {
                 binding.eventsLayoutEmptyState.visibility = View.GONE
                 initializeEvents()
             }
-            binding.seeMoreEvents.isVisible = group.futureEvents?.isNotEmpty() == true
-            binding.arrowEvents.isVisible = group.futureEvents?.isNotEmpty() == true
+            binding.seeMoreEvents.isVisible = group?.futureEvents?.isNotEmpty() == true
+            binding.arrowEvents.isVisible = group?.futureEvents?.isNotEmpty() == true
             /*
-            Glide.with(requireActivity())
-                .load(Uri.parse(group.imageUrl))
-                .centerCrop()
-                .into(groupImage)
-             */
+        Glide.with(requireActivity())
+            .load(Uri.parse(group.imageUrl))
+            .centerCrop()
+            .into(groupImage)
+         */
         }
+
         updateButtonJoin()
         initializePosts()
         handleCreatePostButton()
     }
 
     private fun updateButtonJoin() {
+        val isMember = group?.member == true
         val label =
-            getString(if (group.member) R.string.member else R.string.join)
+            getString(if (isMember) R.string.member else R.string.join)
         val textColor = ContextCompat.getColor(
             requireContext(),
-            if (group.member) R.color.orange else R.color.white
+            if (isMember) R.color.orange else R.color.white
         )
         val background = ResourcesCompat.getDrawable(
             resources,
-            if (group.member) R.drawable.new_bg_rounded_button_orange_stroke else R.drawable.new_bg_rounded_button_orange_fill,
+            if (isMember) R.drawable.new_bg_rounded_button_orange_stroke else R.drawable.new_bg_rounded_button_orange_fill,
             null
         )
         val rightDrawable = ResourcesCompat.getDrawable(
             resources,
-            if (group.member) R.drawable.new_check else R.drawable.new_plus_white,
+            if (isMember) R.drawable.new_check else R.drawable.new_plus_white,
             null
         )
         binding.join.text = label
@@ -326,16 +328,18 @@ class FeedFragment : Fragment() {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_FEED_JOIN
             )
-            if (!group.member) groupPresenter.joinGroup(groupId)
+            if (!(group?.member == true)) groupPresenter.joinGroup(groupId)
         }
     }
 
 
     private fun handleJoinResponse(hasJoined: Boolean) {
-        if (hasJoined) {
-            group.member = !group.member
-            updateButtonJoin()
-            handleCreatePostButton()
+        group?.let {
+            if (hasJoined) {
+                group?.member = !it.member
+                updateButtonJoin()
+                handleCreatePostButton()
+            }
         }
     }
 
@@ -343,14 +347,14 @@ class FeedFragment : Fragment() {
     private fun initializeMembersPhotos() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = group.members?.let { GroupMembersPhotosAdapter(it) }
+            adapter = group?.members?.let { GroupMembersPhotosAdapter(it) }
         }
     }
 
     private fun initializeEvents() {
         binding.eventsRecyclerview.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = group.futureEvents?.let { GroupEventsAdapter(it) }
+            adapter = group?.futureEvents?.let { GroupEventsAdapter(it) }
         }
     }
 
@@ -378,12 +382,12 @@ class FeedFragment : Fragment() {
             Intent(context, GroupCommentActivity::class.java)
                 .putExtras(
                     bundleOf(
-                        Const.ID to group.id,
+                        Const.ID to group?.id,
                         Const.POST_ID to post.id,
                         Const.POST_AUTHOR_ID to post.user?.userId,
                         Const.SHOULD_OPEN_KEYBOARD to shouldOpenKeyboard,
-                        Const.IS_MEMBER to group.member,
-                        Const.NAME to group.name
+                        Const.IS_MEMBER to group?.member,
+                        Const.NAME to group?.name
                     )
                 )
         )
@@ -421,18 +425,22 @@ class FeedFragment : Fragment() {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_FEED_OPTION
             )
-            with(group) {
-                groupUI = SettingUiModel(
-                    groupId, name,
-                    members_count,
-                    address?.displayAddress,
-                    interests,
-                    description,
-                    members,
-                    member,
-                    EntourageApplication.me(activity)?.id == admin?.id
-                )
+
+            group?.let {
+                with(it) {
+                    groupUI = SettingUiModel(
+                        groupId, name,
+                        members_count,
+                        address?.displayAddress,
+                        interests,
+                        description,
+                        members,
+                        member,
+                        EntourageApplication.me(activity)?.id == admin?.id
+                    )
+                }
             }
+
             SettingsModalFragment.newInstance(groupUI)
                 .show(parentFragmentManager, SettingsModalFragment.TAG)
         }
@@ -451,12 +459,12 @@ class FeedFragment : Fragment() {
 
     private fun handleGroupEventsButton() {
         binding.seeMoreEvents.setOnClickListener {
-            group.name?.let { name ->
+            group?.name?.let { name ->
                 val action =
                     FeedFragmentDirections.actionGroupFeedToGroupEventsList(
                         groupId,
                         name,
-                        group.member
+                        group?.member == true
                     )
                 findNavController().navigate(action)
             }
@@ -468,25 +476,29 @@ class FeedFragment : Fragment() {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_FEED_MORE_DESCRIPTION
             )
-            groupUI = SettingUiModel(
-                groupId,
-                group.name,
-                group.members_count,
-                group.displayAddress,
-                group.interests,
-                group.description,
-                group.members,
-                group.member,
-                EntourageApplication.me(activity)?.id == group.admin?.id
-            )
+            group?.let {
+                groupUI = SettingUiModel(
+                    groupId,
+                    it.name,
+                    it.members_count,
+                    it.displayAddress,
+                    it.interests,
+                    it.description,
+                    it.members,
+                    it.member,
+                    EntourageApplication.me(activity)?.id == it.admin?.id
+                )
+            }
             val action = FeedFragmentDirections.actionGroupFeedToGroupAbout(groupUI)
             findNavController().navigate(action)
         }
     }
 
     private fun handleMetaData(tags: Tags?) {
+        if (group == null) return
+
         interestsList.clear()
-        val groupInterests = group.interests
+        val groupInterests = group!!.interests
         tags?.interests?.forEach { interest ->
             if (groupInterests.contains(interest.id)) interest.name?.let { it ->
                 interestsList.add(
