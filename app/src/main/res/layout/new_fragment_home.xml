@@ -72,7 +72,8 @@
                 android:layout_marginBottom="32dp"
                 android:orientation="vertical"
                 android:paddingHorizontal="26dp"
-                android:paddingTop="32dp"
+                android:paddingTop="16dp
+"
                 app:layout_constraintTop_toBottomOf="@id/header">
 
                 <TextView
@@ -80,7 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="2"
-                    android:paddingBottom="12dp"
+                    android:paddingBottom="8dp"
                     android:text="@string/want_to_act"
                     tools:text="@string/want_to_act" />
 
@@ -103,18 +104,18 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:maxLines="2"
-                    android:paddingBottom="12dp"
+                    android:paddingBottom="8dp"
                     android:text="@string/contributions_title"
                     tools:text="Vos contributions au réseau entourage :" />
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="12dp" />
+                    android:layout_height="2dp" />
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/meeting_card"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="116dp"
                     android:background="@drawable/new_bg_rounded_shadow"
                     android:elevation="3dp"
                     android:orientation="horizontal"
@@ -125,12 +126,15 @@
 
                     <LinearLayout
                         android:id="@+id/meeting_informations"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
                         android:orientation="vertical"
-                        android:paddingHorizontal="22dp"
-                        android:paddingVertical="16dp">
+                        android:paddingStart="16dp"
+                        android:paddingVertical="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/meeting_icon"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
                             android:id="@+id/meeting_label"
@@ -177,13 +181,17 @@
 
                     <ImageView
                         android:id="@+id/meeting_icon"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="154dp"
+                        android:layout_height="0dp"
                         android:layout_gravity="bottom"
-                        android:layout_weight="1.5"
-                        app:srcCompat="@drawable/hub_number4" />
+                        android:layout_marginBottom="4dp"
+                        android:layout_weight="0.5"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/new_illu_empty_state_event" />
 
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <Space
                     android:layout_width="match_parent"
@@ -192,7 +200,7 @@
                 <LinearLayout
                     android:id="@+id/contribution_cards"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="78dp"
                     android:orientation="horizontal"
                     android:weightSum="2">
 
@@ -200,7 +208,7 @@
                         android:id="@+id/group_card"
                         layout="@layout/new_home_small_card"
                         android:layout_width="0dp"
-                        android:layout_height="92dp"
+                        android:layout_height="78dp"
                         android:layout_weight="1"
                         app:emptyLabel="@{@string/contributions_group_empty}"
                         app:icon="@{@drawable/new_icon_home_empty_groupes}"
@@ -210,7 +218,7 @@
                         android:id="@+id/event_card"
                         layout="@layout/new_home_small_card"
                         android:layout_width="0dp"
-                        android:layout_height="92dp"
+                        android:layout_height="78dp"
                         android:layout_marginLeft="8dp"
                         android:layout_weight="1"
                         app:emptyLabel="@{@string/contributions_event_empty}"
@@ -225,7 +233,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:maxLines="2"
-                    android:paddingBottom="12dp"
+                    android:paddingBottom="8dp"
                     android:text="@string/need_help"
                     tools:text="@string/need_help" />
 

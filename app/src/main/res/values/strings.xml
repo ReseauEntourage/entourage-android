@@ -301,8 +301,10 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="contributions_message">Messages envoyés</string>
     <string name="contributions_message_empty">Pas encore de messages envoyés</string>
     <string name="contributions_event">Participations à des événements</string>
+    <string name="contribution_event">Participation à un événement</string>
     <string name="contributions_event_empty">Pas d\'événements auquels vous avez participé</string>
     <string name="contributions_group">Groupes rejoints</string>
+    <string name="contribution_group">Groupe rejoint</string>
     <string name="contributions_group_empty">Vous n\'avez pas encore rejoint de groupe de voisins</string>
     <string name="zero">0</string>
     <string name="all_pedago_content">Tout le contenu pédagogique</string>

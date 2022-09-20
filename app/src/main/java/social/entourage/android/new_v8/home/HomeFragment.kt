@@ -70,12 +70,14 @@ class HomeFragment : Fragment() {
                 eventCard.value.text = it.toString()
                 eventCard.isEmpty.isVisible = it <= 0
                 eventCard.isNotEmpty.isVisible = it > 0
+                eventCard.label.text = if (it < 2) getString(R.string.contribution_event) else getString(R.string.contributions_event)
             }
 
             summary.neighborhoodParticipationsCount?.let {
                 groupCard.value.text = it.toString()
                 groupCard.isEmpty.isVisible = it <= 0
                 groupCard.isNotEmpty.isVisible = it > 0
+                groupCard.label.text = if (it < 2) getString(R.string.contribution_group) else getString(R.string.contributions_group)
             }
         }
         summary.recommendations?.let { setRecommendationsList(it) }
