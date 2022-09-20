@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.new_home_card.view.*
 import social.entourage.android.EntourageApplication
@@ -24,6 +25,8 @@ import social.entourage.android.new_v8.home.pedago.PedagoListActivity
 import social.entourage.android.new_v8.models.Recommandation
 import social.entourage.android.new_v8.models.Summary
 import social.entourage.android.new_v8.profile.ProfileActivity
+import social.entourage.android.new_v8.user.UserProfileActivity
+import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 
 class HomeFragment : Fragment() {
@@ -161,22 +164,37 @@ class HomeFragment : Fragment() {
 
     private fun initializeHelpSection() {
         with(binding) {
-            //To be deleted
-            moderator.root.title.text = "Barbara, modératrice"
+            moderator.root.title.text = userSummary?.moderator?.displayName
             moderator.root.description.text = getString(R.string.moderator_subtitle)
-            Glide.with(requireActivity())
-                //To be changed
-                .load("")
-                .placeholder(R.drawable.perso_violet)
-                .circleCrop()
-                .into(moderator.root.icon_card)
+
+            userSummary?.moderator?.imageURL?.let {
+                Glide.with(requireContext())
+                    .load(Uri.parse(it))
+                    .placeholder(R.drawable.placeholder_user)
+                    .error(R.drawable.placeholder_user)
+                    .circleCrop()
+                    .into(moderator.root.icon_card)
+            } ?: kotlin.run {
+                Glide.with(requireContext())
+                    .load(R.drawable.placeholder_user)
+                    .into(moderator.root.icon_card)
+            }
+
+            moderator.root.setOnClickListener {
+                userSummary?.moderator?.id?.let {
+                    requireContext().startActivity(
+                        Intent(context, UserProfileActivity::class.java).putExtra(
+                            Const.USER_ID,
+                            it
+                        )
+                    )
+                }
+            }
+
             solidarityPlaces.root.title.text = getString(R.string.solidarity_places_map)
             solidarityPlaces.root.description.visibility = View.GONE
-            Glide.with(requireActivity())
-                //To be changed
-                .load("")
-                .placeholder(R.drawable.new_solidarity_map)
-                .circleCrop()
+            Glide.with(requireContext())
+                .load(R.drawable.new_solidarity_map)
                 .into(solidarityPlaces.root.icon_card)
 
             solidarityPlaces.root.setOnClickListener {

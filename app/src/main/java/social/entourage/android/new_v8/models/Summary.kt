@@ -27,6 +27,9 @@ class Summary : Serializable {
 
     @SerializedName("recommandations")
     var recommendations: MutableList<Recommandation>? = null
+
+    @SerializedName("moderator")
+    var moderator: HomeModerator? = null
 }
 
 class Recommandation : Serializable {
@@ -55,6 +58,18 @@ class Params : Serializable {
 
     @SerializedName("url")
     val url: String? = null
+}
+
+class HomeModerator : Serializable {
+    @SerializedName("display_name")
+    var displayName: String? = null
+
+    @SerializedName("id")
+    val id: Int? = null
+
+    @SerializedName("avatar_url")
+    val imageURL: String? = null
+
 }
 
 enum class Type {
