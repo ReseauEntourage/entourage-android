@@ -132,6 +132,7 @@ class UserProfileFragment : Fragment() {
             user.avatarURL.let {
                 Glide.with(requireActivity())
                     .load(Uri.parse(it))
+                    .error(R.drawable.placeholder_user)
                     .circleCrop()
                     .into(imageUser)
             }
