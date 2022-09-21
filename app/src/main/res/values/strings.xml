@@ -260,7 +260,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="report_group">Signaler le groupe</string>
     <string name="rules_group">Règlement du groupe</string>
     <string name="rules">Le règlement</string>
-    <string name="rules_group_read">Règlement du groupe, à lire attentivement.</string>
     <string name="group_event">  Événements du groupe</string>
     <string name="group_event_empty_state_title">Pas encore d’événements prévus dans ce groupe</string>
     <string name="group_event_empty_state_subtitle"><![CDATA[Cliquez sur « + » pour en créer un]]></string>

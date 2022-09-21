@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.R
 import social.entourage.android.databinding.NewActivityGroupRulesBinding
 import social.entourage.android.new_v8.models.Rules
+import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class GroupRulesActivity : AppCompatActivity() {
@@ -21,7 +22,10 @@ class GroupRulesActivity : AppCompatActivity() {
             this,
             R.layout.new_activity_group_rules
         )
-        populateList()
+
+        val ruleType = intent.getStringExtra(Const.RULES_TYPE)
+
+        populateList(ruleType)
         initializeGroups()
         handleBackButton()
     }
@@ -40,26 +44,45 @@ class GroupRulesActivity : AppCompatActivity() {
         }
     }
 
-    private fun populateList() {
-        val value = Rules(
-            "Titre de la règle",
-            "Je n’insulterai pas , pas d’incitation à la haine ni de harcèlement.Je n’insulterai pas , pas d’incitation à la haine ni de harcèlement. "
-        )
-        rulesList =
-            mutableListOf(
-                value,
-                value,
-                value,
-                value,
-                value,
-                value,
-                value,
-                value,
-                value,
-                value,
-                value
-            )
+    private fun populateList(ruleType:String?) {
+        var cgus = ArrayList<Rules>()
+        var rule_description = ""
+        var rule_title = ""
+        when(ruleType) {
+            Const.RULES_GROUP -> {
+                rule_description = getString(R.string.group_params_cgu_description)
+                rule_title = getString(R.string.group_params_cgu_title)
+                val line1 = Rules(getString(R.string.neighborhood_CGU_1_title),getString(R.string.neighborhood_CGU_1))
+                val line2 = Rules(getString(R.string.neighborhood_CGU_2_title),getString(R.string.neighborhood_CGU_2))
+                val line3 = Rules(getString(R.string.neighborhood_CGU_3_title),getString(R.string.neighborhood_CGU_3))
+                val line4 = Rules(getString(R.string.neighborhood_CGU_4_title),getString(R.string.neighborhood_CGU_4))
+                val line5 = Rules(getString(R.string.neighborhood_CGU_5_title),getString(R.string.neighborhood_CGU_5))
+                cgus = arrayListOf(line1,line2,line3,line4,line5)
+            }
+            Const.RULES_EVENT -> {
+                rule_description = getString(R.string.event_params_cgu_description)
+                rule_title = getString(R.string.event_params_cgu_title)
+                val line1 = Rules(getString(R.string.event_CGU_1_title),getString(R.string.event_CGU_1))
+                val line2 = Rules(getString(R.string.event_CGU_2_title),getString(R.string.event_CGU_2))
+                val line3 = Rules(getString(R.string.event_CGU_3_title),getString(R.string.event_CGU_3))
+                val line4 = Rules(getString(R.string.event_CGU_4_title),getString(R.string.event_CGU_4))
+                cgus = arrayListOf(line1,line2,line3,line4)
+            }
+            Const.RULES_ACTION -> {
+                rule_description = getString(R.string.action_params_cgu_description)
+                rule_title = getString(R.string.action_params_cgu_title)
+                val line1 = Rules(getString(R.string.action_CGU_1_title),getString(R.string.action_CGU_1))
+                val line2 = Rules(getString(R.string.action_CGU_2_title),getString(R.string.action_CGU_2))
+                val line3 = Rules(getString(R.string.action_CGU_3_title),getString(R.string.action_CGU_3))
+                val line4 = Rules(getString(R.string.action_CGU_4_title),getString(R.string.action_CGU_4))
+                val line5 = Rules(getString(R.string.action_CGU_5_title),getString(R.string.action_CGU_5))
+                cgus = arrayListOf(line1,line2,line3,line4,line5)
+            }
+        }
+        rulesList = cgus
         binding.recyclerView.adapter?.notifyDataSetChanged()
+        binding.ruleDescription.text = rule_description
+        binding.header.title = rule_title
     }
 
 }

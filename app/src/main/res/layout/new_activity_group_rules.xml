@@ -21,18 +21,17 @@
                 android:id="@+id/header"
                 layout="@layout/new_header"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:title="@{@string/rules}" />
+                android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/group_members_number_location"
+                android:id="@+id/rule_description"
                 style="@style/left_courant_bold_orange"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="35dp"
                 android:layout_marginTop="20dp"
-                android:text="@string/rules_group_read"
-                tools:text="@string/rules_group_read" />
+                android:text="@string/group_params_cgu_title"
+                tools:text="@string/group_params_cgu_title" />
 
 
             <androidx.recyclerview.widget.RecyclerView

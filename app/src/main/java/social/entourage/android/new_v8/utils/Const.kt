@@ -37,4 +37,9 @@ object Const {
     const val ID = "id"
     const val NAME = "group_name"
     const val RECURRENCE = "recurrence"
+    const val RULES_TYPE = "rule_type"
+
+    const val RULES_GROUP = "group"
+    const val RULES_EVENT = "event"
+    const val RULES_ACTION = "action"
 }

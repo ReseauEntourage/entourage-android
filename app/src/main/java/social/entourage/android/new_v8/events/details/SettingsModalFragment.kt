@@ -30,6 +30,7 @@ import social.entourage.android.new_v8.events.EditRecurrenceActivity
 import social.entourage.android.new_v8.events.EventsPresenter
 import social.entourage.android.new_v8.events.create.CreateEventActivity
 import social.entourage.android.new_v8.events.create.Recurrence
+import social.entourage.android.new_v8.groups.details.rules.GroupRulesActivity
 import social.entourage.android.new_v8.models.Events
 import social.entourage.android.new_v8.models.Status
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
@@ -114,7 +115,9 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     private fun handleRulesButton() {
         binding.rules.layout.setOnClickListener {
-
+            val intent = Intent(context, GroupRulesActivity::class.java)
+            intent.putExtra(Const.RULES_TYPE,Const.RULES_EVENT)
+            startActivity(intent)
         }
     }
 

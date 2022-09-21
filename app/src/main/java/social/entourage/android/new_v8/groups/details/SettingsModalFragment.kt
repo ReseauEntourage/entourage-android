@@ -122,7 +122,9 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_OPTION_RULES
             )
-            startActivity(Intent(context, GroupRulesActivity::class.java))
+            val intent = Intent(context, GroupRulesActivity::class.java)
+            intent.putExtra(Const.RULES_TYPE,Const.RULES_GROUP)
+            startActivity(intent)
         }
     }
 
