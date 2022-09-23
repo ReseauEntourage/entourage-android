@@ -43,6 +43,9 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".new_v8.events.EventFiltersActivity"
+            android:exported="false" />
+        <activity
             android:name=".new_v8.events.EditRecurrenceActivity"
             android:exported="false" />
         <activity

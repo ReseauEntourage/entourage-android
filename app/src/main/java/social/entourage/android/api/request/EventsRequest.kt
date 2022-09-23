@@ -32,7 +32,10 @@ interface EventsRequest {
     @GET("outings")
     fun getAllEvents(
         @Query("page") page: Int,
-        @Query("per") per: Int
+        @Query("per") per: Int,
+        @Query("travel_distance") travelDistance: Int?,
+        @Query("latitude") latitude: Double?,
+        @Query("longitude") longitude: Double?,
     ): Call<EventsListWrapper>
 
     @POST("outings")

@@ -63,8 +63,8 @@ class EventsPresenter {
             })
     }
 
-    fun getAllEvents(page: Int, per: Int) {
-        EntourageApplication.get().apiModule.eventsRequest.getAllEvents(page, per)
+    fun getAllEvents(page: Int, per: Int,distance:Int?,latitude:Double?,longitude:Double?) {
+        EntourageApplication.get().apiModule.eventsRequest.getAllEvents(page, per,distance,latitude,longitude)
             .enqueue(object : Callback<EventsListWrapper> {
                 override fun onResponse(
                     call: Call<EventsListWrapper>,
