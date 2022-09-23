@@ -6,6 +6,7 @@ import kotlinx.android.synthetic.main.fragment_onboarding_place.*
 import kotlinx.android.synthetic.main.layout_view_title.view.*
 import social.entourage.android.R
 import social.entourage.android.user.edit.place.UserActionPlaceFragment
+import timber.log.Timber
 
 
 class CreateEventActionZoneFragment : UserActionPlaceFragment() {
@@ -31,8 +32,8 @@ class CreateEventActionZoneFragment : UserActionPlaceFragment() {
             metadata?.streetAddress = userAddress?.displayAddress
             latitude = userAddress?.latitude
             longitude = userAddress?.longitude
-            metadata?.googlePlaceId = userAddress?.googlePlaceId
-            metadata?.placeName = userAddress?.googlePlaceId
+            metadata?.googlePlaceId = userAddress?.googlePlaceId ?: ""
+            metadata?.placeName = userAddress?.displayAddress ?: ""
         }
         findNavController().popBackStack()
     }

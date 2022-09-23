@@ -73,7 +73,7 @@ class CreateEventStepOneFragment : Fragment() {
             CommunicationHandler.isButtonClickable.value = isImageValid()
             CommunicationHandler.event.entourageImageId(selectedImage?.id)
             val imageUrl =
-                if (selectedImage?.imageUrl != null) selectedImage?.imageUrl else selectedImage?.landscapeSmallUrl
+                if (selectedImage?.portraitUrl != null) selectedImage?.portraitUrl else selectedImage?.landscapeUrl
             imageUrl?.let { url ->
                 CommunicationHandler.isButtonClickable.value =
                     isGroupNameValid() && isGroupDescriptionValid() && isImageValid()

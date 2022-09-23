@@ -15,7 +15,7 @@ import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
 
 class ChoosePhotoAdapter(
-    var photosList: List<Image>,
+    var photosList: List<Image>, var isEvent:Boolean
 ) : RecyclerView.Adapter<ChoosePhotoAdapter.ViewHolder>() {
 
     private var checkedPosition = -1
@@ -36,7 +36,15 @@ class ChoosePhotoAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
             with(photosList[position]) {
-                val imageUrl = if (this.imageUrl != null) this.imageUrl else this.landscapeSmallUrl
+                var imageUrl:String?
+
+                if (isEvent) {
+                    imageUrl = if (this.portraitUrl != null) this.portraitUrl else this.landscapeUrl
+                }
+                else {
+                    imageUrl = this.imageUrl
+                }
+                
                 imageUrl?.let {
                     Glide.with(binding.image.context)
                         .load(Uri.parse(it))

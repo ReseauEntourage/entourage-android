@@ -85,7 +85,7 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun initializeInterests() {
-        choosePhotoAdapter = ChoosePhotoAdapter(photosList)
+        choosePhotoAdapter = ChoosePhotoAdapter(photosList,imagesType == ImagesType.EVENTS)
         binding.recyclerView.apply {
             layoutManager = GridLayoutManager(context, SPAN_COUNT)
             adapter = choosePhotoAdapter

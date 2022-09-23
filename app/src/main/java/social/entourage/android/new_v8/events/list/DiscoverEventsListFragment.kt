@@ -76,6 +76,9 @@ class DiscoverEventsListFragment : Fragment() {
     }
 
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
+        if(page == 1) {
+            sections.clear()
+        }
         sections = Utils.getSectionHeaders(allEvents, sections)
         binding.progressBar.visibility = View.GONE
         updateView(sections.isEmpty())

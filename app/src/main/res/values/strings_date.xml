@@ -22,5 +22,5 @@
     <string name="x_months_ago">il y a %s mois</string>
     <string name="birthday_date_format">dd-MM</string>
     <string name="events_date">dd/MM/yyyy</string>
-    <string name="events_time">HH-mm</string>
+    <string name="events_time">HH\'h\'mm</string>
 </resources>

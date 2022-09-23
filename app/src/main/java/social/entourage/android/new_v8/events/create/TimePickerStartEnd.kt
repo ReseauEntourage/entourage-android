@@ -71,7 +71,7 @@ class TimePickerStartEnd @JvmOverloads constructor(
             val endTimeString = binding.endTime.text.toString()
             val sdf = SimpleDateFormat(format, Locale.FRANCE)
             val myCalendar = Calendar.getInstance()
-
+            myCalendar.add(Calendar.MINUTE,5)
             val endTime = parseTime(format, endTimeString)
 
             if (endTime != null) {

@@ -14,8 +14,8 @@ class Image() : Parcelable {
     @SerializedName("image_url")
     var imageUrl: String? = null
 
-    @SerializedName("landscape_small_url")
-    var landscapeSmallUrl: String? = null
+    @SerializedName("portrait_url")
+    var portraitUrl: String? = null
 
     @SerializedName("landscape_url")
     var landscapeUrl: String? = null
@@ -27,7 +27,7 @@ class Image() : Parcelable {
         id = parcel.readValue(Int::class.java.classLoader) as? Int
         title = parcel.readString()
         imageUrl = parcel.readString()
-        landscapeSmallUrl = parcel.readString()
+        portraitUrl = parcel.readString()
         landscapeUrl = parcel.readString()
         isSelected = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
     }
@@ -36,7 +36,7 @@ class Image() : Parcelable {
         parcel.writeValue(id)
         parcel.writeString(title)
         parcel.writeString(imageUrl)
-        parcel.writeString(landscapeSmallUrl)
+        parcel.writeString(portraitUrl)
         parcel.writeString(landscapeUrl)
         parcel.writeValue(isSelected)
     }
@@ -56,6 +56,6 @@ class Image() : Parcelable {
     }
 
     override fun toString(): String {
-        return "Image(id=$id, title=$title, imageUrl=$imageUrl, landscapeSmallUrl=$landscapeSmallUrl, landscapeUrl=$landscapeUrl, isSelected=$isSelected)"
+        return "Image(id=$id, title=$title, imageUrl=$imageUrl, portraitUrl=$portraitUrl, landscapeUrl=$landscapeUrl, isSelected=$isSelected)"
     }
 }

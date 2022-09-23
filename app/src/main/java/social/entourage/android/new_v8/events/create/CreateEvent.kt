@@ -13,10 +13,10 @@ enum class Recurrence(val value: Int) {
 data class Metadata(
 
     @field:SerializedName("street_address")
-    var streetAddress: String? = null,
+    var streetAddress: String? = "",
 
     @field:SerializedName("place_name")
-    var placeName: String? = null,
+    var placeName: String? = "",
 
     @field:SerializedName("starts_at")
     var startsAt: String? = null,
@@ -31,7 +31,7 @@ data class Metadata(
     var endsAt: String? = null,
 
     @field:SerializedName("google_place_id")
-    var googlePlaceId: String? = null,
+    var googlePlaceId: String? = "",
 ) {
     fun endsAt(value: String) = apply {
         endsAt = value
