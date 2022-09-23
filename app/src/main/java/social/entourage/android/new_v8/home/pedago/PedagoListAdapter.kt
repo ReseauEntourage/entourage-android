@@ -86,7 +86,7 @@ class PedagoListAdapter(
 
         Glide.with(context)
             .load(child.imageUrl)
-            .placeholder(R.drawable.ic_user_photo_small)
+            .placeholder(R.drawable.new_illu_empty_state_event)
             .apply(RequestOptions().override(77.px, 46.px))
             .transform(RoundedCorners(5.px))
             .into(childViewHolder.binding.image)

@@ -21,6 +21,7 @@
         android:layout_width="77dp"
         android:layout_height="46dp"
         android:layout_marginRight="12dp"
+        android:background="@drawable/bg_round_4dp_beige"
         android:src="@drawable/new_illu_empty_state_event" />
 
     <TextView

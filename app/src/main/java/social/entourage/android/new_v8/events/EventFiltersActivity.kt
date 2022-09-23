@@ -27,7 +27,7 @@ import social.entourage.android.R
 import social.entourage.android.api.tape.Events
 import social.entourage.android.base.location.LocationProvider
 import social.entourage.android.base.location.LocationUtils
-import social.entourage.android.databinding.ActivityEventFiltersBinding
+import social.entourage.android.databinding.NewActivityEventFiltersBinding
 import social.entourage.android.new_v8.events.list.DiscoverEventsListFragment
 import social.entourage.android.new_v8.models.Address
 import social.entourage.android.new_v8.models.EventActionLocationFilters
@@ -64,14 +64,14 @@ class EventFiltersActivity : AppCompatActivity() {
 
     private var currentFilters: EventActionLocationFilters? = null
 
-    private lateinit var binding: ActivityEventFiltersBinding
+    private lateinit var binding: NewActivityEventFiltersBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(
             this,
-            R.layout.activity_event_filters
+            R.layout.new_activity_event_filters
         )
 
         currentFilters = intent.getSerializableExtra(FILTERS) as? EventActionLocationFilters

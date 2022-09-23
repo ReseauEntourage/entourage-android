@@ -7,7 +7,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.widget.TextViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.R
-import social.entourage.android.databinding.NewFilterItemBinding
+import social.entourage.android.databinding.NewFilterItemLightBinding
 import social.entourage.android.new_v8.models.Category
 
 interface OnItemClickListener {
@@ -24,7 +24,7 @@ class FilterAdapter(
     private var lastItemSelectedPos = selectedFilterPosition
 
 
-    inner class ViewHolder(val binding: NewFilterItemBinding) :
+    inner class ViewHolder(val binding: NewFilterItemLightBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun defaultBg() {
             binding.root.background =
@@ -52,7 +52,7 @@ class FilterAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = NewFilterItemBinding.inflate(
+        val binding = NewFilterItemLightBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false

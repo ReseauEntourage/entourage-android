@@ -40,7 +40,7 @@ class RecommendationsListAdapter(
                 Glide.with(holder.itemView.context)
                     .load(this.imageURL)
                     .apply(RequestOptions().override(77.px, 46.px))
-                    .placeholder(R.drawable.new_group_illu)
+                    .placeholder(R.drawable.new_illu_empty_state_event)
                     .transform(RoundedCorners(5.px))
                     .into(binding.image)
                 binding.title.text = this.name
