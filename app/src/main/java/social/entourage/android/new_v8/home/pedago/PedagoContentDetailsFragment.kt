@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import social.entourage.android.databinding.NewFragmentPedagoContentDetailsBinding
 import social.entourage.android.new_v8.home.HomePresenter
+import social.entourage.android.new_v8.models.Pedago
 import java.lang.ref.WeakReference
 
 
@@ -28,6 +29,9 @@ class PedagoContentDetailsFragment : Fragment() {
 
     private val args: PedagoContentDetailsFragmentArgs by navArgs()
 
+    private var isFromNotifs = false
+    private var htmlContent:String = ""
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,13 +42,34 @@ class PedagoContentDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setView()
         handleBackButton()
-        homePresenter.setPedagogicalContentAsRead(args.id)
+        isFromNotifs = args.isFromNotif
+        htmlContent = args.htmlContent
+
+        if(isFromNotifs) {
+            homePresenter.pedagolSingle.observe(requireActivity(), ::updateContent)
+            homePresenter.getPedagogicalResource(args.id)
+        }
+        else {
+            setView()
+            homePresenter.setPedagogicalContentAsRead(args.id)
+        }
+
+    }
+
+    private fun updateContent(pedago: Pedago) {
+        pedago.html?.let {
+            htmlContent = it
+            setView()
+        }
     }
 
     private fun handleBackButton() {
         binding.header.iconBack.setOnClickListener {
+            if(isFromNotifs) {
+                activity?.onBackPressed()
+                return@setOnClickListener
+            }
             findNavController().popBackStack()
         }
     }
@@ -56,7 +81,7 @@ class PedagoContentDetailsFragment : Fragment() {
             setBackgroundColor(Color.TRANSPARENT)
             settings.javaScriptEnabled = true
             loadDataWithBaseURL(
-                null, args.htmlContent, "text/html", "utf-8", null
+                null, htmlContent, "text/html", "utf-8", null
             )
         }
     }

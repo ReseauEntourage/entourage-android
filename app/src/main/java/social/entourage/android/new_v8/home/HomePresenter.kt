@@ -6,6 +6,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.PedagogicResponse
+import social.entourage.android.api.request.PedagogicSingleResponse
 import social.entourage.android.api.request.SummaryResponse
 import social.entourage.android.new_v8.models.Pedago
 import social.entourage.android.new_v8.models.Summary
@@ -14,6 +15,7 @@ class HomePresenter {
     var getSummarySuccess = MutableLiveData<Boolean>()
     var summary = MutableLiveData<Summary>()
     var pedagogicalContent = MutableLiveData<MutableList<Pedago>>()
+    var pedagolSingle = MutableLiveData<Pedago>()
 
     fun getSummary() {
         EntourageApplication.get().apiModule.homeRequest
@@ -50,6 +52,25 @@ class HomePresenter {
 
                 override fun onFailure(call: Call<PedagogicResponse>, t: Throwable) {
                     getSummarySuccess.value = false
+                }
+            })
+    }
+
+    fun getPedagogicalResource(resourceId:Int) {
+        EntourageApplication.get().apiModule.homeRequest
+            .getPedagogicalResource(resourceId)
+            .enqueue(object : Callback<PedagogicSingleResponse> {
+                override fun onResponse(
+                    call: Call<PedagogicSingleResponse>,
+                    response: Response<PedagogicSingleResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        pedagolSingle.value = response.body()?.pedago
+                    }
+                }
+
+                override fun onFailure(call: Call<PedagogicSingleResponse>, t: Throwable) {
+
                 }
             })
     }

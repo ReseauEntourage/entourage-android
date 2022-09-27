@@ -1,6 +1,8 @@
 package social.entourage.android.new_v8
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -15,6 +17,7 @@ import social.entourage.android.api.model.Message
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.entourage.information.FeedItemInformationFragment
+import social.entourage.android.new_v8.models.Params
 
 class MainActivity : BaseSecuredActivity() {
 
@@ -32,6 +35,31 @@ class MainActivity : BaseSecuredActivity() {
             //initialize the push notifications
             initializePushNotifications()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        intent?.action?.let { action ->
+            checkIntentAction(action, intent?.extras)
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        this.intent = intent
+    }
+
+    fun checkIntentAction(action: String, extras: Bundle?) {
+
+        val content = extras?.get("content") as? String
+        content?.let {
+            val message = Message("sender","object",it,0,null)
+
+            PushNotificationLinkManager().presentAction(this,supportFragmentManager,message.content?.extra?.instance,message.content?.extra?.instanceId)
+        }
+
+        intent = null
     }
 
     private fun initializePushNotifications() {

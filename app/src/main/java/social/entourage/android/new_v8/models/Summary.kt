@@ -51,13 +51,13 @@ class Recommandation : Serializable {
 
 class Params : Serializable {
     @SerializedName("id")
-    val id: Int? = null
+    var id: Int? = null
 
     @SerializedName("uuid")
-    val uuid: String? = null
+    var uuid: String? = null
 
     @SerializedName("url")
-    val url: String? = null
+    var url: String? = null
 }
 
 class HomeModerator : Serializable {
@@ -97,8 +97,11 @@ enum class Type {
     @SerializedName("contribution")
     CONTRIBUTION,
 
-    @SerializedName("ask_for_help")
-    ASK_FOR_HELP;
+    @SerializedName("solicitation")
+    SOLICITATION,
+
+    @SerializedName("resource")
+    RESOURCE;
 }
 
 enum class Action {

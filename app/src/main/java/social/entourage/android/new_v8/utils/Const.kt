@@ -42,4 +42,8 @@ object Const {
     const val RULES_GROUP = "group"
     const val RULES_EVENT = "event"
     const val RULES_ACTION = "action"
+
+    const val PARTNER_ID = "partner_id"
+    const val IS_FROM_NOTIF = "isFromNotif"
+    const val HTML_CONTENT = "htmlContent"
 }

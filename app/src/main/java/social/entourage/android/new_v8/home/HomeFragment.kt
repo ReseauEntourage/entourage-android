@@ -48,8 +48,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         user = EntourageApplication.me(activity) ?: return
-        homePresenter.getSummary()
         homePresenter.summary.observe(requireActivity(), ::updateContributionsView)
+        homePresenter.getSummary()
         updateView()
         handleProfileButton()
         handlePedagogicalContentButton()

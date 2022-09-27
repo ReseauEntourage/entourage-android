@@ -24,6 +24,7 @@ class AssociationProfile : Fragment() {
     private val associationPresenter: AssociationPresenter by lazy { AssociationPresenter() }
     var partner: Partner? = null
     private val args: AssociationProfileArgs by navArgs()
+    private var isFromNotifs = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +37,7 @@ class AssociationProfile : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBackButton()
+        isFromNotifs = args.isFromNotif
         associationPresenter.getPartnerInfos(args.partnerId)
         associationPresenter.getPartnerSuccess.observe(requireActivity(), ::handleResponse)
         associationPresenter.followSuccess.observe(requireActivity(), ::handleFollowResponse)
@@ -132,7 +134,13 @@ class AssociationProfile : Fragment() {
     }
 
     private fun setBackButton() {
-        binding.iconBack.setOnClickListener { findNavController().popBackStack() }
+        binding.iconBack.setOnClickListener {
+            if(isFromNotifs) {
+                activity?.onBackPressed()
+                return@setOnClickListener
+            }
+
+            findNavController().popBackStack() }
     }
 
     private fun handleFollowButton() {

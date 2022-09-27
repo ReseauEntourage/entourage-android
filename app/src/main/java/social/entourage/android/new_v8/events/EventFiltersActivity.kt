@@ -126,7 +126,7 @@ class EventFiltersActivity : AppCompatActivity() {
 
         when(currentFilters?.filterType()) {
             EventFilterType.PROFILE -> {
-                binding.typeChoice.check(R.id.profile)
+                binding.typeChoice.check(R.id.profile_address)
                 binding.addressName.text = currentFilters?.addressName()
                 binding.layoutMe.visibility = View.VISIBLE
             }
@@ -145,7 +145,7 @@ class EventFiltersActivity : AppCompatActivity() {
         binding.typeChoice.setOnCheckedChangeListener { _, checkedId ->
             binding.errorView.visibility = View.GONE
             when (checkedId) {
-                R.id.profile -> {
+                R.id.profile_address -> {
                     val _address = EntourageApplication.get().me()?.address
                     val address = Address(_address?.latitude ?: 0.0,_address?.longitude ?: 0.0,_address?.displayAddress ?: "-")
                     currentFilters?.modifyFilter(_address?.displayAddress,address,currentFilters?.travel_distance(),

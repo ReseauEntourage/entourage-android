@@ -69,6 +69,11 @@ class PushNotificationContent : Serializable {
         var invitationId = 0
         var type: String? = null
 
+        @SerializedName("instance")
+        var instance:String? = null
+        @SerializedName("id")
+        var instanceId:Int? = null
+
         companion object {
             private const val serialVersionUID = 9200479161789347105L
             const val JOINABLE_TYPE_ENTOURAGE = "Entourage"

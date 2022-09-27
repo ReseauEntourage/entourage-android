@@ -43,6 +43,13 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".new_v8.home.pedago.PedagoDetailActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".new_v8.association.PartnerDetailActivity"
+            android:exported="false"></activity>
+        <activity
             android:name=".new_v8.events.EventFiltersActivity"
             android:exported="false" />
         <activity

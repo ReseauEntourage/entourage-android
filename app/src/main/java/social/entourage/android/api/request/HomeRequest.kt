@@ -12,6 +12,7 @@ import social.entourage.android.new_v8.models.Summary
 
 class SummaryResponse(@field:SerializedName("user") val summary: Summary)
 class PedagogicResponse(@field:SerializedName("resources") val pedago: MutableList<Pedago>)
+class PedagogicSingleResponse(@field:SerializedName("resource") val pedago: Pedago)
 
 interface HomeRequest {
     @GET("home/summary")
@@ -19,6 +20,9 @@ interface HomeRequest {
 
     @GET("resources")
     fun getPedagogicalResources(): Call<PedagogicResponse>
+
+    @GET("resources/{id}")
+    fun getPedagogicalResource(@Path("id") resourceId: Int): Call<PedagogicSingleResponse>
 
     @POST("resources/{id}/users")
     fun setPedagogicalContentAsRead(@Path("id") groupId: Int): Call<Boolean>

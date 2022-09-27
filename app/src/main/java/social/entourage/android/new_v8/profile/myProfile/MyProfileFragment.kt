@@ -146,7 +146,7 @@ class MyProfileFragment : Fragment() {
             user.partner?.id?.toInt()
                 ?.let {
                     val direction =
-                        ProfileFragmentDirections.actionProfileFragmentToAssociationFragment(it)
+                        ProfileFragmentDirections.actionProfileFragmentToAssociationFragment(it,false)
                     findNavController().navigate(direction)
                 }
         }

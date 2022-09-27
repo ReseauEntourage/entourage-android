@@ -44,7 +44,7 @@ class PedagoListFragment : Fragment() {
                 if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
                     val action =
                         PedagoListFragmentDirections.actionPedagogicalListFragmentToPedagogicalDetailsFragment(
-                            pedagogicalContent.html, pedagogicalContent.id
+                            pedagogicalContent.html, pedagogicalContent.id,false
                         )
                     findNavController().navigate(action)
                 }
