@@ -129,10 +129,15 @@ class UserProfileFragment : Fragment() {
             } ?: run {
                 pins.association.visibility = View.GONE
             }
-            user.avatarURL.let {
+            user.avatarURL?.let {
                 Glide.with(requireActivity())
-                    .load(Uri.parse(it))
+                    .load(it)
                     .error(R.drawable.placeholder_user)
+                    .circleCrop()
+                    .into(imageUser)
+            } ?: run {
+                Glide.with(requireActivity())
+                    .load(R.drawable.placeholder_user)
                     .circleCrop()
                     .into(imageUser)
             }
