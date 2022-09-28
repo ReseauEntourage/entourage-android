@@ -10,4 +10,5 @@
     <string name="event_filter_google">À une nouvelle adresse</string>
     <string name="event_filter_gps">Autour de ma position actuelle</string>
     <string name="event_filter_error_place">Veuillez sélectionnez une adresse</string>
+    <string name="search_filter">Rechercher :</string>
 </resources>

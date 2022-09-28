@@ -42,6 +42,20 @@
                     android:paddingTop="@dimen/padding_top">
 
 
+                    <TextView
+                        android:id="@+id/title_search"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nunitosans_semibold"
+                        android:paddingStart="10dp"
+                        android:paddingBottom="15dp"
+                        android:text="@string/search_filter"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/seekbar" />
+
                     <RadioGroup
                         android:id="@+id/type_choice"
                         android:layout_width="match_parent"
@@ -107,6 +121,16 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
+
+                            <FrameLayout
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                android:background="@color/accent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="@+id/place_name"
+                                app:layout_constraintTop_toBottomOf="@+id/place_name">
+
+                            </FrameLayout>
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <RadioButton
@@ -141,6 +165,7 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/seek_bar_layout"
+                        android:layout_marginLeft="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -244,14 +269,15 @@
         <include
             android:id="@+id/validate"
             layout="@layout/new_rounded_button_white"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="65dp"
             android:layout_marginBottom="32dp"
             app:content="@{@string/validate}"
             app:drawable="@{@drawable/new_rounded_button_orange}"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:layout_editor_absoluteX="65dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
