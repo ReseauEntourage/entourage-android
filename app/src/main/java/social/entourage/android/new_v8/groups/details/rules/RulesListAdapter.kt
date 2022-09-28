@@ -30,7 +30,7 @@ class RulesListAdapter(
             with(rulesList[position]) {
                 binding.title.text = this.title
                 binding.content.text = this.content
-                binding.position.text = String.format("%02d", (position + 1)).plus(".")
+                binding.position.text = ""
             }
         }
     }

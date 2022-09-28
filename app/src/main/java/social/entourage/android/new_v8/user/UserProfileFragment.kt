@@ -122,7 +122,7 @@ class UserProfileFragment : Fragment() {
                 pins.associationName.text = it.name
                 it.smallLogoUrl.let { logo ->
                     Glide.with(requireActivity())
-                        .load(Uri.parse(logo))
+                        .load(logo)
                         .circleCrop()
                         .into(pins.associationAvatar)
                 }

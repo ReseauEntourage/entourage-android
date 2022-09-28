@@ -19,6 +19,7 @@
         style="@style/left_courant_bold_black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@id/position_bg"
         app:layout_constraintLeft_toLeftOf="@id/position_bg"
         app:layout_constraintRight_toRightOf="@id/position_bg"
@@ -30,9 +31,9 @@
         style="@style/left_courant_bold_black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
         app:layout_constraintBottom_toTopOf="@id/content"
         app:layout_constraintLeft_toRightOf="@id/position_bg"
+        app:layout_constraintStart_toStartOf="@+id/position"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Titre de la règle" />
 
@@ -41,8 +42,9 @@
         style="@style/left_courant_black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="38dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintLeft_toRightOf="@id/position_bg"
+        app:layout_constraintStart_toStartOf="@+id/position"
         app:layout_constraintTop_toBottomOf="@id/position_bg"
         tools:text="Je n’insulterai pas , pas d’incitation à la haine ni de harcèlement" />
 
