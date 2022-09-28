@@ -240,28 +240,52 @@ class EventFiltersActivity : AppCompatActivity() {
                     //remove the last part, which is the country
                     address = address.substring(0, lastCommaIndex)
                 }
-                updateFromPlace(place.latLng, address)
+                getCityNameFromPlace(place.latLng)
             }
             AutocompleteActivity.RESULT_ERROR -> {
-                updateFromPlace(null, null)
+                clearFilterFromPlace()
             }
             AutocompleteActivity.RESULT_CANCELED -> {
-                updateFromPlace(null, null)
+                clearFilterFromPlace()
             }
         }
     }
 
-    private fun updateFromPlace(latlng: LatLng?, addressName: String?) {
-        if (latlng != null && addressName != null) {
-            val address = Address(latlng.latitude,latlng.longitude,addressName)
-            binding.placeName.text = addressName
-            currentFilters?.modifyAddress(address)
-            currentFilters?.modifiyShortname(addressName)
-        } else {
+    private fun getCityNameFromPlace(latlng: LatLng) {
+        this.let{ activity ->
+            try {
+                Geocoder(activity, Locale.getDefault()).getFromLocation(
+                    latlng.latitude,
+                    latlng.longitude,
+                    1
+                )?.let { address ->
+                    if (address.size > 0) {
+                        val street = address[0].thoroughfare
+                        val city = address[0].locality
+                        val cp = address[0].postalCode
+
+                        val addressName = "$street - $city - $cp"
+
+                        val address = Address(latlng.latitude,latlng.longitude,addressName)
+                        currentFilters?.modifyAddress(address)
+                        currentFilters?.modifiyShortname("$cp - $city")
+                        binding.placeName.text = addressName
+                    }
+                    else {
+                        clearFilterFromPlace()
+                    }
+                }
+            } catch (e: IOException) {
+                Timber.e(e)
+                clearFilterFromPlace()
+            }
+        }
+    }
+
+    private fun clearFilterFromPlace() {
             currentFilters?.modifyAddress(null)
             currentFilters?.modifiyShortname(null)
             binding.placeName.text = getString(R.string.onboard_place_placeholder)
-        }
     }
 
     //Location
@@ -279,7 +303,7 @@ class EventFiltersActivity : AppCompatActivity() {
         ui_onboard_place_tv_location?.text = ""
         ui_onboard_place_tv_location?.hint = getString(R.string.onboard_place_placeholder)
         lastLocation?.let {
-            this?.let{ activity ->
+            this.let{ activity ->
                 try {
                     Geocoder(activity, Locale.getDefault()).getFromLocation(
                         it.latitude,
