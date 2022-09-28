@@ -81,12 +81,13 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         }
         if (group?.member == true) {
             binding.leave.visibility = View.VISIBLE
-            binding.notificationAll.root.visibility = View.VISIBLE
-            binding.notificationNewMembers.root.visibility = View.VISIBLE
-            binding.notificationNewEvent.root.visibility = View.VISIBLE
-            binding.notificationNewMessages.root.visibility = View.VISIBLE
-            binding.notifyMe.visibility = View.VISIBLE
-            binding.notifyDivider.visibility = View.VISIBLE
+            //TODO a remettre dans le futur pour les notifs
+//            binding.notificationAll.root.visibility = View.VISIBLE
+//            binding.notificationNewMembers.root.visibility = View.VISIBLE
+//            binding.notificationNewEvent.root.visibility = View.VISIBLE
+//            binding.notificationNewMessages.root.visibility = View.VISIBLE
+//            binding.notifyMe.visibility = View.VISIBLE
+//            binding.notifyDivider.visibility = View.VISIBLE
         }
     }
 

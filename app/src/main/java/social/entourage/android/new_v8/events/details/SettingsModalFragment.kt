@@ -238,12 +238,12 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
                 editRecurrenceDivider.isVisible = eventWithNoRecurrence
             }
             if (event?.member == true) {
-                notificationAll.root.visibility = View.VISIBLE
-                notificationNewMembers.root.visibility = View.VISIBLE
-                notificationNewEvent.root.visibility = View.VISIBLE
-                notificationNewMessages.root.visibility = View.VISIBLE
-                notifyMe.visibility = View.VISIBLE
-                notifyDivider.visibility = View.VISIBLE
+//                notificationAll.root.visibility = View.VISIBLE
+//                notificationNewMembers.root.visibility = View.VISIBLE
+//                notificationNewEvent.root.visibility = View.VISIBLE
+//                notificationNewMessages.root.visibility = View.VISIBLE
+//                notifyMe.visibility = View.VISIBLE
+//                notifyDivider.visibility = View.VISIBLE
                 if (event?.status == Status.OPEN && event?.author?.userID != EntourageApplication.me(
                         activity
                     )?.id
