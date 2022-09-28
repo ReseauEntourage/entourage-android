@@ -93,8 +93,9 @@ class ProfileFragment : Fragment() {
             imageProfile.let { photoView ->
                 user.avatarURL?.let { avatarURL ->
                     Glide.with(requireActivity())
-                        .load(Uri.parse(avatarURL))
+                        .load(avatarURL)
                         .placeholder(R.drawable.ic_user_photo_small)
+                        .error(R.drawable.ic_user_photo_small)
                         .circleCrop()
                         .into(photoView)
                 } ?: run {

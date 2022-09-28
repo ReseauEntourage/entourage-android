@@ -60,8 +60,15 @@ class CommentsListAdapter(
                 binding.author_name.text = comment.user?.displayName
                 comment.user?.avatarURLAsString?.let {
                     Glide.with(binding.context)
-                        .load(Uri.parse(it))
+                        .load(it)
                         .placeholder(R.drawable.ic_user_photo_small)
+                        .error(R.drawable.ic_user_photo_small)
+                        .apply(RequestOptions().override(25.px, 25.px))
+                        .circleCrop()
+                        .into(binding.image)
+                } ?: run {
+                    Glide.with(binding.context)
+                        .load(R.drawable.ic_user_photo_small)
                         .apply(RequestOptions().override(25.px, 25.px))
                         .circleCrop()
                         .into(binding.image)
