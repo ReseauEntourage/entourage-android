@@ -29,35 +29,35 @@ class Message(var author: String, var msgObject: String?, content: String, pushN
         }
 
     private fun getContentType():Int {
-        when(content?.type) {
-            PushNotificationContent.TYPE_NEW_CHAT_MESSAGE -> return CHAT_MESSAGE_NOTIFICATION_ID
-            PushNotificationContent.TYPE_NEW_JOIN_REQUEST -> return JOIN_REQUEST_NOTIFICATION_ID
-        }
+//        when(content?.type) {
+//            PushNotificationContent.TYPE_NEW_CHAT_MESSAGE -> return CHAT_MESSAGE_NOTIFICATION_ID
+//            PushNotificationContent.TYPE_NEW_JOIN_REQUEST -> return JOIN_REQUEST_NOTIFICATION_ID
+//        }
         return 1
     }
 
     fun getContentTitleForCount(count: Int, context: Context): String {
-        when (content?.type) {
-            PushNotificationContent.TYPE_NEW_CHAT_MESSAGE -> return context.resources.getQuantityString(R.plurals.notification_title_chat_message, count, author)
-            PushNotificationContent.TYPE_NEW_JOIN_REQUEST -> return context.resources.getQuantityString(R.plurals.notification_title_join_request, count, author)
-        }
+//        when (content?.type) {
+//            PushNotificationContent.TYPE_NEW_CHAT_MESSAGE -> return context.resources.getQuantityString(R.plurals.notification_title_chat_message, count, author)
+//            PushNotificationContent.TYPE_NEW_JOIN_REQUEST -> return context.resources.getQuantityString(R.plurals.notification_title_join_request, count, author)
+//        }
         return author
     }
 
     fun getContentTextForCount(count: Int, context: Context): String {
         if (content != null) {
-            when (content.type) {
-                PushNotificationContent.TYPE_NEW_CHAT_MESSAGE -> {
-                    return context.resources.getQuantityString(R.plurals.notification_text_chat_message, count, count, content.message)
-                }
-                PushNotificationContent.TYPE_NEW_JOIN_REQUEST -> {
-                    return if (count > 1) {
-                        context.resources.getQuantityString(R.plurals.notification_text_join_request_entourage_multiple, count, count)
-                    } else {
-                        context.getString(R.string.notification_text_join_request_entourage_single_nomsg, author)
-                    }
-                }
-            }
+//            when (content.type) {
+//                PushNotificationContent.TYPE_NEW_CHAT_MESSAGE -> {
+//                    return context.resources.getQuantityString(R.plurals.notification_text_chat_message, count, count, content.message)
+//                }
+//                PushNotificationContent.TYPE_NEW_JOIN_REQUEST -> {
+//                    return if (count > 1) {
+//                        context.resources.getQuantityString(R.plurals.notification_text_join_request_entourage_multiple, count, count)
+//                    } else {
+//                        context.getString(R.string.notification_text_join_request_entourage_single_nomsg, author)
+//                    }
+//                }
+//            }
             content.message?.let {
                 if(it.isNotEmpty()) {
                     return it
