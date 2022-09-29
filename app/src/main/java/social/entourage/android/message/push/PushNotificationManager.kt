@@ -56,16 +56,9 @@ object PushNotificationManager {
     fun handlePushNotification(message: Message, context: Context) {
         val content = message.content ?: return
         val application = EntourageApplication.get()
-        if (PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED == content.type) {
-            // Remove the related join request push notification
-            if (content.isEntourageRelated) {
-                application.removePushNotification(content.joinableId, TimestampedObject.ENTOURAGE_CARD, content.userId, PushNotificationContent.TYPE_NEW_JOIN_REQUEST)
-            }
-        } else {
-            application.addPushNotification(message)
-            // Display all notifications except the join_request_canceled
-            displayPushNotification(message, context)
-        }
+        application.addPushNotification(message)
+        // Display all notifications except the join_request_canceled
+        displayPushNotification(message, context)
     }
 
     /**
