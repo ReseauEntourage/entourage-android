@@ -2,7 +2,6 @@ package social.entourage.android.new_v8
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -18,7 +17,6 @@ import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.message.push.PushNotificationManager
-import social.entourage.android.new_v8.models.Params
 
 class MainActivity : BaseSecuredActivity() {
 
@@ -52,7 +50,6 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     fun checkIntentAction(action: String, extras: Bundle?) {
-
         val message = extras?.get(PushNotificationManager.PUSH_MESSAGE) as? Message
         message?.let {
             PushNotificationLinkManager().presentAction(this,supportFragmentManager,message.content?.extra?.instance,message.content?.extra?.instanceId)
