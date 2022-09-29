@@ -104,12 +104,12 @@ interface EventsRequest {
     @PUT("outings/{event_id}")
     fun updateEvent(
         @Path("event_id") eventId: Int,
-        @Body event: CreateEvent
+        @Body event: CreateEventWrapper
     ): Call<EventWrapper>
 
     @PUT("outings/{event_id}/batch_update")
     fun updateEventSiblings(
         @Path("event_id") eventId: Int,
-        @Body event: CreateEvent
+        @Body event: CreateEventWrapper
     ): Call<EventWrapper>
 }

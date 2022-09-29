@@ -374,7 +374,7 @@ class EventsPresenter {
     }
 
     fun updateEvent(eventId: Int, eventEdited: CreateEvent) {
-        EntourageApplication.get().apiModule.eventsRequest.updateEvent(eventId, eventEdited)
+        EntourageApplication.get().apiModule.eventsRequest.updateEvent(eventId, CreateEventWrapper(eventEdited))
             .enqueue(object : Callback<EventWrapper> {
                 override fun onResponse(
                     call: Call<EventWrapper>,
@@ -391,7 +391,7 @@ class EventsPresenter {
 
 
     fun updateEventSiblings(eventId: Int, eventEdited: CreateEvent) {
-        EntourageApplication.get().apiModule.eventsRequest.updateEventSiblings(eventId, eventEdited)
+        EntourageApplication.get().apiModule.eventsRequest.updateEventSiblings(eventId, CreateEventWrapper(eventEdited))
             .enqueue(object : Callback<EventWrapper> {
                 override fun onResponse(
                     call: Call<EventWrapper>,

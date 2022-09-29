@@ -77,7 +77,10 @@ class CreateEventStepFiveFragment : Fragment() {
             CommunicationHandler.isButtonClickable.value =
                 (checkedId == R.id.dont_share) || (checkedId == R.id.share_in_groups && selectedGroupsIdList.isNotEmpty())
 
-            if (checkedId == R.id.dont_share) CommunicationHandler.event.neighborhoodIds.clear()
+            if (checkedId == R.id.dont_share) {
+                CommunicationHandler.event.neighborhoodIds.clear()
+                selectedGroupsIdList.clear()
+            }
             else CommunicationHandler.event.neighborhoodIds.addAll(selectedGroupsIdList)
         }
     }
@@ -138,6 +141,14 @@ class CreateEventStepFiveFragment : Fragment() {
 
     private fun handleOnClickNext(onClick: Boolean) {
         if (onClick) {
+            if (binding.layout.shareInGroups.isChecked) {
+                CommunicationHandler.event?.neighborhoodIds?.clear()
+                CommunicationHandler.event?.neighborhoodIds?.addAll(selectedGroupsIdList)
+            }
+            else {
+                CommunicationHandler.event?.neighborhoodIds?.clear()
+            }
+
             if (binding.layout.shareInGroups.isChecked && selectedGroupsIdList.isEmpty()) {
                 CommunicationHandler.isCondition.value = false
                 binding.layout.error.root.visibility = View.VISIBLE
