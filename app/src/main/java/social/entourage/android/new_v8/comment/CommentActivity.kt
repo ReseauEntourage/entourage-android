@@ -116,7 +116,8 @@ abstract class CommentActivity : AppCompatActivity() {
     private fun initializeComments() {
         binding.comments.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = CommentsListAdapter(commentsList, postAuthorID, object : OnItemClickListener {
+            val meId = EntourageApplication.get().me()?.id ?: postAuthorID
+            adapter = CommentsListAdapter(commentsList, meId, object : OnItemClickListener {
                 override fun onItemClick(comment: Post) {
                     addComment()
                     commentsList.remove(comment)
