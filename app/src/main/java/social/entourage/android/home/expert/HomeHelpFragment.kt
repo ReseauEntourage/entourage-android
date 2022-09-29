@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_home_help.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.Constants
-import social.entourage.android.MainActivity
+import social.entourage.android.MainActivity_v7
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -31,28 +31,28 @@ class HomeHelpFragment: BaseDialogFragment() {
 
         ui_home_bt_1?.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_expertFeed_HelpReporter)
-            val activity = requireActivity() as? MainActivity ?: return@setOnClickListener
+            val activity = requireActivity() as? MainActivity_v7 ?: return@setOnClickListener
             val homeReport = HomeHelpReporterFragment()
             homeReport.show(activity.supportFragmentManager, HomeHelpReporterFragment.TAG)
         }
         ui_home_bt_2?.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_expertFeed_HelpGift)
-            val activity = requireActivity() as? MainActivity ?: return@setOnClickListener
+            val activity = requireActivity() as? MainActivity_v7 ?: return@setOnClickListener
             activity.showWebView(activity.getLink(Constants.DONATE_LINK_ID))
         }
         ui_home_bt_3?.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_expertFeed_HelpShare)
-            val activity = requireActivity() as? MainActivity ?: return@setOnClickListener
+            val activity = requireActivity() as? MainActivity_v7 ?: return@setOnClickListener
             activity.showWebView(activity.getString(R.string.facebook_url))
         }
         ui_home_bt_4?.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_expertFeed_HelpAmbassador)
-            val activity = requireActivity() as? MainActivity ?: return@setOnClickListener
+            val activity = requireActivity() as? MainActivity_v7 ?: return@setOnClickListener
             activity.showWebView(activity.getLink(Constants.AMBASSADOR_ID))
         }
         ui_home_bt_5?.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_expertFeed_HelpLinkedout)
-            val activity = requireActivity() as? MainActivity ?: return@setOnClickListener
+            val activity = requireActivity() as? MainActivity_v7 ?: return@setOnClickListener
             activity.showWebView(activity.getString(R.string.url_linkedout))
         }
     }

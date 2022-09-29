@@ -16,12 +16,12 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.res.ResourcesCompat
 import com.google.firebase.messaging.RemoteMessage
 import social.entourage.android.EntourageApplication
-import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.new_v8.MainActivity
 import timber.log.Timber
 import java.util.*
 

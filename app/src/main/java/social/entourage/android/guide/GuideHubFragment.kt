@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_guide_hub.*
 import social.entourage.android.Constants
 import social.entourage.android.EntourageApplication
-import social.entourage.android.MainActivity
+import social.entourage.android.MainActivity_v7
 import social.entourage.android.R
 import social.entourage.android.tools.log.AnalyticsEvents
 
@@ -43,19 +43,19 @@ class GuideHubFragment : Fragment() {
 
         ui_layout_cell_2?.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_WEBORIENTATION)
-            (activity as MainActivity).showWebViewForLinkId(Constants.SLUG_HUB_LINK_1)
+            (activity as MainActivity_v7).showWebViewForLinkId(Constants.SLUG_HUB_LINK_1)
         }
         ui_layout_cell_3?.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_WEBGUIDE)
-            (activity as MainActivity).showWebViewForLinkId(Constants.SLUG_HUB_LINK_2)
+            (activity as MainActivity_v7).showWebViewForLinkId(Constants.SLUG_HUB_LINK_2)
         }
         ui_layout_cell_4?.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_WEBATELIER)
-            (activity as MainActivity).showWebViewForLinkId(Constants.SLUG_HUB_LINK_3)
+            (activity as MainActivity_v7).showWebViewForLinkId(Constants.SLUG_HUB_LINK_3)
         }
         ui_layout_cell_5?.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_WEBFAQ)
-            (activity as MainActivity).showWebViewForLinkId(Constants.SLUG_HUB_LINK_FAQ)
+            (activity as MainActivity_v7).showWebViewForLinkId(Constants.SLUG_HUB_LINK_FAQ)
         }
 
         ui_image_3.shapeAppearanceModel = ui_image_3.shapeAppearanceModel.withCornerSize(32f).toBuilder().build()

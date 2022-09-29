@@ -75,7 +75,7 @@ class AboutFragment : BaseDialogFragment() {
 
     private fun onPrivacyClicked() {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ABOUT_PRIVACY)
-        (activity as? MainActivity)?.showWebViewForLinkId(Constants.PRIVACY_LINK_ID)
+        (activity as? MainActivity_v7)?.showWebViewForLinkId(Constants.PRIVACY_LINK_ID)
     }
 
     //ENTOURAGE SPECIFIC
@@ -123,22 +123,22 @@ class AboutFragment : BaseDialogFragment() {
 
     private fun onFAQClicked() {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ABOUT_FAQ)
-        (activity as? MainActivity)?.showWebViewForLinkId(Constants.FAQ_LINK_ID)
+        (activity as? MainActivity_v7)?.showWebViewForLinkId(Constants.FAQ_LINK_ID)
     }
 
     private fun onTutorialClicked() {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ABOUT_TUTORIAL)
-        (activity as? MainActivity)?.showTutorial(true)
+        (activity as? MainActivity_v7)?.showTutorial(true)
     }
 
     private fun onSuggestionClicked() {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ABOUT_SUGGESTION)
-        (activity as? MainActivity)?.showWebViewForLinkId(Constants.SUGGESTION_ID)
+        (activity as? MainActivity_v7)?.showWebViewForLinkId(Constants.SUGGESTION_ID)
     }
 
     private fun onFeedbackClicked() {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ABOUT_FEEDBACK)
-        (activity as? MainActivity)?.showWebViewForLinkId(Constants.FEEDBACK_ID)
+        (activity as? MainActivity_v7)?.showWebViewForLinkId(Constants.FEEDBACK_ID)
     }
 
     companion object {

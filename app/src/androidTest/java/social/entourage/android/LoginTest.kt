@@ -165,7 +165,7 @@ class LoginTest {
     }
 
     private fun checkLoginSuccessful() {
-        Intents.intended(IntentMatchers.hasComponent(MainActivity::class.java.name))
+        Intents.intended(IntentMatchers.hasComponent(MainActivity_v7::class.java.name))
     }
 
     private fun checkLoginFailure() {

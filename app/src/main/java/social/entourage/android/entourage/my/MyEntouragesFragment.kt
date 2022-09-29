@@ -34,7 +34,6 @@ import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.tools.view.EntSnackbar.make
 import timber.log.Timber
 import java.util.*
-import javax.inject.Inject
 
 /**
  * My Entourages Fragment
@@ -80,7 +79,7 @@ class MyEntouragesFragment  : BaseDialogFragment(), BaseViewHolderListener, Load
         initializeView()
         refreshInvitations()
         refreshMyFeeds()
-        (activity as? MainActivity)?.showEditActionZoneFragment()
+        (activity as? MainActivity_v7)?.showEditActionZoneFragment()
     }
 
     // ----------------------------------

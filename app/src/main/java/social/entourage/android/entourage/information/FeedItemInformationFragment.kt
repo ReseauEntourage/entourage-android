@@ -37,7 +37,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.material.snackbar.Snackbar
-import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_entourage_information.*
 import kotlinx.android.synthetic.main.layout_entourage_information_top_buttons.*
 import kotlinx.android.synthetic.main.layout_entourage_options.*
@@ -599,7 +598,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
 
     private fun onShowFaq() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_FEEDITEMINFO_FAQ)
-        (activity as? MainActivity)?.showWebViewForLinkId(Constants.FAQ_LINK_ID)
+        (activity as? MainActivity_v7)?.showWebViewForLinkId(Constants.FAQ_LINK_ID)
     }
     // ----------------------------------
     // Chat push notification

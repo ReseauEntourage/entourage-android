@@ -110,7 +110,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         initializeFloatingMenu()
         initializeNewsfeedView()
         initializeInvitations()
-        (activity as? MainActivity)?.showEditActionZoneFragment()
+        (activity as? MainActivity_v7)?.showEditActionZoneFragment()
         fragment_map_empty_list_popup_close?.setOnClickListener {onEmptyListPopupClose()}
         fragment_map_display_toggle?.setOnClickListener {onDisplayToggle()}
         map_longclick_button_entourage_action?.setOnClickListener {onCreateEntourageHelpAction()}
@@ -124,7 +124,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
     override fun onStart() {
         super.onStart()
         if (!isLocationPermissionGranted()) {
-            (activity as? MainActivity)?.showEditActionZoneFragment(this,false)
+            (activity as? MainActivity_v7)?.showEditActionZoneFragment(this,false)
         }
         fragment_map_feeditems_view?.addOnScrollListener(scrollListener)
 //        EntourageEvents.logEvent(EntourageEvents.EVENT_OPEN_FEED_FROM_TAB)
@@ -216,7 +216,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         if (Configuration.showEntourageDisclaimer()) {
             presenter.displayEntourageDisclaimer(groupType)
         } else {
-            (activity as? MainActivity)?.onEntourageDisclaimerAccepted(null)
+            (activity as? MainActivity_v7)?.onEntourageDisclaimerAccepted(null)
         }
     }
 

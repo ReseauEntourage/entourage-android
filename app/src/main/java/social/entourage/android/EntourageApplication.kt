@@ -84,13 +84,6 @@ class EntourageApplication : MultiDexApplication() {
             return null
         }
 
-    private val mainActivity: MainActivity?
-        get() {
-            activities.filterIsInstance<MainActivity>().forEach {
-                return it
-            }
-            return null
-        }
 
     private val newMainActivity: social.entourage.android.new_v8.MainActivity?
         get() {

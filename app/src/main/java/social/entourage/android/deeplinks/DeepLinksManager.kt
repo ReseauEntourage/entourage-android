@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.text.util.Linkify
 import android.widget.TextView
 import social.entourage.android.BuildConfig
-import social.entourage.android.MainActivity
+import social.entourage.android.MainActivity_v7
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent
 import social.entourage.android.message.push.EntourageFirebaseMessagingService
@@ -41,7 +41,7 @@ object DeepLinksManager {
      * Handles the current deep link, and sets it to null if successfully
      * @param activity
      */
-    fun handleCurrentDeepLink(activity: MainActivity) {
+    fun handleCurrentDeepLink(activity: MainActivity_v7) {
         intent?.let {
             currentUri = it.data
             it.data?.scheme?.let { scheme ->
@@ -60,7 +60,7 @@ object DeepLinksManager {
      * Handles deeplinks with format "entourage:// *"
      * @param activity
      */
-    private fun handleEntourageDeepLink(activity: MainActivity) {
+    private fun handleEntourageDeepLink(activity: MainActivity_v7) {
         val host = currentUri?.host
         if (host == null) {
             intent = null
@@ -73,7 +73,7 @@ object DeepLinksManager {
      * Handles the deeplinks with format "http(s)://"
      * @param activity
      */
-    private fun handleHttpDeepLink(activity: MainActivity) {
+    private fun handleHttpDeepLink(activity: MainActivity_v7) {
         currentUri?.let {
             val pathSegments: ArrayList<String> = ArrayList(it.pathSegments)
             if (pathSegments.size >= 2) {
@@ -98,7 +98,7 @@ object DeepLinksManager {
         intent = null
     }
 
-    private fun handleDeepLink(activity: MainActivity, key: String, pathSegments: List<String>?) {
+    private fun handleDeepLink(activity: MainActivity_v7, key: String, pathSegments: List<String>?) {
         /*if (key == DeepLinksView.FEED.view) {
             activity.showFeed()
             if (pathSegments != null && pathSegments.isNotEmpty()) {

@@ -72,7 +72,7 @@ class PlusFragment : Fragment(), BackPressable {
 
     private fun onAction(action: String, eventName: String) {
         AnalyticsEvents.logEvent(eventName)
-        val newIntent = Intent(context, MainActivity::class.java).apply { this.action = action }
+        val newIntent = Intent(context, MainActivity_v7::class.java).apply { this.action = action }
         startActivity(newIntent)
         mainActivity?.showFeed()
     }
@@ -88,8 +88,8 @@ class PlusFragment : Fragment(), BackPressable {
         return true
     }
 
-    val mainActivity: MainActivity?
-        get() = activity as? MainActivity
+    val mainActivity: MainActivity_v7?
+        get() = activity as? MainActivity_v7
 
     companion object {
         const val TAG = "social.entourage.android.fragment_plus"

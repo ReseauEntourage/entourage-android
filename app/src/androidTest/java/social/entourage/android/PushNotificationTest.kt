@@ -24,7 +24,7 @@ class PushNotificationTest {
 
     @Rule
     @JvmField
-    val activityTestRule = ActivityTestRule(MainActivity::class.java, isAppStarted, isAppStarted)
+    val activityTestRule = ActivityTestRule(MainActivity_v7::class.java, isAppStarted, isAppStarted)
     private val entourageID = if(BuildConfig.FLAVOR_env=="prod") "46569" else "2300"
 
     @Before
@@ -41,7 +41,7 @@ class PushNotificationTest {
 
     @Test
     fun testNotifMessageIntent() {
-        val intent = Intent(getApplicationContext<Application>(), MainActivity::class.java)
+        val intent = Intent(getApplicationContext<Application>(), MainActivity_v7::class.java)
         intent.action = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE
         val args = Bundle()
         val myobject = "title"

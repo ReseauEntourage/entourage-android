@@ -9,7 +9,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
 import social.entourage.android.EntourageApplication
-import social.entourage.android.MainActivity
+import social.entourage.android.MainActivity_v7
 import social.entourage.android.MainPresenter
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
@@ -22,7 +22,7 @@ import social.entourage.android.new_v8.models.Params
 class MainActivity : BaseSecuredActivity() {
 
     private lateinit var navController: NavController
-    private val presenter: MainPresenter = MainPresenter(MainActivity())
+    private val presenter: MainPresenter = MainPresenter(MainActivity_v7())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

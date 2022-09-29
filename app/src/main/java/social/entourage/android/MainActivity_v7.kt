@@ -4,8 +4,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.provider.Settings
 import android.view.View
 import android.widget.Toast
@@ -16,8 +14,6 @@ import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.activity_main.*
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.PushNotificationContent
-import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BackPressable
 import social.entourage.android.base.BaseSecuredActivity
@@ -29,7 +25,6 @@ import social.entourage.android.entourage.EntourageDisclaimerFragment
 import social.entourage.android.entourage.information.EntourageInformationFragment
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.guide.GDSMainActivity
-import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.home.expert.HomeExpertFragment
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.navigation.EntBottomNavigationView
@@ -47,9 +42,8 @@ import social.entourage.android.user.edit.photo.PhotoEditFragment
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import timber.log.Timber
 import java.io.File
-import javax.inject.Inject
 
-class MainActivity : BaseSecuredActivity(),
+class MainActivity_v7 : BaseSecuredActivity(),
     EntourageDisclaimerFragment.OnFragmentInteractionListener,
     PhotoChooseInterface,
     UserEditActionZoneFragment.FragmentListener,
@@ -411,7 +405,7 @@ class MainActivity : BaseSecuredActivity(),
     }
 
     override fun onUploadError() {
-        Toast.makeText(this@MainActivity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT)
+        Toast.makeText(this@MainActivity_v7, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT)
             .show()
         dismissProgressDialog()
         (supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as? PhotoEditFragment)?.onPhotoSent(

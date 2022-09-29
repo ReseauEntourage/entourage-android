@@ -9,7 +9,7 @@ import android.widget.ExpandableListView
 import kotlinx.android.synthetic.main.fragment_entourage_category.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.Constants
-import social.entourage.android.MainActivity
+import social.entourage.android.MainActivity_v7
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.tools.EntLinkMovementMethod
@@ -98,7 +98,7 @@ class EntourageCategoryFragment : BaseDialogFragment() {
     }
 
     private fun initializeHelpHtmlView() {
-        (activity as? MainActivity)?.let { mainActivity ->
+        (activity as? MainActivity_v7)?.let { mainActivity ->
             val goalLink = mainActivity.getLink(Constants.GOAL_LINK_ID)
             entourage_category_help_link?.setHtmlString(getString(R.string.entourage_create_help_text, goalLink), EntLinkMovementMethod)
         }

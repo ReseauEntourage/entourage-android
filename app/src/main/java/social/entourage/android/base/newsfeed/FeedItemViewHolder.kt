@@ -13,7 +13,6 @@ import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.layout_feed_action_card.view.*
 import social.entourage.android.Constants
 import social.entourage.android.EntourageApplication
-import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.TimestampedObject

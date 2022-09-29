@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_user_edit.*
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.MainActivity
+import social.entourage.android.MainActivity_v7
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseOrganization
 import social.entourage.android.api.model.User
@@ -35,7 +35,6 @@ import social.entourage.android.user.edit.place.UserEditActionZoneFragment.Fragm
 import social.entourage.android.user.partner.PartnerFragment
 import timber.log.Timber
 import java.util.*
-import javax.inject.Inject
 
 open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
     // ----------------------------------
@@ -364,7 +363,7 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
             }
             if (success) {
                 //logout and go back to login screen
-                if (it is MainActivity) {
+                if (it is MainActivity_v7) {
                     it.selectMenuProfileItem("logout")
                 }
             } else if (hasActivity) {

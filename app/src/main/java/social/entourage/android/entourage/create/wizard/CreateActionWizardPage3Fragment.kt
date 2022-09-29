@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_create_action_wizard_page3.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.Constants
-import social.entourage.android.MainActivity
+import social.entourage.android.MainActivity_v7
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.tools.EntLinkMovementMethod
@@ -32,7 +32,7 @@ class CreateActionWizardPage3Fragment : BaseDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null && getView() != null) {
-            val activity = activity as MainActivity?
+            val activity = activity as MainActivity_v7?
             val text = getString(R.string.create_action_wizard_disclaimer, activity?.getLink(Constants.CHARTE_LINK_ID))
             create_action_wizard_disclaimer?.text = Utils.fromHtml(text)
             create_action_wizard_disclaimer?.movementMethod = EntLinkMovementMethod

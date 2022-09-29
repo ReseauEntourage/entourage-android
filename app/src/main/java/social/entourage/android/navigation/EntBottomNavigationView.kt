@@ -13,7 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import me.leolin.shortcutbadger.ShortcutBadger
 import social.entourage.android.EntourageApplication
-import social.entourage.android.MainActivity
+import social.entourage.android.MainActivity_v7
 import social.entourage.android.R
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.home.expert.HomeExpertFragment
@@ -30,7 +30,7 @@ class EntBottomNavigationView : BottomNavigationView {
 
     constructor(context: Context)  : super(context)
 
-    fun configure(activity: MainActivity) {
+    fun configure(activity: MainActivity_v7) {
         instance = this
         // we need to set the listener first, to respond to the default selected tab request
         this.setOnItemSelectedListener { item: MenuItem ->
@@ -77,7 +77,7 @@ class EntBottomNavigationView : BottomNavigationView {
         view.layoutParams = layoutParams
     }
 
-    private fun shouldBypassNavigation(activity: MainActivity, @IdRes itemId: Int): Boolean {
+    private fun shouldBypassNavigation(activity: MainActivity_v7, @IdRes itemId: Int): Boolean {
         if (itemId == navigationDataSource.actionMenuId) {
             //Handling special cases
             if (!Configuration.showPlusScreen()) {

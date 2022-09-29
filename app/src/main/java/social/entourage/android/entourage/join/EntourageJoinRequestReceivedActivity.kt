@@ -97,7 +97,7 @@ class EntourageJoinRequestReceivedActivity : BaseSecuredActivity() {
             val duration = toast.duration
             toast.show()
             Handler(Looper.getMainLooper()).postDelayed({
-                startActivity(Intent(this@EntourageJoinRequestReceivedActivity, MainActivity::class.java))
+                startActivity(Intent(this@EntourageJoinRequestReceivedActivity, MainActivity_v7::class.java))
                 finish()
             }, duration + 100.toLong())
         }

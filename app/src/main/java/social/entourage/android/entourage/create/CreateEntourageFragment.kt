@@ -406,7 +406,7 @@ class CreateEntourageFragment : BaseDialogFragment(),
 
     private fun initializeHelpHtmlView() {
         create_entourage_help_link?.let {
-            (activity as? MainActivity)?.let { mainActivity ->
+            (activity as? MainActivity_v7)?.let { mainActivity ->
                 val htmlString: String = if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) {
                     getString(R.string.entourage_create_help_text_event, mainActivity.getLink(
                         Constants.EVENTS_GUIDE_ID))

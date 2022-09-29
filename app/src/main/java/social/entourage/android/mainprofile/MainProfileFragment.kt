@@ -15,7 +15,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
-import social.entourage.android.MainActivity
+import social.entourage.android.MainActivity_v7
 import social.entourage.android.R
 import social.entourage.android.api.request.UserResponse
 import social.entourage.android.api.tape.Events
@@ -193,15 +193,15 @@ class MainProfileFragment : Fragment(R.layout.layout_mainprofile) {
     }
 
     private fun selectMenuProfile(position: String) {
-        (activity as? MainActivity)?.selectMenuProfileItem(position)
+        (activity as? MainActivity_v7)?.selectMenuProfileItem(position)
     }
 
     private fun showEvents() {
-        (activity as? MainActivity)?.showEvents()
+        (activity as? MainActivity_v7)?.showEvents()
     }
 
     private fun showActions() {
-        (activity as? MainActivity)?.showAllActions()
+        (activity as? MainActivity_v7)?.showAllActions()
     }
 
     private fun handleLongPress(): Boolean {

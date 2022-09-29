@@ -85,7 +85,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
     override fun onStart() {
         super.onStart()
         if (!LocationUtils.isLocationPermissionGranted()) {
-            (activity as? MainActivity)?.showEditActionZoneFragment(this,false)
+            (activity as? MainActivity_v7)?.showEditActionZoneFragment(this,false)
         }
     }
 
@@ -173,7 +173,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
                 EntourageDisclaimerFragment.newInstance(groupType).show(fragmentManager, EntourageDisclaimerFragment.TAG)
             }
         } else {
-            (activity as? MainActivity)?.onEntourageDisclaimerAccepted(null)
+            (activity as? MainActivity_v7)?.onEntourageDisclaimerAccepted(null)
         }
     }
 
@@ -359,7 +359,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
                 activity?.supportFragmentManager?.registerFragmentLifecycleCallbacks(it, false)
             }
         }
-        (activity as? MainActivity)?.showEditActionZoneFragment()
+        (activity as? MainActivity_v7)?.showEditActionZoneFragment()
         entService?.updateHomefeed(pagination)
 
         presenter.initializeInvitations()
@@ -471,7 +471,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             }
 
             override fun onShowChangeZone() {
-                val activity = (requireActivity() as? MainActivity) ?: return
+                val activity = (requireActivity() as? MainActivity_v7) ?: return
                 AnalyticsEvents.logEvent(AnalyticsEvents.Event_EXPERTFEED_ModifyActionZone)
 
                 val listener = object : UserEditActionZoneFragment.FragmentListener {
@@ -492,7 +492,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             }
 
             override fun onShowEntourageHelp() {
-                val activity = (requireActivity() as? MainActivity) ?: return
+                val activity = (requireActivity() as? MainActivity_v7) ?: return
                 AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_EXPERTFEED_HelpDifferent)
 
                 val homeHelp = HomeHelpFragment()
@@ -500,7 +500,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
             }
 
             override fun onShowChangeMode() {
-                (activity as? MainActivity)?.showProfileTab()
+                (activity as? MainActivity_v7)?.showProfileTab()
             }
         }
 
