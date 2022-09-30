@@ -49,6 +49,7 @@ class PostAdapter(
                 }
                 binding.name.text = user?.displayName
                 content?.let {
+                    binding.postMessage.visibility = View.VISIBLE
                     binding.postMessage.text = it
                 } ?: run {
                     binding.postMessage.visibility = View.GONE

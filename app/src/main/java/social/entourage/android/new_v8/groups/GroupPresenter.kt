@@ -46,6 +46,7 @@ class GroupPresenter {
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
 
+    var isSendingCreatePost = false
 
     fun createGroup(group: Group) {
         EntourageApplication.get().apiModule.groupRequest.createGroup(GroupWrapper(group))
@@ -266,6 +267,8 @@ class GroupPresenter {
     }
 
     fun addPost(message: String?, file: File, groupId: Int) {
+        if (isSendingCreatePost) return
+        isSendingCreatePost = true
         val request = RequestContent("image/jpeg")
         EntourageApplication.get().apiModule.groupRequest.prepareAddPost(groupId, request)
             .enqueue(object : Callback<PrepareAddPostResponse> {
@@ -279,12 +282,16 @@ class GroupPresenter {
                         val uploadKey = response.body()?.uploadKey
                         presignedUrl?.let {
                             uploadFile(groupId, file, presignedUrl, uploadKey, message)
-                        }
+                        } ?: run { isSendingCreatePost = false }
+                    }
+                    else {
+                        isSendingCreatePost = false
                     }
                 }
 
                 override fun onFailure(call: Call<PrepareAddPostResponse>, t: Throwable) {
                     hasUserLeftGroup.value = false
+                    isSendingCreatePost = false
                 }
             })
     }
@@ -306,6 +313,7 @@ class GroupPresenter {
         client.newCall(request).enqueue(object : okhttp3.Callback {
             override fun onFailure(call: okhttp3.Call, e: IOException) {
                 Timber.e("response ${e.message}")
+                isSendingCreatePost = false
             }
 
             override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
@@ -315,12 +323,15 @@ class GroupPresenter {
                     messageChat["content"] = message
                 val chatMessage = ArrayMap<String, Any>()
                 chatMessage["chat_message"] = messageChat
+                isSendingCreatePost = false
                 addPost(groupId, chatMessage)
             }
         })
     }
 
     fun addPost(groupId: Int, params: ArrayMap<String, Any>) {
+        if (isSendingCreatePost) return
+        isSendingCreatePost = true
         EntourageApplication.get().apiModule.groupRequest.addPost(groupId, params)
             .enqueue(object : Callback<PostWrapper> {
                 override fun onResponse(
@@ -332,6 +343,7 @@ class GroupPresenter {
 
                 override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
                     hasPost.value = false
+                    isSendingCreatePost = false
                 }
             })
     }

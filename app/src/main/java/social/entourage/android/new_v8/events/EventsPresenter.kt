@@ -45,6 +45,8 @@ class EventsPresenter {
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
 
+    var isSendingCreatePost = false
+
     fun getMyEvents(userId: Int, page: Int, per: Int) {
         EntourageApplication.get().apiModule.eventsRequest.getMyEvents(userId, page, per)
             .enqueue(object : Callback<EventsListWrapper> {
@@ -267,6 +269,8 @@ class EventsPresenter {
     }
 
     fun addPost(message: String?, file: File, eventId: Int) {
+        if (isSendingCreatePost) return
+        isSendingCreatePost = true
         val request = RequestContent("image/jpeg")
         EntourageApplication.get().apiModule.eventsRequest.prepareAddPost(eventId, request)
             .enqueue(object : Callback<PrepareAddPostResponse> {
@@ -279,17 +283,24 @@ class EventsPresenter {
                         val presignedUrl = response.body()?.presignedUrl
                         val uploadKey = response.body()?.uploadKey
                         presignedUrl?.let {
+                            isSendingCreatePost = true
                             uploadFile(eventId, file, presignedUrl, uploadKey, message)
-                        }
+                        } ?: run { isSendingCreatePost = false }
+                    }
+                    else {
+                        isSendingCreatePost = false
                     }
                 }
 
                 override fun onFailure(call: Call<PrepareAddPostResponse>, t: Throwable) {
+                    isSendingCreatePost = false
                 }
             })
     }
 
     fun addPost(eventId: Int, params: ArrayMap<String, Any>) {
+        if (isSendingCreatePost) return
+        isSendingCreatePost = true
         EntourageApplication.get().apiModule.eventsRequest.addPost(eventId, params)
             .enqueue(object : Callback<PostWrapper> {
                 override fun onResponse(
@@ -301,6 +312,7 @@ class EventsPresenter {
 
                 override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
                     hasPost.value = false
+                    isSendingCreatePost = false
                 }
             })
     }
@@ -321,6 +333,7 @@ class EventsPresenter {
         client.newCall(request).enqueue(object : okhttp3.Callback {
             override fun onFailure(call: okhttp3.Call, e: IOException) {
                 Timber.e("response ${e.message}")
+                isSendingCreatePost = false
             }
 
             override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
@@ -330,6 +343,7 @@ class EventsPresenter {
                     messageChat["content"] = message
                 val chatMessage = ArrayMap<String, Any>()
                 chatMessage["chat_message"] = messageChat
+                isSendingCreatePost = false
                 addPost(eventId, chatMessage)
             }
         })
