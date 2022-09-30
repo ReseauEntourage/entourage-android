@@ -70,15 +70,19 @@ class PostAdapter(
                 ).format(
                     createdTime
                 )
+
                 this.imageUrl?.let { avatarURL ->
+                    binding.photoPost.visibility = View.VISIBLE
                     Glide.with(holder.itemView.context)
-                        .load(Uri.parse(avatarURL))
+                        .load(avatarURL)
                         .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
                         .placeholder(R.drawable.new_group_illu)
+                        .error(R.drawable.new_group_illu)
                         .into(binding.photoPost)
                 } ?: run {
                     binding.photoPost.visibility = View.GONE
                 }
+
                 this.user?.avatarURLAsString?.let { avatarURL ->
                     Glide.with(holder.itemView.context)
                         .load(avatarURL)
