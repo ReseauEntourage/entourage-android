@@ -10,7 +10,10 @@ class MetaData : Serializable {
     @SerializedName("name")
     var name: String? = null
 
+    @SerializedName("subname")
+    var subname: String? = null
+
     override fun toString(): String {
-        return "Interests(id=$id, name=$name)"
+        return "Interests(id=$id, name=$name, subname=$subname)"
     }
 }

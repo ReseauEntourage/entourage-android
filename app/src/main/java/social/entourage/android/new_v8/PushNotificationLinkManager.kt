@@ -1,21 +1,15 @@
 package social.entourage.android.new_v8
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.FragmentManager
-import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.new_v8.association.PartnerDetailActivity
-import social.entourage.android.new_v8.groups.details.feed.FeedActivity
-import social.entourage.android.new_v8.home.pedago.PedagoDetailActivity
-import social.entourage.android.new_v8.models.Action
+import social.entourage.android.new_v8.models.ActionSummary
 import social.entourage.android.new_v8.models.Params
 import social.entourage.android.new_v8.models.Type
-import social.entourage.android.new_v8.user.UserProfileActivity
 import social.entourage.android.new_v8.utils.Const
-import social.entourage.android.new_v8.utils.Utils
 
 /**
  * Created by Me on 26/09/2022.
@@ -54,7 +48,7 @@ class PushNotificationLinkManager {
         params.id = id
         Navigation.navigate(context,supportFragmentManager,
             Type.USER,
-            Action.SHOW, params)
+            ActionSummary.SHOW, params)
     }
     private fun showPartner(context:Context, id: Int) {
         context.startActivity(
@@ -76,7 +70,7 @@ class PushNotificationLinkManager {
         params.id = id
         Navigation.navigate(context,supportFragmentManager,
             Type.OUTING,
-            Action.SHOW, params)
+            ActionSummary.SHOW, params)
     }
 
     private fun showNeighborhood(context:Context,supportFragmentManager: FragmentManager, id: Int) {
@@ -84,7 +78,7 @@ class PushNotificationLinkManager {
         params.id = id
         Navigation.navigate(context,supportFragmentManager,
             Type.NEIGHBORHOOD,
-            Action.SHOW, params)
+            ActionSummary.SHOW, params)
     }
 
     private fun showResource(context:Context,supportFragmentManager: FragmentManager, id: Int) {
@@ -92,7 +86,7 @@ class PushNotificationLinkManager {
         params.id = id
         Navigation.navigate(context,supportFragmentManager,
             Type.RESOURCE,
-            Action.SHOW, params)
+            ActionSummary.SHOW, params)
     }
 }
 

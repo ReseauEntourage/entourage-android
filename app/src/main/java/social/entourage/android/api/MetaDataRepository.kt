@@ -5,11 +5,14 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
+import social.entourage.android.R
 import social.entourage.android.api.model.Image
 import social.entourage.android.api.model.Tags
 import social.entourage.android.api.request.EventsImagesResponse
 import social.entourage.android.api.request.GroupImagesResponse
 import social.entourage.android.api.request.MetaDataResponse
+import social.entourage.android.new_v8.models.ActionSection
+import timber.log.Timber
 
 object MetaDataRepository {
     var metaData: MutableLiveData<Tags> = MutableLiveData()
@@ -66,6 +69,13 @@ object MetaDataRepository {
             override fun onFailure(call: Call<EventsImagesResponse>, t: Throwable) {
             }
         })
+    }
+
+    fun getActionSectionNameFromId(id:String?) : String {
+       val ret =  metaData.value?.sections?.firstOrNull { it.id == id }
+        ret?.name?.let { return it } ?: kotlin.run {
+          return  "-"
+        }
     }
 
 }

@@ -40,7 +40,7 @@ class Recommandation : Serializable {
     val type: Type? = null
 
     @SerializedName("action")
-    val action: Action? = null
+    val action: ActionSummary? = null
 
     @SerializedName("image_url")
     val imageURL: String? = null
@@ -104,7 +104,7 @@ enum class Type {
     RESOURCE;
 }
 
-enum class Action {
+enum class ActionSummary {
     @SerializedName("show")
     SHOW,
 

@@ -43,3 +43,13 @@ data class Metadata(
     @field:SerializedName("landscape_url")
     val landscapeUrl: String? = null
 ) : Serializable
+
+data class MetadataAction(
+
+    @field:SerializedName("city")
+    val city: String? = null,
+
+    @field:SerializedName("display_address")
+    val displayAddress: String? = null,
+
+) : Serializable

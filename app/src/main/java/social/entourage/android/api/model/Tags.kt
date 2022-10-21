@@ -9,7 +9,10 @@ class Tags : Serializable {
 
     @SerializedName("signals")
     var signals: ArrayList<MetaData>? = null
+
+    @SerializedName("sections")
+    var sections: ArrayList<MetaData>? = null
     override fun toString(): String {
-        return "Tags(interests=$interests, signals=$signals)"
+        return "Tags(interests=$interests, signals=$signals, sections=$sections)"
     }
 }
