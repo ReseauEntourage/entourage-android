@@ -7,7 +7,7 @@ class ActionSection(
     val title: String?,
     val subtitle:String?,
     var isSelected: Boolean
-) {
+) : java.io.Serializable {
     val icon: Int
         get() {
             return when (id) {

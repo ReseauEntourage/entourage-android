@@ -1,11 +1,10 @@
 package social.entourage.android.new_v8.models
 
-import android.view.View
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.R
 import social.entourage.android.api.model.feed.FeedItemAuthor
+import social.entourage.android.tools.Utils
 import java.io.Serializable
-import java.text.SimpleDateFormat
 import java.util.*
 
 data class Action(
@@ -63,14 +62,9 @@ data class Action(
         return actionType == "contribution"
     }
 
-    fun createdDate(context: android.content.Context) : String {
+    fun dateFormattedString(context: android.content.Context) : String {
         createdAt?.let {
-            val dateStr = SimpleDateFormat(
-            context.getString(R.string.action_date_list_formatter),
-            Locale.FRANCE
-        ).format(it)
-            return String.format(context.getString(R.string.action_date_list,dateStr))
-        }
-        return "-"
+            return Utils.dateAsStringLitteralFromNow(it,context, R.string.action_date_list)
+        } ?: return  "-"
     }
 }

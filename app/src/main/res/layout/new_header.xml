@@ -34,6 +34,7 @@
             tools:src="@drawable/new_back" />
 
         <TextView
+            android:id="@+id/header_title"
             style="@style/h2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

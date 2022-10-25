@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.events
+package social.entourage.android.new_v8.actions
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -7,12 +7,12 @@ import android.content.Intent
 import android.graphics.Rect
 import android.location.Geocoder
 import android.location.Location
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -23,12 +23,14 @@ import com.google.android.libraries.places.compat.AutocompleteFilter
 import com.google.android.libraries.places.compat.ui.PlaceAutocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import kotlinx.android.synthetic.main.fragment_onboarding_place.*
+import kotlinx.android.synthetic.main.new_activity_event_filters.view.*
+import kotlinx.android.synthetic.main.new_header.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events
 import social.entourage.android.base.location.LocationProvider
 import social.entourage.android.base.location.LocationUtils
-import social.entourage.android.databinding.NewActivityEventFiltersBinding
+import social.entourage.android.databinding.NewActivityActionLocationFiltersBinding
 import social.entourage.android.new_v8.events.list.DiscoverEventsListFragment
 import social.entourage.android.new_v8.models.Address
 import social.entourage.android.new_v8.models.EventActionLocationFilters
@@ -38,7 +40,7 @@ import timber.log.Timber
 import java.io.IOException
 import java.util.*
 
-class EventFiltersActivity : AppCompatActivity() {
+class ActionLocationFilterActivity : AppCompatActivity() {
 
     //Location
     private var mFusedLocationClient: FusedLocationProviderClient? = null
@@ -65,19 +67,18 @@ class EventFiltersActivity : AppCompatActivity() {
 
     private var currentFilters: EventActionLocationFilters? = null
 
-    private lateinit var binding: NewActivityEventFiltersBinding
+    private lateinit var binding: NewActivityActionLocationFiltersBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(
             this,
-            R.layout.new_activity_event_filters
+            R.layout.new_activity_action_location_filters
         )
 
-        currentFilters = intent.getSerializableExtra(FILTERS) as? EventActionLocationFilters
+        currentFilters = intent.getSerializableExtra(LOCATION_FILTERS) as? EventActionLocationFilters
 
-        Timber.d("***** View Created : Filters : ${currentFilters?.addressName()}")
         setupLocationChoice()
         initializeSeekBar()
         setupViews()
@@ -110,7 +111,7 @@ class EventFiltersActivity : AppCompatActivity() {
         if (currentFilters?.validate() == true) {
             binding.errorView.visibility = View.GONE
             val intent = Intent(this, DiscoverEventsListFragment::class.java)
-            intent.putExtra(FILTERS, currentFilters)
+            intent.putExtra(LOCATION_FILTERS, currentFilters)
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
@@ -285,9 +286,9 @@ class EventFiltersActivity : AppCompatActivity() {
     }
 
     private fun clearFilterFromPlace() {
-            currentFilters?.modifyAddress(null)
-            currentFilters?.modifiyShortname(null)
-            binding.placeName.text = getString(R.string.onboard_place_placeholder)
+        currentFilters?.modifyAddress(null)
+        currentFilters?.modifiyShortname(null)
+        binding.placeName.text = getString(R.string.onboard_place_placeholder)
     }
 
     //Location
@@ -345,9 +346,5 @@ class EventFiltersActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Activez la localisation", Toast.LENGTH_LONG).show()
         }
-    }
-
-    companion object {
-        const val FILTERS = "filters"
     }
 }

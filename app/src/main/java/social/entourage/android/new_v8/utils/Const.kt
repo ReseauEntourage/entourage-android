@@ -46,4 +46,8 @@ object Const {
     const val PARTNER_ID = "partner_id"
     const val IS_FROM_NOTIF = "isFromNotif"
     const val HTML_CONTENT = "htmlContent"
+
+    const val ACTION_ID = "actionID"
+    const val ACTION_TITLE = "actionTitle"
+    const val IS_ACTION_DEMAND = "isActionDemand"
 }

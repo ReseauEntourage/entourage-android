@@ -233,7 +233,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="group_error_updated">Erreur lors de la modification du groupe</string>
     <string name="title_activity_main">ActivityMain</string>
     <string name="title_home">Accueil</string>
-    <string name="title_donations">Dons</string>
+    <string name="title_donations">Entraide</string>
     <string name="title_messages">Messages</string>
     <string name="title_groups">Groupes</string>
     <string name="title_events">Evénements</string>
@@ -422,6 +422,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="edit_event">Editer l\'événement</string>
     <string name="event_edit_recurrent_event">Modifier un évènement récurrent</string>
     <string name="error_event_end_time">L\'heure de fin ne peut pas dépasser minuit</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
