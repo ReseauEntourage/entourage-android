@@ -64,7 +64,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         groupPresenter.isGroupReported.observe(requireActivity(), ::handleReportResponse)
         groupPresenter.isPostReported.observe(requireActivity(), ::handleReportResponse)
         eventPresenter.isEventReported.observe(requireActivity(), ::handleReportResponse)
-        actionPresenter.isEventReported.observe(requireActivity(), ::handleReportResponse)
+        actionPresenter.isActionReported.observe(requireActivity(), ::handleReportResponse)
         setupViewStep1()
         handleCloseButton()
         setView()
@@ -205,7 +205,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         userPresenter.isUserReported = MutableLiveData()
         groupPresenter.isGroupReported = MutableLiveData()
         eventPresenter.isEventReported = MutableLiveData()
-        actionPresenter.isEventReported = MutableLiveData()
+        actionPresenter.isActionReported = MutableLiveData()
     }
 
     private fun handleCloseButton() {
