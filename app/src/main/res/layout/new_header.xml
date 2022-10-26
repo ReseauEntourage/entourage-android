@@ -36,16 +36,15 @@
         <TextView
             android:id="@+id/header_title"
             style="@style/h2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
             android:layout_marginBottom="11dp"
             android:text="@{title}"
             app:layout_constraintBottom_toTopOf="@id/divider"
-            app:layout_constraintLeft_toRightOf="@id/icon_back"
+            app:layout_constraintEnd_toStartOf="@+id/icon_settings"
+            app:layout_constraintStart_toEndOf="@+id/icon_back"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Notifications" />
-
 
         <ImageView
             android:id="@+id/icon_settings"

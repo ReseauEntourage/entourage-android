@@ -12,7 +12,8 @@ class DemandsListWrapper(@field:SerializedName("solicitations") val allActions: 
 class ContribsListWrapper(@field:SerializedName("contributions") val allActions: MutableList<Action>)
 
 class CreateActionWrapper(@field:SerializedName("action") val action: Action)
-class ActionWrapper(@field:SerializedName("action") val action: Action)
+class ContribWrapper(@field:SerializedName("contribution") val action: Action)
+class DemandWrapper(@field:SerializedName("solicitation") val action: Action)
 
 
 interface ActionsRequest {
@@ -43,10 +44,10 @@ interface ActionsRequest {
     ): Call<MyActionsListWrapper>
 
     @GET("contributions/{id}")
-    fun getContribution(@Path("id") contribId: Int): Call<ActionWrapper>
+    fun getContribution(@Path("id") contribId: Int): Call<ContribWrapper>
 
     @GET("solicitations/{id}")
-    fun getDemand(@Path("id") demandId: Int): Call<ActionWrapper>
+    fun getDemand(@Path("id") demandId: Int): Call<DemandWrapper>
 
     //Report actions
     @POST("contributions/{action_id}/report")

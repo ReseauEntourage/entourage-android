@@ -96,26 +96,26 @@ object Utils {
             .uppercase(Locale.getDefault())
     }
 
-    fun dateAsStringLitteralFromNow(date: Date, context: Context, format:Int): String {
+    fun dateAsStringLitteralFromNow(date: Date, context: Context, format:Int?,caps:Boolean = true): String {
         val lastUpdate = Calendar.getInstance()
         lastUpdate.time = date
         val now = Calendar.getInstance()
         // check for today
         if (now[Calendar.YEAR] == lastUpdate[Calendar.YEAR] && now[Calendar.MONTH] == lastUpdate[Calendar.MONTH] && now[Calendar.DAY_OF_MONTH] == lastUpdate[Calendar.DAY_OF_MONTH]) {
-            return context.getString(R.string.date_today)
+            return if (caps) context.getString(R.string.date_today) else context.getString(R.string.date_today_lower)
         }
 
         // check for yesterday
         val yesterday = Calendar.getInstance()
         yesterday.add(Calendar.DATE, -1)
         if (yesterday[Calendar.YEAR] == lastUpdate[Calendar.YEAR] && yesterday[Calendar.MONTH] == lastUpdate[Calendar.MONTH] && yesterday[Calendar.DAY_OF_MONTH] == lastUpdate[Calendar.DAY_OF_MONTH]) {
-            return context.getString(R.string.date_yesterday)
+            return if (caps) context.getString(R.string.date_yesterday) else context.getString(R.string.date_yesterday_lower)
         }
 
         // custom regular date
         val dateStr = SimpleDateFormat(context.getString(R.string.action_date_list_formatter),
             Locale.FRANCE).format(date)
-        return context.getString(format,dateStr)
+        return if (format != null) context.getString(format,dateStr) else dateStr
     }
 
     fun getMonthAsString(month: Int, context: Context): String {

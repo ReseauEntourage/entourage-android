@@ -180,12 +180,12 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                     ReportTypes.REPORT_CONTRIB.code -> actionPresenter.sendReport(
                         id,
                         binding.message.text.toString(),
-                        selectedSignalsIdList,true
+                        selectedSignalsIdList,false
                     )
                     ReportTypes.REPORT_DEMAND.code -> actionPresenter.sendReport(
                         id,
                         binding.message.text.toString(),
-                        selectedSignalsIdList, false
+                        selectedSignalsIdList, true
                     )
                     else -> R.string.report_member
                 }

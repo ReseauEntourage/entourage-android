@@ -22,6 +22,12 @@
         <argument
             android:name="actionID"
             app:argType="integer" />
+        <argument
+            android:name="isActionDemand"
+            app:argType="boolean"/>
+        <argument
+            android:name="isActionMine"
+            app:argType="boolean"/>
     </fragment>
 
 </navigation>

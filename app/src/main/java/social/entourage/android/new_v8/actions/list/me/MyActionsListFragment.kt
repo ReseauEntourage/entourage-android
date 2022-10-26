@@ -116,7 +116,8 @@ class MyActionsListFragment : Fragment() {
         val intent = Intent(context, ActionDetailActivity::class.java)
             .putExtra(Const.ACTION_ID, action.id)
             .putExtra(Const.ACTION_TITLE,action.title)
-            .putExtra(Const.IS_ACTION_DEMAND,!action.isContrib())
+            .putExtra(Const.IS_ACTION_DEMAND,action.isDemand())
+            .putExtra(Const.IS_ACTION_MINE, action.isMine())
         startActivity(intent)
     }
 }

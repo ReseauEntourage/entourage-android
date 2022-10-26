@@ -81,9 +81,9 @@ class ActionsPresenter {
 
     fun sendReport(id: Int, reason: String,
                    selectedSignalsIdList: MutableList<String>,
-                   isContrib: Boolean) {
+                   isDemand: Boolean) {
 
-        if (isContrib) {
+        if (!isDemand) {
             sendContribReport(id,reason,selectedSignalsIdList)
         }
         else {
@@ -92,7 +92,7 @@ class ActionsPresenter {
     }
 
     private fun sendContribReport(id: Int, reason: String,
-        selectedSignalsIdList: MutableList<String>) {
+                                  selectedSignalsIdList: MutableList<String>) {
         val userRequest = EntourageApplication.get().apiModule.actionsRequest
         val call = userRequest.reportContribution(
             id, ReportWrapper(Report(reason, selectedSignalsIdList))
@@ -110,7 +110,7 @@ class ActionsPresenter {
     }
 
     private fun sendDemandReport(id: Int, reason: String,
-        selectedSignalsIdList: MutableList<String>) {
+                                 selectedSignalsIdList: MutableList<String>) {
         val userRequest = EntourageApplication.get().apiModule.actionsRequest
         val call = userRequest.reportDemand(
             id, ReportWrapper(Report(reason, selectedSignalsIdList))
@@ -131,21 +131,21 @@ class ActionsPresenter {
         Detail
      */
 
-    fun getDetailAction(id: Int, isContrib:Boolean) {
-        if (isContrib) {
-            getContribution(id)
+    fun getDetailAction(id: Int, isDemand: Boolean) {
+        if (isDemand) {
+            getDemand(id)
         }
         else {
-            getDemand(id)
+            getContribution(id)
         }
     }
 
     private fun getDemand(id: Int) {
         EntourageApplication.get().apiModule.actionsRequest.getDemand(id)
-            .enqueue(object : Callback<ActionWrapper> {
+            .enqueue(object : Callback<DemandWrapper> {
                 override fun onResponse(
-                    call: Call<ActionWrapper>,
-                    response: Response<ActionWrapper>
+                    call: Call<DemandWrapper>,
+                    response: Response<DemandWrapper>
                 ) {
                     Timber.e(response.body().toString())
                     if (response.isSuccessful) {
@@ -155,17 +155,17 @@ class ActionsPresenter {
                     }
                 }
 
-                override fun onFailure(call: Call<ActionWrapper>, t: Throwable) {
+                override fun onFailure(call: Call<DemandWrapper>, t: Throwable) {
                 }
             })
     }
 
     private fun getContribution(id: Int) {
         EntourageApplication.get().apiModule.actionsRequest.getContribution(id)
-            .enqueue(object : Callback<ActionWrapper> {
+            .enqueue(object : Callback<ContribWrapper> {
                 override fun onResponse(
-                    call: Call<ActionWrapper>,
-                    response: Response<ActionWrapper>
+                    call: Call<ContribWrapper>,
+                    response: Response<ContribWrapper>
                 ) {
                     Timber.e(response.body().toString())
                     if (response.isSuccessful) {
@@ -175,7 +175,7 @@ class ActionsPresenter {
                     }
                 }
 
-                override fun onFailure(call: Call<ActionWrapper>, t: Throwable) {
+                override fun onFailure(call: Call<ContribWrapper>, t: Throwable) {
                 }
             })
     }
@@ -196,8 +196,8 @@ class ActionsPresenter {
         Cancel
      */
 
-    fun cancelAction(id: Int, isContrib:Boolean) {
-        if (isContrib) {
+    fun cancelAction(id: Int, isDemand:Boolean) {
+        if (!isDemand) {
             cancelContribution(id)
         }
         else {
