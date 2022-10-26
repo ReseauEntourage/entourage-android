@@ -77,7 +77,6 @@ class EventFiltersActivity : AppCompatActivity() {
 
         currentFilters = intent.getSerializableExtra(FILTERS) as? EventActionLocationFilters
 
-        Timber.d("***** View Created : Filters : ${currentFilters?.addressName()}")
         setupLocationChoice()
         initializeSeekBar()
         setupViews()
@@ -134,12 +133,12 @@ class EventFiltersActivity : AppCompatActivity() {
             EventFilterType.GOOGLE -> {
                 binding.typeChoice.check(R.id.place)
                 binding.layoutPlace.visibility = View.VISIBLE
-                binding.placeName.text = currentFilters?.shortName()
+                binding.placeName.text = currentFilters?.addressName()
             }
             else -> {
                 binding.typeChoice.check(R.id.gps)
                 binding.layoutCustom.visibility = View.VISIBLE
-                binding.locationName.text = currentFilters?.shortName()
+                binding.locationName.text = currentFilters?.addressName()
             }
         }
 
@@ -236,12 +235,18 @@ class EventFiltersActivity : AppCompatActivity() {
             AutocompleteActivity.RESULT_OK -> {
                 val place = PlaceAutocomplete.getPlace(this, data)
                 if (place == null || place.address == null) return@registerForActivityResult
-                var address = place.address.toString()
-                val lastCommaIndex = address.lastIndexOf(',')
+                var addressStr = place.address.toString()
+                val lastCommaIndex = addressStr.lastIndexOf(',')
                 if (lastCommaIndex > 0) {
                     //remove the last part, which is the country
-                    address = address.substring(0, lastCommaIndex)
+                    addressStr = addressStr.substring(0, lastCommaIndex)
                 }
+
+                val address = Address(place.latLng.latitude,place.latLng.longitude,addressStr)
+                currentFilters?.modifyAddress(address)
+                currentFilters?.modifiyShortname(addressStr)
+                binding.placeName.text = addressStr
+
                 getCityNameFromPlace(place.latLng)
             }
             AutocompleteActivity.RESULT_ERROR -> {
@@ -262,16 +267,10 @@ class EventFiltersActivity : AppCompatActivity() {
                     1
                 )?.let { address ->
                     if (address.size > 0) {
-                        val street = address[0].thoroughfare
                         val city = address[0].locality
                         val cp = address[0].postalCode
 
-                        val addressName = "$street - $city - $cp"
-
-                        val address = Address(latlng.latitude,latlng.longitude,addressName)
-                        currentFilters?.modifyAddress(address)
-                        currentFilters?.modifiyShortname("$cp - $city")
-                        binding.placeName.text = addressName
+                        currentFilters?.modifiyShortname("$city, $cp")
                     }
                     else {
                         clearFilterFromPlace()
@@ -313,15 +312,17 @@ class EventFiltersActivity : AppCompatActivity() {
                         1
                     )?.let { address ->
                         if (address.size > 0) {
-                            val street = address[0].thoroughfare
+                            var street = address[0].thoroughfare
                             val city = address[0].locality
                             val cp = address[0].postalCode
 
-                            val addressName = "$street - $city - $cp"
+                            street = if (street == null) "" else "$street, "
+
+                            val addressName = "$street$city, $cp"
                             binding.locationName.text = addressName
                             val address = Address(it.latitude,it.longitude,addressName)
                             currentFilters?.modifyAddress(address)
-                            currentFilters?.modifiyShortname("$cp - $city")
+                            currentFilters?.modifiyShortname("$city, $cp")
                             binding.errorView.visibility = View.INVISIBLE
                         }
                     }
