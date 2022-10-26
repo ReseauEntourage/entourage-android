@@ -46,15 +46,9 @@ class PedagoContentDetailsFragment : Fragment() {
         isFromNotifs = args.isFromNotif
         htmlContent = args.htmlContent
 
-        if(isFromNotifs) {
-            homePresenter.pedagolSingle.observe(requireActivity(), ::updateContent)
-            homePresenter.getPedagogicalResource(args.id)
-        }
-        else {
-            setView()
-            homePresenter.setPedagogicalContentAsRead(args.id)
-        }
-
+        setView()
+        homePresenter.pedagolSingle.observe(requireActivity(), ::updateContent)
+        homePresenter.getPedagogicalResource(args.id)
     }
 
     private fun updateContent(pedago: Pedago) {
