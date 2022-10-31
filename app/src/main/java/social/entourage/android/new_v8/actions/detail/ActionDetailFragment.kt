@@ -194,8 +194,8 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                 action?.author?.avatarURLAsString?.let { avatarURL ->
                     Glide.with(binding.uiUserIv.context)
                         .load(avatarURL)
-                        .placeholder(R.drawable.ic_user_photo_small)
-                        .error(R.drawable.ic_user_photo_small)
+                        .placeholder(R.drawable.placeholder_user)
+                        .error(R.drawable.placeholder_user)
                         .circleCrop()
                         .into(binding.uiUserIv)
                 } ?: kotlin.run {

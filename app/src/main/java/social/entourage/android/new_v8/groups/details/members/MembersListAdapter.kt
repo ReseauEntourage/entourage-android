@@ -45,7 +45,7 @@ class MembersListAdapter(
                 avatarURLAsString?.let { avatarURL ->
                     Glide.with(holder.itemView.context)
                         .load(Uri.parse(avatarURL))
-                        .placeholder(R.drawable.ic_user_photo_small)
+                        .placeholder(R.drawable.placeholder_user)
                         .circleCrop()
                         .into(binding.picture)
                 }

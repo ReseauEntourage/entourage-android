@@ -94,12 +94,12 @@ class ProfileFragment : Fragment() {
                 user.avatarURL?.let { avatarURL ->
                     Glide.with(requireActivity())
                         .load(avatarURL)
-                        .placeholder(R.drawable.ic_user_photo_small)
-                        .error(R.drawable.ic_user_photo_small)
+                        .placeholder(R.drawable.placeholder_user)
+                        .error(R.drawable.placeholder_user)
                         .circleCrop()
                         .into(photoView)
                 } ?: run {
-                    photoView.setImageResource(R.drawable.ic_user_photo_small)
+                    photoView.setImageResource(R.drawable.placeholder_user)
                 }
             }
         }

@@ -41,11 +41,11 @@ class EditImageFragment : Fragment() {
         user.avatarURL?.let { avatarURL ->
             Glide.with(this)
                 .load(Uri.parse(avatarURL))
-                .placeholder(R.drawable.ic_user_photo_small)
+                .placeholder(R.drawable.placeholder_user)
                 .circleCrop()
                 .into(binding.imageProfile)
         } ?: run {
-            binding.imageProfile.setImageResource(R.drawable.ic_user_photo_small)
+            binding.imageProfile.setImageResource(R.drawable.placeholder_user)
         }
     }
 }

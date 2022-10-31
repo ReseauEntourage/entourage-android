@@ -51,7 +51,7 @@ class GroupEventsAdapter(
                     Glide.with(holder.itemView.context)
                         .load(Uri.parse(it))
                         .transform(CenterCrop(), GranularRoundedCorners(20F, 20F, 0F, 0F))
-                        .placeholder(R.drawable.ic_user_photo_small)
+                        .placeholder(R.drawable.placeholder_user)
                         .into(holder.binding.image)
                 }
                 holder.binding.layout.setOnClickListener {

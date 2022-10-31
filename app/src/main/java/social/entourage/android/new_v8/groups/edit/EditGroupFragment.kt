@@ -104,7 +104,7 @@ class EditGroupFragment : Fragment() {
                 Glide.with(requireActivity())
                     .load(Uri.parse(it))
                     .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
-                    .placeholder(R.drawable.ic_user_photo_small)
+                    .placeholder(R.drawable.placeholder_user)
                     .into(stepThree.addPhoto)
             }
         }

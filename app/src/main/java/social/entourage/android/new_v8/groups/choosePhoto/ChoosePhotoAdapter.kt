@@ -53,7 +53,7 @@ class ChoosePhotoAdapter(
                             CenterCrop(),
                             RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px)
                         )
-                        .placeholder(R.drawable.ic_user_photo_small)
+                        .placeholder(R.drawable.placeholder_user)
                         .into(binding.image)
                 }
                 if (photosList[position].isSelected == true) {

@@ -87,13 +87,13 @@ class PostAdapter(
                 this.user?.avatarURLAsString?.let { avatarURL ->
                     Glide.with(holder.itemView.context)
                         .load(avatarURL)
-                        .placeholder(R.drawable.ic_user_photo_small)
-                        .error(R.drawable.ic_user_photo_small)
+                        .placeholder(R.drawable.placeholder_user)
+                        .error(R.drawable.placeholder_user)
                         .circleCrop()
                         .into(binding.image)
                 } ?: run {
                     Glide.with(holder.itemView.context)
-                        .load(R.drawable.ic_user_photo_small)
+                        .load(R.drawable.placeholder_user)
                         .circleCrop()
                         .into(binding.image)
                 }

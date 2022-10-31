@@ -61,14 +61,14 @@ class CommentsListAdapter(
                 comment.user?.avatarURLAsString?.let {
                     Glide.with(binding.context)
                         .load(it)
-                        .placeholder(R.drawable.ic_user_photo_small)
-                        .error(R.drawable.ic_user_photo_small)
+                        .placeholder(R.drawable.placeholder_user)
+                        .error(R.drawable.placeholder_user)
                         .apply(RequestOptions().override(25.px, 25.px))
                         .circleCrop()
                         .into(binding.image)
                 } ?: run {
                     Glide.with(binding.context)
-                        .load(R.drawable.ic_user_photo_small)
+                        .load(R.drawable.placeholder_user)
                         .apply(RequestOptions().override(25.px, 25.px))
                         .circleCrop()
                         .into(binding.image)

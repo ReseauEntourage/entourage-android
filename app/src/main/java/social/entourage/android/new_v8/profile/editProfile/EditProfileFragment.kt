@@ -191,11 +191,11 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
             user.avatarURL?.let { avatarURL ->
                 Glide.with(requireActivity())
                     .load(Uri.parse(avatarURL))
-                    .placeholder(R.drawable.ic_user_photo_small)
+                    .placeholder(R.drawable.placeholder_user)
                     .circleCrop()
                     .into(imageProfile)
             } ?: run {
-                imageProfile.setImageResource(R.drawable.ic_user_photo_small)
+                imageProfile.setImageResource(R.drawable.placeholder_user)
             }
         }
     }
@@ -206,7 +206,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
         imageUri?.path?.let { path ->
             Glide.with(this)
                 .load(path)
-                .placeholder(R.drawable.ic_user_photo_small)
+                .placeholder(R.drawable.placeholder_user)
                 .circleCrop()
                 .into(binding.imageProfile)
             //Upload the photo to Amazon S3
