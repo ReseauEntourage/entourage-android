@@ -71,7 +71,8 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/layout_top_contrib"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="16dp">
 
                             <ImageView
                                 android:id="@+id/ui_image_contrib"
@@ -87,12 +88,28 @@
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:srcCompat="@drawable/new_bg_rounded_14_orange_light" />
 
+                            <ImageView
+                                android:id="@+id/ui_image_placeholder"
+                                android:layout_width="0dp"
+                                android:layout_height="184dp"
+                                android:layout_marginTop="4dp"
+                                android:adjustViewBounds="true"
+                                android:background="@drawable/new_bg_rounded_14_orange_light"
+                                android:cropToPadding="true"
+                                android:scaleType="centerInside"
+                                android:visibility="gone"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_placeholder_action" />
+
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:id="@+id/ui_layout_cat_contrib"
                                 android:layout_width="wrap_content"
                                 android:layout_height="30dp"
                                 android:layout_marginTop="8dp"
-                                android:layout_marginEnd="12dp"
+                                android:layout_marginEnd="4dp"
                                 android:background="@drawable/new_bg_rounded_button_orange_stroke"
                                 android:paddingHorizontal="4dp"
                                 android:paddingVertical="6dp"
@@ -228,7 +245,11 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                             android:layout_height="190dp"
                             android:background="#00000000"
                             map:uiCompass="true"
-                            map:uiZoomControls="true"
+                            map:uiZoomControls="false"
+                            map:uiMapToolbar="false"
+                            map:uiZoomGestures="false"
+                            map:uiRotateGestures="false"
+                            map:uiScrollGestures="false"
                             map:zOrderOnTop="true" />
                     </androidx.cardview.widget.CardView>
 
@@ -247,7 +268,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         android:id="@+id/imageView36"
                         android:layout_width="8dp"
                         android:layout_height="8dp"
-                        android:layout_marginTop="4dp"
+                        android:layout_marginTop="8dp"
                         app:layout_constraintStart_toStartOf="@+id/ui_title_location"
                         app:layout_constraintTop_toBottomOf="@+id/ui_title_location"
                         app:srcCompat="@drawable/new_location_grey" />
@@ -301,12 +322,10 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         android:id="@+id/layout_user"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="20dp"
                         android:layout_marginTop="12dp"
                         android:layout_marginEnd="8dp"
                         android:gravity="center"
                         android:orientation="horizontal"
-                        android:weightSum="100"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/ui_title_author"
                         app:layout_constraintTop_toBottomOf="@+id/ui_title_author">
@@ -410,10 +429,11 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/new_bg_rounded_button_orange_stroke"
                 android:drawableRight="@drawable/new_delete"
-                android:drawablePadding="10dp"
+                android:drawablePadding="8dp"
                 android:elevation="0dp"
                 android:minWidth="120dp"
-                android:padding="10dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:text="@string/action_detail_bt_cancel"
                 android:textAllCaps="false"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -429,11 +449,12 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                 android:layout_marginStart="8dp"
                 android:background="@drawable/new_bg_rounded_button_orange_fill"
                 android:drawableRight="@drawable/new_create_post"
-                android:drawablePadding="10dp"
+                android:drawablePadding="8dp"
                 android:drawableTint="@color/white"
                 android:elevation="0dp"
                 android:minWidth="120dp"
-                android:padding="10dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:text="@string/action_detail_bt_modify"
                 android:textAllCaps="false"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -448,22 +469,23 @@ purus dui, aliquet cursus tellus a, dictum hen." />
             style="@style/left_courant_bold_white"
             android:layout_width="wrap_content"
             android:layout_height="44dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/new_bg_rounded_button_orange_fill"
-            android:drawableRight="@drawable/new_contact"
-            android:drawablePadding="10dp"
-            android:drawableTint="@color/white"
+            android:drawableRight="@drawable/new_contact_white"
+            android:drawablePadding="8dp"
             android:elevation="0dp"
             android:minWidth="120dp"
-            android:padding="10dp"
-            android:visibility="gone"
-            tools:visibility="visible"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             android:text="@string/action_detail_bt_contact"
             android:textAllCaps="false"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="visible" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_full_cancel"

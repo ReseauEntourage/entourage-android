@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -166,6 +167,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
             }
             else {
                 binding.layoutFullCancel.isVisible = false
+                binding.uiImagePlaceholder.isVisible = false
 
                 action?.imageUrl?.let {
                     Glide.with(binding.uiImageContrib.context)
@@ -174,10 +176,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                         .transform(CenterCrop(), RoundedCorners(14.px))
                         .into(binding.uiImageContrib)
                 } ?: kotlin.run {
-                    Glide.with(binding.uiImageContrib.context)
-                        .load(R.drawable.ic_placeholder_action)
-                        .transform(CenterCrop(), RoundedCorners(14.px))
-                        .into(binding.uiImageContrib)
+                    binding.uiImagePlaceholder.isVisible = true
                 }
 
 
@@ -247,9 +246,6 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         this.mGoogleMap = googleMap
         updateMarker()
-        googleMap.setOnMapClickListener {
-            openMap()
-        }
     }
 
     private fun updateMarker() {

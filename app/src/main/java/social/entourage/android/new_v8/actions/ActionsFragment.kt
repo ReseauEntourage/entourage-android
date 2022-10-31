@@ -40,6 +40,7 @@ const val DEMANDS_TAB = 1
 const val LOCATION_FILTERS = "locationFilters"
 const val CATEGORIES_FILTERS = "categoriesFilters"
 const val FILTERS = "filters"
+const val FILTERS2 = "filters2"
 
 class ActionsFragment : Fragment() {
 
@@ -141,8 +142,9 @@ class ActionsFragment : Fragment() {
         val bundle = bundleOf()
         bundle.putSerializable(LOCATION_FILTERS,currentLocationFilters)
         bundle.putSerializable(CATEGORIES_FILTERS,currentCategoriesFilters)
-        //Use to pass datas to child Fragment ;)
+        //Use to pass datas to child Fragment - Fragment Listener only work for 1 child fragment, need to pass multiples fragment results ;)
         childFragmentManager.setFragmentResult(FILTERS, bundle)
+        childFragmentManager.setFragmentResult(FILTERS2, bundle)
     }
 
     override fun onCreateView(
@@ -237,6 +239,7 @@ class ActionsFragment : Fragment() {
     }
 
     private fun createAction() {
+        binding.createAction.setContentCoverColour(0xeeffffff.toInt())
         binding.createAction.speedDialMenuAdapter = speedDialMenuAdapter
         binding.createAction.setOnClickListener {
             //  AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_PLUS)

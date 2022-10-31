@@ -104,8 +104,8 @@ class ActionsListAdapter(
 
             action.author?.avatarURLAsString?.let { avatarURL ->
                 Glide.with(binding.demand_pict.context)
-                    .load(Uri.parse(avatarURL))
-                    .placeholder(R.drawable.ic_user_photo_small)
+                    .load(avatarURL)
+                    .placeholder(R.drawable.placeholder_user)
                     .circleCrop()
                     .into(binding.demand_pict)
             }

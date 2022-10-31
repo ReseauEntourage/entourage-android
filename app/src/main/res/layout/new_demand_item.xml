@@ -69,7 +69,7 @@
                     android:id="@+id/demand_pict"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/new_contact" />
+                    android:src="@drawable/placeholder_user" />
 
                 <TextView
                     android:id="@+id/demand_username"

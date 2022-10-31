@@ -1,15 +1,11 @@
 package social.entourage.android.new_v8.actions.list
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,7 +15,6 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentActionListBinding
 import social.entourage.android.new_v8.actions.*
-import social.entourage.android.new_v8.events.EventFiltersActivity
 import social.entourage.android.new_v8.models.*
 
 const val EVENTS_PER_PAGE = 10
@@ -45,24 +40,6 @@ class ActionListFragment : Fragment() {
 
     private var allActions:MutableList<Action>  = ArrayList()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        //Use to receive datas from parent Fragment ;)
-        parentFragmentManager.setFragmentResultListener(FILTERS,this) { _, bundle ->
-            val locFilters = bundle.getSerializable(LOCATION_FILTERS) as? EventActionLocationFilters
-            val catFilters = bundle.getSerializable(CATEGORIES_FILTERS) as? ActionSectionFilters
-
-            locFilters?.let {
-                this.currentFilters = it
-            }
-            catFilters?.let {
-                this.currentSectionsFilters = it
-            }
-            updateFilters()
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -73,7 +50,6 @@ class ActionListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         isContrib = arguments?.getBoolean(IS_CONTRIB,false) ?: false
 
         myId = EntourageApplication.me(activity)?.id
@@ -84,6 +60,39 @@ class ActionListFragment : Fragment() {
         actionsPresenter.getAllActions.observe(viewLifecycleOwner, ::handleResponseGetDemands)
         initializeEvents()
         handleSwipeRefresh()
+        addParentFragmentListener()
+    }
+
+    private fun addParentFragmentListener() {
+        //Use to receive datas from parent Fragment ;)
+        if (isContrib) {
+            parentFragmentManager.setFragmentResultListener(FILTERS,this) { _, bundle ->
+                val locFilters = bundle.getSerializable(LOCATION_FILTERS) as? EventActionLocationFilters
+                val catFilters = bundle.getSerializable(CATEGORIES_FILTERS) as? ActionSectionFilters
+
+                locFilters?.let {
+                    this.currentFilters = it
+                }
+                catFilters?.let {
+                    this.currentSectionsFilters = it
+                }
+                updateFilters()
+            }
+        }
+        else {
+            parentFragmentManager.setFragmentResultListener(FILTERS2,this) { _, bundle ->
+                val locFilters = bundle.getSerializable(LOCATION_FILTERS) as? EventActionLocationFilters
+                val catFilters = bundle.getSerializable(CATEGORIES_FILTERS) as? ActionSectionFilters
+
+                locFilters?.let {
+                    this.currentFilters = it
+                }
+                catFilters?.let {
+                    this.currentSectionsFilters = it
+                }
+                updateFilters()
+            }
+        }
     }
 
     private fun initializeEmptyState() {

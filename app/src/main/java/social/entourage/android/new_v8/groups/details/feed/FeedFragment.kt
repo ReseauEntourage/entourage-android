@@ -141,6 +141,7 @@ class FeedFragment : Fragment() {
         handleAboutButton()
         handleSwipeRefresh()
         onFragmentResult()
+        binding.createPost.setContentCoverColour(0xeeffffff.toInt())
         binding.createPost.speedDialMenuAdapter = speedDialMenuAdapter
         binding.createPost.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_PLUS)
