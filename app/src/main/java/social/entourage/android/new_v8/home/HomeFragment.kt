@@ -90,12 +90,12 @@ class HomeFragment : Fragment() {
             imageUser.let { photoView ->
                 user?.avatarURL?.let { avatarURL ->
                     Glide.with(requireActivity())
-                        .load(Uri.parse(avatarURL))
-                        .placeholder(R.drawable.ic_user_photo_small)
+                        .load(avatarURL)
+                        .placeholder(R.drawable.placeholder_user)
                         .circleCrop()
                         .into(photoView)
                 } ?: run {
-                    photoView.setImageResource(R.drawable.ic_user_photo_small)
+                    photoView.setImageResource(R.drawable.placeholder_user)
                 }
 
             }
