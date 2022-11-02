@@ -122,7 +122,6 @@ class LoginActivity : BaseActivity() {
 
     fun goRealMain() {
         startActivity(Intent(this, social.entourage.android.new_v8.MainActivity::class.java))
-        finish()
     }
 
     @Deprecated("Deprecated in Java")

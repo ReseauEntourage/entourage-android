@@ -1,6 +1,5 @@
 package social.entourage.android.new_v8.profile.settings
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import retrofit2.Call
 import retrofit2.Callback
@@ -12,7 +11,7 @@ class SettingsPresenter {
 
     var accountDeleted: MutableLiveData<Boolean> = MutableLiveData()
 
-    fun logOut(context: Context) {
+    fun logOut() {
         EntourageApplication.get().logOut()
     }
 

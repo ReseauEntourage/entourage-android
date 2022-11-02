@@ -112,6 +112,7 @@ class MainActivity : BaseSecuredActivity() {
                 editor.putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers)
             }
         }
+        authenticationController.logOutUser()
         //presenter.deleteApplicationInfo()
         editor.remove(EntourageApplication.KEY_REGISTRATION_ID)
         editor.remove(EntourageApplication.KEY_NOTIFICATIONS_ENABLED)

@@ -93,12 +93,11 @@ class SettingsFragment : Fragment() {
     }
 
     private fun startPreOnboardingStartActivity() {
-        startActivity(Intent(activity, PreOnboardingStartActivity::class.java))
         activity?.finish()
     }
 
     private fun logout() {
-        settingsPresenter.logOut(requireContext())
+        settingsPresenter.logOut()
         startPreOnboardingStartActivity()
     }
 
@@ -111,7 +110,7 @@ class SettingsFragment : Fragment() {
 
     private fun handleResponse(isSuccess: Boolean) {
         if (isSuccess) {
-            settingsPresenter.logOut(requireContext())
+            settingsPresenter.logOut()
         } else {
             Toast.makeText(
                 requireContext(),
