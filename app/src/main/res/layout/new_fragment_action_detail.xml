@@ -247,9 +247,6 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                             map:uiCompass="true"
                             map:uiZoomControls="false"
                             map:uiMapToolbar="false"
-                            map:uiZoomGestures="false"
-                            map:uiRotateGestures="false"
-                            map:uiScrollGestures="false"
                             map:zOrderOnTop="true" />
                     </androidx.cardview.widget.CardView>
 
