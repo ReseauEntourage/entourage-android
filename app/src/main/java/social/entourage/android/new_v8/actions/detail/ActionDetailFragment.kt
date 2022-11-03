@@ -257,7 +257,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
             MarkerOptions().position(latLong).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_radius_location)))
         val cameraPosition = CameraPosition.Builder()
             .target(LatLng(latitude, longitude)).zoom(15f).build()
-        mGoogleMap?.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        mGoogleMap?.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
     }
 
     private fun openMap() {
