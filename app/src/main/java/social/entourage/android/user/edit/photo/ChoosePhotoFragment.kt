@@ -67,7 +67,14 @@ class ChoosePhotoFragment : OnboardingPhotoFragment() {
     }
 
     private fun setBackButton() {
-        binding.header.iconBack.setOnClickListener { findNavController().popBackStack() }
+        binding.header.iconBack.setOnClickListener {
+            if (editProfileCallback != null) {
+                dismiss()
+                return@setOnClickListener
+            }
+
+            findNavController().popBackStack()
+        }
     }
 
 
