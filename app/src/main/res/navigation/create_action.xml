@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/groups"
+    app:startDestination="@+id/create_action_cgu_fragment">
+
+    <fragment
+        android:id="@+id/create_action_cgu_fragment"
+        android:name="social.entourage.android.new_v8.actions.create.CreateActionCGUFragment">
+        <action
+            android:id="@+id/action_create_action_cgu_fragment_to_create_action_fragment"
+            app:destination="@id/create_action_fragment" />
+        <argument
+            android:name="isActionDemand"
+            app:argType="boolean" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/create_action_fragment"
+        android:name="social.entourage.android.new_v8.actions.create.CreateActionFragment">
+        <action
+            android:id="@+id/action_create_action_fragment_to_create_action_success_fragment"
+            app:destination="@id/create_action_success_fragment" />
+        <action
+            android:id="@+id/action_create_action_fragment_to_edit_action_place_fragment"
+            app:destination="@id/edit_action_place_fragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
+        <argument
+            android:name="isActionDemand"
+            app:argType="boolean" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/edit_action_place_fragment"
+        android:name="social.entourage.android.new_v8.actions.create.CreateActionPlaceFragment">
+        <argument
+            android:name="setGroupLocation"
+            app:argType="boolean" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/create_action_success_fragment"
+        android:name="social.entourage.android.new_v8.actions.create.CreateActionSuccessFragment">
+        <argument
+            android:name="successActionId"
+            app:argType="integer" />
+        <argument
+            android:name="successTitle"
+            app:argType="string" />
+        <argument
+            android:name="successIsDemand"
+            app:argType="boolean" />
+    </fragment>
+
+</navigation>

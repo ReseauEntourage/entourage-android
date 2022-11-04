@@ -21,13 +21,23 @@ import java.io.IOException
 class UserEditActionZoneFragment : UserActionPlaceFragment() {
     private var mListener: FragmentListener? = null
 
-    private val args: UserEditActionZoneFragmentArgs by navArgs()
     private val viewModel: CommunicationHandlerViewModel by activityViewModels()
 
+    private var setGroupLocation = false
 
     //**********//**********//**********
     // Lifecycle
     //**********//**********//**********
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            setGroupLocation = it.getBoolean("setGroupLocation")
+        }
+
+        //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+    }
+
     override fun setupViews() {
         super.setupViews()
 
@@ -77,7 +87,7 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
     //**********//**********//**********
 
     private fun sendNetwork() {
-        if (args.setGroupLocation) {
+        if (setGroupLocation) {
             try {
                 val geocoder = Geocoder(requireContext())
                 userAddress?.displayAddress?.let { userDisplayAddress->

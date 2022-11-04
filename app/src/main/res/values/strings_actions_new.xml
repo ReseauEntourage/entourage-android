@@ -50,4 +50,35 @@
 
     <string name="atKm">%s, à %s km de moi</string>
     <string name="AtKm">À %s km de moi</string>
+
+    <!-- Action create -->
+    <string name="action_create_demand_title">Nouvelle demande</string>
+    <string name="action_create_contrib_title">Nouvelle contribution</string>
+    <string name="action_create_title">Titre de l\'action</string>
+    <string name="action_create_subtitle">Donnez un nom court et explicite à votre %s</string>
+    <string name="action_create_title_hint">Nommez votre %s</string>
+    <string name="action_create_description">Description</string>
+    <string name="action_create_description_subtitle">Décrivez en détail la %s que vous proposez</string>
+    <string name="action_create_description_hint">Décrivez votre %s</string>
+    <string name="action_create_add_photo">Ajouter une photo</string>
+
+    <string name="action_name_demand">demande</string>
+    <string name="action_name_contrib">contribution</string>
+
+    <!-- pop back create-->
+    <string name="back_create_action_title">Attention</string>
+    <string name="back_create_action_content">Si vous quittez le formulaire de création d’une %s, toutes les informations saisies seront perdues.</string>
+
+    <string name="action_crete_cat_about">Si vous cherchez à proposer une %s qui ne semble pas entrer dans une catégorie c’est que la contribution n’a pas sa place ici.</string>
+    <string name="action_create_cat_about_more0">Vous pouvez</string>
+    <string name="action_create_cat_about_more1"><u>en savoir plus ici.</u></string>
+
+    <string name="action_create_cat_choose_category">Sélectionnez la catégorie qui décrit le mieux votre %s.</string>
+    <string name="action_create_location_title">Localisez votre %s</string>
+    <string name="action_create_location_subtitle">Votre position précise ne sera pas partagée, vous pouvez mettre une autre localisation que la zone d’action de votre profil.</string>
+
+    <string name="action_create_success_title">Votre %s\nà bien été créée !</string>
+    <string name="action_create_success_subtitle">Félicitation, vous venez de créer une nouvelle %s. Pour la rendre plus visible parlez-en sur vos groupes !</string>
+    <string name="action_create_end_finish_bt">Terminer</string>
+    <string name="action_error_create_action">Erreur lors de la création de la %s</string>
 </resources>

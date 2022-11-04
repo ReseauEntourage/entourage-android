@@ -21,38 +21,53 @@ data class Action(
     private var status: String? = null,
 
     @field:SerializedName("title")
-    val title: String? = null,
+    var title: String? = null,
 
     @field:SerializedName("description")
-    val description: String? = null,
+    var description: String? = null,
 
     @field:SerializedName("image_url")
-    val imageUrl: String? = null,
+    var imageUrl: String? = null,
 
     @field:SerializedName("author")
     val author: AuthorAction? = null,
 
 
     @field:SerializedName("section")
-    val sectionName: String? = null,
+    var sectionName: String? = null,
 
     @field:SerializedName("location")
-    val location: Address? = null,
+    var location: Address? = null,
 
     @field:SerializedName("metadata")
-    val metadata: MetadataAction? = null,
+    var metadata: MetadataAction? = null,
 
     @field:SerializedName("action_type")
-    val actionType: String? = null,
+    var actionType: String? = null,
 
     @field:SerializedName("created_at")
     val createdAt: Date? = null,
     @field:SerializedName("status_changed_at")
     val statusChangedAt: Date? = null,
     @field:SerializedName("updated_at")
-    val updatedAt: Date? = null
+    val updatedAt: Date? = null,
+
+    @field:SerializedName("recipient_consent_obtained")
+    var hasConsent: Boolean? = null
+
 
 ) : Serializable {
+
+    fun title(value: String) = apply {
+        title = value
+    }
+
+    fun description(value: String) = apply {
+        description = value
+    }
+
+
+
     fun isCancel() : Boolean {
         return status == "closed"
     }
@@ -103,5 +118,22 @@ class AuthorAction (
     companion object {
         private const val serialVersionUID = 3412733374231780458L
     }
+
+}
+
+
+data class MetadataActionLocation (
+    var streetAddress: String? = "",
+    var placeName: String? = "",
+    var googlePlaceId: String? = "",
+    var latitude: Double? = null,
+    var longitude: Double? =null,
+    var displayAddress: String = ""
+
+) {
+    override fun toString(): String {
+        return "Metadata(streetAddress=$streetAddress, displayAddress=$displayAddress, googlePlaceId=$googlePlaceId) placename: $placeName - lat: $latitude - long: $longitude"
+    }
+
 
 }

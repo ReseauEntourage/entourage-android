@@ -1,5 +1,6 @@
 package social.entourage.android.api.request
 
+import androidx.collection.ArrayMap
 import com.google.gson.annotations.SerializedName
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -11,9 +12,11 @@ class MyActionsListWrapper(@field:SerializedName("actions") val allActions: Muta
 class DemandsListWrapper(@field:SerializedName("solicitations") val allActions: MutableList<Action>)
 class ContribsListWrapper(@field:SerializedName("contributions") val allActions: MutableList<Action>)
 
-class CreateActionWrapper(@field:SerializedName("action") val action: Action)
 class ContribWrapper(@field:SerializedName("contribution") val action: Action)
 class DemandWrapper(@field:SerializedName("solicitation") val action: Action)
+
+class ContribCancelWrapper(@field:SerializedName("contribution") val action: Action)
+class DemandCancelWrapper(@field:SerializedName("solicitation") val action: Action)
 
 
 interface ActionsRequest {
@@ -61,5 +64,23 @@ interface ActionsRequest {
         @Path("action_id") actionId: Int,
         @Body reportWrapper: ReportWrapper
     ): Call<ResponseBody>
+
+    //create action
+    @POST("contributions")
+    fun createActionContrib(@Body action: ContribWrapper): Call<ContribWrapper>
+
+    @POST("solicitations")
+    fun createActionDemand(@Body action: DemandWrapper): Call<DemandWrapper>
+
+    //Prepare images
+    @POST("contributions/presigned_upload")
+    fun prepareAddImage(@Body params: RequestContent): Call<PrepareAddPostResponse>
+
+    //cancel action
+    @DELETE("contributions/{id}")
+    fun cancelContribution(@Path("id") contribId: Int,@Body params: ArrayMap<String, Any>): Call<ContribWrapper>
+
+    @DELETE("solicitations/{id}")
+    fun cancelDemand(@Path("id") demandId: Int, @Body params: ArrayMap<String, Any>): Call<DemandWrapper>
 
 }

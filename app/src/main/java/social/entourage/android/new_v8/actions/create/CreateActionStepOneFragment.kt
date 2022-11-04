@@ -1,0 +1,190 @@
+package social.entourage.android.new_v8.actions.create
+
+import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.EditText
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import social.entourage.android.R
+import social.entourage.android.databinding.NewFragmentCreateActionStepOneBinding
+import social.entourage.android.new_v8.groups.choosePhoto.ChoosePhotoModalFragment
+import social.entourage.android.new_v8.groups.choosePhoto.ImagesType
+import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.new_v8.utils.px
+
+class CreateActionStepOneFragment : Fragment() {
+    private var _binding: NewFragmentCreateActionStepOneBinding? = null
+    val binding: NewFragmentCreateActionStepOneBinding get() = _binding!!
+
+    private val viewModel: CommunicationActionHandlerViewModel by activityViewModels()
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = NewFragmentCreateActionStepOneBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.resetValues()
+        handleNextButtonState()
+        handleChoosePhoto()
+        initializeDescriptionCounter()
+
+        binding.actionName.hint = getString(R.string.action_create_title_hint,
+            if (viewModel.isDemand) getString(R.string.action_name_demand)
+            else getString(R.string.action_name_contrib))
+        binding.actionNameSubtitle.text = getString(R.string.action_create_title_hint,
+            if (viewModel.isDemand) getString(R.string.action_name_demand)
+            else getString(R.string.action_name_contrib))
+        binding.actionDescriptionSubtitle.text = getString(R.string.action_create_description_subtitle,
+            if (viewModel.isDemand) getString(R.string.action_name_demand)
+            else getString(R.string.action_name_contrib))
+        binding.actionDescription.hint = getString(R.string.action_create_description_hint,
+            if (viewModel.isDemand) getString(R.string.action_name_demand)
+            else getString(R.string.action_name_contrib))
+    }
+
+    private fun handleOnClickNext(onClick: Boolean) {
+        if (onClick) {
+            if (isActionNameValid() && isActionDescriptionValid()) {
+                binding.error.root.visibility = View.GONE
+                viewModel.isCondition.value = true
+                viewModel.action.title(binding.actionName.text.toString())
+                viewModel.action.description(binding.actionDescription.text.toString())
+                viewModel.clickNext.removeObservers(viewLifecycleOwner)
+            } else {
+                binding.error.root.visibility = View.VISIBLE
+                binding.error.errorMessage.text = getString(R.string.error_mandatory_fields)
+                viewModel.isCondition.value = false
+            }
+        }
+    }
+
+    private fun handleNextButtonState() {
+        handleEditTextChangedTextListener(binding.actionDescription)
+        handleEditTextChangedTextListener(binding.actionName)
+    }
+
+    private fun handleEditTextChangedTextListener(editText: EditText) {
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                viewModel.isButtonClickable.value = isActionNameValid() && isActionDescriptionValid()
+            }
+
+            override fun afterTextChanged(s: Editable) {
+                viewModel.canExitActionCreation = canExitActionCreation()
+            }
+        })
+    }
+
+    private fun initializeDescriptionCounter() {
+        binding.counter.text = String.format(
+            getString(R.string.description_counter),
+            binding.actionDescription.text?.length.toString()
+        )
+        binding.actionDescription.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                binding.counter.text = String.format(
+                    getString(R.string.description_counter),
+                    s.length.toString()
+                )
+            }
+            override fun afterTextChanged(s: Editable) {}
+        })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.resetValues()
+        viewModel.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
+        viewModel.isButtonClickable.value = isActionNameValid() && isActionDescriptionValid()
+    }
+
+    fun isActionNameValid(): Boolean {
+        return binding.actionName.text.length >= Const.GROUP_NAME_MIN_LENGTH && binding.actionName.text.isNotBlank()
+    }
+
+    fun isActionDescriptionValid(): Boolean {
+        return binding.actionDescription.text.length >= Const.GROUP_DESCRIPTION_MIN_LENGTH && binding.actionDescription.text.isNotBlank()
+    }
+
+    fun canExitActionCreation(): Boolean {
+        return binding.actionName.text.isEmpty() && binding.actionDescription.text.isEmpty()
+    }
+
+    private fun handleChoosePhoto() {
+
+        if (viewModel.isDemand) {
+            binding.uiLayoutAddPhoto.visibility = View.GONE
+        }
+        else {
+            getResult()
+            binding.uiLayoutAddPhoto.visibility = View.VISIBLE
+            val choosePhotoModalFragment = ChoosePhotoModalFragment.newInstance(ImagesType.EVENTS)
+            binding.addPhotoLayout.setOnClickListener {
+                choosePhoto()
+            }
+            binding.uiLayoutAddPhoto.setOnClickListener {
+                choosePhoto()
+            }
+
+            viewModel.imageURI?.let {
+                binding.addPhotoLayout.visibility = View.GONE
+                binding.addPhoto.visibility = View.VISIBLE
+                Glide.with(this)
+                    .load(it)
+                    .transform(CenterCrop(), RoundedCorners(14.px))
+                    .into(binding.addPhoto)
+            } ?: kotlin.run {
+                binding.addPhotoLayout.visibility = View.VISIBLE
+                binding.addPhoto.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun choosePhoto() {
+        val choosePhotoModalFragment = social.entourage.android.new_v8.posts.ChoosePhotoModalFragment.newInstance()
+        choosePhotoModalFragment.show(parentFragmentManager, social.entourage.android.new_v8.posts.ChoosePhotoModalFragment.TAG)
+    }
+
+    private fun getResult() {
+        parentFragmentManager.setFragmentResultListener(
+            Const.REQUEST_KEY_CHOOSE_PHOTO,
+            this
+        ) { _, bundle ->
+            viewModel.imageURI = bundle.getParcelable(Const.CHOOSE_PHOTO)
+            viewModel.imageURI?.let {
+                binding.addPhotoLayout.visibility = View.GONE
+                binding.addPhoto.visibility = View.VISIBLE
+                Glide.with(this)
+                    .load(it)
+                    .transform(CenterCrop(), RoundedCorners(14.px))
+                    .into(binding.addPhoto)
+            }?: kotlin.run {
+                binding.addPhotoLayout.visibility = View.VISIBLE
+                binding.addPhoto.visibility = View.GONE
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.error.root.visibility = View.GONE
+    }
+}

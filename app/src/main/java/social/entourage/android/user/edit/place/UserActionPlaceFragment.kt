@@ -107,14 +107,14 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
                         //remove the last part, which is the country
                         address = address.substring(0, lastCommaIndex)
                     }
-                    updateFromPlace(place.id, address)
+                    updateFromPlace(place.id, address, place.latLng)
                 }
                 AutocompleteActivity.RESULT_ERROR -> {
                     if (this.activity == null) return
-                    updateFromPlace(null, null)
+                    updateFromPlace(null, null,null)
                 }
                 AutocompleteActivity.RESULT_CANCELED -> {
-                    updateFromPlace(null, null)
+                    updateFromPlace(null, null,null)
                 }
             }
         }
@@ -215,7 +215,7 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
                             val city = address[0].locality
                             val cp = address[0].postalCode
 
-                            temporaryAddressName = "$street - $city - $cp"
+                            temporaryAddressName = "$city - $cp"
                             ui_onboard_place_tv_location?.text = temporaryAddressName
                         }
                     }
@@ -238,12 +238,16 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
         startActivityForResult(intent, REQUEST_LOCATION_RETURN)
     }
 
-    private fun updateFromPlace(placeId: String?, addressName: String?) {
+    private fun updateFromPlace(placeId: String?, addressName: String?, latLng: com.google.android.gms.maps.model.LatLng?) {
         temporaryLocation = null
         if (placeId != null && addressName != null) {
             temporaryAddressPlace = User.Address(placeId)
             temporaryAddressPlace?.displayAddress = addressName
             ui_onboard_place_tv_location?.text = addressName
+            latLng?.let {
+                temporaryAddressPlace?.latitude = it.latitude
+                temporaryAddressPlace?.longitude = it.longitude
+            }
         } else {
             temporaryAddressPlace = null
             ui_onboard_place_tv_location?.text = ""
