@@ -134,6 +134,12 @@ data class MetadataActionLocation (
     override fun toString(): String {
         return "Metadata(streetAddress=$streetAddress, displayAddress=$displayAddress, googlePlaceId=$googlePlaceId) placename: $placeName - lat: $latitude - long: $longitude"
     }
-
-
 }
+
+data class ActionCancel (
+    @field:SerializedName("outcome")
+    val outcome: Boolean,
+
+    @field:SerializedName("close_message")
+    val closeMessage: String? = null
+)

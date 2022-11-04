@@ -14,10 +14,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import org.w3c.dom.Text
 import social.entourage.android.R
 import social.entourage.android.new_v8.events.list.SectionHeader
@@ -64,6 +66,76 @@ class Utils {
             }
             customDialog.findViewById<Button>(R.id.no).setOnClickListener {
                 onNo()
+                alertDialog.dismiss()
+            }
+            alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            alertDialog.show()
+        }
+
+        fun showAlertDialogButtonClickedWithCrossClose(
+            context: Context,
+            title: String,
+            content: String,
+            buttonNOK: String,
+            buttonOk:String,
+            onNo: () -> (Unit) = {},
+            onYes: (() -> Unit),
+        ) {
+            val layoutInflater = LayoutInflater.from(context)
+            val customDialog: View = layoutInflater.inflate(R.layout.new_custom_alert_dialog, null)
+            val builder = AlertDialog.Builder(context)
+            builder.setView(customDialog)
+            val alertDialog = builder.create()
+            customDialog.findViewById<ImageView>(R.id.ui_pop_close).isVisible = true
+            customDialog.findViewById<TextView>(R.id.title).text = title
+            customDialog.findViewById<TextView>(R.id.content).text = content
+
+            customDialog.findViewById<ImageView>(R.id.ui_pop_close).setOnClickListener {
+                alertDialog.dismiss()
+            }
+            //Action button Left
+            customDialog.findViewById<TextView>(R.id.yes).text = buttonNOK
+            customDialog.findViewById<Button>(R.id.yes).setOnClickListener {
+                onNo()
+                alertDialog.dismiss()
+            }
+            //Action button right
+            customDialog.findViewById<TextView>(R.id.no).text = buttonOk
+            customDialog.findViewById<Button>(R.id.no).setOnClickListener {
+                onYes()
+                alertDialog.dismiss()
+            }
+            alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            alertDialog.show()
+        }
+
+        fun showAlertDialogButtonEditText(
+            context: Context,
+            title: String,
+            content: String,
+            subcontent:String,
+            placeholder: String,
+            buttonOk:String,
+            onValidate: ((String) -> Unit),
+        ) {
+            val layoutInflater = LayoutInflater.from(context)
+            val customDialog: View = layoutInflater.inflate(R.layout.new_custom_alert_dialog_input_txt, null)
+            val builder = AlertDialog.Builder(context)
+            builder.setView(customDialog)
+            val alertDialog = builder.create()
+            customDialog.findViewById<ImageView>(R.id.ui_pop_close).isVisible = true
+            customDialog.findViewById<TextView>(R.id.title).text = title
+            customDialog.findViewById<TextView>(R.id.content).text = content
+            customDialog.findViewById<TextView>(R.id.subcontent).text = subcontent
+            customDialog.findViewById<EditText>(R.id.ui_message).hint = placeholder
+
+            customDialog.findViewById<ImageView>(R.id.ui_pop_close).setOnClickListener {
+                alertDialog.dismiss()
+            }
+
+            customDialog.findViewById<TextView>(R.id.ui_bt_send).text = buttonOk
+            customDialog.findViewById<Button>(R.id.ui_bt_send).setOnClickListener {
+                onValidate(customDialog.findViewById<EditText>(R.id.ui_message).text.toString())
                 alertDialog.dismiss()
             }
             alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

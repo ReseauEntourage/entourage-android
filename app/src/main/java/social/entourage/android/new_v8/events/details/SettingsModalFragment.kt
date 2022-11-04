@@ -322,7 +322,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         val cancelOneEvent = customDialog.findViewById<RadioButton>(R.id.one_event)
         val cancelAllEvents =
             customDialog.findViewById<RadioButton>(R.id.all_events_recurrent)
-        customDialog.findViewById<Button>(R.id.no).setOnClickListener {
+        customDialog.findViewById<Button>(R.id.yes).setOnClickListener {
             if (cancelOneEvent.isChecked) cancelEventWithoutRecurrence()
             if (cancelAllEvents.isChecked) cancelEventWithRecurrence()
             alertDialog.dismiss()

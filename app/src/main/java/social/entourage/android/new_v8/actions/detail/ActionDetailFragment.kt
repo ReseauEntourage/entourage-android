@@ -52,6 +52,10 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     var isDemand = false
     var isMine = false
 
+    //Cancel Action
+    var outcome = false
+    var cancelMessage:String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -142,8 +146,14 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
             Utils.showToast(requireContext(), getString(R.string.not_implemented))
         }
         binding.uiBtDelete.setOnClickListener {
-            //cancel action
-            Utils.showToast(requireContext(), getString(R.string.not_implemented))
+            val _title = getString(R.string.action_cancel_pop_title, if (isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib))
+            val _subtitle = getString(R.string.action_cancel_pop_subtitle, if (isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib))
+            Utils.showAlertDialogButtonClickedWithCrossClose(requireContext(),_title,_subtitle, getString(R.string.action_cancel_pop_bt_no), getString(R.string.action_cancel_pop_bt_yes), {
+                showCancelActionMessage(false)
+            },
+            {
+                showCancelActionMessage(true)
+            })
         }
         binding.uiBtContact.setOnClickListener {
             //contact 1to1
@@ -153,6 +163,22 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         binding.uiBtBackEmpty.setOnClickListener {
             requireActivity().finish()
         }
+    }
+
+    private fun showCancelActionMessage(isOk:Boolean) {
+        val _title = getString(R.string.action_cancel_pop_title, if (isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib))
+        val _comment = getString(R.string.action_cancel_pop_comment)
+        val _optional = getString(R.string.optional)
+        val _placeholder = getString(R.string.action_cancel_pop_comment_placeholder)
+        val _btSend = getString(R.string.action_cancel_pop_bt_send)
+        Utils.showAlertDialogButtonEditText(requireContext(),_title,_comment,_optional , _placeholder,_btSend) { message ->
+                sendCancelAction(isOk,message)
+        }
+    }
+
+    private fun sendCancelAction(isOk: Boolean, message:String) {
+        val _message:String? = if (message.isNotEmpty()) message else null
+        actionsPresenter.cancelAction(actionId,isDemand,isOk, _message)
     }
 
     private fun updateViews() {

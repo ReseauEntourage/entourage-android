@@ -81,4 +81,13 @@
     <string name="action_create_success_subtitle">Félicitation, vous venez de créer une nouvelle %s. Pour la rendre plus visible parlez-en sur vos groupes !</string>
     <string name="action_create_end_finish_bt">Terminer</string>
     <string name="action_error_create_action">Erreur lors de la création de la %s</string>
+
+    <!-- pop cancel action -->
+    <string name="action_cancel_pop_bt_yes">Oui</string>
+    <string name="action_cancel_pop_bt_no">Non</string>
+    <string name="action_cancel_pop_bt_send">Envoyer</string>
+    <string name="action_cancel_pop_title">Supprimer la %s</string>
+    <string name="action_cancel_pop_subtitle">Votre %s a-t-elle aboutie ?</string>
+    <string name="action_cancel_pop_comment">Dites nous en plus sur votre expérience</string>
+    <string name="action_cancel_pop_comment_placeholder">Racontez nous votre expérience !</string>
 </resources>

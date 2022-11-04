@@ -6,6 +6,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.new_v8.models.Action
+import social.entourage.android.new_v8.models.ActionCancel
 
 
 class MyActionsListWrapper(@field:SerializedName("actions") val allActions: MutableList<Action>)
@@ -15,8 +16,8 @@ class ContribsListWrapper(@field:SerializedName("contributions") val allActions:
 class ContribWrapper(@field:SerializedName("contribution") val action: Action)
 class DemandWrapper(@field:SerializedName("solicitation") val action: Action)
 
-class ContribCancelWrapper(@field:SerializedName("contribution") val action: Action)
-class DemandCancelWrapper(@field:SerializedName("solicitation") val action: Action)
+class ContribCancelWrapper(@field:SerializedName("contribution") val action: ActionCancel)
+class DemandCancelWrapper(@field:SerializedName("solicitation") val action: ActionCancel)
 
 
 interface ActionsRequest {
@@ -77,10 +78,16 @@ interface ActionsRequest {
     fun prepareAddImage(@Body params: RequestContent): Call<PrepareAddPostResponse>
 
     //cancel action
-    @DELETE("contributions/{id}")
-    fun cancelContribution(@Path("id") contribId: Int,@Body params: ArrayMap<String, Any>): Call<ContribWrapper>
+    @HTTP(method = "DELETE", path = "contributions/{action_id}", hasBody = true)
+    fun cancelContribution(
+        @Path("action_id") contribId: Int,
+        @Body params: ContribCancelWrapper
+    ): Call<ContribWrapper>
 
-    @DELETE("solicitations/{id}")
-    fun cancelDemand(@Path("id") demandId: Int, @Body params: ArrayMap<String, Any>): Call<DemandWrapper>
+    @HTTP(method = "DELETE", path = "solicitations/{action_id}", hasBody = true)
+    fun cancelDemand(
+        @Path("action_id") demandId: Int,
+        @Body params: DemandCancelWrapper
+    ): Call<DemandWrapper>
 
 }

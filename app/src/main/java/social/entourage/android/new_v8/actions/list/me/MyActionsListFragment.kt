@@ -29,6 +29,8 @@ class MyActionsListFragment : Fragment() {
     private var page: Int = 0
     private var allActions:MutableList<Action>  = ArrayList()
 
+    private var isFromShowDetail = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,6 +39,18 @@ class MyActionsListFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        if (isFromShowDetail) {
+            myActionsPresenter.isLastPage = false
+            myActionsPresenter.getAllActions.value?.clear()
+            allActions.clear()
+            isFromShowDetail = false
+            page = 0
+            loadActions()
+        }
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -47,10 +61,9 @@ class MyActionsListFragment : Fragment() {
         })
 
         initializeEmptyState()
-        loadActions()
+
         myActionsPresenter.getAllActions.observe(viewLifecycleOwner, ::handleResponseGetDemands)
         setupViews()
-
         loadActions()
     }
 
@@ -118,6 +131,8 @@ class MyActionsListFragment : Fragment() {
             .putExtra(Const.ACTION_TITLE,action.title)
             .putExtra(Const.IS_ACTION_DEMAND,action.isDemand())
             .putExtra(Const.IS_ACTION_MINE, action.isMine())
+
+        isFromShowDetail = true
         startActivity(intent)
     }
 }

@@ -15,6 +15,7 @@ import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.*
 import social.entourage.android.new_v8.models.Action
+import social.entourage.android.new_v8.models.ActionCancel
 import social.entourage.android.new_v8.utils.Utils
 import timber.log.Timber
 import java.io.File
@@ -25,7 +26,7 @@ class ActionsPresenter {
     val EVENTS_PER_PAGE = 10
 
     var getAllActions = MutableLiveData<MutableList<Action>>()
-    var getAction = MutableLiveData<Action>()
+    var getAction = MutableLiveData<Action?>()
 
     var isActionReported = MutableLiveData<Boolean>()
     var newActionCreated = MutableLiveData<Action?>()
@@ -314,20 +315,49 @@ class ActionsPresenter {
         Cancel
      */
 
-    fun cancelAction(id: Int, isDemand:Boolean) {
+    fun cancelAction(id: Int, isDemand:Boolean, isClosedOk:Boolean, message:String?) {
         if (!isDemand) {
-            cancelContribution(id)
+            cancelContribution(id,isClosedOk,message)
         }
         else {
-            cancelDemand(id)
+            cancelDemand(id,isClosedOk,message)
         }
     }
 
-    private fun cancelDemand(id: Int) {
-        //TODO a faire
+    private fun cancelDemand(id: Int, isClosedOk:Boolean, message:String?) {
+        val params = ActionCancel(isClosedOk,message)
+
+        EntourageApplication.get().apiModule.actionsRequest.cancelDemand(id,
+            DemandCancelWrapper(params)
+        )
+            .enqueue(object : Callback<DemandWrapper> {
+                override fun onResponse(
+                    call: Call<DemandWrapper>,
+                    response: Response<DemandWrapper>
+                ) {
+                    getAction.value = response.body()?.action
+                    getAction.value?.setCancel()
+                    getAction.postValue( getAction.value)
+                }
+
+                override fun onFailure(call: Call<DemandWrapper>, t: Throwable) {}
+            })
     }
 
-    private fun cancelContribution(id: Int) {
-        //TODO a faire
+    private fun cancelContribution(id: Int, isClosedOk:Boolean, message:String?) {
+        val params = ActionCancel(isClosedOk,message)
+        EntourageApplication.get().apiModule.actionsRequest.cancelContribution(id,ContribCancelWrapper(params))
+            .enqueue(object : Callback<ContribWrapper> {
+                override fun onResponse(
+                    call: Call<ContribWrapper>,
+                    response: Response<ContribWrapper>
+                ) {
+                    getAction.value = response.body()?.action
+                    getAction.value?.setCancel()
+                    getAction.postValue( getAction.value)
+                }
+
+                override fun onFailure(call: Call<ContribWrapper>, t: Throwable) {}
+            })
     }
 }
