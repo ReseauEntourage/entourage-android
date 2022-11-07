@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateActionCguBinding
 import social.entourage.android.new_v8.groups.details.rules.RulesListAdapter
+import social.entourage.android.new_v8.models.Action
 import social.entourage.android.new_v8.models.Rules
 
 class CreateActionCGUFragment : Fragment() {
@@ -18,12 +19,14 @@ class CreateActionCGUFragment : Fragment() {
     val binding: NewFragmentCreateActionCguBinding get() = _binding!!
 
     private var isDemand = false
+    private var actionEdited: Action? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
             isDemand = CreateActionCGUFragmentArgs.fromBundle(it).isActionDemand
+            actionEdited = CreateActionCGUFragmentArgs.fromBundle(it).actionObj
         }
     }
 
@@ -61,6 +64,7 @@ class CreateActionCGUFragment : Fragment() {
         binding.accept.setOnClickListener {
             val action = CreateActionCGUFragmentDirections.actionCreateActionCguFragmentToCreateActionFragment(isDemand)
             action.isActionDemand = isDemand
+            action.actionObj = actionEdited
             findNavController().navigate(action)
         }
     }

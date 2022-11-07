@@ -16,7 +16,6 @@
             android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
             android:paddingHorizontal="15dp">
 
 
@@ -34,15 +33,17 @@
             <TextView
                 android:id="@+id/ui_header_title"
                 style="@style/h1"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:maxLines="2"
                 android:text="@string/ethics"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/icon_back"
+                app:layout_constraintEnd_toStartOf="@+id/imageView38"
+                app:layout_constraintStart_toEndOf="@+id/icon_back"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+                android:id="@+id/imageView38"
                 android:layout_width="48dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"

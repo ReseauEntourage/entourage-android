@@ -2,7 +2,6 @@ package social.entourage.android.new_v8.actions
 
 import android.content.Context
 import android.net.Uri
-import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
@@ -30,6 +29,8 @@ class ActionsPresenter {
 
     var isActionReported = MutableLiveData<Boolean>()
     var newActionCreated = MutableLiveData<Action?>()
+
+    var isActionUpdated = MutableLiveData<Boolean>()
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
@@ -196,7 +197,7 @@ class ActionsPresenter {
         Create / update
      */
 
-    fun createContribWithImage(action: Action, file: File) {
+    fun createContribWithImage(action: Action, file: File, isUpdate:Boolean) {
 
         if (isSendingCreateContrib) return
         isSendingCreateContrib = true
@@ -212,7 +213,7 @@ class ActionsPresenter {
                         val presignedUrl = response.body()?.presignedUrl
                         val uploadKey = response.body()?.uploadKey
                         presignedUrl?.let {
-                            uploadFile(action, file, presignedUrl, uploadKey)
+                            uploadFile(action, file, presignedUrl, uploadKey,isUpdate)
                         } ?: run { isSendingCreateContrib = false }
                     }
                     else {
@@ -226,7 +227,7 @@ class ActionsPresenter {
             })
     }
 
-    fun uploadFile(action: Action, file: File, presignedUrl: String, uploadKey: String?) {
+    fun uploadFile(action: Action, file: File, presignedUrl: String, uploadKey: String?, isUpdate:Boolean) {
         val client: OkHttpClient = EntourageApplication.get().apiModule.okHttpClient
         val requestBody = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
         val request = Request.Builder()
@@ -242,7 +243,12 @@ class ActionsPresenter {
             override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
                 isSendingCreateContrib = false
                 action.imageUrl = uploadKey
-                createContrib(action)
+                if (isUpdate) {
+                    updateContrib(action)
+                }
+                else {
+                    createContrib(action)
+                }
             }
         })
     }
@@ -254,7 +260,7 @@ class ActionsPresenter {
         else {
             uri?.let { it ->
                 val file = Utils.getFile(context, it)
-                createContribWithImage(action,file)
+                createContribWithImage(action,file,false)
             } ?: run { createContrib(action) }
         }
     }
@@ -307,8 +313,70 @@ class ActionsPresenter {
             })
     }
 
-    fun updateAction(actionId: Int, actionEdited: ArrayMap<String, Any>) {
-        //TODO a faire
+    fun updateAction(actionEdited: Action?, newAction:Action,isDemand: Boolean, uri:Uri?, context: Context) {
+
+        if (actionEdited == null || newAction.id == null) {
+            newActionCreated.value = null
+            return
+        }
+
+        if (isDemand) {
+            updateDemand(newAction)
+        }
+        else {
+            uri?.let { it ->
+                val file = Utils.getFile(context, it)
+                createContribWithImage(newAction,file,true)
+            } ?: run { updateContrib(newAction) }
+        }
+    }
+
+    fun updateDemand(action: Action) {
+        EntourageApplication.get().apiModule.actionsRequest.updateActionDemand(action.id!!,DemandWrapper(action))
+            .enqueue(object : Callback<DemandWrapper> {
+                override fun onResponse(
+                    call: Call<DemandWrapper>,
+                    response: Response<DemandWrapper>
+                ) {
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            isActionUpdated.value = true
+                        } ?: run {
+                            isActionUpdated.value = false
+                        }
+                    } else {
+                        isActionUpdated.value = false
+                    }
+                }
+
+                override fun onFailure(call: Call<DemandWrapper>, t: Throwable) {
+                    isActionUpdated.value = false
+                }
+            })
+    }
+
+    fun updateContrib(action: Action) {
+        EntourageApplication.get().apiModule.actionsRequest.updateActionContrib(action.id!!,ContribWrapper(action))
+            .enqueue(object : Callback<ContribWrapper> {
+                override fun onResponse(
+                    call: Call<ContribWrapper>,
+                    response: Response<ContribWrapper>
+                ) {
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            isActionUpdated.value =true
+                        } ?: run {
+                            isActionUpdated.value = false
+                        }
+                    } else {
+                        isActionUpdated.value = false
+                    }
+                }
+
+                override fun onFailure(call: Call<ContribWrapper>, t: Throwable) {
+                    isActionUpdated.value = false
+                }
+            })
     }
 
     /*
@@ -346,7 +414,9 @@ class ActionsPresenter {
 
     private fun cancelContribution(id: Int, isClosedOk:Boolean, message:String?) {
         val params = ActionCancel(isClosedOk,message)
-        EntourageApplication.get().apiModule.actionsRequest.cancelContribution(id,ContribCancelWrapper(params))
+        EntourageApplication.get().apiModule.actionsRequest.cancelContribution(id,
+            ContribCancelWrapper(params)
+        )
             .enqueue(object : Callback<ContribWrapper> {
                 override fun onResponse(
                     call: Call<ContribWrapper>,

@@ -26,6 +26,7 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.databinding.NewFragmentActionDetailBinding
 import social.entourage.android.new_v8.actions.ActionsPresenter
+import social.entourage.android.new_v8.actions.create.CreateActionActivity
 import social.entourage.android.new_v8.groups.details.rules.GroupRulesActivity
 import social.entourage.android.new_v8.models.Action
 import social.entourage.android.new_v8.models.ActionSection
@@ -51,10 +52,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     var action:Action? = null
     var isDemand = false
     var isMine = false
-
-    //Cancel Action
-    var outcome = false
-    var cancelMessage:String? = null
+    var isFromEdit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +67,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = NewFragmentActionDetailBinding.inflate(inflater,container,false)
 
         mMap = binding.uiMapview
@@ -77,7 +75,6 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         mMap?.getMapAsync(this)
         return binding.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -109,6 +106,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
             if (it.isCancel()) {
                 mCallback?.hideIconReport()
             }
+            mCallback?.updateTitle(action.title)
         }
     }
 
@@ -133,27 +131,37 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
             intent.putExtra(Const.RULES_TYPE,Const.RULES_ACTION)
             startActivity(intent)
         }
+
         binding.layoutUser.setOnClickListener {
             startActivity(Intent(context, UserProfileActivity::class.java).putExtra(
                 Const.USER_ID,
                 action?.author?.userID
             ))
+        }
 
-        }
-        //TODO: à faire
         binding.uiBtModify.setOnClickListener {
-            //edit action
-            Utils.showToast(requireContext(), getString(R.string.not_implemented))
+            val intent = Intent(context, CreateActionActivity::class.java)
+            intent.putExtra(Const.ACTION_OBJ,action)
+            if (isDemand) {
+                intent.putExtra(Const.IS_ACTION_DEMAND, true)
+            }
+            else {
+                intent.putExtra(Const.IS_ACTION_DEMAND, false)
+            }
+            isFromEdit = true
+            startActivity(intent)
         }
+
         binding.uiBtDelete.setOnClickListener {
             val _title = getString(R.string.action_cancel_pop_title, if (isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib))
             val _subtitle = getString(R.string.action_cancel_pop_subtitle, if (isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib))
             Utils.showAlertDialogButtonClickedWithCrossClose(requireContext(),_title,_subtitle, getString(R.string.action_cancel_pop_bt_no), getString(R.string.action_cancel_pop_bt_yes), {
                 showCancelActionMessage(false)
             },
-            {
-                showCancelActionMessage(true)
-            })
+                {
+                    showCancelActionMessage(true)
+                }
+            )
         }
         binding.uiBtContact.setOnClickListener {
             //contact 1to1
@@ -172,7 +180,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         val _placeholder = getString(R.string.action_cancel_pop_comment_placeholder)
         val _btSend = getString(R.string.action_cancel_pop_bt_send)
         Utils.showAlertDialogButtonEditText(requireContext(),_title,_comment,_optional , _placeholder,_btSend) { message ->
-                sendCancelAction(isOk,message)
+            sendCancelAction(isOk,message)
         }
     }
 
@@ -205,17 +213,14 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                     binding.uiImagePlaceholder.isVisible = true
                 }
 
-
                 binding.uiTitleCatContrib.text = MetaDataRepository.getActionSectionNameFromId(it.sectionName)
                 binding.uiIvCatContrib.setImageDrawable(ResourcesCompat.getDrawable(resources,ActionSection.getIconFromId(it.sectionName),null))
-
                 binding.uiTitleCatDemand.text = MetaDataRepository.getActionSectionNameFromId(it.sectionName)
                 binding.uiIvCatDemand.setImageDrawable(ResourcesCompat.getDrawable(resources,ActionSection.getIconFromId(it.sectionName),null))
-
                 binding.uiActionDescription.text = action?.description
 
                 val _addr = action?.metadata?.displayAddress ?: "-"
-                binding.uiLocation?.text = getString(R.string.atKm,_addr,"xxx")
+                binding.uiLocation.text = getString(R.string.atKm,_addr,"xxx")
 
                 action?.author?.avatarURLAsString?.let { avatarURL ->
                     Glide.with(binding.uiUserIv.context)
@@ -229,7 +234,6 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                 }
 
                 binding.uiTitleAuthor.text = action?.createdDateString(requireContext())
-
                 binding.uiUserName.text = action?.author?.userName
                 binding.uiUserMember.text = action?.memberSinceDateString(requireContext())
 
@@ -242,6 +246,10 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
         mMap?.onResume()
+        if (isFromEdit) {
+            isFromEdit = false
+            loadAction()
+        }
     }
 
     override fun onPause() {

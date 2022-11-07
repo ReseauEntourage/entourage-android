@@ -51,4 +51,5 @@ object Const {
     const val ACTION_TITLE = "actionTitle"
     const val IS_ACTION_DEMAND = "isActionDemand"
     const val IS_ACTION_MINE = "isActionMine"
+    const val ACTION_OBJ = "actionObj"
 }

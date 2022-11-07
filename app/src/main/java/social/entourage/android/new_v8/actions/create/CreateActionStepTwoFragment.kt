@@ -21,7 +21,6 @@ class CreateActionStepTwoFragment : Fragment() {
 
     private lateinit var sectionsListAdapter: CreateActionSectionsListAdapter
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.resetValues()
@@ -29,7 +28,7 @@ class CreateActionStepTwoFragment : Fragment() {
             viewModel.initSectionList()
         }
         initializeInterests()
-
+        setupViewWithEdit()
         binding.layout.setTitle(getString(R.string.action_create_cat_choose_category,
             if (viewModel.isDemand) getString(R.string.action_name_demand)
             else getString(R.string.action_name_contrib)))
@@ -94,5 +93,16 @@ class CreateActionStepTwoFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         binding.layout.error.root.visibility = View.GONE
+    }
+
+    private fun setupViewWithEdit() {
+        viewModel.actionEdited?.let {
+            for ( i in 0 until (viewModel.sectionsList.value?.size ?: 0)) {
+                if(viewModel.sectionsList.value?.get(i)?.id == viewModel.actionEdited?.sectionName) {
+                    viewModel.sectionsList.value?.get(i)?.isSelected = true
+                    break
+                }
+            }
+        }
     }
 }

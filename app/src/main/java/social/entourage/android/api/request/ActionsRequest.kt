@@ -73,6 +73,15 @@ interface ActionsRequest {
     @POST("solicitations")
     fun createActionDemand(@Body action: DemandWrapper): Call<DemandWrapper>
 
+    //Update
+    @PUT("contributions/{action_id}")
+    fun updateActionContrib( @Path("action_id") actionId: Int,
+                             @Body action: ContribWrapper): Call<ContribWrapper>
+
+    @PUT("solicitations/{action_id}")
+    fun updateActionDemand( @Path("action_id") actionId: Int,
+                            @Body action: DemandWrapper): Call<DemandWrapper>
+
     //Prepare images
     @POST("contributions/presigned_upload")
     fun prepareAddImage(@Body params: RequestContent): Call<PrepareAddPostResponse>

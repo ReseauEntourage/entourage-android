@@ -17,6 +17,7 @@ class CommunicationActionHandlerViewModel : ViewModel() {
 
     var imageURI: Uri? = null
     var action: Action = Action()
+    var actionEdited: Action? =null
 
     var sectionsList = MutableLiveData<MutableList<ActionSection>>()
 
@@ -31,16 +32,51 @@ class CommunicationActionHandlerViewModel : ViewModel() {
             action.sectionName = it.id
         }
 
-       if ( metadata.value?.latitude != null &&  metadata.value?.longitude != null) {
-           action.location = Address()
-           action.location?.latitude = metadata.value?.latitude!!
-           action.location?.longitude = metadata.value?.longitude!!
-       }
+        if ( metadata.value?.latitude != null &&  metadata.value?.longitude != null) {
+            action.location = Address()
+            action.location?.latitude = metadata.value?.latitude!!
+            action.location?.longitude = metadata.value?.longitude!!
+        }
         action.hasConsent = true
 
         if (keyImageUpload != null) {
             action.imageUrl = keyImageUpload!!
         }
+    }
+
+    fun prepareUpdateAction() {
+        sectionsList.value?.first { it.isSelected }?.let {
+            action.sectionName = it.id
+        }
+
+        if ( metadata.value?.latitude != null &&  metadata.value?.longitude != null) {
+            action.location = Address()
+            action.location?.latitude = metadata.value?.latitude!!
+            action.location?.longitude = metadata.value?.longitude!!
+        }
+
+        //Check to add only update fields
+
+        if (action.title == actionEdited?.title) {
+            action.title = null
+        }
+
+        if (action.description == actionEdited?.description) {
+            action.description = null
+        }
+
+        if (action.sectionName == actionEdited?.sectionName) {
+            action.sectionName = null
+        }
+
+        if (action.location?.latitude == actionEdited?.location?.latitude
+            && action.location?.longitude == actionEdited?.location?.longitude) {
+            action.location = null
+            action.metadata = null
+        }
+
+        action.id = actionEdited?.id
+        action.uuid = actionEdited?.uuid
     }
 
     fun resetValues() {

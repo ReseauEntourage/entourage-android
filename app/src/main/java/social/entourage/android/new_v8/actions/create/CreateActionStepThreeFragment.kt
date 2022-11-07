@@ -21,6 +21,8 @@ class CreateActionStepThreeFragment : Fragment(), UserEditActionZoneFragment.Fra
 
     private val viewModel: CommunicationActionHandlerViewModel by activityViewModels()
 
+    private var isFirstLaunch = true
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -74,8 +76,15 @@ class CreateActionStepThreeFragment : Fragment(), UserEditActionZoneFragment.Fra
         super.onResume()
         viewModel.resetValues()
         viewModel.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
-        viewModel.isButtonClickable.value = viewModel.metadata.value?.streetAddress?.isNotBlank()
-        binding.location.text = viewModel.metadata.value?.streetAddress
+
+        if (isFirstLaunch) {
+            isFirstLaunch = false
+            setupViewWithEdit()
+        }
+        else {
+            binding.location.text = viewModel.metadata.value?.streetAddress
+            viewModel.isButtonClickable.value = viewModel.metadata.value?.streetAddress?.isNotBlank()
+        }
     }
 
     private fun handleChooseLocationGroup() {
@@ -100,5 +109,12 @@ class CreateActionStepThreeFragment : Fragment(), UserEditActionZoneFragment.Fra
 
     override fun onUserEditActionZoneFragmentIgnore() {
         findNavController().popBackStack()
+    }
+
+    private fun setupViewWithEdit() {
+        viewModel.actionEdited?.let {
+            binding.location.setText(it.metadata?.displayAddress)
+            viewModel.isButtonClickable.value = true
+        } ?: kotlin.run { viewModel.isButtonClickable.value = viewModel.metadata.value?.streetAddress?.isNotBlank() }
     }
 }

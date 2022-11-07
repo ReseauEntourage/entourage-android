@@ -15,6 +15,7 @@ import social.entourage.android.new_v8.utils.Const
 //Use to hide report button when loading detail action if canceled
 interface OnDetailActionReceive {
     fun hideIconReport()
+    fun updateTitle(title:String?)
 }
 
 class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
@@ -87,6 +88,9 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
 
     override fun hideIconReport() {
         binding.header.iconSettings.isVisible = false
+    }
 
+    override fun updateTitle(title: String?) {
+        binding.header.title = title
     }
 }

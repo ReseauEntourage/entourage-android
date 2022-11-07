@@ -40,6 +40,8 @@ class CreateActionStepOneFragment : Fragment() {
         handleChoosePhoto()
         initializeDescriptionCounter()
 
+        setupViewWithEdit()
+
         binding.actionName.hint = getString(R.string.action_create_title_hint,
             if (viewModel.isDemand) getString(R.string.action_name_demand)
             else getString(R.string.action_name_contrib))
@@ -125,6 +127,8 @@ class CreateActionStepOneFragment : Fragment() {
     }
 
     fun canExitActionCreation(): Boolean {
+        if (viewModel.actionEdited != null) return true
+
         return binding.actionName.text.isEmpty() && binding.actionDescription.text.isEmpty()
     }
 
@@ -186,5 +190,26 @@ class CreateActionStepOneFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         binding.error.root.visibility = View.GONE
+    }
+
+    private fun setupViewWithEdit() {
+        viewModel.actionEdited?.let {
+            binding.actionName.setText(viewModel.actionEdited?.title)
+            binding.actionDescription.setText(viewModel.actionEdited?.description)
+
+            if (!viewModel.isDemand) {
+                viewModel.actionEdited?.imageUrl?.let {
+                    binding.addPhotoLayout.visibility = View.GONE
+                    binding.addPhoto.visibility = View.VISIBLE
+                    Glide.with(this)
+                        .load(it)
+                        .transform(CenterCrop(), RoundedCorners(14.px))
+                        .into(binding.addPhoto)
+                }?: kotlin.run {
+                    binding.addPhotoLayout.visibility = View.VISIBLE
+                    binding.addPhoto.visibility = View.GONE
+                }
+            }
+        }
     }
 }

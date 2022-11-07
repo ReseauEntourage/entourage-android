@@ -14,6 +14,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateActionBinding
+import social.entourage.android.new_v8.RefreshController
 import social.entourage.android.new_v8.actions.ActionsPresenter
 import social.entourage.android.new_v8.models.Action
 import social.entourage.android.new_v8.utils.Utils
@@ -29,13 +30,16 @@ class CreateActionFragment : Fragment() {
     private val actionPresenter: ActionsPresenter by lazy { ActionsPresenter() }
 
     private var isDemand = false
+    private var actionEdited:Action? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            isDemand = CreateActionCGUFragmentArgs.fromBundle(it).isActionDemand
+            isDemand = CreateActionFragmentArgs.fromBundle(it).isActionDemand
+            actionEdited = CreateActionFragmentArgs.fromBundle(it).actionObj
             viewModel.isDemand = isDemand
+            viewModel.actionEdited = actionEdited
         }
     }
 
@@ -50,7 +54,13 @@ class CreateActionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.uiHeaderTitle.text = if (isDemand) getString(R.string.action_create_demand_title) else getString(R.string.action_create_contrib_title)
+        if (viewModel.actionEdited != null) {
+            binding.uiHeaderTitle.text = if (isDemand) getString(R.string.action_edit_demand_title) else getString(R.string.action_edit_contrib_title)
+        }
+        else {
+            binding.uiHeaderTitle.text = if (isDemand) getString(R.string.action_create_demand_title) else getString(R.string.action_create_contrib_title)
+        }
+
 
         val currentItemPager = viewPager?.currentItem
         initializeViewPager(currentItemPager)
@@ -65,6 +75,7 @@ class CreateActionFragment : Fragment() {
             handleButtonState(_t != null)
         })
 
+        actionPresenter.isActionUpdated.observe(viewLifecycleOwner, ::isActionUpdated)
         actionPresenter.newActionCreated.observe(viewLifecycleOwner, ::handleCreateActionResponse)
     }
 
@@ -79,6 +90,22 @@ class CreateActionFragment : Fragment() {
                     )
                 findNavController().navigate(action)
             }
+        }
+    }
+
+    private fun isActionUpdated(updated: Boolean) {
+        if (updated) {
+            Utils.showToast(requireContext(), getString(R.string.action_updated))
+            activity?.finish()
+            RefreshController.shouldRefreshEventFragment = true
+        } else {
+            Utils.showToast(
+                requireContext(),
+                getString(
+                    R.string.action_error_edit_action,
+                    if (isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib)
+                )
+            )
         }
     }
 
@@ -108,7 +135,11 @@ class CreateActionFragment : Fragment() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 binding.next.text =
-                    getString(if (position == NB_TABS - 1) R.string.create else R.string.new_next)
+                    getString(if (position == NB_TABS - 1) {
+                        if (viewModel.actionEdited != null) {
+                            R.string.edit
+                        } else R.string.create
+                    } else R.string.new_next)
             }
         })
     }
@@ -141,6 +172,11 @@ class CreateActionFragment : Fragment() {
     private fun handleIsCondition(isCondition: Boolean) {
         if (isCondition) {
             if (viewPager?.currentItem == NB_TABS - 1) {
+                if (viewModel.actionEdited != null) {
+                    updateAction()
+                    return
+                }
+
                 if (viewModel.isButtonClickable.value == true) {
                     viewModel.prepareCreateAction()
                     actionPresenter.createAction(viewModel.action, isDemand, viewModel.imageURI, requireContext())
@@ -155,6 +191,11 @@ class CreateActionFragment : Fragment() {
                 viewModel.resetValues()
             }
         }
+    }
+
+    private fun updateAction() {
+        viewModel.prepareUpdateAction()
+        actionPresenter.updateAction(viewModel.actionEdited, viewModel.action, isDemand,viewModel.imageURI,requireContext())
     }
 
     private fun handleBackButton() {
@@ -175,14 +216,14 @@ class CreateActionFragment : Fragment() {
     }
 
     private fun handleValidate() {
-            binding.next.setOnClickListener {
-                if (binding.viewPager.currentItem == NB_TABS - 1) {
-                    viewModel.isCondition.value = true
-                }
-                else {
-                    viewModel.clickNext.value = true
-                }
+        binding.next.setOnClickListener {
+            if (binding.viewPager.currentItem == NB_TABS - 1) {
+                viewModel.isCondition.value = true
             }
+            else {
+                viewModel.clickNext.value = true
+            }
+        }
     }
 
     override fun onDestroy() {

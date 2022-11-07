@@ -12,10 +12,10 @@ import java.util.*
 
 data class Action(
     @field:SerializedName("id")
-    val id: Int? = null,
+    var id: Int? = null,
 
     @field:SerializedName("uuid")
-    val uuid: String? = null,
+    var uuid: String? = null,
 
     @field:SerializedName("status")
     private var status: String? = null,
