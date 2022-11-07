@@ -121,7 +121,7 @@
     <string name="description">Description  (200 caractères max)</string>
     <string name="my_interests">Mes centres d’intêrets</string>
     <string name="interests">Centres d’intêrets</string>
-    <string name="write_message">Ecrire un message</string>
+    <string name="write_message">Nouveau message</string>
     <string name="ethics">Charte éthique</string>
     <string name="ambassador_program">Postuler au programme ambassadeur</string>
     <string name="donation">Faire un don</string>
@@ -150,8 +150,8 @@
     <string name="add_image_subtitle">Avec une photo c’est tout de suite plus sympa.
         Montrez-nous votre plus beau sourire.</string>
     <string name="edit_action_zone">Où souhaitez-vous agir ?</string>
-    <string name="edit_action_zone_subtitle">Entourage est un réseau local!
-        Découvrez les initiatives solidaires de votre quartier et tissez des liens avec vos voisins.</string>
+    <string name="edit_action_zone_subtitle">Entourage est un réseau social !
+Découvrez les initiatives de votre quartier et tissez des liens avec vos voisins.</string>
     <string name="add_location_mandatory">Ajouter un lieu *</string>
     <string name="city_or_department">Ville ou département</string>
     <string name="dont_communicate">* Entourage ne communique pas cette adresse.</string>
@@ -168,10 +168,10 @@
 
     <string name="group_name">Nom du groupe</string>
     <string name="event_name">Nom de l\'événement</string>
-    <string name="group_name_hint">Donnez un nom explicite au groupe</string>
+    <string name="group_name_hint">"Atelier Ping pong"</string>
     <string name="event_name_hint">Donnez un nom explicite à l\'événement</string>
     <string name="write_description">Rédiger un descriptif</string>
-    <string name="write_description_hint">Décrivez rapidement l’objectif de discussion principal de ce groupe</string>
+    <string name="write_description_hint">"Pour se rencontrer entre voisins du 18e"</string>
     <string name="add_location">Ajouter un lieu</string>
     <string name="add_location_hint">Adresse, ville ou département</string>
     <string name="mandatory">- obligatoire</string>
@@ -223,8 +223,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="pass">Passer</string>
     <string name="create_post">Créer une publication</string>
     <string name="create_event">Créer un événement sur le groupe</string>
-    <string name="group_success_title">Votre groupe a \nbien été créé !</string>
-    <string name="group_success_subtitle">Félicitations, vous venez de créer un \nnouveau groupe. Pour le rendre plus actif \nn’hésitez pas à créer un premier post :p</string>
+    <string name="group_success_title">Votre groupe \nest en ligne !</string>
+    <string name="group_success_subtitle">Félicitations, vous venez de créer un nouveau groupe. Pour le rendre plus actif, créez la première publication.</string>
     <string name="select_photo">Sélectionner une photo</string>
     <string name="create">Créer</string>
     <string name="error_create_group">Erreur lors de la création du groupe</string>
@@ -246,9 +246,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="search_group_hint">Rechercher un groupe</string>
     <string name="group_list_empty_state_title">Oups, il n\'y a pas encore d\'autres groupes autour de vous.</string>
     <string name="group_list_empty_state_subtitle">N\'hésitez pas à créer de \nnouveaux groupes de voisins !</string>
-    <string name="group_list_search_empty_state_title">Oups, aucun résultat ne correspond à votre recherche ! </string>
-    <string name="group_list_search_empty_state_subtitle">Si aucun groupe n’existe sur ce sujet, \nvous pouvez en créer un !</string>
-    <string name="my_group_list_empty_state_title">Vous n’avez rejoint encore aucun groupe.</string>
+    <string name="group_list_search_empty_state_title">Mince, aucun résultat ne correspond à votre recherche !</string>
+    <string name="group_list_search_empty_state_subtitle">Si aucun groupe n\'existe sur ce sujet,\ncréez-en un !</string>
+    <string name="my_group_list_empty_state_title">Vous n\'avez pas encore rejoint de groupe.</string>
     <string name="my_group_list_empty_state_button">Découvrir les groupes</string>
     <string name="admin">Admin</string>
     <string name="to_know">À savoir</string>
@@ -264,7 +264,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="group_event_empty_state_title">Pas encore d’événements prévus dans ce groupe</string>
     <string name="group_event_empty_state_subtitle"><![CDATA[Cliquez sur « + » pour en créer un]]></string>
     <string name="group_posts_empty_state_title">Pas encore de publication sur ce groupe</string>
-    <string name="group_posts_empty_state_subtitle">C’est l’occasion pour vous de partager la première nouvelle pour lancer la discussion !</string>
+    <string name="group_posts_empty_state_subtitle">Pourquoi ne pas lancer la discussion avec vos voisins ?</string>
     <string name="posts">Fil d’actualité</string>
     <string name="see_members">Voir les membres</string>
     <string name="leave_group">Quitter le groupe</string>
@@ -294,17 +294,17 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="join_group_to_comment"><![CDATA[* Pour commenter cette publication, rejoingnez le groupe « %s » !]]></string>
     <string name="report_sent">Votre demande a bien été envoyée. Elle sera traitée au plus vite par notre équipe.</string>
     <string name="welcome_user">Bienvenue %s !</string>
-    <string name="contributions_title">Vos contributions au réseau Entourage :</string>
+    <string name="contributions_title">Mes actions au sein du réseau :</string>
     <string name="contributions_meeting">Belles rencontres Entourage</string>
     <string name="contributions_meeting_empty">Pas encore de rencontres Entourage</string>
     <string name="contributions_message">Messages envoyés</string>
     <string name="contributions_message_empty">Pas encore de messages envoyés</string>
-    <string name="contributions_event">Participations à des événements</string>
-    <string name="contribution_event">Participation à un événement</string>
-    <string name="contributions_event_empty">Pas d\'événements auquels vous avez participé</string>
-    <string name="contributions_group">Groupes rejoints</string>
-    <string name="contribution_group">Groupe rejoint</string>
-    <string name="contributions_group_empty">Vous n\'avez pas encore rejoint de groupe de voisins</string>
+    <string name="contributions_event">Événements</string>
+    <string name="contribution_event">Événement</string>
+    <string name="contributions_event_empty">Participez à votre premier événement</string>
+    <string name="contributions_group">Groupes de voisins</string>
+    <string name="contribution_group">Groupe de voisins</string>
+    <string name="contributions_group_empty">N\'attendez plus pour rejoindre un groupe de voisin !</string>
     <string name="zero">0</string>
     <string name="all_pedago_content">Tout le contenu pédagogique</string>
     <string name="pedago_details">Contenu pédagogique</string>
@@ -313,7 +313,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="inspire">S\'inspirer</string>
     <string name="understand">Comprendre</string>
     <string name="all">Tout</string>
-    <string name="want_to_act">Envie d’agir ?</string>
+    <string name="want_to_act">Je commence simplement :</string>
     <string name="not_implemented">Not Implemented</string>
     <string name="pedagogical_content">Me former pour passer à l’action</string>
     <string name="picture">Photo</string>
@@ -333,8 +333,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="november">Novembre</string>
     <string name="december">Décembre</string>
     <string name="choose_categories_event">Sélectionnez la ou les catégories qui décrivent le mieux le sujet de discussion de l\'événement.</string>
-    <string name="event_success_title">Votre événement a \nbien été créé !</string>
-    <string name="event_success_subtitle">Félicitations, vous venez de créer un nouvel \névènement. Pour le rendre plus visible \nparlez-en sur vos groupes ! </string>
+    <string name="event_success_title">Votre événement \nest en ligne !</string>
+    <string name="event_success_subtitle">Félicitations, vous venez de créer un nouvel événement.\nPour le rendre plus actif, \nparlez-en sur vos groupes !</string>
     <string name="see_event">Voir mon événement</string>
     <string name="share_event">Partager l\'événement dans vos groupes</string>
     <string name="share_event_label">Vous ne pouvez partager l’évènement seulement aux groupes dont vous êtes membre. Votre événement sera alors visible dans le(s) groupe(s) sélectionné(s) et tous les membres d\'un groupe pourront y participer.</string>
@@ -360,18 +360,18 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="my_events">Mes événements</string>
     <string name="canceled">- Annulé</string>
     <string name="event_list_empty_state_title">Vous n’avez pas encore rejoint d’événement</string>
-    <string name="event_list_empty_state_subtitle">Allez sur l’onglet découvir, et si aucun ne vous convient c’est l’occasion de créer un nouvel évènement !</string>
+    <string name="event_list_empty_state_subtitle">C\'est l\'occasion de découvrir ce qu\'il se passe près de chez vous, ou de créer un nouvel événement !</string>
     <string name="discover_event_list_empty_state_title">Oups, aucun évènement autour de vous</string>
-    <string name="discover_event_list_empty_state_subtitle">Si aucun événement ne se trouve près de vous, vous pouvez élargir votre zone de recherche.</string>
-    <string name="need_help">Besoin d’aide ?</string>
-    <string name="solidarity_places_map">Carte des lieux solidaires</string>
+    <string name="discover_event_list_empty_state_subtitle">Vous ne trouvez pas l\'événement de vos rêves ? N\'attendez plus pour le créer ou élargissez votre zone de recherche.</string>
+    <string name="need_help">Besoin d\'aide sur l'app ?</string>
+    <string name="solidarity_places_map">Guide de la solidarité</string>
     <string name="moderator_subtitle">Votre guide dans l’app</string>
-    <string name="create_encounters">Créez des rencontres !</string>
-    <string name="participate_to_events">Participez à des événements et des actions solidaires pour augmenter votre compteur de rencontres Entourage</string>
+    <string name="create_encounters">Comment rencontrer d\'autres membres ?</string>
+    <string name="participate_to_events">Pour cela, rien de plus simple ! Participez à des événements et rejoignez des actions. "</string>
     <string name="event_date_formatter_to_date">dd/MM/yyyy HH\'h\'mm</string>
     <string name="event_date_formatter_to_string">yyyy-MM-dd HH:mm:ss Z</string>
     <string name="places_numbers">%s places</string>
-    <string name="event_posts_empty_state_title">Pas encore de publication sur cet événement</string>
+    <string name="event_posts_empty_state_title">Il n\'y a pas (encore) de publication sur cet événement</string>
     <string name="event_posts_empty_state_subtitle">C’est l’occasion pour vous de partager la première nouvelle pour lancer la discussion !</string>
     <string name="feed_event_date">"dd MMMM yyyy"</string>
     <string name="feed_event_time">HH\'h\'mm</string>

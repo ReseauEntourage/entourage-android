@@ -69,9 +69,9 @@
     <string name="back_create_action_title">Attention</string>
     <string name="back_create_action_content">Si vous quittez le formulaire de création d’une %s, toutes les informations saisies seront perdues.</string>
 
-    <string name="action_crete_cat_about">Si vous cherchez à proposer une %s qui ne semble pas entrer dans une catégorie c’est que la contribution n’a pas sa place ici.</string>
-    <string name="action_create_cat_about_more0">Vous pouvez</string>
-    <string name="action_create_cat_about_more1"><u>en savoir plus ici.</u></string>
+    <string name="action_crete_cat_about">Vous cherchez à proposer une %s qui ne rentre pas dans l\'une de ces catégories ? Il semble qu\'elle n'ait pas sa place sur le réseau,</string>
+    <string name="action_create_cat_about_more0">mais vous pouvez toujours</string>
+    <string name="action_create_cat_about_more1"><u> en savoir plus par ici.</u></string>
 
     <string name="action_create_cat_choose_category">Sélectionnez la catégorie qui décrit le mieux votre %s.</string>
     <string name="action_create_location_title">Localisez votre %s</string>
