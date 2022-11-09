@@ -3,6 +3,7 @@ package social.entourage.android.new_v8.home
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -104,6 +105,17 @@ class HomeFragment : Fragment() {
         summary.recommendations?.let { setRecommendationsList(it) }
         initializeHelpSection()
         handleOnClickCounters()
+
+        if ((homePresenter.summary.value?.congratulations?.count() ?: 0) > 0 ) {
+            val timer = object: CountDownTimer(2000, 1000) {
+                override fun onTick(millisUntilFinished: Long) {}
+
+                override fun onFinish() {
+                    showCongratDialog()
+                }
+            }
+            timer.start()
+        }
     }
 
     private fun updateView() {
@@ -227,12 +239,12 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setRecommendationsList(recommendationsList: MutableList<Recommandation>) {
+    private fun setRecommendationsList(recommendationsList: MutableList<HomeAction>) {
         binding.recommendations.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter =
-                RecommendationsListAdapter(recommendationsList, object : OnItemClickListener {
-                    override fun onItemClick(recommendation: Recommandation) {
+            adapter = RecommendationsListAdapter(recommendationsList,
+                object : OnItemClickListener {
+                    override fun onItemClick(recommendation: HomeAction) {
                         if (recommendation.homeType != null && recommendation.action != null && recommendation.params != null) {
                             Navigation.navigate(
                                 context,
@@ -241,8 +253,15 @@ class HomeFragment : Fragment() {
                                 recommendation.action!!,
                                 recommendation.params!!
                             )
+                        }
                     }
                 })
+        }
+    }
+
+    private fun showCongratDialog() {
+        homePresenter.summary.value?.congratulations?.let {
+            HomeCongratPopFragment.newInstance(it as ArrayList<HomeAction>).show(parentFragmentManager, HomeCongratPopFragment.TAG)
         }
     }
 }

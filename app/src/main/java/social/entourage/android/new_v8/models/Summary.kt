@@ -26,13 +26,16 @@ class Summary : Serializable {
     var neighborhoodParticipationsCount: Int? = null
 
     @SerializedName("recommandations")
-    var recommendations: MutableList<Recommandation>? = null
+    var recommendations: MutableList<HomeAction>? = null
 
     @SerializedName("moderator")
     var moderator: HomeModerator? = null
+
+    @SerializedName("congratulations")
+    var congratulations: MutableList<HomeAction>? = null
 }
 
-class Recommandation : Serializable {
+class HomeAction : Serializable {
     @SerializedName("name")
     var name: String? = null
 
@@ -43,7 +46,7 @@ class Recommandation : Serializable {
     var action: ActionSummary? = null
 
     @SerializedName("image_url")
-    val imageURL: String? = null
+    var imageURL: String? = null
 
     @SerializedName("params")
     var params: HomeActionParams? = null

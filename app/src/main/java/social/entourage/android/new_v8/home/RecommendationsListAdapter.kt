@@ -8,15 +8,15 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.R
 import social.entourage.android.databinding.NewRecommendationItemBinding
-import social.entourage.android.new_v8.models.Recommandation
+import social.entourage.android.new_v8.models.HomeAction
 import social.entourage.android.new_v8.utils.px
 
 interface OnItemClickListener {
-    fun onItemClick(recommendation: Recommandation)
+    fun onItemClick(recommendation: HomeAction)
 }
 
 class RecommendationsListAdapter(
-    var recommendationsList: List<Recommandation>,
+    var recommendationsList: List<HomeAction>,
     var onItemClick: OnItemClickListener
 ) : RecyclerView.Adapter<RecommendationsListAdapter.ViewHolder>() {
 

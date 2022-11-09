@@ -422,8 +422,14 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="edit_event">Editer l\'événement</string>
     <string name="event_edit_recurrent_event">Modifier un évènement récurrent</string>
     <string name="error_event_end_time">L\'heure de fin ne peut pas dépasser minuit</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- Home pop congrat -->
+
+    /** Home popup congratulation */
+    <string name="home_congrat_title_single">Bravo ! Vous avez réalisé %d nouvelle action !</string>
+    <string name="home_congrat_title_plural">Bravo ! Vous avez réalisé %d nouvelles actions !</string>
+    <string name="home_congrat_title_next">Super, il y a du nouveau sur l\'accueil !</string>
 
 
 </resources>
