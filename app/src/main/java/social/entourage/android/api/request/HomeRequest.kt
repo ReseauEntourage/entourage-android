@@ -1,10 +1,13 @@
 package social.entourage.android.api.request
 
 import com.google.gson.annotations.SerializedName
+import com.squareup.okhttp.Response
+import com.squareup.okhttp.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.models.Pedago
 import social.entourage.android.new_v8.models.Summary
@@ -26,4 +29,7 @@ interface HomeRequest {
 
     @POST("resources/{id}/users")
     fun setPedagogicalContentAsRead(@Path("id") groupId: Int): Call<Boolean>
+
+    @GET("webviews/url")
+    fun markRecoWebUrlRead(@Query("url") url:String): Call<Response>
 }

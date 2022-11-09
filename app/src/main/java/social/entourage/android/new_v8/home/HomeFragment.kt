@@ -9,9 +9,9 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.new_home_card.view.*
 import social.entourage.android.EntourageApplication
@@ -22,12 +22,12 @@ import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.new_v8.Navigation
 import social.entourage.android.new_v8.ViewPagerDefaultPageController
 import social.entourage.android.new_v8.home.pedago.PedagoListActivity
-import social.entourage.android.new_v8.models.Recommandation
-import social.entourage.android.new_v8.models.Summary
+import social.entourage.android.new_v8.models.*
 import social.entourage.android.new_v8.profile.ProfileActivity
 import social.entourage.android.new_v8.user.UserProfileActivity
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
+import social.entourage.android.tools.view.CommunicationRecoWebUrlHandlerViewModel
 
 class HomeFragment : Fragment() {
     private var _binding: NewFragmentHomeBinding? = null
@@ -36,6 +36,8 @@ class HomeFragment : Fragment() {
 
     private var user: User? = null
     private var userSummary: Summary? = null
+
+    private var isAlreadyLoadSummary = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,10 +51,29 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         user = EntourageApplication.me(activity) ?: return
         homePresenter.summary.observe(requireActivity(), ::updateContributionsView)
+        isAlreadyLoadSummary = true
         homePresenter.getSummary()
+
+        val _model = ViewModelProvider(requireActivity()).get(CommunicationRecoWebUrlHandlerViewModel::class.java)
+        _model.isValid.observe(requireActivity(), ::reloadDatasFromRecos)
+
         updateView()
         handleProfileButton()
         handlePedagogicalContentButton()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!isAlreadyLoadSummary) {
+            reloadDatasFromRecos(true)
+        }
+        else {
+            isAlreadyLoadSummary = false
+        }
+    }
+
+    private fun reloadDatasFromRecos(isOk:Boolean) {
+        homePresenter.getSummary()
     }
 
     private fun updateContributionsView(summary: Summary) {
@@ -212,13 +233,13 @@ class HomeFragment : Fragment() {
             adapter =
                 RecommendationsListAdapter(recommendationsList, object : OnItemClickListener {
                     override fun onItemClick(recommendation: Recommandation) {
-                        if (recommendation.type != null && recommendation.action != null && recommendation.params != null)
+                        if (recommendation.homeType != null && recommendation.action != null && recommendation.params != null) {
                             Navigation.navigate(
                                 context,
                                 parentFragmentManager,
-                                recommendation.type,
-                                recommendation.action,
-                                recommendation.params
+                                recommendation.homeType!!,
+                                recommendation.action!!,
+                                recommendation.params!!
                             )
                     }
                 })

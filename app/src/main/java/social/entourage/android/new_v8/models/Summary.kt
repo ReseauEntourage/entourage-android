@@ -37,19 +37,19 @@ class Recommandation : Serializable {
     var name: String? = null
 
     @SerializedName("type")
-    val type: Type? = null
+    var homeType: HomeType? = null
 
     @SerializedName("action")
-    val action: ActionSummary? = null
+    var action: ActionSummary? = null
 
     @SerializedName("image_url")
     val imageURL: String? = null
 
     @SerializedName("params")
-    val params: Params? = null
+    var params: HomeActionParams? = null
 }
 
-class Params : Serializable {
+class HomeActionParams : Serializable {
     @SerializedName("id")
     var id: Int? = null
 
@@ -72,7 +72,7 @@ class HomeModerator : Serializable {
 
 }
 
-enum class Type {
+enum class HomeType {
     @SerializedName("conversation")
     CONVERSATION,
 
@@ -111,6 +111,6 @@ enum class ActionSummary {
     @SerializedName("index")
     INDEX,
 
-    @SerializedName("new")
-    NEW;
+    @SerializedName("create")
+    CREATE;
 }

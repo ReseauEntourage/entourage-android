@@ -8,13 +8,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.guide.poi.ReadPoiFragment
+import social.entourage.android.new_v8.actions.create.CreateActionActivity
+import social.entourage.android.new_v8.actions.detail.ActionDetailActivity
 import social.entourage.android.new_v8.events.create.CreateEventActivity
 import social.entourage.android.new_v8.groups.create.CreateGroupActivity
 import social.entourage.android.new_v8.groups.details.feed.FeedActivity
 import social.entourage.android.new_v8.home.pedago.PedagoDetailActivity
 import social.entourage.android.new_v8.models.ActionSummary
-import social.entourage.android.new_v8.models.Params
-import social.entourage.android.new_v8.models.Type
+import social.entourage.android.new_v8.models.HomeActionParams
+import social.entourage.android.new_v8.models.HomeType
 import social.entourage.android.new_v8.profile.ProfileActivity
 import social.entourage.android.new_v8.user.UserProfileActivity
 import social.entourage.android.new_v8.utils.Const
@@ -26,12 +28,12 @@ class Navigation {
         fun navigate(
             context: Context,
             fragmentManager: FragmentManager,
-            type: Type,
+            homeType: HomeType,
             action: ActionSummary,
-            params: Params
+            params: HomeActionParams
         ) {
-            when (type) {
-                Type.CONVERSATION -> when (action) {
+            when (homeType) {
+                HomeType.CONVERSATION -> when (action) {
                     //TODO a faire
                     ActionSummary.SHOW -> Utils.showToast(
                         context,
@@ -42,12 +44,12 @@ class Navigation {
                             (context as Activity).findViewById<BottomNavigationView>(R.id.nav_view)
                         bottomNavigationView.selectedItemId = R.id.navigation_messages
                     }
-                    ActionSummary.NEW -> Utils.showToast(
+                    ActionSummary.CREATE -> Utils.showToast(
                         context,
                         context.getString(R.string.not_implemented)
                     )
                 }
-                Type.NEIGHBORHOOD -> when (action) {
+                HomeType.NEIGHBORHOOD -> when (action) {
                     ActionSummary.SHOW -> context.startActivity(
                         Intent(context, FeedActivity::class.java).putExtra(
                             Const.GROUP_ID,
@@ -60,11 +62,11 @@ class Navigation {
                             (context as Activity).findViewById<BottomNavigationView>(R.id.nav_view)
                         bottomNavigationView.selectedItemId = R.id.navigation_groups
                     }
-                    ActionSummary.NEW -> context.startActivity(
+                    ActionSummary.CREATE -> context.startActivity(
                         Intent(context, CreateGroupActivity::class.java)
                     )
                 }
-                Type.PROFILE -> when (action) {
+                HomeType.PROFILE -> when (action) {
                     ActionSummary.SHOW -> context.startActivity(
                         Intent(context, ProfileActivity::class.java).putExtra(
                             Const.GO_TO_EDIT_PROFILE,
@@ -73,7 +75,7 @@ class Navigation {
                     )
                     else -> {}
                 }
-                Type.POI -> when (action) {
+                HomeType.POI -> when (action) {
                     ActionSummary.SHOW -> {
                         val poi = Poi()
                         poi.uuid = "${params.uuid}"
@@ -84,12 +86,12 @@ class Navigation {
                         context,
                         context.getString(R.string.not_implemented)
                     )
-                    ActionSummary.NEW -> Utils.showToast(
+                    ActionSummary.CREATE -> Utils.showToast(
                         context,
                         context.getString(R.string.not_implemented)
                     )
                 }
-                Type.USER -> when (action) {
+                HomeType.USER -> when (action) {
                     ActionSummary.SHOW -> context.startActivity(
                         Intent(context, UserProfileActivity::class.java).putExtra(
                             Const.USER_ID,
@@ -98,7 +100,7 @@ class Navigation {
                     )
                     else -> {}
                 }
-                Type.OUTING -> when (action) {
+                HomeType.OUTING -> when (action) {
                     ActionSummary.SHOW -> context.startActivity(
                         Intent(context, social.entourage.android.new_v8.events.details.feed.FeedActivity::class.java).putExtra(
                             Const.EVENT_ID,
@@ -110,23 +112,25 @@ class Navigation {
                             (context as Activity).findViewById<BottomNavigationView>(R.id.nav_view)
                         bottomNavigationView.selectedItemId = R.id.navigation_events
                     }
-                    ActionSummary.NEW -> context.startActivity(
+                    ActionSummary.CREATE -> context.startActivity(
                         Intent(context, CreateEventActivity::class.java)
                     )
                 }
-                Type.WEBVIEW -> when (action) {
+                HomeType.WEBVIEW -> when (action) {
                     ActionSummary.SHOW -> {
-                        WebViewFragment.newInstance(params.url, 0)
+
+                        WebViewFragment.newInstance(params.url, 0, true)
                             .show(fragmentManager, WebViewFragment.TAG)
                     }
                     else -> {}
                 }
-                Type.CONTRIBUTION -> when (action) {
-                    //TODO a faire
+                HomeType.CONTRIBUTION -> when (action) {
                     ActionSummary.SHOW -> {
-                        Utils.showToast(
-                            context,
-                            context.getString(R.string.not_implemented)
+                        context.startActivity(
+                            Intent(context, ActionDetailActivity::class.java)
+                                .putExtra(Const.ACTION_ID, params.id)
+                                .putExtra(Const.IS_ACTION_DEMAND,false)
+                                .putExtra(Const.IS_ACTION_MINE, false)
                         )
                     }
                     ActionSummary.INDEX -> {
@@ -134,20 +138,21 @@ class Navigation {
                             (context as Activity).findViewById<BottomNavigationView>(R.id.nav_view)
                         bottomNavigationView.selectedItemId = R.id.navigation_donations
                     }
-                    ActionSummary.NEW -> {
-                        Utils.showToast(
-                            context,
-                            context.getString(R.string.not_implemented)
+                    ActionSummary.CREATE -> {
+                        context.startActivity(
+                            Intent(context, CreateActionActivity::class.java)
+                                .putExtra(Const.IS_ACTION_DEMAND, false)
                         )
                     }
                 }
 
-                Type.SOLICITATION -> when (action) {
-                    //TODO a faire
+                HomeType.SOLICITATION -> when (action) {
                     ActionSummary.SHOW -> {
-                        Utils.showToast(
-                            context,
-                            context.getString(R.string.not_implemented)
+                        context.startActivity(
+                            Intent(context, ActionDetailActivity::class.java)
+                                .putExtra(Const.ACTION_ID, params.id)
+                                .putExtra(Const.IS_ACTION_DEMAND,true)
+                                .putExtra(Const.IS_ACTION_MINE, false)
                         )
                     }
                     ActionSummary.INDEX -> {
@@ -155,14 +160,14 @@ class Navigation {
                             (context as Activity).findViewById<BottomNavigationView>(R.id.nav_view)
                         bottomNavigationView.selectedItemId = R.id.navigation_donations
                     }
-                    ActionSummary.NEW -> {
-                        Utils.showToast(
-                            context,
-                            context.getString(R.string.not_implemented)
+                    ActionSummary.CREATE -> {
+                        context.startActivity(
+                            Intent(context, CreateActionActivity::class.java)
+                                .putExtra(Const.IS_ACTION_DEMAND, true)
                         )
                     }
                 }
-                Type.RESOURCE -> when (action) {
+                HomeType.RESOURCE -> when (action) {
                     ActionSummary.SHOW -> {
                         context.startActivity(
                             Intent(context, PedagoDetailActivity::class.java)
@@ -175,7 +180,7 @@ class Navigation {
                         context,
                         context.getString(R.string.not_implemented)
                     )
-                    ActionSummary.NEW -> Utils.showToast(
+                    ActionSummary.CREATE -> Utils.showToast(
                         context,
                         context.getString(R.string.not_implemented)
                     )

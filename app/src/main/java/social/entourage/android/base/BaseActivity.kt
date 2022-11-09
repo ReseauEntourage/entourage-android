@@ -66,7 +66,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun showWebView(url: String, shareMessageRes: Int = 0) {
         if(shareMessageRes!=0 || !WebViewFragment.launchURL(this, url, shareMessageRes)) {
-            WebViewFragment.newInstance(url, shareMessageRes).show(supportFragmentManager, WebViewFragment.TAG)
+            WebViewFragment.newInstance(url, shareMessageRes,false).show(supportFragmentManager, WebViewFragment.TAG)
         }
     }
 

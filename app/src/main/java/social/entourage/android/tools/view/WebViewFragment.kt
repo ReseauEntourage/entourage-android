@@ -27,9 +27,17 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.browser.customtabs.CustomTabsIntent.SHARE_STATE_ON
 import androidx.browser.customtabs.CustomTabsService.ACTION_CUSTOM_TABS_CONNECTION
 import androidx.core.view.GestureDetectorCompat
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_webview.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.new_v8.home.HomePresenter
 import java.util.*
 
 
@@ -41,6 +49,8 @@ class WebViewFragment : BaseDialogFragment() {
     @IdRes private var shareMessageRes: Int = 0
     private var gestureDetectorCompat: GestureDetectorCompat? = null
     var bottomUpJumpAnimation: Animation? = null
+
+    private var hasToSendRead = false
 
     // ----------------------------------
     // LIFECYCLE
@@ -57,6 +67,7 @@ class WebViewFragment : BaseDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         requestedUrl = arguments?.getString(REQUESTED_URL) ?: return dismiss()
         shareMessageRes = arguments?.getInt(SHARE_MESSAGE, 0) ?: 0
+        hasToSendRead = arguments?.getBoolean(SENDGETREAD, false) ?: false
         showAnimation()
         webview_back_button.setOnClickListener {onBackClicked()}
         webview_more_button.setOnClickListener {toggleMenu()}
@@ -65,6 +76,10 @@ class WebViewFragment : BaseDialogFragment() {
         webview_menu_copy.setOnClickListener {onMenuCopyClicked()}
         webview_menu_share.setOnClickListener {onMenuShareClicked()}
         webview_navigation_bar_menu_background.setOnClickListener {toggleMenu()}
+
+        if (hasToSendRead) {
+            setWebUrlRead()
+        }
     }
 
     override val slideStyle: Int
@@ -78,6 +93,22 @@ class WebViewFragment : BaseDialogFragment() {
     // ----------------------------------
     // Private methods
     // ----------------------------------
+    private val homePresenter: HomePresenter by lazy { HomePresenter() }
+    private  fun setWebUrlRead() {
+        EntourageApplication.get().apiModule.homeRequest
+            .markRecoWebUrlRead(requestedUrl)
+            .enqueue(object : Callback<com.squareup.okhttp.Response> {
+                override fun onResponse(
+                    call: Call<com.squareup.okhttp.Response>,
+                    response: Response<com.squareup.okhttp.Response>
+                ) {
+                    val _model = ViewModelProvider(requireActivity()).get(CommunicationRecoWebUrlHandlerViewModel::class.java)
+                    _model.setValid()
+                }
+
+                override fun onFailure(call: Call<com.squareup.okhttp.Response>, t: Throwable) {}
+            })
+    }
     private fun showAnimation() {
         bottomUpJumpAnimation = AnimationUtils.loadAnimation(this.context, R.anim.bottom_up)
         bottomUpJumpAnimation?.setAnimationListener(object : Animation.AnimationListener {
@@ -273,6 +304,7 @@ class WebViewFragment : BaseDialogFragment() {
         val TAG: String? = WebViewFragment::class.java.simpleName
         private const val REQUESTED_URL = "REQUESTED_URL"
         private const val SHARE_MESSAGE = "SHARE_MESSAGE"
+        private const val SENDGETREAD = "sendRead"
         var customTabsPackages: ArrayList<ResolveInfo>? = null
 
         /**
@@ -282,10 +314,11 @@ class WebViewFragment : BaseDialogFragment() {
          * @param requestedUrl Requested url as string.
          * @return A new instance of fragment WebViewFragment.
          */
-        fun newInstance(requestedUrl: String?, @IdRes shareMessageRes: Int? = null): WebViewFragment {
+        fun newInstance(requestedUrl: String?, @IdRes shareMessageRes: Int? = null, sendRead:Boolean): WebViewFragment {
             val fragment = WebViewFragment()
             val args = Bundle()
             args.putString(REQUESTED_URL, requestedUrl)
+            args.putBoolean(SENDGETREAD,sendRead)
             shareMessageRes?.let {args.putInt(SHARE_MESSAGE, it) }
             fragment.arguments = args
             return fragment
@@ -346,5 +379,15 @@ class WebViewFragment : BaseDialogFragment() {
             customIntent.launchUrl(context, Uri.parse(url))
             return true
         }
+    }
+}
+
+
+
+class CommunicationRecoWebUrlHandlerViewModel : ViewModel() {
+    val isValid:MutableLiveData<Boolean> = MutableLiveData()
+
+    fun setValid() {
+        isValid.value = true
     }
 }

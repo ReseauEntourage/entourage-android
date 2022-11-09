@@ -166,9 +166,13 @@ class ActionsPresenter {
                             getAction.value = actionWrapper.action
                         }
                     }
+                    else {
+                        getAction.value = null
+                    }
                 }
 
                 override fun onFailure(call: Call<DemandWrapper>, t: Throwable) {
+                    getAction.value = null
                 }
             })
     }
@@ -186,9 +190,13 @@ class ActionsPresenter {
                             getAction.value = actionWrapper.action
                         }
                     }
+                    else {
+                        getAction.value = null
+                    }
                 }
 
                 override fun onFailure(call: Call<ContribWrapper>, t: Throwable) {
+                    getAction.value = null
                 }
             })
     }

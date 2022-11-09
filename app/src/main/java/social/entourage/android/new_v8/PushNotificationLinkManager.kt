@@ -7,8 +7,8 @@ import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.new_v8.association.PartnerDetailActivity
 import social.entourage.android.new_v8.models.ActionSummary
-import social.entourage.android.new_v8.models.Params
-import social.entourage.android.new_v8.models.Type
+import social.entourage.android.new_v8.models.HomeActionParams
+import social.entourage.android.new_v8.models.HomeType
 import social.entourage.android.new_v8.utils.Const
 
 /**
@@ -44,10 +44,10 @@ class PushNotificationLinkManager {
     }
 
     private fun showUser(context:Context,supportFragmentManager: FragmentManager, id: Int) {
-        val params = Params()
+        val params = HomeActionParams()
         params.id = id
         Navigation.navigate(context,supportFragmentManager,
-            Type.USER,
+            HomeType.USER,
             ActionSummary.SHOW, params)
     }
     private fun showPartner(context:Context, id: Int) {
@@ -66,26 +66,26 @@ class PushNotificationLinkManager {
     }
 
     private fun showOuting(context:Context,supportFragmentManager: FragmentManager, id: Int) {
-        val params = Params()
+        val params = HomeActionParams()
         params.id = id
         Navigation.navigate(context,supportFragmentManager,
-            Type.OUTING,
+            HomeType.OUTING,
             ActionSummary.SHOW, params)
     }
 
     private fun showNeighborhood(context:Context,supportFragmentManager: FragmentManager, id: Int) {
-        val params = Params()
+        val params = HomeActionParams()
         params.id = id
         Navigation.navigate(context,supportFragmentManager,
-            Type.NEIGHBORHOOD,
+            HomeType.NEIGHBORHOOD,
             ActionSummary.SHOW, params)
     }
 
     private fun showResource(context:Context,supportFragmentManager: FragmentManager, id: Int) {
-        val params = Params()
+        val params = HomeActionParams()
         params.id = id
         Navigation.navigate(context,supportFragmentManager,
-            Type.RESOURCE,
+            HomeType.RESOURCE,
             ActionSummary.SHOW, params)
     }
 }

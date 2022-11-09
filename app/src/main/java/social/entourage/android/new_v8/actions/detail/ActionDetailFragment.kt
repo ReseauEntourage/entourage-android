@@ -107,6 +107,9 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                 mCallback?.hideIconReport()
             }
             mCallback?.updateTitle(action.title)
+        } ?: kotlin.run {
+            mCallback?.hideIconReport()
+            showCancelView()
         }
     }
 
@@ -192,12 +195,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     private fun updateViews() {
         action?.let {
             if (it.isCancel()) {
-                binding.uiLayoutAuthor.isVisible = false
-                binding.uiBtContact.isVisible = false
-                binding.layoutTopCancel.isVisible = true
-                binding.uiLayoutWhiteTopCancel.isVisible = true
-                binding.uiLayoutWhiteMapCancel.isVisible = true
-                binding.layoutFullCancel.isVisible = true
+                showCancelView()
             }
             else {
                 binding.layoutFullCancel.isVisible = false
@@ -240,6 +238,15 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                 updateMarker()
             }
         }
+    }
+
+    private fun showCancelView() {
+        binding.uiLayoutAuthor.isVisible = false
+        binding.uiBtContact.isVisible = false
+        binding.layoutTopCancel.isVisible = true
+        binding.uiLayoutWhiteTopCancel.isVisible = true
+        binding.uiLayoutWhiteMapCancel.isVisible = true
+        binding.layoutFullCancel.isVisible = true
     }
 
     //Google map

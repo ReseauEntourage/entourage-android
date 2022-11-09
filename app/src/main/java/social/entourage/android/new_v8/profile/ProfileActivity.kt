@@ -49,7 +49,7 @@ class ProfileActivity : AppCompatActivity(), AvatarUploadView {
 
     private fun showWebView(url: String, shareMessageRes: Int = 0) {
         if (shareMessageRes != 0 || !WebViewFragment.launchURL(this, url, shareMessageRes)) {
-            WebViewFragment.newInstance(url, shareMessageRes)
+            WebViewFragment.newInstance(url, shareMessageRes,false)
                 .show(supportFragmentManager, WebViewFragment.TAG)
         }
     }
