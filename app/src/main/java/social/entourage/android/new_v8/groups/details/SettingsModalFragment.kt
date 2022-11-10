@@ -12,6 +12,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
@@ -70,6 +71,11 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         binding.edit.label = getString(R.string.edit_group_information)
         binding.rules.label = getString(R.string.rules_group)
         binding.report.text = getString(R.string.report_group)
+
+        if (group?.admin == true) {
+            binding.leave.visibility = View.GONE
+        }
+
         binding.leave.text = getString(R.string.leave_group)
     }
 

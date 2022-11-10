@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.databinding.NewGroupMemberItemBinding
@@ -34,6 +35,10 @@ class MembersListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
             with(membersList[position]) {
+
+                val isMe = EntourageApplication.get().me()?.id == userId
+                binding.contact.visibility = if (isMe) View.INVISIBLE else View.VISIBLE
+
                 binding.name.text = displayName
                 communityRoles?.let {
                     if (it.contains(Const.AMBASSADOR)) binding.ambassador.visibility = View.VISIBLE
@@ -44,11 +49,18 @@ class MembersListAdapter(
                 }
                 avatarURLAsString?.let { avatarURL ->
                     Glide.with(holder.itemView.context)
-                        .load(Uri.parse(avatarURL))
+                        .load(avatarURL)
                         .placeholder(R.drawable.placeholder_user)
+                        .error(R.drawable.placeholder_user)
+                        .circleCrop()
+                        .into(binding.picture)
+                } ?: kotlin.run {
+                    Glide.with(holder.itemView.context)
+                        .load(R.drawable.placeholder_user)
                         .circleCrop()
                         .into(binding.picture)
                 }
+
                 binding.layout.setOnClickListener {
                     binding.picture.context.startActivity(
                         Intent(binding.picture.context, UserProfileActivity::class.java).putExtra(

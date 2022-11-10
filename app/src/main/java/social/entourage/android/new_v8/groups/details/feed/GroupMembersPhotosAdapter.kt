@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import social.entourage.android.R
 import social.entourage.android.databinding.NewPhotoItemBinding
 import social.entourage.android.new_v8.models.GroupMember
 import social.entourage.android.new_v8.utils.Const.LIMIT_PHOTOS_MEMBERS
@@ -34,7 +35,14 @@ class GroupMembersPhotosAdapter(
             with(membersList[position]) {
                 this.avatarUrl?.let {
                     Glide.with(binding.image.context)
-                        .load(Uri.parse(it))
+                        .load(it)
+                        .error(R.drawable.placeholder_user)
+                        .apply(RequestOptions().override(25.px, 25.px))
+                        .circleCrop()
+                        .into(binding.image)
+                } ?: kotlin.run {
+                    Glide.with(holder.itemView.context)
+                        .load(R.drawable.placeholder_user)
                         .apply(RequestOptions().override(25.px, 25.px))
                         .circleCrop()
                         .into(binding.image)

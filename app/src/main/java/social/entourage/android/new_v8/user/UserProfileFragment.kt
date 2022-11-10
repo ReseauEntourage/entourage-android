@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.User
@@ -35,6 +36,7 @@ class UserProfileFragment : Fragment() {
     private var interestsList: ArrayList<String> = ArrayList()
     private val args: UserProfileFragmentArgs by navArgs()
 
+    private var isMe = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -95,6 +97,15 @@ class UserProfileFragment : Fragment() {
 
     private fun updateView() {
         userPresenter.user.value?.let { user = it }
+
+        isMe = userPresenter.user.value?.id == EntourageApplication.get().me()?.id
+
+        if (isMe) {
+            binding.message.root.visibility = View.GONE
+            binding.report.visibility = View.GONE
+            binding.information.text = getString(R.string.my_activity)
+        }
+
         handleMetaData()
         with(binding) {
             name.text = user.displayName

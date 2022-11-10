@@ -26,7 +26,7 @@
         <ImageView
             android:id="@+id/icon"
             android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_height="20dp"
             android:adjustViewBounds="true"
             android:cropToPadding="true"
             android:paddingRight="10dp"

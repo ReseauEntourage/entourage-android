@@ -107,6 +107,8 @@ class FeedFragment : Fragment() {
             binding.eventNameToolbar.alpha = res
             binding.participate.isVisible =
                 res == 1F && !event.member && event.status == Status.OPEN
+
+            binding.eventImage.alpha = 1f - res
         }
     }
 
@@ -229,16 +231,28 @@ class FeedFragment : Fragment() {
             }
             event.metadata?.landscapeUrl?.let {
                 Glide.with(requireActivity())
-                    .load(Uri.parse(it))
+                    .load(it)
+                    .error(R.drawable.new_group_illu)
                     .centerCrop()
                     .into(eventImage)
-            }
-            event.metadata?.landscapeUrl?.let {
+
                 Glide.with(requireActivity())
-                    .load(Uri.parse(it))
+                    .load(it)
+                    .error(R.drawable.new_group_illu)
+                    .transform(CenterCrop(), RoundedCorners(5.px))
+                    .into(eventImageToolbar)
+            } ?: kotlin.run {
+                Glide.with(requireActivity())
+                    .load(R.drawable.new_group_illu)
+                    .centerCrop()
+                    .into(eventImage)
+
+                Glide.with(requireActivity())
+                    .load(R.drawable.new_group_illu)
                     .transform(CenterCrop(), RoundedCorners(5.px))
                     .into(eventImageToolbar)
             }
+
             canceled.isVisible = event.status == Status.CLOSED
             if (event.status == Status.CLOSED) {
                 eventName.setTextColor(getColor(requireContext(), R.color.grey))
