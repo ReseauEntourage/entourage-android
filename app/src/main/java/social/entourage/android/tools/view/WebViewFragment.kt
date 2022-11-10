@@ -1,10 +1,7 @@
 package social.entourage.android.tools.view
 
 import android.annotation.TargetApi
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.content.pm.ResolveInfo
 import android.graphics.Bitmap
 import android.net.Uri
@@ -102,8 +99,6 @@ class WebViewFragment : BaseDialogFragment() {
                     call: Call<com.squareup.okhttp.Response>,
                     response: Response<com.squareup.okhttp.Response>
                 ) {
-                    val _model = ViewModelProvider(requireActivity()).get(CommunicationRecoWebUrlHandlerViewModel::class.java)
-                    _model.setValid()
                 }
 
                 override fun onFailure(call: Call<com.squareup.okhttp.Response>, t: Throwable) {}
@@ -165,6 +160,12 @@ class WebViewFragment : BaseDialogFragment() {
         } else {
             dismiss()
         }
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        val _model = ViewModelProvider(requireActivity()).get(CommunicationRecoWebUrlHandlerViewModel::class.java)
+        _model.setValid()
     }
 
     private fun onMenuBrowserClicked() {

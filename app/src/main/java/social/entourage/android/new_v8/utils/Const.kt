@@ -52,4 +52,7 @@ object Const {
     const val IS_ACTION_DEMAND = "isActionDemand"
     const val IS_ACTION_MINE = "isActionMine"
     const val ACTION_OBJ = "actionObj"
+
+    const val IS_OUTING_DISCOVER = "isDiscover"
+
 }

@@ -4,9 +4,12 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.NavArgument
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
+import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.new_v8.actions.create.CreateActionActivity
 import social.entourage.android.new_v8.actions.detail.ActionDetailActivity
@@ -82,10 +85,11 @@ class Navigation {
                         ReadPoiFragment.newInstance(poi, "")
                             .show(fragmentManager, ReadPoiFragment.TAG)
                     }
-                    ActionSummary.INDEX -> Utils.showToast(
-                        context,
-                        context.getString(R.string.not_implemented)
-                    )
+                    ActionSummary.INDEX -> {
+                        context.startActivity(
+                            Intent(context, GDSMainActivity::class.java)
+                        )
+                    }
                     ActionSummary.CREATE -> Utils.showToast(
                         context,
                         context.getString(R.string.not_implemented)
@@ -108,6 +112,11 @@ class Navigation {
                         )
                     )
                     ActionSummary.INDEX -> {
+                        //Use to pass data to the fragment with navigation controller !
+                        fragmentManager.primaryNavigationFragment?.findNavController()?.let {
+                            it.graph.findNode(R.id.navigation_events)?.addArgument(Const.IS_OUTING_DISCOVER,NavArgument.Builder().setDefaultValue(true).build())
+                        }
+
                         val bottomNavigationView =
                             (context as Activity).findViewById<BottomNavigationView>(R.id.nav_view)
                         bottomNavigationView.selectedItemId = R.id.navigation_events
@@ -156,6 +165,11 @@ class Navigation {
                         )
                     }
                     ActionSummary.INDEX -> {
+                        //Use to pass data to the fragment with navigation controller !
+                        fragmentManager.primaryNavigationFragment?.findNavController()?.let {
+                            it.graph.findNode(R.id.navigation_donations)?.addArgument(Const.IS_ACTION_DEMAND,NavArgument.Builder().setDefaultValue(true).build())
+                        }
+
                         val bottomNavigationView =
                             (context as Activity).findViewById<BottomNavigationView>(R.id.nav_view)
                         bottomNavigationView.selectedItemId = R.id.navigation_donations

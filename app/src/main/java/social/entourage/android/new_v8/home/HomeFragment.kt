@@ -261,6 +261,7 @@ class HomeFragment : Fragment() {
 
     private fun showCongratDialog() {
         homePresenter.summary.value?.congratulations?.let {
+            if (it.isEmpty()) return
             HomeCongratPopFragment.newInstance(it as ArrayList<HomeAction>).show(parentFragmentManager, HomeCongratPopFragment.TAG)
         }
     }

@@ -8,5 +8,8 @@
         android:id="@+id/events_fragment"
         android:name="social.entourage.android.new_v8.events.EventsFragment" />
 
+    <argument
+        android:name="isDiscover"
+        app:argType="boolean"/>
 
 </navigation>

@@ -15,6 +15,7 @@ import social.entourage.android.new_v8.RefreshController
 import social.entourage.android.new_v8.ViewPagerDefaultPageController
 import social.entourage.android.new_v8.events.create.CreateEventActivity
 import social.entourage.android.new_v8.events.list.EventsViewPagerAdapter
+import social.entourage.android.new_v8.utils.Const
 import kotlin.math.abs
 
 const val DISCOVER_EVENTS_TAB = 1
@@ -24,6 +25,15 @@ class EventsFragment : Fragment() {
     private var _binding: NewFragmentEventsBinding? = null
     val binding: NewFragmentEventsBinding get() = _binding!!
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        var isDiscover = false
+        arguments?.let {
+            isDiscover = it.getBoolean(Const.IS_OUTING_DISCOVER, false)
+        }
+        ViewPagerDefaultPageController.shouldSelectDiscoverEvents = isDiscover
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

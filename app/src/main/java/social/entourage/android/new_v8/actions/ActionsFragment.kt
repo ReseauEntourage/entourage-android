@@ -147,6 +147,16 @@ class ActionsFragment : Fragment() {
         childFragmentManager.setFragmentResult(FILTERS2, bundle)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        var isDiscover = false
+        arguments?.let {
+            isDiscover = it.getBoolean(Const.IS_ACTION_DEMAND, false)
+        }
+        ViewPagerDefaultPageController.shouldSelectDiscoverEvents = isDiscover
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
