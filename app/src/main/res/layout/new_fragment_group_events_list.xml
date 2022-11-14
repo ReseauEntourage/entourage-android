@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@id/scrollView"
                 app:layout_constraintTop_toTopOf="parent"
-                app:title="@{@string/group_events}" />
+                app:title="@{@string/group_events_new}" />
 
 
             <androidx.recyclerview.widget.RecyclerView

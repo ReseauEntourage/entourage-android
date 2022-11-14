@@ -252,6 +252,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="my_group_list_empty_state_button">Découvrir les groupes</string>
     <string name="admin">Admin</string>
     <string name="to_know">À savoir</string>
+    <string name="to_know_group">À propos du groupe</string>
     <string name="join">Rejoindre</string>
     <string name="member">Membre</string>
     <string name="members_location">%s membres. %s</string>
@@ -263,7 +264,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="group_event">  Événements du groupe</string>
     <string name="group_event_empty_state_title">Pas encore d’événements prévus dans ce groupe</string>
     <string name="group_event_empty_state_subtitle"><![CDATA[Cliquez sur « + » pour en créer un]]></string>
-    <string name="group_posts_empty_state_title">Pas encore de publication sur ce groupe</string>
+    <string name="group_posts_empty_state_title">Il n\'y a pas (encore) de publication sur ce groupe</string>
     <string name="group_posts_empty_state_subtitle">Pourquoi ne pas lancer la discussion avec vos voisins ?</string>
     <string name="posts">Fil d’actualité</string>
     <string name="see_members">Voir les membres</string>
@@ -320,6 +321,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="image_mandatory">La photo est obligatoire</string>
     <string name="show_more_lined"><u>Voir plus</u></string>
     <string name="group_events">Évènements du groupe</string>
+    <string name="group_events_new">Le groupe organise aussi :</string>
     <string name="january">Janvier</string>
     <string name="february">Février</string>
     <string name="march">Mars</string>
@@ -372,7 +374,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_date_formatter_to_string">yyyy-MM-dd HH:mm:ss Z</string>
     <string name="places_numbers">%s places</string>
     <string name="event_posts_empty_state_title">Il n\'y a pas (encore) de publication sur cet événement</string>
-    <string name="event_posts_empty_state_subtitle">C’est l’occasion pour vous de partager la première nouvelle pour lancer la discussion !</string>
+    <string name="event_posts_empty_state_subtitle">Hey ! C\'est l\'occasion de partager la première nouvelle pour lancer la discussion !</string>
     <string name="feed_event_date">"dd MMMM yyyy"</string>
     <string name="feed_event_time">HH\'h\'mm</string>
     <string name="participate">Participer</string>
