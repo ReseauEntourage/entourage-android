@@ -5,9 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
@@ -68,6 +72,18 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         setupViewStep1()
         handleCloseButton()
         setView()
+
+        //Use to force refresh layout
+        dialog?.setOnShowListener { dialog ->
+            val d = dialog as BottomSheetDialog
+            val bottomSheet =
+                d.findViewById<View>(social.entourage.android.R.id.design_bottom_sheet) as FrameLayout?
+            val coordinatorLayout = bottomSheet!!.parent as CoordinatorLayout
+            val bottomSheetBehavior: BottomSheetBehavior<*> =
+                BottomSheetBehavior.from(bottomSheet)
+            bottomSheetBehavior.peekHeight = bottomSheet.height
+            coordinatorLayout.parent.requestLayout()
+        }
     }
 
     override fun onCancel(dialog: DialogInterface) {

@@ -5,9 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Image
@@ -49,6 +53,18 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
         initializeInterests()
         handleValidateButton()
         getImages()
+
+        //Use to force refresh layout
+        dialog?.setOnShowListener { dialog ->
+            val d = dialog as BottomSheetDialog
+            val bottomSheet =
+                d.findViewById<View>(social.entourage.android.R.id.design_bottom_sheet) as FrameLayout?
+            val coordinatorLayout = bottomSheet!!.parent as CoordinatorLayout
+            val bottomSheetBehavior: BottomSheetBehavior<*> =
+                BottomSheetBehavior.from(bottomSheet)
+            bottomSheetBehavior.peekHeight = bottomSheet.height
+            coordinatorLayout.parent.requestLayout()
+        }
     }
 
     private fun getPhotosHandleResponse(list: List<Image>) {
