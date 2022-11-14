@@ -34,23 +34,22 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/new_back_white" />
 
-        <TextView
-            style="@style/h1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="@{title}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/icon_back"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Notifications" />
-
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@{icon}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            style="@style/h1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{title}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/icon_back"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Notifications" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

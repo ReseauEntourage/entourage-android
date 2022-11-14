@@ -79,14 +79,6 @@
                 android:layout_height="wrap_content"
                 tools:text="2 événements prévus" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:orientation="horizontal"
-                tools:listitem="@layout/new_groups_interests_image_item" />
-
         </LinearLayout>
     </LinearLayout>
 

@@ -80,19 +80,12 @@ class GroupsListAdapter(
                         .into(binding.image)
                 }
 
-
-                val listAdapter = GroupsInterestsListAdapter(this.interests)
                 if (userId == groupsList[position].admin?.id) {
                     binding.admin.visibility = View.VISIBLE
                     binding.star.visibility = View.VISIBLE
                 } else {
                     binding.admin.visibility = View.GONE
                     binding.star.visibility = View.GONE
-                }
-                binding.recyclerView.apply {
-                    layoutManager =
-                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                    adapter = listAdapter
                 }
             }
         }
