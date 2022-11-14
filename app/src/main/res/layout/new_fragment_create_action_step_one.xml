@@ -48,36 +48,10 @@
                     android:hint="@string/action_create_title_hint"
                     android:maxLines="1"
                     android:paddingTop="0dp"
-                    app:layout_constraintTop_toBottomOf="@+id/action_name_subtitle"
+                    app:layout_constraintTop_toBottomOf="@+id/action_name_title"
                     tools:layout_editor_absoluteX="22dp"
                     tools:text="content" />
 
-
-                <TextView
-                    android:id="@+id/action_name_subtitle"
-                    style="@style/left_legend"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="1dp"
-                    android:text="@string/action_create_title_hint"
-                    android:textColor="@color/black"
-                    android:textSize="13sp"
-                    app:layout_constraintEnd_toEndOf="@+id/action_name_title"
-                    app:layout_constraintStart_toStartOf="@+id/action_name_title"
-                    app:layout_constraintTop_toBottomOf="@+id/action_name_title" />
-
-                <TextView
-                    android:id="@+id/action_description_subtitle"
-                    style="@style/left_legend"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="1dp"
-                    android:text="@string/action_create_title_hint"
-                    android:textColor="@color/black"
-                    android:textSize="13sp"
-                    app:layout_constraintEnd_toEndOf="@+id/action_description_title"
-                    app:layout_constraintStart_toStartOf="@+id/action_description_title"
-                    app:layout_constraintTop_toBottomOf="@+id/action_description_title" />
 
                 <include
                     android:id="@+id/action_description_title"
@@ -87,7 +61,8 @@
                     android:layout_marginTop="20dp"
                     app:layout_constraintTop_toBottomOf="@id/action_name"
                     app:mandatory="@{@string/mandatory}"
-                    app:title="@{@string/action_create_description}" />
+                    app:title="@{@string/action_create_description}"
+                    tools:layout_editor_absoluteX="25dp" />
 
                 <EditText
                     android:id="@+id/action_description"
@@ -97,10 +72,10 @@
                     android:layout_marginTop="5dp"
                     android:backgroundTint="@color/light_orange_opacity_50"
                     android:hint="@string/action_create_description_hint"
-                    android:maxLength="200"
+                    android:maxLength="400"
                     android:maxLines="4"
                     android:paddingTop="0dp"
-                    app:layout_constraintTop_toBottomOf="@+id/action_description_subtitle"
+                    app:layout_constraintTop_toBottomOf="@+id/action_description_title"
                     tools:layout_editor_absoluteX="25dp"
                     tools:text="content" />
 

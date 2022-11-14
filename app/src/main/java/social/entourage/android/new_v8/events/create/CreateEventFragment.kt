@@ -41,6 +41,7 @@ class CreateEventFragment : Fragment() {
 
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
 
+    private var isAlreadySend = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,6 +68,7 @@ class CreateEventFragment : Fragment() {
             activity?.finish()
             RefreshController.shouldRefreshEventFragment = true
         } else {
+            isAlreadySend = false
             Utils.showToast(requireContext(), getString(R.string.group_error_updated))
         }
     }
@@ -117,7 +119,11 @@ class CreateEventFragment : Fragment() {
                     } else {
                         updateEventWithoutRecurrence()
                     }
-                else eventPresenter.createEvent(CommunicationHandler.event)
+                else {
+                    if (isAlreadySend) return
+                    isAlreadySend = true
+                    eventPresenter.createEvent(CommunicationHandler.event)
+                }
             } else {
                 viewPager.nextPage(true)
                 if (viewPager.currentItem > 0) binding.previous.visibility = View.VISIBLE
@@ -127,6 +133,8 @@ class CreateEventFragment : Fragment() {
     }
 
     private fun updateEventWithRecurrence() {
+        if (isAlreadySend) return
+        isAlreadySend = true
         CommunicationHandler.eventEdited?.id?.let {
             eventPresenter.updateEventSiblings(
                 it,
@@ -136,6 +144,8 @@ class CreateEventFragment : Fragment() {
     }
 
     private fun updateEventWithoutRecurrence() {
+        if (isAlreadySend) return
+        isAlreadySend = true
         CommunicationHandler.eventEdited?.id?.let {
             eventPresenter.updateEvent(
                 it,
@@ -193,6 +203,7 @@ class CreateEventFragment : Fragment() {
 
     private fun handleCreateEventResponse(eventCreated: Events?) {
         if (eventCreated == null) {
+            isAlreadySend = false
             Utils.showToast(requireContext(), getString(R.string.error_create_group))
         } else {
             eventPresenter.newEventCreated.value?.id?.let {

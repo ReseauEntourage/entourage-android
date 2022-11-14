@@ -28,6 +28,7 @@ class CreateGroupFragment : Fragment() {
     private lateinit var viewPager: ViewPager2
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
 
+    private var isAlreadySend = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +48,7 @@ class CreateGroupFragment : Fragment() {
 
     private fun handleCreateGroupResponse(groupCreated: Group?) {
         if (groupCreated == null) {
+            isAlreadySend = false
             Utils.showToast(requireContext(), getString(R.string.error_create_group))
         } else {
             groupPresenter.newGroupCreated.value?.id?.let {
@@ -124,6 +126,8 @@ class CreateGroupFragment : Fragment() {
     private fun handleIsCondition(isCondition: Boolean) {
         if (isCondition) {
             if (viewPager.currentItem == NB_TABS - 1) {
+                if (isAlreadySend) return
+                isAlreadySend = true
                 groupPresenter.createGroup(viewModel.group)
             } else {
                 viewPager.nextPage(true)

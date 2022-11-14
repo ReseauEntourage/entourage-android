@@ -28,7 +28,7 @@ class EventsPresenter {
     var getEvent = MutableLiveData<Events>()
     var isEventReported = MutableLiveData<Boolean>()
     var getAllComments = MutableLiveData<MutableList<Post>>()
-    var newEventCreated = MutableLiveData<Events>()
+    var newEventCreated = MutableLiveData<Events?>()
     var isEventCreated = MutableLiveData<Boolean>()
     var isUserParticipating = MutableLiveData<Boolean>()
     var getMembers = MutableLiveData<MutableList<EntourageUser>>()
@@ -96,14 +96,17 @@ class EventsPresenter {
                             newEventCreated.value = it.event
                         } ?: run {
                             isEventCreated.value = false
+                            newEventCreated.value = null
                         }
                     } else {
                         isEventCreated.value = false
+                        newEventCreated.value = null
                     }
                 }
 
                 override fun onFailure(call: Call<EventWrapper>, t: Throwable) {
                     isEventCreated.value = false
+                    newEventCreated.value = null
                 }
             })
     }

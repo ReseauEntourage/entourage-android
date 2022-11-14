@@ -45,12 +45,6 @@ class CreateActionStepOneFragment : Fragment() {
         binding.actionName.hint = getString(R.string.action_create_title_hint,
             if (viewModel.isDemand) getString(R.string.action_name_demand)
             else getString(R.string.action_name_contrib))
-        binding.actionNameSubtitle.text = getString(R.string.action_create_title_hint,
-            if (viewModel.isDemand) getString(R.string.action_name_demand)
-            else getString(R.string.action_name_contrib))
-        binding.actionDescriptionSubtitle.text = getString(R.string.action_create_description_subtitle,
-            if (viewModel.isDemand) getString(R.string.action_name_demand)
-            else getString(R.string.action_name_contrib))
         binding.actionDescription.hint = getString(R.string.action_create_description_hint,
             if (viewModel.isDemand) getString(R.string.action_name_demand)
             else getString(R.string.action_name_contrib))
@@ -94,7 +88,7 @@ class CreateActionStepOneFragment : Fragment() {
 
     private fun initializeDescriptionCounter() {
         binding.counter.text = String.format(
-            getString(R.string.description_counter),
+            getString(R.string.events_description_counter),
             binding.actionDescription.text?.length.toString()
         )
         binding.actionDescription.addTextChangedListener(object : TextWatcher {
@@ -103,7 +97,7 @@ class CreateActionStepOneFragment : Fragment() {
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 binding.counter.text = String.format(
-                    getString(R.string.description_counter),
+                    getString(R.string.events_description_counter),
                     s.length.toString()
                 )
             }

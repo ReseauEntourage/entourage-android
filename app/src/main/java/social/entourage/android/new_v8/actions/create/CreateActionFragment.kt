@@ -31,6 +31,7 @@ class CreateActionFragment : Fragment() {
 
     private var isDemand = false
     private var actionEdited:Action? = null
+    private var isAlreadySend = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +82,7 @@ class CreateActionFragment : Fragment() {
 
     private fun handleCreateActionResponse(actionCreated: Action?) {
         if (actionCreated == null) {
+            isAlreadySend = false
             Utils.showToast(requireContext(), getString(R.string.action_error_create_action, if (isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib)))
         } else {
             actionPresenter.newActionCreated.value?.let {
@@ -99,6 +101,7 @@ class CreateActionFragment : Fragment() {
             activity?.finish()
             RefreshController.shouldRefreshEventFragment = true
         } else {
+            isAlreadySend = false
             Utils.showToast(
                 requireContext(),
                 getString(
@@ -170,14 +173,19 @@ class CreateActionFragment : Fragment() {
     }
 
     private fun handleIsCondition(isCondition: Boolean) {
+
         if (isCondition) {
             if (viewPager?.currentItem == NB_TABS - 1) {
                 if (viewModel.actionEdited != null) {
+                    if (isAlreadySend) return
+                    isAlreadySend = true
                     updateAction()
                     return
                 }
 
                 if (viewModel.isButtonClickable.value == true) {
+                    if (isAlreadySend) return
+                    isAlreadySend = true
                     viewModel.prepareCreateAction()
                     actionPresenter.createAction(viewModel.action, isDemand, viewModel.imageURI, requireContext())
                 }

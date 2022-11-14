@@ -58,9 +58,8 @@
     <string name="action_create_subtitle">Donnez un nom court et explicite à votre %s</string>
     <string name="action_create_title_hint">Nommez votre %s</string>
     <string name="action_create_description">Description</string>
-    <string name="action_create_description_subtitle">Décrivez en détail la %s que vous proposez</string>
-    <string name="action_create_description_hint">Décrivez votre %s</string>
-    <string name="action_create_add_photo">Ajouter une photo</string>
+    <string name="action_create_description_hint">Décrivez en détail la %s que vous proposez</string>
+    <string name="action_create_add_photo">Photo</string>
 
     <string name="action_name_demand">demande</string>
     <string name="action_name_contrib">contribution</string>
